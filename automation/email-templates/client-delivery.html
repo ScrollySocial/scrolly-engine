@@ -1,0 +1,30 @@
+<!--
+Client delivery email — sent by "approve-and-send.json" once the operator
+approves (or automatically, once REQUIRE_MANUAL_APPROVAL=false).
+
+Tokens (replaced by n8n before calling Resend):
+  {{contact_name}}   - contact name from the Tally submission
+  {{business_name}}  - client business name
+  {{sender_name}}    - your name / business name, sent from
+-->
+<div style="font-family: -apple-system, Helvetica, Arial, sans-serif; max-width: 560px; margin: 0 auto; color: #1a1a1a; line-height: 1.5;">
+  <p>Hi {{contact_name}},</p>
+
+  <p>
+    Your SEO Discovery Report for {{business_name}} is attached — the main report
+    (start there) plus a supporting appendix with the full research behind it.
+  </p>
+
+  <p>
+    The report leads with an executive summary and scorecard, then current wins,
+    the technical/performance findings, keyword and content opportunities,
+    competitive landscape, and a prioritized 30/60/90-day roadmap. Every
+    recommendation states what we found, why it matters, and what to do about it.
+  </p>
+
+  <p>
+    Happy to walk through it together if useful — just reply to this email.
+  </p>
+
+  <p>Thanks,<br>{{sender_name}}</p>
+</div>

@@ -1,0 +1,146 @@
+{
+  "name": "Discover — Engagement Complete",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "engagement-complete",
+        "responseMode": "onReceived",
+        "responseData": "{\"received\": true}",
+        "options": {}
+      },
+      "id": "webhook_complete",
+      "name": "Runner Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [0, 0]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": { "caseSensitive": true, "leftValue": "", "typeValidation": "loose" },
+          "combinator": "and",
+          "conditions": [
+            {
+              "leftValue": "={{ $env.REQUIRE_MANUAL_APPROVAL }}",
+              "rightValue": "true",
+              "operator": { "type": "string", "operation": "equals" }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "if_require_approval",
+      "name": "Require manual approval?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [220, 0]
+    },
+    {
+      "parameters": {
+        "command": "=node \"C:\\Users\\merce\\Scrolly Organic Engine\\automation\\n8n\\scripts\\build-resend-payload.mjs\" operator-review \"{{ $json.body.slug }}\""
+      },
+      "id": "exec_build_review_email",
+      "name": "Build operator review email",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [440, -140]
+    },
+    {
+      "parameters": { "jsCode": "return [{ json: JSON.parse($json.stdout) }];" },
+      "id": "code_parse_review_email",
+      "name": "Parse review email payload",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [660, -140]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.resend.com/emails",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Authorization", "value": "=Bearer {{ $env.RESEND_API_KEY }}" },
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify($json) }}",
+        "options": {}
+      },
+      "id": "http_send_review_email",
+      "name": "Send operator review email",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [880, -140]
+    },
+    {
+      "parameters": {
+        "command": "=node \"C:\\Users\\merce\\Scrolly Organic Engine\\automation\\n8n\\scripts\\build-resend-payload.mjs\" client-delivery \"{{ $json.body.slug }}\""
+      },
+      "id": "exec_build_client_email",
+      "name": "Build client delivery email (auto-send)",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [440, 140]
+    },
+    {
+      "parameters": { "jsCode": "return [{ json: JSON.parse($json.stdout) }];" },
+      "id": "code_parse_client_email",
+      "name": "Parse client email payload",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [660, 140]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.resend.com/emails",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Authorization", "value": "=Bearer {{ $env.RESEND_API_KEY }}" },
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify($json) }}",
+        "options": {}
+      },
+      "id": "http_send_client_email",
+      "name": "Send client email (auto-send)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [880, 140]
+    },
+    {
+      "parameters": {
+        "command": "=node \"C:\\Users\\merce\\Scrolly Organic Engine\\automation\\n8n\\scripts\\mark-delivered.mjs\" \"{{ $('Runner Webhook').item.json.body.slug }}\""
+      },
+      "id": "exec_mark_delivered",
+      "name": "Mark delivered (auto-send)",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [1100, 140]
+    }
+  ],
+  "connections": {
+    "Runner Webhook": { "main": [[{ "node": "Require manual approval?", "type": "main", "index": 0 }]] },
+    "Require manual approval?": {
+      "main": [
+        [{ "node": "Build operator review email", "type": "main", "index": 0 }],
+        [{ "node": "Build client delivery email (auto-send)", "type": "main", "index": 0 }]
+      ]
+    },
+    "Build operator review email": { "main": [[{ "node": "Parse review email payload", "type": "main", "index": 0 }]] },
+    "Parse review email payload": { "main": [[{ "node": "Send operator review email", "type": "main", "index": 0 }]] },
+    "Build client delivery email (auto-send)": { "main": [[{ "node": "Parse client email payload", "type": "main", "index": 0 }]] },
+    "Parse client email payload": { "main": [[{ "node": "Send client email (auto-send)", "type": "main", "index": 0 }]] },
+    "Send client email (auto-send)": { "main": [[{ "node": "Mark delivered (auto-send)", "type": "main", "index": 0 }]] }
+  },
+  "active": false,
+  "settings": { "executionOrder": "v1" }
+}

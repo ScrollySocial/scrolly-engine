@@ -1,0 +1,3119 @@
+{
+  "id": "08101922-2271-0400-0000-1f6fded809ed",
+  "status_code": 20000,
+  "status_message": "Ok.",
+  "items": [
+    {
+      "se_type": "google",
+      "keyword": "grow a garden",
+      "location_code": 2840,
+      "language_code": "en",
+      "keyword_info": {
+        "se_type": "google",
+        "last_updated_time": "2026-07-14 08:08:37 +00:00",
+        "competition": 0.08,
+        "competition_level": "LOW",
+        "cpc": 0.31,
+        "search_volume": 246000,
+        "low_top_of_page_bid": 0.07,
+        "high_top_of_page_bid": 0.47,
+        "categories": [
+          10004,
+          13460
+        ],
+        "monthly_searches": {
+          "2026-06": 60500,
+          "2026-05": 60500,
+          "2026-04": 90500,
+          "2026-03": 60500,
+          "2026-02": 60500,
+          "2026-01": 90500,
+          "2025-12": 135000,
+          "2025-11": 165000,
+          "2025-10": 301000,
+          "2025-09": 673000,
+          "2025-08": 823000,
+          "2025-07": 673000
+        },
+        "search_volume_trend": {
+          "quarterly": -33,
+          "yearly": -93
+        }
+      },
+      "keyword_properties": {
+        "se_type": "google",
+        "synonym_clustering_algorithm": "text_processing",
+        "keyword_difficulty": 44,
+        "detected_language": "en",
+        "words_count": 3
+      },
+      "avg_backlinks_info": {
+        "se_type": "google",
+        "backlinks": 1507.2,
+        "dofollow": 1250.8,
+        "referring_pages": 1349.9,
+        "referring_domains": 153.7,
+        "referring_main_domains": 130.9,
+        "rank": 207,
+        "main_domain_rank": 719.5,
+        "last_updated_time": "2026-07-30 03:46:32 +00:00"
+      },
+      "search_intent_info": {
+        "se_type": "google",
+        "main_intent": "informational",
+        "last_updated_time": "2026-04-28 11:38:50 +00:00"
+      }
+    },
+    {
+      "se_type": "google",
+      "keyword": "diy garden landscaping ideas",
+      "location_code": 2840,
+      "language_code": "en",
+      "keyword_info": {
+        "se_type": "google",
+        "last_updated_time": "2026-07-15 20:14:00 +00:00",
+        "competition": 0.8,
+        "competition_level": "HIGH",
+        "cpc": 0.89,
+        "search_volume": 10,
+        "categories": [
+          10004,
+          10004,
+          10282,
+          10282,
+          11150,
+          11297
+        ],
+        "monthly_searches": {
+          "2026-06": 10,
+          "2026-05": 10,
+          "2026-04": 20,
+          "2026-03": 20,
+          "2026-02": 20,
+          "2026-01": 10,
+          "2025-12": 10,
+          "2025-11": 10,
+          "2025-10": 20,
+          "2025-09": 10,
+          "2025-08": 10,
+          "2025-07": 10
+        },
+        "search_volume_trend": {
+          "quarterly": -50,
+          "yearly": -50
+        }
+      },
+      "keyword_properties": {
+        "se_type": "google",
+        "synonym_clustering_algorithm": "text_processing",
+        "keyword_difficulty": 7,
+        "detected_language": "en",
+        "words_count": 4
+      },
+      "avg_backlinks_info": {
+        "se_type": "google",
+        "backlinks": 78.5,
+        "dofollow": 60.2,
+        "referring_pages": 72,
+        "referring_domains": 28.4,
+        "referring_main_domains": 28,
+        "rank": 74.2,
+        "main_domain_rank": 615.4,
+        "last_updated_time": "2025-04-12 00:25:37 +00:00"
+      },
+      "search_intent_info": {
+        "se_type": "google",
+        "main_intent": "informational",
+        "last_updated_time": "2026-04-27 16:22:59 +00:00"
+      }
+    },
+    {
+      "se_type": "google",
+      "keyword": "landscaping",
+      "location_code": 2840,
+      "language_code": "en",
+      "keyword_info": {
+        "se_type": "google",
+        "last_updated_time": "2026-07-14 07:44:32 +00:00",
+        "competition": 0.33,
+        "competition_level": "LOW",
+        "cpc": 6.62,
+        "search_volume": 165000,
+        "low_top_of_page_bid": 2.35,
+        "high_top_of_page_bid": 8.98,
+        "categories": [
+          10004,
+          10282,
+          11150
+        ],
+        "monthly_searches": {
+          "2026-06": 165000,
+          "2026-05": 201000,
+          "2026-04": 201000,
+          "2026-03": 201000,
+          "2026-02": 135000,
+          "2026-01": 135000,
+          "2025-12": 110000,
+          "2025-11": 110000,
+          "2025-10": 135000,
+          "2025-09": 165000,
+          "2025-08": 165000,
+          "2025-07": 165000
+        },
+        "search_volume_trend": {
+          "monthly": -18,
+          "quarterly": -18,
+          "yearly": -18
+        }
+      },
+      "keyword_properties": {
+        "se_type": "google",
+        "core_keyword": "landscape",
+        "synonym_clustering_algorithm": "text_processing",
+        "keyword_difficulty": 54,
+        "detected_language": "en",
+        "words_count": 1
+      },
+      "avg_backlinks_info": {
+        "se_type": "google",
+        "backlinks": 1453.9,
+        "dofollow": 1178.7,
+        "referring_pages": 1319.8,
+        "referring_domains": 364.2,
+        "referring_main_domains": 334.4,
+        "rank": 246.2,
+        "main_domain_rank": 583.5,
+        "last_updated_time": "2026-07-30 03:52:58 +00:00"
+      },
+      "search_intent_info": {
+        "se_type": "google",
+        "main_intent": "commercial",
+        "foreign_intent": [
+          "informational"
+        ],
+        "last_updated_time": "2026-04-28 13:09:51 +00:00"
+      }
+    },
+    {
+      "se_type": "google",
+      "keyword": "plant stand",
+      "location_code": 2840,
+      "language_code": "en",
+      "keyword_info": {
+        "se_type": "google",
+        "last_updated_time": "2026-07-13 16:35:16 +00:00",
+        "competition": 1,
+        "competition_level": "HIGH",
+        "cpc": 0.58,
+        "search_volume": 74000,
+        "low_top_of_page_bid": 0.23,
+        "high_top_of_page_bid": 0.85,
+        "categories": [
+          10004,
+          10290,
+          11205,
+          12462
+        ],
+        "monthly_searches": {
+          "2026-06": 74000,
+          "2026-05": 90500,
+          "2026-04": 90500,
+          "2026-03": 90500,
+          "2026-02": 74000,
+          "2026-01": 74000,
+          "2025-12": 60500,
+          "2025-11": 90500,
+          "2025-10": 90500,
+          "2025-09": 74000,
+          "2025-08": 74000,
+          "2025-07": 74000
+        },
+        "search_volume_trend": {
+          "monthly": -18,
+          "quarterly": -18,
+          "yearly": -18
+        }
+      },
+      "keyword_properties": {
+        "se_type": "google",
+        "synonym_clustering_algorithm": "text_processing",
+        "detected_language": "en",
+        "words_count": 2
+      },
+      "avg_backlinks_info": {
+        "se_type": "google",
+        "backlinks": 8.1,
+        "dofollow": 5.5,
+        "referring_pages": 7.8,
+        "referring_domains": 3.4,
+        "referring_main_domains": 3.3,
+        "rank": 24.5,
+        "main_domain_rank": 614.6,
+        "last_updated_time": "2026-07-30 04:03:44 +00:00"
+      },
+      "search_intent_info": {
+        "se_type": "google",
+        "main_intent": "transactional",
+        "last_updated_time": "2026-04-29 18:38:00 +00:00"
+      }
+    },
+    {
+      "se_type": "google",
+      "keyword": "landscaping services",
+      "location_code": 2840,
+      "language_code": "en",
+      "keyword_info": {
+        "se_type": "google",
+        "last_updated_time": "2026-07-11 23:25:37 +00:00",
+        "competition": 0.21,
+        "competition_level": "LOW",
+        "cpc": 7.04,
+        "search_volume": 40500,
+        "low_top_of_page_bid": 2.79,
+        "high_top_of_page_bid": 12.28,
+        "categories": [
+          10004,
+          10282,
+          11150
+        ],
+        "monthly_searches": {
+          "2026-06": 27100,
+          "2026-05": 40500,
+          "2026-04": 40500,
+          "2026-03": 74000,
+          "2026-02": 33100,
+          "2026-01": 27100,
+          "2025-12": 27100,
+          "2025-11": 33100,
+          "2025-10": 40500,
+          "2025-09": 49500,
+          "2025-08": 49500,
+          "2025-07": 49500
+        },
+        "search_volume_trend": {
+          "monthly": -33,
+          "quarterly": -33,
+          "yearly": -45
+        }
+      },
+      "keyword_properties": {
+        "se_type": "google",
+        "synonym_clustering_algorithm": "text_processing",
+        "keyword_difficulty": 7,
+        "detected_language": "en",
+        "words_count": 2
+      },
+      "avg_backlinks_info": {
+        "se_type": "google",
+        "backlinks": 83.9,
+        "dofollow": 55.5,
+        "referring_pages": 75.3,
+        "referring_domains": 30.2,
+        "referring_main_domains": 28.9,
+        "rank": 95.8,
+        "main_domain_rank": 350.6,
+        "last_updated_time": "2026-07-30 05:02:03 +00:00"
+      },
+      "search_intent_info": {
+        "se_type": "google",
+        "main_intent": "commercial",
+        "last_updated_time": "2026-04-29 15:31:20 +00:00"
+      }
+    },
+    {
+      "se_type": "google",
+      "keyword": "woody plants grow a garden",
+      "location_code": 2840,
+      "language_code": "en",
+      "keyword_info": {
+        "se_type": "google",
+        "last_updated_time": "2026-07-13 09:37:46 +00:00",
+        "competition": 0,
+        "competition_level": "LOW",
+        "search_volume": 14800,
+        "categories": [
+          10004,
+          10009,
+          10406,
+          13460
+        ],
+        "monthly_searches": {
+          "2026-06": 1000,
+          "2026-05": 30,
+          "2026-04": 90,
+          "2026-03": 40,
+          "2026-02": 110,
+          "2026-01": 110,
+          "2025-12": 170,
+          "2025-11": 3600,
+          "2025-10": 480,
+          "2025-09": 33100,
+          "2025-08": 165000,
+          "2025-07": 10
+        },
+        "search_volume_trend": {
+          "monthly": 3233,
+          "quarterly": 1011
+        }
+      },
+      "keyword_properties": {
+        "se_type": "google",
+        "synonym_clustering_algorithm": "text_processing",
+        "detected_language": "en",
+        "words_count": 5
+      },
+      "avg_backlinks_info": {
+        "se_type": "google",
+        "backlinks": 3.2,
+        "dofollow": 2.8,
+        "referring_pages": 3.2,
+        "referring_domains": 3,
+        "referring_main_domains": 2.6,
+        "rank": 22.3,
+        "main_domain_rank": 576.4,
+        "last_updated_time": "2026-08-03 10:10:52 +00:00"
+      },
+      "search_intent_info": {
+        "se_type": "google",
+        "main_intent": "informational",
+        "foreign_intent": [
+          "commercial"
+        ],
+        "last_updated_time": "2026-05-07 10:12:06 +00:00"
+      }
+    },
+    {
+      "se_type": "google",
+      "keyword": "cherry blossom tree",
+      "location_code": 2840,
+      "language_code": "en",
+      "keyword_info": {
+        "se_type": "google",
+        "last_updated_time": "2026-07-13 04:47:34 +00:00",
+        "competition": 0.92,
+        "competition_level": "HIGH",
+        "cpc": 0.58,
+        "search_volume": 90500,
+        "low_top_of_page_bid": 0.3,
+        "high_top_of_page_bid": 1.63,
+        "categories": [
+          10004,
+          13460
+        ],
+        "monthly_searches": {
+          "2026-06": 60500,
+          "2026-05": 110000,
+          "2026-04": 201000,
+          "2026-03": 201000,
+          "2026-02": 90500,
+          "2026-01": 74000,
+          "2025-12": 60500,
+          "2025-11": 60500,
+          "2025-10": 74000,
+          "2025-09": 74000,
+          "2025-08": 60500,
+          "2025-07": 60500
+        },
+        "search_volume_trend": {
+          "monthly": -45,
+          "quarterly": -70,
+          "yearly": -18
+        }
+      },
+      "keyword_properties": {
+        "se_type": "google",
+        "synonym_clustering_algorithm": "text_processing",
+        "keyword_difficulty": 10,
+        "detected_language": "en",
+        "words_count": 3
+      },
+      "avg_backlinks_info": {
+        "se_type": "google",
+        "backlinks": 329.3,
+        "dofollow": 254.2,
+        "referring_pages": 282.5,
+        "referring_domains": 114.9,
+        "referring_main_domains": 106.6,
+        "rank": 95,
+        "main_domain_rank": 581.8,
+        "last_updated_time": "2026-05-14 18:54:16 +00:00"
+      },
+      "search_intent_info": {
+        "se_type": "google",
+        "main_intent": "informational",
+        "last_updated_time": "2026-04-29 04:50:50 +00:00"
+      }
+    },
+    {
+      "se_type": "google",
+      "keyword": "lawn and garden",
+      "location_code": 2840,
+      "language_code": "en",
+      "keyword_info": {
+        "se_type": "google",
+        "last_updated_time": "2026-07-12 03:19:18 +00:00",
+        "competition": 0.08,
+        "competition_level": "LOW",
+        "cpc": 1.22,
+        "search_volume": 135000,
+        "low_top_of_page_bid": 0.38,
+        "high_top_of_page_bid": 4.03,
+        "categories": [
+          10004,
+          10282,
+          11150
+        ],
+        "monthly_searches": {
+          "2026-06": 201000,
+          "2026-05": 301000,
+          "2026-04": 246000,
+          "2026-03": 165000,
+          "2026-02": 60500,
+          "2026-01": 49500,
+          "2025-12": 49500,
+          "2025-11": 74000,
+          "2025-10": 110000,
+          "2025-09": 135000,
+          "2025-08": 135000,
+          "2025-07": 110000
+        },
+        "search_volume_trend": {
+          "monthly": -33,
+          "quarterly": -18,
+          "yearly": 642
+        }
+      },
+      "keyword_properties": {
+        "se_type": "google",
+        "synonym_clustering_algorithm": "text_processing",
+        "keyword_difficulty": 12,
+        "detected_language": "en",
+        "words_count": 3
+      },
+      "avg_backlinks_info": {
+        "se_type": "google",
+        "backlinks": 712,
+        "dofollow": 355.9,
+        "referring_pages": 366.6,
+        "referring_domains": 21.2,
+        "referring_main_domains": 19.5,
+        "rank": 102.4,
+        "main_domain_rank": 559.4,
+        "last_updated_time": "2026-07-30 03:55:32 +00:00"
+      },
+      "search_intent_info": {
+        "se_type": "google",
+        "main_intent": "informational",
+        "foreign_intent": [
+          "commercial"
+        ],
+        "last_updated_time": "2026-04-28 11:57:09 +00:00"
+      }
+    },
+    {
+      "se_type": "google",
+      "keyword": "landscape edging",
+      "location_code": 2840,
+      "language_code": "en",
+      "keyword_info": {
+        "se_type": "google",
+        "last_updated_time": "2026-07-10 18:15:54 +00:00",
+        "competition": 1,
+        "competition_level": "HIGH",
+        "cpc": 0.71,
+        "search_volume": 49500,
+        "low_top_of_page_bid": 0.24,
+        "high_top_of_page_bid": 1.73,
+        "categories": [
+          10004,
+          10282,
+          11150
+        ],
+        "monthly_searches": {
+          "2026-06": 74000,
+          "2026-05": 110000,
+          "2026-04": 110000,
+          "2026-03": 74000,
+          "2026-02": 18100,
+          "2026-01": 12100,
+          "2025-12": 8100,
+          "2025-11": 14800,
+          "2025-10": 27100,
+          "2025-09": 40500,
+          "2025-08": 49500,
+          "2025-07": 60500
+        },
+        "search_volume_trend": {
+          "monthly": -33,
+          "quarterly": -33
+        }
+      },
+      "keyword_properties": {
+        "se_type": "google",
+        "synonym_clustering_algorithm": "text_processing",
+        "detected_language": "en",
+        "words_count": 2
+      },
+      "avg_backlinks_info": {
+        "se_type": "google",
+        "backlinks": 6.5,
+        "dofollow": 4.5,
+        "referring_pages": 5.7,
+        "referring_domains": 3.5,
+        "referring_main_domains": 3.2,
+        "rank": 35.3,
+        "main_domain_rank": 486,
+        "last_updated_time": "2026-08-03 09:57:46 +00:00"
+      },
+      "search_intent_info": {
+        "se_type": "google",
+        "main_intent": "informational",
+        "last_updated_time": "2026-04-28 19:02:48 +00:00"
+      }
+    },
+    {
+      "se_type": "google",
+      "keyword": "front yard landscaping ideas",
+      "location_code": 2840,
+      "language_code": "en",
+      "keyword_info": {
+        "se_type": "google",
+        "last_updated_time": "2026-07-11 04:25:43 +00:00",
+        "competition": 1,
+        "competition_level": "HIGH",
+        "cpc": 0.67,
+        "search_volume": 40500,
+        "low_top_of_page_bid": 0.17,
+        "high_top_of_page_bid": 2.34,
+        "categories": [
+          10004,
+          10282,
+          11150
+        ],
+        "monthly_searches": {
+          "2026-06": 40500,
+          "2026-05": 60500,
+          "2026-04": 74000,
+          "2026-03": 60500,
+          "2026-02": 27100,
+          "2026-01": 18100,
+          "2025-12": 12100,
+          "2025-11": 18100,
+          "2025-10": 27100,
+          "2025-09": 40500,
+          "2025-08": 40500,
+          "2025-07": 49500
+        },
+        "search_volume_trend": {
+          "monthly": -33,
+          "quarterly": -45,
+          "yearly": -33
+        }
+      },
+      "keyword_properties": {
+        "se_type": "google",
+        "synonym_clustering_algorithm": "text_processing",
+        "keyword_difficulty": 12,
+        "detected_language": "en",
+        "words_count": 4
+      },
+      "avg_backlinks_info": {
+        "se_type": "google",
+        "backlinks": 266.9,
+        "dofollow": 242.7,
+        "referring_pages": 266.7,
+        "referring_domains": 39.7,
+        "referring_main_domains": 22.5,
+        "rank": 109.6,
+        "main_domain_rank": 441.7,
+        "last_updated_time": "2026-07-30 05:12:09 +00:00"
+      },
+      "search_intent_info": {
+        "se_type": "google",
+        "main_intent": "informational",
+        "last_updated_time": "2026-04-29 07:43:49 +00:00"
+      }
+    },
+    {
+      "se_type": "google",
+      "keyword": "lawn care services",
+      "location_code": 2840,
+      "language_code": "en",
+      "keyword_info": {
+        "se_type": "google",
+        "last_updated_time": "2026-07-13 14:37:58 +00:00",
+        "competition": 0.18,
+        "competition_level": "LOW",
+        "cpc": 11.26,
+        "search_volume": 110000,
+        "low_top_of_page_bid": 4,
+        "high_top_of_page_bid": 16.01,
+        "categories": [
+          10004,
+          10282,
+          11150
+        ],
+        "monthly_searches": {
+          "2026-06": 74000,
+          "2026-05": 110000,
+          "2026-04": 165000,
+          "2026-03": 165000,
+          "2026-02": 74000,
+          "2026-01": 110000,
+          "2025-12": 60500,
+          "2025-11": 74000,
+          "2025-10": 110000,
+          "2025-09": 135000,
+          "2025-08": 165000,
+          "2025-07": 201000
+        },
+        "search_volume_trend": {
+          "monthly": -33,
+          "quarterly": -55,
+          "yearly": -63
+        }
+      },
+      "keyword_properties": {
+        "se_type": "google",
+        "core_keyword": "lawn service care",
+        "synonym_clustering_algorithm": "text_processing",
+        "keyword_difficulty": 27,
+        "detected_language": "en",
+        "words_count": 3
+      },
+      "avg_backlinks_info": {
+        "se_type": "google",
+        "backlinks": 913.9,
+        "dofollow": 682.2,
+        "referring_pages": 800.9,
+        "referring_domains": 227.5,
+        "referring_main_domains": 207.2,
+        "rank": 187.5,
+        "main_domain_rank": 349.6,
+        "last_updated_time": "2026-07-30 03:59:23 +00:00"
+      },
+      "search_intent_info": {
+        "se_type": "google",
+        "main_intent": "commercial",
+        "last_updated_time": "2026-04-28 11:57:09 +00:00"
+      }
+    },
+    {
+      "se_type": "google",
+      "keyword": "grow a garden script",
+      "location_code": 2840,
+      "language_code": "en",
+      "keyword_info": {
+        "se_type": "google",
+        "last_updated_time": "2026-07-16 07:15:28 +00:00",
+        "competition": 0,
+        "competition_level": "LOW",
+        "search_volume": 9900,
+        "categories": [
+          10004,
+          13460
+        ],
+        "monthly_searches": {
+          "2026-06": 2400,
+          "2026-05": 2400,
+          "2026-04": 3600,
+          "2026-03": 1300,
+          "2026-02": 1000,
+          "2026-01": 1600,
+          "2025-12": 1900,
+          "2025-11": 2400,
+          "2025-10": 3600,
+          "2025-09": 9900,
+          "2025-08": 22200,
+          "2025-07": 49500
+        },
+        "search_volume_trend": {
+          "quarterly": -33,
+          "yearly": -97
+        }
+      },
+      "keyword_properties": {
+        "se_type": "google",
+        "detected_language": "en",
+        "words_count": 4
+      },
+      "avg_backlinks_info": {
+        "se_type": "google",
+        "backlinks": 8.6,
+        "dofollow": 1.8,
+        "referring_pages": 8.6,
+        "referring_domains": 8.2,
+        "referring_main_domains": 4.8,
+        "rank": 33.2,
+        "main_domain_rank": 520.3,
+        "last_updated_time": "2026-07-30 11:33:14 +00:00"
+      },
+      "search_intent_info": {
+        "se_type": "google",
+        "main_intent": "informational",
+        "last_updated_time": "2026-04-28 13:24:15 +00:00"
+      }
+    },
+    {
+      "se_type": "google",
+      "keyword": "mutations grow a garden",
+      "location_code": 2840,
+      "language_code": "en",
+      "keyword_info": {
+        "se_type": "google",
+        "last_updated_time": "2026-07-11 00:54:18 +00:00",
+        "competition": 0,
+        "competition_level": "LOW",
+        "search_volume": 12100,
+        "categories": [
+          10004,
+          13460
+        ],
+        "monthly_searches": {
+          "2026-06": 480,
+          "2026-05": 320,
+          "2026-04": 480,
+          "2026-03": 210,
+          "2026-02": 170,
+          "2026-01": 260,
+          "2025-12": 480,
+          "2025-11": 1300,
+          "2025-10": 4400,
+          "2025-09": 9900,
+          "2025-08": 33100,
+          "2025-07": 90500
+        },
+        "search_volume_trend": {
+          "monthly": 50,
+          "yearly": -100
+        }
+      },
+      "keyword_properties": {
+        "se_type": "google",
+        "core_keyword": "grow a garden mutations",
+        "synonym_clustering_algorithm": "text_processing",
+        "keyword_difficulty": 3,
+        "detected_language": "en",
+        "words_count": 4
+      },
+      "avg_backlinks_info": {
+        "se_type": "google",
+        "backlinks": 75.4,
+        "dofollow": 42.9,
+        "referring_pages": 62.3,
+        "referring_domains": 31.1,
+        "referring_main_domains": 10.7,
+        "rank": 66.5,
+        "main_domain_rank": 556.5,
+        "last_updated_time": "2026-08-03 10:03:43 +00:00"
+      },
+      "search_intent_info": {
+        "se_type": "google",
+        "main_intent": "informational",
+        "last_updated_time": "2026-04-29 17:40:18 +00:00"
+      }
+    },
+    {
+      "se_type": "google",
+      "keyword": "front porch",
+      "location_code": 2840,
+      "language_code": "en",
+      "keyword_info": {
+        "se_type": "google",
+        "last_updated_time": "2026-07-13 00:51:57 +00:00",
+        "competition": 0.11,
+        "competition_level": "LOW",
+        "cpc": 2.43,
+        "search_volume": 40500,
+        "low_top_of_page_bid": 1.25,
+        "high_top_of_page_bid": 6.38,
+        "categories": [
+          10004,
+          10282,
+          11297
+        ],
+        "monthly_searches": {
+          "2026-06": 40500,
+          "2026-05": 40500,
+          "2026-04": 40500,
+          "2026-03": 40500,
+          "2026-02": 33100,
+          "2026-01": 33100,
+          "2025-12": 33100,
+          "2025-11": 33100,
+          "2025-10": 40500,
+          "2025-09": 40500,
+          "2025-08": 40500,
+          "2025-07": 40500
+        }
+      },
+      "keyword_properties": {
+        "se_type": "google",
+        "core_keyword": "the front porch",
+        "synonym_clustering_algorithm": "text_processing",
+        "keyword_difficulty": 15,
+        "detected_language": "en",
+        "words_count": 2
+      },
+      "avg_backlinks_info": {
+        "se_type": "google",
+        "backlinks": 58,
+        "dofollow": 50.4,
+        "referring_pages": 54.2,
+        "referring_domains": 15,
+        "referring_main_domains": 14.5,
+        "rank": 106.3,
+        "main_domain_rank": 580.2,
+        "last_updated_time": "2026-07-30 05:13:29 +00:00"
+      },
+      "search_intent_info": {
+        "se_type": "google",
+        "main_intent": "informational",
+        "foreign_intent": [
+          "commercial"
+        ],
+        "last_updated_time": "2026-04-29 08:50:54 +00:00"
+      }
+    },
+    {
+      "se_type": "google",
+      "keyword": "prickly plants grow a garden",
+      "location_code": 2840,
+      "language_code": "en",
+      "keyword_info": {
+        "se_type": "google",
+        "last_updated_time": "2026-07-14 10:24:25 +00:00",
+        "competition": 0,
+        "competition_level": "LOW",
+        "search_volume": 12100,
+        "categories": [
+          10004,
+          13460
+        ],
+        "monthly_searches": {
+          "2026-06": 880,
+          "2026-05": 110,
+          "2026-04": 110,
+          "2026-03": 90,
+          "2026-02": 110,
+          "2026-01": 110,
+          "2025-12": 260,
+          "2025-11": 4400,
+          "2025-10": 880,
+          "2025-09": 33100,
+          "2025-08": 90500,
+          "2025-07": 1000
+        },
+        "search_volume_trend": {
+          "monthly": 700,
+          "quarterly": 700
+        }
+      },
+      "keyword_properties": {
+        "se_type": "google",
+        "synonym_clustering_algorithm": "text_processing",
+        "detected_language": "en",
+        "words_count": 5
+      },
+      "avg_backlinks_info": {
+        "se_type": "google",
+        "backlinks": 4.3,
+        "dofollow": 2.9,
+        "referring_pages": 3.6,
+        "referring_domains": 2.9,
+        "referring_main_domains": 2.2,
+        "rank": 24.8,
+        "main_domain_rank": 725.3,
+        "last_updated_time": "2026-07-30 09:42:00 +00:00"
+      },
+      "search_intent_info": {
+        "se_type": "google",
+        "main_intent": "commercial",
+        "foreign_intent": [
+          "transactional",
+          "informational"
+        ],
+        "last_updated_time": "2026-05-07 23:20:15 +00:00"
+      }
+    },
+    {
+      "se_type": "google",
+      "keyword": "tropical plants grow a garden",
+      "location_code": 2840,
+      "language_code": "en",
+      "keyword_info": {
+        "se_type": "google",
+        "last_updated_time": "2026-07-11 11:54:32 +00:00",
+        "competition": 0.08,
+        "competition_level": "LOW",
+        "cpc": 0.2,
+        "search_volume": 9900,
+        "categories": [
+          10004,
+          10009,
+          10406,
+          13460
+        ],
+        "monthly_searches": {
+          "2026-06": 880,
+          "2026-05": 170,
+          "2026-04": 170,
+          "2026-03": 210,
+          "2026-02": 260,
+          "2026-01": 320,
+          "2025-12": 880,
+          "2025-11": 3600,
+          "2025-10": 1900,
+          "2025-09": 33100,
+          "2025-08": 74000,
+          "2025-07": 4400
+        },
+        "search_volume_trend": {
+          "monthly": 418,
+          "quarterly": 418,
+          "yearly": -32
+        }
+      },
+      "keyword_properties": {
+        "se_type": "google",
+        "synonym_clustering_algorithm": "text_processing",
+        "keyword_difficulty": 1,
+        "detected_language": "en",
+        "words_count": 5
+      },
+      "avg_backlinks_info": {
+        "se_type": "google",
+        "backlinks": 6.2,
+        "dofollow": 4.6,
+        "referring_pages": 5.6,
+        "referring_domains": 3.3,
+        "referring_main_domains": 3,
+        "rank": 46.6,
+        "main_domain_rank": 621.5,
+        "last_updated_time": "2026-07-30 10:52:20 +00:00"
+      },
+      "search_intent_info": {
+        "se_type": "google",
+        "main_intent": "informational",
+        "last_updated_time": "2026-05-03 06:35:11 +00:00"
+      }
+    },
+    {
+      "se_type": "google",
+      "keyword": "landscape lighting",
+      "location_code": 2840,
+      "language_code": "en",
+      "keyword_info": {
+        "se_type": "google",
+        "last_updated_time": "2026-07-10 07:41:52 +00:00",
+        "competition": 1,
+        "competition_level": "HIGH",
+        "cpc": 3.47,
+        "search_volume": 33100,
+        "low_top_of_page_bid": 0.55,
+        "high_top_of_page_bid": 5.95,
+        "categories": [
+          10004,
+          10282,
+          11293,
+          12611
+        ],
+        "monthly_searches": {
+          "2026-06": 27100,
+          "2026-05": 33100,
+          "2026-04": 40500,
+          "2026-03": 33100,
+          "2026-02": 27100,
+          "2026-01": 22200,
+          "2025-12": 33100,
+          "2025-11": 40500,
+          "2025-10": 40500,
+          "2025-09": 49500,
+          "2025-08": 40500,
+          "2025-07": 33100
+        },
+        "search_volume_trend": {
+          "monthly": -18,
+          "quarterly": -33,
+          "yearly": -33
+        }
+      },
+      "keyword_properties": {
+        "se_type": "google",
+        "synonym_clustering_algorithm": "text_processing",
+        "keyword_difficulty": 27,
+        "detected_language": "en",
+        "words_count": 2
+      },
+      "avg_backlinks_info": {
+        "se_type": "google",
+        "backlinks": 267.3,
+        "dofollow": 140.1,
+        "referring_pages": 182.3,
+        "referring_domains": 46.7,
+        "referring_main_domains": 44.5,
+        "rank": 158.9,
+        "main_domain_rank": 384.5,
+        "last_updated_time": "2026-07-30 05:34:17 +00:00"
+      },
+      "search_intent_info": {
+        "se_type": "google",
+        "main_intent": "commercial",
+        "foreign_intent": [
+          "transactional"
+        ],
+        "last_updated_time": "2026-04-28 13:18:21 +00:00"
+      }
+    },
+    {
+      "se_type": "google",
+      "keyword": "garden soil",
+      "location_code": 2840,
+      "language_code": "en",
+      "keyword_info": {
+        "se_type": "google",
+        "last_updated_time": "2026-07-13 10:18:42 +00:00",
+        "competition": 1,
+        "competition_level": "HIGH",
+        "cpc": 0.38,
+        "search_volume": 40500,
+        "low_top_of_page_bid": 0.27,
+        "high_top_of_page_bid": 1.86,
+        "categories": [
+          10004,
+          11076,
+          12356,
+          13460
+        ],
+        "monthly_searches": {
+          "2026-06": 49500,
+          "2026-05": 90500,
+          "2026-04": 90500,
+          "2026-03": 74000,
+          "2026-02": 27100,
+          "2026-01": 12100,
+          "2025-12": 8100,
+          "2025-11": 12100,
+          "2025-10": 18100,
+          "2025-09": 22200,
+          "2025-08": 22200,
+          "2025-07": 27100
+        },
+        "search_volume_trend": {
+          "monthly": -45,
+          "quarterly": -45
+        }
+      },
+      "keyword_properties": {
+        "se_type": "google",
+        "synonym_clustering_algorithm": "text_processing",
+        "keyword_difficulty": 2,
+        "detected_language": "en",
+        "words_count": 2
+      },
+      "avg_backlinks_info": {
+        "se_type": "google",
+        "backlinks": 8.9,
+        "dofollow": 5.5,
+        "referring_pages": 8.6,
+        "referring_domains": 5.8,
+        "referring_main_domains": 5.6,
+        "rank": 63.3,
+        "main_domain_rank": 536.9,
+        "last_updated_time": "2026-07-30 05:11:59 +00:00"
+      },
+      "search_intent_info": {
+        "se_type": "google",
+        "main_intent": "informational",
+        "foreign_intent": [
+          "transactional"
+        ],
+        "last_updated_time": "2026-04-27 20:49:20 +00:00"
+      }
+    },
+    {
+      "se_type": "google",
+      "keyword": "landscape architecture",
+      "location_code": 2840,
+      "language_code": "en",
+      "keyword_info": {
+        "se_type": "google",
+        "last_updated_time": "2026-07-14 22:36:56 +00:00",
+        "competition": 0.19,
+        "competition_level": "LOW",
+        "cpc": 8.51,
+        "search_volume": 40500,
+        "low_top_of_page_bid": 2.43,
+        "high_top_of_page_bid": 10.95,
+        "categories": [
+          10004,
+          10004,
+          10273,
+          10282,
+          11130,
+          11150
+        ],
+        "monthly_searches": {
+          "2026-06": 40500,
+          "2026-05": 49500,
+          "2026-04": 49500,
+          "2026-03": 49500,
+          "2026-02": 33100,
+          "2026-01": 60500,
+          "2025-12": 33100,
+          "2025-11": 33100,
+          "2025-10": 40500,
+          "2025-09": 49500,
+          "2025-08": 49500,
+          "2025-07": 40500
+        },
+        "search_volume_trend": {
+          "monthly": -18,
+          "quarterly": -18,
+          "yearly": -33
+        }
+      },
+      "keyword_properties": {
+        "se_type": "google",
+        "core_keyword": "landscape of architecture",
+        "synonym_clustering_algorithm": "text_processing",
+        "keyword_difficulty": 50,
+        "detected_language": "en",
+        "words_count": 2
+      },
+      "avg_backlinks_info": {
+        "se_type": "google",
+        "backlinks": 302.1,
+        "dofollow": 249.5,
+        "referring_pages": 269.3,
+        "referring_domains": 94.7,
+        "referring_main_domains": 87.3,
+        "rank": 209.6,
+        "main_domain_rank": 573.4,
+        "last_updated_time": "2026-08-03 09:42:50 +00:00"
+      },
+      "search_intent_info": {
+        "se_type": "google",
+        "main_intent": "informational",
+        "last_updated_time": "2026-04-28 11:06:07 +00:00"
+      }
+    },
+    {
+      "se_type": "google",
+      "keyword": "landscape supply",
+      "location_code": 2840,
+      "language_code": "en",
+      "keyword_info": {
+        "se_type": "google",
+        "last_updated_time": "2026-07-11 00:27:32 +00:00",
+        "competition": 0.49,
+        "competition_level": "MEDIUM",
+        "cpc": 1.82,
+        "search_volume": 40500,
+        "low_top_of_page_bid": 0.82,
+        "high_top_of_page_bid": 3.83,
+        "categories": [
+          10004,
+          10282,
+          11150
+        ],
+        "monthly_searches": {
+          "2026-06": 49500,
+          "2026-05": 60500,
+          "2026-04": 60500,
+          "2026-03": 60500,
+          "2026-02": 27100,
+          "2026-01": 22200,
+          "2025-12": 18100,
+          "2025-11": 22200,
+          "2025-10": 40500,
+          "2025-09": 40500,
+          "2025-08": 40500,
+          "2025-07": 49500
+        },
+        "search_volume_trend": {
+          "monthly": -18,
+          "quarterly": -18
+        }
+      },
+      "keyword_properties": {
+        "se_type": "google",
+        "synonym_clustering_algorithm": "text_processing",
+        "keyword_difficulty": 4,
+        "detected_language": "en",
+        "words_count": 2
+      },
+      "avg_backlinks_info": {
+        "se_type": "google",
+        "backlinks": 55,
+        "dofollow": 29.3,
+        "referring_pages": 52.7,
+        "referring_domains": 35.6,
+        "referring_main_domains": 32.9,
+        "rank": 110.8,
+        "main_domain_rank": 174.6,
+        "last_updated_time": "2026-07-30 04:59:37 +00:00"
+      },
+      "search_intent_info": {
+        "se_type": "google",
+        "main_intent": "commercial",
+        "last_updated_time": "2026-04-29 13:55:58 +00:00"
+      }
+    },
+    {
+      "se_type": "google",
+      "keyword": "landscaping jobs",
+      "location_code": 2840,
+      "language_code": "en",
+      "keyword_info": {
+        "se_type": "google",
+        "last_updated_time": "2026-07-11 22:37:23 +00:00",
+        "competition": 0.13,
+        "competition_level": "LOW",
+        "cpc": 1.76,
+        "search_volume": 14800,
+        "low_top_of_page_bid": 0.15,
+        "high_top_of_page_bid": 1.38,
+        "categories": [
+          10004,
+          10282,
+          11150
+        ],
+        "monthly_searches": {
+          "2026-06": 14800,
+          "2026-05": 18100,
+          "2026-04": 18100,
+          "2026-03": 18100,
+          "2026-02": 12100,
+          "2026-01": 14800,
+          "2025-12": 9900,
+          "2025-11": 9900,
+          "2025-10": 12100,
+          "2025-09": 14800,
+          "2025-08": 14800,
+          "2025-07": 18100
+        },
+        "search_volume_trend": {
+          "monthly": -18,
+          "quarterly": -18,
+          "yearly": -18
+        }
+      },
+      "keyword_properties": {
+        "se_type": "google",
+        "synonym_clustering_algorithm": "text_processing",
+        "keyword_difficulty": 11,
+        "detected_language": "en",
+        "words_count": 2
+      },
+      "avg_backlinks_info": {
+        "se_type": "google",
+        "backlinks": 14792.3,
+        "dofollow": 5018.2,
+        "referring_pages": 5023.2,
+        "referring_domains": 16.8,
+        "referring_main_domains": 15.5,
+        "rank": 103.8,
+        "main_domain_rank": 527.6,
+        "last_updated_time": "2026-07-30 08:41:20 +00:00"
+      },
+      "search_intent_info": {
+        "se_type": "google",
+        "main_intent": "informational",
+        "foreign_intent": [
+          "navigational"
+        ],
+        "last_updated_time": "2026-04-28 15:34:30 +00:00"
+      }
+    },
+    {
+      "se_type": "google",
+      "keyword": "landscape design services",
+      "location_code": 2840,
+      "language_code": "en",
+      "keyword_info": {
+        "se_type": "google",
+        "last_updated_time": "2026-07-15 13:16:34 +00:00",
+        "competition": 0.1,
+        "competition_level": "LOW",
+        "cpc": 6.56,
+        "search_volume": 12100,
+        "low_top_of_page_bid": 2.43,
+        "high_top_of_page_bid": 10.09,
+        "categories": [
+          10004,
+          10282,
+          11150
+        ],
+        "monthly_searches": {
+          "2026-06": 6600,
+          "2026-05": 8100,
+          "2026-04": 9900,
+          "2026-03": 14800,
+          "2026-02": 8100,
+          "2026-01": 6600,
+          "2025-12": 6600,
+          "2025-11": 6600,
+          "2025-10": 12100,
+          "2025-09": 18100,
+          "2025-08": 14800,
+          "2025-07": 18100
+        },
+        "search_volume_trend": {
+          "monthly": -19,
+          "quarterly": -33,
+          "yearly": -64
+        }
+      },
+      "keyword_properties": {
+        "se_type": "google",
+        "synonym_clustering_algorithm": "text_processing",
+        "keyword_difficulty": 9,
+        "detected_language": "en",
+        "words_count": 3
+      },
+      "avg_backlinks_info": {
+        "se_type": "google",
+        "backlinks": 750.2,
+        "dofollow": 592.4,
+        "referring_pages": 620.3,
+        "referring_domains": 60.8,
+        "referring_main_domains": 57.5,
+        "rank": 98.3,
+        "main_domain_rank": 502,
+        "last_updated_time": "2026-07-30 09:58:31 +00:00"
+      },
+      "search_intent_info": {
+        "se_type": "google",
+        "main_intent": "commercial",
+        "last_updated_time": "2026-04-29 15:11:13 +00:00"
+      }
+    },
+    {
+      "se_type": "google",
+      "keyword": "tanuki grow a garden",
+      "location_code": 2840,
+      "language_code": "en",
+      "keyword_info": {
+        "se_type": "google",
+        "last_updated_time": "2026-07-10 05:53:00 +00:00",
+        "competition": 0,
+        "competition_level": "LOW",
+        "search_volume": 5400,
+        "categories": [
+          10004,
+          13460
+        ],
+        "monthly_searches": {
+          "2026-06": 170,
+          "2026-05": 170,
+          "2026-04": 210,
+          "2026-03": 140,
+          "2026-02": 140,
+          "2026-01": 320,
+          "2025-12": 590,
+          "2025-11": 720,
+          "2025-10": 1300,
+          "2025-09": 2900,
+          "2025-08": 12100,
+          "2025-07": 49500
+        },
+        "search_volume_trend": {
+          "quarterly": -19
+        }
+      },
+      "keyword_properties": {
+        "se_type": "google",
+        "synonym_clustering_algorithm": "text_processing",
+        "detected_language": "en",
+        "words_count": 4
+      },
+      "search_intent_info": {
+        "se_type": "google",
+        "main_intent": "transactional",
+        "last_updated_time": "2026-05-08 07:13:05 +00:00"
+      }
+    },
+    {
+      "se_type": "google",
+      "keyword": "brightview landscaping",
+      "location_code": 2840,
+      "language_code": "en",
+      "keyword_info": {
+        "se_type": "google",
+        "last_updated_time": "2026-07-13 01:06:04 +00:00",
+        "competition": 0.17,
+        "competition_level": "LOW",
+        "cpc": 4.95,
+        "search_volume": 33100,
+        "low_top_of_page_bid": 1.38,
+        "high_top_of_page_bid": 6.46,
+        "categories": [
+          10004,
+          10282,
+          11150
+        ],
+        "monthly_searches": {
+          "2026-06": 40500,
+          "2026-05": 40500,
+          "2026-04": 40500,
+          "2026-03": 40500,
+          "2026-02": 33100,
+          "2026-01": 33100,
+          "2025-12": 27100,
+          "2025-11": 27100,
+          "2025-10": 33100,
+          "2025-09": 33100,
+          "2025-08": 33100,
+          "2025-07": 40500
+        }
+      },
+      "keyword_properties": {
+        "se_type": "google",
+        "synonym_clustering_algorithm": "text_processing",
+        "keyword_difficulty": 98,
+        "detected_language": "en",
+        "words_count": 2
+      },
+      "avg_backlinks_info": {
+        "se_type": "google",
+        "backlinks": 5512,
+        "dofollow": 4805,
+        "referring_pages": 5211.667,
+        "referring_domains": 309.667,
+        "referring_main_domains": 278.333,
+        "rank": 298.333,
+        "main_domain_rank": 656.667,
+        "last_updated_time": "2026-07-30 05:30:41 +00:00"
+      },
+      "search_intent_info": {
+        "se_type": "google",
+        "main_intent": "navigational",
+        "last_updated_time": "2026-04-29 05:29:56 +00:00"
+      }
+    },
+    {
+      "se_type": "google",
+      "keyword": "garden landscaping",
+      "location_code": 2840,
+      "language_code": "en",
+      "keyword_info": {
+        "se_type": "google",
+        "last_updated_time": "2026-07-13 20:33:49 +00:00",
+        "competition": 0.14,
+        "competition_level": "LOW",
+        "cpc": 4.13,
+        "search_volume": 14800,
+        "low_top_of_page_bid": 2.03,
+        "high_top_of_page_bid": 7.67,
+        "categories": [
+          10004,
+          10282,
+          11150
+        ],
+        "monthly_searches": {
+          "2026-06": 27100,
+          "2026-05": 33100,
+          "2026-04": 27100,
+          "2026-03": 14800,
+          "2026-02": 6600,
+          "2026-01": 4400,
+          "2025-12": 3600,
+          "2025-11": 4400,
+          "2025-10": 9900,
+          "2025-09": 14800,
+          "2025-08": 14800,
+          "2025-07": 12100
+        },
+        "search_volume_trend": {
+          "monthly": -18,
+          "yearly": 311
+        }
+      },
+      "keyword_properties": {
+        "se_type": "google",
+        "synonym_clustering_algorithm": "text_processing",
+        "keyword_difficulty": 27,
+        "detected_language": "en",
+        "words_count": 2
+      },
+      "avg_backlinks_info": {
+        "se_type": "google",
+        "backlinks": 1013.8,
+        "dofollow": 543.3,
+        "referring_pages": 889.6,
+        "referring_domains": 153,
+        "referring_main_domains": 138.5,
+        "rank": 175.7,
+        "main_domain_rank": 537.9,
+        "last_updated_time": "2026-07-30 08:50:58 +00:00"
+      },
+      "search_intent_info": {
+        "se_type": "google",
+        "main_intent": "commercial",
+        "foreign_intent": [
+          "informational"
+        ],
+        "last_updated_time": "2026-04-27 20:56:45 +00:00"
+      }
+    },
+    {
+      "se_type": "google",
+      "keyword": "landscaping ideas",
+      "location_code": 2840,
+      "language_code": "en",
+      "keyword_info": {
+        "se_type": "google",
+        "last_updated_time": "2026-07-11 11:55:27 +00:00",
+        "competition": 1,
+        "competition_level": "HIGH",
+        "cpc": 1.08,
+        "search_volume": 27100,
+        "low_top_of_page_bid": 0.18,
+        "high_top_of_page_bid": 2.27,
+        "categories": [
+          10004,
+          10282,
+          11150
+        ],
+        "monthly_searches": {
+          "2026-06": 27100,
+          "2026-05": 40500,
+          "2026-04": 49500,
+          "2026-03": 40500,
+          "2026-02": 18100,
+          "2026-01": 14800,
+          "2025-12": 9900,
+          "2025-11": 14800,
+          "2025-10": 33100,
+          "2025-09": 22200,
+          "2025-08": 27100,
+          "2025-07": 33100
+        },
+        "search_volume_trend": {
+          "monthly": -33,
+          "quarterly": -45,
+          "yearly": -33
+        }
+      },
+      "keyword_properties": {
+        "se_type": "google",
+        "synonym_clustering_algorithm": "text_processing",
+        "keyword_difficulty": 21,
+        "detected_language": "en",
+        "words_count": 2
+      },
+      "avg_backlinks_info": {
+        "se_type": "google",
+        "backlinks": 441.7,
+        "dofollow": 351.3,
+        "referring_pages": 382.6,
+        "referring_domains": 80.6,
+        "referring_main_domains": 71.4,
+        "rank": 150.2,
+        "main_domain_rank": 499.7,
+        "last_updated_time": "2026-08-03 09:48:30 +00:00"
+      },
+      "search_intent_info": {
+        "se_type": "google",
+        "main_intent": "informational",
+        "last_updated_time": "2026-04-28 11:06:21 +00:00"
+      }
+    },
+    {
+      "se_type": "google",
+      "keyword": "house siding",
+      "location_code": 2840,
+      "language_code": "en",
+      "keyword_info": {
+        "se_type": "google",
+        "last_updated_time": "2026-07-13 20:46:00 +00:00",
+        "competition": 1,
+        "competition_level": "HIGH",
+        "cpc": 8.63,
+        "search_volume": 49500,
+        "low_top_of_page_bid": 3.22,
+        "high_top_of_page_bid": 18.23,
+        "categories": [
+          10004,
+          10282,
+          11286,
+          12586,
+          13797
+        ],
+        "monthly_searches": {
+          "2026-06": 40500,
+          "2026-05": 49500,
+          "2026-04": 49500,
+          "2026-03": 49500,
+          "2026-02": 40500,
+          "2026-01": 33100,
+          "2025-12": 33100,
+          "2025-11": 40500,
+          "2025-10": 49500,
+          "2025-09": 49500,
+          "2025-08": 49500,
+          "2025-07": 49500
+        },
+        "search_volume_trend": {
+          "monthly": -18,
+          "quarterly": -18,
+          "yearly": -18
+        }
+      },
+      "keyword_properties": {
+        "se_type": "google",
+        "synonym_clustering_algorithm": "text_processing",
+        "keyword_difficulty": 21,
+        "detected_language": "en",
+        "words_count": 2
+      },
+      "avg_backlinks_info": {
+        "se_type": "google",
+        "backlinks": 53,
+        "dofollow": 30,
+        "referring_pages": 51.2,
+        "referring_domains": 15.4,
+        "referring_main_domains": 14.1,
+        "rank": 116.4,
+        "main_domain_rank": 447.4,
+        "last_updated_time": "2026-07-30 05:02:54 +00:00"
+      },
+      "search_intent_info": {
+        "se_type": "google",
+        "main_intent": "transactional",
+        "foreign_intent": [
+          "commercial"
+        ],
+        "last_updated_time": "2026-04-28 08:07:02 +00:00"
+      }
+    },
+    {
+      "se_type": "google",
+      "keyword": "lin's garden",
+      "location_code": 2840,
+      "language_code": "en",
+      "keyword_info": {
+        "se_type": "google",
+        "last_updated_time": "2026-07-14 01:40:31 +00:00",
+        "competition": 0.04,
+        "competition_level": "LOW",
+        "cpc": 1.84,
+        "search_volume": 49500,
+        "low_top_of_page_bid": 0.84,
+        "high_top_of_page_bid": 2.68,
+        "categories": [
+          10004,
+          13460
+        ],
+        "monthly_searches": {
+          "2026-06": 49500,
+          "2026-05": 49500,
+          "2026-04": 49500,
+          "2026-03": 49500,
+          "2026-02": 49500,
+          "2026-01": 49500,
+          "2025-12": 60500,
+          "2025-11": 49500,
+          "2025-10": 49500,
+          "2025-09": 40500,
+          "2025-08": 40500,
+          "2025-07": 40500
+        },
+        "search_volume_trend": {
+          "yearly": 22
+        }
+      },
+      "keyword_properties": {
+        "se_type": "google",
+        "synonym_clustering_algorithm": "text_processing",
+        "detected_language": "en",
+        "words_count": 2
+      },
+      "avg_backlinks_info": {
+        "se_type": "google",
+        "backlinks": 7.9,
+        "dofollow": 4.4,
+        "referring_pages": 7.9,
+        "referring_domains": 6.2,
+        "referring_main_domains": 5.7,
+        "rank": 17.7,
+        "main_domain_rank": 418.7,
+        "last_updated_time": "2026-07-30 05:00:11 +00:00"
+      },
+      "search_intent_info": {
+        "se_type": "google",
+        "main_intent": "informational",
+        "last_updated_time": "2026-05-03 12:56:54 +00:00"
+      }
+    },
+    {
+      "se_type": "google",
+      "keyword": "rainbow plant life",
+      "location_code": 2840,
+      "language_code": "en",
+      "keyword_info": {
+        "se_type": "google",
+        "last_updated_time": "2026-07-10 22:23:47 +00:00",
+        "competition": 0,
+        "competition_level": "LOW",
+        "cpc": 5.69,
+        "search_volume": 12100,
+        "low_top_of_page_bid": 2,
+        "high_top_of_page_bid": 5.69,
+        "categories": [
+          10004,
+          13460
+        ],
+        "monthly_searches": {
+          "2026-06": 9900,
+          "2026-05": 12100,
+          "2026-04": 9900,
+          "2026-03": 12100,
+          "2026-02": 12100,
+          "2026-01": 18100,
+          "2025-12": 14800,
+          "2025-11": 14800,
+          "2025-10": 12100,
+          "2025-09": 12100,
+          "2025-08": 12100,
+          "2025-07": 9900
+        },
+        "search_volume_trend": {
+          "monthly": -18
+        }
+      },
+      "keyword_properties": {
+        "se_type": "google",
+        "synonym_clustering_algorithm": "text_processing",
+        "keyword_difficulty": 14,
+        "detected_language": "en",
+        "words_count": 3
+      },
+      "avg_backlinks_info": {
+        "se_type": "google",
+        "backlinks": 404.3,
+        "dofollow": 355.4,
+        "referring_pages": 389.7,
+        "referring_domains": 73.9,
+        "referring_main_domains": 71,
+        "rank": 89.8,
+        "main_domain_rank": 767.5,
+        "last_updated_time": "2026-07-30 09:33:12 +00:00"
+      },
+      "search_intent_info": {
+        "se_type": "google",
+        "main_intent": "informational",
+        "last_updated_time": "2026-04-29 21:22:07 +00:00"
+      }
+    },
+    {
+      "se_type": "google",
+      "keyword": "flowering trees",
+      "location_code": 2840,
+      "language_code": "en",
+      "keyword_info": {
+        "se_type": "google",
+        "last_updated_time": "2026-07-15 12:47:58 +00:00",
+        "competition": 1,
+        "competition_level": "HIGH",
+        "cpc": 0.39,
+        "search_volume": 18100,
+        "low_top_of_page_bid": 0.08,
+        "high_top_of_page_bid": 0.98,
+        "categories": [
+          10004,
+          13460
+        ],
+        "monthly_searches": {
+          "2026-06": 18100,
+          "2026-05": 33100,
+          "2026-04": 40500,
+          "2026-03": 27100,
+          "2026-02": 12100,
+          "2026-01": 9900,
+          "2025-12": 8100,
+          "2025-11": 9900,
+          "2025-10": 12100,
+          "2025-09": 14800,
+          "2025-08": 18100,
+          "2025-07": 22200
+        },
+        "search_volume_trend": {
+          "monthly": -45,
+          "quarterly": -55,
+          "yearly": -33
+        }
+      },
+      "keyword_properties": {
+        "se_type": "google",
+        "synonym_clustering_algorithm": "text_processing",
+        "detected_language": "en",
+        "words_count": 2
+      },
+      "avg_backlinks_info": {
+        "se_type": "google",
+        "backlinks": 24.3,
+        "dofollow": 7.7,
+        "referring_pages": 23.6,
+        "referring_domains": 17.8,
+        "referring_main_domains": 13.6,
+        "rank": 48.6,
+        "main_domain_rank": 412.2,
+        "last_updated_time": "2026-05-15 01:16:30 +00:00"
+      },
+      "search_intent_info": {
+        "se_type": "google",
+        "main_intent": "informational",
+        "last_updated_time": "2026-04-29 18:58:05 +00:00"
+      }
+    },
+    {
+      "se_type": "google",
+      "keyword": "corrupted kitsune grow a garden",
+      "location_code": 2840,
+      "language_code": "en",
+      "keyword_info": {
+        "se_type": "google",
+        "last_updated_time": "2026-07-10 15:42:44 +00:00",
+        "competition": 0.39,
+        "competition_level": "MEDIUM",
+        "cpc": 0.41,
+        "search_volume": 14800,
+        "categories": [
+          10004,
+          13460
+        ],
+        "monthly_searches": {
+          "2026-06": 320,
+          "2026-05": 390,
+          "2026-04": 590,
+          "2026-03": 260,
+          "2026-02": 320,
+          "2026-01": 480,
+          "2025-12": 1000,
+          "2025-11": 1000,
+          "2025-10": 2400,
+          "2025-09": 8100,
+          "2025-08": 18100,
+          "2025-07": 135000
+        },
+        "search_volume_trend": {
+          "monthly": -18,
+          "quarterly": -46
+        }
+      },
+      "keyword_properties": {
+        "se_type": "google",
+        "synonym_clustering_algorithm": "text_processing",
+        "detected_language": "en",
+        "words_count": 5
+      },
+      "avg_backlinks_info": {
+        "se_type": "google",
+        "backlinks": 1.5,
+        "dofollow": 1.1,
+        "referring_pages": 1.5,
+        "referring_domains": 1.4,
+        "referring_main_domains": 1.4,
+        "rank": 19.2,
+        "main_domain_rank": 549.3,
+        "last_updated_time": "2026-07-30 08:58:49 +00:00"
+      },
+      "search_intent_info": {
+        "se_type": "google",
+        "main_intent": "transactional",
+        "last_updated_time": "2026-05-05 09:10:54 +00:00"
+      }
+    },
+    {
+      "se_type": "google",
+      "keyword": "the front yard",
+      "location_code": 2840,
+      "language_code": "en",
+      "keyword_info": {
+        "se_type": "google",
+        "last_updated_time": "2026-07-16 09:59:48 +00:00",
+        "competition": 0.03,
+        "competition_level": "LOW",
+        "cpc": 0.28,
+        "search_volume": 33100,
+        "low_top_of_page_bid": 0.57,
+        "high_top_of_page_bid": 2.56,
+        "categories": [
+          10004,
+          10282,
+          11297
+        ],
+        "monthly_searches": {
+          "2026-06": 33100,
+          "2026-05": 40500,
+          "2026-04": 33100,
+          "2026-03": 33100,
+          "2026-02": 33100,
+          "2026-01": 33100,
+          "2025-12": 33100,
+          "2025-11": 33100,
+          "2025-10": 33100,
+          "2025-09": 33100,
+          "2025-08": 40500,
+          "2025-07": 40500
+        },
+        "search_volume_trend": {
+          "monthly": -18
+        }
+      },
+      "keyword_properties": {
+        "se_type": "google",
+        "synonym_clustering_algorithm": "text_processing",
+        "keyword_difficulty": 13,
+        "detected_language": "en",
+        "words_count": 3
+      },
+      "avg_backlinks_info": {
+        "se_type": "google",
+        "backlinks": 104.3,
+        "dofollow": 56.6,
+        "referring_pages": 96.6,
+        "referring_domains": 54.6,
+        "referring_main_domains": 47.9,
+        "rank": 107.7,
+        "main_domain_rank": 487.5,
+        "last_updated_time": "2026-07-30 05:14:58 +00:00"
+      },
+      "search_intent_info": {
+        "se_type": "google",
+        "main_intent": "informational",
+        "last_updated_time": "2026-04-29 21:11:37 +00:00"
+      }
+    },
+    {
+      "se_type": "google",
+      "keyword": "landscaping companies",
+      "location_code": 2840,
+      "language_code": "en",
+      "keyword_info": {
+        "se_type": "google",
+        "last_updated_time": "2026-07-11 10:58:36 +00:00",
+        "competition": 0.42,
+        "competition_level": "MEDIUM",
+        "cpc": 9.7,
+        "search_volume": 27100,
+        "low_top_of_page_bid": 3.36,
+        "high_top_of_page_bid": 19.11,
+        "categories": [
+          10004,
+          10282,
+          11150
+        ],
+        "monthly_searches": {
+          "2026-06": 33100,
+          "2026-05": 40500,
+          "2026-04": 33100,
+          "2026-03": 40500,
+          "2026-02": 22200,
+          "2026-01": 27100,
+          "2025-12": 33100,
+          "2025-11": 18100,
+          "2025-10": 22200,
+          "2025-09": 33100,
+          "2025-08": 33100,
+          "2025-07": 33100
+        },
+        "search_volume_trend": {
+          "monthly": -18,
+          "yearly": -18
+        }
+      },
+      "keyword_properties": {
+        "se_type": "google",
+        "core_keyword": "landscaping company",
+        "synonym_clustering_algorithm": "text_processing",
+        "keyword_difficulty": 9,
+        "detected_language": "en",
+        "words_count": 2
+      },
+      "avg_backlinks_info": {
+        "se_type": "google",
+        "backlinks": 72.4,
+        "dofollow": 28.7,
+        "referring_pages": 62.9,
+        "referring_domains": 35.8,
+        "referring_main_domains": 34,
+        "rank": 108.6,
+        "main_domain_rank": 343.8,
+        "last_updated_time": "2026-06-17 02:51:08 +00:00"
+      },
+      "search_intent_info": {
+        "se_type": "google",
+        "main_intent": "commercial",
+        "last_updated_time": "2026-04-28 19:36:42 +00:00"
+      }
+    },
+    {
+      "se_type": "google",
+      "keyword": "front yard landscaping",
+      "location_code": 2840,
+      "language_code": "en",
+      "keyword_info": {
+        "se_type": "google",
+        "last_updated_time": "2026-07-10 22:02:37 +00:00",
+        "competition": 0.9,
+        "competition_level": "HIGH",
+        "cpc": 2.07,
+        "search_volume": 9900,
+        "low_top_of_page_bid": 0.91,
+        "high_top_of_page_bid": 4.84,
+        "categories": [
+          10004,
+          10282,
+          11150
+        ],
+        "monthly_searches": {
+          "2026-06": 9900,
+          "2026-05": 14800,
+          "2026-04": 14800,
+          "2026-03": 14800,
+          "2026-02": 6600,
+          "2026-01": 5400,
+          "2025-12": 4400,
+          "2025-11": 6600,
+          "2025-10": 8100,
+          "2025-09": 14800,
+          "2025-08": 14800,
+          "2025-07": 14800
+        },
+        "search_volume_trend": {
+          "monthly": -33,
+          "quarterly": -33,
+          "yearly": -45
+        }
+      },
+      "keyword_properties": {
+        "se_type": "google",
+        "synonym_clustering_algorithm": "text_processing",
+        "keyword_difficulty": 11,
+        "detected_language": "en",
+        "words_count": 3
+      },
+      "avg_backlinks_info": {
+        "se_type": "google",
+        "backlinks": 34.1,
+        "dofollow": 14.4,
+        "referring_pages": 33.9,
+        "referring_domains": 30.8,
+        "referring_main_domains": 17.1,
+        "rank": 78,
+        "main_domain_rank": 577.2,
+        "last_updated_time": "2026-08-03 10:13:45 +00:00"
+      },
+      "search_intent_info": {
+        "se_type": "google",
+        "main_intent": "commercial",
+        "last_updated_time": "2026-04-29 11:45:22 +00:00"
+      }
+    },
+    {
+      "se_type": "google",
+      "keyword": "roofing services",
+      "location_code": 2840,
+      "language_code": "en",
+      "keyword_info": {
+        "se_type": "google",
+        "last_updated_time": "2026-07-13 20:59:38 +00:00",
+        "competition": 0.13,
+        "competition_level": "LOW",
+        "cpc": 18.87,
+        "search_volume": 18100,
+        "low_top_of_page_bid": 10,
+        "high_top_of_page_bid": 53.08,
+        "categories": [
+          10004,
+          10282,
+          11140,
+          11285
+        ],
+        "monthly_searches": {
+          "2026-06": 9900,
+          "2026-05": 8100,
+          "2026-04": 9900,
+          "2026-03": 14800,
+          "2026-02": 8100,
+          "2026-01": 14800,
+          "2025-12": 60500,
+          "2025-11": 14800,
+          "2025-10": 22200,
+          "2025-09": 22200,
+          "2025-08": 27100,
+          "2025-07": 18100
+        },
+        "search_volume_trend": {
+          "monthly": 22,
+          "yearly": -63
+        }
+      },
+      "keyword_properties": {
+        "se_type": "google",
+        "core_keyword": "roofing service",
+        "synonym_clustering_algorithm": "text_processing",
+        "keyword_difficulty": 30,
+        "detected_language": "en",
+        "words_count": 2
+      },
+      "avg_backlinks_info": {
+        "se_type": "google",
+        "backlinks": 151.4,
+        "dofollow": 110.6,
+        "referring_pages": 129.1,
+        "referring_domains": 65.8,
+        "referring_main_domains": 64.6,
+        "rank": 171.9,
+        "main_domain_rank": 463.2,
+        "last_updated_time": "2026-07-30 07:25:17 +00:00"
+      },
+      "search_intent_info": {
+        "se_type": "google",
+        "main_intent": "commercial",
+        "last_updated_time": "2026-04-29 23:43:34 +00:00"
+      }
+    },
+    {
+      "se_type": "google",
+      "keyword": "grow a garden value list",
+      "location_code": 2840,
+      "language_code": "en",
+      "keyword_info": {
+        "se_type": "google",
+        "last_updated_time": "2026-07-11 01:28:13 +00:00",
+        "competition": 0,
+        "competition_level": "LOW",
+        "search_volume": 5400,
+        "categories": [
+          10004,
+          10300,
+          11328
+        ],
+        "monthly_searches": {
+          "2026-06": 390,
+          "2026-05": 390,
+          "2026-04": 880,
+          "2026-03": 260,
+          "2026-02": 210,
+          "2026-01": 320,
+          "2025-12": 480,
+          "2025-11": 1300,
+          "2025-10": 2400,
+          "2025-09": 8100,
+          "2025-08": 33100,
+          "2025-07": 18100
+        },
+        "search_volume_trend": {
+          "quarterly": -56,
+          "yearly": -97
+        }
+      },
+      "keyword_properties": {
+        "se_type": "google",
+        "synonym_clustering_algorithm": "text_processing",
+        "detected_language": "en",
+        "words_count": 5
+      },
+      "avg_backlinks_info": {
+        "se_type": "google",
+        "backlinks": 1.9,
+        "dofollow": 1,
+        "referring_pages": 1.4,
+        "referring_domains": 1,
+        "referring_main_domains": 0.9,
+        "rank": 16,
+        "main_domain_rank": 529,
+        "last_updated_time": "2026-07-30 18:44:09 +00:00"
+      },
+      "search_intent_info": {
+        "se_type": "google",
+        "main_intent": "transactional",
+        "foreign_intent": [
+          "commercial"
+        ],
+        "last_updated_time": "2026-05-08 11:22:01 +00:00"
+      }
+    },
+    {
+      "se_type": "google",
+      "keyword": "landscaping stones",
+      "location_code": 2840,
+      "language_code": "en",
+      "keyword_info": {
+        "se_type": "google",
+        "last_updated_time": "2026-07-12 23:12:59 +00:00",
+        "competition": 1,
+        "competition_level": "HIGH",
+        "cpc": 0.66,
+        "search_volume": 22200,
+        "low_top_of_page_bid": 0.29,
+        "high_top_of_page_bid": 2.13,
+        "categories": [
+          10004,
+          10282,
+          11292
+        ],
+        "monthly_searches": {
+          "2026-06": 40500,
+          "2026-05": 40500,
+          "2026-04": 33100,
+          "2026-03": 27100,
+          "2026-02": 9900,
+          "2026-01": 8100,
+          "2025-12": 6600,
+          "2025-11": 9900,
+          "2025-10": 14800,
+          "2025-09": 22200,
+          "2025-08": 27100,
+          "2025-07": 33100
+        },
+        "search_volume_trend": {
+          "quarterly": 22,
+          "yearly": 22
+        }
+      },
+      "keyword_properties": {
+        "se_type": "google",
+        "synonym_clustering_algorithm": "text_processing",
+        "detected_language": "en",
+        "words_count": 2
+      },
+      "avg_backlinks_info": {
+        "se_type": "google",
+        "backlinks": 6.3,
+        "dofollow": 4.4,
+        "referring_pages": 5.8,
+        "referring_domains": 4.4,
+        "referring_main_domains": 4.4,
+        "rank": 53,
+        "main_domain_rank": 457.2,
+        "last_updated_time": "2026-07-30 06:52:50 +00:00"
+      },
+      "search_intent_info": {
+        "se_type": "google",
+        "main_intent": "transactional",
+        "last_updated_time": "2026-04-29 14:46:49 +00:00"
+      }
+    },
+    {
+      "se_type": "google",
+      "keyword": "metal landscape edging",
+      "location_code": 2840,
+      "language_code": "en",
+      "keyword_info": {
+        "se_type": "google",
+        "last_updated_time": "2026-07-11 04:23:54 +00:00",
+        "competition": 1,
+        "competition_level": "HIGH",
+        "cpc": 1.16,
+        "search_volume": 22200,
+        "low_top_of_page_bid": 0.31,
+        "high_top_of_page_bid": 1.89,
+        "categories": [
+          10004,
+          10282,
+          11150
+        ],
+        "monthly_searches": {
+          "2026-06": 33100,
+          "2026-05": 49500,
+          "2026-04": 40500,
+          "2026-03": 33100,
+          "2026-02": 12100,
+          "2026-01": 6600,
+          "2025-12": 4400,
+          "2025-11": 8100,
+          "2025-10": 14800,
+          "2025-09": 18100,
+          "2025-08": 22200,
+          "2025-07": 22200
+        },
+        "search_volume_trend": {
+          "monthly": -33,
+          "quarterly": -18
+        }
+      },
+      "keyword_properties": {
+        "se_type": "google",
+        "synonym_clustering_algorithm": "text_processing",
+        "detected_language": "en",
+        "words_count": 3
+      },
+      "avg_backlinks_info": {
+        "se_type": "google",
+        "backlinks": 21.1,
+        "dofollow": 16,
+        "referring_pages": 18.1,
+        "referring_domains": 10,
+        "referring_main_domains": 9.3,
+        "rank": 51.8,
+        "main_domain_rank": 466.8,
+        "last_updated_time": "2026-07-30 06:46:18 +00:00"
+      },
+      "search_intent_info": {
+        "se_type": "google",
+        "main_intent": "informational",
+        "foreign_intent": [
+          "transactional",
+          "commercial"
+        ],
+        "last_updated_time": "2026-04-29 17:16:04 +00:00"
+      }
+    },
+    {
+      "se_type": "google",
+      "keyword": "landscaping ideas for front of house",
+      "location_code": 2840,
+      "language_code": "en",
+      "keyword_info": {
+        "se_type": "google",
+        "last_updated_time": "2026-07-11 18:13:46 +00:00",
+        "competition": 1,
+        "competition_level": "HIGH",
+        "cpc": 0.95,
+        "search_volume": 8100,
+        "low_top_of_page_bid": 0.11,
+        "high_top_of_page_bid": 2.36,
+        "categories": [
+          10004,
+          10282,
+          11150
+        ],
+        "monthly_searches": {
+          "2026-06": 8100,
+          "2026-05": 14800,
+          "2026-04": 14800,
+          "2026-03": 12100,
+          "2026-02": 2900,
+          "2026-01": 2400,
+          "2025-12": 1600,
+          "2025-11": 2900,
+          "2025-10": 5400,
+          "2025-09": 8100,
+          "2025-08": 9900,
+          "2025-07": 8100
+        },
+        "search_volume_trend": {
+          "monthly": -45,
+          "quarterly": -45,
+          "yearly": -18
+        }
+      },
+      "keyword_properties": {
+        "se_type": "google",
+        "core_keyword": "front of house landscaping ideas",
+        "synonym_clustering_algorithm": "text_processing",
+        "keyword_difficulty": 14,
+        "detected_language": "en",
+        "words_count": 6
+      },
+      "avg_backlinks_info": {
+        "se_type": "google",
+        "backlinks": 266.9,
+        "dofollow": 242.7,
+        "referring_pages": 266.7,
+        "referring_domains": 39.7,
+        "referring_main_domains": 22.5,
+        "rank": 109.6,
+        "main_domain_rank": 590.7,
+        "last_updated_time": "2026-07-30 12:38:05 +00:00"
+      },
+      "search_intent_info": {
+        "se_type": "google",
+        "main_intent": "informational",
+        "last_updated_time": "2026-04-29 14:21:07 +00:00"
+      }
+    },
+    {
+      "se_type": "google",
+      "keyword": "zen egg grow a garden",
+      "location_code": 2840,
+      "language_code": "en",
+      "keyword_info": {
+        "se_type": "google",
+        "last_updated_time": "2026-07-11 16:55:53 +00:00",
+        "competition": 0,
+        "competition_level": "LOW",
+        "search_volume": 3600,
+        "categories": [
+          10004,
+          13460
+        ],
+        "monthly_searches": {
+          "2026-06": 110,
+          "2026-05": 140,
+          "2026-04": 110,
+          "2026-03": 90,
+          "2026-02": 90,
+          "2026-01": 260,
+          "2025-12": 590,
+          "2025-11": 880,
+          "2025-10": 1000,
+          "2025-09": 2900,
+          "2025-08": 8100,
+          "2025-07": 33100
+        },
+        "search_volume_trend": {
+          "monthly": -21
+        }
+      },
+      "keyword_properties": {
+        "se_type": "google",
+        "synonym_clustering_algorithm": "text_processing",
+        "keyword_difficulty": 1,
+        "detected_language": "en",
+        "words_count": 5
+      },
+      "avg_backlinks_info": {
+        "se_type": "google",
+        "backlinks": 6,
+        "dofollow": 5.8,
+        "referring_pages": 6,
+        "referring_domains": 1.6,
+        "referring_main_domains": 1.6,
+        "rank": 38.2,
+        "main_domain_rank": 724.3,
+        "last_updated_time": "2026-07-30 20:44:44 +00:00"
+      },
+      "search_intent_info": {
+        "se_type": "google",
+        "main_intent": "transactional",
+        "last_updated_time": "2026-05-07 18:23:56 +00:00"
+      }
+    },
+    {
+      "se_type": "google",
+      "keyword": "small front yard landscaping ideas",
+      "location_code": 2840,
+      "language_code": "en",
+      "keyword_info": {
+        "se_type": "google",
+        "last_updated_time": "2026-07-10 00:58:47 +00:00",
+        "competition": 1,
+        "competition_level": "HIGH",
+        "cpc": 0.37,
+        "search_volume": 6600,
+        "low_top_of_page_bid": 0.12,
+        "high_top_of_page_bid": 2.19,
+        "categories": [
+          10004,
+          10282,
+          11150
+        ],
+        "monthly_searches": {
+          "2026-06": 6600,
+          "2026-05": 9900,
+          "2026-04": 12100,
+          "2026-03": 9900,
+          "2026-02": 4400,
+          "2026-01": 2900,
+          "2025-12": 1900,
+          "2025-11": 2900,
+          "2025-10": 5400,
+          "2025-09": 6600,
+          "2025-08": 8100,
+          "2025-07": 9900
+        },
+        "search_volume_trend": {
+          "monthly": -33,
+          "quarterly": -45,
+          "yearly": -45
+        }
+      },
+      "keyword_properties": {
+        "se_type": "google",
+        "synonym_clustering_algorithm": "text_processing",
+        "keyword_difficulty": 12,
+        "detected_language": "en",
+        "words_count": 5
+      },
+      "avg_backlinks_info": {
+        "se_type": "google",
+        "backlinks": 38.8,
+        "dofollow": 16.2,
+        "referring_pages": 38.6,
+        "referring_domains": 34.8,
+        "referring_main_domains": 18,
+        "rank": 93.2,
+        "main_domain_rank": 581.1,
+        "last_updated_time": "2026-07-30 13:57:17 +00:00"
+      },
+      "search_intent_info": {
+        "se_type": "google",
+        "main_intent": "informational",
+        "last_updated_time": "2026-04-29 23:21:21 +00:00"
+      }
+    },
+    {
+      "se_type": "google",
+      "keyword": "landscape timbers",
+      "location_code": 2840,
+      "language_code": "en",
+      "keyword_info": {
+        "se_type": "google",
+        "last_updated_time": "2026-07-11 23:58:16 +00:00",
+        "competition": 1,
+        "competition_level": "HIGH",
+        "cpc": 0.31,
+        "search_volume": 14800,
+        "low_top_of_page_bid": 0.24,
+        "high_top_of_page_bid": 1.25,
+        "categories": [
+          10004,
+          10282,
+          11297
+        ],
+        "monthly_searches": {
+          "2026-06": 22200,
+          "2026-05": 27100,
+          "2026-04": 33100,
+          "2026-03": 22200,
+          "2026-02": 9900,
+          "2026-01": 6600,
+          "2025-12": 5400,
+          "2025-11": 6600,
+          "2025-10": 12100,
+          "2025-09": 14800,
+          "2025-08": 18100,
+          "2025-07": 18100
+        },
+        "search_volume_trend": {
+          "monthly": -18,
+          "quarterly": -33,
+          "yearly": -18
+        }
+      },
+      "keyword_properties": {
+        "se_type": "google",
+        "synonym_clustering_algorithm": "text_processing",
+        "detected_language": "en",
+        "words_count": 2
+      },
+      "avg_backlinks_info": {
+        "se_type": "google",
+        "backlinks": 1.1,
+        "dofollow": 1.1,
+        "referring_pages": 1.1,
+        "referring_domains": 0.7,
+        "referring_main_domains": 0.7,
+        "rank": 14,
+        "main_domain_rank": 516.6,
+        "last_updated_time": "2026-07-30 08:41:21 +00:00"
+      },
+      "search_intent_info": {
+        "se_type": "google",
+        "main_intent": "commercial",
+        "foreign_intent": [
+          "navigational",
+          "transactional"
+        ],
+        "last_updated_time": "2026-04-28 11:06:17 +00:00"
+      }
+    },
+    {
+      "se_type": "google",
+      "keyword": "dragonfly grow a garden",
+      "location_code": 2840,
+      "language_code": "en",
+      "keyword_info": {
+        "se_type": "google",
+        "last_updated_time": "2026-07-13 10:56:53 +00:00",
+        "competition": 0.69,
+        "competition_level": "HIGH",
+        "cpc": 0.76,
+        "search_volume": 6600,
+        "categories": [
+          10004,
+          13460
+        ],
+        "monthly_searches": {
+          "2026-06": 390,
+          "2026-05": 390,
+          "2026-04": 480,
+          "2026-03": 260,
+          "2026-02": 210,
+          "2026-01": 390,
+          "2025-12": 590,
+          "2025-11": 1000,
+          "2025-10": 3600,
+          "2025-09": 12100,
+          "2025-08": 22200,
+          "2025-07": 33100
+        },
+        "search_volume_trend": {
+          "quarterly": -19,
+          "yearly": -99
+        }
+      },
+      "keyword_properties": {
+        "se_type": "google",
+        "synonym_clustering_algorithm": "text_processing",
+        "detected_language": "en",
+        "words_count": 4
+      },
+      "avg_backlinks_info": {
+        "se_type": "google",
+        "backlinks": 2.6,
+        "dofollow": 2.2,
+        "referring_pages": 2.5,
+        "referring_domains": 1.1,
+        "referring_main_domains": 0.9,
+        "rank": 32.5,
+        "main_domain_rank": 635.6,
+        "last_updated_time": "2026-07-30 16:43:09 +00:00"
+      },
+      "search_intent_info": {
+        "se_type": "google",
+        "main_intent": "transactional",
+        "foreign_intent": [
+          "informational"
+        ],
+        "last_updated_time": "2026-05-08 00:34:03 +00:00"
+      }
+    },
+    {
+      "se_type": "google",
+      "keyword": "river rock landscaping",
+      "location_code": 2840,
+      "language_code": "en",
+      "keyword_info": {
+        "se_type": "google",
+        "last_updated_time": "2026-07-14 20:20:28 +00:00",
+        "competition": 1,
+        "competition_level": "HIGH",
+        "cpc": 0.56,
+        "search_volume": 27100,
+        "low_top_of_page_bid": 0.17,
+        "high_top_of_page_bid": 2.16,
+        "categories": [
+          10004,
+          10282,
+          11150
+        ],
+        "monthly_searches": {
+          "2026-06": 33100,
+          "2026-05": 49500,
+          "2026-04": 40500,
+          "2026-03": 33100,
+          "2026-02": 9900,
+          "2026-01": 8100,
+          "2025-12": 12100,
+          "2025-11": 12100,
+          "2025-10": 22200,
+          "2025-09": 22200,
+          "2025-08": 40500,
+          "2025-07": 40500
+        },
+        "search_volume_trend": {
+          "monthly": -33,
+          "quarterly": -18,
+          "yearly": -33
+        }
+      },
+      "keyword_properties": {
+        "se_type": "google",
+        "core_keyword": "river rock landscapes",
+        "synonym_clustering_algorithm": "text_processing",
+        "detected_language": "en",
+        "words_count": 3
+      },
+      "avg_backlinks_info": {
+        "se_type": "google",
+        "backlinks": 7.3,
+        "dofollow": 6.7,
+        "referring_pages": 7.1,
+        "referring_domains": 5.2,
+        "referring_main_domains": 5.2,
+        "rank": 31.3,
+        "main_domain_rank": 448.8,
+        "last_updated_time": "2026-07-30 05:58:06 +00:00"
+      },
+      "search_intent_info": {
+        "se_type": "google",
+        "main_intent": "commercial",
+        "foreign_intent": [
+          "informational"
+        ],
+        "last_updated_time": "2026-04-30 00:03:38 +00:00"
+      }
+    },
+    {
+      "se_type": "google",
+      "keyword": "backyard landscaping ideas",
+      "location_code": 2840,
+      "language_code": "en",
+      "keyword_info": {
+        "se_type": "google",
+        "last_updated_time": "2026-07-11 10:15:32 +00:00",
+        "competition": 1,
+        "competition_level": "HIGH",
+        "cpc": 1.87,
+        "search_volume": 18100,
+        "low_top_of_page_bid": 0.26,
+        "high_top_of_page_bid": 3.7,
+        "categories": [
+          10004,
+          10282,
+          11150
+        ],
+        "monthly_searches": {
+          "2026-06": 18100,
+          "2026-05": 22200,
+          "2026-04": 27100,
+          "2026-03": 27100,
+          "2026-02": 14800,
+          "2026-01": 9900,
+          "2025-12": 6600,
+          "2025-11": 9900,
+          "2025-10": 12100,
+          "2025-09": 18100,
+          "2025-08": 22200,
+          "2025-07": 27100
+        },
+        "search_volume_trend": {
+          "monthly": -18,
+          "quarterly": -33,
+          "yearly": -33
+        }
+      },
+      "keyword_properties": {
+        "se_type": "google",
+        "synonym_clustering_algorithm": "text_processing",
+        "keyword_difficulty": 17,
+        "detected_language": "en",
+        "words_count": 3
+      },
+      "avg_backlinks_info": {
+        "se_type": "google",
+        "backlinks": 254.5,
+        "dofollow": 247.9,
+        "referring_pages": 252.1,
+        "referring_domains": 18,
+        "referring_main_domains": 17.6,
+        "rank": 110.7,
+        "main_domain_rank": 505,
+        "last_updated_time": "2026-05-15 01:46:46 +00:00"
+      },
+      "search_intent_info": {
+        "se_type": "google",
+        "main_intent": "informational",
+        "last_updated_time": "2026-04-29 07:23:56 +00:00"
+      }
+    },
+    {
+      "se_type": "google",
+      "keyword": "landscape designer",
+      "location_code": 2840,
+      "language_code": "en",
+      "keyword_info": {
+        "se_type": "google",
+        "last_updated_time": "2026-07-12 17:15:51 +00:00",
+        "competition": 0.14,
+        "competition_level": "LOW",
+        "cpc": 9.14,
+        "search_volume": 18100,
+        "low_top_of_page_bid": 2.37,
+        "high_top_of_page_bid": 12.5,
+        "categories": [
+          10004,
+          10282,
+          11150
+        ],
+        "monthly_searches": {
+          "2026-06": 18100,
+          "2026-05": 27100,
+          "2026-04": 14800,
+          "2026-03": 14800,
+          "2026-02": 12100,
+          "2026-01": 74000,
+          "2025-12": 12100,
+          "2025-11": 6600,
+          "2025-10": 9900,
+          "2025-09": 22200,
+          "2025-08": 18100,
+          "2025-07": 18100
+        },
+        "search_volume_trend": {
+          "monthly": -33,
+          "quarterly": 22,
+          "yearly": -55
+        }
+      },
+      "keyword_properties": {
+        "se_type": "google",
+        "core_keyword": "landscape design",
+        "synonym_clustering_algorithm": "text_processing",
+        "keyword_difficulty": 32,
+        "detected_language": "en",
+        "words_count": 2
+      },
+      "avg_backlinks_info": {
+        "se_type": "google",
+        "backlinks": 807.5,
+        "dofollow": 643.5,
+        "referring_pages": 675.3,
+        "referring_domains": 81.4,
+        "referring_main_domains": 78,
+        "rank": 173.7,
+        "main_domain_rank": 573.3,
+        "last_updated_time": "2026-07-30 07:35:35 +00:00"
+      },
+      "search_intent_info": {
+        "se_type": "google",
+        "main_intent": "commercial",
+        "foreign_intent": [
+          "informational"
+        ],
+        "last_updated_time": "2026-04-28 11:56:46 +00:00"
+      }
+    },
+    {
+      "se_type": "google",
+      "keyword": "parts of a plant",
+      "location_code": 2840,
+      "language_code": "en",
+      "keyword_info": {
+        "se_type": "google",
+        "last_updated_time": "2026-07-11 14:15:41 +00:00",
+        "competition": 0.37,
+        "competition_level": "MEDIUM",
+        "cpc": 0.06,
+        "search_volume": 18100,
+        "low_top_of_page_bid": 0.26,
+        "high_top_of_page_bid": 3.85,
+        "categories": [
+          10004,
+          13460
+        ],
+        "monthly_searches": {
+          "2026-06": 5400,
+          "2026-05": 18100,
+          "2026-04": 33100,
+          "2026-03": 22200,
+          "2026-02": 18100,
+          "2026-01": 14800,
+          "2025-12": 14800,
+          "2025-11": 14800,
+          "2025-10": 33100,
+          "2025-09": 18100,
+          "2025-08": 8100,
+          "2025-07": 5400
+        },
+        "search_volume_trend": {
+          "monthly": -70,
+          "quarterly": -84,
+          "yearly": -18
+        }
+      },
+      "keyword_properties": {
+        "se_type": "google",
+        "synonym_clustering_algorithm": "text_processing",
+        "detected_language": "en",
+        "words_count": 4
+      },
+      "avg_backlinks_info": {
+        "se_type": "google",
+        "backlinks": 17.6,
+        "dofollow": 14.6,
+        "referring_pages": 16.2,
+        "referring_domains": 10.9,
+        "referring_main_domains": 10.6,
+        "rank": 57.1,
+        "main_domain_rank": 522.3,
+        "last_updated_time": "2026-07-30 07:27:56 +00:00"
+      },
+      "search_intent_info": {
+        "se_type": "google",
+        "main_intent": "informational",
+        "last_updated_time": "2026-04-29 17:27:07 +00:00"
+      }
+    },
+    {
+      "se_type": "google",
+      "keyword": "midnight blue heart plant",
+      "location_code": 2840,
+      "language_code": "en",
+      "keyword_info": {
+        "se_type": "google",
+        "last_updated_time": "2026-07-12 14:53:49 +00:00",
+        "competition": 1,
+        "competition_level": "HIGH",
+        "cpc": 0.3,
+        "search_volume": 14800,
+        "low_top_of_page_bid": 0.14,
+        "high_top_of_page_bid": 0.53,
+        "categories": [
+          10004,
+          13460
+        ],
+        "monthly_searches": {
+          "2026-06": 2400,
+          "2026-05": 4400,
+          "2026-04": 6600,
+          "2026-03": 14800,
+          "2026-02": 12100,
+          "2026-01": 18100,
+          "2025-12": 40500,
+          "2025-11": 49500,
+          "2025-10": 40500
+        },
+        "search_volume_trend": {
+          "monthly": -45,
+          "quarterly": -64
+        }
+      },
+      "keyword_properties": {
+        "se_type": "google",
+        "synonym_clustering_algorithm": "text_processing",
+        "detected_language": "en",
+        "words_count": 4
+      },
+      "avg_backlinks_info": {
+        "se_type": "google",
+        "backlinks": 0.3,
+        "dofollow": 0.3,
+        "referring_pages": 0.3,
+        "referring_domains": 0.3,
+        "referring_main_domains": 0.3,
+        "rank": 5.8,
+        "main_domain_rank": 647,
+        "last_updated_time": "2026-07-30 08:29:46 +00:00"
+      },
+      "search_intent_info": {
+        "se_type": "google",
+        "main_intent": "informational",
+        "last_updated_time": "2026-05-05 17:18:42 +00:00"
+      }
+    },
+    {
+      "se_type": "google",
+      "keyword": "money tree indoor plant",
+      "location_code": 2840,
+      "language_code": "en",
+      "keyword_info": {
+        "se_type": "google",
+        "last_updated_time": "2026-07-15 00:01:57 +00:00",
+        "competition": 0.42,
+        "competition_level": "MEDIUM",
+        "cpc": 0.53,
+        "search_volume": 18100,
+        "low_top_of_page_bid": 0.03,
+        "high_top_of_page_bid": 1.41,
+        "categories": [
+          10004,
+          13460
+        ],
+        "monthly_searches": {
+          "2026-06": 12100,
+          "2026-05": 27100,
+          "2026-04": 33100,
+          "2026-03": 5400,
+          "2026-02": 5400,
+          "2026-01": 14800,
+          "2025-12": 14800,
+          "2025-11": 22200,
+          "2025-10": 33100,
+          "2025-09": 18100,
+          "2025-08": 14800,
+          "2025-07": 12100
+        },
+        "search_volume_trend": {
+          "monthly": -55,
+          "quarterly": -63,
+          "yearly": 22
+        }
+      },
+      "keyword_properties": {
+        "se_type": "google",
+        "synonym_clustering_algorithm": "text_processing",
+        "keyword_difficulty": 14,
+        "detected_language": "en",
+        "words_count": 4
+      },
+      "avg_backlinks_info": {
+        "se_type": "google",
+        "backlinks": 102.5,
+        "dofollow": 16.1,
+        "referring_pages": 92.3,
+        "referring_domains": 70.6,
+        "referring_main_domains": 62,
+        "rank": 86.8,
+        "main_domain_rank": 580.8,
+        "last_updated_time": "2026-07-30 07:31:16 +00:00"
+      },
+      "search_intent_info": {
+        "se_type": "google",
+        "main_intent": "transactional",
+        "foreign_intent": [
+          "informational"
+        ],
+        "last_updated_time": "2026-04-29 16:13:56 +00:00"
+      }
+    },
+    {
+      "se_type": "google",
+      "keyword": "tempestuous grow a garden",
+      "location_code": 2840,
+      "language_code": "en",
+      "keyword_info": {
+        "se_type": "google",
+        "last_updated_time": "2026-07-12 13:57:40 +00:00",
+        "competition": 0,
+        "competition_level": "LOW",
+        "search_volume": 2900,
+        "categories": [
+          10004,
+          13460
+        ],
+        "monthly_searches": {
+          "2026-06": 10,
+          "2026-05": 20,
+          "2026-04": 30,
+          "2026-03": 20,
+          "2026-02": 10,
+          "2026-01": 30,
+          "2025-12": 40,
+          "2025-11": 90,
+          "2025-10": 210,
+          "2025-09": 1000,
+          "2025-08": 1900,
+          "2025-07": 33100
+        },
+        "search_volume_trend": {
+          "monthly": -50,
+          "quarterly": -67
+        }
+      },
+      "keyword_properties": {
+        "se_type": "google",
+        "synonym_clustering_algorithm": "text_processing",
+        "keyword_difficulty": 4,
+        "detected_language": "en",
+        "words_count": 4
+      },
+      "avg_backlinks_info": {
+        "se_type": "google",
+        "backlinks": 75,
+        "dofollow": 20.6,
+        "referring_pages": 71.4,
+        "referring_domains": 57,
+        "referring_main_domains": 13.4,
+        "rank": 61.5,
+        "main_domain_rank": 636.2,
+        "last_updated_time": "2026-06-22 14:45:59 +00:00"
+      },
+      "search_intent_info": {
+        "se_type": "google",
+        "main_intent": "transactional",
+        "foreign_intent": [
+          "informational"
+        ],
+        "last_updated_time": "2026-05-03 07:28:40 +00:00"
+      }
+    }
+  ]
+}

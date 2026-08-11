@@ -1,0 +1,19 @@
+{
+  "call": "kw_data_google_ads_search_volume",
+  "keywords": ["pumpkin patch", "giant pumpkin", "fall festival", "corn maze", "pumpkin patch near me"],
+  "location_name": "Texas,United States",
+  "note": "State-level location, not national or single-town — chosen because a fall/agritourism destination draws from a wider radius than the confirmed hyperlocal markets, but national volume would be skewed by giant-pumpkin culture concentrated in other US regions.",
+  "items": [
+    { "keyword": "pumpkin patch", "location_code": 21176, "competition": "LOW", "search_volume": 60500, "cpc": 2.53,
+      "monthly_searches": { "2026-06": 1600, "2026-05": 1600, "2026-04": 1600, "2026-03": 1600, "2026-02": 1900, "2026-01": 2400, "2025-12": 2900, "2025-11": 49500, "2025-10": 550000, "2025-09": 110000, "2025-08": 22200, "2025-07": 4400 } },
+    { "keyword": "giant pumpkin", "location_code": 21176, "competition": "MEDIUM", "competition_index": 35, "search_volume": 390, "cpc": 0.29,
+      "monthly_searches": { "2026-06": 210, "2026-05": 210, "2026-04": 210, "2026-03": 210, "2026-02": 170, "2026-01": 140, "2025-12": 210, "2025-11": 480, "2025-10": 1600, "2025-09": 720, "2025-08": 390, "2025-07": 260 } },
+    { "keyword": "fall festival", "location_code": 21176, "competition": "LOW", "competition_index": 2, "search_volume": 2900, "low_top_of_page_bid": 0.44, "high_top_of_page_bid": 20, "cpc": 7.03,
+      "monthly_searches": { "2026-06": 320, "2026-05": 260, "2026-04": 320, "2026-03": 260, "2026-02": 260, "2026-01": 260, "2025-12": 320, "2025-11": 3600, "2025-10": 18100, "2025-09": 8100, "2025-08": 1900, "2025-07": 1000 } },
+    { "keyword": "corn maze", "location_code": 21176, "competition": "LOW", "competition_index": 1, "search_volume": 5400, "cpc": 0.18,
+      "monthly_searches": { "2026-06": 720, "2026-05": 1000, "2026-04": 880, "2026-03": 880, "2026-02": 880, "2026-01": 880, "2025-12": 1000, "2025-11": 5400, "2025-10": 40500, "2025-09": 12100, "2025-08": 2900, "2025-07": 1000 } },
+    { "keyword": "pumpkin patch near me", "location_code": 21176, "competition": "LOW", "competition_index": 1, "search_volume": 49500, "cpc": 0.03,
+      "monthly_searches": { "2026-06": 480, "2026-05": 480, "2026-04": 390, "2026-03": 390, "2026-02": 320, "2026-01": 480, "2025-12": 1300, "2025-11": 33100, "2025-10": 450000, "2025-09": 74000, "2025-08": 9900, "2025-07": 1600 } }
+  ],
+  "interpretation_note": "The 'competition' field reported by this tool (LOW/MEDIUM/HIGH, competition_index) reflects Google Ads paid-advertiser competition in this dataset only. It is not a measurement of organic/SEO ranking difficulty, which was not separately tested by this call. Do not equate 'LOW competition' here with 'easy to rank organically.'"
+}

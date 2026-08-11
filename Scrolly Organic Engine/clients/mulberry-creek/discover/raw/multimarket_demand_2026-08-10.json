@@ -1,0 +1,42 @@
+{
+  "note": "5 calls to kw_data_google_ads_search_volume, keywords=[plant nursery, garden center, landscape design, landscape installation, landscaping company], location_name set directly per city (not keyword-embedded — this is a different, previously-untried method versus the original Wills Point batch which used location_name=United States with geo-modified keyword text).",
+  "results": {
+    "Wills Point,Texas,United States (location_code 1026891)": {
+      "plant nursery": { "search_volume": 10 },
+      "garden center": { "search_volume": 10, "competition": "LOW", "cpc": 0.03 },
+      "landscape design": { "search_volume": 10 },
+      "landscape installation": { "search_volume": null, "note": "no search_volume field returned — below reporting threshold" },
+      "landscaping company": { "search_volume": 10 }
+    },
+    "Terrell,Texas,United States (location_code 1026833)": {
+      "plant nursery": { "search_volume": 10, "competition": "MEDIUM", "note": "monthly_searches shows occasional 20/mo spikes" },
+      "garden center": { "search_volume": 10, "competition": "LOW", "note": "one month spiked to 30" },
+      "landscape design": { "search_volume": 10, "note": "one month (2025-11) spiked to 110" },
+      "landscape installation": { "search_volume": null },
+      "landscaping company": { "search_volume": 10, "competition": "HIGH" }
+    },
+    "Forney,Texas,United States (location_code 1026401)": {
+      "plant nursery": { "search_volume": 20, "competition": "MEDIUM", "cpc": 10.52, "note": "monthly_searches ranges 10-50, more variable than other markets" },
+      "garden center": { "search_volume": 10, "competition": "LOW", "note": "monthly range 10-30" },
+      "landscape design": { "search_volume": 30, "competition": "MEDIUM", "note": "monthly range 10-210 (2025-11 spike to 210)" },
+      "landscape installation": { "search_volume": null },
+      "landscaping company": { "search_volume": 10, "competition": "MEDIUM", "cpc": 44.07 },
+      "overall_note": "Forney is the only one of the 5 markets to return non-empty CPC data and the most variable monthly patterns — suggests modestly more measurable/differentiated real query volume than the other 4 markets, though still low in absolute terms."
+    },
+    "Emory,Texas,United States (location_code 1026383)": {
+      "plant nursery": { "search_volume": 10 },
+      "garden center": { "search_volume": 10, "competition": "LOW" },
+      "landscape design": { "search_volume": 10 },
+      "landscape installation": { "search_volume": null },
+      "landscaping company": { "search_volume": 10, "competition": "LOW" }
+    },
+    "Mineola,Texas,United States (location_code 1026627)": {
+      "plant nursery": { "search_volume": 10, "competition": "MEDIUM" },
+      "garden center": { "search_volume": 10, "competition": "LOW" },
+      "landscape design": { "search_volume": 10 },
+      "landscape installation": { "search_volume": null },
+      "landscaping company": { "search_volume": 10 }
+    }
+  },
+  "interpretation_note": "search_volume: 10 is DataForSEO's minimum reportable bucket for Google Ads keyword volume — it indicates genuine, non-zero measurable search activity below a precise-count threshold, not literally exactly 10 searches every month. 'landscape installation' returned no search_volume field in every single market tested, consistent with its very low national volume (1,000/mo) observed in the original national-level pull. This location_name-based method DID resolve and return real (if minimal) data in all 5 markets for 4 of 5 keywords — a materially different, more complete result than the original Wills Point test, which used keyword-embedded geo-modifiers (e.g. 'plant nursery Wills Point TX') and returned no data at all for any such term. The two methods are not directly comparable; this is the first successful location-parameterized demand test in this engagement."
+}

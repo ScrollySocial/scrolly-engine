@@ -1,0 +1,28 @@
+{
+  "id": "08101921-2271-0139-0000-e849f92b7f1b",
+  "status_code": 20000,
+  "status_message": "Ok.",
+  "call_params": { "keyword": "landscaping company", "language_code": "en", "location_name": "Wills Point,Texas,United States" },
+  "items": [
+    { "type": "local_pack", "rank_group": 1, "rank_absolute": 1, "title": "Your Choice Landscaping", "description": "Wills Point, TX; Open · Closes 6 PM", "domain": "yourchoicelandscaping.info", "phone": "(214) 451-7860", "url": "https://yourchoicelandscaping.info/", "rating": { "value": 5, "votes_count": 5, "rating_max": 5 }, "cid": "901892538694691840" },
+    { "type": "local_pack", "rank_group": 2, "rank_absolute": 2, "title": "Triple-C Landscaping", "description": "5+ years in business; Open · Closes 6 PM", "domain": "www.triple-c-landscaping.com", "phone": "(469) 955-0645", "url": "https://www.triple-c-landscaping.com/", "rating": { "value": 5, "votes_count": 81, "rating_max": 5 }, "cid": "16227969068728583587" },
+    { "type": "local_pack", "rank_group": 3, "rank_absolute": 3, "title": "Rimmele Landscaping & Handyman", "description": "No reviews · Landscaper; 3+ years in business · Wills Point, TX; Open 24 hours", "domain": "facebook.com", "url": "http://facebook.com/rimmelelandscaping", "cid": "13527512135894951072" },
+    { "type": "organic", "rank_group": 1, "rank_absolute": 4, "domain": "southernbotanical.com", "title": "Landscape Design Dallas: Landscaping Dallas & Ft. Worth", "url": "https://southernbotanical.com/" },
+    { "type": "people_also_ask", "rank_absolute": 5, "questions": [
+      "Is $100 an hour too much for landscape work?",
+      "What is the definition of a landscape company?",
+      "What is a fair price for landscaping per hour?",
+      "What are some good landscaping companies in Dallas Fort Worth?"
+    ] },
+    { "type": "organic", "rank_group": 2, "rank_absolute": 6, "domain": "m.yelp.com", "title": "Best Landscaping Companies near Wills Point, TX", "url": "https://m.yelp.com/search?find_desc=Landscaping+Companies&find_loc=Wills+Point%2C+TX", "rating": { "value": 4.3, "votes_count": 89, "rating_max": 5 } },
+    { "type": "organic", "rank_group": 3, "rank_absolute": 7, "domain": "www.planolandscaping.com", "title": "Plano Landscaping Services" },
+    { "type": "images", "rank_absolute": 8, "title": "Images (image pack present)" },
+    { "type": "organic", "rank_group": 4, "rank_absolute": 9, "domain": "northdallaslandscapes.com", "title": "North Dallas Landscapes: #1 Dallas Landscaping Company" },
+    { "type": "organic", "rank_group": 5, "rank_absolute": 10, "domain": "www.bonicklandscaping.com", "title": "Bonick Landscaping: Luxury Landscape Architects Dallas" },
+    { "type": "organic", "rank_group": 6, "rank_absolute": 11, "domain": "www.brightview.com", "title": "BrightView | Leading Commercial Landscaping Services" },
+    { "type": "organic", "rank_group": 7, "rank_absolute": 12, "domain": "www.thumbtack.com", "title": "Hire the Best Landscaping Services Near Me" },
+    { "type": "organic", "rank_group": 8, "rank_absolute": 13, "domain": "keanelandscaping.com", "title": "Keane Landscaping | Dallas Landscape Design" },
+    { "type": "related_searches", "rank_absolute": 14, "items": ["landscaping company near canton, tx","landscaping company near wills point, tx","Landscaping company near me","Affordable landscaping company","Affordable landscaping Dallas","Residential landscaping Dallas","Plano Landscaping Company","Plano Landscaping company reviews"] }
+  ],
+  "note": "Mulberry Creek does NOT appear in local pack or organic for this keyword."
+}

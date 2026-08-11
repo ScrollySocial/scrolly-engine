@@ -1,0 +1,134 @@
+{
+  "name": "Discover — Intake & Kickoff",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "tally-intake",
+        "responseMode": "onReceived",
+        "responseData": "{\"received\": true}",
+        "options": {}
+      },
+      "id": "webhook_tally",
+      "name": "Tally Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [0, 0]
+    },
+    {
+      "parameters": {
+        "jsCode": "const body = $json.body;\nconst fields = body?.data?.fields || [];\nconst sessionField = fields.find(f => f.key === 'session_id' || f.label === 'session_id');\nreturn [{ json: { ...body, sessionId: sessionField ? sessionField.value : null } }];"
+      },
+      "id": "code_extract_session",
+      "name": "Extract session_id",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [220, 0]
+    },
+    {
+      "parameters": {
+        "method": "GET",
+        "url": "=https://api.stripe.com/v1/checkout/sessions/{{ $json.sessionId }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Authorization", "value": "=Bearer {{ $env.STRIPE_SECRET_KEY }}" }
+          ]
+        },
+        "options": {}
+      },
+      "id": "http_verify_stripe",
+      "name": "Verify Stripe Session",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [440, 0]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": { "caseSensitive": true, "leftValue": "", "typeValidation": "loose" },
+          "combinator": "and",
+          "conditions": [
+            {
+              "leftValue": "={{ $json.payment_status }}",
+              "rightValue": "paid",
+              "operator": { "type": "string", "operation": "equals" }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "if_paid",
+      "name": "Payment verified?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [660, 0]
+    },
+    {
+      "parameters": {
+        "jsCode": "// The original Tally body (with data.fields) lives on \"Extract session_id\"'s\n// output, not on this branch's $json (which is the Stripe session object).\nconst tallyBody = $('Extract session_id').item.json;\nconst payloadB64 = Buffer.from(JSON.stringify(tallyBody)).toString('base64');\nreturn [{ json: { payloadB64 } }];"
+      },
+      "id": "code_build_b64",
+      "name": "Build base64 payload",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [880, -120]
+    },
+    {
+      "parameters": {
+        "command": "=node \"C:\\Users\\merce\\Scrolly Organic Engine\\automation\\n8n\\scripts\\create-engagement.mjs\" --payload-b64 \"{{ $json.payloadB64 }}\""
+      },
+      "id": "exec_create_engagement",
+      "name": "Create engagement",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [1100, -120]
+    },
+    {
+      "parameters": {
+        "jsCode": "return [{ json: JSON.parse($json.stdout) }];"
+      },
+      "id": "code_parse_created",
+      "name": "Parse create-engagement output",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1320, -120]
+    },
+    {
+      "parameters": {
+        "command": "=node \"C:\\Users\\merce\\Scrolly Organic Engine\\automation\\n8n\\scripts\\launch-runner.mjs\" \"{{ $json.slug }}\""
+      },
+      "id": "exec_launch_runner",
+      "name": "Launch runner",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [1540, -120]
+    },
+    {
+      "parameters": {
+        "jsCode": "return [{ json: { rejected: true, reason: 'Stripe session not paid or session_id missing/invalid', sessionId: $json.sessionId || null, stripeStatus: $json.payment_status || null } }];"
+      },
+      "id": "code_rejected",
+      "name": "Log rejected submission",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [880, 120]
+    }
+  ],
+  "connections": {
+    "Tally Webhook": { "main": [[{ "node": "Extract session_id", "type": "main", "index": 0 }]] },
+    "Extract session_id": { "main": [[{ "node": "Verify Stripe Session", "type": "main", "index": 0 }]] },
+    "Verify Stripe Session": { "main": [[{ "node": "Payment verified?", "type": "main", "index": 0 }]] },
+    "Payment verified?": {
+      "main": [
+        [{ "node": "Build base64 payload", "type": "main", "index": 0 }],
+        [{ "node": "Log rejected submission", "type": "main", "index": 0 }]
+      ]
+    },
+    "Build base64 payload": { "main": [[{ "node": "Create engagement", "type": "main", "index": 0 }]] },
+    "Create engagement": { "main": [[{ "node": "Parse create-engagement output", "type": "main", "index": 0 }]] },
+    "Parse create-engagement output": { "main": [[{ "node": "Launch runner", "type": "main", "index": 0 }]] }
+  },
+  "active": false,
+  "settings": { "executionOrder": "v1" }
+}

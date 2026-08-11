@@ -1,0 +1,56 @@
+{
+  "source": "kw_data_google_ads_search_volume, 7 calls, keywords=[\"plant nursery\",\"garden center\",\"landscape design\",\"landscaping company\",\"landscape installation\"] per candidate market, 2026-08-10",
+  "purpose": "O2 Tier 1 (cheap, batched, location-parameterized demand check) for the 7 new candidate markets surfaced this round: Quinlan, Kaufman, Sulphur Springs, Canton, Edgewood, Grand Saline, Point",
+  "results": {
+    "Quinlan,Texas,United States": [
+      {"keyword": "plant nursery", "location_code": 1026720, "search_volume": 10},
+      {"keyword": "garden center", "location_code": 1026720, "competition": "LOW", "competition_index": 14, "search_volume": 10},
+      {"keyword": "landscape design", "location_code": 1026720, "search_volume": 10},
+      {"keyword": "landscaping company", "location_code": 1026720, "competition": "LOW", "search_volume": 10},
+      {"keyword": "landscape installation", "location_code": 1026720, "search_volume": null}
+    ],
+    "Kaufman,Texas,United States": [
+      {"keyword": "plant nursery", "location_code": 1026516, "competition": "MEDIUM", "competition_index": 46, "search_volume": 10, "cpc": 0.66},
+      {"keyword": "garden center", "location_code": 1026516, "competition": "LOW", "search_volume": 10},
+      {"keyword": "landscape design", "location_code": 1026516, "competition": "HIGH", "competition_index": 71, "search_volume": 10},
+      {"keyword": "landscaping company", "location_code": 1026516, "search_volume": 10},
+      {"keyword": "landscape installation", "location_code": 1026516, "search_volume": 10}
+    ],
+    "Sulphur Springs,Texas,United States": [
+      {"keyword": "plant nursery", "location_code": 1026826, "competition": "LOW", "competition_index": 2, "search_volume": 10},
+      {"keyword": "garden center", "location_code": 1026826, "competition": "LOW", "competition_index": 7, "search_volume": 10},
+      {"keyword": "landscape design", "location_code": 1026826, "search_volume": 10},
+      {"keyword": "landscaping company", "location_code": 1026826, "competition": "LOW", "search_volume": 10},
+      {"keyword": "landscape installation", "location_code": 1026826, "search_volume": null}
+    ],
+    "Canton,Texas,United States": [
+      {"keyword": "plant nursery", "location_code": 1026267, "competition": "LOW", "competition_index": 14, "search_volume": 10, "cpc": 0.5},
+      {"keyword": "garden center", "location_code": 1026267, "competition": "LOW", "search_volume": 10},
+      {"keyword": "landscape design", "location_code": 1026267, "competition": "HIGH", "competition_index": 100, "search_volume": 10, "cpc": 1.88},
+      {"keyword": "landscaping company", "location_code": 1026267, "search_volume": 10},
+      {"keyword": "landscape installation", "location_code": 1026267, "search_volume": null}
+    ],
+    "Edgewood,Texas,United States": [
+      {"keyword": "plant nursery", "location_code": 9210266, "competition": "LOW", "search_volume": 10},
+      {"keyword": "garden center", "location_code": 9210266, "search_volume": 10},
+      {"keyword": "landscape design", "location_code": 9210266, "search_volume": 10},
+      {"keyword": "landscaping company", "location_code": 9210266, "search_volume": 10},
+      {"keyword": "landscape installation", "location_code": 9210266, "search_volume": null}
+    ],
+    "Grand Saline,Texas,United States": [
+      {"keyword": "plant nursery", "location_code": 9217261, "search_volume": 10},
+      {"keyword": "garden center", "location_code": 9217261, "search_volume": 10},
+      {"keyword": "landscape design", "location_code": 9217261, "search_volume": 10},
+      {"keyword": "landscaping company", "location_code": 9217261, "search_volume": null},
+      {"keyword": "landscape installation", "location_code": 9217261, "search_volume": null}
+    ],
+    "Point,Texas,United States": [
+      {"keyword": "plant nursery", "location_code": 1026697, "search_volume": 10},
+      {"keyword": "garden center", "location_code": 1026697, "competition": "LOW", "search_volume": 10},
+      {"keyword": "landscape design", "location_code": 1026697, "search_volume": null},
+      {"keyword": "landscaping company", "location_code": 1026697, "search_volume": null},
+      {"keyword": "landscape installation", "location_code": 1026697, "search_volume": null}
+    ]
+  },
+  "note": "All values are DataForSEO's minimum-reportable floor (10/mo) where present, per the same imprecision caveat already documented in normalized/multimarket-local-search.md. null = no data returned for that keyword/location combination, not confirmed zero demand."
+}

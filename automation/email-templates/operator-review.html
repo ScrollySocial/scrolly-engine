@@ -1,0 +1,54 @@
+<!--
+Operator review-request email — sent by the "Engagement Complete" n8n workflow
+when REQUIRE_MANUAL_APPROVAL=true, to the operator (you), before anything
+reaches the client.
+
+Tokens (replaced by n8n before calling Resend — see n8n/engagement-complete.json):
+  {{business_name}}      - client business name
+  {{slug}}                - client folder slug
+  {{mode}}                 - Mode 1/2/3, from status.md
+  {{quality_gate_status}}  - Pass / Pass with gaps / Ceiling-limited, from status.md
+  {{gap_summary}}          - short list of any "Not Evaluated / Data Required" sections, or "None"
+  {{dataforseo_enabled}}   - true/false, whether this run had live DataForSEO data
+  {{approve_url}}          - one-click n8n webhook URL that triggers approve-and-send.json
+                              (must include a signed/random token, not just the slug, so it
+                              can't be guessed or replayed)
+  {{report_pdf_url}}       - link to report.pdf for quick review before approving
+  {{appendix_pdf_url}}     - link to appendix.pdf
+-->
+<div style="font-family: -apple-system, Helvetica, Arial, sans-serif; max-width: 560px; margin: 0 auto; color: #1a1a1a;">
+  <h2 style="margin-bottom: 4px;">Discover report ready for review</h2>
+  <p style="color: #555; margin-top: 0;">{{business_name}} — {{mode}}</p>
+
+  <table style="width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 14px;">
+    <tr>
+      <td style="padding: 6px 0; color: #666;">Final Quality Gate</td>
+      <td style="padding: 6px 0; font-weight: 600;">{{quality_gate_status}}</td>
+    </tr>
+    <tr>
+      <td style="padding: 6px 0; color: #666;">DataForSEO data</td>
+      <td style="padding: 6px 0; font-weight: 600;">{{dataforseo_enabled}}</td>
+    </tr>
+    <tr>
+      <td style="padding: 6px 0; color: #666; vertical-align: top;">Gaps / Not Evaluated</td>
+      <td style="padding: 6px 0;">{{gap_summary}}</td>
+    </tr>
+  </table>
+
+  <p>
+    <a href="{{report_pdf_url}}" style="color: #2563eb;">Review report.pdf</a> &nbsp;·&nbsp;
+    <a href="{{appendix_pdf_url}}" style="color: #2563eb;">Review appendix.pdf</a>
+  </p>
+
+  <p style="margin-top: 28px;">
+    <a href="{{approve_url}}"
+       style="background: #16a34a; color: #fff; padding: 12px 22px; border-radius: 6px; text-decoration: none; font-weight: 600; display: inline-block;">
+      Approve &amp; Send to Client
+    </a>
+  </p>
+
+  <p style="color: #999; font-size: 12px; margin-top: 28px;">
+    This link is unique to this engagement (slug: {{slug}}) and single-use. Nothing is sent to the
+    client until you click it.
+  </p>
+</div>

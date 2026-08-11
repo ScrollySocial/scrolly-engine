@@ -1,0 +1,65 @@
+{
+  "source": "In-browser JS extraction via Claude Browser tool, executed against the live rendered DOM at https://mulberrycreektx.com/, 2026-08-10",
+  "page_metadata": {
+    "title": "Landscaping and Garden Center",
+    "metaDescription": null,
+    "canonical": "https://mulberrycreektx.com/",
+    "metaRobots": "max-image-preview:large",
+    "viewport": "width=device-width, initial-scale=1",
+    "htmlLang": "en-US",
+    "charset": "UTF-8",
+    "generator": "WordPress 7.0.3",
+    "favicon": null,
+    "hasSchemaOrgAnywhere": false,
+    "numJsonLdBlocks": 0
+  },
+  "headings": {
+    "h1": ["Landscaping and Garden Center", "About Mulberry Creek Garden Center", "Contact Us"],
+    "h2": ["Our Services & Products"],
+    "h3": ["Professional Landscaping Services", "Plants, Trees & Shrubs", "Planting Services"]
+  },
+  "images": {
+    "totalImages": 6,
+    "imagesMissingAlt": 0,
+    "sample": [
+      { "context": "logo", "src_host": "bronkbuilder-website-assets.s3.us-east-2.amazonaws.com (LOGO/)", "alt": "ChatGPT Image Jul 23, 2026, 10_56_06 AM.png", "naturalWidth": 1536, "naturalHeight": 1024, "displayWidth": 32, "displayHeight": 21 },
+      { "context": "hero", "src_host": "bronkbuilder-website-assets.s3.us-east-2.amazonaws.com (HERO/)", "alt": "Alternative text for describing the image displayed", "naturalWidth": 1920, "naturalHeight": 1080, "displayWidth": 1265, "displayHeight": 720 },
+      { "context": "about", "src_host": "bronkbuilder-website-assets.s3.us-east-2.amazonaws.com (ABOUT/)", "alt": "Placeholder image for ABOUT", "naturalWidth": 640, "naturalHeight": 426, "displayWidth": 466, "displayHeight": 350 },
+      { "context": "product", "src_host": "bronkbuilder-website-assets.s3.us-east-2.amazonaws.com (PRODUCT/)", "alt": "Placeholder image for PRODUCT", "naturalWidth": 750, "naturalHeight": 547, "displayWidth": 321, "displayHeight": 241 },
+      { "context": "product", "src_host": "bronkbuilder-website-assets.s3.us-east-2.amazonaws.com (PRODUCT/)", "alt": "ChatGPT Image Jul 23, 2026, 10_53_24 AM.png", "naturalWidth": 1086, "naturalHeight": 1448, "displayWidth": 321, "displayHeight": 241 },
+      { "context": "product", "src_host": "bronkbuilder-website-assets.s3.us-east-2.amazonaws.com (PRODUCT/)", "alt": "IMG_5862.PNG", "naturalWidth": 320, "naturalHeight": 280, "displayWidth": 321, "displayHeight": 241 }
+    ],
+    "note": "All images are hosted on a third-party site-builder asset bucket ('bronkbuilder-website-assets'), not the site's own domain/CDN. Several alt attributes are literal placeholder text ('Placeholder image for ABOUT'/'PRODUCT') or raw screenshot/camera-roll filenames ('ChatGPT Image...', 'IMG_5862.PNG'), not descriptive alt text."
+  },
+  "links": {
+    "totalUniqueLinks": 9,
+    "list": [
+      "https://mulberrycreektx.com/#wp--skip-link--target",
+      "https://mulberrycreektx.com/",
+      "https://mulberrycreektx.com/#about",
+      "https://mulberrycreektx.com/#products",
+      "https://mulberrycreektx.com/#contact",
+      "geo:36580+State+Highway+64+Wills+Point%2C+TX+75169",
+      "mailto:office@mulberrycreektx.com",
+      "tel:903-873-2122",
+      "https://mulberrycreek/ — BROKEN: malformed URL (no TLD), found on the Facebook social-icon link (class wp-block-social-link-facebook), text label 'Facebook'"
+    ]
+  },
+  "mixed_content_check": {
+    "httpRefsFoundInHtml": ["http://www.w3.org/2000/svg (x5)"],
+    "assessment": "These are SVG namespace declarations (xmlns attribute), not fetched subresources — inert, do not trigger real mixed-content browser warnings. No genuine mixed-content issue found."
+  },
+  "mobile_viewport_check_375x812": {
+    "innerWidth": 375,
+    "docScrollWidth": 375,
+    "hasHorizontalOverflow": false,
+    "totalInteractiveElements": 13,
+    "smallTapTargets_under_24px": [
+      { "element": "skip-link (screen-reader-text, intentionally 1x1px hidden accessibility pattern)", "excluded_as_false_positive": true },
+      { "element": "logo link", "width": 32, "height": 21.3 },
+      { "element": "address link", "text": "36580 State Highway 64 Wills Point, TX 75169", "width": 266.3, "height": 15 },
+      { "element": "email link", "text": "office@mulberrycreektx.com", "width": 166, "height": 15 },
+      { "element": "phone link", "text": "903-873-2122", "width": 80.25, "height": 15 }
+    ]
+  }
+}

@@ -1,0 +1,1505 @@
+{
+  "id": "08102059-2271-0139-0000-d897510b119e",
+  "status_code": 20000,
+  "status_message": "Ok.",
+  "items": [
+    {
+      "type": "local_pack",
+      "rank_group": 1,
+      "rank_absolute": 1,
+      "page": 1,
+      "title": "Walls Family Farm",
+      "description": "Terrell, TX · (972) 524-9000 \n\"Absolutely an amazing place to bring kids for some fall fun!!\" \n",
+      "domain": "www.facebook.com",
+      "phone": "(972) 524-9000",
+      "url": "https://www.facebook.com/WallsFamilyFarm/",
+      "rating": {
+        "rating_type": "Max5",
+        "value": 4.7,
+        "votes_count": 122,
+        "rating_max": 5
+      },
+      "cid": "13656198340099156262"
+    },
+    {
+      "type": "local_pack",
+      "rank_group": 2,
+      "rank_absolute": 2,
+      "page": 1,
+      "title": "Spooktacular Nights at YesterLand Farm",
+      "description": "Canton, TX · (903) 567-2255 \n",
+      "domain": "www.yesterlandfarm.com",
+      "phone": "(903) 567-2255",
+      "url": "https://www.yesterlandfarm.com/spooktacular-nights",
+      "rating": {
+        "rating_type": "Max5",
+        "value": 4.4,
+        "votes_count": 13,
+        "rating_max": 5
+      },
+      "cid": "5466373704100900104"
+    },
+    {
+      "type": "local_pack",
+      "rank_group": 3,
+      "rank_absolute": 3,
+      "page": 1,
+      "title": "The Corn Maze at Yesterland Farm",
+      "description": "Canton, TX \n\"Very fun experience for the whole family!\" \n",
+      "rating": {
+        "rating_type": "Max5",
+        "value": 5,
+        "votes_count": 2,
+        "rating_max": 5
+      },
+      "cid": "8522283352169537996"
+    },
+    {
+      "type": "organic",
+      "rank_group": 1,
+      "rank_absolute": 4,
+      "page": 1,
+      "domain": "www.hallspumpkinfarm.net",
+      "title": "Hall's Pumpkin Farm & Corn Maze | Visit Now for ... - Grapevine",
+      "url": "https://www.hallspumpkinfarm.net/",
+      "breadcrumb": "https://www.hallspumpkinfarm.net",
+      "website_name": "Hall's Pumpkin Farm & Corn Maze",
+      "description": "We are CLOSED for the 2025 Season ・ 3420 Hall Johnson Road | Grapevine, Texas 76051 ・ maze, with over 2 acres of twists, turns, and dead-ends. Admission ...",
+      "highlighted": [
+        "3420 Hall Johnson Road | Grapevine, Texas 76051"
+      ]
+    },
+    {
+      "type": "product_considerations",
+      "rank_group": 1,
+      "rank_absolute": 5,
+      "page": 1,
+      "title": "Things to know",
+      "items": [
+        {
+          "type": "product_considerations_element",
+          "title": "What is the purpose of a corn maze?",
+          "consideration_category": "Purpose",
+          "expanded_element": [
+            {
+              "type": "product_considerations_ai_overview_expanded_element",
+              "items": [
+                {
+                  "type": "ai_overview_element",
+                  "text": "Corn mazes serve as a popular form of agritourism, designed to provide fun, educational, and challenging, family-friendly outdoor entertainment, while helping farmers generate income and promote agriculture. They function as massive, immersive walking puzzles or \"living puzzles\" designed into fields of tall corn."
+                },
+                {
+                  "type": "ai_overview_element",
+                  "title": "Usage Examples and Purposes",
+                  "text": "Agritourism & Farm Income : Farms use mazes to attract tourists during the fall, supplementing income by creating a \"corn maze craze\" that often includes games and interactive, high-tech features. Educational Opportunities : Mazes teach children and visitors about farming, agriculture, map reading, and navigation, sometimes featuring educational checkpoints. Family Activity & Bonding : Acting as a \"giant game board,\" they encourage visitors to get outside, exercise, and solve problems collaboratively without technology. Promotion of Local Agriculture : They connect consumers to local farms and serve as a way to support agricultural traditions.",
+                  "references": [
+                    {
+                      "type": "ai_overview_reference",
+                      "source": "Mississippi State University",
+                      "domain": "www.naturalresources.msstate.edu",
+                      "url": "https://www.naturalresources.msstate.edu/business-resources/types/corn-maze.php#:~:text=Corn%20mazes%20are%20a%20form,their%20mazes%20for%20additional%20fun.",
+                      "title": "Corn Maze - Natural Resource Enterprises",
+                      "text": "Corn mazes are a form of agritourism that provides entertainment for all ages. Elaborate pictorial mazes can be cut into growing c..."
+                    },
+                    {
+                      "type": "ai_overview_reference",
+                      "source": "Morning Ag Clips",
+                      "domain": "www.morningagclips.com",
+                      "url": "https://www.morningagclips.com/aw-shucks-lost-in-the-history-of-corn-mazes/#:~:text=This%20precision%20allowed%20for%20complex,still%20maintaining%20its%20agricultural%20roots.",
+                      "title": "Aw Shucks! Lost in the History of Corn Mazes - Morning Ag Clips",
+                      "text": "Oct 17, 2024 — This precision allowed for complex images—anything from local landmarks to pop culture icons—to be rendered in the fie..."
+                    },
+                    {
+                      "type": "ai_overview_reference",
+                      "source": "USGS (.gov)",
+                      "domain": "www.usgs.gov",
+                      "url": "https://www.usgs.gov/educational-resources/ten-lessons-teaching-geography-using-corn-mazes",
+                      "title": "Ten Lessons for Teaching Geography Using Corn Mazes - USGS.gov",
+                      "text": "* Introduction: Corn mazes are paths that are cut or plowed in a field of corn (maize). Like tracing a maze on paper with a penci..."
+                    },
+                    {
+                      "type": "ai_overview_reference",
+                      "source": "My Indiana Home",
+                      "domain": "my-indiana-home.com",
+                      "url": "https://my-indiana-home.com/farm/corn-mazes-technology/#:~:text=A-Maize-ing%20Agritourism,GPS%20(global%20positioning%20systems).",
+                      "title": "Lessons in Labyrinths: Corn Mazes Educate and Amaze Visitors",
+                      "text": "Aug 17, 2011 — A-Maize-ing Agritourism Corn mazes, a prime example of an agritourism enterprise, typically help to supplement family ..."
+                    },
+                    {
+                      "type": "ai_overview_reference",
+                      "source": "popefarmscornmaize.com",
+                      "domain": "popefarmscornmaize.com",
+                      "url": "https://popefarmscornmaize.com/exploring-the-history-and-tradition-of-corn-mazes/#:~:text=Supporting%20Local%20Agriculture,agriculture%20in%20our%20daily%20lives.",
+                      "title": "Exploring the History and Tradition of Corn Mazes - Pope Farms",
+                      "text": "Oct 1, 2024 — Supporting Local Agriculture Corn mazes are more than just a fun activity—they're an important way for farms to generat..."
+                    },
+                    {
+                      "type": "ai_overview_reference",
+                      "source": "Facebook ·",
+                      "domain": "www.facebook.com",
+                      "url": "https://www.facebook.com/nbcnightlynews/videos/corn-maze-craze-nightly-news-kids-edition/613017607178031/",
+                      "title": "Corn maze craze | Nightly News: Kids Edition",
+                      "text": "Oct 20, 2022 — well it's that time of year when families head to pumpkin patches or go apple picking. and navigate those popular corn..."
+                    },
+                    {
+                      "type": "ai_overview_reference",
+                      "source": "Lancaster Farmland Trust",
+                      "domain": "lancasterfarmlandtrust.org",
+                      "url": "https://lancasterfarmlandtrust.org/blog/agricultural-artistry-a-short-history-of-the-beloved-corn-maze/#:~:text=Corn%20mazes%20are%20a%20great,farmer%20for%20their%20hard%20work!",
+                      "title": "Agricultural Artistry: A Short History of the Beloved Corn Maze",
+                      "text": "Oct 4, 2023 — Corn mazes are a great way to support local farms and farmers. They're an easy way to get kids outside to enjoy some fu..."
+                    }
+                  ]
+                },
+                {
+                  "type": "ai_overview_element",
+                  "title": "Synonyms and Related Terms",
+                  "text": "Maze, Labyrinth, Maize maze, Corn maze puzzle, Agricultural maze, and Agritourism attraction."
+                },
+                {
+                  "type": "ai_overview_element",
+                  "text": "Commonly called \"maize mazes\" in other countries, these attractions are frequently cut into elaborate, artistic, or thematic designs that can be seen from an aerial perspective.",
+                  "references": [
+                    {
+                      "type": "ai_overview_reference",
+                      "source": "Wikipedia",
+                      "domain": "en.wikipedia.org",
+                      "url": "https://en.wikipedia.org/wiki/Corn_maze#:~:text=(7.2%20acres).-,Designs,maze%2C%20using%20GPS%20mapping%20technology.",
+                      "title": "Corn maze - Wikipedia",
+                      "text": "Designs. Designs may be simple lines, or they may produce an overall image that can be seen from above. Many are based on artistic..."
+                    }
+                  ]
+                }
+              ],
+              "references": [
+                {
+                  "type": "ai_overview_reference",
+                  "source": "Wikipedia",
+                  "domain": "en.wikipedia.org",
+                  "url": "https://en.wikipedia.org/wiki/Corn_maze#:~:text=(7.2%20acres).-,Designs,maze%2C%20using%20GPS%20mapping%20technology.",
+                  "title": "Corn maze - Wikipedia",
+                  "text": "Designs. Designs may be simple lines, or they may produce an overall image that can be seen from above. Many are based on artistic..."
+                },
+                {
+                  "type": "ai_overview_reference",
+                  "source": "Lancaster Farmland Trust",
+                  "domain": "lancasterfarmlandtrust.org",
+                  "url": "https://lancasterfarmlandtrust.org/blog/agricultural-artistry-a-short-history-of-the-beloved-corn-maze/#:~:text=Corn%20mazes%20are%20a%20great,farmer%20for%20their%20hard%20work!",
+                  "title": "Agricultural Artistry: A Short History of the Beloved Corn Maze",
+                  "text": "Oct 4, 2023 — Corn mazes are a great way to support local farms and farmers. They're an easy way to get kids outside to enjoy some fu..."
+                },
+                {
+                  "type": "ai_overview_reference",
+                  "source": "USGS (.gov)",
+                  "domain": "www.usgs.gov",
+                  "url": "https://www.usgs.gov/educational-resources/ten-lessons-teaching-geography-using-corn-mazes",
+                  "title": "Ten Lessons for Teaching Geography Using Corn Mazes - USGS.gov",
+                  "text": "* Introduction: Corn mazes are paths that are cut or plowed in a field of corn (maize). Like tracing a maze on paper with a penci..."
+                },
+                {
+                  "type": "ai_overview_reference",
+                  "source": "Facebook ·",
+                  "domain": "www.facebook.com",
+                  "url": "https://www.facebook.com/nbcnightlynews/videos/corn-maze-craze-nightly-news-kids-edition/613017607178031/",
+                  "title": "Corn maze craze | Nightly News: Kids Edition",
+                  "text": "Oct 20, 2022 — well it's that time of year when families head to pumpkin patches or go apple picking. and navigate those popular corn..."
+                },
+                {
+                  "type": "ai_overview_reference",
+                  "source": "My Indiana Home",
+                  "domain": "my-indiana-home.com",
+                  "url": "https://my-indiana-home.com/farm/corn-mazes-technology/#:~:text=A-Maize-ing%20Agritourism,GPS%20(global%20positioning%20systems).",
+                  "title": "Lessons in Labyrinths: Corn Mazes Educate and Amaze Visitors",
+                  "text": "Aug 17, 2011 — A-Maize-ing Agritourism Corn mazes, a prime example of an agritourism enterprise, typically help to supplement family ..."
+                },
+                {
+                  "type": "ai_overview_reference",
+                  "source": "Mississippi State University",
+                  "domain": "www.naturalresources.msstate.edu",
+                  "url": "https://www.naturalresources.msstate.edu/business-resources/types/corn-maze.php#:~:text=Corn%20mazes%20are%20a%20form,their%20mazes%20for%20additional%20fun.",
+                  "title": "Corn Maze - Natural Resource Enterprises",
+                  "text": "Corn mazes are a form of agritourism that provides entertainment for all ages. Elaborate pictorial mazes can be cut into growing c..."
+                },
+                {
+                  "type": "ai_overview_reference",
+                  "source": "Morning Ag Clips",
+                  "domain": "www.morningagclips.com",
+                  "url": "https://www.morningagclips.com/aw-shucks-lost-in-the-history-of-corn-mazes/#:~:text=This%20precision%20allowed%20for%20complex,still%20maintaining%20its%20agricultural%20roots.",
+                  "title": "Aw Shucks! Lost in the History of Corn Mazes - Morning Ag Clips",
+                  "text": "Oct 17, 2024 — This precision allowed for complex images—anything from local landmarks to pop culture icons—to be rendered in the fie..."
+                },
+                {
+                  "type": "ai_overview_reference",
+                  "source": "popefarmscornmaize.com",
+                  "domain": "popefarmscornmaize.com",
+                  "url": "https://popefarmscornmaize.com/exploring-the-history-and-tradition-of-corn-mazes/#:~:text=Supporting%20Local%20Agriculture,agriculture%20in%20our%20daily%20lives.",
+                  "title": "Exploring the History and Tradition of Corn Mazes - Pope Farms",
+                  "text": "Oct 1, 2024 — Supporting Local Agriculture Corn mazes are more than just a fun activity—they're an important way for farms to generat..."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "product_considerations_element",
+          "title": "What are some tips for navigating a corn maze?",
+          "consideration_category": "Navigation Tips",
+          "expanded_element": [
+            {
+              "type": "product_considerations_ai_overview_expanded_element",
+              "items": [
+                {
+                  "type": "ai_overview_element",
+                  "text": "Navigating a corn maze effectively involves using the \"right-hand rule\" (keeping one hand on the wall/corn), taking a photo of the map, and staying in groups. Wear comfortable, closed-toe shoes for uneven, dirty ground, and bring water to stay hydrated during the, sometimes, hours-long, experience.",
+                  "references": [
+                    {
+                      "type": "ai_overview_reference",
+                      "source": "South Carolina Department of Agriculture (.gov)",
+                      "domain": "agriculture.sc.gov",
+                      "url": "https://agriculture.sc.gov/corn-maze-tips-tricks-from-veteran-mazers/#:~:text=Appropriate%20shoes%20are%20a%20must,they%20get%20a%20little%20dirty.",
+                      "title": "Corn Maze Tips & Tricks from Veteran Mazers",
+                      "text": "Oct 1, 2021 — Appropriate shoes are a must. When getting lost in a corn maze you're trudging through dirt and it can get pretty dusty..."
+                    },
+                    {
+                      "type": "ai_overview_reference",
+                      "source": "Quality Plus Automotive",
+                      "domain": "www.qualityplusautomotive.com",
+                      "url": "https://www.qualityplusautomotive.com/blog/2021/october/fall-fun-5-corn-maze-safety-tips/",
+                      "title": "Fall Fun! 5 Corn Maze Safety Tips - Quality Plus Automotive Service",
+                      "text": "Oct 20, 2021 —  Here are five safety tips to keep the fun coming during your next corn maze experience. * Follow the rules. At the en..."
+                    },
+                    {
+                      "type": "ai_overview_reference",
+                      "source": "YouTube ·",
+                      "domain": "www.youtube.com",
+                      "url": "https://www.youtube.com/shorts/AbNXmOu79hU",
+                      "title": "Corn maze survival tips #cornmaze # ...",
+                      "text": "Sep 22, 2023 — here's five corn maze survival tips number one make sure to bring plenty of water as it can get pretty hot in the corn..."
+                    },
+                    {
+                      "type": "ai_overview_reference",
+                      "source": "YouTube ·",
+                      "domain": "www.youtube.com",
+                      "url": "https://www.youtube.com/shorts/ZhjIMgMj-ec",
+                      "title": "How to Escape a Corn Maze. #halloween #lost ...",
+                      "text": "Oct 16, 2024 — how to escape a corn maze the dirtiest secret in the aggretainment. business is that farmers actually want you to get ..."
+                    },
+                    {
+                      "type": "ai_overview_reference",
+                      "source": "Puzzle Genius",
+                      "domain": "puzzlegenius.org",
+                      "url": "https://puzzlegenius.org/techniques-for-solving-mazes/#:~:text=Hand%20on%20The%20Wall&text=The%20technique%20is%20simple:%20when,not%20work%20in%20all%20mazes.",
+                      "title": "Techniques for Solving Mazes - Puzzle Genius",
+                      "text": "Hand on The Wall The technique is simple: when you enter the maze, place your right hand on the wall to your right (or left hand o..."
+                    }
+                  ]
+                },
+                {
+                  "type": "ai_overview_element",
+                  "text": "Here are top tips for a successful corn maze trip:"
+                },
+                {
+                  "type": "ai_overview_element",
+                  "title": "Strategy & Navigation",
+                  "text": "The Right-Hand Rule: Place your right (or left) hand on the corn stalks when you enter and keep it there throughout the maze. This technique ensures you eventually navigate around dead ends and find the exit, assuming you follow it consistently. Map it Out: Many mazes provide a map at the entrance; take a picture of it with your phone, or study it closely for landmarks and checkpoints before setting off. Identify Landmarks: Watch for unique, large, or unusual features, such as trees, towers, or specific signage, to help you understand where you have already been. Look Backwards: Periodically check behind you. The maze looks different from the opposite direction, and it helps you recognize if you are walking in a circle.",
+                  "references": [
+                    {
+                      "type": "ai_overview_reference",
+                      "source": "YouTube ·",
+                      "domain": "www.youtube.com",
+                      "url": "https://www.youtube.com/shorts/ZhjIMgMj-ec",
+                      "title": "How to Escape a Corn Maze. #halloween #lost ...",
+                      "text": "Oct 16, 2024 — how to escape a corn maze the dirtiest secret in the aggretainment. business is that farmers actually want you to get ..."
+                    },
+                    {
+                      "type": "ai_overview_reference",
+                      "source": "Puzzle Genius",
+                      "domain": "puzzlegenius.org",
+                      "url": "https://puzzlegenius.org/techniques-for-solving-mazes/#:~:text=Hand%20on%20The%20Wall&text=The%20technique%20is%20simple:%20when,not%20work%20in%20all%20mazes.",
+                      "title": "Techniques for Solving Mazes - Puzzle Genius",
+                      "text": "Hand on The Wall The technique is simple: when you enter the maze, place your right hand on the wall to your right (or left hand o..."
+                    },
+                    {
+                      "type": "ai_overview_reference",
+                      "source": "Quora",
+                      "domain": "www.quora.com",
+                      "url": "https://www.quora.com/What-happens-if-people-cant-get-out-of-a-corn-maze#:~:text=The%20%E2%80%9CFollow%20a%20Wall%E2%80%9D%20Method,will%20eventually%20escape%20the%20maze.",
+                      "title": "What happens if people can't get out of a corn maze? - Quora",
+                      "text": "Oct 20, 2018 — The “Follow a Wall” Method: Track a single, unbroken line on any wall. If a maze has an entrance and an exit, and you ..."
+                    },
+                    {
+                      "type": "ai_overview_reference",
+                      "source": "Pineland Farms",
+                      "domain": "pinelandfarms.org",
+                      "url": "https://pinelandfarms.org/surviving-the-corn-maze-tips-tricks/",
+                      "title": "Surviving the Corn Maze: Tips & Tricks - Pineland Farms, Inc.",
+                      "text": "Knowing what to expect can help you prepare mentally and physically for the adventure. * Dress to Impress (the Corn) Comfort is k..."
+                    },
+                    {
+                      "type": "ai_overview_reference",
+                      "source": "The Corn Maze Guy",
+                      "domain": "thecornmazeguy.com",
+                      "url": "https://thecornmazeguy.com/services/tips/#:~:text=Check%20for%20tripping%20hazards%20before,areas%20and%20away%20from%20roads.&text=Hand%20out%20maps%20of%20the,who%20request%20a%20little%20help.&text=A%20bridge%20or%20lookout%20platform,hold%20too%20many%20maze-goers.&text=Pumpkins%20and%20hayrides%20go%20great,Food%20and%20beverages%20too!&text=We%20recommend%20offering%20a%20maze,fun%20for%20the%20entire%20family.&text=Promote%20your%20maze%20with%20social,your%20event%20opening%20gets%20closer.&text=Be%20sure%20your%20insurance%20covers,are%20always%20a%20good%20idea.&text=Additional%20attractions%20make%20your%20maze,of%20low-cost%20additional%20attractions.",
+                      "title": "Tips – The Corn Maze Guy",
+                      "text": "Check for tripping hazards before you open. Have a few “quick exits” if your maze is over 4 acres. Use plastic safety fence (snow ..."
+                    },
+                    {
+                      "type": "ai_overview_reference",
+                      "source": "Maize Adventure",
+                      "domain": "www.maizeadventure.com",
+                      "url": "https://www.maizeadventure.com/blog/corn-maze-tips/#:~:text=Look%20for%20landmarks.,enjoy%20their%20experience%20after%20you.)",
+                      "title": "Corn Maze Tips - Maize Adventure",
+                      "text": "Oct 8, 2019 — Look for landmarks. Have you been on a path before? Perhaps you noticed a particular intersection or ear of corn, or ma..."
+                    }
+                  ]
+                },
+                {
+                  "type": "ai_overview_element",
+                  "text": "This video explains the hand-on-the-wall technique for solving a maze:"
+                },
+                {
+                  "type": "ai_overview_element",
+                  "title": "Preparation & Safety",
+                  "text": "Wear Proper Footwear: Wear comfortable, closed-toe shoes or boots, as the ground is often uneven, dusty, or muddy. Dress in Layers: Check the weather and dress in layers to stay comfortable as temperatures can change, especially in late afternoon. Bring Water & Snacks: Carry water, especially if visiting with children, as the experience can take longer than anticipated. Stay Together: Keep your group, especially children, together to avoid getting separated or \"corn-fused\".",
+                  "references": [
+                    {
+                      "type": "ai_overview_reference",
+                      "source": "South Carolina Department of Agriculture (.gov)",
+                      "domain": "agriculture.sc.gov",
+                      "url": "https://agriculture.sc.gov/corn-maze-tips-tricks-from-veteran-mazers/#:~:text=Appropriate%20shoes%20are%20a%20must,they%20get%20a%20little%20dirty.",
+                      "title": "Corn Maze Tips & Tricks from Veteran Mazers",
+                      "text": "Oct 1, 2021 — Appropriate shoes are a must. When getting lost in a corn maze you're trudging through dirt and it can get pretty dusty..."
+                    },
+                    {
+                      "type": "ai_overview_reference",
+                      "source": "Quality Plus Automotive",
+                      "domain": "www.qualityplusautomotive.com",
+                      "url": "https://www.qualityplusautomotive.com/blog/2021/october/fall-fun-5-corn-maze-safety-tips/",
+                      "title": "Fall Fun! 5 Corn Maze Safety Tips - Quality Plus Automotive Service",
+                      "text": "Oct 20, 2021 —  Here are five safety tips to keep the fun coming during your next corn maze experience. * Follow the rules. At the en..."
+                    },
+                    {
+                      "type": "ai_overview_reference",
+                      "source": "Pineland Farms",
+                      "domain": "pinelandfarms.org",
+                      "url": "https://pinelandfarms.org/surviving-the-corn-maze-tips-tricks/",
+                      "title": "Surviving the Corn Maze: Tips & Tricks - Pineland Farms, Inc.",
+                      "text": "Knowing what to expect can help you prepare mentally and physically for the adventure. * Dress to Impress (the Corn) Comfort is k..."
+                    },
+                    {
+                      "type": "ai_overview_reference",
+                      "source": "Kids Out and About Orange County",
+                      "domain": "theoc.kidsoutandabout.com",
+                      "url": "https://theoc.kidsoutandabout.com/content/twelve-tips-navigating-corn-maze-children#:~:text=3.,have%20provisions%20available%20in%20case.",
+                      "title": "Twelve Tips for Navigating a Corn Maze with Children",
+                      "text": "3. Pack Food & Water to Bring Along. Of course you don't want be lost in a maze. . . and hungry. Stow enough easy snacks and water..."
+                    },
+                    {
+                      "type": "ai_overview_reference",
+                      "source": "YouTube ·",
+                      "domain": "www.youtube.com",
+                      "url": "https://www.youtube.com/shorts/AbNXmOu79hU",
+                      "title": "Corn maze survival tips #cornmaze # ...",
+                      "text": "Sep 22, 2023 — here's five corn maze survival tips number one make sure to bring plenty of water as it can get pretty hot in the corn..."
+                    },
+                    {
+                      "type": "ai_overview_reference",
+                      "source": "Conner’s A-Maize-Ing Acres",
+                      "domain": "connerscornmaze.com",
+                      "url": "https://connerscornmaze.com/f/the-ultimate-guide-to-planning-your-corn-maze-adventure#:~:text=Tips%20for%20Navigating%20a%20Corn,finish%E2%80%94it's%20to%20have%20fun.",
+                      "title": "The Ultimate Guide to Planning Your Corn Maze Adventure",
+                      "text": "Tips for Navigating a Corn Maze Mastering a corn maze requires a mix of strategy, teamwork, and a little bit of luck. Here are som..."
+                    }
+                  ]
+                },
+                {
+                  "type": "ai_overview_element",
+                  "title": "Etiquette & Rules",
+                  "text": "Don't Cut Through the Corn: Stick to the designated paths. Breaking or cutting through the stalks damages the maze for others and can make you more lost. Don't Litter: Keep the trails clean. Don't Run: While exciting, running can lead to tripping hazards like holes or uneven ground, particularly when navigating around sharp corners.",
+                  "references": [
+                    {
+                      "type": "ai_overview_reference",
+                      "source": "Maize Adventure",
+                      "domain": "www.maizeadventure.com",
+                      "url": "https://www.maizeadventure.com/blog/how-to-survive-a-corn-maze-greensboro-nc-high-point-nc/#:~:text=Follow%20the%20Corn%20Maze%20Rules,t%20smoke%20in%20the%20maze.",
+                      "title": "How to Survive a Corn Maze: 6 Great Tips | Maize Adventure",
+                      "text": "Apr 13, 2023 — Follow the Corn Maze Rules, So Everyone Has Fun Round up your kids or friends and head out to the nearest corn maze th..."
+                    },
+                    {
+                      "type": "ai_overview_reference",
+                      "source": "Quality Plus Automotive",
+                      "domain": "www.qualityplusautomotive.com",
+                      "url": "https://www.qualityplusautomotive.com/blog/2021/october/fall-fun-5-corn-maze-safety-tips/",
+                      "title": "Fall Fun! 5 Corn Maze Safety Tips - Quality Plus Automotive Service",
+                      "text": "Oct 20, 2021 —  Here are five safety tips to keep the fun coming during your next corn maze experience. * Follow the rules. At the en..."
+                    }
+                  ]
+                },
+                {
+                  "type": "ai_overview_element",
+                  "text": "If you are totally lost, do not hesitate to call the farm staff or look for employees, who are often positioned at key areas for safety.",
+                  "references": [
+                    {
+                      "type": "ai_overview_reference",
+                      "source": "Pineland Farms",
+                      "domain": "pinelandfarms.org",
+                      "url": "https://pinelandfarms.org/surviving-the-corn-maze-tips-tricks/",
+                      "title": "Surviving the Corn Maze: Tips & Tricks - Pineland Farms, Inc.",
+                      "text": "Knowing what to expect can help you prepare mentally and physically for the adventure. * Dress to Impress (the Corn) Comfort is k..."
+                    },
+                    {
+                      "type": "ai_overview_reference",
+                      "source": "Conner’s A-Maize-Ing Acres",
+                      "domain": "connerscornmaze.com",
+                      "url": "https://connerscornmaze.com/f/the-ultimate-guide-to-planning-your-corn-maze-adventure#:~:text=Tips%20for%20Navigating%20a%20Corn,finish%E2%80%94it's%20to%20have%20fun.",
+                      "title": "The Ultimate Guide to Planning Your Corn Maze Adventure",
+                      "text": "Tips for Navigating a Corn Maze Mastering a corn maze requires a mix of strategy, teamwork, and a little bit of luck. Here are som..."
+                    }
+                  ]
+                }
+              ],
+              "references": [
+                {
+                  "type": "ai_overview_reference",
+                  "source": "Maize Adventure",
+                  "domain": "www.maizeadventure.com",
+                  "url": "https://www.maizeadventure.com/blog/how-to-survive-a-corn-maze-greensboro-nc-high-point-nc/#:~:text=Follow%20the%20Corn%20Maze%20Rules,t%20smoke%20in%20the%20maze.",
+                  "title": "How to Survive a Corn Maze: 6 Great Tips | Maize Adventure",
+                  "text": "Apr 13, 2023 — Follow the Corn Maze Rules, So Everyone Has Fun Round up your kids or friends and head out to the nearest corn maze th..."
+                },
+                {
+                  "type": "ai_overview_reference",
+                  "source": "Pineland Farms",
+                  "domain": "pinelandfarms.org",
+                  "url": "https://pinelandfarms.org/surviving-the-corn-maze-tips-tricks/",
+                  "title": "Surviving the Corn Maze: Tips & Tricks - Pineland Farms, Inc.",
+                  "text": "Knowing what to expect can help you prepare mentally and physically for the adventure. * Dress to Impress (the Corn) Comfort is k..."
+                },
+                {
+                  "type": "ai_overview_reference",
+                  "source": "Conner’s A-Maize-Ing Acres",
+                  "domain": "connerscornmaze.com",
+                  "url": "https://connerscornmaze.com/f/the-ultimate-guide-to-planning-your-corn-maze-adventure#:~:text=Tips%20for%20Navigating%20a%20Corn,finish%E2%80%94it's%20to%20have%20fun.",
+                  "title": "The Ultimate Guide to Planning Your Corn Maze Adventure",
+                  "text": "Tips for Navigating a Corn Maze Mastering a corn maze requires a mix of strategy, teamwork, and a little bit of luck. Here are som..."
+                },
+                {
+                  "type": "ai_overview_reference",
+                  "source": "South Carolina Department of Agriculture (.gov)",
+                  "domain": "agriculture.sc.gov",
+                  "url": "https://agriculture.sc.gov/corn-maze-tips-tricks-from-veteran-mazers/#:~:text=Appropriate%20shoes%20are%20a%20must,they%20get%20a%20little%20dirty.",
+                  "title": "Corn Maze Tips & Tricks from Veteran Mazers",
+                  "text": "Oct 1, 2021 — Appropriate shoes are a must. When getting lost in a corn maze you're trudging through dirt and it can get pretty dusty..."
+                },
+                {
+                  "type": "ai_overview_reference",
+                  "source": "Kids Out and About Orange County",
+                  "domain": "theoc.kidsoutandabout.com",
+                  "url": "https://theoc.kidsoutandabout.com/content/twelve-tips-navigating-corn-maze-children#:~:text=3.,have%20provisions%20available%20in%20case.",
+                  "title": "Twelve Tips for Navigating a Corn Maze with Children",
+                  "text": "3. Pack Food & Water to Bring Along. Of course you don't want be lost in a maze. . . and hungry. Stow enough easy snacks and water..."
+                },
+                {
+                  "type": "ai_overview_reference",
+                  "source": "Quality Plus Automotive",
+                  "domain": "www.qualityplusautomotive.com",
+                  "url": "https://www.qualityplusautomotive.com/blog/2021/october/fall-fun-5-corn-maze-safety-tips/",
+                  "title": "Fall Fun! 5 Corn Maze Safety Tips - Quality Plus Automotive Service",
+                  "text": "Oct 20, 2021 —  Here are five safety tips to keep the fun coming during your next corn maze experience. * Follow the rules. At the en..."
+                },
+                {
+                  "type": "ai_overview_reference",
+                  "source": "Maize Adventure",
+                  "domain": "www.maizeadventure.com",
+                  "url": "https://www.maizeadventure.com/blog/corn-maze-tips/#:~:text=Look%20for%20landmarks.,enjoy%20their%20experience%20after%20you.)",
+                  "title": "Corn Maze Tips - Maize Adventure",
+                  "text": "Oct 8, 2019 — Look for landmarks. Have you been on a path before? Perhaps you noticed a particular intersection or ear of corn, or ma..."
+                },
+                {
+                  "type": "ai_overview_reference",
+                  "source": "The Corn Maze Guy",
+                  "domain": "thecornmazeguy.com",
+                  "url": "https://thecornmazeguy.com/services/tips/#:~:text=Check%20for%20tripping%20hazards%20before,areas%20and%20away%20from%20roads.&text=Hand%20out%20maps%20of%20the,who%20request%20a%20little%20help.&text=A%20bridge%20or%20lookout%20platform,hold%20too%20many%20maze-goers.&text=Pumpkins%20and%20hayrides%20go%20great,Food%20and%20beverages%20too!&text=We%20recommend%20offering%20a%20maze,fun%20for%20the%20entire%20family.&text=Promote%20your%20maze%20with%20social,your%20event%20opening%20gets%20closer.&text=Be%20sure%20your%20insurance%20covers,are%20always%20a%20good%20idea.&text=Additional%20attractions%20make%20your%20maze,of%20low-cost%20additional%20attractions.",
+                  "title": "Tips – The Corn Maze Guy",
+                  "text": "Check for tripping hazards before you open. Have a few “quick exits” if your maze is over 4 acres. Use plastic safety fence (snow ..."
+                },
+                {
+                  "type": "ai_overview_reference",
+                  "source": "YouTube ·",
+                  "domain": "www.youtube.com",
+                  "url": "https://www.youtube.com/shorts/AbNXmOu79hU",
+                  "title": "Corn maze survival tips #cornmaze # ...",
+                  "text": "Sep 22, 2023 — here's five corn maze survival tips number one make sure to bring plenty of water as it can get pretty hot in the corn..."
+                },
+                {
+                  "type": "ai_overview_reference",
+                  "source": "YouTube ·",
+                  "domain": "www.youtube.com",
+                  "url": "https://www.youtube.com/shorts/ZhjIMgMj-ec",
+                  "title": "How to Escape a Corn Maze. #halloween #lost ...",
+                  "text": "Oct 16, 2024 — how to escape a corn maze the dirtiest secret in the aggretainment. business is that farmers actually want you to get ..."
+                },
+                {
+                  "type": "ai_overview_reference",
+                  "source": "Puzzle Genius",
+                  "domain": "puzzlegenius.org",
+                  "url": "https://puzzlegenius.org/techniques-for-solving-mazes/#:~:text=Hand%20on%20The%20Wall&text=The%20technique%20is%20simple:%20when,not%20work%20in%20all%20mazes.",
+                  "title": "Techniques for Solving Mazes - Puzzle Genius",
+                  "text": "Hand on The Wall The technique is simple: when you enter the maze, place your right hand on the wall to your right (or left hand o..."
+                },
+                {
+                  "type": "ai_overview_reference",
+                  "source": "Quora",
+                  "domain": "www.quora.com",
+                  "url": "https://www.quora.com/What-happens-if-people-cant-get-out-of-a-corn-maze#:~:text=The%20%E2%80%9CFollow%20a%20Wall%E2%80%9D%20Method,will%20eventually%20escape%20the%20maze.",
+                  "title": "What happens if people can't get out of a corn maze? - Quora",
+                  "text": "Oct 20, 2018 — The “Follow a Wall” Method: Track a single, unbroken line on any wall. If a maze has an entrance and an exit, and you ..."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "product_considerations_element",
+          "title": "How are corn mazes designed?",
+          "consideration_category": "Design",
+          "expanded_element": [
+            {
+              "type": "product_considerations_ai_overview_expanded_element",
+              "items": [
+                {
+                  "type": "ai_overview_element",
+                  "text": "Corn mazes are designed by first creating a, designed on computers or graph paper, then meticulously transferred to a field using GPS-guided tractors or manual surveying. The design is cut or tilled into the corn when it is small, or by controlling the planter to only sow seeds in specific areas, allowing the maze to grow in place.",
+                  "references": [
+                    {
+                      "type": "ai_overview_reference",
+                      "source": "YouTube ·",
+                      "domain": "www.youtube.com",
+                      "url": "https://www.youtube.com/watch?v=_o8vEvDV1t0",
+                      "title": "How The Most Elaborate Corn Mazes Are Made - Cheddar Explains",
+                      "text": "Oct 14, 2022 — this is Mike's Maze in Sunderland Massachusetts. what you're watching is a time-lapse of a tractor carving a maze into..."
+                    },
+                    {
+                      "type": "ai_overview_reference",
+                      "source": "YouTube ·",
+                      "domain": "www.youtube.com",
+                      "url": "https://www.youtube.com/shorts/XL0AM1kA_3w",
+                      "title": "HOW WE DESIGN A MAZE",
+                      "text": "Jun 17, 2025 — it is corn maze cut day here this was one of my favorite days it is so cool to see it all come together. um if you did..."
+                    },
+                    {
+                      "type": "ai_overview_reference",
+                      "source": "Mental Floss",
+                      "domain": "www.mentalfloss.com",
+                      "url": "https://www.mentalfloss.com/fun/how-corn-mazes-are-made#:~:text=Or%2C%20the%20corn%20can%20be,making%20the%20maze%20more%20immersive.&text=Corn%20mazes%20are%20widely%20perceived,fuel%20an%20alternative%20revenue%20stream.",
+                      "title": "See How Elaborate Corn Mazes Are Made - Mental Floss",
+                      "text": "Oct 14, 2025 — Or, the corn can be planted across the field and a walking trail that follows the maze can be cut with a tractor and s..."
+                    },
+                    {
+                      "type": "ai_overview_reference",
+                      "source": "MazePlay",
+                      "domain": "www.mazeplay.com",
+                      "url": "https://www.mazeplay.com/frequently-asked-corn-maze-questions",
+                      "title": "Frequently asked corn maze questions",
+                      "text": "There are many ways to plant a corn maze. Some methods include: * **Graph paper method** This method involves designing the maze o..."
+                    }
+                  ]
+                },
+                {
+                  "type": "ai_overview_element",
+                  "title": "Designing the Maze",
+                  "text": "Design Phase: Designs are created on computer software (such as Adobe Illustrator) or drafted on graph paper. The image is scaled to fit the field's dimensions. Theme Selection: Many mazes feature complex themes, such as logos, cartoon characters, or complex labyrinths, which are often designed in winter months. Grid Layout: The field is often cross-planted—sown north-south and east-west—to ensure a dense stand of corn that prevents walkers from seeing through the stalks.",
+                  "references": [
+                    {
+                      "type": "ai_overview_reference",
+                      "source": "Treinen Farm",
+                      "domain": "treinenfarm.com",
+                      "url": "https://treinenfarm.com/how-we-create-maze/",
+                      "title": "How We Create the Corn Mazes Near Madison, Wisconsin",
+                      "text": "How We Make the Treinen Farm Corn Maze * Phase One: Imagine. At Treinen Farm we create our mazes from scratch, using our imaginat..."
+                    },
+                    {
+                      "type": "ai_overview_reference",
+                      "source": "Wagner Equipment Co.",
+                      "domain": "wagnerequipment.com",
+                      "url": "https://wagnerequipment.com/blog/how-to-make-a-corn-maze/#:~:text=As%20you%20can%20imagine%2C%20purposely,needs%20for%20the%20next%20year.",
+                      "title": "How to Make a Corn Maze - Wagner Equipment Co.",
+                      "text": "As you can imagine, purposely cutting in a maze in corn takes a lot of work. But how do you create those cool patterns that make t..."
+                    },
+                    {
+                      "type": "ai_overview_reference",
+                      "source": "YouTube ·",
+                      "domain": "www.youtube.com",
+                      "url": "https://www.youtube.com/watch?v=4dI9D8yx49E&t=21",
+                      "title": "From Concept to Cornfield: The Art of Maze Making",
+                      "text": "Aug 10, 2025 — this is how we create the corn maze at Ruby Branch. Farms. so actually to create a corn maze it takes three parts numb..."
+                    },
+                    {
+                      "type": "ai_overview_reference",
+                      "source": "YouTube ·",
+                      "domain": "www.youtube.com",
+                      "url": "https://www.youtube.com/watch?v=_o8vEvDV1t0",
+                      "title": "How The Most Elaborate Corn Mazes Are Made - Cheddar Explains",
+                      "text": "Oct 14, 2022 — this is Mike's Maze in Sunderland Massachusetts. what you're watching is a time-lapse of a tractor carving a maze into..."
+                    },
+                    {
+                      "type": "ai_overview_reference",
+                      "source": "Moulton Farm",
+                      "domain": "www.moultonfarm.com",
+                      "url": "https://www.moultonfarm.com/post/how-we-create-our-corn-maze",
+                      "title": "How we create our corn maze",
+                      "text": "Here's some information about making a corn maze: * **Planting** The maze is planted in mid to late June, depending on the weather..."
+                    }
+                  ]
+                },
+                {
+                  "type": "ai_overview_element",
+                  "title": "Executing the Design",
+                  "text": "GPS Technology: Modern, complex mazes utilize commercial-grade GPS on tractors. The digital design is uploaded to the tractor, which automatically directs the cutting of paths or controls planting to create pathways. Cutting/Tilling: Paths are often cut when the corn is about 3.5 feet high, and the path areas are tilled to prevent regrowth. Manual Method: For smaller operations, designers use a grid system, marking the field with surveyors' flags and cutting the paths by hand using mowers or weed whackers.",
+                  "references": [
+                    {
+                      "type": "ai_overview_reference",
+                      "source": "YouTube ·",
+                      "domain": "www.youtube.com",
+                      "url": "https://www.youtube.com/watch?v=YBwGiEe4YIQ&t=59",
+                      "title": "Ever Wondered How Corn Mazes Are Created?",
+                      "text": "Oct 22, 2018 — and I thought thought it sounded like a really fun. idea. um I was farming at the time. and so I thought I'd like to d..."
+                    },
+                    {
+                      "type": "ai_overview_reference",
+                      "source": "YouTube ·",
+                      "domain": "www.youtube.com",
+                      "url": "https://www.youtube.com/watch?v=_o8vEvDV1t0",
+                      "title": "How The Most Elaborate Corn Mazes Are Made - Cheddar Explains",
+                      "text": "Oct 14, 2022 — this is Mike's Maze in Sunderland Massachusetts. what you're watching is a time-lapse of a tractor carving a maze into..."
+                    },
+                    {
+                      "type": "ai_overview_reference",
+                      "source": "YouTube ·",
+                      "domain": "www.youtube.com",
+                      "url": "https://www.youtube.com/watch?v=nfVB5IGljjw&t=18",
+                      "title": "How corn mazes are created from imagination to an acres-wide design",
+                      "text": "Sep 27, 2024 — so I headed to a maze in Lansboro to get all the corny. details each fall Big Springs Farm in Lansboro unveils a new c..."
+                    },
+                    {
+                      "type": "ai_overview_reference",
+                      "source": "Mental Floss",
+                      "domain": "www.mentalfloss.com",
+                      "url": "https://www.mentalfloss.com/fun/how-corn-mazes-are-made#:~:text=Or%2C%20the%20corn%20can%20be,making%20the%20maze%20more%20immersive.&text=Corn%20mazes%20are%20widely%20perceived,fuel%20an%20alternative%20revenue%20stream.",
+                      "title": "See How Elaborate Corn Mazes Are Made - Mental Floss",
+                      "text": "Oct 14, 2025 — Or, the corn can be planted across the field and a walking trail that follows the maze can be cut with a tractor and s..."
+                    },
+                    {
+                      "type": "ai_overview_reference",
+                      "source": "Instagram ·",
+                      "domain": "www.instagram.com",
+                      "url": "https://www.instagram.com/reel/DN-5p9mjXOF/",
+                      "title": "Have you ever wondered how we cut our corn maze? See above and ...",
+                      "text": "Aug 30, 2025 — for. Have you ever wondered how we cut our corn maze? See above and read below! 🌽 ———————————————————— 🌽We start with ..."
+                    },
+                    {
+                      "type": "ai_overview_reference",
+                      "source": "Wagner Equipment Co.",
+                      "domain": "wagnerequipment.com",
+                      "url": "https://wagnerequipment.com/blog/how-to-make-a-corn-maze/#:~:text=As%20you%20can%20imagine%2C%20purposely,needs%20for%20the%20next%20year.",
+                      "title": "How to Make a Corn Maze - Wagner Equipment Co.",
+                      "text": "As you can imagine, purposely cutting in a maze in corn takes a lot of work. But how do you create those cool patterns that make t..."
+                    },
+                    {
+                      "type": "ai_overview_reference",
+                      "source": "Moulton Farm",
+                      "domain": "www.moultonfarm.com",
+                      "url": "https://www.moultonfarm.com/post/how-we-create-our-corn-maze",
+                      "title": "How we create our corn maze",
+                      "text": "Here's some information about making a corn maze: * **Planting** The maze is planted in mid to late June, depending on the weather..."
+                    }
+                  ]
+                },
+                {
+                  "type": "ai_overview_element",
+                  "title": "Refining the Product",
+                  "text": "Path Width: Typical designs aim for about five-foot-wide paths for comfort. Safety & Logistics: A 20-foot perimeter is often left for safety, and the corn used is usually tall grain corn to enhance the immersion. Post-Season: After the autumn season, the corn is often harvested for livestock feed or tilled back into the soil.",
+                  "references": [
+                    {
+                      "type": "ai_overview_reference",
+                      "source": "YouTube ·",
+                      "domain": "www.youtube.com",
+                      "url": "https://www.youtube.com/watch?v=_o8vEvDV1t0",
+                      "title": "How The Most Elaborate Corn Mazes Are Made - Cheddar Explains",
+                      "text": "Oct 14, 2022 — this is Mike's Maze in Sunderland Massachusetts. what you're watching is a time-lapse of a tractor carving a maze into..."
+                    },
+                    {
+                      "type": "ai_overview_reference",
+                      "source": "YouTube ·",
+                      "domain": "www.youtube.com",
+                      "url": "https://www.youtube.com/watch?v=VJEevupjTcY&t=194",
+                      "title": "How to Make a Corn Maze",
+                      "text": "Aug 7, 2023 — so every time it you're you're driving it's tracking you so I have it set up that it's a like a pull okay through like ..."
+                    },
+                    {
+                      "type": "ai_overview_reference",
+                      "source": "Mental Floss",
+                      "domain": "www.mentalfloss.com",
+                      "url": "https://www.mentalfloss.com/fun/how-corn-mazes-are-made#:~:text=Or%2C%20the%20corn%20can%20be,making%20the%20maze%20more%20immersive.&text=Corn%20mazes%20are%20widely%20perceived,fuel%20an%20alternative%20revenue%20stream.",
+                      "title": "See How Elaborate Corn Mazes Are Made - Mental Floss",
+                      "text": "Oct 14, 2025 — Or, the corn can be planted across the field and a walking trail that follows the maze can be cut with a tractor and s..."
+                    },
+                    {
+                      "type": "ai_overview_reference",
+                      "source": "Wagner Equipment Co.",
+                      "domain": "wagnerequipment.com",
+                      "url": "https://wagnerequipment.com/blog/how-to-make-a-corn-maze/#:~:text=As%20you%20can%20imagine%2C%20purposely,needs%20for%20the%20next%20year.",
+                      "title": "How to Make a Corn Maze - Wagner Equipment Co.",
+                      "text": "As you can imagine, purposely cutting in a maze in corn takes a lot of work. But how do you create those cool patterns that make t..."
+                    }
+                  ]
+                }
+              ],
+              "references": [
+                {
+                  "type": "ai_overview_reference",
+                  "source": "YouTube ·",
+                  "domain": "www.youtube.com",
+                  "url": "https://www.youtube.com/watch?v=YBwGiEe4YIQ&t=59",
+                  "title": "Ever Wondered How Corn Mazes Are Created?",
+                  "text": "Oct 22, 2018 — and I thought thought it sounded like a really fun. idea. um I was farming at the time. and so I thought I'd like to d..."
+                },
+                {
+                  "type": "ai_overview_reference",
+                  "source": "YouTube ·",
+                  "domain": "www.youtube.com",
+                  "url": "https://www.youtube.com/watch?v=_o8vEvDV1t0",
+                  "title": "How The Most Elaborate Corn Mazes Are Made - Cheddar Explains",
+                  "text": "Oct 14, 2022 — this is Mike's Maze in Sunderland Massachusetts. what you're watching is a time-lapse of a tractor carving a maze into..."
+                },
+                {
+                  "type": "ai_overview_reference",
+                  "source": "YouTube ·",
+                  "domain": "www.youtube.com",
+                  "url": "https://www.youtube.com/watch?v=VJEevupjTcY&t=194",
+                  "title": "How to Make a Corn Maze",
+                  "text": "Aug 7, 2023 — so every time it you're you're driving it's tracking you so I have it set up that it's a like a pull okay through like ..."
+                },
+                {
+                  "type": "ai_overview_reference",
+                  "source": "YouTube ·",
+                  "domain": "www.youtube.com",
+                  "url": "https://www.youtube.com/watch?v=nfVB5IGljjw&t=18",
+                  "title": "How corn mazes are created from imagination to an acres-wide design",
+                  "text": "Sep 27, 2024 — so I headed to a maze in Lansboro to get all the corny. details each fall Big Springs Farm in Lansboro unveils a new c..."
+                },
+                {
+                  "type": "ai_overview_reference",
+                  "source": "YouTube ·",
+                  "domain": "www.youtube.com",
+                  "url": "https://www.youtube.com/shorts/XL0AM1kA_3w",
+                  "title": "HOW WE DESIGN A MAZE",
+                  "text": "Jun 17, 2025 — it is corn maze cut day here this was one of my favorite days it is so cool to see it all come together. um if you did..."
+                },
+                {
+                  "type": "ai_overview_reference",
+                  "source": "YouTube ·",
+                  "domain": "www.youtube.com",
+                  "url": "https://www.youtube.com/watch?v=4dI9D8yx49E&t=21",
+                  "title": "From Concept to Cornfield: The Art of Maze Making",
+                  "text": "Aug 10, 2025 — this is how we create the corn maze at Ruby Branch. Farms. so actually to create a corn maze it takes three parts numb..."
+                },
+                {
+                  "type": "ai_overview_reference",
+                  "source": "Mental Floss",
+                  "domain": "www.mentalfloss.com",
+                  "url": "https://www.mentalfloss.com/fun/how-corn-mazes-are-made#:~:text=Or%2C%20the%20corn%20can%20be,making%20the%20maze%20more%20immersive.&text=Corn%20mazes%20are%20widely%20perceived,fuel%20an%20alternative%20revenue%20stream.",
+                  "title": "See How Elaborate Corn Mazes Are Made - Mental Floss",
+                  "text": "Oct 14, 2025 — Or, the corn can be planted across the field and a walking trail that follows the maze can be cut with a tractor and s..."
+                },
+                {
+                  "type": "ai_overview_reference",
+                  "source": "Treinen Farm",
+                  "domain": "treinenfarm.com",
+                  "url": "https://treinenfarm.com/how-we-create-maze/",
+                  "title": "How We Create the Corn Mazes Near Madison, Wisconsin",
+                  "text": "How We Make the Treinen Farm Corn Maze * Phase One: Imagine. At Treinen Farm we create our mazes from scratch, using our imaginat..."
+                },
+                {
+                  "type": "ai_overview_reference",
+                  "source": "Wagner Equipment Co.",
+                  "domain": "wagnerequipment.com",
+                  "url": "https://wagnerequipment.com/blog/how-to-make-a-corn-maze/#:~:text=As%20you%20can%20imagine%2C%20purposely,needs%20for%20the%20next%20year.",
+                  "title": "How to Make a Corn Maze - Wagner Equipment Co.",
+                  "text": "As you can imagine, purposely cutting in a maze in corn takes a lot of work. But how do you create those cool patterns that make t..."
+                },
+                {
+                  "type": "ai_overview_reference",
+                  "source": "Instagram ·",
+                  "domain": "www.instagram.com",
+                  "url": "https://www.instagram.com/reel/DN-5p9mjXOF/",
+                  "title": "Have you ever wondered how we cut our corn maze? See above and ...",
+                  "text": "Aug 30, 2025 — for. Have you ever wondered how we cut our corn maze? See above and read below! 🌽 ———————————————————— 🌽We start with ..."
+                },
+                {
+                  "type": "ai_overview_reference",
+                  "source": "MazePlay",
+                  "domain": "www.mazeplay.com",
+                  "url": "https://www.mazeplay.com/frequently-asked-corn-maze-questions",
+                  "title": "Frequently asked corn maze questions",
+                  "text": "There are many ways to plant a corn maze. Some methods include: * **Graph paper method** This method involves designing the maze o..."
+                },
+                {
+                  "type": "ai_overview_reference",
+                  "source": "Moulton Farm",
+                  "domain": "www.moultonfarm.com",
+                  "url": "https://www.moultonfarm.com/post/how-we-create-our-corn-maze",
+                  "title": "How we create our corn maze",
+                  "text": "Here's some information about making a corn maze: * **Planting** The maze is planted in mid to late June, depending on the weather..."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "product_considerations_element",
+          "title": "What is the history of corn mazes?",
+          "consideration_category": "History",
+          "expanded_element": [
+            {
+              "type": "product_considerations_ai_overview_expanded_element",
+              "items": [
+                {
+                  "type": "ai_overview_element",
+                  "text": "The modern corn maze, a popular autumn agritourism staple, originated in 1993 in Annville, Pennsylvania, created by Don Frantz and Adrian Fisher as a \"Cornelius the Cobasaurus\" dinosaur design. While inspired by ancient hedge mazes, this American innovation was the first to use agricultural cornfields, quickly spreading as a fun, family-friendly fall attraction.",
+                  "references": [
+                    {
+                      "type": "ai_overview_reference",
+                      "source": "Visit Fallon",
+                      "domain": "visitfallonnevada.com",
+                      "url": "https://visitfallonnevada.com/the-history-of-corn-mazes/#:~:text=The%20Birth%20Of%20The%20Modern,staple%20of%20the%20fall%20season.",
+                      "title": "The History Of Corn Mazes - Visit Fallon",
+                      "text": "Oct 16, 2024 — The Birth Of The Modern Corn Maze The transformation from an European fad to a seasonally-beloved American attraction ..."
+                    },
+                    {
+                      "type": "ai_overview_reference",
+                      "source": "Facebook ·",
+                      "domain": "www.facebook.com",
+                      "url": "https://www.facebook.com/nbcnightlynews/videos/corn-maze-craze-nightly-news-kids-edition/613017607178031/",
+                      "title": "Corn maze craze | Nightly News: Kids Edition",
+                      "text": "Oct 20, 2022 — you will find these walking puzzles corn mazes for kids it's like a giant 3T Nintendo it's all the buzzwords. now imme..."
+                    },
+                    {
+                      "type": "ai_overview_reference",
+                      "source": "Pope Farms",
+                      "domain": "popefarmscornmaize.com",
+                      "url": "https://popefarmscornmaize.com/exploring-the-history-and-tradition-of-corn-mazes/#:~:text=A%20Family-Friendly%20Tradition,like%20pumpkin%20picking%20and%20hayrides.",
+                      "title": "Exploring the History and Tradition of Corn Mazes - Pope Farms",
+                      "text": "Oct 1, 2024 — A Family-Friendly Tradition One of the reasons corn mazes have become so popular is their appeal to all ages. Families,"
+                    },
+                    {
+                      "type": "ai_overview_reference",
+                      "source": "Mental Floss",
+                      "domain": "www.mentalfloss.com",
+                      "url": "https://www.mentalfloss.com/fun/how-corn-mazes-are-made#:~:text=The%20Origin%20of%20Corn%20Mazes,fuel%20an%20alternative%20revenue%20stream.",
+                      "title": "See How Elaborate Corn Mazes Are Made - Mental Floss",
+                      "text": "Oct 14, 2025 — The Origin of Corn Mazes Corn mazes are widely perceived as predecessors to hedge mazes, the foliage-bordered paths th..."
+                    },
+                    {
+                      "type": "ai_overview_reference",
+                      "source": "Facebook ·",
+                      "domain": "www.facebook.com",
+                      "url": "https://www.facebook.com/wyso91.3/posts/corn-mazes-didnt-exist-in-the-united-states-until-1993-but-theyve-become-hugely-/1391568512977774/#:~:text=Corn%20mazes%2C%20as%20a%20popular,plays%20a%20significant%20cultural%20role.",
+                      "title": "Corn mazes didn't exist in the United States until 1993, but they've ...",
+                      "text": "Oct 23, 2025 — Corn mazes, as a popular autumn attraction, started becoming common in the United States in the early 1990s. The first..."
+                    }
+                  ]
+                },
+                {
+                  "type": "ai_overview_element",
+                  "title": "Key Historical Aspects & Examples",
+                  "text": "Origin: Don Frantz, a creative producer, conceived the idea while looking at farm landscapes, wanting to create a large-scale, interactive maze. First Maze (1993): Located at Lebanon Valley College in Annville, PA, it set a Guinness World Record for the largest maze. Evolution: Originally simple designs, modern mazes now use GPS mapping to create incredibly intricate patterns, ranging from famous faces to complex, thematic, multi-acre stories. Cultural Significance: They transformed from simple attractions to a key revenue source for farmers, fostering agritourism by connecting urban dwellers with rural life. Worldwide Expansion: Known as \"maize mazes\" in the UK, these attractions have grown into a worldwide fad with hundreds of locations, particularly across North America.",
+                  "references": [
+                    {
+                      "type": "ai_overview_reference",
+                      "source": "Visit Fallon",
+                      "domain": "visitfallonnevada.com",
+                      "url": "https://visitfallonnevada.com/the-history-of-corn-mazes/#:~:text=The%20Birth%20Of%20The%20Modern,staple%20of%20the%20fall%20season.",
+                      "title": "The History Of Corn Mazes - Visit Fallon",
+                      "text": "Oct 16, 2024 — The Birth Of The Modern Corn Maze The transformation from an European fad to a seasonally-beloved American attraction ..."
+                    },
+                    {
+                      "type": "ai_overview_reference",
+                      "source": "Morning Ag Clips",
+                      "domain": "www.morningagclips.com",
+                      "url": "https://www.morningagclips.com/get-lost-a-brief-history-of-the-corn-maze/",
+                      "title": "Get lost! A brief history of the corn maze - Morning Ag Clips",
+                      "text": "The maze attracted many participants and media. Frantz had worked as a creative director and producer in other fields, including B..."
+                    },
+                    {
+                      "type": "ai_overview_reference",
+                      "source": "Facebook ·",
+                      "domain": "www.facebook.com",
+                      "url": "https://www.facebook.com/wyso91.3/posts/corn-mazes-didnt-exist-in-the-united-states-until-1993-but-theyve-become-hugely-/1391568512977774/#:~:text=Corn%20mazes%2C%20as%20a%20popular,plays%20a%20significant%20cultural%20role.",
+                      "title": "Corn mazes didn't exist in the United States until 1993, but they've ...",
+                      "text": "Oct 23, 2025 — Corn mazes, as a popular autumn attraction, started becoming common in the United States in the early 1990s. The first..."
+                    },
+                    {
+                      "type": "ai_overview_reference",
+                      "source": "Wikipedia",
+                      "domain": "en.wikipedia.org",
+                      "url": "https://en.wikipedia.org/wiki/Corn_maze#:~:text=(7.2%20acres).-,Designs,maze%2C%20using%20GPS%20mapping%20technology.",
+                      "title": "Corn maze - Wikipedia",
+                      "text": "Designs. Designs may be simple lines, or they may produce an overall image that can be seen from above. Many are based on artistic..."
+                    },
+                    {
+                      "type": "ai_overview_reference",
+                      "source": "Pope Farms",
+                      "domain": "popefarmscornmaize.com",
+                      "url": "https://popefarmscornmaize.com/exploring-the-history-and-tradition-of-corn-mazes/#:~:text=A%20Family-Friendly%20Tradition,like%20pumpkin%20picking%20and%20hayrides.",
+                      "title": "Exploring the History and Tradition of Corn Mazes - Pope Farms",
+                      "text": "Oct 1, 2024 — A Family-Friendly Tradition One of the reasons corn mazes have become so popular is their appeal to all ages. Families,"
+                    },
+                    {
+                      "type": "ai_overview_reference",
+                      "source": "Reddit",
+                      "domain": "www.reddit.com",
+                      "url": "https://www.reddit.com/r/NoStupidQuestions/comments/xp6fix/a_weird_question_about_corn_mazes_being_a/",
+                      "title": "So \"maze\" is a Latin word dating back to the 13th century that means \"delirium\" or \"delusion\". (Probably close to disorientation.) Corn, as it's called in North America and Australia, is a cereal grain that was farmed by Mexicans starting about 10,000 years ago. So \"mais\" (corn) and \"maze\" aren't linked etymologically at all. So I'm thinking the train of thought for a \"corn maze\" was some people who learned of the name for corn that almost the whole world uses and thought \"Hey, a homophone! Let's make a maze with our mais!\" Or something. They say the first corn maze was created in Pennsylvania in 1993, but they've been dated back to 1982 in newspapers. So, does anyone by any chance have any history of the origin of corn mazes? Preferably the train of thought in creating them. It's believed they started with two dudes from Penn, but that could be wrong.",
+                      "text": "Sep 27, 2022 — I’m guessing the play on words was coincidental, since calling it maize vs. corn in the US isn’t super-common. In the ..."
+                    }
+                  ]
+                },
+                {
+                  "type": "ai_overview_element",
+                  "title": "Synonyms and Related Terms",
+                  "text": "Maize maze : (Common term in the UK) Cornfield maze Agricultural labyrinth : (Contextual) Agritourism maze Fall maze adventure",
+                  "references": [
+                    {
+                      "type": "ai_overview_reference",
+                      "source": "Maize Adventure",
+                      "domain": "www.maizeadventure.com",
+                      "url": "https://www.maizeadventure.com/blog/history-of-corn-mazes/#:~:text=The%20Corn%20Maze%20Origin%20Story,to%20make%20unforgettable%20family%20memories!",
+                      "title": "The Amazing History of Corn Mazes, Including Fun Facts You Never Knew",
+                      "text": "Jan 17, 2023 — The Corn Maze Origin Story — Who Invented Them and Why? So, how did labyrinths with mythical origins become beloved fa..."
+                    },
+                    {
+                      "type": "ai_overview_reference",
+                      "source": "Visit Fallon",
+                      "domain": "visitfallonnevada.com",
+                      "url": "https://visitfallonnevada.com/the-history-of-corn-mazes/#:~:text=The%20Birth%20Of%20The%20Modern,staple%20of%20the%20fall%20season.",
+                      "title": "The History Of Corn Mazes - Visit Fallon",
+                      "text": "Oct 16, 2024 — The Birth Of The Modern Corn Maze The transformation from an European fad to a seasonally-beloved American attraction ..."
+                    },
+                    {
+                      "type": "ai_overview_reference",
+                      "source": "Reddit",
+                      "domain": "www.reddit.com",
+                      "url": "https://www.reddit.com/r/NoStupidQuestions/comments/xp6fix/a_weird_question_about_corn_mazes_being_a/",
+                      "title": "So \"maze\" is a Latin word dating back to the 13th century that means \"delirium\" or \"delusion\". (Probably close to disorientation.) Corn, as it's called in North America and Australia, is a cereal grain that was farmed by Mexicans starting about 10,000 years ago. So \"mais\" (corn) and \"maze\" aren't linked etymologically at all. So I'm thinking the train of thought for a \"corn maze\" was some people who learned of the name for corn that almost the whole world uses and thought \"Hey, a homophone! Let's make a maze with our mais!\" Or something. They say the first corn maze was created in Pennsylvania in 1993, but they've been dated back to 1982 in newspapers. So, does anyone by any chance have any history of the origin of corn mazes? Preferably the train of thought in creating them. It's believed they started with two dudes from Penn, but that could be wrong.",
+                      "text": "Sep 27, 2022 — I’m guessing the play on words was coincidental, since calling it maize vs. corn in the US isn’t super-common. In the ..."
+                    },
+                    {
+                      "type": "ai_overview_reference",
+                      "source": "Pope Farms",
+                      "domain": "popefarmscornmaize.com",
+                      "url": "https://popefarmscornmaize.com/exploring-the-history-and-tradition-of-corn-mazes/#:~:text=A%20Family-Friendly%20Tradition,like%20pumpkin%20picking%20and%20hayrides.",
+                      "title": "Exploring the History and Tradition of Corn Mazes - Pope Farms",
+                      "text": "Oct 1, 2024 — A Family-Friendly Tradition One of the reasons corn mazes have become so popular is their appeal to all ages. Families,"
+                    }
+                  ]
+                },
+                {
+                  "type": "ai_overview_element",
+                  "text": "The largest, modern, and early examples of corn mazes often feature elaborate, creative designs, including popular media characters, designed to provide a \"story-driven\" navigation experience.",
+                  "references": [
+                    {
+                      "type": "ai_overview_reference",
+                      "source": "Wikipedia",
+                      "domain": "en.wikipedia.org",
+                      "url": "https://en.wikipedia.org/wiki/Corn_maze#:~:text=(7.2%20acres).-,Designs,maze%2C%20using%20GPS%20mapping%20technology.",
+                      "title": "Corn maze - Wikipedia",
+                      "text": "Designs. Designs may be simple lines, or they may produce an overall image that can be seen from above. Many are based on artistic..."
+                    }
+                  ]
+                }
+              ],
+              "references": [
+                {
+                  "type": "ai_overview_reference",
+                  "source": "Wikipedia",
+                  "domain": "en.wikipedia.org",
+                  "url": "https://en.wikipedia.org/wiki/Corn_maze#:~:text=(7.2%20acres).-,Designs,maze%2C%20using%20GPS%20mapping%20technology.",
+                  "title": "Corn maze - Wikipedia",
+                  "text": "Designs. Designs may be simple lines, or they may produce an overall image that can be seen from above. Many are based on artistic..."
+                },
+                {
+                  "type": "ai_overview_reference",
+                  "source": "Maize Adventure",
+                  "domain": "www.maizeadventure.com",
+                  "url": "https://www.maizeadventure.com/blog/history-of-corn-mazes/#:~:text=The%20Corn%20Maze%20Origin%20Story,to%20make%20unforgettable%20family%20memories!",
+                  "title": "The Amazing History of Corn Mazes, Including Fun Facts You Never Knew",
+                  "text": "Jan 17, 2023 — The Corn Maze Origin Story — Who Invented Them and Why? So, how did labyrinths with mythical origins become beloved fa..."
+                },
+                {
+                  "type": "ai_overview_reference",
+                  "source": "Visit Fallon",
+                  "domain": "visitfallonnevada.com",
+                  "url": "https://visitfallonnevada.com/the-history-of-corn-mazes/#:~:text=The%20Birth%20Of%20The%20Modern,staple%20of%20the%20fall%20season.",
+                  "title": "The History Of Corn Mazes - Visit Fallon",
+                  "text": "Oct 16, 2024 — The Birth Of The Modern Corn Maze The transformation from an European fad to a seasonally-beloved American attraction ..."
+                },
+                {
+                  "type": "ai_overview_reference",
+                  "source": "Reddit",
+                  "domain": "www.reddit.com",
+                  "url": "https://www.reddit.com/r/NoStupidQuestions/comments/xp6fix/a_weird_question_about_corn_mazes_being_a/",
+                  "title": "So \"maze\" is a Latin word dating back to the 13th century that means \"delirium\" or \"delusion\". (Probably close to disorientation.) Corn, as it's called in North America and Australia, is a cereal grain that was farmed by Mexicans starting about 10,000 years ago. So \"mais\" (corn) and \"maze\" aren't linked etymologically at all. So I'm thinking the train of thought for a \"corn maze\" was some people who learned of the name for corn that almost the whole world uses and thought \"Hey, a homophone! Let's make a maze with our mais!\" Or something. They say the first corn maze was created in Pennsylvania in 1993, but they've been dated back to 1982 in newspapers. So, does anyone by any chance have any history of the origin of corn mazes? Preferably the train of thought in creating them. It's believed they started with two dudes from Penn, but that could be wrong.",
+                  "text": "Sep 27, 2022 — I’m guessing the play on words was coincidental, since calling it maize vs. corn in the US isn’t super-common. In the ..."
+                },
+                {
+                  "type": "ai_overview_reference",
+                  "source": "Facebook ·",
+                  "domain": "www.facebook.com",
+                  "url": "https://www.facebook.com/nbcnightlynews/videos/corn-maze-craze-nightly-news-kids-edition/613017607178031/",
+                  "title": "Corn maze craze | Nightly News: Kids Edition",
+                  "text": "Oct 20, 2022 — you will find these walking puzzles corn mazes for kids it's like a giant 3T Nintendo it's all the buzzwords. now imme..."
+                },
+                {
+                  "type": "ai_overview_reference",
+                  "source": "Pope Farms",
+                  "domain": "popefarmscornmaize.com",
+                  "url": "https://popefarmscornmaize.com/exploring-the-history-and-tradition-of-corn-mazes/#:~:text=A%20Family-Friendly%20Tradition,like%20pumpkin%20picking%20and%20hayrides.",
+                  "title": "Exploring the History and Tradition of Corn Mazes - Pope Farms",
+                  "text": "Oct 1, 2024 — A Family-Friendly Tradition One of the reasons corn mazes have become so popular is their appeal to all ages. Families,"
+                },
+                {
+                  "type": "ai_overview_reference",
+                  "source": "Mental Floss",
+                  "domain": "www.mentalfloss.com",
+                  "url": "https://www.mentalfloss.com/fun/how-corn-mazes-are-made#:~:text=The%20Origin%20of%20Corn%20Mazes,fuel%20an%20alternative%20revenue%20stream.",
+                  "title": "See How Elaborate Corn Mazes Are Made - Mental Floss",
+                  "text": "Oct 14, 2025 — The Origin of Corn Mazes Corn mazes are widely perceived as predecessors to hedge mazes, the foliage-bordered paths th..."
+                },
+                {
+                  "type": "ai_overview_reference",
+                  "source": "Facebook ·",
+                  "domain": "www.facebook.com",
+                  "url": "https://www.facebook.com/wyso91.3/posts/corn-mazes-didnt-exist-in-the-united-states-until-1993-but-theyve-become-hugely-/1391568512977774/#:~:text=Corn%20mazes%2C%20as%20a%20popular,plays%20a%20significant%20cultural%20role.",
+                  "title": "Corn mazes didn't exist in the United States until 1993, but they've ...",
+                  "text": "Oct 23, 2025 — Corn mazes, as a popular autumn attraction, started becoming common in the United States in the early 1990s. The first..."
+                },
+                {
+                  "type": "ai_overview_reference",
+                  "source": "Morning Ag Clips",
+                  "domain": "www.morningagclips.com",
+                  "url": "https://www.morningagclips.com/get-lost-a-brief-history-of-the-corn-maze/",
+                  "title": "Get lost! A brief history of the corn maze - Morning Ag Clips",
+                  "text": "The maze attracted many participants and media. Frantz had worked as a creative director and producer in other fields, including B..."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "product_considerations_element",
+          "title": "What are the different types of corn mazes?",
+          "consideration_category": "Types",
+          "expanded_element": [
+            {
+              "type": "product_considerations_ai_overview_expanded_element",
+              "items": [
+                {
+                  "type": "ai_overview_element",
+                  "text": "Corn mazes vary from simple daytime family fun to complex, multi-phase, and haunted nighttime adventures, often designed via GPS into intricate themed pictures. Common types include flashlights, haunted, \"Maize-O-Poly\" game mazes, and shorter children's, or kid-friendly mazes, with many offering multiple difficulty levels.",
+                  "references": [
+                    {
+                      "type": "ai_overview_reference",
+                      "source": "AARP",
+                      "domain": "www.aarp.org",
+                      "url": "https://www.aarp.org/travel/vacation-ideas/outdoors/corn-mazes/#:~:text=Barbie%20is%20the%20highest-grossing,gaze%20down%20at%20the%20maze.",
+                      "title": "5 Cool Corn Mazes for Fall Fun - AARP",
+                      "text": "Oct 6, 2023 — Barbie is the highest-grossing movie of 2023 and Happy Day Farm's 10-acre maze resembles Barbie and Ken (the farm calls..."
+                    },
+                    {
+                      "type": "ai_overview_reference",
+                      "source": "Instagram",
+                      "domain": "www.instagram.com",
+                      "url": "https://www.instagram.com/p/DN4FyyVEVvL/#:~:text=100%25%20freehand%20design.,largest%20freehand%20pieces%20of%20art!&text=Collins%20Farm%20CORN%20MAZE%20BATH,HAMPSHIRE%20FUN%20FOR%20ALL%20AGES!",
+                      "title": "Four years of corn maze designs. Each year we design and cut the ...",
+                      "text": "Aug 27, 2025 — 100% freehand design. NO GPS and NO measuring equipment are used, making the maze one of the world's largest freehand ..."
+                    },
+                    {
+                      "type": "ai_overview_reference",
+                      "source": "Facebook",
+                      "domain": "www.facebook.com",
+                      "url": "https://www.facebook.com/nepal.foods/posts/makai-oclock-4-different-types-of-maze-%EF%B8%8Fsahanavajracharya-i-remembered-you-here-/1137687399731493/#:~:text=%F0%9F%8C%BDA%20maze%20is%20a%20tour%20puzzle%20and%20can%20be,%E2%80%8D%E2%99%82%EF%B8%8F%F0%9F%A7%9F%E2%80%8D%E2%99%82%EF%B8%8F",
+                      "title": "Makai o’clock 🌽 4 different types of Maze ❤️ @sahanavajracharya I ...",
+                      "text": "Jan 19, 2019 — 🌽A maze is a tour puzzle and can be designed with various levels of difficulty and complexity. Entry and exit 🌀A labyr..."
+                    },
+                    {
+                      "type": "ai_overview_reference",
+                      "source": "Rhythms of Play",
+                      "domain": "rhythmsofplay.com",
+                      "url": "https://rhythmsofplay.com/get-outside-connect-visit-a-corn-maze/#:~:text=Types%20of%20Corn%20Mazes,or%2C%20the%20faint%20of%20heart!",
+                      "title": "Get Lost in a Corn Maze this Fall! - Rhythms of Play",
+                      "text": "Aug 30, 2019 — Types of Corn Mazes There are three main types of corn maze; daytime, nighttime, and haunted. Daytime mazes are perfec..."
+                    }
+                  ]
+                },
+                {
+                  "type": "ai_overview_element",
+                  "title": "Key Types of Corn Mazes:",
+                  "text": "Daytime/Family-Friendly: Simple, shorter, and bright, ideal for young children and families. Flashlight/Night Mazes: Occur after dark, turning the maze into a more challenging, spooky, or exciting activity for teens and adults. Haunted/Scary Mazes: Staffed with actors, props, or special effects to create a \"haunted house\" experience within the cornfield. Picture/Design Mazes: Expertly cut, high-level designs—visible from the air—that resemble celebrities, characters, or intricate images, often featuring 2–3 different \"phases\" for increasing difficulty. Maize-O-Poly/Game Mazes: Interactive mazes where visitors collect stamps or check-in at locations to complete a game board, sometimes featuring bridges for looking ahead. Mystery/Challenge Mazes: Intricate, large-scale mazes without maps, specifically designed to be difficult and take hours to navigate.",
+                  "references": [
+                    {
+                      "type": "ai_overview_reference",
+                      "source": "Rhythms of Play",
+                      "domain": "rhythmsofplay.com",
+                      "url": "https://rhythmsofplay.com/get-outside-connect-visit-a-corn-maze/#:~:text=Types%20of%20Corn%20Mazes,or%2C%20the%20faint%20of%20heart!",
+                      "title": "Get Lost in a Corn Maze this Fall! - Rhythms of Play",
+                      "text": "Aug 30, 2019 — Types of Corn Mazes There are three main types of corn maze; daytime, nighttime, and haunted. Daytime mazes are perfec..."
+                    },
+                    {
+                      "type": "ai_overview_reference",
+                      "source": "YouTube ·",
+                      "domain": "www.youtube.com",
+                      "url": "https://www.youtube.com/watch?v=SBEjoYI4thE&t=141",
+                      "title": "12 corn mazes to get lost in this fall",
+                      "text": "Oct 7, 2022 — at four we brought you six area corn mazes here's a look at another six with Sky drone 12. confreda Farm has two mazes ..."
+                    },
+                    {
+                      "type": "ai_overview_reference",
+                      "source": "Fodors Travel Guide",
+                      "domain": "www.fodors.com",
+                      "url": "https://www.fodors.com/news/photos/americas-scariest-corn-mazes#:~:text=Zombies%20of%20the%20Corn&text=Despite%20the%20location%2C%20your%20freedom,city%20from%20a%20zombie%20apocalypse.",
+                      "title": "Get Lost (If You Dare) in America's 12 Scariest Corn Mazes",
+                      "text": "Oct 6, 2022 — Zombies of the Corn ... Despite the location, your freedom is in doubt when you enter this cleverly named scary corn ma..."
+                    },
+                    {
+                      "type": "ai_overview_reference",
+                      "source": "AARP",
+                      "domain": "www.aarp.org",
+                      "url": "https://www.aarp.org/travel/vacation-ideas/outdoors/corn-mazes/#:~:text=Barbie%20is%20the%20highest-grossing,gaze%20down%20at%20the%20maze.",
+                      "title": "5 Cool Corn Mazes for Fall Fun - AARP",
+                      "text": "Oct 6, 2023 — Barbie is the highest-grossing movie of 2023 and Happy Day Farm's 10-acre maze resembles Barbie and Ken (the farm calls..."
+                    },
+                    {
+                      "type": "ai_overview_reference",
+                      "source": "Mental Floss",
+                      "domain": "www.mentalfloss.com",
+                      "url": "https://www.mentalfloss.com/fun/how-corn-mazes-are-made#:~:text=alternative%20revenue%20stream.-,Solving%20Corn%20Mazes,they%20continue%20to%20Phase%202.%E2%80%9D&text=Is%20there%20a%20strategy%20for,able%20to%20locate%20them%20quickly.",
+                      "title": "See How Elaborate Corn Mazes Are Made - Mental Floss",
+                      "text": "Oct 14, 2025 — Solving Corn Mazes Corn mazes are one-part marketing tool and one-part escape room. Some designers use tiers in their ..."
+                    },
+                    {
+                      "type": "ai_overview_reference",
+                      "source": "YouTube ·",
+                      "domain": "www.youtube.com",
+                      "url": "https://www.youtube.com/watch?v=sHCpRl2re4I&t=99",
+                      "title": "Largest corn maze in the country takes hours to wind through",
+                      "text": "Sep 16, 2024 — we get some families that just want to do the half hour maze and they'll go do something else maybe they'll come back ..."
+                    },
+                    {
+                      "type": "ai_overview_reference",
+                      "source": "KOA",
+                      "domain": "koa.com",
+                      "url": "https://koa.com/blog/best-corn-mazes/",
+                      "title": "North America's 9 Best Corn Mazes to Visit this Fall | KOA Camping Blog",
+                      "text": "Aug 21, 2023 — 5. Great Vermont Corn Maze, Vermont. Elsewhere in New England, an even more mega maze awaits in Danville, Vermont. The..."
+                    }
+                  ]
+                },
+                {
+                  "type": "ai_overview_element",
+                  "text": "Many farms offer multiple options on one site, including smaller straw bale mazes for toddlers and shorter \"scenic\" paths for those wanting a lower-stress activity.",
+                  "references": [
+                    {
+                      "type": "ai_overview_reference",
+                      "source": "The 200 Acres",
+                      "domain": "the200acres.com",
+                      "url": "https://the200acres.com/mazes-build-em-and-they-will-come/#:~:text=This%20allowed%20people%20passing%20by,being%20a%20part%20of%20it.",
+                      "title": "Mazes – Build 'em and they will come- The 200 Acres",
+                      "text": "This allowed people passing by on their way to pick pumpkins from the patch to see the fun going on inside the maze and gave the m..."
+                    },
+                    {
+                      "type": "ai_overview_reference",
+                      "source": "KOA",
+                      "domain": "koa.com",
+                      "url": "https://koa.com/blog/best-corn-mazes/",
+                      "title": "North America's 9 Best Corn Mazes to Visit this Fall | KOA Camping Blog",
+                      "text": "Aug 21, 2023 — 5. Great Vermont Corn Maze, Vermont. Elsewhere in New England, an even more mega maze awaits in Danville, Vermont. The..."
+                    }
+                  ]
+                }
+              ],
+              "references": [
+                {
+                  "type": "ai_overview_reference",
+                  "source": "AARP",
+                  "domain": "www.aarp.org",
+                  "url": "https://www.aarp.org/travel/vacation-ideas/outdoors/corn-mazes/#:~:text=Barbie%20is%20the%20highest-grossing,gaze%20down%20at%20the%20maze.",
+                  "title": "5 Cool Corn Mazes for Fall Fun - AARP",
+                  "text": "Oct 6, 2023 — Barbie is the highest-grossing movie of 2023 and Happy Day Farm's 10-acre maze resembles Barbie and Ken (the farm calls..."
+                },
+                {
+                  "type": "ai_overview_reference",
+                  "source": "Mental Floss",
+                  "domain": "www.mentalfloss.com",
+                  "url": "https://www.mentalfloss.com/fun/how-corn-mazes-are-made#:~:text=alternative%20revenue%20stream.-,Solving%20Corn%20Mazes,they%20continue%20to%20Phase%202.%E2%80%9D&text=Is%20there%20a%20strategy%20for,able%20to%20locate%20them%20quickly.",
+                  "title": "See How Elaborate Corn Mazes Are Made - Mental Floss",
+                  "text": "Oct 14, 2025 — Solving Corn Mazes Corn mazes are one-part marketing tool and one-part escape room. Some designers use tiers in their ..."
+                },
+                {
+                  "type": "ai_overview_reference",
+                  "source": "The 200 Acres",
+                  "domain": "the200acres.com",
+                  "url": "https://the200acres.com/mazes-build-em-and-they-will-come/#:~:text=This%20allowed%20people%20passing%20by,being%20a%20part%20of%20it.",
+                  "title": "Mazes – Build 'em and they will come- The 200 Acres",
+                  "text": "This allowed people passing by on their way to pick pumpkins from the patch to see the fun going on inside the maze and gave the m..."
+                },
+                {
+                  "type": "ai_overview_reference",
+                  "source": "Instagram",
+                  "domain": "www.instagram.com",
+                  "url": "https://www.instagram.com/p/DN4FyyVEVvL/#:~:text=100%25%20freehand%20design.,largest%20freehand%20pieces%20of%20art!&text=Collins%20Farm%20CORN%20MAZE%20BATH,HAMPSHIRE%20FUN%20FOR%20ALL%20AGES!",
+                  "title": "Four years of corn maze designs. Each year we design and cut the ...",
+                  "text": "Aug 27, 2025 — 100% freehand design. NO GPS and NO measuring equipment are used, making the maze one of the world's largest freehand ..."
+                },
+                {
+                  "type": "ai_overview_reference",
+                  "source": "Fodors Travel Guide",
+                  "domain": "www.fodors.com",
+                  "url": "https://www.fodors.com/news/photos/americas-scariest-corn-mazes#:~:text=Zombies%20of%20the%20Corn&text=Despite%20the%20location%2C%20your%20freedom,city%20from%20a%20zombie%20apocalypse.",
+                  "title": "Get Lost (If You Dare) in America's 12 Scariest Corn Mazes",
+                  "text": "Oct 6, 2022 — Zombies of the Corn ... Despite the location, your freedom is in doubt when you enter this cleverly named scary corn ma..."
+                },
+                {
+                  "type": "ai_overview_reference",
+                  "source": "YouTube ·",
+                  "domain": "www.youtube.com",
+                  "url": "https://www.youtube.com/watch?v=sHCpRl2re4I&t=99",
+                  "title": "Largest corn maze in the country takes hours to wind through",
+                  "text": "Sep 16, 2024 — we get some families that just want to do the half hour maze and they'll go do something else maybe they'll come back ..."
+                },
+                {
+                  "type": "ai_overview_reference",
+                  "source": "Facebook",
+                  "domain": "www.facebook.com",
+                  "url": "https://www.facebook.com/nepal.foods/posts/makai-oclock-4-different-types-of-maze-%EF%B8%8Fsahanavajracharya-i-remembered-you-here-/1137687399731493/#:~:text=%F0%9F%8C%BDA%20maze%20is%20a%20tour%20puzzle%20and%20can%20be,%E2%80%8D%E2%99%82%EF%B8%8F%F0%9F%A7%9F%E2%80%8D%E2%99%82%EF%B8%8F",
+                  "title": "Makai o’clock 🌽 4 different types of Maze ❤️ @sahanavajracharya I ...",
+                  "text": "Jan 19, 2019 — 🌽A maze is a tour puzzle and can be designed with various levels of difficulty and complexity. Entry and exit 🌀A labyr..."
+                },
+                {
+                  "type": "ai_overview_reference",
+                  "source": "YouTube ·",
+                  "domain": "www.youtube.com",
+                  "url": "https://www.youtube.com/watch?v=SBEjoYI4thE&t=141",
+                  "title": "12 corn mazes to get lost in this fall",
+                  "text": "Oct 7, 2022 — at four we brought you six area corn mazes here's a look at another six with Sky drone 12. confreda Farm has two mazes ..."
+                },
+                {
+                  "type": "ai_overview_reference",
+                  "source": "Rhythms of Play",
+                  "domain": "rhythmsofplay.com",
+                  "url": "https://rhythmsofplay.com/get-outside-connect-visit-a-corn-maze/#:~:text=Types%20of%20Corn%20Mazes,or%2C%20the%20faint%20of%20heart!",
+                  "title": "Get Lost in a Corn Maze this Fall! - Rhythms of Play",
+                  "text": "Aug 30, 2019 — Types of Corn Mazes There are three main types of corn maze; daytime, nighttime, and haunted. Daytime mazes are perfec..."
+                },
+                {
+                  "type": "ai_overview_reference",
+                  "source": "KOA",
+                  "domain": "koa.com",
+                  "url": "https://koa.com/blog/best-corn-mazes/",
+                  "title": "North America's 9 Best Corn Mazes to Visit this Fall | KOA Camping Blog",
+                  "text": "Aug 21, 2023 — 5. Great Vermont Corn Maze, Vermont. Elsewhere in New England, an even more mega maze awaits in Danville, Vermont. The..."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "organic",
+      "rank_group": 2,
+      "rank_absolute": 6,
+      "page": 1,
+      "domain": "www.cornmazesandmore.org",
+      "title": "Texas Corn Mazes Near You",
+      "url": "https://www.cornmazesandmore.org/TX.php",
+      "breadcrumb": "https://www.cornmazesandmore.org › ...",
+      "website_name": "cornmazesandmore.org",
+      "description": "Find local corn mazes and hay rides here! Just select your area in the list or map below. Corn mazes aren't open until late July or August -",
+      "highlighted": [
+        "Just select your area in the list or map below"
+      ]
+    },
+    {
+      "type": "organic",
+      "rank_group": 3,
+      "rank_absolute": 7,
+      "page": 1,
+      "domain": "dallas.kidsoutandabout.com",
+      "title": "Corn Mazes in and around Dallas",
+      "url": "https://dallas.kidsoutandabout.com/content/corn-mazes-and-around-dallas",
+      "breadcrumb": "https://dallas.kidsoutandabout.com › content › corn-maz...",
+      "website_name": "Kids Out and About Dallas",
+      "description": "Usually, the mazes take between 45 minutes and 2 hours to complete. There are a bunch of corn mazes in the Dallas area. Phone: (903) 567-2255",
+      "highlighted": [
+        "There are a bunch of corn mazes in the Dallas area"
+      ]
+    },
+    {
+      "type": "organic",
+      "rank_group": 4,
+      "rank_absolute": 8,
+      "page": 1,
+      "domain": "atldofarms.com",
+      "title": "At'l Do Farms - The Corn Maze",
+      "url": "https://atldofarms.com/",
+      "breadcrumb": "https://atldofarms.com",
+      "website_name": "At'l Do Farms",
+      "description": "The Corn Maze. Sept - Nov. Fri 6 - 9 pm. Sat 10 am - 9 pm. Sun 2 - 9 pm. with twists, turns, and surprises. General Admission Tuesday–Thursday $10 $10 online ...",
+      "highlighted": [
+        "Sept - Nov. Fri 6 - 9 pm"
+      ]
+    },
+    {
+      "type": "people_also_ask",
+      "rank_group": 1,
+      "rank_absolute": 9,
+      "page": 1,
+      "items": [
+        {
+          "type": "people_also_ask_element",
+          "title": "What is a corn maze?",
+          "expanded_element": [
+            {
+              "type": "people_also_ask_ai_overview_expanded_element",
+              "asynchronous_ai_overview": true
+            }
+          ]
+        },
+        {
+          "type": "people_also_ask_element",
+          "title": "Is it corn maze or corn maize?",
+          "expanded_element": [
+            {
+              "type": "people_also_ask_ai_overview_expanded_element",
+              "asynchronous_ai_overview": true
+            }
+          ]
+        },
+        {
+          "type": "people_also_ask_element",
+          "title": "How much does it cost to have a corn maze?",
+          "expanded_element": [
+            {
+              "type": "people_also_ask_ai_overview_expanded_element",
+              "asynchronous_ai_overview": true
+            }
+          ]
+        },
+        {
+          "type": "people_also_ask_element",
+          "title": "What is the trick to corn mazes?",
+          "expanded_element": [
+            {
+              "type": "people_also_ask_ai_overview_expanded_element",
+              "asynchronous_ai_overview": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "organic",
+      "rank_group": 5,
+      "rank_absolute": 10,
+      "page": 1,
+      "domain": "www.hauntedcornmazes.com",
+      "title": "Haunted Corn Mazes in Texas",
+      "url": "https://www.hauntedcornmazes.com/texas",
+      "breadcrumb": "https://www.hauntedcornmazes.com › texas",
+      "website_name": "hauntedcornmazes.com",
+      "description": "Haunted Drive is a drive-thru haunted house. You will experience frights, thrills and scares from all angles while driving through 13 acres of horror. A 10,000 ... Read more",
+      "highlighted": [
+        "Haunted Drive is a drive-thru haunted house"
+      ]
+    },
+    {
+      "type": "organic",
+      "rank_group": 6,
+      "rank_absolute": 11,
+      "page": 1,
+      "domain": "www.mazeplay.com",
+      "title": "Local Corn Mazes",
+      "url": "https://www.mazeplay.com/Locator.aspx",
+      "breadcrumb": "https://www.mazeplay.com › Locator",
+      "website_name": "MazePlay",
+      "description": "In search of the best local corn mazes? Use our locator tool to find the nearest to you. With hundreds of local corn mazes to choose from, go get lost!",
+      "highlighted": [
+        "Use our locator tool to find the nearest to you"
+      ]
+    },
+    {
+      "type": "organic",
+      "rank_group": 7,
+      "rank_absolute": 12,
+      "page": 1,
+      "domain": "www.texashauntedhouses.com",
+      "title": "Texas Mazes",
+      "url": "https://www.texashauntedhouses.com/texas-mazes.aspx",
+      "breadcrumb": "https://www.texashauntedhouses.com › texas-mazes",
+      "website_name": "Texas Haunted Houses",
+      "description": "Texas Haunted Mazes & Haunted Corn Mazes. Visiting Haunted Corn Mazes and Mazes are some of the most fun things to do during the Halloween season. Read more",
+      "highlighted": [
+        "Haunted Corn Mazes"
+      ]
+    },
+    {
+      "type": "organic",
+      "rank_group": 8,
+      "rank_absolute": 13,
+      "page": 1,
+      "domain": "texasoutside.com",
+      "title": "Fall Corn Mazes",
+      "url": "https://texasoutside.com/texas/fall-corn-mazes/",
+      "breadcrumb": "https://texasoutside.com › Texas Outside Articles",
+      "website_name": "Texas Outside",
+      "description": "Sep 2, 2022 — Fall fun which includes 50+ attractions, 8-acre corn maze which has miles of trails to get lost in, pumpkin patch!",
+      "pre_snippet": "09/02/2022 00:00:00",
+      "highlighted": [
+        "8-acre corn maze"
+      ],
+      "timestamp": "2022-09-02 00:00:00 +00:00"
+    },
+    {
+      "type": "organic",
+      "rank_group": 9,
+      "rank_absolute": 14,
+      "page": 1,
+      "domain": "authentictexas.com",
+      "title": "The Corn Maze at At'l Do Farms",
+      "url": "https://authentictexas.com/the-corn-maze-at-atl-do-farms/",
+      "breadcrumb": "https://authentictexas.com › the-corn-maze-at-atl-do-farms",
+      "website_name": "Authentic Texas",
+      "description": "Every fall, thousands of people come out to get lost in a ten-acre field of corn. They meander, back track, turn around, and “trial and error” their way through ... Read more",
+      "highlighted": [
+        "Every fall, thousands of people come out to get lost in a ten-acre field of corn"
+      ]
+    },
+    {
+      "type": "related_searches",
+      "rank_group": 1,
+      "rank_absolute": 15,
+      "page": 1,
+      "items": [
+        "Corn maze near me",
+        "Corn maze Lubbock",
+        "Corn maze for adults",
+        "Corn maze tickets",
+        "Haunted corn Maze",
+        "Corn maze texas",
+        "Corn maze Pumpkin Patch",
+        "Haunted corn maze amarillo tx"
+      ]
+    }
+  ]
+}

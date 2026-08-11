@@ -1,0 +1,32 @@
+{
+  "id": "08101922-2271-0265-0000-433e76dac686",
+  "status_code": 20000,
+  "status_message": "Ok.",
+  "call_params": { "target": "mulberrycreektx.com" },
+  "items": [
+    {
+      "target": "mulberrycreektx.com",
+      "first_seen": "2021-09-14 02:27:39 +00:00",
+      "backlinks": 21,
+      "backlinks_spam_score": 43,
+      "crawled_pages": 2,
+      "info": { "server": "openresty/1.31.1.1", "cms": "wordpress", "platform_type": ["cms", "blogs"], "ip_address": "66.223.49.89", "target_spam_score": 5 },
+      "internal_links_count": 4,
+      "external_links_count": 1,
+      "referring_domains": 18,
+      "referring_domains_nofollow": 13,
+      "referring_main_domains": 18,
+      "referring_main_domains_nofollow": 13,
+      "referring_ips": 10,
+      "referring_subnets": 10,
+      "referring_pages": 21,
+      "referring_pages_nofollow": 15,
+      "referring_links_tld": { "com": 6, "eu": 4, "party": 2, "pages.dev": 2, "website": 1, "fyi": 1, "us.com": 1, "wiki": 1, "cloud": 1, "world": 1 },
+      "referring_links_types": { "anchor": 20, "image": 1 },
+      "referring_links_attributes": { "nofollow": 15, "noopener": 5, "noreferrer": 2 },
+      "referring_links_platform_types": { "unknown": 20, "news": 1 },
+      "referring_links_semantic_locations": { "": 19, "section": 1, "main": 1 },
+      "referring_links_countries": { "": 16, "US": 3, "WW": 1, "DE": 1 }
+    }
+  ]
+}

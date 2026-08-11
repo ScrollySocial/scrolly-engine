@@ -1,0 +1,4 @@
+automation/node_modules/
+automation/.env
+.claude/settings.local.json
+*.log

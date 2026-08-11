@@ -1,0 +1,4174 @@
+{
+  "id": "08102021-2271-0544-0000-a8219dd89b5d",
+  "status_code": 20000,
+  "status_message": "Ok.",
+  "items": [
+    {
+      "type": "business_listing",
+      "title": "Jo's MowJo Landscape Solutions",
+      "category": "Landscaper",
+      "category_ids": [
+        "landscaper",
+        "lawn_care_service",
+        "plant_nursery"
+      ],
+      "additional_categories": [
+        "Lawn care service",
+        "Plant nursery"
+      ],
+      "cid": "11412191449641572472",
+      "feature_id": "0x86497f5133e80621:0x9e603fa8b8a2d878",
+      "address": "185 Lake Fork Dr, Emory, TX 75440",
+      "address_info": {
+        "address": "185 Lake Fork Dr",
+        "city": "Emory",
+        "zip": "75440",
+        "region": "Texas",
+        "country_code": "US"
+      },
+      "place_id": "ChIJIQboM1F_SYYReNiiuKg_YJ4",
+      "phone": "+1903-355-8671",
+      "main_image": "https://streetviewpixels-pa.googleapis.com/v1/thumbnail?panoid=aPGUq6zUb5qI3K77WKHX-w&cb_client=search.gws-prod.gps&w=408&h=240&yaw=292.7212&pitch=0&thumbfov=100",
+      "total_photos": 1,
+      "snippet": "185 Lake Fork Dr, Emory, TX 75440",
+      "latitude": 32.865,
+      "longitude": -95.736,
+      "people_also_search": [
+        {
+          "cid": "161546018802719682",
+          "feature_id": "0x0:0x23ded3f899d5bc2",
+          "title": "Hooten's Lawn & Tree Service LLC",
+          "rating": {
+            "rating_type": "Max5",
+            "value": 4.5,
+            "votes_count": 47
+          }
+        },
+        {
+          "cid": "16720354786850996598",
+          "feature_id": "0x0:0xe80aa21724c18176",
+          "title": "3 Wisemen’s",
+          "rating": {
+            "rating_type": "Max5",
+            "value": 5,
+            "votes_count": 1
+          }
+        },
+        {
+          "cid": "9560673322232032334",
+          "feature_id": "0x0:0x84ae55bb6131ac4e",
+          "title": "Commercal mowing",
+          "rating": {
+            "rating_type": "Max5"
+          }
+        },
+        {
+          "cid": "12971357327388150797",
+          "feature_id": "0x0:0xb40384c399a18c0d",
+          "title": "Smith’s Lawn Care",
+          "rating": {
+            "rating_type": "Max5",
+            "value": 5,
+            "votes_count": 3
+          }
+        },
+        {
+          "cid": "9026463256558883384",
+          "feature_id": "0x0:0x7d447081f14ed238",
+          "title": "L & K Lawn Services",
+          "rating": {
+            "rating_type": "Max5"
+          }
+        }
+      ],
+      "work_time": {
+        "work_hours": {
+          "timetable": {
+            "monday": [
+              {
+                "open": {
+                  "hour": 8
+                },
+                "close": {
+                  "hour": 18
+                }
+              }
+            ],
+            "tuesday": [
+              {
+                "open": {
+                  "hour": 8
+                },
+                "close": {
+                  "hour": 18
+                }
+              }
+            ],
+            "wednesday": [
+              {
+                "open": {
+                  "hour": 8
+                },
+                "close": {
+                  "hour": 18
+                }
+              }
+            ],
+            "thursday": [
+              {
+                "open": {
+                  "hour": 8
+                },
+                "close": {
+                  "hour": 18
+                }
+              }
+            ],
+            "friday": [
+              {
+                "open": {
+                  "hour": 8
+                },
+                "close": {
+                  "hour": 18
+                }
+              }
+            ],
+            "saturday": [
+              {
+                "open": {
+                  "hour": 9
+                },
+                "close": {
+                  "hour": 17
+                }
+              }
+            ]
+          },
+          "current_status": "close"
+        }
+      },
+      "contact_info": [
+        {
+          "type": "telephone",
+          "value": "+19033558671",
+          "source": "google_business"
+        }
+      ],
+      "check_url": "https://www.google.com/maps?cid=11412191449641572472&hl=en&gl=US",
+      "last_updated_time": "2026-06-28 02:27:40 +00:00",
+      "first_seen": "2024-07-15 07:06:29 +00:00"
+    },
+    {
+      "type": "business_listing",
+      "title": "David’s Lawn Service",
+      "description": "We are a oriented family, I have 10+ years experience in the lawn care business that has helped me provide the best service for my Clients. My Job is something that I really enjoy doing and Work hard to keep my Clients satisfied! If my clients are not happy and pleased my service, then my job is not done. I offer Complete Lawn Maintenance to make your home stand out in the best way possible!",
+      "category": "Lawn care service",
+      "category_ids": [
+        "lawn_care_service",
+        "landscaper"
+      ],
+      "additional_categories": [
+        "Landscaper"
+      ],
+      "cid": "11532122613756252683",
+      "feature_id": "0x864997524670041f:0xa00a546adb30d20b",
+      "address": "303 Phillips St, Mineola, TX 75773",
+      "address_info": {
+        "address": "303 Phillips St",
+        "city": "Mineola",
+        "zip": "75773",
+        "region": "Texas",
+        "country_code": "US"
+      },
+      "place_id": "ChIJHwRwRlKXSYYRC9Iw22pUCqA",
+      "phone": "+1903-497-7777",
+      "logo": "https://lh6.googleusercontent.com/-1-qfMbrMifo/AAAAAAAAAAI/AAAAAAAAAAA/WSMq6_OM250/s44-p-k-no-ns-nd/photo.jpg",
+      "main_image": "https://lh3.googleusercontent.com/gps-cs-s/APNQkAHC99t_bxWynUAfOCs4CzUw5cfFeYkMuASJsvzvDqZczGDCZho1ME29NOKbv7f40vRCYsrS3z4FVFi32aaomWza_D1OktLm3p5t-Ylee_8oUuF5vXgNCe7GUpYgZzQeghN9W6k1=w425-h240-k-no",
+      "total_photos": 34,
+      "snippet": "303 Phillips St, Mineola, TX 75773",
+      "latitude": 32.662,
+      "longitude": -95.496,
+      "is_claimed": true,
+      "people_also_search": [
+        {
+          "cid": "16675217017007287506",
+          "feature_id": "0x0:0xe76a45872344acd2",
+          "title": "Candelarios Lawn & Landscaping",
+          "rating": {
+            "rating_type": "Max5",
+            "value": 4.7,
+            "votes_count": 3
+          }
+        },
+        {
+          "cid": "11555904776209719889",
+          "feature_id": "0x0:0xa05ed22b0c386251",
+          "title": "Total Lawn & Irrigation",
+          "rating": {
+            "rating_type": "Max5",
+            "value": 5,
+            "votes_count": 2
+          }
+        },
+        {
+          "cid": "16609701178784470655",
+          "feature_id": "0x0:0xe68183385ad5d67f",
+          "title": "Walmart Garden Center",
+          "rating": {
+            "rating_type": "Max5",
+            "value": 4.5,
+            "votes_count": 6
+          }
+        },
+        {
+          "cid": "9418065838419987106",
+          "feature_id": "0x0:0x82b3b0fb2243caa2",
+          "title": "Lake Fork Mowing",
+          "rating": {
+            "rating_type": "Max5",
+            "value": 3.3,
+            "votes_count": 9
+          }
+        }
+      ],
+      "work_time": {
+        "work_hours": {
+          "timetable": {
+            "sunday": [
+              {
+                "close": {
+                  "hour": 24
+                }
+              }
+            ],
+            "monday": [
+              {
+                "close": {
+                  "hour": 24
+                }
+              }
+            ],
+            "tuesday": [
+              {
+                "close": {
+                  "hour": 24
+                }
+              }
+            ],
+            "wednesday": [
+              {
+                "close": {
+                  "hour": 24
+                }
+              }
+            ],
+            "thursday": [
+              {
+                "close": {
+                  "hour": 24
+                }
+              }
+            ],
+            "friday": [
+              {
+                "close": {
+                  "hour": 24
+                }
+              }
+            ],
+            "saturday": [
+              {
+                "close": {
+                  "hour": 24
+                }
+              }
+            ]
+          },
+          "current_status": "open"
+        }
+      },
+      "popular_times": {
+        "popular_times_by_days": {
+          "sunday": [
+            {
+              "time": {
+                "hour": 4
+              },
+              "popular_index": 37
+            },
+            {
+              "time": {
+                "hour": 5
+              },
+              "popular_index": 62
+            },
+            {
+              "time": {
+                "hour": 6
+              },
+              "popular_index": 62
+            },
+            {
+              "time": {
+                "hour": 7
+              },
+              "popular_index": 81
+            },
+            {
+              "time": {
+                "hour": 8
+              },
+              "popular_index": 56
+            },
+            {
+              "time": {
+                "hour": 9
+              },
+              "popular_index": 56
+            },
+            {
+              "time": {
+                "hour": 10
+              },
+              "popular_index": 68
+            },
+            {
+              "time": {
+                "hour": 11
+              },
+              "popular_index": 68
+            },
+            {
+              "time": {
+                "hour": 12
+              },
+              "popular_index": 62
+            },
+            {
+              "time": {
+                "hour": 13
+              },
+              "popular_index": 50
+            },
+            {
+              "time": {
+                "hour": 14
+              },
+              "popular_index": 50
+            },
+            {
+              "time": {
+                "hour": 15
+              },
+              "popular_index": 50
+            },
+            {
+              "time": {
+                "hour": 16
+              },
+              "popular_index": 31
+            },
+            {
+              "time": {
+                "hour": 17
+              },
+              "popular_index": 18
+            },
+            {
+              "time": {
+                "hour": 18
+              },
+              "popular_index": 12
+            },
+            {
+              "time": {
+                "hour": 19
+              },
+              "popular_index": 12
+            },
+            {
+              "time": {
+                "hour": 20
+              },
+              "popular_index": 18
+            },
+            {
+              "time": {
+                "hour": 21
+              },
+              "popular_index": 31
+            },
+            {
+              "time": {
+                "hour": 22
+              },
+              "popular_index": 50
+            },
+            {
+              "time": {
+                "hour": 23
+              },
+              "popular_index": 50
+            },
+            {
+              "popular_index": 50
+            },
+            {
+              "time": {
+                "hour": 1
+              },
+              "popular_index": 50
+            },
+            {
+              "time": {
+                "hour": 2
+              },
+              "popular_index": 50
+            },
+            {
+              "time": {
+                "hour": 3
+              },
+              "popular_index": 37
+            }
+          ],
+          "monday": [
+            {
+              "time": {
+                "hour": 4
+              },
+              "popular_index": 43
+            },
+            {
+              "time": {
+                "hour": 5
+              },
+              "popular_index": 37
+            },
+            {
+              "time": {
+                "hour": 6
+              },
+              "popular_index": 62
+            },
+            {
+              "time": {
+                "hour": 7
+              },
+              "popular_index": 50
+            },
+            {
+              "time": {
+                "hour": 8
+              },
+              "popular_index": 50
+            },
+            {
+              "time": {
+                "hour": 9
+              },
+              "popular_index": 43
+            },
+            {
+              "time": {
+                "hour": 10
+              },
+              "popular_index": 50
+            },
+            {
+              "time": {
+                "hour": 11
+              },
+              "popular_index": 37
+            },
+            {
+              "time": {
+                "hour": 12
+              },
+              "popular_index": 18
+            },
+            {
+              "time": {
+                "hour": 13
+              },
+              "popular_index": 12
+            },
+            {
+              "time": {
+                "hour": 14
+              },
+              "popular_index": 12
+            },
+            {
+              "time": {
+                "hour": 15
+              },
+              "popular_index": 12
+            },
+            {
+              "time": {
+                "hour": 16
+              },
+              "popular_index": 25
+            },
+            {
+              "time": {
+                "hour": 17
+              },
+              "popular_index": 43
+            },
+            {
+              "time": {
+                "hour": 18
+              },
+              "popular_index": 68
+            },
+            {
+              "time": {
+                "hour": 19
+              },
+              "popular_index": 62
+            },
+            {
+              "time": {
+                "hour": 20
+              },
+              "popular_index": 68
+            },
+            {
+              "time": {
+                "hour": 21
+              },
+              "popular_index": 56
+            },
+            {
+              "time": {
+                "hour": 22
+              },
+              "popular_index": 56
+            },
+            {
+              "time": {
+                "hour": 23
+              },
+              "popular_index": 56
+            },
+            {
+              "popular_index": 56
+            },
+            {
+              "time": {
+                "hour": 1
+              },
+              "popular_index": 62
+            },
+            {
+              "time": {
+                "hour": 2
+              },
+              "popular_index": 50
+            },
+            {
+              "time": {
+                "hour": 3
+              },
+              "popular_index": 37
+            }
+          ],
+          "tuesday": [
+            {
+              "time": {
+                "hour": 4
+              },
+              "popular_index": 31
+            },
+            {
+              "time": {
+                "hour": 5
+              },
+              "popular_index": 25
+            },
+            {
+              "time": {
+                "hour": 6
+              },
+              "popular_index": 18
+            },
+            {
+              "time": {
+                "hour": 7
+              },
+              "popular_index": 25
+            },
+            {
+              "time": {
+                "hour": 8
+              },
+              "popular_index": 43
+            },
+            {
+              "time": {
+                "hour": 9
+              },
+              "popular_index": 56
+            },
+            {
+              "time": {
+                "hour": 10
+              },
+              "popular_index": 62
+            },
+            {
+              "time": {
+                "hour": 11
+              },
+              "popular_index": 50
+            },
+            {
+              "time": {
+                "hour": 12
+              },
+              "popular_index": 62
+            },
+            {
+              "time": {
+                "hour": 13
+              },
+              "popular_index": 62
+            },
+            {
+              "time": {
+                "hour": 14
+              },
+              "popular_index": 68
+            },
+            {
+              "time": {
+                "hour": 15
+              },
+              "popular_index": 56
+            },
+            {
+              "time": {
+                "hour": 16
+              },
+              "popular_index": 37
+            },
+            {
+              "time": {
+                "hour": 17
+              },
+              "popular_index": 31
+            },
+            {
+              "time": {
+                "hour": 18
+              },
+              "popular_index": 37
+            },
+            {
+              "time": {
+                "hour": 19
+              },
+              "popular_index": 37
+            },
+            {
+              "time": {
+                "hour": 20
+              },
+              "popular_index": 56
+            },
+            {
+              "time": {
+                "hour": 21
+              },
+              "popular_index": 50
+            },
+            {
+              "time": {
+                "hour": 22
+              },
+              "popular_index": 56
+            },
+            {
+              "time": {
+                "hour": 23
+              },
+              "popular_index": 50
+            },
+            {
+              "popular_index": 50
+            },
+            {
+              "time": {
+                "hour": 1
+              },
+              "popular_index": 56
+            },
+            {
+              "time": {
+                "hour": 2
+              },
+              "popular_index": 50
+            },
+            {
+              "time": {
+                "hour": 3
+              },
+              "popular_index": 50
+            }
+          ],
+          "wednesday": [
+            {
+              "time": {
+                "hour": 4
+              },
+              "popular_index": 12
+            },
+            {
+              "time": {
+                "hour": 5
+              },
+              "popular_index": 18
+            },
+            {
+              "time": {
+                "hour": 6
+              },
+              "popular_index": 31
+            },
+            {
+              "time": {
+                "hour": 7
+              },
+              "popular_index": 31
+            },
+            {
+              "time": {
+                "hour": 8
+              },
+              "popular_index": 37
+            },
+            {
+              "time": {
+                "hour": 9
+              },
+              "popular_index": 25
+            },
+            {
+              "time": {
+                "hour": 10
+              },
+              "popular_index": 31
+            },
+            {
+              "time": {
+                "hour": 11
+              },
+              "popular_index": 25
+            },
+            {
+              "time": {
+                "hour": 12
+              },
+              "popular_index": 31
+            },
+            {
+              "time": {
+                "hour": 13
+              },
+              "popular_index": 31
+            },
+            {
+              "time": {
+                "hour": 14
+              },
+              "popular_index": 37
+            },
+            {
+              "time": {
+                "hour": 15
+              },
+              "popular_index": 56
+            },
+            {
+              "time": {
+                "hour": 16
+              },
+              "popular_index": 62
+            },
+            {
+              "time": {
+                "hour": 17
+              },
+              "popular_index": 68
+            },
+            {
+              "time": {
+                "hour": 18
+              },
+              "popular_index": 62
+            },
+            {
+              "time": {
+                "hour": 19
+              },
+              "popular_index": 75
+            },
+            {
+              "time": {
+                "hour": 20
+              },
+              "popular_index": 56
+            },
+            {
+              "time": {
+                "hour": 21
+              },
+              "popular_index": 43
+            },
+            {
+              "time": {
+                "hour": 22
+              },
+              "popular_index": 31
+            },
+            {
+              "time": {
+                "hour": 23
+              },
+              "popular_index": 25
+            },
+            {
+              "popular_index": 37
+            },
+            {
+              "time": {
+                "hour": 1
+              },
+              "popular_index": 37
+            },
+            {
+              "time": {
+                "hour": 2
+              },
+              "popular_index": 31
+            },
+            {
+              "time": {
+                "hour": 3
+              },
+              "popular_index": 12
+            }
+          ],
+          "thursday": [
+            {
+              "time": {
+                "hour": 4
+              },
+              "popular_index": 43
+            },
+            {
+              "time": {
+                "hour": 5
+              },
+              "popular_index": 43
+            },
+            {
+              "time": {
+                "hour": 6
+              },
+              "popular_index": 50
+            },
+            {
+              "time": {
+                "hour": 7
+              },
+              "popular_index": 50
+            },
+            {
+              "time": {
+                "hour": 8
+              },
+              "popular_index": 43
+            },
+            {
+              "time": {
+                "hour": 9
+              },
+              "popular_index": 56
+            },
+            {
+              "time": {
+                "hour": 10
+              },
+              "popular_index": 43
+            },
+            {
+              "time": {
+                "hour": 11
+              },
+              "popular_index": 43
+            },
+            {
+              "time": {
+                "hour": 12
+              },
+              "popular_index": 37
+            },
+            {
+              "time": {
+                "hour": 13
+              },
+              "popular_index": 43
+            },
+            {
+              "time": {
+                "hour": 14
+              },
+              "popular_index": 56
+            },
+            {
+              "time": {
+                "hour": 15
+              },
+              "popular_index": 50
+            },
+            {
+              "time": {
+                "hour": 16
+              },
+              "popular_index": 43
+            },
+            {
+              "time": {
+                "hour": 17
+              },
+              "popular_index": 56
+            },
+            {
+              "time": {
+                "hour": 18
+              },
+              "popular_index": 50
+            },
+            {
+              "time": {
+                "hour": 19
+              },
+              "popular_index": 50
+            },
+            {
+              "time": {
+                "hour": 20
+              },
+              "popular_index": 37
+            },
+            {
+              "time": {
+                "hour": 21
+              },
+              "popular_index": 56
+            },
+            {
+              "time": {
+                "hour": 22
+              },
+              "popular_index": 62
+            },
+            {
+              "time": {
+                "hour": 23
+              },
+              "popular_index": 62
+            },
+            {
+              "popular_index": 75
+            },
+            {
+              "time": {
+                "hour": 1
+              },
+              "popular_index": 68
+            },
+            {
+              "time": {
+                "hour": 2
+              },
+              "popular_index": 62
+            },
+            {
+              "time": {
+                "hour": 3
+              },
+              "popular_index": 43
+            }
+          ],
+          "friday": [
+            {
+              "time": {
+                "hour": 4
+              },
+              "popular_index": 31
+            },
+            {
+              "time": {
+                "hour": 5
+              },
+              "popular_index": 37
+            },
+            {
+              "time": {
+                "hour": 6
+              },
+              "popular_index": 37
+            },
+            {
+              "time": {
+                "hour": 7
+              },
+              "popular_index": 31
+            },
+            {
+              "time": {
+                "hour": 8
+              },
+              "popular_index": 31
+            },
+            {
+              "time": {
+                "hour": 9
+              },
+              "popular_index": 37
+            },
+            {
+              "time": {
+                "hour": 10
+              },
+              "popular_index": 50
+            },
+            {
+              "time": {
+                "hour": 11
+              },
+              "popular_index": 56
+            },
+            {
+              "time": {
+                "hour": 12
+              },
+              "popular_index": 68
+            },
+            {
+              "time": {
+                "hour": 13
+              },
+              "popular_index": 75
+            },
+            {
+              "time": {
+                "hour": 14
+              },
+              "popular_index": 68
+            },
+            {
+              "time": {
+                "hour": 15
+              },
+              "popular_index": 50
+            },
+            {
+              "time": {
+                "hour": 16
+              },
+              "popular_index": 50
+            },
+            {
+              "time": {
+                "hour": 17
+              },
+              "popular_index": 50
+            },
+            {
+              "time": {
+                "hour": 18
+              },
+              "popular_index": 62
+            },
+            {
+              "time": {
+                "hour": 19
+              },
+              "popular_index": 50
+            },
+            {
+              "time": {
+                "hour": 20
+              },
+              "popular_index": 50
+            },
+            {
+              "time": {
+                "hour": 21
+              },
+              "popular_index": 37
+            },
+            {
+              "time": {
+                "hour": 22
+              },
+              "popular_index": 43
+            },
+            {
+              "time": {
+                "hour": 23
+              },
+              "popular_index": 43
+            },
+            {
+              "popular_index": 50
+            },
+            {
+              "time": {
+                "hour": 1
+              },
+              "popular_index": 43
+            },
+            {
+              "time": {
+                "hour": 2
+              },
+              "popular_index": 25
+            },
+            {
+              "time": {
+                "hour": 3
+              },
+              "popular_index": 25
+            }
+          ],
+          "saturday": [
+            {
+              "time": {
+                "hour": 4
+              },
+              "popular_index": 31
+            },
+            {
+              "time": {
+                "hour": 5
+              },
+              "popular_index": 31
+            },
+            {
+              "time": {
+                "hour": 6
+              },
+              "popular_index": 18
+            },
+            {
+              "time": {
+                "hour": 7
+              },
+              "popular_index": 12
+            },
+            {
+              "time": {
+                "hour": 8
+              },
+              "popular_index": 25
+            },
+            {
+              "time": {
+                "hour": 9
+              },
+              "popular_index": 25
+            },
+            {
+              "time": {
+                "hour": 10
+              },
+              "popular_index": 25
+            },
+            {
+              "time": {
+                "hour": 11
+              },
+              "popular_index": 31
+            },
+            {
+              "time": {
+                "hour": 12
+              },
+              "popular_index": 31
+            },
+            {
+              "time": {
+                "hour": 13
+              },
+              "popular_index": 31
+            },
+            {
+              "time": {
+                "hour": 14
+              },
+              "popular_index": 50
+            },
+            {
+              "time": {
+                "hour": 15
+              },
+              "popular_index": 68
+            },
+            {
+              "time": {
+                "hour": 16
+              },
+              "popular_index": 75
+            },
+            {
+              "time": {
+                "hour": 17
+              },
+              "popular_index": 56
+            },
+            {
+              "time": {
+                "hour": 18
+              },
+              "popular_index": 50
+            },
+            {
+              "time": {
+                "hour": 19
+              },
+              "popular_index": 56
+            },
+            {
+              "time": {
+                "hour": 20
+              },
+              "popular_index": 100
+            },
+            {
+              "time": {
+                "hour": 21
+              },
+              "popular_index": 81
+            },
+            {
+              "time": {
+                "hour": 22
+              },
+              "popular_index": 50
+            },
+            {
+              "time": {
+                "hour": 23
+              },
+              "popular_index": 37
+            },
+            {
+              "popular_index": 31
+            },
+            {
+              "time": {
+                "hour": 1
+              },
+              "popular_index": 43
+            },
+            {
+              "time": {
+                "hour": 2
+              },
+              "popular_index": 37
+            },
+            {
+              "time": {
+                "hour": 3
+              },
+              "popular_index": 37
+            }
+          ]
+        }
+      },
+      "contact_info": [
+        {
+          "type": "telephone",
+          "value": "+19034977777",
+          "source": "google_business"
+        }
+      ],
+      "check_url": "https://www.google.com/maps?cid=11532122613756252683&hl=en&gl=US",
+      "last_updated_time": "2026-07-06 17:22:02 +00:00",
+      "first_seen": "2024-07-29 11:46:20 +00:00",
+      "services": [
+        {
+          "category": "Lawn Care Service",
+          "title": "Lawn mowing & maintenance"
+        },
+        {
+          "category": "Lawn Care Service",
+          "title": "Mulching"
+        },
+        {
+          "category": "Lawn Care Service",
+          "title": "Sod installation"
+        },
+        {
+          "category": "Lawn Care Service",
+          "title": "Yard work"
+        },
+        {
+          "category": "Lawn Care Service",
+          "title": "Fertilizer"
+        },
+        {
+          "category": "Lawn Care Service",
+          "title": "Complete Lawn Maintenance"
+        }
+      ]
+    },
+    {
+      "type": "business_listing",
+      "title": "Juan Rocha Tree Service",
+      "description": "Affordable Tree Trimming, Tree Cutting, and Tree Removal Services. Emergency Tree Services. Fast, 24/7 emergency tree services in Wood County, Texas. We respond quickly to remove fallen or hazardous trees after storms, protecting your home and property from further damage.",
+      "category": "Tree service",
+      "category_ids": [
+        "tree_service",
+        "forestry_service",
+        "landscaper"
+      ],
+      "additional_categories": [
+        "Forestry service",
+        "Landscaper"
+      ],
+      "cid": "1155460978102892929",
+      "feature_id": "0x86499423887c984b:0x100905a33fa5f981",
+      "address": "1364 FM 1801, Mineola, TX 75773",
+      "address_info": {
+        "address": "1364 FM 1801",
+        "city": "Mineola",
+        "zip": "75773",
+        "region": "Texas",
+        "country_code": "US"
+      },
+      "place_id": "ChIJS5h8iCOUSYYRgfmlP6MFCRA",
+      "phone": "+1903-530-2576",
+      "url": "https://www.juanrochatreeservice.com/",
+      "domain": "www.juanrochatreeservice.com",
+      "logo": "https://lh5.googleusercontent.com/-a6PqqDuLAqM/AAAAAAAAAAI/AAAAAAAAAAA/-GkjbVRUz8I/s44-p-k-no-ns-nd/photo.jpg",
+      "main_image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmXsrqwgw-FtEDZgwEOIaaY52TZNrP5kVyMkvJOp_0I2_xG0wHtoL1SKZMhb9xqJloAMtVSeiBk4nIvem0M1gkxrOAOyj9YsN2UkoDOi6-a0C6CRi1APpJymtHpYRbt3qb2dzzNpk6L9Uf_=w458-h240-k-no",
+      "total_photos": 19,
+      "snippet": "1364 FM 1801, Mineola, TX 75773",
+      "latitude": 32.661,
+      "longitude": -95.468,
+      "is_claimed": true,
+      "attributes": {
+        "available_attributes": {
+          "from_the_business": [
+            "is_owned_by_latinx"
+          ],
+          "service_options": [
+            "offers_online_estimates"
+          ]
+        }
+      },
+      "place_topics": {
+        "friendly staff": 2,
+        "nice guy": 2
+      },
+      "rating": {
+        "rating_type": "Max5",
+        "value": 4.8,
+        "votes_count": 17
+      },
+      "rating_distribution": {
+        "1": 1,
+        "2": 0,
+        "3": 0,
+        "4": 0,
+        "5": 16
+      },
+      "people_also_search": [
+        {
+          "cid": "5088342466486054740",
+          "feature_id": "0x0:0x469d6c839a6faf54",
+          "title": "Anderson Tree Service",
+          "rating": {
+            "rating_type": "Max5",
+            "value": 5,
+            "votes_count": 5
+          }
+        },
+        {
+          "cid": "16023537683982223148",
+          "feature_id": "0x0:0xde5f0aa092d8872c",
+          "title": "Triple J Tree Service",
+          "rating": {
+            "rating_type": "Max5",
+            "value": 4.9,
+            "votes_count": 56
+          }
+        },
+        {
+          "cid": "12896216248374651455",
+          "feature_id": "0x0:0xb2f89059cefdea3f",
+          "title": "J&A Services",
+          "rating": {
+            "rating_type": "Max5",
+            "value": 4.6,
+            "votes_count": 11
+          }
+        }
+      ],
+      "work_time": {
+        "work_hours": {
+          "timetable": {
+            "sunday": [
+              {
+                "close": {
+                  "hour": 24
+                }
+              }
+            ],
+            "monday": [
+              {
+                "close": {
+                  "hour": 24
+                }
+              }
+            ],
+            "tuesday": [
+              {
+                "close": {
+                  "hour": 24
+                }
+              }
+            ],
+            "wednesday": [
+              {
+                "close": {
+                  "hour": 24
+                }
+              }
+            ],
+            "thursday": [
+              {
+                "close": {
+                  "hour": 24
+                }
+              }
+            ],
+            "friday": [
+              {
+                "close": {
+                  "hour": 24
+                }
+              }
+            ],
+            "saturday": [
+              {
+                "close": {
+                  "hour": 24
+                }
+              }
+            ]
+          },
+          "current_status": "open"
+        }
+      },
+      "popular_times": {
+        "popular_times_by_days": {
+          "sunday": [
+            {
+              "time": {
+                "hour": 4
+              },
+              "popular_index": 33
+            },
+            {
+              "time": {
+                "hour": 5
+              },
+              "popular_index": 38
+            },
+            {
+              "time": {
+                "hour": 6
+              },
+              "popular_index": 38
+            },
+            {
+              "time": {
+                "hour": 7
+              },
+              "popular_index": 33
+            },
+            {
+              "time": {
+                "hour": 8
+              },
+              "popular_index": 27
+            },
+            {
+              "time": {
+                "hour": 9
+              },
+              "popular_index": 22
+            },
+            {
+              "time": {
+                "hour": 10
+              },
+              "popular_index": 33
+            },
+            {
+              "time": {
+                "hour": 11
+              },
+              "popular_index": 33
+            },
+            {
+              "time": {
+                "hour": 12
+              },
+              "popular_index": 38
+            },
+            {
+              "time": {
+                "hour": 13
+              },
+              "popular_index": 22
+            },
+            {
+              "time": {
+                "hour": 14
+              },
+              "popular_index": 16
+            },
+            {
+              "time": {
+                "hour": 15
+              },
+              "popular_index": 5
+            },
+            {
+              "time": {
+                "hour": 16
+              },
+              "popular_index": 16
+            },
+            {
+              "time": {
+                "hour": 17
+              },
+              "popular_index": 22
+            },
+            {
+              "time": {
+                "hour": 18
+              },
+              "popular_index": 33
+            },
+            {
+              "time": {
+                "hour": 19
+              },
+              "popular_index": 22
+            },
+            {
+              "time": {
+                "hour": 20
+              },
+              "popular_index": 22
+            },
+            {
+              "time": {
+                "hour": 21
+              },
+              "popular_index": 33
+            },
+            {
+              "time": {
+                "hour": 22
+              },
+              "popular_index": 61
+            },
+            {
+              "time": {
+                "hour": 23
+              },
+              "popular_index": 72
+            },
+            {
+              "popular_index": 50
+            },
+            {
+              "time": {
+                "hour": 1
+              },
+              "popular_index": 33
+            },
+            {
+              "time": {
+                "hour": 2
+              },
+              "popular_index": 27
+            },
+            {
+              "time": {
+                "hour": 3
+              },
+              "popular_index": 33
+            }
+          ],
+          "monday": [
+            {
+              "time": {
+                "hour": 4
+              },
+              "popular_index": 38
+            },
+            {
+              "time": {
+                "hour": 5
+              },
+              "popular_index": 33
+            },
+            {
+              "time": {
+                "hour": 6
+              },
+              "popular_index": 44
+            },
+            {
+              "time": {
+                "hour": 7
+              },
+              "popular_index": 50
+            },
+            {
+              "time": {
+                "hour": 8
+              },
+              "popular_index": 66
+            },
+            {
+              "time": {
+                "hour": 9
+              },
+              "popular_index": 72
+            },
+            {
+              "time": {
+                "hour": 10
+              },
+              "popular_index": 66
+            },
+            {
+              "time": {
+                "hour": 11
+              },
+              "popular_index": 72
+            },
+            {
+              "time": {
+                "hour": 12
+              },
+              "popular_index": 44
+            },
+            {
+              "time": {
+                "hour": 13
+              },
+              "popular_index": 50
+            },
+            {
+              "time": {
+                "hour": 14
+              },
+              "popular_index": 55
+            },
+            {
+              "time": {
+                "hour": 15
+              },
+              "popular_index": 66
+            },
+            {
+              "time": {
+                "hour": 16
+              },
+              "popular_index": 61
+            },
+            {
+              "time": {
+                "hour": 17
+              },
+              "popular_index": 38
+            },
+            {
+              "time": {
+                "hour": 18
+              },
+              "popular_index": 27
+            },
+            {
+              "time": {
+                "hour": 19
+              },
+              "popular_index": 44
+            },
+            {
+              "time": {
+                "hour": 20
+              },
+              "popular_index": 50
+            },
+            {
+              "time": {
+                "hour": 21
+              },
+              "popular_index": 44
+            },
+            {
+              "time": {
+                "hour": 22
+              },
+              "popular_index": 44
+            },
+            {
+              "time": {
+                "hour": 23
+              },
+              "popular_index": 33
+            },
+            {
+              "popular_index": 22
+            },
+            {
+              "time": {
+                "hour": 1
+              },
+              "popular_index": 33
+            },
+            {
+              "time": {
+                "hour": 2
+              },
+              "popular_index": 44
+            },
+            {
+              "time": {
+                "hour": 3
+              },
+              "popular_index": 50
+            }
+          ],
+          "tuesday": [
+            {
+              "time": {
+                "hour": 4
+              },
+              "popular_index": 61
+            },
+            {
+              "time": {
+                "hour": 5
+              },
+              "popular_index": 66
+            },
+            {
+              "time": {
+                "hour": 6
+              },
+              "popular_index": 72
+            },
+            {
+              "time": {
+                "hour": 7
+              },
+              "popular_index": 66
+            },
+            {
+              "time": {
+                "hour": 8
+              },
+              "popular_index": 33
+            },
+            {
+              "time": {
+                "hour": 9
+              },
+              "popular_index": 22
+            },
+            {
+              "time": {
+                "hour": 10
+              },
+              "popular_index": 22
+            },
+            {
+              "time": {
+                "hour": 11
+              },
+              "popular_index": 16
+            },
+            {
+              "time": {
+                "hour": 12
+              },
+              "popular_index": 33
+            },
+            {
+              "time": {
+                "hour": 13
+              },
+              "popular_index": 33
+            },
+            {
+              "time": {
+                "hour": 14
+              },
+              "popular_index": 61
+            },
+            {
+              "time": {
+                "hour": 15
+              },
+              "popular_index": 55
+            },
+            {
+              "time": {
+                "hour": 16
+              },
+              "popular_index": 38
+            },
+            {
+              "time": {
+                "hour": 17
+              },
+              "popular_index": 33
+            },
+            {
+              "time": {
+                "hour": 18
+              },
+              "popular_index": 44
+            },
+            {
+              "time": {
+                "hour": 19
+              },
+              "popular_index": 38
+            },
+            {
+              "time": {
+                "hour": 20
+              },
+              "popular_index": 33
+            },
+            {
+              "time": {
+                "hour": 21
+              },
+              "popular_index": 22
+            },
+            {
+              "time": {
+                "hour": 22
+              },
+              "popular_index": 11
+            },
+            {
+              "time": {
+                "hour": 23
+              },
+              "popular_index": 11
+            },
+            {
+              "popular_index": 11
+            },
+            {
+              "time": {
+                "hour": 1
+              },
+              "popular_index": 16
+            },
+            {
+              "time": {
+                "hour": 2
+              },
+              "popular_index": 38
+            },
+            {
+              "time": {
+                "hour": 3
+              },
+              "popular_index": 50
+            }
+          ],
+          "wednesday": [
+            {
+              "time": {
+                "hour": 4
+              },
+              "popular_index": 27
+            },
+            {
+              "time": {
+                "hour": 5
+              },
+              "popular_index": 27
+            },
+            {
+              "time": {
+                "hour": 6
+              },
+              "popular_index": 44
+            },
+            {
+              "time": {
+                "hour": 7
+              },
+              "popular_index": 44
+            },
+            {
+              "time": {
+                "hour": 8
+              },
+              "popular_index": 38
+            },
+            {
+              "time": {
+                "hour": 9
+              },
+              "popular_index": 22
+            },
+            {
+              "time": {
+                "hour": 10
+              },
+              "popular_index": 27
+            },
+            {
+              "time": {
+                "hour": 11
+              },
+              "popular_index": 44
+            },
+            {
+              "time": {
+                "hour": 12
+              },
+              "popular_index": 44
+            },
+            {
+              "time": {
+                "hour": 13
+              },
+              "popular_index": 44
+            },
+            {
+              "time": {
+                "hour": 14
+              },
+              "popular_index": 22
+            },
+            {
+              "time": {
+                "hour": 15
+              },
+              "popular_index": 22
+            },
+            {
+              "time": {
+                "hour": 16
+              },
+              "popular_index": 44
+            },
+            {
+              "time": {
+                "hour": 17
+              },
+              "popular_index": 66
+            },
+            {
+              "time": {
+                "hour": 18
+              },
+              "popular_index": 83
+            },
+            {
+              "time": {
+                "hour": 19
+              },
+              "popular_index": 77
+            },
+            {
+              "time": {
+                "hour": 20
+              },
+              "popular_index": 55
+            },
+            {
+              "time": {
+                "hour": 21
+              },
+              "popular_index": 61
+            },
+            {
+              "time": {
+                "hour": 22
+              },
+              "popular_index": 50
+            },
+            {
+              "time": {
+                "hour": 23
+              },
+              "popular_index": 50
+            },
+            {
+              "popular_index": 44
+            },
+            {
+              "time": {
+                "hour": 1
+              },
+              "popular_index": 33
+            },
+            {
+              "time": {
+                "hour": 2
+              },
+              "popular_index": 33
+            },
+            {
+              "time": {
+                "hour": 3
+              },
+              "popular_index": 33
+            }
+          ],
+          "thursday": [
+            {
+              "time": {
+                "hour": 4
+              },
+              "popular_index": 66
+            },
+            {
+              "time": {
+                "hour": 5
+              },
+              "popular_index": 88
+            },
+            {
+              "time": {
+                "hour": 6
+              },
+              "popular_index": 100
+            },
+            {
+              "time": {
+                "hour": 7
+              },
+              "popular_index": 83
+            },
+            {
+              "time": {
+                "hour": 8
+              },
+              "popular_index": 61
+            },
+            {
+              "time": {
+                "hour": 9
+              },
+              "popular_index": 61
+            },
+            {
+              "time": {
+                "hour": 10
+              },
+              "popular_index": 66
+            },
+            {
+              "time": {
+                "hour": 11
+              },
+              "popular_index": 38
+            },
+            {
+              "time": {
+                "hour": 12
+              },
+              "popular_index": 27
+            },
+            {
+              "time": {
+                "hour": 13
+              },
+              "popular_index": 11
+            },
+            {
+              "time": {
+                "hour": 14
+              },
+              "popular_index": 22
+            },
+            {
+              "time": {
+                "hour": 15
+              },
+              "popular_index": 33
+            },
+            {
+              "time": {
+                "hour": 16
+              },
+              "popular_index": 38
+            },
+            {
+              "time": {
+                "hour": 17
+              },
+              "popular_index": 38
+            },
+            {
+              "time": {
+                "hour": 18
+              },
+              "popular_index": 33
+            },
+            {
+              "time": {
+                "hour": 19
+              },
+              "popular_index": 33
+            },
+            {
+              "time": {
+                "hour": 20
+              },
+              "popular_index": 38
+            },
+            {
+              "time": {
+                "hour": 21
+              },
+              "popular_index": 50
+            },
+            {
+              "time": {
+                "hour": 22
+              },
+              "popular_index": 50
+            },
+            {
+              "time": {
+                "hour": 23
+              },
+              "popular_index": 38
+            },
+            {
+              "popular_index": 27
+            },
+            {
+              "time": {
+                "hour": 1
+              },
+              "popular_index": 33
+            },
+            {
+              "time": {
+                "hour": 2
+              },
+              "popular_index": 44
+            },
+            {
+              "time": {
+                "hour": 3
+              },
+              "popular_index": 55
+            }
+          ],
+          "friday": [
+            {
+              "time": {
+                "hour": 4
+              },
+              "popular_index": 44
+            },
+            {
+              "time": {
+                "hour": 5
+              },
+              "popular_index": 66
+            },
+            {
+              "time": {
+                "hour": 6
+              },
+              "popular_index": 55
+            },
+            {
+              "time": {
+                "hour": 7
+              },
+              "popular_index": 44
+            },
+            {
+              "time": {
+                "hour": 8
+              },
+              "popular_index": 27
+            },
+            {
+              "time": {
+                "hour": 9
+              },
+              "popular_index": 33
+            },
+            {
+              "time": {
+                "hour": 10
+              },
+              "popular_index": 44
+            },
+            {
+              "time": {
+                "hour": 11
+              },
+              "popular_index": 50
+            },
+            {
+              "time": {
+                "hour": 12
+              },
+              "popular_index": 55
+            },
+            {
+              "time": {
+                "hour": 13
+              },
+              "popular_index": 55
+            },
+            {
+              "time": {
+                "hour": 14
+              },
+              "popular_index": 66
+            },
+            {
+              "time": {
+                "hour": 15
+              },
+              "popular_index": 44
+            },
+            {
+              "time": {
+                "hour": 16
+              },
+              "popular_index": 38
+            },
+            {
+              "time": {
+                "hour": 17
+              },
+              "popular_index": 33
+            },
+            {
+              "time": {
+                "hour": 18
+              },
+              "popular_index": 44
+            },
+            {
+              "time": {
+                "hour": 19
+              },
+              "popular_index": 38
+            },
+            {
+              "time": {
+                "hour": 20
+              },
+              "popular_index": 44
+            },
+            {
+              "time": {
+                "hour": 21
+              },
+              "popular_index": 55
+            },
+            {
+              "time": {
+                "hour": 22
+              },
+              "popular_index": 50
+            },
+            {
+              "time": {
+                "hour": 23
+              },
+              "popular_index": 44
+            },
+            {
+              "popular_index": 50
+            },
+            {
+              "time": {
+                "hour": 1
+              },
+              "popular_index": 61
+            },
+            {
+              "time": {
+                "hour": 2
+              },
+              "popular_index": 44
+            },
+            {
+              "time": {
+                "hour": 3
+              },
+              "popular_index": 50
+            }
+          ],
+          "saturday": [
+            {
+              "time": {
+                "hour": 4
+              },
+              "popular_index": 77
+            },
+            {
+              "time": {
+                "hour": 5
+              },
+              "popular_index": 72
+            },
+            {
+              "time": {
+                "hour": 6
+              },
+              "popular_index": 61
+            },
+            {
+              "time": {
+                "hour": 7
+              },
+              "popular_index": 50
+            },
+            {
+              "time": {
+                "hour": 8
+              },
+              "popular_index": 33
+            },
+            {
+              "time": {
+                "hour": 9
+              },
+              "popular_index": 27
+            },
+            {
+              "time": {
+                "hour": 10
+              },
+              "popular_index": 22
+            },
+            {
+              "time": {
+                "hour": 11
+              },
+              "popular_index": 22
+            },
+            {
+              "time": {
+                "hour": 12
+              },
+              "popular_index": 33
+            },
+            {
+              "time": {
+                "hour": 13
+              },
+              "popular_index": 44
+            },
+            {
+              "time": {
+                "hour": 14
+              },
+              "popular_index": 33
+            },
+            {
+              "time": {
+                "hour": 15
+              },
+              "popular_index": 27
+            },
+            {
+              "time": {
+                "hour": 16
+              },
+              "popular_index": 33
+            },
+            {
+              "time": {
+                "hour": 17
+              },
+              "popular_index": 33
+            },
+            {
+              "time": {
+                "hour": 18
+              },
+              "popular_index": 44
+            },
+            {
+              "time": {
+                "hour": 19
+              },
+              "popular_index": 50
+            },
+            {
+              "time": {
+                "hour": 20
+              },
+              "popular_index": 44
+            },
+            {
+              "time": {
+                "hour": 21
+              },
+              "popular_index": 38
+            },
+            {
+              "time": {
+                "hour": 22
+              },
+              "popular_index": 44
+            },
+            {
+              "time": {
+                "hour": 23
+              },
+              "popular_index": 38
+            },
+            {
+              "popular_index": 44
+            },
+            {
+              "time": {
+                "hour": 1
+              },
+              "popular_index": 33
+            },
+            {
+              "time": {
+                "hour": 2
+              },
+              "popular_index": 55
+            },
+            {
+              "time": {
+                "hour": 3
+              },
+              "popular_index": 72
+            }
+          ]
+        }
+      },
+      "contact_info": [
+        {
+          "type": "telephone",
+          "value": "+19035302576",
+          "source": "google_business"
+        }
+      ],
+      "check_url": "https://www.google.com/maps?cid=1155460978102892929&hl=en&gl=US",
+      "last_updated_time": "2026-07-13 02:20:56 +00:00",
+      "first_seen": "2026-07-13 02:20:56 +00:00",
+      "services": [
+        {
+          "category": "Tree Service",
+          "title": "Tree removal"
+        },
+        {
+          "category": "Tree Service",
+          "title": "24 Hour Emergency Services"
+        },
+        {
+          "category": "Tree Service",
+          "title": "Fire Wood"
+        },
+        {
+          "category": "Tree Service",
+          "title": "Firewood"
+        },
+        {
+          "category": "Tree Service",
+          "title": "Free Estimate"
+        },
+        {
+          "category": "Tree Service",
+          "title": "Lawn Services"
+        }
+      ]
+    },
+    {
+      "type": "business_listing",
+      "title": "Lawn Solutions",
+      "description": "Dependable Lawn mowing, Edging, Cleanups, Weeding, Tree trimming, Power washing, Painting, and more!",
+      "category": "Landscaper",
+      "category_ids": [
+        "landscaper",
+        "lawn_care_service"
+      ],
+      "additional_categories": [
+        "Lawn care service"
+      ],
+      "cid": "11746348262998526679",
+      "feature_id": "0x864987a11df4401f:0xa3036982a80dcad7",
+      "address": "111 Tullis Ln, Yantis, TX 75497",
+      "address_info": {
+        "address": "111 Tullis Ln",
+        "city": "Yantis",
+        "zip": "75497",
+        "region": "Texas",
+        "country_code": "US"
+      },
+      "place_id": "ChIJH0D0HaGHSYYR18oNqIJpA6M",
+      "phone": "+1903-335-1891",
+      "logo": "https://lh3.googleusercontent.com/-83gB5Rel6Ns/AAAAAAAAAAI/AAAAAAAAAAA/sE4Rehu_wMU/s44-p-k-no-ns-nd/photo.jpg",
+      "main_image": "https://streetviewpixels-pa.googleapis.com/v1/thumbnail?panoid=bPFM8D9-7Q8iVv4ejhInDA&cb_client=search.gws-prod.gps&w=408&h=240&yaw=185.37027&pitch=0&thumbfov=100",
+      "total_photos": 1,
+      "snippet": "111 Tullis Ln, Yantis, TX 75497",
+      "latitude": 32.929,
+      "longitude": -95.572,
+      "is_claimed": true,
+      "people_also_search": [
+        {
+          "cid": "1352502457646969431",
+          "feature_id": "0x0:0x12c50dd1c1e3f257",
+          "title": "A & J Landscape and Sprinklers",
+          "rating": {
+            "rating_type": "Max5",
+            "value": 4,
+            "votes_count": 4
+          }
+        },
+        {
+          "cid": "11613743800119736302",
+          "feature_id": "0x0:0xa12c4e74368837ee",
+          "title": "Four Seasons Landscaping",
+          "rating": {
+            "rating_type": "Max5",
+            "value": 4.5,
+            "votes_count": 42
+          }
+        },
+        {
+          "cid": "13608794698853951275",
+          "feature_id": "0x0:0xbcdc26ad1668a72b",
+          "title": "Texas lawnmowing service",
+          "rating": {
+            "rating_type": "Max5",
+            "value": 5,
+            "votes_count": 1
+          }
+        },
+        {
+          "cid": "9418065838419987106",
+          "feature_id": "0x0:0x82b3b0fb2243caa2",
+          "title": "Lake Fork Mowing",
+          "rating": {
+            "rating_type": "Max5",
+            "value": 3.3,
+            "votes_count": 9
+          }
+        },
+        {
+          "cid": "10552498576557992830",
+          "feature_id": "0x0:0x9272018bbc8deb7e",
+          "title": "Lawn Care",
+          "rating": {
+            "rating_type": "Max5"
+          }
+        }
+      ],
+      "work_time": {
+        "work_hours": {
+          "timetable": {
+            "sunday": [
+              {
+                "open": {
+                  "hour": 7
+                },
+                "close": {
+                  "hour": 12
+                }
+              }
+            ],
+            "monday": [
+              {
+                "open": {
+                  "hour": 7
+                },
+                "close": {
+                  "hour": 19
+                }
+              }
+            ],
+            "tuesday": [
+              {
+                "open": {
+                  "hour": 7
+                },
+                "close": {
+                  "hour": 19
+                }
+              }
+            ],
+            "wednesday": [
+              {
+                "open": {
+                  "hour": 7
+                },
+                "close": {
+                  "hour": 19
+                }
+              }
+            ],
+            "thursday": [
+              {
+                "open": {
+                  "hour": 7
+                },
+                "close": {
+                  "hour": 19
+                }
+              }
+            ],
+            "friday": [
+              {
+                "open": {
+                  "hour": 7
+                },
+                "close": {
+                  "hour": 14
+                }
+              }
+            ],
+            "saturday": [
+              {
+                "open": {
+                  "hour": 7
+                },
+                "close": {
+                  "hour": 12
+                }
+              }
+            ]
+          },
+          "current_status": "open"
+        }
+      },
+      "contact_info": [
+        {
+          "type": "telephone",
+          "value": "+19033351891",
+          "source": "google_business"
+        }
+      ],
+      "check_url": "https://www.google.com/maps?cid=11746348262998526679&hl=en&gl=US",
+      "last_updated_time": "2026-07-06 20:56:59 +00:00",
+      "first_seen": "2024-07-29 16:28:01 +00:00",
+      "services": [
+        {
+          "category": "Lawn Care Service",
+          "title": "Lawn mowing & maintenance",
+          "price": {
+            "current": 35,
+            "currency": "USD",
+            "displayed_price": "From $35.00"
+          }
+        },
+        {
+          "category": "Lawn Care Service",
+          "title": "Edging"
+        },
+        {
+          "category": "Lawn Care Service",
+          "title": "Tree Trimming"
+        },
+        {
+          "category": "Lawn Care Service",
+          "title": "Flower bed maintenance",
+          "price": {
+            "current": 45,
+            "currency": "USD",
+            "displayed_price": "From $45.00"
+          }
+        },
+        {
+          "category": "Lawn Care Service",
+          "title": "Painting"
+        },
+        {
+          "category": "Lawn Care Service",
+          "title": "Power Washing"
+        },
+        {
+          "category": "Lawn Care Service",
+          "title": "Any other home maintenance"
+        }
+      ]
+    },
+    {
+      "type": "business_listing",
+      "title": "A & J Landscape and Sprinklers",
+      "category": "Landscaper",
+      "category_ids": [
+        "landscaper",
+        "general_contractor",
+        "lawn_care_service"
+      ],
+      "additional_categories": [
+        "General contractor",
+        "Lawn care service"
+      ],
+      "cid": "1352502457646969431",
+      "feature_id": "0x864986df6a4304f9:0x12c50dd1c1e3f257",
+      "address": "133 Co Rd 1943, Yantis, TX 75497",
+      "address_info": {
+        "address": "133 Co Rd 1943",
+        "city": "Yantis",
+        "zip": "75497",
+        "region": "Texas",
+        "country_code": "US"
+      },
+      "place_id": "ChIJ-QRDat-GSYYRV_LjwdENxRI",
+      "phone": "+1903-438-6431",
+      "logo": "https://lh5.googleusercontent.com/-FuZ-0RsBgr4/AAAAAAAAAAI/AAAAAAAAAAA/9RavhuLeib0/s44-p-k-no-ns-nd/photo.jpg",
+      "main_image": "https://lh3.googleusercontent.com/gps-cs-s/APNQkAFSpFa7DDhn7HnsSxHh4rPS7vebvXGXGyHFWVK8QWOGMhEq8G6jgjCYEKWmPhBPRtkROyrgGJSCvbNJsPx5RzdwEUXFY35yvpvnoWzNwF4D4VIdPASS7OXzvSsqRuOC2aLq7p23=w408-h544-k-no",
+      "total_photos": 7,
+      "snippet": "133 Co Rd 1943, Yantis, TX 75497",
+      "latitude": 32.903,
+      "longitude": -95.629,
+      "is_claimed": true,
+      "rating": {
+        "rating_type": "Max5",
+        "value": 4,
+        "votes_count": 4
+      },
+      "rating_distribution": {
+        "1": 1,
+        "2": 0,
+        "3": 0,
+        "4": 0,
+        "5": 3
+      },
+      "people_also_search": [
+        {
+          "cid": "4760863439924920690",
+          "feature_id": "0x0:0x4211fc1310de8172",
+          "title": "Hernandez Irrigation Inc.",
+          "rating": {
+            "rating_type": "Max5",
+            "value": 5,
+            "votes_count": 8
+          }
+        },
+        {
+          "cid": "11746348262998526679",
+          "feature_id": "0x0:0xa3036982a80dcad7",
+          "title": "Lawn Solutions",
+          "rating": {
+            "rating_type": "Max5"
+          }
+        },
+        {
+          "cid": "11412191449641572472",
+          "feature_id": "0x0:0x9e603fa8b8a2d878",
+          "title": "Jo's MowJo Landscape Solutions",
+          "rating": {
+            "rating_type": "Max5"
+          }
+        },
+        {
+          "cid": "9026463256558883384",
+          "feature_id": "0x0:0x7d447081f14ed238",
+          "title": "L & K Lawn Services",
+          "rating": {
+            "rating_type": "Max5"
+          }
+        },
+        {
+          "cid": "15563306843237798922",
+          "feature_id": "0x0:0xd7fbf91db198540a",
+          "title": "A+ Lawn Sprinklers",
+          "rating": {
+            "rating_type": "Max5",
+            "value": 3,
+            "votes_count": 2
+          }
+        }
+      ],
+      "work_time": {
+        "work_hours": {
+          "timetable": {
+            "sunday": [
+              {
+                "open": {
+                  "hour": 10
+                },
+                "close": {
+                  "hour": 17
+                }
+              }
+            ],
+            "monday": [
+              {
+                "open": {
+                  "hour": 7
+                },
+                "close": {
+                  "hour": 19
+                }
+              }
+            ],
+            "tuesday": [
+              {
+                "open": {
+                  "hour": 7
+                },
+                "close": {
+                  "hour": 19
+                }
+              }
+            ],
+            "thursday": [
+              {
+                "open": {
+                  "hour": 7
+                },
+                "close": {
+                  "hour": 19
+                }
+              }
+            ],
+            "friday": [
+              {
+                "open": {
+                  "hour": 7
+                },
+                "close": {
+                  "hour": 19
+                }
+              }
+            ],
+            "saturday": [
+              {
+                "open": {
+                  "hour": 7
+                },
+                "close": {
+                  "hour": 19
+                }
+              }
+            ]
+          },
+          "current_status": "open"
+        }
+      },
+      "contact_info": [
+        {
+          "type": "telephone",
+          "value": "+19034386431",
+          "source": "google_business"
+        }
+      ],
+      "check_url": "https://www.google.com/maps?cid=1352502457646969431&hl=en&gl=US",
+      "last_updated_time": "2026-06-30 21:28:10 +00:00",
+      "first_seen": "2024-07-19 21:08:10 +00:00"
+    },
+    {
+      "type": "business_listing",
+      "title": "Keener's Lawn and Landscape",
+      "description": "Your landscape is the first thing your visitors see when they arrive. Make a great first impression with Keener's Lawn and Landscape on your side. We provide professional landscaping services to clients in Quitman, TX and surrounding areas. You can trust our family-owned business to treat your property like our own from start to finish.",
+      "category": "Landscaper",
+      "category_ids": [
+        "landscaper",
+        "establishment_service",
+        "lawn_mower_repair_service"
+      ],
+      "additional_categories": [
+        "Service establishment",
+        "Lawn mower repair service"
+      ],
+      "cid": "15800466879361137847",
+      "feature_id": "0x4188d7131669f4f9:0xdb4688e98da53cb7",
+      "place_id": "ChIJ-fRpFhPXiEERtzyljemIRts",
+      "phone": "+1903-841-8747",
+      "url": "https://keenerslawnandlandscape.com/",
+      "domain": "keenerslawnandlandscape.com",
+      "logo": "https://lh4.googleusercontent.com/-FBtmu2tWPb4/AAAAAAAAAAI/AAAAAAAAAAA/vJGCMVRXVzk/s44-p-k-no-ns-nd/photo.jpg",
+      "main_image": "https://lh3.googleusercontent.com/gps-cs-s/APNQkAEPkeEw8Q3xnR-xHNbBZ9MemqBy1hC6RLBKjbIeL8OvSQjT47Ytfk9DCqagtX7LM4k386skijjfOdNDRbM1IeukKrIf9XlhqSIVIX5HPs6_azDCf9SyArAxaDKvSOTEL0e70xms=w408-h408-k-no",
+      "total_photos": 86,
+      "latitude": 32.604,
+      "longitude": -95.473,
+      "is_claimed": true,
+      "place_topics": {
+        "flower bed cleaning": 2,
+        "lights": 7,
+        "affordability": 3,
+        "friendly crew": 2,
+        "weeds": 2,
+        "polite staff": 2,
+        "flower beds": 2,
+        "promptness": 3,
+        "yard work": 2,
+        "fertilizing": 2
+      },
+      "rating": {
+        "rating_type": "Max5",
+        "value": 5,
+        "votes_count": 28
+      },
+      "rating_distribution": {
+        "1": 0,
+        "2": 0,
+        "3": 0,
+        "4": 0,
+        "5": 28
+      },
+      "work_time": {
+        "work_hours": {
+          "timetable": {
+            "monday": [
+              {
+                "open": {
+                  "hour": 8
+                },
+                "close": {
+                  "hour": 17
+                }
+              }
+            ],
+            "tuesday": [
+              {
+                "open": {
+                  "hour": 8
+                },
+                "close": {
+                  "hour": 17
+                }
+              }
+            ],
+            "wednesday": [
+              {
+                "open": {
+                  "hour": 8
+                },
+                "close": {
+                  "hour": 17
+                }
+              }
+            ],
+            "thursday": [
+              {
+                "open": {
+                  "hour": 8
+                },
+                "close": {
+                  "hour": 17
+                }
+              }
+            ],
+            "friday": [
+              {
+                "open": {
+                  "hour": 8
+                },
+                "close": {
+                  "hour": 17
+                }
+              }
+            ],
+            "saturday": [
+              {
+                "open": {
+                  "hour": 8
+                },
+                "close": {
+                  "hour": 17
+                }
+              }
+            ]
+          },
+          "current_status": "open"
+        }
+      },
+      "contact_info": [
+        {
+          "type": "telephone",
+          "value": "+19038418747",
+          "source": "google_business"
+        }
+      ],
+      "check_url": "https://www.google.com/maps?cid=15800466879361137847&hl=en&gl=US",
+      "last_updated_time": "2026-06-29 20:44:16 +00:00",
+      "first_seen": "2026-06-29 20:44:16 +00:00",
+      "services": [
+        {
+          "category": "Landscaper",
+          "title": "Landscaping maintenance"
+        },
+        {
+          "category": "Landscaper",
+          "title": "Lawn care"
+        },
+        {
+          "category": "Landscaper",
+          "title": "Flower Beds"
+        },
+        {
+          "category": "Landscaper",
+          "title": "Free Estimate"
+        },
+        {
+          "category": "Landscaper",
+          "title": "Green Yard"
+        },
+        {
+          "category": "Landscaper",
+          "title": "Home Services"
+        },
+        {
+          "category": "Landscaper",
+          "title": "Lawn And Landscape"
+        },
+        {
+          "category": "Landscaper",
+          "title": "Leaf Removal"
+        },
+        {
+          "category": "Landscaper",
+          "title": "Mulch Installation"
+        },
+        {
+          "category": "Landscaper",
+          "title": "Organic Lawn Care"
+        },
+        {
+          "category": "Landscaper",
+          "title": "Outdoor Living"
+        },
+        {
+          "category": "Landscaper",
+          "title": "Pest Management"
+        },
+        {
+          "category": "Landscaper",
+          "title": "Shrub Trimming"
+        }
+      ]
+    },
+    {
+      "type": "business_listing",
+      "title": "Holden Landscape",
+      "category": "Lawn care service",
+      "category_ids": [
+        "lawn_care_service",
+        "landscaper",
+        "tree_service"
+      ],
+      "additional_categories": [
+        "Landscaper",
+        "Tree service"
+      ],
+      "cid": "16107494085648481186",
+      "feature_id": "0x864975ea8b54f5ad:0xdf8950879cc87ba2",
+      "address": "9489 FM 17, Grand Saline, TX 75140",
+      "address_info": {
+        "address": "9489 FM 17",
+        "city": "Grand Saline",
+        "zip": "75140",
+        "region": "Texas",
+        "country_code": "US"
+      },
+      "place_id": "ChIJrfVUi-p1SYYRonvInIdQid8",
+      "phone": "+1903-752-9915",
+      "url": "https://www.lawncareandyardlandscaping.com/gardener-in-grand-saline/",
+      "domain": "www.lawncareandyardlandscaping.com",
+      "main_image": "https://lh3.googleusercontent.com/gps-cs-s/APNQkAHVYoecPvPx50hMq8HLV2f81YSeQQ1Glm64cL6zxI9O4g7cP5NFw9Rlr6jAxRre9cS84ovbrl8kCxhk508VBd5ad3M6OjpRBWLcu9ouiFPJT9MSscC0Pf2KH5jFcC-IttvqGswT=w428-h240-k-no",
+      "total_photos": 2,
+      "snippet": "9489 FM 17, Grand Saline, TX 75140",
+      "latitude": 32.656,
+      "longitude": -95.749,
+      "rating": {
+        "rating_type": "Max5",
+        "value": 5,
+        "votes_count": 2
+      },
+      "rating_distribution": {
+        "1": 0,
+        "2": 0,
+        "3": 0,
+        "4": 0,
+        "5": 2
+      },
+      "people_also_search": [
+        {
+          "cid": "14600434441068746320",
+          "feature_id": "0x0:0xca9f29c48a481650",
+          "title": "Affordable Tree Services",
+          "rating": {
+            "rating_type": "Max5",
+            "value": 5,
+            "votes_count": 3
+          }
+        },
+        {
+          "cid": "12040764804277355285",
+          "feature_id": "0x0:0xa71963cb76fa4315",
+          "title": "Schulte Lawn Services",
+          "rating": {
+            "rating_type": "Max5",
+            "value": 2,
+            "votes_count": 2
+          }
+        },
+        {
+          "cid": "11556121065339235290",
+          "feature_id": "0x0:0xa05f96e1c8f42bda",
+          "title": "Hardy Lawn & Landscape",
+          "rating": {
+            "rating_type": "Max5",
+            "value": 3.8,
+            "votes_count": 4
+          }
+        },
+        {
+          "cid": "18371389967320770743",
+          "feature_id": "0x0:0xfef449d6e85468b7",
+          "title": "Gentry Lawn Care",
+          "rating": {
+            "rating_type": "Max5",
+            "value": 4.8,
+            "votes_count": 26
+          }
+        }
+      ],
+      "work_time": {
+        "work_hours": {
+          "timetable": {
+            "monday": [
+              {
+                "open": {
+                  "hour": 8
+                },
+                "close": {
+                  "hour": 18
+                }
+              }
+            ],
+            "tuesday": [
+              {
+                "open": {
+                  "hour": 7,
+                  "minute": 30
+                },
+                "close": {
+                  "hour": 18
+                }
+              }
+            ],
+            "wednesday": [
+              {
+                "open": {
+                  "hour": 8,
+                  "minute": 30
+                },
+                "close": {
+                  "hour": 18
+                }
+              }
+            ],
+            "thursday": [
+              {
+                "open": {
+                  "hour": 8
+                },
+                "close": {
+                  "hour": 17
+                }
+              }
+            ],
+            "friday": [
+              {
+                "open": {
+                  "hour": 8
+                },
+                "close": {
+                  "hour": 17
+                }
+              }
+            ],
+            "saturday": [
+              {
+                "open": {
+                  "hour": 9
+                },
+                "close": {
+                  "hour": 12
+                }
+              }
+            ]
+          },
+          "current_status": "open"
+        }
+      },
+      "contact_info": [
+        {
+          "type": "telephone",
+          "value": "+19037529915",
+          "source": "google_business"
+        }
+      ],
+      "check_url": "https://www.google.com/maps?cid=16107494085648481186&hl=en&gl=US",
+      "last_updated_time": "2026-07-03 17:17:42 +00:00",
+      "first_seen": "2024-07-25 07:28:45 +00:00"
+    },
+    {
+      "type": "business_listing",
+      "title": "Hooten's Lawn & Tree Service LLC",
+      "category": "Tree service",
+      "category_ids": [
+        "tree_service",
+        "landscaper",
+        "lawn_care_service",
+        "plant_nursery"
+      ],
+      "additional_categories": [
+        "Landscaper",
+        "Lawn care service",
+        "Plant nursery"
+      ],
+      "cid": "161546018802719682",
+      "feature_id": "0x86497f209c052b43:0x23ded3f899d5bc2",
+      "address": "609 W Lennon Dr, Emory, TX 75440",
+      "address_info": {
+        "address": "609 W Lennon Dr",
+        "city": "Emory",
+        "zip": "75440",
+        "region": "Texas",
+        "country_code": "US"
+      },
+      "place_id": "ChIJQysFnCB_SYYRwludiT_tPQI",
+      "phone": "+1903-473-8706",
+      "url": "https://hootenslawnandtreeservicellc.com/",
+      "domain": "hootenslawnandtreeservicellc.com",
+      "logo": "https://lh6.googleusercontent.com/-WoCDxAmtLqk/AAAAAAAAAAI/AAAAAAAAAAA/7pm__pxiSfQ/s44-p-k-no-ns-nd/photo.jpg",
+      "main_image": "https://lh3.googleusercontent.com/gps-cs-s/APNQkAGsYHFSYj6WQcwyFq8qbfsJerJiqf96JEUJ3W1QE8KMkKANPVgjBsz5gcHO1Uwoa2LXzvrfbGEFYqVgh4LaV1SUGymxGP9PAmo-4wDbEnxlnyayf4TI1njYPCVKQCZwkifGANK-vg=w408-h306-k-no",
+      "total_photos": 37,
+      "snippet": "609 W Lennon Dr, Emory, TX 75440",
+      "latitude": 32.878,
+      "longitude": -95.773,
+      "is_claimed": true,
+      "attributes": {
+        "available_attributes": {
+          "service_options": [
+            "has_onsite_services"
+          ],
+          "accessibility": [
+            "has_wheelchair_accessible_entrance",
+            "has_wheelchair_accessible_parking"
+          ]
+        }
+      },
+      "place_topics": {
+        "plant selection": 5,
+        "product selection": 2,
+        "tree planting": 2,
+        "healthy plants": 2,
+        "nursery": 2,
+        "clean up": 2,
+        "trees": 2,
+        "phone": 3,
+        "yard": 3,
+        "information": 2
+      },
+      "rating": {
+        "rating_type": "Max5",
+        "value": 4.5,
+        "votes_count": 48
+      },
+      "rating_distribution": {
+        "1": 4,
+        "2": 1,
+        "3": 2,
+        "4": 1,
+        "5": 40
+      },
+      "people_also_search": [
+        {
+          "cid": "11412191449641572472",
+          "feature_id": "0x0:0x9e603fa8b8a2d878",
+          "title": "Jo's MowJo Landscape Solutions",
+          "rating": {
+            "rating_type": "Max5"
+          }
+        },
+        {
+          "cid": "12971357327388150797",
+          "feature_id": "0x0:0xb40384c399a18c0d",
+          "title": "Smith’s Lawn Care",
+          "rating": {
+            "rating_type": "Max5",
+            "value": 5,
+            "votes_count": 3
+          }
+        },
+        {
+          "cid": "9026463256558883384",
+          "feature_id": "0x0:0x7d447081f14ed238",
+          "title": "L & K Lawn Services",
+          "rating": {
+            "rating_type": "Max5"
+          }
+        },
+        {
+          "cid": "16720354786850996598",
+          "feature_id": "0x0:0xe80aa21724c18176",
+          "title": "3 Wisemen’s",
+          "rating": {
+            "rating_type": "Max5",
+            "value": 5,
+            "votes_count": 1
+          }
+        },
+        {
+          "cid": "8644489239333760504",
+          "feature_id": "0x0:0x77f76529a72cedf8",
+          "title": "Hooten's Hardware",
+          "rating": {
+            "rating_type": "Max5",
+            "value": 4.6,
+            "votes_count": 388
+          }
+        }
+      ],
+      "work_time": {
+        "work_hours": {
+          "timetable": {
+            "sunday": [
+              {
+                "open": {
+                  "hour": 9
+                },
+                "close": {
+                  "hour": 16
+                }
+              }
+            ],
+            "monday": [
+              {
+                "open": {
+                  "hour": 8
+                },
+                "close": {
+                  "hour": 17
+                }
+              }
+            ],
+            "tuesday": [
+              {
+                "open": {
+                  "hour": 8
+                },
+                "close": {
+                  "hour": 17
+                }
+              }
+            ],
+            "wednesday": [
+              {
+                "open": {
+                  "hour": 8
+                },
+                "close": {
+                  "hour": 17
+                }
+              }
+            ],
+            "thursday": [
+              {
+                "open": {
+                  "hour": 8
+                },
+                "close": {
+                  "hour": 17
+                }
+              }
+            ],
+            "friday": [
+              {
+                "open": {
+                  "hour": 8
+                },
+                "close": {
+                  "hour": 17
+                }
+              }
+            ],
+            "saturday": [
+              {
+                "open": {
+                  "hour": 8
+                },
+                "close": {
+                  "hour": 16
+                }
+              }
+            ]
+          },
+          "current_status": "close"
+        }
+      },
+      "contact_info": [
+        {
+          "type": "telephone",
+          "value": "+19034738706",
+          "source": "google_business"
+        }
+      ],
+      "check_url": "https://www.google.com/maps?cid=161546018802719682&hl=en&gl=US",
+      "last_updated_time": "2026-07-06 01:35:58 +00:00",
+      "first_seen": "2024-07-28 15:41:21 +00:00",
+      "services": [
+        {
+          "category": "Lawn Care Service",
+          "title": "Grass seeding"
+        },
+        {
+          "category": "Lawn Care Service",
+          "title": "Irrigation system repair & maintenance"
+        },
+        {
+          "category": "Lawn Care Service",
+          "title": "Lawn mowing & maintenance"
+        },
+        {
+          "category": "Lawn Care Service",
+          "title": "Mulching"
+        },
+        {
+          "category": "Lawn Care Service",
+          "title": "Sod installation"
+        },
+        {
+          "category": "Lawn Care Service",
+          "title": "Yard work"
+        },
+        {
+          "category": "Plant Nursery",
+          "title": "Installation"
+        },
+        {
+          "category": "Tree Service",
+          "title": "Tree planting"
+        },
+        {
+          "category": "Tree Service",
+          "title": "Tree removal"
+        },
+        {
+          "category": "Tree Service",
+          "title": "Tree stump removal"
+        },
+        {
+          "category": "Tree Service",
+          "title": "Tree trimming & pruning"
+        },
+        {
+          "category": "Tree Service",
+          "title": "Customizable Fence"
+        },
+        {
+          "category": "Tree Service",
+          "title": "Decorative Rock"
+        },
+        {
+          "category": "Tree Service",
+          "title": "Design And Install"
+        },
+        {
+          "category": "Tree Service",
+          "title": "Emergency Tree Removal"
+        },
+        {
+          "category": "Tree Service",
+          "title": "Fence Installed"
+        },
+        {
+          "category": "Tree Service",
+          "title": "Fence Work"
+        },
+        {
+          "category": "Tree Service",
+          "title": "Garden Decor"
+        },
+        {
+          "category": "Tree Service",
+          "title": "Garden Design"
+        },
+        {
+          "category": "Tree Service",
+          "title": "Home Services"
+        },
+        {
+          "category": "Tree Service",
+          "title": "Irrigation Solutions"
+        },
+        {
+          "category": "Tree Service",
+          "title": "Irrigation System Installation"
+        },
+        {
+          "category": "Tree Service",
+          "title": "Landscape Design"
+        },
+        {
+          "category": "Tree Service",
+          "title": "Lawn Care Maintenance"
+        },
+        {
+          "category": "Tree Service",
+          "title": "Lawn Fertilization"
+        },
+        {
+          "category": "Tree Service",
+          "title": "Outdoor Decor"
+        },
+        {
+          "category": "Tree Service",
+          "title": "Outdoor Living"
+        },
+        {
+          "category": "Tree Service",
+          "title": "Outdoor Space"
+        },
+        {
+          "category": "Tree Service",
+          "title": "Plant Health"
+        },
+        {
+          "category": "Tree Service",
+          "title": "Plants Trees"
+        },
+        {
+          "category": "Tree Service",
+          "title": "Pruning And Trimming"
+        },
+        {
+          "category": "Tree Service",
+          "title": "Residential And Commercial"
+        },
+        {
+          "category": "Tree Service",
+          "title": "Retaining Walls"
+        },
+        {
+          "category": "Tree Service",
+          "title": "Tree Trimming And Removal"
+        },
+        {
+          "category": "Tree Service",
+          "title": "Water Management"
+        },
+        {
+          "category": "Tree Service",
+          "title": "Weed Control"
+        }
+      ]
+    },
+    {
+      "type": "business_listing",
+      "title": "Red Sky Landscaping & Welding - Metal Fencing, Automatic Gate Fabrication, Lawn Services",
+      "description": "Red Sky Landscaping & Welding proudly serves its customers with pride, integrity and attention to the details that matter most to you. This is one of the many things that sets us apart from the rest.",
+      "category": "Landscaper",
+      "category_ids": [
+        "landscaper",
+        "fence_contractor",
+        "welder"
+      ],
+      "additional_categories": [
+        "Fence contractor",
+        "Welder"
+      ],
+      "cid": "2604841864664481473",
+      "feature_id": "0x8649913a146ed7bf:0x242641dff7647ec1",
+      "address": "224 Co Rd 2262, Mineola, TX 75773",
+      "address_info": {
+        "address": "224 Co Rd 2262",
+        "city": "Mineola",
+        "zip": "75773",
+        "region": "Texas",
+        "country_code": "US"
+      },
+      "place_id": "ChIJv9duFDqRSYYRwX5k999BJiQ",
+      "phone": "+1430-235-4381",
+      "url": "https://www.redskylandscapingandwelding.com/",
+      "domain": "www.redskylandscapingandwelding.com",
+      "logo": "https://lh3.googleusercontent.com/-7NBUBSJmsrQ/AAAAAAAAAAI/AAAAAAAAAAA/8j7ZehE0jqc/s44-p-k-no-ns-nd/photo.jpg",
+      "main_image": "https://lh3.googleusercontent.com/gps-cs-s/APNQkAG7xQd8Rpvs9NgXTq0-Kf1kE3Jj8qlTE7bQWDGrh6TwKdkBQcYyERbuouMICq-4cuUlM4uxhgdGst8_h10G06hXYzjtGGvZOuBvfvCDLZgSQukwBQHUW3_o26sGdhcdjoqQk5dM=w408-h544-k-no",
+      "total_photos": 249,
+      "snippet": "224 Co Rd 2262, Mineola, TX 75773",
+      "latitude": 32.716,
+      "longitude": -95.531,
+      "is_claimed": true,
+      "attributes": {
+        "available_attributes": {
+          "from_the_business": [
+            "is_owned_by_latinx"
+          ],
+          "amenities": [
+            "has_restroom_unisex"
+          ],
+          "parking": [
+            "has_parking_lot_free",
+            "has_onsite_parking"
+          ]
+        }
+      },
+      "place_topics": {
+        "chain link fence installation": 2,
+        "fence repair": 2,
+        "welding": 2,
+        "contractors": 2,
+        "durability": 2,
+        "mowing": 2,
+        "area": 3,
+        "pipe": 2,
+        "lawn landscaping": 2
+      },
+      "rating": {
+        "rating_type": "Max5",
+        "value": 5,
+        "votes_count": 14
+      },
+      "rating_distribution": {
+        "1": 0,
+        "2": 0,
+        "3": 0,
+        "4": 0,
+        "5": 14
+      },
+      "people_also_search": [
+        {
+          "cid": "10554823815360324893",
+          "feature_id": "0x0:0x927a44569562a51d",
+          "title": "Republic Fence & Stain",
+          "rating": {
+            "rating_type": "Max5",
+            "value": 5,
+            "votes_count": 10
+          }
+        },
+        {
+          "cid": "10457199293631908961",
+          "feature_id": "0x0:0x911f6f5a5a654c61",
+          "title": "R&M Welding LLC.",
+          "rating": {
+            "rating_type": "Max5"
+          }
+        },
+        {
+          "cid": "11143111860126206030",
+          "feature_id": "0x0:0x9aa44932b343c84e",
+          "title": "Spencer's Fence & Welding",
+          "rating": {
+            "rating_type": "Max5",
+            "value": 5,
+            "votes_count": 1
+          }
+        },
+        {
+          "cid": "12656259773638339956",
+          "feature_id": "0x0:0xafa4113558c76d74",
+          "title": "Ed's Security Fencing",
+          "rating": {
+            "rating_type": "Max5",
+            "value": 4.6,
+            "votes_count": 11
+          }
+        }
+      ],
+      "work_time": {
+        "work_hours": {
+          "timetable": {
+            "monday": [
+              {
+                "open": {
+                  "hour": 7
+                },
+                "close": {
+                  "hour": 18
+                }
+              }
+            ],
+            "tuesday": [
+              {
+                "open": {
+                  "hour": 7
+                },
+                "close": {
+                  "hour": 18
+                }
+              }
+            ],
+            "wednesday": [
+              {
+                "open": {
+                  "hour": 7
+                },
+                "close": {
+                  "hour": 18
+                }
+              }
+            ],
+            "thursday": [
+              {
+                "open": {
+                  "hour": 7
+                },
+                "close": {
+                  "hour": 18,
+                  "minute": 30
+                }
+              }
+            ],
+            "friday": [
+              {
+                "open": {
+                  "hour": 7
+                },
+                "close": {
+                  "hour": 18
+                }
+              }
+            ],
+            "saturday": [
+              {
+                "open": {
+                  "hour": 7
+                },
+                "close": {
+                  "hour": 18
+                }
+              }
+            ]
+          },
+          "current_status": "close"
+        }
+      },
+      "contact_info": [
+        {
+          "type": "telephone",
+          "value": "+14302354381",
+          "source": "google_business"
+        }
+      ],
+      "check_url": "https://www.google.com/maps?cid=2604841864664481473&hl=en&gl=US",
+      "last_updated_time": "2026-06-28 02:14:41 +00:00",
+      "first_seen": "2024-07-20 00:40:23 +00:00",
+      "services": [
+        {
+          "category": "Landscaper",
+          "title": "Landscape design"
+        },
+        {
+          "category": "Landscaper",
+          "title": "Lawn landscaping"
+        },
+        {
+          "category": "Landscaper",
+          "title": "Rock landscaping"
+        },
+        {
+          "category": "Landscaper",
+          "title": "Tree landscaping"
+        },
+        {
+          "category": "Landscaper",
+          "title": "Automatic Doors"
+        },
+        {
+          "category": "Landscaper",
+          "title": "Automatic Gates"
+        },
+        {
+          "category": "Landscaper",
+          "title": "Cleaning Up"
+        },
+        {
+          "category": "Landscaper",
+          "title": "Entry Gates"
+        },
+        {
+          "category": "Landscaper",
+          "title": "Fence"
+        },
+        {
+          "category": "Landscaper",
+          "title": "Fence Contractor"
+        },
+        {
+          "category": "Landscaper",
+          "title": "Fence Installation"
+        },
+        {
+          "category": "Landscaper",
+          "title": "Grass Laying"
+        },
+        {
+          "category": "Landscaper",
+          "title": "Landscaping"
+        },
+        {
+          "category": "Landscaper",
+          "title": "Landscaping Plan"
+        },
+        {
+          "category": "Landscaper",
+          "title": "Landscaping Services"
+        },
+        {
+          "category": "Landscaper",
+          "title": "Lawn Installation"
+        },
+        {
+          "category": "Landscaper",
+          "title": "Lawn Maintenance"
+        },
+        {
+          "category": "Landscaper",
+          "title": "Metal Fence"
+        },
+        {
+          "category": "Landscaper",
+          "title": "Metal Fencing"
+        },
+        {
+          "category": "Landscaper",
+          "title": "Residential Lawn Care"
+        },
+        {
+          "category": "Landscaper",
+          "title": "Retaining Walls"
+        },
+        {
+          "category": "Landscaper",
+          "title": "Security Fences"
+        },
+        {
+          "category": "Landscaper",
+          "title": "Sod Installation"
+        },
+        {
+          "category": "Landscaper",
+          "title": "Sod Installation Services"
+        }
+      ]
+    },
+    {
+      "type": "business_listing",
+      "title": "Texans Lawn Care",
+      "description": "Texans Lawn Care provides professional landscaping, irrigation installation and repair, lawn care, and sod installation in Yantis, Sulphur Springs, Quitman, and the Lake Fork area.\n\nWe specialize in landscape design, flowerbed installation, flagstone patios, sprinkler systems, drip irrigation, and full lawn maintenance for residential and commercial properties.",
+      "category": "Landscaper",
+      "category_ids": [
+        "landscaper",
+        "landscape_designer",
+        "lawn_care_service",
+        "lawn_sprinkler_system_contractor"
+      ],
+      "additional_categories": [
+        "Landscape designer",
+        "Lawn care service",
+        "Lawn sprinkler system contractor"
+      ],
+      "cid": "3192880700116624424",
+      "feature_id": "0x864a2f1371f86215:0x2c4f641484a6e428",
+      "address": "4428 TX-154, Yantis, TX 75497",
+      "address_info": {
+        "address": "4428 TX-154",
+        "city": "Yantis",
+        "zip": "75497",
+        "region": "Texas",
+        "country_code": "US"
+      },
+      "place_id": "ChIJFWL4cRMvSoYRKOSmhBRkTyw",
+      "phone": "+1903-440-1797",
+      "url": "http://www.texanslawncare.com/",
+      "domain": "www.texanslawncare.com",
+      "logo": "https://lh4.googleusercontent.com/-ugyqeClTLDo/AAAAAAAAAAI/AAAAAAAAAAA/-WBVYsj2pwA/s44-p-k-no-ns-nd/photo.jpg",
+      "main_image": "https://lh3.googleusercontent.com/gps-cs-s/APNQkAFfGZy8nwRmGDVBfbF45LY_TvfCcoXgLEwNc_lRbZYAgyXHJ-4CYjShv0pAGGOeXypiA2IrfFNBhtGmpA1mhD1oGhDc8p9mG3CrT_n8PDOP4sRFs3vBuacwWWVD7d6wo_l5Fh2myN5DIMZj=w408-h306-k-no",
+      "total_photos": 120,
+      "snippet": "4428 TX-154, Yantis, TX 75497",
+      "latitude": 32.89,
+      "longitude": -95.556,
+      "is_claimed": true,
+      "place_topics": {
+        "flower bed maintenance": 7,
+        "mulch replacement": 2,
+        "irrigation system repair & maintenance": 3,
+        "tree trimming": 4,
+        "polite crews": 3,
+        "sprinkler": 3,
+        "yard designs": 4,
+        "sod": 8,
+        "weed eating": 2,
+        "drain": 2
+      },
+      "rating": {
+        "rating_type": "Max5",
+        "value": 5,
+        "votes_count": 44
+      },
+      "rating_distribution": {
+        "1": 0,
+        "2": 0,
+        "3": 0,
+        "4": 0,
+        "5": 44
+      },
+      "work_time": {
+        "work_hours": {
+          "timetable": {
+            "sunday": [
+              {
+                "close": {
+                  "hour": 24
+                }
+              }
+            ],
+            "monday": [
+              {
+                "close": {
+                  "hour": 24
+                }
+              }
+            ],
+            "tuesday": [
+              {
+                "close": {
+                  "hour": 24
+                }
+              }
+            ],
+            "wednesday": [
+              {
+                "close": {
+                  "hour": 24
+                }
+              }
+            ],
+            "thursday": [
+              {
+                "close": {
+                  "hour": 24
+                }
+              }
+            ],
+            "friday": [
+              {
+                "close": {
+                  "hour": 24
+                }
+              }
+            ],
+            "saturday": [
+              {
+                "close": {
+                  "hour": 24
+                }
+              }
+            ]
+          },
+          "current_status": "open"
+        }
+      },
+      "contact_info": [
+        {
+          "type": "telephone",
+          "value": "+19034401797",
+          "source": "google_business"
+        }
+      ],
+      "check_url": "https://www.google.com/maps?cid=3192880700116624424&hl=en&gl=US",
+      "last_updated_time": "2026-06-28 04:28:46 +00:00",
+      "first_seen": "2024-07-19 21:11:26 +00:00",
+      "services": [
+        {
+          "category": "Landscaper",
+          "title": "Garden design"
+        },
+        {
+          "category": "Landscaper",
+          "title": "Hardscaping"
+        },
+        {
+          "category": "Landscaper",
+          "title": "Landscape installations"
+        },
+        {
+          "category": "Landscaper",
+          "title": "Landscape management"
+        },
+        {
+          "category": "Landscaper",
+          "title": "Landscaping maintenance"
+        },
+        {
+          "category": "Landscaper",
+          "title": "Lawn landscaping"
+        },
+        {
+          "category": "Landscaper",
+          "title": "Rock landscaping"
+        },
+        {
+          "category": "Landscaper",
+          "title": "Yard drainage"
+        },
+        {
+          "category": "Landscaper",
+          "title": "Sod Installation"
+        },
+        {
+          "category": "Landscaper",
+          "title": "Landscaping Yantis Tx"
+        },
+        {
+          "category": "Landscaper",
+          "title": "Landscaper Yantis Tx"
+        },
+        {
+          "category": "Landscaper",
+          "title": "Landscaping Quitman Tx"
+        },
+        {
+          "category": "Landscaper",
+          "title": "Landscaper Quitman Tx"
+        },
+        {
+          "category": "Landscaper",
+          "title": "Landscaping Sulphur Springs Tx"
+        },
+        {
+          "category": "Landscaper",
+          "title": "Landscaper Sulphur Springs Tx"
+        },
+        {
+          "category": "Landscaper",
+          "title": "Flowerbed installation"
+        },
+        {
+          "category": "Landscape Designer",
+          "title": "Custom landscape design"
+        },
+        {
+          "category": "Landscape Designer",
+          "title": "Landscape design construction"
+        },
+        {
+          "category": "Landscape Designer",
+          "title": "Yard designs"
+        },
+        {
+          "category": "Landscape Designer",
+          "title": "Landscape Design"
+        },
+        {
+          "category": "Lawn Care Service",
+          "title": "Irrigation system repair & maintenance"
+        },
+        {
+          "category": "Lawn Care Service",
+          "title": "Lawn care Sulphur Springs TX"
+        },
+        {
+          "category": "Lawn Care Service",
+          "title": "Lawn Mowing Sulphur Springs"
+        },
+        {
+          "category": "Lawn Care Service",
+          "title": "Lawn Maintenance Sulphur Springs"
+        },
+        {
+          "category": "Lawn Care Service",
+          "title": "Flowerbed Maintenance Sulphur Springs"
+        },
+        {
+          "category": "Lawn Care Service",
+          "title": "Lawn Care Yantis"
+        },
+        {
+          "category": "Lawn Care Service",
+          "title": "Lawn Mowing Yantis"
+        },
+        {
+          "category": "Lawn Care Service",
+          "title": "Lawn Maintenance Yantis"
+        },
+        {
+          "category": "Lawn Care Service",
+          "title": "Lawn Care"
+        },
+        {
+          "category": "Lawn Care Service",
+          "title": "Commercial And Residential Lawn Maintenance"
+        },
+        {
+          "category": "Lawn Care Service",
+          "title": "Home Services"
+        },
+        {
+          "category": "Lawn Care Service",
+          "title": "Lawn Maintenance & Landscape"
+        },
+        {
+          "category": "Lawn Care Service",
+          "title": "Tree Services"
+        },
+        {
+          "category": "Lawn Care Service",
+          "title": "View Services"
+        },
+        {
+          "category": "Lawn Care Service",
+          "title": "Weed Control & Fertilization"
+        },
+        {
+          "category": "Lawn Sprinkler System Contractor",
+          "title": "Irrigation Installation"
+        },
+        {
+          "category": "Lawn Sprinkler System Contractor",
+          "title": "Irrigation Repair"
+        },
+        {
+          "category": "Lawn Sprinkler System Contractor",
+          "title": "Drip Irrigation"
+        }
+      ]
+    }
+  ]
+}
