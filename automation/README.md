@@ -71,14 +71,21 @@ Consider wiring both into a single startup script/Windows Task Scheduler entry l
 - `bridge-server.mjs` built and tested standalone (`/health`, `/create-engagement` both verified via direct HTTP calls), **and** confirmed reachable from inside the n8n container via `host.docker.internal:5679`.
 - All three workflow JSON files rewritten to call the bridge via HTTP Request nodes instead of Execute Command (which can't reach the host from inside the container).
 - n8n owner-account setup complete. All three workflows imported (via "Import from URL" against a temporary local file server — native file-picker upload isn't reliably scriptable) and confirmed rendering with the correct nodes and connections: **Discover — Intake & Kickoff**, **Discover — Engagement Complete**, **Discover — Approve & Send**. Saved in n8n.
+- **First real (funded) agent run completed 2026-08-11.** `ANTHROPIC_API_KEY` confirmed working with real billing. Ran against a deliberately minimal/degenerate test case (`example.com`, the IANA reserved domain — no real business) with `ANTHROPIC_MAX_BUDGET_USD=2` as a safety cap. Result: the agent correctly executed all 13 steps, ran the Final Quality Gate (verdict: PASS), generated a full `report.md`/`appendix.md`, and **correctly recommended HOLD** rather than fabricating an opportunity analysis for a domain with no real business — exactly the integrity behavior the methodology exists to enforce. Real cost: **$2.02** for 24 turns. `run-result.json` showed `success: false`, which is misleading — that reflects the SDK's `error_max_budget_usd` result subtype (cost crossed the $2 ceiling right at the end), not a failed or incomplete engagement; `status.md` itself says `Completed: yes`.
+- **Two real bugs found and fixed** by this first run:
+  1. `runner/run-discover.mjs`'s `completed` detection regex (`/Completed:\s*yes/i`) didn't match `status.md`'s actual output (`Completed: **yes`, markdown-bold) — `\s*` doesn't span the `**`. Fixed to `/Completed:\s*\*{0,2}\s*yes/i`.
+  2. PDF rendering failed — Puppeteer's bundled Chromium download is broken on this machine (shares a cache path, `~/.cache/puppeteer`, with the earlier failed n8n npm install saga). Fixed by pointing `md-to-pdf`'s `launch_options.executablePath` at the system's installed Edge (`C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe`) instead of relying on Puppeteer's own download. Re-verified by re-rendering both PDFs from the existing report — both succeeded (137KB/288KB, real content).
+- The agent's own `status.md` also flagged two infrastructure notes worth acting on: (1) keyless PageSpeed Insights returned HTTP 429 three times — get a free PSI API key before relying on Lighthouse data; (2) `example.com` can't exercise O3–O10 at all (no real business) — use a real small-business site for the next test now that cost/mechanics are proven.
 
 **Not yet done:**
 - Workflows are imported but not yet activated/tested with real data — no live webhook trigger, no credential/env wiring confirmed end-to-end yet.
-- The n8n container was created *without* `--env-file automation/.env` (no real `.env` existed yet at creation time) — needs recreating per the setup steps above once `.env` has real values, or the `$env.X` expressions in the workflows will resolve empty.
+- The n8n container was created *without* `--env-file automation/.env` (no real `.env` existed yet at creation time) — needs recreating per the setup steps above now that `.env` has a real `ANTHROPIC_API_KEY`, or the `$env.X` expressions in the workflows will resolve empty.
 - Tally form, Stripe Payment Link/webhook, and Resend account not yet created (user's own account setup — see each spec file).
 - Full end-to-end dry run (plan Build Order step 6) not yet run.
 - DataForSEO funding + first live verified engagement — blocked on the user adding funds.
 - No startup automation yet for "container + bridge server both running after a reboot" — currently manual.
+- Free PageSpeed Insights API key — not yet obtained.
+- Remaining Anthropic credit after this test: **~$2.98 of the original $5.**
 
 ## npm install saga (historical — kept for context, don't repeat this path)
 

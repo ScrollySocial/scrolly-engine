@@ -172,7 +172,16 @@ async function renderPdf(mdName, pdfName) {
     return false;
   }
   try {
-    await mdToPdf({ path: mdPath }, { dest: pdfPath });
+    const pdfConfig = { dest: pdfPath };
+    // Puppeteer's own bundled Chromium download is unreliable on this
+    // machine (left broken from an unrelated failed npm install sharing the
+    // same ~/.cache/puppeteer path) — point at the system's installed Edge
+    // instead when present, rather than depending on that download at all.
+    const edgePath = 'C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe';
+    if (existsSync(edgePath)) {
+      pdfConfig.launch_options = { executablePath: edgePath };
+    }
+    await mdToPdf({ path: mdPath }, pdfConfig);
     await log(`Rendered ${pdfName}`);
     return true;
   } catch (err) {
@@ -192,7 +201,9 @@ try {
   statusText = '';
 }
 const qualityGateRan = /Final Quality Gate run.*yes/i.test(statusText);
-const completed = /Completed:\s*yes/i.test(statusText);
+// \s* alone doesn't span markdown emphasis markers (e.g. "Completed: **yes"),
+// which the agent's own status.md writes commonly use — allow optional **.
+const completed = /Completed:\s*\*{0,2}\s*yes/i.test(statusText);
 
 // --- Notify n8n ----------------------------------------------------------
 if (N8N_WEBHOOK) {
