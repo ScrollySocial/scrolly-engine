@@ -17,7 +17,7 @@
     },
     {
       "parameters": {
-        "jsCode": "const body = $json.body;\nconst fields = body?.data?.fields || [];\nconst sessionField = fields.find(f => f.key === 'session_id' || f.label === 'session_id');\nreturn [{ json: { ...body, sessionId: sessionField ? sessionField.value : null } }];"
+        "jsCode": "const body = $json.body;\nconst fields = body?.data?.fields || [];\nconst sessionField = fields.find(f => f.key === 'session_id' || f.label === 'session_id');\nreturn [{ json: { sessionId: sessionField ? sessionField.value : null } }];"
       },
       "id": "code_extract_session",
       "name": "Extract session_id",
@@ -66,43 +66,33 @@
     },
     {
       "parameters": {
-        "jsCode": "// The original Tally body (with data.fields) lives on \"Extract session_id\"'s\n// output, not on this branch's $json (which is the Stripe session object).\nconst tallyBody = $('Extract session_id').item.json;\nconst payloadB64 = Buffer.from(JSON.stringify(tallyBody)).toString('base64');\nreturn [{ json: { payloadB64 } }];"
+        "method": "POST",
+        "url": "=http://host.docker.internal:{{ $env.BRIDGE_PORT || 5679 }}/create-engagement",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify($('Tally Webhook').item.json.body) }}",
+        "options": {}
       },
-      "id": "code_build_b64",
-      "name": "Build base64 payload",
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
+      "id": "http_create_engagement",
+      "name": "Create engagement (bridge)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
       "position": [880, -120]
     },
     {
       "parameters": {
-        "command": "=node \"C:\\Users\\merce\\Scrolly Organic Engine\\automation\\n8n\\scripts\\create-engagement.mjs\" --payload-b64 \"{{ $json.payloadB64 }}\""
+        "method": "POST",
+        "url": "=http://host.docker.internal:{{ $env.BRIDGE_PORT || 5679 }}/launch-runner",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ slug: $json.slug }) }}",
+        "options": {}
       },
-      "id": "exec_create_engagement",
-      "name": "Create engagement",
-      "type": "n8n-nodes-base.executeCommand",
-      "typeVersion": 1,
+      "id": "http_launch_runner",
+      "name": "Launch runner (bridge)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
       "position": [1100, -120]
-    },
-    {
-      "parameters": {
-        "jsCode": "return [{ json: JSON.parse($json.stdout) }];"
-      },
-      "id": "code_parse_created",
-      "name": "Parse create-engagement output",
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
-      "position": [1320, -120]
-    },
-    {
-      "parameters": {
-        "command": "=node \"C:\\Users\\merce\\Scrolly Organic Engine\\automation\\n8n\\scripts\\launch-runner.mjs\" \"{{ $json.slug }}\""
-      },
-      "id": "exec_launch_runner",
-      "name": "Launch runner",
-      "type": "n8n-nodes-base.executeCommand",
-      "typeVersion": 1,
-      "position": [1540, -120]
     },
     {
       "parameters": {
@@ -121,13 +111,11 @@
     "Verify Stripe Session": { "main": [[{ "node": "Payment verified?", "type": "main", "index": 0 }]] },
     "Payment verified?": {
       "main": [
-        [{ "node": "Build base64 payload", "type": "main", "index": 0 }],
+        [{ "node": "Create engagement (bridge)", "type": "main", "index": 0 }],
         [{ "node": "Log rejected submission", "type": "main", "index": 0 }]
       ]
     },
-    "Build base64 payload": { "main": [[{ "node": "Create engagement", "type": "main", "index": 0 }]] },
-    "Create engagement": { "main": [[{ "node": "Parse create-engagement output", "type": "main", "index": 0 }]] },
-    "Parse create-engagement output": { "main": [[{ "node": "Launch runner", "type": "main", "index": 0 }]] }
+    "Create engagement (bridge)": { "main": [[{ "node": "Launch runner (bridge)", "type": "main", "index": 0 }]] }
   },
   "active": false,
   "settings": { "executionOrder": "v1" }

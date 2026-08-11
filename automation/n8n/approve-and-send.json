@@ -16,20 +16,25 @@
     },
     {
       "parameters": {
-        "command": "=node \"C:\\Users\\merce\\Scrolly Organic Engine\\automation\\n8n\\scripts\\check-and-consume-token.mjs\" \"{{ $json.query.slug }}\" \"{{ $json.query.token }}\""
+        "method": "POST",
+        "url": "=http://host.docker.internal:{{ $env.BRIDGE_PORT || 5679 }}/check-token",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ slug: $json.query.slug, token: $json.query.token }) }}",
+        "options": {}
       },
-      "id": "exec_check_token",
-      "name": "Check & consume token",
-      "type": "n8n-nodes-base.executeCommand",
-      "typeVersion": 1,
+      "id": "http_check_token",
+      "name": "Check & consume token (bridge)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
       "position": [220, 0]
     },
     {
       "parameters": {
-        "jsCode": "const parsed = JSON.parse($json.stdout);\nreturn [{ json: { valid: !!parsed.valid, slug: $('Approve Click Webhook').item.json.query.slug } }];"
+        "jsCode": "return [{ json: { valid: !!$json.valid, slug: $('Approve Click Webhook').item.json.query.slug } }];"
       },
-      "id": "code_parse_check",
-      "name": "Parse token check",
+      "id": "code_merge_slug",
+      "name": "Merge slug with token result",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [440, 0]
@@ -53,21 +58,18 @@
     },
     {
       "parameters": {
-        "command": "=node \"C:\\Users\\merce\\Scrolly Organic Engine\\automation\\n8n\\scripts\\build-resend-payload.mjs\" client-delivery \"{{ $json.slug }}\""
+        "method": "POST",
+        "url": "=http://host.docker.internal:{{ $env.BRIDGE_PORT || 5679 }}/build-email-payload",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ mode: 'client-delivery', slug: $json.slug }) }}",
+        "options": {}
       },
-      "id": "exec_build_client_email",
-      "name": "Build client delivery email",
-      "type": "n8n-nodes-base.executeCommand",
-      "typeVersion": 1,
+      "id": "http_build_client_email",
+      "name": "Build client delivery email (bridge)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
       "position": [880, -140]
-    },
-    {
-      "parameters": { "jsCode": "return [{ json: JSON.parse($json.stdout) }];" },
-      "id": "code_parse_client_email",
-      "name": "Parse client email payload",
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
-      "position": [1100, -140]
     },
     {
       "parameters": {
@@ -89,17 +91,22 @@
       "name": "Send client email",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
-      "position": [1320, -140]
+      "position": [1100, -140]
     },
     {
       "parameters": {
-        "command": "=node \"C:\\Users\\merce\\Scrolly Organic Engine\\automation\\n8n\\scripts\\mark-delivered.mjs\" \"{{ $('Parse token check').item.json.slug }}\""
+        "method": "POST",
+        "url": "=http://host.docker.internal:{{ $env.BRIDGE_PORT || 5679 }}/mark-delivered",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ slug: $('Merge slug with token result').item.json.slug }) }}",
+        "options": {}
       },
-      "id": "exec_mark_delivered",
-      "name": "Mark delivered",
-      "type": "n8n-nodes-base.executeCommand",
-      "typeVersion": 1,
-      "position": [1540, -140]
+      "id": "http_mark_delivered",
+      "name": "Mark delivered (bridge)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1320, -140]
     },
     {
       "parameters": {
@@ -111,7 +118,7 @@
       "name": "Respond — sent",
       "type": "n8n-nodes-base.respondToWebhook",
       "typeVersion": 1,
-      "position": [1760, -140]
+      "position": [1540, -140]
     },
     {
       "parameters": {
@@ -127,19 +134,18 @@
     }
   ],
   "connections": {
-    "Approve Click Webhook": { "main": [[{ "node": "Check & consume token", "type": "main", "index": 0 }]] },
-    "Check & consume token": { "main": [[{ "node": "Parse token check", "type": "main", "index": 0 }]] },
-    "Parse token check": { "main": [[{ "node": "Token valid?", "type": "main", "index": 0 }]] },
+    "Approve Click Webhook": { "main": [[{ "node": "Check & consume token (bridge)", "type": "main", "index": 0 }]] },
+    "Check & consume token (bridge)": { "main": [[{ "node": "Merge slug with token result", "type": "main", "index": 0 }]] },
+    "Merge slug with token result": { "main": [[{ "node": "Token valid?", "type": "main", "index": 0 }]] },
     "Token valid?": {
       "main": [
-        [{ "node": "Build client delivery email", "type": "main", "index": 0 }],
+        [{ "node": "Build client delivery email (bridge)", "type": "main", "index": 0 }],
         [{ "node": "Respond — invalid", "type": "main", "index": 0 }]
       ]
     },
-    "Build client delivery email": { "main": [[{ "node": "Parse client email payload", "type": "main", "index": 0 }]] },
-    "Parse client email payload": { "main": [[{ "node": "Send client email", "type": "main", "index": 0 }]] },
-    "Send client email": { "main": [[{ "node": "Mark delivered", "type": "main", "index": 0 }]] },
-    "Mark delivered": { "main": [[{ "node": "Respond — sent", "type": "main", "index": 0 }]] }
+    "Build client delivery email (bridge)": { "main": [[{ "node": "Send client email", "type": "main", "index": 0 }]] },
+    "Send client email": { "main": [[{ "node": "Mark delivered (bridge)", "type": "main", "index": 0 }]] },
+    "Mark delivered (bridge)": { "main": [[{ "node": "Respond — sent", "type": "main", "index": 0 }]] }
   },
   "active": false,
   "settings": { "executionOrder": "v1" }
