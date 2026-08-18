@@ -4,7 +4,7 @@ Create these yourself in your own Stripe account (I can't create the account or 
 
 ## 1. Product & Price
 - Product name: `SEO Discovery Report` (or your preferred client-facing name).
-- Price: **$300.00 USD**, one-time (not recurring).
+- Price: **$299.00 USD**, one-time (not recurring).
 
 ## 2. Payment Link
 Create a Payment Link for that price. Under its settings:
@@ -30,4 +30,4 @@ Stripe's test mode uses a parallel set of keys/webhooks and Stripe's documented 
 - DataForSEO has been funded and one full live engagement has been verified (plan step 7) — selling before that means selling something never confirmed to work.
 
 ## What n8n does with this
-`n8n/intake-and-kickoff.json`'s first real step, once a Tally submission arrives, is calling Stripe's `GET /v1/checkout/sessions/{session_id}` with `STRIPE_SECRET_KEY` and checking `payment_status === "paid"` and that the amount matches $300. Only then does it create the client folder and start the runner — an unpaid or forged submission never reaches the agent runner.
+`n8n/intake-and-kickoff.json`'s first real step, once a Tally submission arrives, is calling Stripe's `GET /v1/checkout/sessions/{session_id}` with `STRIPE_SECRET_KEY` and checking `payment_status === "paid"` and that the amount matches $299. Only then does it create the client folder and start the runner — an unpaid or forged submission never reaches the agent runner.

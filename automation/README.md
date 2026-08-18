@@ -1,4 +1,4 @@
-# Scrolly $300 Report — Automation Pipeline
+# Scrolly $299 Report — Automation Pipeline
 
 Turns `methodology/discover-engine.md`'s manual 13-step protocol into an unattended pipeline: Tally intake → Stripe verification → headless Discover agent → PDF report → operator review → client delivery.
 
