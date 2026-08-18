@@ -22,8 +22,8 @@ import { writeFile, mkdir } from 'node:fs/promises';
 import { AUTOMATION_DIR, engagementDir } from './_paths.mjs';
 
 const [mode, slug] = process.argv.slice(2);
-if (!mode || !slug || !['operator-review', 'client-delivery'].includes(mode)) {
-  console.error('Usage: node build-resend-payload.mjs <operator-review|client-delivery> <slug>');
+if (!mode || !slug || !['operator-review', 'client-delivery', 'access-request'].includes(mode)) {
+  console.error('Usage: node build-resend-payload.mjs <operator-review|client-delivery|access-request> <slug>');
   process.exit(1);
 }
 
@@ -120,6 +120,90 @@ if (mode === 'operator-review') {
   };
 
   process.stdout.write(JSON.stringify(body));
+} else if (mode === 'access-request') {
+  // Decide per-service (GBP/GSC/GA4) whether it's worth asking the client to
+  // share access, from their own Tally self-report (contact.json.accessStatus
+  // — see create-engagement.mjs). "I have access" means access already
+  // exists on our side, and the "not set up yet" answers mean there's
+  // nothing to share, so both are skipped; anything else is worth asking,
+  // since the cost of asking is low and the field's wording is informal.
+  const accessStatus = contact.accessStatus || {};
+
+  function decide(status) {
+    const s = String(status || '').trim().toLowerCase();
+    if (!s) return 'skip'; // unanswered — never assume it exists
+    if (s.includes('i have access')) return 'skip';
+    if (s.includes('not set up') || s.includes('no gbp yet') || s.startsWith('no,')) return 'skip';
+    if (s.includes('not sure')) return 'ask-soft';
+    return 'ask'; // e.g. "I can share it" (GSC/GA4) or "Client has it, can share" (GBP)
+  }
+
+  const accessEmail = process.env.SCROLLY_ACCESS_EMAIL || process.env.RESEND_FROM_EMAIL || '';
+
+  const SERVICES = [
+    {
+      key: 'gbp',
+      label: 'Google Business Profile',
+      steps: 'your listing on Google Maps &rarr; menu (&#8942;) &rarr; Business Profile settings &rarr; "People and access" &rarr; Add',
+      role: 'Manager (GBP\'s most limited available role &mdash; it can still edit the listing, so only add it if that\'s fine; GBP has no stricter view-only tier)',
+    },
+    {
+      key: 'gsc',
+      label: 'Google Search Console',
+      steps: 'search.google.com/search-console &rarr; your property &rarr; Settings &rarr; Users and permissions &rarr; Add user',
+      role: '"Restricted" (read-only performance and coverage data, no site changes)',
+    },
+    {
+      key: 'ga4',
+      label: 'GA4 (Google Analytics)',
+      steps: 'analytics.google.com &rarr; Admin &rarr; Property Access Management &rarr; Add users',
+      role: '"Viewer" (read-only reporting, no configuration changes)',
+    },
+  ];
+
+  const included = SERVICES.map((svc) => ({ ...svc, decision: decide(accessStatus[svc.key]) })).filter(
+    (svc) => svc.decision !== 'skip'
+  );
+
+  if (included.length === 0) {
+    // Nothing qualifies (all skipped or unanswered) — signal the caller
+    // (n8n) to not send an email at all, rather than sending an empty ask.
+    process.stdout.write(JSON.stringify({ skip: true, reason: 'No GBP/GSC/GA4 status qualifies for an access request.' }));
+  } else {
+    const templateHtml = await readTextSafe(
+      path.join(AUTOMATION_DIR, 'email-templates', 'access-request.html'),
+      '<p>Hi {{contact_name}}, would you be able to share view-only access to {{access_email}}?</p>'
+    );
+
+    const accessItems = included
+      .map((svc) => {
+        const softener = svc.decision === 'ask-soft' ? ' (if you have this set up)' : '';
+        return `<li><strong>${svc.label}</strong>${softener} &mdash; ${svc.steps} &rarr; ${accessEmail} &rarr; role: ${svc.role}.</li>`;
+      })
+      .join('\n    ');
+
+    const html = fillTemplate(templateHtml, {
+      contact_name: contact.contactName || 'there',
+      business_name: businessName,
+      sender_name: process.env.SENDER_DISPLAY_NAME || '',
+      access_items: accessItems,
+      access_email: accessEmail,
+    });
+
+    if (!contact.contactEmail) {
+      console.error(`No contact.json / contactEmail found for slug "${slug}" — cannot address the access-request email.`);
+      process.exit(1);
+    }
+
+    const body = {
+      from: `${process.env.SENDER_DISPLAY_NAME || 'Scrolly SEO'} <${process.env.RESEND_FROM_EMAIL}>`,
+      to: [contact.contactEmail],
+      subject: `Quick optional step for your ${businessName} report`,
+      html,
+    };
+
+    process.stdout.write(JSON.stringify(body));
+  }
 } else {
   const templateHtml = await readTextSafe(
     path.join(AUTOMATION_DIR, 'email-templates', 'client-delivery.html'),

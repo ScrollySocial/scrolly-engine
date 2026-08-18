@@ -12,12 +12,15 @@ automation/
                                      Lets the n8n Docker container trigger the scripts below without
                                      needing filesystem/process access into the container.
   n8n/
-    intake-and-kickoff.json       - Tally webhook -> Stripe verify -> create client folder -> launch runner
+    intake-and-kickoff.json       - Tally webhook -> Stripe verify -> create client folder -> launch runner,
+                                     plus a parallel, non-blocking branch that emails the client an optional
+                                     GBP/GSC/GA4 view-only access request (skipped entirely if their Tally
+                                     answers don't qualify — see "Optional GSC/GA4/GBP access request" below)
     engagement-complete.json      - runner's completion webhook -> operator review email (or auto-send)
     approve-and-send.json         - operator's one-click approval -> client email
     scripts/                      - small Node helpers. Called by bridge-server.mjs via child_process,
                                      NOT directly by n8n anymore (see "Docker, not npm").
-  email-templates/                - source HTML for both pipeline emails (read by build-resend-payload.mjs)
+  email-templates/                - source HTML for all three pipeline emails (read by build-resend-payload.mjs)
   tally-form-spec.md              - exact fields to build in your own Tally account
   stripe-setup.md                 - exact Payment Link / webhook config for your own Stripe account
   .env.example                    - copy to .env and fill in
@@ -60,6 +63,16 @@ Consider wiring both into a single startup script/Windows Task Scheduler entry l
 8. Fill in each workflow's webhook URLs into `.env` (`N8N_*_WEBHOOK_URL`) once created; recreate the container (step 5) to pick them up, or set them directly as n8n Variables in the UI instead if you'd rather not restart the container each time.
 9. Run the local dry run (see plan's Build Order step 6) before touching real Stripe/Tally.
 
+## Optional GSC/GA4/GBP access request (added 2026-08-18)
+
+Right after intake, `intake-and-kickoff.json` fires a branch (parallel to launching the runner, so it never delays the report) that asks the client for **view-only** access to whichever of GBP/GSC/GA4 their own Tally answer indicates might exist:
+
+- `build-resend-payload.mjs`'s `access-request` mode reads `contact.json`'s `accessStatus` (written by `create-engagement.mjs` from the three Tally status fields) and decides per service: "I have access" or "not set up yet" → skip that service; "I can share it" → ask; "Not sure" → ask, softened ("if you have this set up").
+- If **none** of the three qualify, the script returns `{"skip": true, ...}` and the workflow's "Access request needed?" IF node stops there — no empty email gets sent.
+- The email (`email-templates/access-request.html`) always requests the least-privileged role available per service: GSC "Restricted," GA4 "Viewer," GBP "Manager" (GBP has no stricter tier — the email says so explicitly rather than overclaiming "view-only" for it).
+- This never blocks or delays report delivery. If access arrives later, a future engagement/runner update would need to actually query the GSC/GA4 APIs to detect and use it — that check isn't built yet (see Not yet done).
+- Requires `SCROLLY_ACCESS_EMAIL` in `.env` (the address you want clients to add) — falls back to `RESEND_FROM_EMAIL` if unset.
+
 ## Status (2026-08-11)
 
 **Done and verified directly:**
@@ -79,6 +92,7 @@ Consider wiring both into a single startup script/Windows Task Scheduler entry l
 
 **Not yet done:**
 - Workflows are imported but not yet activated/tested with real data — no live webhook trigger, no credential/env wiring confirmed end-to-end yet.
+- The optional access-request branch (above) is smoke-tested only via direct CLI calls to `build-resend-payload.mjs access-request <slug>` (both the "ask" and "skip" cases) — not yet run through a live n8n execution or an actual Resend send. Also still missing: any mechanism that later checks whether granted GSC/GA4 access actually showed up and pulls real data with it — today it's ask-and-hope, with a human noticing later.
 - The n8n container was created *without* `--env-file automation/.env` (no real `.env` existed yet at creation time) — needs recreating per the setup steps above now that `.env` has a real `ANTHROPIC_API_KEY`, or the `$env.X` expressions in the workflows will resolve empty.
 - Tally form, Stripe Payment Link/webhook, and Resend account not yet created (user's own account setup — see each spec file).
 - Full end-to-end dry run (plan Build Order step 6) not yet run.

@@ -1,0 +1,48 @@
+<!--
+Access-request email — sent by "intake-and-kickoff.json" right after intake,
+in parallel with (not blocking) report generation. Only sent when at least
+one of GBP/GSC/GA4 exists per the client's own Tally answer and Scrolly
+doesn't already have it (see build-resend-payload.mjs's access-request mode,
+which decides per-service inclusion and skips sending entirely if nothing
+qualifies).
+
+Tokens (replaced by n8n before calling Resend):
+  {{contact_name}}   - contact name from the Tally submission
+  {{business_name}}  - client business name
+  {{sender_name}}    - your name / business name, sent from
+  {{access_items}}   - pre-built <li> list, one per service that qualifies
+  {{access_email}}   - the email address to add as a user (SCROLLY_ACCESS_EMAIL)
+-->
+<div style="font-family: -apple-system, Helvetica, Arial, sans-serif; max-width: 560px; margin: 0 auto; color: #1a1a1a; line-height: 1.5;">
+  <p>Hi {{contact_name}},</p>
+
+  <p>
+    Thanks for the details on {{business_name}} — your report is already underway.
+    One optional thing that would make it (and everything after it) stronger:
+    view-only access to a couple of your Google accounts, if you have them set up.
+  </p>
+
+  <p>
+    This is <strong>never required</strong> — the report ships on schedule either
+    way. But where we have it, we can show real ranking and traffic data instead
+    of estimates. Whenever you get a chance:
+  </p>
+
+  <p>
+    Each item below lists the specific role to grant <strong>{{access_email}}</strong> —
+    we've picked the most limited one available for that account in every
+    case, since we only ever need to look, never to change anything.
+  </p>
+
+  <ul style="padding-left: 20px;">
+    {{access_items}}
+  </ul>
+
+  <p>
+    No rush, and no need to reply just to confirm, we'll pick it up automatically
+    once it's there. If any of this doesn't apply to you or you'd rather skip it,
+    that's completely fine too.
+  </p>
+
+  <p>Thanks,<br>{{sender_name}}</p>
+</div>

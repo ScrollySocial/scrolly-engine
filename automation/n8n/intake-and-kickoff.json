@@ -103,6 +103,64 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [880, 120]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=http://host.docker.internal:{{ $env.BRIDGE_PORT || 5679 }}/build-email-payload",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ mode: 'access-request', slug: $json.slug }) }}",
+        "options": {}
+      },
+      "id": "http_build_access_request",
+      "name": "Build access-request email (bridge)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1100, 40]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": { "caseSensitive": true, "leftValue": "", "typeValidation": "loose" },
+          "combinator": "and",
+          "conditions": [
+            {
+              "leftValue": "={{ $json.skip }}",
+              "rightValue": true,
+              "operator": { "type": "boolean", "operation": "notEquals" }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "if_access_request_needed",
+      "name": "Access request needed?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [1320, 40]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.resend.com/emails",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Authorization", "value": "=Bearer {{ $env.RESEND_API_KEY }}" },
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify($json) }}",
+        "options": {}
+      },
+      "id": "http_send_access_request",
+      "name": "Send access-request email",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1540, 40]
     }
   ],
   "connections": {
@@ -115,7 +173,16 @@
         [{ "node": "Log rejected submission", "type": "main", "index": 0 }]
       ]
     },
-    "Create engagement (bridge)": { "main": [[{ "node": "Launch runner (bridge)", "type": "main", "index": 0 }]] }
+    "Create engagement (bridge)": {
+      "main": [
+        [
+          { "node": "Launch runner (bridge)", "type": "main", "index": 0 },
+          { "node": "Build access-request email (bridge)", "type": "main", "index": 0 }
+        ]
+      ]
+    },
+    "Build access-request email (bridge)": { "main": [[{ "node": "Access request needed?", "type": "main", "index": 0 }]] },
+    "Access request needed?": { "main": [[{ "node": "Send access-request email", "type": "main", "index": 0 }]] }
   },
   "active": false,
   "settings": { "executionOrder": "v1" }

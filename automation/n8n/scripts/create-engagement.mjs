@@ -201,7 +201,23 @@ async function main() {
   // Discover methodology, not by delivery's needs.
   await writeFile(
     path.join(dir, 'contact.json'),
-    JSON.stringify({ businessName, contactName, contactEmail, sessionId: payload?.data?.fields ? get(map, 'session_id') : undefined }, null, 2),
+    JSON.stringify(
+      {
+        businessName,
+        contactName,
+        contactEmail,
+        sessionId: payload?.data?.fields ? get(map, 'session_id') : undefined,
+        // Raw Tally self-report status, read by build-resend-payload.mjs's
+        // access-request mode to decide which (if any) access to ask for.
+        accessStatus: {
+          gbp: get(map, 'google business profile access/status'),
+          gsc: get(map, 'google search console access/status'),
+          ga4: get(map, 'ga4 access/status'),
+        },
+      },
+      null,
+      2
+    ),
     'utf8'
   );
 

@@ -39,8 +39,10 @@ All Short/Long text unless noted, all optional, no required validation:
 - Seasonality
 - Brand/business-structure considerations (do related service lines share one site or operate separately?)
 - Google Business Profile access/status — **Multiple choice**: I have access / Client has it, can share / Not sure / No GBP yet
-- Google Search Console access/status — same options
-- GA4 access/status — same options
+- Google Search Console access/status — **Multiple choice**: I have access / I can share it / Not sure / Not set up yet
+- GA4 access/status — **Multiple choice**: I have access / I can share it / Not sure / Not set up yet
+
+These three answers double as the trigger for the automated access-request email (see `email-templates/access-request.html` and `build-resend-payload.mjs`'s `access-request` mode, wired into `intake-and-kickoff.json` right after intake). "I have access" and "Not set up yet" are both skipped (nothing to ask for); "I can share it" and "Not sure" both trigger a request for that service, worded softer for "Not sure." The client fills this form out themselves, so word each option from *their* point of view, not Scrolly's — hence "I can share it," not "Client has it, can share."
 - Existing call/form/conversion tracking (what, if anything)
 
 ## Section 3 — Enhanced Optional (never required — improves O8's value modeling only)
