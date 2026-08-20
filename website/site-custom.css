@@ -1,0 +1,196 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;800&family=Inter:wght@400;500;600;700&display=swap');
+
+:root{
+  --si-indigo:#4f46e5;
+  --si-indigo-dark:#3c34b5;
+  --si-cyan:#0891b2;
+  --si-ink:#10152b;
+  --si-ink-soft:#5c6478;
+  --si-line:#e1e5f2;
+  --si-bg-alt:#eef1fa;
+}
+
+body, input, button, select, textarea {
+  font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+}
+h1,h2,h3,h4,h5,h6,.product_title,.page-title {
+  font-family:'Manrope',sans-serif !important;
+  font-weight:800 !important;
+  color:var(--si-ink);
+}
+
+/* Buttons must not fall back to the browser's default visited-link grey */
+.btn-primary:visited, .btn:visited, a.button:visited, .single_add_to_cart_button:visited,
+.menu-cta-btn a:visited, .woocommerce a.button:visited {
+  color:#fff !important;
+}
+/* Nav links must not fall back to the browser's default visited-link color either */
+.nav-links a, .nav-links a:visited, .site-header nav a:visited, .main-navigation a:visited {
+  color:var(--si-ink-soft) !important;
+}
+/* The inverted buttons on gradient backgrounds (white bg, indigo text) need the opposite fix */
+.section-gradient .btn-primary:visited, .final-cta .btn-primary:visited {
+  color:var(--si-indigo) !important;
+}
+
+/* Logo: two-tone "Scrolly" + "SEO" to match homepage */
+.site-branding .site-title a {
+  font-size:0;
+  line-height:1;
+  display:inline-block;
+  text-decoration:none;
+}
+.site-branding .site-title a::before {
+  content:"Scrolly";
+  font-size:1.3rem;
+  font-weight:800;
+  color:var(--si-ink);
+  font-family:'Manrope',sans-serif;
+}
+.site-branding .site-title a::after {
+  content:"SEO";
+  font-size:1.3rem;
+  font-weight:800;
+  color:var(--si-indigo);
+  font-family:'Manrope',sans-serif;
+}
+
+/* Header bar + rainbow strip under it, matching homepage */
+.site-header {
+  position:relative;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  flex-wrap:wrap;
+  background:rgba(245,247,252,.92);
+  backdrop-filter:saturate(160%) blur(8px);
+  border-bottom:none;
+  padding:14px max(24px, calc((100% - 1160px)/2));
+}
+.site-header::after {
+  content:"";
+  position:absolute;
+  left:0; right:0; bottom:-4px;
+  height:4px;
+  background:linear-gradient(90deg,var(--si-indigo),#2563eb,var(--si-cyan),#7c3aed,#db2777);
+}
+
+.site-header nav a, .main-navigation a {
+  color:var(--si-ink-soft) !important;
+  font-weight:600;
+  font-size:.92rem;
+  text-decoration:none;
+}
+.site-header nav a:hover {
+  color:var(--si-indigo) !important;
+}
+
+.menu-cta-btn a {
+  background:var(--si-indigo) !important;
+  color:#fff !important;
+  padding:10px 22px !important;
+  border-radius:999px !important;
+  font-weight:700 !important;
+}
+.menu-cta-btn a:hover {
+  background:var(--si-indigo-dark) !important;
+}
+
+/* Hide breadcrumb, category/meta, and quantity selector for a cleaner product page */
+.woocommerce-breadcrumb {
+  display:none !important;
+}
+.product_meta, span.posted_in {
+  display:none !important;
+}
+.woocommerce div.product form.cart .quantity {
+  display:none !important;
+}
+
+.price, p.price, .woocommerce-Price-amount {
+  color:var(--si-indigo) !important;
+  font-family:'Manrope',sans-serif;
+  font-weight:800;
+}
+
+.woocommerce a.button, .woocommerce button.button, .woocommerce input.button,
+.single_add_to_cart_button, .added_to_cart {
+  background:var(--si-indigo) !important;
+  border-color:var(--si-indigo) !important;
+  color:#fff !important;
+  border-radius:999px !important;
+  font-weight:700 !important;
+  padding:14px 30px !important;
+  box-shadow:0 10px 24px rgba(79,70,229,.28);
+  transition:transform .12s ease, background .12s ease;
+  border-width:1.5px;
+}
+.woocommerce a.button:hover, .woocommerce button.button:hover, .woocommerce input.button:hover,
+.single_add_to_cart_button:hover {
+  background:var(--si-indigo-dark) !important;
+  border-color:var(--si-indigo-dark) !important;
+  transform:translateY(-2px);
+}
+
+/* Tabs: modern pill switcher instead of thin underline */
+.woocommerce-tabs ul.tabs, ul.wc-tabs {
+  border-bottom:none;
+  background:var(--si-bg-alt);
+  padding:6px;
+  margin:0 0 32px;
+  display:inline-flex;
+  gap:4px;
+  list-style:none;
+  border-radius:999px;
+}
+.woocommerce-tabs ul.tabs li, ul.wc-tabs li {
+  background:none !important;
+  border:none !important;
+  margin:0 !important;
+  padding:0 !important;
+}
+.woocommerce-tabs ul.tabs li:before, ul.wc-tabs li:before { display:none !important; }
+.woocommerce-tabs ul.tabs li a, ul.wc-tabs li a {
+  display:inline-block;
+  padding:10px 22px;
+  font-family:'Manrope',sans-serif;
+  font-weight:700;
+  font-size:.92rem;
+  color:var(--si-ink-soft);
+  border-radius:999px;
+  text-decoration:none;
+  transition:background .12s ease, color .12s ease;
+}
+.woocommerce-tabs ul.tabs li.active a, ul.wc-tabs li.active a {
+  background:#fff;
+  color:var(--si-indigo);
+  box-shadow:0 4px 14px rgba(16,21,43,.1);
+}
+.woocommerce-Tabs-panel, .woocommerce-tabs .panel {
+  border:none !important;
+  padding:0 !important;
+}
+.woocommerce-Tabs-panel h2 {
+  font-size:1.5rem;
+  margin-bottom:16px;
+}
+.woocommerce-Tabs-panel p {
+  color:var(--si-ink-soft);
+  line-height:1.6;
+}
+
+.woocommerce div.product div.images img {
+  border-radius:20px;
+}
+
+.content-area, .site-content, main#main {
+  max-width:1160px;
+  margin:0 auto;
+  padding-left:24px;
+  padding-right:24px;
+  box-sizing:border-box;
+}
+
+.site-footer, footer {
+  padding:14px max(24px, calc((100% - 1160px)/2));
+}

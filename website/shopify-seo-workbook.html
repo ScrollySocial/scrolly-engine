@@ -1,0 +1,976 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shopify SEO Workbook: Build Your Store's SEO Strategy | Scrolly SEO</title>
+<meta name="description" content="A guided, 29-section Shopify SEO workbook with 27 worksheets and 13 Ask AI prompts. Build your own keyword universe, site architecture, content system, and 90-day SEO plan. Just $59.">
+<link rel="canonical" href="https://www.scrollyseo.com/shopify-seo-workbook.html">
+
+<meta property="og:type" content="product">
+<meta property="og:title" content="Shopify SEO Workbook: Build Your Store's SEO Strategy">
+<meta property="og:description" content="A guided, 29-section Shopify SEO workbook with 27 worksheets and 13 Ask AI prompts. Build your own keyword universe, site architecture, content system, and 90-day SEO plan. Just $59.">
+<meta property="og:url" content="https://www.scrollyseo.com/shopify-seo-workbook.html">
+<!-- TODO: add og:image (an exported PNG of the workbook cover) before publish -->
+<meta name="twitter:card" content="summary_large_image">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Product",
+  "name": "Shopify SEO Workbook",
+  "description": "A guided, 29-section workbook that helps Shopify store owners build their own organic search strategy: keyword research, site architecture, product and collection SEO, content planning, technical SEO, Google product visibility, AI search readiness, and a 90-day implementation plan.",
+  "brand": {"@type": "Brand", "name": "Scrolly SEO"},
+  "offers": {
+    "@type": "Offer",
+    "price": "59.00",
+    "priceCurrency": "USD",
+    "url": "https://www.scrollyseo.com/shopify-seo-workbook.html"
+  }
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#f5f7fc; --bg-alt:#eef1fa; --surface:#ffffff; --ink:#10152b; --ink-soft:#5c6478; --line:#e1e5f2;
+    --indigo:#4f46e5; --indigo-dark:#3c34b5; --indigo-bg:#edeafe;
+    --blue:#2563eb; --blue-bg:#e7f0fe;
+    --cyan:#0891b2; --cyan-bg:#e1f6fb;
+    --violet:#7c3aed; --violet-bg:#f2ecfe;
+    --pink:#db2777; --pink-bg:#fde7f2;
+    --mint:#0d9488; --mint-bg:#dff5f1;
+    --amber:#d97706; --amber-bg:#fdf0dc;
+    --red:#dc2626; --red-bg:#fde8e8;
+    --gray:#6b7280; --gray-bg:#eef0f4;
+    --radius:16px; --maxw:none;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0;font-family:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink);background:var(--surface);line-height:1.55;}
+  img,svg{max-width:100%;display:block;}
+  a{color:inherit;}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 clamp(24px,4vw,96px);}
+  h1,h2,h3,h4{font-family:"Manrope",sans-serif;font-weight:800;line-height:1.12;margin:0 0 .5em;color:var(--ink);letter-spacing:-.02em;}
+  h1{font-size:clamp(2.3rem,4.6vw,3.55rem);}
+  h2{font-size:clamp(1.9rem,3.6vw,2.6rem);}
+  h3{font-size:1.25rem;margin-bottom:.5em;}
+  h4{font-size:1rem;margin-bottom:.3em;}
+  p{margin:0 0 1em;}
+  section{padding:84px 0;}
+  .section-white{background:var(--surface);}
+  .section-tint{background:var(--bg-alt);}
+  .section-dark{background:var(--ink);color:#e7e9f5;}
+  .section-dark h2,.section-dark h3{color:#fff;}
+  .section-gradient{background:linear-gradient(120deg,#3730a3 0%,#4f46e5 45%,#0891b2 100%);color:#fff;}
+  .section-gradient h2{color:#fff;}
+  .section-pricing{background:linear-gradient(180deg,#eef0fe 0%,#e5f6fb 100%);}
+  .lede{font-size:1.13rem;color:var(--ink-soft);max-width:620px;margin-bottom:1.5em;}
+  .section-dark .lede{color:#b6bcd8;}
+  .section-gradient .lede{color:#e4e8ff;}
+  .center{text-align:center;margin-left:auto;margin-right:auto;}
+  .eyebrow{display:inline-block;font-size:clamp(.92rem,1.5vw,1.02rem);font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--indigo);margin-bottom:18px;}
+  .section-gradient .eyebrow{color:#c7d2fe;}
+  .head-center{text-align:center;max-width:740px;margin:0 auto 46px;}
+  .head-center .lede{margin-left:auto;margin-right:auto;}
+  .color-strip{height:4px;background:linear-gradient(90deg,var(--indigo),var(--blue),var(--cyan),var(--violet),var(--pink));}
+
+  code{font-family:ui-monospace,"SF Mono",Menlo,monospace;}
+
+  /* Buttons */
+  .btn{display:inline-block;padding:16px 30px;border-radius:999px;font-weight:800;text-decoration:none;font-size:.98rem;border:1.5px solid transparent;transition:transform .12s ease, box-shadow .12s ease;font-family:"Manrope",sans-serif;}
+  .btn:hover{transform:translateY(-2px);}
+  .btn-primary{background:var(--indigo);color:#fff;box-shadow:0 10px 24px rgba(79,70,229,.28);}
+  .btn-primary:hover{background:var(--indigo-dark);box-shadow:0 12px 28px rgba(79,70,229,.34);}
+  .btn-outline{border-color:var(--line);color:var(--ink);}
+  .btn-outline:hover{border-color:var(--indigo);color:var(--indigo);}
+  .cta-note{font-size:.82rem;color:var(--ink-soft);margin-top:10px;}
+  .section-gradient .btn-primary,.final-cta .btn-primary,.section-pricing .price-card .btn-primary{background:#fff;color:var(--indigo);box-shadow:0 14px 30px rgba(16,21,43,.22);}
+  .section-gradient .btn-primary:hover,.final-cta .btn-primary:hover{background:#f2f4ff;}
+
+  /* Header */
+  header.site{position:sticky;top:0;z-index:30;background:rgba(245,247,252,.9);backdrop-filter:saturate(160%) blur(8px);border-bottom:1px solid var(--line);}
+  header.site .wrap{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:20px;padding-top:14px;padding-bottom:14px;}
+  .brand{font-family:"Manrope",sans-serif;font-weight:800;font-size:1.2rem;color:var(--ink);text-decoration:none;display:flex;align-items:center;gap:9px;}
+  .brand span{background:linear-gradient(135deg,var(--indigo),var(--cyan));-webkit-background-clip:text;background-clip:text;color:transparent;}
+  header.site .btn{padding:10px 20px;font-size:.84rem;}
+  .cta-link{font-family:"Manrope",sans-serif;font-weight:700;font-size:.92rem;color:var(--indigo);text-decoration:underline;text-decoration-color:var(--indigo-bg);text-underline-offset:3px;}
+  .cta-link:hover{text-decoration-color:var(--indigo);}
+  .section-gradient .cta-link{color:#fff;text-decoration-color:rgba(255,255,255,.4);}
+  .nav-links{display:flex;gap:24px;font-size:.86rem;font-weight:600;color:var(--ink-soft);justify-self:center;}
+  .nav-links a{text-decoration:none;}
+  .nav-links a:hover{color:var(--indigo);}
+
+  /* Hero */
+  .hero{position:relative;overflow:hidden;padding:56px 0 60px;background:linear-gradient(180deg,#eef1fc 0%,var(--surface) 78%);}
+  .hero .wrap{position:relative;z-index:1;display:grid;grid-template-columns:1.05fr .95fr;gap:48px;align-items:center;}
+  .hero .wrap > div{min-width:0;}
+  .blob{position:absolute;border-radius:50%;filter:blur(90px);opacity:.16;z-index:0;pointer-events:none;}
+  .blob-1{width:520px;height:520px;background:var(--blue);top:-240px;right:-180px;}
+  .tagline{font-family:"Manrope",sans-serif;font-weight:700;font-style:italic;color:#0a6a79;font-size:1.05rem;margin:2px 0 16px;}
+  .hero-actions{margin-top:26px;display:flex;flex-wrap:wrap;gap:14px;align-items:center;}
+  .trust-line{margin-top:22px;font-size:.86rem;color:var(--ink-soft);font-weight:600;}
+  .trust-line b{color:var(--ink);}
+  .trust-line span{margin:0 4px;color:var(--line);}
+  .hero-visual{display:flex;justify-content:center;}
+
+  /* ===== wb-embed: scoped, screen-adapted reproduction of the real workbook design system (workbook.css) ===== */
+  .wb-embed{
+    --radius:14px;
+    font-family:"Inter",-apple-system,"Segoe UI",sans-serif; line-height:1.55; font-size:10.6pt; color:var(--ink);
+  }
+  .wb-embed h1,.wb-embed h2,.wb-embed h3,.wb-embed h4{font-family:"Manrope",sans-serif;font-weight:800;line-height:1.15;margin:0 0 .4em;color:var(--ink);letter-spacing:-0.01em;}
+  .wb-embed p{margin:0 0 .85em;}
+  .wb-embed strong{color:var(--ink);}
+  .wb-embed em{color:inherit;}
+  .wb-embed a{color:var(--blue);}
+  .wb-embed .content-wrap{max-width:100%;}
+  .wb-embed .eyebrow{display:inline-block;font-family:"Manrope",sans-serif;font-weight:800;font-size:8.2pt;letter-spacing:.07em;text-transform:uppercase;padding:4px 11px;border-radius:999px;margin-bottom:12px;}
+  .wb-embed .eyebrow.indigo{color:var(--indigo);background:var(--indigo-bg);}
+  .wb-embed .eyebrow.cyan{color:var(--cyan);background:var(--cyan-bg);}
+  .wb-embed .eyebrow.violet{color:var(--violet);background:var(--violet-bg);}
+  .wb-embed .rhythm{font-family:"Manrope",sans-serif;font-weight:800;font-size:8pt;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-soft);margin:20px 0 8px;}
+  .wb-embed .callout{border-left:4px solid var(--indigo);background:var(--indigo-bg);border-radius:0 10px 10px 0;padding:12px 16px;margin:14px 0;}
+  .wb-embed .callout .cl-label{font-family:"Manrope",sans-serif;font-weight:800;font-size:8.4pt;letter-spacing:.05em;text-transform:uppercase;color:var(--indigo);margin-bottom:4px;}
+  .wb-embed .callout p{font-size:9.6pt;margin:0;color:var(--ink);}
+  .wb-embed .callout.mint{border-color:var(--mint);background:var(--mint-bg);} .wb-embed .callout.mint .cl-label{color:var(--mint);}
+  .wb-embed .worksheet{border:1.4px solid var(--indigo);border-radius:var(--radius);overflow:hidden;margin:0;}
+  .wb-embed .ws-bar{background:var(--indigo);color:#fff;padding:9px 18px;display:flex;align-items:center;gap:8px;font-family:"Manrope",sans-serif;font-weight:800;font-size:9.4pt;letter-spacing:.03em;}
+  .wb-embed .ws-body{padding:16px 22px 6px;background:var(--surface);}
+  .wb-embed .ws-group{font-family:"Manrope",sans-serif;font-weight:800;font-size:9.6pt;color:var(--indigo-dark);margin:14px 0 8px;}
+  .wb-embed .ws-group:first-child{margin-top:0;}
+  .wb-embed .ws-item{display:flex;align-items:flex-start;gap:9px;padding:5px 0;border-bottom:1px dashed var(--line);font-size:9.4pt;}
+  .wb-embed .ws-item:last-child{border-bottom:none;}
+  .wb-embed .chk{flex:0 0 auto;width:13px;height:13px;border-radius:3px;border:1.5px solid var(--ink-soft);margin-top:2px;}
+  .wb-embed .field-label{font-family:"Inter";font-weight:600;font-size:9.4pt;color:var(--ink);margin:8px 0 3px;}
+  .wb-embed .field-blank{border-bottom:1px solid var(--line);min-height:18px;margin-bottom:8px;}
+  .wb-embed .askai{border-left:4px solid var(--violet);background:var(--violet-bg);border-radius:0 var(--radius) var(--radius) 0;padding:14px 18px;margin:0;}
+  .wb-embed .askai .ai-label{display:flex;align-items:center;gap:7px;font-family:"Manrope",sans-serif;font-weight:800;font-size:8.6pt;letter-spacing:.05em;text-transform:uppercase;color:var(--violet);margin-bottom:9px;}
+  .wb-embed .prompt-card{background:#fff;border:1.4px dashed #c9b8f5;border-radius:9px;padding:11px 15px;font-size:9.4pt;color:var(--ink);font-style:italic;margin-bottom:8px;}
+  .wb-embed .prompt-label{font-family:"Manrope";font-weight:700;font-size:8.6pt;color:var(--violet);text-transform:none;font-style:normal;margin-bottom:4px;display:block;}
+  .wb-embed .ai-guard{font-size:8.8pt;color:var(--ink-soft);margin:0;}
+  .wb-embed table{width:100%;border-collapse:collapse;margin:12px 0 18px;font-size:9pt;max-width:100%;}
+  .wb-embed table th{background:var(--bg-alt);text-align:left;font-family:"Inter";font-weight:700;text-transform:uppercase;font-size:7.4pt;letter-spacing:.03em;color:var(--ink-soft);padding:8px 10px;border-bottom:2px solid var(--line);}
+  .wb-embed table td{padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:top;color:var(--ink);}
+  .wb-embed table tr:last-child td{border-bottom:none;}
+  .wb-embed .triage-group{margin-bottom:14px;}
+  .wb-embed .triage-head{display:flex;align-items:center;gap:8px;font-family:"Manrope",sans-serif;font-weight:800;font-size:9.4pt;text-transform:uppercase;letter-spacing:.03em;margin-bottom:7px;padding-bottom:5px;border-bottom:2px solid var(--line);}
+  .wb-embed .dot-lg{width:10px;height:10px;border-radius:50%;flex:0 0 auto;}
+  .wb-embed .triage-row{display:flex;align-items:center;gap:9px;padding:5px 0;font-size:9.4pt;}
+  .wb-embed table.rmap{font-size:8.8pt;}
+  .wb-embed .week-badge{display:inline-flex;align-items:center;justify-content:center;min-width:26px;height:26px;border-radius:7px;background:var(--indigo);color:#fff;font-family:"Manrope";font-weight:800;font-size:9pt;}
+  .wb-embed .effort{display:inline-flex;gap:2px;vertical-align:middle;margin-right:5px;}
+  .wb-embed .effort span{width:6px;height:6px;border-radius:50%;background:var(--line);}
+  .wb-embed .eff-quick span:nth-child(1){background:var(--mint);}
+  .wb-embed .eff-mod span:nth-child(1),.wb-embed .eff-mod span:nth-child(2){background:var(--amber);}
+  .wb-embed .eff-sub span{background:var(--red);}
+  .wb-embed .sec-pill{display:inline-block;background:var(--gray-bg);color:var(--ink-soft);font-weight:700;font-size:7.4pt;border-radius:999px;padding:2px 8px;margin:1px 2px 0 0;}
+  .wb-embed figure.diagram{margin:0;max-width:100%;}
+  .wb-embed figure.diagram svg{width:100%;height:auto;display:block;}
+  .wb-embed figcaption{font-size:8.6pt;color:var(--ink-soft);margin-top:10px;}
+  .wb-embed .legend2{display:grid;grid-template-columns:1fr 1fr;gap:9px 20px;margin-top:18px;}
+  .wb-embed .leg-item{display:flex;align-items:flex-start;gap:9px;font-size:9pt;}
+  .wb-embed .leg-num{flex:0 0 auto;width:21px;height:21px;border-radius:50%;background:linear-gradient(135deg,#4f46e5,#0891b2);color:#fff;display:flex;align-items:center;justify-content:center;font-family:"Manrope";font-weight:800;font-size:8pt;}
+  .wb-embed .leg-item b{display:block;color:var(--ink);}
+  .wb-embed .leg-item span{color:var(--ink-soft);font-size:8.2pt;}
+  .wb-embed .cover2{background:linear-gradient(150deg,#332d99 0%,#4f46e5 38%,#0e7fa6 78%,#0891b2 100%);position:relative;height:11in;width:8.5in;overflow:hidden;border-radius:22px;}
+  .wb-embed .cover2-grid{position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.10) 1px, transparent 1px);background-size:22px 22px;opacity:.5;}
+  .wb-embed .cover2-stage{position:relative;height:8.6in;padding:.9in .85in 0;color:#fff;}
+  .wb-embed .c2-eyebrow{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.28);border-radius:999px;padding:5px 13px 5px 9px;font-family:"Manrope";font-weight:700;font-size:8.6pt;letter-spacing:.03em;}
+  .wb-embed .c2-eyebrow .sw{width:14px;height:14px;border-radius:4px;background:linear-gradient(135deg,#fff,#bcd7ff);display:inline-block;}
+  .wb-embed .c2-h1{font-family:"Manrope";font-weight:800;font-size:38pt;line-height:1.03;letter-spacing:-.02em;margin:20px 0 12px;}
+  .wb-embed .c2-h1 .accent{background:linear-gradient(100deg,#bcd7ff,#a6f3e6);-webkit-background-clip:text;background-clip:text;color:transparent;}
+  .wb-embed .c2-sub{font-size:13pt;color:#dbe3ff;font-weight:500;max-width:4.3in;}
+  .wb-embed .c2-card{position:absolute;background:#fff;border-radius:12px;box-shadow:0 20px 40px rgba(16,21,43,.34);padding:12px 14px;color:var(--ink);}
+  .wb-embed .c2-card h5{font-family:"Manrope";font-weight:800;font-size:7.4pt;text-transform:uppercase;letter-spacing:.04em;color:var(--ink-soft);margin:0 0 6px;}
+  .wb-embed .card-kw{top:1.15in;right:.5in;width:2in;transform:rotate(4deg);}
+  .wb-embed .card-kw .row{display:flex;align-items:center;gap:6px;font-size:8pt;padding:2px 0;color:var(--ink);}
+  .wb-embed .card-kw .row span.d{width:5px;height:5px;border-radius:50%;background:var(--indigo);flex:0 0 auto;}
+  .wb-embed .card-arch{top:3.35in;right:1.65in;width:2in;transform:rotate(-6deg);}
+  .wb-embed .card-arch svg{width:100%;height:60px;display:block;}
+  .wb-embed .card-chk{top:2.6in;right:-.2in;width:1.65in;transform:rotate(9deg);}
+  .wb-embed .card-chk .ci{display:flex;align-items:center;gap:7px;font-size:7.8pt;padding:2px 0;}
+  .wb-embed .card-chk .ci .b{width:12px;height:12px;border-radius:3px;background:var(--mint);flex:0 0 auto;position:relative;}
+  .wb-embed .card-chk .ci .b::after{content:"";position:absolute;left:3px;top:1px;width:4px;height:6px;border:solid #fff;border-width:0 2px 2px 0;transform:rotate(40deg);}
+  .wb-embed .card-serp{top:5.3in;right:.65in;width:2.3in;transform:rotate(-3deg);}
+  .wb-embed .card-serp .url{font-size:6.4pt;color:var(--mint);margin-bottom:2px;}
+  .wb-embed .card-serp .t{font-size:8.4pt;color:var(--blue);font-weight:700;margin-bottom:3px;}
+  .wb-embed .card-serp .d{font-size:7pt;color:var(--ink-soft);}
+  .wb-embed .cover2-base{background:var(--surface);padding:.4in .85in;display:flex;align-items:center;justify-content:space-between;position:relative;z-index:2;height:1.4in;}
+  .wb-embed .wordmark{font-family:"Manrope";font-weight:800;font-size:14pt;}
+  .wb-embed .wordmark .seo{background:linear-gradient(135deg,var(--indigo),var(--cyan));-webkit-background-clip:text;background-clip:text;color:transparent;}
+  .wb-embed .cover2-stats{display:flex;gap:20px;}
+  .wb-embed .c2-stat{text-align:right;}
+  .wb-embed .c2-stat b{display:block;font-family:"Manrope";font-weight:800;color:var(--indigo);font-size:11pt;}
+  .wb-embed .c2-stat small{font-size:6.6pt;color:var(--ink-soft);font-weight:600;text-transform:uppercase;letter-spacing:.03em;}
+
+  /* thumb frames that host wb-embed content at real-page fidelity, scaled to fit the sales page */
+  .wb-cover-thumb{--wbs:.4;position:relative;overflow:hidden;border-radius:22px;width:calc(816px * var(--wbs));height:calc(1056px * var(--wbs));flex:0 0 auto;filter:drop-shadow(0 30px 60px rgba(16,21,43,.35));}
+  .wb-cover-thumb .wb-embed{width:816px;transform:scale(var(--wbs));transform-origin:top left;}
+  @media (max-width:900px){ .wb-cover-thumb{--wbs:.33;} }
+  @media (max-width:520px){ .wb-cover-thumb{--wbs:.29;margin:0 auto;} }
+
+  .wb-thumb{--wbs:.62;--wn:700px;--hn:480px;position:relative;overflow:hidden;width:min(calc(var(--wn) * var(--wbs)), 88vw);height:calc(var(--hn) * var(--wbs));border-radius:18px;background:#fff;box-shadow:0 20px 44px rgba(16,21,43,.14);border:1px solid var(--line);flex:0 0 auto;}
+  .wb-thumb .wb-embed{width:var(--wn);transform:scale(var(--wbs));transform-origin:top left;position:absolute;top:0;left:0;}
+  .wb-thumb .wb-embed-pad{padding:24px;}
+  .wb-thumb .wb-fade{position:absolute;left:0;right:0;bottom:0;height:60px;background:linear-gradient(to bottom, rgba(255,255,255,0), #fff);pointer-events:none;}
+  .wb-thumb .wb-tag{position:absolute;top:13px;left:13px;z-index:5;background:rgba(16,21,43,.82);color:#fff;font-family:"Manrope",sans-serif;font-weight:800;font-size:.64rem;letter-spacing:.04em;text-transform:uppercase;padding:5px 11px;border-radius:999px;}
+  @media (max-width:640px){ .wb-thumb{--wbs:.5;} }
+  @media (max-width:400px){ .wb-thumb{--wbs:.4;} }
+
+  /* ===== Problem: asymmetric split, scattered chaos → order ===== */
+  .problem-split{display:grid;grid-template-columns:1.05fr .95fr;gap:56px;align-items:center;}
+  .problem-split > div{min-width:0;}
+  .problem-split .lede{margin-left:0;margin-right:0;}
+  .problem-visual{display:flex;flex-direction:column;align-items:center;}
+  .search-mock{width:100%;max-width:420px;background:#fff;border:1px solid var(--line);border-radius:18px;box-shadow:0 24px 50px rgba(16,21,43,.12);overflow:hidden;}
+  .search-mock-bar{display:flex;align-items:center;gap:12px;padding:18px 20px;border-bottom:1px solid var(--line);color:var(--ink-soft);}
+  .search-mock-bar span{font-size:1rem;color:var(--ink);font-weight:500;}
+  .search-mock-bar .cursor{display:inline-block;width:1.5px;height:17px;background:var(--indigo);margin-left:2px;vertical-align:-3px;}
+  .search-suggestions{padding:6px 0;}
+  .sg-row{display:flex;align-items:center;gap:12px;padding:10px 20px;font-size:.88rem;color:var(--ink-soft);}
+  .sg-row svg{flex:0 0 auto;opacity:.55;}
+  .sg-row b{color:var(--ink);font-weight:600;}
+  .search-mock-caption{margin-top:18px;font-size:.86rem;color:var(--ink-soft);text-align:center;}
+  @media (max-width:900px){ .problem-split{grid-template-columns:1fr;gap:32px;} }
+
+  /* ===== The System chain ===== */
+  .chain-row{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:34px;}
+  .chain-pill{display:flex;align-items:center;gap:8px;background:var(--mint-bg);border:1px solid #b6e6de;border-radius:999px;padding:9px 16px 9px 10px;font-weight:700;font-size:.86rem;color:#0a5c53;white-space:nowrap;}
+  .chain-pill .ck{width:16px;height:16px;border-radius:50%;background:var(--mint);position:relative;flex:0 0 auto;}
+  .chain-pill .ck::after{content:"";position:absolute;left:5px;top:3px;width:4px;height:8px;border:solid #fff;border-width:0 2px 2px 0;transform:rotate(40deg);}
+  .chain-arrow{color:var(--line);font-size:1rem;flex:0 0 auto;}
+  .chain-final{background:linear-gradient(120deg,#4f46e5,#0891b2);color:#fff;border-radius:999px;padding:11px 22px 11px 16px;font-family:"Manrope",sans-serif;font-weight:800;font-size:.9rem;box-shadow:0 14px 30px rgba(79,70,229,.28);white-space:nowrap;}
+
+  /* ===== Built gallery ===== */
+  .gallery-row{display:flex;flex-wrap:wrap;gap:28px;justify-content:center;margin-top:8px;}
+  .gallery-item{display:flex;flex-direction:column;align-items:center;gap:14px;max-width:calc(var(--wn,700px) * var(--wbs,.62));}
+  .gallery-item h4{font-size:.98rem;text-align:center;}
+  .gallery-item p{font-size:.84rem;color:var(--ink-soft);text-align:center;max-width:280px;margin:0;}
+
+  /* ===== Ask AI section ===== */
+  .copilot-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:52px;align-items:center;}
+  .copilot-grid > div{min-width:0;}
+  .copilot-note{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:22px 26px;margin-top:18px;font-size:.92rem;color:var(--ink-soft);}
+  .copilot-note b{color:var(--ink);}
+
+  /* ===== orbit6 (reused from $299 page) ===== */
+  .orbit6-wrap{max-width:480px;margin:44px auto 0;}
+  .orbit6{position:relative;width:100%;aspect-ratio:1/1;}
+  .orbit6-svg{position:absolute;inset:0;width:100%;height:100%;z-index:0;}
+  .orbit6-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:30%;height:30%;border-radius:50%;background:#fff;color:var(--indigo);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;font-family:"Manrope",sans-serif;font-weight:800;font-size:.78rem;box-shadow:0 0 0 7px rgba(255,255,255,.2),0 20px 46px rgba(0,0,0,.3);z-index:2;}
+  .orbit6-center svg{width:24px;height:24px;margin-bottom:4px;}
+  .orbit6-node{position:absolute;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:9px;z-index:1;}
+  .orbit6-node .circle{width:54px;height:54px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:#fff;box-shadow:0 12px 26px rgba(16,21,43,.22);}
+  .orbit6-node .circle svg{width:22px;height:22px;}
+  .orbit6-node span{font-size:.74rem;font-weight:700;color:#fff;white-space:nowrap;}
+
+  /* ===== Value section (fragment chain) ===== */
+  .value-split{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center;}
+  .value-split > div{min-width:0;}
+  .value-split .btn-primary{margin-top:10px;}
+  .value-visual{display:flex;flex-direction:column;align-items:center;}
+  .tab-cluster{position:relative;width:100%;max-width:440px;min-height:230px;}
+  .tab-chip{position:absolute;display:inline-flex;align-items:center;gap:9px;background:#fff;border:1px solid var(--line);border-radius:9px;padding:9px 14px;font-size:.8rem;font-weight:600;color:var(--ink-soft);box-shadow:0 10px 22px rgba(16,21,43,.08);white-space:nowrap;}
+  .tab-chip .dot{width:8px;height:8px;border-radius:50%;flex:0 0 auto;}
+  .value-arrow{color:var(--line);font-size:1.5rem;margin:8px 0 16px;}
+  .value-final{display:flex;align-items:center;gap:14px;background:linear-gradient(120deg,#4f46e5,#0891b2);border-radius:16px;padding:18px 24px;box-shadow:0 20px 44px rgba(79,70,229,.28);}
+  .vf-icon{width:42px;height:42px;border-radius:11px;background:rgba(255,255,255,.18);display:flex;align-items:center;justify-content:center;flex:0 0 auto;}
+  .vf-copy{display:flex;flex-direction:column;color:#fff;}
+  .vf-copy b{font-family:"Manrope",sans-serif;font-weight:800;font-size:1.02rem;}
+  .vf-copy span{font-size:.84rem;color:#dbe3ff;font-weight:600;}
+  @media (max-width:900px){ .value-split{grid-template-columns:1fr;gap:32px;} }
+  @media (max-width:640px){
+    .tab-cluster, .value-visual .tab-cluster{position:static;display:flex;flex-wrap:wrap;gap:8px;min-height:0;justify-content:center;margin-bottom:16px;}
+    .tab-chip{position:static !important;transform:none !important;}
+  }
+
+  /* ===== Rented vs owned table ===== */
+  .rvo-table{width:100%;border-collapse:collapse;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;}
+  .rvo-table th,.rvo-table td{padding:16px 20px;text-align:left;font-size:.92rem;border-bottom:1px solid var(--line);vertical-align:top;}
+  .rvo-table th{background:var(--bg-alt);font-family:"Manrope",sans-serif;font-size:.86rem;color:var(--ink-soft);}
+  .rvo-table td.owned{background:var(--mint-bg);}
+  .rvo-table tr:last-child td{border-bottom:none;}
+  .rvo-scroll{overflow-x:auto;}
+
+  /* ===== finished artifact ===== */
+  .finished-grid{display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:start;}
+  .finished-grid > div{min-width:0;}
+  .finished-grid .wb-thumb{overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;}
+
+  /* ===== fit split (who it's for), reused pattern ===== */
+  .fit-split{display:grid;grid-template-columns:.85fr 1.15fr;gap:56px;align-items:start;}
+  .fit-split > div{min-width:0;}
+  .fit-cards{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+  .fit-usecase{border-radius:var(--radius);padding:24px 22px;border:1px solid var(--line);}
+  .fit-usecase p{font-size:.9rem;color:var(--ink-soft);margin:0;}
+  .fit-usecase b{display:block;font-family:"Manrope",sans-serif;color:var(--ink);margin-bottom:6px;}
+  .not-for{margin-top:22px;padding:18px 20px;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);}
+  .not-for h4{margin-bottom:8px;}
+  .not-for ul{margin:0;padding-left:20px;color:var(--ink-soft);font-size:.88rem;}
+
+  /* ===== Price ===== */
+  .price-card{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:40px 44px 34px;margin:16px auto 0;max-width:600px;text-align:center;box-shadow:0 24px 60px rgba(16,21,43,.1);}
+  .price-list{list-style:none;margin:0 0 22px;padding:0;text-align:left;}
+  .price-list li{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--bg-alt);font-size:.96rem;}
+  .price-list li:last-child{border-bottom:none;}
+  .price-list .chk2{width:20px;height:20px;border-radius:6px;background:var(--mint-bg);color:var(--mint);font-size:.7rem;font-weight:800;display:flex;align-items:center;justify-content:center;flex:0 0 auto;}
+  .price-amount{display:flex;flex-direction:column;align-items:center;background:linear-gradient(135deg,var(--indigo-bg),var(--cyan-bg));border-radius:16px;padding:26px 20px 30px;margin-bottom:22px;}
+  .price-amount span{font-weight:700;color:var(--ink-soft);font-size:.84rem;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px;}
+  .price-amount b{font-family:"Manrope",sans-serif;font-size:clamp(3rem,6vw,3.8rem);color:var(--indigo);line-height:1;}
+  .price-amount .sub{font-size:.85rem;color:var(--ink-soft);font-weight:600;margin-top:8px;}
+  .delivery-note{display:flex;gap:10px;align-items:flex-start;background:var(--bg-alt);border-radius:12px;padding:14px 16px;margin-top:22px;font-size:.84rem;color:var(--ink-soft);text-align:left;}
+
+  /* ===== Ladder ===== */
+  .ladder{display:flex;gap:0;margin:20px auto 0;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;max-width:760px;box-shadow:0 10px 28px rgba(16,21,43,.05);}
+  .ladder-step{flex:1;padding:30px 28px;background:var(--surface);position:relative;}
+  .ladder-step + .ladder-step{border-left:1px solid var(--line);}
+  .ladder-step.active{background:linear-gradient(160deg,var(--indigo-bg),#fff 70%);}
+  .ladder-step .ls-tag{font-family:"Manrope",sans-serif;font-weight:800;font-size:.72rem;letter-spacing:.05em;text-transform:uppercase;color:var(--indigo);margin-bottom:10px;}
+  .ladder-step.step-analyze .ls-tag{color:var(--cyan);}
+  .ladder-step .ls-price{font-family:"Manrope",sans-serif;font-weight:800;font-size:1.7rem;color:var(--ink);margin-bottom:6px;}
+  .ladder-step p{font-size:.9rem;color:var(--ink-soft);margin:0 0 16px;}
+  @media (max-width:700px){ .ladder{flex-direction:column;} .ladder-step + .ladder-step{border-left:none;border-top:1px solid var(--line);} }
+
+  /* FAQ */
+  .faq-list{max-width:740px;margin:0 auto;}
+  details{border-bottom:1px solid var(--line);padding:18px 2px;}
+  details summary{cursor:pointer;font-weight:700;color:var(--ink);list-style:none;display:flex;justify-content:space-between;align-items:center;gap:16px;font-family:"Manrope",sans-serif;font-size:1rem;}
+  details summary::-webkit-details-marker{display:none;}
+  details summary::after{content:"+";font-size:1.3rem;color:var(--indigo);font-weight:400;flex:0 0 auto;}
+  details[open] summary::after{content:"–";}
+  details p{margin-top:10px;color:var(--ink-soft);font-size:.94rem;}
+
+  /* Final CTA */
+  .final-cta{background:linear-gradient(120deg,#3730a3,#4f46e5 45%,#0891b2);color:#fff;text-align:center;padding:96px 0;}
+  .final-cta h2{color:#fff;}
+  .final-cta .lede{margin:0 auto 30px;color:#e4e8ff;}
+
+  footer{padding:36px 0;font-size:.84rem;color:var(--ink-soft);background:var(--surface);border-top:1px solid var(--line);}
+  footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;}
+  footer a{text-decoration:underline;text-decoration-color:var(--line);}
+
+  @media (max-width:980px){
+    .copilot-grid{grid-template-columns:1fr;}
+    .finished-grid{grid-template-columns:1fr;}
+  }
+  @media (max-width:900px){
+    .hero .wrap{grid-template-columns:1fr;text-align:center;}
+    .hero .hero-actions{justify-content:center;}
+    .hero .lede{margin-left:auto;margin-right:auto;}
+    .nav-links{display:none;}
+    header.site .wrap{grid-template-columns:auto auto;}
+    .fit-split{grid-template-columns:1fr;gap:32px;}
+    .fit-cards{grid-template-columns:1fr 1fr;}
+  }
+  @media (max-width:560px){
+    section{padding:60px 0;}
+    .fit-cards{grid-template-columns:1fr;}
+    .price-card{padding:32px 24px 28px;}
+    .gallery-item{max-width:100%;}
+    .rvo-table th,.rvo-table td{padding:12px 14px;font-size:.84rem;}
+    header.site .wrap{display:flex;flex-direction:column;align-items:flex-start;gap:10px;padding-top:12px;padding-bottom:12px;}
+    header.site .btn{width:100%;text-align:center;box-sizing:border-box;}
+  }
+</style>
+</head>
+<body>
+
+<header class="site">
+  <div class="wrap">
+    <a href="index.html" class="brand">Scrolly<span>SEO</span></a>
+    <nav class="nav-links">
+      <a href="#built">What You'll Build</a>
+      <a href="#inside">Inside the Workbook</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+    <a href="#pricing" class="btn btn-primary">Get the Workbook</a>
+  </div>
+</header>
+<div class="color-strip"></div>
+
+<section class="hero" id="top">
+  <div class="blob blob-1"></div>
+  <div class="wrap">
+    <div>
+      <div class="eyebrow">Shopify SEO Workbook</div>
+      <h1>Build Your Shopify SEO Strategy From Scratch</h1>
+      <div class="tagline">Build your store's organic growth system, one worksheet at a time.</div>
+      <p class="lede">A guided, 29-section workbook that replaces guesswork with a keyword universe, a site architecture, optimized pages, and a 90-day plan, built by you, for your store.</p>
+      <div class="hero-actions">
+        <a href="#pricing" class="btn btn-primary">Get the Workbook</a>
+        <a href="#inside" class="cta-link">See what's inside ↓</a>
+      </div>
+      <p class="trust-line"><b>29</b> guided sections<span>·</span><b>27</b> worksheets &amp; decision tools<span>·</span><b>13</b> Ask AI prompts<span>·</span><b>1</b> finished SEO plan</p>
+    </div>
+    <div class="hero-visual">
+      <div class="wb-cover-thumb">
+        <div class="wb-embed">
+          <div class="cover2">
+            <div class="cover2-grid"></div>
+            <div class="cover2-stage">
+              <span class="c2-eyebrow"><span class="sw"></span>SCROLLY WORKBOOK SERIES</span>
+              <div class="c2-h1" role="presentation">SHOPIFY SEO<br><span class="accent">WORKBOOK</span></div>
+              <p class="c2-sub">Build your store's organic growth system — one worksheet at a time.</p>
+              <div class="c2-card card-kw">
+                <h5>Keyword Universe</h5>
+                <div class="row"><span class="d"></span>non-toxic candles</div>
+                <div class="row"><span class="d"></span>candles for bedrooms</div>
+                <div class="row"><span class="d"></span>soy vs paraffin</div>
+              </div>
+              <div class="c2-card card-arch">
+                <h5>Site Architecture</h5>
+                <svg viewBox="0 0 190 64"><g font-family="Inter" font-size="8" fill="#10152b">
+                  <rect x="70" y="2" width="50" height="16" rx="5" fill="#edeafe" stroke="#4f46e5"/><text x="95" y="13" text-anchor="middle" font-weight="700" fill="#3c34b5">Candles</text>
+                  <line x1="95" y1="18" x2="30" y2="40" stroke="#c7cbe6"/><line x1="95" y1="18" x2="95" y2="40" stroke="#c7cbe6"/><line x1="95" y1="18" x2="160" y2="40" stroke="#c7cbe6"/>
+                  <rect x="4" y="40" width="52" height="16" rx="5" fill="#f5f7fc" stroke="#e1e5f2"/><text x="30" y="51" text-anchor="middle">Non-Toxic</text>
+                  <rect x="69" y="40" width="52" height="16" rx="5" fill="#f5f7fc" stroke="#e1e5f2"/><text x="95" y="51" text-anchor="middle">Seasonal</text>
+                  <rect x="134" y="40" width="52" height="16" rx="5" fill="#f5f7fc" stroke="#e1e5f2"/><text x="160" y="51" text-anchor="middle">Gift Sets</text>
+                </g></svg>
+              </div>
+              <div class="c2-card card-chk">
+                <h5>Technical Check</h5>
+                <div class="ci"><span class="b"></span>Sitemap submitted</div>
+                <div class="ci"><span class="b"></span>Indexing verified</div>
+                <div class="ci"><span class="b"></span>Product optimized</div>
+              </div>
+              <div class="c2-card card-serp">
+                <div class="url">juniperlanecandle.com &rsaquo; sandalwood</div>
+                <div class="t">8oz Soy Candle &ndash; Sandalwood, Amber Jar</div>
+                <div class="d">Hand-poured, non-toxic, 45+ hr burn time...</div>
+              </div>
+            </div>
+            <div class="cover2-base">
+              <div class="wordmark">Scrolly<span class="seo">SEO</span></div>
+              <div class="cover2-stats">
+                <div class="c2-stat"><b>27</b><small>Worksheets</small></div>
+                <div class="c2-stat"><b>29</b><small>Sections</small></div>
+                <div class="c2-stat"><b>1</b><small>Complete Plan</small></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section-white">
+  <div class="wrap">
+    <div class="problem-split">
+      <div>
+        <div class="eyebrow">The Problem</div>
+        <h2>There's Already Demand For What You Sell</h2>
+        <p class="lede">People are searching for products like yours right now. Ads make you pay for that traffic, click by click, whether or not the click was ever going to buy. Social media can build a warm, engaged audience, but it takes real time and content before it pays off.</p>
+        <p class="lede">Organic search puts you in front of people who are already looking to buy, without paying for that exposure and without waiting to build a following first. The hard part is knowing what to actually build first. Everyone will tell you to do all of it at once.</p>
+      </div>
+      <div class="problem-visual">
+        <div class="search-mock">
+          <div class="search-mock-bar">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.2" y2="16.2"/></svg>
+            <span>non-toxic candles for<span class="cursor"></span></span>
+          </div>
+          <div class="search-suggestions">
+            <div class="sg-row"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.2" y2="16.2"/></svg><span><b>non-toxic candles for</b> bedrooms</span></div>
+            <div class="sg-row"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.2" y2="16.2"/></svg><span><b>non-toxic candles for</b> nursery</span></div>
+            <div class="sg-row"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.2" y2="16.2"/></svg><span><b>non-toxic candles for</b> sensitive skin</span></div>
+            <div class="sg-row"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.2" y2="16.2"/></svg><span>best <b>non-toxic candles</b> 2026</span></div>
+          </div>
+        </div>
+        <p class="search-mock-caption">People are typing searches like these into Google right now.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section-tint">
+  <div class="wrap">
+    <div class="head-center">
+      <div class="eyebrow">Rented vs. Owned</div>
+      <h2>Paid Traffic Stops When You Stop Paying. Organic Assets Don't.</h2>
+      <p class="lede center">This isn't ads-bad-SEO-good. Paid traffic is fast, testable, and genuinely useful for validating an offer. Organic search asks for a different kind of investment: mostly your time. A well-built product page or article keeps earning you visits long after you stopped actively working on it.</p>
+    </div>
+    <div class="rvo-scroll">
+      <table class="rvo-table">
+        <thead><tr><th></th><th>Paid Traffic (rented)</th><th>Organic Search (owned)</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Speed to first customer</strong></td><td>Fast (days)</td><td class="owned">Slow (weeks to months)</td></tr>
+          <tr><td><strong>Cost structure</strong></td><td>Ongoing, per click/impression</td><td class="owned">Upfront time/content investment, then low marginal cost</td></tr>
+          <tr><td><strong>Needs testing before it's efficient</strong></td><td>Yes, on creatives, audiences, and offers</td><td class="owned">Less "testing," more "building"</td></tr>
+          <tr><td><strong>Stops working if you stop</strong></td><td>Immediately</td><td class="owned">Gradually. Content and structure keep working for a while.</td></tr>
+          <tr><td><strong>Best for</strong></td><td>Validating offers, launching fast, a specific promotion</td><td class="owned">Long-term discoverability, buyers who research before buying</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="cta-note center" style="margin-top:18px;">No invented ad-cost figures here. The workbook's Section 2 gives you a calculator to work out your own numbers instead.</p>
+  </div>
+</section>
+
+<section class="section-white" id="built">
+  <div class="wrap">
+    <div class="head-center">
+      <div class="eyebrow">The System</div>
+      <h2>The System You're About to Build</h2>
+      <p class="lede center">Ten stages, in order. Each one produces something real (a document, a decision, a page) that the next stage builds on.</p>
+    </div>
+    <div class="chain-row">
+      <span class="chain-pill"><span class="ck"></span>Keyword Universe</span><span class="chain-arrow">→</span>
+      <span class="chain-pill"><span class="ck"></span>Search Intent</span><span class="chain-arrow">→</span>
+      <span class="chain-pill"><span class="ck"></span>Site Architecture</span><span class="chain-arrow">→</span>
+      <span class="chain-pill"><span class="ck"></span>Products &amp; Collections</span><span class="chain-arrow">→</span>
+      <span class="chain-pill"><span class="ck"></span>Content System</span><span class="chain-arrow">→</span>
+      <span class="chain-pill"><span class="ck"></span>Technical Foundation</span><span class="chain-arrow">→</span>
+      <span class="chain-pill"><span class="ck"></span>Google Visibility</span><span class="chain-arrow">→</span>
+      <span class="chain-pill"><span class="ck"></span>Measurement</span><span class="chain-arrow">→</span>
+      <span class="chain-pill"><span class="ck"></span>AI Readiness</span><span class="chain-arrow">→</span>
+      <span class="chain-final">Your 90-Day Plan</span>
+    </div>
+    <div style="text-align:center;margin-top:52px;">
+      <a href="#inside" class="cta-link">See what you'll build ↓</a>
+    </div>
+  </div>
+</section>
+
+<section class="section-tint" id="inside">
+  <div class="wrap">
+    <div class="head-center">
+      <div class="eyebrow">Built, Section by Section</div>
+      <h2>You Don't Finish With Pages. You Finish With a Built System.</h2>
+      <p class="lede center">These are real pages from the actual workbook, not mockups. Each one is something you fill in yourself, specific to your store.</p>
+    </div>
+
+    <div class="gallery-row">
+      <div class="gallery-item">
+        <div class="wb-thumb" style="--hn:520px;">
+          <span class="wb-tag">Real page · Section 4</span>
+          <div class="wb-embed"><div class="wb-embed-pad">
+            <span class="eyebrow indigo">SECTION 4</span>
+            <div class="worksheet"><div class="ws-bar">✎&nbsp; Worksheet — Your Keyword Universe</div><div class="ws-body"><p>Start with your products, then work outward through each category. You don't need every column filled for every product — a handful of solid entries beats a sparse attempt at completeness.</p><div class="ws-group">Product: Soy Candle</div><div class="field-label">Type / Category</div><div class="field-blank"></div><div class="field-label">Problem it solves</div><div class="field-blank"></div><div class="field-label">Material / Feature</div><div class="field-blank"></div></div></div>
+            <div class="wb-fade"></div>
+          </div></div>
+        </div>
+        <h4>Your Keyword Universe</h4>
+        <p>Find the language customers actually use before you write a single page.</p>
+      </div>
+
+      <div class="gallery-item">
+        <div class="wb-thumb" style="--hn:520px;">
+          <span class="wb-tag">Real page · Section 6</span>
+          <div class="wb-embed"><div class="wb-embed-pad">
+            <span class="eyebrow indigo">SECTION 6</span>
+            <div class="worksheet"><div class="ws-bar">✎&nbsp; Worksheet — Draw Your Search-Optimized Store</div><div class="ws-body"><p>Sketch your structure the way a customer — and Google — would actually move through it. Start with your homepage, then map your top-level collections.</p><div class="ws-group">Homepage →</div><div class="field-blank"></div><div class="field-blank"></div><div class="field-blank"></div></div></div>
+            <div class="wb-fade"></div>
+          </div></div>
+        </div>
+        <h4>Your Store Architecture</h4>
+        <p>Turn keyword demand into a logical Shopify structure.</p>
+      </div>
+
+      <div class="gallery-item">
+        <div class="wb-thumb" style="--hn:520px;">
+          <span class="wb-tag">Real page · Section 9</span>
+          <div class="wb-embed"><div class="wb-embed-pad">
+            <span class="eyebrow indigo">SECTION 9</span>
+            <div class="worksheet"><div class="ws-bar">✎&nbsp; Worksheet — Google Product Visibility Checklist</div><div class="ws-body"><div class="ws-item"><span class="chk"></span><span>Google &amp; YouTube sales channel connected</span></div><div class="ws-item"><span class="chk"></span><span>Product feed reviewed in Merchant Center</span></div><div class="ws-item"><span class="chk"></span><span>"Needs attention" items resolved</span></div><div class="ws-item"><span class="chk"></span><span>Free listings eligibility confirmed</span></div></div></div>
+            <div class="wb-fade"></div>
+          </div></div>
+        </div>
+        <h4>Google Product Visibility</h4>
+        <p>Get your products into Merchant Center and Google's free listings.</p>
+      </div>
+
+      <div class="gallery-item">
+        <div class="wb-thumb" style="--hn:520px;">
+          <span class="wb-tag">Real page · Section 18</span>
+          <div class="wb-embed"><div class="wb-embed-pad">
+            <span class="eyebrow indigo">SECTION 18</span>
+            <div class="worksheet"><div class="ws-bar">✎&nbsp; Worksheet — My Shopify Technical SEO Check</div><div class="ws-body"><div class="triage-group"><div class="triage-head" style="color:var(--red);"><span class="dot-lg" style="background:var(--red);"></span>🔴 RED — fix or investigate now</div><div class="triage-row"><span class="chk"></span><span>An important page is confirmed not indexed</span></div><div class="triage-row"><span class="chk"></span><span>PageSpeed shows a consistently poor score</span></div></div><div class="triage-group"><div class="triage-head" style="color:var(--mint);"><span class="dot-lg" style="background:var(--mint);"></span>🟢 GREEN — Shopify handles this</div><div class="triage-row"><span class="chk"></span><span>Sitemap generation and maintenance</span></div></div></div></div>
+            <div class="wb-fade"></div>
+          </div></div>
+        </div>
+        <h4>Technical SEO, Triaged</h4>
+        <p>Know what's actually worth fixing, without treating every warning like an emergency.</p>
+      </div>
+
+      <div class="gallery-item">
+        <div class="wb-thumb" style="--hn:520px;">
+          <span class="wb-tag">Real page · Section 13</span>
+          <div class="wb-embed"><div class="wb-embed-pad">
+            <span class="eyebrow indigo">SECTION 13</span>
+            <div class="worksheet"><div class="ws-bar">✎&nbsp; Worksheet — My First 30 Organic Content Opportunities</div><div class="ws-body"><p>List raw ideas first — from real search suggestions, customer questions, and reviews. Organize and prioritize after, not before.</p><div class="ws-group">Ideas 1–10</div><div class="field-blank"></div><div class="field-blank"></div><div class="field-blank"></div></div></div>
+            <div class="wb-fade"></div>
+          </div></div>
+        </div>
+        <h4>30 Content Opportunities</h4>
+        <p>Turn search demand into content that actually supports sales.</p>
+      </div>
+
+      <div class="gallery-item">
+        <div class="wb-thumb" style="--hn:520px;">
+          <span class="wb-tag">Real page · Section 21</span>
+          <div class="wb-embed"><div class="wb-embed-pad">
+            <span class="eyebrow indigo">SECTION 21</span>
+            <div class="worksheet"><div class="ws-bar">✎&nbsp; Worksheet — AI Search Readiness Checklist</div><div class="ws-body"><div class="ws-item"><span class="chk"></span><span>A stranger could learn what you sell from your homepage alone</span></div><div class="ws-item"><span class="chk"></span><span>Product pages state materials, sizing, and use case in plain text</span></div><div class="ws-item"><span class="chk"></span><span>Your brand is described consistently across your own site</span></div></div></div>
+            <div class="wb-fade"></div>
+          </div></div>
+        </div>
+        <h4>AI Search Readiness</h4>
+        <p>Evaluate whether AI systems can clearly understand your store. No citation guarantees implied.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section-white">
+  <div class="wrap">
+    <div class="head-center">
+      <div class="eyebrow">Signature Asset</div>
+      <h2>Anatomy of a Search-Optimized Shopify Page</h2>
+      <p class="lede center">The exact 11 elements of a real product page, numbered in reading order, from the URL to the call to action.</p>
+    </div>
+    <div style="max-width:460px;margin:0 auto;background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:28px;box-shadow:0 20px 44px rgba(16,21,43,.1);">
+      <div class="wb-embed">
+        <figure class="diagram">
+          <svg viewBox="0 0 760 900" role="img" aria-label="Full annotated Shopify product page for the sandalwood soy candle, numbered 1 through 11 in reading order: URL, title tag, meta description, H1, opening copy, product information, supporting headings, image with alt text, FAQ, internal links, and call to action.">
+            <defs><linearGradient id="gAnatSales" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4f46e5"/><stop offset="1" stop-color="#0891b2"/></linearGradient></defs>
+            <rect x="60" y="0" width="640" height="900" rx="20" fill="#f5f7fc" stroke="#e1e5f2" stroke-width="1.5"/>
+            <rect x="90" y="30" width="580" height="30" rx="7" fill="#fff" stroke="#e1e5f2"/>
+            <text x="106" y="50" font-family="Inter" font-size="13" fill="#5c6478">/products/sandalwood-soy-candle-8oz</text>
+            <circle cx="60" cy="45" r="17" fill="url(#gAnatSales)"/><text x="60" y="51" text-anchor="middle" font-family="Manrope" font-weight="800" font-size="16" fill="#fff">1</text>
+            <rect x="90" y="86" width="420" height="24" rx="5" fill="#dfe3f6"/>
+            <text x="98" y="103" font-family="Manrope" font-weight="800" font-size="15" fill="#5c6478">8oz Soy Candle — Sandalwood</text>
+            <circle cx="60" cy="98" r="17" fill="url(#gAnatSales)"/><text x="60" y="104" text-anchor="middle" font-family="Manrope" font-weight="800" font-size="16" fill="#fff">4</text>
+            <rect x="90" y="126" width="560" height="12" rx="4" fill="#e1e5f2"/>
+            <rect x="90" y="144" width="500" height="12" rx="4" fill="#e1e5f2"/>
+            <circle cx="60" cy="140" r="17" fill="url(#gAnatSales)"/><text x="60" y="146" text-anchor="middle" font-family="Manrope" font-weight="800" font-size="16" fill="#fff">5</text>
+            <rect x="90" y="180" width="260" height="200" rx="12" fill="#eef1fa" stroke="#e1e5f2"/>
+            <circle cx="220" cy="255" r="46" fill="#f4c98a" opacity=".55"/>
+            <rect x="185" y="238" width="70" height="34" rx="6" fill="#c98a4a" opacity=".5"/>
+            <text x="220" y="352" text-anchor="middle" font-family="Inter" font-size="11" fill="#9aa0bd">amber jar, lit, on wood shelf</text>
+            <circle cx="60" cy="188" r="17" fill="url(#gAnatSales)"/><text x="60" y="194" text-anchor="middle" font-family="Manrope" font-weight="800" font-size="16" fill="#fff">8</text>
+            <rect x="374" y="180" width="276" height="14" rx="4" fill="#e1e5f2"/>
+            <rect x="374" y="202" width="276" height="14" rx="4" fill="#e1e5f2"/>
+            <rect x="374" y="224" width="200" height="14" rx="4" fill="#e1e5f2"/>
+            <rect x="374" y="254" width="130" height="30" rx="7" fill="#edeafe" stroke="#4f46e5"/>
+            <text x="439" y="273" text-anchor="middle" font-family="Inter" font-weight="700" font-size="11" fill="#3c34b5">100% Soy Wax</text>
+            <circle cx="60" cy="210" r="17" fill="url(#gAnatSales)"/><text x="60" y="216" text-anchor="middle" font-family="Manrope" font-weight="800" font-size="16" fill="#fff">6</text>
+            <rect x="90" y="410" width="230" height="20" rx="5" fill="#dfe3f6"/>
+            <rect x="90" y="442" width="560" height="12" rx="4" fill="#e1e5f2"/>
+            <rect x="90" y="460" width="520" height="12" rx="4" fill="#e1e5f2"/>
+            <circle cx="60" cy="420" r="17" fill="url(#gAnatSales)"/><text x="60" y="426" text-anchor="middle" font-family="Manrope" font-weight="800" font-size="16" fill="#fff">7</text>
+            <rect x="90" y="502" width="560" height="110" rx="12" fill="#eef1fa" stroke="#e1e5f2"/>
+            <text x="112" y="534" font-family="Inter" font-size="14" font-weight="700" fill="#10152b">Is this candle safe for pets?</text>
+            <rect x="112" y="550" width="500" height="10" rx="3" fill="#e1e5f2"/>
+            <rect x="112" y="568" width="420" height="10" rx="3" fill="#e1e5f2"/>
+            <circle cx="60" cy="512" r="17" fill="url(#gAnatSales)"/><text x="60" y="518" text-anchor="middle" font-family="Manrope" font-weight="800" font-size="16" fill="#fff">9</text>
+            <rect x="90" y="636" width="300" height="16" rx="4" fill="#c7d2fe"/>
+            <text x="106" y="648" font-family="Inter" font-size="12" font-weight="700" fill="#3c34b5">shop non-toxic candles →</text>
+            <circle cx="60" cy="644" r="17" fill="url(#gAnatSales)"/><text x="60" y="650" text-anchor="middle" font-family="Manrope" font-weight="800" font-size="16" fill="#fff">10</text>
+            <rect x="90" y="678" width="230" height="56" rx="12" fill="url(#gAnatSales)"/>
+            <text x="205" y="712" text-anchor="middle" font-family="Manrope" font-weight="800" font-size="17" fill="#fff">Add to Cart — $34</text>
+            <circle cx="60" cy="706" r="17" fill="url(#gAnatSales)"/><text x="60" y="712" text-anchor="middle" font-family="Manrope" font-weight="800" font-size="16" fill="#fff">11</text>
+          </svg>
+          <figcaption>Numbered 1–11 in reading order: URL · title tag · meta description · H1 · opening copy · product info · supporting headings · image + alt text · FAQ · internal links · CTA.</figcaption>
+        </figure>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section-tint">
+  <div class="wrap">
+    <div class="copilot-grid">
+      <div>
+        <div class="eyebrow" style="color:var(--violet);">Your SEO Co-Pilot</div>
+        <h2>Your SEO Co-Pilot Is Built In</h2>
+        <p class="lede">13 reusable "Ask AI" prompts throughout the workbook help you brainstorm, classify, and review. They always work from evidence you provide, never inventing data AI doesn't actually have.</p>
+        <div class="copilot-note"><b>What AI is not used for here:</b> guessing search volume, inventing rankings, or fabricating customer language. Every prompt in the workbook works from your real input and tells you exactly where to sanity-check the output.</div>
+      </div>
+      <div style="max-width:480px;">
+        <div class="wb-embed">
+          <div class="askai">
+            <div class="ai-label">✨ Ask AI</div>
+            <p class="ai-guard">This is a genuinely useful, different use of AI than anything else in this workbook: using it to test whether your own writing is actually clear — not to predict whether you'll be cited anywhere.</p>
+            <div class="prompt-card">Here is the text from my product page: [paste your actual product page copy]. Based only on this text, tell me: what product do you think this is? Who do you think it's for? What materials or specifications can you identify? What important information seems to be missing that a buyer would want to know?</div>
+            <p class="ai-guard">If the AI's answers are vague, wrong, or missing something obvious, that's a real, useful signal your page isn't as clear as you think it is.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section-gradient">
+  <div class="wrap">
+    <div class="head-center">
+      <h2>Search Didn't Disappear. It Expanded.</h2>
+      <p class="lede center">Google, Google's product surfaces, YouTube, social search, and AI assistants. Your store needs to be understandable across all of it, not just ranked on one.</p>
+    </div>
+    <div class="orbit6-wrap">
+      <div class="orbit6">
+        <svg class="orbit6-svg" viewBox="0 0 100 100">
+          <line x1="50" y1="50" x2="50" y2="10" stroke="rgba(255,255,255,.28)" stroke-width="1"/>
+          <line x1="50" y1="50" x2="84.6" y2="30" stroke="rgba(255,255,255,.28)" stroke-width="1"/>
+          <line x1="50" y1="50" x2="84.6" y2="70" stroke="rgba(255,255,255,.28)" stroke-width="1"/>
+          <line x1="50" y1="50" x2="50" y2="90" stroke="rgba(255,255,255,.28)" stroke-width="1"/>
+          <line x1="50" y1="50" x2="15.4" y2="70" stroke="rgba(255,255,255,.28)" stroke-width="1"/>
+          <line x1="50" y1="50" x2="15.4" y2="30" stroke="rgba(255,255,255,.28)" stroke-width="1"/>
+        </svg>
+        <div class="orbit6-center">
+          <svg viewBox="0 0 24 24" fill="none" stroke="var(--indigo)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21V9l9-6 9 6v12"/><path d="M9 21v-6h6v6"/></svg>
+          Your Store
+        </div>
+        <div class="orbit6-node" style="top:10%;left:50%;">
+          <div class="circle"><svg viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.5 3.5 6 3.5 9s-1 6.5-3.5 9c-2.5-2.5-3.5-6-3.5-9s1-6.5 3.5-9Z"/></svg></div>
+          <span>Google</span>
+        </div>
+        <div class="orbit6-node" style="top:30%;left:84.6%;">
+          <div class="circle"><svg viewBox="0 0 24 24" fill="none" stroke="var(--mint)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2h9l5 5v13a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2Z"/><path d="M9 12h6M9 16h6"/></svg></div>
+          <span>Google Shopping</span>
+        </div>
+        <div class="orbit6-node" style="top:70%;left:84.6%;">
+          <div class="circle"><svg viewBox="0 0 24 24" fill="none" stroke="var(--violet)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="5" width="16" height="12" rx="2"/><circle cx="9" cy="10" r="1.2" fill="var(--violet)" stroke="none"/><circle cx="15" cy="10" r="1.2" fill="var(--violet)" stroke="none"/><line x1="12" y1="3" x2="12" y2="5"/></svg></div>
+          <span>AI Assistants</span>
+        </div>
+        <div class="orbit6-node" style="top:90%;left:50%;">
+          <div class="circle"><svg viewBox="0 0 24 24" fill="none" stroke="var(--pink)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-8.5 8.4 8.5 8.5 0 0 1-4-1L3 20l1.1-5.4A8.4 8.4 0 1 1 21 11.5Z"/></svg></div>
+          <span>Search Console</span>
+        </div>
+        <div class="orbit6-node" style="top:70%;left:15.4%;">
+          <div class="circle"><svg viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="10 8 16 12 10 16 10 8"/><rect x="3" y="4" width="18" height="16" rx="3"/></svg></div>
+          <span>YouTube</span>
+        </div>
+        <div class="orbit6-node" style="top:30%;left:15.4%;">
+          <div class="circle"><svg viewBox="0 0 24 24" fill="none" stroke="var(--cyan)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"/></svg></div>
+          <span>Social Search</span>
+        </div>
+      </div>
+    </div>
+    <p class="lede center" style="margin:36px auto 0;color:#e4e8ff;">The workbook covers all six, including honest, hedged guidance on AI search, where no one can promise you'll be cited.</p>
+  </div>
+</section>
+
+<section class="section-white">
+  <div class="wrap">
+    <div class="value-split">
+      <div>
+        <div class="eyebrow">You Could Google All of This</div>
+        <h2>The Information Isn't the Scarce Part</h2>
+        <p class="lede">Knowing what applies to your store, what order to do it in, and turning it into a plan is. You could piece this together yourself from hundreds of articles, YouTube videos, and Reddit threads.</p>
+        <p class="lede">Every hour you're not spending untangling scattered advice is an hour you can put back into the store: talking to customers, improving your product, running the marketing that actually brings in sales today.</p>
+        <a href="#pricing" class="btn btn-primary">Get the Workbook</a>
+      </div>
+      <div class="value-visual">
+        <div class="tab-cluster">
+          <span class="tab-chip" style="top:0%;left:2%;transform:rotate(-3deg);"><span class="dot" style="background:#4f46e5;"></span>shopify-seo-guide-2026.com</span>
+          <span class="tab-chip" style="top:6%;left:44%;transform:rotate(2deg);"><span class="dot" style="background:#0891b2;"></span>reddit.com/r/shopify</span>
+          <span class="tab-chip" style="top:30%;left:0%;transform:rotate(-2deg);"><span class="dot" style="background:#db2777;"></span>youtube.com/watch?v=…</span>
+          <span class="tab-chip" style="top:36%;left:48%;transform:rotate(4deg);"><span class="dot" style="background:#d97706;"></span>ahrefs.com/blog/keywords</span>
+          <span class="tab-chip" style="top:60%;left:6%;transform:rotate(-4deg);"><span class="dot" style="background:#0d9488;"></span>moz.com/beginners-guide</span>
+        </div>
+        <div class="value-arrow">↓</div>
+        <div class="value-final">
+          <div class="vf-icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2Z"/></svg></div>
+          <div class="vf-copy"><b>Shopify SEO Workbook</b><span>One system, $59</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section-tint">
+  <div class="wrap">
+    <div class="head-center">
+      <div class="eyebrow">What You Walk Away With</div>
+      <h2>This Is What You'll Have When You're Done</h2>
+      <p class="lede center">Not 29 sections of notes. A real roadmap and a single consolidated plan, both built from your own answers.</p>
+    </div>
+    <div class="finished-grid">
+      <div>
+        <div class="wb-thumb" style="--wn:760px;--hn:420px;width:100%;max-width:none;height:auto;">
+          <span class="wb-tag">Real page · Section 24</span>
+          <div class="wb-embed" style="width:760px;position:static;transform:none;">
+            <div class="wb-embed-pad" style="padding-top:48px;">
+              <h3 style="font-size:15pt;">Phase 1: Days 1–30 — Foundation</h3>
+              <table class="rmap">
+                <thead><tr><th>Week</th><th>Focus</th><th>Must do</th><th>Tool/Section</th></tr></thead>
+                <tbody>
+                  <tr><td><span class="week-badge">1</span></td><td>Measurement + discoverability</td><td>Set up Search Console · Submit sitemap</td><td><span class="sec-pill">Part 0</span> <span class="sec-pill">Sec. 17</span></td></tr>
+                  <tr><td><span class="week-badge">2</span></td><td>Keyword &amp; priority decisions</td><td>Build your Keyword Universe · Classify by Search Intent</td><td><span class="sec-pill">Sec. 4</span> <span class="sec-pill">Sec. 5</span></td></tr>
+                  <tr><td><span class="week-badge">3</span></td><td>Architecture decisions</td><td>Decide your site architecture · Build your Collection Map</td><td><span class="sec-pill">Sec. 6</span> <span class="sec-pill">Sec. 7</span></td></tr>
+                  <tr><td><span class="week-badge">4</span></td><td>First real optimization</td><td>Fully optimize one product + your top collection</td><td><span class="sec-pill">Sec. 8</span> <span class="sec-pill">Sec. 9</span></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <h4 style="margin-top:16px;">Your 90-Day Plan</h4>
+        <p style="color:var(--ink-soft);font-size:.9rem;">Three phases, week by week, tied back to the exact section that supports each task.</p>
+      </div>
+      <div>
+        <div class="wb-thumb" style="--wn:700px;--hn:420px;width:100%;max-width:none;height:auto;">
+          <span class="wb-tag">Real page · Section 26</span>
+          <div class="wb-embed" style="width:700px;position:static;transform:none;">
+            <div class="wb-embed-pad" style="padding-top:48px;">
+              <h3 style="font-size:15pt;">My Shopify SEO Plan</h3>
+              <div class="worksheet"><div class="ws-bar">✎&nbsp; My Shopify SEO Plan</div><div class="ws-body"><div class="ws-group">My priority keywords</div><div class="field-blank"></div><div class="ws-group">My site architecture</div><div class="field-blank"></div><div class="ws-group">My content pipeline</div><div class="field-blank"></div><div class="ws-group">My 90-day priorities</div><div class="field-blank"></div></div></div>
+            </div>
+          </div>
+        </div>
+        <h4 style="margin-top:16px;">Your Final Consolidated Plan</h4>
+        <p style="color:var(--ink-soft);font-size:.9rem;">Every earlier worksheet, pulled into one document. The actual plan you keep and run.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section-white">
+  <div class="wrap">
+    <div class="fit-split">
+      <div>
+        <div class="eyebrow">Who It's For</div>
+        <h2 style="font-size:clamp(1.8rem,3.2vw,2.3rem);">Built for Store Owners Who'll Do the Work</h2>
+        <p class="lede">This is a DIY product. If you're willing to work through worksheets and make decisions about your own store, it's built for you.</p>
+        <div class="not-for">
+          <h4>This is hands-on work.</h4>
+          <p style="margin-bottom:12px;">You do the research, make the decisions, and fill in the worksheets yourself. No guaranteed rankings, no instant traffic, no black-hat shortcuts. Nobody can honestly promise you those.</p>
+          <p style="margin:0;">Want it done on your store instead, or want help putting it into action? <a href="index.html" style="color:var(--indigo);font-weight:600;">See our other options →</a></p>
+        </div>
+      </div>
+      <div class="fit-cards">
+        <div class="fit-usecase" style="background:var(--blue-bg);"><b>New stores</b><p>Never had a real SEO strategy and want to start with a real structure, not guesswork.</p></div>
+        <div class="fit-usecase" style="background:var(--cyan-bg);"><b>Small stores</b><p>Limited budget, willing to trade time for a durable acquisition asset.</p></div>
+        <div class="fit-usecase" style="background:var(--violet-bg);"><b>Cautious about agencies</b><p>Want to understand organic search before ever hiring one.</p></div>
+        <div class="fit-usecase" style="background:var(--pink-bg);"><b>Tired of random tips</b><p>Want one repeatable system instead of scattered SEO-app advice.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section-pricing" id="pricing">
+  <div class="wrap">
+    <div class="head-center">
+      <div class="eyebrow">Price</div>
+      <h2>$59. Everything You Need to Build It.</h2>
+    </div>
+    <div class="price-card">
+      <ul class="price-list">
+        <li><span class="chk2">✓</span>29 guided sections</li>
+        <li><span class="chk2">✓</span>27 worksheets &amp; decision tools</li>
+        <li><span class="chk2">✓</span>13 reusable Ask AI prompts</li>
+        <li><span class="chk2">✓</span>1 finished, consolidated Shopify SEO plan</li>
+      </ul>
+      <div class="price-amount">
+        <span>One-time payment</span>
+        <b>$59</b>
+        <div class="sub">No subscription. Yours to keep.</div>
+      </div>
+      <!-- TODO: replace this href with the live Stripe Payment Link for the $59 workbook once it's set up -->
+      <a href="#" class="btn btn-primary">Get the Workbook</a>
+      <div class="delivery-note">
+        <span>📄</span>
+        <span><strong>Delivered as a downloadable PDF</strong> immediately after purchase. Printable, and just as usable on a laptop or tablet. Payment is self-service: no forms, no waiting.</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section-white">
+  <div class="wrap">
+    <div class="head-center">
+      <div class="eyebrow">Two Ways to Work With Scrolly</div>
+      <h2>Teach Me vs. Analyze Mine</h2>
+      <p class="lede center">This workbook teaches you the method. If you'd rather have that same depth of research done directly on your store, that's a different product.</p>
+    </div>
+    <div class="ladder">
+      <div class="ladder-step active">
+        <div class="ls-tag">This page</div>
+        <div class="ls-price">$59</div>
+        <p><strong>Teach me.</strong> The Shopify SEO Workbook. Build your own keyword universe, architecture, content system, and 90-day plan, step by step.</p>
+      </div>
+      <div class="ladder-step step-analyze">
+        <div class="ls-tag">SEO Site Audit</div>
+        <div class="ls-price">$299</div>
+        <p><strong>Analyze mine.</strong> Deeper research and professional-grade data, applied directly to your real store. The same thinking this workbook teaches, done for you.</p>
+        <a href="index.html#get-started" class="cta-link">See the SEO Site Audit, $299 →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section-white" id="faq">
+  <div class="wrap">
+    <div class="head-center">
+      <h2>Questions? We've Got Answers.</h2>
+    </div>
+    <div class="faq-list">
+      <details>
+        <summary>Will this tell me the exact keywords to target for my store?</summary>
+        <p>No. It teaches you the method and gives you the worksheets to find your own store's keywords. For deeper, personalized research on your actual business, that's what the $299 SEO Site Audit is for.</p>
+      </details>
+      <details>
+        <summary>Is this only for Shopify?</summary>
+        <p>Yes. Architecture, collections, Merchant Center setup, and theme-level guidance are all written for Shopify specifically, not generic ecommerce.</p>
+      </details>
+      <details>
+        <summary>Does it cover Google Shopping / Merchant Center?</summary>
+        <p>Yes. Section 9 covers it, including free product listings, not just paid.</p>
+      </details>
+      <details>
+        <summary>Does it cover AI search (ChatGPT, etc.)?</summary>
+        <p>Yes. Sections 20 and 21 cover it, framed honestly: what's known, what's still emerging, and what you can control. There's no claim of guaranteed AI citations or rankings.</p>
+      </details>
+      <details>
+        <summary>Does it cover technical SEO?</summary>
+        <p>Yes. A Red/Yellow/Green triage system (Sections 16 to 18) built to tell you what's actually worth fixing, without a developer background.</p>
+      </details>
+      <details>
+        <summary>Do I need to buy other SEO software?</summary>
+        <p>No. It's built around Shopify's native tools plus Google Search Console. A toolkit of optional tools is included (Section 27) but nothing is required.</p>
+      </details>
+      <details>
+        <summary>How quickly will SEO work?</summary>
+        <p>There's no fixed promise. Section 23 addresses this honestly rather than giving a guaranteed number.</p>
+      </details>
+      <details>
+        <summary>Is this an ebook or a workbook?</summary>
+        <p>A workbook. Real fillable worksheets, checklists, and decision tools throughout, not just reading.</p>
+      </details>
+      <details>
+        <summary>What's the difference between this and the $299 SEO Site Audit?</summary>
+        <p>This teaches you to do the work yourself. The <a href="index.html">SEO Site Audit</a> does the research on your specific store for you.</p>
+      </details>
+      <details>
+        <summary>What format do I get, and can I print it?</summary>
+        <p>A downloadable PDF, delivered immediately after purchase. Designed to be genuinely printable, and just as usable on a laptop or tablet.</p>
+      </details>
+      <details id="faq-refund">
+        <summary>What's your refund policy?</summary>
+        <!-- FLAG FOR OWNER/LEGAL REVIEW: directional placeholder only, not final legal language — confirm before publish -->
+        <p>Digital product purchases are generally final once delivered or accessed, with exceptions for duplicate purchases or genuine technical delivery issues. If something goes wrong with your download, contact us and we'll make it right.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<section class="final-cta">
+  <div class="wrap">
+    <h2>Stop Reading About SEO. Start Building It.</h2>
+    <p class="lede center">29 sections. 27 worksheets. 13 Ask AI prompts. One finished plan for your store.</p>
+    <!-- TODO: replace this href with the live Stripe Payment Link for the $59 workbook once it's set up -->
+    <a href="#" class="btn btn-primary">Get the Workbook</a>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 Scrolly SEO · <a href="index.html">SEO Site Audit</a> · <a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a> · <a href="#faq-refund">Refund Policy</a></span>
+    <span><!-- TODO: replace with real contact email --> hello@scrollyseo.com</span>
+  </div>
+</footer>
+
+</body>
+</html>

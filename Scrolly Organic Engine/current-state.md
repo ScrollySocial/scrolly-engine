@@ -1,6 +1,6 @@
 # Current State
 
-**Phase:** V0.1 scaffolding complete. Discover methodology upgraded to **V0.2 ("Opportunity Engine")** — O1–O10 layered on top of the original A–J Supporting Audit. Discover engine at V0.5 (Automated/Unattended Mode). **Automation pipeline built and had its first real funded run** (see `automation/` and `automation/README.md`, started 2026-08-10). **One real client engagement in progress** (Mulberry Creek).
+**Phase:** V0.1 scaffolding complete. Discover methodology upgraded to **V0.2 ("Opportunity Engine")** — O1–O10 layered on top of the original A–J Supporting Audit. Discover engine at V0.5 (Automated/Unattended Mode). **Automation pipeline built and had its first real funded run** (see `automation/` and `automation/README.md`, started 2026-08-10). **One real client engagement in progress** (Mulberry Creek). **Storefront (scrollyseo.com) is live** with product 1 of a planned 4 for sale; product 2 is in draft.
 
 **Exists:**
 - `CLAUDE.md` — entry point / index
@@ -11,17 +11,27 @@
 - `methodology/engagement-template/` — blank per-engagement skeleton copied into `clients/<name>/discover/` at engagement start.
 - `clients/mulberry-creek/` — **real client engagement**, Discover phase run across 3 rounds under the V0.2 methodology upgrade (which happened mid-engagement). Substantially complete; currently blocked on DataForSEO account funding (hit HTTP 402) before the final validation batch can run and report.md/appendix.md can be refreshed for delivery. Full history in `clients/mulberry-creek/discover/status.md`.
 - `clients/_first-real-test/` — kept intentionally as evidence of the first successful funded automation run, not a real client.
+- **Storefront: scrollyseo.com** — WordPress + WooCommerce on EasyWP (Namecheap managed hosting), "Hello Biz" theme (classic PHP, not block/FSE), Elementor free tier. Home page built via Elementor (post ID 16) using a raw-HTML-widget technique to pixel-match the original static design; sitewide header/nav/button/tab styling lives in WordPress Customizer → Additional CSS. Product 1, **"SEO Site Audit" ($299, WooCommerce product ID 24)**, is live and purchasable — all 4 "Audit My Site" CTAs route to `/checkout/?add-to-cart=24`. The repo's `website/` folder mirrors this live content for reference/version history:
+  - `website/home-content.html` — current live Home page HTML (synced 2026-08-20; re-extract from the Elementor editor if the homepage changes live before this file is updated again).
+  - `website/site-custom.css` — current live Customizer Additional CSS (synced 2026-08-20, same caveat).
+  - `website/privacy.html`, `terms.html`, `refund.html` — mirrors of real, live WordPress Pages (`/privacy/` id 64, `/terms/` id 65, `/refund/` id 66, all published 2026-08-20). Refund policy is a blanket "no refunds on digital products" except non-delivery. Homepage footer correctly links to all three. Still has unfilled placeholders ([DATE], legal business name, governing-law state) — needs a real pass before these are legally solid.
+  - `website/index.html` (the original pre-WordPress static mockup) was removed 2026-08-20 — fully superseded by the files above.
+- **Product 2 drafted: "Shopify SEO Workbook" ($59)** — `products/shopify-seo-workbook/` holds the architecture proposal, design system, research notes, and full workbook draft; `website/shopify-seo-workbook.html` is a static sales-page mockup for it. Not yet built as a WooCommerce product or published anywhere live.
 
 **Infrastructure:**
 - DataForSEO account created and connected, but **currently unfunded** (calls returning HTTP 402) — this is the main active blocker across both the Mulberry Creek engagement and further automation testing.
 - No credentials are stored in this vault; held in `automation/.env` (gitignored).
 - Docker Desktop + n8n container + `bridge-server.mjs` all built and verified working end to end on this machine.
+- scrollyseo.com: domain (Namecheap) + EasyWP hosting + SSL active. Permalinks must stay on "Post name" structure — "Plain" permalinks silently break `/checkout/` and were found set wrong once already.
+- **Two independent caches sit in front of every page edit**, and both must be cleared after any content change (via wp-admin, REST, or otherwise) or the live site keeps serving old content: (1) EasyWP's host-level cache — admin-bar "Clear Cache" link (has a nonce, re-find it each time); (2) **Elementor's own render/data cache** (separate from EasyWP's) — Elementor → Tools → "Clear Files & Data". Discovered because a direct REST API edit to a page's content updated the DB correctly but the live site kept rendering the old HTML until the Elementor-specific cache was cleared too.
+- **Gitignore gap:** `products/shopify-seo-workbook/build/node_modules/` is NOT covered by `.gitignore` (only `automation/node_modules/` is). Add it before ever running a broad `git add`, to avoid accidentally committing a large node_modules tree.
 
 **Not yet done:**
 - Restore DataForSEO funding.
 - Tally form, Stripe Payment Link/webhook, Resend account — user's own account setup, specs written but accounts not created.
 - Full end-to-end pipeline dry run with real Tally/Stripe/Resend wiring.
 - Mulberry Creek: finish final validation batch once funded, refresh report.md/appendix.md, deliver.
+- **Storefront:** connect Stripe to WooCommerce (checkout currently has no payment method configured); wire the Tally intake form link post-checkout; fill in legal-page placeholders (business legal name, jurisdiction, dates); build/launch products 2–4 (Shopify SEO Workbook is drafted, not yet built as a WooCommerce product). Note: the homepage's footer (with the legal-page links) is Elementor content local to the Home page only, not a real theme-wide footer — it won't appear on other pages unless rebuilt as a sitewide element.
 - Execution beyond Discover, QA, measurement, reporting, GEO/AEO, APIs, database, the $999 DIY product — out of scope until later versions.
 
 **Next step:** Fund the DataForSEO account, then (a) run Mulberry Creek's final validation batch and refresh its report for delivery, and (b) run a second automation smoke test against a real small-business site now that mechanics/cost are proven (see `automation/README.md` Status section for the exact next-test recommendation).

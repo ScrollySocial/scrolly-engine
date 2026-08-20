@@ -1,4 +1,5 @@
 automation/node_modules/
 automation/.env
+Scrolly Organic Engine/products/shopify-seo-workbook/build/node_modules/
 .claude/settings.local.json
 *.log
