@@ -1,9 +1,9 @@
 // Digital Products (312), Merch / Scrolly Shop (313), SEO Tools (316).
 // Prices below were verified against live WooCommerce on 2026-09-21: product 58 = $59, 69 = $29, 24 = $299 (all published, in stock, purchasable).
-// Merch: no public merch products exist in WooCommerce -> "coming soon", no purchase CTAs, no prices.
-import { shell, img, ICON_UR, esc, productCover, endCta } from '../lib.mjs';
+// Merch (2026-09-24): six public Printify tees are live; cards come from live WooCommerce via shop-data.mjs.
+import { shell, img, ICON_UR, esc, productCover, endCta, merchCards } from '../lib.mjs';
+import { merch } from '../shop-data.mjs';
 
-const mailto = (name) => `mailto:hello@scrollyseo.com?subject=${encodeURIComponent('Launch updates: ' + name)}&body=${encodeURIComponent(`Hi Scrolly, please let me know when ${name} is ready to launch. Thank you!`)}`;
 
 const PRODUCTS = {
   shopify: { id: 58, name: 'Shopify SEO Workbook', kind: 'shopify', price: '$59', tag: 'For your online store', blurb: 'Research keywords, organize your store, improve product pages, and build a practical SEO plan.', page: '/shopify-seo-workbook/' },
@@ -46,42 +46,34 @@ ${endCta({ btn: 'Explore Clubs + Challenges' })}`;
 }
 
 function shop() {
-  const tees = [['tee-earn-your-stripes.png', 'Earn Your Stripes Tee', 'Earn your stripes shirt'], ['tee-scrolly-logo.png', 'Scrolly Logo Tee', 'Scrolly logo shirt'], ['tee-more-do-less-blah.png', 'More Do. Less Blah. Tee', 'More do. Less blah. shirt'], ['tee-big-cat-energy.png', 'Big Cat Energy Tee', 'Big Cat Energy shirt']];
+  const hero = merch.find((p) => p.name === 'Goal Digger') || merch[0];
   const body = `
 <section class="phero" style="background:var(--sand)">
  <div class="in">
   <div>
-   <div class="st"><span class="pill pill-navy">Coming soon · Not open for purchase</span></div>
    <div class="eyebrow">Scrolly merch</div>
-   <h1 class="disp h-xl" style="margin-top:12px">For the builders.<br><span class="it or">For the doers.</span></h1>
-   <p class="lede">Public Scrolly merch is on the way. A place for everyday brand gear as you build, grow, and work toward your next goal.</p>
-   <div class="actions"><a class="btn" href="#launch"><span>Get shop launch details</span></a><a class="btn btn-line" href="/challenges/"><span>Explore the Challenges</span>${ICON_UR(18)}</a></div>
+   <h1 class="disp h-xl" style="margin-top:12px">For the builders.<br><span class="it">For the doers.</span></h1>
+   <p class="lede">Tees printed to order. Free shipping in the US.</p>
+   <div class="actions"><a class="btn btn-pill btn-navy" href="#tees"><span>Shop the tees</span></a></div>
   </div>
-  <div class="art"><img src="${img('shirt-earned-edition.png')}" alt="Earned Edition shirt" width="454" height="347" style="border-radius:16px"></div>
+  <div class="art"><img src="${hero.image.src}" alt="${esc(hero.name)} t-shirt" width="${hero.image.w}" height="${hero.image.h}" style="border-radius:16px"></div>
  </div>
 </section>
-<section class="railsec" id="designs" style="padding-top:clamp(40px,5vw,64px)">
- <div class="railhd" style="justify-content:flex-start"><h2 class="disp">Design previews</h2></div>
- <div class="rail grid">${tees.map(([f, t, alt]) => `<div class="card merch"><div class="cv"><span class="soon">Coming soon</span><img src="${img(f)}" alt="${alt}" width="232" height="322" loading="lazy"></div><h3>${t}</h3><div class="sub">T-shirt design preview</div></div>`).join('')}</div>
- <p class="fine" style="margin-top:22px">These are design previews, not products for sale. Products, prices, sizes, delivery, and returns will be listed before purchase.</p>
+<section class="railsec" id="tees" style="padding-top:clamp(40px,5vw,64px)">
+ <div class="railhd" style="justify-content:flex-start"><h2 class="disp">The tees</h2></div>
+ <div class="rail grid">${merchCards(merch)}</div>
+ <p class="fine" style="margin-top:22px">Free US shipping. International shipping is added at checkout.</p>
 </section>
 <section class="sec lv">
  <div class="in">
-  <div class="hd"><span class="eyebrow">Two distinct collections</span><h2 class="disp h-md">Wear the brand. Earn the achievement.</h2></div>
+  <div class="hd"><h2 class="disp h-md">Wear the brand. Earn the stripe.</h2></div>
   <div class="cols c2">
-   <div class="box"><h3>Public Scrolly merch</h3><p>The planned print-on-demand collection will be open to everyone when it launches. Products, prices, sizes, delivery, and returns will be listed before purchase.</p></div>
-   <div class="box"><h3>Verified achievement merch</h3><p>Winner gear belongs to the Challenge achievement system. It is earned through verification under the Challenge rules and is not part of the public merchandise catalog.</p><div class="actions"><a class="ulink" href="/challenges/">Explore the Challenges ↗</a></div></div>
+   <div class="box" style="border:0;box-shadow:none"><h3>Scrolly tees</h3><p>Open to everyone.</p></div>
+   <div class="box" style="border:0;box-shadow:none"><h3>Challenge stripe shirts</h3><p>Earned by hitting a verified Challenge goal. Not sold here.</p><div class="actions"><a class="ulink" href="/challenges/">Explore the Challenges ↗</a></div></div>
   </div>
  </div>
 </section>
-<section class="cta-end" id="launch">
- <span class="eyebrow" style="color:var(--lav)">Next up</span>
- <h2 class="disp" style="margin-top:14px">Scrolly Shop is <span class="it or">coming soon.</span></h2>
- <p>Public merch is not open for purchase yet. Request launch news by email, or use our contact form to ask a question. Products, pricing, and launch details will be confirmed before checkout opens.</p>
- <div class="actions"><a class="btn btn-pill" href="${mailto('Scrolly Shop')}"><span>Request launch news</span></a><a class="btn btn-pill btn-line" href="/contact/"><span>Contact Scrolly</span></a><a class="btn btn-pill btn-line" href="/digital-products/"><span>Browse digital products</span></a></div>
- <p class="fine" style="color:#c8d1e3;margin-top:18px;font-size:13.5px">The launch-news button opens your email app. Your request is sent only when you send the email.</p>
-</section>
-<div class="stripes" aria-hidden="true"></div>`;
+${endCta()}`;
   return { key: 'scrolly-shop', id: 313, title: 'Scrolly merch', html: shell(body) };
 }
 
