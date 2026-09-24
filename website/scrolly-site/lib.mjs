@@ -81,7 +81,7 @@ export const railSection = ({ id, title, link, linkText = 'View all', cards, ext
 
 // Live Printify tees (see shop-data.mjs): real mockup, name, price, link to the product page.
 export const merchCards = (items) =>
-  items.map((p) => `<a class="card merch" href="${p.href}"><div class="cv ph"><img src="${p.image.src}" alt="${esc(p.image.alt || p.name + ' t-shirt')}" width="${p.image.w}" height="${p.image.h}" loading="lazy"></div><h3>${esc(p.name)}</h3><div class="sub">T-shirt</div>${p.price ? `<div class="pr">${p.price}</div>` : ''}</a>`).join('');
+  items.map((p) => `<a class="card merch" href="${p.href}"><div class="cv ph"><img src="${p.image.src}" alt="${esc(p.image.alt || p.name + ' t-shirt')}" width="${p.image.w}" height="${p.image.h}" loading="lazy"></div><h3>${esc(p.name)}</h3>${p.price ? `<div class="pr">${p.price}</div>` : ''}</a>`).join('');
 
 export const endCta = ({ h = 'Go get ’em,', h2 = 'Tiger', btn = 'Explore Clubs + Challenges', href = '/#clubs', eyebrow = 'Your next move' } = {}) =>
   `<section class="next"><img class="sw" src="${img('stripes-swoosh.png')}" alt="" width="846" height="484" loading="lazy"><img class="tg" src="${img('tiger-leap.png')}" alt="Tiger leaping" width="1200" height="754" loading="lazy"><div class="cta"><div class="e">${eyebrow}</div><h2 class="disp">${h}</h2><h2 class="disp it or"><span>${h2}</span>!</h2><a class="btn btn-pill" href="${href}"><span>${btn}</span></a></div></section>`;
