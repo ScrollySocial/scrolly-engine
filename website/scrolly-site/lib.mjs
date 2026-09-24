@@ -73,15 +73,15 @@ export const productCover = (kind, title) => {
 
 export const coverTitle = (name) => name.toUpperCase().replace('SEO ', 'SEO<br>').replace(' WORKBOOK', '<br>WORKBOOK').replace(' SITE AUDIT', '<br>SITE AUDIT');
 
-export const productCard = ({ href, kind, title, sub, price }) =>
-  `<a class="card" href="${href}"><div class="cv">${productCover(kind, coverTitle(title))}</div><h3>${esc(title)}</h3><div class="sub">${esc(sub)}</div>${price ? `<div class="pr">${price}</div>` : ''}</a>`;
+export const productCard = ({ href, kind, title, sub, price, image }) =>
+  `<a class="card" href="${href}"><div class="cv${image ? ' ph' : ''}">${image ? `<img src="${image.src}" alt="${esc(image.alt || title)}" width="${image.w}" height="${image.h}" loading="lazy">` : productCover(kind, coverTitle(title))}</div><h3>${esc(title)}</h3><div class="sub">${esc(sub)}</div>${price ? `<div class="pr">${price}</div>` : ''}</a>`;
 
 export const railSection = ({ id, title, link, linkText = 'View all', cards, extra = '' }) =>
   `<section class="railsec" id="${id}"><div class="railhd"><h2 class="disp">${title}</h2><div class="ctl"><a href="${link}">${linkText}</a><button class="arr prev" type="button" aria-label="Previous">${ICON_L}</button><button class="arr next-b" type="button" aria-label="Next">${ICON_R}</button></div></div><div class="rail" data-rail>${cards}</div>${extra}</section>`;
 
-export const merchCards = () =>
-  [['tee-earn-your-stripes.png', 'Earn Your Stripes Tee', 'Earn your stripes shirt'], ['tee-scrolly-logo.png', 'Scrolly Logo Tee', 'Scrolly logo shirt'], ['tee-more-do-less-blah.png', 'More Do. Less Blah. Tee', 'More do. Less blah. shirt'], ['tee-big-cat-energy.png', 'Big Cat Energy Tee', 'Big Cat Energy shirt']]
-    .map(([f, t, alt]) => `<a class="card merch" href="/scrolly-shop/"><div class="cv"><span class="soon">Coming soon</span><img src="${img(f)}" alt="${alt}" width="232" height="322" loading="lazy"></div><h3>${t}</h3><div class="sub">T-shirt design preview</div></a>`).join('');
+// Live Printify tees (see shop-data.mjs): real mockup, name, price, link to the product page.
+export const merchCards = (items) =>
+  items.map((p) => `<a class="card merch" href="${p.href}"><div class="cv ph"><img src="${p.image.src}" alt="${esc(p.image.alt || p.name + ' t-shirt')}" width="${p.image.w}" height="${p.image.h}" loading="lazy"></div><h3>${esc(p.name)}</h3><div class="sub">T-shirt</div>${p.price ? `<div class="pr">${p.price}</div>` : ''}</a>`).join('');
 
 export const endCta = ({ h = 'Go get ’em,', h2 = 'Tiger', btn = 'Explore Clubs + Challenges', href = '/#clubs', eyebrow = 'Your next move' } = {}) =>
   `<section class="next"><img class="sw" src="${img('stripes-swoosh.png')}" alt="" width="846" height="484" loading="lazy"><img class="tg" src="${img('tiger-leap.png')}" alt="Tiger leaping" width="1200" height="754" loading="lazy"><div class="cta"><div class="e">${eyebrow}</div><h2 class="disp">${h}</h2><h2 class="disp it or"><span>${h2}</span>!</h2><a class="btn btn-pill" href="${href}"><span>${btn}</span></a></div></section>`;
