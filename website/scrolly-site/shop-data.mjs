@@ -35,16 +35,26 @@ async function load(ids) {
   return out;
 }
 
-// Public tees from Printify, in display order. Winner shirts (634, 646) are rewards and are never listed.
-export const MERCH_IDS = [684, 719, 750, 696, 671, 659];
-// Digital products, in display order; href overrides point at their sales pages instead of the Woo product page.
-export const DIGITAL = [
-  { id: 58, href: '/shopify-seo-workbook/', sub: 'Digital workbook' },
-  { id: 69, href: '/pinterest-seo-workbook/', sub: 'Digital workbook' },
-  { id: 24, href: '/seo-site-audit/', sub: 'Personalized site audit' },
-];
+// Cards are driven by WooCommerce categories: tick "Merch" or "Digital products" on a product and it shows up
+// (sorted by the product's menu order). Private products, e.g. the Winner reward shirts, never appear.
+// The build bakes a snapshot into the page; lib.mjs LIVE_SCRIPT refreshes it from the public Store API on every page view.
+export const CATS = { merch: 'merch', digital: 'digital-products' };
+// Digital products whose card should link to a sales page instead of the Woo product page, plus a short label.
+export const DIGITAL_MAP = {
+  58: { href: '/shopify-seo-workbook/', sub: 'Digital workbook' },
+  69: { href: '/pinterest-seo-workbook/', sub: 'Digital workbook' },
+  24: { href: '/seo-site-audit/', sub: 'Personalized site audit' },
+};
 
-export const merch = await load(MERCH_IDS);
-export const digital = (await load(DIGITAL.map((d) => d.id))).map((p) => ({ ...p, ...DIGITAL.find((d) => d.id === p.id) }));
+async function idsIn(slug) {
+  const cat = (await wp(`/wp-json/wc/v3/products/categories?slug=${slug}`)).json[0];
+  await pause();
+  const list = (await wp(`/wp-json/wc/v3/products?category=${cat.id}&status=publish&orderby=menu_order&order=asc&per_page=50`)).json;
+  await pause();
+  return list.filter((p) => p.images.length).map((p) => p.id);
+}
+
+export const merch = await load(await idsIn(CATS.merch));
+export const digital = (await load(await idsIn(CATS.digital))).map((p) => ({ ...p, ...(DIGITAL_MAP[p.id] || {}) }));
 console.log('[shop] merch', merch.map((p) => `${p.name} ${p.price}`).join(' | '));
 console.log('[shop] digital', digital.map((p) => `${p.name} ${p.price}`).join(' | '));

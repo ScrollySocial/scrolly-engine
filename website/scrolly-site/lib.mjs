@@ -17,6 +17,11 @@ export const ICON_UR = (s = 20) => `<svg width="${s}" height="${s}" viewBox="0 0
 export const ICON_L = `<svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="square" aria-hidden="true"><path d="M14 4L7 11l7 7"/></svg>`;
 export const ICON_R = `<svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="square" aria-hidden="true"><path d="M8 4l7 7-7 7"/></svg>`;
 
+// Live product cards (src/live-cards.js): rails with data-live="<category slug>" re-render from the public Store API on each page view,
+// so photo/name/price changes in WooCommerce show without a rebuild. Keep that file free of '&': WordPress can mangle it in inline scripts.
+const LIVE_SCRIPT = fs.readFileSync(path.join(here, 'src', 'live-cards.js'), 'utf8').trim();
+if (LIVE_SCRIPT.includes('&')) throw new Error('src/live-cards.js must not contain &');
+
 // Page-level behavior only (product rails + goal calculator). Drawer/menu behavior lives in chrome/chrome.js.
 const SCRIPT = `(function(){var r=document.querySelector('.scx');if(!r||r.__init)return;r.__init=1;
 r.querySelectorAll('.rail[data-rail]').forEach(function(rail){var box=rail.closest('.railsec'),p=box.querySelector('.prev'),n=box.querySelector('.next-b');function upd(){var can=rail.scrollWidth>rail.clientWidth+4;if(p)p.style.display=n.style.display=can?'':'none';if(!can)return;p.disabled=rail.scrollLeft<4;n.disabled=rail.scrollLeft+rail.clientWidth>=rail.scrollWidth-4}
@@ -48,7 +53,7 @@ export const FONTS = "@import url('https://fonts.googleapis.com/css2?family=Arch
 
 /** Wrap a page body in the shared shell (component CSS + scoping root + page script). Output is a single wp:html block. */
 export function shell(body) {
-  const inner = `<style id="scx-css">${FONTS}${CSS}</style><div class="scx"><div id="main">${body.replace(/\n\s*/g, '')}</div></div><script id="scx-js">${SCRIPT}</script>`;
+  const inner = `<style id="scx-css">${FONTS}${CSS}</style><div class="scx"><div id="main">${body.replace(/\n\s*/g, '')}</div></div><script id="scx-js">${SCRIPT}${LIVE_SCRIPT}</script>`;
   return `<!-- wp:html -->\n${inner}\n<!-- /wp:html -->`;
 }
 
@@ -76,8 +81,8 @@ export const coverTitle = (name) => name.toUpperCase().replace('SEO ', 'SEO<br>'
 export const productCard = ({ href, kind, title, sub, price, image }) =>
   `<a class="card" href="${href}"><div class="cv${image ? ' ph' : ''}">${image ? `<img src="${image.src}" alt="${esc(image.alt || title)}" width="${image.w}" height="${image.h}" loading="lazy">` : productCover(kind, coverTitle(title))}</div><h3>${esc(title)}</h3><div class="sub">${esc(sub)}</div>${price ? `<div class="pr">${price}</div>` : ''}</a>`;
 
-export const railSection = ({ id, title, link, linkText = 'View all', cards, extra = '' }) =>
-  `<section class="railsec" id="${id}"><div class="railhd"><h2 class="disp">${title}</h2><div class="ctl"><a href="${link}">${linkText}</a><button class="arr prev" type="button" aria-label="Previous">${ICON_L}</button><button class="arr next-b" type="button" aria-label="Next">${ICON_R}</button></div></div><div class="rail" data-rail>${cards}</div>${extra}</section>`;
+export const railSection = ({ id, title, link, linkText = 'View all', cards, extra = '', live = '' }) =>
+  `<section class="railsec" id="${id}"><div class="railhd"><h2 class="disp">${title}</h2><div class="ctl"><a href="${link}">${linkText}</a><button class="arr prev" type="button" aria-label="Previous">${ICON_L}</button><button class="arr next-b" type="button" aria-label="Next">${ICON_R}</button></div></div><div class="rail" data-rail${live}>${cards}</div>${extra}</section>`;
 
 // Live Printify tees (see shop-data.mjs): real mockup, name, price, link to the product page.
 export const merchCards = (items) =>

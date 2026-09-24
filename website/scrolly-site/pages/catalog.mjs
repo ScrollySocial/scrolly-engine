@@ -2,7 +2,7 @@
 // Prices below were verified against live WooCommerce on 2026-09-21: product 58 = $59, 69 = $29, 24 = $299 (all published, in stock, purchasable).
 // Merch (2026-09-24): six public Printify tees are live; cards come from live WooCommerce via shop-data.mjs.
 import { shell, img, ICON_UR, esc, productCover, endCta, merchCards } from '../lib.mjs';
-import { merch } from '../shop-data.mjs';
+import { merch, CATS } from '../shop-data.mjs';
 
 
 const PRODUCTS = {
@@ -61,7 +61,7 @@ function shop() {
 </section>
 <section class="railsec" id="tees" style="padding-top:clamp(40px,5vw,64px)">
  <div class="railhd" style="justify-content:flex-start"><h2 class="disp">The tees</h2></div>
- <div class="rail grid">${merchCards(merch)}</div>
+ <div class="rail grid" data-live="${CATS.merch}" data-live-kind="merch">${merchCards(merch)}</div>
  <p class="fine" style="margin-top:22px">Free US shipping. International shipping is added at checkout.</p>
 </section>
 <section class="sec lv">

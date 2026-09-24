@@ -1,6 +1,6 @@
 import { shell, img, ICON_UR, ICON_L, ICON_R, productCard, railSection, merchCards, endCta } from '../lib.mjs';
 import { club1k, challenge1k } from '../status.mjs';
-import { merch, digital } from '../shop-data.mjs';
+import { merch, digital, CATS, DIGITAL_MAP } from '../shop-data.mjs';
 
 const tile = (cls, amt, h3, p, club, ch) =>
   `<div class="tile ${cls}" data-club="${club[0].split('/')[1].split('-')[0]}"><div><div class="amt">${amt}</div><h3>${h3}</h3><p>${p}</p></div><div class="links"><a class="ulink stretch" href="${club[0]}">${club[1]} ↗</a>${ch ? `<a class="ulink" href="${ch[0]}">${ch[1]} ↗</a>` : ''}</div></div>`;
@@ -111,10 +111,11 @@ ${heroCarousel()}
 
 ${railSection({
   id: 'products', title: 'Digital products', link: '/digital-products/',
+  live: ` data-live="${CATS.digital}" data-live-map='${JSON.stringify(DIGITAL_MAP)}'`,
   cards: digital.map((p) => productCard({ href: p.href, title: p.name, sub: p.sub, price: p.price, image: p.image })).join(''),
 })}
 
-${railSection({ id: 'shop-merch', title: 'Merch', link: '/scrolly-shop/', cards: merchCards(merch) })}
+${railSection({ id: 'shop-merch', title: 'Merch', link: '/scrolly-shop/', cards: merchCards(merch), live: ` data-live="${CATS.merch}" data-live-kind="merch"` })}
 
 ${reel}
 
