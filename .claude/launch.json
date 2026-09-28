@@ -6,6 +6,18 @@
       "runtimeExecutable": "python",
       "runtimeArgs": ["-m", "http.server", "8934", "--directory", "website"],
       "port": 8934
+    },
+    {
+      "name": "club-bridge",
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["--env-file=automation/.env", "automation/bridge-server.mjs"],
+      "port": 5679
+    },
+    {
+      "name": "k1-local-wp",
+      "runtimeExecutable": "php",
+      "runtimeArgs": ["-S", "localhost:8891", "-t", "C:/Users/merce/AppData/Local/Temp/claude/C--Users-merce-Scrolly-Organic-Engine/1025135e-964c-4121-a920-f1c155a300f7/scratchpad/localwp/wordpress"],
+      "port": 8891
     }
   ]
 }

@@ -23,8 +23,8 @@ if ( ! defined( 'SCROLLY_K1_PRODUCT' ) ) {
 	define( 'SCROLLY_K1_CHAL_VARIATION', 583 );
 	define( 'SCROLLY_K1_REBUY', 280 );
 	define( 'SCROLLY_K1_REELS_PAGE', 633 );      // private page: this week's 25 fresh Reel opportunities (replaced each weekly drop)
-	define( 'SCROLLY_K1_CAROUSELS_PAGE', 0 );    // private page: 30 evergreen carousel templates (set the page ID once it exists)
-	define( 'SCROLLY_K1_STORIES_PAGE', 0 );      // private page: 30 evergreen Story templates (set the page ID once it exists)
+	define( 'SCROLLY_K1_CAROUSELS_PAGE', 845 );  // private page: 30 evergreen carousel templates (automation/k1-launch/content)
+	define( 'SCROLLY_K1_STORIES_PAGE', 846 );    // private page: 30 evergreen Story templates (automation/k1-launch/content)
 	define( 'SCROLLY_K1_EP_PLAN', 'my-1k-plan' );
 	define( 'SCROLLY_K1_EP_REELS', 'weekly-reels' );
 
