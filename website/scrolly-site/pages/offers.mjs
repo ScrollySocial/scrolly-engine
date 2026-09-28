@@ -33,7 +33,7 @@ const faq = (rows) => `<section class="band cr"><div class="in"><div class="head
 // cream/teal, no em dashes. Buttons add straight to checkout; the shirt size is asked at checkout (challenge-shirt-size-checkout.php).
 const K1_CSS = `
 .scx .k1h{background:var(--tier);display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,.8fr);align-items:center;gap:clamp(20px,3vw,48px);padding:clamp(40px,5.5vw,84px) var(--gut) clamp(44px,5.5vw,84px);min-height:560px}
-.scx .k1h h1{font-size:clamp(42px,5.2vw,84px);line-height:.92;letter-spacing:-.03em}
+.scx .k1h h1{font-size:clamp(42px,5.2vw,84px);line-height:.92;letter-spacing:-.03em;text-wrap:balance}
 .scx .k1h .lede{margin-top:26px;max-width:560px;font-size:clamp(20px,1.8vw,26px);line-height:1.3;font-weight:700}
 .scx .k1h .sub2{margin-top:14px;max-width:540px;font-size:clamp(17px,1.4vw,20px);line-height:1.4;font-weight:500}
 .scx .k1-acts{display:flex;flex-wrap:wrap;gap:14px;margin-top:30px}
@@ -42,7 +42,19 @@ const K1_CSS = `
 .scx .btn.k1-teal,.scx .btn.k1-teal:hover,.scx .btn.k1-teal:focus{background:var(--tier);border-color:var(--tier);color:#000!important}
 .scx .btn.k1-teal *,.scx .btn.k1-white *{color:#000!important}
 .scx .k1h .fine{margin-top:16px;font-size:14px}
-.scx .k1h .art img{width:100%;max-width:660px;margin:0 auto;display:block}
+.scx .k1h{position:relative;overflow:hidden}
+.scx .k1h .art{position:relative;container-type:size;pointer-events:none}
+.scx .k1h .art img{position:absolute;max-width:none;margin:0;height:auto}
+.scx .k1h .art:not(.lay) img{left:0;top:0;width:100%;height:100%;object-fit:contain}
+.scx .k1h .art.l1 .ly-s{width:min(112cqw,158cqh);left:-4%;top:48%;transform:translateY(-58%)}
+.scx .k1h .art.l1 .ly-t{width:min(100cqw,176cqh);left:0;top:52%;transform:translateY(-50%)}
+.scx .k1h .art.l10 .ly-s{width:min(120cqw,196cqh);left:-6%;top:44%;transform:translateY(-50%)}
+.scx .k1h .art.l10 .ly-t{width:min(92cqw,138cqh);left:4%;bottom:0}
+.scx .k1h .art.l24 .ly-s{width:min(130cqw,210cqh);left:-24%;top:42%;transform:translateY(-50%)}
+.scx .k1h .art.l24 .ly-t{width:min(100cqw,150cqh);right:-2%;bottom:0}
+/* every tier page shares one hero box: same height and same art area on desktop, same height on mobile */
+@media(min-width:901px){.scx .k1h{height:clamp(540px,44vw,700px);min-height:0;padding-top:0;padding-bottom:0;grid-template-columns:minmax(0,1.12fr) minmax(0,.88fr)}.scx .k1h .art{position:absolute;top:0;right:0;bottom:0;width:49%}}
+@media(max-width:900px){.scx .k1h{min-height:840px;grid-template-rows:1fr auto;align-items:center}.scx .k1h .art{height:clamp(260px,78vw,360px);align-self:end;margin:0 calc(-1*var(--gut)) calc(-1*clamp(44px,5.5vw,84px))}.scx .k1h .art.l1 .ly-s{width:124%;left:-12%;top:auto;bottom:0;transform:none}.scx .k1h .art.l1 .ly-t{width:108%;left:-4%;top:auto;bottom:8%;transform:none}.scx .k1h .art.l10 .ly-s{width:120%;left:-10%;top:0;transform:none}.scx .k1h .art.l10 .ly-t{width:96%;left:2%}.scx .k1h .art.l24 .ly-s{width:130%;left:-20%;top:auto;bottom:10%;transform:none}.scx .k1h .art.l24 .ly-t{width:112%;left:auto;right:-4%;bottom:0}}
 .scx .goal .yg{color:#fff}
 .scx .goal .big.k1-one{font-size:clamp(28px,3.5vw,50px);line-height:1;max-width:calc(100% - clamp(0px,18vw,260px))}
 @media(max-width:760px){.scx .goal .big.k1-one{max-width:none}}
@@ -87,7 +99,7 @@ const K1_CSS = `
 .scx .k1-end h2 span{color:var(--tier)}
 .scx .k1-end p{margin-top:16px;font-size:19px}
 .scx .k1-end .k1-acts{justify-content:center}
-@media(max-width:900px){.scx .k1h{grid-template-columns:1fr;min-height:0}.scx .k1h .art{max-width:520px}.scx .k1-tiles{grid-template-columns:1fr;gap:18px}.scx .k1-tile{padding:32px 24px 28px}}
+@media(max-width:900px){.scx .k1h{grid-template-columns:1fr}.scx .k1-tiles{grid-template-columns:1fr;gap:18px}.scx .k1-tile{padding:32px 24px 28px}}
 `;
 
 const PREVIEW = {
@@ -98,13 +110,13 @@ const PREVIEW = {
 };
 
 const TIER_PAGES = {
-  '1k': { key: '1k-club', id: 291, amt: '$1K', tier: 'var(--teal)', cap: 'var(--lav)', art: 'tiger-stride.png',
+  '1k': { key: '1k-club', id: 291, amt: '$1K', tier: 'var(--teal)', cap: 'var(--lav)', art: 'tiger-stride.png', layers: [['k1-strokes.webp', 1536, 1024], ['k1-tiger.webp', 1774, 887]], lay: 'l1',
     h1: 'Don’t know where to start making money online?', h1b: 'We’ve got you.',
     goal: 'Earn your first $1,000.00 online', pct: ['$1K', 'your first goal'], end: 'Earn your <span>first stripe.</span>',
     intro: 'The Club gives you the plan. The Challenge gives you 30 consecutive days to go get it, and a shirt when you do.',
-    club: { one: 'Your plan, yours to keep. One-time.', items: [['The $1K Club playbook (PDF)', 'What to sell, who to reach and where, step by step.'], ['$1K Math calculators', 'How many sales it takes to reach $1,000.'], ['My Plan', 'Your goal, your numbers and your next steps.'], ['Your dashboard', 'Log your numbers and keep your history.']] },
-    chal: { one: 'Everything in the Club, plus:', items: [['25 reel templates every week', 'Fresh, ready-to-film ideas. Use the ones that fit.'], ['30 consecutive days, one goal', '$1,000 in total revenue.'], ['Revenue tracking', 'See where you stand as sales come in.'], ['Your stripe shirt', 'Hit $1,000 and it ships free in the lower 48. Pick your size at checkout.']] },
-    shirt: ['shirt-1k-challenge-back-cut.webp', 'Back of the $1K Challenge stripe shirt: Earned my first stripe. Built it. Proved it. Scrolly $1K Club.', 'shirt-1k-challenge-front-cut.webp'],
+    club: { one: 'Your plan, yours to keep. One-time.', items: [['The $1K Club playbook (PDF)', 'Make your first $1K with Instagram, step by step.'], ['Reel and carousel templates', 'A Reel safe-zone guide and a 3:4 carousel template.'], ['Setup checklist and worksheets', 'Printable, for every step in the playbook.'], ['$1K Math calculator', 'How many sales it takes to reach $1,000.']] },
+    chal: { one: 'Everything in the Club, plus:', items: [['Your personal $1K Plan', 'Your $1K number, what to do each week, and a weekly check-in.'], ['25 Reel ideas every week', 'Current formats, ready to film. Plus 30 carousel and 30 Story templates.'], ['30 consecutive days, one goal', '$1,000 in total revenue.'], ['Your stripe shirt', 'Hit $1,000 and it ships free in the lower 48. Pick your size at checkout.']] },
+    shirt: ['shirt-1k-challenge-back-teal.webp', 'Back of the $1K Challenge stripe shirt: Earned my first stripe. Built it. Proved it. Scrolly $1K Club.', 'shirt-1k-challenge-front-teal.webp'],
     caption: 'Hit $1,000 in 30 consecutive days and your stripe shirt ships free in the lower 48.',
     faqs: [
       ['Is $1,000 guaranteed?', 'No, and that’s the point. It isn’t a guarantee. It’s a realistic plan built to give you a real shot at it, and the win means something because it isn’t handed to you. Results depend on your offer, your customers and the work you put in.'],
@@ -112,11 +124,11 @@ const TIER_PAGES = {
       ['How do I earn the shirt?', 'Hit $1,000 in total revenue inside your 30 consecutive days, then show your sales records. Once they’re verified, your stripe shirt ships to you. Everyone who hits the goal earns one.'],
       ['Is shipping free?', 'Free to addresses in the lower 48 US states. Anywhere else, you can still earn your shirt: we’ll email you to arrange shipping, which you pay.'],
       ['When do I pick my shirt size?', `At the top of checkout, right under your email. It looks like this:<img class="k1-faqimg" src="${img('checkout-shirt-size-v2.png')}" alt="The Stripe shirt size dropdown at checkout" width="900" height="164" loading="lazy">Shirts are adult men’s S to 4XL in Comfort Colors 1717, a heavyweight cotton tee with a relaxed fit.`],
-      ['What if I don’t hit $1,000 in 30 days?', 'You keep everything in the Club. Club members can start another 30-day attempt for $35, with fresh reel templates and another go at the shirt.'],
+      ['What if I don’t hit $1,000 in 30 days?', 'You keep everything in the Club. Club members can start another 30-day attempt for $35, with fresh Reel ideas and another go at the shirt.'],
       ['Can I buy the Challenge on its own?', 'No. The Challenge is built on the Club, so your first one comes with Club + Challenge.'],
       ['Can I get a refund?', 'No. The Club and Challenge are digital products, so all sales are final. See our <a class="ulink" href="/refund/">Refund Policy</a>.'],
     ] },
-  '10k': { key: '10k-club', id: 304, amt: '$10K', tier: 'var(--lav)', cap: 'var(--lav)', art: 'tiger-leap.png',
+  '10k': { key: '10k-club', id: 304, amt: '$10K', tier: 'var(--lav)', cap: 'var(--lav)', art: 'tiger-leap.png', layers: [['k10-clouds.webp', 1774, 887], ['k10-tiger.webp', 1536, 1024]], lay: 'l10',
     h1: 'Ready to make it your living?', h1b: 'Coming soon.',
     goal: 'Earn your first $10,000.00 month', pct: ['$10K', 'your next goal'], end: 'Earn your <span>next stripe.</span>',
     intro: 'The $10K Club and Challenge are on the way. Get launch news and be first in.',
@@ -130,7 +142,7 @@ const TIER_PAGES = {
       ['What will it cost and include?', 'Pricing and what’s included will be posted before it opens.'],
       ['Where should I start?', 'With the <a class="ulink" href="/1k-club/">$1K Club + Challenge</a>.'],
     ] },
-  '24k': { key: '24k-club', id: 306, amt: '$24K', tier: 'var(--peach)', cap: 'var(--peach)', art: 'tiger-leap.png',
+  '24k': { key: '24k-club', id: 306, amt: '$24K', tier: 'var(--peach)', cap: 'var(--peach)', art: 'tiger-leap.png', layers: [['k24-strokes.webp', 1774, 887], ['k24-tiger.webp', 1536, 1024]], lay: 'l24',
     h1: 'Ready to scale it?', h1b: 'Coming soon.',
     goal: 'Earn your first $24,000.00 month', pct: ['$24K', 'your big goal'], end: 'Earn your <span>top stripe.</span>',
     intro: 'The $24K Club and Challenge are on the way. Get launch news and be first in.',
@@ -166,7 +178,7 @@ function tierPage(tk) {
  <h1 class="disp">${c.h1}<br><span class="it">${c.h1b}</span></h1>
  <div class="k1-acts">${joinChal('btn-black')}${joinClub('k1-white')}</div>
  <p class="fine">Results not guaranteed. Revenue before costs.</p>
-</div><div class="art"><img src="${img(c.art)}" alt="Illustrated tiger" width="1200" height="754" fetchpriority="high"></div></section>
+</div>${c.layers ? `<div class="art lay ${c.lay}"><img class="ly-s" src="${img(c.layers[0][0])}" alt="" width="${c.layers[0][1]}" height="${c.layers[0][2]}"><img class="ly-t" src="${img(c.layers[1][0])}" alt="Illustrated tiger" width="${c.layers[1][1]}" height="${c.layers[1][2]}" fetchpriority="high"></div>` : `<div class="art"><img src="${img(c.art)}" alt="Illustrated tiger" width="1200" height="754" fetchpriority="high"></div>`}</section>
 <section class="goal k1-goal">
  <div class="disp big k1-one">${c.goal}</div>
  <div class="hand yg" aria-hidden="true"><div>You got this!</div><svg viewBox="0 0 70 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"><path d="M4 8L60 3M12 20L66 15"/></svg></div>

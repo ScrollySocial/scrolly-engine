@@ -1,0 +1,13 @@
+/* Local static copies of the site fonts (Google Fonts, SIL OFL). Static instances embed in the PDF
+   as named TrueType fonts; variable fonts would be embedded as unnamed Type 3 outlines. */
+@font-face { font-family: 'Archivo'; font-style: normal; font-weight: 800; font-display: block; src: url(archivo-800.ttf) format('truetype'); }
+@font-face { font-family: 'Archivo'; font-style: normal; font-weight: 900; font-display: block; src: url(archivo-900.ttf) format('truetype'); }
+@font-face { font-family: 'Public Sans'; font-style: normal; font-weight: 400; font-display: block; src: url(publicsans-400.ttf) format('truetype'); }
+@font-face { font-family: 'Public Sans'; font-style: normal; font-weight: 600; font-display: block; src: url(publicsans-600.ttf) format('truetype'); }
+@font-face { font-family: 'Public Sans'; font-style: normal; font-weight: 700; font-display: block; src: url(publicsans-700.ttf) format('truetype'); }
+@font-face { font-family: 'Public Sans'; font-style: normal; font-weight: 800; font-display: block; src: url(publicsans-800.ttf) format('truetype'); }
+@font-face { font-family: 'Public Sans'; font-style: italic; font-weight: 400; font-display: block; src: url(publicsans-400i.ttf) format('truetype'); }
+@font-face { font-family: 'Caveat Brush'; font-style: normal; font-weight: 400; font-display: block; src: url(caveatbrush-400.ttf) format('truetype'); }
+/* Public Sans and Caveat Brush have no "→" (U+2192); borrow Archivo's so no system font is embedded. */
+@font-face { font-family: 'Scrolly Arrow'; font-style: normal; font-weight: 100 900; font-display: block; src: url(archivo-800.ttf) format('truetype'); unicode-range: U+2190-2193; }
+@font-face { font-family: 'Scrolly Arrow'; font-style: italic; font-weight: 100 900; font-display: block; src: url(archivo-800.ttf) format('truetype'); unicode-range: U+2190-2193; }
