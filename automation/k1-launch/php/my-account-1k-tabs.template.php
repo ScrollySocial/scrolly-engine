@@ -27,6 +27,9 @@ if ( ! defined( 'SCROLLY_K1_PRODUCT' ) ) {
 	define( 'SCROLLY_K1_STORIES_PAGE', 846 );    // private page: 30 evergreen Story templates (automation/k1-launch/content)
 	define( 'SCROLLY_K1_EP_PLAN', 'my-1k-plan' );
 	define( 'SCROLLY_K1_EP_REELS', 'weekly-reels' );
+	define( 'SCROLLY_K1_EP_CHECKIN', 'weekly-check-in' );
+	define( 'SCROLLY_K1_EP_NUMBERS', 'my-numbers' );
+	define( 'SCROLLY_K1_ENDPOINTS_V', '3' ); // bump whenever an endpoint is added, so rewrite rules are rebuilt once
 
 	/** What this customer owns: club, challenge, and their most recent Challenge order id. */
 	function scrolly_k1_access( $user_id ) {
@@ -131,6 +134,12 @@ if ( ! defined( 'SCROLLY_K1_PRODUCT' ) ) {
 		return $labels[ $status ] ?? $status;
 	}
 
+	/** Winner shirt size: the member's own latest choice (My $1K Plan), else the size picked at checkout. */
+	function scrolly_k1_shirt_size( $uid, $order_id ) {
+		$mine = (string) get_user_meta( $uid, 'scrolly_k1_shirt_size', true );
+		return $mine ? $mine : scrolly_k1_order_shirt_size( $order_id );
+	}
+
 	/** Shirt size chosen at checkout (block checkout additional field scrolly/shirt-size), if the order has one. */
 	function scrolly_k1_order_shirt_size( $order_id ) {
 		$order = $order_id ? wc_get_order( $order_id ) : null;
@@ -158,7 +167,7 @@ if ( ! defined( 'SCROLLY_K1_PRODUCT' ) ) {
 
 		if ( 'not_started' === $status ) {
 			return $h . '<h2>Your 30-day Challenge</h2><p>Start when you’re ready. Your 30 consecutive days begin today when you press start. Hit $1,000 in qualifying revenue inside those 30 days to earn your stripe.</p>'
-				. scrolly_k1_form_open( 'start' ) . '<button class="btn teal" type="submit">Start my 30 days</button></form></div>';
+				. scrolly_k1_form_open( 'start' ) . '<button class="btn teal" type="submit">Start my 30 days</button></form>' . scrolly_k1_size_form( scrolly_k1_shirt_size( $uid, (int) $a['chal_order'] ) ) . '</div>';
 		}
 
 		// Primary display: day, revenue, what is left, milestones.
@@ -214,7 +223,7 @@ if ( ! defined( 'SCROLLY_K1_PRODUCT' ) ) {
 			}
 			if ( empty( $ach['merchOrdered'] ) && 'accepted' !== $choice ) {
 				$order = wc_get_order( (int) ( $chal['order'] ?? 0 ) );
-				$size  = scrolly_k1_order_shirt_size( (int) ( $chal['order'] ?? 0 ) );
+				$size  = scrolly_k1_shirt_size( $uid, (int) ( $chal['order'] ?? 0 ) );
 				$pre   = array(
 					'name'     => $order ? trim( $order->get_shipping_first_name() . ' ' . $order->get_shipping_last_name() ) : '',
 					'address1' => $order ? $order->get_shipping_address_1() : '', 'address2' => $order ? $order->get_shipping_address_2() : '',
@@ -246,7 +255,19 @@ if ( ! defined( 'SCROLLY_K1_PRODUCT' ) ) {
 				? '<a class="btn teal" href="' . esc_url( $retry ) . '">Start another 30 days ($35)</a>'
 				: '<p class="note" style="color:#fff">A new 30-day attempt ($35) opens soon. We will email you when it is available.</p>';
 		}
+		if ( empty( $ach['merchOrdered'] ) && 'accepted' !== ( $ach['rewardChoice'] ?? '' ) && ! in_array( $status, array( 'completed', 'expired' ), true ) ) {
+			$h .= scrolly_k1_size_form( scrolly_k1_shirt_size( $uid, (int) $a['chal_order'] ) );
+		}
 		return $h . '</div>';
+	}
+
+	/** Change the winner shirt size any time before the shirt is ordered. */
+	function scrolly_k1_size_form( $current ) {
+		$h = '<details style="margin-top:16px"><summary style="color:#fff">Your stripe shirt size: ' . esc_html( $current ? $current : 'not chosen' ) . ' (change)</summary>' . scrolly_k1_form_open( 'size' ) . '<label for="k1-mysize" style="color:#fff;margin-top:10px">Shirt size (Adult Men\x27s, Comfort Colors 1717)</label><select id="k1-mysize" name="size" style="max-width:220px">';
+		foreach ( array( 'S', 'M', 'L', 'XL', '2XL', '3XL', '4XL' ) as $sz ) {
+			$h .= '<option' . selected( $current, $sz, false ) . '>' . $sz . '</option>';
+		}
+		return $h . '</select><button class="btn teal" type="submit">Save size</button></form></details>';
 	}
 
 	/** Retry = a new $35 Challenge (product 280). Returns the add-to-cart URL once 280 is published, otherwise null. */
@@ -325,41 +346,66 @@ if ( ! defined( 'SCROLLY_K1_PRODUCT' ) ) {
 
 	// ---- endpoints + menu
 	add_action( 'init', function () {
-		add_rewrite_endpoint( SCROLLY_K1_EP_PLAN, EP_ROOT | EP_PAGES );
-		add_rewrite_endpoint( SCROLLY_K1_EP_REELS, EP_ROOT | EP_PAGES );
-		if ( get_option( 'scrolly_k1_endpoints_v' ) !== '1' ) {
+		foreach ( array( SCROLLY_K1_EP_PLAN, SCROLLY_K1_EP_REELS, SCROLLY_K1_EP_CHECKIN, SCROLLY_K1_EP_NUMBERS ) as $ep ) {
+			add_rewrite_endpoint( $ep, EP_ROOT | EP_PAGES );
+		}
+		if ( get_option( 'scrolly_k1_endpoints_v' ) !== SCROLLY_K1_ENDPOINTS_V ) {
 			flush_rewrite_rules( false );
-			update_option( 'scrolly_k1_endpoints_v', '1' );
+			update_option( 'scrolly_k1_endpoints_v', SCROLLY_K1_ENDPOINTS_V );
 		}
 	} );
 	add_filter( 'woocommerce_get_query_vars', function ( $vars ) {
-		$vars[ SCROLLY_K1_EP_PLAN ]  = SCROLLY_K1_EP_PLAN;
-		$vars[ SCROLLY_K1_EP_REELS ] = SCROLLY_K1_EP_REELS;
+		foreach ( array( SCROLLY_K1_EP_PLAN, SCROLLY_K1_EP_REELS, SCROLLY_K1_EP_CHECKIN, SCROLLY_K1_EP_NUMBERS ) as $ep ) {
+			$vars[ $ep ] = $ep;
+		}
 		return $vars;
 	} );
 	add_filter( 'woocommerce_endpoint_' . SCROLLY_K1_EP_PLAN . '_title', function () { return 'My $1K Plan'; } );
 	add_filter( 'woocommerce_endpoint_' . SCROLLY_K1_EP_REELS . '_title', function () { return 'Challenge Content'; } );
+	add_filter( 'woocommerce_endpoint_' . SCROLLY_K1_EP_CHECKIN . '_title', function () { return 'Weekly Check-in'; } );
+	add_filter( 'woocommerce_endpoint_' . SCROLLY_K1_EP_NUMBERS . '_title', function () { return 'My Numbers'; } );
+
+	// Menu: addresses and payment methods live inside Account details for everyone. $1K members get their tabs first and
+	// no Dashboard (it isn't the $1K dashboard; the real one is the Club app, later).
 	add_filter( 'woocommerce_account_menu_items', function ( $items ) {
+		unset( $items['edit-address'], $items['payment-methods'] );
 		$a = scrolly_k1_access( get_current_user_id() );
 		if ( ! $a['club'] ) {
 			return $items;
 		}
-		$new = array();
-		foreach ( $items as $k => $label ) {
-			$new[ $k ] = $label;
-			if ( 'dashboard' === $k ) {
-				$new[ SCROLLY_K1_EP_PLAN ] = 'My $1K Plan';
-				if ( $a['challenge'] ) {
-					$new[ SCROLLY_K1_EP_REELS ] = 'Challenge Content';
-				}
-			}
+		unset( $items['dashboard'] );
+		$new = array( SCROLLY_K1_EP_PLAN => 'My $1K Plan' );
+		if ( $a['challenge'] ) {
+			$new[ SCROLLY_K1_EP_CHECKIN ] = 'Weekly Check-in';
+			$new[ SCROLLY_K1_EP_NUMBERS ] = 'My Numbers';
+			$new[ SCROLLY_K1_EP_REELS ]   = 'Challenge Content';
 		}
-		return $new;
+		return $new + $items;
+	}, 20 );
+	add_action( 'woocommerce_before_edit_account_form', function () {
+		echo '<p style="margin:0 0 18px"><a href="' . esc_url( wc_get_account_endpoint_url( 'edit-address' ) ) . '">Billing and shipping addresses</a> · <a href="' . esc_url( wc_get_account_endpoint_url( 'payment-methods' ) ) . '">Saved payment methods</a></p>';
+	} );
+	// My Account layout: wider page, a slim menu column, and a wide content column (all account pages).
+	add_action( 'wp_head', function () {
+		if ( ! function_exists( 'is_account_page' ) || ! is_account_page() || ! is_user_logged_in() ) {
+			return;
+		}
+		echo '<style id="scrolly-k1-account-layout">body.woocommerce-account .page-content>.woocommerce{max-width:1240px!important}body.woocommerce-account .woocommerce-MyAccount-navigation{float:left;width:190px!important;margin-right:0}body.woocommerce-account .woocommerce-MyAccount-navigation ul{list-style:none;margin:0;padding:0}body.woocommerce-account .woocommerce-MyAccount-navigation li{margin:0 0 4px}body.woocommerce-account .woocommerce-MyAccount-navigation li a{display:block;padding:9px 14px;border-radius:10px;text-decoration:none!important;font-weight:700}body.woocommerce-account .woocommerce-MyAccount-navigation li.is-active a{background:#000;color:#fff!important}body.woocommerce-account .woocommerce-MyAccount-content{float:right;width:calc(100% - 230px)!important}@media(max-width:768px){body.woocommerce-account .woocommerce-MyAccount-navigation,body.woocommerce-account .woocommerce-MyAccount-content{float:none;width:100%!important}body.woocommerce-account .woocommerce-MyAccount-navigation ul{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:18px}body.woocommerce-account .woocommerce-MyAccount-navigation li{margin:0}}</style>';
+	} );
+	// $1K members land on My $1K Plan instead of the Dashboard.
+	add_action( 'template_redirect', function () {
+		if ( ! is_user_logged_in() || ! function_exists( 'is_account_page' ) || ! is_account_page() || is_wc_endpoint_url() ) {
+			return;
+		}
+		if ( scrolly_k1_access( get_current_user_id() )['club'] ) {
+			wp_safe_redirect( wc_get_account_endpoint_url( SCROLLY_K1_EP_PLAN ) );
+			exit;
+		}
 	} );
 
 	// ---- saving (plain form posts, nonce-checked, current user only)
-	function scrolly_k1_back( $msg = '', $anchor = '' ) {
-		$url = wc_get_account_endpoint_url( SCROLLY_K1_EP_PLAN );
+	function scrolly_k1_back( $msg = '', $anchor = '', $ep = SCROLLY_K1_EP_PLAN ) {
+		$url = wc_get_account_endpoint_url( $ep );
 		$url = $msg ? add_query_arg( 'k1', $msg, $url ) : $url;
 		wp_safe_redirect( $anchor ? $url . '#' . $anchor : $url );
 		exit;
@@ -470,7 +516,7 @@ if ( ! defined( 'SCROLLY_K1_PRODUCT' ) ) {
 				usort( $log, function ( $x, $y ) { return strcmp( $y['date'], $x['date'] ); } );
 				update_user_meta( $uid, 'scrolly_k1_log', array_slice( $log, 0, 500 ) );
 			}
-			scrolly_k1_back( 'review', 'k1-review-sec' );
+			scrolly_k1_back( 'review', 'k1-review', SCROLLY_K1_EP_CHECKIN );
 		}
 		if ( 'log' === $do ) {
 			$log   = get_user_meta( $uid, 'scrolly_k1_log', true );
@@ -487,14 +533,14 @@ if ( ! defined( 'SCROLLY_K1_PRODUCT' ) ) {
 			);
 			usort( $log, function ( $x, $y ) { return strcmp( $y['date'], $x['date'] ); } );
 			update_user_meta( $uid, 'scrolly_k1_log', array_slice( $log, 0, 500 ) );
-			scrolly_k1_back( 'log' );
+			scrolly_k1_back( 'log', '', SCROLLY_K1_EP_NUMBERS );
 		}
 		if ( 'del' === $do ) {
 			$id  = sanitize_text_field( wp_unslash( $_POST['id'] ?? '' ) );
 			$log = get_user_meta( $uid, 'scrolly_k1_log', true );
 			$log = is_array( $log ) ? array_values( array_filter( $log, function ( $e ) use ( $id ) { return ( $e['id'] ?? '' ) !== $id; } ) ) : array();
 			update_user_meta( $uid, 'scrolly_k1_log', $log );
-			scrolly_k1_back( 'del' );
+			scrolly_k1_back( 'del', '', SCROLLY_K1_EP_NUMBERS );
 		}
 		if ( 'start' === $do && $a['challenge'] ) {
 			$w = scrolly_k1_window( $uid, $a );
@@ -571,6 +617,14 @@ if ( ! defined( 'SCROLLY_K1_PRODUCT' ) ) {
 			$chal['achievement']['claim'] = array( 'claimedRevenueUsd' => $claimed, 'loggedRevenueUsd' => $rev, 'note' => $note, 'files' => $names, 'claimedAt' => current_time( 'mysql' ) );
 			update_user_meta( $uid, 'scrolly_k1_chal', $chal );
 			scrolly_k1_back( 'claimed', 'k1-challenge' );
+		}
+
+		if ( 'size' === $do && $a['challenge'] ) {
+			$size = (string) wp_unslash( $_POST['size'] ?? '' );
+			if ( in_array( $size, array( 'S', 'M', 'L', 'XL', '2XL', '3XL', '4XL' ), true ) ) {
+				update_user_meta( $uid, 'scrolly_k1_shirt_size', $size );
+			}
+			scrolly_k1_back( 'size', 'k1-challenge' );
 		}
 
 		// Winner merch: accept (size + shipping details) or decline. Fulfillment is manual (Printify by hand).
@@ -738,6 +792,7 @@ K1JS;
 .k1a .warn{background:#fff3c4;color:#000;border-radius:12px;padding:10px 14px;font-weight:700;margin:0 0 16px}
 .k1a .chip{display:inline-block;background:var(--teal);color:#000;border-radius:20px;padding:4px 12px;font-weight:800;font-size:13px;margin:0 0 10px}
 .k1a ul.milestones{list-style:none;padding:0;display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}.k1a ul.milestones li{border:1px solid rgba(255,255,255,.4);border-radius:20px;padding:4px 12px;font-weight:700;color:#fff}.k1a ul.milestones li.hit{background:var(--teal);color:#000;border-color:var(--teal)}
+.k1a .k1tabs{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 16px}.k1a .k1tabs button{min-height:44px;padding:0 20px;border-radius:30px;border:0;background:#fff;color:#000;font:800 15px "Public Sans",Arial,sans-serif;cursor:pointer;box-shadow:inset 0 0 0 1px rgba(0,0,0,.15)}.k1a .k1tabs button[aria-selected=true]{background:#000;color:#fff!important;box-shadow:none}
 .k1a .sec.black .proof label{color:#fff}.k1a .sec.black textarea,.k1a .sec.black input[type=file]{color:#000;background:#fff}
 @media(max-width:700px){.k1a .grid,.k1a .grid3{grid-template-columns:1fr}.k1a table{font-size:14px}.k1a th:nth-child(4),.k1a td:nth-child(4){display:none}}
 </style>';
@@ -805,36 +860,59 @@ K1JS;
 		return $h;
 	}
 
-	add_action( 'woocommerce_account_' . SCROLLY_K1_EP_PLAN . '_endpoint', function () {
+	/** Shared context for the $1K tabs: access, saved data, notices. Returns null (after printing) when the tab can't render. */
+	function scrolly_k1_tab_open( $need_challenge ) {
 		$uid = get_current_user_id();
 		$a   = scrolly_k1_access( $uid );
 		echo scrolly_k1_css() . '<div class="k1a">';
-		if ( ! $a['club'] ) {
-			echo '<div class="sec teal"><h2>My $1K Plan</h2><p>This tab is for $1K Club members.</p><a class="btn" href="' . esc_url( home_url( '/1k-club/' ) ) . '">See the $1K Club</a></div></div>';
+		if ( ! $a['club'] || ( $need_challenge && ! $a['challenge'] ) ) {
+			echo '<div class="sec teal"><h2>' . ( $a['club'] ? 'Part of the $1K Challenge' : 'My $1K Plan' ) . '</h2><p>' . ( $a['club'] ? 'The weekly check-in and your numbers come with the $1K Challenge.' : 'This tab is for $1K Club members.' ) . '</p><a class="btn" href="' . esc_url( $a['club'] ? scrolly_k1_add_challenge_url() : home_url( '/1k-club/' ) ) . '">' . ( $a['club'] ? 'Add the $1K Challenge' : 'See the $1K Club' ) . '</a></div></div>';
+			return null;
+		}
+		$c = array( 'uid' => $uid, 'a' => $a );
+		foreach ( array( 'profile' => 'scrolly_k1_profile', 'log' => 'scrolly_k1_log', 'reviews' => 'scrolly_k1_reviews' ) as $k => $meta ) {
+			$v       = get_user_meta( $uid, $meta, true );
+			$c[ $k ] = is_array( $v ) ? $v : array();
+		}
+		$msgs = array( 'profile' => 'Your plan is ready.', 'review' => 'Check-in saved. Your focus for next week is below.', 'log' => 'Numbers logged.', 'del' => 'Entry removed.', 'start' => 'Your 30 days have started. Go get it.', 'claimed' => 'Proof received. We will review it and update this page.', 'reward' => 'Thanks. Your winner shirt choice is saved.', 'size' => 'Shirt size saved.' );
+		$errs = array( 'claimneed' => 'Please tick the box confirming your sales qualify.', 'claimfiles' => 'Please attach at least one screenshot or PDF (JPG, PNG, WEBP, or PDF, up to 8 MB each).', 'claimmail' => 'Your proof did not go through. Nothing was saved, so please try again, or email ' . SCROLLY_K1_ADMIN_EMAIL . '.', 'rewardneed' => 'Please choose a size and fill in your name, address, city, postcode, and country.' );
+		$c['k1'] = sanitize_key( wp_unslash( $_GET['k1'] ?? '' ) );
+		if ( isset( $msgs[ $c['k1'] ] ) ) {
+			echo '<div class="ok" role="status">' . esc_html( $msgs[ $c['k1'] ] ) . '</div>';
+		}
+		if ( isset( $errs[ $c['k1'] ] ) ) {
+			echo '<div class="warn" role="alert">' . esc_html( $errs[ $c['k1'] ] ) . '</div>';
+		}
+		$c['w']  = scrolly_k1_window( $uid, $a );
+		$last    = $c['reviews'] ? end( $c['reviews'] ) : null;
+		$last_t  = $last ? strtotime( $last['periodEnd'] . ' 12:00:00' ) : 0;
+		$c['due'] = ! $last || ( current_time( 'timestamp' ) - $last_t ) >= 6 * DAY_IN_SECONDS;
+		$c['due_line'] = ! $last
+			? 'Do your first check-in at the end of your first week, or now to set a starting point.'
+			: ( $c['due'] ? 'Your weekly check-in is due.' : 'Next check-in: ' . wp_date( 'l, M j', $last_t + 7 * DAY_IN_SECONDS ) . '.' );
+		return $c;
+	}
+
+	/** Challenge members who haven't done Start Here yet are sent to it from the other tabs. */
+	function scrolly_k1_need_profile_note() {
+		echo '<div class="sec black"><h2>Start here first</h2><p>Answer a few questions about your business in My $1K Plan, and this tab fills in.</p><a class="btn teal" href="' . esc_url( wc_get_account_endpoint_url( SCROLLY_K1_EP_PLAN ) ) . '">Go to My $1K Plan</a></div></div>';
+	}
+
+	add_action( 'woocommerce_account_' . SCROLLY_K1_EP_PLAN . '_endpoint', function () {
+		$c = scrolly_k1_tab_open( false );
+		if ( ! $c ) {
 			return;
 		}
-		$profile = get_user_meta( $uid, 'scrolly_k1_profile', true );
-		$profile = is_array( $profile ) ? $profile : array();
-		$log     = get_user_meta( $uid, 'scrolly_k1_log', true );
-		$log     = is_array( $log ) ? $log : array();
-		$reviews = get_user_meta( $uid, 'scrolly_k1_reviews', true );
-		$reviews = is_array( $reviews ) ? $reviews : array();
+		$a       = $c['a'];
+		$uid     = $c['uid'];
+		$profile = $c['profile'];
+		$log     = $c['log'];
 		$price   = (float) ( $profile['price'] ?? 0 );
-		$msgs    = array( 'profile' => 'Your plan is ready.', 'review' => 'Check-in saved. Your focus for next week is below.', 'log' => 'Numbers logged.', 'del' => 'Entry removed.', 'start' => 'Your 30 days have started. Go get it.', 'claimed' => 'Proof received. We will review it and update this page.', 'reward' => 'Thanks. Your winner shirt choice is saved.' );
-		$errs    = array( 'claimneed' => 'Please tick the box confirming your sales qualify.', 'claimfiles' => 'Please attach at least one screenshot or PDF (JPG, PNG, WEBP, or PDF, up to 8 MB each).', 'claimmail' => 'Your proof did not go through. Nothing was saved, so please try again, or email ' . SCROLLY_K1_ADMIN_EMAIL . '.', 'rewardneed' => 'Please choose a size and fill in your name, address, city, postcode, and country.' );
-		$k1      = sanitize_key( wp_unslash( $_GET['k1'] ?? '' ) );
-		if ( isset( $msgs[ $k1 ] ) ) {
-			echo '<div class="ok" role="status">' . esc_html( $msgs[ $k1 ] ) . '</div>';
-		}
-		if ( isset( $errs[ $k1 ] ) ) {
-			echo '<div class="warn" role="alert">' . esc_html( $errs[ $k1 ] ) . '</div>';
-		}
 
 		// Club only: the playbook is the product; the personalized plan and weekly loop come with the Challenge.
 		if ( ! $a['challenge'] ) {
-			$chal_url = scrolly_k1_add_challenge_url();
 			echo '<div class="sec black"><h2>Your $1K Club</h2><p>Your playbook is ready in <a style="color:#94ece1" href="' . esc_url( wc_get_account_endpoint_url( 'downloads' ) ) . '">Downloads</a>. It walks through the whole system: your $1K math, fixing your buying path, what to post, and how to track and improve.</p></div>';
-			echo '<div class="sec teal"><h2>Make your first $1K with Instagram</h2><p>The $1K Challenge builds your personal $1K Plan from your business details, tells you what to post and fix each week, gives you a weekly check-in that shows what to change next, and 25 fresh Reel ideas every week for 30 days.</p><a class="btn" href="' . esc_url( $chal_url ) . '">Add the $1K Challenge</a></div>';
+			echo '<div class="sec teal"><h2>Make your first $1K with Instagram</h2><p>The $1K Challenge builds your personal $1K Plan from your business details, tells you what to post and fix each week, gives you a weekly check-in that shows what to change next, and 25 fresh Reel ideas every week for 30 days.</p><a class="btn" href="' . esc_url( scrolly_k1_add_challenge_url() ) . '">Add the $1K Challenge</a></div>';
 			echo scrolly_k1_calc_html( 0 ) . '</div>';
 			return;
 		}
@@ -843,21 +921,18 @@ K1JS;
 		if ( ! $profile ) {
 			$draft = get_transient( 'scrolly_k1_draft_' . $uid );
 			echo '<div class="sec black"><h2>Start here</h2><p>Make your first $1K with Instagram. Tell us about what you sell, and in about two minutes we will work out your $1K number, what it takes to get there, and what to focus on first.</p><p class="note">For businesses that already sell something with a price, have an Instagram account (new is fine), and give people a trackable next step: buy, book, request a quote, apply, or get in touch.</p></div>';
-			if ( 'need' === $k1 ) {
+			if ( 'need' === $c['k1'] ) {
 				echo '<div class="warn" role="alert">Please fill in what you sell, a price above $0, the kind of business, and where people buy.</div>';
 			}
 			echo '<div class="sec">' . scrolly_k1_profile_form( is_array( $draft ) ? $draft : array() ) . '</div></div>';
 			return;
 		}
 
-		// Challenge lifecycle card (progress, milestones, proof, winner, retry).
-		$w = scrolly_k1_window( $uid, $a );
+		// Challenge lifecycle card (progress, milestones, shirt size, proof, winner, retry).
+		$w = $c['w'];
 		if ( $w ) {
 			echo scrolly_k1_challenge_card( $uid, $a, $w, $log, $profile );
 		}
-
-		$saved_attr   = esc_attr( wp_json_encode( $profile ) );
-		$reviews_attr = esc_attr( wp_json_encode( $reviews ) );
 
 		// Challenge progress for the goal gap (same revenue function as the Challenge card).
 		$chal = array( 'started' => false, 'day' => 0, 'revenue' => 0, 'over' => false );
@@ -865,29 +940,42 @@ K1JS;
 			$chal = array( 'started' => true, 'day' => (int) $w['day'], 'revenue' => scrolly_k1_window_revenue( $log, $w ), 'over' => (bool) $w['over'] );
 		}
 
-		// Weekly check-in timing (shown in This Week and in the check-in section).
-		$last     = $reviews ? end( $reviews ) : null;
-		$last_t   = $last ? strtotime( $last['periodEnd'] . ' 12:00:00' ) : 0;
-		$due      = ! $last || ( current_time( 'timestamp' ) - $last_t ) >= 6 * DAY_IN_SECONDS;
-		$due_line = ! $last
-			? 'Do your first check-in at the end of your first week, or now to set a starting point.'
-			: ( $due ? 'Your weekly check-in is due.' : 'Next check-in: ' . wp_date( 'l, M j', $last_t + 7 * DAY_IN_SECONDS ) . '.' );
-
 		// This Week: Plan / latest check-in -> this week's execution list (rendered by the bundle).
-		echo '<div id="k1-week" data-challenge="' . esc_attr( wp_json_encode( $chal ) ) . '" data-next="' . esc_attr( $due_line ) . '" data-content="' . esc_attr( wc_get_account_endpoint_url( SCROLLY_K1_EP_REELS ) ) . '"></div>';
+		echo '<div id="k1-week" data-challenge="' . esc_attr( wp_json_encode( $chal ) ) . '" data-next="' . esc_attr( $c['due_line'] ) . '" data-content="' . esc_attr( wc_get_account_endpoint_url( SCROLLY_K1_EP_REELS ) ) . '" data-checkin="' . esc_attr( wc_get_account_endpoint_url( SCROLLY_K1_EP_CHECKIN ) ) . '"></div>';
 
-		// My $1K Plan (rendered in the browser by the reused Club logic).
-		echo '<div id="k1-plan" data-saved="' . $saved_attr . '" data-reviews="' . $reviews_attr . '"><div class="sec"><p>Building your plan…</p></div></div>';
+		// My $1K Plan (rendered in the browser by the reused Club logic); the calculator moves in right under the plan box.
+		echo '<div id="k1-plan" data-saved="' . esc_attr( wp_json_encode( $profile ) ) . '" data-reviews="' . esc_attr( wp_json_encode( $c['reviews'] ) ) . '"><div class="sec"><p>Building your plan…</p></div></div>';
 		echo '<noscript><div class="sec cream"><p>Your plan needs JavaScript to display. Please enable it and reload.</p></div></noscript>';
-
-		// Weekly Review: check-in -> deterministic diagnosis (Module 7 engine, bundled) -> next week's focus.
-		echo '<div class="sec" id="k1-review-sec"><h2>Weekly check-in</h2><p>' . esc_html( $due_line ) . ' It takes about 5 minutes: what you did, your numbers, and we tell you what to change next.</p>';
-		echo '<details' . ( $due ? ' open' : '' ) . '><summary>' . ( $due ? 'Check in for this week' : 'Check in early' ) . '</summary>' . scrolly_k1_checkin_form( scrolly_k1_logged_in_week( $log, current_time( 'Y-m-d' ) ) ) . '</details>';
-		echo '<div id="k1-review" data-saved="' . $saved_attr . '" data-reviews="' . $reviews_attr . '"></div></div>';
+		echo scrolly_k1_calc_html( $price );
 
 		echo '<div class="sec"><details><summary>Edit my business details</summary>' . scrolly_k1_profile_form( $profile, 'Update my plan' ) . '</details></div>';
+		echo '<p class="note">Your playbook PDF is in <a href="' . esc_url( wc_get_account_endpoint_url( 'downloads' ) ) . '">Downloads</a>.</p>';
+		echo '<script>' . scrolly_k1_app_js() . '</script></div>';
+	} );
 
-		// Log a sale as it happens (feeds the Challenge total; unchanged)
+	// Weekly check-in tab: form -> deterministic diagnosis (Module 7 engine, bundled) -> next week's focus, plus past check-ins.
+	add_action( 'woocommerce_account_' . SCROLLY_K1_EP_CHECKIN . '_endpoint', function () {
+		$c = scrolly_k1_tab_open( true );
+		if ( ! $c ) {
+			return;
+		}
+		if ( ! $c['profile'] ) {
+			scrolly_k1_need_profile_note();
+			return;
+		}
+		echo '<div class="sec" id="k1-review-sec"><h2>Weekly check-in</h2><p>' . esc_html( $c['due_line'] ) . ' It takes about 5 minutes: what you did, your numbers, and we tell you what to change next.</p>';
+		echo '<details' . ( $c['due'] ? ' open' : '' ) . '><summary>' . ( $c['due'] ? 'Check in for this week' : 'Check in early' ) . '</summary>' . scrolly_k1_checkin_form( scrolly_k1_logged_in_week( $c['log'], current_time( 'Y-m-d' ) ) ) . '</details></div>';
+		echo '<div id="k1-review" data-saved="' . esc_attr( wp_json_encode( $c['profile'] ) ) . '" data-reviews="' . esc_attr( wp_json_encode( $c['reviews'] ) ) . '"></div>';
+		echo '<script>' . scrolly_k1_app_js() . '</script></div>';
+	} );
+
+	// My numbers tab: log a sale as it happens (feeds the Challenge total) + the history.
+	add_action( 'woocommerce_account_' . SCROLLY_K1_EP_NUMBERS . '_endpoint', function () {
+		$c = scrolly_k1_tab_open( true );
+		if ( ! $c ) {
+			return;
+		}
+		$log = $c['log'];
 		echo '<div class="sec"><h2>Log a sale as it happens</h2><p>Add revenue as it comes in so your Challenge total stays current. Only you can see it.</p>' . scrolly_k1_form_open( 'log' ) . '<div class="grid3">';
 		echo '<div><label for="k1-date">Date</label><input id="k1-date" name="date" type="date" value="' . esc_attr( current_time( 'Y-m-d' ) ) . '"></div>';
 		echo '<div><label for="k1-rev">Revenue ($)</label><input id="k1-rev" name="rev" type="number" min="0" step="0.01" required></div>';
@@ -896,8 +984,6 @@ K1JS;
 		echo '<div style="grid-column:span 2"><label for="k1-note">Note</label><input id="k1-note" name="note" placeholder="What worked?"></div>';
 		echo '</div><label class="chk" style="margin-top:12px"><input type="checkbox" name="refund" value="1"> This is a refund (it comes off your Challenge total)</label>';
 		echo '<button class="btn" type="submit">Log it</button><p class="note" style="margin-top:10px">Count money collected for your products or services. Leave out sales tax and shipping you charge. Log refunds with the box above.</p></form></div>';
-
-		// History (unchanged)
 		echo '<div class="sec"><h2>My numbers log</h2>';
 		if ( ! $log ) {
 			echo '<p>No numbers yet. Your first entry will show up here.</p>';
@@ -911,11 +997,7 @@ K1JS;
 			}
 			echo '</tbody></table>';
 		}
-		echo '</div>';
-
-		echo scrolly_k1_calc_html( $price );
-		echo '<p class="note">Your playbook PDF is in <a href="' . esc_url( wc_get_account_endpoint_url( 'downloads' ) ) . '">Downloads</a>.</p>';
-		echo '<script>' . scrolly_k1_app_js() . '</script></div>';
+		echo '</div></div>';
 	} );
 
 	// ---- Admin: verify winners and track the shirt from the user's profile screen (Users -> Edit user).
@@ -936,6 +1018,7 @@ K1JS;
 		$hist = get_user_meta( $user->ID, 'scrolly_k1_chal_history', true );
 		echo '<h2 id="k1-challenge-admin">$1K Challenge</h2>' . wp_nonce_field( 'scrolly_k1_admin', '_k1admin', true, false ) . '<table class="form-table">';
 		echo '<tr><th>Status</th><td><strong>' . esc_html( scrolly_k1_status_label( $st ) ) . '</strong> (' . esc_html( $st ) . ')' . ( is_array( $hist ) && $hist ? ' · ' . count( $hist ) . ' earlier attempt(s)' : '' ) . '</td></tr>';
+		echo '<tr><th>Shirt size</th><td>' . esc_html( scrolly_k1_shirt_size( $user->ID, (int) $chal['order'] ) ?: 'not chosen' ) . ' <span class="description">(the member can change it until you mark the shirt ordered)</span></td></tr>';
 		if ( $w && ! empty( $w['started'] ) ) {
 			echo '<tr><th>Window</th><td>Order #' . (int) $chal['order'] . ' · ' . esc_html( gmdate( 'M j', $w['start'] ) . ' to ' . gmdate( 'M j, Y', $w['end'] - DAY_IN_SECONDS ) ) . ' · day ' . (int) $w['day'] . '</td></tr>';
 			echo '<tr><th>Revenue they logged in the window</th><td>' . esc_html( scrolly_k1_money( $rev ) ) . ( $rev < SCROLLY_K1_GOAL ? ' <strong style="color:#b32d2e">(below $1,000)</strong>' : '' ) . '</td></tr>';
@@ -1013,8 +1096,10 @@ K1JS;
 		$w = scrolly_k1_window( $uid, $a );
 		echo '<div class="sec black"><h2>Challenge Content</h2><p>' . ( $w && $w['started'] ? 'Week ' . (int) min( 5, ceil( $w['day'] / 7 ) ) . ' of your Challenge. ' : '' ) . 'Use the pieces that fit your business. Your <a style="color:#94ece1" href="' . esc_url( wc_get_account_endpoint_url( SCROLLY_K1_EP_PLAN ) . '#k1-this-week' ) . '">This Week</a> list says how many of each to make.</p>';
 		echo '<p class="note">Make each video once for Instagram Reels, then post the same video to TikTok and YouTube Shorts if you use them.</p></div>';
+		echo '<div class="k1tabs" role="tablist"><button type="button" role="tab" data-t="k1-reels" aria-selected="true">Reels (25)</button><button type="button" role="tab" data-t="k1-carousels" aria-selected="false">Carousels (30)</button><button type="button" role="tab" data-t="k1-stories" aria-selected="false">Stories (30)</button></div>';
 		echo '<div class="reels" id="k1-reels"><h2>This week’s 25 Reel opportunities</h2><p class="note">Reach and discovery. A new set drops every week.</p>' . scrolly_k1_page_html( SCROLLY_K1_REELS_PAGE, 'This week’s Reels are on the way.' ) . '</div>';
-		echo '<div class="reels" id="k1-carousels" style="margin-top:22px"><h2>30 carousel templates</h2><p class="note">Education, trust, and answering the doubts people have before buying.</p>' . scrolly_k1_page_html( SCROLLY_K1_CAROUSELS_PAGE, 'Your carousel templates are on the way.' ) . '</div>';
-		echo '<div class="reels" id="k1-stories" style="margin-top:22px"><h2>30 Story templates</h2><p class="note">Staying in touch, proof, and your call to action.</p>' . scrolly_k1_page_html( SCROLLY_K1_STORIES_PAGE, 'Your Story templates are on the way.' ) . '</div></div>';
+		echo '<div class="reels" id="k1-carousels" hidden><h2>30 carousel templates</h2><p class="note">Education, trust, and answering the doubts people have before buying.</p>' . scrolly_k1_page_html( SCROLLY_K1_CAROUSELS_PAGE, 'Your carousel templates are on the way.' ) . '</div>';
+		echo '<div class="reels" id="k1-stories" hidden><h2>30 Story templates</h2><p class="note">Staying in touch, proof, and your call to action.</p>' . scrolly_k1_page_html( SCROLLY_K1_STORIES_PAGE, 'Your Story templates are on the way.' ) . '</div>';
+		echo '<script>(function(){var b=document.querySelectorAll(".k1tabs button");function show(id){b.forEach(function(x){var on=x.dataset.t===id;x.setAttribute("aria-selected",on?"true":"false");document.getElementById(x.dataset.t).hidden=!on;});}b.forEach(function(x){x.addEventListener("click",function(){show(x.dataset.t);history.replaceState(null,"","#"+x.dataset.t);});});var h=location.hash.slice(1);if(document.getElementById(h)&&/^k1-(reels|carousels|stories)$/.test(h))show(h);})();</script></div>';
 	} );
 }

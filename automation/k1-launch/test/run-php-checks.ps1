@@ -34,7 +34,9 @@ Write-Output ('edit form: ' + ($o -match 'Edit my business details'))
 Write-Output ('Challenge card (not started yet): ' + ($o -match 'Start my 30 days'))
 Write-Output ('success message: ' + ($o -match 'Your plan is ready'))
 Write-Output ('PHP warnings/errors: ' + [regex]::Matches($o, '(Warning|Notice|Fatal error|Deprecated):').Count)
-Write-Output ('check-in form: ' + ($o -match 'Weekly check-in' -and $o -match 'id="k1-checkin-metrics"'))
+$ci = (php $stub $lint checkin $state) -join "`n"
+Write-Output ('check-in form (own tab): ' + ($ci -match 'Weekly check-in' -and $ci -match 'id="k1-checkin-metrics"'))
+Write-Output ('check-in NOT on plan tab: ' + (-not ($o -match 'id="k1-checkin-metrics"')))
 
 Write-Output '--- 5. weekly check-in save'
 php $stub $lint review $state
@@ -42,10 +44,11 @@ $st = Get-Content $state -Raw | ConvertFrom-Json
 $rev = $st.scrolly_k1_reviews[-1]
 Write-Output ('review stored: actions=' + ($rev.actions -join ',') + ' rev=' + $rev.rev + ' sales=' + $rev.sales + ' metrics=' + (($rev.metrics | ForEach-Object { $_.label + ':' + $_.value }) -join '; ') + ' snapshot.route=' + $rev.snapshot.route)
 Write-Output ('log after check-in (expect $350 earlier + $350 top-up): ' + (($st.scrolly_k1_log | ForEach-Object { '$' + $_.rev + ' (' + $_.note + ')' }) -join ', '))
-$o = (php $stub $lint plan $state review) -join "`n"
+$o = (php $stub $lint checkin $state review) -join "`n"
 Write-Output ('result container has reviews: ' + ($o -match 'id="k1-review" data-saved=.*data-reviews="\[\{'))
 Write-Output ('next check-in date shown: ' + ($o -match 'Next check-in:'))
-Write-Output ('This Week container with Challenge data: ' + ($o -match 'id="k1-week" data-challenge='))
+$pl = (php $stub $lint plan $state) -join "`n"
+Write-Output ('This Week container with Challenge data: ' + ($pl -match 'id="k1-week" data-challenge='))
 Write-Output ('PHP warnings/errors: ' + [regex]::Matches($o, '(Warning|Notice|Fatal error|Deprecated):').Count)
 Set-Content -Path (Join-Path $root 'dist\stub-plan-output.html') -Value $o -Encoding utf8
 

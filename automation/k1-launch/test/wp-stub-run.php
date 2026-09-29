@@ -20,8 +20,9 @@ function delete_transient( $k ) { unset( $GLOBALS['meta'][ 't_' . $k ] ); save_s
 class StubItem { function __construct( public $p, public $v ) {} function get_product_id() { return $this->p; } function get_variation_id() { return $this->v; } }
 class StubDate { function getTimestamp() { return time() - 3 * 86400; } }
 function get_post_status( $id ) { return 'draft'; } function get_permalink( $id ) { return "https://example.test/?p=$id"; }
-class StubOrder { function get_items() { return array( new StubItem( 279, (int) ( getenv( 'K1_VARIATION' ) ?: 583 ) ) ); } function get_id() { return 1001; } function get_date_paid() { return new StubDate(); } function get_date_created() { return new StubDate(); } }
+class StubOrder { function get_items() { return array( new StubItem( 279, (int) ( getenv( 'K1_VARIATION' ) ?: 583 ) ) ); } function get_id() { return 1001; } function get_date_paid() { return new StubDate(); } function get_date_created() { return new StubDate(); } function get_meta( $k ) { return ''; } }
 function wc_get_orders( $q ) { return array( new StubOrder() ); }
+function wc_get_order( $id ) { return $id ? new StubOrder() : false; }
 function wc_get_account_endpoint_url( $e ) { return "https://example.test/my-account/$e/"; }
 function admin_url( $p ) { return "https://example.test/wp-admin/$p"; } function home_url( $p = '' ) { return "https://example.test$p"; }
 function esc_url( $s ) { return htmlspecialchars( $s, ENT_QUOTES ); } function esc_attr( $s ) { return htmlspecialchars( (string) $s, ENT_QUOTES ); }
@@ -58,5 +59,5 @@ if ( $mode === 'save' ) {
 	do_hook( 'admin_post_scrolly_k1_save' );
 } else {
 	$_GET = array( 'k1' => $argv[4] ?? '' );
-	do_hook( 'woocommerce_account_my-1k-plan_endpoint' );
+	do_hook( $mode === 'checkin' ? 'woocommerce_account_weekly-check-in_endpoint' : 'woocommerce_account_my-1k-plan_endpoint' );
 }

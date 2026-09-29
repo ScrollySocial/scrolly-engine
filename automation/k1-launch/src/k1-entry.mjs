@@ -13,7 +13,7 @@ const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '
 const n = (x) => (x == null ? '?' : Number(x).toLocaleString('en-US'));
 const money = (x) => '$' + Number(x).toLocaleString('en-US', { maximumFractionDigits: 2 });
 
-export function renderPlan(v) {
+export function renderPlan(v, perPost = null) {
   const steps = v.funnel.steps.map((s) => s.isSale
     ? `<li><b>${n(s.base)} ${esc(s.label)}</b> at ${money(v.price)}</li>`
     : `<li>about <b>${n(s.base)} ${esc(s.label)}</b>${s.low !== s.high ? ` <span class="note">(planning range ${n(s.low)} to ${n(s.high)})</span>` : ' <span class="note">(from your own conversion rate)</span>'}</li>`).join('');
@@ -27,10 +27,10 @@ export function renderPlan(v) {
     <p>${v.business ? esc(v.business) + ' · ' : ''}${esc(v.offer)} at ${money(v.price)} · ${esc(v.route.label)}</p>
     <div class="big">${n(v.number.requiredSales)} ${esc(v.number.saleNoun)}</div>
     <p>at ${money(v.price)} gets you to ${money(v.number.resultingRevenue)}. That is your $1K number.</p></div>
+  <div id="k1-calc-slot"></div>
   <div class="sec"><h2>What it takes</h2>
     <p class="note">Working backward from your ${n(v.number.requiredSales)} ${esc(v.number.saleNoun)}.</p>
-    <ul class="funnel">${steps}</ul>
-    <p class="note">Before that: somewhere between ${n(v.funnel.reach.low)} and ${n(v.funnel.reach.high)} ${esc(v.funnel.reach.label)}. Reach varies the most, so treat it as a rough range.</p>
+    <ul class="funnel">${steps}<li>about <b>${n(v.funnel.reach.low)} to ${n(v.funnel.reach.high)} ${esc(v.funnel.reach.label)}</b> <span class="note">(reach varies the most, so treat it as a rough range)</span></li>${postsRow(v, perPost)}</ul>
     <p class="note">${v.funnel.usesYourData ? 'These numbers use the conversion rate you gave us.' : 'Planning estimates, not predictions. They get sharper as you log real numbers each week.'}</p>
     <p>${esc(v.interpretation)}</p></div>
   ${econ}${trust}
@@ -40,6 +40,24 @@ export function renderPlan(v) {
   <div class="sec"><h2>Don't worry about these yet</h2><ul>${v.notYet.map((x) => `<li>${esc(x)}</li>`).join('')}</ul></div>
   <div class="sec"><h2>What we know so far</h2><ul class="known">${v.whatWeKnow.map((d) => `<li><span class="ic">${esc(d.icon)}</span> <b>${esc(d.headline)}.</b> ${esc(d.rationale)}</li>`).join('')}</ul>
     <p class="note">Numbers to track each week: ${v.checkInMetrics.map(esc).join(', ')}.</p></div>`;
+}
+
+/** Posts needed = reach needed ÷ the member's own reach per post (latest check-in). Never an invented average. */
+function postsRow(v, perPost) {
+  if (!perPost) return '<li><b>Posts needed:</b> <span class="note">worked out after your first weekly check-in, from your own reach per post.</span></li>';
+  const lo = Math.ceil(v.funnel.reach.low / perPost.reach), hi = Math.ceil(v.funnel.reach.high / perPost.reach);
+  return `<li>about <b>${n(lo)} to ${n(hi)} posts</b> <span class="note">(at your ${n(Math.round(perPost.reach))} reach per post, from your check-in for the week ending ${esc(perPost.week)})</span></li>`;
+}
+
+/** Latest check-in with known Instagram reach and posts created: reach per post. */
+export function reachPerPost(reviews) {
+  for (let i = reviews.length - 1; i >= 0; i--) {
+    const r = reviews[i];
+    const reach = (r.metrics || []).find((m) => /reach/i.test(m.label) && m.value !== '' && m.value != null);
+    const created = Number(r.created);
+    if (reach && Number(reach.value) > 0 && created > 0) return { reach: Number(reach.value) / created, week: r.periodEnd };
+  }
+  return null;
 }
 
 // ---- Weekly Review (Module 7 diagnosis via weekly-review-adapter.mjs; deterministic, no AI)
@@ -139,7 +157,7 @@ function renderFocusBox(rec, d) {
 }
 
 /** This Week: the bridge from Plan / latest check-in to a short execution list. contentUrl = the Challenge content tab. */
-export function renderThisWeek(tw, contentUrl = '#') {
+export function renderThisWeek(tw, contentUrl = '#', checkinUrl = '#k1-review-sec') {
   const items = tw.content.items.map((i) => `<li><b>${esc(i.text)}</b> <span class="note">${esc(i.job)}.</span></li>`).join('');
   return `<div class="sec black" id="k1-this-week"><h2>This week${tw.week ? ` (week ${tw.week} of your Challenge)` : ''}</h2>
     <p class="note">${esc(tw.focusSource)}:</p><p class="focus"><b>${esc(clean(tw.focus))}</b></p>
@@ -150,7 +168,7 @@ export function renderThisWeek(tw, contentUrl = '#') {
     <h3 style="margin-top:22px">2. Make it easy to buy</h3><p>${esc(tw.conversion)}</p>
     ${tw.business ? `<h3>3. Business move</h3><p>${esc(tw.business)}</p>` : ''}
     <h3>${tw.business ? '4' : '3'}. Track these for your check-in</h3><ul>${tw.track.metrics.map((m) => `<li>${esc(m)}</li>`).join('')}${tw.track.alsoTrack.map((m) => `<li>${esc(m)}</li>`).join('')}</ul>
-    <p class="note">${esc(tw.nextCheckIn)} <a href="#k1-review-sec">Go to your weekly check-in</a>.</p></div>`;
+    <p class="note">${esc(tw.nextCheckIn)} <a href="${esc(checkinUrl)}">Go to your weekly check-in</a>.</p></div>`;
 }
 
 function safeJson(s, fallback) { try { return JSON.parse(s); } catch { return fallback; } }
@@ -160,8 +178,9 @@ function autorun() {
   const planEl = document.getElementById('k1-plan');
   const reviewEl = document.getElementById('k1-review');
   const metricsEl = document.getElementById('k1-checkin-metrics');
-  const saved = planEl ? safeJson(planEl.dataset.saved, null) : null;
-  const reviews = planEl ? safeJson(planEl.dataset.reviews, []) : [];
+  const src = planEl || reviewEl;
+  const saved = src ? safeJson(src.dataset.saved, null) : null;
+  const reviews = src ? safeJson(src.dataset.reviews, []) : [];
   const challenge = weekEl ? safeJson(weekEl.dataset.challenge, {}) : {};
   let diagnosed = [];
   try { diagnosed = reviews.map((rec) => ({ rec, d: diagnoseRecord(rec) })); } catch (err) { diagnosed = []; }
@@ -170,13 +189,15 @@ function autorun() {
   if (planEl && saved) {
     try {
       planView = computePlanView(saved);
-      planEl.innerHTML = renderPlan(planView);
+      planEl.innerHTML = renderPlan(planView, reachPerPost(reviews));
+      const calc = document.getElementById('k1-calc'), slot = document.getElementById('k1-calc-slot');
+      if (calc && slot) slot.appendChild(calc);
     } catch (err) {
       planEl.innerHTML = `<div class="sec cream"><p>We couldn't build your plan from these answers (${esc(err.message)}). Please check your business details below.</p></div>`;
     }
   }
   if (weekEl && saved && planView) {
-    try { weekEl.innerHTML = renderThisWeek(computeThisWeek(saved, planView, latest || null, challenge, weekEl.dataset.next || ''), weekEl.dataset.content || '#'); } catch (err) { weekEl.innerHTML = ''; }
+    try { weekEl.innerHTML = renderThisWeek(computeThisWeek(saved, planView, latest || null, challenge, weekEl.dataset.next || ''), weekEl.dataset.content || '#', weekEl.dataset.checkin || '#k1-review-sec'); } catch (err) { weekEl.innerHTML = ''; }
   }
   if (metricsEl && saved) { try { metricsEl.innerHTML = renderCheckInMetrics(saved); } catch (err) { /* form still works without funnel boxes */ } }
   // Finished without a verified win: show where their latest check-in pointed.
