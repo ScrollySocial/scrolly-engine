@@ -23,13 +23,9 @@ export function renderPlan(v, perPost = null) {
     ${e.levers.length ? `<p><b>Ways businesses like yours raise the average order:</b></p><ul>${e.levers.map((l) => `<li>${esc(l)}</li>`).join('')}</ul>` : ''}</div>` : '';
   const trust = e.trustNote ? `<div class="sec cream"><h3>Your offer economics</h3><p>${esc(e.trustNote)}</p></div>` : '';
   return `
-  <div class="sec black"><h2>My $1K Plan</h2>
-    <p>${v.business ? esc(v.business) + ' · ' : ''}${esc(v.offer)} at ${money(v.price)} · ${esc(v.route.label)}</p>
-    <div class="big">${n(v.number.requiredSales)} ${esc(v.number.saleNoun)}</div>
-    <p>at ${money(v.price)} gets you to ${money(v.number.resultingRevenue)}. That is your $1K number.</p></div>
   <div id="k1-calc-slot"></div>
   <div class="sec"><h2>What it takes</h2>
-    <p class="note">Working backward from your ${n(v.number.requiredSales)} ${esc(v.number.saleNoun)}.</p>
+    <p class="note">${v.business ? esc(v.business) + ' · ' : ''}${esc(v.offer)} at ${money(v.price)}. Working backward from your ${n(v.number.requiredSales)} ${esc(v.number.saleNoun)} (${money(v.number.resultingRevenue)}).</p>
     <ul class="funnel">${steps}<li>about <b>${n(v.funnel.reach.low)} to ${n(v.funnel.reach.high)} ${esc(v.funnel.reach.label)}</b> <span class="note">(reach varies the most, so treat it as a rough range)</span></li>${postsRow(v, perPost)}</ul>
     <p class="note">${v.funnel.usesYourData ? 'These numbers use the conversion rate you gave us.' : 'Planning estimates, not predictions. They get sharper as you log real numbers each week.'}</p>
     <p>${esc(v.interpretation)}</p></div>
@@ -125,7 +121,8 @@ export function diagnoseRecord(rec) { return computeReviewForSaved(rec.snapshot,
 
 /** Goal gap: factual progress first, pace second, labeled projection last (never the headline). */
 export function renderGoalGap(g) {
-  return `<div class="gap"><div class="big">${esc(g.headline)}</div><p><b>${esc(g.toGo)}.</b> ${esc(g.salesLine)}${g.paceLine ? ' ' + esc(g.paceLine) : ''}</p>
+  const pct = Math.max(0, Math.min(100, Math.round((g.revenue / 1000) * 100)));
+  return `<div class="gap"><div class="big">${esc(g.headline)}</div><div class="stripe"><div class="track" role="img" aria-label="${pct} percent of $1,000"><i style="width:${pct}%"></i></div><b>${pct}%</b></div><p><b>${esc(g.toGo)}.</b> ${esc(g.salesLine)}${g.paceLine ? ' ' + esc(g.paceLine) : ''}</p>
     ${g.started ? '' : '<p class="note">Your Challenge has not started yet, so this counts from $0.</p>'}
     ${g.projection ? `<p class="note">${esc(g.projection)}</p>` : ''}</div>`;
 }

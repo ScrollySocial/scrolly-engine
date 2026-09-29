@@ -182,7 +182,7 @@ if ( ! defined( 'SCROLLY_K1_PRODUCT' ) ) {
 				: esc_html( scrolly_k1_money( $remaining ) ) . ' to go' . ( $more ? ', about ' . (int) $more . ' more ' . ( 1 === $more ? 'sale' : 'sales' ) . ' at your ' . esc_html( scrolly_k1_money( $price ) ) . ' average.' : '.' ) );
 		$h .= '<p>' . $gap_line
 			. ' <span class="note" style="color:#fff">(' . esc_html( gmdate( 'M j', $w['start'] ) ) . ' to ' . esc_html( gmdate( 'M j', $w['end'] - DAY_IN_SECONDS ) ) . ')</span></p>';
-		$h .= '<div class="track" role="img" aria-label="' . (int) $pct . ' percent of $1,000"><i style="width:' . (int) $pct . '%"></i></div><ul class="milestones">';
+		$h .= '<div class="stripe"><div class="track" role="img" aria-label="' . (int) $pct . ' percent of $1,000"><i style="width:' . (int) $pct . '%"></i></div><b>' . (int) $pct . '%</b></div><ul class="milestones">';
 		foreach ( array( 250, 500, 750, 1000 ) as $m ) {
 			$h .= '<li class="' . ( $rev >= $m ? 'hit' : '' ) . '">' . ( $rev >= $m ? '✓ ' : '' ) . esc_html( scrolly_k1_money( $m ) ) . '</li>';
 		}
@@ -373,7 +373,7 @@ if ( ! defined( 'SCROLLY_K1_PRODUCT' ) ) {
 		if ( ! $a['club'] ) {
 			return $items;
 		}
-		unset( $items['dashboard'] );
+		unset( $items['dashboard'], $items['orders'] );
 		$new = array( SCROLLY_K1_EP_PLAN => 'My $1K Plan' );
 		if ( $a['challenge'] ) {
 			$new[ SCROLLY_K1_EP_CHECKIN ] = 'Weekly Check-in';
@@ -383,7 +383,7 @@ if ( ! defined( 'SCROLLY_K1_PRODUCT' ) ) {
 		return $new + $items;
 	}, 20 );
 	add_action( 'woocommerce_before_edit_account_form', function () {
-		echo '<p style="margin:0 0 18px"><a href="' . esc_url( wc_get_account_endpoint_url( 'edit-address' ) ) . '">Billing and shipping addresses</a> · <a href="' . esc_url( wc_get_account_endpoint_url( 'payment-methods' ) ) . '">Saved payment methods</a></p>';
+		echo '<p style="margin:0 0 18px"><a href="' . esc_url( wc_get_account_endpoint_url( 'orders' ) ) . '">Orders</a> · <a href="' . esc_url( wc_get_account_endpoint_url( 'edit-address' ) ) . '">Billing and shipping addresses</a> · <a href="' . esc_url( wc_get_account_endpoint_url( 'payment-methods' ) ) . '">Saved payment methods</a></p>';
 	} );
 	// My Account layout: wider page, a slim menu column, and a wide content column (all account pages).
 	add_action( 'wp_head', function () {
@@ -764,7 +764,8 @@ K1JS;
 .k1a .sec.black{background:#000;color:#fff}.k1a .sec.black h2,.k1a .sec.black p,.k1a .sec.black h3{color:#fff}
 .k1a .big{font-family:"Archivo","Arial Black",sans-serif;font-weight:900;font-size:clamp(40px,5vw,64px);line-height:.95;color:#000}
 .k1a .sec.black .big{color:var(--teal)}
-.k1a .track{height:26px;border-radius:13px;background:var(--cream);overflow:hidden;margin:14px 0 8px}
+.k1a .stripe{display:flex;align-items:center;gap:16px;margin:14px 0 8px}.k1a .stripe .track{flex:1;margin:0}.k1a .stripe b{font-family:"Archivo","Arial Black",sans-serif;font-weight:900;font-size:clamp(28px,3vw,40px);line-height:1;color:var(--teal);min-width:3.2em;text-align:right}.k1a .sec:not(.black) .stripe b{color:#000}
+.k1a .track{height:clamp(30px,3.2vw,44px);border-radius:12px;background:var(--cream);overflow:hidden;margin:14px 0 8px}
 .k1a .track i{display:block;height:100%;background:var(--teal)}
 .k1a .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
 .k1a .grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
@@ -1100,6 +1101,6 @@ K1JS;
 		echo '<div class="reels" id="k1-reels"><h2>This week’s 25 Reel opportunities</h2><p class="note">Reach and discovery. A new set drops every week.</p>' . scrolly_k1_page_html( SCROLLY_K1_REELS_PAGE, 'This week’s Reels are on the way.' ) . '</div>';
 		echo '<div class="reels" id="k1-carousels" hidden><h2>30 carousel templates</h2><p class="note">Education, trust, and answering the doubts people have before buying.</p>' . scrolly_k1_page_html( SCROLLY_K1_CAROUSELS_PAGE, 'Your carousel templates are on the way.' ) . '</div>';
 		echo '<div class="reels" id="k1-stories" hidden><h2>30 Story templates</h2><p class="note">Staying in touch, proof, and your call to action.</p>' . scrolly_k1_page_html( SCROLLY_K1_STORIES_PAGE, 'Your Story templates are on the way.' ) . '</div>';
-		echo '<script>(function(){var b=document.querySelectorAll(".k1tabs button");function show(id){b.forEach(function(x){var on=x.dataset.t===id;x.setAttribute("aria-selected",on?"true":"false");document.getElementById(x.dataset.t).hidden=!on;});}b.forEach(function(x){x.addEventListener("click",function(){show(x.dataset.t);history.replaceState(null,"","#"+x.dataset.t);});});var h=location.hash.slice(1);if(document.getElementById(h)&&/^k1-(reels|carousels|stories)$/.test(h))show(h);})();</script></div>';
+		echo '<script>(function(){var b=document.querySelectorAll(".k1tabs button");function show(id){b.forEach(function(x){var on=x.dataset.t===id;x.setAttribute("aria-selected",on?"true":"false");document.getElementById(x.dataset.t).hidden=!on;});}b.forEach(function(x){x.addEventListener("click",function(){show(x.dataset.t);history.replaceState(null,"","#"+x.dataset.t);});});var h=location.hash.slice(1);if(document.getElementById(h)&&/^k1-(reels|carousels|stories)$/.test(h))show(h);})();</script><script>(function(){function load(src,cb){var s=document.createElement("script");s.async=true;s.src=src;s.onload=cb;document.body.appendChild(s);}document.addEventListener("click",function(e){var b=e.target.closest(".k1c .ex button");if(!b)return;var slot=b.parentNode.querySelector(".slot");if(slot.dataset.done)return;slot.dataset.done="1";b.textContent="Loading…";if(b.dataset.ig){slot.innerHTML=\'<blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/reel/\'+b.dataset.ig+\'/" data-instgrm-version="14" style="margin:0;min-width:280px;max-width:340px;width:100%"></blockquote>\';if(window.instgrm){window.instgrm.Embeds.process();}else{load("https://www.instagram.com/embed.js",function(){window.instgrm&&window.instgrm.Embeds.process();});}}else{var id=b.dataset.tt.split("/video/")[1];slot.innerHTML=\'<blockquote class="tiktok-embed" cite="\'+b.dataset.tt+\'" data-video-id="\'+id+\'" style="margin:0;max-width:340px;min-width:280px"><section></section></blockquote>\';load("https://www.tiktok.com/embed.js");}b.style.display="none";});})();</script></div>';
 	} );
 }

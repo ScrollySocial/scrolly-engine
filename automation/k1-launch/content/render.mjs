@@ -28,18 +28,30 @@ const css = `<style>
 .k1c .src{font-size:13px;color:#4a4a4a}
 .k1c ol,.k1c ul{margin:4px 0 10px;padding-left:20px}
 .k1c li{margin:0 0 4px}
+.k1c .ex{margin:10px 0 12px}.k1c .ex button{min-height:40px;padding:0 16px;border:0;border-radius:24px;background:#000;color:#fff;font:800 14px "Public Sans",Arial,sans-serif;cursor:pointer}.k1c .ex .slot{max-width:340px;margin-top:10px}.k1c .ex a.au{display:inline-block;margin-left:12px;font-weight:700;color:#000;text-decoration:underline}
 .k1c .audio{background:#fbf8f3;border-radius:8px;padding:8px 10px;font-size:13px}
 @media(max-width:600px){.k1c .body{padding-left:16px}.k1c details.card>summary{flex-wrap:wrap}.k1c .job{margin-left:0}}
 </style>`;
 
 const wrap = (inner) => `<!-- wp:html -->\n<div class="k1c">${css}${inner}</div>\n<!-- /wp:html -->\n`;
 
+// Example video: loads only when tapped (official Instagram / TikTok embeds; we never re-host anyone's video).
+function exampleBlock(m) {
+  if (!m) return '';
+  const src = m.ig ? `data-ig="${esc(m.ig)}"` : `data-tt="${esc(m.tt)}"`;
+  const where = m.ig ? 'Instagram' : 'TikTok';
+  const audio = m.audio ? `<a class="au" href="https://www.instagram.com/reels/audio/${esc(m.audio)}/" target="_blank" rel="noopener">Open this audio in Instagram</a>` : '';
+  return `<div class="ex"><button type="button" ${src}>▶ Watch an example (${where})</button>${audio}<div class="slot"></div></div>`;
+}
+const LAZY = `<p class="src" style="margin-top:14px">Examples are real public posts shown through Instagram's and TikTok's own embeds, to show the format. Use the format, not their content. On your phone, "Open this audio in Instagram" takes you to the sound, where you can tap Use audio.</p>`;
+
 const reels = wrap(`<div class="intro"><b>${esc(WEEK.label)}: ${esc(WEEK.dates)}.</b> 25 current Reel formats people are copying right now, each explained in plain words with ways to use it for your business. Pick the ones that fit; your This Week list says how many to film. Borrow the format and the text idea, and bring your own footage, buyer, and next step. We can't give you rights to any song: when the audio note says to swap it, swap it.</div>`
   + REELS.map((r, i) => `<details class="card"${i < 3 ? ' open' : ''}><summary><span class="n">${i + 1}</span><span>${esc(r.name)}</span><span class="job">${esc(r.job)}</span></summary><div class="body">`
     + `<p class="src">${esc(r.src)} · about ${esc(r.time)} to make</p>`
     + `<p><b>Film:</b> ${esc(r.film)}</p><p><b>On-screen text:</b> ${esc(r.text)}</p>`
     + `<p><b>For your business:</b></p><ul>${r.ex.map((e) => `<li>${esc(e)}</li>`).join('')}</ul>`
-    + `<p class="audio">${esc(r.audio)}</p></div></details>`).join(''));
+    + exampleBlock(r.media)
+    + `<p class="audio">${esc(r.audio)}</p></div></details>`).join('') + LAZY);
 
 const carousels = wrap(`<div class="intro"><b>30 carousel templates.</b> Carousels do the Trust job: explaining, answering doubts, and proving. Every template follows the Playbook skeleton: slide 1 is the first hook, slide 2 is a second first impression (it has to make sense on its own), the middle proves it, and the last slide is the action. Make slides 1080 × 1440 (3:4), about 25 words or fewer each, and put the action on the last slide and in the caption. Examples use the Playbook's illustrative businesses.</div>`
   + CAROUSELS.map((c, i) => `<details class="card"><summary><span class="n">${i + 1}</span><span>${esc(c.name)}</span><span class="job">${esc(c.job)}</span></summary><div class="body">`
