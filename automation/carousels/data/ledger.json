@@ -1,3 +1,33 @@
 {
-  "entries": []
+  "entries": [
+    {
+      "id": "2026-10-07-views-to-1k",
+      "date": "2026-10-07",
+      "style": "D",
+      "format": null,
+      "palette": "warm",
+      "reader": "People who want to make their first $1K online through organic content",
+      "problem": "They don't know how much attention a $1,000 goal actually takes",
+      "outcome": "They can work backward from $1,000 to the views they need, using their own numbers",
+      "topic": "How many views $1,000 takes",
+      "mainPoint": "Work backward: $1,000 to sales to visitors to views",
+      "structure": "worked calculation",
+      "ending": "swap in your own numbers + CTA",
+      "hook": "How many *views* does it take to make $1,000.00?",
+      "slides": 10,
+      "cta": {
+        "type": "link-in-bio",
+        "offer": "1k-club-challenge"
+      },
+      "tigerNod": "line",
+      "hashtags": [
+        "#smallbusinesstips",
+        "#instagramforbusiness",
+        "#onlinebusiness"
+      ],
+      "media": [],
+      "notionUrl": "https://app.notion.com/p/3f2ab38f4c58815c984bf316568fa42c",
+      "status": "approved"
+    }
+  ]
 }
