@@ -68,6 +68,20 @@
       "tags": [],
       "notes": "",
       "textSpace": [],
+      "missing": true
+    },
+    {
+      "id": "322d4e1434",
+      "type": "photo",
+      "root": "photosDir",
+      "file": "panoramas/pinned-2026-10-1.png",
+      "folder": "panoramas",
+      "width": 1080,
+      "height": 1440,
+      "addedAt": "2026-10-07",
+      "tags": [],
+      "notes": "",
+      "textSpace": [],
       "missing": false
     },
     {
@@ -166,6 +180,20 @@
       "tags": [],
       "notes": "",
       "textSpace": [],
+      "missing": true
+    },
+    {
+      "id": "a9e772ab41",
+      "type": "photo",
+      "root": "photosDir",
+      "file": "panoramas/pinned-2026-10-2.png",
+      "folder": "panoramas",
+      "width": 1080,
+      "height": 1440,
+      "addedAt": "2026-10-07",
+      "tags": [],
+      "notes": "",
+      "textSpace": [],
       "missing": false
     },
     {
@@ -226,6 +254,20 @@
     },
     {
       "id": "c06c806b5f",
+      "type": "photo",
+      "root": "photosDir",
+      "file": "panoramas/pinned-2026-10-3.png",
+      "folder": "panoramas",
+      "width": 1080,
+      "height": 1440,
+      "addedAt": "2026-10-07",
+      "tags": [],
+      "notes": "",
+      "textSpace": [],
+      "missing": true
+    },
+    {
+      "id": "c3826f5112",
       "type": "photo",
       "root": "photosDir",
       "file": "panoramas/pinned-2026-10-3.png",
