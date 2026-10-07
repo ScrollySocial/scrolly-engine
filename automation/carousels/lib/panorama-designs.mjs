@@ -57,3 +57,54 @@ export const DESIGNS = {
 </style>`;
   },
 };
+
+// v2 (2026-10-07, after Mercedes's feedback): one focal point per tile, plain backgrounds behind text,
+// small die-cut stickers (stars, a badge) crossing the seams. Tile 1 = her walking video/photo full-bleed.
+const STAR = (fill) => `<svg viewBox="0 0 100 100"><path d="M50 4 61 36 95 37 68 58 78 92 50 72 22 92 32 58 5 37 39 36Z" fill="${fill}" stroke="#fff" stroke-width="7" stroke-linejoin="round" paint-order="stroke"/></svg>`;
+DESIGNS['pinned-2026-10-v2'] = ({ brand, photo, hooks, stats }) => {
+  const [h1, h2, h3] = hooks;
+  const P = brand.palettes, warm = P.warm, tan = P.tangerine;
+  const max = Math.log10(Math.max(...stats.map((s) => +s[0].replace(/,/g, ''))));
+  return `
+<div class="t t1" style="background-image:url('${photo.url}');background-position:${photo.focus || 'center'}">
+  <div class="hl1"><p><span>${esc(h1.big)}</span></p><p class="sm"><span>${esc(h1.small)}</span></p></div>
+</div>
+<div class="t t2"><div class="hook"><h1>${rich(h2.big)}</h1><p>${esc(h2.small)} →</p></div></div>
+<div class="t t3"><div class="hook"><h1>${rich(h3.big)}</h1><p>${esc(h3.small)}</p></div>
+  <div class="card">${stats.map(([v, l]) => `<div class="row"><b>${esc(v)}</b><span>${esc(l)}</span><i style="width:${Math.max(8, (Math.log10(+v.replace(/,/g, '')) / max) * 100)}%"></i></div>`).join('')}</div>
+</div>
+<div class="sticker badge"><b>30</b><span>days</span></div>
+<div class="sticker star sa">${STAR('#FFD7C4')}</div>
+<div class="sticker star sb">${STAR(tan.bg)}</div>
+<div class="sticker star sc">${STAR(warm.accent)}</div>
+<style>
+.canvas{position:relative;width:3240px;height:1440px;overflow:hidden;font-family:'${brand.fonts.bold.family}',sans-serif}
+.t{position:absolute;top:0;bottom:0;width:1080px}
+.t1{left:0;background-size:cover}
+.t2{left:1080px;background:${tan.bg}}
+.t3{left:2160px;background:${warm.bg}}
+.hl1{position:absolute;left:80px;right:80px;bottom:170px;font-family:'${brand.fonts.highlight.family}',sans-serif;font-weight:600;color:#000}
+.hl1 p{font-size:84px;line-height:1.4}.hl1 p.sm{font-size:52px;margin-top:22px}
+.hl1 span{background:#fff;padding:.08em .32em;border-radius:.22em;-webkit-box-decoration-break:clone;box-decoration-break:clone}
+.hook{position:absolute;left:90px;right:90px;top:170px}
+.hook h1{font-weight:800;font-stretch:75%;font-variation-settings:'wdth' 75;text-transform:uppercase;line-height:.92;font-size:168px;letter-spacing:-.005em}
+.hook em{font-family:'${brand.fonts.serif.family}',serif;font-style:italic;font-weight:400;text-transform:none;font-size:1.12em;letter-spacing:0}
+.hook p{margin-top:44px;font-weight:700;font-stretch:88%;font-variation-settings:'wdth' 88;font-size:60px}
+.t2 .hook{color:#fff;left:140px;top:330px}.t2 em{color:${tan.accent}}
+.t3 .hook{color:${warm.ink};top:150px}.t3 .hook h1{font-size:140px}.t3 em{color:${warm.accent}}
+.card{position:absolute;left:120px;right:120px;bottom:150px;background:#fff;border-radius:40px;padding:50px 56px;box-shadow:0 20px 50px rgba(60,20,0,.12);rotate:-2deg;display:flex;flex-direction:column;gap:34px}
+.row{display:grid;grid-template-columns:auto 1fr;align-items:baseline;column-gap:22px;row-gap:12px}
+.row b{font-weight:800;font-stretch:80%;font-variation-settings:'wdth' 80;font-size:96px;line-height:1;color:${warm.ink}}
+.row span{font-weight:700;font-size:40px;color:${warm.ink};opacity:.7}
+.row i{grid-column:1/3;display:block;height:22px;border-radius:11px;background:${warm.accent}}
+.row:not(:last-child) i{background:color-mix(in srgb,${warm.accent} 35%,#fff)}
+.sticker{position:absolute;filter:drop-shadow(0 8px 14px rgba(40,10,0,.25))}
+.badge{left:968px;top:70px;width:220px;height:220px;border-radius:50%;background:#fff;color:${tan.bg};display:flex;flex-direction:column;align-items:center;justify-content:center;rotate:-10deg;border:10px solid ${tan.bg};outline:8px solid #fff}
+.badge b{font-weight:800;font-stretch:75%;font-variation-settings:'wdth' 75;font-size:112px;line-height:.9}
+.badge span{font-weight:800;font-size:40px;text-transform:uppercase;letter-spacing:.06em}
+.star svg{display:block;width:100%;height:auto}
+.sa{left:1010px;top:1250px;width:100px;rotate:12deg}
+.sb{left:2100px;top:1000px;width:150px;rotate:-14deg}
+.sc{left:2105px;top:70px;width:96px;rotate:8deg}
+</style>`;
+};

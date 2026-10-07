@@ -16,12 +16,13 @@ const brand = cfg('brand'), media = cfg('media');
 const { mediaFor } = mediaResolver();
 const n = conf.posts.length, W = 1080 * n, H = 1440;
 const fams = [...new Set(Object.values(brand.fonts).map((f) => f.google))].map((g) => `family=${g.replace(/ /g, '+')}`).join('&');
-const body = DESIGNS[group]({
+const body = DESIGNS[conf.design || group]({
   brand,
   photo: mediaFor(conf.media, conf.focus),
-  shirt: fileUrl(path.join(REPO, conf.shirt)),
-  screen: mediaFor(conf.screen, conf.screenFocus),
+  shirt: conf.shirt && fileUrl(path.join(REPO, conf.shirt)),
+  screen: conf.screen && mediaFor(conf.screen, conf.screenFocus),
   hooks: conf.hooks,
+  stats: conf.stats,
 });
 const outDir = path.join(media.photosDir, 'panoramas');
 mkdirSync(outDir, { recursive: true });
