@@ -1,0 +1,88 @@
+{
+  "id": "2026-10-07-pinned-challenge",
+  "style": "D",
+  "palette": "tangerine",
+  "brief": {
+    "source": "Live sales page scrollyseo.com/1k-club (inclusions in config/destinations.json); Mercedes's hook 2026-10-07; pinned post 2 of 3",
+    "reader": "People who want to make their first $1,000 online and are deciding whether to buy",
+    "problem": "They don't know what the Challenge includes or how it works",
+    "outcome": "They understand what they get for $75 and how to join",
+    "topic": "The $1K Challenge offer (pinned sales post)",
+    "mainPoint": "30 days, one goal, a personal plan plus weekly Reel ideas and templates, one-time $75",
+    "structure": "offer walkthrough",
+    "ending": "buy CTA",
+    "slide2Check": "Format change from the panorama cover (hook2); restates the promise as 30 days, one goal; works as a first slide",
+    "mediaPlan": "Slides 3-4 become screen-recording VIDEOS from Mercedes ($1K Plan in My Account; weekly Reel ideas) once ffmpeg is approved. No shirt images on Instagram (2026-10-07)."
+  },
+  "media": {},
+  "slides": [
+    {
+      "layout": "image",
+      "media": "b313ab1e62",
+      "grid": "pinned-2026-10",
+      "text": "Want to make $1,000 in 30 days? Meet the $1K Challenge"
+    },
+    {
+      "layout": "hook2",
+      "top": "30 days. One goal: your first $1,000.",
+      "bottom": "Here's everything you get →"
+    },
+    {
+      "layout": "phone",
+      "screen": {
+        "type": "insights",
+        "rows": [
+          "Your $1K number",
+          "This week's plan",
+          "Weekly check-in"
+        ],
+        "hi": 1
+      },
+      "text": "Your personal $1K Plan: your $1K number, what to do each week, and a weekly check-in."
+    },
+    {
+      "layout": "number",
+      "big": "30",
+      "text": "consecutive days, one goal: $1,000 in total revenue."
+    },
+    {
+      "layout": "phone",
+      "screen": {
+        "type": "reel",
+        "onscreen": "This week's Reel ideas",
+        "caption": "25 ideas, ready to film"
+      },
+      "text": "25 Reel ideas every week, in current formats, ready to film."
+    },
+    {
+      "layout": "checklist",
+      "items": [
+        "30 carousel templates",
+        "30 Story templates",
+        "The full $1K Club Playbook",
+        "The $1K Math calculator"
+      ],
+      "text": "Plus:"
+    },
+    {
+      "layout": "text",
+      "text": "One-time payment. No subscription, ever.",
+      "pattern": "rays"
+    },
+    {
+      "text": "Join the $1K Challenge for $75. Link in bio."
+    }
+  ],
+  "cta": {
+    "type": "link-in-bio",
+    "offer": "1k-club-challenge"
+  },
+  "tigerNod": null,
+  "caption": "The $1K Challenge is $75, one time, at the link in my bio. It gives you 30 consecutive days and one goal: $1,000 in total revenue. You get your personal $1K Plan with your number and what to do each week, 25 Reel ideas every week, 30 carousel and 30 Story templates, and the full $1K Club Playbook. Prefer to go at your own pace? The $1K Club is $40 and gives you the plan to keep.",
+  "hashtags": [
+    "#onlinebusiness",
+    "#smallbusinesstips",
+    "#instagramforbusiness"
+  ],
+  "notionUrl": null
+}
