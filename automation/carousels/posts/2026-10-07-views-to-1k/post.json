@@ -3,7 +3,7 @@
   "style": "D",
   "palette": "warm",
   "brief": {
-    "source": "Playbook ch. 6 (Your $1K plan): worked example $50 order, 2.5% buy, 7.5% visit",
+    "source": "Playbook ch. 6 (Your $1K plan): worked example $50 order, 2.5% buy, 7.5% visit ; pinned post 3 of 3 (Mercedes 2026-10-07: option A, upgraded for pinning)",
     "reader": "People who want to make their first $1K online through organic content",
     "problem": "They don't know how much attention a $1,000 goal actually takes",
     "outcome": "They can work backward from $1,000 to the views they need, using their own numbers",
@@ -11,12 +11,14 @@
     "mainPoint": "Work backward: $1,000 to sales to visitors to views",
     "structure": "worked calculation",
     "ending": "swap in your own numbers + CTA",
-    "slide2Check": "Format change from the cover (hook2: hook top right-aligned, swipe-pull bottom left-aligned); same promise, works as a first slide"
+    "slide2Check": "Format change from the panorama photo cover (hook2 on warm); same promise, works as a first slide"
   },
   "media": {},
   "slides": [
     {
-      "text": "How many *views* does it take to make $1,000.00?"
+      "layout": "pano",
+      "grid": "pinned-2026-10",
+      "text": "How many views does it take to make $1,000.00?"
     },
     {
       "layout": "hook2",
@@ -98,6 +100,15 @@
         "A link sticker in more Stories"
       ],
       "text": "Small fixes that raise it:"
+    },
+    {
+      "layout": "phone",
+      "screen": {
+        "type": "image"
+      },
+      "media": "4b3aaf72ba",
+      "focus": "50% 88%",
+      "text": "Want to run your own numbers? The free calculator on scrollyseo.com does the math in seconds."
     },
     {
       "layout": "text",

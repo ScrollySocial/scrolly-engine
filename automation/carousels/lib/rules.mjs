@@ -2,7 +2,8 @@
 // (momentum, substance, honesty of the hook) are Claude's final review, listed in SKILL.md.
 import { existsSync } from 'node:fs';
 import path from 'node:path';
-import { cfg, postDir } from './common.mjs';
+import { readFileSync } from 'node:fs';
+import { cfg, postDir, HERE } from './common.mjs';
 
 const CTA_PATTERNS = {
   'link-in-bio': /link in (my )?bio/i,
@@ -63,13 +64,17 @@ export function lint(post) {
     const content = slides.slice(2, -1);
     const lay = (s) => s.layout || 'cover';
     content.forEach((s, k) => { if (lay(s) === 'cover') E(`slide ${k + 3}: content slide uses the cover look; give it a layout (content-rules 7c)`); });
-    content.forEach((s, k) => { if (k && lay(s) === lay(content[k - 1])) E(`slides ${k + 2}-${k + 3}: same layout twice in a row (${lay(s)})`); });
+    content.forEach((s, k) => { if (k && lay(s) === lay(content[k - 1]) && !['pano', 'photo'].includes(lay(s))) E(`slides ${k + 2}-${k + 3}: same layout twice in a row (${lay(s)})`); });
     const kinds = new Set(content.map(lay));
-    if (content.length >= 4 && kinds.size < 3) E(`only ${kinds.size} layout(s) across content slides; use at least 3 (content-rules 7c)`);
+    if (content.length >= 4 && kinds.size < 3 && !content.every((x) => ['pano', 'photo'].includes(lay(x)))) E(`only ${kinds.size} layout(s) across content slides; use at least 3 (content-rules 7c)`);
     const accents = content.filter((s) => /\*[^*]+\*/.test(s.text || '')).length;
     if (accents > 2) E(`${accents} content slides use an accent word; cover only, plus at most 2 (content-rules 7c)`);
   }
-  const standIns = [post.media?.background, post.media?.avatar, ...slides.map((x) => x.media), ...slides.map((x) => x.cutout)].filter((m) => String(m || '').startsWith('stock:'));
+  const standIns = [post.media?.background, post.media?.avatar, post.media?.pano, ...slides.map((x) => x.media), ...slides.map((x) => x.cutout)].filter((m) => String(m || '').startsWith('stock:'));
+  for (const g of new Set(slides.map((x) => x.grid).filter(Boolean))) {
+    const pano = JSON.parse(readFileSync(path.join(HERE, 'data/panoramas.json'), 'utf8'))[g];
+    if (String(pano?.media || '').startsWith('stock:')) standIns.push(pano.media);
+  }
   if (standIns.length) Wn(`${standIns.length} stand-in stock photo(s); swap in Mercedes's photos before approval (ledger add refuses stand-ins)`);
   if (/but first/i.test(allText)) E('"but first" is banned');
 

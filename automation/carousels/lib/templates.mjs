@@ -6,6 +6,7 @@
 // E  Text style 2: bold solid color block. Placeholder until inspiration is picked.
 // Copy markup: *word* = emphasis (D/E/C only; ignored in highlight styles). \n = forced line break.
 import path from 'node:path';
+import { readFileSync } from 'node:fs';
 import { W, H, REPO, esc, fileUrl } from './common.mjs';
 import { LAYOUTS, LAYOUT_CSS } from './layouts.mjs';
 
@@ -92,8 +93,19 @@ export function slideHtml(post, slide, i, ctx) {
     if (slide.layout && slide.layout !== 'cover') {
       const fn = LAYOUTS[slide.layout];
       if (!fn) throw new Error(`slide ${i + 1}: unknown layout "${slide.layout}". Known: cover, ${Object.keys(LAYOUTS).join(', ')}`);
+      if (slide.layout === 'pano' && slide.grid) {
+        // Shared grid panorama across several posts' covers (data/panoramas.json).
+        const g = JSON.parse(readFileSync(path.join(REPO, 'automation/carousels/data/panoramas.json'), 'utf8'))[slide.grid];
+        if (!g) throw new Error(`unknown grid panorama "${slide.grid}"`);
+        slide._pano = { i: Math.max(0, g.posts.indexOf(post.id)), n: g.posts.length };
+        slide.media = g.media; slide.focus = slide.focus || g.focus;
+      } else if (slide.layout === 'pano') {
+        const panoSlides = post.slides.filter((x) => x.layout === 'pano' && !x.grid);
+        slide._pano = { i: panoSlides.indexOf(slide), n: panoSlides.length };
+        slide.media = slide.media || post.media?.pano;
+      }
       const m = slide.media ? mediaFor(slide.media, slide.focus) : null;
-      if (['photo'].includes(slide.layout) && !m) throw new Error(`slide ${i + 1}: photo layout needs slide.media`);
+      if (['photo', 'pano'].includes(slide.layout) && !m) throw new Error(`slide ${i + 1}: photo layout needs slide.media`);
       return `<section class="s blk lay lay-${slide.layout} tex-${tex} ${kind}" style="${vars}${bgImg}" data-i="${i}" data-min="48">${fn(slide, m)}${nod(post, brand, isLast)}</section>`;
     }
     const top = cut || photo;

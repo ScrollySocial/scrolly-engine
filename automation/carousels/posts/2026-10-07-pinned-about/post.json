@@ -1,0 +1,79 @@
+{
+  "id": "2026-10-07-pinned-about",
+  "style": "D",
+  "palette": "warm",
+  "brief": {
+    "source": "Mercedes's own answers in chat 2026-10-07 (about-me questions); pinned post 1 of 3",
+    "reader": "New visitors deciding whether to follow",
+    "problem": "They don't know who runs Scrolly or why to trust and follow it",
+    "outcome": "They know who Mercedes is, what Scrolly helps with, and why to follow",
+    "topic": "About Mercedes and Scrolly (pinned intro)",
+    "mainPoint": "An analytical person who struggled with selling built marketing systems and shares them",
+    "structure": "walking-through-slides story",
+    "ending": "follow CTA with tiger nod",
+    "slide2Check": "Format change from the panorama cover (hook2 on warm); promises the short version of why Scrolly exists, works as a first slide",
+    "mediaPlan": "Mercedes will film a VIDEO of herself walking (not a photo). Split that one video horizontally across the pano slides so she walks through the carousel as people swipe (needs ffmpeg video support). Don't change until she has the clip."
+  },
+  "media": {
+    "pano": "stock:runField"
+  },
+  "slides": [
+    {
+      "layout": "pano",
+      "text": "Allow me to introduce myself, the person behind @scrollysocial",
+      "grid": "pinned-2026-10"
+    },
+    {
+      "layout": "hook2",
+      "top": "Nice to meet you",
+      "bottom": "Here's the short version of why Scrolly exists →"
+    },
+    {
+      "layout": "pano",
+      "text": "Hi, I'm Mercedes. I help you turn content into customers."
+    },
+    {
+      "layout": "pano",
+      "text": "I spent years in financial operations and reporting. Numbers are my comfort zone."
+    },
+    {
+      "layout": "pano",
+      "text": "I kept coming up with business ideas, then getting stuck at the same spot: selling them."
+    },
+    {
+      "layout": "pano",
+      "text": "So I learned marketing the way I learn everything: break it down, build a system, test it."
+    },
+    {
+      "layout": "pano",
+      "text": "What I found: making content is easier than you think. Staying consistent is harder than you think."
+    },
+    {
+      "layout": "pano",
+      "text": "Scrolly is for you if you want to make money online, or grow your business, without weeks of setup or paying for ads."
+    },
+    {
+      "layout": "pano",
+      "text": "I love helping small businesses and solopreneurs carve out an income in a world built for big companies."
+    },
+    {
+      "layout": "pano",
+      "text": "Off the clock: books, my cats, guitar and French lessons, and anything I can make with my hands. Coffee always hot."
+    },
+    {
+      "layout": "pano",
+      "text": "Follow along for practical tips to help you reach your dreams. Go get 'em, tiger :)"
+    }
+  ],
+  "cta": {
+    "type": "follow"
+  },
+  "tigerNod": null,
+  "caption": "Follow along for practical tips to help you reach your dreams. I'm Mercedes, and I built Scrolly after years of having business ideas I didn't know how to sell. I'm an analyst at heart, so I learned marketing the only way I know how: break it into steps, build systems, and test what works. Now I share those systems so you don't have to build them from scratch. If you want the full plan for your first $1,000, the $1K Challenge is in my bio.",
+  "hashtags": [
+    "#smallbusiness",
+    "#organicmarketing",
+    "#solopreneur"
+  ],
+  "notionUrl": null
+}

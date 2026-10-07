@@ -1,0 +1,88 @@
+{
+  "builtAt": "2026-10-07T16:43:20.315Z",
+  "exportDir": "C:\\Users\\merce\\OneDrive\\Scrolly Media\\exports\\carousels\\2026-10-07-pinned-about",
+  "mediaUsed": [
+    "stock:talkCam",
+    "stock:runField"
+  ],
+  "fit": [
+    {
+      "i": 0,
+      "size": 88,
+      "min": 48,
+      "ok": true,
+      "lines": 4
+    },
+    {
+      "i": 1,
+      "size": 132,
+      "min": 48,
+      "ok": true,
+      "lines": 8
+    },
+    {
+      "i": 2,
+      "size": 94,
+      "min": 48,
+      "ok": true,
+      "lines": 4
+    },
+    {
+      "i": 3,
+      "size": 94,
+      "min": 48,
+      "ok": true,
+      "lines": 5
+    },
+    {
+      "i": 4,
+      "size": 94,
+      "min": 48,
+      "ok": true,
+      "lines": 5
+    },
+    {
+      "i": 5,
+      "size": 94,
+      "min": 48,
+      "ok": true,
+      "lines": 5
+    },
+    {
+      "i": 6,
+      "size": 94,
+      "min": 48,
+      "ok": true,
+      "lines": 6
+    },
+    {
+      "i": 7,
+      "size": 94,
+      "min": 48,
+      "ok": true,
+      "lines": 7
+    },
+    {
+      "i": 8,
+      "size": 94,
+      "min": 48,
+      "ok": true,
+      "lines": 6
+    },
+    {
+      "i": 9,
+      "size": 94,
+      "min": 48,
+      "ok": true,
+      "lines": 6
+    },
+    {
+      "i": 10,
+      "size": 94,
+      "min": 48,
+      "ok": true,
+      "lines": 5
+    }
+  ],
+  "problems": []
+}

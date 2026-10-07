@@ -1,7 +1,7 @@
 {
   "_note": "Everything account-specific lives here so a customer version is just a different brand.json.",
   "handle": "@scrollysocial",
-  "_handleNote": "Taken from links on the website; confirm with Mercedes.",
+  "_handleNote": "Confirmed by Mercedes 2026-10-07.",
   "manychat": false,
   "hashtagsPerPost": 3,
   "fonts": {

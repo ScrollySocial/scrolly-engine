@@ -1,3 +1,32 @@
 {
-  "items": []
+  "items": [
+    {
+      "id": "3c178a43f9",
+      "type": "photo",
+      "root": "photosDir",
+      "file": "screens/calculator-views-1000.png",
+      "folder": "screens",
+      "width": 1290,
+      "height": 2700,
+      "addedAt": "2026-10-07",
+      "tags": [],
+      "notes": "",
+      "textSpace": [],
+      "missing": true
+    },
+    {
+      "id": "4b3aaf72ba",
+      "type": "photo",
+      "root": "photosDir",
+      "file": "screens/calculator-views-1000.png",
+      "folder": "screens",
+      "width": 1290,
+      "height": 3348,
+      "addedAt": "2026-10-07",
+      "tags": [],
+      "notes": "",
+      "textSpace": [],
+      "missing": false
+    }
+  ]
 }

@@ -62,7 +62,7 @@ Working draft from Mercedes. Expect several rounds of revision. Change this file
 ## 7c. Layout variety inside a post (Mercedes, 2026-10-07)
 - Content slides must NOT look like the cover. Slides 1-2 are the big-type hooks; from slide 3 on, switch formats.
 - Break up formats across the content slides: phone mockups (bio, Story with link sticker, Insights, a Reel), real screenshots, charts, formulas, big numbers, chat/DM bubbles, checklists, photos with overlays, polaroids, notes. A changed background color alone does not count as a new format (exception: a photo/video slide with simple text).
-- No two content slides in a row with the same layout, and at least 3 different layouts in the content slides.
+- No two content slides in a row with the same layout, and at least 3 different layouts in the content slides. Exception: photo/video-led posts (e.g. walking-through-slides, layout `pano`, one wide photo across slides) where every slide is the photo with simple text.
 - Accent words (the italic serif in a color) belong on the cover. Use them on at most one or two other slides, only for the single most important word. Never on nearly every slide.
 - Paragraph text is LEFT-aligned (one short paragraph per slide). Center alignment only for the cover hooks.
 - Across a week, mix post types: most posts should include photo or video backgrounds (Mercedes's photos), with text-only posts as the minority.

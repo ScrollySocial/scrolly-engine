@@ -1,0 +1,9 @@
+{
+  "_note": "Shared grid panoramas: one wide image split across the covers (slide 1) of several posts that sit side by side on the profile grid. A slide uses it with {\"layout\": \"pano\", \"grid\": \"<group>\"} and the post's position in `posts` sets which third it gets.",
+  "pinned-2026-10": {
+    "media": "stock:talkCam",
+    "focus": "50% 30%",
+    "posts": ["2026-10-07-pinned-about", "2026-10-07-pinned-challenge", "2026-10-07-views-to-1k"],
+    "pinOrderNote": "Grid order left to right. Confirm which pinned post Instagram shows on the left after pinning; re-pin if needed."
+  }
+}

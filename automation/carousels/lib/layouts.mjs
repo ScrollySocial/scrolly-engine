@@ -59,6 +59,8 @@ export const LAYOUTS = {
   phone: (s, m) => `${para(s)}<div class="phone"><div class="notch"></div>${screen(s.screen, m)}</div>`,
   chat: (s) => `${para(s)}<div class="chat">${(s.chat || []).map((c) => `<div class="bub ${c.me ? 'me' : 'them'}">${esc(c.text)}</div>`).join('')}</div>`,
   checklist: (s) => `${para(s)}<ul class="checks">${(s.items || []).map((t) => `<li><span class="ck">${ICON.check}</span>${esc(t)}</li>`).join('')}</ul>`,
+  // Walking-through-slides: one wide photo split across consecutive slides (s._pano = {i, n} set by templates).
+  pano: (s, m) => `<div class="bg" style="background-image:url('${m.url}');background-size:${s._pano.n * 100}% auto;background-position:${s._pano.n > 1 ? (s._pano.i / (s._pano.n - 1)) * 100 : 50}% ${(m.focus || '').split(/\s+/)[1] || '50%'}"></div><div class="txt"><p class="fit hl"><span>${esc(s.text)}</span></p></div>`,
   photo: (s, m) => `<div class="bg" style="background-image:url('${m.url}');background-position:${m.focus || 'center'}"></div><div class="txt"><p class="fit hl"><span>${esc(s.text)}</span></p></div>`,
 };
 
@@ -127,8 +129,15 @@ export const LAYOUT_CSS = (brand) => `
 .checks{list-style:none;display:flex;flex-direction:column;gap:26px;width:100%}
 .checks li{display:flex;align-items:center;gap:26px;background:var(--paper);color:var(--paper-ink);border-radius:24px;padding:26px 30px;font-size:54px;font-weight:700;font-stretch:90%;font-variation-settings:'wdth' 90}
 .ck{width:58px;height:58px;border-radius:50%;background:var(--paper-accent);color:#fff;display:grid;place-items:center;flex:none}.ck svg{width:34px}
+/* pano */
+.lay-pano{padding:0}
+.lay-pano .bg{background-repeat:no-repeat}
+.s.lay-pano .txt{position:absolute;left:80px;right:80px;bottom:150px}
+.lay-pano.cover .fit{font-size:88px}
+.s.lay-pano.cover .txt{top:200px;bottom:auto}
+.lay-pano .fit{font-family:'${brand.fonts.highlight.family}',sans-serif;font-weight:600;font-size:68px;line-height:1.42;text-transform:none;font-stretch:100%;font-variation-settings:normal}
 /* photo */
 .lay-photo{padding:0}
-.lay-photo .txt{position:absolute;left:80px;right:80px;bottom:150px}
+.s.lay-photo .txt{position:absolute;left:80px;right:80px;bottom:150px}
 .lay-photo .fit{font-family:'${brand.fonts.highlight.family}',sans-serif;font-weight:600;font-size:68px;line-height:1.42;text-transform:none;font-stretch:100%;font-variation-settings:normal}
 `;

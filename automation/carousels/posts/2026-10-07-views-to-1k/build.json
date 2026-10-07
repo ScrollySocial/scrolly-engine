@@ -1,14 +1,17 @@
 {
-  "builtAt": "2026-10-07T03:10:37.822Z",
+  "builtAt": "2026-10-07T16:43:02.325Z",
   "exportDir": "C:\\Users\\merce\\OneDrive\\Scrolly Media\\exports\\carousels\\2026-10-07-views-to-1k",
-  "mediaUsed": [],
+  "mediaUsed": [
+    "stock:talkCam",
+    "4b3aaf72ba"
+  ],
   "fit": [
     {
       "i": 0,
-      "size": 168,
-      "min": 72,
+      "size": 88,
+      "min": 48,
       "ok": true,
-      "lines": 4
+      "lines": 3
     },
     {
       "i": 1,
@@ -61,13 +64,20 @@
     },
     {
       "i": 8,
+      "size": 86,
+      "min": 48,
+      "ok": true,
+      "lines": 5
+    },
+    {
+      "i": 9,
       "size": 94,
       "min": 48,
       "ok": true,
       "lines": 4
     },
     {
-      "i": 9,
+      "i": 10,
       "size": 136,
       "min": 72,
       "ok": true,
