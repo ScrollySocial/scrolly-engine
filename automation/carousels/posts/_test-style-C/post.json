@@ -1,0 +1,51 @@
+{
+  "id": "_test-style-C",
+  "style": "C",
+  "format": "notes",
+  "formatDate": "October 6, 2026",
+  "tigerNod": null,
+  "brief": {
+    "source": "test only",
+    "slide2Check": "test only",
+    "reader": "Small business owner new to Instagram",
+    "problem": "Their carousels get swiped past after slide 1",
+    "outcome": "A carousel plan where every slide earns the next swipe",
+    "topic": "Writing carousel slides people finish",
+    "mainPoint": "Plan one thought per slide and make each slide pay off",
+    "structure": "steps",
+    "ending": "cta-link"
+  },
+  "slides": [
+    {
+      "text": "Your carousel loses people on slide 2. Here is how to keep them."
+    },
+    {
+      "text": "Write the one thing your reader should be able to do by the last slide."
+    },
+    {
+      "text": "Then list every step they need to get there, one per line."
+    },
+    {
+      "text": "Cross out any line that only repeats the one before it."
+    },
+    {
+      "text": "Each line that survives becomes one slide, in that order."
+    },
+    {
+      "text": "Read slide 2 on its own. If it needs slide 1 to make sense, rewrite it."
+    },
+    {
+      "text": "Want 25 ready-to-steal Reel ideas every week? The $1K Challenge is at the link in bio."
+    }
+  ],
+  "cta": {
+    "type": "link-in-bio",
+    "offer": "1k-club-challenge"
+  },
+  "caption": "If you want weekly ideas you can film in minutes, the $1K Challenge is at the link in bio. This planning method works for any topic because it starts from the result your reader wants. When you list the steps, write them as actions your reader can take today, like opening their notes app or picking one photo. If a step needs a long explanation, it is probably two slides. Save this for your next carousel.",
+  "hashtags": [
+    "#carouseltips",
+    "#instagramtips",
+    "#smallbusiness"
+  ]
+}

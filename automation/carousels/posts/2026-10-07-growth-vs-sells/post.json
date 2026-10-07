@@ -1,0 +1,125 @@
+{
+  "id": "2026-10-07-growth-vs-sells",
+  "style": "D",
+  "palette": "tangerine",
+  "brief": {
+    "source": "idea 2026-10-07-growth-content-vs-selling-content; Mercedes topic (seen on Instagram) + Buffer State of Social Media Engagement 2026; overlaps Playbook ch. 5 and ch. 8",
+    "reader": "People posting to make their first sales",
+    "problem": "Every post tries to grow and sell at once, so it does neither well",
+    "outcome": "They give each post one job and know which format does which job",
+    "topic": "Growth content vs selling content",
+    "mainPoint": "Reels to reach, carousels to teach, Stories to sell",
+    "structure": "compare and contrast",
+    "ending": "one-line rule + CTA",
+    "slide2Check": "Format change from the cover (hook2: hook top right-aligned, swipe-pull bottom left-aligned); same promise, works as a first slide"
+  },
+  "media": {},
+  "slides": [
+    {
+      "text": "Content for *growth* vs content that *sells*"
+    },
+    {
+      "layout": "hook2",
+      "top": "Your posts are trying to do *two jobs* at once",
+      "bottom": "Here's how to split them →",
+      "pattern": "stars"
+    },
+    {
+      "layout": "checklist",
+      "items": [
+        "Reach new people",
+        "Bring people closer to buying"
+      ],
+      "text": "Give every post one job:"
+    },
+    {
+      "layout": "phone",
+      "screen": {
+        "type": "reel",
+        "onscreen": "Never seen you before",
+        "caption": "A Reel for new people"
+      },
+      "media": "stock:couchTee",
+      "text": "Growth content is for people who don't know you yet."
+    },
+    {
+      "layout": "chart",
+      "chart": {
+        "rows": [
+          [
+            "Reels",
+            225,
+            "2.25x"
+          ],
+          [
+            "Carousels",
+            165,
+            "about 1.65x"
+          ],
+          [
+            "Single images",
+            100,
+            "1x"
+          ]
+        ],
+        "hi": 0,
+        "note": "Reach compared with single images. Buffer, 4M+ posts, Jan 2022 to Oct 2024"
+      },
+      "text": "Reels reached the most people in Buffer's analysis of 4 million+ posts."
+    },
+    {
+      "layout": "phone",
+      "screen": {
+        "type": "story-link",
+        "caption": "Here's how to get it",
+        "link": "Shop now"
+      },
+      "text": "Selling content is for people already paying attention: your Stories and your bio."
+    },
+    {
+      "layout": "chart",
+      "chart": {
+        "rows": [
+          [
+            "Carousels",
+            6.9,
+            "6.90%"
+          ],
+          [
+            "Single images",
+            4.44,
+            "4.44%"
+          ],
+          [
+            "Reels",
+            3.31,
+            "3.31%"
+          ]
+        ],
+        "hi": 0,
+        "note": "Median engagement per person reached, same Buffer data"
+      },
+      "text": "Carousels can do both. They earned the most engagement."
+    },
+    {
+      "layout": "text",
+      "text": "Reels to reach. Carousels to teach. Stories to sell.",
+      "pattern": "rays"
+    },
+    {
+      "text": "Get a plan for each week in the $1K Challenge. Link in bio."
+    }
+  ],
+  "cta": {
+    "type": "link-in-bio",
+    "offer": "1k-club-challenge"
+  },
+  "tigerNod": null,
+  "caption": "Want a plan for what to post each week? It's in the $1K Challenge, link in bio. Most accounts mix the two jobs in every post, so they do neither well. Before you post, decide: is this one for strangers or for people already interested? Then write the hook, the caption and the next step for that person.",
+  "hashtags": [
+    "#contentstrategy",
+    "#instagramtips",
+    "#smallbusinessmarketing"
+  ],
+  "notionUrl": null
+}

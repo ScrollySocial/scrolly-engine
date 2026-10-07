@@ -1,0 +1,122 @@
+{
+  "id": "2026-10-07-reel-length",
+  "style": "D",
+  "palette": "tangerine",
+  "brief": {
+    "source": "research card 2026-10-07-reel-length-and-views (Socialinsider); overlaps Playbook ch. 9",
+    "reader": "People making Reels to reach new viewers",
+    "problem": "They assume shorter is always better and don't pick a length on purpose",
+    "outcome": "They choose Reel length by the job the Reel has to do",
+    "topic": "Reel length and views",
+    "mainPoint": "45 to 60 seconds got the most median views; short Reels still win for testing",
+    "structure": "data by bracket",
+    "ending": "balanced takeaway + CTA",
+    "slide2Check": "Format change from the cover (hook2: hook top right-aligned, swipe-pull bottom left-aligned); same promise, works as a first slide"
+  },
+  "media": {},
+  "slides": [
+    {
+      "text": "How long should your *Reel* be?",
+      "pattern": "rays"
+    },
+    {
+      "layout": "hook2",
+      "top": "6 million Reels, one clear winner",
+      "bottom": "Here's the length that got the *most views* →"
+    },
+    {
+      "layout": "phone",
+      "screen": {
+        "type": "reel",
+        "onscreen": "How long should this be?",
+        "caption": "Testing Reel lengths"
+      },
+      "media": "stock:talkCam",
+      "focus": "50% 25%",
+      "text": "Socialinsider studied 6 million brand Reels from January to June 2026."
+    },
+    {
+      "layout": "chart",
+      "chart": {
+        "rows": [
+          [
+            "Under 30s",
+            4700,
+            "4,700"
+          ],
+          [
+            "30-45s",
+            8564,
+            "8,564"
+          ],
+          [
+            "45-60s",
+            10374,
+            "10,374"
+          ],
+          [
+            "60-90s",
+            9790,
+            "9,790"
+          ],
+          [
+            "90-120s",
+            8000,
+            "8,000"
+          ],
+          [
+            "2-3 min",
+            9000,
+            "9,000"
+          ],
+          [
+            "3 min+",
+            4428,
+            "4,428"
+          ]
+        ],
+        "hi": 2
+      },
+      "text": "Median views per Reel, by length"
+    },
+    {
+      "layout": "number",
+      "big": "10,374",
+      "text": "median views for Reels of 45 to 60 seconds, the most of any length."
+    },
+    {
+      "layout": "text",
+      "text": "Past 3 minutes, views dropped to 4,428, close to Reels under 30 seconds.",
+      "pattern": "dots"
+    },
+    {
+      "layout": "checklist",
+      "items": [
+        "Explaining a process",
+        "Showing a before and after",
+        "Walking through a demo"
+      ],
+      "text": "Give it 45 to 60 seconds when you're:"
+    },
+    {
+      "layout": "photo",
+      "media": "stock:cameraBack",
+      "text": "Short Reels still win for testing ideas fast."
+    },
+    {
+      "text": "Get 25 Reel ideas every week in the $1K Challenge. Link in bio."
+    }
+  ],
+  "cta": {
+    "type": "link-in-bio",
+    "offer": "1k-club-challenge"
+  },
+  "tigerNod": "emoji",
+  "caption": "25 ready-to-film Reel ideas land every week in the $1K Challenge, link in bio. These numbers come from Socialinsider's look at 6 million Reels posted by brands from January to June 2026. \"Median\" means the middle Reel in each length group, so one viral video can't skew the number. A good way to use this: pick the length that fits the job. Explaining a process or showing a before and after? Give it 45 to 60 seconds. Testing a new hook or format? A short Reel gets you an answer faster.",
+  "hashtags": [
+    "#instagramreels",
+    "#reelstips",
+    "#contentcreationtips"
+  ],
+  "notionUrl": null
+}

@@ -36,3 +36,11 @@
 - Execution beyond Discover, QA, measurement, reporting, GEO/AEO, APIs, database, the $999 DIY product — out of scope until later versions.
 
 **Next step:** Fund the DataForSEO account, then (a) run Mulberry Creek's final validation batch and refresh its report for delivery, and (b) run a second automation smoke test against a real small-business site now that mechanics/cost are proven (see `automation/README.md` Status section for the exact next-test recommendation).
+
+## 2026-10-07 — Carousel engine + research builder (automation/carousels)
+Built a Claude-run carousel maker (no Canva/SaaS) for Scrolly's own Instagram, designed to be packaged later for customers (Business Brain Skills + content tracker template).
+- How to use: skills `.claude/skills/scrolly-carousel/SKILL.md` (make carousels) and `.claude/skills/scrolly-research/SKILL.md` (research ideas off the app). Both are the source of truth for the workflow; don't duplicate them here.
+- Rules: `automation/carousels/content-rules.md` (Mercedes's copy + visual rules: slide 2 = second hook in a new format, content slides switch layouts, accent word on covers only, left-aligned paragraphs, 5+ slides with ~10 typical, organic-marketing niche, never contradict the $1K views method). Research rules: `automation/carousels/research/guidelines.md`. `check.mjs` enforces the checkable ones.
+- No repeats: `check-topic.mjs` + `check.mjs` compare against approved carousels (`data/ledger.json`), drafts in `posts/`, and all idea cards incl. rejected/used (`research/ideas/`).
+- Media: `OneDrive/Scrolly Media/` (photos synced; exports land there and reach her phone); video later on an external drive. Notion Content Pipeline gets a row per approved carousel (new columns Carousel Style, Media Used, Carousel ID).
+- Status: 4 carousels built for 2026-10-08 (views-to-1k, reel-length, growth-vs-sells, 7-day-traffic-plan), Mercedes happy with the direction; stock photo stand-ins to be swapped for her photos; "sell every day" post waits for her photos. Not yet: video slides (ffmpeg via Docker), trend research feed, customer packaging. Nothing committed yet.

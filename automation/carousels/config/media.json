@@ -1,0 +1,9 @@
+{
+  "_note": "Shared media library for carousels and the future reels editor. Photos live in OneDrive (keep the folder set to 'Always keep on this device'); video lives on the external drive and is only needed when a post uses it.",
+  "photosDir": "C:/Users/merce/OneDrive/Scrolly Media/photos",
+  "inspirationDir": "C:/Users/merce/OneDrive/Scrolly Media/inspiration",
+  "exportsDir": "C:/Users/merce/OneDrive/Scrolly Media/exports/carousels",
+  "videoDir": null,
+  "_videoDirNote": "Set to the external drive's footage folder (e.g. E:/Scrolly Media/video) once the drive is set up.",
+  "photoReuseWeeks": 3
+}

@@ -1,0 +1,112 @@
+{
+  "id": "2026-10-07-7-day-traffic-plan",
+  "style": "D",
+  "palette": "warm",
+  "brief": {
+    "source": "idea 2026-10-07-7-day-organic-traffic-plan; Mercedes topic (seen on Instagram); overlaps Playbook ch. 4, ch. 7 (starting week, reposts), ch. 11 (link stickers), ch. 6 (link taps in Insights)",
+    "reader": "People ready to start posting for their first sales",
+    "problem": "They don't know what to do first to get people to their page",
+    "outcome": "A concrete first week of organic actions that send people to their page",
+    "topic": "A 7-day organic traffic plan",
+    "mainPoint": "Seven small daily moves: bio, Reel, carousel, Stories link, replies, repost, check link taps",
+    "structure": "day-by-day list",
+    "ending": "30-day version CTA",
+    "slide2Check": "Format change from the cover (hook2: hook top right-aligned, swipe-pull bottom left-aligned); same promise, works as a first slide"
+  },
+  "media": {},
+  "slides": [
+    {
+      "text": "The 7-day organic *traffic* plan"
+    },
+    {
+      "layout": "hook2",
+      "top": "One week, seven small moves",
+      "bottom": "Here's what to do each day for *more people* on your page →",
+      "pattern": "stripes"
+    },
+    {
+      "layout": "phone",
+      "screen": {
+        "type": "bio",
+        "name": "Your Business",
+        "lines": [
+          "What you sell, in plain words",
+          "Who it's for"
+        ],
+        "link": "your buying page"
+      },
+      "text": "Day 1: make your bio say what you sell and where to buy it."
+    },
+    {
+      "layout": "photo",
+      "media": "stock:talkCam",
+      "focus": "50% 30%",
+      "text": "Day 2: post a Reel that answers one question your buyer asks."
+    },
+    {
+      "layout": "text",
+      "text": "Day 3: post a carousel that teaches one thing.",
+      "pattern": "grid"
+    },
+    {
+      "layout": "phone",
+      "screen": {
+        "type": "story-link",
+        "caption": "Behind the scenes",
+        "link": "your link"
+      },
+      "media": "stock:laptopDesk",
+      "text": "Day 4: show the work in Stories, with a link sticker."
+    },
+    {
+      "layout": "chat",
+      "chat": [
+        {
+          "text": "A question about what you sell"
+        },
+        {
+          "me": true,
+          "text": "A real, helpful answer"
+        },
+        {
+          "text": "Thank you!"
+        }
+      ],
+      "text": "Day 5: reply to every comment and message from someone interested."
+    },
+    {
+      "layout": "text",
+      "text": "Day 6: repost your best Reel with a new hook.",
+      "pattern": "dots"
+    },
+    {
+      "layout": "phone",
+      "screen": {
+        "type": "insights",
+        "rows": [
+          "Views",
+          "Reach",
+          "Profile activity",
+          "External link taps"
+        ],
+        "hi": 3
+      },
+      "text": "Day 7: see which post got the most link taps, then make another like it."
+    },
+    {
+      "text": "The $1K Challenge turns this into 30 days, with a plan for each week. Link in bio."
+    }
+  ],
+  "cta": {
+    "type": "link-in-bio",
+    "offer": "1k-club-challenge"
+  },
+  "tigerNod": "image",
+  "caption": "Want the 30-day version? It's the $1K Challenge, link in bio. Organic traffic comes from doing a few things on repeat: a clear bio, posts that answer real questions, and an easy way to click through. Link taps are in your Insights, and they tell you which posts send people to your page.",
+  "hashtags": [
+    "#organicmarketing",
+    "#instagramgrowth",
+    "#smallbusinesstips"
+  ],
+  "notionUrl": null
+}

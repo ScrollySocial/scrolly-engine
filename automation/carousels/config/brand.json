@@ -1,0 +1,88 @@
+{
+  "_note": "Everything account-specific lives here so a customer version is just a different brand.json.",
+  "handle": "@scrollysocial",
+  "_handleNote": "Taken from links on the website; confirm with Mercedes.",
+  "manychat": false,
+  "hashtagsPerPost": 3,
+  "fonts": {
+    "highlight": {
+      "family": "Figtree",
+      "weight": 600,
+      "google": "Figtree:wght@500;600;700;800"
+    },
+    "display": {
+      "family": "Figtree",
+      "weight": 800,
+      "google": "Figtree:wght@500;600;700;800"
+    },
+    "bold": {
+      "family": "Bricolage Grotesque",
+      "weight": 800,
+      "google": "Bricolage Grotesque:opsz,wdth,wght@12..96,75..100,200..800"
+    },
+    "serif": {
+      "family": "Instrument Serif",
+      "weight": 400,
+      "google": "Instrument Serif:ital@0;1"
+    }
+  },
+  "tigerNod": {
+    "_note": "Small, tasteful, CTA slide or caption only, at most once per post. Rotate.",
+    "options": [
+      "line",
+      "emoji",
+      "image"
+    ],
+    "lines": [
+      "Go get 'em, tiger.",
+      "Off you go, tiger."
+    ],
+    "emoji": "🐯",
+    "image": "website/scrolly-site/assets/cta-tiger.webp"
+  },
+  "palettes": {
+    "_note": "Main palettes (Mercedes 2026-10-06, 'at least for now'): warm + tangerine. Wildcards (wildcard:true) = occasional surprise backgrounds, at most 1 in any 6 posts (check.mjs warns). Variety otherwise comes from patterns + overlays. paper/paperInk/paperAccent = note/card/polaroid colors.",
+    "warm": {
+      "bg": "#F6EEE5",
+      "ink": "#161210",
+      "accent": "#E05A33",
+      "tex": "#EDE2D5",
+      "paper": "#FFFFFF",
+      "paperInk": "#161210",
+      "paperAccent": "#E05A33",
+      "mark": "#F9C9B4"
+    },
+    "tangerine": {
+      "bg": "#E8602F",
+      "ink": "#FFFFFF",
+      "accent": "#FFE3D3",
+      "tex": "#EC6D3E",
+      "paper": "#F6EEE5",
+      "paperInk": "#161210",
+      "paperAccent": "#E05A33",
+      "mark": "#FFB08F"
+    },
+    "blush": {
+      "bg": "#F8DCE5",
+      "ink": "#161210",
+      "accent": "#E05A33",
+      "tex": "#F2CCD9",
+      "paper": "#FFFFFF",
+      "paperInk": "#161210",
+      "paperAccent": "#E05A33",
+      "mark": "#F6B9A3",
+      "wildcard": true
+    },
+    "mist": {
+      "bg": "#E7EEF5",
+      "ink": "#161210",
+      "accent": "#E05A33",
+      "tex": "#DAE4EE",
+      "paper": "#FFFFFF",
+      "paperInk": "#161210",
+      "paperAccent": "#E05A33",
+      "mark": "#F6C1AD",
+      "wildcard": true
+    }
+  }
+}

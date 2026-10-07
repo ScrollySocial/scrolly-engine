@@ -1,0 +1,83 @@
+{
+  "_note": "Stats bank. A stat enters only after verification per research/guidelines.md. One object per stat: id, claim (plain-language, as it could appear), value, source {who, title, url, original: true}, published, dataPeriod, measured (population, geography, sample, method), qualifiers [], verifiedOn, freshnessFlag (e.g. older than 2 years), usedIn [].",
+  "stats": [
+    {
+      "id": "stripe-us-fee",
+      "claim": "Stripe's standard US card fee is 2.9% + 30¢ per successful charge",
+      "value": "2.9% + $0.30",
+      "source": { "who": "Stripe", "title": "Pricing", "url": "https://stripe.com/pricing", "original": true },
+      "published": "checked 2026-10-07",
+      "dataPeriod": "current",
+      "measured": "Standard US online card pricing, domestic cards",
+      "qualifiers": ["+1.5% international cards", "+1% currency conversion", "custom pricing for volume"],
+      "verifiedOn": "2026-10-07",
+      "freshnessFlag": null,
+      "usedIn": []
+    },
+    {
+      "id": "etsy-us-fees",
+      "claim": "Etsy charges a $0.20 listing fee, a 6.5% transaction fee, and 3% + $0.25 payment processing (US sellers)",
+      "value": "$0.20; 6.5%; 3% + $0.25",
+      "source": { "who": "Etsy", "title": "Fees & Payments Policy; Etsy Payments Policy (updated Jul 31, 2026)", "url": "https://www.etsy.com/legal/fees/", "original": true },
+      "published": "checked 2026-10-07",
+      "dataPeriod": "current",
+      "measured": "US sellers",
+      "qualifiers": ["transaction fee includes shipping and gift wrap", "processing applies to the gross order incl. shipping and tax", "Offsite Ads and other fees not included"],
+      "verifiedOn": "2026-10-07",
+      "freshnessFlag": null,
+      "usedIn": []
+    },
+    {
+      "id": "irs-1099k-threshold",
+      "claim": "Payment apps and marketplaces only send a 1099-K above $20,000 and 200 transactions, but all income must still be reported",
+      "value": "$20,000 and 200 transactions",
+      "source": { "who": "IRS", "title": "Understanding your Form 1099-K; IR-2025-107", "url": "https://www.irs.gov/businesses/understanding-your-form-1099-k", "original": true },
+      "published": "page updated 2026-06-28; release 2025-10-23",
+      "dataPeriod": "One Big Beautiful Bill, retroactive",
+      "measured": "US federal rule",
+      "qualifiers": ["state thresholds can differ (not researched)"],
+      "verifiedOn": "2026-10-07",
+      "freshnessFlag": null,
+      "usedIn": []
+    },
+    {
+      "id": "irs-se-tax-400",
+      "claim": "Self-employment tax applies once net self-employment earnings reach $400; the rate is 15.3%",
+      "value": "$400; 15.3%",
+      "source": { "who": "IRS", "title": "Self-Employment Tax (Social Security and Medicare Taxes)", "url": "https://www.irs.gov/businesses/small-businesses-self-employed/self-employment-tax-social-security-and-medicare-taxes", "original": true },
+      "published": "page updated 2026-06-27",
+      "dataPeriod": "current",
+      "measured": "US federal rule",
+      "qualifiers": ["net earnings = after business expenses", "12.4% Social Security + 2.9% Medicare", "employer-equivalent half is deductible", "Social Security part has a wage cap"],
+      "verifiedOn": "2026-10-07",
+      "freshnessFlag": null,
+      "usedIn": []
+    },
+    {
+      "id": "baymard-abandon-reasons",
+      "claim": "Among US shoppers who left a checkout for reasons other than just browsing, 40% left because extra costs were too high",
+      "value": "40% (also: forced account 18%, long checkout 17%, total not visible 12%, too few payment methods 9%)",
+      "source": { "who": "Baymard Institute", "title": "Cart Abandonment Rate Statistics", "url": "https://baymard.com/lists/cart-abandonment-rate", "original": true },
+      "published": "last updated 2025-09-22",
+      "dataPeriod": "Baymard's latest abandonment-reasons survey (year not shown)",
+      "measured": "US online shoppers who abandoned for non-browsing reasons; multiple answers",
+      "qualifiers": ["sample size not public", "general e-commerce, mostly physical goods", "don't headline the 70% average: it mixes 50 studies from 2006-2025"],
+      "verifiedOn": "2026-10-07",
+      "freshnessFlag": null,
+      "usedIn": []
+    },
+    {
+      "id": "ftc-review-penalty",
+      "claim": "FTC civil penalties for knowing fake-review violations: up to $53,088 per violation",
+      "value": "$53,088",
+      "source": { "who": "FTC", "title": "FTC Warns 10 Companies About Possible Violations of the Agency's New Consumer Review Rule", "url": "https://www.ftc.gov/news-events/news/press-releases/2025/12/ftc-warns-10-companies-about-possible-violations-agencys-new-consumer-review-rule", "original": true },
+      "published": "2025-12-22",
+      "dataPeriod": "2025",
+      "measured": "US federal rule (16 CFR Part 465)",
+      "qualifiers": ["inflation-adjusted yearly", "knowing violations"],
+      "verifiedOn": "2026-10-07",
+      "freshnessFlag": null,
+      "usedIn": []
+    }
+  ]
+}

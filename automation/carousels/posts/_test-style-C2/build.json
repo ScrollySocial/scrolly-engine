@@ -1,0 +1,50 @@
+{
+  "builtAt": "2026-10-06T23:13:10.445Z",
+  "exportDir": "C:\\Users\\merce\\OneDrive\\Scrolly Media\\exports\\carousels\\_test-style-C2",
+  "mediaUsed": [],
+  "fit": [
+    {
+      "i": 0,
+      "size": 62,
+      "ok": true,
+      "lines": 3
+    },
+    {
+      "i": 1,
+      "size": 54,
+      "ok": true,
+      "lines": 3
+    },
+    {
+      "i": 2,
+      "size": 54,
+      "ok": true,
+      "lines": 2
+    },
+    {
+      "i": 3,
+      "size": 54,
+      "ok": true,
+      "lines": 2
+    },
+    {
+      "i": 4,
+      "size": 54,
+      "ok": true,
+      "lines": 2
+    },
+    {
+      "i": 5,
+      "size": 54,
+      "ok": true,
+      "lines": 3
+    },
+    {
+      "i": 6,
+      "size": 54,
+      "ok": true,
+      "lines": 3
+    }
+  ],
+  "problems": []
+}

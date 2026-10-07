@@ -1,0 +1,73 @@
+{
+  "builtAt": "2026-10-07T03:10:58.667Z",
+  "exportDir": "C:\\Users\\merce\\OneDrive\\Scrolly Media\\exports\\carousels\\2026-10-07-growth-vs-sells",
+  "mediaUsed": [
+    "stock:couchTee"
+  ],
+  "fit": [
+    {
+      "i": 0,
+      "size": 168,
+      "min": 72,
+      "ok": true,
+      "lines": 4
+    },
+    {
+      "i": 1,
+      "size": 132,
+      "min": 48,
+      "ok": true,
+      "lines": 8
+    },
+    {
+      "i": 2,
+      "size": 94,
+      "min": 48,
+      "ok": true,
+      "lines": 1
+    },
+    {
+      "i": 3,
+      "size": 86,
+      "min": 48,
+      "ok": true,
+      "lines": 3
+    },
+    {
+      "i": 4,
+      "size": 94,
+      "min": 48,
+      "ok": true,
+      "lines": 4
+    },
+    {
+      "i": 5,
+      "size": 86,
+      "min": 48,
+      "ok": true,
+      "lines": 4
+    },
+    {
+      "i": 6,
+      "size": 94,
+      "min": 48,
+      "ok": true,
+      "lines": 3
+    },
+    {
+      "i": 7,
+      "size": 94,
+      "min": 48,
+      "ok": true,
+      "lines": 2
+    },
+    {
+      "i": 8,
+      "size": 136,
+      "min": 72,
+      "ok": true,
+      "lines": 4
+    }
+  ],
+  "problems": []
+}

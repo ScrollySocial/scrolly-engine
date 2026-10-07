@@ -1,0 +1,123 @@
+{
+  "id": "2026-10-07-views-to-1k",
+  "style": "D",
+  "palette": "warm",
+  "brief": {
+    "source": "Playbook ch. 6 (Your $1K plan): worked example $50 order, 2.5% buy, 7.5% visit",
+    "reader": "People who want to make their first $1K online through organic content",
+    "problem": "They don't know how much attention a $1,000 goal actually takes",
+    "outcome": "They can work backward from $1,000 to the views they need, using their own numbers",
+    "topic": "How many views $1,000 takes",
+    "mainPoint": "Work backward: $1,000 to sales to visitors to views",
+    "structure": "worked calculation",
+    "ending": "swap in your own numbers + CTA",
+    "slide2Check": "Format change from the cover (hook2: hook top right-aligned, swipe-pull bottom left-aligned); same promise, works as a first slide"
+  },
+  "media": {},
+  "slides": [
+    {
+      "text": "How many *views* does it take to make $1,000.00?"
+    },
+    {
+      "layout": "hook2",
+      "top": "Your $1,000 goal is secretly a *views* goal",
+      "bottom": "Here's the math, one step at a time →",
+      "pattern": "dots"
+    },
+    {
+      "layout": "formula",
+      "formula": [
+        "$1,000|goal",
+        "÷",
+        "$50|price",
+        "=",
+        "20|sales"
+      ],
+      "text": "Start with your price. Your goal divided by it is the sales you need."
+    },
+    {
+      "layout": "number",
+      "big": "800",
+      "text": "visitors bring in those 20 sales, if 2.5% of them buy."
+    },
+    {
+      "layout": "phone",
+      "screen": {
+        "type": "insights",
+        "rows": [
+          "Views",
+          "Reach",
+          "Profile activity",
+          "External link taps"
+        ],
+        "hi": 3
+      },
+      "text": "Visitors come from link taps. Your Insights show how many you get."
+    },
+    {
+      "layout": "formula",
+      "formula": [
+        "800|visitors",
+        "÷",
+        "7.5%|who visit",
+        "=",
+        "10,667|views"
+      ],
+      "text": "Then divide visitors by the share of viewers who tap through."
+    },
+    {
+      "layout": "chart",
+      "chart": {
+        "rows": [
+          [
+            "7.5% visit",
+            10667,
+            "10,667"
+          ],
+          [
+            "2.5% visit",
+            32000,
+            "32,000"
+          ],
+          [
+            "1% visit",
+            80000,
+            "80,000"
+          ]
+        ],
+        "hi": 0,
+        "note": "Views needed for $1,000 at $50, if 2.5% of visitors buy"
+      },
+      "text": "That one percentage changes everything."
+    },
+    {
+      "layout": "checklist",
+      "items": [
+        "A clearer hook",
+        "A clearer page",
+        "A link sticker in more Stories"
+      ],
+      "text": "Small fixes that raise it:"
+    },
+    {
+      "layout": "text",
+      "text": "Both percentages are starting guesses. Swap in your own once you've posted.",
+      "pattern": "grid"
+    },
+    {
+      "text": "The $1K Challenge gives you your $1K number and what to do each week. Link in bio."
+    }
+  ],
+  "cta": {
+    "type": "link-in-bio",
+    "offer": "1k-club-challenge"
+  },
+  "tigerNod": "line",
+  "caption": "Your $1K number and a plan for each week are in the $1K Challenge, link in bio. Want to check the math yourself first? Here's where the 2.5% comes from: Littledata's study of 421 Shopify stores found a median of 1.4% of visits ending in a sale, and Dynamic Yield's data from 400+ brands averages 2.66%. One clear offer shown to people who already watched your videos can reasonably aim near 2.5%, but plan with the lower number too. One more thing: Instagram counts replays as views, so views are always higher than the number of people.",
+  "hashtags": [
+    "#smallbusinesstips",
+    "#instagramforbusiness",
+    "#onlinebusiness"
+  ],
+  "notionUrl": null
+}
