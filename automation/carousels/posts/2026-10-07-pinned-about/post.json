@@ -19,9 +19,10 @@
   },
   "slides": [
     {
-      "layout": "pano",
-      "text": "Allow me to introduce myself, the person behind @scrollysocial",
-      "grid": "pinned-2026-10"
+      "layout": "image",
+      "media": "5ac0d7d04d",
+      "grid": "pinned-2026-10",
+      "text": "Allow me to introduce myself. The person behind @scrollysocial"
     },
     {
       "layout": "hook2",

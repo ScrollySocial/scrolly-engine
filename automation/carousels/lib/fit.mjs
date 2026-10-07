@@ -4,7 +4,9 @@ export function fitSlides(pg, sz) {
   return pg.evaluate((sz) => {
     const res = [];
     for (const s of document.querySelectorAll('section.s')) {
-      const i = +s.dataset.i, p = s.querySelector('.fit'), txt = s.querySelector('.txt'), card = s.querySelector('.card');
+      const i = +s.dataset.i, p = s.querySelector('.fit');
+      if (!p) { res.push({ i, size: 0, min: 0, ok: true, lines: 0 }); continue; }
+      const txt = s.querySelector('.txt'), card = s.querySelector('.card');
       const margin = s.classList.contains('blk') ? 120 : s.classList.contains('fmt-card') ? 60 : 90;
       const sr = s.getBoundingClientRect();
       const fits = () => {

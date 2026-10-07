@@ -61,6 +61,8 @@ export const LAYOUTS = {
   checklist: (s) => `${para(s)}<ul class="checks">${(s.items || []).map((t) => `<li><span class="ck">${ICON.check}</span>${esc(t)}</li>`).join('')}</ul>`,
   // Walking-through-slides: one wide photo split across consecutive slides (s._pano = {i, n} set by templates).
   pano: (s, m) => `<div class="bg" style="background-image:url('${m.url}');background-size:${s._pano.n * 100}% auto;background-position:${s._pano.n > 1 ? (s._pano.i / (s._pano.n - 1)) * 100 : 50}% ${(m.focus || '').split(/\s+/)[1] || '50%'}"></div><div class="txt"><p class="fit hl"><span>${esc(s.text)}</span></p></div>`,
+  // Finished artwork with its text baked in (e.g. a designed grid-panorama tile). s.text is kept as alt text only.
+  image: (s, m) => `<div class="bg" style="background-image:url('${m.url}');background-size:cover;background-position:center"></div>`,
   photo: (s, m) => `<div class="bg" style="background-image:url('${m.url}');background-position:${m.focus || 'center'}"></div><div class="txt"><p class="fit hl"><span>${esc(s.text)}</span></p></div>`,
 };
 
@@ -129,6 +131,8 @@ export const LAYOUT_CSS = (brand) => `
 .checks{list-style:none;display:flex;flex-direction:column;gap:26px;width:100%}
 .checks li{display:flex;align-items:center;gap:26px;background:var(--paper);color:var(--paper-ink);border-radius:24px;padding:26px 30px;font-size:54px;font-weight:700;font-stretch:90%;font-variation-settings:'wdth' 90}
 .ck{width:58px;height:58px;border-radius:50%;background:var(--paper-accent);color:#fff;display:grid;place-items:center;flex:none}.ck svg{width:34px}
+/* image */
+.lay-image{padding:0}
 /* pano */
 .lay-pano{padding:0}
 .lay-pano .bg{background-repeat:no-repeat}

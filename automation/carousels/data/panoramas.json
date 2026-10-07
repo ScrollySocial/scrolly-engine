@@ -3,7 +3,29 @@
   "pinned-2026-10": {
     "media": "stock:talkCam",
     "focus": "50% 30%",
-    "posts": ["2026-10-07-pinned-about", "2026-10-07-pinned-challenge", "2026-10-07-views-to-1k"],
-    "pinOrderNote": "Grid order left to right. Confirm which pinned post Instagram shows on the left after pinning; re-pin if needed."
+    "posts": [
+      "2026-10-07-pinned-about",
+      "2026-10-07-pinned-challenge",
+      "2026-10-07-views-to-1k"
+    ],
+    "pinOrderNote": "Grid order left to right. Confirm which pinned post Instagram shows on the left after pinning; re-pin if needed.",
+    "design": "pinned-2026-10",
+    "shirt": "website/scrolly-site/assets/hp3-earned-shirt.webp",
+    "screen": "4b3aaf72ba",
+    "screenFocus": "50% 100%",
+    "hooks": [
+      {
+        "big": "Allow me to *introduce* myself",
+        "small": "The person behind @scrollysocial"
+      },
+      {
+        "big": "The $1K *Challenge*",
+        "small": "30 consecutive days, one goal"
+      },
+      {
+        "big": "How many *views* make $1,000?",
+        "small": "The math, step by step"
+      }
+    ]
   }
 }

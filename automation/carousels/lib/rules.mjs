@@ -64,7 +64,7 @@ export function lint(post) {
     const content = slides.slice(2, -1);
     const lay = (s) => s.layout || 'cover';
     content.forEach((s, k) => { if (lay(s) === 'cover') E(`slide ${k + 3}: content slide uses the cover look; give it a layout (content-rules 7c)`); });
-    content.forEach((s, k) => { if (k && lay(s) === lay(content[k - 1]) && !['pano', 'photo'].includes(lay(s))) E(`slides ${k + 2}-${k + 3}: same layout twice in a row (${lay(s)})`); });
+    content.forEach((s, k) => { if (k && lay(s) === lay(content[k - 1]) && !['pano', 'photo', 'image'].includes(lay(s))) E(`slides ${k + 2}-${k + 3}: same layout twice in a row (${lay(s)})`); });
     const kinds = new Set(content.map(lay));
     if (content.length >= 4 && kinds.size < 3 && !content.every((x) => ['pano', 'photo'].includes(lay(x)))) E(`only ${kinds.size} layout(s) across content slides; use at least 3 (content-rules 7c)`);
     const accents = content.filter((s) => /\*[^*]+\*/.test(s.text || '')).length;

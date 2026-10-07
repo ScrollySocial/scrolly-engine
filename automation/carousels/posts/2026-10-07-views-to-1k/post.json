@@ -16,9 +16,10 @@
   "media": {},
   "slides": [
     {
-      "layout": "pano",
+      "layout": "image",
+      "media": "0c377786c1",
       "grid": "pinned-2026-10",
-      "text": "How many views does it take to make $1,000.00?"
+      "text": "How many views make $1,000?. The math, step by step"
     },
     {
       "layout": "hook2",
