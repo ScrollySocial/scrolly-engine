@@ -67,6 +67,12 @@ Working draft from Mercedes. Expect several rounds of revision. Change this file
 - Paragraph text is LEFT-aligned (one short paragraph per slide). Center alignment only for the cover hooks.
 - Across a week, mix post types: most posts should include photo or video backgrounds (Mercedes's photos), with text-only posts as the minority.
 
+## 7d. Grid panoramas (pinned rows)
+- Several posts' covers form one wide design across the profile grid (`data/panoramas.json`, `node panorama.mjs <group>`).
+- Each tile has its own design and job, but the row must clearly cross over: shapes or a photo flow across the seams.
+- Anything that crosses a seam is NEUTRAL: shapes, stickers (stars, sparkles, squiggles, blobs) or a photograph. Never words, badges with text, or a chart/graph split across two posts. Text and charts stay fully inside their tile.
+- One focal point per tile; plain backgrounds behind text (no dots/grid behind text).
+
 ## 8. Value before the CTA
 - Deliver the promised value before asking for action.
 - The resource or product in the CTA should help them apply or extend what they learned.
