@@ -43,7 +43,7 @@ Nothing here is published. Items marked **Decide** need Mercedes.
 | 8 | /calculators/income-goal/ | The $1K Math calculator |
 | 9 | Her face, or the Club page | "$75, one time. 30 consecutive days, one goal: $1,000. Link in bio." |
 
-Rules: no shirt visuals (text mention only, if at all); no results claims; "earn", never "win".
+Rules: no shirt visuals (text mention only, if at all); no results claims; "earn", never "win". Mercedes confirmed 2026-10-09 the shirt design is being redone, so no shirt imagery anywhere new until the new design exists.
 
 ### Shot list for Mercedes (one session, about 30 minutes)
 
@@ -59,7 +59,17 @@ Whisper transcript, then best take per line, then cuts, captions in brand style,
 
 ---
 
-## 3. Automated review and testimonial collection (design)
+## 3. Automated review and testimonial collection
+
+**Decided 2026-10-09 (Mercedes):** collect reviews ASAP. Buyers can review any time once they've gone through the content, and get asked again after the Challenge.
+
+**Built 2026-10-09, NOT live:** `automation/k1-launch/php/k1-reviews.php` (separate WPCode snippet; reads the frozen snippet's data, never changes it). Test: `php automation/k1-launch/test/reviews-run.php <form|save|save-bad|cron> [days] [none|active|done|verified]`. Previews: `automation/k1-launch/preview/review-*.png`. Waiting on her OK, then she pastes it as a new WPCode snippet.
+- Form at My Account > `leave-a-review` (no new menu item), linked from a "Leave a review" card at the bottom of My $1K Plan and Downloads.
+- Emails, once each, daily check: 7 days after purchase (if no review yet) · after the 30 days end without a verified $1K · when she verifies a $1K. One-click opt-out in each.
+- Reviews land in wp-admin > **Reviews** as Pending, plus an email to hello@. Publish = approved for use within what they ticked; nothing shows on the site.
+- Defaults chosen (change if she wants): no public WooCommerce product reviews; ticking the social box counts as consent (no second ask); emails signed "Scrolly".
+
+### Original design notes
 
 ### Constraints
 
@@ -101,6 +111,8 @@ Whisper transcript, then best take per line, then cuts, captions in brand style,
 ## 4. Week 2 Reels set (due Oct 19)
 
 **Week 2 = Monday Oct 19 to Sunday Oct 25.** Page 633 gets replaced with the new 25 (back it up first, as with the Week 1 re-date).
+
+**No-buyer rule (Mercedes 2026-10-09):** check Challenge orders on Sun Oct 18. If nobody has bought yet, nobody has seen Week 1, so re-date page 633 to "Week 1: October 19 to October 25" (same 25) and push Week 2 back a week (due Oct 26; same schedule shifted 7 days). The research below can still run early. Apify credit also resets Oct 24, which helps a later Week 2.
 
 **Rules carried over:** calibration v2 (current, easy, broad applicability 4-5, explainable in 1 to 2 sentences, low performance burden); rolling 4-week no-repeat, so none of Week 1's 25 return; Instagram first, and TikTok-only finds are labeled as such; organic posts only, so no ad caveats; correct audio notes (song vs. original sound vs. none). She rejected padding to 25 and she rejected shrinking the number, so start early.
 

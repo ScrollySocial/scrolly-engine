@@ -8,6 +8,7 @@ $GLOBALS['hooks'] = array();
 define( 'DAY_IN_SECONDS', 86400 ); define( 'HOUR_IN_SECONDS', 3600 ); define( 'MB_IN_BYTES', 1048576 ); define( 'EP_ROOT', 1 ); define( 'EP_PAGES', 2 );
 function save_state() { file_put_contents( $GLOBALS['state_file'], json_encode( $GLOBALS['meta'] ) ); }
 function add_action( $h, $cb ) { $GLOBALS['hooks'][ $h ][] = $cb; } function add_filter( $h, $cb ) { add_action( $h, $cb ); }
+function has_action( $h, $cb = false ) { if ( false === $cb ) { return ! empty( $GLOBALS['hooks'][ $h ] ); } return in_array( $cb, $GLOBALS['hooks'][ $h ] ?? array(), true ) ? 10 : false; }
 function do_hook( $h, ...$args ) { foreach ( $GLOBALS['hooks'][ $h ] ?? array() as $cb ) { $cb( ...$args ); } }
 function get_current_user_id() { return 7; }
 function get_user_meta( $u, $k, $single ) { return $GLOBALS['meta'][ $k ] ?? ''; }
@@ -16,10 +17,10 @@ function get_transient( $k ) { return $GLOBALS['meta'][ 't_' . $k ] ?? false; }
 function set_transient( $k, $v, $t ) { $GLOBALS['meta'][ 't_' . $k ] = $v; save_state(); }
 function delete_transient( $k ) { unset( $GLOBALS['meta'][ 't_' . $k ] ); save_state(); }
 class StubItem { function __construct( public $p, public $v ) {} function get_product_id() { return $this->p; } function get_variation_id() { return $this->v; } }
-class StubDate { function getTimestamp() { return time() - 40 * 86400; } }
+class StubDate { function getTimestamp() { return time() - (int) ( getenv( 'K1_PAID_DAYS' ) ?: 40 ) * 86400; } }
 class StubOrder {
 	function __construct( public $id ) {}
-	function get_items() { return array( new StubItem( 279, (int) ( getenv( 'K1_VARIATION' ) ?: 583 ) ) ); } function get_id() { return $this->id; }
+	function get_items() { return array( new StubItem( 279, (int) ( getenv( 'K1_VARIATION' ) ?: 583 ) ) ); } function get_id() { return $this->id; } function get_customer_id() { return 7; }
 	function get_date_paid() { return new StubDate(); } function get_date_created() { return new StubDate(); }
 	function get_meta( $k ) { return $k === '_wc_other/scrolly/shirt-size' ? 'L' : ''; }
 	function get_shipping_first_name() { return 'Grace'; } function get_shipping_last_name() { return 'Hopper'; } function get_shipping_address_1() { return '1 Main St'; }
@@ -55,7 +56,7 @@ function k1test_is_uploaded_file( $f ) { return file_exists( $f ); } function k1
 function wp_check_filetype_and_ext( $file, $name, $mimes ) { $ext = strtolower( pathinfo( $name, PATHINFO_EXTENSION ) ); return array( 'ext' => isset( $mimes[ $ext ] ) ? $ext : false ); }
 function wp_mail( $to, $subject, $body, $headers = array(), $attachments = array() ) {
 	// Attachment names are the array keys (WordPress 6.2+); record them plus the real source paths to check nothing was copied.
-	$GLOBALS['meta']['_mails'][] = array( 'to' => $to, 'subject' => $subject, 'attachments' => array_keys( (array) $attachments ), 'sources' => array_values( (array) $attachments ) );
+	$GLOBALS['meta']['_mails'][] = array( 'to' => $to, 'subject' => $subject, 'body' => $body, 'attachments' => array_keys( (array) $attachments ), 'sources' => array_values( (array) $attachments ) );
 	save_state();
 	return getenv( 'K1_MAIL_FAIL' ) ? false : true;
 }
