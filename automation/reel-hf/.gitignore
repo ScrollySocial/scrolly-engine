@@ -25,3 +25,5 @@ node_modules/
 */*.webm
 */*.m4a
 _runs/
+# the engine's own review page lives in lib/review (per-Reel review/ folders stay out)
+!lib/review/
