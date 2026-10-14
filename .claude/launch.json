@@ -4,20 +4,67 @@
     {
       "name": "website",
       "runtimeExecutable": "python",
-      "runtimeArgs": ["-m", "http.server", "8934", "--directory", "website"],
+      "runtimeArgs": [
+        "-m",
+        "http.server",
+        "8934",
+        "--directory",
+        "website"
+      ],
       "port": 8934
+    },
+    {
+      "name": "reel-previews",
+      "runtimeExecutable": "python",
+      "runtimeArgs": [
+        "-m",
+        "http.server",
+        "8942",
+        "--directory",
+        "automation/reel-hf"
+      ],
+      "port": 8942
     },
     {
       "name": "club-bridge",
       "runtimeExecutable": "node",
-      "runtimeArgs": ["--env-file=automation/.env", "automation/bridge-server.mjs"],
+      "runtimeArgs": [
+        "--env-file=automation/.env",
+        "automation/bridge-server.mjs"
+      ],
       "port": 5679
     },
     {
       "name": "k1-local-wp",
       "runtimeExecutable": "php",
-      "runtimeArgs": ["-S", "localhost:8891", "-t", "C:/Users/merce/AppData/Local/Temp/claude/C--Users-merce-Scrolly-Organic-Engine/1025135e-964c-4121-a920-f1c155a300f7/scratchpad/localwp/wordpress"],
+      "runtimeArgs": [
+        "-S",
+        "localhost:8891",
+        "-t",
+        "C:/Users/merce/AppData/Local/Temp/claude/C--Users-merce-Scrolly-Organic-Engine/1025135e-964c-4121-a920-f1c155a300f7/scratchpad/localwp/wordpress"
+      ],
       "port": 8891
+    },
+    {
+      "name": "reel-review",
+      "runtimeExecutable": "node",
+      "runtimeArgs": [
+        "automation/reel-hf/lib/review/server.mjs",
+        "--port",
+        "4321"
+      ],
+      "port": 4321
+    },
+    {
+      "name": "reel-review-jumbo-shrimp",
+      "runtimeExecutable": "node",
+      "runtimeArgs": [
+        "automation/reel-hf/lib/review/server.mjs",
+        "2026-10-13-bb-jumbo-shrimp",
+        "--port",
+        "4322"
+      ],
+      "port": 4322
     }
   ]
 }

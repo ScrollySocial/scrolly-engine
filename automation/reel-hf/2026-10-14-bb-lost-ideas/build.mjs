@@ -19,8 +19,10 @@ for (const [i, w] of R.W.entries()) {
   if (w.w === 'business' && R.W[i - 1]?.w === 'Your' && R.W[i + 1]?.w === 'brain') { w.w = 'Business'; R.W[i + 1].w = 'Brain'; }
 }
 
-R.frames([0, at('old'), at('i built'), at("it's called"), at('every time'), at('you just'), at('your business'), at('update'),
-  at('so that'), at('so if')]);
+// frame edges sit 0.01s before the word: at() rounds up, which split each frame's first word into the previous caption
+const fat = (p, a) => +(at(p, a) - 0.01).toFixed(2);
+R.frames([0, fat('old'), fat('i built'), fat("it's called"), fat('every time'), fat('you just'), fat('your business'), fat('and update'),
+  fat('so that'), fat('so if')]);
 const NOTES = {};
 const note = (n, title, sound) => (NOTES[n] = { title, sound });
 const ME = { kind: 'me' };
