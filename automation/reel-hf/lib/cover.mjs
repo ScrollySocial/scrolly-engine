@@ -21,10 +21,16 @@ const HERE = path.dirname(fileURLToPath(import.meta.url));
 const u = (p) => pathToFileURL(path.resolve(p)).href;
 const esc = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 export const COVER_BGS = ['cream', 'blush', 'mist', 'peach', 'ink'];
-export const COVER_STYLES = { cut: 'Centered', behind: 'Text behind you', side: 'Off-center', photo: 'Full video frame' };
+// cut-out styles (need a cut-out of her) and photo layouts (her full video frame, text straight on the photo).
+// The photo layouts are the Oct 10 Reel cover templates (automation/carousels/lib/reel-covers.mjs) without the italic
+// serif (Mercedes 2026-10-14): big lines in Bricolage, the *accent* on the peach marker, notes handwritten.
+export const CUT_STYLES = { cut: 'Centered', behind: 'Text behind you', side: 'Off-center' };
+export const PHOTO_STYLES = { photo: 'Title on top', stack: 'Stack', title: 'Big title', number: 'Big number', word: 'One big word', label: 'Label' };
+export const COVER_STYLES = { ...CUT_STYLES, ...PHOTO_STYLES };
 
-export function coverHtml({ text, aside, cut, photo, style = photo && !cut ? 'photo' : 'cut', bg = 'cream', brand = scrolly, asset = u }) {
+export function coverHtml({ text, aside, cut, photo, style = photo && !cut ? 'photo' : 'cut', bg = 'cream', pos = 'bottom', brand = scrolly, asset = u }) {
   const C = brand.C;
+  if (PHOTO_STYLES[style] && style !== 'photo') return photoLayoutHtml({ text, aside, photo, style, pos, brand, asset });
   if (style !== 'photo' && !cut) style = 'photo';
   const onPhoto = style === 'photo', dark = !onPhoto && bg === 'ink';
   const ink = onPhoto || dark ? '#fff' : C.ink, titleInk = dark ? (C.cream2 || '#FFF4DC') : ink;
@@ -110,7 +116,72 @@ window.coverReady = new Promise((ok) => {
 </body></html>`;
 }
 
-// options: [{ text, aside, style, bg, cut, photo }] (each falls back to the shared cut / bg)
+// The Oct 10 layouts on her full video frame. text: the cover line, *accent* = the word(s) that get big or marked;
+// aside: the handwritten note. pos: 'top' | 'bottom' (keep the text off her face). Lines per layout:
+//   stack  = note + arrow, caps, BIG accent, caps        title  = BIG title (accent marked), note under it
+//   number = note + arrow, HUGE accent, the rest small   word   = note, ONE HUGE word (the accent), the rest small
+//   label  = note + arrow, the line on the peach marker
+function photoLayoutHtml({ text, aside, photo, style, pos, brand, asset }) {
+  const C = brand.C, cream = C.cream2 || '#FFF4DC';
+  text = String(text).replace(/<m>(.*?)<\/m>/g, '*$1*'); // Claude's options mark the accent with <m>, hers with *stars*
+  const m = String(text).match(/^(.*?)\*([^*]+)\*(.*)$/), clean = String(text).replace(/\*/g, '');
+  const before = m ? m[1].trim() : '', accent = m ? m[2].trim() : '', after = m ? m[3].trim() : '';
+  const mk = (s) => esc(s).replace(/\*([^*]+)\*/g, '<span class="mk"><i></i><b>$1</b></span>');
+  const L = [];
+  const note = (arrow) => aside && L.push(['script', esc(aside), arrow]);
+  if (style === 'stack') { note(true); if (m) { before && L.push(['caps', esc(before)]); L.push(['big', esc(accent)]); after && L.push(['caps', esc(after)]); } else L.push(['caps', esc(clean)]); }
+  else if (style === 'title') { L.push(['big', mk(text)]); aside && L.push(['under', esc(aside)]); }
+  else if (style === 'number') { note(true); const n = accent || (clean.match(/[$€£]?\d[\d,.]*%?k?/i) || [clean])[0]; L.push(['huge', esc(n)]); const rest = m ? `${before} ${after}`.trim() : clean.replace(n, '').trim(); rest && L.push(['small', esc(rest)]); }
+  else if (style === 'word') { note(false); const w = accent || clean.split(/\s+/).sort((a, b) => b.length - a.length)[0]; L.push(['word', esc(w.toLowerCase())]); const rest = m ? `${before} ${after}`.trim() : clean.replace(w, '').trim(); rest && L.push(['small', esc(rest)]); }
+  else { note(true); L.push(['label', esc(clean)]); }
+  const place = style === 'title' ? 'top' : pos === 'top' ? 'top' : 'bottom';
+  const ARROW = `<svg class="arrow" viewBox="0 0 120 170"><path d="M38 8c-30 30-18 70 18 70 26 0 26-34 2-30-30 6-30 60-6 92" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round"/><path d="M34 128l18 22 20-20" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+  const body = L.map(([k, h, arrow], i) => k === 'label' ? `<p class="l label"><span>${h}</span></p>` : `<p class="l ${k}">${h}${arrow && i < L.length - 1 ? ARROW : ''}</p>`).join('');
+  return `<!doctype html><html><head><meta charset="utf-8"><style>
+@font-face{font-family:B;src:url('${asset(path.join(HERE, 'assets/fonts/bricolage-800.woff2'))}') format('woff2');font-weight:800;font-stretch:75% 100%}
+@font-face{font-family:H;src:url('${asset(path.join(HERE, 'assets/fonts/covered-by-your-grace.woff2'))}') format('woff2')}
+@font-face{font-family:F;src:url('${asset(path.join(HERE, 'assets/fonts/figtree.woff2'))}') format('woff2');font-weight:300 900}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1080px;height:1920px;overflow:hidden;background:#000}
+.c{position:relative;width:1080px;height:1920px;overflow:hidden;--k:1}
+.ph{position:absolute;inset:0;background:url('${asset(photo)}') center/cover no-repeat;filter:saturate(.92) contrast(1.02)}
+.dim{position:absolute;inset:0;background:rgba(20,14,10,.2)}
+.shade{position:absolute;left:0;right:0;height:900px;background:radial-gradient(ellipse 75% 50% at 50% 50%,rgba(15,10,8,.58),rgba(15,10,8,0) 74%)}
+.shade.top{top:180px}.shade.bottom{top:840px}
+.t{position:absolute;left:80px;right:80px;display:flex;flex-direction:column;align-items:center;text-align:center;color:${cream};text-shadow:0 3px 24px rgba(0,0,0,.3)}
+.t.top{top:310px}.t.bottom{bottom:310px}
+.l{position:relative;font-family:B;font-weight:800;font-stretch:78%}
+.caps{font-size:calc(104px*var(--k));line-height:1;text-transform:uppercase;letter-spacing:-.01em;font-stretch:86%}
+.big{font-size:calc(200px*var(--k));line-height:.86;letter-spacing:-.015em;margin:.03em 0 .06em;text-shadow:0 0 46px rgba(0,0,0,.5),0 4px 16px rgba(0,0,0,.4)}
+.huge{font-size:calc(300px*var(--k));line-height:.86;letter-spacing:-.02em;text-shadow:0 0 46px rgba(0,0,0,.5),0 4px 16px rgba(0,0,0,.4)}
+.word{font-size:calc(280px*var(--k));line-height:.9;letter-spacing:-.04em;text-shadow:0 0 46px rgba(0,0,0,.45)}
+.l .mk{font-size:inherit}
+.small{font:500 calc(44px*var(--k))/1.25 F,sans-serif;margin-top:18px}
+.under{font:400 calc(58px*var(--k))/1.05 H,cursive;letter-spacing:.06em;margin-top:14px}
+.script{font:400 calc(76px*var(--k))/1.02 H,cursive;letter-spacing:.03em;text-transform:uppercase;transform:rotate(-5deg);align-self:flex-start;margin:0 0 6px 40px;text-align:left;max-width:560px}
+.script .arrow{position:absolute;left:38%;top:92%;width:96px;color:${cream};transform:rotate(8deg)}
+.script:has(.arrow){margin-bottom:120px}
+.label{font-size:calc(92px*var(--k));line-height:1.2;color:${C.ink};text-shadow:none;margin-top:10px}
+.label span{background:${C.peach};padding:.02em .22em .08em;border-radius:.12em;-webkit-box-decoration-break:clone;box-decoration-break:clone}
+.nw,.mk{white-space:nowrap}
+.mk{position:relative;display:inline-block;padding:0 .12em;rotate:-1.5deg;text-shadow:none}
+.mk i{position:absolute;left:-.04em;right:-.04em;top:.1em;bottom:.02em;background:${C.peach};border-radius:.08em;skew:-6deg}
+.mk b{position:relative;color:${C.ink}}
+</style></head><body><div class="c"><div class="ph"></div><div class="dim"></div><div class="shade ${place}"></div>
+<div class="t ${place} lay-${style}">${body}</div></div>
+<script>
+// shrink the text block until it fits the grid-safe band (y 300 to 1620) and the width
+window.coverReady = (async () => {
+  await document.fonts.ready;
+  const c = document.querySelector('.c'), t = document.querySelector('.t');
+  let k = 1;
+  const ok = () => { const r = t.getBoundingClientRect(); return r.top >= 300 && r.bottom <= 1620 && [...t.children].every((el) => el.scrollWidth <= t.clientWidth + 4); };
+  while (!ok() && k > .4) { k -= .03; c.style.setProperty('--k', k); }
+})();
+</script></body></html>`;
+}
+
+// options: [{ text, aside, style, bg, cut, photo, pos }] (each falls back to the shared cut / bg)
 export async function renderCovers({ options, cut, bg = 'cream', outDir = 'review/covers', names }) {
   mkdirSync(outDir, { recursive: true });
   const browser = await launch();

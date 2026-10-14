@@ -10,7 +10,7 @@ import { createHash } from 'node:crypto';
 import { copyFileSync, existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { allReels, coverFile, decisionsHash, finalFile, reelStatus, ROOT } from './pipeline.mjs';
-import { renderCovers } from './cover.mjs';
+import { renderCovers, PHOTO_STYLES } from './cover.mjs';
 import { BRANDS } from './brand/index.mjs';
 
 const args = process.argv.slice(2);
@@ -58,11 +58,11 @@ for (const { slug } of todo) {
     const n = D.cover.frame || 1;
     const cut = [`review/cover-cuts/f${nn(n)}.png`, `sketch/f${nn(n)}-cut.png`].map((p) => path.join(dir, p)).find(existsSync);
     const photo = path.join(dir, `sketch/f${nn(n)}.jpg`);
-    const style = D.cover.style === 'photo' || !cut ? 'photo' : D.cover.style || 'cut';
+    const want = D.cover.style || 'cut', style = PHOTO_STYLES[want] ? want : cut ? want : 'photo'; // photo layouts need no cut-out
     try {
       mkdirSync(path.dirname(coverFile(slug)), { recursive: true });
       rmSync(coverFile(slug), { force: true });
-      await renderCovers({ options: [{ text: D.cover.text, aside: D.cover.aside?.trim() || '', style, photo, bg: D.cover.bg || 'cream', brand: BRANDS[D.brand] || undefined }], cut, outDir: path.dirname(coverFile(slug)), names: ['cover.png'] });
+      await renderCovers({ options: [{ text: D.cover.text, aside: D.cover.aside?.trim() || '', style, photo, pos: D.cover.pos || 'bottom', bg: D.cover.bg || 'cream', brand: BRANDS[D.brand] || undefined }], cut, outDir: path.dirname(coverFile(slug)), names: ['cover.png'] });
       cover = coverFile(slug);
     } catch (e) { writeFileSync(log, `\ncover failed: ${e.message}\n`, { flag: 'a' }); }
   }

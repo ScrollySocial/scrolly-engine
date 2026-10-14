@@ -2,6 +2,9 @@
 // Canvas 1080×1920 (9:16). The profile grid shows the middle 3:4 (y 240 to 1680), so text stays inside y 300 to 1620.
 // Every cover is a frame from the reel. Text sits straight on the photo (no cards or bands): a mix of heavy caps,
 // big italic serif, a handwritten note with a drawn arrow, and small plain lines, in cream.
+// 2026-10-14 (Mercedes): NO italic serif anymore. 'serif', 'title' and 'label' lines and *accents* now use Bricolage
+// 800 condensed; an *accent* sits on the peach marker (ink text) instead of turning peach. Line kinds are unchanged,
+// so existing reel.json files still work. The review page's cover picker has the same layouts (reel-hf/lib/cover.mjs).
 //
 // cover.lines = [[kind, text], ...] kinds: script (handwritten note), caps, serif (big italic), title (upright serif),
 // word (huge lowercase sans), small, label (serif in a soft highlight box). *word* inside caps = serif accent.
@@ -61,10 +64,10 @@ body{width:${CW}px;height:${CH}px;overflow:hidden;background:#222}
 .t{position:absolute;left:80px;right:80px;display:flex;flex-direction:column;align-items:center;text-align:center;color:${CREAM};text-shadow:0 3px 24px rgba(0,0,0,.28)}
 .t.top{top:310px}.t.center{top:50%;transform:translateY(-50%)}.t.bottom{bottom:310px}
 .l{position:relative}
-em{font-family:'${f.serif.family}',serif;font-style:italic;font-weight:400;text-transform:none;letter-spacing:0;color:${serifColor};font-size:1.25em;line-height:.8}
+em{font-family:'${f.bold.family}',sans-serif;font-style:normal;font-weight:800;font-stretch:78%;text-transform:none;letter-spacing:-.01em;color:${INK};background:${PEACH};padding:0 .12em;border-radius:.08em;display:inline-block;rotate:-1.5deg;text-shadow:none!important;font-size:1em;line-height:1}
 .caps{font:800 calc(104px*var(--k))/1.0 '${f.bold.family}',sans-serif;font-stretch:88%;text-transform:uppercase;letter-spacing:-.01em}
-.serif{font:italic 400 calc(230px*var(--k))/.86 '${f.serif.family}',serif;color:${serifColor};letter-spacing:-.01em;margin:.02em 0 .06em}
-.title{font:400 calc(150px*var(--k))/.95 '${f.serif.family}',serif;letter-spacing:-.015em}
+.serif{font:800 calc(200px*var(--k))/.86 '${f.bold.family}',sans-serif;font-stretch:78%;color:${CREAM};letter-spacing:-.015em;margin:.02em 0 .06em}
+.title{font:800 calc(150px*var(--k))/.92 '${f.bold.family}',sans-serif;font-stretch:78%;letter-spacing:-.015em}
 .title em{font-size:1em}
 .word{font:800 calc(280px*var(--k))/.9 'Inter Tight',sans-serif;letter-spacing:-.06em;text-transform:lowercase}
 .small{font:500 calc(44px*var(--k))/1.25 '${f.highlight.family}',sans-serif;margin-top:18px;letter-spacing:.005em}
@@ -72,11 +75,11 @@ em{font-family:'${f.serif.family}',serif;font-style:italic;font-weight:400;text-
 .t.title-t .script{align-self:center;transform:none;margin:14px 0 0;text-transform:none;letter-spacing:.06em;font-size:calc(58px*var(--k))}
 .script .arrow{position:absolute;left:38%;top:92%;width:96px;color:${CREAM};transform:rotate(8deg)}
 .script:has(.arrow){margin-bottom:120px}
-.label{font:400 calc(92px*var(--k))/1.18 '${f.serif.family}',serif;color:${INK};text-shadow:none;margin-top:10px}
+.label{font:800 calc(92px*var(--k))/1.2 '${f.bold.family}',sans-serif;font-stretch:78%;color:${INK};text-shadow:none;margin-top:10px}
 .label span{background:${PEACH};padding:.02em .22em .06em;border-radius:.18em;-webkit-box-decoration-break:clone;box-decoration-break:clone}
-.label em{color:${INK};font-size:1em}
+.label em{background:none;padding:0;rotate:0deg}
 .behind-t .serif,.behind-t .caps{font-size:calc(330px*var(--k));line-height:.82}
-.number-t .serif{font-size:calc(320px*var(--k));font-style:normal}
+.number-t .serif{font-size:calc(300px*var(--k))}
 ${serifStyle === 'thin' ? '' : '.serif,.c em:not(.label em){text-shadow:0 0 46px rgba(0,0,0,.55),0 4px 16px rgba(0,0,0,.45)}'}
 ${serifStyle === 'bold' ? ".serif,.c em:not(.label em){font-family:'Fraunces',serif!important;font-weight:600;font-variation-settings:'opsz' 144;letter-spacing:-.025em}.serif{line-height:.9}" : ''}
 </style></head><body><div class="c">

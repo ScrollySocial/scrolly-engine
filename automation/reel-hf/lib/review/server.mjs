@@ -90,9 +90,9 @@ createServer((req, res) => {
   if (p === '/api/cutout' && req.method === 'POST') { makeCut(+url.searchParams.get('frame')); return json(res, { ok: true }); }
   // live cover preview: frame, style (cut | photo), background, text, aside
   if (p === '/cover') {
-    const q = url.searchParams, n = +q.get('frame') || 1, style = COVER_STYLES[q.get('style')] ? q.get('style') : 'cut';
+    const q = url.searchParams, n = +q.get('frame') || 1, style = COVER_STYLES[q.get('style')] ? q.get('style') : 'cut', pos = q.get('pos') === 'top' ? 'top' : 'bottom';
     const cut = cutFor(n), photo = `sketch/f${nn(n)}.jpg`;
-    const html = coverHtml({ brand: BRANDS[q.get('brand')] || BRANDS.scrolly, text: q.get('text') || '', aside: q.get('aside') || '', style, bg: q.get('bg') || 'cream', cut: cut && path.join(DIR, cut), photo: path.join(DIR, photo), asset: urlFor });
+    const html = coverHtml({ brand: BRANDS[q.get('brand')] || BRANDS.scrolly, text: q.get('text') || '', aside: q.get('aside') || '', style, pos, bg: q.get('bg') || 'cream', cut: cut && path.join(DIR, cut), photo: path.join(DIR, photo), asset: urlFor });
     res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-store' }); return res.end(html);
   }
   if (p.startsWith('/lib/')) { const f = inside(path.join(HERE, '..'), p.slice(4)); return f ? sendFile(req, res, f) : (res.writeHead(403), res.end()); }
