@@ -80,7 +80,9 @@ moments she kept and redo only the changed moments. Then `node build.mjs && npm 
 1. Read the Notion saved view **Reels to edit** (Format Reel + Status Edit, by Publish Order):
    `notion-query-data-sources` with `{"mode":"view","view_url":"view://3f9ab38f-4c58-81e3-a763-000cb6af8568"}`.
    **Never** SQL or rows mode on Notion lists (small query allowance; repo-root CLAUDE.md). Skip rows already in
-   `automation/reel-hf/rows.json`.
+   `automation/reel-hf/rows.json`, but first copy every listed Reel's posting order to the review hub:
+   `node lib/schedule.mjs <slug> order=<Publish Order or -> date=<Publish Date or ->` (Notion is the only place the order
+   is set; the hub at localhost:4320 numbers the Reels from this copy).
 2. A row is a **Studio** Reel when its footage is talking-head take(s) of her. The footage is named in **Filming Notes**
    (paths relative to the footage folder, `carousels/config/media.json` → `reelFootageDir`, e.g. `videos/Business
    Brain/IMG_2008` → find the file by name). Skip and log (with the reason) rows where: the footage file isn't there
