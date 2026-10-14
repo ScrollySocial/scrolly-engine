@@ -1,0 +1,112 @@
+[
+  {
+    "fingerprint": "tiktok:sound:7678338544116435730",
+    "soundId": "7678338544116435730",
+    "formatTag": "transition:upside-down-flip",
+    "trendName": "Upside-down flip transition",
+    "firstSeenSnapshot": "2026-W39",
+    "snapshotsSeen": [
+      "2026-W39"
+    ],
+    "releasedIn": []
+  },
+  {
+    "fingerprint": "tiktok:sound:7641944089235032839",
+    "soundId": "7641944089235032839",
+    "formatTag": "transition:glow-up-before-after",
+    "trendName": "Glow-up transition (before → after on the beat)",
+    "firstSeenSnapshot": "2026-W39",
+    "snapshotsSeen": [
+      "2026-W39"
+    ],
+    "releasedIn": []
+  },
+  {
+    "fingerprint": "tiktok:sound:7674416465486875422",
+    "soundId": "7674416465486875422",
+    "formatTag": "transition:duo-outfit-swap",
+    "trendName": "Two-person outfit transition",
+    "firstSeenSnapshot": "2026-W39",
+    "snapshotsSeen": [
+      "2026-W39"
+    ],
+    "releasedIn": []
+  },
+  {
+    "fingerprint": "tiktok:sound:7689204613626743559",
+    "soundId": "7689204613626743559",
+    "formatTag": "announcement:countdown-drop-teaser",
+    "trendName": "\"Tomorrow.\" limited-drop teaser",
+    "firstSeenSnapshot": "2026-W39",
+    "snapshotsSeen": [
+      "2026-W39"
+    ],
+    "releasedIn": []
+  },
+  {
+    "fingerprint": "tiktok:sound:7099522931209816066",
+    "soundId": "7099522931209816066",
+    "formatTag": "template:duo-walk-in",
+    "trendName": "\"Hotel Lobby\" dynamic-duo template",
+    "firstSeenSnapshot": "2026-W39",
+    "snapshotsSeen": [
+      "2026-W39"
+    ],
+    "releasedIn": []
+  },
+  {
+    "fingerprint": "tiktok:sound:7379783449715247914",
+    "soundId": "7379783449715247914",
+    "formatTag": "transformation:5s-quick-reveal",
+    "trendName": "5-second hair (or anything) transformation",
+    "firstSeenSnapshot": "2026-W39",
+    "snapshotsSeen": [
+      "2026-W39"
+    ],
+    "releasedIn": []
+  },
+  {
+    "fingerprint": "tiktok:sound:7315852279827172128",
+    "soundId": "7315852279827172128",
+    "formatTag": "announcement:secret-reveal",
+    "trendName": "\"The secret's out\" launch reveal",
+    "firstSeenSnapshot": "2026-W39",
+    "snapshotsSeen": [
+      "2026-W39"
+    ],
+    "releasedIn": []
+  },
+  {
+    "fingerprint": "tiktok:sound:7523279356548139798",
+    "soundId": "7523279356548139798",
+    "formatTag": "story:text-overlay-origin",
+    "trendName": "Short clip + long \"why I started\" story caption",
+    "firstSeenSnapshot": "2026-W39",
+    "snapshotsSeen": [
+      "2026-W39"
+    ],
+    "releasedIn": []
+  },
+  {
+    "fingerprint": "tiktok:sound:7394898156456708895",
+    "soundId": "7394898156456708895",
+    "formatTag": "transition:seasonal-halloween-outfit",
+    "trendName": "Halloween outfit transition (seasonal)",
+    "firstSeenSnapshot": "2026-W39",
+    "snapshotsSeen": [
+      "2026-W39"
+    ],
+    "releasedIn": []
+  },
+  {
+    "fingerprint": "tiktok:sound:7363630457409243152",
+    "soundId": "7363630457409243152",
+    "formatTag": "pov:owner-text-over-track",
+    "trendName": "\"Nothing against influencers, but…\" owner POV",
+    "firstSeenSnapshot": "2026-W39",
+    "snapshotsSeen": [
+      "2026-W39"
+    ],
+    "releasedIn": []
+  }
+]

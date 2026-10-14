@@ -1,0 +1,545 @@
+{
+ "id": "2026-10-13-bb-jumbo-shrimp",
+ "kit": "yap",
+ "fps": 30,
+ "duration": 24.393,
+ "video": "2026-10-13-bb-jumbo-shrimp/base.mp4",
+ "words": [
+  {
+   "w": "Saying",
+   "s": 0.551,
+   "e": 1.051,
+   "seg": 0,
+   "first": true
+  },
+  {
+   "w": "that",
+   "s": 1.051,
+   "e": 1.231,
+   "seg": 0,
+   "first": false
+  },
+  {
+   "w": "your",
+   "s": 1.231,
+   "e": 1.351,
+   "seg": 0,
+   "first": false
+  },
+  {
+   "w": "AI",
+   "s": 1.351,
+   "e": 1.671,
+   "seg": 0,
+   "first": false
+  },
+  {
+   "w": "would",
+   "s": 1.671,
+   "e": 2.091,
+   "seg": 0,
+   "first": false
+  },
+  {
+   "w": "be",
+   "s": 2.091,
+   "e": 2.251,
+   "seg": 0,
+   "first": false
+  },
+  {
+   "w": "better",
+   "s": 2.251,
+   "e": 2.571,
+   "seg": 0,
+   "first": false
+  },
+  {
+   "w": "if",
+   "s": 2.571,
+   "e": 3.011,
+   "seg": 0,
+   "first": false
+  },
+  {
+   "w": "you",
+   "s": 3.011,
+   "e": 3.151,
+   "seg": 0,
+   "first": false
+  },
+  {
+   "w": "gave",
+   "s": 3.151,
+   "e": 3.431,
+   "seg": 0,
+   "first": false
+  },
+  {
+   "w": "it",
+   "s": 3.431,
+   "e": 3.631,
+   "seg": 0,
+   "first": false
+  },
+  {
+   "w": "a",
+   "s": 3.631,
+   "e": 3.731,
+   "seg": 0,
+   "first": false
+  },
+  {
+   "w": "brain",
+   "s": 3.731,
+   "e": 4.011,
+   "seg": 0,
+   "first": false
+  },
+  {
+   "w": "sounds",
+   "s": 4.011,
+   "e": 4.511,
+   "seg": 0,
+   "first": false
+  },
+  {
+   "w": "like",
+   "s": 4.511,
+   "e": 4.771,
+   "seg": 0,
+   "first": false
+  },
+  {
+   "w": "one",
+   "s": 4.771,
+   "e": 4.931,
+   "seg": 0,
+   "first": false
+  },
+  {
+   "w": "of",
+   "s": 4.931,
+   "e": 5.051,
+   "seg": 0,
+   "first": false
+  },
+  {
+   "w": "those",
+   "s": 5.051,
+   "e": 5.171,
+   "seg": 0,
+   "first": false
+  },
+  {
+   "w": "oxymorons",
+   "s": 5.171,
+   "e": 6.151,
+   "seg": 0,
+   "first": false
+  },
+  {
+   "w": "like",
+   "s": 6.151,
+   "e": 6.371,
+   "seg": 0,
+   "first": false
+  },
+  {
+   "w": "jumbo",
+   "s": 6.371,
+   "e": 6.971,
+   "seg": 0,
+   "first": false
+  },
+  {
+   "w": "shrimp",
+   "s": 6.971,
+   "e": 7.231,
+   "seg": 0,
+   "first": false
+  },
+  {
+   "w": "But",
+   "s": 7.231,
+   "e": 7.456,
+   "seg": 0,
+   "first": false
+  },
+  {
+   "w": "hear",
+   "s": 7.61,
+   "e": 8.03,
+   "seg": 1,
+   "first": false
+  },
+  {
+   "w": "me",
+   "s": 8.03,
+   "e": 8.23,
+   "seg": 1,
+   "first": false
+  },
+  {
+   "w": "out",
+   "s": 8.23,
+   "e": 8.41,
+   "seg": 1,
+   "first": false
+  },
+  {
+   "w": "Here's",
+   "s": 8.41,
+   "e": 8.97,
+   "seg": 1,
+   "first": false
+  },
+  {
+   "w": "why",
+   "s": 8.97,
+   "e": 9.13,
+   "seg": 1,
+   "first": false
+  },
+  {
+   "w": "your",
+   "s": 9.13,
+   "e": 9.45,
+   "seg": 1,
+   "first": false
+  },
+  {
+   "w": "AI",
+   "s": 9.45,
+   "e": 9.81,
+   "seg": 1,
+   "first": false
+  },
+  {
+   "w": "might",
+   "s": 9.81,
+   "e": 10.63,
+   "seg": 1,
+   "first": false
+  },
+  {
+   "w": "be",
+   "s": 10.63,
+   "e": 10.83,
+   "seg": 1,
+   "first": false
+  },
+  {
+   "w": "better",
+   "s": 10.83,
+   "e": 11.05,
+   "seg": 1,
+   "first": false
+  },
+  {
+   "w": "if",
+   "s": 11.05,
+   "e": 11.37,
+   "seg": 1,
+   "first": false
+  },
+  {
+   "w": "you",
+   "s": 11.37,
+   "e": 11.49,
+   "seg": 1,
+   "first": false
+  },
+  {
+   "w": "gave",
+   "s": 11.49,
+   "e": 11.67,
+   "seg": 1,
+   "first": false
+  },
+  {
+   "w": "it",
+   "s": 11.67,
+   "e": 11.89,
+   "seg": 1,
+   "first": false
+  },
+  {
+   "w": "an",
+   "s": 11.89,
+   "e": 12.13,
+   "seg": 1,
+   "first": false
+  },
+  {
+   "w": "additional",
+   "s": 12.13,
+   "e": 12.47,
+   "seg": 1,
+   "first": false
+  },
+  {
+   "w": "brain",
+   "s": 12.47,
+   "e": 13.11,
+   "seg": 1,
+   "first": false
+  },
+  {
+   "w": "and",
+   "s": 13.11,
+   "e": 13.83,
+   "seg": 1,
+   "first": false
+  },
+  {
+   "w": "that's",
+   "s": 13.83,
+   "e": 14.05,
+   "seg": 1,
+   "first": false
+  },
+  {
+   "w": "because",
+   "s": 14.05,
+   "e": 14.29,
+   "seg": 1,
+   "first": false
+  },
+  {
+   "w": "AI",
+   "s": 14.29,
+   "e": 14.77,
+   "seg": 1,
+   "first": false
+  },
+  {
+   "w": "is",
+   "s": 14.77,
+   "e": 15.27,
+   "seg": 1,
+   "first": false
+  },
+  {
+   "w": "Artificial",
+   "s": 15.27,
+   "e": 15.81,
+   "seg": 1,
+   "first": false
+  },
+  {
+   "w": "and",
+   "s": 15.81,
+   "e": 16.25,
+   "seg": 1,
+   "first": false
+  },
+  {
+   "w": "so",
+   "s": 16.25,
+   "e": 16.39,
+   "seg": 1,
+   "first": false
+  },
+  {
+   "w": "we",
+   "s": 16.39,
+   "e": 16.51,
+   "seg": 1,
+   "first": false
+  },
+  {
+   "w": "need",
+   "s": 16.51,
+   "e": 16.61,
+   "seg": 1,
+   "first": false
+  },
+  {
+   "w": "to",
+   "s": 16.61,
+   "e": 16.73,
+   "seg": 1,
+   "first": false
+  },
+  {
+   "w": "add",
+   "s": 16.73,
+   "e": 16.95,
+   "seg": 1,
+   "first": false
+  },
+  {
+   "w": "in",
+   "s": 16.95,
+   "e": 17.37,
+   "seg": 1,
+   "first": false
+  },
+  {
+   "w": "the",
+   "s": 17.37,
+   "e": 17.67,
+   "seg": 1,
+   "first": false
+  },
+  {
+   "w": "human",
+   "s": 17.67,
+   "e": 17.93,
+   "seg": 1,
+   "first": false
+  },
+  {
+   "w": "element",
+   "s": 17.93,
+   "e": 18.27,
+   "seg": 1,
+   "first": false
+  },
+  {
+   "w": "and",
+   "s": 18.27,
+   "e": 18.59,
+   "seg": 1,
+   "first": false
+  },
+  {
+   "w": "only",
+   "s": 18.59,
+   "e": 18.87,
+   "seg": 1,
+   "first": false
+  },
+  {
+   "w": "you",
+   "s": 18.87,
+   "e": 19.09,
+   "seg": 1,
+   "first": false
+  },
+  {
+   "w": "can",
+   "s": 19.09,
+   "e": 19.29,
+   "seg": 1,
+   "first": false
+  },
+  {
+   "w": "bring",
+   "s": 19.29,
+   "e": 19.53,
+   "seg": 1,
+   "first": false
+  },
+  {
+   "w": "that",
+   "s": 19.53,
+   "e": 19.79,
+   "seg": 1,
+   "first": false
+  },
+  {
+   "w": "but",
+   "s": 19.79,
+   "e": 19.949,
+   "seg": 1,
+   "first": false
+  },
+  {
+   "w": "you",
+   "s": 20.101,
+   "e": 20.561,
+   "seg": 2,
+   "first": false
+  },
+  {
+   "w": "can",
+   "s": 20.561,
+   "e": 20.721,
+   "seg": 2,
+   "first": false
+  },
+  {
+   "w": "still",
+   "s": 20.721,
+   "e": 21.021,
+   "seg": 2,
+   "first": false
+  },
+  {
+   "w": "do",
+   "s": 21.021,
+   "e": 21.221,
+   "seg": 2,
+   "first": false
+  },
+  {
+   "w": "it",
+   "s": 21.221,
+   "e": 21.381,
+   "seg": 2,
+   "first": false
+  },
+  {
+   "w": "in",
+   "s": 21.381,
+   "e": 21.521,
+   "seg": 2,
+   "first": false
+  },
+  {
+   "w": "a",
+   "s": 21.521,
+   "e": 21.621,
+   "seg": 2,
+   "first": false
+  },
+  {
+   "w": "very",
+   "s": 21.621,
+   "e": 21.921,
+   "seg": 2,
+   "first": false
+  },
+  {
+   "w": "Systematic",
+   "s": 21.921,
+   "e": 22.701,
+   "seg": 2,
+   "first": false
+  },
+  {
+   "w": "and",
+   "s": 22.701,
+   "e": 23.321,
+   "seg": 2,
+   "first": false
+  },
+  {
+   "w": "efficient",
+   "s": 23.321,
+   "e": 23.701,
+   "seg": 2,
+   "first": false
+  },
+  {
+   "w": "way",
+   "s": 23.701,
+   "e": 24.393,
+   "seg": 2,
+   "first": false
+  }
+ ],
+ "emphasis": [],
+ "cuts": [
+  0,
+  7.456,
+  19.949
+ ],
+ "title": null,
+ "end": null,
+ "music": null,
+ "sfx": null,
+ "grade": null
+}

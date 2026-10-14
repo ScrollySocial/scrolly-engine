@@ -1,0 +1,532 @@
+{
+  "checkedAt": "2026-09-25T20:05:35.177Z",
+  "perSound": 10,
+  "run": {
+    "label": "verify:test-02:sound-scraper",
+    "actorId": "clockworks/tiktok-sound-scraper",
+    "runId": "0jIPG6F2eUm25RL2f",
+    "status": "SUCCEEDED",
+    "items": 50,
+    "usageTotalUsd": 0.15,
+    "chargedEventCounts": {
+      "result": 30,
+      "transcription-minute": 0
+    },
+    "computeUnits": 0.00322,
+    "durationSecs": 11.592,
+    "maxItems": 50,
+    "maxTotalChargeUsd": 0.5
+  },
+  "sounds": {
+    "7672170961831037709": {
+      "soundName": "original sound",
+      "sampled": 10,
+      "distinctCreators": 10,
+      "creatorsLast7d": 2,
+      "creatorsLast14d": 2,
+      "highPerformers100k": 6,
+      "earliestSampledUse": "2026-08-09T23:01:48.000Z",
+      "newestSampledUse": "2026-09-20T02:53:41.000Z",
+      "examples": [
+        {
+          "url": "https://www.tiktok.com/@nailz_forever64/video/7672170878246915341",
+          "author": "nailz_forever64",
+          "followers": 8645,
+          "plays": 1600000,
+          "postedAt": "2026-08-09T23:01:48.000Z",
+          "durationSec": 13,
+          "template": false
+        },
+        {
+          "url": "https://www.tiktok.com/@miamaynailz/video/7682742258319363348",
+          "author": "miamaynailz",
+          "followers": 313,
+          "plays": 944600,
+          "postedAt": "2026-09-07T10:43:51.000Z",
+          "durationSec": 10,
+          "template": false
+        },
+        {
+          "url": "https://www.tiktok.com/@nails.by.ella.110/video/7677354861351996703",
+          "author": "nails.by.ella.110",
+          "followers": 785,
+          "plays": 624600,
+          "postedAt": "2026-08-23T22:18:11.000Z",
+          "durationSec": 13,
+          "template": false
+        },
+        {
+          "url": "https://www.tiktok.com/@suppersecret.hidden/video/7687445152448793869",
+          "author": "suppersecret.hidden",
+          "followers": 2757,
+          "plays": 476600,
+          "postedAt": "2026-09-20T02:53:41.000Z",
+          "durationSec": 13,
+          "template": false
+        },
+        {
+          "url": "https://www.tiktok.com/@dani_nails01/video/7684050872078175508",
+          "author": "dani_nails01",
+          "followers": 1145,
+          "plays": 469100,
+          "postedAt": "2026-09-10T23:21:57.000Z",
+          "durationSec": 13,
+          "template": false
+        },
+        {
+          "url": "https://www.tiktok.com/@keegster._/video/7676978786507722015",
+          "author": "keegster._",
+          "followers": 237,
+          "plays": 128300,
+          "postedAt": "2026-08-22T21:58:47.000Z",
+          "durationSec": 10,
+          "template": false
+        },
+        {
+          "url": "https://www.tiktok.com/@lilykaylouise/video/7675172443094338846",
+          "author": "lilykaylouise",
+          "followers": 14000,
+          "plays": 97500,
+          "postedAt": "2026-08-18T01:09:15.000Z",
+          "durationSec": 13,
+          "template": false
+        },
+        {
+          "url": "https://www.tiktok.com/@.kinsley433/video/7687007630799179039",
+          "author": ".kinsley433",
+          "followers": 1928,
+          "plays": 88900,
+          "postedAt": "2026-09-18T22:35:49.000Z",
+          "durationSec": 0,
+          "template": false
+        },
+        {
+          "url": "https://www.tiktok.com/@josdoesnailz/video/7676537742871792910",
+          "author": "josdoesnailz",
+          "followers": 577,
+          "plays": 82200,
+          "postedAt": "2026-08-21T17:27:17.000Z",
+          "durationSec": 11,
+          "template": false
+        },
+        {
+          "url": "https://www.tiktok.com/@nailsby.miriam/video/7682485528469556500",
+          "author": "nailsby.miriam",
+          "followers": 80600,
+          "plays": 41200,
+          "postedAt": "2026-09-06T18:07:39.000Z",
+          "durationSec": 12,
+          "template": false
+        }
+      ]
+    },
+    "7683515977018919713": {
+      "soundName": "original sound",
+      "sampled": 10,
+      "distinctCreators": 10,
+      "creatorsLast7d": 9,
+      "creatorsLast14d": 9,
+      "highPerformers100k": 9,
+      "earliestSampledUse": "2026-09-09T12:46:09.000Z",
+      "newestSampledUse": "2026-09-23T16:07:54.000Z",
+      "examples": [
+        {
+          "url": "https://www.tiktok.com/@unnknowntypeshi/video/7688116197409279254",
+          "author": "unnknowntypeshi",
+          "followers": 2786,
+          "plays": 5100000,
+          "postedAt": "2026-09-21T22:17:36.000Z",
+          "durationSec": 10,
+          "template": false
+        },
+        {
+          "url": "https://www.tiktok.com/@glittersparkles1710/video/7688193408711675167",
+          "author": "glittersparkles1710",
+          "followers": 2181,
+          "plays": 5000000,
+          "postedAt": "2026-09-22T03:17:12.000Z",
+          "durationSec": 0,
+          "template": false
+        },
+        {
+          "url": "https://www.tiktok.com/@amorajbryantt/video/7687750764105698591",
+          "author": "amorajbryantt",
+          "followers": 1607,
+          "plays": 4500000,
+          "postedAt": "2026-09-20T22:39:37.000Z",
+          "durationSec": 0,
+          "template": false
+        },
+        {
+          "url": "https://www.tiktok.com/@mysteriousbaddie43/video/7687727905593511182",
+          "author": "mysteriousbaddie43",
+          "followers": 2901,
+          "plays": 3200000,
+          "postedAt": "2026-09-20T21:10:57.000Z",
+          "durationSec": 8,
+          "template": false
+        },
+        {
+          "url": "https://www.tiktok.com/@secret542793777/video/7687939282920606990",
+          "author": "secret542793777",
+          "followers": 681,
+          "plays": 2600000,
+          "postedAt": "2026-09-21T10:51:47.000Z",
+          "durationSec": 10,
+          "template": false
+        },
+        {
+          "url": "https://www.tiktok.com/@yeatbhidk/video/7687888710779538718",
+          "author": "yeatbhidk",
+          "followers": 1029,
+          "plays": 2400000,
+          "postedAt": "2026-09-21T07:35:09.000Z",
+          "durationSec": 10,
+          "template": false
+        },
+        {
+          "url": "https://www.tiktok.com/@secretunicornxoxo6/video/7687872012273945870",
+          "author": "secretunicornxoxo6",
+          "followers": 331,
+          "plays": 2200000,
+          "postedAt": "2026-09-21T06:30:38.000Z",
+          "durationSec": 10,
+          "template": false
+        },
+        {
+          "url": "https://www.tiktok.com/@trinityisrelatable1/video/7688198032285879566",
+          "author": "trinityisrelatable1",
+          "followers": 515,
+          "plays": 1600000,
+          "postedAt": "2026-09-22T03:35:28.000Z",
+          "durationSec": 5,
+          "template": false
+        },
+        {
+          "url": "https://www.tiktok.com/@betterlucknextime84/video/7688763142507138337",
+          "author": "betterlucknextime84",
+          "followers": 194,
+          "plays": 1400000,
+          "postedAt": "2026-09-23T16:07:54.000Z",
+          "durationSec": 10,
+          "template": false
+        },
+        {
+          "url": "https://www.tiktok.com/@keisukeuedaswife/video/7683515956353649952",
+          "author": "keisukeuedaswife",
+          "followers": 8291,
+          "plays": 83800,
+          "postedAt": "2026-09-09T12:46:09.000Z",
+          "durationSec": 34,
+          "template": false
+        }
+      ]
+    },
+    "7677752340367133461": {
+      "soundName": "som original",
+      "sampled": 10,
+      "distinctCreators": 10,
+      "creatorsLast7d": 2,
+      "creatorsLast14d": 7,
+      "highPerformers100k": 10,
+      "earliestSampledUse": "2026-08-25T00:00:20.000Z",
+      "newestSampledUse": "2026-09-23T09:16:09.000Z",
+      "examples": [
+        {
+          "url": "https://www.tiktok.com/@jennifer.coppen/video/7687969513328938261",
+          "author": "jennifer.coppen",
+          "followers": 17400000,
+          "plays": 6700000,
+          "postedAt": "2026-09-21T12:48:15.000Z",
+          "durationSec": 11,
+          "template": false
+        },
+        {
+          "url": "https://www.tiktok.com/@mama_that_tiktoks/video/7681459519389502733",
+          "author": "mama_that_tiktoks",
+          "followers": 341100,
+          "plays": 4600000,
+          "postedAt": "2026-09-03T23:46:26.000Z",
+          "durationSec": 9,
+          "template": false
+        },
+        {
+          "url": "https://www.tiktok.com/@marishkakhum_/video/7686855678333291796",
+          "author": "marishkakhum_",
+          "followers": 514200,
+          "plays": 3400000,
+          "postedAt": "2026-09-18T12:46:01.000Z",
+          "durationSec": 10,
+          "template": false
+        },
+        {
+          "url": "https://www.tiktok.com/@xvsuellen/video/7677752294242372872",
+          "author": "xvsuellen",
+          "followers": 597800,
+          "plays": 2500000,
+          "postedAt": "2026-08-25T00:00:20.000Z",
+          "durationSec": 9,
+          "template": false
+        },
+        {
+          "url": "https://www.tiktok.com/@paramonova_as/video/7685724365366840597",
+          "author": "paramonova_as",
+          "followers": 1400000,
+          "plays": 1500000,
+          "postedAt": "2026-09-15T11:35:58.000Z",
+          "durationSec": 9,
+          "template": false
+        },
+        {
+          "url": "https://www.tiktok.com/@linn_4__/video/7686808572860058901",
+          "author": "linn_4__",
+          "followers": 80700,
+          "plays": 1200000,
+          "postedAt": "2026-09-18T09:43:14.000Z",
+          "durationSec": 8,
+          "template": false
+        },
+        {
+          "url": "https://www.tiktok.com/@jasminelovellll/video/7686206394730646806",
+          "author": "jasminelovellll",
+          "followers": 207200,
+          "plays": 1200000,
+          "postedAt": "2026-09-16T18:46:31.000Z",
+          "durationSec": 9,
+          "template": false
+        },
+        {
+          "url": "https://www.tiktok.com/@j3nnywr3nn/video/7682506402656423190",
+          "author": "j3nnywr3nn",
+          "followers": 501200,
+          "plays": 1100000,
+          "postedAt": "2026-09-06T19:28:36.000Z",
+          "durationSec": 9,
+          "template": false
+        },
+        {
+          "url": "https://www.tiktok.com/@sofiacrisafulli/video/7688657022727769376",
+          "author": "sofiacrisafulli",
+          "followers": 3200000,
+          "plays": 931300,
+          "postedAt": "2026-09-23T09:16:09.000Z",
+          "durationSec": 10,
+          "template": false
+        },
+        {
+          "url": "https://www.tiktok.com/@liziixlp/video/7684383004856274196",
+          "author": "liziixlp",
+          "followers": 5667,
+          "plays": 516100,
+          "postedAt": "2026-09-11T20:50:53.000Z",
+          "durationSec": 9,
+          "template": false
+        }
+      ]
+    },
+    "7673178143884200720": {
+      "soundName": "orijinal ses",
+      "sampled": 10,
+      "distinctCreators": 10,
+      "creatorsLast7d": 0,
+      "creatorsLast14d": 0,
+      "highPerformers100k": 10,
+      "earliestSampledUse": "2026-08-12T16:09:57.000Z",
+      "newestSampledUse": "2026-09-07T20:58:20.000Z",
+      "examples": [
+        {
+          "url": "https://www.tiktok.com/@moonfairyfalan/video/7673178082915699986",
+          "author": "moonfairyfalan",
+          "followers": 38200,
+          "plays": 17700000,
+          "postedAt": "2026-08-12T16:09:57.000Z",
+          "durationSec": 27,
+          "template": false
+        },
+        {
+          "url": "https://www.tiktok.com/@its_gamma/video/7681028352869780756",
+          "author": "its_gamma",
+          "followers": 594000,
+          "plays": 16600000,
+          "postedAt": "2026-09-02T20:30:00.000Z",
+          "durationSec": 25,
+          "template": false
+        },
+        {
+          "url": "https://www.tiktok.com/@quincy5ive/video/7674036298549595424",
+          "author": "quincy5ive",
+          "followers": 328100,
+          "plays": 14100000,
+          "postedAt": "2026-08-14T23:40:15.000Z",
+          "durationSec": 26,
+          "template": false
+        },
+        {
+          "url": "https://www.tiktok.com/@clipperpemula0408/video/7681167105223331092",
+          "author": "clipperpemula0408",
+          "followers": 14900,
+          "plays": 8300000,
+          "postedAt": "2026-09-03T04:51:30.000Z",
+          "durationSec": 20,
+          "template": false
+        },
+        {
+          "url": "https://www.tiktok.com/@void.omvr/video/7681060991530011924",
+          "author": "void.omvr",
+          "followers": 334100,
+          "plays": 8200000,
+          "postedAt": "2026-09-02T21:59:46.000Z",
+          "durationSec": 24,
+          "template": false
+        },
+        {
+          "url": "https://www.tiktok.com/@notsophiesilva/video/7682862897856285983",
+          "author": "notsophiesilva",
+          "followers": 6800000,
+          "plays": 8100000,
+          "postedAt": "2026-09-07T18:32:04.000Z",
+          "durationSec": 15,
+          "template": false
+        },
+        {
+          "url": "https://www.tiktok.com/@noceu3/video/7678514290898308385",
+          "author": "noceu3",
+          "followers": 27400,
+          "plays": 5800000,
+          "postedAt": "2026-08-27T01:17:17.000Z",
+          "durationSec": 19,
+          "template": false
+        },
+        {
+          "url": "https://www.tiktok.com/@xxgirls02/video/7674786686232022292",
+          "author": "xxgirls02",
+          "followers": 5900000,
+          "plays": 5700000,
+          "postedAt": "2026-08-17T00:12:16.000Z",
+          "durationSec": 26,
+          "template": false
+        },
+        {
+          "url": "https://www.tiktok.com/@denisalmuu/video/7679000349671296278",
+          "author": "denisalmuu",
+          "followers": 92800,
+          "plays": 5600000,
+          "postedAt": "2026-08-28T08:43:24.000Z",
+          "durationSec": 17,
+          "template": false
+        },
+        {
+          "url": "https://www.tiktok.com/@lennu.aep/video/7682900619283221792",
+          "author": "lennu.aep",
+          "followers": 71500,
+          "plays": 4500000,
+          "postedAt": "2026-09-07T20:58:20.000Z",
+          "durationSec": 33,
+          "template": false
+        }
+      ]
+    },
+    "7474644416906136342": {
+      "soundName": "b2b",
+      "sampled": 10,
+      "distinctCreators": 10,
+      "creatorsLast7d": 0,
+      "creatorsLast14d": 0,
+      "highPerformers100k": 10,
+      "earliestSampledUse": "2025-03-05T18:43:02.000Z",
+      "newestSampledUse": "2025-05-01T09:47:21.000Z",
+      "examples": [
+        {
+          "url": "https://www.tiktok.com/@maccormac7/video/7479456133057449246",
+          "author": "maccormac7",
+          "followers": 80200,
+          "plays": 8500000,
+          "postedAt": "2025-03-08T15:10:23.000Z",
+          "durationSec": 0,
+          "template": false
+        },
+        {
+          "url": "https://www.tiktok.com/@nameluaa/video/7496366008773430534",
+          "author": "nameluaa",
+          "followers": 159900,
+          "plays": 8100000,
+          "postedAt": "2025-04-23T04:48:51.000Z",
+          "durationSec": 12,
+          "template": false
+        },
+        {
+          "url": "https://www.tiktok.com/@dramainq/video/7499411630917225750",
+          "author": "dramainq",
+          "followers": 125100,
+          "plays": 4100000,
+          "postedAt": "2025-05-01T09:47:21.000Z",
+          "durationSec": 0,
+          "template": false
+        },
+        {
+          "url": "https://www.tiktok.com/@champagneandpearls/video/7487585883395230984",
+          "author": "champagneandpearls",
+          "followers": 2040,
+          "plays": 3800000,
+          "postedAt": "2025-03-30T12:57:24.000Z",
+          "durationSec": 9,
+          "template": false
+        },
+        {
+          "url": "https://www.tiktok.com/@vacelqluomr/video/7482522218161851670",
+          "author": "vacelqluomr",
+          "followers": 185300,
+          "plays": 3400000,
+          "postedAt": "2025-03-16T21:27:48.000Z",
+          "durationSec": 9,
+          "template": false
+        },
+        {
+          "url": "https://www.tiktok.com/@skz.luv.club/video/7494452873422556423",
+          "author": "skz.luv.club",
+          "followers": 74200,
+          "plays": 2800000,
+          "postedAt": "2025-04-18T01:04:55.000Z",
+          "durationSec": 0,
+          "template": false
+        },
+        {
+          "url": "https://www.tiktok.com/@frozam/video/7478397825064176919",
+          "author": "frozam",
+          "followers": 889100,
+          "plays": 2100000,
+          "postedAt": "2025-03-05T18:43:02.000Z",
+          "durationSec": 9,
+          "template": false
+        },
+        {
+          "url": "https://www.tiktok.com/@fridavatnarlie/video/7482043722171993366",
+          "author": "fridavatnarlie",
+          "followers": 630400,
+          "plays": 1800000,
+          "postedAt": "2025-03-15T14:31:01.000Z",
+          "durationSec": 12,
+          "template": false
+        },
+        {
+          "url": "https://www.tiktok.com/@nayztv/video/7482040398639058198",
+          "author": "nayztv",
+          "followers": 34600,
+          "plays": 1600000,
+          "postedAt": "2025-03-15T14:18:06.000Z",
+          "durationSec": 8,
+          "template": false
+        },
+        {
+          "url": "https://www.tiktok.com/@cosclaire/video/7486158452608306475",
+          "author": "cosclaire",
+          "followers": 53400,
+          "plays": 1100000,
+          "postedAt": "2025-03-26T16:38:26.000Z",
+          "durationSec": 0,
+          "template": false
+        }
+      ]
+    }
+  }
+}

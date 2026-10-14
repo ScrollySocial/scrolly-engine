@@ -16,6 +16,11 @@ Spec and decisions: vault `products/content-engine/reel-engine-handoff.md`. Work
 | `transcribe-footage.mjs` | Footage → 16 kHz wav → local faster-whisper transcript in carousels/reels/_work/audio |
 | `doctor.mjs` | Setup check (ffmpeg/ffprobe, puppeteer 25.13.0, Edge, whisper, fonts, sfx, OneDrive folders) |
 | `review/` | Review page (laptop): `node build.mjs review` → `node lib/review/server.mjs <reel>` → http://localhost:4321; read back with `node lib/review/import.mjs <reel>` |
+| `pipeline.mjs` | Where every Reel stands (plan / edit / render / approve / post / done) from its review files; `--mark <reel>` after acting on her choices |
+| `render-ready.mjs` | Renders every Reel with Plan it + Edit it approved: build, check, render, fresh copy to OneDrive final, her cover, page refresh |
+| `post-reel.mjs` | Posting copy (cover as frame 0, CRF 20, ≤9 Mbps) → WordPress media (never-expiring link for Buffer); `--buffer <id>` records it |
+| `review/hub.mjs` | One page for every Reel: http://localhost:4320 (`--start` runs it in the background); opens each Reel's page on 4331+ |
+| `../rows.json` | Notion row → Reel folder ledger, so the overnight run never drafts a row twice |
 | `animatic.mjs` | Storyboard stills timed to voice + music + sound effects (review before the full build) |
 | `assets/` | Shared fonts, gsap, the 10 approved sound effects |
 

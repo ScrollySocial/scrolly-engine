@@ -1,0 +1,35 @@
+[
+  {
+    "snapshotId": "2026-W39",
+    "sequence": 1,
+    "collectedAt": "2026-09-25T19:28:56.053Z",
+    "source": "clockworks/tiktok-scraper",
+    "rawCount": 320,
+    "stageCounts": {
+      "raw": 320,
+      "uniqueVideos": 320,
+      "notAdOrSponsored": 320,
+      "duration": 198,
+      "durationCompliant": 119,
+      "durationFlagged": 79,
+      "recency": 198,
+      "performance": 52,
+      "soundClusters": 52,
+      "clustersWithMultipleCreators": 1
+    },
+    "rules": {
+      "maxDurationSec": 15,
+      "flagDurationSec": 30,
+      "maxAgeDays": 8,
+      "minPlays": 50000,
+      "minPlaysPerFollower": 3,
+      "bigPlays": 500000
+    },
+    "files": {
+      "raw": "snapshots/2026-W39/raw/",
+      "normalized": "snapshots/2026-W39/normalized.json",
+      "clusters": "snapshots/2026-W39/clusters.json",
+      "selection": "snapshots/2026-W39/final-selection.json"
+    }
+  }
+]

@@ -1,0 +1,28 @@
+{
+  "test": "test-02",
+  "status": "RUN 2026-09-25 (reduced design approved by Mercedes). Actual: 213 videos $1.34 + 5 sounds x 10 $0.25 = $1.59. Results in final-selection.json and query-metrics.json",
+  "learnedFromSnapshot1": {
+    "finalistsByPosition": "9 of 10 finalists were in the top 10 results of their query, so 10 per query instead of 20 halves cost with little loss",
+    "bestQuery": "transition: 4 finalists including all 3 Rising",
+    "zeroYieldQueries": ["trend", "pov", "new trend", "viral sound", "trending sound", "packing orders", "business owner", "realtor", "fitness coach"],
+    "zeroYieldReason": "generic trend terms return teen skits and dance; niche business terms return long talking videos (realtor, fitness coach and packing orders had 2, 2 and 0 videos under 15s out of 20)"
+  },
+  "taxonomy": {
+    "formatMechanics": ["outfit transition", "glow up transition", "before and after", "transformation", "reveal", "expectation vs reality", "things that just make sense", "satisfying", "photo trend", "text trend", "template trend", "watch until the end", "countdown", "restock", "behind the scenes", "day in the life"],
+    "formatByBusiness": ["small business transition", "salon transformation", "nail transformation", "cleaning before and after", "boutique outfit transition", "bakery reveal", "packaging reveal", "product launch", "restock day small business", "small business behind the scenes", "digital product launch", "small business pov", "contractor before and after", "esthetician before and after"],
+    "businessNiches": ["ecommerce", "handmade business", "boutique", "esthetician", "cleaning business", "contractor", "restaurant", "bakery", "coach", "local business", "freelancer", "consultant", "photographer", "nail tech"],
+    "keptFromSnapshot1": ["transition", "capcut template", "smallbusinesscheck", "small business", "digital products", "product reveal", "hair stylist"],
+    "dropped": ["trend", "pov", "new trend", "viral sound", "trending sound", "packing orders", "business owner", "realtor", "fitness coach"]
+  },
+  "fullDesign": { "queries": 51, "videosPerQuery": 10, "rawVideos": 510, "discoveryUsd": 3.16, "soundsVerified": 30, "videosPerSound": 8, "verificationUsd": 1.2, "totalUsd": 4.36, "fitsRemainingFreeCredit": false },
+  "reducedDesign": {
+    "queries": 22, "videosPerQuery": 10, "rawVideos": 220, "discoveryUsd": 1.37,
+    "soundsVerified": 12, "videosPerSound": 6, "verificationUsd": 0.36,
+    "totalUsd": 1.73, "bufferLeftUsd": 0.24,
+    "queriesChosen": ["outfit transition", "glow up transition", "before and after", "transformation", "reveal", "expectation vs reality", "satisfying", "photo trend", "text trend", "template trend",
+      "small business transition", "salon transformation", "nail transformation", "cleaning before and after", "boutique outfit transition", "bakery reveal", "packaging reveal", "product launch", "restock day small business", "small business behind the scenes", "digital product launch", "contractor before and after"],
+    "plusFreeReuse": "Snapshot #1's 52 survivors are re-scored with the new Trending/Rising/Breakout rules and visually checked, and combined with Test #2 to estimate what a full week would yield",
+    "limitation": "Tests the untested families (format-first, format x business) but not the 14 plain business niches; uses the whole remaining free credit until the cycle resets 2026-10-24"
+  },
+  "remainingFreeCreditUsd": 1.975
+}

@@ -1,0 +1,678 @@
+{
+  "snapshot": "2026-W39",
+  "released": false,
+  "note": "TEST selection for review. Not published, and NOT counted as a weekly release for the 4-week repeat rule.",
+  "count": 10,
+  "records": [
+    {
+      "trendName": "Upside-down flip transition",
+      "status": "Rising",
+      "statusBasis": "3 different creators posted with this sound in the last 14 days among its top 10 videos; earliest sampled use 2026-08-27",
+      "example": {
+        "url": "https://www.tiktok.com/@kimberlykimpena/video/7688525476393930014",
+        "durationSec": 11.2,
+        "durationCompliant": true,
+        "templateStickerOnExample": true
+      },
+      "audio": {
+        "name": "original sound - hellemdebas",
+        "id": "7678338544116435730",
+        "url": "https://www.tiktok.com/music/original-sound-7678338544116435730",
+        "author": "hellem",
+        "isOriginalSound": true
+      },
+      "sourceFacts": {
+        "source": "clockworks/tiktok-scraper (search, past week, most liked) + clockworks/tiktok-sound-scraper",
+        "postedAt": "2026-09-23T00:45:48.000Z",
+        "ageDaysAtCollection": 2.8,
+        "plays": 3522855,
+        "likes": 527483,
+        "comments": 1147,
+        "shares": 7848,
+        "saves": 32845,
+        "creator": "kimberlykimpena",
+        "creatorFollowers": 4100000,
+        "playsPerFollower": 0.9,
+        "foundByQueries": [
+          "transition"
+        ],
+        "captionLanguage": "en",
+        "postedFromCountry": "US",
+        "hashtags": [
+          "upsidedown",
+          "makeuptransition",
+          "makeup",
+          "curlyhair",
+          "kimberlykim"
+        ],
+        "soundCheck": {
+          "videosSampled": 10,
+          "distinctCreators": 10,
+          "creatorsLast7d": 2,
+          "creatorsLast14d": 3,
+          "earliestSampledUse": "2026-08-27T00:00:00.000Z",
+          "newestSampledUse": "2026-09-23T00:45:48.000Z"
+        }
+      },
+      "ourAssessment": {
+        "assessedBy": "Claude (AI judgment, 2026-09-25). Based on caption, hashtags, sound metadata and numbers. The videos were not watched, so the format is inferred.",
+        "whySelected": "A recent sound (late August) with several creators in the last 14 days. The example is a makeup transition with a TikTok template attached. The flip mechanic transfers to any reveal.",
+        "filmThis": "0-5s: the \"before\" shot. 5-6s: flip the phone (or the product) upside down on the beat. 6-11s: the finished result, the right way up.",
+        "productBusiness": "Flip from the product in its box to the product styled or in use. Food: raw ingredients → the plated dish.",
+        "serviceBusiness": "Makeup artists, nail techs, barbers, photographers: bare → finished look, or raw photo → edited photo.",
+        "onScreenText": "\"Wait for the flip\"",
+        "cautions": [
+          "The example creator has a large following (4.1M), so plays per follower is low. The sound spread, not this single video, is the evidence."
+        ]
+      },
+      "fingerprint": {
+        "primary": "tiktok:sound:7678338544116435730",
+        "soundId": "7678338544116435730",
+        "formatTag": "transition:upside-down-flip",
+        "soundOriginator": "hellemdebas"
+      }
+    },
+    {
+      "trendName": "Glow-up transition (before → after on the beat)",
+      "status": "Rising",
+      "statusBasis": "5 different creators posted with this sound in the last 14 days among its top 10 videos; earliest sampled use 2026-05-20",
+      "example": {
+        "url": "https://www.tiktok.com/@hilariouslisa/video/7688823110371446046",
+        "durationSec": 12.3,
+        "durationCompliant": true,
+        "templateStickerOnExample": true
+      },
+      "audio": {
+        "name": "original sound - kicoviccnina",
+        "id": "7641944089235032839",
+        "url": "https://www.tiktok.com/music/original-sound-7641944089235032839",
+        "author": "𝑵𝑲",
+        "isOriginalSound": true
+      },
+      "sourceFacts": {
+        "source": "clockworks/tiktok-scraper (search, past week, most liked) + clockworks/tiktok-sound-scraper",
+        "postedAt": "2026-09-23T20:00:44.000Z",
+        "ageDaysAtCollection": 2,
+        "plays": 830990,
+        "likes": 56450,
+        "comments": 655,
+        "shares": 863,
+        "saves": 1288,
+        "creator": "hilariouslisa",
+        "creatorFollowers": 3793,
+        "playsPerFollower": 219.1,
+        "foundByQueries": [
+          "transition"
+        ],
+        "captionLanguage": "en",
+        "postedFromCountry": "US",
+        "hashtags": [
+          "couple",
+          "makeup",
+          "transition",
+          "style",
+          "viral"
+        ],
+        "soundCheck": {
+          "videosSampled": 10,
+          "distinctCreators": 9,
+          "creatorsLast7d": 3,
+          "creatorsLast14d": 5,
+          "earliestSampledUse": "2026-05-20T12:06:00.000Z",
+          "newestSampledUse": "2026-09-23T20:00:49.000Z"
+        }
+      },
+      "ourAssessment": {
+        "assessedBy": "Claude (AI judgment, 2026-09-25). Based on caption, hashtags, sound metadata and numbers. The videos were not watched, so the format is inferred.",
+        "whySelected": "The sound shows trend-level spread (several different creators this fortnight) and the example has a TikTok template attached. Any business with a visible before/after can copy it.",
+        "filmThis": "0-5s: the \"before\" shot, plain, filmed straight on. 5-6s: cover the lens or snap on the beat. 6-12s: the \"after\" in the same framing and pose, holding still for the reveal.",
+        "productBusiness": "Plain packaging or raw materials → the finished, styled product in the same spot. Digital sellers: blank template → the finished design on screen.",
+        "serviceBusiness": "Stylists, cleaners, organisers, landscapers, designers: the space or client before → after, same angle.",
+        "onScreenText": "\"Same spot. 2 hours later.\"",
+        "cautions": [
+          "Tap \"Try TikTok template\" on the example if available and replace the clips; timing is kept."
+        ]
+      },
+      "fingerprint": {
+        "primary": "tiktok:sound:7641944089235032839",
+        "soundId": "7641944089235032839",
+        "formatTag": "transition:glow-up-before-after",
+        "soundOriginator": "kicoviccnina"
+      }
+    },
+    {
+      "trendName": "Two-person outfit transition",
+      "status": "Rising",
+      "statusBasis": "5 different creators posted with this sound in the last 14 days among its top 10 videos; earliest sampled use 2026-08-16",
+      "example": {
+        "url": "https://www.tiktok.com/@saucey_austin/video/7688408642772569358",
+        "durationSec": 8.8,
+        "durationCompliant": true,
+        "templateStickerOnExample": false
+      },
+      "audio": {
+        "name": "original sound - dhatgirlbecca",
+        "id": "7674416465486875422",
+        "url": "https://www.tiktok.com/music/original-sound-7674416465486875422",
+        "author": "Dhatgirlbecca",
+        "isOriginalSound": true
+      },
+      "sourceFacts": {
+        "source": "clockworks/tiktok-scraper (search, past week, most liked) + clockworks/tiktok-sound-scraper",
+        "postedAt": "2026-09-22T17:12:48.000Z",
+        "ageDaysAtCollection": 3.1,
+        "plays": 531449,
+        "likes": 69986,
+        "comments": 166,
+        "shares": 659,
+        "saves": 2077,
+        "creator": "saucey_austin",
+        "creatorFollowers": 6900000,
+        "playsPerFollower": 0.1,
+        "foundByQueries": [
+          "transition"
+        ],
+        "captionLanguage": "en",
+        "postedFromCountry": "US",
+        "hashtags": [
+          "sauceyaustin",
+          "destyneenathasia",
+          "outfittransition",
+          "grwm",
+          "fashiontiktok"
+        ],
+        "soundCheck": {
+          "videosSampled": 10,
+          "distinctCreators": 10,
+          "creatorsLast7d": 3,
+          "creatorsLast14d": 5,
+          "earliestSampledUse": "2026-08-16T00:15:50.000Z",
+          "newestSampledUse": "2026-09-24T13:45:19.000Z"
+        }
+      },
+      "ourAssessment": {
+        "assessedBy": "Claude (AI judgment, 2026-09-25). Based on caption, hashtags, sound metadata and numbers. The videos were not watched, so the format is inferred.",
+        "whySelected": "A new sound (first seen mid-August) with several creators using it in the last 14 days, so the data supports \"rising\". It needs two people and a quick change, nothing else.",
+        "filmThis": "0-4s: two people side by side in plain or work clothes. 4-5s: jump or clap on the beat. 5-9s: both in the \"styled\" look. Keep the camera locked in place.",
+        "productBusiness": "Boutiques and apparel: before outfit → your pieces. Accessory or beauty sellers: bare → wearing or using the product.",
+        "serviceBusiness": "Two team members: street clothes → uniform (\"clocking in\"). Salons: before → after appointment looks.",
+        "onScreenText": "\"Us before vs after opening the shop\"",
+        "cautions": [
+          "Needs a second person."
+        ]
+      },
+      "fingerprint": {
+        "primary": "tiktok:sound:7674416465486875422",
+        "soundId": "7674416465486875422",
+        "formatTag": "transition:duo-outfit-swap",
+        "soundOriginator": "dhatgirlbecca"
+      }
+    },
+    {
+      "trendName": "\"Tomorrow.\" limited-drop teaser",
+      "status": "Breakout post",
+      "statusBasis": "brand-new sound: only this video uses it so far. Strong performance, not yet a trend",
+      "example": {
+        "url": "https://www.tiktok.com/@loveabyrs/video/7689204580566977799",
+        "durationSec": 10,
+        "durationCompliant": true,
+        "templateStickerOnExample": true
+      },
+      "audio": {
+        "name": "original sound - loveabyrs",
+        "id": "7689204613626743559",
+        "url": "https://www.tiktok.com/music/original-sound-7689204613626743559",
+        "author": "loveabyrs",
+        "isOriginalSound": true
+      },
+      "sourceFacts": {
+        "source": "clockworks/tiktok-scraper (search, past week, most liked) + clockworks/tiktok-sound-scraper",
+        "postedAt": "2026-09-24T20:41:00.000Z",
+        "ageDaysAtCollection": 0.9,
+        "plays": 495484,
+        "likes": 14111,
+        "comments": 35,
+        "shares": 16308,
+        "saves": 4003,
+        "creator": "loveabyrs",
+        "creatorFollowers": 1938,
+        "playsPerFollower": 255.7,
+        "foundByQueries": [
+          "small business"
+        ],
+        "captionLanguage": "en",
+        "postedFromCountry": "KW",
+        "hashtags": [],
+        "soundCheck": {
+          "videosSampled": 1,
+          "distinctCreators": 1,
+          "creatorsLast7d": 1,
+          "creatorsLast14d": 1,
+          "earliestSampledUse": "2026-09-24T20:41:00.000Z",
+          "newestSampledUse": "2026-09-24T20:41:00.000Z"
+        }
+      },
+      "ourAssessment": {
+        "assessedBy": "Claude (AI judgment, 2026-09-25). Based on caption, hashtags, sound metadata and numbers. The videos were not watched, so the format is inferred.",
+        "whySelected": "A breakout post: 495K plays from a 1,938-follower shop, and 16,308 shares (unusually high for a product post). It is a launch format any seller can reuse, and a template is attached.",
+        "filmThis": "0-3s: black screen or close-up with \"Tomorrow.\" 3-8s: quick glimpses of the product, never fully shown. 8-10s: drop date and time and \"limited\".",
+        "productBusiness": "New collections, restocks, limited batches, digital product launches.",
+        "serviceBusiness": "Opening a limited number of booking slots, a new service menu, or a waitlist opening.",
+        "onScreenText": "\"Tomorrow. Limited. Once it's gone, it's gone.\"",
+        "cautions": [
+          "Only say \"limited\" if it is true.",
+          "It is a single breakout post, not a proven trend."
+        ]
+      },
+      "fingerprint": {
+        "primary": "tiktok:sound:7689204613626743559",
+        "soundId": "7689204613626743559",
+        "formatTag": "announcement:countdown-drop-teaser",
+        "soundOriginator": "loveabyrs"
+      }
+    },
+    {
+      "trendName": "\"Hotel Lobby\" dynamic-duo template",
+      "status": "Breakout post (established sound)",
+      "statusBasis": "sound in use since at least 2022-09-06; 0 of its top 10 videos are from the last 14 days, so the evidence is this week's video, not sound-wide growth",
+      "example": {
+        "url": "https://www.tiktok.com/@capcut.templates5031/video/7687341084627832094",
+        "durationSec": 10.1,
+        "durationCompliant": true,
+        "templateStickerOnExample": false
+      },
+      "audio": {
+        "name": "HOTEL LOBBY (Unc & Phew)",
+        "id": "7099522931209816066",
+        "url": "https://www.tiktok.com/music/original-sound-7099522931209816066",
+        "author": "Quavo & Takeoff",
+        "isOriginalSound": false
+      },
+      "sourceFacts": {
+        "source": "clockworks/tiktok-scraper (search, past week, most liked) + clockworks/tiktok-sound-scraper",
+        "postedAt": "2026-09-19T20:09:48.000Z",
+        "ageDaysAtCollection": 6,
+        "plays": 1909416,
+        "likes": 90263,
+        "comments": 427,
+        "shares": 5885,
+        "saves": 6773,
+        "creator": "capcut.templates5031",
+        "creatorFollowers": 1776,
+        "playsPerFollower": 1075.1,
+        "foundByQueries": [
+          "capcut template"
+        ],
+        "captionLanguage": "en",
+        "postedFromCountry": "US",
+        "hashtags": [
+          "capcut",
+          "capcutpioneer",
+          "pioneertemplate",
+          "hotellobby",
+          "migos"
+        ],
+        "soundCheck": {
+          "videosSampled": 10,
+          "distinctCreators": 10,
+          "creatorsLast7d": 0,
+          "creatorsLast14d": 0,
+          "earliestSampledUse": "2022-09-06T17:11:54.000Z",
+          "newestSampledUse": "2025-02-08T18:31:44.000Z"
+        }
+      },
+      "ourAssessment": {
+        "assessedBy": "Claude (AI judgment, 2026-09-25). Based on caption, hashtags, sound metadata and numbers. The videos were not watched, so the format is inferred.",
+        "whySelected": "A 1,776-follower template account got 1.9M plays this week with a ready-made CapCut template. The trend itself dates to 2022, so this is a fresh hit on an old format, not a new trend.",
+        "filmThis": "Use the CapCut template linked from the example: two people, walk-in or pose clips, and the template handles the cuts (about 10s).",
+        "productBusiness": "Owner + product as \"the duo\", or two best-sellers \"walking in\" as a pair.",
+        "serviceBusiness": "Two team members as the duo (\"your stylist and colourist walking into Monday\").",
+        "onScreenText": "\"The dynamic duo behind [business]\"",
+        "cautions": [
+          "Commercial track (Quavo & Takeoff): likely unavailable on business accounts.",
+          "Old trend: the sound check found no top videos newer than 2025."
+        ]
+      },
+      "fingerprint": {
+        "primary": "tiktok:sound:7099522931209816066",
+        "soundId": "7099522931209816066",
+        "formatTag": "template:duo-walk-in",
+        "soundOriginator": "Quavo & Takeoff"
+      }
+    },
+    {
+      "trendName": "5-second hair (or anything) transformation",
+      "status": "Breakout post (established sound)",
+      "statusBasis": "sound in use since at least 2024-06-13; 2 of its top 10 videos are from the last 14 days, so the evidence is this week's video, not sound-wide growth",
+      "example": {
+        "url": "https://www.tiktok.com/@emmazimmer662/video/7689155868532804865",
+        "durationSec": 5.2,
+        "durationCompliant": true,
+        "templateStickerOnExample": false
+      },
+      "audio": {
+        "name": "original sound - monicaortizzzz",
+        "id": "7379783449715247914",
+        "url": "https://www.tiktok.com/music/original-sound-7379783449715247914",
+        "author": "Monica Velarde",
+        "isOriginalSound": true
+      },
+      "sourceFacts": {
+        "source": "clockworks/tiktok-scraper (search, past week, most liked) + clockworks/tiktok-sound-scraper",
+        "postedAt": "2026-09-24T17:32:07.000Z",
+        "ageDaysAtCollection": 1.1,
+        "plays": 1134583,
+        "likes": 57349,
+        "comments": 3093,
+        "shares": 26129,
+        "saves": 1739,
+        "creator": "emmazimmer662",
+        "creatorFollowers": 279,
+        "playsPerFollower": 4066.6,
+        "foundByQueries": [
+          "hair stylist"
+        ],
+        "captionLanguage": "en",
+        "postedFromCountry": "CA",
+        "hashtags": [
+          "hair",
+          "hairtransformation",
+          "haircut",
+          "hairtok"
+        ],
+        "soundCheck": {
+          "videosSampled": 10,
+          "distinctCreators": 10,
+          "creatorsLast7d": 2,
+          "creatorsLast14d": 2,
+          "earliestSampledUse": "2024-06-13T00:48:53.000Z",
+          "newestSampledUse": "2026-09-24T17:32:07.000Z"
+        }
+      },
+      "ourAssessment": {
+        "assessedBy": "Claude (AI judgment, 2026-09-25). Based on caption, hashtags, sound metadata and numbers. The videos were not watched, so the format is inferred.",
+        "whySelected": "Very short (5s) and unusually widely shared (26,129 shares on 1.1M plays from a 279-follower account). The sound is an older one being picked up again this week.",
+        "filmThis": "0-2s: \"before\", quick and unposed. 2-5s: the reveal, one clean shot, no talking.",
+        "productBusiness": "Anything with a transformation: skincare, cleaning products, tools, packaging makeovers.",
+        "serviceBusiness": "Hair stylists first; also groomers, detailers and cleaners. Show the client result in 5 seconds.",
+        "onScreenText": "\"New [hair / car / kitchen] for a new season\"",
+        "cautions": [
+          "Get client permission before posting their face."
+        ]
+      },
+      "fingerprint": {
+        "primary": "tiktok:sound:7379783449715247914",
+        "soundId": "7379783449715247914",
+        "formatTag": "transformation:5s-quick-reveal",
+        "soundOriginator": "monicaortizzzz"
+      }
+    },
+    {
+      "trendName": "\"The secret's out\" launch reveal",
+      "status": "Breakout post (established sound)",
+      "statusBasis": "sound in use since at least 2023-12-23; 0 of its top 10 videos are from the last 14 days, so the evidence is this week's video, not sound-wide growth",
+      "example": {
+        "url": "https://www.tiktok.com/@themayfairgroup/video/7687001792353291550",
+        "durationSec": 9.9,
+        "durationCompliant": true,
+        "templateStickerOnExample": false
+      },
+      "audio": {
+        "name": "original sound - ajwavy",
+        "id": "7315852279827172128",
+        "url": "https://www.tiktok.com/music/original-sound-7315852279827172128",
+        "author": "AjWavy",
+        "isOriginalSound": true
+      },
+      "sourceFacts": {
+        "source": "clockworks/tiktok-scraper (search, past week, most liked) + clockworks/tiktok-sound-scraper",
+        "postedAt": "2026-09-20T16:00:00.000Z",
+        "ageDaysAtCollection": 5.1,
+        "plays": 841076,
+        "likes": 69206,
+        "comments": 550,
+        "shares": 898,
+        "saves": 884,
+        "creator": "themayfairgroup",
+        "creatorFollowers": 35600,
+        "playsPerFollower": 23.6,
+        "foundByQueries": [
+          "product reveal"
+        ],
+        "captionLanguage": "en",
+        "postedFromCountry": "US",
+        "hashtags": [],
+        "soundCheck": {
+          "videosSampled": 10,
+          "distinctCreators": 10,
+          "creatorsLast7d": 0,
+          "creatorsLast14d": 0,
+          "earliestSampledUse": "2023-12-23T18:03:17.000Z",
+          "newestSampledUse": "2026-08-16T23:59:32.000Z"
+        }
+      },
+      "ourAssessment": {
+        "assessedBy": "Claude (AI judgment, 2026-09-25). Based on caption, hashtags, sound metadata and numbers. The videos were not watched, so the format is inferred.",
+        "whySelected": "A breakout post: 841K plays at about 24x the brand's follower count, on a long-established sound. It is a simple reveal format for launches or collabs.",
+        "filmThis": "0-3s: finger to lips or a covered product, with text \"the secret's out\". 3-8s: the reveal. 8-10s: date plus \"early access link in bio\".",
+        "productBusiness": "New product, new colourway, or a collaboration with another small brand.",
+        "serviceBusiness": "A new service, a new location, or a new team member.",
+        "onScreenText": "\"The secret's out 👀 [thing] drops [date]\"",
+        "cautions": [
+          "The example leans on an influencer collab; members do not need one.",
+          "Breakout post on an established sound, not sound-wide growth."
+        ]
+      },
+      "fingerprint": {
+        "primary": "tiktok:sound:7315852279827172128",
+        "soundId": "7315852279827172128",
+        "formatTag": "announcement:secret-reveal",
+        "soundOriginator": "ajwavy"
+      }
+    },
+    {
+      "trendName": "Short clip + long \"why I started\" story caption",
+      "status": "Breakout post (established sound)",
+      "statusBasis": "sound in use since at least 2025-07-04; 1 of its top 10 videos are from the last 14 days, so the evidence is this week's video, not sound-wide growth",
+      "example": {
+        "url": "https://www.tiktok.com/@itsniamhminton/video/7687139461901208865",
+        "durationSec": 6.3,
+        "durationCompliant": true,
+        "templateStickerOnExample": false
+      },
+      "audio": {
+        "name": "original sound - nj.audios",
+        "id": "7523279356548139798",
+        "url": "https://www.tiktok.com/music/original-sound-7523279356548139798",
+        "author": "nj.audios",
+        "isOriginalSound": true
+      },
+      "sourceFacts": {
+        "source": "clockworks/tiktok-scraper (search, past week, most liked) + clockworks/tiktok-sound-scraper",
+        "postedAt": "2026-09-19T07:07:17.000Z",
+        "ageDaysAtCollection": 6.5,
+        "plays": 599393,
+        "likes": 19569,
+        "comments": 2551,
+        "shares": 1323,
+        "saves": 8346,
+        "creator": "itsniamhminton",
+        "creatorFollowers": 578,
+        "playsPerFollower": 1037,
+        "foundByQueries": [
+          "digital products"
+        ],
+        "captionLanguage": "en",
+        "postedFromCountry": "GB",
+        "hashtags": [
+          "sidehustle",
+          "workingmum",
+          "digitalproducts",
+          "christmas"
+        ],
+        "soundCheck": {
+          "videosSampled": 10,
+          "distinctCreators": 10,
+          "creatorsLast7d": 0,
+          "creatorsLast14d": 1,
+          "earliestSampledUse": "2025-07-04T17:26:15.000Z",
+          "newestSampledUse": "2026-09-15T14:50:30.000Z"
+        }
+      },
+      "ourAssessment": {
+        "assessedBy": "Claude (AI judgment, 2026-09-25). Based on caption, hashtags, sound metadata and numbers. The videos were not watched, so the format is inferred.",
+        "whySelected": "A 6-second clip with a story told in text got 599K plays and 8,346 saves from a 578-follower account. It speaks directly to digital-product sellers.",
+        "filmThis": "0-6s: one calm shot (you working, a coffee, your screen). The story goes in on-screen text and the caption, not spoken.",
+        "productBusiness": "Digital products especially: \"a few years ago I was [problem], so I started [product]\".",
+        "serviceBusiness": "Consultants and coaches: \"a few years ago I was stuck in [situation], so I started helping people [outcome]\".",
+        "onScreenText": "\"A few years ago, I was [relatable struggle]…\"",
+        "cautions": [
+          "The sound is not new, so the evidence is this video's performance, not a sound trend."
+        ]
+      },
+      "fingerprint": {
+        "primary": "tiktok:sound:7523279356548139798",
+        "soundId": "7523279356548139798",
+        "formatTag": "story:text-overlay-origin",
+        "soundOriginator": "nj.audios"
+      }
+    },
+    {
+      "trendName": "Halloween outfit transition (seasonal)",
+      "status": "Breakout post (established sound)",
+      "statusBasis": "sound in use since at least 2024-07-23; 0 of its top 10 videos are from the last 14 days, so the evidence is this week's video, not sound-wide growth",
+      "example": {
+        "url": "https://www.tiktok.com/@miawilsonn4/video/7688819941226646814",
+        "durationSec": 6,
+        "durationCompliant": true,
+        "templateStickerOnExample": true
+      },
+      "audio": {
+        "name": "original sound - screampremium",
+        "id": "7394898156456708895",
+        "url": "https://www.tiktok.com/music/original-sound-7394898156456708895",
+        "author": "Sean",
+        "isOriginalSound": true
+      },
+      "sourceFacts": {
+        "source": "clockworks/tiktok-scraper (search, past week, most liked) + clockworks/tiktok-sound-scraper",
+        "postedAt": "2026-09-23T19:48:30.000Z",
+        "ageDaysAtCollection": 2,
+        "plays": 558645,
+        "likes": 76141,
+        "comments": 413,
+        "shares": 3052,
+        "saves": 31946,
+        "creator": "miawilsonn4",
+        "creatorFollowers": 149300,
+        "playsPerFollower": 3.7,
+        "foundByQueries": [
+          "transition"
+        ],
+        "captionLanguage": "en",
+        "postedFromCountry": "US",
+        "hashtags": [
+          "halloween",
+          "transition",
+          "halloweentransition",
+          "transitionidea",
+          "halloween2026"
+        ],
+        "soundCheck": {
+          "videosSampled": 10,
+          "distinctCreators": 10,
+          "creatorsLast7d": 0,
+          "creatorsLast14d": 0,
+          "earliestSampledUse": "2024-07-23T18:21:55.000Z",
+          "newestSampledUse": "2026-06-03T00:13:31.000Z"
+        }
+      },
+      "ourAssessment": {
+        "assessedBy": "Claude (AI judgment, 2026-09-25). Based on caption, hashtags, sound metadata and numbers. The videos were not watched, so the format is inferred.",
+        "whySelected": "Seasonally timely: posted this week as part of a series. 559K plays and 31,946 saves (people saving it to copy), and a TikTok template is attached.",
+        "filmThis": "0-3s: everyday look. 3s: snap or turn on the beat. 3-6s: Halloween version.",
+        "productBusiness": "Halloween stock, costumes and accessories; bakeries (plain cookie → Halloween cookie).",
+        "serviceBusiness": "Salons and nail techs (Halloween looks), photographers, event and party services.",
+        "onScreenText": "\"Halloween transition idea, [your shop] edition\"",
+        "cautions": [
+          "Seasonal: useful until October 31 only.",
+          "Established sound; the evidence is this week's saves and plays."
+        ]
+      },
+      "fingerprint": {
+        "primary": "tiktok:sound:7394898156456708895",
+        "soundId": "7394898156456708895",
+        "formatTag": "transition:seasonal-halloween-outfit",
+        "soundOriginator": "screampremium"
+      }
+    },
+    {
+      "trendName": "\"Nothing against influencers, but…\" owner POV",
+      "status": "Breakout post (established sound)",
+      "statusBasis": "sound in use since at least 2025-10-04; 0 of its top 10 videos are from the last 14 days, so the evidence is this week's video, not sound-wide growth",
+      "example": {
+        "url": "https://www.tiktok.com/@revys.ph/video/7687135085413305618",
+        "durationSec": 9.4,
+        "durationCompliant": true,
+        "templateStickerOnExample": false
+      },
+      "audio": {
+        "name": "What’s This? What’s That?",
+        "id": "7363630457409243152",
+        "url": "https://www.tiktok.com/music/original-sound-7363630457409243152",
+        "author": "LOTTY FRIENDS",
+        "isOriginalSound": false
+      },
+      "sourceFacts": {
+        "source": "clockworks/tiktok-scraper (search, past week, most liked) + clockworks/tiktok-sound-scraper",
+        "postedAt": "2026-09-19T06:50:23.000Z",
+        "ageDaysAtCollection": 6.5,
+        "plays": 442904,
+        "likes": 49948,
+        "comments": 219,
+        "shares": 757,
+        "saves": 691,
+        "creator": "revys.ph",
+        "creatorFollowers": 2045,
+        "playsPerFollower": 216.6,
+        "foundByQueries": [
+          "smallbusinesscheck"
+        ],
+        "captionLanguage": "en",
+        "postedFromCountry": "PH",
+        "hashtags": [
+          "smallbusiness",
+          "smallbusinessowner",
+          "cookiebusiness",
+          "homebakingbusiness",
+          "supportmybusiness"
+        ],
+        "soundCheck": {
+          "videosSampled": 10,
+          "distinctCreators": 10,
+          "creatorsLast7d": 0,
+          "creatorsLast14d": 0,
+          "earliestSampledUse": "2025-10-04T04:11:41.000Z",
+          "newestSampledUse": "2026-05-02T09:06:46.000Z"
+        }
+      },
+      "ourAssessment": {
+        "assessedBy": "Claude (AI judgment, 2026-09-25). Based on caption, hashtags, sound metadata and numbers. The videos were not watched, so the format is inferred.",
+        "whySelected": "A 2,045-follower cookie business got 443K plays with an honest owner-POV text over a playful track. The relatable struggle is the hook, and anyone running a small business can use it.",
+        "filmThis": "0-9s: you doing an everyday task in the business (packing, baking, answering messages) with the POV text on screen. No talking.",
+        "productBusiness": "\"Nothing against [expensive option], but I'd have to sell [X] of these just to pay for it, so hi, I'm the face of the brand now.\"",
+        "serviceBusiness": "\"Nothing against agencies, but that's [X] clients just to pay them, so I'm doing my own marketing.\"",
+        "onScreenText": "\"Guess I'm the face of my brand now 😂\"",
+        "cautions": [
+          "Commercial track: may not be available on business accounts. Use a similar playful sound from the Commercial Music Library."
+        ]
+      },
+      "fingerprint": {
+        "primary": "tiktok:sound:7363630457409243152",
+        "soundId": "7363630457409243152",
+        "formatTag": "pov:owner-text-over-track",
+        "soundOriginator": "LOTTY FRIENDS"
+      }
+    }
+  ]
+}

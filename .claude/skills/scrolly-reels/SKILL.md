@@ -87,6 +87,13 @@ non-expiring URL (no Notion file links); how the queue picks up the video file i
 same session, so the next Reel starts from it. A component joins `lib/` only after it ships in an approved Reel
 (check the HyperFrames registry first).
 
+## Overnight run (scheduled)
+The scheduled task **reels-overnight** (12:30am daily) runs this skill unattended by `overnight.md` (this folder):
+posts what she approved on the page, applies her choices, renders approved Reels, drafts every new Studio row, and
+leaves everything on the review hub (http://localhost:4320, `lib/review/hub.mjs`). Where each Reel stands:
+`node lib/pipeline.mjs`. Rows already drafted are in `automation/reel-hf/rows.json`. In a chat session, the same
+scripts work by hand: `lib/render-ready.mjs`, `lib/post-reel.mjs`.
+
 ## Later (not built)
 Trial Reel variants (on hold until her account is eligible: hook / opening / pace, one change each, child rows via
 Parent Content), Film / Chill / Demo / Quick Cut templates, borrowed audio clean-up and QA scripts, customer package

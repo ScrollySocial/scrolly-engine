@@ -1,0 +1,105 @@
+{
+  "pass": "test-03-correction (no Apify spend). Re-review of already-paid data under the corrected 'Scrolly Reel Opportunity' definition, 2026-09-25",
+  "definition": "A currently circulating, copyable short-form mechanic (visual action and/or text structure and/or audio) that ordinary creators are recreating now, which a business owner can film in minutes on a phone (<=15s, ideally 5-10s, 1 person, 1-3 shots, no dancing). The business adaptation comes last.",
+  "evidenceNote": "creatorsInOurData counts distinct creators using the exact sound ID across all 671 already-collected videos. soundCheck figures are from the clockworks sound-scraper runs (top-popular sample, not newest). Nothing here is an Instagram signal: all of it is TikTok data.",
+  "examples": [
+    {
+      "id": "A-text-A", "name": "\"-A\" text from Pretty Little Liars", "label": "Circulating (3 creators + trend-account callout)",
+      "sourceFacts": { "soundId": "7296300151751379744", "soundName": "pll purposes only ty", "creatorsInOurData": 3, "examples": [
+        { "url": "https://www.tiktok.com/@jonyystarr/video/7687787896375414030", "durationSec": 5.2, "plays": 479583, "postedAt": "2026-09-20" },
+        { "url": "https://www.tiktok.com/@trendbible/video/7687271378063559968", "durationSec": 6.8, "plays": 423523, "postedAt": "2026-09-19", "note": "trend-spotting account; on-screen text reads TRENDING SOUND plus instructions" } ] },
+      "visualCheck": "full (embed playback)",
+      "visualMechanic": "Hold your phone like a text just arrived, read it, look up at the camera and glance around. One shot, 5-7s.",
+      "textMechanic": "One snarky, knowing message about what you are doing right now, signed \"-A\".",
+      "audioMechanic": "Essential: the PLL sound is what tells viewers which trend this is. Audio risk MEDIUM (TV-show audio may not be available to business accounts).",
+      "difficulty": "Easy", "filmingTime": "2 minutes",
+      "adaptation": "Café: \"Third oat latte before 10am? Your secret's safe with me… for now. -A\". Salon: \"Told her 'just a trim'? We both know it's a full chop. -A\""
+    },
+    {
+      "id": "B-hand-to-lens", "name": "Hands-to-lens reveal", "label": "Trending",
+      "sourceFacts": { "soundId": "7677752340367133461", "soundName": "som original (xvsuellen)", "soundCheck": "7 distinct creators in the last 14 days; 10 of 10 sampled uses at 100K+ plays; first sampled use 2026-08-25", "sameMechanicOtherSounds": ["7660849025491028743 (kates_makeu, 2 creators)", "7678338544116435730 (hellemdebas, 3 creators in 14d)"],
+        "examples": [
+        { "url": "https://www.tiktok.com/@jasminelovellll/video/7686206394730646806", "durationSec": 9, "plays": 1200000, "note": "hair straightening version" },
+        { "url": "https://www.tiktok.com/@gracemayofficial/video/7689302488624762142", "durationSec": 8.8, "plays": 97126, "note": "makeup version, different sound" },
+        { "url": "https://www.tiktok.com/@maisyevil/video/7687547977061190934", "durationSec": 9.1, "plays": 757342 } ] },
+      "visualCheck": "full (3 videos watched)",
+      "visualMechanic": "Close selfie shot in the 'before' state, mouthing along to the audio. Push both hands toward the lens so they fill the frame, then pull away to reveal the 'after' in the same framing.",
+      "textMechanic": "Optional one-liner: \"[Did X] for the first time in [Y] years…\"",
+      "audioMechanic": "Helpful (the beat marks the reveal); substitutable. Audio risk MEDIUM.",
+      "difficulty": "Easy", "filmingTime": "5 minutes plus the transformation itself",
+      "adaptation": "Stylist: client's hair before → hands → blowout. Product: empty shelf → hands → styled display. Cleaner: cluttered counter → hands → clean."
+    },
+    {
+      "id": "C-kick-transition", "name": "Kick-on-the-beat outfit change", "label": "Trending",
+      "sourceFacts": { "soundId": "7641944089235032839", "soundCheck": "5 distinct creators in the last 14 days (snapshot-1 check); 11 creators and 7 recent across our data", "copyingChain": "@brookemonk_ (11.7M plays): \"I saw @kingapawlik_ do this and had to try\"",
+        "examples": [
+        { "url": "https://www.tiktok.com/@kingapawlik_/video/7686550131570658592", "durationSec": 9, "plays": 10700000, "followers": 108000 },
+        { "url": "https://www.tiktok.com/@brookemonk_/video/7688823087986478367", "durationSec": 11, "plays": 11700000 },
+        { "url": "https://www.tiktok.com/@hilariouslisa/video/7688823110371446046", "durationSec": 12.3, "note": "couple variant" } ],
+        "duoVariant": { "soundId": "7674416465486875422", "soundCheck": "5 creators in 14 days, first use 2026-08-16", "url": "https://www.tiktok.com/@saucey_austin/video/7688408642772569358" } },
+      "visualCheck": "full (kingapawlik_, saucey_austin and hilariouslisa watched)",
+      "visualMechanic": "Stand in a hallway or room in loungewear. Kick a leg up 2-3 times on the beat, cut on the last kick, and land in the same spot fully dressed, then pose. The camera stays still on a phone stand.",
+      "textMechanic": "None needed; the caption carries it.",
+      "audioMechanic": "Essential for the kick timing, though another beat works. Audio risk MEDIUM.",
+      "difficulty": "Easy (solo) / Moderate (duo)", "filmingTime": "5 minutes plus an outfit change",
+      "adaptation": "Boutique: loungewear → your new-arrivals outfit. Realtor: sweats → showing-day suit, text \"open house mode\". Local team: street clothes → uniform."
+    },
+    {
+      "id": "D-ugly-face-glam", "name": "Silly face → glam cut", "label": "Early (2 creators)",
+      "sourceFacts": { "soundId": "7681548461036800799", "soundName": "original sound - popesoup (#transitionaudios)", "creatorsInOurData": 2,
+        "examples": [
+        { "url": "https://www.tiktok.com/@soapyrenee/video/7688500110929448206", "durationSec": 7.2, "plays": 314077 },
+        { "url": "https://www.tiktok.com/@christinakirkman/video/7687022979577875725", "durationSec": 12.4, "plays": 249057, "note": "nails version (not watched)" } ] },
+      "visualCheck": "full for soapyrenee",
+      "visualMechanic": "Unready (robe, no makeup) pulling an exaggerated grimace at the camera → hard cut → the finished look, smiling.",
+      "textMechanic": "Hook text at the top: \"This look needed more than just one video 👀\"",
+      "audioMechanic": "Helpful; a 'transition audio' made for this. Audio risk MEDIUM.",
+      "difficulty": "Easy", "filmingTime": "3 minutes",
+      "adaptation": "Nail tech: bare nails + grimace → chrome set. Product: sad plain box → gift-wrapped. Baker: flat dough → finished cake."
+    },
+    {
+      "id": "E-bag-strap-duo", "name": "Bag strap in teeth, duo outfit swap", "label": "Early (2 creators + 'ib' credit)",
+      "sourceFacts": { "soundId": "7624368171760257800", "soundName": "No One Else", "creatorsInOurData": 2, "copyingSignal": "caption credits \"ib: @rileywhite\"", "templateSticker": true,
+        "examples": [ { "url": "https://www.tiktok.com/@aprilrose139/video/7689135628054695190", "durationSec": 8.3, "plays": 203479 } ] },
+      "visualCheck": "full",
+      "visualMechanic": "Two people in sweats, each biting a bag strap → cut → both styled, same pose.",
+      "textMechanic": "None.", "audioMechanic": "Helpful, substitutable. Audio risk MEDIUM.",
+      "difficulty": "Moderate (needs 2 people)", "filmingTime": "10 minutes",
+      "adaptation": "Boutique owner + friend: day off → styled in the new drop. Two-person service team: day off → on duty."
+    },
+    {
+      "id": "F-text-story", "name": "6-second clip + 'a few years ago…' text story", "label": "Circulating sound (11 creators, older) + breakout example",
+      "sourceFacts": { "soundId": "7523279356548139798", "soundName": "original sound - nj.audios", "soundCheck": "11 distinct creators; 2 in the last 14 days",
+        "examples": [ { "url": "https://www.tiktok.com/@itsniamhminton/video/7687139461901208865", "durationSec": 6.3, "plays": 599393, "followers": 578, "saves": 8346 } ] },
+      "visualCheck": "cover frame (movement is not the mechanic)",
+      "visualMechanic": "One calm clip of you (in the kitchen, at your desk). No action needed.",
+      "textMechanic": "\"A few years ago, I was [relatable struggle]… so I started [thing].\" On screen and in the caption.",
+      "audioMechanic": "Helpful (an emotional audio from an audio-maker account); substitutable. Audio risk LOW-MEDIUM.",
+      "difficulty": "Easy", "filmingTime": "2 minutes",
+      "adaptation": "Digital product seller: origin of the template shop. Coach: \"a few years ago I was burned out…\""
+    },
+    {
+      "id": "G-5s-reveal", "name": "5-second hair reveal", "label": "Circulating sound (10 creators, older, 2 recent) + breakout example",
+      "sourceFacts": { "soundId": "7379783449715247914", "soundCheck": "10 creators sampled; 2 in the last 14 days",
+        "examples": [ { "url": "https://www.tiktok.com/@emmazimmer662/video/7689155868532804865", "durationSec": 5.2, "plays": 1134583, "followers": 279, "shares": 26129 },
+        { "url": "https://www.tiktok.com/@olyajio_ajio/video/7687094826419899656", "durationSec": 5, "plays": 1800000 } ] },
+      "visualCheck": "PARTIAL: the before and the text were seen, the reveal moment was not captured",
+      "needsHumanReview": true,
+      "visualMechanic": "Before shot holding the hair → quick cut → new look (to confirm by watching).",
+      "textMechanic": "\"New hair for a new [season/decade]\"", "audioMechanic": "Helpful. Audio risk MEDIUM.",
+      "difficulty": "Easy", "filmingTime": "2 minutes plus the service",
+      "adaptation": "Any before/after in 5 seconds: detailer, groomer, lash tech."
+    },
+    {
+      "id": "H-text-message", "name": "Fake text-message conversation over emoji wallpaper", "label": "Trending, but EXCLUDED by content rules",
+      "sourceFacts": { "soundId": "7683515977018919713", "soundCheck": "9 creators in the last 7 days; 9 of 10 sampled at 100K+", "creatorsInOurData": 12,
+        "examples": [ { "url": "https://www.tiktok.com/@unnknowntypeshi/video/7688116197409279254", "durationSec": 10, "plays": 5100000 } ] },
+      "visualCheck": "full",
+      "why": "Exactly the right TYPE (text mechanic, zero filming, spreading fast), but this instance's punchline is sexual innuendo. Kept as a reference for the text-conversation mechanic, not for publishing."
+    }
+  ],
+  "previous13UnderNewDefinition": {
+    "survive": ["Couple glow-up (becomes C, kick transition)", "Makeup glow-up (B)", "Two-person outfit (C duo)", "Upside-down makeup flip (B family)", "5-second transformation (G, partial)", "Text story (F)", "Nail set transition (transition, not yet watched)"],
+    "fail": ["Satisfying process close-up (a process video, no copying evidence)", "Drops [date] tease (a brand post, not a circulating mechanic)", "Tomorrow teaser (same)", "Owner POV text (single post; its track isn't shown spreading now)", "Packing complaint (single post)", "Made-to-order transition (single post, 26s, sound cooling)"]
+  }
+}

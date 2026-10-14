@@ -1,0 +1,1046 @@
+{
+  "test": "test-02",
+  "released": false,
+  "note": "Experiment output. Not published; not a release for the repeat rule.",
+  "classificationRules": {
+    "Trending": "sound check: >=5 distinct creators posted with the sound in the last 14 days AND >=5 sampled videos have >=100K plays",
+    "Rising": "sound check: 3-4 distinct creators in the last 14 days, sound first sampled use within the last 120 days",
+    "Breakout": "the example video passes the breakout rule (>=100K plays and >=5x followers, floor 1,000; or >=1M plays and >=1x followers). Sound not shown to be spreading",
+    "Sustained": "UNAVAILABLE until 5 consecutive weekly snapshots exist"
+  },
+  "summary": {
+    "target25Met": false,
+    "publishable": 13,
+    "trending": 3,
+    "rising": 1,
+    "breakout": 9,
+    "fullyVisuallyVerified": 3,
+    "needsHumanReview": 10,
+    "audioRisk": {
+      "MEDIUM": 9,
+      "LOW": 4
+    },
+    "difficulty": {
+      "Moderate": 3,
+      "Easy": 10
+    },
+    "durationFlagged": 1,
+    "softDuplicates": [
+      {
+        "formatTag_AI": "transition:makeup-before-after",
+        "differentSoundIds": [
+          "7677752340367133461",
+          "7678338544116435730"
+        ]
+      }
+    ]
+  },
+  "rejectedAfterReview": [
+    {
+      "item": "Text-message conversation trend (sound 7683515977018919713)",
+      "classificationByRules": "Trending (9 creators in 7 days, 9 of 10 samples at 100K+)",
+      "reason": "content rule: the joke is sexual innuendo (\"Send?\" / \"A picture of your hair?\"). Watched via embed."
+    },
+    {
+      "item": "Hotel Lobby template (sound 7099522931209816066)",
+      "reason": "cover shows a two-person rap lip-sync performance; commercial track (audioRisk HIGH); trend dates to 2022. CORRECTS Test #1, which included it."
+    },
+    {
+      "item": "Halloween outfit transition (miawilsonn4)",
+      "reason": "fails the new breakout rule (plays are 3.7x followers, under 5x) and the sound is not spreading. Removed from Test #1's list."
+    },
+    {
+      "item": "Thank-you-dad B&W photo trend (2 creators, 2 different sounds)",
+      "reason": "personal tribute storytelling, not adaptable for businesses; sources are 22-23s tutorials"
+    }
+  ],
+  "records": [
+    {
+      "name": "Couple glow-up transition",
+      "classification": "Trending",
+      "classificationRule": "sound check: >=5 distinct creators posted with the sound in the last 14 days AND >=5 sampled videos have >=100K plays",
+      "example": {
+        "url": "https://www.tiktok.com/@hilariouslisa/video/7688823110371446046",
+        "durationSec": 12.3,
+        "durationCompliant": true,
+        "templateStickerOnExample": true
+      },
+      "audio": {
+        "name": "original sound - kicoviccnina",
+        "id": "7641944089235032839",
+        "url": "https://www.tiktok.com/music/original-sound-7641944089235032839",
+        "author": "𝑵𝑲",
+        "isOriginalSound": true
+      },
+      "sourceFacts": {
+        "postedAt": "2026-09-23T20:00:44.000Z",
+        "ageDaysAtCollection": 2,
+        "plays": 830990,
+        "likes": 56450,
+        "comments": 655,
+        "shares": 863,
+        "saves": 1288,
+        "creator": "hilariouslisa",
+        "creatorFollowers": 3793,
+        "playsPerFollowerFloored": 219.1,
+        "shareRate": 0.001,
+        "saveRate": 0.0015,
+        "foundBy": [
+          "test-02:glow up transition",
+          "snapshot-1:transition"
+        ],
+        "postedFromCountry": "US",
+        "soundCheck": {
+          "from": "snapshot-1 sound check",
+          "sampled": 10,
+          "distinctCreators": 9,
+          "creatorsLast7d": 3,
+          "creatorsLast14d": 5,
+          "highPerformers100k": "5+ (top 5 recorded)",
+          "earliestSampledUse": "2026-05-20T12:06:00.000Z",
+          "newestSampledUse": "2026-09-23T20:00:49.000Z",
+          "checkedAt": "2026-09-25T19:31:34.852Z"
+        }
+      },
+      "ourAssessment": {
+        "assessedBy": "Claude (AI judgment, 2026-09-25)",
+        "whySelected": "Verified multi-creator trend, and the mechanic (plain → dressed up on a hand clasp) works for anyone selling a transformation.",
+        "filmThis": "0-5s: you (and a partner or teammate) in plain clothes, facing camera. 5-6s: clasp hands and spin on the beat. 6-12s: same spot, fully styled.",
+        "productAdaptation": "Apparel, jewellery, beauty: the \"after\" is wearing your product.",
+        "serviceAdaptation": "Stylists and MUAs: client + stylist, messy → finished. Two-person teams: work clothes → event-ready.",
+        "onScreenText": "\"Us before vs after [your service]\"",
+        "bestFor": [
+          "Service",
+          "Product"
+        ],
+        "difficulty": "Moderate",
+        "audioRisk": "MEDIUM",
+        "formatTag": "transition:glow-up-before-after",
+        "cautions": [
+          "Needs two people."
+        ],
+        "visualCheck": {
+          "method": "embed playback, 4 frames",
+          "verified": "full",
+          "saw": "two people in casual clothes, hands clasp and spin, both reappear in formal wear"
+        }
+      },
+      "needsHumanReview": false,
+      "fingerprint": {
+        "primary": "tiktok:sound:7641944089235032839",
+        "soundId": "7641944089235032839",
+        "formatTag_AI": "transition:glow-up-before-after"
+      }
+    },
+    {
+      "name": "Makeup glow-up transition",
+      "classification": "Trending",
+      "classificationRule": "sound check: >=5 distinct creators posted with the sound in the last 14 days AND >=5 sampled videos have >=100K plays",
+      "example": {
+        "url": "https://www.tiktok.com/@maisyevil/video/7687547977061190934",
+        "durationSec": 9.1,
+        "durationCompliant": true,
+        "templateStickerOnExample": true
+      },
+      "audio": {
+        "name": "original sound - xvsuellen",
+        "id": "7677752340367133461",
+        "url": "https://www.tiktok.com/music/original-sound-7677752340367133461",
+        "author": "susu",
+        "isOriginalSound": true
+      },
+      "sourceFacts": {
+        "postedAt": "2026-09-20T09:32:32.000Z",
+        "ageDaysAtCollection": 5.4,
+        "plays": 757342,
+        "likes": 102829,
+        "comments": 367,
+        "shares": 1897,
+        "saves": 4443,
+        "creator": "maisyevil",
+        "creatorFollowers": 36000,
+        "playsPerFollowerFloored": 21,
+        "shareRate": 0.0025,
+        "saveRate": 0.0059,
+        "foundBy": [
+          "test-02:glow up transition"
+        ],
+        "postedFromCountry": "GB",
+        "soundCheck": {
+          "from": "test-02 sound check",
+          "sampled": 10,
+          "distinctCreators": 10,
+          "creatorsLast7d": 2,
+          "creatorsLast14d": 7,
+          "highPerformers100k": 10,
+          "earliestSampledUse": "2026-08-25T00:00:20.000Z",
+          "newestSampledUse": "2026-09-23T09:16:09.000Z",
+          "checkedAt": "2026-09-25T20:05:35.177Z"
+        }
+      },
+      "ourAssessment": {
+        "assessedBy": "Claude (AI judgment, 2026-09-25)",
+        "whySelected": "Verified trend: 7 creators used this sound in the last 14 days and all 10 sampled uses have 100K+ plays. The before → after is the whole format.",
+        "filmThis": "0-4s: bare face (or plain product), looking at camera. 4-5s: sweep your hand across the lens. 5-9s: finished look, same framing.",
+        "productAdaptation": "Beauty and skincare: bare → wearing your product. Any product: plain → styled, using the hand sweep.",
+        "serviceAdaptation": "MUAs, estheticians, lash and brow artists: client before → after (with permission).",
+        "onScreenText": "\"Before vs after [product / service]\"",
+        "bestFor": [
+          "Service",
+          "Product"
+        ],
+        "difficulty": "Moderate",
+        "audioRisk": "MEDIUM",
+        "formatTag": "transition:makeup-before-after",
+        "cautions": [
+          "Same format family as the couple glow-up and upside-down flip: do not publish all three in one week (soft duplicate by formatTag)."
+        ],
+        "visualCheck": {
+          "method": "embed playback, 3 frames",
+          "verified": "full",
+          "saw": "bare face with glasses, a hand passes in front of the lens, full glam with hair down"
+        }
+      },
+      "needsHumanReview": false,
+      "fingerprint": {
+        "primary": "tiktok:sound:7677752340367133461",
+        "soundId": "7677752340367133461",
+        "formatTag_AI": "transition:makeup-before-after"
+      }
+    },
+    {
+      "name": "Two-person outfit transition",
+      "classification": "Trending",
+      "classificationRule": "sound check: >=5 distinct creators posted with the sound in the last 14 days AND >=5 sampled videos have >=100K plays",
+      "example": {
+        "url": "https://www.tiktok.com/@saucey_austin/video/7688408642772569358",
+        "durationSec": 8.8,
+        "durationCompliant": true,
+        "templateStickerOnExample": false
+      },
+      "audio": {
+        "name": "original sound - dhatgirlbecca",
+        "id": "7674416465486875422",
+        "url": "https://www.tiktok.com/music/original-sound-7674416465486875422",
+        "author": "Dhatgirlbecca",
+        "isOriginalSound": true
+      },
+      "sourceFacts": {
+        "postedAt": "2026-09-22T17:12:48.000Z",
+        "ageDaysAtCollection": 3.1,
+        "plays": 531449,
+        "likes": 69986,
+        "comments": 166,
+        "shares": 659,
+        "saves": 2077,
+        "creator": "saucey_austin",
+        "creatorFollowers": 6900000,
+        "playsPerFollowerFloored": 0.1,
+        "shareRate": 0.0012,
+        "saveRate": 0.0039,
+        "foundBy": [
+          "test-02:outfit transition",
+          "snapshot-1:transition"
+        ],
+        "postedFromCountry": "US",
+        "soundCheck": {
+          "from": "snapshot-1 sound check",
+          "sampled": 10,
+          "distinctCreators": 10,
+          "creatorsLast7d": 3,
+          "creatorsLast14d": 5,
+          "highPerformers100k": "5+ (top 5 recorded)",
+          "earliestSampledUse": "2026-08-16T00:15:50.000Z",
+          "newestSampledUse": "2026-09-24T13:45:19.000Z",
+          "checkedAt": "2026-09-25T19:31:34.852Z"
+        }
+      },
+      "ourAssessment": {
+        "assessedBy": "Claude (AI judgment, 2026-09-25)",
+        "whySelected": "Verified trend on a new sound (first sampled use mid-August, 5 creators in the last 14 days). Two people plus two outfits, nothing else.",
+        "filmThis": "0-4s: two people side by side in loungewear. 4-5s: kick or jump on the beat. 5-9s: both in the \"after\" looks. Camera locked off.",
+        "productAdaptation": "Boutiques and apparel: before → your pieces.",
+        "serviceAdaptation": "Local teams: street clothes → uniform (\"clocking in\"). Salons: before → after appointment.",
+        "onScreenText": "\"Us before vs after opening the shop\"",
+        "bestFor": [
+          "Product",
+          "Local"
+        ],
+        "difficulty": "Moderate",
+        "audioRisk": "MEDIUM",
+        "formatTag": "transition:duo-outfit-swap",
+        "cautions": [
+          "Needs a second person and a quick outfit change.",
+          "The example creator has 6.9M followers, so this video is not a breakout. The trend evidence is the sound spread."
+        ],
+        "visualCheck": {
+          "method": "embed playback, 3 frames",
+          "verified": "full",
+          "saw": "two people in loungewear in a kitchen, a kick on the beat, both reappear styled (red gown, sharp outfit)"
+        }
+      },
+      "needsHumanReview": false,
+      "fingerprint": {
+        "primary": "tiktok:sound:7674416465486875422",
+        "soundId": "7674416465486875422",
+        "formatTag_AI": "transition:duo-outfit-swap"
+      }
+    },
+    {
+      "name": "Upside-down makeup flip",
+      "classification": "Rising",
+      "classificationRule": "sound check: 3-4 distinct creators in the last 14 days, sound first sampled use within the last 120 days",
+      "example": {
+        "url": "https://www.tiktok.com/@kimberlykimpena/video/7688525476393930014",
+        "durationSec": 11.2,
+        "durationCompliant": true,
+        "templateStickerOnExample": true
+      },
+      "audio": {
+        "name": "original sound - hellemdebas",
+        "id": "7678338544116435730",
+        "url": "https://www.tiktok.com/music/original-sound-7678338544116435730",
+        "author": "hellem",
+        "isOriginalSound": true
+      },
+      "sourceFacts": {
+        "postedAt": "2026-09-23T00:45:48.000Z",
+        "ageDaysAtCollection": 2.8,
+        "plays": 3522855,
+        "likes": 527483,
+        "comments": 1147,
+        "shares": 7848,
+        "saves": 32845,
+        "creator": "kimberlykimpena",
+        "creatorFollowers": 4100000,
+        "playsPerFollowerFloored": 0.9,
+        "shareRate": 0.0022,
+        "saveRate": 0.0093,
+        "foundBy": [
+          "snapshot-1:transition"
+        ],
+        "postedFromCountry": "US",
+        "soundCheck": {
+          "from": "snapshot-1 sound check",
+          "sampled": 10,
+          "distinctCreators": 10,
+          "creatorsLast7d": 2,
+          "creatorsLast14d": 3,
+          "highPerformers100k": "5+ (top 5 recorded)",
+          "earliestSampledUse": "2026-08-27T00:00:00.000Z",
+          "newestSampledUse": "2026-09-23T00:45:48.000Z",
+          "checkedAt": "2026-09-25T19:31:34.852Z"
+        }
+      },
+      "ourAssessment": {
+        "assessedBy": "Claude (AI judgment, 2026-09-25)",
+        "whySelected": "Rising sound (3 creators in the last 14 days, first sampled use late August). A simple before → after with one camera move.",
+        "filmThis": "0-5s: the \"before\". 5-6s: turn the phone upside down (or cover the lens) on the beat. 6-11s: the finished look.",
+        "productAdaptation": "Beauty: bare → wearing it. Food: raw → plated.",
+        "serviceAdaptation": "MUAs, nail techs, barbers: bare → finished.",
+        "onScreenText": "\"Wait for the flip\"",
+        "bestFor": [
+          "Service",
+          "Product"
+        ],
+        "difficulty": "Easy",
+        "audioRisk": "MEDIUM",
+        "formatTag": "transition:makeup-before-after",
+        "cautions": [
+          "Same format family as the makeup glow-up. The exact camera move needs a human look."
+        ],
+        "visualCheck": {
+          "method": "embed playback, 5 frames",
+          "verified": "partial",
+          "saw": "bare face with hair tied up, a black transition frame, full glam with curly hair down. The flip mechanic itself is inferred from #upsidedown."
+        }
+      },
+      "needsHumanReview": true,
+      "fingerprint": {
+        "primary": "tiktok:sound:7678338544116435730",
+        "soundId": "7678338544116435730",
+        "formatTag_AI": "transition:makeup-before-after"
+      }
+    },
+    {
+      "name": "Satisfying process close-up",
+      "classification": "Breakout",
+      "classificationRule": "the example video passes the breakout rule (>=100K plays and >=5x followers, floor 1,000; or >=1M plays and >=1x followers). Sound not shown to be spreading",
+      "example": {
+        "url": "https://www.tiktok.com/@aless.forfake/video/7688381525699644675",
+        "durationSec": 10,
+        "durationCompliant": true,
+        "templateStickerOnExample": true
+      },
+      "audio": {
+        "name": "b2b",
+        "id": "7474644416906136342",
+        "url": "https://www.tiktok.com/music/original-sound-7474644416906136342",
+        "author": "★",
+        "isOriginalSound": true
+      },
+      "sourceFacts": {
+        "postedAt": "2026-09-22T15:27:06.000Z",
+        "ageDaysAtCollection": 3.2,
+        "plays": 2254647,
+        "likes": 145226,
+        "comments": 304,
+        "shares": 2056,
+        "saves": 6973,
+        "creator": "aless.forfake",
+        "creatorFollowers": 936,
+        "playsPerFollowerFloored": 2254.6,
+        "shareRate": 0.0009,
+        "saveRate": 0.0031,
+        "foundBy": [
+          "test-02:satisfying"
+        ],
+        "postedFromCountry": "CH",
+        "soundCheck": {
+          "from": "test-02 sound check",
+          "sampled": 10,
+          "distinctCreators": 10,
+          "creatorsLast7d": 0,
+          "creatorsLast14d": 0,
+          "highPerformers100k": 10,
+          "earliestSampledUse": "2025-03-05T18:43:02.000Z",
+          "newestSampledUse": "2025-05-01T09:47:21.000Z",
+          "checkedAt": "2026-09-25T20:05:35.177Z"
+        }
+      },
+      "ourAssessment": {
+        "assessedBy": "Claude (AI judgment, 2026-09-25)",
+        "whySelected": "Breakout: 2.3M plays from about 1K followers. A tight close-up of one satisfying step of making something.",
+        "filmThis": "0-10s: extreme close-up of the most satisfying step (icing, peeling film, erasing, polishing, pouring). No talking.",
+        "productAdaptation": "Makers, bakers, candle and soap makers, artists.",
+        "serviceAdaptation": "Cleaners (the wipe), detailers (the foam), landscapers (the edge).",
+        "onScreenText": "\"So satisfying 😩\"",
+        "bestFor": [
+          "Product",
+          "Local"
+        ],
+        "difficulty": "Easy",
+        "audioRisk": "MEDIUM",
+        "formatTag": "process:satisfying-closeup",
+        "cautions": [
+          "\"b2b\" is an older, widely used sound; any calm track works."
+        ],
+        "visualCheck": {
+          "method": "cover frame",
+          "verified": "partial",
+          "saw": "cover: a pencil portrait; caption says erasing is the satisfying part"
+        }
+      },
+      "needsHumanReview": true,
+      "fingerprint": {
+        "primary": "tiktok:sound:7474644416906136342",
+        "soundId": "7474644416906136342",
+        "formatTag_AI": "process:satisfying-closeup"
+      }
+    },
+    {
+      "name": "5-second transformation",
+      "classification": "Breakout",
+      "classificationRule": "the example video passes the breakout rule (>=100K plays and >=5x followers, floor 1,000; or >=1M plays and >=1x followers). Sound not shown to be spreading",
+      "example": {
+        "url": "https://www.tiktok.com/@emmazimmer662/video/7689155868532804865",
+        "durationSec": 5.2,
+        "durationCompliant": true,
+        "templateStickerOnExample": false
+      },
+      "audio": {
+        "name": "original sound - monicaortizzzz",
+        "id": "7379783449715247914",
+        "url": "https://www.tiktok.com/music/original-sound-7379783449715247914",
+        "author": "Monica Velarde",
+        "isOriginalSound": true
+      },
+      "sourceFacts": {
+        "postedAt": "2026-09-24T17:32:07.000Z",
+        "ageDaysAtCollection": 1.1,
+        "plays": 1134583,
+        "likes": 57349,
+        "comments": 3093,
+        "shares": 26129,
+        "saves": 1739,
+        "creator": "emmazimmer662",
+        "creatorFollowers": 279,
+        "playsPerFollowerFloored": 1134.6,
+        "shareRate": 0.023,
+        "saveRate": 0.0015,
+        "foundBy": [
+          "snapshot-1:hair stylist"
+        ],
+        "postedFromCountry": "CA",
+        "soundCheck": {
+          "from": "snapshot-1 sound check",
+          "sampled": 10,
+          "distinctCreators": 10,
+          "creatorsLast7d": 2,
+          "creatorsLast14d": 2,
+          "highPerformers100k": "5+ (top 5 recorded)",
+          "earliestSampledUse": "2024-06-13T00:48:53.000Z",
+          "newestSampledUse": "2026-09-24T17:32:07.000Z",
+          "checkedAt": "2026-09-25T19:31:34.852Z"
+        }
+      },
+      "ourAssessment": {
+        "assessedBy": "Claude (AI judgment, 2026-09-25)",
+        "whySelected": "Breakout: 1.1M plays from a 279-follower account, with 26,129 shares. Five seconds, no talking.",
+        "filmThis": "0-2s: before, quick and unposed. 2-5s: the result, one clean shot.",
+        "productAdaptation": "Skincare, cleaning products, tools: the result in 5 seconds.",
+        "serviceAdaptation": "Hair stylists first; also groomers, detailers, cleaners.",
+        "onScreenText": "\"New [hair / car / kitchen] for a new season\"",
+        "bestFor": [
+          "Service",
+          "Local"
+        ],
+        "difficulty": "Easy",
+        "audioRisk": "MEDIUM",
+        "formatTag": "transformation:5s-quick-reveal",
+        "cautions": [
+          "Client permission before posting their face."
+        ],
+        "visualCheck": {
+          "method": "cover frame",
+          "verified": "partial",
+          "saw": "cover shows the finished result (long wavy hair). The before half was not seen."
+        }
+      },
+      "needsHumanReview": true,
+      "fingerprint": {
+        "primary": "tiktok:sound:7379783449715247914",
+        "soundId": "7379783449715247914",
+        "formatTag_AI": "transformation:5s-quick-reveal"
+      }
+    },
+    {
+      "name": "\"Drops [date]\" outfit tease",
+      "classification": "Breakout",
+      "classificationRule": "the example video passes the breakout rule (>=100K plays and >=5x followers, floor 1,000; or >=1M plays and >=1x followers). Sound not shown to be spreading",
+      "example": {
+        "url": "https://www.tiktok.com/@themayfairgroup/video/7687001792353291550",
+        "durationSec": 9.9,
+        "durationCompliant": true,
+        "templateStickerOnExample": false
+      },
+      "audio": {
+        "name": "original sound - ajwavy",
+        "id": "7315852279827172128",
+        "url": "https://www.tiktok.com/music/original-sound-7315852279827172128",
+        "author": "AjWavy",
+        "isOriginalSound": true
+      },
+      "sourceFacts": {
+        "postedAt": "2026-09-20T16:00:00.000Z",
+        "ageDaysAtCollection": 5.1,
+        "plays": 841076,
+        "likes": 69206,
+        "comments": 550,
+        "shares": 898,
+        "saves": 884,
+        "creator": "themayfairgroup",
+        "creatorFollowers": 35600,
+        "playsPerFollowerFloored": 23.6,
+        "shareRate": 0.0011,
+        "saveRate": 0.0011,
+        "foundBy": [
+          "test-02:product launch",
+          "snapshot-1:product reveal"
+        ],
+        "postedFromCountry": "US",
+        "soundCheck": {
+          "from": "snapshot-1 sound check",
+          "sampled": 10,
+          "distinctCreators": 10,
+          "creatorsLast7d": 0,
+          "creatorsLast14d": 0,
+          "highPerformers100k": "5+ (top 5 recorded)",
+          "earliestSampledUse": "2023-12-23T18:03:17.000Z",
+          "newestSampledUse": "2026-08-16T23:59:32.000Z",
+          "checkedAt": "2026-09-25T19:31:34.852Z"
+        }
+      },
+      "ourAssessment": {
+        "assessedBy": "Claude (AI judgment, 2026-09-25)",
+        "whySelected": "Breakout: 841K plays at 24x the brand's followers. A person simply wearing the new piece plus a date overlay.",
+        "filmThis": "0-10s: someone wearing or holding the new product, glancing around casually. Overlay: \"Drops [date] 👀\".",
+        "productAdaptation": "Apparel, accessories, any launch with a date.",
+        "serviceAdaptation": "New service or menu with a start date.",
+        "onScreenText": "\"Drops [date] ♥️👀\"",
+        "bestFor": [
+          "Product"
+        ],
+        "difficulty": "Easy",
+        "audioRisk": "LOW",
+        "formatTag": "announcement:dated-drop-tease",
+        "cautions": [
+          "Established sound; the evidence is this one video."
+        ],
+        "visualCheck": {
+          "method": "cover frame",
+          "verified": "partial",
+          "saw": "cover: a model in the new black tank and jeans with overlay \"Drops 9/24 ♥️👀\". CORRECTS Test #1 (no finger-to-lips, no covered product)."
+        }
+      },
+      "needsHumanReview": true,
+      "fingerprint": {
+        "primary": "tiktok:sound:7315852279827172128",
+        "soundId": "7315852279827172128",
+        "formatTag_AI": "announcement:dated-drop-tease"
+      }
+    },
+    {
+      "name": "Short clip + \"why I started\" text story",
+      "classification": "Breakout",
+      "classificationRule": "the example video passes the breakout rule (>=100K plays and >=5x followers, floor 1,000; or >=1M plays and >=1x followers). Sound not shown to be spreading",
+      "example": {
+        "url": "https://www.tiktok.com/@itsniamhminton/video/7687139461901208865",
+        "durationSec": 6.3,
+        "durationCompliant": true,
+        "templateStickerOnExample": false
+      },
+      "audio": {
+        "name": "original sound - nj.audios",
+        "id": "7523279356548139798",
+        "url": "https://www.tiktok.com/music/original-sound-7523279356548139798",
+        "author": "nj.audios",
+        "isOriginalSound": true
+      },
+      "sourceFacts": {
+        "postedAt": "2026-09-19T07:07:17.000Z",
+        "ageDaysAtCollection": 6.5,
+        "plays": 599393,
+        "likes": 19569,
+        "comments": 2551,
+        "shares": 1323,
+        "saves": 8346,
+        "creator": "itsniamhminton",
+        "creatorFollowers": 578,
+        "playsPerFollowerFloored": 599.4,
+        "shareRate": 0.0022,
+        "saveRate": 0.0139,
+        "foundBy": [
+          "test-02:digital product launch",
+          "snapshot-1:digital products"
+        ],
+        "postedFromCountry": "GB",
+        "soundCheck": {
+          "from": "snapshot-1 sound check",
+          "sampled": 10,
+          "distinctCreators": 10,
+          "creatorsLast7d": 0,
+          "creatorsLast14d": 1,
+          "highPerformers100k": "5+ (top 5 recorded)",
+          "earliestSampledUse": "2025-07-04T17:26:15.000Z",
+          "newestSampledUse": "2026-09-15T14:50:30.000Z",
+          "checkedAt": "2026-09-25T19:31:34.852Z"
+        }
+      },
+      "ourAssessment": {
+        "assessedBy": "Claude (AI judgment, 2026-09-25)",
+        "whySelected": "Breakout: 599K plays from 578 followers and 8,346 saves. Found again by the \"digital product launch\" search.",
+        "filmThis": "0-6s: one calm shot of you. The story goes in on-screen text and the caption.",
+        "productAdaptation": "Digital products: \"a few years ago I was [problem], so I started [product]\".",
+        "serviceAdaptation": "Coaches and consultants: the same, about the outcome you help with.",
+        "onScreenText": "\"A few years ago, I was [relatable struggle]…\"",
+        "bestFor": [
+          "Digital",
+          "Service"
+        ],
+        "difficulty": "Easy",
+        "audioRisk": "LOW",
+        "formatTag": "story:text-overlay-origin",
+        "cautions": [],
+        "visualCheck": {
+          "method": "cover frame",
+          "verified": "partial",
+          "saw": "cover: a person in a kitchen with a text-story overlay"
+        }
+      },
+      "needsHumanReview": true,
+      "fingerprint": {
+        "primary": "tiktok:sound:7523279356548139798",
+        "soundId": "7523279356548139798",
+        "formatTag_AI": "story:text-overlay-origin"
+      }
+    },
+    {
+      "name": "\"Tomorrow.\" playful drop teaser",
+      "classification": "Breakout",
+      "classificationRule": "the example video passes the breakout rule (>=100K plays and >=5x followers, floor 1,000; or >=1M plays and >=1x followers). Sound not shown to be spreading",
+      "example": {
+        "url": "https://www.tiktok.com/@loveabyrs/video/7689204580566977799",
+        "durationSec": 10,
+        "durationCompliant": true,
+        "templateStickerOnExample": true
+      },
+      "audio": {
+        "name": "original sound - loveabyrs",
+        "id": "7689204613626743559",
+        "url": "https://www.tiktok.com/music/original-sound-7689204613626743559",
+        "author": "loveabyrs",
+        "isOriginalSound": true
+      },
+      "sourceFacts": {
+        "postedAt": "2026-09-24T20:41:00.000Z",
+        "ageDaysAtCollection": 0.9,
+        "plays": 495484,
+        "likes": 14111,
+        "comments": 35,
+        "shares": 16308,
+        "saves": 4003,
+        "creator": "loveabyrs",
+        "creatorFollowers": 1938,
+        "playsPerFollowerFloored": 255.7,
+        "shareRate": 0.0329,
+        "saveRate": 0.0081,
+        "foundBy": [
+          "snapshot-1:small business"
+        ],
+        "postedFromCountry": "KW",
+        "soundCheck": {
+          "from": "snapshot-1 sound check",
+          "sampled": 1,
+          "distinctCreators": 1,
+          "creatorsLast7d": 1,
+          "creatorsLast14d": 1,
+          "highPerformers100k": "1+ (top 5 recorded)",
+          "earliestSampledUse": "2026-09-24T20:41:00.000Z",
+          "newestSampledUse": "2026-09-24T20:41:00.000Z",
+          "checkedAt": "2026-09-25T19:31:34.852Z"
+        }
+      },
+      "ourAssessment": {
+        "assessedBy": "Claude (AI judgment, 2026-09-25)",
+        "whySelected": "Breakout: 495K plays from 1,938 followers and 16,308 shares. It shows the product in a fun, casual shoot plus \"Tomorrow.\" Easy for any launch.",
+        "filmThis": "0-7s: a fun, unpolished clip of your new product in use (behind the scenes of your shoot is perfect). 7-10s: text \"Tomorrow.\" plus the time.",
+        "productAdaptation": "New collections, restocks, limited batches.",
+        "serviceAdaptation": "Opening a limited number of booking slots; show yourself setting up.",
+        "onScreenText": "\"Tomorrow. Limited. Once it's gone, it's gone.\"",
+        "bestFor": [
+          "Product",
+          "Digital"
+        ],
+        "difficulty": "Easy",
+        "audioRisk": "LOW",
+        "formatTag": "announcement:countdown-drop-teaser",
+        "cautions": [
+          "Only say limited if true."
+        ],
+        "visualCheck": {
+          "method": "cover frame",
+          "verified": "partial",
+          "saw": "cover: a model in the new pink activewear, playful, in a white studio holding a ball. CORRECTS Test #1, which assumed a dark teaser that hid the product."
+        }
+      },
+      "needsHumanReview": true,
+      "fingerprint": {
+        "primary": "tiktok:sound:7689204613626743559",
+        "soundId": "7689204613626743559",
+        "formatTag_AI": "announcement:countdown-drop-teaser"
+      }
+    },
+    {
+      "name": "Nail set transition",
+      "classification": "Breakout",
+      "classificationRule": "the example video passes the breakout rule (>=100K plays and >=5x followers, floor 1,000; or >=1M plays and >=1x followers). Sound not shown to be spreading",
+      "example": {
+        "url": "https://www.tiktok.com/@suppersecret.hidden/video/7687445152448793869",
+        "durationSec": 13.1,
+        "durationCompliant": true,
+        "templateStickerOnExample": false
+      },
+      "audio": {
+        "name": "original sound - nailz_forever64",
+        "id": "7672170961831037709",
+        "url": "https://www.tiktok.com/music/original-sound-7672170961831037709",
+        "author": "Nailz By LB 💗🩵",
+        "isOriginalSound": true
+      },
+      "sourceFacts": {
+        "postedAt": "2026-09-20T02:53:41.000Z",
+        "ageDaysAtCollection": 5.7,
+        "plays": 476157,
+        "likes": 74620,
+        "comments": 127,
+        "shares": 342,
+        "saves": 4874,
+        "creator": "suppersecret.hidden",
+        "creatorFollowers": 2757,
+        "playsPerFollowerFloored": 172.7,
+        "shareRate": 0.0007,
+        "saveRate": 0.0102,
+        "foundBy": [
+          "test-02:nail transformation"
+        ],
+        "postedFromCountry": "US",
+        "soundCheck": {
+          "from": "test-02 sound check",
+          "sampled": 10,
+          "distinctCreators": 10,
+          "creatorsLast7d": 2,
+          "creatorsLast14d": 2,
+          "highPerformers100k": 6,
+          "earliestSampledUse": "2026-08-09T23:01:48.000Z",
+          "newestSampledUse": "2026-09-20T02:53:41.000Z",
+          "checkedAt": "2026-09-25T20:05:35.177Z"
+        }
+      },
+      "ourAssessment": {
+        "assessedBy": "Claude (AI judgment, 2026-09-25)",
+        "whySelected": "Breakout: 476K plays at 173x followers. The creator jokes the transition beat the nails, so the transition is the hook.",
+        "filmThis": "0-5s: bare nails close to the lens. 5-6s: hand sweep or snap on the beat. 6-13s: finished set, same angle.",
+        "productAdaptation": "Press-on nails, polish.",
+        "serviceAdaptation": "Nail techs; the same mechanic for lashes and brows.",
+        "onScreenText": "\"The transition or the nails?\"",
+        "bestFor": [
+          "Service"
+        ],
+        "difficulty": "Easy",
+        "audioRisk": "MEDIUM",
+        "formatTag": "transition:nails-before-after",
+        "cautions": [
+          "The sound (nailz_forever64) is widely used but not currently spreading (2 creators in 14 days)."
+        ],
+        "visualCheck": {
+          "method": "cover frame",
+          "verified": "partial",
+          "saw": "cover: close-up of the finished long nails. The transition itself was not seen."
+        }
+      },
+      "needsHumanReview": true,
+      "fingerprint": {
+        "primary": "tiktok:sound:7672170961831037709",
+        "soundId": "7672170961831037709",
+        "formatTag_AI": "transition:nails-before-after"
+      }
+    },
+    {
+      "name": "\"Nothing against influencers, but…\" owner POV",
+      "classification": "Breakout",
+      "classificationRule": "the example video passes the breakout rule (>=100K plays and >=5x followers, floor 1,000; or >=1M plays and >=1x followers). Sound not shown to be spreading",
+      "example": {
+        "url": "https://www.tiktok.com/@revys.ph/video/7687135085413305618",
+        "durationSec": 9.4,
+        "durationCompliant": true,
+        "templateStickerOnExample": false
+      },
+      "audio": {
+        "name": "What’s This? What’s That?",
+        "id": "7363630457409243152",
+        "url": "https://www.tiktok.com/music/original-sound-7363630457409243152",
+        "author": "LOTTY FRIENDS",
+        "isOriginalSound": false
+      },
+      "sourceFacts": {
+        "postedAt": "2026-09-19T06:50:23.000Z",
+        "ageDaysAtCollection": 6.5,
+        "plays": 442904,
+        "likes": 49948,
+        "comments": 219,
+        "shares": 757,
+        "saves": 691,
+        "creator": "revys.ph",
+        "creatorFollowers": 2045,
+        "playsPerFollowerFloored": 216.6,
+        "shareRate": 0.0017,
+        "saveRate": 0.0016,
+        "foundBy": [
+          "snapshot-1:smallbusinesscheck"
+        ],
+        "postedFromCountry": "PH",
+        "soundCheck": {
+          "from": "snapshot-1 sound check",
+          "sampled": 10,
+          "distinctCreators": 10,
+          "creatorsLast7d": 0,
+          "creatorsLast14d": 0,
+          "highPerformers100k": "5+ (top 5 recorded)",
+          "earliestSampledUse": "2025-10-04T04:11:41.000Z",
+          "newestSampledUse": "2026-05-02T09:06:46.000Z",
+          "checkedAt": "2026-09-25T19:31:34.852Z"
+        }
+      },
+      "ourAssessment": {
+        "assessedBy": "Claude (AI judgment, 2026-09-25)",
+        "whySelected": "Breakout: 443K plays at 217x followers. An honest owner POV works for any small business.",
+        "filmThis": "0-9s: you doing an everyday task with the POV text on screen. No talking.",
+        "productAdaptation": "\"…I'd have to sell [X] just to pay them.\"",
+        "serviceAdaptation": "\"…that's [X] clients just to pay an agency.\"",
+        "onScreenText": "\"Guess I'm the face of my brand now 😂\"",
+        "bestFor": [
+          "Any"
+        ],
+        "difficulty": "Easy",
+        "audioRisk": "MEDIUM",
+        "formatTag": "pov:owner-text-over-track",
+        "cautions": [
+          "Track \"What's This? What's That?\": check availability on business accounts, or substitute a playful sound."
+        ],
+        "visualCheck": {
+          "method": "cover frame",
+          "verified": "partial",
+          "saw": "cover: the owner with text overlay and a tray of cookies"
+        }
+      },
+      "needsHumanReview": true,
+      "fingerprint": {
+        "primary": "tiktok:sound:7363630457409243152",
+        "soundId": "7363630457409243152",
+        "formatTag_AI": "pov:owner-text-over-track"
+      }
+    },
+    {
+      "name": "\"I hate packaging [product]\" honest packing clip",
+      "classification": "Breakout",
+      "classificationRule": "the example video passes the breakout rule (>=100K plays and >=5x followers, floor 1,000; or >=1M plays and >=1x followers). Sound not shown to be spreading",
+      "example": {
+        "url": "https://www.tiktok.com/@bakedbyj0ana/video/7687598675555618078",
+        "durationSec": 7.3,
+        "durationCompliant": true,
+        "templateStickerOnExample": false
+      },
+      "audio": {
+        "name": "original sound - skidmark3000",
+        "id": "7648857265117612814",
+        "url": "https://www.tiktok.com/music/original-sound-7648857265117612814",
+        "author": "😟",
+        "isOriginalSound": true
+      },
+      "sourceFacts": {
+        "postedAt": "2026-09-20T12:49:44.000Z",
+        "ageDaysAtCollection": 5.3,
+        "plays": 395573,
+        "likes": 20778,
+        "comments": 74,
+        "shares": 361,
+        "saves": 655,
+        "creator": "bakedbyj0ana",
+        "creatorFollowers": 111,
+        "playsPerFollowerFloored": 395.6,
+        "shareRate": 0.0009,
+        "saveRate": 0.0017,
+        "foundBy": [
+          "snapshot-1:small business"
+        ],
+        "postedFromCountry": "US",
+        "soundCheck": {
+          "from": "snapshot-1 sound check",
+          "sampled": 10,
+          "distinctCreators": 10,
+          "creatorsLast7d": 0,
+          "creatorsLast14d": 0,
+          "highPerformers100k": "5+ (top 5 recorded)",
+          "earliestSampledUse": "2026-03-18T18:14:31.000Z",
+          "newestSampledUse": "2026-09-10T01:14:37.000Z",
+          "checkedAt": "2026-09-25T19:31:34.852Z"
+        }
+      },
+      "ourAssessment": {
+        "assessedBy": "Claude (AI judgment, 2026-09-25)",
+        "whySelected": "Breakout: 396K plays at 396x followers (floored). An honest, unglamorous behind-the-scenes shot of packing orders.",
+        "filmThis": "0-7s: you packing orders, slightly fed up, with text \"I hate packaging [product]\". Use a comedic sound.",
+        "productAdaptation": "Any shop that packs orders.",
+        "serviceAdaptation": "Swap for the task you dread: \"I hate invoicing\".",
+        "onScreenText": "\"I hate packaging cookies\" → \"[your product]\"",
+        "bestFor": [
+          "Product"
+        ],
+        "difficulty": "Easy",
+        "audioRisk": "MEDIUM",
+        "formatTag": "bts:relatable-packing-complaint",
+        "cautions": [
+          "The sound's content was not heard; pick your own comedic sound."
+        ],
+        "visualCheck": {
+          "method": "cover frame",
+          "verified": "partial",
+          "saw": "cover: the owner packing cookies, with \"I hate packaging cookies\" text. CORRECTS Test #1, which rejected it as unverifiable."
+        }
+      },
+      "needsHumanReview": true,
+      "fingerprint": {
+        "primary": "tiktok:sound:7648857265117612814",
+        "soundId": "7648857265117612814",
+        "formatTag_AI": "bts:relatable-packing-complaint"
+      }
+    },
+    {
+      "name": "Made-to-order product transition",
+      "classification": "Breakout",
+      "classificationRule": "the example video passes the breakout rule (>=100K plays and >=5x followers, floor 1,000; or >=1M plays and >=1x followers). Sound not shown to be spreading",
+      "example": {
+        "url": "https://www.tiktok.com/@rangbyher/video/7688261860814015765",
+        "durationSec": 26.1,
+        "durationCompliant": false,
+        "templateStickerOnExample": false
+      },
+      "audio": {
+        "name": "original sound - moonfairyfalan",
+        "id": "7673178143884200720",
+        "url": "https://www.tiktok.com/music/original-sound-7673178143884200720",
+        "author": "𓍯𓂃",
+        "isOriginalSound": true
+      },
+      "sourceFacts": {
+        "postedAt": "2026-09-22T07:42:45.000Z",
+        "ageDaysAtCollection": 3.5,
+        "plays": 113347,
+        "likes": 2503,
+        "comments": 17,
+        "shares": 279,
+        "saves": 921,
+        "creator": "rangbyher",
+        "creatorFollowers": 58,
+        "playsPerFollowerFloored": 113.3,
+        "shareRate": 0.0025,
+        "saveRate": 0.0081,
+        "foundBy": [
+          "test-02:small business transition"
+        ],
+        "postedFromCountry": "PK",
+        "soundCheck": {
+          "from": "test-02 sound check",
+          "sampled": 10,
+          "distinctCreators": 10,
+          "creatorsLast7d": 0,
+          "creatorsLast14d": 0,
+          "highPerformers100k": 10,
+          "earliestSampledUse": "2026-08-12T16:09:57.000Z",
+          "newestSampledUse": "2026-09-07T20:58:20.000Z",
+          "checkedAt": "2026-09-25T20:05:35.177Z"
+        }
+      },
+      "ourAssessment": {
+        "assessedBy": "Claude (AI judgment, 2026-09-25)",
+        "whySelected": "Breakout: 113K plays at 113x followers, from a handmade seller selling directly (\"DM for booking\"). The source is 26s, but the format fits in 15s.",
+        "filmThis": "0-5s: the piece in progress (yarn, hands). 5-6s: cut on the beat. 6-12s: worn and styled. End with \"made to order\".",
+        "productAdaptation": "Handmade and made-to-order sellers.",
+        "serviceAdaptation": "Custom services: raw material → finished commission.",
+        "onScreenText": "\"Made to order. DM to book yours.\"",
+        "bestFor": [
+          "Product"
+        ],
+        "difficulty": "Easy",
+        "audioRisk": "LOW",
+        "formatTag": "transition:product-on-model",
+        "cautions": [
+          "The source example is 26s (FLAGGED): the member version must be cut to 15s.",
+          "The sound is cooling (no uses in 14 days)."
+        ],
+        "visualCheck": {
+          "method": "cover frame",
+          "verified": "partial",
+          "saw": "cover: a handmade crochet granny-square jacket worn by a person"
+        }
+      },
+      "needsHumanReview": true,
+      "fingerprint": {
+        "primary": "tiktok:sound:7673178143884200720",
+        "soundId": "7673178143884200720",
+        "formatTag_AI": "transition:product-on-model"
+      }
+    }
+  ]
+}

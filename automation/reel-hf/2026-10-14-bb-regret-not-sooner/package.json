@@ -1,0 +1,12 @@
+{
+  "name": "2026-10-14-bb-regret-not-sooner",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node build.mjs",
+    "dev": "npx --yes hyperframes@0.8.150 preview",
+    "check": "npx --yes hyperframes@0.8.150 check",
+    "render": "npx --yes hyperframes@0.8.150 render",
+    "publish": "npx --yes hyperframes@0.8.150 publish"
+  }
+}

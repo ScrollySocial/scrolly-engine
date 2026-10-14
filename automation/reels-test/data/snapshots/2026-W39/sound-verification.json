@@ -1,0 +1,458 @@
+{
+  "checkedAt": "2026-09-25T19:31:34.852Z",
+  "perSoundRequested": 10,
+  "run": {
+    "label": "verify:2026-W39:sound-scraper",
+    "actorId": "clockworks/tiktok-sound-scraper",
+    "runId": "8OqlW9tBwOzdM52r1",
+    "status": "SUCCEEDED",
+    "items": 112,
+    "usageTotalUsd": 0.56,
+    "chargedEventCounts": {
+      "result": 112,
+      "transcription-minute": 0
+    },
+    "computeUnits": 0.013711944444444445,
+    "durationSecs": 49.363,
+    "maxItems": 135,
+    "maxTotalChargeUsd": 0.8
+  },
+  "sounds": {
+    "7678338544116435730": {
+      "sampled": 10,
+      "distinctCreatorsSampled": 10,
+      "creatorsLast7d": 2,
+      "creatorsLast14d": 3,
+      "newestPost": "2026-09-23T00:45:48.000Z",
+      "oldestPostInSample": "2026-08-27T00:00:00.000Z",
+      "samplePlays": [
+        3500000,
+        1400000,
+        1400000,
+        1200000,
+        1100000
+      ],
+      "musicVideoCountIfProvided": null,
+      "extraExamples": [
+        {
+          "url": "https://www.tiktok.com/@kimberlykimpena/video/7688525476393930014",
+          "plays": 3500000,
+          "postedAt": "2026-09-23T00:45:48.000Z",
+          "durationSec": 11
+        },
+        {
+          "url": "https://www.tiktok.com/@hellemdebas/video/7678338513514925333",
+          "plays": 1400000,
+          "postedAt": "2026-08-27T00:00:00.000Z",
+          "durationSec": 11
+        },
+        {
+          "url": "https://www.tiktok.com/@nessamariah/video/7683599137987693842",
+          "plays": 1400000,
+          "postedAt": "2026-09-09T18:09:00.000Z",
+          "durationSec": 9
+        }
+      ]
+    },
+    "7549946006722022166": {
+      "sampled": 10,
+      "distinctCreatorsSampled": 10,
+      "creatorsLast7d": 1,
+      "creatorsLast14d": 1,
+      "newestPost": "2026-09-19T17:48:11.000Z",
+      "oldestPostInSample": "2025-09-14T14:06:32.000Z",
+      "samplePlays": [
+        4000000,
+        3900000,
+        3500000,
+        2600000,
+        2000000
+      ],
+      "musicVideoCountIfProvided": null,
+      "extraExamples": [
+        {
+          "url": "https://www.tiktok.com/@i.lost.sam/video/7651846943659822349",
+          "plays": 4000000,
+          "postedAt": "2026-06-16T04:34:36.000Z",
+          "durationSec": 6
+        },
+        {
+          "url": "https://www.tiktok.com/@asgv.overlays/video/7549945999549156630",
+          "plays": 3900000,
+          "postedAt": "2025-09-14T14:06:32.000Z",
+          "durationSec": 12
+        },
+        {
+          "url": "https://www.tiktok.com/@nunehbo/video/7687304618858056967",
+          "plays": 3500000,
+          "postedAt": "2026-09-19T17:48:11.000Z",
+          "durationSec": 6
+        }
+      ]
+    },
+    "7099522931209816066": {
+      "sampled": 10,
+      "distinctCreatorsSampled": 10,
+      "creatorsLast7d": 0,
+      "creatorsLast14d": 0,
+      "newestPost": "2025-02-08T18:31:44.000Z",
+      "oldestPostInSample": "2022-09-06T17:11:54.000Z",
+      "samplePlays": [
+        47500000,
+        24100000,
+        19200000,
+        19100000,
+        18800000
+      ],
+      "musicVideoCountIfProvided": null,
+      "extraExamples": [
+        {
+          "url": "https://www.tiktok.com/@alec_judd11/video/7229772887647866155",
+          "plays": 47500000,
+          "postedAt": "2023-05-05T18:51:23.000Z",
+          "durationSec": 60
+        },
+        {
+          "url": "https://www.tiktok.com/@nailzbyvan/video/7194189164919770410",
+          "plays": 24100000,
+          "postedAt": "2023-01-29T21:28:24.000Z",
+          "durationSec": 28
+        },
+        {
+          "url": "https://www.tiktok.com/@ximena_kstro/video/7267399107361164549",
+          "plays": 19200000,
+          "postedAt": "2023-08-15T04:20:15.000Z",
+          "durationSec": 7
+        }
+      ]
+    },
+    "7379783449715247914": {
+      "sampled": 10,
+      "distinctCreatorsSampled": 10,
+      "creatorsLast7d": 2,
+      "creatorsLast14d": 2,
+      "newestPost": "2026-09-24T17:32:07.000Z",
+      "oldestPostInSample": "2024-06-13T00:48:53.000Z",
+      "samplePlays": [
+        10300000,
+        10100000,
+        3900000,
+        3300000,
+        3200000
+      ],
+      "musicVideoCountIfProvided": null,
+      "extraExamples": [
+        {
+          "url": "https://www.tiktok.com/@jxtradast67/video/7619608591422459143",
+          "plays": 10300000,
+          "postedAt": "2026-03-21T07:32:58.000Z",
+          "durationSec": 5
+        },
+        {
+          "url": "https://www.tiktok.com/@itsselena/video/7634268429230394657",
+          "plays": 10100000,
+          "postedAt": "2026-04-29T19:40:37.000Z",
+          "durationSec": 5
+        },
+        {
+          "url": "https://www.tiktok.com/@thata.gomes197/video/7669190647651241236",
+          "plays": 3900000,
+          "postedAt": "2026-08-01T22:16:45.000Z",
+          "durationSec": 5
+        }
+      ]
+    },
+    "7315852279827172128": {
+      "sampled": 10,
+      "distinctCreatorsSampled": 10,
+      "creatorsLast7d": 0,
+      "creatorsLast14d": 0,
+      "newestPost": "2026-08-16T23:59:32.000Z",
+      "oldestPostInSample": "2023-12-23T18:03:17.000Z",
+      "samplePlays": [
+        65700000,
+        43300000,
+        13000000,
+        10900000,
+        10800000
+      ],
+      "musicVideoCountIfProvided": null,
+      "extraExamples": [
+        {
+          "url": "https://www.tiktok.com/@sk.extensionsbeauty/video/7548122881813761302",
+          "plays": 65700000,
+          "postedAt": "2025-09-09T16:11:53.000Z",
+          "durationSec": 12
+        },
+        {
+          "url": "https://www.tiktok.com/@atelier.kitsu/video/7668963939237072161",
+          "plays": 43300000,
+          "postedAt": "2026-08-01T07:36:56.000Z",
+          "durationSec": 8
+        },
+        {
+          "url": "https://www.tiktok.com/@mysweetbeautycorner/video/7560236871746440470",
+          "plays": 13000000,
+          "postedAt": "2025-10-12T07:40:27.000Z",
+          "durationSec": 12
+        }
+      ]
+    },
+    "7641944089235032839": {
+      "sampled": 10,
+      "distinctCreatorsSampled": 9,
+      "creatorsLast7d": 3,
+      "creatorsLast14d": 5,
+      "newestPost": "2026-09-23T20:00:49.000Z",
+      "oldestPostInSample": "2026-05-20T12:06:00.000Z",
+      "samplePlays": [
+        19300000,
+        12900000,
+        11700000,
+        10700000,
+        9300000
+      ],
+      "musicVideoCountIfProvided": null,
+      "extraExamples": [
+        {
+          "url": "https://www.tiktok.com/@syehazza8/video/7683757918176529685",
+          "plays": 19300000,
+          "postedAt": "2026-09-10T04:25:11.000Z",
+          "durationSec": 11
+        },
+        {
+          "url": "https://www.tiktok.com/@.soulframe.offici/video/7681749559520840991",
+          "plays": 12900000,
+          "postedAt": "2026-09-04T18:31:55.000Z",
+          "durationSec": 9
+        },
+        {
+          "url": "https://www.tiktok.com/@brookemonk_/video/7688823087986478367",
+          "plays": 11700000,
+          "postedAt": "2026-09-23T20:00:49.000Z",
+          "durationSec": 11
+        }
+      ]
+    },
+    "7523279356548139798": {
+      "sampled": 10,
+      "distinctCreatorsSampled": 10,
+      "creatorsLast7d": 0,
+      "creatorsLast14d": 1,
+      "newestPost": "2026-09-15T14:50:30.000Z",
+      "oldestPostInSample": "2025-07-04T17:26:15.000Z",
+      "samplePlays": [
+        1700000,
+        1600000,
+        1500000,
+        1500000,
+        1400000
+      ],
+      "musicVideoCountIfProvided": null,
+      "extraExamples": [
+        {
+          "url": "https://www.tiktok.com/@rhiansmailliw/video/7569729944750656790",
+          "plays": 1700000,
+          "postedAt": "2025-11-06T21:38:19.000Z",
+          "durationSec": 25
+        },
+        {
+          "url": "https://www.tiktok.com/@rzepkovskaa/video/7681037422469156129",
+          "plays": 1600000,
+          "postedAt": "2026-09-02T20:28:10.000Z",
+          "durationSec": 10
+        },
+        {
+          "url": "https://www.tiktok.com/@bikinixpress365/video/7637256496362835231",
+          "plays": 1500000,
+          "postedAt": "2026-05-07T23:25:00.000Z",
+          "durationSec": 0
+        }
+      ]
+    },
+    "7394898156456708895": {
+      "sampled": 10,
+      "distinctCreatorsSampled": 10,
+      "creatorsLast7d": 0,
+      "creatorsLast14d": 0,
+      "newestPost": "2026-06-03T00:13:31.000Z",
+      "oldestPostInSample": "2024-07-23T18:21:55.000Z",
+      "samplePlays": [
+        15400000,
+        8500000,
+        5100000,
+        3400000,
+        2400000
+      ],
+      "musicVideoCountIfProvided": null,
+      "extraExamples": [
+        {
+          "url": "https://www.tiktok.com/@faithovafearrr/video/7558558031156383007",
+          "plays": 15400000,
+          "postedAt": "2025-10-07T19:05:44.000Z",
+          "durationSec": 9
+        },
+        {
+          "url": "https://www.tiktok.com/@giannamjoyce/video/7559744869502160141",
+          "plays": 8500000,
+          "postedAt": "2025-10-10T23:51:39.000Z",
+          "durationSec": 6
+        },
+        {
+          "url": "https://www.tiktok.com/@vmp_720/video/7547903118823001358",
+          "plays": 5100000,
+          "postedAt": "2025-09-09T01:59:42.000Z",
+          "durationSec": 9
+        }
+      ]
+    },
+    "7674416465486875422": {
+      "sampled": 10,
+      "distinctCreatorsSampled": 10,
+      "creatorsLast7d": 3,
+      "creatorsLast14d": 5,
+      "newestPost": "2026-09-24T13:45:19.000Z",
+      "oldestPostInSample": "2026-08-16T00:15:50.000Z",
+      "samplePlays": [
+        531700,
+        405900,
+        370400,
+        203300,
+        130200
+      ],
+      "musicVideoCountIfProvided": null,
+      "extraExamples": [
+        {
+          "url": "https://www.tiktok.com/@saucey_austin/video/7688408642772569358",
+          "plays": 531700,
+          "postedAt": "2026-09-22T17:12:48.000Z",
+          "durationSec": 8
+        },
+        {
+          "url": "https://www.tiktok.com/@clairenceruthoff/video/7687343502786628886",
+          "plays": 405900,
+          "postedAt": "2026-09-19T20:19:02.000Z",
+          "durationSec": 11
+        },
+        {
+          "url": "https://www.tiktok.com/@fridachocobronzeofficiel/video/7683179431430491412",
+          "plays": 370400,
+          "postedAt": "2026-09-08T15:00:17.000Z",
+          "durationSec": 10
+        }
+      ]
+    },
+    "7689204613626743559": {
+      "sampled": 1,
+      "distinctCreatorsSampled": 1,
+      "creatorsLast7d": 1,
+      "creatorsLast14d": 1,
+      "newestPost": "2026-09-24T20:41:00.000Z",
+      "oldestPostInSample": "2026-09-24T20:41:00.000Z",
+      "samplePlays": [
+        497200
+      ],
+      "musicVideoCountIfProvided": null,
+      "extraExamples": [
+        {
+          "url": "https://www.tiktok.com/@loveabyrs/video/7689204580566977799",
+          "plays": 497200,
+          "postedAt": "2026-09-24T20:41:00.000Z",
+          "durationSec": 10
+        }
+      ]
+    },
+    "7363630457409243152": {
+      "sampled": 10,
+      "distinctCreatorsSampled": 10,
+      "creatorsLast7d": 0,
+      "creatorsLast14d": 0,
+      "newestPost": "2026-05-02T09:06:46.000Z",
+      "oldestPostInSample": "2025-10-04T04:11:41.000Z",
+      "samplePlays": [
+        16400000,
+        5400000,
+        5200000,
+        4500000,
+        3000000
+      ],
+      "musicVideoCountIfProvided": null,
+      "extraExamples": [
+        {
+          "url": "https://www.tiktok.com/@aadaehoon/video/7557214416773680392",
+          "plays": 16400000,
+          "postedAt": "2025-10-04T04:11:41.000Z",
+          "durationSec": 13
+        },
+        {
+          "url": "https://www.tiktok.com/@cortis_fanpage5/video/7574334940028964103",
+          "plays": 5400000,
+          "postedAt": "2025-11-19T07:28:03.000Z",
+          "durationSec": 11
+        },
+        {
+          "url": "https://www.tiktok.com/@jvdxann/video/7593204901224664341",
+          "plays": 5200000,
+          "postedAt": "2026-01-09T03:53:12.000Z",
+          "durationSec": 28
+        }
+      ]
+    },
+    "7648857265117612814": {
+      "sampled": 10,
+      "distinctCreatorsSampled": 10,
+      "creatorsLast7d": 0,
+      "creatorsLast14d": 0,
+      "newestPost": "2026-09-10T01:14:37.000Z",
+      "oldestPostInSample": "2026-03-18T18:14:31.000Z",
+      "samplePlays": [
+        8400000,
+        6900000,
+        4800000,
+        4600000,
+        3700000
+      ],
+      "musicVideoCountIfProvided": null,
+      "extraExamples": [
+        {
+          "url": "https://www.tiktok.com/@sophiesd1gitaldiary/video/7683708783477935373",
+          "plays": 8400000,
+          "postedAt": "2026-09-10T01:14:37.000Z",
+          "durationSec": 0
+        },
+        {
+          "url": "https://www.tiktok.com/@icup053/video/7664386061048597791",
+          "plays": 6900000,
+          "postedAt": "2026-07-19T23:32:39.000Z",
+          "durationSec": 6
+        },
+        {
+          "url": "https://www.tiktok.com/@rileyanntaylor/video/7664472682477391118",
+          "plays": 4800000,
+          "postedAt": "2026-07-20T05:08:58.000Z",
+          "durationSec": 11
+        }
+      ]
+    },
+    "7688989730348239623": {
+      "sampled": 1,
+      "distinctCreatorsSampled": 1,
+      "creatorsLast7d": 1,
+      "creatorsLast14d": 1,
+      "newestPost": "2026-09-24T06:47:04.000Z",
+      "oldestPostInSample": "2026-09-24T06:47:04.000Z",
+      "samplePlays": [
+        50700
+      ],
+      "musicVideoCountIfProvided": null,
+      "extraExamples": [
+        {
+          "url": "https://www.tiktok.com/@reyy.ryhannn/video/7688989682557832449",
+          "plays": 50700,
+          "postedAt": "2026-09-24T06:47:04.000Z",
+          "durationSec": 5
+        }
+      ]
+    }
+  }
+}

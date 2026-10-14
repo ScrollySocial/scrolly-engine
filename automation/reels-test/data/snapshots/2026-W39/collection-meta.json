@@ -1,0 +1,78 @@
+{
+  "snapshot": "2026-W39",
+  "collectedAt": "2026-09-25T19:28:56.053Z",
+  "source": "clockworks/tiktok-scraper",
+  "input": {
+    "searchQueries": [
+      "trend",
+      "trending sound",
+      "capcut template",
+      "new trend",
+      "pov",
+      "transition",
+      "viral sound",
+      "small business",
+      "smallbusinesscheck",
+      "packing orders",
+      "product reveal",
+      "business owner",
+      "digital products",
+      "hair stylist",
+      "realtor",
+      "fitness coach"
+    ],
+    "searchSection": "/video",
+    "videoSearchSorting": "MOST_LIKED",
+    "videoSearchDateFilter": "PAST_WEEK",
+    "resultsPerPage": 20,
+    "proxyCountryCode": "None"
+  },
+  "queryFamilies": {
+    "trendCarriers": [
+      "trend",
+      "trending sound",
+      "capcut template",
+      "new trend",
+      "pov",
+      "transition",
+      "viral sound"
+    ],
+    "business": [
+      "small business",
+      "smallbusinesscheck",
+      "packing orders",
+      "product reveal",
+      "business owner",
+      "digital products",
+      "hair stylist",
+      "realtor",
+      "fitness coach"
+    ]
+  },
+  "run": {
+    "label": "collect:2026-W39:clockworks-search",
+    "actorId": "clockworks/tiktok-scraper",
+    "runId": "hchWbkKXhKutAEThO",
+    "status": "SUCCEEDED",
+    "items": 320,
+    "usageTotalUsd": 1.9791999999999996,
+    "chargedEventCounts": {
+      "result": 319,
+      "filter-applied": 319,
+      "popularity-filter-applied": 0,
+      "follower-dataset-item": 0,
+      "mobile-filter-sorting-applied": 319,
+      "video-download": 0,
+      "comment-dataset-item": 0,
+      "scrape-as-in-country": 0,
+      "transcription-minute": 0,
+      "ai-video-description": 0,
+      "ai-video-summary": 0,
+      "actor-start": 1
+    },
+    "computeUnits": 0.09160388888888889,
+    "durationSecs": 329.774,
+    "maxItems": 340,
+    "maxTotalChargeUsd": 2.2
+  }
+}

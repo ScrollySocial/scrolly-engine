@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1080, height=1920">
+<script src="assets/js/gsap.min.js"></script>
+<style>
+@font-face{font-family:'ScrollyFigtree';src:url('assets/fonts/figtree.woff2') format('woff2');font-weight:300 900}
+@font-face{font-family:'ScrollyBricolage';src:url('assets/fonts/bricolage-800.woff2') format('woff2');font-weight:800;font-stretch:75% 100%}
+@font-face{font-family:'ScrollyHand';src:url('assets/fonts/covered-by-your-grace.woff2') format('woff2')}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1080px;height:1920px;overflow:hidden;background:#000}
+#root{position:relative;width:100%;height:100%;overflow:hidden;container-type:inline-size;font-family:'ScrollyFigtree',sans-serif}
+#cam{position:absolute;inset:0;transform-origin:50% 42%}
+.talk{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.scene{position:absolute;inset:0}
+.cutvid{position:absolute;left:0;top:0;width:1080px;height:1920px;object-fit:cover}
+.abs{position:absolute}.blk{display:block}
+.fill,.fade{position:absolute;inset:0}
+.big{position:absolute;left:5cqw;right:5cqw;text-align:center;font-family:'ScrollyBricolage';font-weight:800;font-stretch:78%;line-height:.9;letter-spacing:-.01em;text-shadow:0 .4cqw 2cqw rgba(0,0,0,.35)}
+.big .w{display:inline-block}
+.mk{position:relative;display:inline-block;padding:0 .12em}
+.mkbg{position:absolute;left:-.04em;right:-.04em;top:.1em;bottom:.02em;background:#FFC9A8;transform-origin:0 50%;border-radius:.08em;display:block}
+.mk{rotate:-1.5deg}.mkbg{skew:-6deg}
+.mkt{position:relative;color:#161210;text-shadow:none}
+.hand{position:absolute;font-family:'ScrollyHand';line-height:1;text-shadow:0 0 1.1cqw rgba(0,0,0,.6),0 .3cqw 1.6cqw rgba(0,0,0,.55);white-space:nowrap}
+.cap{position:absolute;left:6cqw;right:6cqw;text-align:center;z-index:8}
+.cap span{display:inline-block;font:800 5.4cqw/1.15 'ScrollyFigtree';color:#fff;text-shadow:0 0 .6cqw rgba(0,0,0,.8),0 .5cqw 1.8cqw rgba(0,0,0,.6)}
+.chat{position:absolute;left:6cqw;right:6cqw;display:flex;flex-direction:column;gap:1.6cqw}
+.msg{font:500 4cqw/1.3 'Segoe UI','ScrollyFigtree',sans-serif;padding:2.4cqw 3.2cqw;border-radius:4.4cqw;max-width:84%;box-shadow:0 .8cqw 2.4cqw rgba(0,0,0,.25)}
+.msg.me{align-self:flex-end;background:#2f2f2f;color:#fff;border-bottom-right-radius:1.2cqw}
+.msg.ai{align-self:flex-start;background:#fff;color:#1c1c1c;border-bottom-left-radius:1.2cqw}
+.chip{align-self:flex-end;font:600 3.2cqw 'Segoe UI','ScrollyFigtree';background:#fff;color:#333;padding:1.2cqw 2.4cqw;border-radius:2cqw;border:.3cqw solid #ddd}
+.paper{position:absolute;left:14cqw;right:14cqw;background:#fffdf7;background-image:repeating-linear-gradient(180deg,transparent 0 8.4cqw,#cfe0ee 8.4cqw 8.7cqw);padding:2.6cqw 5cqw 3cqw;font:400 7.6cqw/8.7cqw 'ScrollyHand';color:#2b2724;box-shadow:0 1.4cqw 3.6cqw rgba(0,0,0,.35)}
+.paper div{display:flex;justify-content:space-between}.tick{display:inline-block;color:#2e7d4f;font-family:'ScrollyFigtree';font-weight:800}.tick.x{color:#E05A33}
+.badge{position:absolute;width:46cqw;border-radius:2.4cqw;overflow:hidden;box-shadow:0 1.4cqw 3.6cqw rgba(0,0,0,.4);background:#fff}
+.b-top{background:#E05A33;color:#fff;text-align:center;font:800 9cqw/1 'ScrollyFigtree';padding:2cqw 0 1.4cqw}.b-top small{display:block;font:600 3.4cqw 'ScrollyFigtree';margin-top:.6cqw}
+.b-name{font:400 7.4cqw/1 'ScrollyHand';color:#161210;text-align:center;padding:4cqw 2cqw 4.6cqw}
+.folder{position:absolute;width:30cqw;filter:drop-shadow(0 1.4cqw 2.4cqw rgba(0,0,0,.4))}
+.f-tab{display:inline-block;background:#E9C98E;font:400 6.4cqw/1 'ScrollyHand';color:#2b2724;padding:1.6cqw 3cqw 1cqw 2.4cqw;border-radius:1.6cqw 3cqw 0 0;white-space:nowrap}
+.f-body{height:20cqw;border-radius:0 1.6cqw 1.6cqw 1.6cqw;position:relative;overflow:hidden;background:linear-gradient(180deg,#F2D7A3,#E2BE80)}
+.f-body i{position:absolute;left:12%;right:12%;display:block}.f-body i:nth-child(1){top:-.6cqw;height:4cqw;background:#fffdf7;border-radius:.4cqw}.f-body i:nth-child(2){top:7cqw;height:.5cqw;background:rgba(138,106,58,.35)}.f-body i:nth-child(3){top:10cqw;height:.5cqw;right:30%;background:rgba(138,106,58,.35)}
+.post{position:absolute;width:27cqw;border-radius:1cqw;border:.8cqw solid #fff;box-shadow:0 1.4cqw 3cqw rgba(0,0,0,.4)}
+.receipt{position:absolute;width:30cqw;background:#fffdf7;padding:3cqw 3.2cqw 6cqw;font:400 5.4cqw/1.12 'ScrollyHand';color:#2b2724;rotate:-3deg;box-shadow:0 1.4cqw 3cqw rgba(0,0,0,.35)}
+.receipt b{font-weight:400;color:#E05A33}
+.prompt{position:absolute;width:56cqw;display:flex;align-items:center;justify-content:space-between;background:#2f2f2f;color:#fff;border-radius:99px;padding:2.4cqw 2.4cqw 2.4cqw 4cqw;font:500 4.4cqw 'Segoe UI','ScrollyFigtree';box-shadow:0 1cqw 3cqw rgba(0,0,0,.4)}
+.prompt .ptxt{display:inline-block}
+.prompt i{font-style:normal;width:6.4cqw;height:6.4cqw;border-radius:50%;background:#fff;color:#2f2f2f;display:grid;place-items:center;font-weight:800}
+.md{position:absolute;left:5cqw;right:5cqw;background:#1f1d1b;border-radius:2cqw;overflow:hidden;box-shadow:0 1.6cqw 4cqw rgba(0,0,0,.45);font:500 3.7cqw/1.55 Consolas,'Cascadia Mono',monospace}
+.md-bar{display:flex;align-items:center;gap:1.2cqw;padding:1.6cqw 2.4cqw;background:#2b2826}.md-bar i{width:2cqw;height:2cqw;border-radius:50%;background:#5a5450;display:block}.md-bar span{margin-left:1.6cqw;font:600 3.2cqw 'ScrollyFigtree';color:#cfc6bd}
+.md-body{padding:1.8cqw 0 2.4cqw}.ln{display:flex;gap:3cqw;padding:0 3cqw;color:#e9e1d8;min-height:5.7cqw}.ln b{width:4cqw;text-align:right;color:#6f6862;font-weight:400}.lt{display:inline-block}
+.ln.h .lt{color:#FFC9A8;font-weight:700}.ln.add{background:rgba(110,190,130,.16)}.ln.add b{color:#7fcf93}.ln.no{background:rgba(224,90,51,.16)}.ln.no b{color:#E05A33}
+.brainwrap{position:absolute;inset:0;overflow:hidden;background:#efe6da}.brain{position:absolute;left:0;top:0;width:100%;display:block}
+.url{position:absolute;left:14cqw;right:14cqw;display:flex;align-items:center;gap:2cqw;background:#fff;border-radius:99px;padding:2.4cqw 4cqw;font:600 5cqw 'Segoe UI','ScrollyFigtree';color:#1c1c1c;box-shadow:0 1cqw 3cqw rgba(0,0,0,.35)}.lock{font-size:3.6cqw}
+.ph{position:relative;display:inline-block;font-weight:700;color:#8a3b22;background:#fbe9df;border-radius:1cqw;padding:0 .8cqw;margin:1.3cqw .6cqw}
+.ph-ring{position:absolute;left:-12%;top:-38%;width:124%;height:176%;overflow:visible;pointer-events:none}
+.draw{stroke-dasharray:1;stroke-dashoffset:1}
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="34.34" data-width="1080" data-height="1920">
+<div id="cam"><video id="talk-0" class="clip talk" src="assets/talk-seg/talk-0.mp4" muted playsinline data-start="0" data-duration="18" data-track-index="0"></video><video id="talk-1" class="clip talk" src="assets/talk-seg/talk-1.mp4" muted playsinline data-start="18" data-duration="16.34" data-track-index="1"></video></div>
+<audio id="voice" src="assets/talk-audio.m4a" data-start="0" data-duration="34.34" data-track-index="9" data-volume="1"></audio>
+<div id="s1" class="clip scene" data-start="0" data-duration="4.7" data-track-index="2" style="z-index:5"><div class="fade" style="background:linear-gradient(180deg,rgba(0,0,0,.6),rgba(0,0,0,.25) 30%,rgba(0,0,0,0) 50%)"></div><div id="b1" class="big" style="top:6cqw;font-size:10cqw;color:#fff"><span class="w">How</span> <span class="w">many</span> <span class="w">ideas</span> <span class="w">are</span> <span class="w"><span class="mk"><span class="mkbg"></span><span class="mkt">buried</span></span></span> <span class="w">in</span> <span class="w">old</span> <span class="w">AI</span> <span class="w">chats?</span></div></div>
+<div id="s2" class="clip scene" data-start="4.7" data-duration="3.3" data-track-index="2" style="z-index:5"><div class="fade" style="background:linear-gradient(180deg,rgba(0,0,0,.6),rgba(0,0,0,.25) 32.4%,rgba(0,0,0,0) 54%)"></div><div id="srch2" class="abs" style="left:10cqw;right:10cqw;top:5cqw;background:#f9f9f9;border-radius:2.4cqw;padding:2.4cqw 3cqw 3cqw;box-shadow:0 1.6cqw 4cqw rgba(0,0,0,.4);font-family:'Segoe UI','ScrollyFigtree',sans-serif;color:#202124">
+  <div style="display:flex;align-items:center;gap:2cqw;background:#fff;border:.3cqw solid #d0d0d0;border-radius:99px;padding:1.8cqw 3cqw">
+    <svg viewBox="0 0 24 24" style="width:4.6cqw;height:4.6cqw;flex:none"><circle cx="10" cy="10" r="6.5" fill="none" stroke="#6b6b6b" stroke-width="2.4"/><path d="M15 15 L21 21" stroke="#6b6b6b" stroke-width="2.6" stroke-linecap="round"/></svg>
+    <span id="q2" style="font:400 4.3cqw/1.2 'Segoe UI';display:inline-block">holiday bundle idea</span></div>
+  <div id="none2" style="font:600 4cqw/1.2 'Segoe UI';color:#8e8e8e;text-align:center;margin-top:3cqw">No chats found</div></div><div id="h2" class="hand" style="left:36cqw;top:33cqw;font-size:7cqw;rotate:-4deg;color:#FFF4DC">it was right here…</div></div>
+<div id="s3" class="clip scene" data-start="8" data-duration="3.08" data-track-index="2" style="z-index:5"><div class="fade" style="background:linear-gradient(180deg,rgba(0,0,0,.6),rgba(0,0,0,.25) 30%,rgba(0,0,0,0) 50%)"></div><div id="h3" class="hand" style="left:22cqw;top:4cqw;font-size:7cqw;rotate:-3deg;color:#FFF4DC">so I built this</div><div id="b3" class="big" style="top:15cqw;font-size:12cqw;color:#fff"><span class="w">Never</span> <span class="w">lose</span> <span class="w">a</span> <span class="w">good</span> <span class="w">idea</span> <span class="w"><span class="mk"><span class="mkbg"></span><span class="mkt">again</span></span></span> </div></div>
+<div id="s4" class="clip scene" data-start="11.08" data-duration="2.84" data-track-index="2" style="z-index:5"><div class="brainwrap"><img id="br4" class="brain" src="assets/img/brain.png" data-layout-allow-overflow></div><div class="fill" style="background:rgba(22,18,16,0.12)"></div></div>
+<div id="s4b" class="clip scene" data-start="11.08" data-duration="2.84" data-track-index="3" style="z-index:7"><svg id="cur4" class="abs blk" style="left:74cqw;top:14cqw;width:7cqw;height:7cqw" viewBox="0 0 24 24"><path d="M4 2 L4 20 L9 15 L13 23 L16 21.5 L12 14 L19 14 Z" fill="#fff" stroke="#161210" stroke-width="1.5"/></svg></div>
+<div id="s5" class="clip scene" data-start="13.92" data-duration="3.9" data-track-index="2" style="z-index:5"><div class="fade" style="background:linear-gradient(180deg,rgba(0,0,0,.6),rgba(0,0,0,.25) 32.4%,rgba(0,0,0,0) 54%)"></div><div class="chat" style="top:5cqw"><div id="c5a" class="msg me">idea: refill pouches for my candles, so people keep the jar</div><div id="c5b" class="msg ai">Love that. Saving it to your Ideas.</div></div></div>
+<div id="s6" class="clip scene" data-start="17.82" data-duration="2.48" data-track-index="2" style="z-index:5"><div class="fade" style="background:linear-gradient(180deg,rgba(0,0,0,.6),rgba(0,0,0,.25) 27.599999999999998%,rgba(0,0,0,0) 46%)"></div><div id="p6" class="prompt" style="left:22cqw;top:12cqw"><span class="ptxt">new rule: no emojis</span><i>↑</i></div><div id="h6" class="hand" style="left:30cqw;top:30cqw;font-size:7cqw;rotate:-3deg;color:#FFF4DC">or a new rule</div></div>
+<div id="s7" class="clip scene" data-start="20.3" data-duration="2.5" data-track-index="2" style="z-index:5"><div class="fade" style="background:linear-gradient(180deg,rgba(0,0,0,.6),rgba(0,0,0,.25) 32.4%,rgba(0,0,0,0) 54%)"></div><div id="md7" class="md" style="top:5cqw"><div class="md-bar"><i></i><i></i><i></i><span>ideas.md</span></div><div class="md-body"><div class="ln h"><b>1</b><span class="lt"># Ideas</span></div><div class="ln "><b>2</b><span class="lt">holiday gift bundle</span></div><div class="ln add"><b>3</b><span class="lt">+ candle refill pouches</span></div></div></div></div>
+<div id="s8" class="clip scene" data-start="22.8" data-duration="1.44" data-track-index="2" style="z-index:5"><div class="fade" style="background:linear-gradient(180deg,rgba(0,0,0,.6),rgba(0,0,0,.25) 28.799999999999997%,rgba(0,0,0,0) 48%)"></div><div id="f8a" class="folder" style="left:8cqw;top:9cqw;rotate:-6deg"><div class="f-tab">ideas</div><div class="f-body"><i></i><i></i><i></i></div></div><div id="f8b" class="folder" style="left:54cqw;top:6cqw;rotate:5deg"><div class="f-tab">my voice</div><div class="f-body"><i></i><i></i><i></i></div></div><div id="h8" class="hand" style="left:30cqw;top:42cqw;font-size:7cqw;rotate:-3deg;color:#FFF4DC">filed for you</div></div>
+<div id="s9" class="clip scene" data-start="24.24" data-duration="5.03" data-track-index="2" style="z-index:5"><div class="fade" style="background:linear-gradient(180deg,rgba(0,0,0,.6),rgba(0,0,0,.25) 30%,rgba(0,0,0,0) 50%)"></div><div id="b9" class="big" style="top:6cqw;font-size:12cqw;color:#fff"><span class="w">Your</span> <span class="w">business’s</span> <span class="w"><span class="mk"><span class="mkbg"></span><span class="mkt">permanent</span></span></span> <span class="w">memory</span></div><div id="h9" class="hand" style="left:6cqw;top:41cqw;font-size:6cqw;rotate:-3deg;color:#FFF4DC">no more digging through old chats</div></div>
+<div id="s10" class="clip scene" data-start="29.27" data-duration="5.07" data-track-index="2" style="z-index:5"><div class="fade" style="background:linear-gradient(180deg,rgba(0,0,0,.6),rgba(0,0,0,.25) 30%,rgba(0,0,0,0) 50%)"></div><div id="b10" class="big" style="top:6cqw;font-size:11cqw;color:#fff"><span class="w">Scrolly</span> <span class="w"><span class="mk"><span class="mkbg"></span><span class="mkt">Business Brain</span></span></span> </div><div id="u10" class="url" style="top:31cqw"><span class="lock">🔒</span>scrollyseo.com</div><div id="h10" class="hand" style="left:56cqw;top:44cqw;font-size:7.5cqw;rotate:-4deg;color:#FFF4DC">on my website</div><div id="a10" class="abs blk" style="left:34cqw;top:41cqw;width:18cqw;height:13.5cqw;rotate:190deg"><svg viewBox="0 0 120 90" style="width:100%;height:100%"><path class="draw" pathLength="1" d="M8 12 C40 4 86 18 98 64" fill="none" stroke="#FFF4DC" stroke-width="6" stroke-linecap="round"/><path class="draw" pathLength="1" d="M80 52 L99 70 L110 46" fill="none" stroke="#FFF4DC" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div>
+<video id="cut4" class="clip cutvid" src="assets/cut/f04-cut.webm" muted playsinline data-start="11.08" data-duration="2.84" data-track-index="4" style="z-index:6"></video>
+<div id="cap0" class="clip cap" data-start="4.70" data-duration="1.80" data-track-index="6" style="top:128cqw"><span>old AI conversation that you</span></div>
+<div id="cap1" class="clip cap" data-start="6.52" data-duration="1.46" data-track-index="6" style="top:128cqw"><span>cannot find again?</span></div>
+<div id="cap2" class="clip cap" data-start="8.00" data-duration="0.30" data-track-index="6" style="top:128cqw"><span>I</span></div>
+<div id="cap3" class="clip cap" data-start="8.32" data-duration="1.12" data-track-index="6" style="top:128cqw"><span>built something to make sure</span></div>
+<div id="cap4" class="clip cap" data-start="9.46" data-duration="1.24" data-track-index="6" style="top:128cqw"><span>that never happens to you</span></div>
+<div id="cap5" class="clip cap" data-start="10.72" data-duration="0.92" data-track-index="6" style="top:128cqw"><span>again it's</span></div>
+<div id="cap6" class="clip cap" data-start="11.66" data-duration="1.56" data-track-index="6" style="top:150cqw"><span>called the Scrolly Business Brain</span></div>
+<div id="cap7" class="clip cap" data-start="13.24" data-duration="0.96" data-track-index="6" style="top:150cqw"><span>and every</span></div>
+<div id="cap8" class="clip cap" data-start="14.22" data-duration="0.84" data-track-index="6" style="top:128cqw"><span>time you come up with</span></div>
+<div id="cap9" class="clip cap" data-start="15.08" data-duration="1.68" data-track-index="6" style="top:128cqw"><span>a great business idea to</span></div>
+<div id="cap10" class="clip cap" data-start="16.78" data-duration="1.02" data-track-index="6" style="top:128cqw"><span>do or</span></div>
+<div id="cap11" class="clip cap" data-start="17.82" data-duration="0.30" data-track-index="6" style="top:128cqw"><span>you</span></div>
+<div id="cap12" class="clip cap" data-start="18.00" data-duration="1.02" data-track-index="6" style="top:128cqw"><span>just want to change your</span></div>
+<div id="cap13" class="clip cap" data-start="19.04" data-duration="1.74" data-track-index="6" style="top:128cqw"><span>style going forward Your</span></div>
+<div id="cap14" class="clip cap" data-start="20.80" data-duration="1.80" data-track-index="6" style="top:128cqw"><span>Business Brain will remember that</span></div>
+<div id="cap15" class="clip cap" data-start="22.62" data-duration="0.48" data-track-index="6" style="top:128cqw"><span>and update</span></div>
+<div id="cap16" class="clip cap" data-start="23.12" data-duration="1.58" data-track-index="6" style="top:128cqw"><span>the corresponding files so</span></div>
+<div id="cap17" class="clip cap" data-start="24.72" data-duration="1.22" data-track-index="6" style="top:128cqw"><span>that it becomes a part</span></div>
+<div id="cap18" class="clip cap" data-start="25.96" data-duration="1.88" data-track-index="6" style="top:128cqw"><span>of your business’s permanent information</span></div>
+<div id="cap19" class="clip cap" data-start="27.86" data-duration="1.42" data-track-index="6" style="top:128cqw"><span>going forward</span></div>
+<audio id="fx-pop1" src="assets/sfx/pop-light.mp3" data-start="0.90" data-duration="0.18" data-track-index="12" data-volume="0.6"></audio>
+<audio id="fx-type2" src="assets/sfx/typing-laptop.mp3" data-start="5.36" data-duration="0.9" data-track-index="13" data-volume="0.35"></audio>
+<audio id="fx-no2" src="assets/sfx/nope.mp3" data-start="6.52" data-duration="1.2" data-track-index="14" data-volume="0.45"></audio>
+<audio id="fx-wh3" src="assets/sfx/whoosh-air.mp3" data-start="8.00" data-duration="1.6" data-track-index="15" data-volume="0.4"></audio>
+<audio id="fx-pop3" src="assets/sfx/pop-bubble.mp3" data-start="10.72" data-duration="0.38" data-track-index="12" data-volume="0.6"></audio>
+<audio id="fx-wh4" src="assets/sfx/whoosh-fast.mp3" data-start="10.96" data-duration="1.4" data-track-index="13" data-volume="0.55"></audio>
+<audio id="fx-pop4" src="assets/sfx/pop-light.mp3" data-start="12.88" data-duration="0.18" data-track-index="14" data-volume="0.5"></audio>
+<audio id="fx-pop5a" src="assets/sfx/pop-bubble.mp3" data-start="14.70" data-duration="0.38" data-track-index="15" data-volume="0.6"></audio>
+<audio id="fx-pop5b" src="assets/sfx/pop-light.mp3" data-start="16.78" data-duration="0.18" data-track-index="12" data-volume="0.6"></audio>
+<audio id="fx-pop6" src="assets/sfx/pop-bubble.mp3" data-start="17.87" data-duration="0.38" data-track-index="13" data-volume="0.6"></audio>
+<audio id="fx-type6" src="assets/sfx/typing-laptop.mp3" data-start="18.44" data-duration="1" data-track-index="14" data-volume="0.35"></audio>
+<audio id="fx-pap7" src="assets/sfx/paper-slide.mp3" data-start="20.35" data-duration="1" data-track-index="15" data-volume="0.6"></audio>
+<audio id="fx-type7" src="assets/sfx/typing-laptop.mp3" data-start="21.82" data-duration="1.3" data-track-index="12" data-volume="0.35"></audio>
+<audio id="fx-pap8" src="assets/sfx/paper-slide.mp3" data-start="22.85" data-duration="1" data-track-index="13" data-volume="0.6"></audio>
+<audio id="fx-pop8" src="assets/sfx/pop-light.mp3" data-start="23.76" data-duration="0.18" data-track-index="14" data-volume="0.6"></audio>
+<audio id="fx-wh9" src="assets/sfx/whoosh-air.mp3" data-start="26.54" data-duration="1.6" data-track-index="15" data-volume="0.4"></audio>
+<audio id="fx-chk9" src="assets/sfx/check.mp3" data-start="27.86" data-duration="1.2" data-track-index="12" data-volume="0.45"></audio>
+<audio id="fx-wh10" src="assets/sfx/whoosh-air.mp3" data-start="29.27" data-duration="1.6" data-track-index="13" data-volume="0.4"></audio>
+<audio id="fx-chime10" src="assets/sfx/chime.mp3" data-start="33.27" data-duration="1.05" data-track-index="14" data-volume="0.5"></audio>
+<audio id="music-a" src="assets/music/music-a.mp3" data-start="0" data-duration="34.34" data-track-index="10" data-volume="0.02" data-fade-in="4.22" data-fade-out="1.95"></audio>
+</div>
+<script>
+const tl = gsap.timeline({ paused: true });
+const E = 'power3.out', B = 'back.out(1.6)';
+const pop = (s, t, r = 0) => tl.fromTo(s, { scale: 0, rotation: r - 8, opacity: 0 }, { scale: 1, rotation: r, opacity: 1, duration: 0.45, ease: B }, t);
+const up = (s, t, y = 30) => tl.fromTo(s, { y, opacity: 0 }, { y: 0, opacity: 1, duration: 0.4, ease: E }, t);
+const draw = (s, t, d = 0.45) => tl.fromTo(s + ' .draw, ' + s + '.draw', { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: d, ease: 'power2.inOut' }, t);
+const swipe = (s, t) => tl.fromTo(s + ' .mkbg', { scaleX: 0 }, { scaleX: 1, duration: 0.35, ease: 'power2.out' }, t);
+const words = (s, t) => tl.fromTo(s + ' .w', { y: 40, opacity: 0 }, { y: 0, opacity: 1, duration: 0.35, ease: E, stagger: 0.06 }, t);
+const typeLines = (s, t0, gap) => document.querySelectorAll(s + ' .ln').forEach((el, i) => {
+  tl.fromTo(el, { opacity: 0 }, { opacity: 1, duration: 0.01 }, t0 + i * gap);
+  tl.fromTo(el.querySelector('.lt'), { clipPath: 'inset(0 100% 0 0)' }, { clipPath: 'inset(0 0% 0 0)', duration: Math.max(0.2, gap * 0.8), ease: 'steps(18)' }, t0 + i * gap);
+});
+tl.set('#cam', { scale: 1 }, 0);
+tl.set('#cam', { scale: 1.07 }, 7.899);
+tl.set('#cam', { scale: 1 }, 17.562);
+tl.set('#cam', { scale: 1.07 }, 20.669);
+tl.set('#cam', { scale: 1 }, 29.137);
+tl.fromTo('#cam', { scale: 1.0 }, { scale: 1.15, duration: 0.45, ease: E, immediateRender: false }, 6.52);
+tl.set('#cam', { scale: 1.0 }, 11.08);
+tl.fromTo('#cam', { x: 0, filter: 'blur(0px)' }, { x: -90, filter: 'blur(14px)', duration: 0.12, ease: 'power2.in', immediateRender: false }, 11.08 - 0.12);
+tl.fromTo('#cam', { x: 90, filter: 'blur(14px)' }, { x: 0, filter: 'blur(0px)', duration: 0.18, ease: 'power2.out', immediateRender: false }, 11.08);
+tl.fromTo('#cam', { x: 0, filter: 'blur(0px)' }, { x: -90, filter: 'blur(14px)', duration: 0.12, ease: 'power2.in', immediateRender: false }, 29.27 - 0.12);
+tl.fromTo('#cam', { x: 90, filter: 'blur(14px)' }, { x: 0, filter: 'blur(0px)', duration: 0.18, ease: 'power2.out', immediateRender: false }, 29.27);
+words('#b1', 0.15);
+swipe('#b1', 0.9);
+tl.fromTo('#srch2', { y: -40, opacity: 0 }, { y: 0, opacity: 1, duration: 0.4, ease: E }, 4.75);
+tl.fromTo('#q2', { clipPath: 'inset(0 100% 0 0)' }, { clipPath: 'inset(0 0% 0 0)', duration: 0.9, ease: 'steps(19)' }, 5.36);
+pop('#none2', 6.52);
+up('#h2', 6.859999999999999, 16);
+up('#h3', 8.1, 16);
+words('#b3', 9.06);
+swipe('#b3', 7.2);
+tl.fromTo('#br4', { yPercent: 0 }, { yPercent: -38, duration: 2.84, ease: 'none' }, 11.08);
+tl.fromTo('#cur4', { x: 160, y: 220, opacity: 0 }, { x: 0, y: 0, opacity: 1, duration: 0.8, ease: E }, 11.58);
+tl.fromTo('#cur4', { scale: 1 }, { scale: 0.82, duration: 0.08, yoyo: true, repeat: 1, immediateRender: false }, 12.88);
+up('#c5a', 14.7, 24);
+pop('#c5b', 16.78);
+pop('#p6', 17.87);
+tl.fromTo('#p6 .ptxt', { clipPath: 'inset(0 100% 0 0)' }, { clipPath: 'inset(0 0% 0 0)', duration: 1.0, ease: 'steps(15)' }, 18.44);
+up('#h6', 19.04, 16);
+up('#md7', 20.35, 20);
+typeLines('#md7', 21.82, 0.45);
+tl.fromTo('#f8a', { y: -260, opacity: 0 }, { y: 0, opacity: 1, duration: 0.45, ease: B }, 22.85);
+tl.fromTo('#f8b', { y: -260, opacity: 0 }, { y: 0, opacity: 1, duration: 0.45, ease: B }, 23.76);
+up('#h8', 24.060000000000002, 16);
+words('#b9', 25.06);
+swipe('#b9', 26.64);
+up('#h9', 27.86, 16);
+words('#b10', 29.37);
+swipe('#b10', 29.97);
+pop('#u10', 31.95);
+up('#h10', 33.27, 16);
+draw('#a10', 33.370000000000005, 0.4);
+
+document.querySelectorAll('.cap span').forEach((el) => { const t = +el.parentElement.dataset.start; tl.fromTo(el, { y: 14, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: E }, t); });
+window.__timelines['main'] = tl;
+</script>
+</body>
+</html>

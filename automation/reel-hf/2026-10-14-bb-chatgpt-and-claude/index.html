@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1080, height=1920">
+<script src="assets/js/gsap.min.js"></script>
+<style>
+@font-face{font-family:'ScrollyFigtree';src:url('assets/fonts/figtree.woff2') format('woff2');font-weight:300 900}
+@font-face{font-family:'ScrollyBricolage';src:url('assets/fonts/bricolage-800.woff2') format('woff2');font-weight:800;font-stretch:75% 100%}
+@font-face{font-family:'ScrollyHand';src:url('assets/fonts/covered-by-your-grace.woff2') format('woff2')}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1080px;height:1920px;overflow:hidden;background:#000}
+#root{position:relative;width:100%;height:100%;overflow:hidden;container-type:inline-size;font-family:'ScrollyFigtree',sans-serif}
+#cam{position:absolute;inset:0;transform-origin:50% 42%}
+.talk{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.scene{position:absolute;inset:0}
+.cutvid{position:absolute;left:0;top:0;width:1080px;height:1920px;object-fit:cover}
+.abs{position:absolute}.blk{display:block}
+.fill,.fade{position:absolute;inset:0}
+.big{position:absolute;left:5cqw;right:5cqw;text-align:center;font-family:'ScrollyBricolage';font-weight:800;font-stretch:78%;line-height:.9;letter-spacing:-.01em;text-shadow:0 .4cqw 2cqw rgba(0,0,0,.35)}
+.big .w{display:inline-block}
+.mk{position:relative;display:inline-block;padding:0 .12em}
+.mkbg{position:absolute;left:-.04em;right:-.04em;top:.1em;bottom:.02em;background:#FFC9A8;transform-origin:0 50%;border-radius:.08em;display:block}
+.mk{rotate:-1.5deg}.mkbg{skew:-6deg}
+.mkt{position:relative;color:#161210;text-shadow:none}
+.hand{position:absolute;font-family:'ScrollyHand';line-height:1;text-shadow:0 0 1.1cqw rgba(0,0,0,.6),0 .3cqw 1.6cqw rgba(0,0,0,.55);white-space:nowrap}
+.cap{position:absolute;left:6cqw;right:6cqw;text-align:center;z-index:8}
+.cap span{display:inline-block;font:800 5.4cqw/1.15 'ScrollyFigtree';color:#fff;text-shadow:0 0 .6cqw rgba(0,0,0,.8),0 .5cqw 1.8cqw rgba(0,0,0,.6)}
+.chat{position:absolute;left:6cqw;right:6cqw;display:flex;flex-direction:column;gap:1.6cqw}
+.msg{font:500 4cqw/1.3 'Segoe UI','ScrollyFigtree',sans-serif;padding:2.4cqw 3.2cqw;border-radius:4.4cqw;max-width:84%;box-shadow:0 .8cqw 2.4cqw rgba(0,0,0,.25)}
+.msg.me{align-self:flex-end;background:#2f2f2f;color:#fff;border-bottom-right-radius:1.2cqw}
+.msg.ai{align-self:flex-start;background:#fff;color:#1c1c1c;border-bottom-left-radius:1.2cqw}
+.chip{align-self:flex-end;font:600 3.2cqw 'Segoe UI','ScrollyFigtree';background:#fff;color:#333;padding:1.2cqw 2.4cqw;border-radius:2cqw;border:.3cqw solid #ddd}
+.paper{position:absolute;left:14cqw;right:14cqw;background:#fffdf7;background-image:repeating-linear-gradient(180deg,transparent 0 8.4cqw,#cfe0ee 8.4cqw 8.7cqw);padding:2.6cqw 5cqw 3cqw;font:400 7.6cqw/8.7cqw 'ScrollyHand';color:#2b2724;box-shadow:0 1.4cqw 3.6cqw rgba(0,0,0,.35)}
+.paper div{display:flex;justify-content:space-between}.tick{display:inline-block;color:#2e7d4f;font-family:'ScrollyFigtree';font-weight:800}.tick.x{color:#E05A33}
+.badge{position:absolute;width:46cqw;border-radius:2.4cqw;overflow:hidden;box-shadow:0 1.4cqw 3.6cqw rgba(0,0,0,.4);background:#fff}
+.b-top{background:#E05A33;color:#fff;text-align:center;font:800 9cqw/1 'ScrollyFigtree';padding:2cqw 0 1.4cqw}.b-top small{display:block;font:600 3.4cqw 'ScrollyFigtree';margin-top:.6cqw}
+.b-name{font:400 7.4cqw/1 'ScrollyHand';color:#161210;text-align:center;padding:4cqw 2cqw 4.6cqw}
+.folder{position:absolute;width:30cqw;filter:drop-shadow(0 1.4cqw 2.4cqw rgba(0,0,0,.4))}
+.f-tab{display:inline-block;background:#E9C98E;font:400 6.4cqw/1 'ScrollyHand';color:#2b2724;padding:1.6cqw 3cqw 1cqw 2.4cqw;border-radius:1.6cqw 3cqw 0 0;white-space:nowrap}
+.f-body{height:20cqw;border-radius:0 1.6cqw 1.6cqw 1.6cqw;position:relative;overflow:hidden;background:linear-gradient(180deg,#F2D7A3,#E2BE80)}
+.f-body i{position:absolute;left:12%;right:12%;display:block}.f-body i:nth-child(1){top:-.6cqw;height:4cqw;background:#fffdf7;border-radius:.4cqw}.f-body i:nth-child(2){top:7cqw;height:.5cqw;background:rgba(138,106,58,.35)}.f-body i:nth-child(3){top:10cqw;height:.5cqw;right:30%;background:rgba(138,106,58,.35)}
+.post{position:absolute;width:27cqw;border-radius:1cqw;border:.8cqw solid #fff;box-shadow:0 1.4cqw 3cqw rgba(0,0,0,.4)}
+.receipt{position:absolute;width:30cqw;background:#fffdf7;padding:3cqw 3.2cqw 6cqw;font:400 5.4cqw/1.12 'ScrollyHand';color:#2b2724;rotate:-3deg;box-shadow:0 1.4cqw 3cqw rgba(0,0,0,.35)}
+.receipt b{font-weight:400;color:#E05A33}
+.prompt{position:absolute;width:56cqw;display:flex;align-items:center;justify-content:space-between;background:#2f2f2f;color:#fff;border-radius:99px;padding:2.4cqw 2.4cqw 2.4cqw 4cqw;font:500 4.4cqw 'Segoe UI','ScrollyFigtree';box-shadow:0 1cqw 3cqw rgba(0,0,0,.4)}
+.prompt .ptxt{display:inline-block}
+.prompt i{font-style:normal;width:6.4cqw;height:6.4cqw;border-radius:50%;background:#fff;color:#2f2f2f;display:grid;place-items:center;font-weight:800}
+.md{position:absolute;left:5cqw;right:5cqw;background:#1f1d1b;border-radius:2cqw;overflow:hidden;box-shadow:0 1.6cqw 4cqw rgba(0,0,0,.45);font:500 3.7cqw/1.55 Consolas,'Cascadia Mono',monospace}
+.md-bar{display:flex;align-items:center;gap:1.2cqw;padding:1.6cqw 2.4cqw;background:#2b2826}.md-bar i{width:2cqw;height:2cqw;border-radius:50%;background:#5a5450;display:block}.md-bar span{margin-left:1.6cqw;font:600 3.2cqw 'ScrollyFigtree';color:#cfc6bd}
+.md-body{padding:1.8cqw 0 2.4cqw}.ln{display:flex;gap:3cqw;padding:0 3cqw;color:#e9e1d8;min-height:5.7cqw}.ln b{width:4cqw;text-align:right;color:#6f6862;font-weight:400}.lt{display:inline-block}
+.ln.h .lt{color:#FFC9A8;font-weight:700}.ln.add{background:rgba(110,190,130,.16)}.ln.add b{color:#7fcf93}.ln.no{background:rgba(224,90,51,.16)}.ln.no b{color:#E05A33}
+.brainwrap{position:absolute;inset:0;overflow:hidden;background:#efe6da}.brain{position:absolute;left:0;top:0;width:100%;display:block}
+.url{position:absolute;left:14cqw;right:14cqw;display:flex;align-items:center;gap:2cqw;background:#fff;border-radius:99px;padding:2.4cqw 4cqw;font:600 5cqw 'Segoe UI','ScrollyFigtree';color:#1c1c1c;box-shadow:0 1cqw 3cqw rgba(0,0,0,.35)}.lock{font-size:3.6cqw}
+.ph{position:relative;display:inline-block;font-weight:700;color:#8a3b22;background:#fbe9df;border-radius:1cqw;padding:0 .8cqw;margin:1.3cqw .6cqw}
+.ph-ring{position:absolute;left:-12%;top:-38%;width:124%;height:176%;overflow:visible;pointer-events:none}
+.draw{stroke-dasharray:1;stroke-dashoffset:1}
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="83.22" data-width="1080" data-height="1920">
+<div id="cam"><video id="talk-0" class="clip talk" src="assets/talk-seg/talk-0.mp4" muted playsinline data-start="0" data-duration="18" data-track-index="0"></video><video id="talk-1" class="clip talk" src="assets/talk-seg/talk-1.mp4" muted playsinline data-start="18" data-duration="18" data-track-index="1"></video><video id="talk-2" class="clip talk" src="assets/talk-seg/talk-2.mp4" muted playsinline data-start="36" data-duration="18" data-track-index="0"></video><video id="talk-3" class="clip talk" src="assets/talk-seg/talk-3.mp4" muted playsinline data-start="54" data-duration="18" data-track-index="1"></video><video id="talk-4" class="clip talk" src="assets/talk-seg/talk-4.mp4" muted playsinline data-start="72" data-duration="11.22" data-track-index="0"></video></div>
+<audio id="voice" src="assets/talk-audio.m4a" data-start="0" data-duration="83.22" data-track-index="9" data-volume="1"></audio>
+<div id="s1" class="clip scene" data-start="0" data-duration="3.61" data-track-index="2" style="z-index:5"><div class="fade" style="background:linear-gradient(180deg,rgba(0,0,0,.6),rgba(0,0,0,.25) 27.599999999999998%,rgba(0,0,0,0) 46%)"></div><div id="b1" class="big" style="top:6cqw;font-size:10.5cqw;color:#fff"><span class="w">I</span> <span class="w">gave</span> <span class="w">ChatGPT</span> <span class="w">and</span> <span class="w">Claude</span> <span class="w"><span class="mk"><span class="mkbg"></span><span class="mkt">one brain</span></span></span> </div></div>
+<div id="s2" class="clip scene" data-start="3.61" data-duration="6.94" data-track-index="2" style="z-index:5"><div class="fade" style="background:linear-gradient(180deg,rgba(0,0,0,.6),rgba(0,0,0,.25) 28.799999999999997%,rgba(0,0,0,0) 48%)"></div><div id="h2" class="hand" style="left:8cqw;top:6cqw;font-size:7cqw;rotate:-3deg;color:#FFF4DC">pick one and stick with it?</div><div id="t2a" class="abs" style="left:8cqw;top:26cqw;rotate:-4deg;display:flex;align-items:center;gap:2cqw;background:#fff;color:#1c1c1c;border-radius:2.4cqw 2.4cqw 0 0;padding:2.4cqw 4cqw 2.4cqw 3cqw;font:600 5cqw 'Segoe UI','ScrollyFigtree',sans-serif;box-shadow:0 1.2cqw 3cqw rgba(0,0,0,.35)"><span style="width:3.4cqw;height:3.4cqw;border-radius:50%;background:#161210;display:block"></span>ChatGPT<span style="color:#9a9a9a;font-weight:400;margin-left:1.4cqw">×</span></div><div id="t2b" class="abs" style="left:52cqw;top:24cqw;rotate:3deg;display:flex;align-items:center;gap:2cqw;background:#fff;color:#1c1c1c;border-radius:2.4cqw 2.4cqw 0 0;padding:2.4cqw 4cqw 2.4cqw 3cqw;font:600 5cqw 'Segoe UI','ScrollyFigtree',sans-serif;box-shadow:0 1.2cqw 3cqw rgba(0,0,0,.35)"><span style="width:3.4cqw;height:3.4cqw;border-radius:50%;background:#161210;display:block"></span>Claude<span style="color:#9a9a9a;font-weight:400;margin-left:1.4cqw">×</span></div></div>
+<div id="s3" class="clip scene" data-start="10.55" data-duration="6.15" data-track-index="2" style="z-index:5"><div class="fade" style="background:linear-gradient(180deg,rgba(0,0,0,.6),rgba(0,0,0,.25) 32.4%,rgba(0,0,0,0) 54%)"></div><div class="chat" style="top:6cqw"><div id="c3a" class="msg me">Quick background on my business first…</div><div id="c3b" class="msg me">Okay so again, my business is…</div><div id="c3c" class="msg me">Like I said before, I sell…</div></div><div id="h3" class="hand" style="left:6cqw;top:44cqw;font-size:6.5cqw;rotate:-4deg;color:#FFF4DC">every single time</div></div>
+<div id="s4" class="clip scene" data-start="16.7" data-duration="7.47" data-track-index="2" style="z-index:5"><div class="fade" style="background:linear-gradient(180deg,rgba(0,0,0,.6),rgba(0,0,0,.25) 31.2%,rgba(0,0,0,0) 52%)"></div><div id="b4" class="big" style="top:5cqw;font-size:12cqw;color:#fff"><span class="w">One</span> <span class="w">place</span> <span class="w">both</span> <span class="w">AIs</span> <span class="w">can</span> <span class="w"><span class="mk"><span class="mkbg"></span><span class="mkt">read</span></span></span> </div><div id="h4a" class="hand" style="left:6cqw;top:34cqw;font-size:7.5cqw;rotate:-5deg;color:#FFF4DC">ChatGPT</div><div id="a4a" class="abs blk" style="left:22cqw;top:24cqw;width:13cqw;height:9.75cqw;rotate:160deg"><svg viewBox="0 0 120 90" style="width:100%;height:100%"><path class="draw" pathLength="1" d="M8 12 C40 4 86 18 98 64" fill="none" stroke="#FFF4DC" stroke-width="6" stroke-linecap="round"/><path class="draw" pathLength="1" d="M80 52 L99 70 L110 46" fill="none" stroke="#FFF4DC" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div id="h4b" class="hand" style="left:70cqw;top:34cqw;font-size:7.5cqw;rotate:4deg;color:#FFF4DC">Claude</div><div id="a4b" class="abs blk" style="left:64cqw;top:24cqw;width:13cqw;height:9.75cqw;rotate:100deg"><svg viewBox="0 0 120 90" style="width:100%;height:100%"><path class="draw" pathLength="1" d="M8 12 C40 4 86 18 98 64" fill="none" stroke="#FFF4DC" stroke-width="6" stroke-linecap="round"/><path class="draw" pathLength="1" d="M80 52 L99 70 L110 46" fill="none" stroke="#FFF4DC" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div>
+<div id="s5" class="clip scene" data-start="24.17" data-duration="5.91" data-track-index="2" style="z-index:5"><div class="fade" style="background:linear-gradient(180deg,rgba(0,0,0,.6),rgba(0,0,0,.25) 31.2%,rgba(0,0,0,0) 52%)"></div><div id="h5" class="hand" style="left:26cqw;top:3cqw;font-size:7cqw;rotate:-3deg;color:#FFF4DC">1 hour in Claude</div><div id="p5" class="paper" style="top:14cqw"><div>new product <span id="t5a" class="tick">✓</span></div><div>launch date <span id="t5b" class="tick">✓</span></div><div>post series <span id="t5c" class="tick">✓</span></div></div></div>
+<div id="s6" class="clip scene" data-start="30.08" data-duration="4.02" data-track-index="2" style="z-index:5"><div class="fade" style="background:linear-gradient(180deg,rgba(0,0,0,.6),rgba(0,0,0,.25) 32.4%,rgba(0,0,0,0) 54%)"></div><div class="chat" style="top:6cqw"><div id="c6a" class="msg me">okay, picking up where we left off</div><div id="c6b" class="msg ai">I don’t have any context on that yet. Can you fill me in?</div></div><div id="h6" class="hand" style="left:8cqw;top:44cqw;font-size:6.5cqw;rotate:-4deg;color:#FFF4DC">starting from zero</div></div>
+<div id="s7" class="clip scene" data-start="34.1" data-duration="10.74" data-track-index="2" style="z-index:5"><div class="fade" style="background:linear-gradient(180deg,rgba(0,0,0,.6),rgba(0,0,0,.25) 32.4%,rgba(0,0,0,0) 54%)"></div><div id="mem7" class="abs" style="left:28cqw;top:6cqw;display:flex;align-items:center;gap:1.6cqw;background:#fff;color:#5d5d5d;border-radius:99px;padding:1.8cqw 3.6cqw;font:500 4.2cqw 'Segoe UI','ScrollyFigtree',sans-serif;box-shadow:0 1cqw 3cqw rgba(0,0,0,.3)"><span style="font-size:4.6cqw;color:#1c1c1c">✎</span>Memory updated</div><div id="h7a" class="hand" style="left:64cqw;top:20cqw;font-size:8cqw;rotate:6deg;color:#FFC9A8">spotty</div><div class="chat" style="top:20cqw;right:34cqw"><div id="c7" class="msg ai">Your launch is this Friday, right?</div></div><div id="h7b" class="hand" style="left:8cqw;top:38cqw;font-size:6.5cqw;rotate:-4deg;color:#FFF4DC">that changed last week</div></div>
+<div id="s8" class="clip scene" data-start="44.84" data-duration="5.13" data-track-index="2" style="z-index:5"><div class="fade" style="background:linear-gradient(180deg,rgba(0,0,0,.6),rgba(0,0,0,.25) 28.799999999999997%,rgba(0,0,0,0) 48%)"></div><div id="f8a" class="folder" style="left:1cqw;top:11cqw;rotate:-8deg"><div class="f-tab">offers</div><div class="f-body"><i></i><i></i><i></i></div></div><div id="f8b" class="folder" style="left:23cqw;top:4cqw;rotate:-2deg"><div class="f-tab">decisions</div><div class="f-body"><i></i><i></i><i></i></div></div><div id="f8c" class="folder" style="left:47cqw;top:8cqw;rotate:3deg"><div class="f-tab">series</div><div class="f-body"><i></i><i></i><i></i></div></div><div id="f8d" class="folder" style="left:69cqw;top:19cqw;rotate:8deg"><div class="f-tab">customers</div><div class="f-body"><i></i><i></i><i></i></div></div><div id="h8" class="hand" style="left:8cqw;top:42cqw;font-size:7cqw;rotate:-3deg;color:#FFF4DC">outside the AI</div></div>
+<div id="s9" class="clip scene" data-start="49.97" data-duration="4.94" data-track-index="2" style="z-index:5"><div class="brainwrap"><img id="br9" class="brain" src="assets/img/brain.png" data-layout-allow-overflow></div><div class="fill" style="background:rgba(22,18,16,0.12)"></div></div>
+<div id="s9b" class="clip scene" data-start="49.97" data-duration="4.94" data-track-index="3" style="z-index:7"><svg id="cur9" class="abs blk" style="left:74cqw;top:14cqw;width:7cqw;height:7cqw" viewBox="0 0 24 24"><path d="M4 2 L4 20 L9 15 L13 23 L16 21.5 L12 14 L19 14 Z" fill="#fff" stroke="#161210" stroke-width="1.5"/></svg></div>
+<div id="s10" class="clip scene" data-start="54.91" data-duration="4.59" data-track-index="2" style="z-index:5"><div class="fade" style="background:linear-gradient(180deg,rgba(0,0,0,.6),rgba(0,0,0,.25) 32.4%,rgba(0,0,0,0) 54%)"></div><div id="bb10" class="abs" style="left:20cqw;top:4cqw;width:60cqw;background:#F6EEE5;color:#161210;border-radius:2.4cqw;padding:3cqw 3.4cqw;text-align:center;font:800 6.6cqw/1 'ScrollyBricolage';font-stretch:78%;box-shadow:0 1.4cqw 3.6cqw rgba(0,0,0,.4)">🧠 Business Brain<div style="font:500 3.6cqw 'Segoe UI','ScrollyFigtree';margin-top:1.4cqw;color:#6b625b">Notion</div></div><div id="p10a" class="abs" style="left:6cqw;top:36cqw;background:#fff;color:#1c1c1c;border-radius:99px;padding:2.2cqw 4.6cqw;font:700 5.2cqw 'Segoe UI','ScrollyFigtree',sans-serif;box-shadow:0 1cqw 3cqw rgba(0,0,0,.35);white-space:nowrap">ChatGPT</div><div id="p10b" class="abs" style="left:66cqw;top:36cqw;background:#fff;color:#1c1c1c;border-radius:99px;padding:2.2cqw 4.6cqw;font:700 5.2cqw 'Segoe UI','ScrollyFigtree',sans-serif;box-shadow:0 1cqw 3cqw rgba(0,0,0,.35);white-space:nowrap">Claude</div><div id="a10a" class="abs blk" style="left:14cqw;top:17cqw;width:14cqw;height:10.5cqw;rotate:130deg"><svg viewBox="0 0 120 90" style="width:100%;height:100%"><path class="draw" pathLength="1" d="M8 12 C40 4 86 18 98 64" fill="none" stroke="#FFF4DC" stroke-width="6" stroke-linecap="round"/><path class="draw" pathLength="1" d="M80 52 L99 70 L110 46" fill="none" stroke="#FFF4DC" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div id="a10b" class="abs blk" style="left:70cqw;top:17cqw;width:14cqw;height:10.5cqw;rotate:50deg"><svg viewBox="0 0 120 90" style="width:100%;height:100%"><path class="draw" pathLength="1" d="M8 12 C40 4 86 18 98 64" fill="none" stroke="#FFF4DC" stroke-width="6" stroke-linecap="round"/><path class="draw" pathLength="1" d="M80 52 L99 70 L110 46" fill="none" stroke="#FFF4DC" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div>
+<div id="s11" class="clip scene" data-start="59.5" data-duration="5.62" data-track-index="2" style="z-index:5"><div class="fade" style="background:linear-gradient(180deg,rgba(0,0,0,.6),rgba(0,0,0,.25) 30%,rgba(0,0,0,0) 50%)"></div><div id="pr11" class="prompt" style="left:16cqw;top:10cqw"><span class="ptxt">check my Brain first</span><i>↑</i></div><div id="h11" class="hand" style="left:14cqw;top:30cqw;font-size:7cqw;rotate:-3deg;color:#FFF4DC">before it builds anything</div></div>
+<div id="s12" class="clip scene" data-start="65.12" data-duration="8.18" data-track-index="2" style="z-index:5"><div class="fade" style="background:linear-gradient(180deg,rgba(0,0,0,.6),rgba(0,0,0,.25) 33.6%,rgba(0,0,0,0) 56%)"></div><div id="md12" class="md" style="top:4cqw"><div class="md-bar"><i></i><i></i><i></i><span>Business Brain › Launch plan</span></div><div class="md-body"><div class="ln h"><b>1</b><span class="lt"># Fall launch</span></div><div class="ln no"><b>2</b><span class="lt">launch date: Friday</span></div><div class="ln add"><b>3</b><span class="lt">+ launch date: next Tuesday</span></div></div></div><div id="h12" class="hand" style="left:34cqw;top:38cqw;font-size:7cqw;rotate:-4deg;color:#FFF4DC">both see the new one</div></div>
+<div id="s13" class="clip scene" data-start="73.3" data-duration="6.37" data-track-index="2" style="z-index:5"><div class="fade" style="background:linear-gradient(180deg,rgba(0,0,0,.6),rgba(0,0,0,.25) 30%,rgba(0,0,0,0) 50%)"></div><div id="b13" class="big" style="top:6cqw;font-size:12cqw;color:#fff"><span class="w">You</span> <span class="w">decide</span> <span class="w">what</span> <span class="w">your</span> <span class="w">AI</span> <span class="w"><span class="mk"><span class="mkbg"></span><span class="mkt">knows</span></span></span> </div></div>
+<div id="s14" class="clip scene" data-start="79.67" data-duration="3.55" data-track-index="2" style="z-index:5"><div class="fade" style="background:linear-gradient(180deg,rgba(0,0,0,.6),rgba(0,0,0,.25) 30%,rgba(0,0,0,0) 50%)"></div><div id="b14" class="big" style="top:6cqw;font-size:11cqw;color:#fff"><span class="w">Scrolly</span> <span class="w"><span class="mk"><span class="mkbg"></span><span class="mkt">Business Brain</span></span></span> </div><div id="u14" class="url" style="top:22cqw"><span class="lock">🔒</span>scrollyseo.com</div><div id="h14" class="hand" style="left:56cqw;top:36cqw;font-size:7.5cqw;rotate:-4deg;color:#FFF4DC">simple setup</div></div>
+<video id="cut9" class="clip cutvid" src="assets/cut/f09-cut.webm" muted playsinline data-start="49.97" data-duration="4.94" data-track-index="4" style="z-index:6"></video>
+<div id="cap0" class="clip cap" data-start="3.61" data-duration="1.18" data-track-index="6" style="top:128cqw"><span>And I know some people</span></div>
+<div id="cap1" class="clip cap" data-start="4.81" data-duration="1.28" data-track-index="6" style="top:128cqw"><span>prefer to pick one AI</span></div>
+<div id="cap2" class="clip cap" data-start="6.11" data-duration="1.18" data-track-index="6" style="top:128cqw"><span>and stick with it</span></div>
+<div id="cap3" class="clip cap" data-start="7.31" data-duration="1.16" data-track-index="6" style="top:128cqw"><span>but personally I like to</span></div>
+<div id="cap4" class="clip cap" data-start="8.49" data-duration="1.08" data-track-index="6" style="top:128cqw"><span>use different tools for different</span></div>
+<div id="cap5" class="clip cap" data-start="9.59" data-duration="0.94" data-track-index="6" style="top:128cqw"><span>things</span></div>
+<div id="cap6" class="clip cap" data-start="10.55" data-duration="0.94" data-track-index="6" style="top:128cqw"><span>And the problem that I</span></div>
+<div id="cap7" class="clip cap" data-start="11.51" data-duration="1.26" data-track-index="6" style="top:128cqw"><span>was running into is that</span></div>
+<div id="cap8" class="clip cap" data-start="12.79" data-duration="0.56" data-track-index="6" style="top:128cqw"><span>I don't want to have</span></div>
+<div id="cap9" class="clip cap" data-start="13.37" data-duration="1.50" data-track-index="6" style="top:128cqw"><span>to keep explaining my business</span></div>
+<div id="cap10" class="clip cap" data-start="14.89" data-duration="1.70" data-track-index="6" style="top:128cqw"><span>over and over again</span></div>
+<div id="cap11" class="clip cap" data-start="24.17" data-duration="0.96" data-track-index="6" style="top:128cqw"><span>because maybe I've just spent</span></div>
+<div id="cap12" class="clip cap" data-start="25.15" data-duration="1.20" data-track-index="6" style="top:128cqw"><span>an hour working on something</span></div>
+<div id="cap13" class="clip cap" data-start="26.37" data-duration="1.02" data-track-index="6" style="top:128cqw"><span>in Claude</span></div>
+<div id="cap14" class="clip cap" data-start="27.51" data-duration="1.24" data-track-index="6" style="top:128cqw"><span>and I made some decisions</span></div>
+<div id="cap15" class="clip cap" data-start="28.77" data-duration="1.29" data-track-index="6" style="top:128cqw"><span>based on that output</span></div>
+<div id="cap16" class="clip cap" data-start="30.08" data-duration="1.44" data-track-index="6" style="top:128cqw"><span>And I want ChatGPT to</span></div>
+<div id="cap17" class="clip cap" data-start="31.54" data-duration="0.72" data-track-index="6" style="top:128cqw"><span>know what happened when I</span></div>
+<div id="cap18" class="clip cap" data-start="32.28" data-duration="1.32" data-track-index="6" style="top:128cqw"><span>go and I switch over</span></div>
+<div id="cap19" class="clip cap" data-start="34.10" data-duration="0.30" data-track-index="6" style="top:128cqw"><span>Both</span></div>
+<div id="cap20" class="clip cap" data-start="34.42" data-duration="1.24" data-track-index="6" style="top:128cqw"><span>of those AIs do have</span></div>
+<div id="cap21" class="clip cap" data-start="35.68" data-duration="0.90" data-track-index="6" style="top:128cqw"><span>a memory</span></div>
+<div id="cap22" class="clip cap" data-start="36.60" data-duration="1.12" data-track-index="6" style="top:128cqw"><span>So they do learn your</span></div>
+<div id="cap23" class="clip cap" data-start="37.74" data-duration="1.58" data-track-index="6" style="top:128cqw"><span>business as you use them</span></div>
+<div id="cap24" class="clip cap" data-start="39.34" data-duration="1.58" data-track-index="6" style="top:128cqw"><span>but it can be spotty</span></div>
+<div id="cap25" class="clip cap" data-start="40.94" data-duration="1.12" data-track-index="6" style="top:128cqw"><span>It doesn't always remember the</span></div>
+<div id="cap26" class="clip cap" data-start="42.08" data-duration="1.10" data-track-index="6" style="top:128cqw"><span>right thing or the most</span></div>
+<div id="cap27" class="clip cap" data-start="43.20" data-duration="1.40" data-track-index="6" style="top:128cqw"><span>up-to-date thing</span></div>
+<div id="cap28" class="clip cap" data-start="44.84" data-duration="2.00" data-track-index="6" style="top:128cqw"><span>So I started organizing my</span></div>
+<div id="cap29" class="clip cap" data-start="46.86" data-duration="2.08" data-track-index="6" style="top:128cqw"><span>business information outside of the</span></div>
+<div id="cap30" class="clip cap" data-start="48.96" data-duration="0.99" data-track-index="6" style="top:128cqw"><span>AI itself</span></div>
+<div id="cap31" class="clip cap" data-start="49.97" data-duration="1.16" data-track-index="6" style="top:128cqw"><span>I use Notion</span></div>
+<div id="cap32" class="clip cap" data-start="51.15" data-duration="0.82" data-track-index="6" style="top:128cqw"><span>and that is a central</span></div>
+<div id="cap33" class="clip cap" data-start="51.99" data-duration="1.18" data-track-index="6" style="top:128cqw"><span>place where a lot of</span></div>
+<div id="cap34" class="clip cap" data-start="53.19" data-duration="1.70" data-track-index="6" style="top:128cqw"><span>my business information lives</span></div>
+<div id="cap35" class="clip cap" data-start="54.91" data-duration="0.30" data-track-index="6" style="top:128cqw"><span>And</span></div>
+<div id="cap36" class="clip cap" data-start="55.05" data-duration="1.10" data-track-index="6" style="top:128cqw"><span>I've connected it to the</span></div>
+<div id="cap37" class="clip cap" data-start="56.17" data-duration="1.58" data-track-index="6" style="top:128cqw"><span>AI tools that I use</span></div>
+<div id="cap38" class="clip cap" data-start="57.77" data-duration="1.71" data-track-index="6" style="top:128cqw"><span>which is ChatGPT and Claude</span></div>
+<div id="cap39" class="clip cap" data-start="59.50" data-duration="0.30" data-track-index="6" style="top:128cqw"><span>And</span></div>
+<div id="cap40" class="clip cap" data-start="59.70" data-duration="0.84" data-track-index="6" style="top:128cqw"><span>that means that I can</span></div>
+<div id="cap41" class="clip cap" data-start="60.56" data-duration="1.18" data-track-index="6" style="top:128cqw"><span>just tell my AI to</span></div>
+<div id="cap42" class="clip cap" data-start="61.76" data-duration="1.74" data-track-index="6" style="top:128cqw"><span>reference my business Brain before</span></div>
+<div id="cap43" class="clip cap" data-start="63.52" data-duration="1.58" data-track-index="6" style="top:128cqw"><span>it actually builds something</span></div>
+<div id="cap44" class="clip cap" data-start="65.12" data-duration="1.14" data-track-index="6" style="top:128cqw"><span>So then when the information</span></div>
+<div id="cap45" class="clip cap" data-start="66.28" data-duration="1.68" data-track-index="6" style="top:128cqw"><span>gets updated in Notion</span></div>
+<div id="cap46" class="clip cap" data-start="67.98" data-duration="1.14" data-track-index="6" style="top:128cqw"><span>I make sure that both</span></div>
+<div id="cap47" class="clip cap" data-start="69.14" data-duration="2.46" data-track-index="6" style="top:128cqw"><span>tools are referencing up-to-date information</span></div>
+<div id="cap48" class="clip cap" data-start="71.62" data-duration="1.62" data-track-index="6" style="top:128cqw"><span>and nothing's getting stale</span></div>
+<audio id="fx-pop1" src="assets/sfx/pop-light.mp3" data-start="2.74" data-duration="0.18" data-track-index="12" data-volume="0.6"></audio>
+<audio id="fx-pop2a" src="assets/sfx/pop-bubble.mp3" data-start="8.71" data-duration="0.38" data-track-index="13" data-volume="0.6"></audio>
+<audio id="fx-pop2b" src="assets/sfx/pop-light.mp3" data-start="9.49" data-duration="0.18" data-track-index="14" data-volume="0.6"></audio>
+<audio id="fx-type3" src="assets/sfx/typing-laptop.mp3" data-start="13.69" data-duration="1.2" data-track-index="15" data-volume="0.35"></audio>
+<audio id="fx-pop3b" src="assets/sfx/pop-bubble.mp3" data-start="14.89" data-duration="0.38" data-track-index="12" data-volume="0.6"></audio>
+<audio id="fx-pop3c" src="assets/sfx/pop-light.mp3" data-start="15.71" data-duration="0.18" data-track-index="13" data-volume="0.6"></audio>
+<audio id="fx-wh4" src="assets/sfx/whoosh-air.mp3" data-start="16.70" data-duration="1.6" data-track-index="14" data-volume="0.4"></audio>
+<audio id="fx-pop4" src="assets/sfx/pop-bubble.mp3" data-start="22.37" data-duration="0.38" data-track-index="15" data-volume="0.6"></audio>
+<audio id="fx-pap5" src="assets/sfx/paper-slide.mp3" data-start="27.87" data-duration="1" data-track-index="12" data-volume="0.6"></audio>
+<audio id="fx-chk5a" src="assets/sfx/check.mp3" data-start="28.43" data-duration="1.2" data-track-index="13" data-volume="0.4"></audio>
+<audio id="fx-pop5b" src="assets/sfx/pop-light.mp3" data-start="28.77" data-duration="0.18" data-track-index="14" data-volume="0.6"></audio>
+<audio id="fx-chk5c" src="assets/sfx/check.mp3" data-start="29.39" data-duration="1.2" data-track-index="15" data-volume="0.4"></audio>
+<audio id="fx-pop6a" src="assets/sfx/pop-bubble.mp3" data-start="30.62" data-duration="0.38" data-track-index="12" data-volume="0.6"></audio>
+<audio id="fx-no6" src="assets/sfx/nope.mp3" data-start="32.62" data-duration="1.2" data-track-index="13" data-volume="0.45"></audio>
+<audio id="fx-pop7a" src="assets/sfx/pop-light.mp3" data-start="35.78" data-duration="0.18" data-track-index="14" data-volume="0.6"></audio>
+<audio id="fx-pop7b" src="assets/sfx/pop-bubble.mp3" data-start="41.50" data-duration="0.38" data-track-index="15" data-volume="0.6"></audio>
+<audio id="fx-pop7c" src="assets/sfx/pop-light.mp3" data-start="43.20" data-duration="0.18" data-track-index="12" data-volume="0.6"></audio>
+<audio id="fx-pap8a" src="assets/sfx/paper-slide.mp3" data-start="45.90" data-duration="1" data-track-index="13" data-volume="0.7"></audio>
+<audio id="fx-pop8b" src="assets/sfx/pop-bubble.mp3" data-start="46.86" data-duration="0.38" data-track-index="14" data-volume="0.6"></audio>
+<audio id="fx-pap8c" src="assets/sfx/paper-slide.mp3" data-start="47.14" data-duration="1" data-track-index="15" data-volume="0.7"></audio>
+<audio id="fx-pop8d" src="assets/sfx/pop-light.mp3" data-start="47.90" data-duration="0.18" data-track-index="12" data-volume="0.6"></audio>
+<audio id="fx-wh9" src="assets/sfx/whoosh-fast.mp3" data-start="49.85" data-duration="1.4" data-track-index="13" data-volume="0.55"></audio>
+<audio id="fx-pop9" src="assets/sfx/pop-light.mp3" data-start="51.92" data-duration="0.18" data-track-index="14" data-volume="0.5"></audio>
+<audio id="fx-pop10a" src="assets/sfx/pop-bubble.mp3" data-start="55.33" data-duration="0.38" data-track-index="15" data-volume="0.6"></audio>
+<audio id="fx-pop10b" src="assets/sfx/pop-light.mp3" data-start="58.05" data-duration="0.18" data-track-index="12" data-volume="0.6"></audio>
+<audio id="fx-chk10" src="assets/sfx/check.mp3" data-start="58.95" data-duration="1.2" data-track-index="13" data-volume="0.45"></audio>
+<audio id="fx-pop11" src="assets/sfx/pop-bubble.mp3" data-start="60.70" data-duration="0.38" data-track-index="14" data-volume="0.6"></audio>
+<audio id="fx-type11" src="assets/sfx/typing-laptop.mp3" data-start="61.76" data-duration="1" data-track-index="15" data-volume="0.35"></audio>
+<audio id="fx-pap12" src="assets/sfx/paper-slide.mp3" data-start="66.04" data-duration="1" data-track-index="12" data-volume="0.6"></audio>
+<audio id="fx-type12" src="assets/sfx/typing-laptop.mp3" data-start="66.60" data-duration="1.4" data-track-index="13" data-volume="0.3"></audio>
+<audio id="fx-chk12" src="assets/sfx/check.mp3" data-start="68.76" data-duration="1.2" data-track-index="14" data-volume="0.45"></audio>
+<audio id="fx-wh13" src="assets/sfx/whoosh-air.mp3" data-start="73.40" data-duration="1.6" data-track-index="15" data-volume="0.4"></audio>
+<audio id="fx-wh14" src="assets/sfx/whoosh-fast.mp3" data-start="79.55" data-duration="1.4" data-track-index="12" data-volume="0.55"></audio>
+<audio id="fx-chime14" src="assets/sfx/chime.mp3" data-start="81.47" data-duration="1.73" data-track-index="13" data-volume="0.5"></audio>
+<audio id="music-a" src="assets/music/music-a.mp3" data-start="0" data-duration="83.22" data-track-index="10" data-volume="0.02" data-fade-in="4.22" data-fade-out="1.95"></audio>
+</div>
+<script>
+const tl = gsap.timeline({ paused: true });
+const E = 'power3.out', B = 'back.out(1.6)';
+const pop = (s, t, r = 0) => tl.fromTo(s, { scale: 0, rotation: r - 8, opacity: 0 }, { scale: 1, rotation: r, opacity: 1, duration: 0.45, ease: B }, t);
+const up = (s, t, y = 30) => tl.fromTo(s, { y, opacity: 0 }, { y: 0, opacity: 1, duration: 0.4, ease: E }, t);
+const draw = (s, t, d = 0.45) => tl.fromTo(s + ' .draw, ' + s + '.draw', { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: d, ease: 'power2.inOut' }, t);
+const swipe = (s, t) => tl.fromTo(s + ' .mkbg', { scaleX: 0 }, { scaleX: 1, duration: 0.35, ease: 'power2.out' }, t);
+const words = (s, t) => tl.fromTo(s + ' .w', { y: 40, opacity: 0 }, { y: 0, opacity: 1, duration: 0.35, ease: E, stagger: 0.06 }, t);
+const typeLines = (s, t0, gap) => document.querySelectorAll(s + ' .ln').forEach((el, i) => {
+  tl.fromTo(el, { opacity: 0 }, { opacity: 1, duration: 0.01 }, t0 + i * gap);
+  tl.fromTo(el.querySelector('.lt'), { clipPath: 'inset(0 100% 0 0)' }, { clipPath: 'inset(0 0% 0 0)', duration: Math.max(0.2, gap * 0.8), ease: 'steps(18)' }, t0 + i * gap);
+});
+tl.set('#cam', { scale: 1 }, 0);
+tl.set('#cam', { scale: 1.07 }, 3.601);
+tl.set('#cam', { scale: 1 }, 16.5);
+tl.set('#cam', { scale: 1.07 }, 22.146);
+tl.set('#cam', { scale: 1 }, 24.214);
+tl.set('#cam', { scale: 1.07 }, 29.882);
+tl.set('#cam', { scale: 1 }, 33.456);
+tl.set('#cam', { scale: 1.07 }, 44.643);
+tl.set('#cam', { scale: 1 }, 49.81);
+tl.set('#cam', { scale: 1.07 }, 51.181);
+tl.set('#cam', { scale: 1 }, 54.792);
+tl.set('#cam', { scale: 1.07 }, 59.399);
+tl.set('#cam', { scale: 1 }, 65.02);
+tl.set('#cam', { scale: 1.07 }, 73.1);
+tl.set('#cam', { scale: 1 }, 79.475);
+tl.fromTo('#cam', { scale: 1.0 }, { scale: 1.15, duration: 0.45, ease: E, immediateRender: false }, 14.89);
+tl.set('#cam', { scale: 1.0 }, 49.97);
+tl.fromTo('#cam', { x: 0, filter: 'blur(0px)' }, { x: -90, filter: 'blur(14px)', duration: 0.12, ease: 'power2.in', immediateRender: false }, 49.97 - 0.12);
+tl.fromTo('#cam', { x: 90, filter: 'blur(14px)' }, { x: 0, filter: 'blur(0px)', duration: 0.18, ease: 'power2.out', immediateRender: false }, 49.97);
+tl.fromTo('#cam', { x: 0, filter: 'blur(0px)' }, { x: -90, filter: 'blur(14px)', duration: 0.12, ease: 'power2.in', immediateRender: false }, 79.67 - 0.12);
+tl.fromTo('#cam', { x: 90, filter: 'blur(14px)' }, { x: 0, filter: 'blur(0px)', duration: 0.18, ease: 'power2.out', immediateRender: false }, 79.67);
+words('#b1', 0.15);
+swipe('#b1', 2.74);
+up('#h2', 4.81, 16);
+pop('#t2a', 8.71);
+pop('#t2b', 9.49);
+pop('#c3a', 13.69);
+pop('#c3b', 14.89);
+pop('#c3c', 15.71);
+up('#h3', 16.01, 16);
+words('#b4', 16.8);
+swipe('#b4', 19.44);
+up('#h4a', 22.37, 16);
+draw('#a4a', 22.470000000000002, 0.35);
+up('#h4b', 22.62, 16);
+draw('#a4b', 22.720000000000002, 0.35);
+up('#h5', 25.29, 16);
+tl.fromTo('#p5', { y: -60, opacity: 0, rotation: 4 }, { y: 0, opacity: 1, rotation: -2, duration: 0.5, ease: B }, 27.87);
+pop('#t5a', 28.43);
+pop('#t5b', 28.77);
+pop('#t5c', 29.39);
+up('#c6a', 30.62, 24);
+pop('#c6b', 32.62);
+up('#h6', 33.22, 16);
+pop('#mem7', 35.78);
+up('#h7a', 40.3, 16);
+pop('#c7', 41.5);
+up('#h7b', 43.2, 16);
+tl.fromTo('#f8a', { y: -260, opacity: 0 }, { y: 0, opacity: 1, duration: 0.45, ease: B }, 45.9);
+tl.fromTo('#f8b', { y: -260, opacity: 0 }, { y: 0, opacity: 1, duration: 0.45, ease: B }, 46.86);
+tl.fromTo('#f8c', { y: -260, opacity: 0 }, { y: 0, opacity: 1, duration: 0.45, ease: B }, 47.14);
+tl.fromTo('#f8d', { y: -260, opacity: 0 }, { y: 0, opacity: 1, duration: 0.45, ease: B }, 47.9);
+up('#h8', 49.16, 16);
+tl.fromTo('#br9', { yPercent: 0 }, { yPercent: -38, duration: 4.94, ease: 'none' }, 49.97);
+tl.fromTo('#cur9', { x: 160, y: 220, opacity: 0 }, { x: 0, y: 0, opacity: 1, duration: 0.8, ease: E }, 50.57);
+tl.fromTo('#cur9', { scale: 1 }, { scale: 0.82, duration: 0.08, yoyo: true, repeat: 1, immediateRender: false }, 51.87);
+pop('#bb10', 55.33);
+pop('#p10a', 58.05);
+pop('#p10b', 58.95);
+draw('#a10a', 57.949999999999996, 0.35);
+draw('#a10b', 58.85, 0.35);
+pop('#pr11', 60.7);
+tl.fromTo('#pr11 .ptxt', { clipPath: 'inset(0 100% 0 0)' }, { clipPath: 'inset(0 0% 0 0)', duration: 1.0, ease: 'steps(15)' }, 61.76);
+up('#h11', 64.02, 16);
+up('#md12', 66.04, 20);
+typeLines('#md12', 66.6, 0.6);
+up('#h12', 68.76, 16);
+words('#b13', 73.39999999999999);
+swipe('#b13', 76.32);
+words('#b14', 79.77);
+swipe('#b14', 80.27);
+pop('#u14', 81.47);
+up('#h14', 82.11, 16);
+
+document.querySelectorAll('.cap span').forEach((el) => { const t = +el.parentElement.dataset.start; tl.fromTo(el, { y: 14, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: E }, t); });
+window.__timelines['main'] = tl;
+</script>
+</body>
+</html>
