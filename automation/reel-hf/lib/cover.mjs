@@ -25,11 +25,14 @@ export const COVER_BGS = ['cream', 'blush', 'mist', 'peach', 'ink'];
 // The photo layouts are the Oct 10 Reel cover templates (automation/carousels/lib/reel-covers.mjs) without the italic
 // serif (Mercedes 2026-10-14): big lines in Bricolage, the *accent* on the peach marker, notes handwritten.
 export const CUT_STYLES = { cut: 'Centered', behind: 'Text behind you', side: 'Off-center' };
-export const PHOTO_STYLES = { photo: 'Title on top', stack: 'Stack', title: 'Big title', number: 'Big number', word: 'One big word', label: 'Label' };
+// 'number' = one big number OR word (Mercedes 2026-10-14 merged "Big number" and "One big word"); 'word' still renders
+// as 'number' for any older pick.
+export const PHOTO_STYLES = { photo: 'Title on top', stack: 'Stack', title: 'Big title', number: 'Big number or word', label: 'Label' };
 export const COVER_STYLES = { ...CUT_STYLES, ...PHOTO_STYLES };
 
 export function coverHtml({ text, aside, cut, photo, style = photo && !cut ? 'photo' : 'cut', bg = 'cream', pos = 'bottom', brand = scrolly, asset = u }) {
   const C = brand.C;
+  if (style === 'word') style = 'number';
   if (PHOTO_STYLES[style] && style !== 'photo') return photoLayoutHtml({ text, aside, photo, style, pos, brand, asset });
   if (style !== 'photo' && !cut) style = 'photo';
   const onPhoto = style === 'photo', dark = !onPhoto && bg === 'ink';
@@ -119,7 +122,7 @@ window.coverReady = new Promise((ok) => {
 // The Oct 10 layouts on her full video frame. text: the cover line, *accent* = the word(s) that get big or marked;
 // aside: the handwritten note. pos: 'top' | 'bottom' (keep the text off her face). Lines per layout:
 //   stack  = note + arrow, caps, BIG accent, caps        title  = BIG title (accent marked), note under it
-//   number = note + arrow, HUGE accent, the rest small   word   = note, ONE HUGE word (the accent), the rest small
+//   number = note + arrow, the HUGE accent (a number or a word), the rest small
 //   label  = note + arrow, the line on the peach marker
 function photoLayoutHtml({ text, aside, photo, style, pos, brand, asset }) {
   const C = brand.C, cream = C.cream2 || '#FFF4DC';
@@ -131,8 +134,11 @@ function photoLayoutHtml({ text, aside, photo, style, pos, brand, asset }) {
   const note = (arrow) => aside && L.push(['script', esc(aside), arrow]);
   if (style === 'stack') { note(true); if (m) { before && L.push(['caps', esc(before)]); L.push(['big', esc(accent)]); after && L.push(['caps', esc(after)]); } else L.push(['caps', esc(clean)]); }
   else if (style === 'title') { L.push(['big', mk(text)]); aside && L.push(['under', esc(aside)]); }
-  else if (style === 'number') { note(true); const n = accent || (clean.match(/[$€£]?\d[\d,.]*%?k?/i) || [clean])[0]; L.push(['huge', esc(n)]); const rest = m ? `${before} ${after}`.trim() : clean.replace(n, '').trim(); rest && L.push(['small', esc(rest)]); }
-  else if (style === 'word') { note(false); const w = accent || clean.split(/\s+/).sort((a, b) => b.length - a.length)[0]; L.push(['word', esc(w.toLowerCase())]); const rest = m ? `${before} ${after}`.trim() : clean.replace(w, '').trim(); rest && L.push(['small', esc(rest)]); }
+  else if (style === 'number') { // the *accent* (or the first number, or the longest word) huge, the rest small under it
+    note(true);
+    const n = accent || (clean.match(/[$€£]?\d[\d,.]*%?k?/i) || [])[0] || clean.split(/\s+/).sort((a, b) => b.length - a.length)[0];
+    L.push(['huge', esc(n)]); const rest = m ? `${before} ${after}`.trim() : clean.replace(n, '').replace(/\s+/g, ' ').trim(); rest && L.push(['small', esc(rest)]);
+  }
   else { note(true); L.push(['label', esc(clean)]); }
   const place = style === 'title' ? 'top' : pos === 'top' ? 'top' : 'bottom';
   const ARROW = `<svg class="arrow" viewBox="0 0 120 170"><path d="M38 8c-30 30-18 70 18 70 26 0 26-34 2-30-30 6-30 60-6 92" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round"/><path d="M34 128l18 22 20-20" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
@@ -153,7 +159,7 @@ html,body{width:1080px;height:1920px;overflow:hidden;background:#000}
 .l{position:relative;font-family:B;font-weight:800;font-stretch:78%}
 .caps{font-size:calc(104px*var(--k));line-height:1;text-transform:uppercase;letter-spacing:-.01em;font-stretch:86%}
 .big{font-size:calc(200px*var(--k));line-height:.86;letter-spacing:-.015em;margin:.03em 0 .06em;text-shadow:0 0 46px rgba(0,0,0,.5),0 4px 16px rgba(0,0,0,.4)}
-.huge{font-size:calc(300px*var(--k));line-height:.86;letter-spacing:-.02em;text-shadow:0 0 46px rgba(0,0,0,.5),0 4px 16px rgba(0,0,0,.4)}
+.huge{font-size:calc(300px*var(--k));line-height:.86;letter-spacing:0;font-stretch:84%;text-shadow:0 0 46px rgba(0,0,0,.5),0 4px 16px rgba(0,0,0,.4)}
 .word{font-size:calc(280px*var(--k));line-height:.9;letter-spacing:-.04em;text-shadow:0 0 46px rgba(0,0,0,.45)}
 .l .mk{font-size:inherit}
 .small{font:500 calc(44px*var(--k))/1.25 F,sans-serif;margin-top:18px}

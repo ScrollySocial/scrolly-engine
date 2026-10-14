@@ -582,8 +582,9 @@ function renderCover() {
   const sty = $('#cstyles'); sty.textContent = '';
   // styles (lib/cover.mjs): cut-outs of her on a color, or layouts on her full video frame (the Oct 10 covers, no italics)
   const CUTS = { cut: 'Centered', behind: 'Text behind you', side: 'Off-center' };
-  const PHOTOS = { photo: 'Title on top', stack: 'Stack', title: 'Big title', number: 'Big number', word: 'One big word', label: 'Label' };
-  for (const [name, group] of [['Cut-out of you:', CUTS], ['On your video frame:', PHOTOS]]) {
+  const PHOTOS = { photo: 'Title on top', stack: 'Stack', title: 'Big title', number: 'Big number or word', label: 'Label' };
+  if (c.style === 'word') c.style = 'number';
+  for (const [name, group] of [['You cut out, on a color you pick:', CUTS], ['Your video frame as the background:', PHOTOS]]) {
     const row = el('div', 'cstyles'); row.style.width = '100%'; row.append(el('span', 'sub', name));
     row.lastChild.style.margin = '0 4px 0 0';
     for (const [k, label] of Object.entries(group)) {
@@ -601,7 +602,7 @@ function renderCover() {
     sty.append(row);
   }
   if (CUTS[c.style]) {
-    const cutLbl = el('span', 'sub', 'Background:'); cutLbl.style.margin = '0 4px 0 0'; sty.append(cutLbl);
+    const cutLbl = el('span', 'sub', 'Color behind you:'); cutLbl.style.margin = '0 4px 0 0'; sty.append(cutLbl);
     for (const bg of R.coverBgs || Object.keys(BG)) {
       const b = el('button', 'sw'); b.type = 'button'; b.title = bg; b.setAttribute('aria-label', 'Background ' + bg); b.style.background = BG[bg] || bg;
       b.setAttribute('aria-pressed', c.bg === bg); b.addEventListener('click', () => setCover({ bg })); sty.append(b);

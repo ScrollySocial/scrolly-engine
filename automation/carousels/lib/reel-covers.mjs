@@ -69,7 +69,7 @@ em{font-family:'${f.bold.family}',sans-serif;font-style:normal;font-weight:800;f
 .serif{font:800 calc(200px*var(--k))/.86 '${f.bold.family}',sans-serif;font-stretch:78%;color:${CREAM};letter-spacing:-.015em;margin:.02em 0 .06em}
 .title{font:800 calc(150px*var(--k))/.92 '${f.bold.family}',sans-serif;font-stretch:78%;letter-spacing:-.015em}
 .title em{font-size:1em}
-.word{font:800 calc(280px*var(--k))/.9 'Inter Tight',sans-serif;letter-spacing:-.06em;text-transform:lowercase}
+.word{font:800 calc(280px*var(--k))/.9 'Inter Tight',sans-serif;letter-spacing:-.01em;text-transform:lowercase}
 .small{font:500 calc(44px*var(--k))/1.25 '${f.highlight.family}',sans-serif;margin-top:18px;letter-spacing:.005em}
 .script{font:400 calc(76px*var(--k))/1.02 'Covered By Your Grace',cursive;letter-spacing:.03em;text-transform:uppercase;transform:rotate(-5deg);align-self:flex-start;margin:0 0 6px 40px;text-align:left;max-width:560px}
 .t.title-t .script{align-self:center;transform:none;margin:14px 0 0;text-transform:none;letter-spacing:.06em;font-size:calc(58px*var(--k))}
