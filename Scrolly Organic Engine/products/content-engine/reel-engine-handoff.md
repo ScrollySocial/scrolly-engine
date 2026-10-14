@@ -208,6 +208,23 @@ unless marked **open**. Not logged to the Business Brain yet: she said it's stil
 - `lib/doctor.mjs` now fixes (npm/pip installs, ffmpeg copy, venv, folders, browser path); `--check` looks only;
   `--install` adds Node/Python/browser via winget/brew. New skill `.claude/skills/reel-engine-setup/`.
 
+- **Customer package (session 6, same branch):** `automation/reel-package/build-package.mjs` builds
+  `dist/reel-engine/` (gitignored; zip it to ship) from `reel-hf/lib` + `reel-package/overlay/`. Covers checklist items
+  1-3 of `selling-research.md` "Before selling": empty `lib/assets/sfx` + `sounds.md` (the 10 exact Mixkit items, matched
+  by file hash, with numbers) + `sfx/sources.json`; no Mixkit fetching code; no ffmpeg (doctor installs it); blank
+  `reel-settings.json` and `lib/brand/my-brand.mjs` (neutral starter colors, the 3 OFL fonts); `OFL-*.txt` per font;
+  `THIRD-PARTY-NOTICES.md` + Apache text; Getting started `README.md`; customer `CLAUDE.md` (Reel workflow) and a
+  customer copy of the setup skill. The cut script is `reel-studio/prep.mjs` rewired at build time (plans/, work/audio,
+  no Scrolly spelling fixes). The build fails if any audio, ffmpeg, Mixkit URL in code or Scrolly/Mercedes detail ships.
+  Engine changes: a missing sound is skipped ("sound off") instead of a broken `<audio>`; doctor's sound check is a NOTE
+  and converts dropped-in Mixkit downloads to `<name>.mp3`; doctor checks Claude Code installed + `claude auth status`.
+  **Tested as a new customer (2026-10-13):** fresh copy → doctor fixed 8 items to "All set" (Edge, puppeteer +
+  HyperFrames, ffmpeg-static, ffprobe, venv, faster-whisper) → transcribe → cut → 20s sample Reel: check 0 errors,
+  render 5m48s, -14.3 LUFS. Voice-file `build-lib.mjs` output still byte-identical.
+  **Not in the package yet:** a customer "make a Reel" skill (scrolly-reels is hers; the package's CLAUDE.md carries the
+  steps), a starter build.mjs `review` branch, a license/EULA for our own code, Mac test. Item 2 (Claude Pro week) and
+  5 (Mixkit email) still open.
+
 ## Next: overnight scheduling (planned 2026-10-13, superseded by Session 4 above)
 Mercedes's idea (2026-10-13), agreed in shape:
 - **Overnight run (~1am):** for every Content Pipeline row with Format Reel, Status Edit and footage: transcribe, rough

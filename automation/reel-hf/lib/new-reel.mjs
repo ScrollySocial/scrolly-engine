@@ -14,7 +14,8 @@ if (!id || !/^\d{4}-\d{2}-\d{2}-[a-z0-9-]+$/.test(id)) { console.log('Usage: nod
 const dir = path.join(ROOT, id);
 if (existsSync(dir)) throw new Error(`${dir} already exists`);
 
-const copyDir = (from, to) => { mkdirSync(to, { recursive: true }); for (const f of readdirSync(from)) copyFileSync(path.join(from, f), path.join(to, f)); };
+// dotfiles (an empty folder's .gitkeep) and notes (sfx/sources.json) stay behind; a missing source folder (no sounds downloaded yet) is fine
+const copyDir = (from, to) => { mkdirSync(to, { recursive: true }); if (existsSync(from)) for (const f of readdirSync(from)) if (!/^\.|\.json$/.test(f)) copyFileSync(path.join(from, f), path.join(to, f)); };
 for (const sub of ['fonts', 'js', 'sfx']) copyDir(path.join(HERE, 'assets', sub), path.join(dir, 'assets', sub));
 for (const sub of ['img', 'music', 'cut']) mkdirSync(path.join(dir, 'assets', sub), { recursive: true });
 for (const f of ['hyperframes.json', 'CLAUDE.md', 'AGENTS.md']) copyFileSync(path.join(SRC, f), path.join(dir, f));

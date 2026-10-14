@@ -1,0 +1,102 @@
+---
+name: reel-engine-setup
+description: Set up the Reel engine in this folder for the person on this computer. Asks a few plain questions (name, footage and export folders, review, tracker, posting, look, rules), writes reel-settings.json and their brand kit, then runs lib/doctor.mjs, which installs what's missing (HyperFrames helpers, puppeteer, ffmpeg, the Python transcription venv, folders, browser path) and, with permission, system software. Use when someone says "set up my Reel engine", "install the Reel engine", "get Reels working on this computer", opens this folder for the first time, or when doctor.mjs says NEEDS YOU.
+---
+
+# Set up my Reel engine
+
+The engine (`lib/`) holds no personal details. Everything about one person lives in `reel-settings.json` (each section
+has a `_note` saying what it's for) and their look in `lib/brand/my-brand.mjs`. This skill fills both in by asking,
+then hands over to `node lib/doctor.mjs`, which checks every piece and fixes what it can.
+Run engine commands from this folder (the one with `reel-settings.json`) with the **Bash sandbox off** (npm, pip,
+the browser, ffmpeg).
+
+## 0. Already set up?
+Read `reel-settings.json`. If `owner.name` is filled in and `node lib/doctor.mjs --check` ends with "All set", tell
+them it's ready and stop. A fresh package has empty values: ask everything below.
+
+## 1. Ask (plain words, a few at a time)
+Use AskUserQuestion for choices, chat for free text. Recommended option first. Don't ask what you can detect.
+
+**About you**
+1. "What's your first name?" → `owner.name` (status lines say "waiting on <name>").
+2. "What's your Instagram handle?" → `owner.instagram` (shown on the caption preview).
+
+**Your files** (look first: OneDrive, Dropbox, iCloud Drive, Videos folders; offer the ones that exist)
+3. "Where do your raw videos go?" → `folders.footage`. One subfolder per series is the pattern.
+4. "Where should finished Reels land?" → `folders.exports`. Recommend a synced folder (OneDrive / Dropbox / iCloud)
+   so finished videos reach their phone. Engine adds `final/` and `previews/` inside.
+
+**How you work**
+5. "Will anyone else review your Reels?" → `review.shared`.
+   - No, just me (recommended): the local review page. Fastest, private, real animations and sounds, nothing uploaded.
+   - Yes, a teammate / VA / client: a shareable page. **Not built yet**: say so, set `false`, note it as wanted.
+6. "Where do you keep track of your posts?" → `tracker`.
+   - Nowhere / I'll start Reels from chat (default): `app: "none"`.
+   - Notion: search their Notion for a content tracker database; show what you found and confirm before using it
+     (never create one without a yes). Store `database` (collection id), `name`, and their status names for
+     edit / approved / ready-to-queue / scheduled in `statuses`.
+7. "How do finished Reels get posted?" → `posting`.
+   - I post them myself (default): `videoHost: "none"`, `scheduler: ""`. The engine makes the posting copy (cover baked
+     in as the first frame) and tells them where it is.
+   - Through a scheduler (e.g. Buffer): `scheduler: "<name>"`. A scheduler needs the video at a link that never
+     expires. If they have a WordPress site: `videoHost: "wordpress"` + a client module path; their WordPress
+     application password goes in that client's `.env` **typed by them**, never pasted into chat.
+
+**Your look** (`lib/brand/my-brand.mjs`; every value marked EDIT ME)
+8. "What are your brand colors?" Ask for hex codes or a link to their site / brand guide and read the colors from it.
+   Map them to the seven roles in the file's comment (light background, warmer light, marker, text, accent, two soft
+   panels); show the mapping in plain words and confirm. The marker color must be light enough for dark text on it.
+9. "Which fonts do you use?" Keep the starter fonts if they have none. For their own: get the font files into
+   `lib/assets/fonts` **with their license file next to each**, and update `fontFaces` + `fontFiles`. A Google Font
+   is always fine. A paid font: ask whether its license covers video; if unsure, pick a close Google Font instead.
+10. Set `name`, `label` and `site`, and keep `brand` in settings equal to `name` (rename the key in
+    `lib/brand/index.mjs` to match if it changes). Show them a cover rendered with the kit (`renderCovers` in
+    `lib/cover.mjs`) before calling it done.
+11. "How loud should background music be under your voice?" → `templates.studio.music.volume`
+    (Quiet bed = the template's 0.05, leave it unset / Very quiet = 0.02). They can still change it per Reel on the
+    review page.
+12. "Anything you never want in a Reel?" (free text, optional) → `rules.list`, one short line each. If they keep a
+    longer rules doc, point `rules.doc` + `rules.section` at it; otherwise leave `doc` empty.
+
+Leave `tools` as shipped unless doctor says otherwise (it fills in `tools.browser` itself). On a Mac, set
+`tools.python` to `tools/.venv/bin/python`.
+
+## 2. Write the files
+Update `reel-settings.json` in place: keep every `_note`, change only the values. Paths: absolute, forward slashes.
+Show them a short plain summary of what you saved (no JSON).
+
+## 3. Install what's missing
+1. `node lib/doctor.mjs` → fixes everything inside the folder: puppeteer + HyperFrames helpers (npm), ffmpeg +
+   ffprobe, the Python venv with faster-whisper, GSAP, missing folders, the browser path. Takes a few minutes the
+   first time (downloads); run it in the background and wait.
+2. Lines left as **NEEDS YOU**:
+   - Node / Python / browser missing: ask "Can I install <thing> with winget (or brew)?" and on a yes run
+     `node lib/doctor.mjs --install`. Restart the terminal if Node or Python was installed, then run doctor again.
+   - Engine files missing (transcribe script, cut script, fonts): the package is incomplete. Stop and say which
+     files; don't invent replacements.
+   - WordPress client / tracker id: go back to question 6 or 7.
+3. **NOTE** lines don't block:
+   - Sound effects: point them to `sounds.md` (10 free downloads from Mixkit, ~5 minutes). They drop the downloads in
+     `lib/assets/sfx/` and run doctor again, which renames them. **Never download the sounds for them**: the Mixkit
+     license is theirs to accept, and the engine must not fetch Mixkit files itself.
+   - Claude Code signed in (terminal): fine if they use Claude Code inside the desktop app.
+   - OneDrive "keep on this device" downloads every take; ask before `--install` pins it, since it can be many GB.
+4. Done when `node lib/doctor.mjs --check` ends with "All set".
+
+## 4. Prove it works (2 minutes)
+Ask for one short test clip (or use any in their footage folder): `node lib/transcribe-footage.mjs "<Folder>/<File>"`
+and show them the transcript's first lines. First run downloads the speech model (~150 MB).
+
+## 5. Hand over
+One short message: what's set up, where finished Reels will land, how to start ("say *make a Reel from <file>*"),
+whether the sounds are still to download, and anything still open. The Reel workflow is in `CLAUDE.md`.
+
+## Never
+- Never put passwords, API keys or tokens into chat or into `reel-settings.json`.
+- Never install system software (Node, Python, a browser) or pin a synced folder without a yes.
+- Never create a Notion database, Buffer channel or WordPress anything without asking.
+- Never add sound or music files to the package for them.
+
+## Credits
+The doctor-script pattern comes from Nicola Pocock's (@getgitgirl) claude-reel-editor, MIT license.

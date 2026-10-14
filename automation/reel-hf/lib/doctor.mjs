@@ -10,11 +10,11 @@
 // Each line: OK · FIXED (it changed something) · NEEDS YOU (it can't fix this; the line says what to do) ·
 // NOTE (worth doing, doesn't block Reels).
 import { execFileSync, spawnSync } from 'node:child_process';
-import { copyFileSync, existsSync, mkdirSync, readdirSync, writeFileSync } from 'node:fs';
+import { copyFileSync, existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { createRequire } from 'node:module';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { FILE, P, S, exe, findBrowser, hf, pythonCmd, saveSettings } from './settings.mjs';
+import { FILE, P, S, exe, findBrowser, hf, pythonCmd, saveSettings, tool } from './settings.mjs';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const args = process.argv.slice(2);
@@ -36,13 +36,13 @@ async function step(msg, test, { fix, needs, system, soft } = {}) {
       let again = false;
       try { again = await test(); } catch {}
       if (again) return say('FIXED', `${msg}${note ? ` (${note})` : ''}`);
-    } catch (e) { return say('NEEDS YOU', msg, `${needs || 'see above'} (tried to fix: ${String(e.message).split('\n')[0]})`); }
+    } catch (e) { return say(soft ? 'NOTE' : 'NEEDS YOU', msg, `${needs || 'see above'} (tried to fix: ${String(e.message).split('\n')[0]})`); }
   }
   say(soft ? 'NOTE' : 'NEEDS YOU', msg, fix && !allowed ? `${needs}${system ? ' · or run: node lib/doctor.mjs --install' : FIX ? '' : ' · or run: node lib/doctor.mjs'}` : needs);
 }
 
 const run = (cmd, a, opts = {}) => {
-  const p = spawnSync(cmd, a, { encoding: 'utf8', shell: WIN && /^(npm|npx)$/.test(cmd), stdio: ['ignore', 'pipe', 'pipe'], ...opts });
+  const p = spawnSync(cmd, a, { encoding: 'utf8', shell: WIN && /^(npm|npx|claude)$/.test(cmd), stdio: ['ignore', 'pipe', 'pipe'], ...opts });
   if (p.status !== 0) throw new Error((p.stderr || p.stdout || p.error?.message || `${cmd} failed`).trim().split('\n').slice(-1)[0]);
   return p.stdout;
 };
@@ -62,6 +62,14 @@ await step(`settings file ${rel(FILE)}`, () => existsSync(FILE), { needs: 'run t
 await step(`Node ${process.versions.node}`, () => +process.versions.node.split('.')[0] >= 20, {
   system: true, fix: () => pkgInstall('OpenJS.NodeJS.LTS', 'node') && 'restart the terminal to use the new Node',
   needs: 'install Node 20 or newer from nodejs.org',
+});
+
+// ---- Claude Code (plans, edits and builds each Reel; needs a paid Claude plan, Pro or higher) ----
+await step('Claude Code installed', () => onPath('claude') && run('claude', ['--version']).trim(), {
+  soft: true, needs: 'install Claude Code (claude.com/claude-code) and sign in with a paid Claude plan (Pro or higher)',
+});
+await step('Claude Code signed in (terminal)', () => onPath('claude') && JSON.parse(run('claude', ['auth', 'status'])).loggedIn, {
+  soft: true, needs: 'in a terminal run: claude, then sign in. Using Claude Code inside the Claude desktop app? That app signs in on its own, so this is fine',
 });
 
 // ---- browser for stills, covers, storyboards (Edge or Chrome) ----
@@ -140,8 +148,28 @@ for (const [label, file] of [['transcribe script', P.transcribeScript], ['silenc
 }
 const studio = (await import('./templates/studio.mjs')).default;
 const sfxDir = path.join(HERE, 'assets/sfx');
-await step(`sound effects (${Object.keys(studio.sfxLen).length} in the Studio template)`, () => Object.keys(studio.sfxLen).every((s) => existsSync(path.join(sfxDir, `${s}.mp3`))), {
-  needs: `restore lib/assets/sfx from the package (missing: ${Object.keys(studio.sfxLen).filter((s) => !existsSync(path.join(sfxDir, `${s}.mp3`))).join(', ')})`,
+// sounds are downloaded by the person (their own Mixkit license), so missing ones don't block: they stay silent.
+// A download dropped in lib/assets/sfx (Mixkit names it e.g. mixkit-air-woosh-1489.wav; sfx/sources.json maps the
+// number to the engine's name), or one already renamed to <name>.wav, is saved as <name>.mp3.
+const sounds = Object.keys(studio.sfxLen), sfxPath = (s) => path.join(sfxDir, `${s}.mp3`);
+const missingSfx = () => sounds.filter((s) => !existsSync(sfxPath(s)));
+const sfxSources = existsSync(path.join(sfxDir, 'sources.json')) ? JSON.parse(readFileSync(path.join(sfxDir, 'sources.json'), 'utf8')) : {};
+// downloads dropped in the folder are converted first (fix mode), so the count below is what's really there
+const sfxConverted = [];
+if (FIX) {
+  const files = existsSync(sfxDir) ? readdirSync(sfxDir).filter((f) => /\.(wav|mp3|m4a|ogg)$/i.test(f)) : [];
+  for (const s of missingSfx()) {
+    const num = sfxSources[s]?.mixkit;
+    const src = files.find((f) => f.replace(/\.[^.]+$/, '') === s) || (num && files.find((f) => new RegExp(`(^|\\D)${num}(\\D|$)`).test(f)));
+    if (!src) continue;
+    try { execFileSync(tool('ffmpeg'), ['-v', 'error', '-y', '-i', path.join(sfxDir, src), '-codec:a', 'libmp3lame', '-q:a', '2', sfxPath(s)]); sfxConverted.push(`${src} → ${s}.mp3`); }
+    catch (e) { say('NOTE', `couldn't convert ${src}`, String(e.message).split('\n')[0]); }
+  }
+  if (sfxConverted.length) say('FIXED', `sound downloads saved under the engine's names (${sfxConverted.join(', ')})`);
+}
+await step(`sound effects in lib/assets/sfx (${sounds.length - missingSfx().length} of ${sounds.length})`, () => !missingSfx().length, {
+  soft: true,
+  needs: `download them from the links in ${existsSync(path.join(HERE, '../sounds.md')) ? 'sounds.md' : 'the package\'s sounds.md'}, drop them in lib/assets/sfx and run doctor again (missing: ${missingSfx().join(', ')}). Until then those sounds stay silent`,
 });
 const { BRANDS, defaultBrand } = await import('./brand/index.mjs');
 await step(`brand kit "${S.brand || '(not set)'}"`, () => BRANDS[S.brand], {

@@ -30,7 +30,8 @@ asks a few questions, writes the file and runs `doctor.mjs`, which installs what
 | `review/hub.mjs` | One page for every Reel: http://localhost:4320 (`--start` runs it in the background); opens each Reel's page on 4331+ (settings `review`) |
 | `../rows.json` | Tracker row → Reel folder ledger (settings `tracker.rows`), so the overnight run never drafts a row twice |
 | `animatic.mjs` | Storyboard stills timed to voice + music + sound effects (review before the full build) |
-| `assets/` | Shared fonts, gsap, the 10 approved sound effects |
+| `assets/` | Shared fonts, gsap, the 10 approved sound effects (a missing sound is skipped, never a broken build) |
+| `../../reel-package/` | Builds the customer copy: `node build-package.mjs` → `dist/reel-engine/` (blank settings + brand kit, no sounds, licenses) |
 
 ## New Reel
 ```bash

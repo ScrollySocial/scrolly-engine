@@ -111,6 +111,8 @@ export function reel({ brand, template = studio, words = 'assets/words.json', ou
       if (ed.off) { sfxOff.push({ id, name: file, base, t: +t, vol, baseVol, d: d ?? T.sfxLen[file], off: true }); return; }
       if (ed.name && ed.name !== file) { file = ed.name; d = T.sfxLen[file] ?? d; }
       if (!existsSync(`assets/sfx/${file}.mp3`) && existsSync(path.join(LIB_SFX, `${file}.mp3`))) copyFileSync(path.join(LIB_SFX, `${file}.mp3`), `assets/sfx/${file}.mp3`);
+      // a sound that isn't downloaded yet stays silent (the Reel still builds and renders); sounds.md lists the files
+      if (!existsSync(`assets/sfx/${file}.mp3`)) { console.log(`sound off: assets/sfx/${file}.mp3 not found (${id})`); sfxOff.push({ id, name: file, base, t: +t, vol, baseVol, d: d ?? T.sfxLen[file], off: true, missing: true }); return; }
       if (ed.vol != null) vol = ed.vol;
       sfxData.push({ id, name: file, base, file: `assets/sfx/${file}.mp3`, t: +t, vol, baseVol, d: d ?? T.sfxLen[file] });
       sfx.push(`<audio id="${id}" src="assets/sfx/${file}.mp3" data-start="${(+t).toFixed(2)}" data-duration="${d ?? T.sfxLen[file]}" data-track-index="${12 + (sfx.length % 4)}" data-volume="${vol}"></audio>`);
