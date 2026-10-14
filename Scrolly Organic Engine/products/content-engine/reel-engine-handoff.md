@@ -129,7 +129,12 @@ unless marked **open**. Not logged to the Business Brain yet: she said it's stil
    getgitgirl's, storyboard, animatic, notes at a timestamp) → render.
 4. **Variants engine for Trial Reels:** render the base once; mirror via ffmpeg (seconds); hook swap = re-render only
    the opening scene and splice; first-frame/cover swap; batch naming + tracking in the Content Pipeline.
-5. **Customer package:** brand kit file instead of Scrolly's, finished MP4 default, optional Studio editing, cloud
+5. **Customer review options (Mercedes 2026-10-13, idea for the customer build):** setup asks "Will anyone else review
+   your Reels?" No (default, recommended) = the local review page: fastest, private, real animations + sounds live, no
+   uploads. Yes = a hosted, shareable page (claude.ai Artifact like getgitgirl's, or on the customer's own site): opens
+   on a phone, co-workers/VA/client can leave notes; slower (video uploads + draft renders per change). Same page and
+   decisions file either way; switchable later.
+6. **Customer package:** brand kit file instead of Scrolly's, finished MP4 default, optional Studio editing, cloud
    rendering (HyperFrames supports AWS Lambda / Cloud Run / HeyGen cloud) priced into the offer.
 
 ## Constraints and numbers
