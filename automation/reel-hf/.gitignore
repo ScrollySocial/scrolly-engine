@@ -1,0 +1,26 @@
+# Code, specs and small assets are tracked. Footage copies, renders and generated review files stay out of git
+# (the originals live in OneDrive "Scrolly Media").
+node_modules/
+*/assets/talk*.mp4
+*/assets/talk-audio.m4a
+*/assets/talk-seg/
+*/assets/cut/
+*/assets/music/
+*/assets/music-candidates/
+*/samples-music/
+*/review/
+*/animatic/
+*/animatic.mp4
+*/snapshots/
+*/renders/
+*/sketch/*.jpg
+*/sketch/*.png
+*/storyboard-v*.png
+*/.backups/
+*/_*.html
+*/.transcode-cache/
+*/assets/**/*.mp4
+*/assets/**/*.webm
+*/*.mp4
+*/*.webm
+*/*.m4a

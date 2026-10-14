@@ -1,0 +1,62 @@
+<!doctype html>
+<!-- Side-by-side test (HyperFrames half): the same 5s "Studio" beat as reel-studio/src/StudioBeat.jsx (Remotion). -->
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      @font-face { font-family: 'ScrollyFigtree'; src: url('assets/figtree.woff2') format('woff2'); font-weight: 300 900; }
+      @font-face { font-family: 'ScrollySerif'; src: url('assets/instrument-serif-italic.woff2') format('woff2'); font-style: italic; }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1080px; height: 1920px; overflow: hidden; background: #000; }
+      #root { position: relative; width: 1080px; height: 1920px; overflow: hidden; }
+      #cam { position: absolute; inset: 0; transform-origin: 50% 40%; }
+      #cam video { width: 100%; height: 100%; object-fit: cover; filter: contrast(1.05) saturate(.96); }
+      .shade { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,.5) 0%, rgba(0,0,0,.25) 26%, rgba(0,0,0,0) 40%); }
+      .lead { position: absolute; top: 250px; left: 60px; right: 60px; text-align: center; }
+      .lead span, .next { display: inline-block; margin: 0 10px; font: 700 58px 'ScrollyFigtree', sans-serif; color: #fff; text-shadow: 0 3px 14px rgba(0,0,0,.5); opacity: 0; }
+      .next { position: absolute; top: 250px; left: 0; right: 0; text-align: center; margin: 0; }
+      .key { position: absolute; top: 330px; left: 70px; right: 70px; text-align: center; font: italic 400 120px/0.95 'ScrollySerif', serif; color: #FFC9A8; text-shadow: 0 5px 26px rgba(0,0,0,.55); opacity: 0; }
+      #spark { position: absolute; left: 880px; top: 300px; width: 110px; filter: drop-shadow(0 4px 10px rgba(0,0,0,.3)); transform: scale(0); }
+      #card { position: absolute; left: 590px; top: 1050px; width: 430px; border-radius: 24px; overflow: hidden; border: 6px solid #FFF4DC; box-shadow: 0 24px 60px rgba(0,0,0,.45); }
+      #card img { width: 100%; display: block; }
+      #peach { position: absolute; inset: 0; background: #FFC9A8; opacity: 0; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="5" data-width="1080" data-height="1920">
+      <div id="cam"><video id="talk" class="clip" data-start="0" data-duration="5" data-track-index="0" data-has-audio="true" src="assets/beat.mp4" playsinline></video></div>
+      <div class="shade"></div>
+      <div class="lead" id="lead"><span id="w1">That’s</span><span id="w2">because</span><span id="w3">AI</span></div>
+      <div class="key" id="key">doesn’t automatically know your personality</div>
+      <svg id="spark" viewBox="0 0 40 40"><path d="M20 0c1.5 12 6.5 17 20 20-13.5 3-18.5 8-20 20C18.5 28 13.5 23 0 20 13.5 17 18.5 12 20 0z" fill="#FFF4DC"/></svg>
+      <div id="card"><img src="assets/brain-card.png" alt=""></div>
+      <div class="next" id="next">Think about it,</div>
+      <div id="peach"></div>
+    </div>
+    <script>
+      const tl = gsap.timeline({ paused: true });
+      gsap.set('#card', { x: 620, rotation: 5 });
+      // lead-in, word by word
+      [['#w1', 0.333], ['#w2', 0.693], ['#w3', 0.893]].forEach(([s, t]) => tl.fromTo(s, { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.3, ease: 'back.out(2)' }, t));
+      // key phrase lands: lead-in steps back, phrase pops, camera punches in, sparkle spins in
+      tl.to('#lead', { y: -40, opacity: 0.65, duration: 0.4, ease: 'power2.out' }, 1.789);
+      tl.fromTo('#key', { opacity: 0, scale: 0.75 }, { opacity: 1, scale: 1, duration: 0.5, ease: 'back.out(1.7)' }, 1.789);
+      tl.fromTo('#cam', { scale: 1 }, { scale: 1.13, duration: 0.55, ease: 'power3.out' }, 1.789);
+      tl.fromTo('#spark', { scale: 0, rotation: 90 }, { scale: 1, rotation: 0, duration: 0.7, ease: 'elastic.out(1, 0.5)' }, 1.85);
+      // proof card slides in and out
+      tl.to('#card', { x: 0, rotation: -5, duration: 0.55, ease: 'back.out(1.4)' }, 2.3);
+      tl.to('#card', { x: 620, rotation: 5, duration: 0.45, ease: 'power2.in' }, 4.2);
+      tl.to('#cam', { scale: 1, duration: 0.5, ease: 'power2.inOut' }, 4.15);
+      tl.to('#lead', { opacity: 0, duration: 0.1 }, 4.24);
+      tl.to('#next', { opacity: 1, duration: 0.25 }, 4.24);
+      // whip out to peach
+      tl.to('#cam', { x: -260, filter: 'blur(28px)', duration: 0.45, ease: 'power3.in' }, 4.5);
+      tl.to('#peach', { opacity: 1, duration: 0.25 }, 4.75);
+      window.__timelines = window.__timelines || {};
+      window.__timelines['main'] = tl;
+      tl.seek(0);
+    </script>
+  </body>
+</html>

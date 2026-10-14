@@ -1,0 +1,41 @@
+{
+  "version": 1,
+  "preferences": {
+    "flow": {
+      "value": "companion",
+      "confirmed_in": [
+        "2026-10-13-bb-voice-file"
+      ],
+      "updated_at": "2026-10-13T14:02:47.220Z"
+    },
+    "storyboard": {
+      "value": "yes",
+      "confirmed_in": [
+        "2026-10-13-bb-voice-file"
+      ],
+      "updated_at": "2026-10-13T14:02:47.395Z"
+    },
+    "aspect": {
+      "value": "1080x1920",
+      "confirmed_in": [
+        "2026-10-13-bb-voice-file"
+      ],
+      "updated_at": "2026-10-13T14:02:47.552Z"
+    },
+    "language": {
+      "value": "en",
+      "confirmed_in": [
+        "2026-10-13-bb-voice-file"
+      ],
+      "updated_at": "2026-10-13T14:02:47.744Z"
+    },
+    "destination": {
+      "value": "instagram-reels",
+      "confirmed_in": [
+        "2026-10-13-bb-voice-file"
+      ],
+      "updated_at": "2026-10-13T14:02:47.932Z"
+    }
+  },
+  "sightings": {}
+}

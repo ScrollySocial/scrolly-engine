@@ -1,0 +1,6 @@
+# ffmpeg/ffprobe binaries and node_modules are machine setup (see reel-hf/lib/doctor.mjs)
+node_modules/
+bin/
+beat/renders/
+*.mp4
+*.m4a

@@ -1,0 +1,24 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+@font-face{font-family:B;src:url('file:///C:/Users/merce/Scrolly%20Organic%20Engine/automation/reel-hf/2026-10-13-bb-know-what-you-sell/assets/fonts/bricolage-800.woff2') format('woff2');font-weight:800;font-stretch:75% 100%}
+@font-face{font-family:H;src:url('file:///C:/Users/merce/Scrolly%20Organic%20Engine/automation/reel-hf/2026-10-13-bb-know-what-you-sell/assets/fonts/covered-by-your-grace.woff2') format('woff2')}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1080px;height:1920px;overflow:hidden;background:#F8DCE5}
+.her{position:absolute;left:0;right:0;top:190px;height:1920px;background:url('file:///C:/Users/merce/Scrolly%20Organic%20Engine/automation/reel-hf/2026-10-13-bb-know-what-you-sell/cover/cutout.png') center top/1080px auto no-repeat;filter:drop-shadow(0 18px 40px rgba(22,18,16,.18))}
+.t{position:absolute;left:50px;right:50px;top:300px;text-align:center;font:800 150px/.9 B;font-stretch:78%;color:#161210;letter-spacing:-.01em}
+.mk{position:relative;display:inline-block;padding:0 .12em;rotate:-1.5deg;white-space:nowrap}
+.mk i{position:absolute;left:-.04em;right:-.04em;top:.1em;bottom:.02em;background:#FFC9A8;border-radius:.08em;skew:-6deg}
+.mk b{position:relative;font-weight:800}
+.hand{position:absolute;right:46px;top:var(--ht);font:84px/1 H;color:#161210;rotate:-5deg}
+.hand svg{position:absolute;left:-118px;top:36px}
+</style></head><body>
+<div class="her"></div>
+<div class="t">Stop explaining <span class="mk"><i></i><b>your products</b></span> to&nbsp;AI</div>
+<div class="hand" style="--ht:0px">one setup<svg width="110" height="90" viewBox="0 0 110 90" fill="none" stroke="#161210" stroke-width="5" stroke-linecap="round"><path d="M100 12 C70 10 40 30 26 70"/><path d="M14 52 L26 72 L44 60"/></svg></div>
+<script>
+// aside sits just under the title, right side, beside her head (never over her face)
+// her head top sits ~676px below the cut-out's top edge; keep it 120px under the title, aside beside her head
+const t = document.querySelector('.t').getBoundingClientRect();
+document.querySelector('.her').style.top = (t.bottom + 120 - 676) + 'px';
+document.querySelector('.hand').style.setProperty('--ht', (t.bottom + 18) + 'px');
+</script>
+</body></html>

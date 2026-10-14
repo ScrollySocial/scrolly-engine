@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1080, height=1920">
+<script src="assets/js/gsap.min.js"></script>
+<style>
+@font-face{font-family:'ScrollyFigtree';src:url('assets/fonts/figtree.woff2') format('woff2');font-weight:300 900}
+@font-face{font-family:'ScrollyBricolage';src:url('assets/fonts/bricolage-800.woff2') format('woff2');font-weight:800;font-stretch:75% 100%}
+@font-face{font-family:'ScrollyHand';src:url('assets/fonts/covered-by-your-grace.woff2') format('woff2')}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1080px;height:1920px;overflow:hidden;background:#000}
+#root{position:relative;width:100%;height:100%;overflow:hidden;container-type:inline-size;font-family:'ScrollyFigtree',sans-serif}
+#cam{position:absolute;inset:0;transform-origin:50% 42%}
+.talk{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.scene{position:absolute;inset:0}
+.cutvid{position:absolute;left:0;top:0;width:1080px;height:1920px;object-fit:cover}
+.abs{position:absolute}.blk{display:block}
+.fill,.fade{position:absolute;inset:0}
+.big{position:absolute;left:5cqw;right:5cqw;text-align:center;font-family:'ScrollyBricolage';font-weight:800;font-stretch:78%;line-height:.9;letter-spacing:-.01em;text-shadow:0 .4cqw 2cqw rgba(0,0,0,.35)}
+.big .w{display:inline-block}
+.mk{position:relative;display:inline-block;padding:0 .12em}
+.mkbg{position:absolute;left:-.04em;right:-.04em;top:.1em;bottom:.02em;background:#FFC9A8;transform-origin:0 50%;border-radius:.08em;display:block}
+.mk{rotate:-1.5deg}.mkbg{skew:-6deg}
+.mkt{position:relative;color:#161210;text-shadow:none}
+.hand{position:absolute;font-family:'ScrollyHand';line-height:1;text-shadow:0 0 1.1cqw rgba(0,0,0,.6),0 .3cqw 1.6cqw rgba(0,0,0,.55);white-space:nowrap}
+.cap{position:absolute;left:6cqw;right:6cqw;text-align:center;z-index:8}
+.cap span{display:inline-block;font:800 5.4cqw/1.15 'ScrollyFigtree';color:#fff;text-shadow:0 0 .6cqw rgba(0,0,0,.8),0 .5cqw 1.8cqw rgba(0,0,0,.6)}
+.chat{position:absolute;left:6cqw;right:6cqw;display:flex;flex-direction:column;gap:1.6cqw}
+.msg{font:500 4cqw/1.3 'Segoe UI','ScrollyFigtree',sans-serif;padding:2.4cqw 3.2cqw;border-radius:4.4cqw;max-width:84%;box-shadow:0 .8cqw 2.4cqw rgba(0,0,0,.25)}
+.msg.me{align-self:flex-end;background:#2f2f2f;color:#fff;border-bottom-right-radius:1.2cqw}
+.msg.ai{align-self:flex-start;background:#fff;color:#1c1c1c;border-bottom-left-radius:1.2cqw}
+.chip{align-self:flex-end;font:600 3.2cqw 'Segoe UI','ScrollyFigtree';background:#fff;color:#333;padding:1.2cqw 2.4cqw;border-radius:2cqw;border:.3cqw solid #ddd}
+.paper{position:absolute;left:14cqw;right:14cqw;background:#fffdf7;background-image:repeating-linear-gradient(180deg,transparent 0 8.4cqw,#cfe0ee 8.4cqw 8.7cqw);padding:2.6cqw 5cqw 3cqw;font:400 7.6cqw/8.7cqw 'ScrollyHand';color:#2b2724;box-shadow:0 1.4cqw 3.6cqw rgba(0,0,0,.35)}
+.paper div{display:flex;justify-content:space-between}.tick{display:inline-block;color:#2e7d4f;font-family:'ScrollyFigtree';font-weight:800}.tick.x{color:#E05A33}
+.badge{position:absolute;width:46cqw;border-radius:2.4cqw;overflow:hidden;box-shadow:0 1.4cqw 3.6cqw rgba(0,0,0,.4);background:#fff}
+.b-top{background:#E05A33;color:#fff;text-align:center;font:800 9cqw/1 'ScrollyFigtree';padding:2cqw 0 1.4cqw}.b-top small{display:block;font:600 3.4cqw 'ScrollyFigtree';margin-top:.6cqw}
+.b-name{font:400 7.4cqw/1 'ScrollyHand';color:#161210;text-align:center;padding:4cqw 2cqw 4.6cqw}
+.folder{position:absolute;width:30cqw;filter:drop-shadow(0 1.4cqw 2.4cqw rgba(0,0,0,.4))}
+.f-tab{display:inline-block;background:#E9C98E;font:400 6.4cqw/1 'ScrollyHand';color:#2b2724;padding:1.6cqw 3cqw 1cqw 2.4cqw;border-radius:1.6cqw 3cqw 0 0;white-space:nowrap}
+.f-body{height:20cqw;border-radius:0 1.6cqw 1.6cqw 1.6cqw;position:relative;overflow:hidden;background:linear-gradient(180deg,#F2D7A3,#E2BE80)}
+.f-body i{position:absolute;left:12%;right:12%;display:block}.f-body i:nth-child(1){top:-.6cqw;height:4cqw;background:#fffdf7;border-radius:.4cqw}.f-body i:nth-child(2){top:7cqw;height:.5cqw;background:rgba(138,106,58,.35)}.f-body i:nth-child(3){top:10cqw;height:.5cqw;right:30%;background:rgba(138,106,58,.35)}
+.post{position:absolute;width:27cqw;border-radius:1cqw;border:.8cqw solid #fff;box-shadow:0 1.4cqw 3cqw rgba(0,0,0,.4)}
+.receipt{position:absolute;width:30cqw;background:#fffdf7;padding:3cqw 3.2cqw 6cqw;font:400 5.4cqw/1.12 'ScrollyHand';color:#2b2724;rotate:-3deg;box-shadow:0 1.4cqw 3cqw rgba(0,0,0,.35)}
+.receipt b{font-weight:400;color:#E05A33}
+.prompt{position:absolute;width:56cqw;display:flex;align-items:center;justify-content:space-between;background:#2f2f2f;color:#fff;border-radius:99px;padding:2.4cqw 2.4cqw 2.4cqw 4cqw;font:500 4.4cqw 'Segoe UI','ScrollyFigtree';box-shadow:0 1cqw 3cqw rgba(0,0,0,.4)}
+.prompt .ptxt{display:inline-block}
+.prompt i{font-style:normal;width:6.4cqw;height:6.4cqw;border-radius:50%;background:#fff;color:#2f2f2f;display:grid;place-items:center;font-weight:800}
+.md{position:absolute;left:5cqw;right:5cqw;background:#1f1d1b;border-radius:2cqw;overflow:hidden;box-shadow:0 1.6cqw 4cqw rgba(0,0,0,.45);font:500 3.7cqw/1.55 Consolas,'Cascadia Mono',monospace}
+.md-bar{display:flex;align-items:center;gap:1.2cqw;padding:1.6cqw 2.4cqw;background:#2b2826}.md-bar i{width:2cqw;height:2cqw;border-radius:50%;background:#5a5450;display:block}.md-bar span{margin-left:1.6cqw;font:600 3.2cqw 'ScrollyFigtree';color:#cfc6bd}
+.md-body{padding:1.8cqw 0 2.4cqw}.ln{display:flex;gap:3cqw;padding:0 3cqw;color:#e9e1d8;min-height:5.7cqw}.ln b{width:4cqw;text-align:right;color:#6f6862;font-weight:400}.lt{display:inline-block}
+.ln.h .lt{color:#FFC9A8;font-weight:700}.ln.add{background:rgba(110,190,130,.16)}.ln.add b{color:#7fcf93}.ln.no{background:rgba(224,90,51,.16)}.ln.no b{color:#E05A33}
+.brainwrap{position:absolute;inset:0;overflow:hidden;background:#efe6da}.brain{position:absolute;left:0;top:0;width:100%;display:block}
+.url{position:absolute;left:14cqw;right:14cqw;display:flex;align-items:center;gap:2cqw;background:#fff;border-radius:99px;padding:2.4cqw 4cqw;font:600 5cqw 'Segoe UI','ScrollyFigtree';color:#1c1c1c;box-shadow:0 1cqw 3cqw rgba(0,0,0,.35)}.lock{font-size:3.6cqw}
+.ph{position:relative;display:inline-block;font-weight:700;color:#8a3b22;background:#fbe9df;border-radius:1cqw;padding:0 .8cqw;margin:1.3cqw .6cqw}
+.ph-ring{position:absolute;left:-12%;top:-38%;width:124%;height:176%;overflow:visible;pointer-events:none}
+.draw{stroke-dasharray:1;stroke-dashoffset:1}
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="61.15" data-width="1080" data-height="1920">
+<div id="cam"><video id="talk-0" class="clip talk" src="assets/talk-seg/talk-0.mp4" muted playsinline data-start="0" data-duration="18" data-track-index="0"></video><video id="talk-1" class="clip talk" src="assets/talk-seg/talk-1.mp4" muted playsinline data-start="18" data-duration="18" data-track-index="1"></video><video id="talk-2" class="clip talk" src="assets/talk-seg/talk-2.mp4" muted playsinline data-start="36" data-duration="18" data-track-index="0"></video><video id="talk-3" class="clip talk" src="assets/talk-seg/talk-3.mp4" muted playsinline data-start="54" data-duration="7.15" data-track-index="1"></video></div>
+<audio id="voice" src="assets/talk-audio.m4a" data-start="0" data-duration="61.15" data-track-index="9" data-volume="1"></audio>
+<div id="s1" class="clip scene" data-start="0" data-duration="3.42" data-track-index="2" style="z-index:5"><div class="fade" style="background:linear-gradient(180deg,rgba(0,0,0,.6),rgba(0,0,0,.25) 27.599999999999998%,rgba(0,0,0,0) 46%)"></div><div id="b1" class="big" style="top:6cqw;font-size:11cqw;color:#fff"><span class="w">Your</span> <span class="w">AI</span> <span class="w">should</span> <span class="w">know</span> <span class="w">what</span> <span class="w">you’re</span> <span class="w"><span class="mk"><span class="mkbg"></span><span class="mkt">selling</span></span></span> </div></div>
+<div id="s2" class="clip scene" data-start="3.42" data-duration="7.38" data-track-index="2" style="z-index:5"><div class="fade" style="background:linear-gradient(180deg,rgba(0,0,0,.6),rgba(0,0,0,.25) 30%,rgba(0,0,0,0) 50%)"></div><div class="chat" style="top:6cqw"><div id="c2a" class="msg ai">Hi! What can I help you with today?</div><div id="c2b" class="msg me">write an Instagram post for my sourdough starter kit</div></div></div>
+<div id="s3" class="clip scene" data-start="10.8" data-duration="5.93" data-track-index="2" style="z-index:5"><div class="fade" style="background:linear-gradient(180deg,rgba(0,0,0,.6),rgba(0,0,0,.25) 32.4%,rgba(0,0,0,0) 54%)"></div><div class="chat" style="top:4cqw"><div id="c3a" class="msg me">write an Instagram post for my sourdough starter kit</div><div id="c3b" class="msg ai">Meet our Sourdough Starter Kit!<br>Only <span id="ph1" class="ph">[PRICE]<svg class="ph-ring" viewBox="0 0 200 100" preserveAspectRatio="none"><path class="draw" pathLength="1" d="M18 52 C14 18 70 6 112 8 C170 11 196 34 190 58 C184 86 120 96 76 92 C34 88 6 70 22 40" fill="none" stroke="#E05A33" stroke-width="5" stroke-linecap="round"/></svg></span><br>Comes with <span id="ph2" class="ph">[WHAT’S INCLUDED]<svg class="ph-ring" viewBox="0 0 200 100" preserveAspectRatio="none"><path class="draw" pathLength="1" d="M18 52 C14 18 70 6 112 8 C170 11 196 34 190 58 C184 86 120 96 76 92 C34 88 6 70 22 40" fill="none" stroke="#E05A33" stroke-width="5" stroke-linecap="round"/></svg></span><br>Perfect for <span id="ph3" class="ph">[AUDIENCE]<svg class="ph-ring" viewBox="0 0 200 100" preserveAspectRatio="none"><path class="draw" pathLength="1" d="M18 52 C14 18 70 6 112 8 C170 11 196 34 190 58 C184 86 120 96 76 92 C34 88 6 70 22 40" fill="none" stroke="#E05A33" stroke-width="5" stroke-linecap="round"/></svg></span> ✨</div></div></div>
+<div id="s4" class="clip scene" data-start="16.73" data-duration="7.55" data-track-index="2" style="z-index:5"><div class="fade" style="background:linear-gradient(180deg,rgba(0,0,0,.6),rgba(0,0,0,.25) 28.799999999999997%,rgba(0,0,0,0) 48%)"></div><div class="chat" style="top:6cqw"><div id="c4a" class="msg me">it’s $24</div><div id="c4b" class="msg me">it comes with a jar too</div><div id="c4c" class="msg me">it’s for first-time bakers</div></div><div id="h4" class="hand" style="left:5cqw;top:41cqw;font-size:6.5cqw;rotate:-3deg;color:#FFF4DC">faster to just write it myself</div></div>
+<div id="s5" class="clip scene" data-start="24.28" data-duration="6.54" data-track-index="2" style="z-index:5"><div class="fill" style="background:#E7EEF5"></div><div id="b5" class="big" style="top:7cqw;font-size:13.5cqw;color:#161210"><span class="w">One</span> <span class="w"><span class="mk"><span class="mkbg"></span><span class="mkt">central place</span></span></span> <span class="w">for</span> <span class="w">my</span> <span class="w">business</span> <span class="w">info</span></div></div>
+<div id="s6" class="clip scene" data-start="30.82" data-duration="8.18" data-track-index="2" style="z-index:5"><div class="fade" style="background:linear-gradient(180deg,rgba(0,0,0,.6),rgba(0,0,0,.25) 28.799999999999997%,rgba(0,0,0,0) 48%)"></div><div id="f6a" class="folder" style="left:1cqw;top:11cqw;rotate:-8deg"><div class="f-tab">offers</div><div class="f-body"><i></i><i></i><i></i></div></div><div id="f6b" class="folder" style="left:23cqw;top:4cqw;rotate:-2deg"><div class="f-tab">prices</div><div class="f-body"><i></i><i></i><i></i></div></div><div id="f6c" class="folder" style="left:45cqw;top:8cqw;rotate:3deg"><div class="f-tab">customers</div><div class="f-body"><i></i><i></i><i></i></div></div><div id="f6d" class="folder" style="left:69cqw;top:19cqw;rotate:8deg"><div class="f-tab">working on</div><div class="f-body"><i></i><i></i><i></i></div></div><div id="h6" class="hand" style="left:8cqw;top:42cqw;font-size:7cqw;rotate:-3deg;color:#FFF4DC">a place to live</div></div>
+<div id="s7" class="clip scene" data-start="39" data-duration="6.98" data-track-index="2" style="z-index:5"><div class="fade" style="background:linear-gradient(180deg,rgba(0,0,0,.6),rgba(0,0,0,.25) 32.4%,rgba(0,0,0,0) 54%)"></div><div class="chat" style="top:4cqw"><div id="c7a" class="msg me">write an Instagram post for my sourdough starter kit</div><div id="c7b" class="chip">🧠 My offers</div><div id="c7c" class="msg ai">Sourdough Starter Kit, $24: live starter, glass jar and feeding guide. Made for first-time bakers.</div></div><div id="h7" class="hand" style="left:54cqw;top:51cqw;font-size:8cqw;rotate:-5deg;color:#FFC9A8">no guessing</div><div id="a7" class="abs blk" style="left:33cqw;top:48.5cqw;width:18cqw;height:13.5cqw;rotate:200deg"><svg viewBox="0 0 120 90" style="width:100%;height:100%"><path class="draw" pathLength="1" d="M8 12 C40 4 86 18 98 64" fill="none" stroke="#FFC9A8" stroke-width="6" stroke-linecap="round"/><path class="draw" pathLength="1" d="M80 52 L99 70 L110 46" fill="none" stroke="#FFC9A8" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div>
+<div id="s8" class="clip scene" data-start="45.98" data-duration="7.66" data-track-index="2" style="z-index:5"><div class="fade" style="background:linear-gradient(180deg,rgba(0,0,0,.6),rgba(0,0,0,.25) 30%,rgba(0,0,0,0) 50%)"></div><div id="p8" class="paper" style="top:6cqw"><div>price <span id="t8a" class="tick">✓</span></div><div>what’s included <span id="t8b" class="tick">✓</span></div><div>who it’s for <span id="t8c" class="tick">✓</span></div></div><div id="h8" class="hand" style="left:46cqw;top:40cqw;font-size:7.5cqw;rotate:-4deg;color:#FFF4DC">so much easier</div></div>
+<div id="s9" class="clip scene" data-start="53.64" data-duration="3.1" data-track-index="2" style="z-index:5"><div class="brainwrap"><img id="br9" class="brain" src="assets/img/brain.png" data-layout-allow-overflow></div><div class="fill" style="background:rgba(22,18,16,0.12)"></div></div>
+<div id="s9b" class="clip scene" data-start="53.64" data-duration="3.1" data-track-index="3" style="z-index:7"><svg id="cur9" class="abs blk" style="left:74cqw;top:14cqw;width:7cqw;height:7cqw" viewBox="0 0 24 24"><path d="M4 2 L4 20 L9 15 L13 23 L16 21.5 L12 14 L19 14 Z" fill="#fff" stroke="#161210" stroke-width="1.5"/></svg></div>
+<div id="s10" class="clip scene" data-start="56.74" data-duration="4.41" data-track-index="2" style="z-index:5"><div class="fade" style="background:linear-gradient(180deg,rgba(0,0,0,.6),rgba(0,0,0,.25) 30%,rgba(0,0,0,0) 50%)"></div><div id="b10" class="big" style="top:6cqw;font-size:11cqw;color:#fff"><span class="w">Scrolly</span> <span class="w"><span class="mk"><span class="mkbg"></span><span class="mkt">Business Brain</span></span></span> </div><div id="u10" class="url" style="top:31cqw"><span class="lock">🔒</span>scrollyseo.com</div><div id="h10" class="hand" style="left:56cqw;top:44cqw;font-size:7.5cqw;rotate:-4deg;color:#FFF4DC">on my website</div><div id="a10" class="abs blk" style="left:34cqw;top:41cqw;width:18cqw;height:13.5cqw;rotate:190deg"><svg viewBox="0 0 120 90" style="width:100%;height:100%"><path class="draw" pathLength="1" d="M8 12 C40 4 86 18 98 64" fill="none" stroke="#FFF4DC" stroke-width="6" stroke-linecap="round"/><path class="draw" pathLength="1" d="M80 52 L99 70 L110 46" fill="none" stroke="#FFF4DC" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div>
+<video id="cut5" class="clip cutvid" src="assets/cut/f05-cut.webm" muted playsinline data-start="24.28" data-duration="6.54" data-track-index="4" style="z-index:6"></video>
+<video id="cut9" class="clip cutvid" src="assets/cut/f09-cut.webm" muted playsinline data-start="53.64" data-duration="3.1" data-track-index="4" style="z-index:6"></video>
+<div id="cap0" class="clip cap" data-start="0.15" data-duration="2.10" data-track-index="6" style="top:128cqw"><span>Your AI should know what</span></div>
+<div id="cap1" class="clip cap" data-start="2.27" data-duration="0.94" data-track-index="6" style="top:128cqw"><span>you're selling</span></div>
+<div id="cap2" class="clip cap" data-start="3.42" data-duration="0.42" data-track-index="6" style="top:128cqw"><span>Imagine</span></div>
+<div id="cap3" class="clip cap" data-start="3.86" data-duration="1.64" data-track-index="6" style="top:128cqw"><span>that you're using AI to</span></div>
+<div id="cap4" class="clip cap" data-start="5.52" data-duration="1.52" data-track-index="6" style="top:128cqw"><span>help market your business</span></div>
+<div id="cap5" class="clip cap" data-start="7.30" data-duration="0.90" data-track-index="6" style="top:128cqw"><span>You ask it to write</span></div>
+<div id="cap6" class="clip cap" data-start="8.22" data-duration="1.48" data-track-index="6" style="top:128cqw"><span>an Instagram post for one</span></div>
+<div id="cap7" class="clip cap" data-start="9.72" data-duration="0.94" data-track-index="6" style="top:128cqw"><span>of your products</span></div>
+<div id="cap8" class="clip cap" data-start="10.80" data-duration="0.44" data-track-index="6" style="top:128cqw"><span>Well</span></div>
+<div id="cap9" class="clip cap" data-start="11.26" data-duration="0.74" data-track-index="6" style="top:128cqw"><span>does it know how much</span></div>
+<div id="cap10" class="clip cap" data-start="12.02" data-duration="1.07" data-track-index="6" style="top:128cqw"><span>it costs or</span></div>
+<div id="cap11" class="clip cap" data-start="13.11" data-duration="1.32" data-track-index="6" style="top:128cqw"><span>what's included?</span></div>
+<div id="cap12" class="clip cap" data-start="14.57" data-duration="0.66" data-track-index="6" style="top:128cqw"><span>Does it know who you're</span></div>
+<div id="cap13" class="clip cap" data-start="15.25" data-duration="0.86" data-track-index="6" style="top:128cqw"><span>actually trying to sell it</span></div>
+<div id="cap14" class="clip cap" data-start="16.13" data-duration="0.57" data-track-index="6" style="top:128cqw"><span>to?</span></div>
+<div id="cap15" class="clip cap" data-start="16.73" data-duration="0.30" data-track-index="6" style="top:128cqw"><span>Because otherwise</span></div>
+<div id="cap16" class="clip cap" data-start="17.05" data-duration="1.28" data-track-index="6" style="top:128cqw"><span>you can end up spending</span></div>
+<div id="cap17" class="clip cap" data-start="18.35" data-duration="2.22" data-track-index="6" style="top:128cqw"><span>more money and time correcting</span></div>
+<div id="cap18" class="clip cap" data-start="20.59" data-duration="1.74" data-track-index="6" style="top:128cqw"><span>your AI than you would</span></div>
+<div id="cap19" class="clip cap" data-start="22.35" data-duration="1.08" data-track-index="6" style="top:128cqw"><span>have spent just writing post</span></div>
+<div id="cap20" class="clip cap" data-start="23.45" data-duration="0.86" data-track-index="6" style="top:128cqw"><span>yourself</span></div>
+<div id="cap21" class="clip cap" data-start="31.46" data-duration="0.66" data-track-index="6" style="top:128cqw"><span>has my offers</span></div>
+<div id="cap22" class="clip cap" data-start="32.14" data-duration="0.78" data-track-index="6" style="top:128cqw"><span>my</span></div>
+<div id="cap23" class="clip cap" data-start="32.94" data-duration="0.86" data-track-index="6" style="top:128cqw"><span>prices</span></div>
+<div id="cap24" class="clip cap" data-start="34.20" data-duration="0.94" data-track-index="6" style="top:128cqw"><span>my customers</span></div>
+<div id="cap25" class="clip cap" data-start="35.26" data-duration="1.74" data-track-index="6" style="top:128cqw"><span>things I'm currently working on</span></div>
+<div id="cap26" class="clip cap" data-start="37.02" data-duration="0.90" data-track-index="6" style="top:128cqw"><span>It all has a place</span></div>
+<div id="cap27" class="clip cap" data-start="37.94" data-duration="1.04" data-track-index="6" style="top:128cqw"><span>to live</span></div>
+<div id="cap28" class="clip cap" data-start="39.00" data-duration="1.98" data-track-index="6" style="top:128cqw"><span>And then when I want</span></div>
+<div id="cap29" class="clip cap" data-start="41.00" data-duration="0.88" data-track-index="6" style="top:128cqw"><span>AI to help me with</span></div>
+<div id="cap30" class="clip cap" data-start="41.90" data-duration="0.74" data-track-index="6" style="top:128cqw"><span>something</span></div>
+<div id="cap31" class="clip cap" data-start="42.72" data-duration="1.26" data-track-index="6" style="top:128cqw"><span>it can reference that information</span></div>
+<div id="cap32" class="clip cap" data-start="44.00" data-duration="1.66" data-track-index="6" style="top:128cqw"><span>instead of guessing</span></div>
+<div id="cap33" class="clip cap" data-start="45.98" data-duration="0.30" data-track-index="6" style="top:128cqw"><span>Of course</span></div>
+<div id="cap34" class="clip cap" data-start="46.10" data-duration="0.80" data-track-index="6" style="top:128cqw"><span>you still need to check</span></div>
+<div id="cap35" class="clip cap" data-start="46.92" data-duration="0.96" data-track-index="6" style="top:128cqw"><span>your output</span></div>
+<div id="cap36" class="clip cap" data-start="48.22" data-duration="1.78" data-track-index="6" style="top:128cqw"><span>but having the right information</span></div>
+<div id="cap37" class="clip cap" data-start="50.02" data-duration="1.70" data-track-index="6" style="top:128cqw"><span>available to your AI makes</span></div>
+<div id="cap38" class="clip cap" data-start="51.74" data-duration="1.88" data-track-index="6" style="top:128cqw"><span>that process so much easier</span></div>
+<div id="cap39" class="clip cap" data-start="53.64" data-duration="1.40" data-track-index="6" style="top:150cqw"><span>I created the Scrolly Business</span></div>
+<div id="cap40" class="clip cap" data-start="55.06" data-duration="1.26" data-track-index="6" style="top:150cqw"><span>Brain to help other business</span></div>
+<div id="cap41" class="clip cap" data-start="56.34" data-duration="0.90" data-track-index="6" style="top:150cqw"><span>owners</span></div>
+<audio id="fx-pop1" src="assets/sfx/pop-light.mp3" data-start="2.41" data-duration="0.18" data-track-index="12" data-volume="0.6"></audio>
+<audio id="fx-pop2a" src="assets/sfx/pop-bubble.mp3" data-start="4.66" data-duration="0.38" data-track-index="13" data-volume="0.6"></audio>
+<audio id="fx-type2" src="assets/sfx/typing-laptop.mp3" data-start="7.68" data-duration="1.4" data-track-index="14" data-volume="0.35"></audio>
+<audio id="fx-pop3" src="assets/sfx/pop-light.mp3" data-start="10.90" data-duration="0.18" data-track-index="15" data-volume="0.6"></audio>
+<audio id="fx-no3" src="assets/sfx/nope.mp3" data-start="15.03" data-duration="1.2" data-track-index="12" data-volume="0.45"></audio>
+<audio id="fx-pop4a" src="assets/sfx/pop-light.mp3" data-start="16.73" data-duration="0.18" data-track-index="13" data-volume="0.6"></audio>
+<audio id="fx-pop4b" src="assets/sfx/pop-bubble.mp3" data-start="18.81" data-duration="0.38" data-track-index="14" data-volume="0.6"></audio>
+<audio id="fx-pop4c" src="assets/sfx/pop-light.mp3" data-start="20.21" data-duration="0.18" data-track-index="15" data-volume="0.6"></audio>
+<audio id="fx-wh5" src="assets/sfx/whoosh-fast.mp3" data-start="24.16" data-duration="1.4" data-track-index="12" data-volume="0.55"></audio>
+<audio id="fx-wh5b" src="assets/sfx/whoosh-air.mp3" data-start="27.04" data-duration="1.6" data-track-index="13" data-volume="0.45"></audio>
+<audio id="fx-pap6a" src="assets/sfx/paper-slide.mp3" data-start="31.80" data-duration="1" data-track-index="14" data-volume="0.7"></audio>
+<audio id="fx-pop6b" src="assets/sfx/pop-bubble.mp3" data-start="32.94" data-duration="0.38" data-track-index="15" data-volume="0.6"></audio>
+<audio id="fx-pap6c" src="assets/sfx/paper-slide.mp3" data-start="34.28" data-duration="1" data-track-index="12" data-volume="0.7"></audio>
+<audio id="fx-pop6d" src="assets/sfx/pop-light.mp3" data-start="36.08" data-duration="0.18" data-track-index="13" data-volume="0.6"></audio>
+<audio id="fx-pop7a" src="assets/sfx/pop-bubble.mp3" data-start="39.22" data-duration="0.38" data-track-index="14" data-volume="0.6"></audio>
+<audio id="fx-pop7b" src="assets/sfx/pop-light.mp3" data-start="43.04" data-duration="0.18" data-track-index="15" data-volume="0.6"></audio>
+<audio id="fx-pop7c" src="assets/sfx/pop-bubble.mp3" data-start="43.90" data-duration="0.38" data-track-index="12" data-volume="0.6"></audio>
+<audio id="fx-chk7" src="assets/sfx/check.mp3" data-start="45.02" data-duration="1.2" data-track-index="13" data-volume="0.5"></audio>
+<audio id="fx-pap8" src="assets/sfx/paper-slide.mp3" data-start="46.08" data-duration="1" data-track-index="14" data-volume="0.6"></audio>
+<audio id="fx-chk8a" src="assets/sfx/check.mp3" data-start="46.76" data-duration="1.2" data-track-index="15" data-volume="0.4"></audio>
+<audio id="fx-pop8b" src="assets/sfx/pop-light.mp3" data-start="49.42" data-duration="0.18" data-track-index="12" data-volume="0.6"></audio>
+<audio id="fx-chk8c" src="assets/sfx/check.mp3" data-start="50.94" data-duration="1.2" data-track-index="13" data-volume="0.4"></audio>
+<audio id="fx-wh9" src="assets/sfx/whoosh-fast.mp3" data-start="53.52" data-duration="1.4" data-track-index="14" data-volume="0.55"></audio>
+<audio id="fx-pop9" src="assets/sfx/pop-light.mp3" data-start="55.59" data-duration="0.18" data-track-index="15" data-volume="0.5"></audio>
+<audio id="fx-wh10" src="assets/sfx/whoosh-air.mp3" data-start="56.74" data-duration="1.6" data-track-index="12" data-volume="0.4"></audio>
+<audio id="fx-chime10" src="assets/sfx/chime.mp3" data-start="60.16" data-duration="0.97" data-track-index="13" data-volume="0.5"></audio>
+<audio id="music-a" src="assets/music/music-a.mp3" data-start="0" data-duration="61.15" data-track-index="10" data-volume="0.02" data-fade-in="4.22" data-fade-out="1.95"></audio>
+</div>
+<script>
+const tl = gsap.timeline({ paused: true });
+const E = 'power3.out', B = 'back.out(1.6)';
+const pop = (s, t, r = 0) => tl.fromTo(s, { scale: 0, rotation: r - 8, opacity: 0 }, { scale: 1, rotation: r, opacity: 1, duration: 0.45, ease: B }, t);
+const up = (s, t, y = 30) => tl.fromTo(s, { y, opacity: 0 }, { y: 0, opacity: 1, duration: 0.4, ease: E }, t);
+const draw = (s, t, d = 0.45) => tl.fromTo(s + ' .draw, ' + s + '.draw', { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: d, ease: 'power2.inOut' }, t);
+const swipe = (s, t) => tl.fromTo(s + ' .mkbg', { scaleX: 0 }, { scaleX: 1, duration: 0.35, ease: 'power2.out' }, t);
+const words = (s, t) => tl.fromTo(s + ' .w', { y: 40, opacity: 0 }, { y: 0, opacity: 1, duration: 0.35, ease: E, stagger: 0.06 }, t);
+const typeLines = (s, t0, gap) => document.querySelectorAll(s + ' .ln').forEach((el, i) => {
+  tl.fromTo(el, { opacity: 0 }, { opacity: 1, duration: 0.01 }, t0 + i * gap);
+  tl.fromTo(el.querySelector('.lt'), { clipPath: 'inset(0 100% 0 0)' }, { clipPath: 'inset(0 0% 0 0)', duration: Math.max(0.2, gap * 0.8), ease: 'steps(18)' }, t0 + i * gap);
+});
+tl.set('#cam', { scale: 1 }, 0);
+tl.set('#cam', { scale: 1.07 }, 3.218);
+tl.set('#cam', { scale: 1 }, 7.1);
+tl.set('#cam', { scale: 1.07 }, 10.704);
+tl.set('#cam', { scale: 1 }, 12.928);
+tl.set('#cam', { scale: 1.07 }, 16.586);
+tl.set('#cam', { scale: 1 }, 24.095);
+tl.set('#cam', { scale: 1.07 }, 25.892);
+tl.set('#cam', { scale: 1 }, 32.797);
+tl.set('#cam', { scale: 1.07 }, 38.803);
+tl.set('#cam', { scale: 1 }, 45.664);
+tl.set('#cam', { scale: 1.07 }, 53.543);
+tl.fromTo('#cam', { scale: 1.0 }, { scale: 1.15, duration: 0.45, ease: E, immediateRender: false }, 22.87);
+tl.set('#cam', { scale: 1.0 }, 24.28);
+tl.fromTo('#cam', { x: 0, filter: 'blur(0px)' }, { x: -90, filter: 'blur(14px)', duration: 0.12, ease: 'power2.in', immediateRender: false }, 24.28 - 0.12);
+tl.fromTo('#cam', { x: 90, filter: 'blur(14px)' }, { x: 0, filter: 'blur(0px)', duration: 0.18, ease: 'power2.out', immediateRender: false }, 24.28);
+tl.fromTo('#cam', { x: 0, filter: 'blur(0px)' }, { x: -90, filter: 'blur(14px)', duration: 0.12, ease: 'power2.in', immediateRender: false }, 53.64 - 0.12);
+tl.fromTo('#cam', { x: 90, filter: 'blur(14px)' }, { x: 0, filter: 'blur(0px)', duration: 0.18, ease: 'power2.out', immediateRender: false }, 53.64);
+words('#b1', 0.15);
+swipe('#b1', 2.41);
+pop('#c2a', 4.66);
+up('#c2b', 7.68, 24);
+pop('#c3b', 10.9);
+draw('#ph1', 12.14, 0.4);
+draw('#ph2', 13.57, 0.4);
+draw('#ph3', 15.03, 0.4);
+pop('#c4a', 16.73);
+pop('#c4b', 18.81);
+pop('#c4c', 20.21);
+up('#h4', 22.87, 16);
+words('#b5', 24.380000000000003);
+swipe('#b5', 27.14);
+tl.fromTo('#f6a', { y: -260, opacity: 0 }, { y: 0, opacity: 1, duration: 0.45, ease: B }, 31.8);
+tl.fromTo('#f6b', { y: -260, opacity: 0 }, { y: 0, opacity: 1, duration: 0.45, ease: B }, 32.94);
+tl.fromTo('#f6c', { y: -260, opacity: 0 }, { y: 0, opacity: 1, duration: 0.45, ease: B }, 34.28);
+tl.fromTo('#f6d', { y: -260, opacity: 0 }, { y: 0, opacity: 1, duration: 0.45, ease: B }, 36.08);
+up('#h6', 37.78, 16);
+up('#c7a', 39.22, 24);
+pop('#c7b', 43.04);
+up('#c7c', 43.900000000000006, 24);
+up('#h7', 45.02, 16);
+draw('#a7', 45.120000000000005, 0.35);
+tl.fromTo('#p8', { y: -60, opacity: 0, rotation: 4 }, { y: 0, opacity: 1, rotation: -2, duration: 0.5, ease: B }, 46.08);
+pop('#t8a', 46.76);
+pop('#t8b', 49.42);
+pop('#t8c', 50.94);
+up('#h8', 51.98, 16);
+tl.fromTo('#br9', { yPercent: 0 }, { yPercent: -38, duration: 3.10, ease: 'none' }, 53.64);
+tl.fromTo('#cur9', { x: 160, y: 220, opacity: 0 }, { x: 0, y: 0, opacity: 1, duration: 0.8, ease: E }, 54.24);
+tl.fromTo('#cur9', { scale: 1 }, { scale: 0.82, duration: 0.08, yoyo: true, repeat: 1, immediateRender: false }, 55.54);
+words('#b10', 56.84);
+swipe('#b10', 57.440000000000005);
+pop('#u10', 58.04);
+up('#h10', 60.160000000000004, 16);
+draw('#a10', 60.260000000000005, 0.4);
+tl.set('#cut5, #cut9', { clipPath: 'inset(0 8% 0 0)' }, 0);
+document.querySelectorAll('.cap span').forEach((el) => { const t = +el.parentElement.dataset.start; tl.fromTo(el, { y: 14, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: E }, t); });
+window.__timelines['main'] = tl;
+</script>
+</body>
+</html>

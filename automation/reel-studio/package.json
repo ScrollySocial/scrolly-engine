@@ -1,0 +1,20 @@
+{
+  "name": "scrolly-reel-studio",
+  "private": true,
+  "type": "module",
+  "description": "Remotion-based Reel editor kits (Yap, Cinematic, Faceless, Screen demo) for Scrolly",
+  "scripts": {
+    "studio": "remotion studio src/index.jsx",
+    "render": "node render.mjs"
+  },
+  "dependencies": {
+    "@remotion/bundler": "^4.0.535",
+    "@remotion/cli": "^4.0.535",
+    "@remotion/google-fonts": "^4.0.535",
+    "@remotion/media-utils": "^4.0.535",
+    "@remotion/renderer": "^4.0.535",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "remotion": "^4.0.535"
+  }
+}
