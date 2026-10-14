@@ -298,7 +298,7 @@ textarea{min-height:42px;margin-top:8px}
         <h2>Post caption</h2>
         <p class="sub">What goes under the Reel on Instagram. Edit it right here.</p>
         <div class="lbl">Preview text (what shows before "more")</div>
-        <div class="igprev"><b>scrollysocial</b> <span id="capPreview"></span><span class="more">… more</span></div>
+        <div class="igprev"><b id="igHandle">your_account</b> <span id="capPreview"></span><span class="more">… more</span></div>
         <div class="lbl" style="margin-top:12px">Full text</div>
         <textarea id="postCaption" rows="7" aria-label="Full caption text"></textarea>
         <div class="capmeta"><span class="mono" id="capCount"></span><button class="linkbtn" id="capReset" type="button">Back to Claude's draft</button></div>
@@ -306,7 +306,7 @@ textarea{min-height:42px;margin-top:8px}
         <input type="text" id="postTags">
         <div class="lbl" style="margin-top:16px">When you approve</div>
         <div class="seg" id="postAfter" role="group" aria-label="When you approve">
-          <button type="button" data-v="queue">Add to the Buffer queue</button>
+          <button type="button" data-v="queue">Add to the posting queue</button>
           <button type="button" data-v="hold">Hold for now</button>
         </div>
         <p class="sub" id="postAfterNote" style="margin:8px 0 0"></p>
@@ -488,7 +488,7 @@ function renderBrand() {
   const sw = $('#brandSw'); sw.textContent = '';
   if (cur) for (const k of ['cream', 'peach', 'orange', 'ink', 'blush', 'mist']) { const i = el('i'); i.style.background = cur.colors[k]; i.title = k; sw.append(i); }
 }
-$('#brandSel').addEventListener('change', (e) => { D.brand = e.target.value === 'scrolly' ? undefined : e.target.value; renderBrand(); renderCover(); save(true); });
+$('#brandSel').addEventListener('change', (e) => { D.brand = e.target.value === (R.defaultBrand || R.brands[0]?.id) ? undefined : e.target.value; renderBrand(); renderCover(); save(true); });
 function renderCover() {
   const c = coverConf();
   const fr = $('#cframes'); fr.textContent = '';
@@ -520,7 +520,7 @@ function renderCover() {
     if (!cutState.cutJob?.running) fetch('/api/cutout?frame=' + c.frame, { method: 'POST' });
     clearTimeout(coverTimer); coverTimer = setTimeout(async () => { await refreshCuts(); renderCover(); }, 3000);
   } else msg.hidden = true;
-  const q = new URLSearchParams({ brand: D.brand || 'scrolly', frame: c.frame, style: c.style, bg: c.bg, text: c.text, aside: c.aside || '', v: (cutState.cuts || []).join('.') });
+  const q = new URLSearchParams({ brand: D.brand || R.defaultBrand || R.brands[0]?.id, frame: c.frame, style: c.style, bg: c.bg, text: c.text, aside: c.aside || '', v: (cutState.cuts || []).join('.') });
   const src = '/cover?' + q; if ($('#cprev').dataset.src !== src) { $('#cprev').dataset.src = src; $('#cprev').src = src; }
 }
 $('#coverOwn').addEventListener('input', (e) => { clearTimeout(coverTimer); const val = e.target.value; coverTimer = setTimeout(() => setCover({ text: val }), 500); });
@@ -791,11 +791,14 @@ function renderPost() {
   $('#capPreview').textContent = postCap().replace(/\s+/g, ' ').slice(0, 125);
   $('#capCount').textContent = `${full.length} / 2,200 characters · ${(postTags().match(/#\w+/g) || []).length} hashtags`;
   $('#capReset').hidden = !(D.post && (D.post.caption != null || D.post.hashtags != null));
+  $('#igHandle').textContent = R.account || 'your_account';
+  const qb = $('#postAfter [data-v="queue"]');
+  qb.textContent = R.scheduler ? `Add to the ${R.scheduler} queue` : 'Add to the posting queue';
   const after = D.postAfter || 'hold';
   $$('#postAfter button').forEach((b) => b.setAttribute('aria-pressed', b.dataset.v === after));
   $('#postAfterNote').textContent = after === 'queue'
-    ? 'Claude sets the Reel\'s Notion row to Ready, which adds it to the Buffer queue (the video needs a link that never expires).'
-    : 'Claude sets the Reel\'s Notion row to Approved with the caption, video and cover. You post it whenever you like.';
+    ? (R.tracker ? `Claude sets the Reel's ${R.tracker} row to ${R.statuses.ready || 'Ready'}, which adds it to the ${R.scheduler || 'posting'} queue (the video needs a link that never expires).` : `Claude adds it to the ${R.scheduler || 'posting'} queue (the video needs a link that never expires).`)
+    : (R.tracker ? `Claude sets the Reel's ${R.tracker} row to ${R.statuses.approved || 'Approved'} with the caption, video and cover. You post it whenever you like.` : 'Claude keeps the caption, video and cover together. You post it whenever you like.');
 }
 $('#postCaption').addEventListener('input', (e) => { D.post = { ...(D.post || {}), caption: e.target.value }; renderPost(); save(); });
 $('#postTags').addEventListener('input', (e) => { D.post = { ...(D.post || {}), hashtags: e.target.value }; renderPost(); save(); });

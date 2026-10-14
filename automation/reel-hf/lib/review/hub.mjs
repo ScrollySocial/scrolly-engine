@@ -1,5 +1,5 @@
-// One link for every Reel in review: http://localhost:4320 lists each Reel with where it stands (lib/pipeline.mjs)
-// and opens its own review page (lib/review/server.mjs), started on demand on a fixed port per Reel (4331, 4332, …;
+// One link for every Reel in review: http://localhost:<hubPort> (4320 by default) lists each Reel with where it stands (lib/pipeline.mjs)
+// and opens its own review page (lib/review/server.mjs), started on demand on a fixed port per Reel (firstReelPort, +1, …;
 // kept in _runs/hub-ports.json so links stay the same across days). New Reel folders show up on refresh.
 // Usage: node lib/review/hub.mjs            (runs in this terminal)
 //        node lib/review/hub.mjs --start    (starts it in the background if it isn't running yet, then exits;
@@ -10,8 +10,9 @@ import { existsSync, mkdirSync, openSync, readFileSync, writeFileSync } from 'no
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { allReels, reelStatus, ROOT } from '../pipeline.mjs';
+import { S, ports as PORTS_SET } from '../settings.mjs';
 
-const HUB = 4320, FIRST = 4331;
+const HUB = PORTS_SET.hub, FIRST = PORTS_SET.firstReel;
 const SELF = fileURLToPath(import.meta.url);
 const RUNS = path.join(ROOT, '_runs');
 mkdirSync(RUNS, { recursive: true });
@@ -52,9 +53,9 @@ async function ensure(slug) {
 const LABEL = {
   plan: ['Plan it', 'Your turn: check the moments, script and cover'],
   edit: ['Edit it', 'Your turn: sounds, captions, music, transitions'],
-  render: ['Rendering', 'Renders in the evening run'],
+  render: ['Rendering', 'Renders in the next run'],
   approve: ['Approve it', 'Your turn: watch the video, approve the caption'],
-  post: ['Posting', 'Claude adds it to Buffer'],
+  post: ['Posting', S.posting.scheduler ? `Claude adds it to ${S.posting.scheduler}` : 'Claude gets it ready to post'],
   done: ['Done', 'Queued or posted'],
   'no-page': ['Not ready', 'No review page yet'],
 };

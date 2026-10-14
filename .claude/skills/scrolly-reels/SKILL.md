@@ -14,7 +14,8 @@ say so and offer Studio or wait.
 1. Vault `products/content-engine/reel-engine-handoff.md`: goal, decisions, **Her rules** (look, sound, process, covers).
    Her rules there override anything here and anything older.
 2. Vault `brand/writing-and-content-rules.md` for caption voice, and memory `feedback_reel_graphics_style`.
-3. `lib/README.md` (engine commands) and the component catalog at the top of `lib/components.mjs`.
+3. `lib/README.md` (engine commands), `reel-settings.json` (her folders, tracker, posting route, rules list) and the
+   component catalog at the top of `lib/components.mjs`.
 4. The last approved Reel's `build.mjs` as the pattern (`2026-10-13-bb-know-what-you-sell/build.mjs`).
 
 ## Never
@@ -28,15 +29,16 @@ say so and offer Studio or wait.
 Each ◆ is a review checkpoint. **How** she reviews is a swappable part: follow `review/README.md` (the review slot)
 for every ◆. Don't hard-code a review format into the steps.
 
-**0. Setup.** `node lib/doctor.mjs`. Fix anything it flags before going on.
+**0. Setup.** `node lib/doctor.mjs` (checks and fixes what it can). Anything left as NEEDS YOU: fix it before going on
+(the `reel-engine-setup` skill walks through it).
 
 **1. Start.** Two doors, one process:
-- From chat: she names the idea or drops footage. Create the Content Pipeline row (`collection://d2cc8645-5399-4d65-91e2-d535e5cc98bc`):
+- From chat: she names the idea or drops footage. Create the Content Pipeline row (database = `reel-settings.json` → `tracker.database`):
   Content = working title, Format = Reel, Platforms = Instagram, Status = Edit, Series, Product if it sells one.
 - From Notion: "next Reel" = the first row with Format Reel and Status Edit (sort by Publish Order, then created);
   or the row she names. Read Hook, CTA, Series, Edit Notes, Filming Notes.
 Slug = `yyyy-mm-dd-<series>-<topic>` (e.g. `2026-10-13-bb-know-what-you-sell`). Footage lives under the footage folder
-(`carousels/config/media.json` → `reelFootageDir`), one subfolder per series.
+(`reel-settings.json` → `folders.footage`), one subfolder per series.
 
 **2. Transcribe.** `node lib/transcribe-footage.mjs "<Folder>/<File>.MOV" …` → `carousels/reels/_work/audio/<name>.json/.txt`.
 Read the .txt. Pick the best take of each line; drop retakes, false starts, "check your output"-type asides.
@@ -67,9 +69,9 @@ review/decisions.json); word cuts need the take re-cut (plan.json + prep-footage
 **6. Make the video.** Background removal for every cut-out moment (`hyperframes remove-background <clip> -o assets/cut/fNN-cut.webm`,
 ~3 min each; run in the background). `node build.mjs && npm run check` (long footage: set
 `PRODUCER_PAGE_NAVIGATION_TIMEOUT_MS=180000 PRODUCER_PLAYER_READY_TIMEOUT_MS=180000`). Render with hyperframes-test/bin on PATH:
-`npx --yes hyperframes@0.8.150 render . -o "<reelExportsDir>/final/<slug>.mp4"` (~11× real time: run it in the background).
+`npx --yes hyperframes@0.8.150 render . -o "<folders.exports>/final/<slug>.mp4"` (~11× real time: run it in the background).
 Look at frames yourself before sending (text over her face, cut-off text, emoji boxes). Render her cover choice with
-`renderCovers` from lib/cover.mjs (her frame, style, background, text, aside) into `<reelExportsDir>/<slug>/cover.png`.
+`renderCovers` from lib/cover.mjs (her frame, style, background, text, aside) into `<folders.exports>/<slug>/cover.png`.
 Then `node build.mjs review` so step 3 plays the render. Fine-tuning can also happen in HyperFrames Studio
 (`npm run dev`); diff and fold back.
 ◆ **Step 3 on the page, Approve it:** the video, notes at a moment, the post caption, and "When you approve".

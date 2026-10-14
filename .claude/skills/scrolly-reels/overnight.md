@@ -12,7 +12,7 @@ Write a running log to `automation/reel-hf/_runs/<yyyy-mm-dd>-overnight.md` as y
 ## Before anything
 1. Read the skill `SKILL.md` (this folder), its **Read first** list (handoff spec Her rules, writing rules, graphics
    memory, lib/README, the last approved Reel's build.mjs) and `review/README.md`. Her rules override this file.
-2. `node lib/doctor.mjs`. If anything fails that blocks Reels, write it in the log, notify her (see Wrap up) and stop.
+2. `node lib/doctor.mjs` (fixes what it can). If anything is left as NEEDS YOU, write it in the log, notify her (see Wrap up) and stop.
 3. `node lib/pipeline.mjs` to see every Reel's stage.
 
 ## A. Post (stage `post`: she clicked "Approve the Reel")
@@ -54,10 +54,10 @@ If she approved a step and you changed what it showed, keep the approval but say
 4. A failed Reel (see `renders/render.log`) doesn't stop the others. Note it.
 
 ## D. Draft new Reels (Notion rows → review pages)
-1. Content Pipeline (`collection://d2cc8645-5399-4d65-91e2-d535e5cc98bc`): rows with Format **Reel** and Status **Edit**,
+1. Content Pipeline (`reel-settings.json` → `tracker.database`): rows with Format **Reel** and Status **Edit**,
    sorted by Publish Order, then created time. Skip rows already in `automation/reel-hf/rows.json`.
 2. A row is a **Studio** Reel when its footage is talking-head take(s) of her. The footage is named in **Filming Notes**
-   (paths relative to the footage folder, `carousels/config/media.json` → `reelFootageDir`, e.g. `videos/Business
+   (paths relative to the footage folder, `reel-settings.json` → `folders.footage`, e.g. `videos/Business
    Brain/IMG_2008` → find the file by name). Skip and log (with the reason) rows where: the footage file isn't there
    (OneDrive not synced), it's a screen recording (Demo), b-roll or short intro clips (Quick Cut / Chill), multi-angle
    (Film), the Notes say it was already edited, or no footage is named. These types aren't built yet.

@@ -1,10 +1,11 @@
-// Reads her review back: prints every note, cut, sound change, music change, cover pick and rule from
+// Reads the review back: prints every note, cut, sound change, music change, cover pick and rule from
 // <reel>/review/decisions.json as a plain change list, tied to a time and frame, for Claude to act on.
 // Sound and music changes already apply on the next build (lib/reel.mjs reads decisions.json); cuts need the take
 // re-cut (find the words in plan.json's source transcript, adjust the keep list, re-run prep-footage).
 // Usage: node lib/review/import.mjs <reel-folder>
 import { existsSync, readFileSync } from 'node:fs';
 import path from 'node:path';
+import { P, S, ownerName } from '../settings.mjs';
 
 const dir = path.resolve(process.argv[2] || '.');
 const R = JSON.parse(readFileSync(path.join(dir, 'review/reel.json'), 'utf8'));
@@ -23,7 +24,7 @@ for (const [n, b] of Object.entries(D.visual || {})) if (b.state || b.note) out.
 for (const [i, e] of Object.entries(D.captions || {})) out.push(`CAPTION #${i} “${R.captions?.[+i]?.t || ''}”: ${[e.style, e.text && 'text → ' + e.text, e.mark?.length && 'marker on words ' + e.mark.join(',')].filter(Boolean).join(', ')} (applies on next build)`);
 if (D.captionFont) out.push(`CAPTION FONT: ${D.captionFont} (applies on next build)`);
 for (const n of D.videoNotes || []) out.push(`VIDEO NOTE ${fmt(n.t)}: ${n.text}`);
-for (const p of D.pins || []) out.push(`NOTE ${fmt(p.t)} F${p.frame} ${frame(p.frame)?.title || ''}${where(p)}: ${p.text || '(empty note: ask her)'}`);
+for (const p of D.pins || []) out.push(`NOTE ${fmt(p.t)} F${p.frame} ${frame(p.frame)?.title || ''}${where(p)}: ${p.text || `(empty note: ask ${ownerName})`}`);
 const cut = (D.cut || []).map((i) => R.words[i]).filter(Boolean);
 for (const w of cut) out.push(`CUT ${fmt(w.s)} F${w.frame}: "${w.w}" (word ${w.i}; re-cut the take, then rebuild)`);
 for (const [id, e] of Object.entries(D.sound || {})) {
@@ -38,11 +39,11 @@ if (D.music?.file) out.push(`MUSIC track → ${D.music.file} (applies on next bu
 for (const [k, type] of Object.entries(D.transitions || {})) out.push(`TRANSITION into ${k}: ${type} (applies on next build)`);
 if (D.look) out.push(`LOOK ${JSON.stringify(D.look)} (applies on next build; check the render, CSS filters on footage)`);
 for (const [n, L] of Object.entries(D.lookByFrame || {})) out.push(`LOOK for F${n}: ${L ? JSON.stringify(L) : 'as filmed'} (applies on next build)`);
-if (D.post?.caption || D.post?.hashtags) out.push(`POST CAPTION (her edit): ${(D.post.caption ?? R.post?.caption ?? '').replace(/\s+/g, ' ').slice(0, 160)}… | hashtags: ${D.post.hashtags ?? R.post?.hashtags ?? ''}`);
-if (D.postAfter) out.push(`AFTER APPROVAL: ${D.postAfter === 'queue' ? 'set the Notion row to Ready (adds it to the Buffer queue; needs a live video URL)' : 'hold: set the Notion row to Approved'}`);
+if (D.post?.caption || D.post?.hashtags) out.push(`POST CAPTION (edited): ${(D.post.caption ?? R.post?.caption ?? '').replace(/\s+/g, ' ').slice(0, 160)}… | hashtags: ${D.post.hashtags ?? R.post?.hashtags ?? ''}`);
+if (D.postAfter) out.push(`AFTER APPROVAL: ${D.postAfter === 'queue' ? `set the tracker row to ${S.tracker.statuses?.ready || 'Ready'} (adds it to the ${S.posting.scheduler || 'posting'} queue; needs a live video URL)` : `hold: set the tracker row to ${S.tracker.statuses?.approved || 'Approved'}`}`);
 if (D.cover) out.push(`COVER: frame F${D.cover.frame}, ${D.cover.style === 'photo' ? 'full video frame' : 'cut-out on ' + D.cover.bg}, text “${D.cover.text}”${D.cover.aside ? ' + aside “' + D.cover.aside + '”' : ''} (render with lib/cover.mjs renderCovers)`);
-else if (D.coverText) out.push(`COVER TEXT: ${D.coverText}${R.coverOptions?.includes(D.coverText) ? '' : ' (her own wording)'}`);
+else if (D.coverText) out.push(`COVER TEXT: ${D.coverText}${R.coverOptions?.includes(D.coverText) ? '' : ' (own wording)'}`);
 if (D.notes?.trim()) out.push(`GENERAL: ${D.notes.trim()}`);
-if (D.rule?.trim()) out.push(`RULE FOR EVERY REEL (add to the handoff spec's Her rules after confirming): ${D.rule.trim()}`);
+if (D.rule?.trim()) out.push(`RULE FOR EVERY REEL (add to ${S.rules.doc ? `"${S.rules.section || 'rules'}" in ${path.relative(process.cwd(), P.rulesDoc)}` : 'reel-settings.json rules.list'} after confirming): ${D.rule.trim()}`);
 
-console.log(out.length ? `${R.slug}: ${out.length} item(s), saved ${D.savedAt}\n` + out.map((l) => '- ' + l).join('\n') : 'Nothing changed: she approved as is.');
+console.log(out.length ? `${R.slug}: ${out.length} item(s), saved ${D.savedAt}\n` + out.map((l) => '- ' + l).join('\n') : `Nothing changed: ${ownerName} approved as is.`);

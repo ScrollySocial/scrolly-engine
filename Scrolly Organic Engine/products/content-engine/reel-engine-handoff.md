@@ -200,6 +200,14 @@ unless marked **open**. Not logged to the Business Brain yet: she said it's stil
 - Still open: approvals on the page don't notify Claude (the nightly run picks them up); Holiday kit colors;
   marker auto-contrast; Film/Chill/Demo/Quick Cut (overnight skips those rows and says so); Trial variants on hold.
 
+## Session 5 (2026-10-13): customer setup (branch reel-engine/customer-setup, not merged)
+- `lib/` holds nothing personal now: her name, IG handle, OneDrive folders, Edge path, tool locations, Notion database
+  id + statuses, posting route (WordPress + Buffer), rules list and Studio music level live in
+  `automation/reel-hf/reel-settings.json` (read by `lib/settings.mjs`); the values are hers, so nothing changes for her.
+  Voice-file `build-lib.mjs` output is byte-identical.
+- `lib/doctor.mjs` now fixes (npm/pip installs, ffmpeg copy, venv, folders, browser path); `--check` looks only;
+  `--install` adds Node/Python/browser via winget/brew. New skill `.claude/skills/reel-engine-setup/`.
+
 ## Next: overnight scheduling (planned 2026-10-13, superseded by Session 4 above)
 Mercedes's idea (2026-10-13), agreed in shape:
 - **Overnight run (~1am):** for every Content Pipeline row with Format Reel, Status Edit and footage: transcribe, rough

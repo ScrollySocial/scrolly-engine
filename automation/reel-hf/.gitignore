@@ -1,5 +1,5 @@
 # Code, specs and small assets are tracked. Footage copies, renders and generated review files stay out of git
-# (the originals live in OneDrive "Scrolly Media").
+# (the originals live in the footage folder named in reel-settings.json).
 node_modules/
 */assets/talk*.mp4
 */assets/talk-audio.m4a

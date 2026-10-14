@@ -1,7 +1,6 @@
 // Scrolly brand kit for Reels: the ONLY file a customer swaps for their own look.
 // Colors by role and the three font families (files live in lib/assets/fonts and get copied into each Reel).
-// Rules this kit encodes (Mercedes 2026-10-13): statements = condensed heavy grotesque, emphasis = peach marker swipe,
-// asides = handwriting. Never italic serif accents, never color-changed words.
+// Type roles this kit encodes: statements = condensed heavy grotesque, emphasis = peach marker swipe, asides = handwriting.
 export default {
   name: 'scrolly',
   label: 'Scrolly',
@@ -15,6 +14,5 @@ export default {
 @font-face{font-family:'ScrollyBricolage';src:url('assets/fonts/bricolage-800.woff2') format('woff2');font-weight:800;font-stretch:75% 100%}
 @font-face{font-family:'ScrollyHand';src:url('assets/fonts/covered-by-your-grace.woff2') format('woff2')}`,
   fontFiles: ['figtree.woff2', 'bricolage-800.woff2', 'covered-by-your-grace.woff2'],
-  // CTA rules: Business Brain = name + scrollyseo.com, never the price; IG bio link = $1K Challenge.
   site: 'scrollyseo.com',
 };

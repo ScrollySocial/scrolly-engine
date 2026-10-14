@@ -1,6 +1,6 @@
 // Local review page for one Reel (laptop). Serves the page, the Reel's files (with byte ranges so video seeks),
-// her decisions (review/decisions.json, saved as she works) and one fixed job: rebuild the preview stage + review data.
-// Usage: node lib/review/server.mjs [<reel-folder>] [--port 4321]   (default: the most recently built Reel)
+// the reviewer's decisions (review/decisions.json, saved as they work) and one fixed job: rebuild the preview stage + review data.
+// Usage: node lib/review/server.mjs [<reel-folder>] [--port <n>]   (default: the most recently built Reel; port from reel-settings.json)
 import { createServer } from 'node:http';
 import { spawn } from 'node:child_process';
 import { createReadStream, existsSync, readFileSync, readdirSync, statSync, writeFileSync, mkdirSync } from 'node:fs';
@@ -8,13 +8,13 @@ import { createHash } from 'node:crypto';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { coverHtml } from '../cover.mjs';
-import { BRANDS } from '../brand/index.mjs';
+import { BRANDS, defaultBrand } from '../brand/index.mjs';
+import { P, S, hf, ports, withBin } from '../settings.mjs';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.join(HERE, '../..');
-const MEDIA = JSON.parse(readFileSync(path.join(ROOT, '../carousels/config/media.json'), 'utf8'));
 const args = process.argv.slice(2);
-const PORT = +(args[args.indexOf('--port') + 1] || 0) || 4321;
+const PORT = +(args[args.indexOf('--port') + 1] || 0) || ports.page;
 const pick = args.find((a) => !a.startsWith('--') && !/^\d+$/.test(a));
 const reels = readdirSync(ROOT).filter((d) => /^\d{4}-\d{2}-\d{2}-/.test(d) && existsSync(path.join(ROOT, d, 'build.mjs')));
 const slug = pick ? path.basename(pick) : reels.sort((a, b) => statSync(path.join(ROOT, b, 'build.mjs')).mtimeMs - statSync(path.join(ROOT, a, 'build.mjs')).mtimeMs)[0];
@@ -28,7 +28,7 @@ const soundHash = (d) => createHash('sha1').update(JSON.stringify([d.sound || {}
 let job = { running: false, log: '', ok: null };
 let cutJob = { running: false, frame: null, ok: null };
 const nn = (n) => String(n).padStart(2, '0');
-// the cut-out of her for cover frame n: made on the review page, or the storyboard's existing one
+// the speaker's cut-out for cover frame n: made on the review page, or the storyboard's existing one
 const cutFor = (n) => [`review/cover-cuts/f${nn(n)}.png`, `sketch/f${nn(n)}-cut.png`].find((p) => existsSync(path.join(DIR, p)));
 const slash = (p) => p.split(path.sep).join('/');
 const urlFor = (abs) => { const a = path.resolve(abs); if (a.startsWith(DIR)) return '/reel/' + slash(path.relative(DIR, a)); if (a.startsWith(path.join(HERE, '..'))) return '/lib/' + slash(path.relative(path.join(HERE, '..'), a)); return ''; };
@@ -36,7 +36,7 @@ function makeCut(n) {
   if (cutJob.running || cutFor(n)?.startsWith('review/')) return;
   cutJob = { running: true, frame: n, ok: null };
   mkdirSync(path.join(DIR, 'review/cover-cuts'), { recursive: true });
-  const p = spawn('npx', ['--yes', 'hyperframes@0.8.150', 'remove-background', `sketch/f${nn(n)}.jpg`, '-o', `review/cover-cuts/f${nn(n)}.png`], { cwd: DIR, shell: true, env: { ...process.env, PATH: `${path.join(ROOT, '../hyperframes-test/bin')}${path.delimiter}${process.env.PATH}` } });
+  const p = spawn('npx', ['--yes', hf, 'remove-background', `sketch/f${nn(n)}.jpg`, '-o', `review/cover-cuts/f${nn(n)}.png`], { cwd: DIR, shell: true, env: withBin() });
   p.on('close', (code) => { cutJob = { running: false, frame: n, ok: code === 0 && existsSync(path.join(DIR, `review/cover-cuts/f${nn(n)}.png`)) }; });
 }
 
@@ -63,7 +63,7 @@ function rebuild() {
   const next = () => {
     const step = steps.shift();
     if (!step) { job.running = false; job.ok = true; writeFileSync(BUILD, JSON.stringify({ at: new Date().toISOString(), soundHash: soundHash(dec) })); return; }
-    const p = spawn(process.execPath, step, { cwd: DIR, env: { ...process.env, PATH: `${path.join(ROOT, '../hyperframes-test/bin')}${path.delimiter}${process.env.PATH}` } });
+    const p = spawn(process.execPath, step, { cwd: DIR, env: withBin() });
     p.stdout.on('data', (d) => (job.log += d)); p.stderr.on('data', (d) => (job.log += d));
     p.on('close', (code) => { if (code) { job.running = false; job.ok = false; job.log += `\n(stopped: ${step.join(' ')} exited ${code})`; } else next(); });
   };
@@ -73,7 +73,13 @@ function rebuild() {
 createServer((req, res) => {
   const url = new URL(req.url, 'http://x'), p = decodeURIComponent(url.pathname);
   if (p === '/' || p === '/index.html') return sendFile(req, res, path.join(HERE, 'page.html'));
-  if (p === '/api/reel') return sendFile(req, res, path.join(DIR, 'review/reel.json'));
+  if (p === '/api/reel') {
+    const f = path.join(DIR, 'review/reel.json');
+    if (!existsSync(f)) return sendFile(req, res, f);
+    // + who and where, for the page's labels (reel-settings.json)
+    return json(res, { ...JSON.parse(readFileSync(f, 'utf8')), defaultBrand: defaultBrand().name, owner: S.owner.name || '', account: S.owner.instagram || '',
+      scheduler: S.posting.scheduler || '', tracker: S.tracker.app && S.tracker.app !== 'none' ? S.tracker.name || S.tracker.app : '', statuses: S.tracker.statuses || {} });
+  }
   if (p === '/api/state') {
     const dec = existsSync(DEC) ? JSON.parse(readFileSync(DEC, 'utf8')) : {};
     const b = existsSync(BUILD) ? JSON.parse(readFileSync(BUILD, 'utf8')) : null;
@@ -90,11 +96,11 @@ createServer((req, res) => {
   if (p === '/cover') {
     const q = url.searchParams, n = +q.get('frame') || 1, style = q.get('style') === 'photo' ? 'photo' : 'cut';
     const cut = cutFor(n), photo = `sketch/f${nn(n)}.jpg`;
-    const html = coverHtml({ brand: BRANDS[q.get('brand')] || BRANDS.scrolly, text: q.get('text') || '', aside: q.get('aside') || '', style, bg: q.get('bg') || 'cream', cut: cut && path.join(DIR, cut), photo: path.join(DIR, photo), asset: urlFor });
+    const html = coverHtml({ brand: BRANDS[q.get('brand')] || defaultBrand(), text: q.get('text') || '', aside: q.get('aside') || '', style, bg: q.get('bg') || 'cream', cut: cut && path.join(DIR, cut), photo: path.join(DIR, photo), asset: urlFor });
     res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-store' }); return res.end(html);
   }
   if (p.startsWith('/lib/')) { const f = inside(path.join(HERE, '..'), p.slice(4)); return f ? sendFile(req, res, f) : (res.writeHead(403), res.end()); }
-  if (p.startsWith('/exports/')) { const f = inside(path.join(MEDIA.reelExportsDir), p.slice(8)); return f ? sendFile(req, res, f) : (res.writeHead(403), res.end()); }
+  if (p.startsWith('/exports/')) { const f = inside(P.exports, p.slice(8)); return f ? sendFile(req, res, f) : (res.writeHead(403), res.end()); }
   if (p.startsWith('/reel/')) { const f = inside(DIR, p.slice(5)); return f ? sendFile(req, res, f) : (res.writeHead(403), res.end()); }
   res.writeHead(404); res.end('not found');
 }).listen(PORT, '127.0.0.1', () => console.log(`Reel review for ${slug}: http://localhost:${PORT}`));

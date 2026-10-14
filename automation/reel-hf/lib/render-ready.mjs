@@ -1,10 +1,10 @@
-// Evening run, the mechanical half: renders every Reel whose Plan it AND Edit it are approved and whose render is
-// missing or older than her latest choices (stage "render" in lib/pipeline.mjs). Claude applies her notes first;
+// Render run, the mechanical half: renders every Reel whose Plan it AND Edit it are approved and whose render is
+// missing or older than the latest page choices (stage "render" in lib/pipeline.mjs). Claude applies the notes first;
 // this script only builds, checks, renders, makes the cover and refreshes the review page.
-// Per Reel: node build.mjs → hyperframes check → render (into <reel>/renders, then a fresh copy to OneDrive
-// exports/reels/final, never replaced in place) → cover.png from her cover pick → node build.mjs review → review/render.json.
+// Per Reel: node build.mjs → hyperframes check → render (into <reel>/renders, then a fresh copy to the exports
+// folder's final/, never replaced in place) → cover.png from the cover pick → node build.mjs review → review/render.json.
 // Skips a Reel whose index.html was edited outside build.mjs (HyperFrames Studio): diff and fold those in first.
-// Usage: node lib/render-ready.mjs [--only <reel>] [--dry]     (needs the Bash sandbox off: Edge + ffmpeg)
+// Usage: node lib/render-ready.mjs [--only <reel>] [--dry]     (needs the Bash sandbox off: headless browser + ffmpeg)
 import { spawnSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { copyFileSync, existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
@@ -12,12 +12,12 @@ import path from 'node:path';
 import { allReels, coverFile, decisionsHash, finalFile, reelStatus, ROOT } from './pipeline.mjs';
 import { renderCovers } from './cover.mjs';
 import { BRANDS } from './brand/index.mjs';
+import { hf, withBin } from './settings.mjs';
 
 const args = process.argv.slice(2);
 const only = args.includes('--only') ? path.basename(args[args.indexOf('--only') + 1]) : null;
 const dry = args.includes('--dry');
-const BIN = path.join(ROOT, '../hyperframes-test/bin');
-const env = { ...process.env, PATH: `${BIN}${path.delimiter}${process.env.PATH}`, PRODUCER_PAGE_NAVIGATION_TIMEOUT_MS: '180000', PRODUCER_PLAYER_READY_TIMEOUT_MS: '180000' };
+const env = { ...withBin(), PRODUCER_PAGE_NAVIGATION_TIMEOUT_MS: '180000', PRODUCER_PLAYER_READY_TIMEOUT_MS: '180000' };
 const sha = (f) => createHash('sha1').update(readFileSync(f)).digest('hex');
 const nn = (n) => String(n).padStart(2, '0');
 
@@ -43,15 +43,15 @@ for (const { slug } of todo) {
   if (existsSync(stamp) && existsSync(path.join(dir, 'index.html')) && readFileSync(stamp, 'utf8').trim() !== sha(path.join(dir, 'index.html'))) { fail('index.html was edited in Studio: diff it into build.mjs first'); continue; }
   if (!run(process.execPath, ['build.mjs'], 5)) { fail('build.mjs failed'); continue; }
   writeFileSync(stamp, sha(path.join(dir, 'index.html')));
-  if (!run('npx', ['--yes', 'hyperframes@0.8.150', 'check'], 15)) { fail('hyperframes check failed'); continue; }
+  if (!run('npx', ['--yes', hf, 'check'], 15)) { fail('hyperframes check failed'); continue; }
   const local = path.join(dir, 'renders', `${slug}.mp4`);
-  if (!run('npx', ['--yes', 'hyperframes@0.8.150', 'render', '.', '-o', `renders/${slug}.mp4`], 45) || !existsSync(local)) { fail('render failed'); continue; }
-  // OneDrive breaks files replaced in place: remove, then copy fresh
+  if (!run('npx', ['--yes', hf, 'render', '.', '-o', `renders/${slug}.mp4`], 45) || !existsSync(local)) { fail('render failed'); continue; }
+  // synced folders (OneDrive and the like) can break files replaced in place: remove, then copy fresh
   mkdirSync(path.dirname(finalFile(slug)), { recursive: true });
   rmSync(finalFile(slug), { force: true });
   copyFileSync(local, finalFile(slug));
 
-  // her cover pick from the page (Plan it → Cover)
+  // the cover pick from the page (Plan it → Cover)
   const D = JSON.parse(readFileSync(path.join(dir, 'review/decisions.json'), 'utf8'));
   let cover = null;
   if (D.cover?.text) {

@@ -1,6 +1,6 @@
 // Scrolly Holiday kit (DRAFT, 2026-10-13): same fonts and rules as the Scrolly kit, festive colors for Christmas /
 // holiday Reels (e.g. the Brother series). Colors by the same roles, so every component and cover just works.
-// Mercedes adjusts these before first use.
+// Colors still to be confirmed before first use.
 import scrolly from './scrolly.mjs';
 
 export default {

@@ -1,13 +1,10 @@
-// Step 1 pictures: every moment drawn with the Reel's REAL graphics (final positions) over a still of her, with its
+// Step 1 pictures: every moment drawn with the Reel's REAL graphics (final positions) over a still of the speaker, with its
 // caption, as review/frames/fNN.jpg. Re-rendered only when the drawn frames change.
-import { createRequire } from 'node:module';
 import { createHash } from 'node:crypto';
 import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
-import { fileURLToPath, pathToFileURL } from 'node:url';
-
-const HERE = path.dirname(fileURLToPath(import.meta.url));
-const EDGE = 'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe';
+import { pathToFileURL } from 'node:url';
+import { launch } from '../settings.mjs';
 
 export async function renderFrames(R, { stills, dir = 'review/frames' }) {
   mkdirSync(dir, { recursive: true });
@@ -16,8 +13,7 @@ export async function renderFrames(R, { stills, dir = 'review/frames' }) {
   R.storyboard(page, { stills, full: true });
   const stamp = createHash('sha1').update(readFileSync(page)).digest('hex'), stampFile = `${dir}/.stamp`;
   if (existsSync(stampFile) && readFileSync(stampFile, 'utf8') === stamp && files.every(existsSync)) { rmSync(page, { force: true }); return files; }
-  const puppeteer = createRequire(path.join(HERE, '../../../hyperframes-test/package.json'))('puppeteer');
-  const b = await puppeteer.launch({ headless: true, executablePath: EDGE, userDataDir: path.resolve(dir, '.edge'), timeout: 90000 });
+  const b = await launch({ headless: true, userDataDir: path.resolve(dir, '.edge'), timeout: 90000 });
   try {
     const p = await b.newPage();
     await p.setViewport({ width: 1080, height: 1920 });
