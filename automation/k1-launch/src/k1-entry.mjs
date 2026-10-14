@@ -13,22 +13,18 @@ const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '
 const n = (x) => (x == null ? '?' : Number(x).toLocaleString('en-US'));
 const money = (x) => '$' + Number(x).toLocaleString('en-US', { maximumFractionDigits: 2 });
 
-export function renderPlan(v, perPost = null) {
-  const steps = v.funnel.steps.map((s) => s.isSale
-    ? `<li><b>${n(s.base)} ${esc(s.label)}</b> at ${money(v.price)}</li>`
-    : `<li>about <b>${n(s.base)} ${esc(s.label)}</b>${s.low !== s.high ? ` <span class="note">(planning range ${n(s.low)} to ${n(s.high)})</span>` : ' <span class="note">(from your own conversion rate)</span>'}</li>`).join('');
+// "What it takes" is written guidance only (2026-09-29): every number (sales, visitors, views, per-post) comes from the
+// My $1K Plan calculator placed in #k1-calc-slot, so the page has one source of truth.
+export function renderPlan(v) {
   const e = v.economics;
   const econ = e.note ? `<div class="sec cream"><h3>Your offer economics</h3><p>${esc(e.note)}</p>
-    ${e.scenarios.length ? `<table><thead><tr><th>Average order value</th><th>Sales needed for $1,000</th></tr></thead><tbody>${e.scenarios.map((s) => `<tr><td>${money(s.aov)}${s.current ? ' (today)' : ''}</td><td>${n(s.sales)}</td></tr>`).join('')}</tbody></table><p class="note">Planning scenarios, not predictions or promises.</p>` : ''}
     ${e.levers.length ? `<p><b>Ways businesses like yours raise the average order:</b></p><ul>${e.levers.map((l) => `<li>${esc(l)}</li>`).join('')}</ul>` : ''}</div>` : '';
   const trust = e.trustNote ? `<div class="sec cream"><h3>Your offer economics</h3><p>${esc(e.trustNote)}</p></div>` : '';
   return `
   <div id="k1-calc-slot"></div>
-  <div class="sec"><h2>What it takes</h2>
-    <p class="note">${v.business ? esc(v.business) + ' · ' : ''}${esc(v.offer)} at ${money(v.price)}. Working backward from your ${n(v.number.requiredSales)} ${esc(v.number.saleNoun)} (${money(v.number.resultingRevenue)}).</p>
-    <ul class="funnel">${steps}<li>about <b>${n(v.funnel.reach.low)} to ${n(v.funnel.reach.high)} ${esc(v.funnel.reach.label)}</b> <span class="note">(reach varies the most, so treat it as a rough range)</span></li>${postsRow(v, perPost)}</ul>
-    <p class="note">${v.funnel.usesYourData ? 'These numbers use the conversion rate you gave us.' : 'Planning estimates, not predictions. They get sharper as you log real numbers each week.'}</p>
-    <p>${esc(v.interpretation)}</p></div>
+  ${v.guidance ? `<div class="sec"><h2>What it takes</h2>
+    <p class="note">${v.business ? esc(v.business) + ' · ' : ''}${esc(v.offer)}</p>
+    <p>${esc(v.guidance)}</p></div>` : ''}
   ${econ}${trust}
   <div class="sec teal"><h2>My first priority</h2><h3>${esc(v.firstPriority.label)}</h3><p>${esc(v.firstPriority.rationale)}</p>
     <h3>Work on this now</h3><ul>${v.workOnNow.map((w) => `<li>${esc(w)}</li>`).join('')}</ul>
@@ -36,24 +32,6 @@ export function renderPlan(v, perPost = null) {
   <div class="sec"><h2>Don't worry about these yet</h2><ul>${v.notYet.map((x) => `<li>${esc(x)}</li>`).join('')}</ul></div>
   <div class="sec"><h2>What we know so far</h2><ul class="known">${v.whatWeKnow.map((d) => `<li><span class="ic">${esc(d.icon)}</span> <b>${esc(d.headline)}.</b> ${esc(d.rationale)}</li>`).join('')}</ul>
     <p class="note">Numbers to track each week: ${v.checkInMetrics.map(esc).join(', ')}.</p></div>`;
-}
-
-/** Posts needed = reach needed ÷ the member's own reach per post (latest check-in). Never an invented average. */
-function postsRow(v, perPost) {
-  if (!perPost) return '<li><b>Posts needed:</b> <span class="note">worked out after your first weekly check-in, from your own reach per post.</span></li>';
-  const lo = Math.ceil(v.funnel.reach.low / perPost.reach), hi = Math.ceil(v.funnel.reach.high / perPost.reach);
-  return `<li>about <b>${n(lo)} to ${n(hi)} posts</b> <span class="note">(at your ${n(Math.round(perPost.reach))} reach per post, from your check-in for the week ending ${esc(perPost.week)})</span></li>`;
-}
-
-/** Latest check-in with known Instagram reach and posts created: reach per post. */
-export function reachPerPost(reviews) {
-  for (let i = reviews.length - 1; i >= 0; i--) {
-    const r = reviews[i];
-    const reach = (r.metrics || []).find((m) => /reach/i.test(m.label) && m.value !== '' && m.value != null);
-    const created = Number(r.created);
-    if (reach && Number(reach.value) > 0 && created > 0) return { reach: Number(reach.value) / created, week: r.periodEnd };
-  }
-  return null;
 }
 
 // ---- Weekly Review (Module 7 diagnosis via weekly-review-adapter.mjs; deterministic, no AI)
@@ -186,7 +164,7 @@ function autorun() {
   if (planEl && saved) {
     try {
       planView = computePlanView(saved);
-      planEl.innerHTML = renderPlan(planView, reachPerPost(reviews));
+      planEl.innerHTML = renderPlan(planView);
       const calc = document.getElementById('k1-calc'), slot = document.getElementById('k1-calc-slot');
       if (calc && slot) slot.appendChild(calc);
     } catch (err) {

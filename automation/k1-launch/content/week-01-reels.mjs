@@ -3,7 +3,7 @@
 // Sources: Later's Instagram Reels trend tracker (entries Aug 7 to Sep 25, 2026), SocialPilot's Instagram Reels
 // trends report (Sep 10 to 24, 2026), and Scrolly's own TikTok sample (automation/reels-test, calibration-v2).
 // Weekly curation is a manual V1 fulfillment step: copy this file to week-02-reels.mjs and replace the list.
-export const WEEK = { n: 1, label: 'Week 1', dates: 'September 28 to October 4, 2026' };
+export const WEEK = { n: 1, label: 'Week 1', dates: 'October 9 to October 18, 2026' }; // re-dated 2026-10-09 for launch (no sales yet), same 25 Reels
 
 const IG_LATER = (d) => `Trending on Instagram Reels (Later's weekly tracker, ${d})`;
 const IG_SP = 'Trending on Instagram Reels (SocialPilot report, Sept 10 to 24, 2026)';

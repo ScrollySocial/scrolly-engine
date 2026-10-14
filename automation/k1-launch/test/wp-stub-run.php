@@ -1,7 +1,7 @@
 <?php
 // Runs the generated My Account snippet outside WordPress with minimal stand-ins for the WP/Woo
 // functions it calls. Catches PHP errors and checks the Start Here -> save -> Plan flow.
-// Usage: php wp-stub-run.php <snippet.php> <mode: start|save|plan> [statefile]
+// Usage: php wp-stub-run.php <snippet.php> <mode: start|save|plan|checkin|content|downloads> [statefile]
 // State (user meta) persists in a JSON file between runs, like the database would.
 $snippet = $argv[1]; $mode = $argv[2]; $state = $argv[3] ?? sys_get_temp_dir() . '/k1-stub-state.json';
 $GLOBALS['meta'] = file_exists( $state ) ? json_decode( file_get_contents( $state ), true ) : array();
@@ -10,6 +10,7 @@ define( 'DAY_IN_SECONDS', 86400 ); define( 'HOUR_IN_SECONDS', 3600 ); define( 'E
 function save_state() { global $state; file_put_contents( $GLOBALS['state_file'], json_encode( $GLOBALS['meta'] ) ); }
 $GLOBALS['state_file'] = $state;
 function add_action( $h, $cb ) { $GLOBALS['hooks'][ $h ][] = $cb; } function add_filter( $h, $cb ) { add_action( $h, $cb ); }
+function has_action( $h, $cb = false ) { if ( false === $cb ) { return ! empty( $GLOBALS['hooks'][ $h ] ); } return in_array( $cb, $GLOBALS['hooks'][ $h ] ?? array(), true ) ? 10 : false; }
 function do_hook( $h, ...$args ) { foreach ( $GLOBALS['hooks'][ $h ] ?? array() as $cb ) { $cb( ...$args ); } }
 function get_current_user_id() { return 7; }
 function get_user_meta( $u, $k, $single ) { return $GLOBALS['meta'][ $k ] ?? ''; }
@@ -38,6 +39,8 @@ function get_option( $k ) { return '1'; } function update_option() {} function a
 function get_post( $id ) { return (object) array( 'post_content' => '<p>Week 1 reels placeholder</p>' ); }
 function apply_filters( $h, $v ) { return $v; }
 function wp_safe_redirect( $u ) { echo "REDIRECT $u\n"; } function add_query_arg( $k, $v, $u ) { return "$u?$k=$v"; }
+// K1_BP=1: the customer's downloads include the Make blueprint (Challenge Content > Automation tab).
+function wc_get_customer_available_downloads( $u ) { return getenv( 'K1_BP' ) ? array( array( 'download_url' => 'https://example.test/?download_file=279&key=bp', 'file' => array( 'file' => 'https://example.test/wp-content/uploads/2026/10/Auto-Posting-With-Your-AI-abc.pdf' ) ) ) : array(); }
 function wp_generate_password() { return 'abcd1234'; } function wp_die( $m ) { echo "DIE $m\n"; exit; }
 
 require $snippet;
@@ -59,5 +62,12 @@ if ( $mode === 'save' ) {
 	do_hook( 'admin_post_scrolly_k1_save' );
 } else {
 	$_GET = array( 'k1' => $argv[4] ?? '' );
-	do_hook( $mode === 'checkin' ? 'woocommerce_account_weekly-check-in_endpoint' : 'woocommerce_account_my-1k-plan_endpoint' );
+	do_hook( $mode === 'checkin' ? 'woocommerce_account_weekly-check-in_endpoint' : ( $mode === 'content' ? 'woocommerce_account_weekly-reels_endpoint' : ( $mode === 'downloads' ? 'woocommerce_after_account_downloads' : 'woocommerce_account_my-1k-plan_endpoint' ) ) );
+}
+if ( $mode === 'downloads' ) { // Challenge buyers: the table keeps every row and gains a Content Tracker row just before the guide
+	$rows = array( array( 'file' => array( 'file' => 'https://example.test/1K-Club-Playbook.pdf' ) ), array( 'file' => array( 'file' => 'https://example.test/Auto-Posting-With-Your-AI-abc.pdf' ) ) );
+	foreach ( $GLOBALS['hooks']['woocommerce_customer_get_downloadable_products'] ?? array() as $cb ) { $rows = $cb( $rows ); }
+	echo "
+TABLE ROWS: " . implode( ',', array_map( function ( $r ) { return basename( $r['file']['file'] ); }, $rows ) ) . "
+";
 }

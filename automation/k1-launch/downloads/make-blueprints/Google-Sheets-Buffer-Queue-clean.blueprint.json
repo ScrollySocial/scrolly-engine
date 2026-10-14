@@ -1,0 +1,333 @@
+{
+  "name": "Google Sheets Buffer Queue",
+  "flow": [
+    {
+      "id": 6,
+      "module": "google-sheets:filterRows",
+      "version": 2,
+      "metadata": {
+        "designer": {
+          "x": 0,
+          "y": 0
+        }
+      }
+    },
+    {
+      "id": 3,
+      "module": "buffer:ActionCreateStatus",
+      "version": 2,
+      "parameters": {},
+      "mapper": {
+        "text": "{{6.`3`}}",
+        "type": "queue",
+        "media": {
+          "link": "{{6.`2`}}"
+        },
+        "shorten": true,
+        "useMedia": true,
+        "attachment": false,
+        "profileIds": []
+      },
+      "metadata": {
+        "designer": {
+          "x": 300,
+          "y": 0,
+          "name": "Queue TikTok Videos",
+          "messages": [
+            {
+              "category": "reference",
+              "severity": "error",
+              "message": "'Buffer - Create a status update' [module ID 3] references inaccessible module 'Notion - Search Objects' [module ID 2]."
+            }
+          ]
+        },
+        "restore": {
+          "expect": {
+            "type": {
+              "mode": "chose",
+              "label": "Add an update to the end of the queue "
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "account",
+            "type": "account:buffer",
+            "label": "Connection",
+            "required": true
+          }
+        ],
+        "expect": [
+          {
+            "name": "profileIds",
+            "type": "select",
+            "label": "Profiles",
+            "editable": {
+              "help": "Enter your registered profile IDs. If you enter more IDs, use a comma to separate them.",
+              "enabled": true
+            },
+            "multiple": true,
+            "required": true
+          },
+          {
+            "name": "text",
+            "type": "text",
+            "label": "Text",
+            "required": true
+          },
+          {
+            "name": "type",
+            "type": "select",
+            "label": "Publication",
+            "default": "now",
+            "required": true,
+            "validate": {
+              "enum": [
+                "now",
+                "top",
+                "queue",
+                "scheduled"
+              ]
+            }
+          },
+          {
+            "name": "useMedia",
+            "type": "boolean",
+            "label": "Attach media to the update",
+            "required": true
+          },
+          {
+            "name": "media",
+            "spec": [
+              {
+                "name": "link",
+                "type": "url",
+                "label": "Link",
+                "required": false
+              },
+              {
+                "name": "title",
+                "type": "text",
+                "label": "Title",
+                "required": false
+              },
+              {
+                "name": "description",
+                "type": "text",
+                "label": "Description",
+                "required": false
+              },
+              {
+                "name": "picture",
+                "type": "url",
+                "label": "Link to an image",
+                "required": false
+              },
+              {
+                "name": "thumbnail",
+                "type": "url",
+                "label": "Thumbnail",
+                "required": false
+              }
+            ],
+            "type": "collection",
+            "label": "Media",
+            "required": false
+          },
+          {
+            "name": "shorten",
+            "type": "boolean",
+            "label": "Shorten links within text",
+            "default": true,
+            "advanced": true,
+            "editable": true,
+            "required": true
+          },
+          {
+            "name": "attachment",
+            "type": "boolean",
+            "label": "Attach links in the text as media",
+            "default": false,
+            "advanced": true,
+            "editable": true,
+            "required": true
+          }
+        ]
+      }
+    },
+    {
+      "id": 4,
+      "module": "buffer:ActionCreateStatus",
+      "version": 2,
+      "parameters": {},
+      "mapper": {
+        "text": "{{6.`4`}}",
+        "type": "queue",
+        "media": {
+          "link": "{{6.`2`}}"
+        },
+        "shorten": true,
+        "useMedia": true,
+        "attachment": false,
+        "profileIds": []
+      },
+      "metadata": {
+        "designer": {
+          "x": 600,
+          "y": 0,
+          "name": "Queue YouTube Shorts",
+          "messages": [
+            {
+              "category": "reference",
+              "severity": "error",
+              "message": "'Buffer - Create a status update' [module ID 4] references inaccessible module 'Notion - Search Objects' [module ID 2]."
+            }
+          ]
+        },
+        "restore": {
+          "expect": {
+            "type": {
+              "mode": "chose",
+              "label": "Add an update to the end of the queue "
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "account",
+            "type": "account:buffer",
+            "label": "Connection",
+            "required": true
+          }
+        ],
+        "expect": [
+          {
+            "name": "profileIds",
+            "type": "select",
+            "label": "Profiles",
+            "editable": {
+              "help": "Enter your registered profile IDs. If you enter more IDs, use a comma to separate them.",
+              "enabled": true
+            },
+            "multiple": true,
+            "required": true
+          },
+          {
+            "name": "text",
+            "type": "text",
+            "label": "Text",
+            "required": true
+          },
+          {
+            "name": "type",
+            "type": "select",
+            "label": "Publication",
+            "default": "now",
+            "required": true,
+            "validate": {
+              "enum": [
+                "now",
+                "top",
+                "queue",
+                "scheduled"
+              ]
+            }
+          },
+          {
+            "name": "useMedia",
+            "type": "boolean",
+            "label": "Attach media to the update",
+            "required": true
+          },
+          {
+            "name": "media",
+            "spec": [
+              {
+                "name": "link",
+                "type": "url",
+                "label": "Link",
+                "required": false
+              },
+              {
+                "name": "title",
+                "type": "text",
+                "label": "Title",
+                "required": false
+              },
+              {
+                "name": "description",
+                "type": "text",
+                "label": "Description",
+                "required": false
+              },
+              {
+                "name": "picture",
+                "type": "url",
+                "label": "Link to an image",
+                "required": false
+              },
+              {
+                "name": "thumbnail",
+                "type": "url",
+                "label": "Thumbnail",
+                "required": false
+              }
+            ],
+            "type": "collection",
+            "label": "Media",
+            "required": false
+          },
+          {
+            "name": "shorten",
+            "type": "boolean",
+            "label": "Shorten links within text",
+            "default": true,
+            "advanced": true,
+            "editable": true,
+            "required": true
+          },
+          {
+            "name": "attachment",
+            "type": "boolean",
+            "label": "Attach links in the text as media",
+            "default": false,
+            "advanced": true,
+            "editable": true,
+            "required": true
+          }
+        ]
+      }
+    },
+    {
+      "id": 7,
+      "module": "google-sheets:updateRow",
+      "version": 2,
+      "metadata": {
+        "designer": {
+          "x": 900,
+          "y": 0
+        }
+      }
+    }
+  ],
+  "metadata": {
+    "instant": false,
+    "version": 1,
+    "scenario": {
+      "roundtrips": 1,
+      "maxErrors": 3,
+      "autoCommit": true,
+      "autoCommitTriggerLast": true,
+      "sequential": false,
+      "slots": null,
+      "confidential": false,
+      "dataloss": false,
+      "dlq": false,
+      "freshVariables": false
+    },
+    "designer": {
+      "orphans": []
+    },
+    "notes": []
+  }
+}

@@ -25,6 +25,12 @@ if ( ! defined( 'SCROLLY_K1_PRODUCT' ) ) {
 	define( 'SCROLLY_K1_REELS_PAGE', 633 );      // private page: this week's 25 fresh Reel opportunities (replaced each weekly drop)
 	define( 'SCROLLY_K1_CAROUSELS_PAGE', 845 );  // private page: 30 evergreen carousel templates (automation/k1-launch/content)
 	define( 'SCROLLY_K1_STORIES_PAGE', 846 );    // private page: 30 evergreen Story templates (automation/k1-launch/content)
+	// Content Tracker (public Notion template, never a private workspace URL) + its companion guide, Auto-Posting with Your AI
+	// (2026-10-08, replaced the Make blueprint): a protected WooCommerce download on 583 and 280 whose file name contains
+	// SCROLLY_K1_GUIDE_FILE. Video URL: set once recorded.
+	define( 'SCROLLY_K1_TRACKER_URL', 'https://antique-sweater-bd0.notion.site/Content-Tracker-3f0ab38f4c5881e2a658f557f4f34d03' );
+	define( 'SCROLLY_K1_GUIDE_FILE', 'Auto-Posting-With-Your-AI' );
+	define( 'SCROLLY_K1_TRACKER_VIDEO', '' );
 	define( 'SCROLLY_K1_EP_PLAN', 'my-1k-plan' );
 	define( 'SCROLLY_K1_EP_REELS', 'weekly-reels' );
 	define( 'SCROLLY_K1_EP_CHECKIN', 'weekly-check-in' );
@@ -166,8 +172,9 @@ if ( ! defined( 'SCROLLY_K1_PRODUCT' ) ) {
 		$h      = '<div class="sec black" id="k1-challenge">';
 
 		if ( 'not_started' === $status ) {
-			return $h . '<h2>Your 30-day Challenge</h2><p>Start when you’re ready. Your 30 consecutive days begin today when you press start. Hit $1,000 in qualifying revenue inside those 30 days to earn your stripe.</p>'
-				. scrolly_k1_form_open( 'start' ) . '<button class="btn teal" type="submit">Start my 30 days</button></form>' . scrolly_k1_size_form( scrolly_k1_shirt_size( $uid, (int) $a['chal_order'] ) ) . '</div>';
+			// Mercedes 2026-10-09: the start step read as optional, so it is now "Step 2" with the orange primary button.
+			return $h . '<p class="chip">Step 2 of 2</p><h2>Start your 30 days</h2><p>Your 30 consecutive days begin the moment you press start, and only sales inside those days count toward your $1,000. Start today, or come back here when you’re ready.</p>'
+				. scrolly_k1_form_open( 'start' ) . '<button class="btn or" type="submit">Start my 30 days</button></form>' . scrolly_k1_size_form( scrolly_k1_shirt_size( $uid, (int) $a['chal_order'] ) ) . '</div>';
 		}
 
 		// Primary display: day, revenue, what is left, milestones.
@@ -263,7 +270,7 @@ if ( ! defined( 'SCROLLY_K1_PRODUCT' ) ) {
 
 	/** Change the winner shirt size any time before the shirt is ordered. */
 	function scrolly_k1_size_form( $current ) {
-		$h = '<details style="margin-top:16px"><summary style="color:#fff">Your stripe shirt size: ' . esc_html( $current ? $current : 'not chosen' ) . ' (change)</summary>' . scrolly_k1_form_open( 'size' ) . '<label for="k1-mysize" style="color:#fff;margin-top:10px">Shirt size (Adult Men\x27s, Comfort Colors 1717)</label><select id="k1-mysize" name="size" style="max-width:220px">';
+		$h = '<details style="margin-top:16px"><summary style="color:#fff">Your stripe shirt size: ' . esc_html( $current ? $current : 'not chosen' ) . ' (change)</summary>' . scrolly_k1_form_open( 'size' ) . '<label for="k1-mysize" style="color:#fff;margin-top:10px">Shirt size (Adult Men&#39;s, Comfort Colors 1717, Graphite)</label><select id="k1-mysize" name="size" style="max-width:220px">';
 		foreach ( array( 'S', 'M', 'L', 'XL', '2XL', '3XL', '4XL' ) as $sz ) {
 			$h .= '<option' . selected( $current, $sz, false ) . '>' . $sz . '</option>';
 		}
@@ -333,14 +340,14 @@ if ( ! defined( 'SCROLLY_K1_PRODUCT' ) ) {
 			return;
 		}
 		$plan = wc_get_account_endpoint_url( SCROLLY_K1_EP_PLAN );
-		echo '<div style="margin:24px 0;padding:24px;border-radius:16px;background:#000;color:#fff">';
-		echo '<p style="margin:0 0 8px;font-weight:800;font-size:20px;color:#fff">' . ( $chal ? 'You’re in. Your $1K Challenge is ready.' : 'You’re in. Your $1K Club is ready.' ) . '</p>';
-		echo '<p style="margin:0 0 16px;color:#fff">' . ( $chal
+		echo '<div class="k1ty">';
+		echo '<p class="t">' . ( $chal ? 'You’re in. Your $1K Challenge is ready.' : 'You’re in. Your $1K Club is ready.' ) . '</p>';
+		echo '<p>' . ( $chal
 			? 'Open My $1K Plan to answer a few questions about your business, get your plan, and start your 30 days when you’re ready. Your playbook PDF is in Downloads.'
 			: 'Your playbook PDF is in Downloads, and your $1K Math calculator is in My $1K Plan.' ) . '</p>';
-		echo '<a href="' . esc_url( $plan ) . '" style="display:inline-block;background:#94ece1;color:#000;padding:12px 24px;border-radius:32px;text-decoration:none;font-weight:800">Open My $1K Plan</a> ';
-		echo '<a href="' . esc_url( wc_get_account_endpoint_url( 'downloads' ) ) . '" style="display:inline-block;color:#fff;padding:12px 16px;font-weight:700">Go to Downloads</a>';
-		echo '<p style="margin:14px 0 0;font-size:14px;color:#fff;opacity:.85">Your access is saved to your account under ' . esc_html( $order->get_billing_email() ) . '. To come back later, log in at ' . esc_html( wc_get_page_permalink( 'myaccount' ) ) . ' (use “Lost your password?” if you need a new one).</p>';
+		echo '<div class="acts"><a class="go" href="' . esc_url( $plan ) . '">Open My $1K Plan</a>';
+		echo '<a class="alt" href="' . esc_url( wc_get_account_endpoint_url( 'downloads' ) ) . '">Go to Downloads</a></div>';
+		echo '<p class="small">Your access is saved to your account under ' . esc_html( $order->get_billing_email() ) . '. To come back later, log in at ' . esc_html( wc_get_page_permalink( 'myaccount' ) ) . ' (use “Lost your password?” if you need a new one).</p>';
 		echo '</div>';
 	}, 5 );
 
@@ -385,13 +392,7 @@ if ( ! defined( 'SCROLLY_K1_PRODUCT' ) ) {
 	add_action( 'woocommerce_before_edit_account_form', function () {
 		echo '<p style="margin:0 0 18px"><a href="' . esc_url( wc_get_account_endpoint_url( 'orders' ) ) . '">Orders</a> · <a href="' . esc_url( wc_get_account_endpoint_url( 'edit-address' ) ) . '">Billing and shipping addresses</a> · <a href="' . esc_url( wc_get_account_endpoint_url( 'payment-methods' ) ) . '">Saved payment methods</a></p>';
 	} );
-	// My Account layout: wider page, a slim menu column, and a wide content column (all account pages).
-	add_action( 'wp_head', function () {
-		if ( ! function_exists( 'is_account_page' ) || ! is_account_page() || ! is_user_logged_in() ) {
-			return;
-		}
-		echo '<style id="scrolly-k1-account-layout">body.woocommerce-account .page-content>.woocommerce{max-width:1240px!important}body.woocommerce-account .woocommerce-MyAccount-navigation{float:left;width:190px!important;margin-right:0}body.woocommerce-account .woocommerce-MyAccount-navigation ul{list-style:none;margin:0;padding:0}body.woocommerce-account .woocommerce-MyAccount-navigation li{margin:0 0 4px}body.woocommerce-account .woocommerce-MyAccount-navigation li a{display:block;padding:9px 14px;border-radius:10px;text-decoration:none!important;font-weight:700}body.woocommerce-account .woocommerce-MyAccount-navigation li.is-active a{background:#000;color:#fff!important}body.woocommerce-account .woocommerce-MyAccount-content{float:right;width:calc(100% - 230px)!important}@media(max-width:768px){body.woocommerce-account .woocommerce-MyAccount-navigation,body.woocommerce-account .woocommerce-MyAccount-content{float:none;width:100%!important}body.woocommerce-account .woocommerce-MyAccount-navigation ul{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:18px}body.woocommerce-account .woocommerce-MyAccount-navigation li{margin:0}}</style>';
-	} );
+	// My Account layout (menu column + content column) lives in website/scrolly-site/chrome/k1-account.css (v3, 2026-10-03).
 	// $1K members land on My $1K Plan instead of the Dashboard.
 	add_action( 'template_redirect', function () {
 		if ( ! is_user_logged_in() || ! function_exists( 'is_account_page' ) || ! is_account_page() || is_wc_endpoint_url() ) {
@@ -656,7 +657,7 @@ if ( ! defined( 'SCROLLY_K1_PRODUCT' ) ) {
 			$chal['achievement']['shipping']     = $ship;
 			update_user_meta( $uid, 'scrolly_k1_chal', $chal );
 			wp_mail( SCROLLY_K1_ADMIN_EMAIL, '$1K winner shirt to order: ' . $ship['name'] . ' (' . $size . ')',
-				"Order the teal winner shirt in Printify.\n\nSize: $size\n" . $ship['name'] . "\n" . $ship['address1'] . "\n" . ( $ship['address2'] ? $ship['address2'] . "\n" : '' ) . $ship['city'] . ', ' . $ship['state'] . ' ' . $ship['postcode'] . "\n" . $ship['country']
+				"Order the graphite \$1K Club winner shirt in Printify (Comfort Colors 1717, Graphite):\nhttps://printify.com/app/product-details/6acad00ccebf0fc23e019c79\n\nSize: $size\n" . $ship['name'] . "\n" . $ship['address1'] . "\n" . ( $ship['address2'] ? $ship['address2'] . "\n" : '' ) . $ship['city'] . ', ' . $ship['state'] . ' ' . $ship['postcode'] . "\n" . $ship['country']
 				. "\n\nCustomer: " . $user->user_email . "\nMark it ordered: " . admin_url( 'user-edit.php?user_id=' . $uid ) . '#k1-challenge-admin' );
 			scrolly_k1_back( 'reward', 'k1-challenge' );
 		}
@@ -752,64 +753,84 @@ __K1_APP_JS__
 K1JS;
 	}
 
+	/**
+	 * Member-area styles live in website/scrolly-site/chrome/k1-account.css (v3 look, 2026-10-03), printed site-wide by the
+	 * global chrome snippet and pushed over REST with install-chrome.mjs, so restyles never need a WPCode re-paste.
+	 * Kept as a function so the call sites stay unchanged.
+	 */
 	function scrolly_k1_css() {
-		return '<style id="scrolly-k1-acct">
-.k1a{--teal:#94ece1;--cream:#fbf8f3;--or:#ff6338;color:#000;font-family:"Public Sans",system-ui,Arial,sans-serif}
-.k1a *{box-sizing:border-box}
-.k1a h2{font-family:"Archivo","Arial Black",sans-serif;font-weight:900;text-transform:uppercase;letter-spacing:-.01em;font-size:clamp(24px,2.4vw,32px);line-height:1;margin:0 0 14px;color:#000}
-.k1a h3{font-family:"Archivo","Arial Black",sans-serif;font-weight:900;font-size:19px;margin:0 0 10px;color:#000}
-.k1a p{margin:0 0 12px;font-size:16px;line-height:1.45;color:#000}
-.k1a .sec{background:#fff;border-radius:16px;padding:clamp(18px,2.4vw,28px);margin:0 0 22px}
-.k1a .sec.teal{background:var(--teal)}
-.k1a .sec.black{background:#000;color:#fff}.k1a .sec.black h2,.k1a .sec.black p,.k1a .sec.black h3{color:#fff}
-.k1a .big{font-family:"Archivo","Arial Black",sans-serif;font-weight:900;font-size:clamp(40px,5vw,64px);line-height:.95;color:#000}
-.k1a .sec.black .big{color:var(--teal)}
-.k1a .stripe{display:flex;align-items:center;gap:16px;margin:14px 0 8px}.k1a .stripe .track{flex:1;margin:0}.k1a .stripe b{font-family:"Archivo","Arial Black",sans-serif;font-weight:900;font-size:clamp(28px,3vw,40px);line-height:1;color:var(--teal);min-width:3.2em;text-align:right}.k1a .sec:not(.black) .stripe b{color:#000}
-.k1a .track{height:clamp(30px,3.2vw,44px);border-radius:12px;background:var(--cream);overflow:hidden;margin:14px 0 8px}
-.k1a .track i{display:block;height:100%;background:var(--teal)}
-.k1a .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
-.k1a .grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
-.k1a label{display:block;font-weight:700;font-size:14px;margin:0 0 6px;color:#000}
-.k1a input,.k1a select,.k1a textarea{width:100%;min-height:48px;padding:10px 14px;border:1px solid rgba(0,0,0,.2);border-radius:10px;background:#fff;font:inherit;font-size:16px;color:#000}
-.k1a textarea{min-height:90px}
-.k1a .btn{display:inline-flex;align-items:center;justify-content:center;min-height:52px;padding:0 26px;border:0;border-radius:32px;background:#000;color:#fff!important;font:800 16px "Public Sans",Arial,sans-serif;text-decoration:none!important;cursor:pointer;margin-top:14px}
-.k1a .btn.teal{background:var(--teal);color:#000!important}
-.k1a .btn.or{background:var(--or);color:#000!important}
-.k1a .note{font-size:13px;opacity:.8}
-.k1a .ok{background:var(--teal);color:#000;border-radius:12px;padding:10px 14px;font-weight:700;margin:0 0 16px}
-.k1a table{width:100%;border-collapse:collapse;font-size:15px}
-.k1a th,.k1a td{text-align:left;padding:10px 8px;border-bottom:1px solid rgba(0,0,0,.1);vertical-align:top;color:#000}
-.k1a th{font-weight:800}
-.k1a td .x{border:0;background:none;padding:0;font:600 13px "Public Sans",Arial,sans-serif;text-decoration:underline;cursor:pointer;color:#000}
-.k1a .calc-out{font-family:"Archivo","Arial Black",sans-serif;font-weight:900;font-size:clamp(34px,4vw,48px);line-height:1;margin-top:12px}
-.k1a .reels{background:#fff;border-radius:16px;padding:clamp(18px,2.4vw,28px)}
-.k1a .sec.cream{background:var(--cream);border:1px solid rgba(0,0,0,.08)}
-.k1a ul{margin:0 0 12px;padding-left:20px}.k1a li{margin:0 0 6px;line-height:1.45}
-.k1a ul.funnel{list-style:none;padding:0}.k1a ul.funnel li{padding:8px 0;border-bottom:1px solid rgba(0,0,0,.08)}
-.k1a ul.known{list-style:none;padding:0}.k1a .ic{display:inline-block;width:22px;font-weight:800}
-.k1a fieldset{border:0;padding:0;margin:16px 0 0}.k1a legend{font-weight:700;font-size:14px;margin:0 0 8px}
-.k1a label.chk{display:inline-flex;align-items:center;gap:6px;font-weight:500;margin:0 16px 8px 0}.k1a label.chk input{width:auto;min-height:0}
-.k1a details{margin:16px 0 0}.k1a summary{cursor:pointer;font-weight:700}
-.k1a .warn{background:#fff3c4;color:#000;border-radius:12px;padding:10px 14px;font-weight:700;margin:0 0 16px}
-.k1a .chip{display:inline-block;background:var(--teal);color:#000;border-radius:20px;padding:4px 12px;font-weight:800;font-size:13px;margin:0 0 10px}
-.k1a ul.milestones{list-style:none;padding:0;display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}.k1a ul.milestones li{border:1px solid rgba(255,255,255,.4);border-radius:20px;padding:4px 12px;font-weight:700;color:#fff}.k1a ul.milestones li.hit{background:var(--teal);color:#000;border-color:var(--teal)}
-.k1a .k1tabs{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 16px}.k1a .k1tabs button{min-height:44px;padding:0 20px;border-radius:30px;border:0;background:#fff;color:#000;font:800 15px "Public Sans",Arial,sans-serif;cursor:pointer;box-shadow:inset 0 0 0 1px rgba(0,0,0,.15)}.k1a .k1tabs button[aria-selected=true]{background:#000;color:#fff!important;box-shadow:none}
-.k1a .sec.black .proof label{color:#fff}.k1a .sec.black textarea,.k1a .sec.black input[type=file]{color:#000;background:#fff}
-@media(max-width:700px){.k1a .grid,.k1a .grid3{grid-template-columns:1fr}.k1a table{font-size:14px}.k1a th:nth-child(4),.k1a td:nth-child(4){display:none}}
-</style>';
+		return '';
 	}
 
 	// ---- My $1K Plan tab
-	/** Client-side $1K Math calculator (unchanged from the 2026-09-23 launch version). */
-	function scrolly_k1_calc_html( $price ) {
-		$h  = '<div class="sec teal" id="k1-calc"><h2>$1K Math</h2><p>Try different prices and see how many sales it takes.</p><div class="grid3">';
-		$h .= '<div><label for="c-goal">Goal ($)</label><input id="c-goal" type="number" min="1" value="1000"></div>';
-		$h .= '<div><label for="c-price">Average sale ($)</label><input id="c-price" type="number" min="0" step="0.01" value="' . esc_attr( $price ?: 50 ) . '"></div>';
-		$h .= '<div><label for="c-days">Days</label><input id="c-days" type="number" min="1" value="30"></div></div>';
-		$h .= '<div class="calc-out" id="c-out"></div><p id="c-per"></p>';
-		$h .= '<p class="note">Planning math only. Revenue before costs.</p></div>';
-		$h .= '<script>(function(){var g=document.getElementById("c-goal"),p=document.getElementById("c-price"),d=document.getElementById("c-days"),o=document.getElementById("c-out"),e=document.getElementById("c-per");if(!g)return;function n(x){x=parseFloat(x.value);return isFinite(x)?x:0}function run(){var G=n(g),P=n(p),D=n(d);if(G>0){if(P>0){var s=Math.ceil(G/P);o.textContent=s.toLocaleString("en-US")+" sales";e.textContent=D>0?"About "+(Math.round(s/D*10)/10)+" a day, or "+(Math.round(s/D*7*10)/10)+" a week, over "+D+" days.":""}else{o.textContent="";e.textContent="Enter an average sale."}}}[g,p,d].forEach(function(i){i.addEventListener("input",run)});run()})();</script>';
+	/**
+	 * My $1K Plan calculator (2026-09-29): ONE card that replaces the black "My $1K Plan" number and the teal "$1K Math"
+	 * calculator. Goal -> sales, then videos/day x days x platforms -> publishing opportunities, then a planning scenario
+	 * (or the member's own rates) works back to sales-page visitors, cumulative views and average views per published post.
+	 * Math: src/plan-calc.mjs (bundled with src/calc-entry.mjs into scrolly_k1_calc_js() by build.mjs). Planning math only.
+	 *
+	 * @param float  $price Average sale from Start Here (0 = unknown, defaults to $50).
+	 * @param string $model online_checkout (built) or lead_service (same math, plus a note on how to read it).
+	 */
+	function scrolly_k1_calc_html( $price, $model = 'online_checkout' ) {
+		$h  = '<div class="sec black k1calc" id="k1-calc"><h2>My $1K Plan</h2><div class="grid3">';
+		$h .= '<div><label for="c-goal">Goal ($)</label><input id="c-goal" type="number" min="1" step="1" inputmode="decimal" value="1000"></div>';
+		$h .= '<div><label for="c-price">Average sale ($)</label><input id="c-price" type="number" min="0" step="0.01" inputmode="decimal" value="' . esc_attr( $price ? $price : 50 ) . '"></div>';
+		$h .= '<div><label for="c-days">Days</label><input id="c-days" type="number" min="1" step="1" inputmode="numeric" value="30"></div></div>';
+		$h .= '<div class="calc-out" id="c-out" aria-live="polite"></div><p id="c-per"></p>';
+		$h .= '<p class="note">Planning math only. Revenue before costs.</p>';
+
+		$h .= '<div class="calc-panel"><h3>Your distribution plan</h3>';
+		$h .= '<div class="grid"><div><label for="c-vpd">Original videos per day</label><input id="c-vpd" type="number" min="0" step="1" inputmode="numeric" value="3"></div></div>';
+		$h .= '<fieldset><legend>Distribute each video to</legend><div class="calc-pills">';
+		foreach ( array( 'instagram' => 'Instagram', 'facebook' => 'Facebook', 'tiktok' => 'TikTok', 'youtube' => 'YouTube Shorts', 'pinterest' => 'Pinterest' ) as $key => $label ) {
+			$h .= '<label class="calc-pill"><input type="checkbox" name="c-platform" value="' . esc_attr( $key ) . '" checked><span>' . esc_html( $label ) . '</span></label>';
+		}
+		$h .= '</div></fieldset>';
+		$h .= '<p class="calc-eq" id="c-orig"></p><p class="calc-eq" id="c-pub"></p><p class="warnline" id="c-dist-issue" role="status"></p><p class="note" id="c-pubnote"></p></div>';
+
+		$h .= '<div class="calc-panel"><h3>What could it take?</h3>';
+		$h .= '<div class="calc-scen" role="radiogroup" aria-label="Planning scenario">';
+		foreach ( array( 'conservative' => 'Conservative', 'planning' => 'Planning', 'strong' => 'Strong' ) as $key => $label ) {
+			$h .= '<button type="button" role="radio" data-scenario="' . esc_attr( $key ) . '" aria-checked="' . ( 'planning' === $key ? 'true' : 'false' ) . '">' . esc_html( $label ) . '</button>';
+		}
+		$h .= '</div><p class="note" id="c-rates"></p>';
+		if ( 'lead_service' === $model ) {
+			$h .= '<p class="note">This math is written for online checkout. For booked or quoted work, read "sales-page visitors" as people who reach your booking or quote page.</p>';
+		}
+		$h .= '<div class="calc-funnel" id="c-funnel" hidden>';
+		$h .= '<div class="calc-step"><b id="c-f-sales"></b><span id="c-f-sales-noun">sales</span></div><div class="calc-up" aria-hidden="true">↑</div>';
+		$h .= '<div class="calc-step"><b id="c-f-visitors"></b><span>sales-page visitors</span></div><div class="calc-up" aria-hidden="true">↑</div>';
+		$h .= '<div class="calc-step"><b id="c-f-views"></b><span>cumulative views</span></div></div>';
+		$h .= '<div class="calc-hero" id="c-hero" hidden><span>About</span><b id="c-vpp"></b><span>average views per published post</span></div>';
+		$h .= '<p class="warnline" id="c-vpp-issue" role="status"></p>';
+		$h .= '<p class="note">These are planning scenarios, not expected results. Actual performance varies by offer, audience, content, platform, and sales process.</p>';
+		$h .= '<details class="calc-own"><summary>Use my own conversion rates</summary><p class="note">If you have real numbers, use them instead of the scenarios above.</p><div class="grid">';
+		$h .= '<div><label for="c-cv">View to site visit (%)</label><input id="c-cv" type="number" min="0" max="100" step="0.1" inputmode="decimal" placeholder="e.g. 1.5"></div>';
+		$h .= '<div><label for="c-cs">Visitor to purchase (%)</label><input id="c-cs" type="number" min="0" max="100" step="0.1" inputmode="decimal" placeholder="e.g. 5"></div>';
+		$h .= '</div></details></div></div>';
+		// Printed in the footer, not inline: WordPress content filters can rewrite "&&" in inline scripts to "&#038;&#038;".
+		if ( ! has_action( 'wp_footer', 'scrolly_k1_calc_print_js' ) ) {
+			add_action( 'wp_footer', 'scrolly_k1_calc_print_js', 99 );
+		}
 		return $h;
+	}
+
+	function scrolly_k1_calc_print_js() {
+		echo '<script id="scrolly-k1-calc-js">' . scrolly_k1_calc_js() . '</script>';
+	}
+
+	/** Calculator script (src/calc-entry.mjs + src/plan-calc.mjs), inlined by build.mjs. */
+	function scrolly_k1_calc_js() {
+		return <<<'K1CALC'
+__K1_CALC_JS__
+K1CALC;
+	}
+
+	/** Which calculator model fits the saved profile (same rule as modelForSaved() in src/plan-calc.mjs). */
+	function scrolly_k1_calc_model( $profile ) {
+		$where = (string) ( $profile['where'] ?? '' );
+		return ( in_array( $where, array( 'booking', 'quote', 'dm', 'phone' ), true ) || 'services' === ( $profile['route'] ?? '' ) ) ? 'lead_service' : 'online_checkout';
 	}
 
 	/** Revenue/sales already logged for the 7 days ending $end (Y-m-d). */
@@ -865,7 +886,7 @@ K1JS;
 	function scrolly_k1_tab_open( $need_challenge ) {
 		$uid = get_current_user_id();
 		$a   = scrolly_k1_access( $uid );
-		echo scrolly_k1_css() . '<div class="k1a">';
+		echo scrolly_k1_css() . '<div class="k1a k1v3">';
 		if ( ! $a['club'] || ( $need_challenge && ! $a['challenge'] ) ) {
 			echo '<div class="sec teal"><h2>' . ( $a['club'] ? 'Part of the $1K Challenge' : 'My $1K Plan' ) . '</h2><p>' . ( $a['club'] ? 'The weekly check-in and your numbers come with the $1K Challenge.' : 'This tab is for $1K Club members.' ) . '</p><a class="btn" href="' . esc_url( $a['club'] ? scrolly_k1_add_challenge_url() : home_url( '/1k-club/' ) ) . '">' . ( $a['club'] ? 'Add the $1K Challenge' : 'See the $1K Club' ) . '</a></div></div>';
 			return null;
@@ -891,7 +912,17 @@ K1JS;
 		$c['due_line'] = ! $last
 			? 'Do your first check-in at the end of your first week, or now to set a starting point.'
 			: ( $c['due'] ? 'Your weekly check-in is due.' : 'Next check-in: ' . wp_date( 'l, M j', $last_t + 7 * DAY_IN_SECONDS ) . '.' );
+		// Other Challenge tabs: a reminder until the 30 days are started (the start button itself lives on My $1K Plan).
+		if ( $need_challenge && $c['profile'] && ( ! $c['w'] || empty( $c['w']['started'] ) ) ) {
+			echo scrolly_k1_start_nudge();
+		}
 		return $c;
+	}
+
+	/** Reminder shown until the Challenge's 30 days are started: sales only count inside the window. */
+	function scrolly_k1_start_nudge() {
+		return '<div class="sec black"><h2>Your 30 days haven’t started yet</h2><p>Sales only count toward your $1,000 once you press Start my 30 days.</p>'
+			. scrolly_k1_form_open( 'start' ) . '<button class="btn or" type="submit">Start my 30 days</button></form></div>';
 	}
 
 	/** Challenge members who haven't done Start Here yet are sent to it from the other tabs. */
@@ -912,7 +943,7 @@ K1JS;
 
 		// Club only: the playbook is the product; the personalized plan and weekly loop come with the Challenge.
 		if ( ! $a['challenge'] ) {
-			echo '<div class="sec black"><h2>Your $1K Club</h2><p>Your playbook is ready in <a style="color:#94ece1" href="' . esc_url( wc_get_account_endpoint_url( 'downloads' ) ) . '">Downloads</a>. It walks through the whole system: your $1K math, fixing your buying path, what to post, and how to track and improve.</p></div>';
+			echo '<div class="sec black"><h2>Your $1K Club</h2><p>Your playbook is ready in <a href="' . esc_url( wc_get_account_endpoint_url( 'downloads' ) ) . '">Downloads</a>. It walks through the whole system: your $1K math, fixing your buying path, what to post, and how to track and improve.</p></div>';
 			echo '<div class="sec teal"><h2>Make your first $1K with Instagram</h2><p>The $1K Challenge builds your personal $1K Plan from your business details, tells you what to post and fix each week, gives you a weekly check-in that shows what to change next, and 25 fresh Reel ideas every week for 30 days.</p><a class="btn" href="' . esc_url( scrolly_k1_add_challenge_url() ) . '">Add the $1K Challenge</a></div>';
 			echo scrolly_k1_calc_html( 0 ) . '</div>';
 			return;
@@ -947,7 +978,7 @@ K1JS;
 		// My $1K Plan (rendered in the browser by the reused Club logic); the calculator moves in right under the plan box.
 		echo '<div id="k1-plan" data-saved="' . esc_attr( wp_json_encode( $profile ) ) . '" data-reviews="' . esc_attr( wp_json_encode( $c['reviews'] ) ) . '"><div class="sec"><p>Building your plan…</p></div></div>';
 		echo '<noscript><div class="sec cream"><p>Your plan needs JavaScript to display. Please enable it and reload.</p></div></noscript>';
-		echo scrolly_k1_calc_html( $price );
+		echo scrolly_k1_calc_html( $price, scrolly_k1_calc_model( $profile ) );
 
 		echo '<div class="sec"><details><summary>Edit my business details</summary>' . scrolly_k1_profile_form( $profile, 'Update my plan' ) . '</details></div>';
 		echo '<p class="note">Your playbook PDF is in <a href="' . esc_url( wc_get_account_endpoint_url( 'downloads' ) ) . '">Downloads</a>.</p>';
@@ -1086,21 +1117,69 @@ K1JS;
 		$post = $id ? get_post( $id ) : null;
 		return $post ? apply_filters( 'the_content', $post->post_content ) : '<p>' . esc_html( $empty ) . '</p>';
 	}
+	// ---- Downloads tab (Challenge buyers): the Content Tracker (public Notion template) and the Auto-Posting with Your AI
+	//   guide sit as rows in the WooCommerce downloads table with everything else (Mercedes 2026-10-09: the separate block
+	//   below the table was easy to miss). The setup steps follow the table.
+	/** Setup steps for the Content Tracker + AI auto-posting rows above. */
+	function scrolly_k1_automation_html( $uid ) {
+		$h   = '<h2>Set up your Content Tracker + auto-posting</h2><p>The Content Tracker and the Auto-Posting with Your AI guide in the list above work together. Plan your posts in Notion, and your AI sends them to Buffer.</p>';
+		if ( SCROLLY_K1_TRACKER_VIDEO ) {
+			$h .= '<p><a href="' . esc_url( SCROLLY_K1_TRACKER_VIDEO ) . '" target="_blank" rel="noopener">Watch the setup video</a></p>';
+		}
+		$h  .= '<h3>Set it up in 4 steps</h3><ol>'
+			. '<li><strong>Duplicate the Content Tracker.</strong> Click its button in the list above, then click Duplicate at the top right in Notion.</li>'
+			. '<li><strong>Connect Notion and Buffer to your AI.</strong> Step 2 of the guide has the settings for Claude and ChatGPT.</li>'
+			. '<li><strong>Get one post ready.</strong> Delete the example rows, fill in one finished post with its captions and media, and set its Status to Ready.</li>'
+			. '<li><strong>Send it.</strong> Copy the message from Step 5 of the guide to your AI. Check that the post shows up in Buffer and its Status changes to Queued.</li></ol>';
+		$h  .= '<div class="sec teal"><h3>How it works</h3>'
+			. '<p>Your AI takes your Ready posts in Publish Order (lowest number first), adds them to your Buffer queue, and marks them Queued. Ask for it any time, or set it to run once a day (Step 6 of the guide).</p>'
+			. '<p><strong>Status:</strong> Idea → Ready → Queued → Published. Mark a post Published once it’s live, or ask your AI to check Buffer and update it.</p>'
+			. '<p style="margin:16px 0 0;padding-left:14px;border-left:4px solid var(--s3-orange);font-size:var(--s3-fs-fine)"><strong>Keep these field names:</strong> Status, Publish Order, Platforms, Instagram Caption, TikTok Caption, YouTube Title, YouTube Description, Media Links. Your AI reads them by name. Everything else in the tracker is yours to change.</p></div>';
+		return $h;
+	}
+	// Adds the Content Tracker as a row just before the guide row, for Challenge buyers who have the guide.
+	add_filter( 'woocommerce_customer_get_downloadable_products', function ( $downloads ) {
+		$out = array();
+		foreach ( (array) $downloads as $d ) {
+			if ( isset( $d['file']['file'] ) && false !== strpos( $d['file']['file'], SCROLLY_K1_GUIDE_FILE ) && get_current_user_id() && scrolly_k1_access( get_current_user_id() )['challenge'] ) {
+				$out[] = array_merge( $d, array(
+					'download_url'        => SCROLLY_K1_TRACKER_URL,
+					'download_id'         => 'k1-content-tracker',
+					'download_name'       => 'Content Tracker (Notion template)',
+					'downloads_remaining' => '',
+					'access_expires'      => null,
+					'file'                => array( 'name' => 'Content Tracker (Notion template)', 'file' => SCROLLY_K1_TRACKER_URL ),
+				) );
+			}
+			$out[] = $d;
+		}
+		return $out;
+	} );
+	add_action( 'woocommerce_after_account_downloads', function () {
+		$uid = get_current_user_id();
+		$a   = scrolly_k1_access( $uid );
+		if ( $a['challenge'] ) {
+			echo scrolly_k1_css() . '<div class="k1a k1v3" id="k1-tracker" style="margin-top:32px"><div class="sec">' . scrolly_k1_automation_html( $uid ) . '</div></div>';
+		}
+	} );
 	add_action( 'woocommerce_account_' . SCROLLY_K1_EP_REELS . '_endpoint', function () {
 		$uid = get_current_user_id();
 		$a   = scrolly_k1_access( $uid );
-		echo scrolly_k1_css() . '<div class="k1a">';
+		echo scrolly_k1_css() . '<div class="k1a k1v3">';
 		if ( ! $a['challenge'] ) {
 			echo '<div class="sec teal"><h2>Challenge Content</h2><p>Fresh Reel opportunities every week, plus carousel and Story templates, come with the $1K Challenge.</p><a class="btn" href="' . esc_url( scrolly_k1_add_challenge_url() ) . '">Add the $1K Challenge</a></div></div>';
 			return;
 		}
 		$w = scrolly_k1_window( $uid, $a );
-		echo '<div class="sec black"><h2>Challenge Content</h2><p>' . ( $w && $w['started'] ? 'Week ' . (int) min( 5, ceil( $w['day'] / 7 ) ) . ' of your Challenge. ' : '' ) . 'Use the pieces that fit your business. Your <a style="color:#94ece1" href="' . esc_url( wc_get_account_endpoint_url( SCROLLY_K1_EP_PLAN ) . '#k1-this-week' ) . '">This Week</a> list says how many of each to make.</p>';
+		if ( ( ! $w || empty( $w['started'] ) ) && get_user_meta( $uid, 'scrolly_k1_profile', true ) ) {
+			echo scrolly_k1_start_nudge();
+		}
+		echo '<div class="sec black"><h2>Challenge Content</h2><p>' . ( $w && $w['started'] ? 'Week ' . (int) min( 5, ceil( $w['day'] / 7 ) ) . ' of your Challenge. ' : '' ) . 'Use the pieces that fit your business. Your <a href="' . esc_url( wc_get_account_endpoint_url( SCROLLY_K1_EP_PLAN ) . '#k1-this-week' ) . '">This Week</a> list says how many of each to make.</p>';
 		echo '<p class="note">Make each video once for Instagram Reels, then post the same video to TikTok and YouTube Shorts if you use them.</p></div>';
-		echo '<div class="k1tabs" role="tablist"><button type="button" role="tab" data-t="k1-reels" aria-selected="true">Reels (25)</button><button type="button" role="tab" data-t="k1-carousels" aria-selected="false">Carousels (30)</button><button type="button" role="tab" data-t="k1-stories" aria-selected="false">Stories (30)</button></div>';
-		echo '<div class="reels" id="k1-reels"><h2>This week’s 25 Reel opportunities</h2><p class="note">Reach and discovery. A new set drops every week.</p>' . scrolly_k1_page_html( SCROLLY_K1_REELS_PAGE, 'This week’s Reels are on the way.' ) . '</div>';
-		echo '<div class="reels" id="k1-carousels" hidden><h2>30 carousel templates</h2><p class="note">Education, trust, and answering the doubts people have before buying.</p>' . scrolly_k1_page_html( SCROLLY_K1_CAROUSELS_PAGE, 'Your carousel templates are on the way.' ) . '</div>';
-		echo '<div class="reels" id="k1-stories" hidden><h2>30 Story templates</h2><p class="note">Staying in touch, proof, and your call to action.</p>' . scrolly_k1_page_html( SCROLLY_K1_STORIES_PAGE, 'Your Story templates are on the way.' ) . '</div>';
-		echo '<script>(function(){var b=document.querySelectorAll(".k1tabs button");function show(id){b.forEach(function(x){var on=x.dataset.t===id;x.setAttribute("aria-selected",on?"true":"false");document.getElementById(x.dataset.t).hidden=!on;});}b.forEach(function(x){x.addEventListener("click",function(){show(x.dataset.t);history.replaceState(null,"","#"+x.dataset.t);});});var h=location.hash.slice(1);if(document.getElementById(h)&&/^k1-(reels|carousels|stories)$/.test(h))show(h);})();</script><script>(function(){function load(src,cb){var s=document.createElement("script");s.async=true;s.src=src;s.onload=cb;document.body.appendChild(s);}document.addEventListener("click",function(e){var b=e.target.closest(".k1c .ex button");if(!b)return;var slot=b.parentNode.querySelector(".slot");if(slot.dataset.done)return;slot.dataset.done="1";b.textContent="Loading…";if(b.dataset.ig){slot.innerHTML=\'<blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/reel/\'+b.dataset.ig+\'/" data-instgrm-version="14" style="margin:0;min-width:280px;max-width:340px;width:100%"></blockquote>\';if(window.instgrm){window.instgrm.Embeds.process();}else{load("https://www.instagram.com/embed.js",function(){window.instgrm&&window.instgrm.Embeds.process();});}}else{var id=b.dataset.tt.split("/video/")[1];slot.innerHTML=\'<blockquote class="tiktok-embed" cite="\'+b.dataset.tt+\'" data-video-id="\'+id+\'" style="margin:0;max-width:340px;min-width:280px"><section></section></blockquote>\';load("https://www.tiktok.com/embed.js");}b.style.display="none";});})();</script></div>';
+		echo '<div class="k1tabs" role="tablist" aria-label="Challenge content"><button type="button" role="tab" id="k1-tab-reels" aria-controls="k1-reels" data-t="k1-reels" aria-selected="true">Reels (25)</button><button type="button" role="tab" id="k1-tab-carousels" aria-controls="k1-carousels" data-t="k1-carousels" aria-selected="false" tabindex="-1">Carousels (30)</button><button type="button" role="tab" id="k1-tab-stories" aria-controls="k1-stories" data-t="k1-stories" aria-selected="false" tabindex="-1">Stories (30)</button></div>';
+		echo '<div class="reels" id="k1-reels" role="tabpanel" aria-labelledby="k1-tab-reels"><h2>This week’s 25 Reel opportunities</h2><p class="note">Reach and discovery. A new set drops every week.</p>' . scrolly_k1_page_html( SCROLLY_K1_REELS_PAGE, 'This week’s Reels are on the way.' ) . '</div>';
+		echo '<div class="reels" id="k1-carousels" role="tabpanel" aria-labelledby="k1-tab-carousels" hidden><h2>30 carousel templates</h2><p class="note">Education, trust, and answering the doubts people have before buying.</p>' . scrolly_k1_page_html( SCROLLY_K1_CAROUSELS_PAGE, 'Your carousel templates are on the way.' ) . '</div>';
+		echo '<div class="reels" id="k1-stories" role="tabpanel" aria-labelledby="k1-tab-stories" hidden><h2>30 Story templates</h2><p class="note">Staying in touch, proof, and your call to action.</p>' . scrolly_k1_page_html( SCROLLY_K1_STORIES_PAGE, 'Your Story templates are on the way.' ) . '</div>';
+		echo '<script>(function(){var b=document.querySelectorAll(".k1tabs button");function show(id){b.forEach(function(x){var on=x.dataset.t===id;x.setAttribute("aria-selected",on?"true":"false");x.tabIndex=on?0:-1;document.getElementById(x.dataset.t).hidden=!on;});}b.forEach(function(x,i){x.addEventListener("click",function(){show(x.dataset.t);history.replaceState(null,"","#"+x.dataset.t);});x.addEventListener("keydown",function(e){var n=e.key==="ArrowRight"?i+1:e.key==="ArrowLeft"?i-1:e.key==="Home"?0:e.key==="End"?b.length-1:null;if(n===null)return;e.preventDefault();var t=b[(n+b.length)%b.length];show(t.dataset.t);t.focus();history.replaceState(null,"","#"+t.dataset.t);});});var h=location.hash.slice(1);if(document.getElementById(h)&&/^k1-(reels|carousels|stories)$/.test(h))show(h);})();</script><script>(function(){function load(src,cb){var s=document.createElement("script");s.async=true;s.src=src;s.onload=cb;document.body.appendChild(s);}document.addEventListener("click",function(e){var b=e.target.closest(".k1c .ex button");if(!b)return;var slot=b.parentNode.querySelector(".slot");if(slot.dataset.done)return;slot.dataset.done="1";b.textContent="Loading…";if(b.dataset.ig){slot.innerHTML=\'<blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/reel/\'+b.dataset.ig+\'/" data-instgrm-version="14" style="margin:0;min-width:280px;max-width:340px;width:100%"></blockquote>\';if(window.instgrm){window.instgrm.Embeds.process();}else{load("https://www.instagram.com/embed.js",function(){window.instgrm&&window.instgrm.Embeds.process();});}}else{var id=b.dataset.tt.split("/video/")[1];slot.innerHTML=\'<blockquote class="tiktok-embed" cite="\'+b.dataset.tt+\'" data-video-id="\'+id+\'" style="margin:0;max-width:340px;min-width:280px"><section></section></blockquote>\';load("https://www.tiktok.com/embed.js");}slot.tabIndex=-1;slot.setAttribute("role","group");slot.setAttribute("aria-label","Example video");b.style.display="none";slot.focus();});})();</script></div>';
 	} );
 }

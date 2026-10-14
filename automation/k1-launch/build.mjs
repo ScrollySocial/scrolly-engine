@@ -18,13 +18,21 @@ const js = fs.readFileSync(path.join(dist, 'k1-app.js'), 'utf8').trim();
 if (/<\/script/i.test(js)) throw new Error('bundle contains </script, cannot inline');
 if (/^K1JS;?$/m.test(js)) throw new Error('bundle contains the PHP nowdoc terminator');
 
+// The My $1K Plan calculator is its own small bundle: it also runs on the Club-only view, which doesn't load the plan bundle.
+execSync(`npx --yes esbuild@0.28.2 "${path.join(here, 'src', 'calc-entry.mjs')}" --bundle --format=iife --minify --target=es2019 --legal-comments=none --outfile="${path.join(dist, 'k1-calc.js')}"`, { stdio: 'inherit' });
+const calcJs = fs.readFileSync(path.join(dist, 'k1-calc.js'), 'utf8').trim();
+if (/<\/script/i.test(calcJs)) throw new Error('calc bundle contains </script, cannot inline');
+if (/^K1CALC;?$/m.test(calcJs)) throw new Error('calc bundle contains the PHP nowdoc terminator');
+
 const template = fs.readFileSync(path.join(here, 'php', 'my-account-1k-tabs.template.php'), 'utf8');
 const placeholder = /^__K1_APP_JS__$/m; // only the placeholder line inside the nowdoc, never a mention in a comment
 if ((template.match(/^__K1_APP_JS__$/gm) || []).length !== 1) throw new Error('template must contain exactly one __K1_APP_JS__ line');
-fs.writeFileSync(path.join(dist, 'my-account-1k-tabs.php'), template.replace(placeholder, () => js));
+if ((template.match(/^__K1_CALC_JS__$/gm) || []).length !== 1) throw new Error('template must contain exactly one __K1_CALC_JS__ line');
+fs.writeFileSync(path.join(dist, 'my-account-1k-tabs.php'), template.replace(placeholder, () => js).replace(/^__K1_CALC_JS__$/m, () => calcJs));
 
-// Preview: same CSS as the snippet + the 5 harness businesses.
-const css = template.match(/<style id="scrolly-k1-acct">([\s\S]*?)<\/style>/)[1];
+// Preview: the live member styles (global chrome CSS: v3 tokens + k1-account.css, as install-chrome.mjs publishes them) + the 5 harness businesses.
+const chromeDir = path.join(here, '..', '..', 'website', 'scrolly-site', 'chrome');
+const css = ['v3.css', 'k1-account.css'].map((f) => fs.readFileSync(path.join(chromeDir, f), 'utf8')).join('\n');
 const businesses = [
   { business: 'Fix-It Frank', route: 'services', stage: 'C', offer: 'Home repair jobs', price: 250, audience: 'Homeowners in town', where: 'phone', channel: 'instagram', found: ['referral', 'facebook'], revenue: 600, closePct: '', reviews: '', emailList: '' },
   { business: 'Ops Clarity', route: 'services', stage: 'B', offer: 'Operations audit', price: 500, audience: 'Agency owners', where: 'booking', channel: 'linkedin', found: ['linkedin'], revenue: '', closePct: '', reviews: '', emailList: '' },
@@ -38,9 +46,9 @@ const sampleReviews = (b) => [
   { periodStart: '2026-09-21', periodEnd: '2026-09-27', actions: ['published_content'], created: 4, distributed: 10, rev: 0, sales: 0, cap: 'no', attr: 'unknown', note: '', vals: [900, 0, 0], snapshot: b },
   { periodStart: '2026-09-28', periodEnd: '2026-10-04', actions: ['published_content', 'changed_cta'], created: 5, distributed: 13, rev: b.price, sales: 1, cap: 'no', attr: 'partially_known', note: '', vals: [1400, 9, 3], snapshot: b },
 ];
-const blocks = businesses.map((b, i) => `<h1 style="font:800 20px Arial;margin:32px 0 12px">Test business ${i + 1}: ${b.business}</h1><div class="k1a" id="p${i}"></div>`).join('');
+const blocks = businesses.map((b, i) => `<h1 style="font:800 20px Arial;margin:32px 0 12px">Test business ${i + 1}: ${b.business}</h1><div class="k1a k1v3" id="p${i}"></div>`).join('');
 fs.writeFileSync(path.join(dist, 'preview.html'), `<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>My $1K Plan Preview</title>
-<style>body{margin:0;background:#f3efe8}main{max-width:820px;margin:0 auto;padding:16px}${css}</style></head><body><main>${blocks}</main>
+<style>body{margin:0;background:#f7f3ec}main{max-width:820px;margin:0 auto;padding:16px}${css}</style></head><body><main>${blocks}</main>
 <script>${js}</script><script>
 var B=${JSON.stringify(businesses)}, R=${JSON.stringify(businesses.map(sampleReviews))};
 var C=[{started:true,day:9,revenue:250},{started:true,day:10,revenue:500},{started:true,day:16,revenue:532},{started:true,day:8,revenue:175},{started:true,day:12,revenue:700}];

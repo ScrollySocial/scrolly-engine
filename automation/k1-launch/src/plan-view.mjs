@@ -3,7 +3,6 @@
  *
  * All intelligence is REUSED, unchanged, from automation/club/lib:
  *   computeModule1Results (Router + $1K Math + Mini Evaluation + First Priority + Starting Point Plan)
- *   computeThousandKMath  (called again at alternative order values for the economics scenarios)
  * This file only (1) maps the saved Start Here answers into a BusinessProfile, and
  * (2) shapes the results for display: bottom-of-funnel first, labeled planning
  * ranges, offer economics, work-on-now / not-yet, clean punctuation, and an
@@ -11,7 +10,6 @@
  */
 import { newBusinessProfile } from '../../club/lib/business-profile-schema.mjs';
 import { computeModule1Results } from '../../club/lib/module1.mjs';
-import { computeThousandKMath } from '../../club/lib/thousand-k-math.mjs';
 import { getRouteConfig, listRoutes } from '../../club/lib/business-model-router.mjs';
 import { v1MetricLabel, V1_TOP_STAGE_NOUN, V1_STAGE_NOUN, CROSS_POST_NOTE } from './v1-instagram.mjs';
 
@@ -81,7 +79,6 @@ export function saleWords(saved) {
 
 // ---- small display helpers
 const clean = (s) => (s == null ? s : String(s).replace(/\s*(?:—|–|--)\s*/g, ', ').replace(/,\s*,/g, ','));
-const niceUp = (x) => (x < 100 ? Math.ceil(x / 5) * 5 : Math.ceil(x / 25) * 25);
 const STAGE_NOUN = {
   reach: 'people reached', product_view: 'product views', add_to_cart: 'cart adds', purchase: 'sales',
   lead_or_inquiry: 'inquiries', qualified_conversation: 'sales conversations', booked_client: 'clients',
@@ -99,21 +96,28 @@ const AOV_LEVERS = {
   local_hybrid: ['Party or event packs', 'A minimum order box', 'Add-ons like delivery or personalization'],
   services: ['Packages (for example 3 sessions instead of 1)', 'A monthly option for ongoing work'],
 };
+// Guidance only: the numbers (sales, visitors, views) live in the My $1K Plan calculator, the single source of truth.
 function economics(math, route) {
   const out = { highVolume: math.isHighTransactionCount, note: null, levers: [], scenarios: [], trustNote: null };
   if (math.isHighTransactionCount && AOV_LEVERS[route]) {
-    const alts = [...new Set([niceUp(math.price * 1.75), niceUp(math.price * 2.6)])].filter((p) => p > math.price);
-    out.scenarios = [{ aov: math.price, sales: math.requiredSales, current: true },
-      ...alts.map((p) => ({ aov: p, sales: computeThousandKMath({ price: p, route }).requiredSales, current: false }))];
     out.levers = AOV_LEVERS[route];
-    out.note = `At $${math.price} per sale you need ${math.requiredSales} sales. That is a high-volume path for a new organic presence. Raising what the average customer spends (without simply raising your price) can shorten it a lot.`;
+    out.note = 'At your average sale it takes a lot of sales to reach $1,000, which is a high-volume path for a new organic presence. Raising what the average customer spends (without simply raising your price) can shorten it a lot.';
   } else if (math.isHighTransactionCount && route === 'creator_affiliate') {
-    out.note = `You need ${math.requiredSales} conversions. For creator income, volume of clicks is the main lever, so pick offers with a higher payout where you can.`;
+    out.note = 'For creator income, volume of clicks is the main lever, so pick offers with a higher payout where you can.';
   }
   if (math.price >= 300 && route !== 'creator_affiliate') {
-    out.trustNote = `You only need ${math.requiredSales} ${math.requiredSales === 1 ? 'sale' : 'sales'}, but each one is a bigger decision. Proof (results, reviews, examples) and an easy next step matter more for you than raw reach.`;
+    out.trustNote = 'Each sale is a bigger decision for your buyers. Proof (results, reviews, examples) and an easy next step matter more for you than raw reach.';
   }
   return out;
+}
+
+/** The engine's interpretation minus its numbers (sales, rates, implied volumes), which now live in the calculator. */
+function guidanceOnly(text) {
+  const sentences = String(text || '').match(/[^.!?]+[.!?]+/g) || [];
+  return sentences.map((s) => s.trim())
+    // "That's mathematically possible..." only makes sense after the (removed) numeric high-count sentence.
+    .filter((s) => !/[0-9$%]/.test(s) && !/^That's mathematically possible/.test(s))
+    .join(' ');
 }
 
 // ---- what to work on now / what to ignore (route + channel + priority, so identical priorities still differ)
@@ -178,6 +182,7 @@ export function computePlanView(saved) {
     startingState: { title: r.startingState.title, copy: clean(r.startingState.copy) },
     dataConfidence: { title: r.dataConfidence.title, copy: clean(r.dataConfidence.copy) },
     interpretation: clean(r.interpretation),
+    guidance: clean(guidanceOnly(r.interpretation)),
     whatWeKnow: r.whatWeKnow.map((d) => ({ icon: d.icon, headline: d.headline, rationale: clean(d.rationale), kind: d.kind })),
     firstPriority: { type: r.firstPriority.type, label: r.firstPriority.label, rationale: clean(r.firstPriority.rationale) },
     workOnNow: [PRIORITY_ACTION[r.firstPriority.type](ctx), ROUTE_ACTION[profile.route](ctx)],
