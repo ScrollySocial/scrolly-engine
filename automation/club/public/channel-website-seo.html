@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Scrolly Club — Website SEO &amp; AI Discovery</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/club/club-shell.css">
+<link rel="stylesheet" href="/club/channel-module.css">
+</head>
+<body>
+<main>
+  <div class="eyebrow">Channel Module</div>
+  <h1>Website SEO &amp; AI Discovery</h1>
+  <p class="lede">Not a traffic source of its own — this is what makes your website actually findable through Google Search (<a href="/club/channel/google">previous module</a>) and, increasingly, AI answer tools. Fixing the destination, not adding a new acquisition channel.</p>
+
+  <nav class="dest-nav" aria-label="Module sections">
+    <a href="#overview" data-dest="overview">Overview &amp; Results</a>
+    <a href="#setup" data-dest="setup">Set Up</a>
+    <a href="#how-to-use" data-dest="how-to-use">How to Use It</a>
+    <a href="#numbers" data-dest="numbers">Your $1K Numbers</a>
+    <a href="#track" data-dest="track">Track &amp; Improve</a>
+  </nav>
+
+  <div class="dest-panels">
+  <section class="dest-panel" id="dest-overview">
+    <div class="panel">
+      <h2>Search intent: what is someone actually trying to do?</h2>
+      <table class="data-table">
+        <tr><td>Informational</td><td>"How do I get candle wax out of carpet" — not ready to buy yet, but might remember you.</td><td></td></tr>
+        <tr><td>Commercial</td><td>"Best non-toxic candles for allergies" — comparing options, close to a decision.</td><td></td></tr>
+        <tr><td>Transactional</td><td>"Buy soy candle lavender" — ready to purchase now.</td><td></td></tr>
+      </table>
+      <p class="muted">Product/category pages should target transactional and commercial intent; supporting content should target informational intent that links back to what you sell.</p>
+    </div>
+  </section>
+
+  <section class="dest-panel" id="dest-setup" hidden>
+    <div class="panel">
+      <h2>Basic crawling and indexing checks</h2>
+      <p class="muted">Before optimizing anything, confirm Google can actually see your site. Google Search Console (free) is the real tool for this.</p>
+      <div class="checklist" id="crawlChecklist">
+        <div class="check-row"><input type="checkbox" id="crawl1"><label for="crawl1">Verify your site in Google Search Console</label></div>
+        <div class="check-row"><input type="checkbox" id="crawl2"><label for="crawl2">Submit a sitemap</label></div>
+        <div class="check-row"><input type="checkbox" id="crawl3"><label for="crawl3">Check the Coverage/Pages report for errors</label></div>
+      </div>
+      <div class="demo-missing"><b>Screenshot needed:</b> Google Search Console's verification screen and the Pages/Coverage report. No authenticated Search Console property or approved reference asset exists in this project yet.</div>
+    </div>
+  </section>
+
+  <section class="dest-panel" id="dest-how-to-use" hidden>
+    <div class="panel">
+      <h2>Page types your site actually needs</h2>
+      <ul class="can-list">
+        <li><b>Product/service pages</b> — one per real thing you sell, with a clear title, price/scope, and a purchase or booking action</li>
+        <li><b>Category pages</b> (if you have multiple related products)</li>
+        <li><b>Supporting content</b> — answers real buyer questions, links back to the relevant product/service page</li>
+      </ul>
+      <h2 style="margin-top:18px">Titles, headings, and internal links</h2>
+      <div class="checklist" id="seoChecklist">
+        <div class="check-row"><input type="checkbox" id="seo1"><label for="seo1">Every page has a unique, descriptive title<small>Not "Home" or "Products" — the actual thing a searcher is looking for.</small></label></div>
+        <div class="check-row"><input type="checkbox" id="seo2"><label for="seo2">Headings describe the actual content in real language</label></div>
+        <div class="check-row"><input type="checkbox" id="seo3"><label for="seo3">Related pages link to each other</label></div>
+        <div class="check-row"><input type="checkbox" id="seo4"><label for="seo4">Every important page has enough real information to actually be useful</label></div>
+      </div>
+      <h2 style="margin-top:18px">AI discovery: what's actually known</h2>
+      <p>AI answer tools (Google's AI Overviews, ChatGPT search, Perplexity) synthesize responses partly from indexed web content. Clear, factual, well-structured pages that plainly state what you sell, for whom, and at what price are more likely to be accurately represented — a reasonable inference from how these systems work, not a guaranteed placement.</p>
+      <div class="warn-box">Be skeptical of specific "AI SEO hack" claims — this space is new and changes quickly, and much confident-sounding advice is speculation. The safest approach is the one that's always worked: be genuinely clear, accurate, and useful.</div>
+    </div>
+  </section>
+
+  <section class="dest-panel" id="dest-numbers" hidden>
+    <div class="panel calc-panel">
+      <h2>If organic search supplied your $1,000</h2>
+      <p class="muted">Shared with Google Search &amp; Business Profile — this is one calculation, not two. Your website's SEO work is what actually produces this traffic.</p>
+      <p class="calc-linked-note" data-calc="linked-note"></p>
+      <button type="button" class="calc-reset" data-calc="reset">Use my current business data</button>
+      <div class="tool-row">
+        <div class="tool-field"><label>Average order value (USD)</label><input type="number" data-calc="aov" min="1" step="0.01" placeholder="e.g. 40"></div>
+        <div class="tool-field"><label>Visit-to-order conversion rate (%)</label><input type="number" data-calc="rate" min="0.1" max="100" step="0.1" placeholder="e.g. 2"></div>
+        <div class="tool-field"><label>Remaining revenue toward your $1,000</label><input type="number" data-calc="remaining" min="0" step="1" value="1000"></div>
+        <div class="tool-field"><label>Organic search's planned share (%)</label><input type="number" data-calc="share" min="1" max="100" step="1" placeholder="e.g. 30"></div>
+      </div>
+      <table class="calc-table" data-calc="table"></table>
+      <div class="evidence-gap">We don't have a verified, attributed case study for website SEO to share here yet. Realistic shape: SEO is a slow-compounding channel — meaningful organic movement typically takes months, and depends heavily on how competitive your specific niche and keywords are. Do not expect week-one results.</div>
+    </div>
+  </section>
+
+  <section class="dest-panel" id="dest-track" hidden>
+    <div class="panel">
+      <h2>Answering buyer questions directly</h2>
+      <p>A genuine FAQ section — real questions your customers actually ask, answered plainly — helps both human visitors and search/AI systems understand what you offer and address common objections before checkout.</p>
+    </div>
+  </section>
+  </div>
+
+  <div class="dest-controls">
+    <button type="button" class="dest-back" disabled>← Back</button>
+    <button type="button" class="dest-next">Next →</button>
+  </div>
+
+  <div class="first-action">
+    <h2>Your first action</h2>
+    <p>This week: verify your site in Google Search Console (free, five minutes) and check that your homepage and top product/service page each have a real, unique, descriptive title.</p>
+  </div>
+</main>
+<script src="/club/channel-module.js"></script>
+<script>
+ChannelModule.init({
+  moduleKey: 'website-seo',
+  destinations: ['overview', 'setup', 'how-to-use', 'numbers', 'track'],
+  checklists: { seo: { ids: ['seo1','seo2','seo3','seo4'] }, crawl: { ids: ['crawl1','crawl2','crawl3'] } },
+  calculators: [{ scenarioKey: 'organic-search', root: '.calc-panel' }],
+});
+</script>
+<script src="/club/club-shell.js"></script>
+</body></html>

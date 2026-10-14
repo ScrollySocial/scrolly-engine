@@ -1,0 +1,189 @@
+/* Scrolly $1K Club — shared chrome for every signed-in Club page except
+   Home (automation/club/public/overview.html), which owns its own frozen
+   copy of these same tokens/header/sidebar styles. Keep this file's visual
+   output matching Home's; do not fork values without updating both.
+
+   2026-09-22 brand pass: token NAMES kept as-is (so every page/alias that
+   already references var(--scrolly-blue) etc. still works with zero other
+   edits -- see feedback_club_app_must_use_canonical_brand_tokens.md) but
+   VALUES repointed to the current Scrolly system: black/near-black ink
+   (not navy), $1K teal as the dominant Club accent, cream surfaces, purple
+   secondary, orange sparing. --scrolly-blue in particular now resolves to
+   black -- it was the token nearly every button/link/focus-ring/icon in
+   this file and every page that loads it already keyed off, so repointing
+   it is what turns those into solid black CTAs + black text accents in one
+   place, matching "black/near-black typography" + "buttons should feel
+   solid, modern and intentional" without touching every selector. Teal
+   itself is intentionally NOT this token -- it's light enough that white
+   button text or blue-style small text on it fails contrast -- so teal is
+   applied directly (fills/badges/active states/hover), never through this
+   token. See .club-shell-nav a[aria-current] and button hover rules below
+   for the actual black-fill / teal-fill-with-black-text pattern. */
+:root{
+  --scrolly-navy:#000000; --scrolly-blue:#000000; --scrolly-cyan:#94ECE1; --scrolly-teal:#94ECE1;
+  --scrolly-periwinkle:#C1AEFC; --scrolly-violet:#C1AEFC; --scrolly-pink:#FFB38F; --scrolly-gold:#F5B700;
+  --orange:#FF6338; --violet-deep:#735CFF;
+  --ink:#000000; --slate:#5B5B5B; --border:#E7E2D9; --surface:#FFFFFF; --surface-soft:#FBF8F3; --surface-blue:#E7FAF6; --surface-mint:#E7FAF6;
+  --radius-card:10px; --radius-btn:8px;
+  --shadow-card:0 2px 7px rgba(0,0,0,.06);
+  --stripe: linear-gradient(100deg, #94ECE1 0%, #94ECE1 55%, #C1AEFC 80%, #FFB38F 100%);
+  --club-sidebar-w:200px;
+  --club-header-h:70px;
+}
+.club-shell-icon{width:22px;height:22px;flex:none;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+
+/* ---- Utility bar: the one Club-specific control the real site-wide WP
+   header (injected separately, see club-shell.js buildSiteHeader/
+   buildSiteFooter) has no room for -- the mobile sidebar-drawer toggle.
+   Sits directly under the real header on every Club page except Home;
+   only visible at mobile widths (see media query below), since desktop
+   already shows the sidebar. Quick Actions was removed in the 2026-09-15
+   sprint -- three navigation systems (WP header, Club sidebar, Quick
+   Actions) was one too many. */
+.club-shell-utilitybar{max-width:1280px;margin:0 auto;padding:8px 20px;display:none;align-items:center;gap:10px;background:#fff;border-bottom:1px solid var(--border);position:sticky;top:var(--club-header-h);z-index:25}
+.club-shell-utilitybar .club-shell-current-module{font-family:'Archivo',Inter,sans-serif;font-weight:700;font-size:12.5px;color:var(--slate);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.club-shell-utilitybar .club-shell-current-module::before{content:"·";margin-right:10px;color:var(--border)}
+/* Selectors below are prefixed with `body.club-shell-page` (added even
+   though these classes are already page-unique) specifically to beat
+   theme.css's real site-wide [type=button],button{border:1px solid #c36;
+   color:#c36} reset on genuine specificity -- (0,1,2) beats its (0,1,0)
+   outright. A plain single-class selector ties with it at (0,1,0), and
+   that tie was found to resolve unpredictably here (a dynamically
+   JS-inserted stylesheet did not reliably lose ties against statically-
+   parsed ones, !important or not) -- so every button rule in this file
+   and in each page's own <style> block uses this same prefix pattern
+   rather than relying on !important or source order. */
+.club-shell-menu-btn{display:none;align-items:center;gap:6px;height:34px;padding:0 12px;border-radius:8px;font-size:12.5px;font-weight:700;font-family:'Archivo',Inter,sans-serif;cursor:pointer;flex:none}
+body.club-shell-page .club-shell-menu-btn{border:1px solid var(--border);background:#fff;color:var(--ink)}
+
+/* ---- Sidebar (persistent, fixed on desktop; collapsible drawer on mobile) ---- */
+.club-shell-body{display:flex;align-items:flex-start;max-width:1280px;margin:0 auto}
+.club-shell-sidebar{width:var(--club-sidebar-w);flex:none;padding:16px 12px;position:sticky;top:calc(var(--club-header-h) + 12px);align-self:flex-start;background:#fff;border:1px solid var(--border);border-radius:var(--radius-card);box-shadow:var(--shadow-card);margin:12px 0 12px 20px}
+.club-shell-club-label{color:var(--scrolly-navy);font-family:'Archivo',Inter,sans-serif;font-size:15px;font-weight:800;line-height:1.2;margin:0 2px 14px}
+.club-shell-club-label small{display:block;font-size:11px;font-weight:600;color:var(--slate);letter-spacing:.02em;margin-top:2px}
+.club-shell-nav{display:grid;gap:3px}
+.club-shell-nav a{display:flex;align-items:center;gap:10px;padding:8px 9px;border-radius:7px;font-size:12.5px;font-weight:600;color:var(--ink);text-decoration:none}
+.club-shell-nav a:hover:not([aria-current]){background:var(--surface-soft)}
+.club-shell-nav a[aria-current]{background:#94ece1;color:#000;font-weight:800}
+.club-shell-nav a[aria-current] .club-shell-icon{color:#000}
+.club-shell-nav .club-shell-icon{color:var(--ink);opacity:.6;width:19px;height:19px}
+/* (0,2,0) specificity, deliberately -- must beat body.club-shell-page a's
+   (0,1,1) blanket link-color fix below, or this card's white text on its
+   black fill silently loses to that rule's var(--ink) (black), same class
+   of bug as the theme.css leak that fix addresses. Confirmed live 2026-09-22
+   after Mercedes reported black-on-black text here. */
+body.club-shell-page .club-shell-promo{display:block;margin-top:18px;padding:11px 10px;background:var(--ink);border:1px solid var(--ink);border-radius:8px;font-size:12px;line-height:1.35;text-decoration:none;color:#fff}
+.club-shell-promo:hover{background:#1a1a1a}
+.club-shell-promo strong{display:block;font-family:'Archivo',Inter,sans-serif;font-size:12.5px;color:#94ECE1;margin-bottom:3px}
+.club-shell-promo .arrow{float:right;color:#94ECE1;font-weight:700}
+
+/* Bottom padding is deliberately generous (not the 12px every other side
+   uses) -- Priority 1C of the 2026-09-15 sprint: several Club pages had
+   no breathing room before the real black WP footer. One shared rule
+   here fixes it everywhere at once instead of a per-page hack. */
+.club-shell-content{flex:1;min-width:0;padding:12px 20px 56px 20px}
+
+/* ---- Mobile: collapsible drawer ---- */
+.club-shell-backdrop{display:none}
+@media (max-width:900px){
+  .club-shell-menu-btn{display:inline-flex}
+  .club-shell-utilitybar{display:flex}
+  .club-shell-body{display:block}
+  .club-shell-sidebar{
+    position:fixed;top:0;left:0;height:100vh;z-index:60;
+    border-radius:0;margin:0;box-shadow:0 0 0 100vw rgba(11,31,77,0);
+    transform:translateX(-100%);transition:transform .2s ease;overflow-y:auto;width:min(80vw,300px);
+  }
+  .club-shell-sidebar.club-shell-open{transform:translateX(0);box-shadow:8px 0 30px rgba(11,31,77,.25)}
+  .club-shell-backdrop{display:block;position:fixed;inset:0;background:rgba(11,31,77,.35);z-index:50;opacity:0;pointer-events:none;transition:opacity .2s ease}
+  .club-shell-backdrop.club-shell-open{opacity:1;pointer-events:auto}
+  .club-shell-content{padding:14px 16px}
+}
+
+/* ---- Generic component polish for legacy Club pages: these pages already
+   use `.card`, bare `button`, `input,select,textarea`, `table`, `.hint`,
+   `.error` consistently, so retinting + restyling those selectors once
+   here carries the canonical look through every page without touching
+   their markup, form field names, or JS. Each page's own <style> is loaded
+   AFTER this file, so page-specific overrides still win where intended. */
+body.club-shell-page{margin:0;background:var(--surface-soft);color:var(--ink);font:16px/1.6 'Public Sans',Inter,-apple-system,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+/* theme.css (the live cross-origin WP stylesheet every Club page loads)
+   ships a generic pink #cc3366 link/button color that otherwise bleeds
+   through any plain <a> or <button> without its own explicit color --
+   confirmed live on more than one page. A page-specific class rule
+   normally already beats it, but this catches the plain, unclassed case
+   everywhere at once. */
+body.club-shell-page a{color:var(--ink)}
+/* 2026-09-22: unified with channel-module.css/the homepage's own type
+   system (Archivo, uppercase, heavy weight) -- this file used to run
+   Poppins/sentence-case, so "Your $1K Math" (a real <h2>, this rule) and
+   "Who this works best for" (channel-module.css's own h2) rendered as two
+   visually different products. One system now. Pages loading this file
+   need an Archivo font <link>, not just Poppins/Inter (see each page's
+   <head>). */
+body.club-shell-page h1,body.club-shell-page h2,body.club-shell-page h3,body.club-shell-page h4{font-family:'Archivo',Arial,sans-serif;font-weight:900;text-transform:uppercase;letter-spacing:-.015em;color:var(--scrolly-navy)}
+/* Standardized title scale: "My Plan" (26px flat) and "Performance"
+   (clamp 2-3rem) used to read as two different products. One shared H1
+   scale for every club-shell.css page; page-local <style> blocks should
+   not redeclare h1{font-size}. */
+body.club-shell-page h1{font-size:clamp(1.9rem,4.2vw,2.75rem);font-weight:900;letter-spacing:-.015em;line-height:.98;margin:0 0 10px}
+body.club-shell-page h2{font-size:clamp(1.15rem,2.2vw,1.4rem);font-weight:900;line-height:1.05;margin:0 0 10px}
+body.club-shell-page .card,body.club-shell-page .panel{background:#fff;border:1px solid var(--border);border-radius:var(--radius-card);box-shadow:var(--shadow-card)}
+body.club-shell-page label{color:var(--ink)}
+body.club-shell-page input,body.club-shell-page select,body.club-shell-page textarea{border:1px solid var(--border);border-radius:8px;font-family:Inter,-apple-system,sans-serif}
+body.club-shell-page input:focus,body.club-shell-page select:focus,body.club-shell-page textarea:focus{outline:2px solid var(--ink);outline-offset:1px}
+body.club-shell-page button:not(.club-shell-menu-btn){font-family:'Archivo',Inter,sans-serif;font-weight:700;border-radius:var(--radius-btn);transition:background-color .15s ease,color .15s ease}
+/* Default solid-button interaction: black fill, teal-fill/black-text on
+   hover -- the "black + teal" pairing, applied to every already-black
+   button (var(--scrolly-blue) resolves to black above) without hunting
+   down each hardcoded hover hex individually. Page-local button rules
+   that set their own background still win where they intentionally
+   differ (e.g. a plain white secondary button). */
+body.club-shell-page button:not(.club-shell-menu-btn):not(.btn-secondary):not(.btn-locked):hover:not(:disabled){background:#94ECE1;color:#000}
+body.club-shell-page .eyebrow{color:var(--ink);opacity:.6;font-weight:700}
+body.club-shell-page table th,body.club-shell-page table td{border-bottom:1px solid var(--border)}
+
+/* ---- Module form stepper (Back/Next over existing field groups) ---- */
+.stepper-progress{font-size:11px;font-weight:700;color:var(--slate);text-transform:uppercase;letter-spacing:.04em;margin-bottom:14px}
+.stepper-nav{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:18px}
+.stepper-back,.stepper-next{border-radius:var(--radius-btn);padding:10px 20px;font-weight:700;font-family:'Archivo',Inter,sans-serif;font-size:13.5px;cursor:pointer}
+body.club-shell-page .stepper-back{background:#fff;color:var(--ink);border:1px solid var(--border)}
+.stepper-back:disabled{opacity:.35;cursor:not-allowed}
+body.club-shell-page .stepper-next{background:var(--scrolly-blue);color:#fff;border:none}
+.stepper-next{margin-left:auto}
+.step[hidden]{display:none}
+
+/* ---- Module Previous/My Plan/Next nav -- built once per page load and
+   injected TWICE (top and bottom, see club-shell.js buildPrevNext): top
+   so a member never has to scroll to move between modules, bottom kept
+   as a convenience. ---- */
+.club-shell-prevnext{max-width:720px;margin:24px auto 8px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.club-shell-prevnext-top{margin:0 auto 20px}
+.club-shell-prevnext-link{display:flex;align-items:center;gap:8px;padding:12px 16px;background:#fff;border:1px solid var(--border);border-radius:var(--radius-card);text-decoration:none;color:var(--ink);font-size:12.5px;max-width:38%}
+.club-shell-prevnext-link:hover{border-color:var(--scrolly-blue)}
+.club-shell-prevnext-link.next{margin-left:auto;text-align:right;flex-direction:row-reverse}
+.club-shell-prevnext-link small{display:block;color:var(--slate);font-weight:600;text-transform:uppercase;letter-spacing:.03em;font-size:10px;margin-bottom:2px}
+.club-shell-prevnext-link span{font-family:'Archivo',Inter,sans-serif;font-weight:700;color:var(--scrolly-navy)}
+.club-shell-prevnext-index{display:flex;align-items:center;gap:6px;flex:none;padding:12px 14px;background:var(--surface-soft);border:1px solid var(--border);border-radius:var(--radius-card);text-decoration:none;color:var(--ink);font-size:12.5px;font-weight:700;font-family:'Archivo',Inter,sans-serif}
+.club-shell-prevnext-index:hover{border-color:var(--scrolly-blue)}
+.club-shell-prevnext-index .club-shell-icon{color:var(--scrolly-blue);width:17px;height:17px}
+.club-shell-chevron-left{transform:rotate(90deg);color:var(--scrolly-blue)}
+.club-shell-chevron-right{transform:rotate(-90deg);color:var(--scrolly-blue)}
+@media (max-width:520px){
+  .club-shell-prevnext-link span small{display:none}
+  .club-shell-prevnext-link{max-width:34%;font-size:11px;padding:10px}
+  .club-shell-prevnext-index span{display:none}
+  .club-shell-prevnext-index{padding:10px}
+}
+
+/* ---- Shared "session expired" recovery state (club-shell.js
+   renderAccessExpired) -- one consistent look everywhere a token turns out
+   to be missing/invalid, replacing each page's own ad hoc plain-text
+   message. Branded like a notice, not an error page: this is routine
+   (a link aged out), not something broken. ---- */
+.club-shell-access-expired{max-width:520px;margin:16px 0;padding:18px 20px;background:var(--surface-blue);border:1px solid var(--border);border-radius:var(--radius-card)}
+.club-shell-access-expired strong{display:block;font-family:'Archivo',Inter,sans-serif;font-size:15px;color:var(--scrolly-navy);margin-bottom:6px}
+.club-shell-access-expired p{margin:0 0 12px;font-size:13.5px;color:var(--slate);line-height:1.5}
+.club-shell-access-expired a{display:inline-block;font-weight:700;font-family:'Archivo',Inter,sans-serif;font-size:13px;color:#fff;background:var(--scrolly-blue);padding:9px 16px;border-radius:var(--radius-btn);text-decoration:none;transition:background-color .15s ease,color .15s ease}
+.club-shell-access-expired a:hover{background:#94ECE1;color:#000}
+.club-shell-access-expired a:focus-visible{outline:2px solid var(--ink);outline-offset:2px}

@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Scrolly Club — YouTube &amp; Shorts</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/club/club-shell.css">
+<link rel="stylesheet" href="/club/channel-module.css">
+</head>
+<body>
+<main>
+  <div class="eyebrow">Channel Module</div>
+  <h1>YouTube &amp; Shorts</h1>
+  <p class="lede">YouTube is a search engine as much as a video platform. That makes it genuinely different from TikTok and Instagram Reels, even though Shorts looks similar on the surface.</p>
+
+  <nav class="dest-nav" aria-label="Module sections">
+    <a href="#overview" data-dest="overview">Overview &amp; Results</a>
+    <a href="#setup" data-dest="setup">Set Up</a>
+    <a href="#how-to-use" data-dest="how-to-use">How to Use It</a>
+    <a href="#numbers" data-dest="numbers">Your $1K Numbers</a>
+    <a href="#track" data-dest="track">Track &amp; Improve</a>
+  </nav>
+
+  <div class="dest-panels">
+  <section class="dest-panel" id="dest-overview">
+    <div class="panel">
+      <h2>Search vs. recommendation — and why it matters</h2>
+      <p>Long-form video is discovered two ways: someone <b>searches</b> a question, or YouTube <b>recommends</b> it based on watch history. Both reward videos that genuinely answer a real question — a searchable title and a real answer inside matter more here than on TikTok, where the feed cares more about immediate watch-through than search-matching.</p>
+      <div class="example">"How to clean a cast iron pan" is a real, searchable question with buying intent nearby. "Day in my life as a candle maker" is recommendation-feed content — it can work, but it isn't answering a search.</div>
+      <h2 style="margin-top:18px">Shorts vs. long-form</h2>
+      <table class="data-table">
+        <tr><td>Shorts</td><td>Under 60 seconds, discovered mainly through YouTube's Shorts feed — closer to TikTok/Reels distribution mechanics than to long-form search.</td><td></td></tr>
+        <tr><td>Long-form</td><td>Discovered through search and "up next" — rewards depth and real answers, not just a strong first 2 seconds.</td><td></td></tr>
+      </table>
+    </div>
+  </section>
+
+  <section class="dest-panel" id="dest-setup" hidden>
+    <div class="panel">
+      <h2>Setup that actually matters</h2>
+      <div class="checklist" id="ytSetup">
+        <div class="check-row"><input type="checkbox" id="yt1"><label for="yt1">Write titles in real searched language, not clever wordplay<small>"Best X for Y" beats a pun a search engine can't match.</small></label></div>
+        <div class="check-row"><input type="checkbox" id="yt2"><label for="yt2">Write a description that actually describes the video and includes your link<small>The first 1-2 lines show in search results — make them count.</small></label></div>
+        <div class="check-row"><input type="checkbox" id="yt3"><label for="yt3">Design thumbnails that add information, not just a shocked face<small>A thumbnail that previews the actual answer earns more qualified clicks.</small></label></div>
+        <div class="check-row"><input type="checkbox" id="yt4"><label for="yt4">Set up your channel's About page, links, and (if eligible) the Shopping tab<small>Shopping/product links depend on eligibility and region — confirm current requirements in YouTube's own Creator settings before assuming it's available.</small></label></div>
+        <div class="check-row"><input type="checkbox" id="yt5"><label for="yt5">Use an end screen and pinned comment to point to your best next step</label></div>
+      </div>
+      <div class="demo-missing"><b>Screenshot needed:</b> YouTube Studio's channel customization screen (About/links) and the Shopping tab eligibility panel. No authenticated YouTube channel or approved reference asset exists in this project yet.</div>
+    </div>
+  </section>
+
+  <section class="dest-panel" id="dest-how-to-use" hidden>
+    <div class="panel">
+      <h2>Worked example: turning a buyer question into a video</h2>
+      <p class="muted">This is the method — not a personalized idea generator. (Fresh, personalized video ideas are part of the $1K Challenge, not this module.)</p>
+      <div class="example">
+        <b>1. Start with a real question a buyer already asks you</b> — "Will this candle scent be too strong for a small bedroom?"<br>
+        <b>2. Turn it into a searchable title</b> — "Best Candle Scent Strength for Small Rooms (What Actually Works)"<br>
+        <b>3. Actually answer it in the video</b> — not a teaser that never resolves<br>
+        <b>4. Give the interested viewer a next step</b> — a specific product link in the description, not just "check out my channel"
+      </div>
+      <h2 style="margin-top:18px">How an interested viewer actually reaches you</h2>
+      <ul class="can-list">
+        <li>A link in the video description — the most reliable, always-available path</li>
+        <li>A pinned comment restating the link</li>
+        <li>An end screen — useful for depth, not for an external purchase</li>
+        <li>The Shopping tab / product links, where your channel is eligible</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="dest-panel" id="dest-numbers" hidden>
+    <div class="panel calc-panel">
+      <h2>If YouTube supplied your $1,000</h2>
+      <p class="calc-linked-note" data-calc="linked-note"></p>
+      <button type="button" class="calc-reset" data-calc="reset">Use my current business data</button>
+      <div class="tool-row">
+        <div class="tool-field"><label>Average order value (USD)</label><input type="number" data-calc="aov" min="1" step="0.01" placeholder="e.g. 40"></div>
+        <div class="tool-field"><label>Visit-to-order conversion rate (%)</label><input type="number" data-calc="rate" min="0.1" max="100" step="0.1" placeholder="e.g. 1.5"></div>
+        <div class="tool-field"><label>Remaining revenue toward your $1,000</label><input type="number" data-calc="remaining" min="0" step="1" value="1000"></div>
+        <div class="tool-field"><label>YouTube's planned share (%)</label><input type="number" data-calc="share" min="1" max="100" step="1" placeholder="e.g. 25"></div>
+      </div>
+      <table class="calc-table" data-calc="table"></table>
+      <p class="warn-box">Views and watch time are not visits — only count people who actually clicked through to your link.</p>
+      <div class="evidence-gap">We don't have a verified, attributed case study for YouTube to share here yet. Realistic shape instead: Shorts tend to bring in people who've never heard of you faster (a discovery tool), while long-form videos build the deeper audience relationship and searchable, evergreen traffic over time — not a guaranteed timeline for either.</div>
+    </div>
+  </section>
+
+  <section class="dest-panel" id="dest-track" hidden>
+    <div class="panel">
+      <h2>What to watch</h2>
+      <table class="diag-table">
+        <tr><td>High views, low click-through to your link</td><td>Check whether the description and pinned comment actually make the next step obvious.</td></tr>
+        <tr><td>Clicks arriving, low conversion</td><td>Check the landing page, not the video.</td></tr>
+        <tr><td>Search traffic growing slowly</td><td>Normal for long-form SEO-style content — it compounds over months, not days.</td></tr>
+      </table>
+    </div>
+  </section>
+  </div>
+
+  <div class="dest-controls">
+    <button type="button" class="dest-back" disabled>← Back</button>
+    <button type="button" class="dest-next">Next →</button>
+  </div>
+
+  <div class="first-action">
+    <h2>Your first action</h2>
+    <p>This week: write down the 3 questions your customers ask most often before buying. Those are your first 3 video titles — in their language, not yours.</p>
+  </div>
+</main>
+<script src="/club/channel-module.js"></script>
+<script>
+ChannelModule.init({
+  moduleKey: 'youtube',
+  destinations: ['overview', 'setup', 'how-to-use', 'numbers', 'track'],
+  checklists: { yt: { ids: ['yt1','yt2','yt3','yt4','yt5'] } },
+  calculators: [{ scenarioKey: 'youtube', root: '.calc-panel' }],
+});
+</script>
+<script src="/club/club-shell.js"></script>
+</body></html>

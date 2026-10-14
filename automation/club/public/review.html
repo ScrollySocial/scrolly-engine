@@ -1,0 +1,236 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Scrolly Club — Growth Review</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/club/club-shell.css">
+<style>:root{--ink:var(--scrolly-navy);--muted:var(--slate);--line:var(--border);--blue:var(--scrolly-blue);--bg:var(--surface-soft)}*{box-sizing:border-box}body{margin:0;font:16px/1.5 Inter,-apple-system,sans-serif;color:var(--ink);background:var(--bg)}main{max-width:900px;margin:0 auto;padding:24px 20px}h1{font-size:clamp(2rem,5vw,3.2rem)}h3{margin:16px 0 8px;font-size:1rem}.panel{background:#fff;border:1px solid var(--line);border-radius:var(--radius-card);padding:24px;margin-top:20px}.muted{color:var(--muted)}.fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px}label{display:grid;gap:6px;font-weight:700;margin-top:10px}input,select,textarea{font:inherit;padding:10px;border:1px solid var(--line);border-radius:8px;min-width:0;width:100%}.checkline{display:flex;align-items:center;gap:8px;font-weight:400;margin-top:6px}.checkline input{width:auto}button{margin-top:18px;border:0;border-radius:var(--radius-btn);background:var(--blue);color:#fff;padding:11px 16px;font-weight:800;cursor:pointer}.status{min-height:24px;color:var(--muted)}table{width:100%;border-collapse:collapse}th,td{text-align:left;border-bottom:1px solid var(--line);padding:8px;font-size:.9rem}ul{margin:6px 0;padding-left:20px}@media(max-width:520px){table{display:block;overflow:auto}}</style></head>
+<body>
+<main><h1>Growth Review</h1><p class="muted">Report what happened this period. A real zero is not the same as unknown — leave anything you did not track blank. Figures here are per-period answers, separate from the running snapshot on <a href="/club/website">Website &amp; Conversion</a>.</p><div id="app"><section class="panel muted">Loading…</section></div></main>
+<script>
+const TOKEN_KEY='scrolly_club_access_token';
+const params=new URLSearchParams(location.search);
+if(params.get('token')){sessionStorage.setItem(TOKEN_KEY,params.get('token'));history.replaceState({},'',location.pathname)}
+const token=sessionStorage.getItem(TOKEN_KEY);
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+const ACTIONS=[
+  ['published_content','Published content'],
+  ['sent_outreach','Sent outreach'],
+  ['updated_listing','Updated a listing or page'],
+  ['ran_messaging_experiment','Ran a messaging experiment'],
+  ['changed_cta','Changed a call to action'],
+  ['added_proof','Added proof or testimonials'],
+  ['did_nothing','Did not work on this this period'],
+  ['other','Something else'],
+];
+
+const NOT_ELIGIBLE_REASONS={
+  not_a_club_member:{message:'This page is only available to $1K Club members.'},
+  module1_not_complete:{message:'Finish Your $1K Starting Point first — Growth Review needs it in place before there is anything to measure against.',href:'/club',label:'Go to Module 1'},
+  module2_not_complete:{message:'Finish Your Offer first — Growth Review needs it in place before there is anything to measure against.',href:'/club/module2',label:'Go to Module 2'},
+  module3_not_complete:{message:'Finish Your Customer Discovery Map first — Growth Review needs it in place before there is anything to measure against.',href:'/club/module3',label:'Go to Module 3'},
+  module4_not_complete:{message:'Finish Your Channel Plan first — Growth Review needs it in place before there is anything to measure against.',href:'/club/module4',label:'Go to Module 4'},
+  module5_not_complete:{message:'Finish Your Messaging &amp; Content Plan first — Growth Review needs it in place before there is anything to measure against.',href:'/club/module5',label:'Go to Module 5'},
+  module6_not_complete:{message:'Finish Your Sales Path first — Growth Review needs it in place before there is anything to measure against.',href:'/club/module6',label:'Go to Module 6'},
+};
+
+function fmtDate(d){return new Date(d).toISOString().slice(0,10)}
+function todayStr(){return fmtDate(new Date())}
+
+function renderNotEligible(reason){
+  const info=NOT_ELIGIBLE_REASONS[reason]||{message:'Your access link is missing or expired.'};
+  document.querySelector('#app').innerHTML=`<section class="panel"><h2>Not available yet</h2><p class="muted">${esc(info.message)}</p>${info.href?`<a href="${info.href}">${esc(info.label)}</a>`:''}</section>`;
+}
+
+function metricRowHtml(m,i){
+  return `<div class="panel" style="margin-top:10px"><strong>${esc(m.label)}</strong>
+    <label class="checkline"><input type="checkbox" data-metric-known="${i}"> I track this metric</label>
+    <input type="number" min="0" step="1" data-metric-value="${i}" placeholder="Value" disabled>
+  </div>`;
+}
+
+function experimentRowHtml(e,i){
+  return `<div class="panel" style="margin-top:10px"><strong>${esc(e.label)}</strong><p class="muted">${esc(e.experimentText)}</p>
+    <label>Status
+      <select data-exp-status="${i}">
+        <option value="not_run">Not run yet</option>
+        <option value="ran">Ran it</option>
+        <option value="partially_ran">Partially ran it</option>
+        <option value="no_longer_relevant">No longer relevant</option>
+      </select>
+    </label>
+    <label>Result (optional)<input type="text" data-exp-result="${i}" placeholder="What happened"></label>
+  </div>`;
+}
+
+function renderIntakeForm(state){
+  const ctx=state.context, latest=state.latestReview;
+  const defaultStart = latest ? fmtDate(new Date(latest.input.periodEnd).getTime()+86400000) : fmtDate(Date.now()-6*86400000);
+  // Derived FROM defaultStart (a 7-day window), never independently from
+  // "today" -- computing it from today() alone could land before
+  // defaultStart (e.g. right after a review whose periodEnd was already
+  // "today"), silently submitting an inverted period end < start.
+  const defaultEnd = latest ? fmtDate(new Date(defaultStart).getTime()+6*86400000) : todayStr();
+  const channelBoxes=ctx.availableChannels.map(c=>`<label class="checkline"><input type="checkbox" value="${esc(c.key)}" class="channel-box"> ${esc(c.label)} (${esc(c.role)})</label>`).join('') || '<p class="muted">No channels selected in Module 4 yet.</p>';
+  const actionBoxes=ACTIONS.map(([v,l])=>`<label class="checkline"><input type="checkbox" value="${esc(v)}" class="action-box"> ${esc(l)}</label>`).join('');
+  const metricRows=ctx.reportableMetrics.map(metricRowHtml).join('') || '<p class="muted">No path metrics defined yet.</p>';
+  const experimentRows=ctx.candidateExperiments.map(experimentRowHtml).join('') || '<p class="muted">No pending experiments from Modules 2–6 yet.</p>';
+
+  document.querySelector('#form-host').innerHTML=`
+    <form id="review-form" class="panel">
+      <h2>${latest?'Start your next Growth Review':'Start your first Growth Review'}</h2>
+      <div class="fields">
+        <label>Period start<input type="date" id="periodStart" value="${defaultStart}"></label>
+        <label>Period end<input type="date" id="periodEnd" value="${defaultEnd}"></label>
+      </div>
+      <h3>What you did this period</h3>
+      ${channelBoxes}
+      ${actionBoxes}
+      <label>Did you have more interest or demand than you could take on?
+        <select id="capacityConstrained"><option value="">Unsure</option><option value="true">Yes</option><option value="false">No</option></select>
+      </label>
+      <label>Notes (optional)<textarea id="activityNotes" rows="2"></textarea></label>
+
+      <h3>Results</h3>
+      <div class="fields">
+        <label>Revenue ($)<input type="number" id="revenueUsd" min="0" step="0.01" placeholder="Unknown"></label>
+        <label>Sales<input type="number" id="salesCount" min="0" step="1" placeholder="Unknown"></label>
+      </div>
+
+      <h3>Path metrics</h3>
+      ${metricRows}
+
+      <h3>Revenue attribution</h3>
+      <label>Do you know where this revenue actually came from?
+        <select id="attributionState">
+          <option value="unknown">Unknown</option>
+          <option value="partially_known">Partially known</option>
+          <option value="known">Known</option>
+        </select>
+      </label>
+
+      <h3>Experiments</h3>
+      ${experimentRows}
+
+      <button type="submit">Submit Growth Review</button>
+      <p id="submit-status" class="status"></p>
+    </form>`;
+
+  document.querySelectorAll('[data-metric-known]').forEach((cb)=>{
+    cb.addEventListener('change',(e)=>{
+      const i=e.target.getAttribute('data-metric-known');
+      const valInput=document.querySelector(`[data-metric-value="${i}"]`);
+      valInput.disabled=!e.target.checked;
+      if(!e.target.checked) valInput.value='';
+    });
+  });
+
+  document.querySelector('#review-form').addEventListener('submit', async (e)=>{
+    e.preventDefault();
+    const status=document.querySelector('#submit-status');
+    status.textContent='Submitting…';
+    const channelsUsed=[...document.querySelectorAll('.channel-box:checked')].map((el)=>el.value);
+    const actions=[...document.querySelectorAll('.action-box:checked')].map((el)=>el.value);
+    const capRaw=document.querySelector('#capacityConstrained').value;
+    const capacityConstrained = capRaw==='' ? null : capRaw==='true';
+    const pathMetrics=ctx.reportableMetrics.map((m,i)=>{
+      const known=document.querySelector(`[data-metric-known="${i}"]`).checked;
+      const raw=document.querySelector(`[data-metric-value="${i}"]`).value;
+      return { label:m.label, known, value: known ? Number(raw||0) : null };
+    });
+    const experimentUpdates=ctx.candidateExperiments.map((exp,i)=>({
+      source: exp.source,
+      status: document.querySelector(`[data-exp-status="${i}"]`).value,
+      result: document.querySelector(`[data-exp-result="${i}"]`).value || null,
+    }));
+    const revRaw=document.querySelector('#revenueUsd').value;
+    const salesRaw=document.querySelector('#salesCount').value;
+    const answers={
+      periodStart: document.querySelector('#periodStart').value || null,
+      periodEnd: document.querySelector('#periodEnd').value || null,
+      activity: { channelsUsed, actions, capacityConstrained, notes: document.querySelector('#activityNotes').value || null },
+      revenueUsd: revRaw===''? null : Number(revRaw),
+      salesCount: salesRaw===''? null : Number(salesRaw),
+      pathMetrics,
+      revenueAttribution: { state: document.querySelector('#attributionState').value, breakdown: [] },
+      experimentUpdates,
+    };
+    try{
+      const r=await fetch('/club/review/submit',{method:'POST',headers:{Authorization:`Bearer ${token}`,'Content-Type':'application/json'},body:JSON.stringify({answers})});
+      const d=await r.json();
+      if(!r.ok||!d.ok){status.textContent='Could not save that review'+(d.reason?` (${d.reason})`:'')+'.';return}
+      status.textContent='Saved.';
+      await load();
+    }catch(err){status.textContent='Could not reach the server.'}
+  });
+}
+
+function reportedDisplay(known,value,suffix){
+  if(!known||value==null) return 'Not tracked';
+  return `${value}${suffix||''}`;
+}
+
+function diagnosisHtml(review){
+  const c=review.constraint, s=review.strongestSignal, conf=review.confidence;
+  const repeat=review.repeat.map((r)=>`<li><strong>${esc(r.title)}</strong> — ${esc(r.rationale)}</li>`).join('');
+  const stop=review.stop.map((r)=>`<li><strong>${esc(r.title)}</strong> — ${esc(r.rationale)}</li>`).join('');
+  const revenueUsd=review.input.revenueUsd, salesCount=review.input.salesCount;
+  const metricRows=review.reportableMetrics.map((m)=>`<tr><td>${esc(m.label)}</td><td>${esc(reportedDisplay(m.known,m.value))}</td></tr>`).join('');
+  return `<section class="panel">
+    <h2>${esc(c.label)}</h2>
+    <p class="muted">${esc(c.rationale)}</p>
+    <p><strong>Confidence:</strong> ${esc(conf.label)} — <span class="muted">${esc(conf.explanation)}</span></p>
+    <p><strong>Strongest signal:</strong> ${s.label?esc(s.label):'None yet'} — <span class="muted">${esc(s.rationale)}</span></p>
+    <h3>What you reported</h3>
+    <table><tbody>
+      <tr><td>Revenue</td><td>${esc(reportedDisplay(revenueUsd!=null,revenueUsd,' USD'))}</td></tr>
+      <tr><td>Sales</td><td>${esc(reportedDisplay(salesCount!=null,salesCount))}</td></tr>
+      ${metricRows}
+    </tbody></table>
+    <h3>Repeat</h3><ul>${repeat}</ul>
+    <h3>Stop</h3><ul>${stop}</ul>
+    <h3>Test</h3><p>${esc(review.test)}</p>
+    <h3>Next Week's Focus</h3><p>${esc(review.nextWeekFocus)}</p>
+    <p class="muted">Period: ${esc(review.input.periodStart)} to ${esc(review.input.periodEnd)} — recorded ${esc(new Date(review.createdAt).toLocaleString())}</p>
+  </section>`;
+}
+
+function priorPeriodComparisonHtml(cmp){
+  if(!cmp) return '';
+  const rev=cmp.revenueUsd, sales=cmp.salesCount;
+  const line=(m,suffix)=>`${reportedDisplay(m.latest!=null,m.latest,suffix)} (was ${reportedDisplay(m.prior!=null,m.prior,suffix)}${m.change!=null?`, change ${m.change>=0?'+':''}${m.change}${suffix||''}`:''})`;
+  return `<section class="panel"><h2>Compared to last period</h2><p class="muted">${esc(cmp.priorPeriod.periodStart)}–${esc(cmp.priorPeriod.periodEnd)} vs ${esc(cmp.latestPeriod.periodStart)}–${esc(cmp.latestPeriod.periodEnd)}. This is a plain factual comparison, not a claimed trend.</p><table><tbody><tr><td>Revenue</td><td>${esc(line(rev,' USD'))}</td></tr><tr><td>Sales</td><td>${esc(line(sales,''))}</td></tr></tbody></table></section>`;
+}
+
+function challengeContextHtml(d){
+  if(!d.challenge) return '';
+  const c=d.challenge, p=d.opportunityProgress, w=d.weeklyChallengeReview;
+  const progressLine = p ? `Recommended ${esc(p.recommended)} &middot; Planned ${esc(p.planned)} &middot; Posted ${esc(p.posted)}` : 'Not enough data yet';
+  const weekly = w && w.status==='ready'
+    ? `<p><strong>This week:</strong> ${esc(w.analysis.postedThisPeriod)} posted${w.analysis.bestPerformingPlatform?`, best known performance on ${esc(w.analysis.bestPerformingPlatform.replace('_',' '))}`:''}.</p>`
+    : '<p class="muted">Weekly Challenge summary: not enough data yet.</p>';
+  return `<section class="panel"><h2>Your $1K Challenge — Day ${esc(c.day)} of ${esc(c.windowDays)}</h2><p class="muted">Status: ${esc(c.status)}</p><p>${progressLine}</p>${weekly}<a href="/club/module2">Open content opportunities</a></section>`;
+}
+
+function historyHtml(history){
+  if(history.length<2) return '';
+  const rows=[...history].reverse().slice(0,20).map((r)=>`<tr><td>${esc(r.input.periodStart)} – ${esc(r.input.periodEnd)}</td><td>${esc(r.constraint.label)}</td><td>${esc(new Date(r.createdAt).toLocaleDateString())}</td></tr>`).join('');
+  return `<section class="panel"><h2>Past reviews</h2><table><thead><tr><th>Period</th><th>Result</th><th>Recorded</th></tr></thead><tbody>${rows}</tbody></table></section>`;
+}
+
+async function load(){
+  const app=document.querySelector('#app');
+  if(!token){app.innerHTML='<section class="panel"><h2>Open Scrolly Club from your account to continue</h2><p class="muted">Your account link supplies the secure access needed for your Growth Review.</p></section>';return}
+  try{
+    const r=await fetch('/club/review/state',{headers:{Authorization:`Bearer ${token}`}});
+    const d=await r.json();
+    if(!r.ok||!d.ok){renderNotEligible(d.reason);return}
+    const latestHtml = d.latestReview ? diagnosisHtml(d.latestReview) : '<section class="panel"><h2>No reviews yet</h2><p class="muted">Submit your first Growth Review below to see your diagnosis.</p></section>';
+    app.innerHTML = challengeContextHtml(d) + latestHtml + priorPeriodComparisonHtml(d.priorPeriodComparison) + '<div id="form-host"></div>' + historyHtml(d.history);
+    renderIntakeForm(d);
+  }catch(e){
+    app.innerHTML='<section class="panel"><p class="muted">Could not reach the server.</p></section>';
+  }
+}
+load();
+</script>
+<script src="/club/club-shell.js"></script>
+</body></html>

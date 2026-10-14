@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/club/club-shell.css">
+<title>Build Your Offer</title>
+<style>
+  :root { --indigo:var(--scrolly-blue); --indigo-dark:#0e5fe0; --ink:var(--scrolly-navy); --ink-soft:var(--slate); --line:var(--border); --bg-alt:var(--surface-soft);
+    --opportunity:#b45309; --ontrack:#0891b2; --strength:#15803d; --insufficient:#6b7280; --notestablished:#9ca3af; --exists:#15803d; --hypothesis:#7c3aed; }
+  * { box-sizing: border-box; }
+  body { font-family: Inter, -apple-system, Arial, sans-serif; background: var(--bg-alt); color: var(--ink); margin: 0; padding: 24px; }
+  .wrap { max-width: 720px; margin: 0 auto; }
+  .eyebrow { font-size: 12px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: var(--indigo); margin-bottom: 6px; }
+  h1 { font-size: 26px; margin: 0 0 8px; }
+  h2 { font-size: 17px; margin: 0 0 12px; }
+  h3 { font-size: 14px; margin: 16px 0 6px; }
+  .sub { color: var(--ink-soft); margin-bottom: 24px; line-height: 1.5; }
+  .card { background: #fff; border: 1px solid var(--line); border-radius: 10px; padding: 20px; margin-bottom: 16px; }
+  label { display: block; font-size: 13px; font-weight: 600; margin: 12px 0 4px; }
+  input, select, textarea { width: 100%; padding: 8px 10px; border: 1px solid var(--line); border-radius: 6px; font-size: 14px; font-family: inherit; }
+  textarea { min-height: 60px; resize: vertical; }
+  .row { display: flex; gap: 12px; }
+  .row > div { flex: 1; }
+  button { border-radius: 999px; padding: 10px 22px; font-weight: 700; font-size: 14px; cursor: pointer; margin-top: 16px; }
+  body.club-shell-page button { background: var(--indigo); color: #fff; border: none; }
+  button:hover { background: var(--indigo-dark); }
+  button.secondary { background: #fff; color: var(--indigo); border: 1px solid var(--indigo); }
+  .error { color: #b91c1c; font-size: 13px; margin-top: 8px; }
+  .hint { font-size: 12px; color: var(--ink-soft); margin-top: 4px; line-height: 1.5; }
+  .locked { background: var(--bg-alt); padding: 8px 10px; border-radius: 6px; font-size: 14px; }
+  [hidden] { display: none !important; }
+
+  .check-list { list-style: none; margin: 8px 0; padding: 0; }
+  .check-list li { display: flex; align-items: center; gap: 8px; padding: 4px 0; flex-wrap: wrap; }
+  .check-list li label.opt { font-weight: 400; margin: 0; flex: 1; min-width: 160px; }
+  .basis-toggle { display: none; gap: 10px; font-size: 12px; font-weight: 400; }
+  .basis-toggle.show { display: flex; }
+  .basis-toggle label { font-weight: 400; margin: 0; display: flex; align-items: center; gap: 4px; }
+
+  .positioning-option { border: 1px solid var(--line); border-radius: 8px; padding: 12px; margin-bottom: 8px; cursor: pointer; }
+  .positioning-option:hover { border-color: var(--indigo); }
+  .positioning-option input { width: auto; margin-right: 8px; }
+
+  .dim-row { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; padding: 10px 0; border-bottom: 1px solid var(--line); }
+  .dim-row:last-child { border-bottom: none; }
+  .dim-headline { font-weight: 700; font-size: 14px; }
+  .dim-rationale { font-size: 13px; color: var(--ink-soft); margin-top: 2px; line-height: 1.4; }
+  .badge { flex: 0 0 auto; font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 999px; color: #fff; white-space: nowrap; }
+  .badge.not_established { background: var(--notestablished); }
+  .badge.working_hypothesis { background: var(--hypothesis); }
+  .badge.insufficient_data { background: var(--insufficient); }
+  .badge.growth_opportunity { background: var(--opportunity); }
+  .badge.on_track { background: var(--ontrack); }
+  .badge.growth_strength { background: var(--strength); }
+
+  .plan-card { border: 1px solid var(--indigo); }
+  .plan-row { display: flex; gap: 6px; padding: 8px 0; border-bottom: 1px solid var(--line); }
+  .plan-row:last-child { border-bottom: none; }
+  .plan-key { flex: 0 0 200px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .03em; color: var(--ink-soft); }
+  .plan-value { flex: 1; font-size: 14px; }
+  .plan-value ul { margin: 0; padding-left: 18px; }
+  .plan-next { background: var(--bg-alt); border-left: 4px solid var(--indigo); padding: 12px 16px; border-radius: 4px; margin-top: 14px; }
+  .plan-next-cta { font-weight: 700; margin-top: 6px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="eyebrow">Scrolly $1K Club &middot; Module 2 of 7</div>
+  <h1>Build Something People Want to Buy</h1>
+  <div class="sub">Is the thing you're about to market understandable, desirable, believable, and reasonably easy to buy? Let's find out.</div>
+
+  <div id="opportunities-widget"></div>
+
+  <div id="gate" class="card" hidden>
+    <p>You'll need to open $1K Club from your Scrolly account to continue.</p>
+    <p class="hint">Log in at scrollyseo.com, go to My Account, and click "Go to $1K Club".</p>
+    <button type="button" onclick="location.href='https://scrollyseo.com/my-account/'">Go to My Account</button>
+  </div>
+  <div id="needsModule1" class="card" hidden>
+    <p>Module 1 isn't finished yet — Module 2 builds directly on your $1K Starting Point.</p>
+    <button type="button" onclick="location.href='/club'">Go to Module 1</button>
+  </div>
+  <div id="checking" class="card"><p>Checking your access...</p></div>
+
+  <form id="offerForm" class="card stepper-form" hidden>
+    <div class="step" data-step="1">
+      <h2>1. What are you selling?</h2>
+      <label id="offerLabel">What do you sell?</label>
+      <input id="offerConfirmed" type="text" required />
+      <label id="getLabel">What does the buyer actually receive?</label>
+      <textarea id="whatTheyGet" required></textarea>
+      <label>Price</label>
+      <div id="priceLocked" class="locked"></div>
+      <div class="hint">Price was set in Module 1 — this module doesn't change it.</div>
+    </div>
+
+    <div class="step" data-step="2">
+      <h2>2. Who is it for?</h2>
+      <label>Who is most likely to buy this?</label>
+      <textarea id="audienceConfirmed" required></textarea>
+    </div>
+
+    <div class="step" data-step="3">
+      <h2>3. Why would they want it?</h2>
+      <label>What do they get, solve, achieve, avoid, or make easier by buying this?</label>
+      <textarea id="buyingMotivation"></textarea>
+    </div>
+
+    <div class="step" data-step="4">
+      <h2>4. Why this one?</h2>
+      <label>What makes this the one to choose over alternatives?</label>
+      <select id="diffCategory">
+        <option value="">I don't know yet</option>
+        <option>Price/value</option><option>Convenience</option><option>Specialization</option><option>Quality</option>
+        <option>Speed</option><option>Style/aesthetic</option><option>Personalization</option><option>Process/method</option>
+        <option>Expertise</option><option>Trust</option><option>Materials</option><option>Selection</option>
+        <option>Availability</option><option>Community</option><option>Service</option><option>Location</option>
+        <option>Values</option><option>Simplicity</option><option>Other</option>
+      </select>
+      <textarea id="diffDetail" placeholder="Optional — a sentence on why"></textarea>
+      <div class="hint">"I don't know yet" is a completely valid answer — we'll flag it as something to learn, not invent one for you.</div>
+    </div>
+
+    <div class="step" data-step="5">
+      <h2>5. Price + $1K Economics</h2>
+      <div id="module1MathSummary" class="locked"></div>
+    </div>
+
+    <div class="step" data-step="6">
+      <h2>6. Buying friction / objections</h2>
+      <div class="hint">Check anything relevant. If a real buyer has actually said this, mark it Observed — otherwise it's a Hypothesis (a guess worth testing).</div>
+      <ul class="check-list" id="objectionList"></ul>
+      <label>Other (optional)</label>
+      <input id="objectionOtherNote" type="text" placeholder="Describe another objection" />
+      <div class="basis-toggle show" id="objectionOtherBasis">
+        <label><input type="radio" name="objectionOtherBasisRadio" value="observed"> Observed</label>
+        <label><input type="radio" name="objectionOtherBasisRadio" value="hypothesis" checked> Hypothesis</label>
+      </div>
+    </div>
+
+    <div class="step" data-step="7">
+      <h2>7. Proof + trust inventory</h2>
+      <div class="hint">Check anything that already exists — none of this is required to move forward.</div>
+      <ul class="check-list" id="proofList"></ul>
+    </div>
+
+    <button type="button" id="generatePositioningBtn">Generate positioning options</button>
+    <div id="formError" class="error" hidden></div>
+  </form>
+
+  <div id="positioningCard" class="card" hidden>
+    <h2>One-Sentence Offer</h2>
+    <div id="positioningOptions"></div>
+    <label>Final positioning (pick one above, edit it, or write your own)</label>
+    <textarea id="selectedPositioning"></textarea>
+    <button type="button" id="completeBtn">Complete Module 2</button>
+    <button type="button" class="secondary" id="backToFormBtn">Back</button>
+    <div id="submitError" class="error" hidden></div>
+  </div>
+
+  <div id="results" hidden></div>
+</div>
+
+<script>
+const $ = (id) => document.getElementById(id);
+const TOKEN_KEY = 'scrolly_club_access_token';
+
+const params = new URLSearchParams(location.search);
+if (params.get('token')) {
+  sessionStorage.setItem(TOKEN_KEY, params.get('token'));
+  history.replaceState({}, '', location.pathname);
+}
+function getToken() { return sessionStorage.getItem(TOKEN_KEY); }
+async function api(path, options = {}) {
+  const token = getToken();
+  const headers = { ...(options.headers || {}) };
+  if (token) headers['Authorization'] = 'Bearer ' + token;
+  const res = await fetch(path, { ...options, headers });
+  return res.json();
+}
+function money(n) {
+  return '$' + Number(n).toLocaleString('en-US', { minimumFractionDigits: n % 1 === 0 ? 0 : 2, maximumFractionDigits: 2 });
+}
+
+const OFFER_QUESTIONS = {
+  ecommerce: { offer: 'What exactly do you sell?', get: 'What exactly does the buyer receive?' },
+  services: { offer: 'What service do you offer?', get: 'What do you actually do or deliver for the client?' },
+  digital_product: { offer: 'What is your digital product/course?', get: 'What does the customer get access to?' },
+  creator_affiliate: { offer: 'What are you currently promoting?', get: 'What is the primary thing you\'re trying to monetize or drive purchases toward?' },
+  marketplace_first: { offer: 'What listing/product are we focusing on?', get: 'What does the buyer receive from this listing?' },
+  local_hybrid: { offer: 'What does the customer buy/book/order?', get: 'What exactly do they receive or experience?' },
+};
+
+const OBJECTION_TYPES = ['Price', 'Trust', 'Uncertainty about results', 'Unclear fit', 'Lack of proof', 'Time commitment', 'Shipping', 'Delivery timing', 'Complexity', 'Switching cost', 'Unfamiliar brand', 'Unclear product information', 'Unclear next step'];
+const PROOF_TYPES = ['Customer reviews', 'Testimonials', 'Ratings', 'Sales/order history', 'Portfolio/work samples', 'Before/after examples', 'Case studies', 'Credentials', 'Demonstrations', 'Product photography', 'Process transparency', 'Guarantees/policies', 'Founder expertise', 'Community/social proof', 'Repeat customers'];
+
+function renderObjectionList() {
+  $('objectionList').innerHTML = OBJECTION_TYPES.map((t, i) => `
+    <li>
+      <input type="checkbox" id="obj_${i}" data-type="${t}" onchange="document.getElementById('objbasis_${i}').classList.toggle('show', this.checked)">
+      <label class="opt" for="obj_${i}">${t}</label>
+      <div class="basis-toggle" id="objbasis_${i}">
+        <label><input type="radio" name="objbasisradio_${i}" value="observed"> Observed</label>
+        <label><input type="radio" name="objbasisradio_${i}" value="hypothesis" checked> Hypothesis</label>
+      </div>
+    </li>`).join('');
+}
+function renderProofList() {
+  $('proofList').innerHTML = PROOF_TYPES.map((t, i) => `
+    <li><input type="checkbox" id="proof_${i}" data-type="${t}"><label class="opt" for="proof_${i}">${t}</label></li>`).join('')
+    + `<li><input type="checkbox" id="proof_none"><label class="opt" for="proof_none">None yet</label></li>`;
+}
+renderObjectionList();
+renderProofList();
+
+let module1Route = null;
+
+function collectObjections() {
+  const objections = [];
+  OBJECTION_TYPES.forEach((t, i) => {
+    const box = $('obj_' + i);
+    if (box.checked) {
+      const basis = document.querySelector(`input[name="objbasisradio_${i}"]:checked`).value;
+      objections.push({ type: t, note: null, basis });
+    }
+  });
+  const otherNote = $('objectionOtherNote').value.trim();
+  if (otherNote) {
+    const basis = document.querySelector('input[name="objectionOtherBasisRadio"]:checked').value;
+    objections.push({ type: otherNote, note: null, basis });
+  }
+  return objections;
+}
+function collectProof() {
+  if ($('proof_none').checked) return [];
+  return PROOF_TYPES.filter((t, i) => $('proof_' + i).checked).map((t) => ({ type: t, detail: null }));
+}
+
+async function init() {
+  if (!getToken()) { $('checking').hidden = true; $('gate').hidden = false; return; }
+  const ctx = await api('/club/module2/context');
+  $('checking').hidden = true;
+  if (!ctx.ok) {
+    if (ctx.reason === 'module1_not_complete' || ctx.reason === 'not_a_club_member') { $('needsModule1').hidden = false; return; }
+    $('gate').hidden = false;
+    return;
+  }
+
+  module1Route = ctx.profile.route;
+  const q = OFFER_QUESTIONS[module1Route] || OFFER_QUESTIONS.services;
+  $('offerLabel').textContent = q.offer;
+  $('getLabel').textContent = q.get;
+  $('offerConfirmed').value = ctx.profile.offer || '';
+  $('audienceConfirmed').value = ctx.profile.audience || '';
+  $('priceLocked').textContent = money(ctx.profile.price);
+
+  const math = ctx.module1Results.math;
+  $('module1MathSummary').innerHTML = `${money(math.price)} &times; ${math.requiredSales} sales = <b>${money(math.resultingRevenue)}</b> to cross $1,000.` +
+    (math.isHighTransactionCount ? ` <span class="hint">That's a relatively high transaction count for an early-stage business — worth understanding operationally, not a signal to change price automatically.</span>` : '');
+
+  // Returning customer: prefill from an existing OfferPlan (confirm-or-refine, not re-enter from scratch).
+  if (ctx.existingOfferPlan) {
+    const p = ctx.existingOfferPlan;
+    if (p.offerConfirmed) $('offerConfirmed').value = p.offerConfirmed;
+    if (p.whatTheyGet) $('whatTheyGet').value = p.whatTheyGet;
+    if (p.audienceConfirmed) $('audienceConfirmed').value = p.audienceConfirmed;
+    if (p.buyingMotivation) $('buyingMotivation').value = p.buyingMotivation;
+    if (p.differentiation?.category) $('diffCategory').value = p.differentiation.category;
+    if (p.differentiation?.detail) $('diffDetail').value = p.differentiation.detail;
+  }
+
+  // A previously-completed Module 2 -> show results directly, same pattern as Module 1.
+  const existing = await api('/club/module2/results');
+  if (existing.ok) { renderResults(existing.results); return; }
+
+  $('offerForm').hidden = false;
+}
+
+function currentAnswers() {
+  const diffStatus = $('diffCategory').value ? 'stated' : 'unknown';
+  return {
+    offerConfirmed: $('offerConfirmed').value.trim(),
+    whatTheyGet: $('whatTheyGet').value.trim(),
+    audienceConfirmed: $('audienceConfirmed').value.trim(),
+    buyingMotivation: $('buyingMotivation').value.trim() || null,
+    differentiation: { category: $('diffCategory').value || null, detail: $('diffDetail').value.trim() || null, status: diffStatus },
+    objections: collectObjections(),
+    proofInventory: collectProof(),
+  };
+}
+
+$('generatePositioningBtn').addEventListener('click', async () => {
+  $('formError').hidden = true;
+  const answers = currentAnswers();
+  if (!answers.offerConfirmed || !answers.whatTheyGet || !answers.audienceConfirmed) {
+    $('formError').textContent = 'Please fill in what you sell, what the buyer receives, and who it\'s for.';
+    $('formError').hidden = false;
+    return;
+  }
+  const body = await api('/club/module2/positioning', {
+    method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ answers }),
+  });
+  if (!body.ok) { $('formError').textContent = 'Could not generate positioning: ' + body.reason; $('formError').hidden = false; return; }
+
+  $('positioningOptions').innerHTML = body.positioningOptions.map((opt, i) => `
+    <div class="positioning-option" onclick="document.getElementById('posopt_${i}').checked = true; document.getElementById('selectedPositioning').value = ${JSON.stringify(opt)};">
+      <input type="radio" name="posopt" id="posopt_${i}">${opt}
+    </div>`).join('');
+  $('selectedPositioning').value = body.positioningOptions[0] || '';
+  $('offerForm').hidden = true;
+  $('positioningCard').hidden = false;
+});
+
+$('backToFormBtn').addEventListener('click', () => { $('positioningCard').hidden = true; $('offerForm').hidden = false; });
+
+$('completeBtn').addEventListener('click', async () => {
+  $('submitError').hidden = true;
+  const answers = currentAnswers();
+  answers.selectedPositioning = $('selectedPositioning').value.trim();
+  if (!answers.selectedPositioning) { $('submitError').textContent = 'Please select or write a final positioning sentence.'; $('submitError').hidden = false; return; }
+
+  const body = await api('/club/module2/submit', {
+    method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ answers }),
+  });
+  if (!body.ok) { $('submitError').textContent = 'Could not complete Module 2: ' + body.reason; $('submitError').hidden = false; return; }
+  renderResults(body.results);
+});
+
+function dimRow(d) {
+  return `<div class="dim-row"><div><div class="dim-headline">${d.headline}</div><div class="dim-rationale">${d.rationale}</div></div><span class="badge ${d.state}">${d.state.replace(/_/g,' ')}</span></div>`;
+}
+function planItem(label) { return `<li>${label}</li>`; }
+
+function renderResults(results) {
+  const { dimensions, yourOffer, nextClubStep } = results;
+  const proofList = yourOffer.bestAvailableProof.map((p) => p.type).join(', ');
+
+  $('results').innerHTML = `
+    <div class="card">
+      <h2>Offer Evaluation</h2>
+      ${dimRow(dimensions.offerClarity)}
+      ${dimRow(dimensions.buyerFit)}
+      ${dimRow(dimensions.reasonToChoose)}
+      ${dimRow(dimensions.priceEconomics)}
+      ${dimRow(dimensions.proofTrust)}
+      ${dimRow(dimensions.buyingFriction)}
+    </div>
+
+    <div class="card plan-card">
+      <h2>Your $1K Offer</h2>
+      <div class="plan-row"><div class="plan-key">Primary offer</div><div class="plan-value">${yourOffer.primaryOffer}</div></div>
+      <div class="plan-row"><div class="plan-key">Customer</div><div class="plan-value">${yourOffer.customer}</div></div>
+      <div class="plan-row"><div class="plan-key">What they get</div><div class="plan-value">${yourOffer.whatTheyGet}</div></div>
+      <div class="plan-row"><div class="plan-key">Price</div><div class="plan-value">${money(yourOffer.price)}</div></div>
+      <div class="plan-row"><div class="plan-key">$1K target</div><div class="plan-value">${yourOffer.target.salesRequired} sales &middot; ${money(yourOffer.target.resultingRevenue)} resulting revenue</div></div>
+      <div class="plan-row"><div class="plan-key">Why they want it</div><div class="plan-value">${yourOffer.whyTheyWantIt || '<span class="hint">Not captured</span>'}</div></div>
+      <div class="plan-row"><div class="plan-key">Why this offer</div><div class="plan-value">${yourOffer.whyThisOffer}</div></div>
+      <div class="plan-row"><div class="plan-key">Primary buying concern</div><div class="plan-value">${yourOffer.primaryBuyingConcern.label} <span class="hint">(${yourOffer.primaryBuyingConcern.basis})</span></div></div>
+      <div class="plan-row"><div class="plan-key">Best available proof</div><div class="plan-value">${proofList || 'None yet'}</div></div>
+      <div class="plan-row"><div class="plan-key">Positioning</div><div class="plan-value">${yourOffer.positioning}</div></div>
+      <div class="plan-row"><div class="plan-key">Fix first</div><div class="plan-value">${yourOffer.fixFirst.title}</div></div>
+      <div class="plan-row"><div class="plan-key">Keep</div><div class="plan-value">${yourOffer.keep.title}</div></div>
+      <div class="plan-row"><div class="plan-key">Learn</div><div class="plan-value">${yourOffer.learn.title}</div></div>
+      <div class="plan-row"><div class="plan-key">Next experiment</div><div class="plan-value">${yourOffer.nextExperiment}</div></div>
+      <div class="plan-next">
+        <div>${nextClubStep.transition}</div>
+        <div class="plan-next-cta"><a href="/club/module3" style="color: var(--indigo);">${nextClubStep.cta}</a></div>
+      </div>
+    </div>
+  `;
+  $('results').hidden = false;
+  $('offerForm').hidden = true;
+  $('positioningCard').hidden = true;
+  $('gate').hidden = true;
+  $('needsModule1').hidden = true;
+}
+
+init();
+</script>
+<script>
+// Independent of the Offer Builder logic above -- fetches its own data,
+// touches only #opportunities-widget, renders nothing if there's no active
+// Challenge (most members). A failure here never blocks Module 2 itself.
+(async () => {
+  const token = sessionStorage.getItem('scrolly_club_access_token');
+  if (!token) return;
+  const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  try {
+    const cr = await fetch('/club/challenge/state', { headers: { Authorization: `Bearer ${token}` } });
+    const cd = await cr.json();
+    if (!cr.ok || !cd.ok || !cd.active) return;
+    const or = await fetch('/club/opportunities/state', { headers: { Authorization: `Bearer ${token}` } });
+    const od = await or.json();
+    if (!or.ok || !od.ok) return;
+    const rows = od.assignments.map((a) => `<tr><td>${esc(a.opportunity?.coreConcept || a.opportunityId)}</td><td>${esc(a.platform.replace('_', ' '))}</td><td>${esc(a.state)}</td></tr>`).join('');
+    document.getElementById('opportunities-widget').innerHTML = `
+      <div class="card" style="margin-bottom:16px">
+        <h2>Your $1K Challenge — Content Opportunities (Day ${esc(cd.active.day)} of ${esc(cd.active.windowDays)})</h2>
+        <p class="hint">Recommended ${esc(od.progress.recommended)} &middot; Planned ${esc(od.progress.planned)} &middot; Posted ${esc(od.progress.posted)}. You are never expected to work through the whole list -- these are your current recommended few.</p>
+        <table style="width:100%;border-collapse:collapse;margin-top:8px"><thead><tr><th style="text-align:left;padding:6px;border-bottom:1px solid var(--line)">Idea</th><th style="text-align:left;padding:6px;border-bottom:1px solid var(--line)">Platform</th><th style="text-align:left;padding:6px;border-bottom:1px solid var(--line)">Status</th></tr></thead><tbody>${rows}</tbody></table>
+        <p class="hint" style="margin-top:8px">Full planning/posting/results flow is not in this page yet -- see the Growth Review page for current progress.</p>
+      </div>`;
+  } catch (e) { /* best-effort only -- Module 2 itself must keep working regardless */ }
+})();
+</script>
+<script src="/club/club-shell.js"></script>
+<script src="/club/module-stepper.js"></script>
+</body>
+</html>

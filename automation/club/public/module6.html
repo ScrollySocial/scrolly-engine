@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/club/club-shell.css">
+<title>Turn Attention Into Sales</title>
+<style>
+  :root { --indigo:var(--scrolly-blue); --indigo-dark:#0e5fe0; --ink:var(--scrolly-navy); --ink-soft:var(--slate); --line:var(--border); --bg-alt:var(--surface-soft);
+    --opportunity:#b45309; --ontrack:#0891b2; --strength:#15803d; --insufficient:#6b7280; --notestablished:#9ca3af; --exists:#15803d; --hypothesis:#7c3aed; }
+  * { box-sizing: border-box; }
+  body { font-family: Inter, -apple-system, Arial, sans-serif; background: var(--bg-alt); color: var(--ink); margin: 0; padding: 24px; }
+  .wrap { max-width: 760px; margin: 0 auto; }
+  .eyebrow { font-size: 12px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: var(--indigo); margin-bottom: 6px; }
+  h1 { font-size: 26px; margin: 0 0 8px; }
+  h2 { font-size: 17px; margin: 0 0 12px; }
+  .sub { color: var(--ink-soft); margin-bottom: 24px; line-height: 1.5; }
+  .card { background: #fff; border: 1px solid var(--line); border-radius: 10px; padding: 20px; margin-bottom: 16px; }
+  label { display: block; font-size: 13px; font-weight: 600; margin: 12px 0 4px; }
+  select, input { width: 100%; padding: 8px 10px; border: 1px solid var(--line); border-radius: 6px; font-size: 14px; font-family: inherit; }
+  button { border-radius: 999px; padding: 10px 22px; font-weight: 700; font-size: 14px; cursor: pointer; margin-top: 16px; }
+  body.club-shell-page button { background: var(--indigo); color: #fff; border: none; }
+  button:hover { background: var(--indigo-dark); }
+  .error { color: #b91c1c; font-size: 13px; margin-top: 8px; }
+  .hint { font-size: 12px; color: var(--ink-soft); margin-top: 4px; line-height: 1.5; }
+  [hidden] { display: none !important; }
+
+  .check-list { list-style: none; margin: 8px 0; padding: 0; }
+  .check-list li { display: flex; align-items: center; gap: 8px; padding: 4px 0; flex-wrap: wrap; }
+  .check-list li label.opt { font-weight: 400; margin: 0; flex: 1; min-width: 160px; }
+
+  .badge { display: inline-block; font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 999px; color: #fff; white-space: nowrap; }
+  .badge.customer_reported, .badge.on_track, .badge.clear, .badge.confirmed, .badge.likely, .badge.in_place { background: var(--strength); }
+  .badge.growth_opportunity, .badge.not_established, .badge.needed { background: var(--opportunity); }
+  .badge.working_hypothesis, .badge.unknown_needs_checking, .badge.not_necessary_yet { background: var(--hypothesis); }
+  .badge.exists_placement_unknown { background: var(--ontrack); }
+
+  .path-flow { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; font-size: 14px; font-weight: 600; margin: 10px 0; }
+  .path-step { background: var(--bg-alt); border: 1px solid var(--line); border-radius: 8px; padding: 6px 12px; }
+  .path-arrow { color: var(--ink-soft); }
+  .channel-path-block { margin-bottom: 14px; }
+  .channel-path-label { font-size: 12px; text-transform: uppercase; letter-spacing: .03em; font-weight: 700; color: var(--ink-soft); margin-bottom: 4px; }
+
+  .plan-card { border: 1px solid var(--indigo); }
+  .plan-row { display: flex; gap: 6px; padding: 8px 0; border-bottom: 1px solid var(--line); }
+  .plan-row:last-child { border-bottom: none; }
+  .plan-key { flex: 0 0 200px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .03em; color: var(--ink-soft); }
+  .plan-value { flex: 1; font-size: 14px; }
+  .plan-value ul { margin: 0; padding-left: 18px; }
+  .plan-next { background: var(--bg-alt); border-left: 4px solid var(--indigo); padding: 12px 16px; border-radius: 4px; margin-top: 14px; }
+  .plan-next-cta { font-weight: 700; margin-top: 6px; }
+  .dim-row { padding: 8px 0; border-bottom: 1px solid var(--line); }
+  .dim-row:last-child { border-bottom: none; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="eyebrow">Scrolly $1K Club &middot; Module 6 of 7</div>
+  <h1>Turn Attention Into Sales</h1>
+  <div class="sub">Once someone finds you and gets interested, what exactly needs to happen for that attention to become a sale? This connects your marketing to a real buying mechanism.</div>
+
+  <div id="gate" class="card" hidden><p>You'll need to open $1K Club from your Scrolly account to continue.</p><button type="button" onclick="location.href='https://scrollyseo.com/my-account/'">Go to My Account</button></div>
+  <div id="needsModule1" class="card" hidden><p>Module 1 isn't finished yet.</p><button type="button" onclick="location.href='/club'">Go to Module 1</button></div>
+  <div id="needsModule2" class="card" hidden><p>Module 2 isn't finished yet.</p><button type="button" onclick="location.href='/club/module2'">Go to Module 2</button></div>
+  <div id="needsModule3" class="card" hidden><p>Module 3 isn't finished yet.</p><button type="button" onclick="location.href='/club/module3'">Go to Module 3</button></div>
+  <div id="needsModule4" class="card" hidden><p>Module 4 isn't finished yet.</p><button type="button" onclick="location.href='/club/module4'">Go to Module 4</button></div>
+  <div id="needsModule5" class="card" hidden><p>Module 5 isn't finished yet — Module 6 builds directly on your Messaging &amp; Content Plan.</p><button type="button" onclick="location.href='/club/module5'">Go to Module 5</button></div>
+  <div id="checking" class="card"><p>Checking your access...</p></div>
+
+  <form id="salesPathForm" class="card stepper-form" hidden>
+    <div class="step" data-step="1">
+      <h2>1. Where can someone currently buy, book, order, or contact you?</h2>
+      <div class="hint">Check everything that's genuinely real right now.</div>
+      <ul class="check-list" id="destinationList"></ul>
+    </div>
+
+    <div class="step" data-step="2">
+      <h2>2. Does the buying path work on mobile?</h2>
+      <select id="mobileStatus">
+        <option value="">Select...</option>
+        <option value="confirmed">Confirmed — I've actually checked it on a phone</option>
+        <option value="likely">Likely — probably fine, haven't specifically checked</option>
+        <option value="unknown_needs_checking">Unknown — needs checking</option>
+      </select>
+    </div>
+
+    <div class="step" data-step="3">
+      <h2>3. If someone is interested but not ready to buy today, what happens?</h2>
+      <select id="followUpMechanism">
+        <option value="">Select...</option>
+        <option value="email">Email follow-up</option>
+        <option value="dm">DM follow-up</option>
+        <option value="consultation_follow_up">Consultation/conversation follow-up</option>
+        <option value="phone">Phone follow-up</option>
+        <option value="marketplace_native">Marketplace-native (saves/favorites, etc.)</option>
+        <option value="reminder">Reminder</option>
+        <option value="referral_relationship">Referral relationship</option>
+        <option value="none">Nothing right now</option>
+        <option value="not_necessary_yet">Not necessary yet</option>
+      </select>
+    </div>
+
+    <button type="button" id="submitBtn">See my $1K Sales Path</button>
+    <div id="formError" class="error" hidden></div>
+  </form>
+
+  <div id="results" hidden></div>
+</div>
+
+<script>
+const $ = (id) => document.getElementById(id);
+const TOKEN_KEY = 'scrolly_club_access_token';
+const params = new URLSearchParams(location.search);
+if (params.get('token')) { sessionStorage.setItem(TOKEN_KEY, params.get('token')); history.replaceState({}, '', location.pathname); }
+function getToken() { return sessionStorage.getItem(TOKEN_KEY); }
+async function api(path, options = {}) {
+  const token = getToken();
+  const headers = { ...(options.headers || {}) };
+  if (token) headers['Authorization'] = 'Bearer ' + token;
+  const res = await fetch(path, { ...options, headers });
+  return res.json();
+}
+function label(v) { return String(v || '').replace(/_/g, ' '); }
+function money(n) { return n == null ? '' : '$' + Number(n).toLocaleString('en-US', { minimumFractionDigits: n % 1 === 0 ? 0 : 2, maximumFractionDigits: 2 }); }
+
+const DESTINATION_TYPES = ['website_product_page','sales_page','marketplace_listing','checkout','payment_link','booking_page','inquiry_contact_form','dm','email','phone','physical_location','application','sales_call','affiliate_destination','other','not_set_up_yet'];
+
+function renderDestinationList() {
+  $('destinationList').innerHTML = DESTINATION_TYPES.map((t, i) => `<li><input type="checkbox" id="dest_${i}" data-val="${t}"><label class="opt" for="dest_${i}">${label(t)}</label></li>`).join('');
+}
+renderDestinationList();
+
+function collectDestinations() {
+  return DESTINATION_TYPES.filter((t, i) => $('dest_' + i)?.checked).map((type) => ({ type, detail: null }));
+}
+
+async function init() {
+  if (!getToken()) { $('checking').hidden = true; $('gate').hidden = false; return; }
+  const ctx = await api('/club/module6/context');
+  $('checking').hidden = true;
+  if (!ctx.ok) {
+    if (ctx.reason === 'module1_not_complete' || ctx.reason === 'not_a_club_member') { $('needsModule1').hidden = false; return; }
+    if (ctx.reason === 'module2_not_complete') { $('needsModule2').hidden = false; return; }
+    if (ctx.reason === 'module3_not_complete') { $('needsModule3').hidden = false; return; }
+    if (ctx.reason === 'module4_not_complete') { $('needsModule4').hidden = false; return; }
+    if (ctx.reason === 'module5_not_complete') { $('needsModule5').hidden = false; return; }
+    $('gate').hidden = false;
+    return;
+  }
+
+  if (ctx.existingSalesPathPlan) {
+    const p = ctx.existingSalesPathPlan;
+    (p.conversionDestinations || []).forEach((d) => { const i = DESTINATION_TYPES.indexOf(d.type); if (i >= 0 && $('dest_' + i)) $('dest_' + i).checked = true; });
+    if (p.mobileStatus) $('mobileStatus').value = p.mobileStatus;
+    if (p.followUpMechanism) $('followUpMechanism').value = p.followUpMechanism;
+  }
+
+  const existing = await api('/club/module6/results');
+  if (existing.ok) { renderResults(existing.results); return; }
+
+  $('salesPathForm').hidden = false;
+}
+
+$('submitBtn').addEventListener('click', async () => {
+  $('formError').hidden = true;
+  const answers = { conversionDestinations: collectDestinations(), mobileStatus: $('mobileStatus').value || null, followUpMechanism: $('followUpMechanism').value || null };
+  if (answers.conversionDestinations.length === 0) { $('formError').textContent = 'Please check at least one (or "not set up yet").'; $('formError').hidden = false; return; }
+  if (!answers.mobileStatus) { $('formError').textContent = 'Please select whether the path works on mobile.'; $('formError').hidden = false; return; }
+  if (!answers.followUpMechanism) { $('formError').textContent = 'Please select what happens for an interested-but-not-ready buyer.'; $('formError').hidden = false; return; }
+
+  const body = await api('/club/module6/submit', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ answers }) });
+  if (!body.ok) { $('formError').textContent = 'Could not complete Module 6: ' + body.reason; $('formError').hidden = false; return; }
+  renderResults(body.results);
+});
+
+function pathFlow(steps) {
+  return `<div class="path-flow">${steps.map((s, i) => `${i > 0 ? '<span class="path-arrow">&rarr;</span>' : ''}<span class="path-step">${s}</span>`).join('')}</div>`;
+}
+
+function renderResults(results) {
+  const sp = results.salesPath;
+  $('results').innerHTML = `
+    <div class="card">
+      <h2>Primary Sales Path</h2>
+      ${sp.primarySalesPath ? pathFlow(sp.primarySalesPath.steps) : '<p class="hint">Not enough evidence yet.</p>'}
+      ${sp.pathType ? `<div class="hint">Path type: <b>${sp.pathType}</b></div>` : ''}
+    </div>
+
+    <div class="card">
+      <h2>Channel &rarr; Revenue Paths</h2>
+      ${sp.channelRevenuePaths.map((c) => `<div class="channel-path-block"><div class="channel-path-label">${c.channel} (${label(c.job)})</div>${pathFlow(c.steps)}</div>`).join('')}
+    </div>
+
+    <div class="card">
+      <h2>CTA &rarr; Destination Map</h2>
+      ${sp.ctaDestinationMap.map((c) => `<div class="dim-row"><b>${c.channel}</b> — ${c.ctaLabel} &rarr; ${c.destination || 'no destination yet'} ${c.mismatch ? `<span class="badge growth_opportunity">mismatch</span><div class="hint">${c.mismatchReason}</div>` : ''}</div>`).join('')}
+    </div>
+
+    <div class="card">
+      <h2>Conversion Gap</h2>
+      <div class="row-title"><b>${sp.conversionGap.label}</b></div>
+      <div class="hint">${sp.conversionGap.rationale}</div>
+    </div>
+
+    <div class="card">
+      <h2>Trust at the Decision Point</h2>
+      <span class="badge ${sp.trustAtDecisionPoint.state}">${label(sp.trustAtDecisionPoint.state)}</span>
+      <p class="hint">${sp.trustAtDecisionPoint.rationale}</p>
+    </div>
+
+    <div class="card">
+      <h2>Follow-Up</h2>
+      <span class="badge ${sp.followUp.state}">${label(sp.followUp.state)}</span>
+      <p class="hint">${sp.followUp.rationale}</p>
+    </div>
+
+    <div class="card plan-card">
+      <h2>Your $1K Sales Path</h2>
+      <div class="plan-row"><div class="plan-key">Direct vs Nurture</div><div class="plan-value">${label(sp.conversionApproach.approach)}<br><span class="hint">${sp.conversionApproach.rationale}</span></div></div>
+      <div class="plan-row"><div class="plan-key">$1K Connection</div><div class="plan-value">${money(sp.thousandKConnection.price)} &times; ${sp.thousandKConnection.salesRequired} sales = ${money(sp.thousandKConnection.resultingRevenue)}<br><span class="hint">${sp.thousandKConnection.interpretation}</span></div></div>
+      <div class="plan-row"><div class="plan-key">Measure</div><div class="plan-value"><ul>${sp.measure.map((m) => `<li>${m}</li>`).join('')}</ul></div></div>
+      <div class="plan-row"><div class="plan-key">Fix Now</div><div class="plan-value">${sp.fixNow.title}<br><span class="hint">${sp.fixNow.rationale}</span></div></div>
+      <div class="plan-row"><div class="plan-key">Keep</div><div class="plan-value">${sp.keep.title}<br><span class="hint">${sp.keep.rationale}</span></div></div>
+      <div class="plan-row"><div class="plan-key">Measure First</div><div class="plan-value">${sp.measureFirst.title}<br><span class="hint">${sp.measureFirst.rationale}</span></div></div>
+      <div class="plan-row"><div class="plan-key">First Sales-Path Experiment</div><div class="plan-value">${sp.firstSalesPathExperiment}</div></div>
+      <div class="plan-next">
+        <div>${results.nextClubStep.transition}</div>
+        <div class="plan-next-cta">${results.nextClubStep.cta}</div>
+      </div>
+    </div>
+  `;
+  $('results').hidden = false;
+  ['salesPathForm','gate','needsModule1','needsModule2','needsModule3','needsModule4','needsModule5'].forEach((id) => { $(id).hidden = true; });
+}
+
+init();
+</script>
+<script src="/club/club-shell.js"></script>
+<script src="/club/module-stepper.js"></script>
+</body>
+</html>

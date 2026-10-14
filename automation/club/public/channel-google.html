@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Scrolly Club — Google Search &amp; Business Profile</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/club/club-shell.css">
+<link rel="stylesheet" href="/club/channel-module.css">
+</head>
+<body>
+<main>
+  <div class="eyebrow">Channel Module</div>
+  <h1>Google Search &amp; Google Business Profile</h1>
+  <p class="lede">Your presence on Google's own surfaces — Search results, Maps, and Google Business Profile. Improving your actual website's SEO is its own module (<a href="/club/channel/website-seo">Website SEO &amp; AI Discovery</a>) — the two share one traffic calculation below, since SEO feeds Google Search rather than being a separate bucket.</p>
+
+  <nav class="dest-nav" aria-label="Module sections">
+    <a href="#overview" data-dest="overview">Overview &amp; Results</a>
+    <a href="#setup" data-dest="setup">Set Up</a>
+    <a href="#how-to-use" data-dest="how-to-use">How to Use It</a>
+    <a href="#numbers" data-dest="numbers">Your $1K Numbers</a>
+    <a href="#track" data-dest="track">Track &amp; Improve</a>
+  </nav>
+
+  <div class="dest-panels">
+  <section class="dest-panel" id="dest-overview">
+    <div class="panel">
+      <h2>Branded vs. product/service search</h2>
+      <p><b>Branded search</b> — someone searching your business name — means they already know you; the job is making sure they land somewhere useful. <b>Product/service search</b> — "non-toxic soy candles" or "emergency plumber near me" — means Google has to decide your business is relevant to a stranger, which depends on your website content, your Business Profile, and (for local/service businesses) proximity and reviews.</p>
+      <h2 style="margin-top:18px">Is Google Business Profile relevant to you?</h2>
+      <p class="muted">GBP is built for businesses with a physical location customers visit, or that serve customers in a defined area (plumbers, cleaners, local shops, clinics). A purely online business with no service area is generally not eligible the way a local business is — check Google's current eligibility rules for your specific situation before assuming either way.</p>
+    </div>
+  </section>
+
+  <section class="dest-panel" id="dest-setup" hidden>
+    <div class="panel">
+      <h2>Google Business Profile setup</h2>
+      <div class="checklist" id="gbpSetup">
+        <div class="check-row"><input type="checkbox" id="gbp1"><label for="gbp1">Claim and verify your profile<small>Verification methods vary (postcard, phone, email, or instant, depending on your business).</small></label></div>
+        <div class="check-row"><input type="checkbox" id="gbp2"><label for="gbp2">Choose accurate primary and secondary categories<small>One of the strongest signals for which searches you show up in — pick precisely, not broadly.</small></label></div>
+        <div class="check-row"><input type="checkbox" id="gbp3"><label for="gbp3">Add real, current photos</label></div>
+        <div class="check-row"><input type="checkbox" id="gbp4"><label for="gbp4">Fill in hours, service area, and attributes completely</label></div>
+        <div class="check-row"><input type="checkbox" id="gbp5"><label for="gbp5">Set up review requests and respond to existing reviews</label></div>
+      </div>
+      <div class="demo-missing"><b>Screenshot needed:</b> Google Business Profile Manager's verification flow and category-selection screen. No authenticated GBP listing or approved reference asset exists in this project yet.</div>
+
+      <h2 style="margin-top:20px">Google Shopping — if you sell products</h2>
+      <p>Google Merchant Center lets ecommerce businesses list products in Google's free shopping listings (separate from paid ads) — a real, no-cost visibility surface. Setup involves a product feed matching your actual catalog; requirements change over time, so confirm current setup steps directly in Merchant Center.</p>
+    </div>
+  </section>
+
+  <section class="dest-panel" id="dest-how-to-use" hidden>
+    <div class="panel">
+      <h2>Using Posts and Q&amp;A</h2>
+      <p>Not a requirement, but a free, visible surface if kept current — an abandoned Posts feed is worse than none at all. Use it for real updates (hours changes, new offerings), not filler.</p>
+      <h2 style="margin-top:18px">Understanding your performance data</h2>
+      <table class="diag-table">
+        <tr><td>GBP Insights: calls, direction requests, website clicks</td><td>What people actually did after finding your profile — the closest thing to a business outcome GBP reports directly.</td></tr>
+        <tr><td>GBP Insights: views (Search vs. Maps)</td><td>Where you're being found — useful for noticing if you're invisible on one surface, not a performance score.</td></tr>
+      </table>
+    </div>
+  </section>
+
+  <section class="dest-panel" id="dest-numbers" hidden>
+    <div class="panel calc-panel">
+      <h2>If Google Search supplied your $1,000</h2>
+      <p class="muted">Shared with Website SEO — editing this scenario updates both modules, since your website's SEO work is what actually feeds Google Search traffic, not a separate bucket.</p>
+      <p class="calc-linked-note" data-calc="linked-note"></p>
+      <button type="button" class="calc-reset" data-calc="reset">Use my current business data</button>
+      <div class="tool-row">
+        <div class="tool-field"><label>Average order value (USD)</label><input type="number" data-calc="aov" min="1" step="0.01" placeholder="e.g. 40"></div>
+        <div class="tool-field"><label>Visit-to-order conversion rate (%)</label><input type="number" data-calc="rate" min="0.1" max="100" step="0.1" placeholder="e.g. 2"></div>
+        <div class="tool-field"><label>Remaining revenue toward your $1,000</label><input type="number" data-calc="remaining" min="0" step="1" value="1000"></div>
+        <div class="tool-field"><label>Google Search's planned share (%)</label><input type="number" data-calc="share" min="1" max="100" step="1" placeholder="e.g. 30"></div>
+      </div>
+      <table class="calc-table" data-calc="table"></table>
+      <p class="warn-box">This is one shared organic-search bucket. Do not also count separate "SEO" traffic on top of this in a full channel mix — see the Website SEO module.</p>
+    </div>
+  </section>
+
+  <section class="dest-panel" id="dest-track" hidden>
+    <div class="panel">
+      <h2>Evidence: what this has actually produced</h2>
+      <div class="evidence-gap">We don't have a verified, attributed case study for Google Search/GBP to share here yet. Realistic expectation: a complete, accurate, actively-maintained profile is a well-documented baseline for local search visibility — not a guarantee of ranking above competitors with more reviews or a stronger website.</div>
+    </div>
+  </section>
+  </div>
+
+  <div class="dest-controls">
+    <button type="button" class="dest-back" disabled>← Back</button>
+    <button type="button" class="dest-next">Next →</button>
+  </div>
+
+  <div class="first-action">
+    <h2>Your first action</h2>
+    <p>This week: if you have a physical location or service area, claim/verify your Google Business Profile and fill in every field completely. If you're online-only, skip to the Website SEO module — GBP isn't built for you.</p>
+  </div>
+</main>
+<script src="/club/channel-module.js"></script>
+<script>
+ChannelModule.init({
+  moduleKey: 'google',
+  destinations: ['overview', 'setup', 'how-to-use', 'numbers', 'track'],
+  checklists: { gbp: { ids: ['gbp1','gbp2','gbp3','gbp4','gbp5'] } },
+  calculators: [{ scenarioKey: 'organic-search', root: '.calc-panel' }],
+});
+</script>
+<script src="/club/club-shell.js"></script>
+</body></html>

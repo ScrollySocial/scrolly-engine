@@ -1,0 +1,272 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Scrolly Club — Pinterest</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/club/club-shell.css">
+<link rel="stylesheet" href="/club/channel-module.css">
+<style>
+.pin-anatomy-visual{display:grid;grid-template-columns:1fr;gap:0;margin-top:10px}
+@media(min-width:560px){.pin-anatomy-visual{grid-template-columns:220px 1fr}}
+.pin-mock{background:linear-gradient(160deg,#fdf2f8,#eef2ff);border-radius:14px;padding:16px;position:relative;aspect-ratio:2/3;max-width:220px;margin:0 auto}
+.pin-mock-callout{position:absolute;width:22px;height:22px;border-radius:50%;background:var(--ink);color:#fff;display:flex;align-items:center;justify-content:center;font-family:Poppins,sans-serif;font-weight:800;font-size:11px}
+.pin-anatomy-list{display:grid;gap:8px;margin-top:14px}
+@media(min-width:560px){.pin-anatomy-list{margin-top:0;padding-left:16px}}
+.trend-chart{background:var(--bg);border-radius:10px;padding:16px;margin-top:10px}
+.trend-line{height:70px;position:relative;border-bottom:1px solid var(--line);margin-bottom:8px}
+.trend-curve{position:absolute;bottom:0;left:0;width:100%;height:100%}
+.metric-ladder{display:grid;gap:6px;margin-top:10px}
+.metric-tier{padding:12px 14px;border-radius:8px;font-size:13px}
+.metric-tier b{display:block;font-family:Poppins,sans-serif;font-size:11px;text-transform:uppercase;letter-spacing:.02em;margin-bottom:2px}
+.tier-1{background:#eef2ff;color:#3730a3}
+.tier-2{background:#e0e7ff;color:#3730a3}
+.tier-3{background:#ddd6fe;color:#5b21b6}
+.tier-4{background:#4f46e5;color:#fff}
+</style>
+</head>
+<body>
+<main>
+  <div class="eyebrow">Channel Module</div>
+  <h1>Pinterest</h1>
+  <p class="lede">A visual planning-and-search engine — people come here already researching, saving, and comparing before they buy. This module teaches the mechanics and shows real, sourced evidence of what it's actually produced for small businesses. It isn't a requirement — use what's relevant and skip the rest.</p>
+
+  <nav class="dest-nav" aria-label="Module sections">
+    <a href="#overview" data-dest="overview">Overview &amp; Results</a>
+    <a href="#setup" data-dest="setup">Set Up</a>
+    <a href="#how-to-use" data-dest="how-to-use">How to Use It</a>
+    <a href="#numbers" data-dest="numbers">Your $1K Numbers</a>
+    <a href="#track" data-dest="track">Track &amp; Improve</a>
+  </nav>
+
+  <div class="dest-panels">
+  <section class="dest-panel" id="dest-overview">
+    <div class="panel">
+      <h2>Is Pinterest worth your time?</h2>
+      <p class="muted">Pinterest is a stronger fit when people research, plan, save ideas, or compare options before buying what you sell. It's a weaker fit for urgent needs, low-visual categories, or pure impulse buys.</p>
+      <div class="example"><b>Contrast:</b> hand-poured candles connect naturally to home decor, seasonal styling, and gifting — a large discovery ecosystem. A 24-hour emergency plumber's customer is searching because a pipe just burst, not planning a Pinterest board.</div>
+      <div class="checklist" id="fitChecklist">
+        <div class="check-row"><input type="checkbox" id="fit1"><label for="fit1">People research or plan before buying what I sell (not just an urgent, on-the-spot need)</label></div>
+        <div class="check-row"><input type="checkbox" id="fit2"><label for="fit2">What I sell has a visual angle (a photo or short video can show it well)</label></div>
+        <div class="check-row"><input type="checkbox" id="fit3"><label for="fit3">I have at least one page worth sending someone to</label></div>
+        <div class="check-row"><input type="checkbox" id="fit4"><label for="fit4">I can realistically publish a few Pins a week for the next few months</label></div>
+      </div>
+      <p class="muted" id="fitResult" style="margin-top:10px;font-weight:600"></p>
+
+      <h2 style="margin-top:20px">Where Pinterest actually works</h2>
+      <table class="data-table">
+        <tr><td>Home Decor</td><td>The platform's strongest category, especially cozy/seasonal styling.</td><td>~79% engagement</td></tr>
+        <tr><td>Fashion &amp; Accessories</td><td>4th-largest category — styling guides generate consistently high saves.</td><td>Strong evergreen</td></tr>
+        <tr><td>DIY &amp; Crafts</td><td>Tutorial content with a long shelf life.</td><td>High save-rate</td></tr>
+        <tr><td>Food &amp; Recipes</td><td>Recipe Pins reliably beat the platform average when the photography is genuinely useful.</td><td>1–2% saves vs 0.2–0.5% avg</td></tr>
+        <tr><td>Beauty</td><td>Very high, consistent search volume.</td><td>Very high volume</td></tr>
+        <tr><td>Home Goods &amp; Luxury</td><td>Aspirational, higher-price items that convert once someone's already planning.</td><td>5–8% vs 2–4% avg conv.</td></tr>
+      </table>
+      <p class="source-note">Sourced from Pinterest's own category research and third-party benchmarks via Hootsuite (see full citation in Track &amp; Improve). Category-level patterns, not a promise for any individual business — a single case study never establishes an average.</p>
+
+      <div class="two-col" style="margin-top:16px">
+        <div><h3>Pinterest can help you</h3>
+          <ul class="can-list">
+            <li>Build a discovery channel that keeps working after you stop actively promoting it<span class="stat-note">Pinterest users report spending roughly 2x as much per month as users of other platforms — via Hootsuite.</span></li>
+            <li>Reach people while they're researching and comparing, not just scrolling</li>
+            <li>Send qualified visitors who came looking for exactly this<span class="stat-note">Jewelry brand Pilgrim reported its highest-ever online sales via Pinterest's Shopify integration — one documented case via Shopify, not a universal outcome.</span></li>
+          </ul>
+        </div>
+        <div><h3>Pinterest cannot guarantee</h3>
+          <ul class="cannot-list">
+            <li>Immediate traffic — most accounts see real movement around weeks 4–6, not day one</li>
+            <li>Any specific search ranking or recommendation placement</li>
+            <li>Sales — a click is an opportunity your site still has to close</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="dest-panel" id="dest-setup" hidden>
+    <div class="panel">
+      <h2>Setup, step by step</h2>
+      <div class="checklist" id="setupChecklist">
+        <div class="check-row"><input type="checkbox" id="setup1"><label for="setup1">Convert to (or create) a Pinterest business account<small>Business Settings → Convert to business account (or create new). Unlocks Analytics and eligibility for Rich Pins/catalogs. This alone doesn't increase distribution — it only unlocks the tools below.</small></label></div>
+      </div>
+      <div class="demo-missing"><b>Screenshot needed:</b> Pinterest Settings → "Convert to business account" screen. No authenticated Pinterest account or approved reference asset exists in this project yet.</div>
+
+      <div class="checklist">
+        <div class="check-row"><input type="checkbox" id="setup2"><label for="setup2">Claim your website<small>Settings → Claim → enter your domain, verify via the method Pinterest offers (HTML tag, file upload, or DNS, depending on your platform). Connects your site to your Pinterest presence for attribution — required before Rich Pins can validate.</small></label></div>
+      </div>
+
+      <h3 style="margin-top:16px">Profile: before and after</h3>
+      <div class="example"><b>Before:</b> "Juniper Lane · Candles + vibes + cozy things"<br><b>After:</b> "Juniper Lane Candle Co. · Hand-poured soy candles, home fragrance, cozy home ideas, seasonal styling, and gift inspiration."<br><span class="muted" style="font-size:12.5px">Why it matters: Pinterest and a first-time visitor both use this line to decide what your account is about. "Vibes" tells neither of them anything searchable.</span></div>
+
+      <div class="checklist">
+        <div class="check-row"><input type="checkbox" id="setup4"><label for="setup4">If you sell on Shopify: connect your product feed and validate Rich Pins<small>Business Settings → Claimed accounts / Catalogs. Requires a working product feed — availability and exact steps depend on your Shopify plan and region; confirm current requirements in Pinterest's own catalog documentation before assuming it's available. Rich Pins sync your product info automatically once validated — they are infrastructure, not a strategy on their own.</small></label></div>
+      </div>
+      <p class="muted" id="storeConnHint" style="font-size:12.5px;margin-top:8px"></p>
+      <div class="demo-missing"><b>Screenshot needed:</b> Pinterest catalog/Rich Pins validator screen showing a connected feed and validation status. Not available in this build.</div>
+    </div>
+  </section>
+
+  <section class="dest-panel" id="dest-how-to-use" hidden>
+    <div class="panel">
+      <h2>Finding real language, not guessing it</h2>
+      <p>Start inside Pinterest itself: search your product, read the autocomplete suggestions, and note recurring themes.</p>
+      <div class="demo-figure">
+        <div class="demo-media" style="aspect-ratio:16/9"><span class="demo-tag diagram">Diagram</span><div style="padding:20px;text-align:center;font-size:13px;color:var(--muted)">Search box: "non-toxic candle" <br>↓<br>Autocomplete list: "non-toxic candle for allergies" · "non-toxic candle scents" · "non-toxic candle gift set"</div></div>
+        <figcaption class="demo-caption"><span class="demo-what">What you're looking at:</span>An illustrative diagram of Pinterest's autocomplete pattern, not a live screenshot. What to notice: each suggestion is a longer, more specific real phrase — those are free, currently-searched keyword ideas, not something we invented.<span class="demo-source">Illustrative recreation — real Pinterest Search screenshot not available in this build.</span></figcaption>
+      </div>
+
+      <h3 style="margin-top:18px">Pinterest Trends: read the shape, not a number</h3>
+      <div class="trend-chart">
+        <svg viewBox="0 0 300 80" class="trend-curve" preserveAspectRatio="none"><path d="M0,60 C60,58 100,50 140,20 C160,8 180,8 200,20 C230,38 260,55 300,58" fill="none" stroke="#4f46e5" stroke-width="3"/></svg>
+        <p class="muted" style="font-size:12.5px;margin-top:6px">Illustrative curve for "fall table decor" — interest rises through late summer, peaks in September, falls after. The y-axis is <b>relative to its own peak (0-100)</b>, not a literal search count.</p>
+      </div>
+      <p class="muted">Use the shape to time publishing <i>ahead</i> of the rise, not during the peak — by the time interest peaks, the useful window to get discovered before the occasion has mostly passed.</p>
+      <div class="demo-missing"><b>Screenshot needed:</b> real Pinterest Trends interest-over-time graph. Illustrative curve above is a diagram, not a live screenshot.</div>
+
+      <h3 style="margin-top:18px">Organize before you publish</h3>
+      <div class="example">Home Fragrance → Soy Candles → Non-Toxic Candles → Bedroom Fragrance → Fall Home Scent → Housewarming Gifts. Every board needs a clear topic — <b>"Cute Stuff"</b> and <b>"Things I Love"</b> aren't boards, they're junk drawers.</div>
+
+      <h3 style="margin-top:18px">What good execution looks like: an annotated Pin</h3>
+      <div class="pin-anatomy-visual">
+        <div class="pin-mock">
+          <div class="pin-mock-callout" style="top:8%;left:8%">1</div>
+          <div class="pin-mock-callout" style="top:70%;left:15%">2</div>
+          <div class="pin-mock-callout" style="top:88%;left:60%">6</div>
+          <div style="position:absolute;bottom:8px;right:8px;background:#fff;border-radius:6px;padding:4px 8px;font-size:10px;font-weight:800;color:var(--ink)">Save</div>
+        </div>
+        <div class="pin-anatomy-list">
+          <div class="anatomy-el"><b>1</b>Visual — clear, real, not generic stock or AI slop</div>
+          <div class="anatomy-el"><b>2</b>Text overlay — "7 Blue Sofa Styling Ideas," understandable in under 2 seconds</div>
+          <div class="anatomy-el"><b>3</b>Title — matches the overlay, in real searched language</div>
+          <div class="anatomy-el"><b>4</b>Description — two plain sentences on who it's for and what they get</div>
+          <div class="anatomy-el"><b>5</b>Board — "Fall Home Decor," matches the Pin's actual topic</div>
+          <div class="anatomy-el"><b>6</b>Destination — a real page about blue sofa styling, not a mismatched homepage</div>
+          <div class="anatomy-el"><b>7</b>Alt text — a plain description of the image</div>
+        </div>
+      </div>
+      <p class="muted" style="margin-top:10px">The relationship that matters most: the Pin's promise (element 2, the overlay) and its destination (element 6) have to match. A Pin promising "7 styling ideas" that lands on a generic product page — not the actual styling guide — loses the visitor's trust in the first two seconds.</p>
+      <div class="demo-missing"><b>Screenshot needed:</b> a real published Pin with its publishing fields (title/description/board/destination) visible in Pinterest's own Pin builder. Diagram above illustrates the concept, not a live screenshot.</div>
+    </div>
+  </section>
+
+  <section class="dest-panel" id="dest-numbers" hidden>
+    <div class="panel calc-panel">
+      <h2>If Pinterest supplied your $1,000</h2>
+      <p class="calc-linked-note" data-calc="linked-note"></p>
+      <button type="button" class="calc-reset" data-calc="reset">Use my current business data</button>
+      <div class="tool-row">
+        <div class="tool-field"><label>Average order value (USD)</label><input type="number" data-calc="aov" min="1" step="0.01" placeholder="e.g. 40"></div>
+        <div class="tool-field"><label>Visit-to-order conversion rate (%)</label><input type="number" data-calc="rate" min="0.1" max="100" step="0.1" placeholder="e.g. 1.5"><small>Out of 100 visits, how many become an order.</small></div>
+        <div class="tool-field"><label>Remaining revenue toward your $1,000</label><input type="number" data-calc="remaining" min="0" step="1" value="1000"></div>
+        <div class="tool-field"><label>Pinterest's planned share (%)</label><input type="number" data-calc="share" min="1" max="100" step="1" placeholder="e.g. 25"></div>
+      </div>
+      <table class="calc-table" data-calc="table"></table>
+      <p class="warn-box">A higher average order value means fewer orders needed — it says nothing about your conversion rate or the work required. Mixing channels only leaves total traffic unchanged if every added visit converts at the same rate; a channel with a different real rate changes the total.</p>
+    </div>
+  </section>
+
+  <section class="dest-panel" id="dest-track" hidden>
+    <div class="panel">
+      <h2>Real evidence: what this has actually produced</h2>
+      <p class="muted">Neither business below is a Scrolly customer or used this Club. Real, independently published, attributed examples — with the metric TYPE kept distinct, since impressions, clicks, and sales are not interchangeable.</p>
+      <div class="case-grid">
+        <div class="case-card">
+          <span class="case-tag">Homestead / Candles</span>
+          <h3>Steel Spoon Farm — Jen Kibler</h3>
+          <p class="muted" style="font-size:13px;margin:0">Goat milk soap, soy candles, farm-inspired gifts.</p>
+          <div class="case-numbers">
+            <div><div class="case-num">~5,000</div><div class="case-num-label"><b>monthly Pinterest views</b> (impressions-level metric), up from a few hundred, within 2 months</div></div>
+            <div><div class="case-num">2 mo.</div><div class="case-num-label"><b>time to first tracked sale</b> — a distinct, later-funnel outcome from views above</div></div>
+          </div>
+          <p class="case-note">Self-reported by the business owner. One business, one timeframe — not an average. <a href="https://meaganwilliamson.com/pinterest-case-study/" target="_blank" rel="noopener">Read the original source →</a></p>
+        </div>
+        <div class="case-card">
+          <span class="case-tag">Lifestyle / Parenting Blog</span>
+          <h3>Independent Lifestyle Blogger</h3>
+          <p class="muted" style="font-size:13px;margin:0">Recipes, kids' activities, seasonal &amp; family content.</p>
+          <div class="case-numbers">
+            <div><div class="case-num">7,653</div><div class="case-num-label"><b>outbound clicks</b> (traffic-level metric, not impressions) in Oct 2025, best month on record</div></div>
+            <div><div class="case-num">+433%</div><div class="case-num-label">YoY growth in that same click metric</div></div>
+          </div>
+          <p class="case-note">Published by a Pinterest management consultant about a real, unnamed client — no sales figure was reported, so none is implied here. Started from ~1,000 monthly outbound clicks. <a href="https://caffeineandconquer.com/pinterest-case-study-traffic-growth/" target="_blank" rel="noopener">Read the original source →</a></p>
+        </div>
+      </div>
+      <p class="source-note">Category-fit percentages above: Pinterest's own category research and third-party benchmarks via Hootsuite, as cited on Scrolly's Pinterest workbook page (checked 2026-09-16). "Users spend ~2x more per month" and "26% more per year, visit stores 25% more often" — Pinterest/LiveRamp research via Shopify, and Hootsuite, respectively, both checked 2026-09-16.</p>
+
+      <h2 style="margin-top:22px">What to watch</h2>
+      <div class="metric-ladder">
+        <div class="metric-tier tier-1"><b>Discovery</b>Impressions — was the Pin shown at all? The widest, least business-specific number.</div>
+        <div class="metric-tier tier-2"><b>Interest</b>Saves — did it resonate enough to bookmark?</div>
+        <div class="metric-tier tier-3"><b>Traffic</b>Outbound clicks — did it drive an actual visit to your site?</div>
+        <div class="metric-tier tier-4"><b>Business result</b>Orders / revenue — the only tier that's a business outcome; everything below it is a leading signal.</div>
+      </div>
+      <p class="muted" style="margin-top:8px">These are genuinely different measurements — a Pin with high impressions and zero clicks means it was seen but didn't earn a visit; treat that as a creative/relevance question, not a "Pinterest doesn't work" conclusion.</p>
+      <table class="diag-table">
+        <tr><td>High impressions, low outbound clicks</td><td>Check the creative, the promise, and whether the destination is relevant.</td></tr>
+        <tr><td>High saves, low outbound clicks</td><td>The Pin may be more save-worthy than action-oriented — try a stronger reason to click through.</td></tr>
+        <tr><td>Clicks arriving, low conversion</td><td>Check page speed, mobile experience, and price clarity — not Pinterest.</td></tr>
+        <tr><td>Low distribution overall</td><td>Check topic demand, seasonality, and destination quality before concluding "Pinterest doesn't work for me."</td></tr>
+      </table>
+      <div class="demo-missing" style="margin-top:14px"><b>Screenshot needed:</b> Pinterest Analytics overview dashboard showing impressions/saves/clicks as a real trend chart. Not available in this build — the metric ladder above teaches the concept without one.</div>
+    </div>
+  </section>
+  </div>
+
+  <div class="dest-controls">
+    <button type="button" class="dest-back" disabled>← Back</button>
+    <button type="button" class="dest-next">Next →</button>
+  </div>
+
+  <div class="first-action" id="firstAction">
+    <h2 id="firstActionTitle">Your first action</h2>
+    <p id="firstActionCopy">This week: convert to a business account and claim your website. Everything else in Set Up builds on that.</p>
+  </div>
+</main>
+<script src="/club/channel-module.js"></script>
+<script>
+function updateFitResult(){
+  const ids = ['fit1','fit2','fit3','fit4'];
+  const checked = ids.filter(id => document.getElementById(id).checked).length;
+  const out = document.getElementById('fitResult');
+  if (checked === 0) { out.textContent = ''; return; }
+  const labels = ['Probably not a priority right now.', 'Worth testing, not urgent.', 'Worth testing, not urgent.', 'A genuinely strong fit — worth setting up properly.'];
+  out.textContent = `${checked} of 4 — ${labels[checked-1]}`;
+}
+updateFitResult();
+
+// The closing card's message should match where the member actually is,
+// not assume everyone is brand new -- an "ignore everything until setup
+// is done" instruction is wrong once setup is genuinely complete.
+function updateFirstAction() {
+  const state = ChannelModule.loadState('pinterest');
+  const setupIds = ['setup1','setup2','setup4'];
+  const setupDone = setupIds.every((id) => state.setup && state.setup[id]);
+  const title = document.getElementById('firstActionTitle');
+  const copy = document.getElementById('firstActionCopy');
+  if (setupDone) {
+    title.textContent = 'Your next action';
+    copy.textContent = 'Setup is done — this week, publish 3-5 Pins using the topic architecture and Pin anatomy above, then check Track & Improve in about two weeks once you have real impressions to read.';
+  } else {
+    title.textContent = 'Your first action';
+    copy.textContent = 'This week: convert to a business account and claim your website. Everything else in Set Up builds on that.';
+  }
+}
+
+ChannelModule.init({
+  moduleKey: 'pinterest',
+  destinations: ['overview', 'setup', 'how-to-use', 'numbers', 'track'],
+  checklists: {
+    fit: { ids: ['fit1','fit2','fit3','fit4'], onChange: updateFitResult },
+    setup: { ids: ['setup1','setup2','setup4'], onChange: updateFirstAction },
+  },
+  calculators: [{ scenarioKey: 'pinterest', root: '.calc-panel' }],
+  onPersonalize: (d) => {
+    const hint = document.getElementById('storeConnHint');
+    if (d.connections && d.connections.store && d.connections.store.status === 'connected') {
+      hint.textContent = 'Your store connection is active — use it to help with the Rich Pins step above.';
+    } else {
+      hint.textContent = 'No store connected yet — you can still do everything above manually. Connections are optional.';
+    }
+  },
+});
+updateFirstAction();
+</script>
+<script src="/club/club-shell.js"></script>
+</body></html>

@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/club/club-shell.css">
+<title>Find the People Most Likely to Buy It</title>
+<style>
+  :root { --indigo:var(--scrolly-blue); --indigo-dark:#0e5fe0; --ink:var(--scrolly-navy); --ink-soft:var(--slate); --line:var(--border); --bg-alt:var(--surface-soft);
+    --opportunity:#b45309; --ontrack:#0891b2; --strength:#15803d; --insufficient:#6b7280; --notestablished:#9ca3af; --exists:#15803d; --hypothesis:#7c3aed; }
+  * { box-sizing: border-box; }
+  body { font-family: Inter, -apple-system, Arial, sans-serif; background: var(--bg-alt); color: var(--ink); margin: 0; padding: 24px; }
+  .wrap { max-width: 720px; margin: 0 auto; }
+  .eyebrow { font-size: 12px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: var(--indigo); margin-bottom: 6px; }
+  h1 { font-size: 26px; margin: 0 0 8px; }
+  h2 { font-size: 17px; margin: 0 0 12px; }
+  h3 { font-size: 14px; margin: 16px 0 6px; }
+  .sub { color: var(--ink-soft); margin-bottom: 24px; line-height: 1.5; }
+  .card { background: #fff; border: 1px solid var(--line); border-radius: 10px; padding: 20px; margin-bottom: 16px; }
+  label { display: block; font-size: 13px; font-weight: 600; margin: 12px 0 4px; }
+  input, select, textarea { width: 100%; padding: 8px 10px; border: 1px solid var(--line); border-radius: 6px; font-size: 14px; font-family: inherit; }
+  textarea { min-height: 60px; resize: vertical; }
+  .row { display: flex; gap: 12px; }
+  .row > div { flex: 1; }
+  button { border-radius: 999px; padding: 10px 22px; font-weight: 700; font-size: 14px; cursor: pointer; margin-top: 16px; }
+  body.club-shell-page button { background: var(--indigo); color: #fff; border: none; }
+  button:hover { background: var(--indigo-dark); }
+  button.secondary { background: #fff; color: var(--indigo); border: 1px solid var(--indigo); }
+  .error { color: #b91c1c; font-size: 13px; margin-top: 8px; }
+  .hint { font-size: 12px; color: var(--ink-soft); margin-top: 4px; line-height: 1.5; }
+  .locked { background: var(--bg-alt); padding: 8px 10px; border-radius: 6px; font-size: 14px; }
+  [hidden] { display: none !important; }
+
+  .check-list { list-style: none; margin: 8px 0; padding: 0; }
+  .check-list li { display: flex; align-items: center; gap: 8px; padding: 4px 0; flex-wrap: wrap; }
+  .check-list li label.opt { font-weight: 400; margin: 0; flex: 1; min-width: 160px; }
+  .check-list li.suggested label.opt { font-weight: 700; }
+  .basis-toggle { display: none; gap: 10px; font-size: 12px; font-weight: 400; }
+  .basis-toggle.show { display: flex; }
+  .basis-toggle label { font-weight: 400; margin: 0; display: flex; align-items: center; gap: 4px; }
+
+  .radio-list { list-style: none; margin: 8px 0; padding: 0; }
+  .radio-list li { padding: 3px 0; }
+  .radio-list li label { font-weight: 400; margin: 0; display: flex; align-items: center; gap: 8px; }
+
+  .hyp-list { list-style: none; margin: 8px 0; padding: 0; }
+  .hyp-list li { display: flex; align-items: center; gap: 8px; padding: 3px 0; }
+  .hyp-list li label { font-weight: 400; margin: 0; flex: 1; }
+
+  .dim-row { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; padding: 10px 0; border-bottom: 1px solid var(--line); }
+  .dim-row:last-child { border-bottom: none; }
+  .dim-headline { font-weight: 700; font-size: 14px; }
+  .dim-rationale { font-size: 13px; color: var(--ink-soft); margin-top: 2px; line-height: 1.4; }
+  .badge { flex: 0 0 auto; font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 999px; color: #fff; white-space: nowrap; }
+  .badge.observed { background: var(--strength); }
+  .badge.hypothesis { background: var(--hypothesis); }
+  .badge.working_hypothesis { background: var(--hypothesis); }
+  .badge.partially_validated { background: var(--ontrack); }
+  .badge.evidence_backed { background: var(--strength); }
+
+  .plan-card { border: 1px solid var(--indigo); }
+  .plan-row { display: flex; gap: 6px; padding: 8px 0; border-bottom: 1px solid var(--line); }
+  .plan-row:last-child { border-bottom: none; }
+  .plan-key { flex: 0 0 200px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .03em; color: var(--ink-soft); }
+  .plan-value { flex: 1; font-size: 14px; }
+  .plan-value ul { margin: 0; padding-left: 18px; }
+  .plan-next { background: var(--bg-alt); border-left: 4px solid var(--indigo); padding: 12px 16px; border-radius: 4px; margin-top: 14px; }
+  .plan-next-cta { font-weight: 700; margin-top: 6px; }
+  .confidence-badge { display: inline-block; font-size: 12px; font-weight: 700; padding: 4px 12px; border-radius: 999px; color: #fff; margin-top: 6px; background: var(--insufficient); }
+  .confidence-badge.working_hypothesis { background: var(--hypothesis); }
+  .confidence-badge.partially_validated { background: var(--ontrack); }
+  .confidence-badge.evidence_backed { background: var(--strength); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="eyebrow">Scrolly $1K Club &middot; Module 3 of 7</div>
+  <h1>Find the People Most Likely to Buy It</h1>
+  <div class="sub">Who is most likely to buy this, what makes them start looking, what do they care about when choosing, and where might they realistically discover it? This is customer discovery, not a made-up avatar — we'll flag what's real evidence and what's still a guess.</div>
+
+  <div id="gate" class="card" hidden>
+    <p>You'll need to open $1K Club from your Scrolly account to continue.</p>
+    <p class="hint">Log in at scrollyseo.com, go to My Account, and click "Go to $1K Club".</p>
+    <button type="button" onclick="location.href='https://scrollyseo.com/my-account/'">Go to My Account</button>
+  </div>
+  <div id="needsModule1" class="card" hidden>
+    <p>Module 1 isn't finished yet — Module 3 builds on your $1K Starting Point.</p>
+    <button type="button" onclick="location.href='/club'">Go to Module 1</button>
+  </div>
+  <div id="needsModule2" class="card" hidden>
+    <p>Module 2 isn't finished yet — Module 3 builds directly on your offer.</p>
+    <button type="button" onclick="location.href='/club/module2'">Go to Module 2</button>
+  </div>
+  <div id="checking" class="card"><p>Checking your access...</p></div>
+
+  <form id="discoveryForm" class="card stepper-form" hidden>
+    <div class="step" data-step="1">
+      <h2>1. Who is most likely to buy this?</h2>
+      <label>Describe the type of person or business most likely to buy</label>
+      <textarea id="buyerDescription" required></textarea>
+      <label id="situationLabel">What's going on for them right now?</label>
+      <textarea id="currentSituation"></textarea>
+      <label>What are they trying to accomplish?</label>
+      <textarea id="tryingToAccomplish"></textarea>
+      <label>Why does that matter to them now?</label>
+      <textarea id="whyNow"></textarea>
+    </div>
+
+    <div class="step" data-step="2">
+      <h2>2. What starts their search?</h2>
+      <div class="hint">Check anything that plausibly applies. Then pick the single strongest current hypothesis below.</div>
+      <ul class="check-list" id="triggerList"></ul>
+      <label>Strongest current hypothesis</label>
+      <select id="primaryTriggerCategory"><option value="">Select...</option></select>
+    </div>
+
+    <div class="step" data-step="3">
+      <h2>3. What do they want after buying?</h2>
+      <label>Functional result — the practical outcome/change they want</label>
+      <textarea id="desiredFunctional" required></textarea>
+      <label>Practical or emotional result (optional — how they want it to feel, or what it makes easier)</label>
+      <textarea id="desiredEmotional"></textarea>
+    </div>
+
+    <div class="step" data-step="4">
+      <h2>4. Objections</h2>
+      <div class="hint">Carried forward from Module 2 — confirm, refine, or add more. If a real buyer has actually said this, mark it Observed; otherwise it's a Hypothesis.</div>
+      <ul class="check-list" id="objectionList"></ul>
+      <label>Add another (optional)</label>
+      <input id="objectionOtherNote" type="text" placeholder="Describe another objection" />
+      <div class="basis-toggle show" id="objectionOtherBasis">
+        <label><input type="radio" name="objectionOtherBasisRadio" value="observed"> Observed</label>
+        <label><input type="radio" name="objectionOtherBasisRadio" value="hypothesis" checked> Hypothesis</label>
+      </div>
+    </div>
+
+    <div class="step" data-step="5">
+      <h2>5. What do they care about when choosing?</h2>
+      <ul class="check-list" id="criteriaList"></ul>
+    </div>
+
+    <div class="step" data-step="6">
+      <h2>6. Where might they realistically discover this?</h2>
+      <div class="hint">This maps plausible places they may already look — it is not a channel recommendation. Module 4 decides that later.</div>
+      <ul class="check-list" id="envList"></ul>
+    </div>
+
+    <div class="step" data-step="7">
+      <h2>7. Customer-language hypotheses</h2>
+      <div class="hint">Generated from your answers above — these are hypotheses about how buyers might phrase this, not validated keyword data.</div>
+      <button type="button" id="generateHypothesesBtn">Generate hypotheses</button>
+      <ul class="hyp-list" id="hypList"></ul>
+    </div>
+
+    <div class="step" data-step="8">
+      <h2>8. What's this based on?</h2>
+      <div class="hint">Select everywhere your beliefs above actually come from. Real buyer evidence (existing buyers, sales conversations, reviews, etc.) counts more than intuition — we'll be upfront about which one this is.</div>
+      <ul class="check-list" id="evidenceList"></ul>
+    </div>
+
+    <button type="button" id="submitBtn">See my Customer Discovery Map</button>
+    <div id="formError" class="error" hidden></div>
+  </form>
+
+  <div id="results" hidden></div>
+</div>
+
+<script>
+const $ = (id) => document.getElementById(id);
+const TOKEN_KEY = 'scrolly_club_access_token';
+
+const params = new URLSearchParams(location.search);
+if (params.get('token')) {
+  sessionStorage.setItem(TOKEN_KEY, params.get('token'));
+  history.replaceState({}, '', location.pathname);
+}
+function getToken() { return sessionStorage.getItem(TOKEN_KEY); }
+async function api(path, options = {}) {
+  const token = getToken();
+  const headers = { ...(options.headers || {}) };
+  if (token) headers['Authorization'] = 'Bearer ' + token;
+  const res = await fetch(path, { ...options, headers });
+  return res.json();
+}
+function label(v) { return String(v).replace(/_/g, ' '); }
+
+const TRIGGER_CATEGORIES = ['revenue_performance_problem','upcoming_launch','deadline','event_occasion','season','gift_need','frustration_with_paid_advertising','current_solution_stopped_working','current_solution_inadequate','saw_someone_else_achieve_result','new_responsibility_change','knowledge_gap','urgent_practical_need','desire_want','replacement_replenishment','other','not_sure_yet'];
+const CRITERIA_CATEGORIES = ['price_value','quality','speed','ease','expertise','proof','design_style','materials','customization','convenience','reviews','support','policies','shipping','availability','location','values','selection','other','not_sure'];
+const DISCOVERY_ENVIRONMENTS = ['google_search','google_maps_local_search','youtube','instagram','tiktok','pinterest','threads','facebook','reddit_forums','etsy','amazon','referrals_word_of_mouth','email_newsletters','professional_communities','marketplaces_directories','in_person_local_discovery','other','unsure'];
+const EVIDENCE_SOURCES = ['existing_buyers','actual_sales_conversations','customer_emails','dms_comments','reviews','search_query_data','interviews','repeat_customer_behavior','customer_support_questions','personal_business_experience','competitor_community_observation','best_guess_intuition','other'];
+const OBJECTION_TYPES = ['Price', 'Trust', 'Uncertainty about results', 'Unclear fit', 'Lack of proof', 'Time commitment', 'Shipping', 'Delivery timing', 'Complexity', 'Switching cost', 'Unfamiliar brand', 'Unclear product information', 'Unclear next step'];
+
+let routeLanguage = { suggestedTriggerCategories: [], suggestedCriteriaCategories: [], situationPrompt: "What's going on for them right now?" };
+let currentRoute = null;
+let carriedObjections = [];
+
+function renderCheckList(containerId, categories, suggested) {
+  $(containerId).innerHTML = categories.map((c, i) => {
+    const isSuggested = suggested.includes(c);
+    return `<li class="${isSuggested ? 'suggested' : ''}"><input type="checkbox" id="${containerId}_${i}" data-cat="${c}"><label class="opt" for="${containerId}_${i}">${label(c)}${isSuggested ? ' <span class="hint">(commonly relevant)</span>' : ''}</label></li>`;
+  }).join('');
+}
+function collectChecked(containerId, categories) {
+  return categories.filter((c, i) => $(containerId + '_' + i)?.checked);
+}
+
+function renderTriggerSelect() {
+  $('primaryTriggerCategory').innerHTML = '<option value="">Select...</option>' + TRIGGER_CATEGORIES.map((c) => `<option value="${c}">${label(c)}</option>`).join('');
+}
+
+function renderObjectionList() {
+  const carriedTypes = carriedObjections.map((o) => o.type);
+  const allTypes = [...new Set([...carriedTypes, ...OBJECTION_TYPES])];
+  $('objectionList').innerHTML = allTypes.map((t, i) => {
+    const carried = carriedObjections.find((o) => o.type === t);
+    return `
+    <li>
+      <input type="checkbox" id="obj_${i}" data-type="${t}" ${carried ? 'checked' : ''} onchange="document.getElementById('objbasis_${i}').classList.toggle('show', this.checked)">
+      <label class="opt" for="obj_${i}">${t}</label>
+      <div class="basis-toggle ${carried ? 'show' : ''}" id="objbasis_${i}">
+        <label><input type="radio" name="objbasisradio_${i}" value="observed" ${carried?.basis === 'observed' ? 'checked' : ''}> Observed</label>
+        <label><input type="radio" name="objbasisradio_${i}" value="hypothesis" ${!carried || carried.basis === 'hypothesis' ? 'checked' : ''}> Hypothesis</label>
+      </div>
+    </li>`;
+  }).join('');
+  window.__objectionTypes = allTypes;
+}
+function collectObjections() {
+  const objections = [];
+  (window.__objectionTypes || []).forEach((t, i) => {
+    const box = $('obj_' + i);
+    if (box && box.checked) {
+      const basis = document.querySelector(`input[name="objbasisradio_${i}"]:checked`).value;
+      objections.push({ type: t, note: null, basis });
+    }
+  });
+  const otherNote = $('objectionOtherNote').value.trim();
+  if (otherNote) {
+    const basis = document.querySelector('input[name="objectionOtherBasisRadio"]:checked').value;
+    objections.push({ type: otherNote, note: null, basis });
+  }
+  return objections;
+}
+
+async function init() {
+  if (!getToken()) { $('checking').hidden = true; $('gate').hidden = false; return; }
+  const ctx = await api('/club/module3/context');
+  $('checking').hidden = true;
+  if (!ctx.ok) {
+    if (ctx.reason === 'module1_not_complete' || ctx.reason === 'not_a_club_member') { $('needsModule1').hidden = false; return; }
+    if (ctx.reason === 'module2_not_complete') { $('needsModule2').hidden = false; return; }
+    $('gate').hidden = false;
+    return;
+  }
+
+  currentRoute = ctx.profile.route;
+  const ROUTE_LANGUAGE = {
+    ecommerce: { situationPrompt: "What's going on for them right now that relates to this kind of product?", suggestedTriggerCategories: ['desire_want','gift_need','season','saw_someone_else_achieve_result','replacement_replenishment'], suggestedCriteriaCategories: ['price_value','quality','design_style','reviews','shipping'] },
+    services: { situationPrompt: 'What business problem or situation are they dealing with right now?', suggestedTriggerCategories: ['revenue_performance_problem','current_solution_inadequate','new_responsibility_change','urgent_practical_need','deadline'], suggestedCriteriaCategories: ['expertise','proof','price_value','availability','reviews'] },
+    digital_product: { situationPrompt: 'What knowledge gap or problem are they trying to solve right now?', suggestedTriggerCategories: ['knowledge_gap','urgent_practical_need','current_solution_inadequate','new_responsibility_change'], suggestedCriteriaCategories: ['expertise','proof','price_value','reviews'] },
+    creator_affiliate: { situationPrompt: "What are they already engaging with or interested in right now?", suggestedTriggerCategories: ['desire_want','saw_someone_else_achieve_result','knowledge_gap'], suggestedCriteriaCategories: ['reviews','values','price_value','convenience'] },
+    marketplace_first: { situationPrompt: 'What occasion or use case brings them to search for this?', suggestedTriggerCategories: ['event_occasion','gift_need','season','desire_want','replacement_replenishment'], suggestedCriteriaCategories: ['price_value','reviews','shipping','selection'] },
+    local_hybrid: { situationPrompt: 'What local or practical need are they dealing with right now?', suggestedTriggerCategories: ['urgent_practical_need','event_occasion','current_solution_inadequate','new_responsibility_change'], suggestedCriteriaCategories: ['location','availability','reviews','price_value'] },
+  };
+  routeLanguage = ROUTE_LANGUAGE[currentRoute] || ROUTE_LANGUAGE.services;
+  $('situationLabel').textContent = routeLanguage.situationPrompt;
+
+  $('buyerDescription').value = ctx.offerPlan.audienceConfirmed || '';
+  carriedObjections = ctx.offerPlan.objections || [];
+
+  renderCheckList('triggerList', TRIGGER_CATEGORIES, routeLanguage.suggestedTriggerCategories);
+  renderTriggerSelect();
+  renderObjectionList();
+  renderCheckList('criteriaList', CRITERIA_CATEGORIES, routeLanguage.suggestedCriteriaCategories);
+  renderCheckList('envList', DISCOVERY_ENVIRONMENTS, []);
+  renderCheckList('evidenceList', EVIDENCE_SOURCES, []);
+
+  if (ctx.existingDiscoveryPlan) {
+    const p = ctx.existingDiscoveryPlan;
+    if (p.buyerDescription) $('buyerDescription').value = p.buyerDescription;
+    if (p.currentSituation) $('currentSituation').value = p.currentSituation;
+    if (p.tryingToAccomplish) $('tryingToAccomplish').value = p.tryingToAccomplish;
+    if (p.whyNow) $('whyNow').value = p.whyNow;
+    if (p.desiredResult?.functional) $('desiredFunctional').value = p.desiredResult.functional;
+    if (p.desiredResult?.practicalEmotional) $('desiredEmotional').value = p.desiredResult.practicalEmotional;
+    (p.buyingTriggers || []).forEach((t) => {
+      const i = TRIGGER_CATEGORIES.indexOf(t.category);
+      if (i >= 0 && $('triggerList_' + i)) $('triggerList_' + i).checked = true;
+    });
+    if (p.primaryTriggerCategory) $('primaryTriggerCategory').value = p.primaryTriggerCategory;
+    (p.buyingCriteria || []).forEach((c) => {
+      const i = CRITERIA_CATEGORIES.indexOf(c.category);
+      if (i >= 0 && $('criteriaList_' + i)) $('criteriaList_' + i).checked = true;
+    });
+    (p.discoveryEnvironments || []).forEach((e) => {
+      const i = DISCOVERY_ENVIRONMENTS.indexOf(e);
+      if (i >= 0 && $('envList_' + i)) $('envList_' + i).checked = true;
+    });
+    (p.evidenceSources || []).forEach((e) => {
+      const i = EVIDENCE_SOURCES.indexOf(e);
+      if (i >= 0 && $('evidenceList_' + i)) $('evidenceList_' + i).checked = true;
+    });
+    if (p.customerLanguageHypotheses?.length) renderHypotheses(p.customerLanguageHypotheses);
+  }
+
+  const existing = await api('/club/module3/results');
+  if (existing.ok) { renderResults(existing.results); return; }
+
+  $('discoveryForm').hidden = false;
+}
+
+function renderHypotheses(list) {
+  $('hypList').innerHTML = list.map((h, i) => `<li><input type="checkbox" id="hyp_${i}" checked data-text="${h.replace(/"/g,'&quot;')}"><label for="hyp_${i}">${h}</label></li>`).join('');
+}
+function collectHypotheses() {
+  const items = $('hypList').querySelectorAll('li');
+  const result = [];
+  items.forEach((li) => {
+    const box = li.querySelector('input[type=checkbox]');
+    if (box && box.checked) result.push(box.dataset.text);
+  });
+  return result;
+}
+
+$('generateHypothesesBtn').addEventListener('click', async () => {
+  const answers = { buyerDescription: $('buyerDescription').value.trim(), desiredResult: { functional: $('desiredFunctional').value.trim() }, primaryTriggerCategory: $('primaryTriggerCategory').value || null };
+  const body = await api('/club/module3/language-hypotheses', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ answers }) });
+  if (body.ok) renderHypotheses(body.customerLanguageHypotheses);
+});
+
+$('submitBtn').addEventListener('click', async () => {
+  $('formError').hidden = true;
+  const answers = {
+    buyerDescription: $('buyerDescription').value.trim(),
+    currentSituation: $('currentSituation').value.trim() || null,
+    tryingToAccomplish: $('tryingToAccomplish').value.trim() || null,
+    whyNow: $('whyNow').value.trim() || null,
+    buyingTriggers: collectChecked('triggerList', TRIGGER_CATEGORIES).map((category) => ({ category, note: null })),
+    primaryTriggerCategory: $('primaryTriggerCategory').value || null,
+    desiredResult: { functional: $('desiredFunctional').value.trim(), practicalEmotional: $('desiredEmotional').value.trim() || null },
+    objections: collectObjections(),
+    buyingCriteria: collectChecked('criteriaList', CRITERIA_CATEGORIES).map((category) => ({ category })),
+    discoveryEnvironments: collectChecked('envList', DISCOVERY_ENVIRONMENTS),
+    customerLanguageHypotheses: collectHypotheses(),
+    evidenceSources: collectChecked('evidenceList', EVIDENCE_SOURCES),
+  };
+  if (!answers.buyerDescription) { $('formError').textContent = 'Please describe who is most likely to buy this.'; $('formError').hidden = false; return; }
+  if (!answers.desiredResult.functional) { $('formError').textContent = 'Please describe the functional result the buyer wants.'; $('formError').hidden = false; return; }
+  if (answers.buyingTriggers.length === 0) { $('formError').textContent = 'Please check at least one buying trigger.'; $('formError').hidden = false; return; }
+  if (!answers.primaryTriggerCategory) { $('formError').textContent = 'Please pick the single strongest current hypothesis.'; $('formError').hidden = false; return; }
+  if (answers.buyingCriteria.length === 0) { $('formError').textContent = 'Please check at least one buying criterion.'; $('formError').hidden = false; return; }
+  if (answers.discoveryEnvironments.length === 0) { $('formError').textContent = 'Please check at least one place they may discover this.'; $('formError').hidden = false; return; }
+  if (answers.evidenceSources.length === 0) { $('formError').textContent = "Please check what your answers above are based on (best guess/intuition is a valid, honest answer)."; $('formError').hidden = false; return; }
+
+  const body = await api('/club/module3/submit', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ answers }) });
+  if (!body.ok) { $('formError').textContent = 'Could not complete Module 3: ' + body.reason; $('formError').hidden = false; return; }
+  renderResults(body.results);
+});
+
+function planItem(v) { return `<li>${label(v)}</li>`; }
+
+function renderResults(results) {
+  const { discoveryMap, confidence, whatThisTellsUs, discoveryGap, nextExperiment, nextClubStep } = results;
+  const objectionRow = (o) => `<div class="dim-row"><div><div class="dim-headline">${o.type}</div></div><span class="badge ${o.basis}">${o.basis}</span></div>`;
+
+  $('results').innerHTML = `
+    <div class="card">
+      <h2>Confidence</h2>
+      <span class="confidence-badge ${confidence.key}">${confidence.label}</span>
+      <p class="hint">${confidence.explanation}</p>
+    </div>
+
+    <div class="card">
+      <h2>What This Tells Us</h2>
+      ${whatThisTellsUs.length ? '<ul>' + whatThisTellsUs.map(planItem => `<li>${planItem}</li>`).join('') + '</ul>' : '<p class="hint">Not enough here yet to interpret beyond what you entered.</p>'}
+    </div>
+
+    <div class="card">
+      <h2>Likely Objections</h2>
+      ${discoveryMap.likelyObjections.length ? discoveryMap.likelyObjections.map(objectionRow).join('') : '<p class="hint">None identified yet.</p>'}
+    </div>
+
+    <div class="card plan-card">
+      <h2>Your Customer Discovery Map</h2>
+      <div class="plan-row"><div class="plan-key">Likely buyer</div><div class="plan-value">${discoveryMap.likelyBuyer || ''}</div></div>
+      <div class="plan-row"><div class="plan-key">Current situation</div><div class="plan-value">${discoveryMap.currentSituation || '<span class="hint">Not captured</span>'}</div></div>
+      <div class="plan-row"><div class="plan-key">Buying trigger</div><div class="plan-value">${label(discoveryMap.buyingTrigger.strongest)}${discoveryMap.buyingTrigger.selected.length > 1 ? ' <span class="hint">(also considered: ' + discoveryMap.buyingTrigger.selected.map(t=>label(t.category)).filter(c=>c!==label(discoveryMap.buyingTrigger.strongest)).join(', ') + ')</span>' : ''}</div></div>
+      <div class="plan-row"><div class="plan-key">Desired result</div><div class="plan-value">${discoveryMap.desiredResult.functional}${discoveryMap.desiredResult.practicalEmotional ? '<br><span class="hint">' + discoveryMap.desiredResult.practicalEmotional + '</span>' : ''}</div></div>
+      <div class="plan-row"><div class="plan-key">What they care about</div><div class="plan-value"><ul>${discoveryMap.whatTheyCareAbout.map(planItem).join('')}</ul></div></div>
+      <div class="plan-row"><div class="plan-key">Where they may look</div><div class="plan-value"><ul>${discoveryMap.whereTheyMayLook.map(planItem).join('')}</ul></div></div>
+      <div class="plan-row"><div class="plan-key">Customer-language hypotheses</div><div class="plan-value">${discoveryMap.customerLanguageHypotheses.length ? '<ul>' + discoveryMap.customerLanguageHypotheses.map((h) => `<li>${h}</li>`).join('') + '</ul>' : '<span class="hint">None generated yet</span>'}</div></div>
+      <div class="plan-row"><div class="plan-key">Evidence</div><div class="plan-value"><ul>${discoveryMap.evidence.map(planItem).join('')}</ul></div></div>
+      <div class="plan-row"><div class="plan-key">Confidence</div><div class="plan-value">${discoveryMap.confidence}</div></div>
+      <div class="plan-row"><div class="plan-key">Discovery gap</div><div class="plan-value">${discoveryGap.title}<br><span class="hint">${discoveryGap.rationale}</span></div></div>
+      <div class="plan-row"><div class="plan-key">Next experiment</div><div class="plan-value">${nextExperiment}</div></div>
+      <div class="plan-next">
+        <div>${nextClubStep.transition}</div>
+        <div class="plan-next-cta"><a href="/club/module4" style="color: var(--indigo);">${nextClubStep.cta}</a></div>
+      </div>
+    </div>
+  `;
+  $('results').hidden = false;
+  $('discoveryForm').hidden = true;
+  $('gate').hidden = true;
+  $('needsModule1').hidden = true;
+  $('needsModule2').hidden = true;
+}
+
+init();
+</script>
+<script src="/club/club-shell.js"></script>
+<script src="/club/module-stepper.js"></script>
+</body>
+</html>

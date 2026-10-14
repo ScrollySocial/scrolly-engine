@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Scrolly Club — Groups &amp; Communities</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/club/club-shell.css">
+<link rel="stylesheet" href="/club/channel-module.css">
+</head>
+<body>
+<main>
+  <div class="eyebrow">Channel Module</div>
+  <h1>Groups &amp; Communities</h1>
+  <p class="lede">Facebook Groups, Reddit, and niche forums are places people already gather to ask real questions and get real recommendations — including, sometimes, for exactly what you sell. This is the slowest, most manual channel here, and the one most likely to punish obvious self-promotion.</p>
+
+  <nav class="dest-nav" aria-label="Module sections">
+    <a href="#overview" data-dest="overview">Overview &amp; Results</a>
+    <a href="#setup" data-dest="setup">Set Up</a>
+    <a href="#how-to-use" data-dest="how-to-use">How to Use It</a>
+    <a href="#numbers" data-dest="numbers">Your $1K Numbers</a>
+    <a href="#track" data-dest="track">Track &amp; Improve</a>
+  </nav>
+
+  <div class="dest-panels">
+  <section class="dest-panel" id="dest-overview">
+    <div class="panel">
+      <h2>The rule that actually matters</h2>
+      <p>Communities exist for their members, not for your business. The businesses that get real, sustained value participate as genuine members first — answering questions, being useful, showing up consistently — and mention what they sell rarely, only when it's a real, honest answer to what was asked.</p>
+      <div class="warn-box">A community that figures out you're only there to sell will turn on you fast, and moderators frequently ban obvious self-promotion outright. This isn't a free ad channel — treat it like one and it stops working immediately.</div>
+    </div>
+  </section>
+
+  <section class="dest-panel" id="dest-setup" hidden>
+    <div class="panel">
+      <h2>Finding communities actually worth your time</h2>
+      <div class="checklist" id="findChecklist">
+        <div class="check-row"><input type="checkbox" id="find1"><label for="find1">Search Facebook Groups and Reddit for your product category and your customer's situation<small>Both by product ("candle making") and by buyer identity/problem ("small apartment decor").</small></label></div>
+        <div class="check-row"><input type="checkbox" id="find2"><label for="find2">Check that it's actually active<small>Recent posts, real replies — not a dead group with a big member count.</small></label></div>
+        <div class="check-row"><input type="checkbox" id="find3"><label for="find3">Read the rules before posting anything<small>Most communities explicitly restrict or ban self-promotion.</small></label></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="dest-panel" id="dest-how-to-use" hidden>
+    <div class="panel">
+      <h2>Recognizing a real opportunity</h2>
+      <table class="data-table">
+        <tr><td>Direct recommendation request</td><td>"Does anyone know a good X for Y?" — the clearest, most appropriate moment to mention what you sell, if it's genuinely relevant.</td><td></td></tr>
+        <tr><td>Problem you can actually solve</td><td>Someone describes a problem your product/service addresses — answer the problem first.</td><td></td></tr>
+        <tr><td>General discussion</td><td>Not every thread is a selling opportunity — most aren't.</td><td></td></tr>
+      </table>
+      <h2 style="margin-top:18px">What a genuinely useful answer looks like</h2>
+      <div class="example">Question: "Any recommendations for candles that won't trigger my partner's allergies?" A useful reply explains what actually matters (fragrance-free vs. lightly scented, wick material, wax type), THEN mentions your product as one real option among the explanation — not "Try mine! [link]" with nothing else.</div>
+    </div>
+  </section>
+
+  <section class="dest-panel" id="dest-numbers" hidden>
+    <div class="panel">
+      <h2>Measuring what this actually produces</h2>
+      <p class="muted">This is genuinely the hardest channel here to measure precisely — most platforms don't give referral analytics from a Group or forum post. Track what you realistically can:</p>
+      <ul class="can-list">
+        <li>Direct messages or profile visits following a specific post</li>
+        <li>A rise in a specific, trackable referral link if you use one (where community rules allow links at all)</li>
+        <li>Repeat recognition — being remembered as "the person who actually knows about X" compounds slowly but is real</li>
+      </ul>
+      <div class="evidence-gap">There's no traffic calculator for this channel: referral traffic from a Group, subreddit, or forum thread isn't something any platform reports back to you, so a calculator here would be a guess dressed up as a number. Published, reliable case-study numbers for community-based marketing are also genuinely scarce across the industry — we're not going to invent one to fill this space.</div>
+    </div>
+  </section>
+
+  <section class="dest-panel" id="dest-track" hidden>
+    <div class="panel">
+      <h2>Staying in good standing</h2>
+      <ul class="can-list">
+        <li>Re-read a community's rules periodically — they change</li>
+        <li>If a moderator removes a post, don't repost it elsewhere in the same community</li>
+        <li>Being useful consistently, without selling, is itself the long-term strategy here</li>
+      </ul>
+    </div>
+  </section>
+  </div>
+
+  <div class="dest-controls">
+    <button type="button" class="dest-back" disabled>← Back</button>
+    <button type="button" class="dest-next">Next →</button>
+  </div>
+
+  <div class="first-action">
+    <h2>Your first action</h2>
+    <p>This week: find and join 2-3 real, active communities where your actual customers already gather — and just observe. Read the rules, watch how genuine members participate, before you post anything.</p>
+  </div>
+</main>
+<script src="/club/channel-module.js"></script>
+<script>
+ChannelModule.init({
+  moduleKey: 'groups',
+  destinations: ['overview', 'setup', 'how-to-use', 'numbers', 'track'],
+  checklists: { find: { ids: ['find1','find2','find3'] } },
+});
+</script>
+<script src="/club/club-shell.js"></script>
+</body></html>

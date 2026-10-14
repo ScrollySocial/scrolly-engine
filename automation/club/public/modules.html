@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Scrolly Club: Learn</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800;900&family=Public+Sans:wght@400;500;600;700&family=Caveat+Brush&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/club/club-shell.css">
+<style>
+:root{--indigo:var(--scrolly-blue);--ink:var(--scrolly-navy);--line:var(--border);--bg-alt:var(--surface-soft)}
+*{box-sizing:border-box}
+body{font-family:'Public Sans',-apple-system,Arial,sans-serif;margin:0;padding:0}
+.wrap{max-width:720px}
+.eyebrow{font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--ink);opacity:.6;margin-bottom:6px}
+.sub{color:var(--slate);margin-bottom:20px;line-height:1.5}
+.status{padding:20px;color:var(--slate)}
+.module-list{display:grid;gap:10px}
+.module-row{display:flex;align-items:center;gap:14px;padding:16px 18px;background:#fff;border:1px solid var(--border);border-radius:var(--radius-card);box-shadow:var(--shadow-card);text-decoration:none;color:var(--ink)}
+.module-row:hover{border-color:var(--ink)}
+.module-row:hover:not(.complete) .module-badge{background:#94ECE1;color:#000}
+.module-row:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.module-num{flex:none;width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Archivo',sans-serif;font-weight:800;font-size:14px;background:var(--surface-soft);color:var(--slate)}
+.module-row.complete .module-num{background:#94ECE1;color:#000}
+.channel-badge{font-size:11px;letter-spacing:.01em;background:var(--surface-blue);color:var(--ink)}
+.module-body{flex:1;min-width:0}
+.module-title{display:block;font-family:'Archivo',sans-serif;font-weight:700;font-size:14.5px;color:var(--scrolly-navy)}
+.module-sub{display:block;font-size:12px;color:var(--slate);margin-top:2px}
+.module-badge{flex:none;font-size:11.5px;font-weight:800;padding:6px 14px;border-radius:999px;background:var(--ink);color:#fff;font-family:'Archivo',Inter,sans-serif;transition:background-color .15s ease,color .15s ease}
+.module-row.complete .module-badge{background:var(--surface-mint);color:#0F7A5F}
+.section-label{font-family:'Archivo',Inter,sans-serif;font-weight:700;font-size:13px;color:var(--ink);text-transform:uppercase;letter-spacing:.03em;margin:28px 0 4px}
+.section-sub{font-size:12.5px;color:var(--slate);margin:0 0 12px}
+.growth-preview{margin-top:28px;padding:16px 18px;background:var(--surface-soft);border:1px dashed var(--border);border-radius:var(--radius-card)}
+.growth-preview b{display:block;font-family:'Archivo',Inter,sans-serif;font-size:13px;color:var(--ink);margin-bottom:4px}
+.growth-preview p{margin:0;font-size:12.5px;color:var(--slate);line-height:1.5}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="eyebrow">Scrolly $1K Club</div>
+  <h1>Learn</h1>
+  <p class="sub">Deep, practical instruction toward your first (or next) $1,000 in 30 days: how to do what your <a href="/club" style="color:var(--ink);font-weight:700">My Plan</a> lays out. Pick the track that fits how your buyers actually find and choose you. You can change your focus any time.</p>
+
+  <div class="section-label">Core tracks</div>
+  <p class="section-sub">Each one goes deep: real examples, setup walkthroughs, and a full traffic plan, not a quick overview.</p>
+  <div class="module-list">
+    <a class="module-row" href="/club/channel/instagram-facebook">
+      <span class="module-num channel-badge">IG</span>
+      <span class="module-body"><span class="module-title">Instagram &amp; Facebook</span><span class="module-sub">Profiles, Pages, Reels, Stories, Groups, and real buying paths</span></span>
+      <span class="module-badge">Open</span>
+    </a>
+    <a class="module-row" href="/club/channel/tiktok">
+      <span class="module-num channel-badge">TT</span>
+      <span class="module-body"><span class="module-title">TikTok &amp; TikTok Shop</span><span class="module-sub">Discovery, search, Shop eligibility, and a real buyer's path to purchase</span></span>
+      <span class="module-badge">Open</span>
+    </a>
+    <a class="module-row" href="/club/channel/linkedin">
+      <span class="module-num channel-badge">Li</span>
+      <span class="module-body"><span class="module-title">LinkedIn</span><span class="module-sub">For online B2B sellers: posts, documents, and real buyer conversations</span></span>
+      <span class="module-badge">Open</span>
+    </a>
+  </div>
+
+  <div class="section-label" style="margin-top:28px">Shared foundation</div>
+  <p class="section-sub">Applies no matter which track you pick.</p>
+  <div class="module-list">
+    <a class="module-row" href="/club/channel/purchase-path">
+      <span class="module-num channel-badge">$</span>
+      <span class="module-body"><span class="module-title">Make It Easy to Buy</span><span class="module-sub">Point your link at the actual offer and remove friction between interest and purchase</span></span>
+      <span class="module-badge">Open</span>
+    </a>
+  </div>
+
+  <div class="growth-preview">
+    <b>Longer-term growth</b>
+    <p>Once your core track is working, later material (part of the future $10K Club) will go deeper on channels like Pinterest and website SEO. Not available for purchase yet.</p>
+  </div>
+</div>
+<script src="/club/club-shell.js"></script>
+</body>
+</html>

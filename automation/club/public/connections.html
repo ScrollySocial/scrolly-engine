@@ -1,0 +1,220 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Scrolly Club: Connections</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800;900&family=Public+Sans:wght@400;500;600;700&family=Caveat+Brush&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/club/club-shell.css">
+<style>
+:root{--ink:var(--scrolly-navy);--muted:var(--slate);--line:var(--border);--blue:var(--scrolly-blue);--bg:var(--surface-soft)}
+*{box-sizing:border-box}
+body{margin:0;font:16px/1.6 'Public Sans',-apple-system,sans-serif;color:var(--ink);background:var(--bg)}
+main{max-width:900px;margin:0 auto;padding:24px 20px}
+.crumb{display:inline-block;font-size:12.5px;font-weight:700;color:var(--muted);text-decoration:none;margin-bottom:10px}
+.crumb:hover{color:var(--ink)}
+.sub{color:var(--muted);margin:0 0 24px;max-width:600px}
+.conn-list{display:grid;gap:10px}
+.conn-row{display:flex;align-items:center;gap:16px;background:#fff;border:1px solid var(--line);border-radius:var(--radius-card);box-shadow:var(--shadow-card);padding:18px 20px}
+.conn-icon{flex:none;width:42px;height:42px;border-radius:10px;background:var(--surface-blue);display:flex;align-items:center;justify-content:center;font-size:20px}
+.conn-body{flex:1;min-width:0}
+.conn-title{font-family:'Archivo',sans-serif;font-weight:700;font-size:15px;color:var(--ink)}
+.conn-measures{font-size:13px;color:var(--muted);margin-top:2px}
+.conn-status{flex:none;font-size:12px;font-weight:700;padding:6px 12px;border-radius:999px;white-space:nowrap}
+.conn-status.connected{background:var(--surface-mint);color:#0F7A5F}
+.conn-status.soon{background:var(--surface-soft);color:var(--muted)}
+.conn-status.manual{background:var(--surface-blue);color:var(--blue)}
+.conn-action{flex:none}
+.conn-action button{border-radius:var(--radius-btn);padding:9px 16px;font-weight:800;font-family:'Archivo',Inter,sans-serif;font-size:12.5px;cursor:pointer;white-space:nowrap}
+body.club-shell-page .conn-action button{border:0;background:var(--blue);color:#fff}
+.conn-manual{font-size:12px;color:var(--muted);margin-top:6px}
+.conn-manual a{color:var(--blue);font-weight:600;text-decoration:none}
+.conn-manual a:hover{text-decoration:underline}
+.import-toggle,.req-toggle{font-weight:700;font-size:12.5px;font-family:'Archivo',Inter,sans-serif;cursor:pointer;padding:0;margin-top:8px;margin-right:14px}
+body.club-shell-page .import-toggle,body.club-shell-page .req-toggle{background:none;border:0;color:var(--blue)}
+.import-panel,.req-panel{margin-top:12px;padding-top:12px;border-top:1px solid var(--line)}
+.import-row{display:flex;gap:8px;flex-wrap:wrap}
+input[type=url],input[type=text],input[type=number]{font:inherit;padding:9px 10px;border:1px solid var(--line);border-radius:8px;min-width:0;flex:1}
+.import-row button{border-radius:var(--radius-btn);padding:9px 16px;font-weight:800;font-family:'Archivo',Inter,sans-serif;font-size:12.5px;cursor:pointer}
+body.club-shell-page .import-row button{border:0;background:var(--blue);color:#fff}
+.import-status{font-size:13px;color:var(--muted);margin-top:8px;min-height:18px}
+.summary-fields{display:grid;grid-template-columns:1fr 1fr 140px;gap:10px;margin-top:12px}
+.summary-fields label{display:grid;gap:5px;font-size:12.5px;font-weight:700}
+.detected-note{font-size:12px;color:var(--muted);margin-top:8px}
+.req-list{font-size:12.5px;color:var(--muted);margin:8px 0 0;padding-left:18px;display:grid;gap:4px}
+.req-note{font-size:11.5px;color:var(--muted);margin-top:8px;font-style:italic}
+.states-panel{background:#fff;border:1px solid var(--line);border-radius:var(--radius-card);padding:16px 20px;margin-bottom:16px;font-size:13px;color:var(--muted)}
+.states-panel b{color:var(--ink)}
+[hidden]{display:none!important}
+</style></head>
+<body>
+<main>
+  <a class="crumb" href="/club">&larr; My Plan</a>
+  <h1>Connections</h1>
+  <p class="sub">Optional, read-only, disconnect anytime. Connecting a place you sell or market saves you from entering things by hand, but everything here also works fully with zero connections. You can always enter revenue, sales, and visits yourself on Performance.</p>
+
+  <div class="states-panel">
+    Three different things can show here, and they mean different levels of trust: <b>Connected</b> means Scrolly is reading real, authorized data directly from that account. <b>Catalog imported</b> means we read your store's public product list, nothing private, and nothing connected to live revenue. <b>Manual</b> means you're telling us the numbers yourself on Performance. A catalog import is never shown as connected revenue.
+  </div>
+
+  <div class="conn-list" id="connList">Loading…</div>
+</main>
+<script>
+const K='scrolly_club_access_token';
+const p=new URLSearchParams(location.search);
+if(p.get('token')){sessionStorage.setItem(K,p.get('token'));history.replaceState({},'',location.pathname)}
+const token=sessionStorage.getItem(K);
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+// Real categories Scrolly measures growth from today. Store and Website
+// Analytics are two separate technical integrations underneath (see
+// public-store-import.mjs's describeAuthorizedIntegrationRequirements,
+// both notConfigured:true) but are shown as ONE "Your Store & Website"
+// card. From the member's side, it's all "my sales system." Social
+// platforms have no backend integration yet: honestly "Coming soon," never
+// a fake connect flow.
+function renderList(connections, requirements) {
+  const storeConnected = connections?.store?.status === 'connected';
+  const analyticsConnected = connections?.analytics?.status === 'connected';
+  const rows = [
+    {
+      icon: '🛒', title: 'Your Store & Website', key: 'store',
+      measures: 'Orders, revenue, average order value, site visits, and traffic sources',
+      connected: storeConnected && analyticsConnected,
+      manual: 'You can enter revenue, sales, and visits manually on',
+      reqKeys: ['shopify', 'googleAnalytics'],
+    },
+    { icon: '📷', title: 'Instagram', measures: 'Reach and engagement on your posts', connected: false, key: 'instagram' },
+    { icon: '🎵', title: 'TikTok', measures: 'Views and engagement on your videos', connected: false, key: 'tiktok' },
+    { icon: '💼', title: 'LinkedIn', measures: 'Reach and engagement on your posts', connected: false, key: 'linkedin' },
+    { icon: '▶️', title: 'YouTube', measures: 'Views and watch time on your videos', connected: false, key: 'youtube' },
+    { icon: '📌', title: 'Pinterest', measures: 'Saves and engagement on your pins', connected: false, key: 'pinterest' },
+  ];
+  document.getElementById('connList').innerHTML = rows.map((r) => `
+    <div class="conn-row">
+      <div class="conn-icon">${r.icon}</div>
+      <div class="conn-body">
+        <div class="conn-title">${esc(r.title)}</div>
+        <div class="conn-measures">${esc(r.measures)}</div>
+        ${r.key === 'store' ? `<button type="button" class="import-toggle" id="importToggle">Import your Shopify catalog</button>
+          <div class="import-panel" id="importPanel" hidden>
+            <p class="conn-manual" style="margin-top:0">Works with public Shopify storefronts. Reads product titles and prices, nothing private, no login. This fills in your business profile; it doesn't connect live revenue.</p>
+            <div class="import-row">
+              <input type="url" id="storeUrl" placeholder="yourstore.com">
+              <button type="button" id="checkBtn">Check this URL</button>
+            </div>
+            <p class="import-status" id="importStatus"></p>
+            <div id="summaryBlock" hidden>
+              <p class="detected-note" id="detectedNote"></p>
+              <div class="summary-fields">
+                <label>Offer<input type="text" id="offerField"></label>
+                <label>Who buys it<input type="text" id="audienceField" placeholder="e.g. busy professionals"></label>
+                <label>Price (USD)<input type="number" id="priceField" min="0" step="0.01"></label>
+              </div>
+              <div class="import-row" style="margin-top:10px">
+                <button type="button" id="saveProfileBtn">Save to my profile</button>
+              </div>
+              <p class="import-status" id="saveStatus"></p>
+            </div>
+          </div>` : ''}
+        ${r.reqKeys ? `<button type="button" class="req-toggle" data-req="${r.key}">What would it take to connect this for real?</button>
+          <div class="req-panel" id="reqPanel-${r.key}" hidden></div>` : ''}
+        ${r.manual ? `<p class="conn-manual">${esc(r.manual)} <a href="/club/performance">Performance</a>.</p>` : ''}
+      </div>
+      <span class="conn-status ${r.connected ? 'connected' : 'soon'}">${r.connected ? 'Connected' : 'Coming soon'}</span>
+    </div>`).join('');
+
+  const toggle = document.getElementById('importToggle');
+  const panel = document.getElementById('importPanel');
+  if (toggle) toggle.addEventListener('click', () => { panel.hidden = !panel.hidden; });
+  wireImportForm();
+  wireRequirementToggles(rows, requirements);
+}
+
+function wireRequirementToggles(rows, requirements) {
+  document.querySelectorAll('.req-toggle').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const key = btn.dataset.req;
+      const row = rows.find((r) => r.key === key);
+      const panel = document.getElementById('reqPanel-' + key);
+      if (panel.hidden && !panel.dataset.filled) {
+        panel.dataset.filled = '1';
+        panel.innerHTML = (row.reqKeys || []).map((rk) => {
+          const info = requirements && requirements[rk];
+          if (!info) return '';
+          const label = { shopify: 'Store order/revenue data (Shopify Admin API)', googleAnalytics: 'Website visit data (Google Analytics)' }[rk] || rk;
+          return `<p class="conn-manual" style="margin-top:8px"><b>${esc(label)}:</b> requires ${info.requires.map(esc).join('; ')}.</p>`;
+        }).join('') + '<p class="req-note">Not yet set up in this environment. Nothing here is a live connection until this exists and a member has authorized it.</p>';
+      }
+      panel.hidden = !panel.hidden;
+    });
+  });
+}
+
+function wireImportForm() {
+  const checkBtn = document.getElementById('checkBtn');
+  if (!checkBtn) return;
+  checkBtn.addEventListener('click', async () => {
+    const url = document.getElementById('storeUrl').value.trim();
+    const status = document.getElementById('importStatus');
+    document.getElementById('summaryBlock').hidden = true;
+    if (!url) { status.textContent = 'Enter a store URL first.'; return; }
+    if (!token) { status.textContent = 'Open Scrolly Club from your account to continue.'; return; }
+    status.textContent = 'Checking…';
+    try {
+      const r = await fetch('/club/connections/import', { method: 'POST', headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' }, body: JSON.stringify({ url }) });
+      const d = await r.json();
+      if (!d.ok) {
+        const messages = {
+          invalid_url: 'That doesn\'t look like a valid URL.',
+          unreachable: 'Could not reach that URL.',
+          not_a_public_shopify_store: 'No public Shopify catalog found at that URL.',
+          no_products_found: 'That store has no public products listed.',
+          no_prices_found: 'Found products but no prices to read.',
+        };
+        status.textContent = messages[d.reason] || 'Could not import from that URL.';
+        return;
+      }
+      // Quiet, not a "wow" audit: we don't headline product counts or price
+      // ranges here. Just confirm we found something and let the member
+      // review and edit the prefilled fields at their own pace.
+      status.textContent = 'Found your catalog. Review the details below before saving.';
+      document.getElementById('detectedNote').textContent = `For example: "${d.imported.sampleTitles[0] || 'one of your products'}." Edit anything below before saving.`;
+      document.getElementById('offerField').value = d.suggestedOffer || '';
+      document.getElementById('priceField').value = d.suggestedPriceUsd ?? '';
+      document.getElementById('summaryBlock').hidden = false;
+    } catch (e) {
+      status.textContent = 'Could not reach the server.';
+    }
+  });
+
+  document.getElementById('saveProfileBtn').addEventListener('click', async () => {
+    const status = document.getElementById('saveStatus');
+    status.textContent = 'Saving…';
+    const offer = document.getElementById('offerField').value;
+    const priceUsd = document.getElementById('priceField').value;
+    const audience = document.getElementById('audienceField').value;
+    try {
+      const r = await fetch('/club/connections/apply-import', { method: 'POST', headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' }, body: JSON.stringify({ offer, priceUsd, audience }) });
+      const d = await r.json();
+      status.textContent = d.ok ? 'Saved to your business profile.' : 'Could not save.';
+    } catch (e) {
+      status.textContent = 'Could not reach the server.';
+    }
+  });
+}
+
+async function load() {
+  let connections = null;
+  let requirements = null;
+  if (token) {
+    try {
+      const overview = await fetch('/club/overview/state', { headers: { Authorization: `Bearer ${token}` } }).then(r => r.json());
+      connections = overview.ok ? overview.connections : null;
+    } catch (e) {}
+  }
+  try {
+    const reqRes = await fetch('/club/connections/requirements').then(r => r.json());
+    requirements = reqRes.ok ? reqRes.integrations : null;
+  } catch (e) {}
+  renderList(connections, requirements);
+}
+load();
+</script>
+<script src="/club/club-shell.js"></script>
+</body></html>

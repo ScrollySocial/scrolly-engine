@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Scrolly Club — Content Studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/club/club-shell.css">
+<style>
+:root{--ink:var(--scrolly-navy);--muted:var(--slate);--line:var(--border);--blue:var(--scrolly-blue);--bg:var(--surface-soft)}
+*{box-sizing:border-box}
+body{margin:0;font:16px/1.5 Inter,-apple-system,sans-serif;color:var(--ink);background:var(--bg)}
+main{max-width:1000px;margin:0 auto;padding:24px 20px}
+h1{font-size:clamp(2rem,5vw,3rem);margin-bottom:6px}
+h2{font-size:1.05rem;margin:0}
+.lede,.muted{color:var(--muted)}
+.tier-note{font-size:12.5px;color:var(--muted);background:var(--surface-blue);border:1px solid var(--line);border-radius:8px;padding:9px 12px;margin:12px 0}
+.panel{background:#fff;border:1px solid var(--line);border-radius:var(--radius-card);padding:22px;margin-top:20px}
+.idea-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px;margin-top:14px}
+.idea-card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:16px;display:flex;flex-direction:column}
+.idea-channel{display:inline-flex;font-size:10.5px;font-weight:700;color:var(--blue);background:var(--surface-blue);padding:3px 9px;border-radius:999px;text-transform:uppercase;letter-spacing:.03em;margin-bottom:8px;width:fit-content}
+.idea-text{font-family:Poppins,Inter,sans-serif;font-weight:700;font-size:14px;color:var(--ink);margin-bottom:6px;line-height:1.35}
+.idea-purpose{font-size:12px;color:var(--muted);line-height:1.4;flex:1}
+.idea-role{font-size:11px;color:var(--muted);margin-top:8px;font-weight:600}
+.adapt-btn{margin-top:12px;border-radius:8px;padding:8px 12px;font-weight:700;font-size:12.5px;cursor:pointer}
+body.club-shell-page .adapt-btn{border:1px solid var(--blue);background:#fff;color:var(--blue)}
+body.club-shell-page .adapt-btn:hover{background:var(--surface-blue)}
+.platform-tabs{display:flex;gap:6px;flex-wrap:wrap;margin:14px 0 10px}
+.platform-tab{border-radius:999px;padding:6px 14px;font-size:12.5px;font-weight:700;cursor:pointer}
+body.club-shell-page .platform-tab{border:1px solid var(--line);background:#fff;color:var(--muted)}
+body.club-shell-page .platform-tab[aria-pressed="true"]{background:var(--blue);color:#fff;border-color:var(--blue)}
+textarea.adapt-text{width:100%;min-height:120px;padding:12px;border:1px solid var(--line);border-radius:8px;font:14px/1.5 Inter,sans-serif;resize:vertical}
+.adapt-actions{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.btn{border-radius:var(--radius-btn);padding:10px 16px;font-weight:700;font-family:Poppins,Inter,sans-serif;font-size:13px;cursor:pointer}
+body.club-shell-page .btn{border:0}
+body.club-shell-page .btn-primary{background:var(--blue);color:#fff}
+body.club-shell-page .btn-secondary{background:#fff;color:var(--ink);border:1px solid var(--line)}
+body.club-shell-page .btn-danger{background:#fff;color:#B91C1C;border:1px solid #FCA5A5}
+.adapt-status{font-size:12px;color:var(--muted);margin-top:6px;min-height:16px}
+.saved-list{display:grid;gap:10px;margin-top:14px}
+.saved-item{border:1px solid var(--line);border-radius:10px;padding:14px;background:var(--surface-soft)}
+.saved-meta{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:6px}
+.saved-platform{font-size:10.5px;font-weight:700;color:var(--blue);text-transform:uppercase;letter-spacing:.03em}
+.saved-date{font-size:11px;color:var(--muted)}
+.saved-text{font-size:13.5px;white-space:pre-wrap;margin-bottom:8px}
+.coming-soon{border:1px dashed var(--line);border-radius:10px;padding:14px;color:var(--muted);font-size:12.5px}
+[hidden]{display:none!important}
+</style></head>
+<body>
+<main>
+  <h1>Content Studio</h1>
+  <p class="lede">Choose an idea, adapt it for a platform, edit it, and save it — everything here is built from your own real inputs.</p>
+  <div id="app" class="panel"><p class="muted">Loading…</p></div>
+
+  <section class="panel" id="savedSection" hidden>
+    <h2>Your Saved Content</h2>
+    <div id="savedList" class="saved-list"></div>
+  </section>
+</main>
+<script>
+const TOKEN_KEY='scrolly_club_access_token';
+const params=new URLSearchParams(location.search);
+if(params.get('token')){sessionStorage.setItem(TOKEN_KEY,params.get('token'));history.replaceState({},'',location.pathname)}
+const token=sessionStorage.getItem(TOKEN_KEY);
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+const PLATFORMS = [
+  { key: 'generic', label: 'As written' },
+  { key: 'instagram', label: 'Instagram caption' },
+  { key: 'tiktok', label: 'Video hook' },
+  { key: 'email', label: 'Email subject' },
+];
+
+// Pure reformatting of the member's own idea text -- no new facts, no
+// claims about performance or trends. Labeled in the UI as a quick
+// reformat the member should still read and edit before using.
+function adapt(ideaText, platformKey) {
+  const clean = ideaText.trim().replace(/\.$/, '');
+  switch (platformKey) {
+    case 'instagram':
+      return `${ideaText}\n\nSave this for later 👇`;
+    case 'tiktok':
+      return `Wait, ${clean.charAt(0).toLowerCase()}${clean.slice(1)}...`;
+    case 'email':
+      return clean.length > 60 ? clean.slice(0, 57) + '…' : clean;
+    default:
+      return ideaText;
+  }
+}
+
+async function api(path, options) {
+  const headers = Object.assign({}, options && options.headers, token ? { Authorization: `Bearer ${token}` } : {});
+  const res = await fetch(path, Object.assign({}, options, { headers }));
+  return res.json();
+}
+
+let savedItems = [];
+
+function renderSaved() {
+  const section = document.getElementById('savedSection');
+  const list = document.getElementById('savedList');
+  if (!savedItems.length) { section.hidden = true; return; }
+  section.hidden = false;
+  list.innerHTML = savedItems.map(item => `
+    <div class="saved-item" data-id="${esc(item.id)}">
+      <div class="saved-meta">
+        <span class="saved-platform">${esc(item.platform)}</span>
+        <span class="saved-date">${esc(new Date(item.savedAt).toLocaleDateString())}</span>
+      </div>
+      <div class="saved-text">${esc(item.text)}</div>
+      <button type="button" class="btn btn-danger delete-btn" data-id="${esc(item.id)}">Delete</button>
+    </div>`).join('');
+  list.querySelectorAll('.delete-btn').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const id = btn.getAttribute('data-id');
+      const body = await api('/club/content/delete', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id }) });
+      if (body.ok) { savedItems = body.items; renderSaved(); }
+    });
+  });
+}
+
+function ideaCard(idea, index) {
+  return `<div class="idea-card">
+    <span class="idea-channel">${esc(idea.channel || 'Any channel')}</span>
+    <div class="idea-text">${esc(idea.idea)}</div>
+    ${idea.purpose ? `<div class="idea-purpose">${esc(idea.purpose)}</div>` : ''}
+    <div class="idea-role">${esc(idea.role)}${idea.angle ? ' · ' + esc(idea.angle) : ''}</div>
+    <button type="button" class="adapt-btn" data-idx="${index}">Adapt this idea →</button>
+    <div class="adapt-panel" data-panel="${index}" hidden></div>
+  </div>`;
+}
+
+function wireAdaptButtons(ideas) {
+  document.querySelectorAll('.adapt-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const idx = Number(btn.getAttribute('data-idx'));
+      const idea = ideas[idx];
+      const panel = document.querySelector(`.adapt-panel[data-panel="${idx}"]`);
+      const alreadyOpen = !panel.hidden;
+      document.querySelectorAll('.adapt-panel').forEach(p => { p.hidden = true; });
+      if (alreadyOpen) return;
+      panel.hidden = false;
+      let currentPlatform = 'generic';
+      panel.innerHTML = `
+        <div class="platform-tabs">${PLATFORMS.map(p => `<button type="button" class="platform-tab" data-platform="${p.key}" aria-pressed="${p.key === 'generic'}">${esc(p.label)}</button>`).join('')}</div>
+        <textarea class="adapt-text">${esc(adapt(idea.idea, 'generic'))}</textarea>
+        <div class="adapt-actions">
+          <button type="button" class="btn btn-secondary copy-btn">Copy</button>
+          <button type="button" class="btn btn-primary save-btn">Save to Library</button>
+        </div>
+        <p class="adapt-status"></p>`;
+      const textarea = panel.querySelector('.adapt-text');
+      const status = panel.querySelector('.adapt-status');
+      panel.querySelectorAll('.platform-tab').forEach(tab => {
+        tab.addEventListener('click', () => {
+          currentPlatform = tab.getAttribute('data-platform');
+          panel.querySelectorAll('.platform-tab').forEach(t => t.setAttribute('aria-pressed', String(t === tab)));
+          textarea.value = adapt(idea.idea, currentPlatform);
+          status.textContent = '';
+        });
+      });
+      panel.querySelector('.copy-btn').addEventListener('click', async () => {
+        try {
+          await navigator.clipboard.writeText(textarea.value);
+          status.textContent = 'Copied.';
+        } catch (e) {
+          textarea.select();
+          status.textContent = 'Select-all applied — press Ctrl/Cmd+C to copy.';
+        }
+      });
+      panel.querySelector('.save-btn').addEventListener('click', async () => {
+        status.textContent = 'Saving…';
+        const body = await api('/club/content/save', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ sourceIdea: idea.idea, platform: PLATFORMS.find(p => p.key === currentPlatform).label, text: textarea.value }),
+        });
+        if (body.ok) {
+          status.textContent = 'Saved to your library.';
+          savedItems.unshift(body.item);
+          renderSaved();
+        } else {
+          status.textContent = 'Could not save.';
+        }
+      });
+    });
+  });
+}
+
+async function load() {
+  const app = document.getElementById('app');
+  if (!token) { app.innerHTML = '<p class="muted">Open Scrolly Club from your account to continue.</p>'; return; }
+  try {
+    const body = await api('/club/content/state');
+    if (!body.ok) {
+      if (body.reason === 'module1_not_complete') {
+        app.innerHTML = `<p class="muted">Complete your $1K Starting Point first — that's the minimum Content Studio needs.</p><a class="btn btn-primary" href="/club">Go there</a>`;
+      } else if (window.ClubShell) {
+        window.ClubShell.renderAccessExpired(app);
+      } else {
+        app.innerHTML = '<p class="muted">Your access link is missing or expired.</p>';
+      }
+      return;
+    }
+    savedItems = body.savedItems || [];
+    const ideas = body.ideas || [];
+    if (!ideas.length) {
+      app.innerHTML = '<p class="muted">Add your offer and audience in Module 1 to generate starter ideas.</p>';
+      return;
+    }
+    const note = body.tier === 'quick'
+      ? 'Quick ideas below are built from your Module 1 profile alone. Complete "Give Them a Reason to Pay Attention" (Module 5) — a single short step — for ideas personalized to your buyer\'s actual triggers, objections, and channels.'
+      : `${ideas.length} ideas personalized to your buyer, triggers, and channels.`;
+    app.innerHTML = `<div class="tier-note">${esc(note)}</div><div class="idea-grid">${ideas.map(ideaCard).join('')}</div>`;
+    wireAdaptButtons(ideas);
+    renderSaved();
+  } catch (e) {
+    app.innerHTML = '<p class="muted">Could not reach the server.</p>';
+  }
+}
+load();
+</script>
+<script src="/club/club-shell.js"></script>
+</body></html>

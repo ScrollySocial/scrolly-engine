@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/club/club-shell.css">
+<title>Choose How People Will Find You</title>
+<style>
+  :root { --indigo:var(--scrolly-blue); --indigo-dark:#0e5fe0; --ink:var(--scrolly-navy); --ink-soft:var(--slate); --line:var(--border); --bg-alt:var(--surface-soft);
+    --opportunity:#b45309; --ontrack:#0891b2; --strength:#15803d; --insufficient:#6b7280; --notestablished:#9ca3af; --exists:#15803d; --hypothesis:#7c3aed; }
+  * { box-sizing: border-box; }
+  body { font-family: Inter, -apple-system, Arial, sans-serif; background: var(--bg-alt); color: var(--ink); margin: 0; padding: 24px; }
+  .wrap { max-width: 720px; margin: 0 auto; }
+  .eyebrow { font-size: 12px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: var(--indigo); margin-bottom: 6px; }
+  h1 { font-size: 26px; margin: 0 0 8px; }
+  h2 { font-size: 17px; margin: 0 0 12px; }
+  h3 { font-size: 14px; margin: 16px 0 6px; }
+  .sub { color: var(--ink-soft); margin-bottom: 24px; line-height: 1.5; }
+  .card { background: #fff; border: 1px solid var(--line); border-radius: 10px; padding: 20px; margin-bottom: 16px; }
+  label { display: block; font-size: 13px; font-weight: 600; margin: 12px 0 4px; }
+  input, select, textarea { width: 100%; padding: 8px 10px; border: 1px solid var(--line); border-radius: 6px; font-size: 14px; font-family: inherit; }
+  .row { display: flex; gap: 12px; }
+  .row > div { flex: 1; }
+  button { border-radius: 999px; padding: 10px 22px; font-weight: 700; font-size: 14px; cursor: pointer; margin-top: 16px; }
+  body.club-shell-page button { background: var(--indigo); color: #fff; border: none; }
+  button:hover { background: var(--indigo-dark); }
+  .error { color: #b91c1c; font-size: 13px; margin-top: 8px; }
+  .hint { font-size: 12px; color: var(--ink-soft); margin-top: 4px; line-height: 1.5; }
+  [hidden] { display: none !important; }
+
+  .check-list { list-style: none; margin: 8px 0; padding: 0; }
+  .check-list li { display: flex; align-items: center; gap: 8px; padding: 4px 0; flex-wrap: wrap; }
+  .check-list li label.opt { font-weight: 400; margin: 0; flex: 1; min-width: 160px; }
+  .basis-toggle { display: none; gap: 10px; font-size: 12px; font-weight: 400; }
+  .basis-toggle.show { display: flex; }
+  .basis-toggle label { font-weight: 400; margin: 0; display: flex; align-items: center; gap: 4px; }
+
+  .dim-row { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; padding: 10px 0; border-bottom: 1px solid var(--line); }
+  .dim-row:last-child { border-bottom: none; }
+  .dim-headline { font-weight: 700; font-size: 14px; }
+  .dim-rationale { font-size: 13px; color: var(--ink-soft); margin-top: 2px; line-height: 1.4; }
+  .badge { flex: 0 0 auto; font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 999px; color: #fff; white-space: nowrap; }
+  .badge.constrained { background: var(--notestablished); }
+
+  .plan-card { border: 1px solid var(--indigo); }
+  .plan-row { display: flex; gap: 6px; padding: 8px 0; border-bottom: 1px solid var(--line); }
+  .plan-row:last-child { border-bottom: none; }
+  .plan-key { flex: 0 0 200px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .03em; color: var(--ink-soft); }
+  .plan-value { flex: 1; font-size: 14px; }
+  .plan-value ul { margin: 0; padding-left: 18px; }
+  .plan-next { background: var(--bg-alt); border-left: 4px solid var(--indigo); padding: 12px 16px; border-radius: 4px; margin-top: 14px; }
+  .plan-next-cta { font-weight: 700; margin-top: 6px; }
+  .confidence-badge { display: inline-block; font-size: 12px; font-weight: 700; padding: 4px 12px; border-radius: 999px; color: #fff; margin-top: 6px; background: var(--insufficient); }
+  .confidence-badge.working_hypothesis { background: var(--hypothesis); }
+  .confidence-badge.partially_validated { background: var(--ontrack); }
+  .confidence-badge.evidence_backed { background: var(--strength); }
+  .not-now-item { padding: 8px 0; border-bottom: 1px solid var(--line); }
+  .not-now-item:last-child { border-bottom: none; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="eyebrow">Scrolly $1K Club &middot; Module 4 of 7</div>
+  <h1>Choose How People Will Find You</h1>
+  <div class="sub">This isn't "your audience uses Instagram, so use Instagram." It's a prioritization system — one place to focus first, at most one supporting channel, and a clear list of what we're deliberately not trying to do right now.</div>
+
+  <div id="gate" class="card" hidden>
+    <p>You'll need to open $1K Club from your Scrolly account to continue.</p>
+    <p class="hint">Log in at scrollyseo.com, go to My Account, and click "Go to $1K Club".</p>
+    <button type="button" onclick="location.href='https://scrollyseo.com/my-account/'">Go to My Account</button>
+  </div>
+  <div id="needsModule1" class="card" hidden>
+    <p>Module 1 isn't finished yet — Module 4 builds on your $1K Starting Point.</p>
+    <button type="button" onclick="location.href='/club'">Go to Module 1</button>
+  </div>
+  <div id="needsModule2" class="card" hidden>
+    <p>Module 2 isn't finished yet — Module 4 builds on your offer.</p>
+    <button type="button" onclick="location.href='/club/module2'">Go to Module 2</button>
+  </div>
+  <div id="needsModule3" class="card" hidden>
+    <p>Module 3 isn't finished yet — Module 4 builds directly on your Customer Discovery Map.</p>
+    <button type="button" onclick="location.href='/club/module3'">Go to Module 3</button>
+  </div>
+  <div id="checking" class="card"><p>Checking your access...</p></div>
+
+  <form id="channelForm" class="card stepper-form" hidden>
+    <div class="step" data-step="1">
+      <h2>1. How much marketing time do you realistically have?</h2>
+      <label>Hours per week available for marketing</label>
+      <input id="marketingHoursPerWeek" type="number" min="0" step="0.5" required />
+      <div class="hint">A rough number is fine — this isn't about building a schedule.</div>
+    </div>
+
+    <div class="step" data-step="2">
+      <h2>2. What can you realistically create?</h2>
+      <div class="hint">Check anything you can genuinely produce on an ongoing basis.</div>
+      <ul class="check-list" id="formatList"></ul>
+    </div>
+
+    <div class="step" data-step="3">
+      <h2>3. What do you already have?</h2>
+      <div class="hint">Check anything that already exists. For each, tell us honestly whether it's just an account/listing, or whether there's real activity/traction behind it.</div>
+      <ul class="check-list" id="assetList"></ul>
+      <label><input type="checkbox" id="noneYetAssets" style="width:auto;display:inline;margin-right:6px;">None yet</label>
+    </div>
+
+    <div class="step" data-step="4">
+      <h2>4. Anything you won't use?</h2>
+      <div class="hint">Channels you genuinely can't or won't use right now. We'll still explain the tradeoff if one of these would otherwise have been the strongest option.</div>
+      <ul class="check-list" id="constraintList"></ul>
+    </div>
+
+    <button type="button" id="submitBtn">See my $1K Channel Plan</button>
+    <div id="formError" class="error" hidden></div>
+  </form>
+
+  <div id="results" hidden></div>
+</div>
+
+<script>
+const $ = (id) => document.getElementById(id);
+const TOKEN_KEY = 'scrolly_club_access_token';
+
+const params = new URLSearchParams(location.search);
+if (params.get('token')) {
+  sessionStorage.setItem(TOKEN_KEY, params.get('token'));
+  history.replaceState({}, '', location.pathname);
+}
+function getToken() { return sessionStorage.getItem(TOKEN_KEY); }
+async function api(path, options = {}) {
+  const token = getToken();
+  const headers = { ...(options.headers || {}) };
+  if (token) headers['Authorization'] = 'Bearer ' + token;
+  const res = await fetch(path, { ...options, headers });
+  return res.json();
+}
+function label(v) { return String(v).replace(/_/g, ' '); }
+
+const FEASIBLE_FORMATS = ['short_form_video','talking_head_video','long_form_video','writing_articles','short_written_posts','photography_images','graphics_design','audio','live_conversation_networking','direct_outreach','product_demonstrations','none_unsure'];
+const EXISTING_ASSET_TYPES = ['existing_social_audience','website_traffic','search_visibility','email_list','marketplace_listings_sales','referral_relationships','local_reputation','community_presence','youtube_library','pinterest_account_content','existing_content_library'];
+const CHANNEL_UNIVERSE = ['google_search','google_maps_local_search','youtube','instagram','tiktok','pinterest','threads','facebook','reddit_forums','etsy','amazon','referrals_word_of_mouth','email_newsletters','professional_communities','marketplaces_directories','in_person_local_discovery'];
+
+function renderFormatList() {
+  $('formatList').innerHTML = FEASIBLE_FORMATS.map((f, i) => `<li><input type="checkbox" id="fmt_${i}" data-val="${f}"><label class="opt" for="fmt_${i}">${label(f)}</label></li>`).join('');
+}
+function renderConstraintList() {
+  $('constraintList').innerHTML = CHANNEL_UNIVERSE.map((c, i) => `<li><input type="checkbox" id="con_${i}" data-val="${c}"><label class="opt" for="con_${i}">${label(c)}</label></li>`).join('');
+}
+function renderAssetList() {
+  $('assetList').innerHTML = EXISTING_ASSET_TYPES.map((a, i) => `
+    <li>
+      <input type="checkbox" id="asset_${i}" data-val="${a}" onchange="document.getElementById('assetlevel_${i}').classList.toggle('show', this.checked)">
+      <label class="opt" for="asset_${i}">${label(a)}</label>
+      <div class="basis-toggle" id="assetlevel_${i}">
+        <label><input type="radio" name="assetlevel_${i}" value="account_only" checked> Just the account/listing</label>
+        <label><input type="radio" name="assetlevel_${i}" value="real_traction"> Real traction</label>
+      </div>
+    </li>`).join('');
+}
+renderFormatList();
+renderConstraintList();
+renderAssetList();
+
+function collectChecked(prefix, values) {
+  return values.filter((v, i) => $(`${prefix}_${i}`)?.checked);
+}
+function collectAssets() {
+  if ($('noneYetAssets').checked) return [];
+  const assets = [];
+  EXISTING_ASSET_TYPES.forEach((type, i) => {
+    const box = $('asset_' + i);
+    if (box && box.checked) {
+      const level = document.querySelector(`input[name="assetlevel_${i}"]:checked`).value;
+      assets.push({ type, level, detail: null });
+    }
+  });
+  return assets;
+}
+
+$('noneYetAssets').addEventListener('change', (e) => {
+  document.querySelectorAll('#assetList input[type=checkbox]').forEach((b) => { b.checked = false; b.disabled = e.target.checked; });
+});
+
+async function init() {
+  if (!getToken()) { $('checking').hidden = true; $('gate').hidden = false; return; }
+  const ctx = await api('/club/module4/context');
+  $('checking').hidden = true;
+  if (!ctx.ok) {
+    if (ctx.reason === 'module1_not_complete' || ctx.reason === 'not_a_club_member') { $('needsModule1').hidden = false; return; }
+    if (ctx.reason === 'module2_not_complete') { $('needsModule2').hidden = false; return; }
+    if (ctx.reason === 'module3_not_complete') { $('needsModule3').hidden = false; return; }
+    $('gate').hidden = false;
+    return;
+  }
+
+  if (ctx.existingChannelPlan) {
+    const p = ctx.existingChannelPlan;
+    if (p.marketingHoursPerWeek != null) $('marketingHoursPerWeek').value = p.marketingHoursPerWeek;
+    (p.feasibleFormats || []).forEach((f) => { const i = FEASIBLE_FORMATS.indexOf(f); if (i >= 0 && $('fmt_' + i)) $('fmt_' + i).checked = true; });
+    (p.hardConstraints || []).forEach((c) => { const i = CHANNEL_UNIVERSE.indexOf(c); if (i >= 0 && $('con_' + i)) $('con_' + i).checked = true; });
+    if ((p.existingAssets || []).length === 0) { $('noneYetAssets').checked = true; }
+    (p.existingAssets || []).forEach((a) => {
+      const i = EXISTING_ASSET_TYPES.indexOf(a.type);
+      if (i >= 0 && $('asset_' + i)) {
+        $('asset_' + i).checked = true;
+        document.getElementById('assetlevel_' + i).classList.add('show');
+        const radio = document.querySelector(`input[name="assetlevel_${i}"][value="${a.level}"]`);
+        if (radio) radio.checked = true;
+      }
+    });
+  }
+
+  const existing = await api('/club/module4/results');
+  if (existing.ok) { renderResults(existing.results); return; }
+
+  $('channelForm').hidden = false;
+}
+
+function planItem(v) { return `<li>${v}</li>`; }
+
+$('submitBtn').addEventListener('click', async () => {
+  $('formError').hidden = true;
+  const answers = {
+    marketingHoursPerWeek: $('marketingHoursPerWeek').value === '' ? null : Number($('marketingHoursPerWeek').value),
+    feasibleFormats: collectChecked('fmt', FEASIBLE_FORMATS),
+    existingAssets: collectAssets(),
+    hardConstraints: collectChecked('con', CHANNEL_UNIVERSE),
+  };
+  if (answers.marketingHoursPerWeek === null) { $('formError').textContent = 'Please enter your available marketing hours per week.'; $('formError').hidden = false; return; }
+  if (answers.feasibleFormats.length === 0) { $('formError').textContent = 'Please check at least one format you can realistically create (or "none/unsure").'; $('formError').hidden = false; return; }
+
+  const body = await api('/club/module4/submit', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ answers }) });
+  if (!body.ok) { $('formError').textContent = 'Could not complete Module 4: ' + body.reason; $('formError').hidden = false; return; }
+  renderResults(body.results);
+});
+
+function renderResults(results) {
+  const { channelPlan, confidence } = results;
+  const notNowRow = (n) => `<div class="not-now-item"><div class="dim-headline">${n.label}${n.constrained ? ' <span class="badge constrained">your constraint</span>' : ''}</div><div class="dim-rationale">${n.reason}</div></div>`;
+
+  $('results').innerHTML = `
+    <div class="card">
+      <h2>Confidence</h2>
+      <span class="confidence-badge ${confidence.key}">${confidence.label}</span>
+      <p class="hint">${confidence.explanation}</p>
+    </div>
+
+    <div class="card">
+      <h2>Not Now</h2>
+      ${channelPlan.notNow.length ? channelPlan.notNow.map(notNowRow).join('') : '<p class="hint">Every plausible channel is already part of your plan.</p>'}
+    </div>
+
+    <div class="card plan-card">
+      <h2>Your $1K Channel Plan</h2>
+      <div class="plan-row"><div class="plan-key">Primary channel</div><div class="plan-value">${channelPlan.primaryChannel || 'Not enough evidence yet'}</div></div>
+      <div class="plan-row"><div class="plan-key">Job</div><div class="plan-value">${label(channelPlan.primaryJob || '')}</div></div>
+      <div class="plan-row"><div class="plan-key">Why this is primary</div><div class="plan-value">${channelPlan.whyPrimary}</div></div>
+      <div class="plan-row"><div class="plan-key">What early evidence looks like</div><div class="plan-value">${channelPlan.earlyEvidence.length ? '<ul>' + channelPlan.earlyEvidence.map(planItem).join('') + '</ul>' : '<span class="hint">Not applicable yet</span>'}</div></div>
+      <div class="plan-row"><div class="plan-key">Secondary channel</div><div class="plan-value">${channelPlan.secondaryChannel}</div></div>
+      <div class="plan-row"><div class="plan-key">Job</div><div class="plan-value">${channelPlan.secondaryJob ? label(channelPlan.secondaryJob) : '<span class="hint">N/A</span>'}</div></div>
+      <div class="plan-row"><div class="plan-key">Why secondary</div><div class="plan-value">${channelPlan.whySecondary}</div></div>
+      <div class="plan-row"><div class="plan-key">Compounding asset</div><div class="plan-value">${channelPlan.compoundingAsset}${channelPlan.compoundingIsPrimary ? ' <span class="hint">(same as your Primary Channel)</span>' : ''}${channelPlan.compoundingIsSecondary ? ' <span class="hint">(same as your Secondary Channel)</span>' : ''}</div></div>
+      <div class="plan-row"><div class="plan-key">Why it compounds</div><div class="plan-value">${channelPlan.whyItCompounds}</div></div>
+      <div class="plan-row"><div class="plan-key">Available capacity</div><div class="plan-value">${channelPlan.availableCapacity.hoursPerWeek} hrs/week &middot; ${channelPlan.formatsToLeanInto.map(label).join(', ')}</div></div>
+      <div class="plan-row"><div class="plan-key">Channel strategy</div><div class="plan-value">${channelPlan.strategySynthesis}</div></div>
+      <div class="plan-row"><div class="plan-key">Channel experiment</div><div class="plan-value">${channelPlan.channelExperiment || ''}</div></div>
+      <div class="plan-next">
+        <div>${results.nextClubStep.transition}</div>
+        <div class="plan-next-cta"><a href="/club/module5" style="color: var(--indigo);">${results.nextClubStep.cta}</a></div>
+      </div>
+    </div>
+  `;
+  $('results').hidden = false;
+  $('channelForm').hidden = true;
+  $('gate').hidden = true;
+  $('needsModule1').hidden = true;
+  $('needsModule2').hidden = true;
+  $('needsModule3').hidden = true;
+}
+
+init();
+</script>
+<script src="/club/club-shell.js"></script>
+<script src="/club/module-stepper.js"></script>
+</body>
+</html>

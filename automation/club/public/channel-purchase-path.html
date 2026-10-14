@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Scrolly Club: Make It Easy to Buy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800;900&family=Public+Sans:wght@400;500;600;700&family=Caveat+Brush&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/club/club-shell.css">
+<link rel="stylesheet" href="/club/channel-module.css">
+<style>
+.journey{display:grid;grid-template-columns:1fr;gap:0;border:1px solid var(--line);border-radius:var(--radius-card);box-shadow:var(--shadow-card);overflow:hidden;margin:14px 0}
+.journey-tag{background:var(--ink);color:#fff;padding:8px 14px;font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.04em}
+.journey-stage{display:grid;grid-template-columns:130px 1fr;gap:12px;padding:14px;border-bottom:1px solid var(--line);align-items:start}
+.journey-stage:last-child{border-bottom:0}
+.journey-stage-label{background:var(--tier-soft);color:var(--ink);border-radius:8px;padding:8px 10px;text-align:center;font-family:var(--font-body);font-weight:800;font-size:11.5px}
+.journey-stage-body{font-size:13.5px;color:var(--ink);line-height:1.55}
+.wk-note{font-size:13px;color:var(--muted);line-height:1.55;margin-top:8px}
+</style>
+</head>
+<body>
+<main>
+  <div class="eyebrow">Shared foundation</div>
+  <h1>Make It Easy to Buy</h1>
+  <p class="lede">Every track sends attention somewhere. This is what happens the moment someone actually arrives, from the content that got their attention through delivery after they pay. There's no traffic calculator here on purpose: this isn't an acquisition channel, it improves the conversion rate every track's calculator already uses.</p>
+  <div class="panel" id="existingDiagnosis" hidden>
+    <div class="section-head"><span class="section-num">✓</span><h2>Your existing diagnosis</h2></div>
+    <p class="muted" id="diagnosisText"></p>
+  </div>
+
+  <nav class="dest-nav" aria-label="Module sections">
+    <a href="#overview" data-dest="overview">Overview &amp; Results</a>
+    <a href="#setup" data-dest="setup">Set Up</a>
+    <a href="#how-to-use" data-dest="how-to-use">How to Use It</a>
+    <a href="#track" data-dest="track">Track &amp; Improve</a>
+  </nav>
+
+  <div class="dest-panels">
+  <section class="dest-panel" id="dest-overview">
+    <div class="panel">
+      <h2>Why this affects every track's numbers</h2>
+      <p>Every track's calculator asks for a visit-to-order (or inquiry-to-close) conversion rate. This is where that rate actually gets better or worse. Improving it here reduces the traffic you need to hit the same revenue goal, without finding more people.</p>
+      <div class="insight-note">
+        <span class="insight-tag">Insight</span>
+        <p class="insight-takeaway">Your bio link is a decision, not a default.</p>
+        <p class="insight-action">A profile link set to your homepage sends every visitor through a maze they didn't ask for. Point it at the exact thing your current post is about, and change it as often as your featured offer changes.</p>
+      </div>
+      <h2 style="margin-top:22px">The five stages, in order</h2>
+      <p class="muted">Content → Profile/link → Specific offer → Checkout or booking → Confirmation/delivery. A weak point at any stage loses people at that exact step &mdash; the worked examples in How to Use It walk through both a digital-product and a service business start to finish.</p>
+    </div>
+  </section>
+
+  <section class="dest-panel" id="dest-setup" hidden>
+    <div class="panel">
+      <h2>Choosing the right commerce tool for your offer</h2>
+      <p class="muted">The right destination depends on what you're actually selling, not a single universal recommendation.</p>
+
+      <div class="setup-item">
+        <div class="setup-item-head"><span class="setup-item-num">1</span><span class="setup-item-title">A single payment page, no full store needed</span></div>
+        <div class="setup-item-grid">
+          <div><b>Who it fits</b>A digital product, a single service package, or a simple physical item where you don't need a full catalog.</div>
+          <div><b>What it does</b>A tool like Stripe Payment Links creates one shareable checkout page per offer in a few minutes, no website required, and can automatically deliver a digital file or send an email confirmation after payment.</div>
+          <div><b>Where to find it</b>Stripe dashboard → Payment Links (or an equivalent from whatever payment processor you already use)</div>
+          <div class="setup-item-confirm">A test purchase completes and you receive both a payment notification and, for a digital product, the automated delivery email.</div>
+        </div>
+      </div>
+
+      <div class="setup-item">
+        <div class="setup-item-head"><span class="setup-item-num">2</span><span class="setup-item-title">A booking page, for anything that needs a conversation first</span></div>
+        <div class="setup-item-grid">
+          <div><b>Who it fits</b>Services, consultations, appointments &mdash; anything where a price genuinely depends on a conversation.</div>
+          <div><b>What it does</b>A scheduling tool shows your real availability and confirms a time without back-and-forth messages, then sends both of you a confirmation with what to expect next.</div>
+          <div><b>Where to find it</b>Any current booking/scheduling tool you already use, linked directly from your Featured section or bio</div>
+          <div class="setup-item-confirm">Booking a real test slot sends a confirmation to both the booker and you, with the correct time zone.</div>
+        </div>
+      </div>
+
+      <div class="setup-item">
+        <div class="setup-item-head"><span class="setup-item-num">3</span><span class="setup-item-title">A small product catalog</span></div>
+        <div class="setup-item-grid">
+          <div><b>Who it fits</b>Several physical products where a single payment link isn't enough.</div>
+          <div><b>What it does</b>A hosted storefront (Shopify and similar) handles inventory, shipping, and a real cart &mdash; worth the setup overhead once you have more than a couple of items.</div>
+          <div><b>Where to find it</b>Whatever storefront platform you already use or are setting up</div>
+          <div class="setup-item-confirm">A test order completes and shows correctly in your orders dashboard.</div>
+        </div>
+      </div>
+
+      <h2 style="margin-top:22px">Is your product or service information actually clear?</h2>
+      <div class="checklist" id="infoChecklist">
+        <div class="check-row"><input type="checkbox" id="info1"><label for="info1">What it is, who it's for, and what it costs are all visible without scrolling far or clicking through multiple pages</label></div>
+        <div class="check-row"><input type="checkbox" id="info2"><label for="info2">Pricing is clear, not "contact for pricing" unless that's a genuine business requirement</label></div>
+        <div class="check-row"><input type="checkbox" id="info3"><label for="info3">The purchase or booking link actually works and is easy to find</label></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="dest-panel" id="dest-how-to-use" hidden>
+    <div class="panel">
+      <h2>A digital product, start to finish</h2>
+      <p class="muted">Example: the resume-writing course from the Instagram &amp; Facebook module.</p>
+      <div class="journey">
+        <div class="journey-tag">Worked journey &middot; digital product</div>
+        <div class="journey-stage"><div class="journey-stage-label">1. Content</div><div class="journey-stage-body">A Reel demonstrating the formatting fix (see Instagram &amp; Facebook, section B) ends on "link in bio."</div></div>
+        <div class="journey-stage"><div class="journey-stage-label">2. Profile / link</div><div class="journey-stage-body">The bio link points directly at the course's sales page &mdash; not a homepage, not a "shop all products" page.</div></div>
+        <div class="journey-stage"><div class="journey-stage-label">3. Specific offer</div><div class="journey-stage-body">The sales page states the price, what's included, and who it's for in the first screen, with no scrolling required to find any of the three.</div></div>
+        <div class="journey-stage"><div class="journey-stage-label">4. Checkout</div><div class="journey-stage-body">A Stripe Payment Link (or equivalent) processes payment in 2 fields: email and card. No account creation required to buy.</div></div>
+        <div class="journey-stage"><div class="journey-stage-label">5. Confirmation / delivery</div><div class="journey-stage-body">An automatic email arrives within seconds containing the actual course access link, not just a receipt. This step is where digital products most often lose trust if it's delayed or missing.</div></div>
+      </div>
+
+      <h2 style="margin-top:26px">A service, start to finish</h2>
+      <p class="muted">Example: the fractional CFO from the LinkedIn module.</p>
+      <div class="journey">
+        <div class="journey-tag">Worked journey &middot; service</div>
+        <div class="journey-stage"><div class="journey-stage-label">1. Content</div><div class="journey-stage-body">A LinkedIn post on contribution margin ends with "reply 'margin' and I'll walk you through it" (see LinkedIn, section B).</div></div>
+        <div class="journey-stage"><div class="journey-stage-label">2. Profile / link</div><div class="journey-stage-body">The Featured section links a short "book a 20-minute margin review" page, not a general "contact me" form.</div></div>
+        <div class="journey-stage"><div class="journey-stage-label">3. Specific offer</div><div class="journey-stage-body">The booking page states exactly what happens in the 20 minutes and that it's free, so there's no ambiguity about being pitched into a sale immediately.</div></div>
+        <div class="journey-stage"><div class="journey-stage-label">4. Booking</div><div class="journey-stage-body">A scheduling tool shows real open slots and confirms a time without an email back-and-forth.</div></div>
+        <div class="journey-stage"><div class="journey-stage-label">5. Confirmation / delivery</div><div class="journey-stage-body">A confirmation email states the time, time zone, and what to bring (e.g. "have your last month of order data handy"), so the actual call starts productive instead of spent on logistics.</div></div>
+      </div>
+      <p class="wk-note">The shape is the same for any offer: name the specific thing, remove every unnecessary step between interest and the actual transaction, and confirm immediately in a way that sets up what happens next. What changes is only which tool sits at stage 4.</p>
+
+      <h2 style="margin-top:26px">Proof and objections along the way</h2>
+      <ul class="can-list">
+        <li>Real reviews or testimonials visible near the purchase decision, not buried on a separate page</li>
+        <li>A plain answer to the objection you hear most often, before they have to ask</li>
+        <li>Clear delivery, shipping, or scheduling expectations stated up front: surprises here cause abandoned carts and cancelled bookings alike</li>
+      </ul>
+
+      <h2 style="margin-top:22px">Bundles and packages, only if they genuinely help</h2>
+      <p class="muted">A bundle is useful when it removes a real decision burden ("just get me the starter set") or reflects how customers actually buy. It's not useful as a way to inflate average order value artificially. A bundle that doesn't make sense as a single decision reads as pushy, not helpful.</p>
+
+      <div class="completion-box">
+        <b>How you'll know this section is done</b>
+        <ul>
+          <li>You can name, in order, all five stages a real customer goes through for your actual offer</li>
+          <li>You've personally completed your own checkout or booking flow on your phone in the last 30 days</li>
+          <li>Your confirmation or delivery step actually tells the buyer what happens next, not just "thank you for your order"</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="dest-panel" id="dest-track" hidden>
+    <div class="panel">
+      <h2>What to watch</h2>
+      <table class="diag-table">
+        <tr><td>Traffic arriving, no add-to-cart or bookings</td><td>Check clarity of the offer and pricing before assuming the traffic itself is bad.</td></tr>
+        <tr><td>Cart or booking started, not completed</td><td>Check for unexpected costs, confusing steps, or a broken mobile flow.</td></tr>
+        <tr><td>Purchases happening, but few repeat or referred</td><td>A delivery or experience problem, not a discovery problem &mdash; a different fix entirely.</td></tr>
+      </table>
+    </div>
+  </section>
+  </div>
+
+  <div class="dest-controls">
+    <button type="button" class="dest-back" disabled>← Back</button>
+    <button type="button" class="dest-next">Next →</button>
+  </div>
+
+  <div class="first-action">
+    <h2>Your first action</h2>
+    <p>This week: point your profile link at the exact offer your most recent post talks about, then go through your own <span class="accent">purchase or booking flow</span> on your phone, start to finish, as if you were a first-time customer. Fix the first real point of friction you hit, not the tenth.</p>
+  </div>
+</main>
+<script src="/club/channel-module.js"></script>
+<script>
+ChannelModule.init({
+  moduleKey: 'purchase-path',
+  destinations: ['overview', 'setup', 'how-to-use', 'track'],
+  checklists: { info: { ids: ['info1','info2','info3'] } },
+});
+// Bonus reuse: if this member already completed the old Module 6 (Sales
+// Path) flow, surface its real diagnosis. Most new members won't have,
+// since that chain is no longer part of onboarding.
+const token = ChannelModule.getToken();
+if (token) {
+  fetch('/club/module6/results', { headers: { Authorization: `Bearer ${token}` } })
+    .then(r => r.json())
+    .then(d => {
+      if (d.ok && d.results && d.results.conversionGap) {
+        document.getElementById('diagnosisText').textContent = 'From your earlier Sales Path work: ' + (d.results.conversionGap.summary || d.results.conversionGap.label || JSON.stringify(d.results.conversionGap));
+        document.getElementById('existingDiagnosis').hidden = false;
+      }
+    })
+    .catch(() => {});
+}
+</script>
+<script src="/club/club-shell.js"></script>
+</body></html>

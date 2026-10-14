@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Scrolly Club: My Plan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800;900&family=Public+Sans:wght@400;500;600;700&family=Caveat+Brush&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/club/club-shell.css">
+<style>
+  :root { --indigo:var(--scrolly-blue); --indigo-dark:#94ECE1; --ink:var(--scrolly-navy); --ink-soft:var(--slate); --line:var(--border); --bg-alt:var(--surface-soft);
+    --opportunity:#b45309; --ontrack:#0891b2; --strength:#15803d; --insufficient:#6b7280; --notestablished:#9ca3af; --exists:#15803d; }
+  * { box-sizing: border-box; }
+  body { font-family: 'Public Sans', -apple-system, Arial, sans-serif; background: var(--bg-alt); color: var(--ink); margin: 0; padding: 24px; }
+  .wrap { max-width: 720px; margin: 0 auto; }
+  .eyebrow { font-size: 12px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: var(--ink); opacity: .6; margin-bottom: 6px; }
+  h2 { font-size: 17px; margin: 0 0 12px; }
+  .sub { color: var(--ink-soft); margin-bottom: 24px; line-height: 1.5; }
+  .card { background: #fff; border: 1px solid var(--line); border-radius: 10px; padding: 20px; margin-bottom: 16px; }
+  label { display: block; font-size: 13px; font-weight: 600; margin: 12px 0 4px; }
+  input, select, textarea { width: 100%; padding: 8px 10px; border: 1px solid var(--line); border-radius: 6px; font-size: 14px; }
+  .row { display: flex; gap: 12px; }
+  .row > div { flex: 1; }
+  button { border-radius: 999px; padding: 10px 22px; font-weight: 700; font-size: 14px; cursor: pointer; margin-top: 16px; transition: background-color .15s ease, color .15s ease; }
+  body.club-shell-page button { background: var(--indigo); color: #fff; border: none; }
+  button:hover { background: var(--indigo-dark); color: #000; }
+  .error { color: #b91c1c; font-size: 13px; margin-top: 8px; }
+  .hint { font-size: 12px; color: var(--ink-soft); margin-top: 8px; line-height: 1.5; }
+  [hidden] { display: none !important; }
+
+  fieldset { border: 0; padding: 0; margin: 12px 0 4px; }
+  fieldset legend { font-size: 13px; font-weight: 600; padding: 0; margin-bottom: 6px; }
+  .choice-grid { display: flex; flex-wrap: wrap; gap: 8px; }
+  .choice-item { display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 500; background: var(--bg-alt); border: 1px solid var(--line); border-radius: 999px; padding: 7px 12px; cursor: pointer; }
+  .choice-item input { width: auto; margin: 0; }
+  .choice-item:has(input:checked) { background: #eef4ff; border-color: var(--indigo); color: var(--indigo); font-weight: 700; }
+
+  .state-title { font-family: 'Archivo', sans-serif; font-size: 20px; font-weight: 900; text-transform: uppercase; letter-spacing: -.01em; color: var(--indigo); margin: 0 0 8px; }
+  .state-copy { line-height: 1.55; margin: 0 0 10px; }
+  .state-focus { font-size: 13px; color: var(--ink-soft); font-weight: 600; }
+
+  .math-target { font-size: 13px; color: var(--ink-soft); text-transform: uppercase; letter-spacing: .03em; font-weight: 700; }
+  .math-row { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; margin: 10px 0; }
+  .math-big { font-size: 34px; font-weight: 800; color: var(--ink); }
+  .math-label { font-size: 13px; color: var(--ink-soft); }
+  .math-equation { font-size: 15px; margin: 10px 0 4px; padding: 10px 14px; background: var(--bg-alt); border-radius: 8px; display: inline-block; }
+  .confidence-badge { display: inline-block; font-size: 12px; font-weight: 700; padding: 4px 12px; border-radius: 999px; background: var(--bg-alt); color: var(--indigo); margin-top: 10px; }
+  .confidence-copy { font-size: 13px; color: var(--ink-soft); margin-top: 6px; line-height: 1.5; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 10px; }
+  th, td { text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--line); }
+  .scenario-label { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .03em; color: var(--ink-soft); margin-top: 14px; }
+
+  .interpretation { line-height: 1.6; }
+
+  .know-item { display: flex; gap: 10px; padding: 10px 0; border-bottom: 1px solid var(--line); }
+  .know-item:last-child { border-bottom: none; }
+  .know-icon { flex: 0 0 auto; width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 13px; color: #fff; }
+  .know-icon.exists, .know-icon.on_track { background: var(--exists); }
+  .know-icon.not_established { background: var(--notestablished); }
+  .know-icon.insufficient_data { background: var(--insufficient); }
+  .know-icon.growth_opportunity { background: var(--opportunity); }
+  .know-icon.growth_strength { background: var(--strength); }
+  .know-headline { font-weight: 700; font-size: 14px; }
+  .know-rationale { font-size: 13px; color: var(--ink-soft); margin-top: 2px; line-height: 1.4; }
+
+  .priority-label { font-family: 'Archivo', sans-serif; font-size: 19px; font-weight: 900; text-transform: uppercase; letter-spacing: -.01em; color: var(--indigo); margin: 0 0 8px; }
+  .priority-rationale { line-height: 1.55; margin-bottom: 14px; }
+  .next-action { background: var(--bg-alt); border-left: 4px solid var(--indigo); padding: 12px 16px; border-radius: 4px; font-weight: 700; }
+
+  .assumption-rates { list-style: none; margin: 10px 0 0; padding: 0; font-size: 12px; color: var(--ink-soft); }
+  .assumption-rates li { padding: 3px 0; }
+
+  .plan-card { border: 1px solid var(--indigo); }
+  .plan-row { display: flex; gap: 6px; padding: 8px 0; border-bottom: 1px solid var(--line); }
+  .plan-row:last-child { border-bottom: none; }
+  .plan-key { flex: 0 0 200px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .03em; color: var(--ink-soft); }
+  .plan-value { flex: 1; font-size: 14px; }
+  .plan-value ul { margin: 0; padding-left: 18px; }
+  .plan-next { background: var(--bg-alt); border-left: 4px solid var(--indigo); padding: 12px 16px; border-radius: 4px; margin-top: 14px; }
+  .plan-next-cta { font-weight: 700; margin-top: 6px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="eyebrow">Scrolly $1K Club &middot; My Plan</div>
+  <h1>Your Business &amp; Your $1K Starting Point</h1>
+  <div class="sub">A few questions about your business, then your $1,000 math. Before you add more platforms, post more content, rebuild your website, or change your offer, let's figure out what actually has to happen for your business to make $1,000.</div>
+
+  <div id="gate" class="card" hidden>
+    <p>You'll need to open $1K Club from your Scrolly account to continue.</p>
+    <p class="hint">Log in at scrollyseo.com, go to My Account, and click "Go to $1K Club." That link brings you straight back here, signed in. No order numbers to look up.</p>
+    <button id="loginLinkBtn" type="button" onclick="location.href='https://scrollyseo.com/my-account/'">Go to My Account</button>
+  </div>
+  <div id="checking" class="card"><p>Checking your access...</p></div>
+
+  <form id="onboardingForm" class="card stepper-form" hidden>
+    <h2>Your Business &amp; Connections</h2>
+    <div class="step" data-step="1">
+      <label>Business name</label>
+      <input id="businessName" type="text" placeholder="e.g. Juniper Lane Candle Co." required />
+
+      <label>Website or store URL (optional)</label>
+      <input id="websiteUrl" type="text" placeholder="e.g. junipercandles.com" />
+      <div class="hint">Optional. You can add or change this anytime on Connections. We never scan this without telling you first.</div>
+
+      <label>Where are you starting from?</label>
+      <select id="stage" required>
+        <option value="">Select...</option>
+        <option value="A">I don't have a clear, proven offer yet</option>
+        <option value="B">I have something to sell, but little/no sales evidence yet</option>
+        <option value="C">I already have real sales, and want to grow from here</option>
+      </select>
+
+      <label>What best describes what you sell?</label>
+      <select id="route" required>
+        <option value="">Select...</option>
+        <option value="ecommerce">Physical products</option>
+        <option value="digital_product">Digital products</option>
+        <option value="services">Services</option>
+        <option value="local_hybrid">Appointments / bookings</option>
+        <option value="creator_affiliate">Membership / subscription</option>
+        <option value="marketplace_first">Other</option>
+      </select>
+    </div>
+
+    <div class="step" data-step="2">
+      <label>What do you sell (or plan to sell)? (short description)</label>
+      <input id="offer" type="text" placeholder="e.g. handmade soy candles" />
+      <div class="hint">This can be your whole business or your main line. All eligible revenue counts toward your $1,000, not just this.</div>
+
+      <label>Price of this offer (USD)</label><input id="price" type="number" min="0" step="0.01" required />
+    </div>
+
+    <div class="step" data-step="3">
+      <label>Who buys this? (short description)</label>
+      <input id="audience" type="text" placeholder="e.g. people redecorating a living room" />
+
+      <fieldset>
+        <legend>Where can people currently buy or hire you? (select all that apply)</legend>
+        <div class="choice-grid" data-group="sellingSurfaces">
+          <label class="choice-item"><input type="checkbox" value="own_site">Own website</label>
+          <label class="choice-item"><input type="checkbox" value="shopify">Shopify</label>
+          <label class="choice-item"><input type="checkbox" value="woocommerce">WooCommerce / WordPress</label>
+          <label class="choice-item"><input type="checkbox" value="etsy">Etsy</label>
+          <label class="choice-item"><input type="checkbox" value="squarespace">Squarespace</label>
+          <label class="choice-item"><input type="checkbox" value="wix">Wix</label>
+          <label class="choice-item"><input type="checkbox" value="square">Square</label>
+          <label class="choice-item"><input type="checkbox" value="stan">Stan</label>
+          <label class="choice-item"><input type="checkbox" value="gumroad">Gumroad</label>
+          <label class="choice-item"><input type="checkbox" value="marketplace">Marketplace</label>
+          <label class="choice-item"><input type="checkbox" value="social_media">Social media</label>
+          <label class="choice-item"><input type="checkbox" value="booking_platform">Booking platform</label>
+          <label class="choice-item"><input type="checkbox" value="in_person">In person</label>
+          <label class="choice-item"><input type="checkbox" value="other">Other</label>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Where do you currently market your business? (select all that apply)</legend>
+        <div class="choice-grid" data-group="discoveryChannels">
+          <label class="choice-item"><input type="checkbox" value="instagram">Instagram</label>
+          <label class="choice-item"><input type="checkbox" value="tiktok">TikTok</label>
+          <label class="choice-item"><input type="checkbox" value="youtube">YouTube</label>
+          <label class="choice-item"><input type="checkbox" value="pinterest">Pinterest</label>
+          <label class="choice-item"><input type="checkbox" value="linkedin">LinkedIn</label>
+          <label class="choice-item"><input type="checkbox" value="facebook">Facebook</label>
+          <label class="choice-item"><input type="checkbox" value="email">Email</label>
+          <label class="choice-item"><input type="checkbox" value="blog_seo">Blog / SEO</label>
+          <label class="choice-item"><input type="checkbox" value="other">Other</label>
+          <label class="choice-item"><input type="checkbox" value="not_marketing_yet">Not marketing yet</label>
+        </div>
+      </fieldset>
+    </div>
+
+    <div class="step" data-step="4">
+      <div class="row">
+        <div>
+          <label>Do you have a way to follow up with interested people (email list, etc.)?</label>
+          <select id="hasEmailList"><option value="">Not sure / N/A</option><option value="true">Yes</option><option value="false">No</option></select>
+        </div>
+        <div><label>List size (if yes)</label><input id="emailListSize" type="number" min="0" /></div>
+      </div>
+    </div>
+
+    <button type="submit">See my $1K Starting Point</button>
+    <div id="formError" class="error" hidden></div>
+  </form>
+
+  <div id="results" hidden></div>
+</div>
+
+<script>
+const $ = (id) => document.getElementById(id);
+const TOKEN_KEY = 'scrolly_club_access_token'; // sessionStorage: tab-scoped, cleared on tab close -- never localStorage
+
+// A fresh token arrives as ?token=... from the WordPress "Go to $1K Club"
+// link (see automation/wordpress/deployed/club-access-route.php). Move it
+// into sessionStorage immediately and strip it from the visible URL/history
+// so it doesn't linger in the address bar, bookmarks, or referrer headers.
+const params = new URLSearchParams(location.search);
+if (params.get('token')) {
+  sessionStorage.setItem(TOKEN_KEY, params.get('token'));
+  history.replaceState({}, '', location.pathname);
+}
+
+function getToken() { return sessionStorage.getItem(TOKEN_KEY); }
+
+async function api(path, options = {}) {
+  const token = getToken();
+  const headers = { ...(options.headers || {}) };
+  if (token) headers['Authorization'] = 'Bearer ' + token;
+  const res = await fetch(path, { ...options, headers });
+  return res.json();
+}
+
+function money(n) {
+  return '$' + Number(n).toLocaleString('en-US', { minimumFractionDigits: n % 1 === 0 ? 0 : 2, maximumFractionDigits: 2 });
+}
+
+function pct(rate) { return Math.round(rate * 1000) / 10 + '%'; }
+
+function renderResults(results) {
+  const { startingState, math, dataConfidence, whatWeKnow, interpretation, firstPriority, nextClubStep, startingPointPlan } = results;
+
+  const knowItem = (d) => `
+    <div class="know-item">
+      <div class="know-icon ${d.state}">${d.icon}</div>
+      <div>
+        <div class="know-headline">${d.headline}</div>
+        <div class="know-rationale">${d.rationale}</div>
+      </div>
+    </div>`;
+
+  const scenarioRow = (label, vols) => `<tr><td>${label}</td>${vols.map(v => `<td>${v.count ?? 'Unknown'}</td>`).join('')}</tr>`;
+  const stageHeaders = math.scenarios.base.map(v => `<th>${v.stage.replace(/_/g,' ')}</th>`).join('');
+  const hasRealClosingData = math.transitions[math.transitions.length - 1].source === 'your_own_data';
+
+  // FIX 2: make the assumed rates behind the scenario table visible, so the
+  // dramatic reach differences aren't a mystery. One compact line per step.
+  const assumptionRates = math.transitions.map((t) => {
+    const fromLabel = t.from.replace(/_/g, ' ');
+    const toLabel = t.to.replace(/_/g, ' ');
+    return t.source === 'your_own_data'
+      ? `<li>${fromLabel} &rarr; ${toLabel}: <b>${pct(t.rate.base)}</b> (your own reported rate)</li>`
+      : `<li>${fromLabel} &rarr; ${toLabel}: ${pct(t.rate.low)} conservative &middot; ${pct(t.rate.base)} base &middot; ${pct(t.rate.high)} upside</li>`;
+  }).join('');
+
+  const funnelIntro = dataConfidence.key === 'establishing_baseline'
+    ? `<p class="hint">We don't have enough data yet to know exactly how much traffic, reach, or lead volume you need. The scenarios below are <b>planning scenarios, not a prediction or universal benchmark.</b> Establishing a real baseline is the current objective.</p>`
+    : '';
+  const funnelOutro = hasRealClosingData
+    ? 'The final step above uses your own reported rate; the rest are planning scenarios, not your own measured data.'
+    : 'Planning scenario, not a prediction or universal benchmark.';
+
+  const funnelSection = `
+    ${funnelIntro}
+    <table><thead><tr><th>Scenario</th>${stageHeaders}</tr></thead><tbody>
+      ${scenarioRow('Conservative', math.scenarios.conservative)}
+      ${scenarioRow('Base', math.scenarios.base)}
+      ${scenarioRow('Upside', math.scenarios.upside)}
+    </tbody></table>
+    <p class="hint">${funnelOutro}</p>
+    <ul class="assumption-rates">${assumptionRates}</ul>`;
+
+  const planListItem = (label) => `<li>${label}</li>`;
+
+  $('results').innerHTML = `
+    <div class="card" id="module1Recap">
+      <div class="state-title">Business &amp; Connections: complete</div>
+      <p class="state-copy" id="module1BusinessLine"></p>
+      <p class="state-copy" id="module1ConnLine">Checking your connections status…</p>
+      <div class="state-focus"><a href="/club/connections">Manage connections (optional) →</a></div>
+    </div>
+
+    <div class="card">
+      <div class="state-title">${startingState.title}</div>
+      <p class="state-copy">${startingState.copy}</p>
+      <div class="state-focus">Focus: ${startingState.focus}</div>
+    </div>
+
+    <div class="card">
+      <h2>Your $1K Math</h2>
+      <div class="math-target">Revenue target: $1,000</div>
+      <div class="math-row"><span class="math-big">${money(math.price)}</span><span class="math-label">primary offer</span></div>
+      <div class="math-row"><span class="math-big">${math.requiredSales}</span><span class="math-label">sale${math.requiredSales === 1 ? '' : 's'} required</span></div>
+      <div class="math-equation">${money(math.price)} &times; ${math.requiredSales} sale${math.requiredSales === 1 ? '' : 's'} = <b>${money(math.resultingRevenue)}</b></div>
+      <div><span class="confidence-badge">${dataConfidence.title}</span></div>
+      <div class="confidence-copy">${dataConfidence.copy}</div>
+      ${funnelSection}
+    </div>
+
+    <div class="card">
+      <h2>What the Math Tells Us</h2>
+      <p class="interpretation">${interpretation}</p>
+    </div>
+
+    <div class="card">
+      <h2>What We Know So Far</h2>
+      ${whatWeKnow.map(knowItem).join('')}
+    </div>
+
+    <div class="card">
+      <h2>Your First Priority</h2>
+      <div class="priority-label">${firstPriority.label}</div>
+      <p class="priority-rationale">${firstPriority.rationale}</p>
+    </div>
+
+    <div class="card plan-card">
+      <h2>Your $1K Starting Point Plan</h2>
+      <div class="plan-row"><div class="plan-key">Starting state</div><div class="plan-value">${startingPointPlan.startingState.title}</div></div>
+      <div class="plan-row"><div class="plan-key">Primary offer</div><div class="plan-value">${startingPointPlan.primaryOffer.name ? startingPointPlan.primaryOffer.name + ': ' : ''}${money(startingPointPlan.primaryOffer.price)}</div></div>
+      <div class="plan-row"><div class="plan-key">$1K target</div><div class="plan-value">${startingPointPlan.target.salesRequired} sales &middot; ${money(startingPointPlan.target.resultingRevenue)} resulting revenue</div></div>
+      <div class="plan-row"><div class="plan-key">Data confidence</div><div class="plan-value">${startingPointPlan.dataConfidence.title}</div></div>
+      <div class="plan-row"><div class="plan-key">What already exists</div><div class="plan-value">${startingPointPlan.whatExists.length ? '<ul>' + startingPointPlan.whatExists.map(planListItem).join('') + '</ul>' : '<span class="hint">Nothing established yet.</span>'}</div></div>
+      <div class="plan-row"><div class="plan-key">What we don't know yet</div><div class="plan-value">${startingPointPlan.whatsUnknown.length ? '<ul>' + startingPointPlan.whatsUnknown.map(planListItem).join('') + '</ul>' : '<span class="hint">Nothing outstanding.</span>'}</div></div>
+      <div class="plan-row"><div class="plan-key">Current strategic priority</div><div class="plan-value">${startingPointPlan.currentPriority}</div></div>
+      <div class="plan-row"><div class="plan-key">Baseline to start measuring</div><div class="plan-value"><ul>${startingPointPlan.baselineMetrics.map(planListItem).join('')}</ul></div></div>
+      <div class="plan-next">
+        <div>Your core tracks are ready whenever you are. Pick a focus track and switch any time.</div>
+        <div class="plan-next-cta"><a href="/club/modules" style="color: var(--indigo);">Go to Learn →</a></div>
+      </div>
+    </div>
+  `;
+  loadModule1Recap();
+  $('results').hidden = false;
+  $('onboardingForm').hidden = true;
+  $('gate').hidden = true;
+}
+
+// Module 1's own recap (business name + a simple connected/not-connected
+// status, per the rebuild spec) uses a separate call to
+// /club/overview/state -- computeModule1Results() itself is intentionally
+// a pure $1K Math/diagnosis function and doesn't carry raw profile fields
+// or connections status, so this is real data, just fetched separately.
+async function loadModule1Recap() {
+  const body = await api('/club/overview/state');
+  if (!body.ok) return;
+  const name = body.profile && body.profile.businessName;
+  $('module1BusinessLine').textContent = name ? `Business: ${name}` : 'Business name not set yet. You can add it on Connections.';
+  const store = body.connections && body.connections.store && body.connections.store.status === 'connected';
+  const analytics = body.connections && body.connections.analytics && body.connections.analytics.status === 'connected';
+  $('module1ConnLine').textContent = (store || analytics)
+    ? 'Connections: some connected. Everything in the Club still works either way.'
+    : 'Connections: none connected. Completely optional, everything in the Club works without one.';
+}
+
+async function init() {
+  if (!getToken()) {
+    $('checking').hidden = true;
+    $('gate').hidden = false;
+    return;
+  }
+  const body = await api('/club/results');
+  $('checking').hidden = true;
+  if (body.ok) {
+    renderResults(body.results);
+    return;
+  }
+  if (body.reason === 'onboarding_not_complete' || body.reason === 'not_a_club_member') {
+    // Token is valid (WordPress already confirmed Club ownership) -- just no profile yet.
+    $('onboardingForm').hidden = false;
+    return;
+  }
+  // Expired/invalid/malformed token -- send them back for a fresh one, never show the old order-code form.
+  sessionStorage.removeItem(TOKEN_KEY);
+  $('gate').hidden = false;
+}
+
+function checkedValues(groupName) {
+  return Array.from(document.querySelectorAll(`[data-group="${groupName}"] input:checked`)).map(el => el.value);
+}
+
+$('onboardingForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  $('formError').hidden = true;
+  const route = $('route').value;
+
+  const answers = {
+    businessName: $('businessName').value || null,
+    websiteUrl: $('websiteUrl').value || null,
+    route,
+    stage: $('stage').value,
+    offer: $('offer').value || null,
+    price: $('price').value === '' ? null : Number($('price').value),
+    audience: $('audience').value || null,
+    discoveryChannels: checkedValues('discoveryChannels'),
+    sellingSurfaces: checkedValues('sellingSurfaces'),
+    hasEmailList: $('hasEmailList').value === '' ? null : $('hasEmailList').value === 'true',
+    emailListSize: $('emailListSize').value === '' ? null : Number($('emailListSize').value),
+    existingMetrics: {},
+  };
+
+  const body = await api('/club/onboarding', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ answers }),
+  });
+
+  if (!body.ok) {
+    $('formError').textContent = 'Could not complete onboarding: ' + body.reason;
+    $('formError').hidden = false;
+    return;
+  }
+  renderResults(body.results);
+});
+
+init();
+</script>
+<script src="/club/club-shell.js"></script>
+<script src="/club/module-stepper.js"></script>
+</body>
+</html>

@@ -1,0 +1,342 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Scrolly Club: $1K Challenge</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800;900&family=Public+Sans:wght@400;500;600;700&family=Caveat+Brush&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/club/club-shell.css">
+<style>
+:root{--ink:var(--scrolly-navy);--muted:var(--slate);--line:var(--border);--blue:var(--scrolly-blue);--bg:var(--surface-soft)}
+*{box-sizing:border-box}
+body{margin:0;font:16px/1.6 'Public Sans',-apple-system,sans-serif;color:var(--ink);background:var(--bg)}
+main{max-width:900px;margin:0 auto;padding:24px 20px}
+.eyebrow{font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--blue)}
+h1{font-size:clamp(1.8rem,5vw,2.6rem);margin:4px 0 6px}
+h2{font-family:'Archivo',Inter,sans-serif;font-size:1.15rem;margin:0 0 8px}
+.lede,.muted{color:var(--muted)}
+.panel{background:#fff;border:1px solid var(--line);border-radius:var(--radius-card);padding:22px;margin-top:16px}
+.status-line{font-size:13px;color:var(--muted)}
+.progress-track{height:10px;border-radius:999px;background:var(--bg);overflow:hidden;margin:12px 0 6px}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--scrolly-teal),var(--scrolly-blue));border-radius:999px;transition:width .3s}
+.progress-label{font-family:'Archivo',Inter,sans-serif;font-weight:800;font-size:1.2rem}
+.advisory-note{font-size:12.5px;color:var(--muted);background:var(--surface-blue,#EEF6FF);border-radius:8px;padding:10px 14px;margin-top:14px}
+.opps-grid{display:grid;gap:14px;margin-top:14px}
+.opp-card{border:1px solid var(--line);border-radius:10px;padding:16px}
+.opp-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.opp-title{font-family:'Archivo',Inter,sans-serif;font-weight:700;font-size:14.5px}
+.opp-badge{flex:none;font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.03em;padding:3px 10px;border-radius:999px;background:var(--bg);color:var(--muted)}
+.opp-badge.planned{background:var(--surface-blue,#EEF6FF);color:var(--blue)}
+.opp-badge.posted{background:var(--surface-mint,#E8FBF6);color:#0F7A5F}
+.opp-platform{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.03em;color:var(--muted);margin-top:2px}
+.opp-detail{margin-top:10px;font-size:13.5px;line-height:1.55}
+.opp-detail b{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.03em;color:var(--muted);margin-bottom:2px}
+.opp-detail + .opp-detail{margin-top:8px}
+.opp-actions{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+.opp-actions button{border-radius:var(--radius-btn);padding:8px 14px;font-weight:700;font-size:12.5px;cursor:pointer;border:1px solid var(--line);background:#fff;color:var(--ink)}
+.opp-actions button.primary{border:0;background:var(--blue);color:#fff}
+.result-form{display:none;margin-top:10px;gap:8px;flex-wrap:wrap}
+.result-form.open{display:flex}
+.result-form input{width:110px;padding:7px 9px;border:1px solid var(--line);border-radius:6px;font-size:12.5px}
+.claim-form label{display:block;margin-top:10px;font-weight:700;font-size:13px}
+.claim-form input,.claim-form textarea{width:100%;margin-top:4px;padding:9px 10px;border:1px solid var(--line);border-radius:8px;font:inherit}
+.claim-form button{margin-top:14px;border-radius:var(--radius-btn);padding:10px 18px;font-weight:800;border:0;background:var(--blue);color:#fff;cursor:pointer}
+.reward-choices{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap}
+.reward-choices button{border-radius:var(--radius-btn);padding:10px 18px;font-weight:800;cursor:pointer;border:1px solid var(--line);background:#fff;color:var(--ink)}
+.reward-choices button.primary{border:0;background:var(--blue);color:#fff}
+.history-row{display:flex;justify-content:space-between;gap:10px;padding:10px 0;border-bottom:1px solid var(--line);font-size:13.5px}
+.history-row:last-child{border-bottom:0}
+.history-status{font-weight:700;color:var(--muted)}
+.not-open{padding:18px;background:var(--surface-blue,#EEF6FF);border-radius:10px;font-size:14px}
+.not-open button{margin-top:12px;border-radius:var(--radius-btn);padding:10px 18px;font-weight:800;border:0;background:var(--blue);color:#fff;cursor:pointer}
+</style></head>
+<body>
+<main>
+  <div class="eyebrow">$1K Challenge</div>
+  <h1 id="pageHeading">Your $1K Challenge</h1>
+  <p class="lede" id="pageLede">A 30-day, personalized execution attempt. Separate from the Club itself, and not required to use anything else here.</p>
+
+  <div id="app"><div class="panel muted">Loading…</div></div>
+
+  <section class="panel" id="historyPanel" hidden>
+    <h2>Your attempt history</h2>
+    <div id="historyList"></div>
+  </section>
+</main>
+<script>
+const TOKEN_KEY='scrolly_club_access_token';
+const params=new URLSearchParams(location.search);
+if(params.get('token')){sessionStorage.setItem(TOKEN_KEY,params.get('token'));history.replaceState({},'',location.pathname)}
+const token=sessionStorage.getItem(TOKEN_KEY);
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+async function api(path, opts={}) {
+  const res = await fetch(path, { ...opts, headers: { Authorization: `Bearer ${token}`, ...(opts.body ? {'Content-Type':'application/json'} : {}), ...(opts.headers||{}) } });
+  return res.json();
+}
+
+const STATUS_COPY = {
+  not_started: { heading: 'Start your $1K Challenge', lede: 'A 30-day, personalized execution attempt on top of your Club access.' },
+  active: { heading: 'Your $1K Challenge, Day', lede: '' },
+  completed: { heading: 'Challenge window closed', lede: "This attempt's 30-day window has ended." },
+  claim_available: { heading: 'You hit your $1,000 goal', lede: 'Claim your $1K Stripe achievement below. A founder reviews every claim before it\'s verified.' },
+  expired: { heading: 'Claim window closed', lede: 'The 14-day claim window for this attempt has passed.' },
+  stripe_submitted: { heading: 'Claim under review', lede: 'A founder reviews every $1K Stripe claim by hand. You\'ll see this update once it\'s verified.' },
+  stripe_verified: { heading: 'Verified: choose your reward', lede: 'Your $1,000 achievement is verified.' },
+};
+
+function fmtMoney(n){ return Number.isFinite(n) ? '$'+Math.round(n).toLocaleString('en-US') : 'Unknown'; }
+
+async function load() {
+  const app = document.getElementById('app');
+  if (!token) {
+    if (window.ClubShell) window.ClubShell.renderAccessExpired(app);
+    else app.textContent = 'Open Scrolly Club from your account to continue.';
+    return;
+  }
+  const state = await api('/club/challenge/state');
+  if (!state.ok) {
+    if (state.reason === 'not_a_club_member') { app.innerHTML = '<div class="panel muted">This page is only available to $1K Club members.</div>'; return; }
+    if (window.ClubShell) window.ClubShell.renderAccessExpired(app);
+    else app.textContent = 'Your access link is missing or expired.';
+    return;
+  }
+
+  // "Active" (server-side) means status === 'active' specifically -- a
+  // real bug found in testing: claim_available/stripe_submitted/
+  // stripe_verified/completed/expired attempts are NOT 'active' but still
+  // need their own detail view, not the "start a fresh attempt" screen.
+  // The most recent attempt (history is chronological, oldest first) is
+  // always the right one to show in detail; renderActive() already knows
+  // how to render every one of those statuses, including offering a fresh
+  // start from within the completed/expired branch.
+  const mostRecent = state.active || (state.history.length ? state.history[state.history.length - 1] : null);
+  if (!mostRecent) {
+    renderNotActive(app);
+    return;
+  }
+  renderHistory(state.history, mostRecent.challengeId);
+  renderActive(app, mostRecent);
+}
+
+function renderHistory(history, excludeChallengeId) {
+  if (!history || history.length < 2) return; // the single active/most-recent attempt is already shown above; only show this for real history
+  const panel = document.getElementById('historyPanel');
+  const list = document.getElementById('historyList');
+  const past = history.filter((h) => h.challengeId !== excludeChallengeId);
+  if (!past.length) return;
+  panel.hidden = false;
+  list.innerHTML = past.map((h) => `
+    <div class="history-row">
+      <span>Attempt started ${esc(new Date(h.startedAt).toLocaleDateString())}</span>
+      <span class="history-status">${esc(STATUS_COPY[h.status]?.heading || h.status)}</span>
+    </div>`).join('');
+}
+
+function renderNotActive(app) {
+  document.getElementById('pageHeading').textContent = 'Start your $1K Challenge';
+  document.getElementById('pageLede').textContent = 'A 30-day, personalized execution attempt: real ranked content opportunities for your business, a weekly review, and progress tracking toward $1,000. $25 per attempt, no auto-renewal, repeatable any time.';
+  app.innerHTML = `
+    <div class="panel">
+      <h2>Ready when you are</h2>
+      <p>Starting requires a separate $25 Challenge purchase (the Club itself doesn't include it).</p>
+      <button type="button" id="startBtn" class="not-open-btn" style="border-radius:var(--radius-btn);padding:11px 20px;font-weight:800;border:0;background:var(--blue);color:#fff;cursor:pointer">Start my Challenge attempt &rarr;</button>
+      <p class="status" id="startStatus" style="margin-top:10px;color:var(--muted);font-size:13px"></p>
+    </div>`;
+  document.getElementById('startBtn').addEventListener('click', async (e) => {
+    const btn = e.currentTarget;
+    const status = document.getElementById('startStatus');
+    btn.disabled = true;
+    status.textContent = 'Checking your purchase…';
+    try {
+      const r = await api('/club/challenge/start', { method: 'POST', body: '{}' });
+      if (r.ok) { load(); return; }
+      if (r.reason === 'no_valid_challenge_purchase') {
+        status.innerHTML = 'Not open yet. The $1K Challenge isn\'t available for purchase yet. Check back soon, or reach out if you believe this is a mistake.';
+      } else if (r.reason === 'challenge_already_active') {
+        status.textContent = 'You already have an active attempt.'; load();
+      } else {
+        status.textContent = 'Could not start your attempt right now.';
+      }
+    } catch (err) {
+      status.textContent = 'Could not reach the server.';
+    }
+    btn.disabled = false;
+  });
+}
+
+function renderActive(app, c) {
+  const copy = STATUS_COPY[c.status] || STATUS_COPY.active;
+  document.getElementById('pageHeading').textContent = c.status === 'active' ? `Day ${c.day} of ${c.windowDays}` : copy.heading;
+  document.getElementById('pageLede').textContent = copy.lede || `Started ${new Date(c.startedAt).toLocaleDateString()}.`;
+
+  const pct = c.goal.known ? Math.min(100, Math.max(0, (c.goal.gained / c.goal.usd) * 100)) : 0;
+  const progressHtml = `
+    <div class="panel">
+      <div class="status-line">Toward your $1,000 goal for this attempt</div>
+      <div class="progress-label">${c.goal.known ? fmtMoney(c.goal.gained) : 'Not enough data yet'} / ${fmtMoney(c.goal.usd)}</div>
+      <div class="progress-track"><div class="progress-fill" style="width:${pct}%"></div></div>
+      <div class="status-line">${c.goal.known ? '' : 'Report your revenue on Performance to track real progress here. This is not automatically measured.'}</div>
+    </div>`;
+
+  if (c.status === 'claim_available') {
+    app.innerHTML = progressHtml + `
+      <div class="panel claim-form">
+        <h2>Claim your $1K Stripe achievement</h2>
+        <p class="muted">Tell us what happened. A founder reviews every claim by hand before it's verified. This does not involve any payment step; "$1K Stripe" is the name of the achievement/merch reward, not a payment processor.</p>
+        <label>Revenue you tracked during this attempt (USD)<input type="number" id="claimRevenue" min="0" step="1" value="${c.goal.known ? Math.round(c.goal.gained) : ''}"></label>
+        <label>Anything you want the reviewer to know (optional)<textarea id="claimNote" rows="3"></textarea></label>
+        <button type="button" id="claimBtn">Submit claim for review</button>
+        <p class="status" id="claimStatus" style="margin-top:8px;color:var(--muted);font-size:13px"></p>
+      </div>`;
+    document.getElementById('claimBtn').addEventListener('click', async () => {
+      const status = document.getElementById('claimStatus');
+      status.textContent = 'Submitting…';
+      const claimedRevenueUsd = document.getElementById('claimRevenue').value;
+      const note = document.getElementById('claimNote').value;
+      const r = await api('/club/challenge/claim', { method: 'POST', body: JSON.stringify({ challengeId: c.challengeId, claimedRevenueUsd: claimedRevenueUsd === '' ? null : Number(claimedRevenueUsd), note: note || null }) });
+      if (r.ok) load(); else status.textContent = 'Could not submit your claim right now.';
+    });
+    return;
+  }
+
+  if (c.status === 'stripe_submitted') {
+    app.innerHTML = progressHtml + `<div class="panel"><h2>Under review</h2><p>Thanks. A founder reviews every claim by hand. This isn't automatic, so it may take a few days. You'll see this page update once it's verified.</p></div>`;
+    return;
+  }
+
+  if (c.status === 'stripe_verified') {
+    if (c.achievement.rewardChoice === 'pending') {
+      app.innerHTML = progressHtml + `
+        <div class="panel">
+          <h2>Verified: choose your $1K Stripe reward</h2>
+          <p>Congratulations, your $1,000 achievement is verified.</p>
+          <div class="reward-choices">
+            <button type="button" class="primary" id="acceptBtn">Accept the physical reward</button>
+            <button type="button" id="declineBtn">Decline (verified status stays either way)</button>
+          </div>
+          <p class="status" id="rewardStatus" style="margin-top:10px;color:var(--muted);font-size:13px"></p>
+        </div>`;
+      const choose = async (choice) => {
+        const status = document.getElementById('rewardStatus');
+        status.textContent = 'Saving…';
+        const r = await api('/club/challenge/reward-choice', { method: 'POST', body: JSON.stringify({ challengeId: c.challengeId, choice }) });
+        if (r.ok) load(); else status.textContent = 'Could not save your choice right now.';
+      };
+      document.getElementById('acceptBtn').addEventListener('click', () => choose('accepted'));
+      document.getElementById('declineBtn').addEventListener('click', () => choose('declined'));
+    } else {
+      app.innerHTML = progressHtml + `<div class="panel"><h2>Verified</h2><p>Your achievement is verified${c.achievement.rewardChoice === 'accepted' ? " and your reward is on its way. We'll reach out about shipping details if we still need them." : '. You declined the physical reward, which is completely fine. Your verified status and any merch access already unlocked stay in place.'}</p></div>`;
+    }
+    return;
+  }
+
+  if (c.status === 'completed' || c.status === 'expired') {
+    app.innerHTML = progressHtml + `
+      <div class="panel">
+        <h2>${c.status === 'completed' ? "This attempt's window is closed" : 'Claim window closed'}</h2>
+        <p>${c.status === 'expired' ? "The 14-day window to claim your $1,000 achievement has passed for this attempt." : "You can review what happened on Performance, or start a new attempt whenever you're ready."}</p>
+        <button type="button" id="restartBtn" style="border-radius:var(--radius-btn);padding:10px 18px;font-weight:800;border:0;background:var(--blue);color:#fff;cursor:pointer;margin-top:8px">Start a new attempt &rarr;</button>
+      </div>`;
+    document.getElementById('restartBtn').addEventListener('click', () => { document.getElementById('app').innerHTML = '<div class="panel muted">Loading…</div>'; renderNotActive(document.getElementById('app')); });
+    return;
+  }
+
+  // active
+  app.innerHTML = progressHtml + `
+    <div class="panel">
+      <h2>Your content opportunities</h2>
+      <p class="muted">Ranked for your business, industry, and available time. Real starting angles, not filler. Fresh personalized ideas beyond this list are what the Challenge adds beyond the Club's fixed teaching examples.</p>
+      <div class="advisory-note">These are ready-to-adapt starting points for you to film, write, and post yourself. Scrolly's tools are advisory only here: nothing here logs into your accounts, publishes on your behalf, or makes changes to your website or listings.</div>
+      <p class="status-line" id="weekNote" style="margin-top:10px"></p>
+      <div class="opps-grid" id="oppsGrid"><p class="muted">Loading…</p></div>
+    </div>
+    <div class="panel"><h2>Weekly review</h2><p class="muted">Report what happened this week and get a plain-language read on what to repeat, stop, or test next.</p><a href="/club/performance#review">Open your Weekly Review &rarr;</a></div>`;
+  loadOpportunities();
+}
+
+const TRACK_TO_PLATFORM = { 'instagram-facebook': 'instagram_reels', 'tiktok': 'tiktok', 'linkedin': 'linkedin' };
+function focusPlatformsQuery() {
+  let track = null;
+  try { track = localStorage.getItem('scrolly_focus_track_v1'); } catch (e) {}
+  const platform = TRACK_TO_PLATFORM[track];
+  return platform ? `?activePlatforms=${encodeURIComponent(platform)}` : '';
+}
+
+async function loadOpportunities() {
+  const grid = document.getElementById('oppsGrid');
+  const r = await api('/club/opportunities/state' + focusPlatformsQuery());
+  if (!r.ok) {
+    grid.innerHTML = r.reason === 'module1_not_complete'
+      ? '<p class="muted">Finish Your $1K Starting Point first. Opportunities are ranked using your business profile.</p>'
+      : '<p class="muted">Could not load your opportunities right now.</p>';
+    return;
+  }
+  if (!r.assignments.length) { grid.innerHTML = '<p class="muted">No opportunities assigned yet. Try reloading in a moment.</p>'; return; }
+  const weekNote = document.getElementById('weekNote');
+  if (weekNote) {
+    weekNote.textContent = r.nextUnlockDay
+      ? `Week ${r.week} of 4. More opportunities unlock on day ${r.nextUnlockDay}.`
+      : `Week ${r.week} of 4. Everything this attempt unlocks is now visible.`;
+  }
+  grid.innerHTML = r.assignments.map(renderOppCard).join('');
+  r.assignments.forEach(wireOppCard);
+}
+
+function platformLabel(p) { return { instagram_reels: 'Instagram Reels', tiktok: 'TikTok', youtube_shorts: 'YouTube Shorts', linkedin: 'LinkedIn' }[p] || p; }
+
+function renderOppCard(a) {
+  const o = a.opportunity;
+  if (!o) return '';
+  const ad = o.adaptation;
+  const isWritten = ad && ad.titleMetadata && ad.titleMetadata.postType === 'text_or_document';
+  return `
+    <div class="opp-card" data-assignment="${esc(a.assignmentId)}" data-state="${esc(a.state)}">
+      <div class="opp-head">
+        <div><div class="opp-title">${esc(o.coreConcept)}</div><div class="opp-platform">${esc(platformLabel(a.platform))} &middot; ${esc(o.difficulty)} effort &middot; ${esc(o.shelfLife.replace('_',' '))}</div></div>
+        <span class="opp-badge ${esc(a.state)}">${esc(a.state)}</span>
+      </div>
+      ${ad ? `
+      <div class="opp-detail"><b>${isWritten ? 'Opening line' : 'Hook'}</b>${esc(ad.hookVariation)}</div>
+      <div class="opp-detail"><b>${isWritten ? 'Post structure' : 'How to shoot it'}</b>${esc(ad.executionNotes)}</div>
+      <div class="opp-detail"><b>${isWritten ? 'Post copy' : 'Caption'}</b>${esc(ad.captionGuidance)}</div>
+      ${ad.titleMetadata && ad.titleMetadata.title ? `<div class="opp-detail"><b>Title</b>${esc(ad.titleMetadata.title)}</div>` : ''}
+      ` : ''}
+      <div class="opp-actions">
+        ${a.state === 'recommended' ? '<button type="button" class="primary" data-action="plan">Plan this</button>' : ''}
+        ${a.state === 'planned' ? '<button type="button" class="primary" data-action="posted">Mark posted</button>' : ''}
+        ${a.state === 'posted' ? '<button type="button" data-action="result">Record result</button>' : ''}
+      </div>
+      <div class="result-form" data-result-form>
+        <input type="number" min="0" placeholder="Views" data-metric="views">
+        <input type="number" min="0" placeholder="Engagements" data-metric="engagement">
+        <input type="number" min="0" placeholder="Followers gained" data-metric="followersGained">
+        <input type="number" min="0" placeholder="Site clicks" data-metric="siteClicks">
+        <input type="number" min="0" placeholder="Leads/sales" data-metric="leadsOrSales">
+        <button type="button" class="primary" data-action="save-result">Save result</button>
+      </div>
+    </div>`;
+}
+
+function wireOppCard(a) {
+  const card = document.querySelector(`[data-assignment="${a.assignmentId}"]`);
+  if (!card) return;
+  card.querySelector('[data-action="plan"]')?.addEventListener('click', async () => {
+    await api('/club/opportunities/plan', { method: 'POST', body: JSON.stringify({ assignmentId: a.assignmentId }) });
+    loadOpportunities();
+  });
+  card.querySelector('[data-action="posted"]')?.addEventListener('click', async () => {
+    await api('/club/opportunities/posted', { method: 'POST', body: JSON.stringify({ assignmentId: a.assignmentId }) });
+    loadOpportunities();
+  });
+  card.querySelector('[data-action="result"]')?.addEventListener('click', () => {
+    card.querySelector('[data-result-form]').classList.add('open');
+  });
+  card.querySelector('[data-action="save-result"]')?.addEventListener('click', async () => {
+    const metrics = {};
+    card.querySelectorAll('[data-metric]').forEach((el) => { metrics[el.dataset.metric] = el.value === '' ? null : Number(el.value); });
+    const r = await api('/club/opportunities/result', { method: 'POST', body: JSON.stringify({ assignmentId: a.assignmentId, metrics }) });
+    if (r.ok) { card.querySelector('[data-result-form]').innerHTML = '<p class="muted" style="margin:0">Result saved.</p>'; }
+  });
+}
+
+load();
+</script>
+<script src="/club/club-shell.js"></script>
+</body></html>

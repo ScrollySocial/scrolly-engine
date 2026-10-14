@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/club/club-shell.css">
+<title>Give Them a Reason to Pay Attention</title>
+<style>
+  :root { --indigo:var(--scrolly-blue); --indigo-dark:#0e5fe0; --ink:var(--scrolly-navy); --ink-soft:var(--slate); --line:var(--border); --bg-alt:var(--surface-soft);
+    --opportunity:#b45309; --ontrack:#0891b2; --strength:#15803d; --insufficient:#6b7280; --notestablished:#9ca3af; --exists:#15803d; --hypothesis:#7c3aed; }
+  * { box-sizing: border-box; }
+  body { font-family: Inter, -apple-system, Arial, sans-serif; background: var(--bg-alt); color: var(--ink); margin: 0; padding: 24px; }
+  .wrap { max-width: 760px; margin: 0 auto; }
+  .eyebrow { font-size: 12px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: var(--indigo); margin-bottom: 6px; }
+  h1 { font-size: 26px; margin: 0 0 8px; }
+  h2 { font-size: 17px; margin: 0 0 12px; }
+  h3 { font-size: 14px; margin: 16px 0 6px; }
+  .sub { color: var(--ink-soft); margin-bottom: 24px; line-height: 1.5; }
+  .card { background: #fff; border: 1px solid var(--line); border-radius: 10px; padding: 20px; margin-bottom: 16px; }
+  label { display: block; font-size: 13px; font-weight: 600; margin: 12px 0 4px; }
+  textarea, input { width: 100%; padding: 8px 10px; border: 1px solid var(--line); border-radius: 6px; font-size: 14px; font-family: inherit; }
+  textarea { min-height: 56px; resize: vertical; }
+  button { border-radius: 999px; padding: 10px 22px; font-weight: 700; font-size: 14px; cursor: pointer; margin-top: 16px; }
+  body.club-shell-page button { background: var(--indigo); color: #fff; border: none; }
+  button:hover { background: var(--indigo-dark); }
+  .error { color: #b91c1c; font-size: 13px; margin-top: 8px; }
+  .hint { font-size: 12px; color: var(--ink-soft); margin-top: 4px; line-height: 1.5; }
+  [hidden] { display: none !important; }
+
+  .option { border: 1px solid var(--line); border-radius: 8px; padding: 12px; margin-bottom: 8px; cursor: pointer; }
+  .option:hover { border-color: var(--indigo); }
+  .option input { width: auto; margin-right: 8px; }
+
+  .badge { display: inline-block; font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 999px; color: #fff; white-space: nowrap; }
+  .badge.working_hypothesis { background: var(--hypothesis); }
+  .badge.partially_validated { background: var(--ontrack); }
+  .badge.evidence_backed { background: var(--strength); }
+  .badge.observed { background: var(--strength); }
+  .badge.hypothesis { background: var(--hypothesis); }
+  .badge.high { background: var(--strength); }
+  .badge.medium { background: var(--ontrack); }
+  .badge.low { background: var(--notestablished); }
+
+  .angle-row, .role-row, .idea-row { padding: 10px 0; border-bottom: 1px solid var(--line); }
+  .angle-row:last-child, .role-row:last-child, .idea-row:last-child { border-bottom: none; }
+  .row-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; }
+  .row-title { font-weight: 700; font-size: 14px; }
+  .row-rationale { font-size: 13px; color: var(--ink-soft); margin-top: 2px; line-height: 1.4; }
+
+  .channel-block { border: 1px solid var(--line); border-radius: 8px; padding: 14px; margin-bottom: 12px; }
+  .channel-title { font-weight: 800; font-size: 15px; color: var(--indigo); }
+  .channel-job { font-size: 12px; color: var(--ink-soft); text-transform: uppercase; letter-spacing: .03em; font-weight: 700; margin-bottom: 6px; }
+  .channel-detail { font-size: 13px; margin: 6px 0; line-height: 1.5; }
+  .chip-list { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; }
+  .chip { background: var(--bg-alt); border-radius: 999px; padding: 3px 10px; font-size: 12px; }
+
+  .idea-card { border: 1px solid var(--line); border-radius: 8px; padding: 12px; margin-bottom: 8px; }
+  .idea-meta { font-size: 11px; color: var(--ink-soft); text-transform: uppercase; letter-spacing: .03em; font-weight: 700; margin-top: 6px; }
+
+  .plan-card { border: 1px solid var(--indigo); }
+  .plan-row { display: flex; gap: 6px; padding: 8px 0; border-bottom: 1px solid var(--line); }
+  .plan-row:last-child { border-bottom: none; }
+  .plan-key { flex: 0 0 200px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .03em; color: var(--ink-soft); }
+  .plan-value { flex: 1; font-size: 14px; }
+  .plan-next { background: var(--bg-alt); border-left: 4px solid var(--indigo); padding: 12px 16px; border-radius: 4px; margin-top: 14px; }
+  .plan-next-cta { font-weight: 700; margin-top: 6px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="eyebrow">Scrolly $1K Club &middot; Module 5 of 7</div>
+  <h1>Give Them a Reason to Pay Attention</h1>
+  <div class="sub">Not a content calendar, not 100 Instagram ideas -- what your marketing actually needs to communicate, which messages matter most, and how to keep generating relevant ideas from your own strategy.</div>
+
+  <div id="gate" class="card" hidden>
+    <p>You'll need to open $1K Club from your Scrolly account to continue.</p>
+    <button type="button" onclick="location.href='https://scrollyseo.com/my-account/'">Go to My Account</button>
+  </div>
+  <div id="needsModule1" class="card" hidden><p>Module 1 isn't finished yet.</p><button type="button" onclick="location.href='/club'">Go to Module 1</button></div>
+  <div id="needsModule2" class="card" hidden><p>Module 2 isn't finished yet.</p><button type="button" onclick="location.href='/club/module2'">Go to Module 2</button></div>
+  <div id="needsModule3" class="card" hidden><p>Module 3 isn't finished yet.</p><button type="button" onclick="location.href='/club/module3'">Go to Module 3</button></div>
+  <div id="needsModule4" class="card" hidden><p>Module 4 isn't finished yet — Module 5 builds directly on your Channel Plan.</p><button type="button" onclick="location.href='/club/module4'">Go to Module 4</button></div>
+  <div id="checking" class="card"><p>Checking your access...</p></div>
+
+  <div id="coreMessageCard" class="card" hidden>
+    <h2>Your Core Message</h2>
+    <div class="hint">What does your buyer most need to understand for this offer to become relevant? Pick one, edit one, or write your own.</div>
+    <div id="coreMessageOptions"></div>
+    <label>Final core message</label>
+    <textarea id="selectedCoreMessage"></textarea>
+    <button type="button" id="submitBtn">Build My Messaging Plan</button>
+    <div id="formError" class="error" hidden></div>
+  </div>
+
+  <div id="results" hidden></div>
+</div>
+
+<script>
+const $ = (id) => document.getElementById(id);
+const TOKEN_KEY = 'scrolly_club_access_token';
+
+const params = new URLSearchParams(location.search);
+if (params.get('token')) {
+  sessionStorage.setItem(TOKEN_KEY, params.get('token'));
+  history.replaceState({}, '', location.pathname);
+}
+function getToken() { return sessionStorage.getItem(TOKEN_KEY); }
+async function api(path, options = {}) {
+  const token = getToken();
+  const headers = { ...(options.headers || {}) };
+  if (token) headers['Authorization'] = 'Bearer ' + token;
+  const res = await fetch(path, { ...options, headers });
+  return res.json();
+}
+function label(v) { return String(v || '').replace(/_/g, ' '); }
+let generatedOptions = [];
+
+async function init() {
+  if (!getToken()) { $('checking').hidden = true; $('gate').hidden = false; return; }
+  const ctx = await api('/club/module5/context');
+  $('checking').hidden = true;
+  if (!ctx.ok) {
+    if (ctx.reason === 'module1_not_complete' || ctx.reason === 'not_a_club_member') { $('needsModule1').hidden = false; return; }
+    if (ctx.reason === 'module2_not_complete') { $('needsModule2').hidden = false; return; }
+    if (ctx.reason === 'module3_not_complete') { $('needsModule3').hidden = false; return; }
+    if (ctx.reason === 'module4_not_complete') { $('needsModule4').hidden = false; return; }
+    $('gate').hidden = false;
+    return;
+  }
+
+  const existing = await api('/club/module5/results');
+  if (existing.ok) { renderResults(existing.results); return; }
+
+  if (ctx.existingMessagingPlan?.selectedCoreMessage) {
+    $('selectedCoreMessage').value = ctx.existingMessagingPlan.selectedCoreMessage;
+    generatedOptions = ctx.existingMessagingPlan.coreMessageOptions || [];
+    renderOptions();
+  } else {
+    const gen = await api('/club/module5/core-message', { method: 'POST', headers: { 'Content-Type': 'application/json' } });
+    if (gen.ok) { generatedOptions = gen.coreMessageOptions; renderOptions(); }
+  }
+  $('coreMessageCard').hidden = false;
+}
+
+function renderOptions() {
+  $('coreMessageOptions').innerHTML = generatedOptions.map((opt, i) => `
+    <div class="option" onclick="document.getElementById('cmopt_${i}').checked = true; document.getElementById('selectedCoreMessage').value = ${JSON.stringify(opt)};">
+      <input type="radio" name="cmopt" id="cmopt_${i}">${opt}
+    </div>`).join('');
+  if (!$('selectedCoreMessage').value && generatedOptions[0]) $('selectedCoreMessage').value = generatedOptions[0];
+}
+
+$('submitBtn').addEventListener('click', async () => {
+  $('formError').hidden = true;
+  const selectedCoreMessage = $('selectedCoreMessage').value.trim();
+  if (!selectedCoreMessage) { $('formError').textContent = 'Please select, edit, or write a core message.'; $('formError').hidden = false; return; }
+  const body = await api('/club/module5/submit', {
+    method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ answers: { selectedCoreMessage, coreMessageOptions: generatedOptions } }),
+  });
+  if (!body.ok) { $('formError').textContent = 'Could not complete Module 5: ' + body.reason; $('formError').hidden = false; return; }
+  renderResults(body.results);
+});
+
+function angleRow(a) {
+  return `<div class="angle-row"><div class="row-head"><div class="row-title">${a.name}</div><span class="badge ${a.evidenceState}">${label(a.evidenceState)}</span></div><div class="row-rationale">${a.whyThisBuyerMayCare}</div></div>`;
+}
+function roleRow(r) {
+  return `<div class="role-row"><div class="row-head"><div class="row-title">${r.label}</div><span class="badge ${r.priority}">${r.priority}</span></div><div class="row-rationale">${r.rationale}</div></div>`;
+}
+function channelBlock(c) {
+  return `<div class="channel-block">
+    <div class="channel-title">${c.channel}</div>
+    <div class="channel-job">Job: ${label(c.job)}</div>
+    <div class="channel-detail">${c.whatToCommunicate}</div>
+    <div class="channel-detail"><b>Priority roles:</b> <div class="chip-list">${c.priorityRoles.map(r => `<span class="chip">${r.label}</span>`).join('')}</div></div>
+    <div class="channel-detail"><b>Suitable formats:</b> <div class="chip-list">${(c.suitableFormats.length ? c.suitableFormats : ['none directly compatible yet']).map(f => `<span class="chip">${label(f)}</span>`).join('')}</div></div>
+    <div class="channel-detail"><b>CTA direction:</b> ${c.ctaLabel} <span class="hint">(e.g. ${c.ctaExamples.join(', ')})</span></div>
+  </div>`;
+}
+function ideaCard(idea) {
+  return `<div class="idea-card">
+    <div>${idea.idea}</div>
+    <div class="idea-meta">${idea.channel} &middot; ${idea.role}${idea.angle ? ' &middot; ' + idea.angle : ''} &middot; CTA: ${idea.ctaDirection}</div>
+  </div>`;
+}
+
+function renderResults(results) {
+  const plan = results.messagingContentPlan;
+  const objRow = (o) => `<div class="angle-row"><div class="row-head"><div class="row-title">${o.objection}</div><span class="badge ${o.basis}">${o.basis}</span></div><div class="row-rationale">${o.messageDirection}</div></div>`;
+
+  $('results').innerHTML = `
+    <div class="card">
+      <h2>Confidence</h2>
+      <span class="badge ${results.confidence.key}">${results.confidence.label}</span>
+      <p class="hint">${results.confidence.explanation}</p>
+    </div>
+
+    <div class="card">
+      <h2>Top Message Angles</h2>
+      ${plan.topMessageAngles.map(angleRow).join('')}
+    </div>
+
+    <div class="card">
+      <h2>Content Priorities</h2>
+      ${plan.contentPriorities.map(roleRow).join('')}
+    </div>
+
+    <div class="card">
+      <h2>Channel &rarr; Message Map</h2>
+      ${plan.channelMessageMap.map(channelBlock).join('')}
+    </div>
+
+    <div class="card">
+      <h2>Proof Plan</h2>
+      ${plan.proofPlan.existingProof.length ? `<h3>Proof you already have</h3>` + plan.proofPlan.existingProof.map(p => `<div class="angle-row"><div class="row-title">${p.type}</div><div class="row-rationale">${p.howToUse}</div></div>`).join('') : ''}
+      ${plan.proofPlan.proofToBuild.length ? `<h3>Proof to build</h3><div class="chip-list">${plan.proofPlan.proofToBuild.map(p => `<span class="chip">${p}</span>`).join('')}</div>` : ''}
+    </div>
+
+    <div class="card">
+      <h2>Objections to Address</h2>
+      ${plan.objectionsToAddress.length ? plan.objectionsToAddress.map(objRow).join('') : '<p class="hint">None identified yet.</p>'}
+    </div>
+
+    <div class="card">
+      <h2>Personalized Starter Ideas</h2>
+      <div class="hint">Evergreen ideas built from your own strategy -- not current trends, not a 30-day calendar.</div>
+      ${plan.starterIdeas.map(ideaCard).join('')}
+    </div>
+
+    <div class="card plan-card">
+      <h2>Your $1K Messaging &amp; Content Plan</h2>
+      <div class="plan-row"><div class="plan-key">Core message</div><div class="plan-value">${plan.coreMessage}</div></div>
+      <div class="plan-row"><div class="plan-key">CTA strategy</div><div class="plan-value">${plan.ctaStrategy.map(c => `${c.channel}: ${c.ctaCategory}`).join(' &middot; ')}</div></div>
+      <div class="plan-row"><div class="plan-key">Reusable idea formula</div><div class="plan-value">${plan.reusableIdeaFormula.formula}<br><span class="hint">${plan.reusableIdeaFormula.description}</span></div></div>
+      <div class="plan-row"><div class="plan-key">First messaging experiment</div><div class="plan-value">${plan.firstMessagingExperiment}</div></div>
+      <div class="plan-next">
+        <div>${results.nextClubStep.transition}</div>
+        <div class="plan-next-cta"><a href="/club/module6" style="color: var(--indigo);">${results.nextClubStep.cta}</a></div>
+      </div>
+    </div>
+  `;
+  $('results').hidden = false;
+  $('coreMessageCard').hidden = true;
+  $('gate').hidden = true;
+  $('needsModule1').hidden = true;
+  $('needsModule2').hidden = true;
+  $('needsModule3').hidden = true;
+  $('needsModule4').hidden = true;
+}
+
+init();
+</script>
+<script src="/club/club-shell.js"></script>
+<script src="/club/module-stepper.js"></script>
+</body>
+</html>
