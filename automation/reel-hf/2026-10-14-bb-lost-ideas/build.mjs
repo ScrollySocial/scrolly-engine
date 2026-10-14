@@ -113,7 +113,7 @@ fx('fx-pap7', 'paper-slide', win(7).s + 0.05, 0.6); fx('fx-type7', 'typing-lapto
 fx('fx-pap8', 'paper-slide', win(8).s + 0.05, 0.6); fx('fx-pop8', 'pop-light', at('files'));
 fx('fx-wh9', 'whoosh-air', at('permanent') - 0.1, 0.4); fx('fx-chk9', 'check', at('going', 27), 0.45);
 fx('fx-wh10', 'whoosh-air', win(10).s, 0.4); fx('fx-chime10', 'chime', at('website') - 0.4, 0.5, +(R.DUR - at('website') + 0.4 - 0.02).toFixed(2));
-R.music('assets/music/music-a.mp3'); // "Sleepy Cat" (Mixkit, from Reel #2's candidates; Curiosity, Chill Bro, Lonerism, Sweet September and Slow Pop are on other Reels)
+R.music('assets/music/music-a.mp3'); // "Lo-fi 01" (Mixkit, from Reel #2's candidates; Curiosity, Chill Bro, Lonerism, Sweet September, Slow Pop and Sleepy Cat are on other Reels)
 
 // cover options (the viewer's problem in their words; no internal names, no price); <m> = peach marker swipe
 const COVERS = [

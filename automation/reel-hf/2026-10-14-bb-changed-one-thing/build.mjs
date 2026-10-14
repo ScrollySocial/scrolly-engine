@@ -23,8 +23,11 @@ for (const [i, w] of R.W.entries()) {
   if (/^brain/i.test(w.w) && R.W[i - 1]?.w === 'Business') w.w = w.w.replace('brain', 'Brain');
 }
 
+// a lone "And" before "I find myself" made a one-word caption that overlapped the next one: fold it into "I"
+{ const k = R.W.findIndex((w, i) => w.w === 'And' && w.s > 53 && R.W[i + 1]?.w === 'I'); if (k > 0) { R.W[k + 1] = { ...R.W[k + 1], w: 'And I', s: R.W[k].s }; R.W.splice(k, 1); } }
+
 R.frames([0, at('well'), at('so i gave'), at('and you'), at('but not'), at('and suddenly'), at('i told'), at('so instead'),
-  at('and i like'), at('and that way'), at('and i find', 53), at("and i've")]);
+  at('and i like'), at('and that way'), at('and', 53.5), at("and i've")]);
 const NOTES = {};
 const note = (n, title, sound) => (NOTES[n] = { title, sound });
 const ME = { kind: 'me' };
@@ -33,7 +36,7 @@ const UI = "'Segoe UI','" + B.font.body + "',sans-serif";
 // F1 hook
 note(1, 'Hook above her head', 'pop on the swipe');
 R.scene(1, [K.fade(50), K.statement('b1', 'I changed <m>one thing</m> in my business', { top: 6, size: 11, in: 0.15, swipe: at('one') }),
-  K.hand('h1', 'every time I use AI', { x: 44, y: 40, size: 6.5, r: -4, in: at('completely') })]);
+  K.hand('h1', 'every time I use AI', { x: 44, y: 40, size: 6.5, r: -4, in: at('every') })]);
 
 // F2 explaining her business to two AI apps, again: the same message lands in both windows
 note(2, 'Two AI chat windows (ChatGPT, Claude) get the same “here’s my business” message', 'bubble pop, light pop');
@@ -83,12 +86,12 @@ R.scene(6, [K.fade(52), K.chat([
 ], { top: 6 })]);
 
 // F7 "I told you not to do this": the AI repeats the exact thing she banned
-note(7, 'Chat: AI opens with “Hey friends!”, she says no, it does it again; punch-in on “every single time”', 'bubble pop, light pop, bubble pop, air whoosh on the aside');
+note(7, 'Chat: AI opens with “Hey friends!”, she says no, it does it again; punch-in on “every single time”', 'bubble pop, light pop, bubble pop');
 R.scene(7, [K.fade(56), K.chat([
   { id: 'c7a', kind: 'ai', text: 'Hey friends! ✨ Our speckled mugs are here!', in: win(7).s + 0.05 },
   { ...ME, id: 'c7b', text: 'I told you: never start with “Hey friends!”', in: at('told'), enter: 'up' },
   { id: 'c7c', kind: 'ai', text: 'You’re right, sorry! Hey friends! ✨ Meet our…', in: at('continue') },
-], { top: 4 }), K.hand('h7', 'anyone else?', { x: 56, y: 50, size: 7.5, r: -4, in: at('anyone') })]);
+], { top: 4 })]);
 
 // F8 so instead: one place for all of it
 note(8, 'Statement: something I call my Business Brain; aside “all of it”', 'light pop on the swipe, bubble pop on the aside');
@@ -110,13 +113,13 @@ const FILES = [['Offers', 'updated today'], ['Prices', 'updated today'], ['How I
 R.scene(10, [K.fade(54), {
   html: `<div id="fl10" class="abs" style="left:12cqw;right:12cqw;top:4cqw;background:#fff;border-radius:2.4cqw;padding:2.4cqw 3cqw 1.4cqw;box-shadow:0 1.6cqw 4cqw rgba(0,0,0,.4);font-family:${UI};color:#37352f">
     <div style="font:700 4.2cqw/1 ${UI};margin:0 0 2cqw">🧠 Business Brain</div>
-    ${FILES.map(([t, u], i) => `<div id="fr10-${i}" style="display:flex;justify-content:space-between;align-items:center;font:400 3.6cqw/1.2 ${UI};padding:1.5cqw 1cqw;border-radius:1.2cqw;${i === 0 ? 'background:#f1f1ef;' : ''}"><span>📄 ${t}</span><span style="font-size:2.8cqw;color:#9b9a97">${u}</span></div>`).join('')}</div>`,
+    ${FILES.map(([t, u], i) => `<div id="fr10-${i}" style="display:flex;justify-content:space-between;align-items:center;font:400 3.6cqw/1.2 ${UI};padding:1.5cqw 1cqw;border-radius:1.2cqw;${i === 0 ? 'background:#f1f1ef;' : ''}"><span>📄 ${t}</span><span style="font-size:2.8cqw;color:#787774">${u}</span></div>`).join('')}</div>`,
   anim: [
     `tl.fromTo('#fl10', { y: -40, opacity: 0 }, { y: 0, opacity: 1, duration: 0.4, ease: E }, ${win(10).s + 0.05});`,
     ...FILES.map((_, i) => `tl.fromTo('#fr10-${i}', { opacity: 0, x: -20 }, { opacity: 1, x: 0, duration: 0.25, ease: E }, ${(win(10).s + 0.3 + i * 0.2).toFixed(2)});`),
   ],
 }, K.cursor('cur10', { x: 40, y: 15, size: 6, click: at('correct') }),
-  K.hand('h10', 'always current', { x: 48, y: 41, size: 7, r: -4, in: at('up to date') - 0.2 })]);
+  K.hand('h10', 'always current', { x: 50, y: 45, size: 7, r: -4, in: at('up to date') - 0.2 })]);
 
 // F11 the payoff, ticked off as she says it
 note(11, 'Lined-paper list ticks as she talks: repeat myself less, fewer mistakes, better output', 'paper slide, check, light pop, check');
@@ -148,7 +151,7 @@ fx('fx-wh3', 'whoosh-air', win(3).s, 0.4);
 fx('fx-pap4', 'paper-slide', win(4).s + 0.05, 0.6); fx('fx-pop4', 'pop-bubble', at('hours')); fx('fx-type4', 'typing-laptop', at('figured'), 0.35, 2.2);
 fx('fx-pop5a', 'pop-light', win(5).s + 0.05); fx('fx-no5', 'nope', at('spotty'), 0.45); fx('fx-pop5b', 'pop-bubble', at('makes'));
 fx('fx-pop6a', 'pop-light', at('explaining')); fx('fx-pop6b', 'pop-bubble', at('product')); fx('fx-pop6c', 'pop-light', at('again', 28));
-fx('fx-pop7a', 'pop-bubble', win(7).s + 0.05); fx('fx-pop7b', 'pop-light', at('told')); fx('fx-pop7c', 'pop-bubble', at('continue')); fx('fx-wh7', 'whoosh-air', at('anyone'), 0.4);
+fx('fx-pop7a', 'pop-bubble', win(7).s + 0.05); fx('fx-pop7b', 'pop-light', at('told')); fx('fx-pop7c', 'pop-bubble', at('continue'));
 fx('fx-pop8', 'pop-light', at('business', 40));
 fx('fx-wh9', 'whoosh-fast', win(9).s - 0.12, 0.55); fx('fx-pop9', 'pop-bubble', win(9).s + 2.1, 0.5); fx('fx-chk9', 'check', at('free') - 0.2, 0.45);
 fx('fx-pap10', 'paper-slide', win(10).s + 0.05, 0.6); fx('fx-pop10', 'pop-light', at('correct') + 0.5); fx('fx-chk10', 'check', at('up to date') - 0.2, 0.45);
