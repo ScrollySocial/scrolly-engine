@@ -20,6 +20,7 @@
 //   scrollPage(id, src, …)       a full-page screenshot scrolling behind her (pair with a cut-out)
 //   cursor(id, …)                mouse cursor that glides in and clicks
 //   urlBar(id, text, …)          browser URL pill (end card)
+//   ctaUi(id, ui, …)             end-card Instagram piece: follow button, comment bar, share row, saved toast, bio link
 
 // Wrap <m>…</m> in the marker spans, then split into word spans for the word-by-word entrance (marker stays whole).
 const marker = (html) => html.replace(/<m>(.*?)<\/m>/g, '<span class="mk"><span class="mkbg"></span><span class="mkt">$1</span></span>');
@@ -124,6 +125,34 @@ export function makeComponents(B) {
   K.urlBar = (id, text, { top, in: t } = {}) =>
     h(`<div id="${id}" class="url" style="top:${top}cqw"><span class="lock">🔒</span>${text}</div>`, t != null ? [`pop('#${id}', ${t});`] : []);
 
+  // End-card action UI (lib/cta.mjs): a real-looking Instagram piece for the action the Reel asks for, centered at `top`.
+  // ui: 'follow' | 'comment' | 'dm' | 'share' | 'save' | 'link'. word = the comment word, handle/site from the brand kit.
+  // Icons are inline SVG (emoji render as boxes). Animation: pops in at `in`; the word types, the bookmark fills.
+  const ICON = {
+    send: '<svg viewBox="0 0 24 24"><path d="M22 3 9.2 10.1M22 3l-7.4 18-3.2-8.2L3 9.7z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>',
+    save: '<svg viewBox="0 0 24 24"><path class="bmk" d="M19 21 12 15.5 5 21V4a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1z" fill="transparent" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>',
+    link: '<svg viewBox="0 0 24 24"><path d="M10 14a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1M14 10a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>',
+  };
+  const avatar = (ch) => `<span class="ig-av">${ch}</span>`;
+  K.ctaUi = (id, ui, { top, word = '', handle = '', site = '', name = '', in: t } = {}) => {
+    const who = handle || name || '@yourname', ini = (handle.replace(/^@/, '')[0] || name[0] || 'Y').toUpperCase();
+    const body = {
+      follow: `${avatar(ini)}<span class="ig-who"><b>${who}</b><small>Suggested for you</small></span><span class="ig-btn">Follow</span>`,
+      comment: `${avatar(ini)}<span class="ig-in"><span class="ctw">${word}</span><span class="ig-caret"></span></span><span class="ig-post">Post</span>`,
+      share: `<span class="ig-ico">${ICON.send}</span><span class="ig-who"><b>Send to</b><small>Share with a friend</small></span><span class="ig-avs">${avatar('A')}${avatar('J')}${avatar('M')}</span>`,
+      save: `<span class="ig-ico">${ICON.save}</span><span class="ig-who"><b>Saved</b><small>Find it in your saved posts</small></span>`,
+      link: `<span class="ig-ico">${ICON.link}</span><span class="ig-who"><b>${who}</b><small class="ig-url">${site}</small></span>`,
+    }[ui === 'dm' ? 'comment' : ui];
+    const anim = [];
+    if (t != null) {
+      anim.push(`pop('#${id}', ${t});`);
+      if (ui === 'comment' || ui === 'dm') anim.push(`tl.fromTo('#${id} .ctw', { clipPath: 'inset(0 100% 0 0)' }, { clipPath: 'inset(0 0% 0 0)', duration: ${Math.max(0.3, word.length * 0.09).toFixed(2)}, ease: 'steps(${Math.max(1, word.length)})' }, ${t} + 0.35);`);
+      if (ui === 'save') anim.push(`tl.to('#${id} .bmk', { fill: '${C.ink}', duration: 0.2 }, ${t} + 0.45);`);
+      if (ui === 'follow') anim.push(`tl.to('#${id} .ig-btn', { backgroundColor: '#EFEFEF', color: '#000', duration: 0.01 }, ${t} + 0.9); tl.set('#${id} .ig-btn', { textContent: 'Following' }, ${t} + 0.9);`);
+    }
+    return h(`<div id="${id}" class="ig-card" style="top:${top}cqw">${body}</div>`, anim);
+  };
+
   return K;
 }
 
@@ -165,4 +194,14 @@ export const componentCss = ({ C, font: F }) => `.big{position:absolute;left:5cq
 .url{position:absolute;left:14cqw;right:14cqw;display:flex;align-items:center;gap:2cqw;background:#fff;border-radius:99px;padding:2.4cqw 4cqw;font:600 5cqw 'Segoe UI','${F.body}';color:#1c1c1c;box-shadow:0 1cqw 3cqw rgba(0,0,0,.35)}.lock{font-size:3.6cqw}
 .ph{position:relative;display:inline-block;font-weight:700;color:#8a3b22;background:#fbe9df;border-radius:1cqw;padding:0 .8cqw;margin:1.3cqw .6cqw}
 .ph-ring{position:absolute;left:-12%;top:-38%;width:124%;height:176%;overflow:visible;pointer-events:none}
-.draw{stroke-dasharray:1;stroke-dashoffset:1}`;
+.draw{stroke-dasharray:1;stroke-dashoffset:1}
+.ig-card{position:absolute;left:12cqw;right:12cqw;display:flex;align-items:center;gap:3cqw;background:#fff;border-radius:4cqw;padding:3.2cqw 4cqw;font:400 4.4cqw/1.2 'Segoe UI','${F.body}',sans-serif;color:#000;box-shadow:0 1.2cqw 4cqw rgba(0,0,0,.22)}
+.ig-av{flex:none;display:inline-flex;align-items:center;justify-content:center;width:10cqw;height:10cqw;border-radius:50%;background:${C.peach};color:${C.ink};font-weight:700;font-size:4.6cqw;box-shadow:0 0 0 .5cqw #fff,0 0 0 .9cqw ${C.orange}}
+.ig-avs{display:flex;margin-left:auto}.ig-avs .ig-av{width:8.5cqw;height:8.5cqw;font-size:3.8cqw;margin-left:-2cqw;box-shadow:0 0 0 .6cqw #fff}
+.ig-who{display:flex;flex-direction:column;min-width:0;flex:1}.ig-who b{font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.ig-who small{font-size:3.6cqw;color:#737373}
+.ig-url{color:#00376B!important;font-weight:600}
+.ig-btn{flex:none;background:#0095F6;color:#fff;font-weight:700;border-radius:2.2cqw;padding:2cqw 4.4cqw}
+.ig-in{flex:1;display:flex;align-items:center;border:.3cqw solid #dbdbdb;border-radius:99px;padding:2.2cqw 3.6cqw;font-weight:700;letter-spacing:.02em;min-height:10cqw}
+.ig-caret{width:.4cqw;height:5cqw;background:#0095F6;margin-left:.4cqw}
+.ig-post{flex:none;color:#0095F6;font-weight:700}
+.ig-ico{flex:none;width:10cqw;height:10cqw;color:#000}.ig-ico svg{width:100%;height:100%;display:block}`;

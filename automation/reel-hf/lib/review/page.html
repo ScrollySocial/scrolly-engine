@@ -91,6 +91,12 @@ textarea{min-height:42px;margin-top:8px}
 #brandSel{font:inherit;font-size:15px;border:1.5px solid var(--line);border-radius:10px;padding:5px 8px;background:#fff}
 .swatches{display:inline-flex;gap:4px}
 .swatches i{width:18px;height:18px;border-radius:50%;border:1.5px solid #fff;box-shadow:0 0 0 1px var(--line);display:inline-block}
+.endwrap{display:grid;grid-template-columns:minmax(0,1fr) 240px;gap:24px;align-items:start}
+.endwrap img{width:240px;border-radius:14px;box-shadow:0 8px 24px rgba(22,18,16,.15);display:block}
+.ctas{display:flex;gap:8px;flex-wrap:wrap}
+.endtip{background:var(--peach2);border-radius:12px;padding:10px 12px;margin:12px 0 0;font-size:15px}
+.endline{font-size:16px;margin:4px 0 0}
+@media (max-width:900px){.endwrap{grid-template-columns:minmax(0,1fr)}}
 .coverwrap{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:24px;align-items:start}
 .cframes{display:flex;gap:8px;flex-wrap:wrap}
 .cfr{width:62px;aspect-ratio:9/16;border-radius:8px;border:3px solid transparent;padding:0;background:#3b322d center/cover}
@@ -181,6 +187,7 @@ textarea{min-height:42px;margin-top:8px}
     <button class="tab" role="tab" data-tab1="cover">Cover</button>
     <button class="tab" role="tab" data-tab1="script">Script</button>
     <button class="tab" role="tab" data-tab1="moments">Moments</button>
+    <button class="tab" role="tab" data-tab1="ending">Ending</button>
   </nav>
   <nav class="tabs" id="tabs2" role="tablist" aria-label="Edit it sections">
     <button class="tab" role="tab" data-tab="screen">Moments &amp; sounds</button>
@@ -242,6 +249,24 @@ textarea{min-height:42px;margin-top:8px}
         <h2>Moments</h2>
         <p class="sub">Each moment's graphics in their final spot, with the line you say. Click a picture to see it bigger.</p>
         <div class="moments" id="moments"></div>
+      </section>
+      <section data-q="ending" class="panel">
+        <h2>Ending: what should this Reel get people to do?</h2>
+        <p class="sub">Every Reel asks for one thing. Pick it here: the Reel ends on a card for it, the caption gets the matching line, and the hook should set it up.</p>
+        <div class="endwrap">
+          <div>
+            <div class="lbl">1 · The action</div>
+            <div class="ctas" id="ctas"></div>
+            <div id="ctaFields"></div>
+            <div class="lbl">Color behind you</div>
+            <div class="cstyles" id="ctaBg"></div>
+            <div class="lbl" style="margin-top:14px">Caption line it adds</div>
+            <p class="endline" id="ctaLine"></p>
+            <p class="endtip" id="ctaHook"></p>
+            <p class="endtip" id="ctaManual" hidden></p>
+          </div>
+          <div id="ctaPic"></div>
+        </div>
       </section>
       <section class="panel approve"><span class="sub" style="margin:0" id="ok1text">Happy with how it looks?</span><button class="btn go" id="ok1" type="button">Plan looks good, on to editing →</button></section>
     </div>
@@ -384,7 +409,7 @@ function showTab(t) {
 }
 $$('[data-tab]').forEach((b) => b.addEventListener('click', () => showTab(b.dataset.tab)));
 function tabDots() {
-  const has = { screen: Object.keys(D.board).length || Object.keys(D.sound).length || D.addedSfx.length, script: D.cut.length, cover: !!D.cover, moments: Object.keys(D.visual).length, audio: D.music.file || D.music.volume != null || D.soundRequests, trans: Object.keys(D.transitions).length, caps: Object.keys(D.captions).length || D.captionFont, look: !!D.look || Object.keys(D.lookByFrame || {}).length > 0 };
+  const has = { screen: Object.keys(D.board).length || Object.keys(D.sound).length || D.addedSfx.length, script: D.cut.length, cover: !!D.cover, ending: !!D.cta?.kind, moments: Object.keys(D.visual).length, audio: D.music.file || D.music.volume != null || D.soundRequests, trans: Object.keys(D.transitions).length, caps: Object.keys(D.captions).length || D.captionFont, look: !!D.look || Object.keys(D.lookByFrame || {}).length > 0 };
   $$('.tab').forEach((b) => { b.querySelector('.dot')?.remove(); if (has[b.dataset.tab || b.dataset.tab1]) b.append(el('span', 'dot')); });
 }
 async function approve(key, next) {
@@ -426,8 +451,10 @@ function renderApprovals() {
   $$('.step').forEach((b) => { const k = ['look', 'sound', 'video'][+b.dataset.step - 1]; b.classList.toggle('done', !!valid(k) && !open[k]); });
   // step 1: change requests make it "send to Claude", not "looks good"
   $('#ok1').textContent = n1 ? 'Send my changes to Claude →' : 'Plan looks good: add the sounds →';
+  $('#ok1').disabled = !n1 && !ctaPicked();
   $('#ok1text').textContent = n1
     ? (valid('look') ? `Sent to Claude ${when(D.approved.look)}. Anything you add now goes too.` : `${plural(n1, 'change')} for Claude. Sending takes you back to your list of Reels; this one comes back to you once they're made.`)
+    : !ctaPicked() ? 'Pick what this Reel should get people to do (the Ending tab) before approving the plan.'
     : (valid('look') ? `Approved ${when(D.approved.look)}.` : fixed ? fixed + 'approve the plan.' : 'Happy with the plan? Claude then adds sounds, music and transitions to it, and Edit it opens.');
   // step 2: it's a live preview, never the video
   $('#s2note').textContent = 'This is a live preview: your footage with the current graphics and sounds, playing right in the page. It is not the final video. That only gets made after you finish this step.'
@@ -630,6 +657,39 @@ $('#coverOwn').addEventListener('input', (e) => { clearTimeout(coverTimer); cons
 $('#coverAside').addEventListener('change', (e) => setCover({ aside: e.target.checked ? $('#asideText').value || "here's the fix" : '' }));
 $('#asideText').addEventListener('input', (e) => { if ($('#coverAside').checked) { clearTimeout(coverTimer); coverTimer = setTimeout(() => setCover({ aside: e.target.value }), 500); } });
 
+// ---------- Ending: the Reel's purpose (lib/cta.mjs). Changes rebuild, so the end-card picture and caption line update ----------
+const ctaConf = () => (D.cta?.kind ? D.cta : R.cta || {});
+const ctaPicked = () => { const c = ctaConf(), d = (R.ctas || []).find((x) => x.id === c.kind); return !!d && (!d.needs.includes('word') || !!String(c.word || '').trim()); };
+function setCta(patch, rebuild = true) { const c = ctaConf(); D.cta = { kind: c.kind, word: c.word || '', detail: c.detail || '', bg: c.bg || '', ...patch }; renderEnding(); tabDots(); renderApprovals(); save(rebuild); }
+function renderEnding() {
+  const c = ctaConf(), list = R.ctas || [], d = list.find((x) => x.id === c.kind);
+  const box = $('#ctas'); box.textContent = '';
+  for (const o of list) {
+    const b = el('button', 'btn small' + (c.kind === o.id ? ' main' : ' quiet'), o.label); b.type = 'button'; b.setAttribute('aria-pressed', c.kind === o.id);
+    b.addEventListener('click', () => setCta({ kind: o.id })); box.append(b);
+  }
+  const f = $('#ctaFields'); f.textContent = '';
+  const field = (key, label, hint) => {
+    const l = el('div', 'lbl', label); const i = el('input'); i.type = 'text'; i.placeholder = hint; i.value = c[key] || ''; i.setAttribute('aria-label', label);
+    if (key === 'word') { i.style.textTransform = 'uppercase'; i.maxLength = 20; }
+    i.addEventListener('change', () => setCta({ [key]: i.value.trim() })); f.append(l, i);
+  };
+  if (d?.needs.includes('word')) field('word', 'The word they comment', 'e.g. GUIDE');
+  if (d?.needs.includes('detail')) field('detail', d.detailLabel || 'Detail', d.detailHint ? 'e.g. ' + d.detailHint : '');
+  const bgs = $('#ctaBg'); bgs.textContent = '';
+  for (const bg of R.coverBgs || Object.keys(BG)) {
+    const b = el('button', 'sw'); b.type = 'button'; b.title = bg; b.setAttribute('aria-label', 'End card color ' + bg); b.style.background = BG[bg] || bg;
+    b.setAttribute('aria-pressed', (c.bg || 'cream') === bg); b.addEventListener('click', () => setCta({ bg })); bgs.append(b);
+  }
+  const fresh = R.cta && R.cta.kind === c.kind && (R.cta.word || '') === String(c.word || '').toUpperCase() && (R.cta.detail || '') === (c.detail || '');
+  $('#ctaLine').textContent = !d ? 'Pick an action first.' : fresh ? R.ctaLine : (d.needs.includes('word') && !c.word ? 'Type the word first.' : 'Updating…');
+  $('#ctaHook').textContent = d ? 'Hook tip: ' + d.hook : 'Every Reel needs one action. Pick the one this Reel earns.';
+  $('#ctaManual').hidden = !d?.manual; $('#ctaManual').textContent = d?.manual || '';
+  const pic = $('#ctaPic'); pic.textContent = '';
+  const ef = R.frames.find((x) => x.end);
+  if (ef?.img) { const img = el('img'); img.alt = 'End card preview'; img.src = `/reel/${ef.img}?${encodeURIComponent(R.made)}`; pic.append(img); }
+  else pic.append(el('p', 'sub', 'The end card shows here once you pick an action.'));
+}
 function renderMoments() {
   const box = $('#moments'); box.textContent = '';
   const cut = new Set(D.cut);
@@ -918,7 +978,7 @@ $('#notes').addEventListener('input', (e) => { D.notes = e.target.value; save();
 $('#rule').addEventListener('input', (e) => { D.rule = e.target.value; save(); });
 
 // ---------- load, and pick up updates while the page is open ----------
-function renderAll() { renderPost(); renderBrand(); renderCover(); renderMoments(); renderCaptions(); renderScript(); renderCards(); renderAudio(); renderTrans(); renderLook(); renderVideoNotes(); renderApprovals(); tabDots(); }
+function renderAll() { renderPost(); renderBrand(); renderCover(); renderEnding(); renderMoments(); renderCaptions(); renderScript(); renderCards(); renderAudio(); renderTrans(); renderLook(); renderVideoNotes(); renderApprovals(); tabDots(); }
 async function loadReel() {
   R = await fetch('/api/reel').then((r) => r.json()); for (const k of ['sfxReel', 'covers', 'transitions', 'musicLib', 'captions']) R[k] ||= [];
   stageEl.src = `/reel/review/stage.html?${encodeURIComponent(R.made)}`;
@@ -948,7 +1008,7 @@ async function watch() {
   let s = 1, tb = 'screen'; try { s = +(localStorage.getItem('reelStep') || 1); tb = localStorage.getItem('reelTab') || 'screen'; } catch {}
   if (!['screen', 'caps', 'audio', 'trans', 'look'].includes(tb)) tb = 'screen';
   let t1 = 'cover'; try { t1 = localStorage.getItem('reelTab1') || 'cover'; } catch {}
-  if (!['cover', 'script', 'moments'].includes(t1)) t1 = 'cover';
+  if (!['cover', 'script', 'moments', 'ending'].includes(t1)) t1 = 'cover';
   showTab1(t1);
   showTab(tb); showStep(s); pill(saved.savedAt ? 'Your notes are loaded' : 'Ready');
   requestAnimationFrame(tick); setTimeout(watch, 2500);

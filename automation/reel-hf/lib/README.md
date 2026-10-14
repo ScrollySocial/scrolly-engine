@@ -8,6 +8,7 @@ Spec and decisions: vault `products/content-engine/reel-engine-handoff.md`. Work
 |---|---|
 | `reel.mjs` | Engine core: frames, scenes, cut-outs, camera (alternate / punch / whip), captions, sfx, music → `index.html` |
 | `components.mjs` | Component catalog (list at the top of the file) + all component CSS |
+| `cta.mjs` | Every Reel's purpose: the 6 actions (Follow, Comment a word, Share, Save, Link in bio, Comment for a freebie), their end-card text, caption line and hook tip. `R.endCard({ kind, word, detail })` in build.mjs; her Ending pick (decisions.json `cta`) wins |
 | `brand/scrolly.mjs` | Brand kit: colors by role, fonts, site. A customer swaps this one file |
 | `brand/index.mjs` | Every kit the review page's Brand kit dropdown offers (Scrolly, Scrolly Holiday draft); a customer kit = one file + one line |
 | `templates/studio.mjs` | Studio template: segment length, framing, caption rules, music level, sfx lengths |

@@ -44,6 +44,7 @@ if (D.post?.caption || D.post?.hashtags) out.push(`POST CAPTION (her edit): ${(D
 if (D.postAfter) out.push(`AFTER APPROVAL: ${D.postAfter === 'queue' ? 'set the Notion row to Ready (adds it to the Buffer queue; needs a live video URL)' : 'hold: set the Notion row to Approved'}`);
 if (D.cover) out.push(`COVER: frame F${D.cover.frame}, ${{ cut: `centered cut-out on ${D.cover.bg}`, behind: `text-behind-her cut-out on ${D.cover.bg}`, side: `off-center cut-out on ${D.cover.bg}` }[D.cover.style || 'cut'] || `'${D.cover.style}' layout on the video frame, text ${D.cover.pos || 'bottom'}`}, text “${D.cover.text}”${D.cover.aside ? ' + aside “' + D.cover.aside + '”' : ''} (render with lib/cover.mjs renderCovers)`);
 else if (D.coverText) out.push(`COVER TEXT: ${D.coverText}${R.coverOptions?.includes(D.coverText) ? '' : ' (her own wording)'}`);
+if (D.cta?.kind) out.push(`CTA: ${D.cta.kind}${D.cta.word ? ' word “' + D.cta.word + '”' : ''}${D.cta.detail ? ' · ' + D.cta.detail : ''}${D.cta.bg ? ' · end card on ' + D.cta.bg : ''} (applies on next build; record it in the Notion row's CTA field)`);
 if (D.notes?.trim()) out.push(`GENERAL: ${D.notes.trim()}`);
 if (D.rule?.trim()) out.push(`RULE FOR EVERY REEL (add to the handoff spec's Her rules after confirming): ${D.rule.trim()}`);
 
