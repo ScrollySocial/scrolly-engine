@@ -24,3 +24,4 @@ node_modules/
 */*.mp4
 */*.webm
 */*.m4a
+_e2e-*/

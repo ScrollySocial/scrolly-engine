@@ -234,7 +234,7 @@ const typeLines = (s, t0, gap) => document.querySelectorAll(s + ' .ln').forEach(
 ${camOut().join('\n')}${lookJs()}
 ${animJs.join('\n')}
 ${rawJs.join('\n')}
-document.querySelectorAll('.cap span').forEach((el) => { const t = +el.parentElement.dataset.start; tl.fromTo(el, { y: 14, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: E }, t); });
+document.querySelectorAll('.cap ${Object.values(capEdits).some((e) => e.mark?.length) ? '> ' : ''}span').forEach((el) => { const t = +el.parentElement.dataset.start; tl.fromTo(el, { y: 14, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: E }, t); });
 ${stage ? STAGE_JS : "window.__timelines['main'] = tl;"}
 `;
       const html = `<!doctype html>
