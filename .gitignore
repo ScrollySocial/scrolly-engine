@@ -3,3 +3,17 @@ automation/.env
 Scrolly Organic Engine/products/shopify-seo-workbook/build/node_modules/
 .claude/settings.local.json
 *.log
+
+# The vault is its own git repo, backed up to GitHub as ScrollySocial/scrolly-brain
+Scrolly Organic Engine/
+
+# Video and audio are too big for git (GitHub caps files at 100MB); back them up outside git
+*.mp4
+*.mov
+*.wav
+*.mp3
+*.m4a
+**/.edit/
+
+# Shared photo library (~1,200 images): media, not code
+automation/k1-launch/content/library/
