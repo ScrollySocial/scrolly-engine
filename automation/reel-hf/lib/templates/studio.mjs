@@ -16,6 +16,6 @@ export default {
   music: { volume: 0.02, fadeIn: 4.22, fadeOut: 1.95 },
   // Graphics density: something new on screen every 1 to 2 seconds, one focal point at a time.
   density: '1-2s',
-  // Sound effects available in lib/assets/sfx (real lengths in seconds). Never the SAME sound back to back.
+  // Sound effects available in lib/assets/sfx (real lengths in seconds). Never the SAME sound back to back, except list items (one shared sound per list is good).
   sfxLen: { 'pop-light': 0.18, 'pop-bubble': 0.38, nope: 1.2, check: 1.2, 'whoosh-air': 1.6, 'whoosh-fast': 1.4, 'paper-slide': 1.0, chime: 1.25, 'typing-laptop': 2, buzzer: 1.25 },
 };

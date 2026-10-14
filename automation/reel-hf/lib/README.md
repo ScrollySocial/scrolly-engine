@@ -41,7 +41,7 @@ all 145 GSAP timeline calls identical in value and per-target order (2026-10-13)
 ## Rules baked in (Mercedes)
 - Statements: condensed heavy grotesque; emphasis = peach marker swipe (`<m>word</m>`); asides handwritten. Never italic serif accents or color-changed words. No eyebrow cards.
 - Graphics around her body (above her head first), never over her face. Circles/scribbles never cross the text they mark.
-- One music track, one static volume + fades. Never the SAME sound effect back to back.
+- One music track, one static volume + fades. Never the SAME sound effect back to back, except list items: when she says a list, each item can share one sound (Mercedes 2026-10-14).
 - No em dashes or "|" on screen. Business Brain CTA = name + scrollyseo.com, never the price.
 
 ## Growing the library

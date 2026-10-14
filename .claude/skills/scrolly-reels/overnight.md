@@ -71,7 +71,7 @@ If she approved a step and you changed what it showed, keep the approval but say
    - Plan the moments in build.mjs (follow the last approved Reel's build.mjs as the pattern), stills + cut-out stills,
      5-6 `COVERS` lines (the viewer's problem in their words) + `coverCut`, the `POST` caption (writing rules; CTA from
      the row; Business Brain = name + scrollyseo.com, never the price; exactly 3 hashtags; no em dashes).
-   - First sound pass: `R.fx` per event (never the same sound back to back), music from the existing library (rotate:
+   - First sound pass: `R.fx` per event (never the same sound back to back, except the items of a list she says, which share one sound), music from the existing library (rotate:
      not the track used by the last Reel; **no downloads**), captions, transitions.
    - `node build.mjs && npm run check` (long footage: the PRODUCER_* timeouts), then `node build.mjs review`.
    - Add the row to `rows.json` (page id → slug). Notion row: Status stays **Edit**; Script / Working File and Edit

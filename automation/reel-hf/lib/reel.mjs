@@ -59,7 +59,9 @@ export function reel({ brand, template = studio, words = 'assets/words.json', ou
   const byFrame = {}, cutStill = {}, cutMeta = []; // for the storyboard sheet
   const sfxData = [], sfxOff = []; let musicData = null; // for the animatic mix (+ switched-off sounds, for the review page)
   // sound changes she made on the review page (review/decisions.json): { sound: { <fx id>: { off, name, vol } }, music: { volume } }
-  // caption edits from step 1: { <caption #>: { text, style: 'big' | 'hide', mark: [word #] } }, captionFont: 'body' | 'statement' | 'hand'
+  // caption edits from the page: { <caption #>: { text, style: 'big' | 'hide', mark: [word #], big: [word #] } },
+  // captionFont: 'body' | 'statement' | 'hand'. style 'big' = the whole line (older pages); big = single big words,
+  // which can also carry the marker.
   const capEdits = D.captions || {}, capFont = D.captionFont;
   const soundEdits = D.sound || {}, musicEdit = D.music || {}, transEdits = D.transitions || {}, look = D.look;
   let addedDone = false;
@@ -74,9 +76,9 @@ export function reel({ brand, template = studio, words = 'assets/words.json', ou
   const win = (n) => ({ s: F[n - 1], d: +(F[n] - F[n - 1]).toFixed(2) });
 
   const capCss = () => {
-    const big = Object.values(capEdits).some((e) => e.style === 'big'), font = capFont && capFonts(B)[capFont], marked = Object.values(capEdits).some((e) => e.mark?.length);
+    const big = Object.values(capEdits).some((e) => e.style === 'big'), bigWords = Object.values(capEdits).some((e) => e.big?.length), font = capFont && capFonts(B)[capFont], marked = Object.values(capEdits).some((e) => e.mark?.length);
     return (marked ? `.cap .mk{display:inline-block;padding:0 .12em}.cap .mkbg{display:block;position:absolute;left:-.04em;right:-.04em;top:.12em;bottom:.04em;background:${B.C.peach};text-shadow:none}.cap .mkt{position:relative;color:${B.C.ink};text-shadow:none}
-` : '') + (big ? `.cap.big span{font:800 10.5cqw/.95 '${B.font.statement}';font-stretch:78%}\n` : '') + (font ? `.cap span{font-family:${font}}${capFont === 'statement' ? '.cap span{font-stretch:80%}' : ''}${capFont === 'hand' ? '.cap span{font-weight:400;font-size:7cqw}' : ''}\n` : '');
+` : '') + (big ? `.cap.big span{font:800 10.5cqw/.95 '${B.font.statement}';font-stretch:78%}\n` : '') + (bigWords ? `.cap .bw{display:inline-block;font:800 1.6em/.9 '${B.font.statement}';font-stretch:78%;vertical-align:-.12em}\n` : '') + (font ? `.cap span{font-family:${font}}${capFont === 'statement' ? '.cap span{font-stretch:80%}' : ''}${capFont === 'hand' ? '.cap span{font-weight:400;font-size:7cqw}' : ''}\n` : '');
   };
   const R = {
     W, DUR, P, K, C: B.C, B, T, at, win,
@@ -140,8 +142,9 @@ export function reel({ brand, template = studio, words = 'assets/words.json', ou
       capRender = (i) => {
         const c = caps[i], ed = capEdits[i] || {};
         if (ed.style === 'hide') return null;
-        const words = (ed.text ?? c.t).split(/\s+/).filter(Boolean), mark = new Set(ed.mark || []);
-        const inner = ed.text == null && !mark.size ? c.t : words.map((w, k) => (mark.has(k) ? `<span class="mk"><span class="mkbg"></span><span class="mkt">${w}</span></span>` : w)).join(' ');
+        const words = (ed.text ?? c.t).split(/\s+/).filter(Boolean), mark = new Set(ed.mark || []), bigW = new Set(ed.big || []);
+        const word = (w, k) => { const m = mark.has(k) ? `<span class="mk"><span class="mkbg"></span><span class="mkt">${w}</span></span>` : w; return bigW.has(k) ? `<span class="bw">${m}</span>` : m; };
+        const inner = ed.text == null && !mark.size && !bigW.size ? c.t : words.map(word).join(' ');
         return { cls: 'clip cap' + (ed.style === 'big' ? ' big' : ''), inner };
       };
       capHtml = caps.map((c, i) => { const r = capRender(i); if (!r) return null; const d = Math.max(0.3, Math.min((caps[i + 1]?.s ?? c.e + 0.6) - c.s - 0.02, Math.max(0.6, c.e - c.s + 0.5))); return `<div id="cap${i}" class="${r.cls}" data-start="${c.s.toFixed(2)}" data-duration="${d.toFixed(2)}" data-track-index="6" style="top:${top(c.s)}cqw"><span>${r.inner}</span></div>`; }).filter((x) => x != null).join('\n');
@@ -234,7 +237,7 @@ const typeLines = (s, t0, gap) => document.querySelectorAll(s + ' .ln').forEach(
 ${camOut().join('\n')}${lookJs()}
 ${animJs.join('\n')}
 ${rawJs.join('\n')}
-document.querySelectorAll('.cap ${Object.values(capEdits).some((e) => e.mark?.length) ? '> ' : ''}span').forEach((el) => { const t = +el.parentElement.dataset.start; tl.fromTo(el, { y: 14, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: E }, t); });
+document.querySelectorAll('.cap ${Object.values(capEdits).some((e) => e.mark?.length || e.big?.length) ? '> ' : ''}span').forEach((el) => { const t = +el.parentElement.dataset.start; tl.fromTo(el, { y: 14, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: E }, t); });
 ${stage ? STAGE_JS : "window.__timelines['main'] = tl;"}
 `;
       const html = `<!doctype html>

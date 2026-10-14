@@ -22,7 +22,7 @@ const LABEL = { k: 'KEEP', c: 'CHANGE', r: 'REMOVE' };
 for (const [n, b] of Object.entries(D.board || {})) if (b.state || b.note) out.push(`${LABEL[b.state] || 'NOTE'} F${n} ${frame(+n)?.title || ''}${b.note ? ': ' + b.note : ''}`);
 for (const [k, at] of Object.entries(D.approved || {})) out.push(`APPROVED step "${k}" at ${at}`);
 for (const [n, b] of Object.entries(D.visual || {})) if (b.state || b.note) out.push(`LOOK ${LABEL[b.state] || 'NOTE'} F${n} ${frame(+n)?.title || ''}${b.note ? ': ' + b.note : ''}`);
-for (const [i, e] of Object.entries(D.captions || {})) out.push(`CAPTION #${i} “${R.captions?.[+i]?.t || ''}”: ${[e.style, e.text && 'text → ' + e.text, e.mark?.length && 'marker on words ' + e.mark.join(',')].filter(Boolean).join(', ')} (applies on next build)`);
+for (const [i, e] of Object.entries(D.captions || {})) out.push(`CAPTION #${i} “${R.captions?.[+i]?.t || ''}”: ${[e.style, e.text && 'text → ' + e.text, e.mark?.length && 'marker on words ' + e.mark.join(','), e.big?.length && 'big words ' + e.big.join(',')].filter(Boolean).join(', ')} (applies on next build)`);
 if (D.captionFont) out.push(`CAPTION FONT: ${D.captionFont} (applies on next build)`);
 for (const n of D.videoNotes || []) out.push(`VIDEO NOTE ${fmt(n.t)}: ${n.text}`);
 for (const p of D.pins || []) out.push(`NOTE ${fmt(p.t)} F${p.frame} ${frame(p.frame)?.title || ''}${where(p)}: ${p.text || '(empty note: ask her)'}`);

@@ -81,6 +81,9 @@ textarea{min-height:42px;margin-top:8px}
 .cw{border:1.5px solid transparent;background:none;border-radius:6px;padding:0 4px;font-weight:700;font-size:16px}
 .cw:hover{border-color:var(--line)}
 .cw.mk{background:var(--peach)}
+.cw.bw{font:800 21px B;font-stretch:80%}
+.cw.sel{border-color:var(--ink);box-shadow:0 0 0 2px var(--ink)}
+.seg button:disabled{opacity:.4;cursor:not-allowed}
 .caprow.hide .capw{opacity:.4;text-decoration:line-through}
 .caprow.big .cw{font:800 20px B;font-stretch:80%}
 .capgroup{font:800 14px B;font-stretch:85%;color:var(--muted);margin:12px 0 2px}
@@ -252,7 +255,7 @@ textarea{min-height:42px;margin-top:8px}
       </section>
       <section data-p="caps" class="panel">
         <h2>Captions</h2>
-        <p class="sub">Click a word to put it on the peach marker. Pick Normal, Big or Hidden for each line, or edit the wording. The preview on the left updates a few seconds after a change.</p>
+        <p class="sub">Click a word to pick it, then make it <b>Big</b>, <b>Highlight</b> it (peach marker), or both. <b>Hide line</b> hides the whole line. "edit" changes the wording. The preview on the left updates a few seconds after a change.</p>
         <div class="lbl">Caption font (whole Reel)</div>
         <div class="fonts" id="fonts"></div>
         <div id="caps"></div>
@@ -335,6 +338,7 @@ const fmt = (t) => `${Math.floor(t / 60)}:${(Math.max(0, t) % 60).toFixed(1).pad
 const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
 const pretty = (n) => n.replace(/-/g, ' ');
 const blank = () => ({ lookByFrame: {}, cover: null, cut: [], visual: {}, board: {}, sound: {}, music: {}, transitions: {}, look: null, captions: {}, captionFont: null, addedSfx: [], soundRequests: '', videoNotes: [], approved: {}, coverText: '', notes: '', rule: '' });
+let capSel = null; // the caption word she picked: { i: caption #, k: word # }
 let R = null, D = blank(), step = 1, mode = 'plan', saveTimer = null, ST = { stage: null, pass: null };
 
 // ---------- saving (some changes also refresh the preview / pictures) ----------
@@ -621,11 +625,12 @@ function renderCaptions() {
   for (const c of R.captions) {
     if (c.frame !== lastF) { lastF = c.frame; const fr = R.frames.find((f) => f.n === c.frame); box.append(el('div', 'capgroup', `F${c.frame} · ${fr?.title || ''}`)); }
     const ed = D.captions[c.i] || {}, row = el('div', 'caprow' + (ed.style === 'hide' ? ' hide' : ed.style === 'big' ? ' big' : ''));
-    const words = (ed.text ?? c.t).split(/\s+/).filter(Boolean), mark = new Set(ed.mark || []);
-    const ws = el('div', 'capw');
+    const words = (ed.text ?? c.t).split(/\s+/).filter(Boolean), mark = new Set(ed.mark || []), bigW = new Set(ed.big || []);
+    const ws = el('div', 'capw'), picked = capSel?.i === c.i ? capSel.k : null;
     words.forEach((w, k) => {
-      const b = el('button', 'cw' + (mark.has(k) ? ' mk' : ''), w); b.type = 'button'; b.title = mark.has(k) ? 'Remove the marker' : 'Put this word on the peach marker';
-      b.addEventListener('click', () => setCap(c.i, { mark: mark.has(k) ? [...mark].filter((x) => x !== k) : [...mark, k] }));
+      const b = el('button', 'cw' + (mark.has(k) ? ' mk' : '') + (bigW.has(k) ? ' bw' : '') + (picked === k ? ' sel' : ''), w); b.type = 'button';
+      b.title = 'Pick this word'; b.setAttribute('aria-pressed', picked === k);
+      b.addEventListener('click', () => { capSel = picked === k ? null : { i: c.i, k }; renderCaptions(); });
       ws.append(b);
     });
     const edit = el('button', 'linkbtn', 'edit'); edit.type = 'button'; edit.style.marginLeft = '6px';
@@ -636,11 +641,15 @@ function renderCaptions() {
       inp.addEventListener('blur', done); ws.replaceWith(inp); inp.focus();
     });
     ws.append(edit);
-    const seg = el('div', 'seg');
-    for (const [k, label] of [[undefined, 'Normal'], ['big', 'Big'], ['hide', 'Hidden']]) {
-      const b = el('button', '', label); b.type = 'button'; b.setAttribute('aria-pressed', ed.style === k);
-      b.addEventListener('click', () => setCap(c.i, { style: k })); seg.append(b);
+    // Big and Highlight act on the picked word (together is fine); Hide line acts on the whole line
+    const seg = el('div', 'seg'), toggle = (set, key) => setCap(c.i, { [key]: set.has(picked) ? [...set].filter((x) => x !== picked) : [...set, picked] });
+    for (const [label, set, key] of [['Big', bigW, 'big'], ['Highlight', mark, 'mark']]) {
+      const b = el('button', '', label); b.type = 'button'; b.disabled = picked == null; b.title = picked == null ? 'Click a word first' : `${label} "${words[picked]}"`;
+      b.setAttribute('aria-pressed', picked != null && set.has(picked)); b.addEventListener('click', () => toggle(set, key)); seg.append(b);
     }
+    const hb = el('button', '', 'Hide line'); hb.type = 'button'; hb.setAttribute('aria-pressed', ed.style === 'hide');
+    hb.addEventListener('click', () => setCap(c.i, { style: ed.style === 'hide' ? undefined : 'hide' })); seg.append(hb);
+    if (ed.style === 'big') { const nb = el('button', '', 'Whole line big ✕'); nb.type = 'button'; nb.title = 'This line was set big as a whole; click to undo'; nb.addEventListener('click', () => setCap(c.i, { style: undefined })); seg.append(nb); }
     row.append(el('span', 'mono', fmt(c.s)), ws, seg); box.append(row);
   }
 }
@@ -727,7 +736,7 @@ function renderCards() {
     const list = R.sfx.filter((s) => s.frame === f.n), rows = list.map(soundRow);
     if (!rows.length) card.append(el('div', 'empty', 'No sound effects here.'));
     rows.forEach((r) => card.append(r));
-    let prev = null; list.forEach((s, k) => { const st = soundState(s); if (st.off) return; if (prev === st.name) rows[k].children[1].append(el('div', 'flag', 'Same sound as the one before (fine if you meant it)')); prev = st.name; });
+    let prev = null; list.forEach((s, k) => { const st = soundState(s); if (st.off) return; if (prev === st.name) rows[k].children[1].append(el('div', 'flag', 'Same sound as the one before (fine for list items or if you meant it)')); prev = st.name; });
     const holder = el('div'); const addb = el('button', 'linkbtn', '+ Add a sound'); addb.type = 'button';
     addb.addEventListener('click', () => addSoundForm(f, holder)); holder.append(addb); card.append(holder);
     const ta = el('textarea'); ta.placeholder = 'Notes on the sound or timing here'; ta.value = b.note || ''; ta.rows = 1;
