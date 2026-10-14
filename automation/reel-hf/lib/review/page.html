@@ -1,0 +1,845 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reel review</title>
+<style>
+@font-face{font-family:B;src:url('/lib/assets/fonts/bricolage-800.woff2') format('woff2');font-weight:800;font-stretch:75% 100%}
+@font-face{font-family:F;src:url('/lib/assets/fonts/figtree.woff2') format('woff2');font-weight:300 900}
+@font-face{font-family:H;src:url('/lib/assets/fonts/covered-by-your-grace.woff2') format('woff2')}
+:root{--cream:#F6EEE5;--paper:#FFFBF6;--peach:#FFC9A8;--peach2:#FFE3D2;--orange:#E05A33;--ink:#161210;--muted:#6f655e;--line:#E6D9CC;--mist:#E7EEF5;--ok:#2F7D5B}
+*{box-sizing:border-box}
+body{margin:0;background:var(--cream);color:var(--ink);font:15px/1.5 F,system-ui,sans-serif}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline:3px solid var(--orange);outline-offset:2px}
+header{position:sticky;top:0;z-index:5;background:var(--paper);border-bottom:1px solid var(--line)}
+.hrow{display:flex;align-items:center;gap:16px;flex-wrap:wrap;padding:10px 22px}
+.kicker{font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--orange)}
+h1{font:800 24px/1.05 B;font-stretch:80%;margin:0}
+.grow{flex:1}
+.steps{display:flex;gap:6px;flex-wrap:wrap}
+.step{display:flex;gap:8px;align-items:center;border:1.5px solid var(--line);background:#fff;border-radius:999px;padding:5px 14px 5px 6px;font-weight:700;font-size:14px;color:var(--muted)}
+.step .num{width:24px;height:24px;border-radius:50%;background:var(--cream);display:inline-flex;align-items:center;justify-content:center;font-size:13px}
+.step[aria-current=step]{background:var(--ink);border-color:var(--ink);color:var(--cream)}
+.step[aria-current=step] .num{background:var(--orange);color:#fff}
+.step.done .num{background:var(--ok);color:#fff}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;padding:0 22px 10px}
+.tab{border:1.5px solid var(--line);background:#fff;border-radius:999px;padding:5px 13px;font-weight:700;font-size:13px;color:var(--muted)}
+.tab[aria-selected=true]{background:var(--peach2);border-color:var(--orange);color:var(--ink)}
+.tab .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--orange);margin-left:6px;vertical-align:1px}
+.pill{font-size:13px;padding:4px 11px;border-radius:999px;background:var(--cream);border:1px solid var(--line);color:var(--muted)}
+.pill.bad{color:#a3301a;border-color:#e9a28c;background:#fff1ec}
+.pill.good{color:var(--ok);border-color:#a9d3bd;background:#eef8f2}
+.wrap{display:grid;grid-template-columns:auto minmax(0,1fr);gap:24px;padding:16px 22px 60px;align-items:start}
+.wrap.full{grid-template-columns:minmax(0,1fr);max-width:1180px;margin:0 auto}
+.side{position:sticky;top:120px;display:flex;flex-direction:column;gap:10px;align-items:center}
+.player{position:relative;height:clamp(420px,calc(100vh - 250px),760px);aspect-ratio:9/16;border-radius:18px;overflow:hidden;background:#000;box-shadow:0 10px 30px rgba(22,18,16,.18)}
+.player iframe{position:absolute;left:0;top:0;width:1080px;height:1920px;border:0;transform-origin:0 0;pointer-events:none}
+.player video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.musicbadge{position:absolute;left:10px;top:10px;z-index:3;background:rgba(22,18,16,.72);color:#fff;font-size:12px;font-weight:700;border-radius:999px;padding:4px 10px;pointer-events:none}
+.novideo{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;padding:24px;color:#e9dfd5;font-size:15px;background:#3b322d}
+.ctl{display:flex;gap:8px;align-items:center;justify-content:center;flex-wrap:wrap}
+.btn{border:1.5px solid var(--ink);background:var(--paper);border-radius:999px;padding:6px 14px;font-weight:700;font-size:14px}
+.btn.main{background:var(--ink);color:var(--cream)}
+.btn.go{background:var(--ok);border-color:var(--ok);color:#fff;padding:9px 18px;font-size:15px}
+.btn.quiet{border-color:var(--line);font-weight:600}
+.btn.small{padding:3px 10px;font-size:13px}
+.scrub{width:100%;display:flex;gap:8px;align-items:center}
+.scrub input{flex:1;accent-color:var(--orange)}
+.time{font:600 12px ui-monospace,Consolas,monospace;color:var(--muted);white-space:nowrap}
+.panel{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:18px 20px;margin-bottom:16px}
+h2{font:800 24px/1.1 B;font-stretch:80%;margin:0 0 4px}
+h3{font:800 18px/1.1 B;font-stretch:82%;margin:18px 0 6px}
+.sub{color:var(--muted);font-size:14px;margin:0 0 12px}
+.empty{color:var(--muted);font-size:14px}
+.mono{font:600 12px ui-monospace,Consolas,monospace;color:var(--muted)}
+.approve{display:flex;gap:14px;align-items:center;flex-wrap:wrap;justify-content:space-between}
+/* step 1 */
+.covers{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:14px}
+.cov{border:3px solid transparent;border-radius:14px;padding:0;background:none;text-align:left}
+.cov img{width:100%;aspect-ratio:9/16;object-fit:cover;border-radius:11px;display:block;background:#eee}
+.cov span{display:block;font-size:13px;margin:6px 4px 0;color:var(--muted)}
+.cov[aria-pressed=true]{border-color:var(--orange)}
+input[type=text],textarea{width:100%;font:inherit;font-size:15px;border:1.5px solid var(--line);border-radius:12px;padding:8px 10px;background:#fff;resize:vertical}
+textarea{min-height:42px;margin-top:8px}
+#coverOwn{margin-top:14px}
+.moments{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:18px}
+.moment img{width:100%;aspect-ratio:9/16;object-fit:cover;border-radius:12px;display:block;background:#3b322d;cursor:zoom-in}
+.moment .ct{font:800 18px/1.15 B;font-stretch:82%;margin:8px 0 0}
+.quote{font-style:italic;color:#4a423d;margin:4px 0 8px}
+.seg{display:inline-flex;border:1.5px solid var(--line);border-radius:999px;overflow:hidden;background:#fff}
+.seg button{border:0;background:none;padding:5px 12px;font-weight:700;font-size:13px;color:var(--muted)}
+.seg button[aria-pressed=true]{background:var(--ink);color:#fff}
+.seg button[aria-pressed=true].k{background:var(--ok)}
+.seg button[aria-pressed=true].c{background:var(--orange)}
+.fonts{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+.fontbtn{border:1.5px solid var(--line);background:#fff;border-radius:12px;padding:6px 14px;font-size:18px}
+.fontbtn[aria-pressed=true]{border-color:var(--orange);background:var(--peach2)}
+.caprow{display:grid;grid-template-columns:52px minmax(0,1fr) auto;gap:10px;align-items:center;padding:6px 0;border-top:1px dashed var(--line)}
+.capw{display:flex;flex-wrap:wrap;gap:3px;align-items:center}
+.cw{border:1.5px solid transparent;background:none;border-radius:6px;padding:0 4px;font-weight:700;font-size:16px}
+.cw:hover{border-color:var(--line)}
+.cw.mk{background:var(--peach)}
+.caprow.hide .capw{opacity:.4;text-decoration:line-through}
+.caprow.big .cw{font:800 20px B;font-stretch:80%}
+.capgroup{font:800 14px B;font-stretch:85%;color:var(--muted);margin:12px 0 2px}
+.brandrow{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:6px 0 10px}
+#brandSel{font:inherit;font-size:15px;border:1.5px solid var(--line);border-radius:10px;padding:5px 8px;background:#fff}
+.swatches{display:inline-flex;gap:4px}
+.swatches i{width:18px;height:18px;border-radius:50%;border:1.5px solid #fff;box-shadow:0 0 0 1px var(--line);display:inline-block}
+.coverwrap{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:24px;align-items:start}
+.cframes{display:flex;gap:8px;flex-wrap:wrap}
+.cfr{width:62px;aspect-ratio:9/16;border-radius:8px;border:3px solid transparent;padding:0;background:#3b322d center/cover}
+.cfr[aria-pressed=true]{border-color:var(--orange)}
+.cstyles{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.sw{width:34px;height:34px;border-radius:50%;border:3px solid #fff;box-shadow:0 0 0 1.5px var(--line);padding:0}
+.sw[aria-pressed=true]{box-shadow:0 0 0 3px var(--orange)}
+.ctext{display:flex;gap:10px;align-items:center;padding:6px 8px;border-radius:10px;cursor:pointer}
+.ctext:hover,.ctext.on{background:var(--peach2)}
+.ctext input{accent-color:var(--orange);margin:0}
+.ctext span{font:800 17px/1.15 B;font-stretch:82%}
+.coverprev{position:sticky;top:90px}
+.cpbox{position:relative;width:300px;height:533px;border-radius:16px;overflow:hidden;background:#eee;box-shadow:0 8px 24px rgba(22,18,16,.15)}
+.cpbox iframe{position:absolute;left:0;top:0;width:1080px;height:1920px;border:0;transform:scale(.2778);transform-origin:0 0;pointer-events:none}
+.cpmsg{position:absolute;inset:auto 10px 10px 10px;background:rgba(22,18,16,.8);color:#fff;font-size:13px;border-radius:10px;padding:8px 10px}
+.tog{display:inline-flex;gap:8px;align-items:center;font-size:14px;color:var(--muted);flex-wrap:wrap}
+@media (max-width:900px){.coverwrap{grid-template-columns:minmax(0,1fr)}}
+.zoom{position:fixed;inset:0;background:rgba(22,18,16,.8);display:flex;align-items:center;justify-content:center;z-index:20;cursor:zoom-out}
+.zoom img{height:92vh;border-radius:14px}
+/* step 2 */
+.beatline{background:#fff;border:1.5px solid var(--line);border-radius:14px;padding:14px 16px;margin-bottom:12px}
+.beatline.now{border-color:var(--orange);box-shadow:0 0 0 1px var(--orange)}
+.bh{display:flex;gap:12px;align-items:center;margin-bottom:6px}
+.bh .btn{white-space:nowrap;flex:none}
+.bh .ct{font:800 18px/1.15 B;font-stretch:82%;margin:0}
+.said{font-size:18px;line-height:1.75;margin:0}
+.wd{padding:1px 2px;border-radius:5px;cursor:pointer}
+.wd:hover{background:var(--peach2)}
+.wd.cut{background:var(--ink);color:var(--cream);text-decoration:line-through}
+.wd.now{box-shadow:inset 0 -3px 0 var(--orange)}
+.card{padding:14px;border:2px solid transparent;border-radius:14px;margin-bottom:6px}
+.card + .card{border-top:1px dashed var(--line)}
+.card.now{border:2px solid var(--orange);background:#fff}
+.cardhead{display:flex;gap:14px;align-items:center;margin-bottom:4px}
+.pthumb{position:relative;flex:none;width:72px;aspect-ratio:9/16;border-radius:10px;border:0;padding:0;background:#3b322d center/cover}
+.pthumb .pbtn{position:absolute;left:50%;top:50%;width:30px;height:30px;margin:-15px 0 0 -15px;border-radius:50%;background:rgba(22,18,16,.75);color:#fff;font-size:12px;display:flex;align-items:center;justify-content:center}
+.card.now .pthumb{outline:3px solid var(--orange)}
+.card .ct{font:800 18px/1.15 B;font-stretch:82%;margin:0}
+.lbl{font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:10px 0 2px}
+.linkbtn{border:0;background:none;color:var(--orange);font-weight:700;padding:6px 0;font-size:14px}
+.addform{display:flex;gap:6px;flex-wrap:wrap;align-items:center;padding:6px 0}
+.addform select,.snd select{font:inherit;font-size:14px;border:1.5px solid var(--line);border-radius:10px;padding:4px 6px;background:#fff;max-width:100%}
+.snd{display:grid;grid-template-columns:52px minmax(0,1fr) auto;gap:8px;align-items:center;padding:5px 0;border-top:1px dashed var(--line)}
+.snd.off select{text-decoration:line-through;color:var(--muted)}
+.flag{font-size:12px;color:#9C5B00}
+.changed{font-size:11px;color:var(--orange);font-weight:700}
+.mini{display:flex;gap:4px;align-items:center}
+.mini button{border:1.5px solid var(--line);background:#fff;border-radius:8px;padding:3px 8px;font-size:13px;font-weight:700}
+.mini .v{font:600 12px ui-monospace,Consolas,monospace;min-width:36px;text-align:center}
+.track{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:10px;align-items:center;padding:7px 10px;border-radius:12px}
+.track.on{background:var(--peach2)}
+.track .nm{font-weight:700}
+.lib{display:flex;flex-wrap:wrap;gap:8px}
+.libsnd{display:inline-flex;gap:8px;align-items:center;border:1.5px solid var(--line);background:#fff;border-radius:999px;padding:5px 12px 5px 6px;font-weight:700;font-size:14px}
+.libsnd .pl{width:22px;height:22px;border-radius:50%;background:var(--ink);color:#fff;font-size:10px;display:inline-flex;align-items:center;justify-content:center}
+.tr{padding:12px 0;border-top:1px dashed var(--line)}
+.tr:first-child{border-top:0}
+.trtop{display:flex;gap:12px;align-items:center;flex-wrap:wrap;justify-content:space-between}
+.trdesc{font-size:13px;color:var(--muted);margin-top:4px}
+.pmrow{display:grid;grid-template-columns:minmax(160px,240px) minmax(0,1fr);gap:10px;align-items:center;padding:6px 0;border-top:1px dashed var(--line)}
+.presets{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.slider{display:grid;grid-template-columns:110px minmax(0,1fr) 44px;gap:10px;align-items:center;margin:8px 0}
+.slider input{accent-color:var(--orange)}
+.igprev{background:#fff;border:1.5px solid var(--line);border-radius:12px;padding:10px 12px;font-size:14px;line-height:1.45;margin-bottom:6px}
+.igprev .more{color:var(--muted)}
+.capmeta{display:flex;justify-content:space-between;align-items:center;margin-top:4px}
+#postCaption{min-height:150px}
+.vnote{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:10px;align-items:start;padding:6px 0;border-top:1px dashed var(--line)}
+.x{border:0;background:none;color:var(--muted);font-size:18px;line-height:1;padding:2px 4px}
+[hidden]{display:none!important}
+@media (max-width:900px){.wrap{grid-template-columns:minmax(0,1fr)}.side{position:static}}
+</style>
+</head>
+<body>
+<header>
+  <div class="hrow">
+    <div><div class="kicker"><a href="http://localhost:4320/" style="color:inherit">← All Reels</a> · Reel review</div><h1 id="title">Reel</h1></div>
+    <span class="pill" id="save">Loading…</span>
+    <span class="grow"></span>
+    <nav class="steps" aria-label="Review steps">
+      <button class="step" data-step="1" type="button"><span class="num">1</span>Plan it</button>
+      <button class="step" data-step="2" type="button"><span class="num">2</span>Edit it</button>
+      <button class="step" data-step="3" type="button"><span class="num">3</span>Approve it</button>
+    </nav>
+  </div>
+  <nav class="tabs" id="tabs1" role="tablist" aria-label="Plan it sections">
+    <button class="tab" role="tab" data-tab1="cover">Cover</button>
+    <button class="tab" role="tab" data-tab1="script">Script</button>
+    <button class="tab" role="tab" data-tab1="moments">Moments</button>
+  </nav>
+  <nav class="tabs" id="tabs2" role="tablist" aria-label="Edit it sections">
+    <button class="tab" role="tab" data-tab="screen">Moments &amp; sounds</button>
+    <button class="tab" role="tab" data-tab="caps">Captions</button>
+    <button class="tab" role="tab" data-tab="audio">Music &amp; library</button>
+    <button class="tab" role="tab" data-tab="trans">Transitions</button>
+    <button class="tab" role="tab" data-tab="look">Filters &amp; lighting</button>
+  </nav>
+</header>
+
+<div class="wrap" id="wrap">
+  <aside class="side" id="side">
+    <div class="player" id="player">
+      <iframe id="stage" title="Reel preview" tabindex="-1"></iframe>
+      <video id="v" playsinline preload="auto" hidden></video>
+      <div class="musicbadge" id="musicbadge" hidden>♪ <span id="musicname"></span></div>
+      <div class="novideo" id="novideo" hidden>The video gets made after you finish step 2 (Edit it). Then it plays here.</div>
+    </div>
+    <div class="scrub"><input type="range" id="scrub" min="0" max="60" step="0.05" value="0" aria-label="Position"><span class="time" id="time">0:00.0</span></div>
+    <label class="tog" id="boostwrap"><input type="checkbox" id="boost"> Boost music while reviewing (not in the Reel)</label>
+    <div class="ctl">
+      <button class="btn quiet" id="back" type="button" aria-label="Back 3 seconds">−3s</button>
+      <button class="btn main" id="play" type="button">Play</button>
+      <button class="btn quiet" id="fwd" type="button" aria-label="Forward 3 seconds">+3s</button>
+    </div>
+  </aside>
+
+  <main>
+    <!-- STEP 1: LOOK -->
+    <div data-s="1">
+      <section class="panel">
+        <h2>Step 1 · Plan it</h2>
+        <div class="brandrow"><label for="brandSel" class="lbl" style="margin:0">Brand kit</label><select id="brandSel"></select><span class="swatches" id="brandSw"></span></div>
+        <p class="sub" style="margin:0">Check the cover, what you say, and every moment's graphics before any sound is picked. Pictures use a still of you; the real video comes in step 3.</p>
+      </section>
+      <section data-q="cover" class="panel">
+        <h2>Cover</h2>
+        <p class="sub">Build it in three picks. The cover on the right updates as you go.</p>
+        <div class="coverwrap">
+          <div class="coverpick">
+            <div class="lbl">1 · Frame from the video</div>
+            <div class="cframes" id="cframes"></div>
+            <div class="lbl">2 · Style</div>
+            <div class="cstyles" id="cstyles"></div>
+            <div class="lbl">3 · Text</div>
+            <div id="ctexts"></div>
+            <input type="text" id="coverOwn" placeholder="Or write your own line (put *stars* around words for the peach marker)">
+            <label class="tog" style="margin-top:8px"><input type="checkbox" id="coverAside"> Handwritten note: <input type="text" id="asideText" style="width:180px;padding:3px 8px" value="here's the fix"></label>
+          </div>
+          <div class="coverprev"><div class="cpbox"><iframe id="cprev" title="Cover preview" tabindex="-1"></iframe><div class="cpmsg" id="cpmsg" hidden></div></div></div>
+        </div>
+      </section>
+      <section data-q="script" class="panel">
+        <h2>Script</h2>
+        <p class="sub">What you say, beat by beat. Click a beat to hear it; click a word to cut it (click again to keep it).</p>
+        <div id="script"></div>
+      </section>
+      <section data-q="moments" class="panel">
+        <h2>Moments</h2>
+        <p class="sub">Each moment's graphics in their final spot, with the line you say. Click a picture to see it bigger.</p>
+        <div class="moments" id="moments"></div>
+      </section>
+      <section class="panel approve"><span class="sub" style="margin:0" id="ok1text">Happy with how it looks?</span><button class="btn go" id="ok1" type="button">Plan looks good, on to editing →</button></section>
+    </div>
+
+    <!-- STEP 2: SOUND & MOTION -->
+    <div data-s="2">
+      <section data-p="screen" class="panel">
+        <h2>Moments &amp; sounds</h2>
+        <p class="sub">Press ▶ Play on a moment and watch it on the left; the card you're on lights up.</p>
+        <div id="cards"></div>
+      </section>
+      <section data-p="caps" class="panel">
+        <h2>Captions</h2>
+        <p class="sub">Click a word to put it on the peach marker. Pick Normal, Big or Hidden for each line, or edit the wording. The preview on the left updates a few seconds after a change.</p>
+        <div class="lbl">Caption font (whole Reel)</div>
+        <div class="fonts" id="fonts"></div>
+        <div id="caps"></div>
+      </section>
+      <section data-p="audio" class="panel">
+        <h2>Music &amp; sound library</h2>
+        <h3>Music</h3>
+        <p class="sub">Listen to a track on its own, then pick one. In the Reel it plays far under your voice.</p>
+        <div id="tracks"></div>
+        <div class="ctl" style="justify-content:flex-start;margin-top:10px"><span class="sub" style="margin:0">Level under your voice:</span><div class="mini" id="mlevel"></div></div>
+        <h3>Sound library</h3>
+        <p class="sub">Every sound you can use. Click to hear it. To use one, press "+ Add a sound" on a moment.</p>
+        <div class="lib" id="sfxlib"></div>
+        <h3>Request a new sound</h3>
+        <p class="sub">Describe what you'd like (e.g. "cash register ding"). Claude finds options and checks with you before downloading.</p>
+        <textarea id="requests" placeholder="One sound per line"></textarea>
+      </section>
+      <section data-p="trans" class="panel">
+        <h2>Transitions</h2>
+        <p class="sub">A transition moves your footage itself (not the graphics) as one moment hands over to the next. They're fast, so use 🐢 Slow to see one at quarter speed.</p>
+        <div id="trans"></div>
+      </section>
+      <section data-p="look" class="panel">
+        <h2>Filters &amp; lighting</h2>
+        <p class="sub">Changes the look of your footage only (not the graphics). You see it live on the left.</p>
+        <div class="presets" id="presets"></div>
+        <div id="sliders"></div>
+        <h3>A different look for one moment</h3>
+        <p class="sub">For example black and white for one beat. Everything else keeps the whole-Reel look.</p>
+        <div id="perMoment"></div>
+      </section>
+      <section class="panel approve"><span class="sub" style="margin:0" id="ok2text">Sounds and motion right?</span><button class="btn go" id="ok2" type="button">Edit done, make the video →</button></section>
+    </div>
+
+    <!-- STEP 3: VIDEO -->
+    <div data-s="3">
+      <section class="panel">
+        <h2>Step 3 · Approve it</h2>
+        <p class="sub" id="vsub">The finished Reel. Pause where something's off and add a note at that moment.</p>
+        <div class="ctl" style="justify-content:flex-start"><input type="text" id="vtext" placeholder="What should change at this moment?" style="flex:1;min-width:220px"><button class="btn main" id="vadd" type="button">Add note here</button></div>
+        <div id="vnotes" style="margin-top:10px"></div>
+      </section>
+      <section class="panel">
+        <h2>Post caption</h2>
+        <p class="sub">What goes under the Reel on Instagram. Edit it right here.</p>
+        <div class="lbl">Preview text (what shows before "more")</div>
+        <div class="igprev"><b>scrollysocial</b> <span id="capPreview"></span><span class="more">… more</span></div>
+        <div class="lbl" style="margin-top:12px">Full text</div>
+        <textarea id="postCaption" rows="7" aria-label="Full caption text"></textarea>
+        <div class="capmeta"><span class="mono" id="capCount"></span><button class="linkbtn" id="capReset" type="button">Back to Claude's draft</button></div>
+        <div class="lbl">Hashtags</div>
+        <input type="text" id="postTags">
+        <div class="lbl" style="margin-top:16px">When you approve</div>
+        <div class="seg" id="postAfter" role="group" aria-label="When you approve">
+          <button type="button" data-v="queue">Add to the Buffer queue</button>
+          <button type="button" data-v="hold">Hold for now</button>
+        </div>
+        <p class="sub" id="postAfterNote" style="margin:8px 0 0"></p>
+      </section>
+      <section class="panel approve"><span class="sub" style="margin:0" id="ok3text">Ready to post?</span><button class="btn go" id="ok3" type="button">Approve the Reel ✓</button></section>
+    </div>
+
+    <section class="panel">
+      <h2>Anything else</h2>
+      <textarea id="notes" placeholder="Notes about this Reel"></textarea>
+      <p class="sub" style="margin:12px 0 0">A rule for every Reel from now on (optional)</p>
+      <textarea id="rule" placeholder="e.g. never put a sound on every list item"></textarea>
+    </section>
+  </main>
+</div>
+
+<audio id="voice" preload="auto"></audio>
+<audio id="music" preload="auto"></audio>
+<audio id="listen"></audio>
+
+<script>
+const $ = (s) => document.querySelector(s), $$ = (s) => [...document.querySelectorAll(s)];
+const v = $('#v'), voice = $('#voice'), music = $('#music'), listen = $('#listen'), stageEl = $('#stage');
+const fmt = (t) => `${Math.floor(t / 60)}:${(Math.max(0, t) % 60).toFixed(1).padStart(4, '0')}`;
+const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
+const pretty = (n) => n.replace(/-/g, ' ');
+const blank = () => ({ lookByFrame: {}, cover: null, cut: [], visual: {}, board: {}, sound: {}, music: {}, transitions: {}, look: null, captions: {}, captionFont: null, addedSfx: [], soundRequests: '', videoNotes: [], approved: {}, coverText: '', notes: '', rule: '' });
+let R = null, D = blank(), step = 1, mode = 'plan', saveTimer = null;
+
+// ---------- saving (some changes also refresh the preview / pictures) ----------
+const pill = (text, cls) => { const p = $('#save'); p.textContent = text; p.className = 'pill' + (cls ? ' ' + cls : ''); };
+let rebuildAfterSave = false;
+function save(rebuild) {
+  if (rebuild) rebuildAfterSave = true;
+  clearTimeout(saveTimer); pill('Saving…');
+  saveTimer = setTimeout(async () => {
+    try {
+      const r = await fetch('/api/decisions', { method: 'PUT', body: JSON.stringify(D) }).then((r) => r.json());
+      if (!r.ok) throw new Error(r.error);
+      pill('Saved ' + new Date().toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }), 'good');
+      if (rebuildAfterSave) { rebuildAfterSave = false; pill('Updating…'); await fetch('/api/rebuild', { method: 'POST' }); }
+    } catch { pill("Couldn't save: is the review page still running?", 'bad'); }
+  }, 400);
+}
+
+// ---------- steps + tabs ----------
+function showStep(n) {
+  step = n; stop(); v.pause();
+  $$('.step').forEach((b) => { b.setAttribute('aria-current', +b.dataset.step === n ? 'step' : 'false'); b.classList.toggle('done', !!D.approved[['look', 'sound', 'video'][+b.dataset.step - 1]]); });
+  $$('[data-s]').forEach((d) => (d.hidden = +d.dataset.s !== n));
+  $('#tabs2').hidden = n !== 2; $('#tabs1').hidden = n !== 1; $('#side').hidden = n === 1; $('#wrap').classList.toggle('full', n === 1);
+  setMode(n === 3 ? 'video' : 'plan');
+  try { localStorage.setItem('reelStep', n); } catch {}
+}
+$$('.step').forEach((b) => b.addEventListener('click', () => showStep(+b.dataset.step)));
+function showTab1(t) {
+  $$('[data-tab1]').forEach((b) => b.setAttribute('aria-selected', b.dataset.tab1 === t));
+  $$('section[data-q]').forEach((sec) => (sec.hidden = sec.dataset.q !== t));
+  try { localStorage.setItem('reelTab1', t); } catch {}
+}
+$$('[data-tab1]').forEach((b) => b.addEventListener('click', () => showTab1(b.dataset.tab1)));
+function showTab(t) {
+  $$('[data-tab]').forEach((b) => b.setAttribute('aria-selected', b.dataset.tab === t));
+  $$('section[data-p]').forEach((s) => (s.hidden = s.dataset.p !== t));
+  try { localStorage.setItem('reelTab', t); } catch {}
+}
+$$('[data-tab]').forEach((b) => b.addEventListener('click', () => showTab(b.dataset.tab)));
+function tabDots() {
+  const has = { screen: Object.keys(D.board).length || Object.keys(D.sound).length || D.addedSfx.length, script: D.cut.length, cover: !!D.cover, moments: Object.keys(D.visual).length, audio: D.music.file || D.music.volume != null || D.soundRequests, trans: Object.keys(D.transitions).length, caps: Object.keys(D.captions).length || D.captionFont, look: !!D.look || Object.keys(D.lookByFrame || {}).length > 0 };
+  $$('.tab').forEach((b) => { b.querySelector('.dot')?.remove(); if (has[b.dataset.tab || b.dataset.tab1]) b.append(el('span', 'dot')); });
+}
+function approve(key, next) {
+  D.approved = { ...D.approved, [key]: new Date().toISOString() }; save();
+  $$('.step').forEach((b) => b.classList.toggle('done', !!D.approved[['look', 'sound', 'video'][+b.dataset.step - 1]]));
+  renderApprovals(); if (next) { showStep(next); window.scrollTo(0, 0); }
+}
+function renderApprovals() {
+  const t = (k) => (D.approved[k] ? 'Approved ' + new Date(D.approved[k]).toLocaleString([], { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' }) + '. Change anything and Claude picks it up.' : null);
+  $('#ok1text').textContent = t('look') || 'Happy with the plan? Then sounds get picked to match.';
+  $('#ok2text').textContent = t('sound') || 'Edit right? Then Claude makes the video.';
+  $('#ok3text').textContent = t('video') || 'Video and caption ready? Approving starts the posting step.';
+}
+$('#ok1').addEventListener('click', () => approve('look', 2));
+$('#ok2').addEventListener('click', () => approve('sound', 3));
+$('#ok3').addEventListener('click', () => approve('video'));
+
+// ---------- one clock: your voice drives it; graphics, footage, music and sound effects follow ----------
+let t = 0, playing = false, stopAt = null, timers = [], t0 = 0, p0 = 0, rate = 1;
+const soundState = (s) => { const e = D.sound[s.id] || {}; return { off: !!e.off, name: e.name || s.base, vol: e.vol ?? s.baseVol, edited: !!(e.off || (e.name && e.name !== s.base) || (e.vol != null && e.vol !== s.baseVol)) }; };
+const sfxUrl = (name) => (R.sfxReel.includes(name) ? `/reel/assets/sfx/${name}.mp3` : `/lib/assets/sfx/${name}.mp3`);
+const liveSfx = new Set();
+// plays a sound for its real length in the Reel (long files like typing get cut off, like the render does)
+function playSfx(name, vol, dur) {
+  const a = new Audio(sfxUrl(name)); a.volume = Math.min(1, vol); liveSfx.add(a);
+  const end = () => { a.pause(); liveSfx.delete(a); };
+  a.addEventListener('ended', end); if (dur) setTimeout(end, dur * 1000); a.play().catch(end);
+}
+const sfxDur = (s, st) => (st.name === s.base ? s.d : Math.min(s.d || 2, 2));
+const musicFile = () => D.music.file || R.music?.file;
+function musicVol(x) { if (!R.music) return 0; const base = D.music.volume ?? R.music.baseVolume; return Math.min(1, ($('#boost').checked ? 6 : 1) * base * Math.min(1, x / R.music.fadeIn) * Math.min(1, Math.max(0, (R.dur - x) / R.music.fadeOut))); }
+const stage = () => { try { return stageEl.contentWindow.stage; } catch { return null; } };
+function play(from = t, until = null, slow = 1) {
+  listen.pause();
+  if (mode === 'video') { v.currentTime = from; v.play(); return; }
+  stop(); t = from >= R.dur - 0.05 ? 0 : Math.max(0, from); stopAt = until; playing = true; t0 = t; p0 = performance.now(); rate = slow;
+  stage()?.rate(rate);
+  if (rate === 1) {
+    voice.currentTime = t; voice.play().catch(() => {});
+    if (step === 1) { if (until != null) timers.push(setTimeout(stop, (until - t) * 1000 + 40)); $('#play').textContent = 'Pause'; markScript(); return; }
+    if (R.music) { music.currentTime = t; music.volume = musicVol(t); music.play().catch(() => {}); $('#musicname').textContent = `${(R.musicNames || {})[musicFile()] || 'music'} · ${$('#boost').checked ? 'boosted for review' : 'very quiet under your voice'}`; $('#musicbadge').hidden = false; }
+    for (const s of R.sfx) { const st = soundState(s); if (!st.off && s.t >= t - 0.01 && (until == null || s.t < until)) timers.push(setTimeout(() => playSfx(st.name, st.vol, sfxDur(s, st)), (s.t - t) * 1000)); }
+  }
+  if (until != null) timers.push(setTimeout(stop, ((until - t) / rate) * 1000 + 40));
+  stage()?.play(); $('#play').textContent = 'Pause';
+}
+function stop() { playing = false; timers.forEach(clearTimeout); timers = []; voice.pause(); music.pause(); liveSfx.forEach((a) => a.pause()); liveSfx.clear(); $('#musicbadge').hidden = true; stage()?.pause(); if (rate !== 1) { rate = 1; stage()?.rate(1); } $('#play').textContent = 'Play'; }
+function seek(x) { x = Math.max(0, Math.min(R.dur - 0.05, x)); if (mode === 'video') { if (v.src) v.currentTime = x; t = x; return; } if (playing) play(x, stopAt); else t = x; }
+$('#play').addEventListener('click', () => { if (mode === 'video') { if (R.draft) v.paused ? v.play() : v.pause(); return; } playing ? stop() : play(t); });
+$('#boost').addEventListener('change', () => { try { localStorage.setItem('reelBoost', $('#boost').checked ? '1' : ''); } catch {} if (playing) play(t, stopAt); });
+try { $('#boost').checked = !!localStorage.getItem('reelBoost'); } catch {}
+$('#back').addEventListener('click', () => seek(t - 3));
+$('#fwd').addEventListener('click', () => seek(t + 3));
+$('#scrub').addEventListener('input', (e) => { stop(); seek(+e.target.value); });
+document.addEventListener('keydown', (e) => { if (e.code === 'Space' && step > 1 && !/INPUT|TEXTAREA|SELECT|BUTTON/.test(document.activeElement.tagName)) { e.preventDefault(); $('#play').click(); } });
+v.addEventListener('play', () => ($('#play').textContent = 'Pause'));
+v.addEventListener('pause', () => ($('#play').textContent = 'Play'));
+
+const cutWords = () => D.cut.map((i) => R.words[i]).filter(Boolean);
+const frameAt = (x) => R.frames.find((f) => x >= f.s && x < f.e) || R.frames.at(-1);
+let lastFrame = 0, lastPose = -1;
+function tick() {
+  if (mode === 'video') t = v.currentTime || t;
+  else if (playing) {
+    t = rate === 1 && !voice.paused && voice.currentTime > 0 ? voice.currentTime : t0 + ((performance.now() - p0) / 1000) * rate;
+    if (rate === 1) { const cw = cutWords().find((w) => t >= w.s && t < w.e - 0.02); if (cw) play(cw.e, stopAt); }
+    if (R.music) music.volume = musicVol(t);
+    if (t >= R.dur - 0.03) stop();
+  }
+  if (mode === 'plan' && (playing || Math.abs(t - lastPose) > 0.004)) { const s = stage(); if (s) { s.seek(t); lastPose = t; } }
+  $('#time').textContent = `${fmt(t)} / ${fmt(R.dur)}`;
+  if (document.activeElement !== $('#scrub')) $('#scrub').value = t;
+  const f = frameAt(t);
+  if (f.n !== lastFrame) { lastFrame = f.n; applyLook(); $$('.beatline, .card').forEach((b) => b.classList.toggle('now', +b.dataset.n === f.n)); if (playing || !v.paused) $(`section:not([hidden]) .card[data-n="${f.n}"], section:not([hidden]) .beatline[data-n="${f.n}"]`)?.scrollIntoView({ block: 'nearest', behavior: 'smooth' }); }
+  const w = R.words.find((w) => t >= w.s && t < w.e), cur = $('.wd.now');
+  if (cur && (!w || +cur.dataset.i !== w.i)) cur.classList.remove('now');
+  if (w) $(`.wd[data-i="${w.i}"]`)?.classList.add('now');
+  requestAnimationFrame(tick);
+}
+
+// ---------- preview: your real footage + the real graphics, live (step 2); the render (step 3) ----------
+function fitStage() { stageEl.style.transform = `scale(${$('#player').clientHeight / 1920})`; }
+new ResizeObserver(fitStage).observe($('#player'));
+stageEl.addEventListener('load', () => { lastPose = -1; applyLook(); });
+function setMode(m) {
+  stop(); v.pause(); mode = m;
+  stageEl.hidden = m !== 'plan'; v.hidden = m !== 'video' || !R.draft; $('#novideo').hidden = !(m === 'video' && !R.draft);
+  if (m === 'video' && R.draft) { const url = `/exports/final/${R.slug}.mp4?${R.draft.at}`; if (v.dataset.url !== url) { v.dataset.url = url; v.src = url; } }
+}
+
+// ================= STEP 1 =================
+const BG = { cream: '#F6EEE5', blush: '#F8DCE5', mist: '#E7EEF5', peach: '#FFC9A8', ink: '#161210' };
+let cutState = { cuts: [], cutJob: {} }, coverTimer = null;
+function coverConf() {
+  const c = D.cover || {};
+  const opt = R.covers.find((o) => o.plain === (c.text ?? D.coverText)) || (c.text || D.coverText ? null : R.covers[0]);
+  return { frame: c.frame || R.coverDefault || 1, style: c.style || 'cut', bg: c.bg || 'cream', text: opt ? opt.text : c.text || D.coverText || '', plain: opt ? opt.plain : c.text || D.coverText || '', own: !opt, aside: c.aside ?? (opt?.aside || '') };
+}
+function setCover(patch) {
+  const cur = coverConf();
+  D.cover = { frame: cur.frame, style: cur.style, bg: cur.bg, text: cur.plain, aside: cur.aside, ...patch };
+  D.coverText = D.cover.text;
+  renderCover(); save();
+}
+async function refreshCuts() { try { const st = await fetch('/api/state').then((r) => r.json()); cutState = st; } catch {} }
+function renderBrand() {
+  const sel = $('#brandSel'); sel.textContent = '';
+  for (const b of R.brands || []) sel.add(new Option(b.label, b.id, false, b.id === (D.brand || R.brand)));
+  const cur = (R.brands || []).find((b) => b.id === (D.brand || R.brand));
+  const sw = $('#brandSw'); sw.textContent = '';
+  if (cur) for (const k of ['cream', 'peach', 'orange', 'ink', 'blush', 'mist']) { const i = el('i'); i.style.background = cur.colors[k]; i.title = k; sw.append(i); }
+}
+$('#brandSel').addEventListener('change', (e) => { D.brand = e.target.value === 'scrolly' ? undefined : e.target.value; renderBrand(); renderCover(); save(true); });
+function renderCover() {
+  const c = coverConf();
+  const fr = $('#cframes'); fr.textContent = '';
+  for (const f of R.frames) {
+    if (!f.still) continue;
+    const b = el('button', 'cfr'); b.type = 'button'; b.title = `F${f.n}: ${f.title}`; b.setAttribute('aria-label', 'Use frame F' + f.n); b.setAttribute('aria-pressed', c.frame === f.n);
+    b.style.backgroundImage = `url('/reel/${f.still}')`; b.addEventListener('click', () => setCover({ frame: f.n })); fr.append(b);
+  }
+  const sty = $('#cstyles'); sty.textContent = '';
+  const cutLbl = el('span', 'sub', 'You cut out, on:'); cutLbl.style.margin = '0 4px 0 0'; sty.append(cutLbl);
+  for (const bg of R.coverBgs || Object.keys(BG)) {
+    const b = el('button', 'sw'); b.type = 'button'; b.title = bg; b.setAttribute('aria-label', 'Cut-out on ' + bg); b.style.background = BG[bg] || bg;
+    b.setAttribute('aria-pressed', c.style === 'cut' && c.bg === bg); b.addEventListener('click', () => setCover({ style: 'cut', bg })); sty.append(b);
+  }
+  const ph = el('button', 'btn small' + (c.style === 'photo' ? ' main' : ' quiet'), 'Full video frame'); ph.type = 'button'; ph.style.marginLeft = '8px';
+  ph.addEventListener('click', () => setCover({ style: 'photo' })); sty.append(ph);
+  const tx = $('#ctexts'); tx.textContent = '';
+  for (const o of R.covers) {
+    const l = el('label', 'ctext' + (!c.own && c.plain === o.plain ? ' on' : ''));
+    l.innerHTML = `<input type="radio" name="ctext" ${!c.own && c.plain === o.plain ? 'checked' : ''}><span></span>`; l.querySelector('span').textContent = o.plain;
+    l.querySelector('input').addEventListener('change', () => setCover({ text: o.plain, aside: o.aside || '' })); tx.append(l);
+  }
+  const own = $('#coverOwn'); if (document.activeElement !== own) own.value = c.own ? c.plain : '';
+  $('#coverAside').checked = !!c.aside; if (document.activeElement !== $('#asideText') && c.aside) $('#asideText').value = c.aside;
+  // preview (cut-out style needs a cut-out of her from that frame: made once, 2 to 3 minutes)
+  const msg = $('#cpmsg'), hasCut = cutState.cuts?.includes(c.frame);
+  if (c.style === 'cut' && !hasCut) {
+    msg.hidden = false; msg.textContent = cutState.cutJob?.running ? `Cutting you out of F${cutState.cutJob.frame} (2 to 3 minutes; you can keep reviewing)…` : `Cutting you out of F${c.frame} (2 to 3 minutes; you can keep reviewing)…`;
+    if (!cutState.cutJob?.running) fetch('/api/cutout?frame=' + c.frame, { method: 'POST' });
+    clearTimeout(coverTimer); coverTimer = setTimeout(async () => { await refreshCuts(); renderCover(); }, 3000);
+  } else msg.hidden = true;
+  const q = new URLSearchParams({ brand: D.brand || 'scrolly', frame: c.frame, style: c.style, bg: c.bg, text: c.text, aside: c.aside || '', v: (cutState.cuts || []).join('.') });
+  const src = '/cover?' + q; if ($('#cprev').dataset.src !== src) { $('#cprev').dataset.src = src; $('#cprev').src = src; }
+}
+$('#coverOwn').addEventListener('input', (e) => { clearTimeout(coverTimer); const val = e.target.value; coverTimer = setTimeout(() => setCover({ text: val }), 500); });
+$('#coverAside').addEventListener('change', (e) => setCover({ aside: e.target.checked ? $('#asideText').value || "here's the fix" : '' }));
+$('#asideText').addEventListener('input', (e) => { if ($('#coverAside').checked) { clearTimeout(coverTimer); coverTimer = setTimeout(() => setCover({ aside: e.target.value }), 500); } });
+
+function renderMoments() {
+  const box = $('#moments'); box.textContent = '';
+  const cut = new Set(D.cut);
+  for (const f of R.frames) {
+    const b = D.visual[f.n] || {}, m = el('div', 'moment');
+    if (f.img) { const img = el('img'); img.alt = `F${f.n}: ${f.title}`; img.src = `/reel/${f.img}?${encodeURIComponent(R.made)}`; img.addEventListener('click', () => { const z = el('div', 'zoom'); const zi = el('img'); zi.src = img.src; zi.alt = img.alt; z.append(zi); z.addEventListener('click', () => z.remove()); document.body.append(z); }); m.append(img); }
+    m.append(el('p', 'ct', f.title || 'Moment ' + f.n), el('div', 'mono', `F${f.n} · ${fmt(f.s)} to ${fmt(f.e)}`));
+    m.append(el('p', 'quote', '“' + R.words.filter((w) => w.frame === f.n && !cut.has(w.i)).map((w) => w.w).join(' ') + '”'));
+    const seg = el('div', 'seg'); seg.setAttribute('role', 'group'); seg.setAttribute('aria-label', 'Decision for F' + f.n);
+    for (const [k, label] of [['k', 'Keep'], ['c', 'Change'], ['r', 'Remove']]) {
+      const btn = el('button', k, label); btn.type = 'button'; btn.setAttribute('aria-pressed', b.state === k);
+      btn.addEventListener('click', () => { const cur = D.visual[f.n] || {}; D.visual[f.n] = { ...cur, state: cur.state === k ? '' : k }; if (!D.visual[f.n].state && !D.visual[f.n].note) delete D.visual[f.n]; renderMoments(); save(); });
+      seg.append(btn);
+    }
+    const ta = el('textarea'); ta.placeholder = 'Notes on the graphics here'; ta.value = b.note || ''; ta.rows = 1;
+    ta.addEventListener('input', () => { D.visual[f.n] = { ...(D.visual[f.n] || {}), note: ta.value }; if (!D.visual[f.n].note && !D.visual[f.n].state) delete D.visual[f.n]; save(); });
+    m.append(seg, ta); box.append(m);
+  }
+}
+
+const FONTS = [[null, 'Figtree (as planned)', 'F'], ['statement', 'Bricolage', 'B'], ['hand', 'Handwritten', 'H']];
+function renderCaptions() {
+  const fb = $('#fonts'); fb.textContent = '';
+  for (const [key, label, fam] of FONTS) {
+    const b = el('button', 'fontbtn', label); b.type = 'button'; b.style.fontFamily = fam; if (fam === 'B') b.style.fontWeight = 800; b.setAttribute('aria-pressed', (D.captionFont || null) === key);
+    b.addEventListener('click', () => { D.captionFont = key; renderCaptions(); save(true); }); fb.append(b);
+  }
+  const box = $('#caps'); box.textContent = '';
+  let lastF = 0;
+  for (const c of R.captions) {
+    if (c.frame !== lastF) { lastF = c.frame; const fr = R.frames.find((f) => f.n === c.frame); box.append(el('div', 'capgroup', `F${c.frame} · ${fr?.title || ''}`)); }
+    const ed = D.captions[c.i] || {}, row = el('div', 'caprow' + (ed.style === 'hide' ? ' hide' : ed.style === 'big' ? ' big' : ''));
+    const words = (ed.text ?? c.t).split(/\s+/).filter(Boolean), mark = new Set(ed.mark || []);
+    const ws = el('div', 'capw');
+    words.forEach((w, k) => {
+      const b = el('button', 'cw' + (mark.has(k) ? ' mk' : ''), w); b.type = 'button'; b.title = mark.has(k) ? 'Remove the marker' : 'Put this word on the peach marker';
+      b.addEventListener('click', () => setCap(c.i, { mark: mark.has(k) ? [...mark].filter((x) => x !== k) : [...mark, k] }));
+      ws.append(b);
+    });
+    const edit = el('button', 'linkbtn', 'edit'); edit.type = 'button'; edit.style.marginLeft = '6px';
+    edit.addEventListener('click', () => {
+      const inp = el('input'); inp.type = 'text'; inp.value = words.join(' '); inp.setAttribute('aria-label', 'Caption wording');
+      const done = () => { const val = inp.value.trim(); setCap(c.i, { text: !val || val === c.t ? undefined : val, mark: [] }); };
+      inp.addEventListener('keydown', (e) => { if (e.key === 'Enter') done(); if (e.key === 'Escape') renderCaptions(); });
+      inp.addEventListener('blur', done); ws.replaceWith(inp); inp.focus();
+    });
+    ws.append(edit);
+    const seg = el('div', 'seg');
+    for (const [k, label] of [[undefined, 'Normal'], ['big', 'Big'], ['hide', 'Hidden']]) {
+      const b = el('button', '', label); b.type = 'button'; b.setAttribute('aria-pressed', ed.style === k);
+      b.addEventListener('click', () => setCap(c.i, { style: k })); seg.append(b);
+    }
+    row.append(el('span', 'mono', fmt(c.s)), ws, seg); box.append(row);
+  }
+}
+function setCap(i, patch) {
+  const e = { ...(D.captions[i] || {}), ...patch };
+  for (const k of Object.keys(e)) if (e[k] === undefined || (Array.isArray(e[k]) && !e[k].length)) delete e[k];
+  if (Object.keys(e).length) D.captions[i] = e; else delete D.captions[i];
+  renderCaptions(); save(true);
+}
+
+// ================= STEP 2 =================
+function toggleCut(i) { const c = new Set(D.cut); c.has(i) ? c.delete(i) : c.add(i); D.cut = [...c].sort((a, b) => a - b); renderScript(); renderCards(); renderMoments(); tabDots(); save(); }
+function markScript() { $$('.beatline').forEach((b) => b.classList.toggle('now', playing && +b.dataset.n === frameAt(t).n)); }
+function renderScript() {
+  const box = $('#script'); box.textContent = '';
+  const cut = new Set(D.cut);
+  for (const f of R.frames) {
+    const line = el('div', 'beatline'); line.dataset.n = f.n;
+    const h = el('div', 'bh');
+    const hear = el('button', 'btn small main', '▶ Hear it'); hear.type = 'button'; hear.title = 'Hear this part';
+    hear.addEventListener('click', () => (playing && frameAt(t).n === f.n ? stop() : play(f.s, f.e)));
+    const titles = el('div'); titles.append(el('p', 'ct', f.title || 'Moment ' + f.n), el('div', 'mono', `F${f.n} · ${fmt(f.s)} to ${fmt(f.e)}`));
+    h.append(hear, titles);
+    const said = el('p', 'said');
+    for (const w of R.words.filter((w) => w.frame === f.n)) {
+      const s = el('span', 'wd' + (cut.has(w.i) ? ' cut' : ''), w.w); s.dataset.i = w.i; s.tabIndex = 0; s.title = cut.has(w.i) ? 'Cut. Click to keep it' : 'Click to cut this word';
+      s.addEventListener('click', () => toggleCut(w.i)); s.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleCut(w.i); } });
+      said.append(s, ' ');
+    }
+    line.append(h, said); box.append(line);
+  }
+}
+function soundRow(s) {
+  const st = soundState(s), row = el('div', 'snd' + (st.off ? ' off' : ''));
+  const tb = el('button', 'mono', fmt(s.t)); tb.type = 'button'; tb.style.cssText = 'border:0;background:none;text-align:left;padding:0'; tb.title = 'Play this moment with its sound';
+  tb.addEventListener('click', () => play(Math.max(0, s.t - 1), s.t + 1.5));
+  const word = R.words.find((w) => w.s >= s.t - 0.25 && w.frame === s.frame);
+  const sel = el('select'); sel.setAttribute('aria-label', 'Sound at ' + fmt(s.t));
+  for (const n of R.sfxLib) sel.add(new Option(pretty(n) + (n === s.base && !s.added ? ' (planned)' : ''), n, false, n === st.name));
+  sel.addEventListener('change', () => setSound(s, { name: sel.value }));
+  const mid = el('div'); mid.style.minWidth = '0'; mid.append(sel);
+  const meta = el('div', 'mono', (s.added ? 'you added · ' : '') + (word ? `on “${word.w}”` : ''));
+  if (st.edited && !s.added) meta.append(el('span', 'changed', ' · changed'));
+  mid.append(meta);
+  const mini = el('div', 'mini');
+  const btn = (label, title, fn) => { const b = el('button', '', label); b.type = 'button'; b.title = title; b.addEventListener('click', fn); mini.append(b); };
+  btn('▶', 'Hear just this sound', () => playSfx(st.name, st.vol, sfxDur(s, st)));
+  btn('−', 'Quieter', () => setSound(s, { vol: +Math.max(0.05, st.vol - 0.1).toFixed(2) }));
+  mini.append(el('span', 'v', Math.round(st.vol * 100) + '%'));
+  btn('+', 'Louder', () => setSound(s, { vol: +Math.min(1, st.vol + 0.1).toFixed(2) }));
+  if (s.added) btn('Remove', 'Remove this sound', () => { D.addedSfx = D.addedSfx.filter((a) => a.id !== s.id); R.sfx = R.sfx.filter((x) => x.id !== s.id); delete D.sound[s.id]; renderCards(); tabDots(); save(true); });
+  else btn(st.off ? 'On' : 'Off', st.off ? 'Switch it back on' : 'Switch it off', () => setSound(s, { off: !st.off }));
+  row.append(tb, mid, mini);
+  return row;
+}
+function addSoundForm(f, holder) {
+  holder.textContent = '';
+  const form = el('div', 'addform');
+  const sel = el('select'); sel.setAttribute('aria-label', 'Sound to add');
+  for (const n of R.sfxLib) sel.add(new Option(pretty(n), n));
+  const hear = el('button', 'btn small quiet', '▶'); hear.type = 'button'; hear.title = 'Hear it'; hear.addEventListener('click', () => playSfx(sel.value, 0.6));
+  const at = el('select'); at.setAttribute('aria-label', 'Word it lands on');
+  for (const w of R.words.filter((w) => w.frame === f.n && !D.cut.includes(w.i))) at.add(new Option(`on “${w.w}” (${fmt(w.s)})`, w.s));
+  const add = el('button', 'btn small main', 'Add'); add.type = 'button';
+  add.addEventListener('click', () => {
+    const a = { id: 'add-' + Date.now().toString(36), name: sel.value, t: +(+at.value).toFixed(2), vol: 0.6 };
+    D.addedSfx = [...D.addedSfx, a];
+    R.sfx = [...R.sfx, { id: a.id, name: a.name, base: a.name, t: a.t, vol: 0.6, baseVol: 0.6, frame: f.n, added: true }].sort((x, y) => x.t - y.t);
+    renderCards(); tabDots(); save(true);
+  });
+  const cancel = el('button', 'btn small quiet', 'Cancel'); cancel.type = 'button'; cancel.addEventListener('click', () => renderCards());
+  form.append(sel, hear, at, add, cancel); holder.append(form);
+}
+function renderCards() {
+  const box = $('#cards'); box.textContent = '';
+  for (const f of R.frames) {
+    const b = D.board[f.n] || {}, card = el('div', 'card'); card.dataset.n = f.n;
+    const head = el('div', 'cardhead');
+    const pb = el('button', 'pthumb'); pb.type = 'button'; pb.title = 'Play this moment in the preview'; pb.setAttribute('aria-label', 'Play F' + f.n);
+    if (f.img) pb.style.backgroundImage = `url('/reel/${f.img}?${encodeURIComponent(R.made)}')`; pb.append(el('span', 'pbtn', '▶'));
+    pb.addEventListener('click', () => play(f.s, f.e));
+    const titles = el('div'); titles.append(el('p', 'ct', f.title || 'Moment ' + f.n), el('div', 'mono', `F${f.n} · ${fmt(f.s)} to ${fmt(f.e)}`));
+    head.append(pb, titles); card.append(head, el('div', 'lbl', 'Sounds'));
+    const list = R.sfx.filter((s) => s.frame === f.n), rows = list.map(soundRow);
+    if (!rows.length) card.append(el('div', 'empty', 'No sound effects here.'));
+    rows.forEach((r) => card.append(r));
+    let prev = null; list.forEach((s, k) => { const st = soundState(s); if (st.off) return; if (prev === st.name) rows[k].children[1].append(el('div', 'flag', 'Same sound as the one before (fine if you meant it)')); prev = st.name; });
+    const holder = el('div'); const addb = el('button', 'linkbtn', '+ Add a sound'); addb.type = 'button';
+    addb.addEventListener('click', () => addSoundForm(f, holder)); holder.append(addb); card.append(holder);
+    const ta = el('textarea'); ta.placeholder = 'Notes on the sound or timing here'; ta.value = b.note || ''; ta.rows = 1;
+    ta.addEventListener('input', () => { D.board[f.n] = { ...(D.board[f.n] || {}), note: ta.value }; if (!D.board[f.n].note) delete D.board[f.n]; tabDots(); save(); });
+    card.append(ta); box.append(card);
+  }
+  lastFrame = 0;
+}
+function setSound(s, patch) {
+  const e = { ...(D.sound[s.id] || {}), ...patch };
+  if (e.name === s.base) delete e.name; if (e.vol === s.baseVol) delete e.vol; if (!e.off) delete e.off;
+  if (Object.keys(e).length) D.sound[s.id] = e; else delete D.sound[s.id];
+  renderCards(); tabDots(); save();
+}
+function renderAudio() {
+  const tracks = $('#tracks'); tracks.textContent = '';
+  if (!R.music) tracks.append(el('div', 'empty', 'No music in this Reel.'));
+  for (const file of [...new Set([R.music?.file, ...R.musicLib].filter(Boolean))]) {
+    const on = file === musicFile(), row = el('div', 'track' + (on ? ' on' : ''));
+    const lb = el('button', 'btn small quiet', listen.dataset.file === file && !listen.paused ? '❚❚' : '▶'); lb.type = 'button'; lb.title = 'Listen on its own';
+    lb.addEventListener('click', () => { stop(); if (listen.dataset.file === file && !listen.paused) listen.pause(); else { listen.dataset.file = file; listen.src = '/reel/' + file; listen.volume = 0.5; listen.play().catch(() => {}); } renderAudio(); });
+    const nm = el('div'); nm.append(el('div', 'nm', (R.musicNames || {})[file] || file.split('/').pop().replace(/\.mp3$/, '')), el('div', 'mono', file === R.music?.file ? 'planned' : 'option'));
+    const pick = el('button', 'btn small' + (on ? ' main' : ' quiet'), on ? 'In the Reel' : 'Use this'); pick.type = 'button';
+    pick.addEventListener('click', () => { if (on) return; if (file === R.music?.file) delete D.music.file; else D.music.file = file; music.src = '/reel/' + musicFile(); renderAudio(); tabDots(); save(); });
+    row.append(lb, nm, pick); tracks.append(row);
+  }
+  const lv = $('#mlevel'); lv.textContent = '';
+  if (R.music) {
+    const vol = D.music.volume ?? R.music.baseVolume;
+    const set = (x) => { const y = +Math.max(0, Math.min(0.2, x)).toFixed(3); if (y === R.music.baseVolume) delete D.music.volume; else D.music.volume = y; renderAudio(); tabDots(); save(); };
+    const q = el('button', '', 'Quieter'); q.type = 'button'; q.addEventListener('click', () => set(vol * 0.75));
+    const l = el('button', '', 'Louder'); l.type = 'button'; l.addEventListener('click', () => set(vol * 1.33));
+    const vv = el('span', 'v', vol === R.music.baseVolume ? 'as planned' : Math.round(vol / R.music.baseVolume * 100) + '%'); vv.style.minWidth = '80px';
+    lv.append(q, vv, l);
+  }
+  const lib = $('#sfxlib'); lib.textContent = '';
+  for (const n of R.sfxLib) { const b = el('button', 'libsnd'); b.type = 'button'; b.title = 'Hear it'; b.append(el('span', 'pl', '▶'), el('span', '', pretty(n))); b.addEventListener('click', () => playSfx(n, 0.6)); lib.append(b); }
+  const rq = $('#requests'); if (document.activeElement !== rq) rq.value = D.soundRequests || '';
+}
+$('#requests').addEventListener('input', (e) => { D.soundRequests = e.target.value; tabDots(); save(); });
+
+const TYPES = [['cut', 'Straight cut', 'Jumps straight to the next moment. Nothing moves.'], ['whip', 'Whip', 'Your footage blurs and slides sideways for a split second.'], ['zoom', 'Zoom in', 'Your footage pushes in closer as the new moment starts.']];
+function renderTrans() {
+  const box = $('#trans'); box.textContent = '';
+  for (const tr of R.transitions) {
+    const from = R.frames.find((f) => f.n === tr.frame - 1), to = R.frames.find((f) => f.n === tr.frame);
+    const cur = D.transitions['F' + tr.frame] || tr.planned, row = el('div', 'tr'), top = el('div', 'trtop');
+    const info = el('div'); info.append(el('b', '', `F${tr.frame - 1} → F${tr.frame}`), el('span', 'mono', '  ' + fmt(tr.t)));
+    const seg = el('div', 'seg');
+    for (const [k, label] of TYPES) {
+      const b = el('button', '', label + (k === tr.planned ? ' ·' : '')); b.type = 'button'; b.title = k === tr.planned ? 'What Claude planned' : ''; b.setAttribute('aria-pressed', cur === k);
+      b.addEventListener('click', () => { if (k === tr.planned) delete D.transitions['F' + tr.frame]; else D.transitions['F' + tr.frame] = k; renderTrans(); tabDots(); save(true); });
+      seg.append(b);
+    }
+    const btns = el('div', 'ctl');
+    const p = el('button', 'btn small quiet', '▶ See it'); p.type = 'button'; p.addEventListener('click', () => play(Math.max(0, tr.t - 1.5), tr.t + 1.5));
+    const sl = el('button', 'btn small quiet', '🐢 Slow'); sl.type = 'button'; sl.title = 'Quarter speed, no sound'; sl.addEventListener('click', () => play(Math.max(0, tr.t - 0.6), tr.t + 0.8, 0.25));
+    btns.append(p, sl);
+    top.append(info, seg, btns);
+    row.append(top, el('div', 'trdesc', `${from?.title || ''} → ${to?.title || ''}. ${TYPES.find((x) => x[0] === cur)[2]}`)); box.append(row);
+  }
+  if (!R.transitions.length) box.append(el('div', 'empty', 'This Reel has one moment, so there are no transitions.'));
+}
+
+const PRESETS = [['As filmed', null], ['Warm', { warmth: 0.45, saturate: 1.05 }], ['Bright and airy', { brightness: 1.1, contrast: 0.94, saturate: 0.95 }], ['Soft', { contrast: 0.9, saturate: 0.9, brightness: 1.04 }], ['Punchy', { contrast: 1.12, saturate: 1.15 }], ['Black and white', { saturate: 0, contrast: 1.08 }]];
+const SLIDERS = [['brightness', 'Brightness', 0.8, 1.2, 1], ['contrast', 'Contrast', 0.8, 1.2, 1], ['saturate', 'Colour', 0, 1.5, 1], ['warmth', 'Warmth', 0, 1, 0]];
+const lookFilter = (L = {}) => `brightness(${L.brightness ?? 1}) contrast(${L.contrast ?? 1}) saturate(${L.saturate ?? 1}) sepia(${((L.warmth ?? 0) * 0.35).toFixed(3)})`;
+const lookAt = (n) => (D.lookByFrame?.[n] !== undefined ? D.lookByFrame[n] || {} : D.look || {});
+function applyLook() { stage()?.look(lookFilter(lookAt(frameAt(t).n))); }
+function renderLook() {
+  const pr = $('#presets'); pr.textContent = '';
+  for (const [name, L] of PRESETS) {
+    const on = JSON.stringify(D.look || null) === JSON.stringify(L);
+    const b = el('button', 'btn small' + (on ? ' main' : ' quiet'), name); b.type = 'button';
+    b.addEventListener('click', () => { D.look = L ? { ...L } : null; renderLook(); applyLook(); tabDots(); save(); }); pr.append(b);
+  }
+  const sl = $('#sliders'); sl.textContent = '';
+  for (const [key, label, min, max, def] of SLIDERS) {
+    const row = el('div', 'slider'), val = (D.look || {})[key] ?? def;
+    const r = el('input'); r.type = 'range'; r.min = min; r.max = max; r.step = 0.01; r.value = val; r.setAttribute('aria-label', label);
+    const out = el('span', 'mono', Math.round(val * 100) + '%');
+    r.addEventListener('input', () => { D.look = { ...(D.look || {}), [key]: +r.value }; out.textContent = Math.round(+r.value * 100) + '%'; applyLook(); tabDots(); save(); });
+    row.append(el('span', '', label), r, out); sl.append(row);
+  }
+  // one moment, its own look (presets only)
+  const pm = $('#perMoment'); pm.textContent = '';
+  for (const f of R.frames) {
+    const row = el('div', 'pmrow'), has = D.lookByFrame?.[f.n] !== undefined;
+    const name = el('button', 'linkbtn', `F${f.n} · ${f.title}`); name.type = 'button'; name.style.textAlign = 'left'; name.title = 'Play this moment';
+    name.addEventListener('click', () => play(f.s, f.e));
+    const seg = el('div', 'presets'); seg.style.margin = '0';
+    const same = el('button', 'btn small' + (!has ? ' main' : ' quiet'), 'Same as whole Reel'); same.type = 'button';
+    same.addEventListener('click', () => { delete D.lookByFrame[f.n]; renderLook(); applyLook(); tabDots(); save(); }); seg.append(same);
+    for (const [pname, L] of PRESETS) {
+      const on = has && JSON.stringify(D.lookByFrame[f.n] || null) === JSON.stringify(L);
+      const b = el('button', 'btn small' + (on ? ' main' : ' quiet'), pname); b.type = 'button';
+      b.addEventListener('click', () => { D.lookByFrame = { ...D.lookByFrame, [f.n]: L ? { ...L } : null }; renderLook(); seek(f.s + 0.3); applyLook(); tabDots(); save(); });
+      seg.append(b);
+    }
+    row.append(name, seg); pm.append(row);
+  }
+}
+
+// ================= STEP 3 =================
+function renderVideoNotes() {
+  $('#vsub').textContent = R.draft ? 'The finished Reel. Pause where something is off and add a note at that moment.' : 'The video gets made after you finish step 2 (Edit it): tell Claude "make the video". It plays on the left when it is ready.';
+  const box = $('#vnotes'); box.textContent = '';
+  D.videoNotes.forEach((n, k) => {
+    const row = el('div', 'vnote');
+    const tb = el('button', 'btn small quiet', fmt(n.t)); tb.type = 'button'; tb.addEventListener('click', () => { seek(n.t); });
+    const x = el('button', 'x', '×'); x.type = 'button'; x.title = 'Delete note'; x.addEventListener('click', () => { D.videoNotes.splice(k, 1); renderVideoNotes(); save(); });
+    row.append(tb, el('div', '', n.text), x); box.append(row);
+  });
+}
+// post caption: Claude's draft unless she edits it; first ~125 characters show before "more" on Instagram
+const postCap = () => D.post?.caption ?? R.post?.caption ?? '';
+const postTags = () => D.post?.hashtags ?? R.post?.hashtags ?? '';
+function renderPost() {
+  const ta = $('#postCaption'), tg = $('#postTags');
+  if (document.activeElement !== ta) ta.value = postCap();
+  if (document.activeElement !== tg) tg.value = postTags();
+  const full = postCap() + (postTags() ? '\n\n' + postTags() : '');
+  $('#capPreview').textContent = postCap().replace(/\s+/g, ' ').slice(0, 125);
+  $('#capCount').textContent = `${full.length} / 2,200 characters · ${(postTags().match(/#\w+/g) || []).length} hashtags`;
+  $('#capReset').hidden = !(D.post && (D.post.caption != null || D.post.hashtags != null));
+  const after = D.postAfter || 'hold';
+  $$('#postAfter button').forEach((b) => b.setAttribute('aria-pressed', b.dataset.v === after));
+  $('#postAfterNote').textContent = after === 'queue'
+    ? 'Claude sets the Reel\'s Notion row to Ready, which adds it to the Buffer queue (the video needs a link that never expires).'
+    : 'Claude sets the Reel\'s Notion row to Approved with the caption, video and cover. You post it whenever you like.';
+}
+$('#postCaption').addEventListener('input', (e) => { D.post = { ...(D.post || {}), caption: e.target.value }; renderPost(); save(); });
+$('#postTags').addEventListener('input', (e) => { D.post = { ...(D.post || {}), hashtags: e.target.value }; renderPost(); save(); });
+$('#capReset').addEventListener('click', () => { D.post = null; renderPost(); save(); });
+$$('#postAfter button').forEach((b) => b.addEventListener('click', () => { D.postAfter = b.dataset.v; renderPost(); save(); }));
+$('#vadd').addEventListener('click', () => {
+  const text = $('#vtext').value.trim(); if (!text) { $('#vtext').focus(); return; }
+  D.videoNotes = [...D.videoNotes, { t: +(v.currentTime || t).toFixed(2), text }].sort((a, b) => a.t - b.t); $('#vtext').value = ''; renderVideoNotes(); save();
+});
+
+$('#notes').addEventListener('input', (e) => { D.notes = e.target.value; save(); });
+$('#rule').addEventListener('input', (e) => { D.rule = e.target.value; save(); });
+
+// ---------- load, and pick up updates while the page is open ----------
+function renderAll() { renderPost(); renderBrand(); renderCover(); renderMoments(); renderCaptions(); renderScript(); renderCards(); renderAudio(); renderTrans(); renderLook(); renderVideoNotes(); renderApprovals(); tabDots(); }
+async function loadReel() {
+  R = await fetch('/api/reel').then((r) => r.json()); for (const k of ['sfxReel', 'covers', 'transitions', 'musicLib', 'captions']) R[k] ||= [];
+  stageEl.src = `/reel/review/stage.html?${encodeURIComponent(R.made)}`;
+  voice.src = '/reel/assets/talk-audio.m4a';
+  if (R.music) music.src = '/reel/' + musicFile();
+  document.title = `Reel review · ${R.title || R.slug}`; $('#title').textContent = R.title || R.slug;
+  $('#scrub').max = R.dur;
+}
+async function watch() {
+  try { const r = await fetch('/api/reel').then((r) => r.json()); if (r.made !== R.made) { const keep = t, ae = document.activeElement; stop(); await loadReel(); t = keep; if (!ae || !/INPUT|TEXTAREA/.test(ae.tagName)) renderAll(); else { renderMoments(); renderCover(); } setMode(mode); pill('Updated', 'good'); } } catch {}
+  setTimeout(watch, 2500);
+}
+(async () => {
+  try { await loadReel(); } catch { pill('No review data yet. Ask Claude to run: node build.mjs review', 'bad'); return; }
+  const st = await fetch('/api/state').then((r) => r.json());
+  const saved = st.decisions || {};
+  D = { ...blank(), ...saved };
+  for (const k of ['lookByFrame', 'visual', 'board', 'sound', 'music', 'transitions', 'captions', 'approved']) D[k] ||= {};
+  for (const k of ['cut', 'addedSfx', 'videoNotes']) D[k] ||= [];
+  $('#notes').value = D.notes || ''; $('#rule').value = D.rule || '';
+  await refreshCuts(); renderAll(); fitStage();
+  let s = 1, tb = 'screen'; try { s = +(localStorage.getItem('reelStep') || 1); tb = localStorage.getItem('reelTab') || 'screen'; } catch {}
+  if (!['screen', 'caps', 'audio', 'trans', 'look'].includes(tb)) tb = 'screen';
+  let t1 = 'cover'; try { t1 = localStorage.getItem('reelTab1') || 'cover'; } catch {}
+  if (!['cover', 'script', 'moments'].includes(t1)) t1 = 'cover';
+  showTab1(t1);
+  showTab(tb); showStep(s); pill(saved.savedAt ? 'Your notes are loaded' : 'Ready');
+  requestAnimationFrame(tick); setTimeout(watch, 2500);
+})();
+</script>
+</body>
+</html>

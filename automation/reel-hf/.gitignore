@@ -9,6 +9,7 @@ node_modules/
 */assets/music-candidates/
 */samples-music/
 */review/
+!lib/review/
 */animatic/
 */animatic.mp4
 */snapshots/

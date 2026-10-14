@@ -34,18 +34,24 @@ export function reelStatus(slug) {
   const hasPage = existsSync(path.join(dir, 'review/reel.json'));
   const final = existsSync(finalFile(slug));
   const renderCurrent = !!(rendered?.ok && final && rendered.hash === decisionsHash(D));
-  let stage;
-  if (posted) stage = 'done';
-  else if (!hasPage) stage = 'no-page';
-  else if (!A.look) stage = 'plan';
-  else if (!A.sound) stage = 'edit';
-  else if (!renderCurrent) stage = 'render';
-  else if (!A.video) stage = 'approve';
-  else stage = 'post';
   // she saved something Claude hasn't acted on yet (notes, cuts, cover, sounds...)
   const newDecisions = !!(D.savedAt && (!pass || D.savedAt > pass.at));
   // moments she changed or removed after sounds were placed: their sounds need a redo
   const redoSounds = Object.entries({ ...(D.board || {}), ...(D.visual || {}) }).filter(([, b]) => b.state === 'c' || b.state === 'r').map(([n]) => +n);
+  // change requests (not just picks): a step approved with these goes back to Claude, never on to the render
+  const asks = redoSounds.length || String(D.notes || '').trim() || (D.videoNotes || []).length || String(D.soundRequests || '').trim()
+    || Object.values({ ...(D.board || {}), ...(D.visual || {}) }).some((b) => String(b.note || '').trim());
+  // once Claude revises (pipeline --mark <reel> --revised), approvals given before that need giving again
+  const ok = (k) => A[k] && !(pass?.revised && A[k] < pass.revised);
+  let stage;
+  if (posted) stage = 'done';
+  else if (!hasPage) stage = 'no-page';
+  else if (newDecisions && asks && ok('look')) stage = 'revise';
+  else if (!ok('look')) stage = 'plan';
+  else if (!ok('sound')) stage = 'edit';
+  else if (!renderCurrent) stage = 'render';
+  else if (!ok('video')) stage = 'approve';
+  else stage = 'post';
   return { slug, stage, approved: A, newDecisions, savedAt: D.savedAt || null, redoSounds, rendered: rendered?.at || null, final: final ? finalFile(slug) : null, posted: posted || null, postAfter: D.postAfter || null };
 }
 
@@ -55,6 +61,7 @@ const NEXT = {
   'no-page': 'no review page yet (overnight run drafts it, or legacy Reel)',
   plan: 'waiting on Mercedes: Plan it',
   edit: 'waiting on Mercedes: Edit it',
+  revise: "Claude's turn: apply her change requests, then she reviews again",
   render: 'evening run renders it',
   approve: 'waiting on Mercedes: Approve it',
   post: 'Claude posts it (skill step 7)',
@@ -66,8 +73,10 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
   if (args[0] === '--mark') {
     const slug = path.basename(args[1] || '');
     if (!existsSync(path.join(ROOT, slug, 'review'))) throw new Error(`no review folder for ${slug}`);
-    writeFileSync(path.join(ROOT, slug, 'review/pass.json'), JSON.stringify({ at: new Date().toISOString() }));
-    console.log(`${slug}: marked as acted on`);
+    const at = new Date().toISOString();
+    // --revised: Claude changed what she approved, so her approvals before now must be given again
+    writeFileSync(path.join(ROOT, slug, 'review/pass.json'), JSON.stringify(args.includes('--revised') ? { at, revised: at } : { at }));
+    console.log(`${slug}: marked as acted on${args.includes('--revised') ? ' (revised: she reviews again)' : ''}`);
   } else {
     const rows = allReels().map(reelStatus);
     if (args.includes('--json')) console.log(JSON.stringify(rows, null, 1));
