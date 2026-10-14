@@ -1,0 +1,6 @@
+/* scrollyseo.com: Appearance > Customize > Additional CSS (v3, 2026-10-03).
+   REPLACES everything currently in that box. The old 12KB of rules (forced Arial Black headings, square orange Woo buttons,
+   old --sc-* palette) is backed up in website/backups/2026-10-03-pre-v3-migration/customizer-additional-css.css.
+   All site styling now lives in chrome/v3.css (pushed by node chrome/install-chrome.mjs). Only the accessibility toolbar fix stays here. */
+#raccess-toggle.raccess-toolbar-toggle{background:#000;color:#fbf8f3;border:0;border-radius:50%;width:52px;height:52px;padding:0}
+#raccess-toggle.raccess-toolbar-toggle:focus-visible{outline:3px solid #000;outline-offset:3px;box-shadow:0 0 0 3px #fbf8f3}

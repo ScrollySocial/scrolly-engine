@@ -1,0 +1,132 @@
+{
+ "id": 12,
+ "date": "2026-08-18T19:49:36",
+ "date_gmt": "2026-08-18T19:49:36",
+ "guid": {
+  "rendered": "https://scrollyseo.com/?page_id=12",
+  "raw": "https://scrollyseo.com/?page_id=12"
+ },
+ "modified": "2026-08-18T19:49:36",
+ "modified_gmt": "2026-08-18T19:49:36",
+ "password": "",
+ "slug": "",
+ "status": "draft",
+ "type": "page",
+ "link": "https://scrollyseo.com/?page_id=12",
+ "title": {
+  "raw": "Elementor #12",
+  "rendered": "Elementor #12"
+ },
+ "content": {
+  "raw": "",
+  "rendered": "",
+  "protected": false,
+  "block_version": 0
+ },
+ "excerpt": {
+  "raw": "",
+  "rendered": "",
+  "protected": false
+ },
+ "author": 1,
+ "featured_media": 0,
+ "parent": 0,
+ "menu_order": 0,
+ "comment_status": "closed",
+ "ping_status": "closed",
+ "template": "",
+ "meta": {
+  "footnotes": "",
+  "_elementor_edit_mode": "builder",
+  "_elementor_template_type": "wp-post",
+  "_elementor_data": "",
+  "_elementor_page_settings": null
+ },
+ "permalink_template": "https://scrollyseo.com/%pagename%/",
+ "generated_slug": "elementor-12",
+ "class_list": [
+  "post-12",
+  "page",
+  "type-page",
+  "status-draft",
+  "hentry"
+ ],
+ "jetpack_sharing_enabled": true,
+ "_links": {
+  "self": [
+   {
+    "href": "https://scrollyseo.com/wp-json/wp/v2/pages/12",
+    "targetHints": {
+     "allow": [
+      "GET",
+      "POST",
+      "PUT",
+      "PATCH",
+      "DELETE"
+     ]
+    }
+   }
+  ],
+  "collection": [
+   {
+    "href": "https://scrollyseo.com/wp-json/wp/v2/pages"
+   }
+  ],
+  "about": [
+   {
+    "href": "https://scrollyseo.com/wp-json/wp/v2/types/page"
+   }
+  ],
+  "author": [
+   {
+    "embeddable": true,
+    "href": "https://scrollyseo.com/wp-json/wp/v2/users/1"
+   }
+  ],
+  "replies": [
+   {
+    "embeddable": true,
+    "href": "https://scrollyseo.com/wp-json/wp/v2/comments?post=12"
+   }
+  ],
+  "version-history": [
+   {
+    "count": 1,
+    "href": "https://scrollyseo.com/wp-json/wp/v2/pages/12/revisions"
+   }
+  ],
+  "predecessor-version": [
+   {
+    "id": 13,
+    "href": "https://scrollyseo.com/wp-json/wp/v2/pages/12/revisions/13"
+   }
+  ],
+  "wp:attachment": [
+   {
+    "href": "https://scrollyseo.com/wp-json/wp/v2/media?parent=12"
+   }
+  ],
+  "wp:action-publish": [
+   {
+    "href": "https://scrollyseo.com/wp-json/wp/v2/pages/12"
+   }
+  ],
+  "wp:action-unfiltered-html": [
+   {
+    "href": "https://scrollyseo.com/wp-json/wp/v2/pages/12"
+   }
+  ],
+  "wp:action-assign-author": [
+   {
+    "href": "https://scrollyseo.com/wp-json/wp/v2/pages/12"
+   }
+  ],
+  "curies": [
+   {
+    "name": "wp",
+    "href": "https://api.w.org/{rel}",
+    "templated": true
+   }
+  ]
+ }
+}

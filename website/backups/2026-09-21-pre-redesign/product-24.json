@@ -1,0 +1,118 @@
+{
+ "id": 24,
+ "name": "SEO Site Audit",
+ "slug": "seo-site-audit",
+ "permalink": "https://scrollyseo.com/product/seo-site-audit/",
+ "date_created": "2026-08-18T23:39:10",
+ "date_created_gmt": "2026-08-18T23:39:10",
+ "date_modified": "2026-08-25T16:27:59",
+ "date_modified_gmt": "2026-08-25T16:27:59",
+ "type": "simple",
+ "status": "publish",
+ "featured": false,
+ "catalog_visibility": "visible",
+ "description": "<style id=\"scrolly-shared-shell-v1\">#site-header{background:#f5f7fc!important;border-bottom:4px solid transparent!important;border-image:linear-gradient(90deg,#4f46e5,#8b5cf6,#db2777,#ef4444) 1!important}#site-header .site-navigation .menu{display:flex!important;align-items:center!important;gap:8px!important}#menu-item-34,#menu-item-34>a,#menu-item-34>a:link,#menu-item-34>a:visited,#menu-item-34>a:hover,#menu-item-34>a:focus,#menu-item-34>a:active,#menu-item-34>a *{color:#fff!important;-webkit-text-fill-color:#fff!important;opacity:1!important;filter:none!important}#menu-item-34>a{background:#4f46e5!important;border-radius:999px!important;padding:12px 24px!important}.menu-cart-icon>a,.menu-account-icon>a{font-size:0!important;width:44px!important;height:44px!important;display:grid!important;place-items:center!important}.menu-cart-icon>a:before{content:\"🛒\";font-size:21px!important}.menu-account-icon>a:before{content:\"👤\";font-size:20px!important}.menu-disabled>a{opacity:.72!important;cursor:default!important;pointer-events:none!important}#site-footer{background:#11131b!important;border-top:4px solid transparent!important;border-image:linear-gradient(90deg,#4f46e5,#8b5cf6,#db2777,#ef4444) 1!important;margin-top:-18px!important;position:relative!important;z-index:5!important;padding:30px clamp(22px,5vw,72px)!important;display:flex!important;align-items:center!important;justify-content:center!important;gap:0!important;text-align:left!important}#site-footer:before{content:\"Scrolly\";font:900 clamp(1.3rem,2.5vw,1.8rem) Manrope,sans-serif;line-height:1;color:#fff!important;white-space:nowrap}#site-footer:after{display:none!important}#site-footer .site-navigation{display:flex!important;align-items:center!important;gap:30px!important}#site-footer .site-navigation:before{content:\"SEO\";font:900 clamp(1.3rem,2.5vw,1.8rem) Manrope,sans-serif;line-height:1;background:linear-gradient(90deg,#818cf8,#a78bfa,#e879f9,#fb7185);-webkit-background-clip:text;background-clip:text;color:transparent;white-space:nowrap}#site-footer .menu{display:flex!important;align-items:center!important;justify-content:center!important;flex-wrap:wrap!important;gap:10px 24px!important;margin:0!important}#site-footer a,#site-footer a:visited{color:#fff!important;-webkit-text-fill-color:#fff!important;text-decoration:none!important}#site-footer a:hover,#site-footer a:focus{color:#fda4af!important;-webkit-text-fill-color:#fda4af!important}body.home #site-footer{margin-top:-18px!important;position:relative!important;z-index:5!important;position:relative!important;z-index:5!important}@media(max-width:850px){#site-header .site-navigation .menu{flex-wrap:wrap!important}#site-footer{flex-wrap:wrap!important;row-gap:18px!important}#site-footer .site-navigation{flex-wrap:wrap!important;justify-content:center!important;gap:18px 24px!important}}</style>\n<p>A custom, fact-based SEO analysis of your current search visibility, Google search opportunity, competitors, technical site performance, local search, AI discovery, and 20+ other areas that can help grow your organic traffic.</p>\n<p>&nbsp;</p>\n<p>29-section custom analysis. Delivered within 2 business days. Every finding sourced.</p>\n<p>&nbsp;</p>\n<p>What's included:</p>\n<p>- Full SEO Site Audit + appendix, all 29 sections</p>\n<p>- Technical, competitive, content, and local analysis</p>\n<p>- Prioritized 30/60/90-day roadmap</p>\n<p>- Delivered within 2 business days</p>\n<p>&nbsp;</p>\n<p>Not included:</p>\n<p>- Full website implementation or redesign</p>\n<p>- Writing every recommended page or blog post</p>\n<p>- Ongoing SEO management or link building</p>\n<p>&nbsp;</p>\n<p>After payment, submit our short intake form to initiate the process. You'll receive your completed site audit in two business days or less.</p>\n",
+ "short_description": "<p>A $299 evidence-based SEO Site Audit: what&#8217;s working, what&#8217;s broken, and exactly what to build next. Every finding sourced and scored. Delivered within 2 business days.</p>\n",
+ "sku": "",
+ "price": "299",
+ "regular_price": "299",
+ "sale_price": "",
+ "date_on_sale_from": null,
+ "date_on_sale_from_gmt": null,
+ "date_on_sale_to": null,
+ "date_on_sale_to_gmt": null,
+ "on_sale": false,
+ "purchasable": true,
+ "total_sales": 4,
+ "virtual": true,
+ "downloadable": false,
+ "downloads": [],
+ "download_limit": -1,
+ "download_expiry": -1,
+ "external_url": "",
+ "button_text": "",
+ "tax_status": "taxable",
+ "tax_class": "",
+ "manage_stock": false,
+ "stock_quantity": null,
+ "backorders": "no",
+ "backorders_allowed": false,
+ "backordered": false,
+ "low_stock_amount": null,
+ "sold_individually": true,
+ "weight": "",
+ "dimensions": {
+  "length": "",
+  "width": "",
+  "height": ""
+ },
+ "shipping_required": false,
+ "shipping_taxable": false,
+ "shipping_class": "",
+ "shipping_class_id": 0,
+ "reviews_allowed": true,
+ "average_rating": "0.00",
+ "rating_count": 0,
+ "upsell_ids": [],
+ "cross_sell_ids": [],
+ "parent_id": 0,
+ "purchase_note": "",
+ "categories": [
+  {
+   "id": 17,
+   "name": "SEO Audits",
+   "slug": "seo-audits"
+  }
+ ],
+ "brands": [],
+ "tags": [],
+ "images": [
+  {
+   "id": 25,
+   "date_created": "2026-08-19T01:42:04",
+   "date_created_gmt": "2026-08-19T01:42:04",
+   "date_modified": "2026-08-19T01:42:46",
+   "date_modified_gmt": "2026-08-19T01:42:46",
+   "src": "https://scrollyseo.com/wp-content/uploads/2026/08/seo-audit-product.png",
+   "name": "seo-audit-product",
+   "alt": "SEO Site Audit report preview",
+   "srcset": "https://scrollyseo.com/wp-content/uploads/2026/08/seo-audit-product.png 1000w, https://scrollyseo.com/wp-content/uploads/2026/08/seo-audit-product-300x300.png 300w, https://scrollyseo.com/wp-content/uploads/2026/08/seo-audit-product-150x150.png 150w, https://scrollyseo.com/wp-content/uploads/2026/08/seo-audit-product-768x768.png 768w, https://scrollyseo.com/wp-content/uploads/2026/08/seo-audit-product-600x600.png 600w, https://scrollyseo.com/wp-content/uploads/2026/08/seo-audit-product-100x100.png 100w",
+   "sizes": "(max-width: 1000px) 100vw, 1000px",
+   "thumbnail": "https://scrollyseo.com/wp-content/uploads/2026/08/seo-audit-product-300x300.png"
+  }
+ ],
+ "attributes": [],
+ "default_attributes": [],
+ "variations": [],
+ "grouped_products": [],
+ "menu_order": 0,
+ "price_html": "<span class=\"woocommerce-Price-amount amount\"><bdi><span class=\"woocommerce-Price-currencySymbol\" translate=\"no\">&#36;</span>299.00</bdi></span>",
+ "related_ids": [],
+ "meta_data": [],
+ "stock_status": "instock",
+ "has_options": false,
+ "post_password": "",
+ "global_unique_id": "",
+ "jetpack_sharing_enabled": true,
+ "_links": {
+  "self": [
+   {
+    "href": "https://scrollyseo.com/wp-json/wc/v3/products/24",
+    "targetHints": {
+     "allow": [
+      "GET",
+      "POST",
+      "PUT",
+      "PATCH",
+      "DELETE"
+     ]
+    }
+   }
+  ],
+  "collection": [
+   {
+    "href": "https://scrollyseo.com/wp-json/wc/v3/products"
+   }
+  ]
+ }
+}

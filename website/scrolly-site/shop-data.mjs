@@ -44,6 +44,7 @@ export const DIGITAL_MAP = {
   58: { href: '/shopify-seo-workbook/', sub: 'Digital workbook' },
   69: { href: '/pinterest-seo-workbook/', sub: 'Digital workbook' },
   24: { href: '/seo-site-audit/', sub: 'Personalized site audit' },
+  1387: { sub: 'Notion template for your AI' },
 };
 
 async function idsIn(slug) {

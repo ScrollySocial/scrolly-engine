@@ -1,0 +1,112 @@
+[
+ {
+  "id": 19,
+  "description": "",
+  "name": "Footer Menu",
+  "slug": "footer-menu",
+  "meta": [],
+  "locations": [
+   "menu-2"
+  ],
+  "auto_add": false,
+  "_links": {
+   "self": [
+    {
+     "href": "https://scrollyseo.com/wp-json/wp/v2/menus/19",
+     "targetHints": {
+      "allow": [
+       "GET",
+       "POST",
+       "PUT",
+       "PATCH",
+       "DELETE"
+      ]
+     }
+    }
+   ],
+   "collection": [
+    {
+     "href": "https://scrollyseo.com/wp-json/wp/v2/menus"
+    }
+   ],
+   "about": [
+    {
+     "href": "https://scrollyseo.com/wp-json/wp/v2/taxonomies/nav_menu"
+    }
+   ],
+   "wp:post_type": [
+    {
+     "href": "https://scrollyseo.com/wp-json/wp/v2/menu-items?menus=19"
+    }
+   ],
+   "wp:menu-location": [
+    {
+     "embeddable": true,
+     "href": "https://scrollyseo.com/wp-json/wp/v2/menu-locations/menu-2"
+    }
+   ],
+   "curies": [
+    {
+     "name": "wp",
+     "href": "https://api.w.org/{rel}",
+     "templated": true
+    }
+   ]
+  }
+ },
+ {
+  "id": 18,
+  "description": "",
+  "name": "Main Menu",
+  "slug": "main-menu",
+  "meta": [],
+  "locations": [
+   "menu-1"
+  ],
+  "auto_add": false,
+  "_links": {
+   "self": [
+    {
+     "href": "https://scrollyseo.com/wp-json/wp/v2/menus/18",
+     "targetHints": {
+      "allow": [
+       "GET",
+       "POST",
+       "PUT",
+       "PATCH",
+       "DELETE"
+      ]
+     }
+    }
+   ],
+   "collection": [
+    {
+     "href": "https://scrollyseo.com/wp-json/wp/v2/menus"
+    }
+   ],
+   "about": [
+    {
+     "href": "https://scrollyseo.com/wp-json/wp/v2/taxonomies/nav_menu"
+    }
+   ],
+   "wp:post_type": [
+    {
+     "href": "https://scrollyseo.com/wp-json/wp/v2/menu-items?menus=18"
+    }
+   ],
+   "wp:menu-location": [
+    {
+     "embeddable": true,
+     "href": "https://scrollyseo.com/wp-json/wp/v2/menu-locations/menu-1"
+    }
+   ],
+   "curies": [
+    {
+     "name": "wp",
+     "href": "https://api.w.org/{rel}",
+     "templated": true
+    }
+   ]
+  }
+ }
+]

@@ -48,4 +48,41 @@
     if(el.parentElement){if(!el.classList.contains('scxg-shirt-sec'))el.classList.add('scxg-shirt-sec')}}
   if(document.querySelector('.wp-block-woocommerce-checkout,.wc-block-checkout')){shirtSec();new MutationObserver(function(){shirtSec()}).observe(document.body,{childList:true,subtree:true})}
   document.addEventListener('keydown',function(e){var r=root();if(e.key==='Escape'&&r&&r.classList.contains('scxg-open'))set(false)});
+  /* v3 (2026-10-03). CFG: footer tiger art, header Join button, and the optional footer signup + social links.
+     signup/social stay hidden until real values are set here (tracked in Notion: scrollyseo.com missing links). */
+  var CFG={tiger:'https://scrollyseo.com/wp-content/uploads/2026/10/scrolly-hp3-footer-tiger.webp',tw:1800,th:600,
+    join:['/next-move/','Take the quiz'],quote:'Go get ’em, Tiger.',
+    signup:{action:'https://assets.mailerlite.com/jsonp/2596740/forms/200782368424855203/subscribe',field:'fields[email]'},/* MailerLite form 2QLk6d "Less scrolling, more Scrolly" */
+    social:[['Instagram','https://www.instagram.com/scrollysocial/'],['TikTok','https://www.tiktok.com/@scrollysocial'],['YouTube','https://www.youtube.com/@ScrollySocial'],['X','https://x.com/scrollysocial']]/* format: e.g. [['Instagram','https://instagram.com/...'],['TikTok','...'],['YouTube','...'],['Pinterest','...'],['Facebook','...']] */};
+  var ICO={Instagram:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>',
+    TikTok:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 4v10.2a4 4 0 1 1-3-3.87"/><path d="M14 4c1 2.4 2.5 3.7 5 4"/></svg>',
+    YouTube:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="2.5" y="5.5" width="19" height="13" rx="4"/><path d="m10 9 5 3-5 3z" fill="currentColor" stroke="none"/></svg>',
+    Pinterest:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.8 18c.8-2.8 1.4-5.2 2-8.2.4-1.7 3.1-1.5 2.7.7-.4 2-1.7 3-3 2.3-2.1-1.1-1.7-5 1.7-5.7 4.6-.9 6.7 3.8 5 6.8-1.1 2-3.2 2.8-5.1 2.1"/></svg>',
+    X:'<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.8 3h3.1l-6.8 7.8 8 10.2h-6.3l-4.9-6.4L5.3 21H2.2l7.3-8.3L1.8 3h6.4l4.4 5.9zm-1.1 16.2h1.7L7.4 4.7H5.6z"/></svg>',Facebook:'<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M14 8h3V4.5c-.5-.1-2-.2-3.4-.2-3.1 0-5.1 1.8-5.1 5.3V12H5v4h3.5v8H13v-8h3.5l.6-4H13V10c0-1.2.3-2 1-2z"/></svg>'};
+  function lk(a){return '<a href="'+esc(a.getAttribute('href'))+'">'+esc(a.textContent)+'</a>'}
+  function join(){var r=root();if(!r||r.__join)return;r.__join=1;var right=r.querySelector('.scxg-right');if(!right)return;
+    var j=document.createElement('a');j.className='scxg-join';j.href=CFG.join[0];j.innerHTML=esc(CFG.join[1])+' <span aria-hidden="true">→</span>';
+    right.insertBefore(j,right.querySelector('.scxg-burger'))}
+  /* Footer v3: columns = Main Menu tree (read from the drawer), bottom row = Footer Menu links. Edit both in Appearance > Menus. */
+  function foot(){var f=document.querySelector('.scxg-ftr');if(!f||f.__v3)return;f.__v3=1;
+    var logo=f.querySelector('.logo'),legal=[].slice.call(f.querySelectorAll('nav a')).map(lk),cols='';
+    [].slice.call(document.querySelectorAll('.scxg-drawer .top>li')).forEach(function(li){var a=li.querySelector(':scope>a');if(!a)return;
+      var kids=[].slice.call(li.querySelectorAll(':scope>ul>li>a'));if(!kids.length)kids=[a];
+      cols+='<div class="col"><h2>'+esc(a.textContent)+'</h2><ul>'+kids.map(function(k){return '<li>'+lk(k)+'</li>'}).join('')+'</ul></div>'});
+    var contact='';
+    if(CFG.signup)contact+='<form class="signup" method="post" action="'+esc(CFG.signup.action)+'" target="_blank"><label for="scxg-email" style="position:absolute;left:-9999px">Your email</label><input id="scxg-email" type="email" name="'+esc(CFG.signup.field)+'" placeholder="Your email" autocomplete="email" required><input type="hidden" name="ml-submit" value="1"><input type="hidden" name="anticsrf" value="true"><button type="submit" aria-label="Subscribe">→</button></form><p class="signup-note" role="status">Organic marketing tips by email. Unsubscribe anytime.</p>';
+    if(CFG.social.length)contact+='<div class="social">'+CFG.social.map(function(s){return '<a href="'+esc(s[1])+'" aria-label="Scrolly on '+esc(s[0])+' (opens in a new tab)" rel="noopener" target="_blank">'+(ICO[s[0]]||esc(s[0]))+'</a>'}).join('')+'</div>';
+    f.innerHTML='<div class="fhero"><img class="ftiger" src="'+CFG.tiger+'" alt="" width="'+CFG.tw+'" height="'+CFG.th+'" loading="lazy" decoding="async"><div class="fbrand"><p class="fquote">'+esc(CFG.quote)+'</p>'+(contact?'<div class="fcontact">'+contact+'</div>':'')+'</div></div>'
+      +'<div class="w fnav">'+(logo?logo.outerHTML:'')+cols+'</div>'
+      +'<div class="w fbot">'+legal.join('')+'<span>© '+new Date().getFullYear()+' Scrolly</span></div>';
+    f.classList.add('v3');
+    /* Signup posts to MailerLite in the background and shows the result in place (no new tab); a failed request falls back to a normal submit. */
+    var sf=f.querySelector('form.signup');if(sf)sf.addEventListener('submit',function(e){e.preventDefault();var note=f.querySelector('.signup-note'),btn=sf.querySelector('button');btn.disabled=true;
+      fetch(sf.action,{method:'POST',body:new FormData(sf)}).then(function(r){return r.json()}).then(function(d){
+        if(d&&d.success){sf.hidden=true;note.textContent='Thanks! You’re on the list. Check your inbox.'}else{btn.disabled=false;note.textContent='That didn’t go through. Check your email address and try again.'}
+      }).catch(function(){btn.disabled=false;sf.submit()})})}
+  /* Menu items whose URL ends in #coming-soon render as plain "Coming soon" text, never as dead links. */
+  function soon(){[].slice.call(document.querySelectorAll('.scxg a[href$="#coming-soon"]')).forEach(function(a){var s=document.createElement('span');s.className='scxg-soon';s.innerHTML=esc(a.textContent)+' <em>Coming soon</em>';a.parentNode.replaceChild(s,a)})}
+  function v3(){join();foot();soon()}
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',v3);else v3();
 })();

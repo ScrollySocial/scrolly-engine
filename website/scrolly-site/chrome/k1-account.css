@@ -1,0 +1,222 @@
+/* My Account (WooCommerce page 8) + the $1K member area (.k1a.k1v3, printed by the WPCode "My $1k Plan Snippet" from
+   automation/k1-launch). v3 look on the shared tokens and type scale (nothing under 15px). Printed site-wide after v3.css by
+   install-chrome.mjs, so restyles ship over REST with no snippet re-paste. Member rules only match the .k1v3 class that the
+   2026-10-03 snippet prints, so the older pasted snippet keeps its own look until it is replaced. */
+
+/* ---- account frame (every account screen, logged in or not) ---- */
+body.woocommerce-account:not(:has(.hp,.scx,.s3)) .site-main{max-width:1320px}
+body.woocommerce-account .woocommerce:has(>.woocommerce-MyAccount-navigation){display:grid;grid-template-columns:230px minmax(0,1fr);gap:clamp(28px,4vw,64px);align-items:start}
+body.woocommerce-account .woocommerce:has(>.woocommerce-MyAccount-navigation)::before,body.woocommerce-account .woocommerce:has(>.woocommerce-MyAccount-navigation)::after{display:none}
+body.woocommerce-account :is(.woocommerce-MyAccount-navigation,.woocommerce-MyAccount-content){float:none!important;width:auto!important;margin:0!important}
+body.woocommerce-account .woocommerce-MyAccount-navigation ul{list-style:none;margin:0;padding:0}
+body.woocommerce-account .woocommerce-MyAccount-navigation li{margin:0 0 4px;padding:0;border:0}
+body.woocommerce-account .woocommerce-MyAccount-navigation li a{display:flex;align-items:center;min-height:48px;padding:10px 18px;border-radius:999px;color:var(--s3-ink)!important;text-decoration:none!important;font:600 var(--s3-fs-ui)/1.25 var(--s3-sans)}
+body.woocommerce-account .woocommerce-MyAccount-navigation li a:hover{background:#ece6dc}
+body.woocommerce-account .woocommerce-MyAccount-navigation li.is-active a{background:var(--s3-black);color:#fff!important}
+body.woocommerce-account .woocommerce-MyAccount-content{font-size:var(--s3-fs-body);line-height:1.55}
+body.woocommerce-account .woocommerce-MyAccount-content>p:first-child{margin-top:0}
+body.woocommerce-account .woocommerce-MyAccount-content mark{background:none;color:inherit;font-weight:700}
+/* orders / downloads / order details tables */
+body.woocommerce-account .woocommerce-MyAccount-content table.shop_table,body.woocommerce-order-received table.shop_table{width:100%;border:0;border-collapse:collapse;background:#fff;border-radius:16px;overflow:hidden;font-size:var(--s3-fs-fine)}
+body.woocommerce-account table.shop_table :is(th,td),body.woocommerce-order-received table.shop_table :is(th,td){padding:14px 16px;border:0;border-bottom:1px solid var(--s3-line);background:none;text-align:left;vertical-align:middle}
+body.woocommerce-account table.shop_table thead th,body.woocommerce-order-received table.shop_table thead th{font:700 var(--s3-fs-label)/1.3 var(--s3-sans);letter-spacing:.12em;text-transform:uppercase}
+body.woocommerce-account table.shop_table tr:last-child>*{border-bottom:0}
+body.woocommerce-account table.shop_table .button{min-height:44px!important;padding:10px 18px!important;margin:4px 6px 4px 0!important;font-size:var(--s3-fs-label)!important}
+/* login / register / lost password */
+body.woocommerce-account :is(form.woocommerce-form-login,form.woocommerce-form-register,form.woocommerce-ResetPassword,form.lost_reset_password){max-width:560px;margin:0 0 32px;padding:clamp(24px,3vw,40px);border:0;border-radius:16px;background:#fff}
+body.woocommerce-account :is(form.woocommerce-form-login,form.woocommerce-form-register,form.woocommerce-ResetPassword,form.lost_reset_password) label{display:block;margin:0 0 8px;font:600 var(--s3-fs-ui)/1.35 var(--s3-sans)}
+body.woocommerce-account :is(form.woocommerce-form-login,form.woocommerce-form-register,form.woocommerce-ResetPassword,form.lost_reset_password) .input-text{width:100%}
+body.woocommerce-account .woocommerce-form-login__rememberme{display:inline-flex!important;align-items:center;gap:8px;margin:8px 16px 0 0!important;font-weight:400!important}
+body.woocommerce-account :is(.woocommerce-LostPassword,.lost_password){font-size:var(--s3-fs-fine)}
+body.woocommerce-account .u-columns{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(24px,3vw,48px)}
+body.woocommerce-account .u-columns>.u-column1,body.woocommerce-account .u-columns>.u-column2{width:auto!important;float:none!important}
+body.woocommerce-account .woocommerce>h2,body.woocommerce-account .u-columns h2{font-size:var(--s3-fs-h3)!important;margin:0 0 20px!important}
+/* WooCommerce's show/hide password eye is a <button>: keep it a plain icon, not a theme-layer pill */
+html body.woocommerce-account .woocommerce .show-password-input,html body.woocommerce-checkout .woocommerce .show-password-input{display:flex!important;align-items:center;justify-content:center;min-height:44px!important;width:44px;padding:0!important;border:0!important;border-radius:4px!important;background:transparent!important;color:var(--s3-ink)!important;box-shadow:none!important}
+html body.woocommerce-account .woocommerce .show-password-input:hover{background:#ece6dc!important}
+body.woocommerce-account .woocommerce-form-login__rememberme input,body.woocommerce-account input[type=checkbox]{width:22px;height:22px;accent-color:#0a0a0a}
+/* addresses + account details */
+body.woocommerce-account .woocommerce-Addresses{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px}
+body.woocommerce-account .woocommerce-Addresses::before,body.woocommerce-account .woocommerce-Addresses::after{display:none}
+body.woocommerce-account .woocommerce-Address{width:auto!important;float:none!important;background:#fff;border-radius:16px;padding:clamp(20px,2.6vw,32px)}
+body.woocommerce-account .woocommerce-Address address{font-style:normal;line-height:1.6}
+body.woocommerce-account :is(.woocommerce-EditAccountForm,.woocommerce-address-fields) label{font:600 var(--s3-fs-ui)/1.35 var(--s3-sans)}
+body.woocommerce-account fieldset legend{font:400 var(--s3-fs-lede)/1.2 var(--s3-serif);padding:0;margin:24px 0 12px}
+@media(max-width:860px){
+ body.woocommerce-account .woocommerce:has(>.woocommerce-MyAccount-navigation){grid-template-columns:1fr;gap:24px}
+ body.woocommerce-account .woocommerce-MyAccount-navigation ul{display:flex;flex-wrap:wrap;gap:8px}
+ body.woocommerce-account .woocommerce-MyAccount-navigation li{margin:0}
+ body.woocommerce-account .woocommerce-MyAccount-navigation li a{background:#fff;min-height:44px;padding:8px 16px}
+ body.woocommerce-account :is(.u-columns,.woocommerce-Addresses){grid-template-columns:1fr}
+}
+@media(max-width:600px){
+ body.woocommerce-account table.shop_table_responsive tr{display:block;padding:8px 0;border-bottom:1px solid var(--s3-line)}
+ body.woocommerce-account table.shop_table_responsive thead{display:none}
+ body.woocommerce-account table.shop_table_responsive td{display:flex;justify-content:space-between;gap:16px;border:0!important;padding:8px 16px;text-align:right}
+ body.woocommerce-account table.shop_table_responsive td::before{content:attr(data-title);font-weight:700;text-align:left}
+}
+
+/* ---- order thank-you panel (snippet prints .k1ty on the order-received page) ---- */
+.k1ty{margin:24px 0;padding:clamp(24px,3vw,40px);border-radius:16px;background:var(--s3-black);color:#fff}
+.k1ty .t{margin:0 0 10px;font:400 var(--s3-fs-title)/1.15 var(--s3-serif);color:#fff}
+.k1ty p{margin:0 0 18px;color:#fff;font-size:var(--s3-fs-body);line-height:1.55}
+.k1ty .acts{display:flex;flex-wrap:wrap;align-items:center;gap:12px 20px;margin:0 0 4px}
+.k1ty a.go{display:inline-flex;align-items:center;min-height:52px;padding:0 30px;border-radius:999px;background:var(--s3-orange);color:#000!important;font:800 var(--s3-fs-label)/1 var(--s3-sans);letter-spacing:.14em;text-transform:uppercase;text-decoration:none!important}
+.k1ty a.go:hover{background:#fff}
+.k1ty a.alt{display:inline-flex;align-items:center;min-height:44px;color:#fff!important;font:600 var(--s3-fs-ui)/1 var(--s3-sans);text-decoration:underline!important;text-underline-offset:4px}
+.k1ty .small{margin:16px 0 0;font-size:var(--s3-fs-fine);color:#cfcfcf}
+.k1ty :focus-visible{outline:3px solid #fff!important;outline-offset:3px}
+
+/* ---- $1K member area ---- */
+.k1a.k1v3{--k1-panel:#ece6dc;color:var(--s3-ink);font:var(--s3-fs-body)/1.55 var(--s3-sans)}
+.k1v3 *{box-sizing:border-box}
+.k1v3 [hidden]{display:none!important}
+.k1v3 h2{margin:0 0 16px;font-family:var(--s3-serif)!important;font-weight:400!important;font-size:var(--s3-fs-h3)!important;line-height:1.05!important;letter-spacing:-.02em;text-transform:none!important;color:inherit}
+.k1v3 h3{margin:0 0 10px;font-family:var(--s3-serif)!important;font-weight:400!important;font-size:var(--s3-fs-lede)!important;line-height:1.2!important;letter-spacing:-.01em;text-transform:none!important;color:inherit}
+.k1v3 p{margin:0 0 12px;font-size:var(--s3-fs-body);line-height:1.55;color:inherit}
+.k1v3 a{color:inherit;text-decoration:underline;text-underline-offset:3px}
+.k1v3 :is(a,button,input,select,textarea,summary):focus-visible{outline:3px solid #111;outline-offset:3px}
+.k1v3 .sec.black :is(a,button,input,select,textarea,summary):focus-visible{outline-color:#fff}
+.k1v3 .sec{margin:0 0 24px;padding:clamp(20px,2.6vw,36px);border-radius:16px;background:#fff}
+.k1v3 .sec.teal{background:var(--k1-panel)}
+.k1v3 .sec.cream{background:var(--s3-cream);box-shadow:inset 0 0 0 1px var(--s3-line)}
+.k1v3 .sec.black{background:var(--s3-black);color:#fff}
+.k1v3 .sec.black :is(h2,h3,p,label,legend,summary,li){color:#fff}
+.k1v3 .sec.black a{color:#fff}
+.k1v3 .big{font:400 clamp(2.8rem,5vw,4.4rem)/.95 var(--s3-serif);letter-spacing:-.03em;color:inherit}
+.k1v3 .sec.black .big{color:var(--s3-orange)}
+.k1v3 .stripe{display:flex;align-items:center;gap:16px;margin:16px 0 8px}
+.k1v3 .stripe .track{flex:1;margin:0}
+.k1v3 .stripe b{min-width:3.2em;text-align:right;font:400 var(--s3-fs-h3)/1 var(--s3-serif);color:var(--s3-ink)}
+.k1v3 .sec.black .stripe b{color:var(--s3-orange)}
+.k1v3 .track{height:clamp(28px,3vw,40px);margin:16px 0 8px;border-radius:999px;background:var(--k1-panel);overflow:hidden}
+.k1v3 .sec.black .track{background:#2a2a2a}
+.k1v3 .track i{display:block;height:100%;background:var(--s3-orange)}
+.k1v3 .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.k1v3 .grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.k1v3 label{display:block;margin:0 0 8px;font:600 var(--s3-fs-ui)/1.35 var(--s3-sans);color:inherit}
+.k1v3 :is(input:not([type]),input[type=text],input[type=number],input[type=email],input[type=tel],input[type=url],select,textarea){width:100%;min-height:52px;padding:12px 16px;border:1px solid #8f8a83;border-radius:4px;background:#fff;font:var(--s3-fs-ui)/1.35 var(--s3-sans);color:var(--s3-ink)}
+.k1v3 textarea{min-height:110px}
+.k1v3 input[type=file]{min-height:0;padding:12px}
+.k1v3 .btn{display:inline-flex;align-items:center;justify-content:center;gap:12px;min-height:52px;margin-top:16px;padding:0 30px;border:0;border-radius:999px;background:var(--s3-black);color:#fff!important;font:800 var(--s3-fs-label)/1 var(--s3-sans);letter-spacing:.14em;text-transform:uppercase;text-decoration:none!important;cursor:pointer}
+.k1v3 .btn:hover{background:var(--s3-orange);color:#000!important}
+.k1v3 :is(.btn.teal,.btn.or){background:var(--s3-orange);color:#000!important}
+.k1v3 :is(.btn.teal,.btn.or):hover{background:var(--s3-black);color:#fff!important}
+.k1v3 .sec.black .btn{background:var(--s3-orange);color:#000!important}
+.k1v3 .sec.black .btn:hover{background:#fff;color:#000!important}
+.k1v3 .note{font-size:var(--s3-fs-fine);line-height:1.5;color:var(--s3-muted)}
+.k1v3 .sec.black .note{color:#cfcfcf!important}
+.k1v3 .ok{margin:0 0 16px;padding:14px 18px;border-radius:4px;background:var(--k1-panel);color:var(--s3-ink);font-weight:700}
+.k1v3 .warn{margin:0 0 16px;padding:14px 18px;border-radius:4px;background:#fff3c4;color:#000!important;font-weight:700}
+.k1v3 table{width:100%;border-collapse:collapse;font-size:var(--s3-fs-fine)}
+.k1v3 :is(th,td){padding:12px 10px;border-bottom:1px solid var(--s3-line);text-align:left;vertical-align:top;color:inherit}
+.k1v3 th{font:700 var(--s3-fs-label)/1.3 var(--s3-sans);letter-spacing:.12em;text-transform:uppercase}
+.k1v3 td .x{display:inline-flex;align-items:center;min-height:44px;padding:0;border:0;background:none;font:600 var(--s3-fs-label)/1 var(--s3-sans);text-decoration:underline;color:inherit;cursor:pointer}
+.k1v3 .calc-out{margin-top:12px;font:400 clamp(2.4rem,4vw,3.4rem)/1 var(--s3-serif)}
+.k1v3 .sec.black .calc-out{margin:18px 0 8px;font-size:clamp(2.8rem,6vw,4.6rem);color:var(--s3-orange);overflow-wrap:anywhere}
+.k1v3 .k1calc>.grid3 label{color:#fff}
+.k1v3 .k1calc .calc-panel{margin-top:20px;padding:clamp(18px,2.4vw,28px);border-radius:16px;background:#fff;color:var(--s3-ink)}
+.k1v3 .k1calc .calc-panel :is(h3,p,label,legend,summary,li){color:var(--s3-ink)}
+.k1v3 .k1calc .calc-panel .note{color:var(--s3-muted)!important}
+.k1v3 .k1calc .calc-panel :focus-visible{outline-color:#111}
+.k1v3 .calc-pills,.k1v3 .calc-scen{display:flex;flex-wrap:wrap;gap:8px}
+.k1v3 .calc-scen{margin:0 0 12px}
+.k1v3 label.calc-pill{position:relative;display:inline-flex;margin:0;cursor:pointer}
+.k1v3 .calc-pill input{position:absolute;width:1px;height:1px;min-height:0;opacity:0}
+.k1v3 :is(.calc-pill span,.calc-scen button){display:inline-flex;align-items:center;gap:8px;min-height:48px;padding:0 18px;border:0;border-radius:999px;background:#fff;color:var(--s3-ink);box-shadow:inset 0 0 0 1px #8f8a83;font:600 var(--s3-fs-ui)/1 var(--s3-sans);cursor:pointer}
+.k1v3 .calc-pill input:checked+span,.k1v3 .calc-scen button[aria-checked=true]{background:var(--s3-black);color:#fff!important;box-shadow:none}
+.k1v3 .calc-pill input:checked+span::before{content:"✓"}
+.k1v3 .calc-pill input:focus-visible+span,.k1v3 .calc-scen button:focus-visible{outline:3px solid #111;outline-offset:3px}
+.k1v3 .c-custom .calc-scen button{opacity:.55}
+.k1v3 .calc-eq{margin:12px 0 0;font-size:var(--s3-fs-body)}
+.k1v3 .calc-eq:empty,.k1v3 .warnline:empty,.k1v3 .note:empty{display:none}
+.k1v3 .calc-funnel{display:flex;flex-direction:column;align-items:flex-start;gap:4px;margin:16px 0 8px}
+.k1v3 .calc-step{display:flex;align-items:baseline;flex-wrap:wrap;gap:4px 12px}
+.k1v3 .calc-step b{font:400 var(--s3-fs-title)/1.1 var(--s3-serif);overflow-wrap:anywhere}
+.k1v3 :is(.calc-step span,.calc-hero span){font:700 var(--s3-fs-label)/1.3 var(--s3-sans);letter-spacing:.12em;text-transform:uppercase}
+.k1v3 .calc-up{padding-left:8px;font:400 var(--s3-fs-num)/1 var(--s3-serif)}
+.k1v3 .calc-hero{display:flex;flex-direction:column;gap:6px;margin:16px 0 12px;padding:18px 22px;border-radius:16px;background:var(--k1-panel)}
+.k1v3 .calc-hero b{font:400 clamp(2.8rem,6vw,4.4rem)/1 var(--s3-serif);letter-spacing:-.03em;overflow-wrap:anywhere}
+.k1v3 .warnline{margin:10px 0 0;font-weight:700}
+.k1v3 .calc-own{margin-top:16px}
+.k1v3 .reels{padding:clamp(20px,2.6vw,36px);border-radius:16px;background:#fff}
+.k1v3 ul{margin:0 0 12px;padding-left:22px}
+.k1v3 li{margin:0 0 8px;line-height:1.5}
+.k1v3 ul.funnel,.k1v3 ul.known{list-style:none;padding:0}
+.k1v3 ul.funnel li{padding:10px 0;border-bottom:1px solid var(--s3-line)}
+.k1v3 .ic{display:inline-block;width:24px;font-weight:800}
+.k1v3 fieldset{margin:16px 0 0;padding:0;border:0}
+.k1v3 legend{margin:0 0 10px;padding:0;font:600 var(--s3-fs-ui)/1.35 var(--s3-sans);color:inherit}
+.k1v3 label.chk{display:inline-flex;align-items:center;gap:10px;min-height:44px;margin:0 20px 8px 0;font-weight:400}
+.k1v3 label.chk input{width:22px;height:22px;min-height:0;flex:none}
+.k1v3 details{margin:16px 0 0}
+.k1v3 summary{display:list-item;min-height:44px;padding:10px 0;font-weight:700;cursor:pointer}
+.k1v3 .chip{display:inline-flex;align-items:center;min-height:32px;margin:0 0 12px;padding:4px 14px;border-radius:999px;background:var(--s3-orange);color:#000;font:700 var(--s3-fs-label)/1 var(--s3-sans);letter-spacing:.1em;text-transform:uppercase}
+.k1v3 ul.milestones{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0;padding:0;list-style:none}
+.k1v3 ul.milestones li{margin:0;padding:6px 14px;border-radius:999px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.45);font:700 var(--s3-fs-label)/1.3 var(--s3-sans);color:#fff}
+.k1v3 ul.milestones li.hit{background:var(--s3-orange);box-shadow:none;color:#000}
+.k1v3 .k1tabs{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 20px}
+.k1v3 .k1tabs button{min-height:48px;padding:0 22px;border:0;border-radius:999px;background:#fff;color:var(--s3-ink);box-shadow:inset 0 0 0 1px #8f8a83;font:800 var(--s3-fs-label)/1 var(--s3-sans);letter-spacing:.12em;text-transform:uppercase;cursor:pointer}
+.k1v3 .k1tabs button[aria-selected=true]{background:var(--s3-black);color:#fff!important;box-shadow:none}
+.k1v3 .sec.black .proof label{color:#fff}
+.k1v3 .sec.black :is(textarea,input[type=file]){background:#fff;color:var(--s3-ink)}
+@media(max-width:700px){
+ .k1v3 :is(.grid,.grid3){grid-template-columns:1fr}
+ .k1v3 :is(th,td){padding:10px 6px}
+ .k1v3 :is(th:nth-child(4),td:nth-child(4)){display:none}
+ .k1v3 .stripe b{min-width:2.6em}
+}
+
+/* ---- Challenge Content cards (.k1c): private pages 633 (weekly Reels), 845 (carousels), 846 (Stories), rendered inside the
+   member area by automation/k1-launch/content/render.mjs. Their styles used to be embedded in each page; they live here now. ---- */
+.k1c{color:var(--s3-ink);font:var(--s3-fs-body)/1.55 var(--s3-sans)}
+.k1c .intro{margin:0 0 18px;padding:16px 20px;border-radius:16px;background:#ece6dc;font-size:var(--s3-fs-body);line-height:1.5}
+.k1c details.card{margin:0 0 12px;padding:0;border:0;border-radius:16px;background:#fff;box-shadow:inset 0 0 0 1px var(--s3-line)}
+.k1c details.card>summary{display:flex;align-items:baseline;gap:14px;min-height:56px;padding:16px 20px;list-style:none;font:700 var(--s3-fs-ui)/1.35 var(--s3-sans);cursor:pointer}
+.k1c details.card>summary::-webkit-details-marker{display:none}
+.k1c details.card[open]>summary{padding-bottom:8px}
+.k1c .n{min-width:32px;font:400 var(--s3-fs-lede)/1 var(--s3-serif);color:var(--s3-ink)}
+.k1c .job{margin-left:auto;padding:4px 12px;border-radius:999px;background:var(--s3-orange);color:#000;font:700 var(--s3-fs-label)/1.3 var(--s3-sans);white-space:nowrap}
+.k1c .body{padding:0 20px 20px 66px;font-size:var(--s3-fs-body);line-height:1.55}
+.k1c .body p{margin:0 0 10px}
+.k1c .body b{font-weight:700}
+.k1c .src{font-size:var(--s3-fs-fine);color:var(--s3-muted)}
+.k1c :is(ol,ul){margin:6px 0 12px;padding-left:22px}
+.k1c li{margin:0 0 6px}
+.k1c .ex{margin:12px 0 14px}
+.k1c .ex .slot{max-width:340px;margin-top:12px}
+.k1c .ex a.au{display:inline-flex;align-items:center;min-height:44px;margin-left:14px;font-weight:700;color:var(--s3-ink)!important;text-decoration:underline!important}
+.k1c .audio{padding:10px 14px;border-radius:4px;background:#ece6dc;font-size:var(--s3-fs-fine)}
+.k1c .how{margin:12px 0 0;padding-left:22px}
+.k1c .tpl{margin:6px 0 16px}
+.k1c .strip{margin:0 0 12px;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.k1c .strip img{display:block;width:auto;max-width:none;height:180px;border-radius:8px}
+.k1c .acts{display:flex;flex-wrap:wrap;align-items:center;gap:10px 18px;margin:0 0 8px}
+.k1c a.btn{display:inline-flex;align-items:center;min-height:48px;padding:0 24px;border-radius:999px;background:var(--s3-black)!important;color:#fff!important;font:800 var(--s3-fs-label)/1 var(--s3-sans);letter-spacing:.12em;text-transform:uppercase;text-decoration:none!important}
+.k1c a.btn:hover{background:var(--s3-orange)!important;color:#000!important}
+.k1c :is(a.lnk,.src a){display:inline-flex;align-items:center;min-height:44px;font-weight:700;color:var(--s3-ink)!important;text-decoration:underline!important}
+.k1c :is(summary,a,button):focus-visible{outline:3px solid #111;outline-offset:3px}
+/* the example-video button is a <button>, so it also needs to beat the v3.css theme layer */
+.k1a .k1c .ex button,body .k1c .ex button{display:inline-flex!important;align-items:center;min-height:48px!important;padding:0 22px!important;border:0!important;border-radius:999px!important;background:var(--s3-black)!important;color:#fff!important;font:800 var(--s3-fs-label)/1 var(--s3-sans)!important;letter-spacing:.1em!important;text-transform:uppercase!important}
+.k1a .k1c .ex button:hover,body .k1c .ex button:hover{background:var(--s3-orange)!important;color:#000!important}
+@media(max-width:600px){.k1c .body{padding-left:20px}.k1c details.card>summary{flex-wrap:wrap}.k1c .job{margin-left:0}}
+
+/* ---- override layer: v3.css's theme layer styles every <button> (with !important) and every text input on pages that carry
+   no page root, which includes My Account. These rules load after it and are more specific, so the member area keeps its own
+   controls. Keep this block last. ---- */
+.k1a.k1v3 .sec>:first-child{margin-top:0!important}
+.k1a.k1v3 :is(input:not([type]),input[type=text],input[type=number],input[type=email],input[type=tel],input[type=url],select,textarea){min-height:52px!important;padding:12px 16px!important;border:1px solid #8f8a83!important;border-radius:4px!important;background:#fff!important;color:var(--s3-ink)!important;font:var(--s3-fs-ui)/1.35 var(--s3-sans)!important}
+.k1a.k1v3 textarea{min-height:110px!important}
+.k1a.k1v3 .btn{display:inline-flex!important;min-height:52px!important;padding:0 30px!important;border:0!important;border-radius:999px!important;background:var(--s3-black)!important;color:#fff!important;font:800 var(--s3-fs-label)/1 var(--s3-sans)!important;letter-spacing:.14em!important;text-transform:uppercase!important;box-shadow:none!important}
+.k1a.k1v3 .btn:hover{background:var(--s3-orange)!important;color:#000!important}
+.k1a.k1v3 :is(.btn.teal,.btn.or),.k1a.k1v3 .sec.black .btn{background:var(--s3-orange)!important;color:#000!important}
+.k1a.k1v3 :is(.btn.teal,.btn.or):hover{background:var(--s3-black)!important;color:#fff!important}
+.k1a.k1v3 .sec.black .btn:hover{background:#fff!important;color:#000!important}
+.k1a.k1v3 :is(.calc-scen button,.k1tabs button){display:inline-flex!important;align-items:center;min-height:48px!important;padding:0 20px!important;border:0!important;border-radius:999px!important;background:#fff!important;color:var(--s3-ink)!important;box-shadow:inset 0 0 0 1px #8f8a83!important;text-decoration:none!important}
+.k1a.k1v3 .calc-scen button{font:600 var(--s3-fs-ui)/1 var(--s3-sans)!important;letter-spacing:0!important;text-transform:none!important}
+.k1a.k1v3 .k1tabs button{font:800 var(--s3-fs-label)/1 var(--s3-sans)!important;letter-spacing:.12em!important;text-transform:uppercase!important}
+.k1a.k1v3 :is(.calc-scen button,.k1tabs button):hover{background:var(--k1-panel)!important;color:var(--s3-ink)!important}
+.k1a.k1v3 :is(.calc-scen button[aria-checked=true],.k1tabs button[aria-selected=true]),.k1a.k1v3 :is(.calc-scen button[aria-checked=true],.k1tabs button[aria-selected=true]):hover{background:var(--s3-black)!important;color:#fff!important;box-shadow:none!important}
+.k1a.k1v3 button.x{display:inline-flex!important;align-items:center;min-height:44px!important;padding:0!important;border:0!important;border-radius:0!important;background:none!important;box-shadow:none!important;color:inherit!important;font:600 var(--s3-fs-label)/1.2 var(--s3-sans)!important;letter-spacing:0!important;text-transform:none!important;text-decoration:underline!important;text-underline-offset:3px}
+.k1a.k1v3 button.x:hover{background:none!important;color:inherit!important}
+.k1a.k1v3 .sec.black button.x{color:#fff!important}

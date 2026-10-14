@@ -5,7 +5,7 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 const here = path.dirname(fileURLToPath(import.meta.url));
-const media = JSON.parse(fs.readFileSync(path.join(here, 'media-map.json'), 'utf8'));
+export const media = JSON.parse(fs.readFileSync(path.join(here, 'media-map.json'), 'utf8'));
 
 export const img = (name) => {
   const m = media[name];
@@ -32,13 +32,19 @@ function show(n,u){ix=(n+sl.length)%sl.length;sl.forEach(function(s,i){var on=i=
 function tick(){if(!hov&&!document.hidden)show(ix+1)}
 function play(){if(stopped||tm)return;tm=setInterval(tick,7000);if(pb){pb.textContent='Pause slideshow';pb.setAttribute('aria-pressed','false')}}
 function halt(u){clearInterval(tm);tm=null;if(u)stopped=true;if(pb){pb.textContent='Play slideshow';pb.setAttribute('aria-pressed','true')}}
-hs.querySelector('.hsl-prev').addEventListener('click',function(){show(ix-1,true)});hs.querySelector('.hsl-next').addEventListener('click',function(){show(ix+1,true)});
+var pv=hs.querySelector('.hsl-prev'),nx=hs.querySelector('.hsl-next');if(pv){pv.addEventListener('click',function(){show(ix-1,true)})}if(nx){nx.addEventListener('click',function(){show(ix+1,true)})}
 tb.forEach(function(t,i){t.addEventListener('click',function(){show(i,true)});t.addEventListener('keydown',function(e){var d=e.key==='ArrowRight'?1:e.key==='ArrowLeft'?-1:0;if(d){e.preventDefault();show(ix+d,true);tb[ix].focus()}})});
 if(pb){pb.hidden=false;pb.addEventListener('click',function(){if(tm){halt(true)}else{stopped=false;play()}});if(stopped){pb.textContent='Play slideshow';pb.setAttribute('aria-pressed','true')}}
 hs.addEventListener('mouseenter',function(){hov=true});hs.addEventListener('mouseleave',function(){hov=false});hs.addEventListener('focusin',function(){hov=true});hs.addEventListener('focusout',function(){hov=false});
 var x0=null,y0=null;hs.addEventListener('touchstart',function(e){x0=e.touches[0].clientX;y0=e.touches[0].clientY},{passive:true});hs.addEventListener('touchend',function(e){if(x0===null)return;var dx=e.changedTouches[0].clientX-x0,dy=e.changedTouches[0].clientY-y0;x0=null;if(Math.abs(dx)>50&&Math.abs(dx)>Math.abs(dy)*1.5)show(ix+(dx<0?1:-1),true)},{passive:true});
 show(0);play()}
-var gl=r.querySelector('.goal');if(gl){if(window.matchMedia('(hover:hover) and (pointer:fine)').matches){r.querySelectorAll('.tile[data-club]').forEach(function(t){var k=t.getAttribute('data-club');var er=r.querySelector('.earned');function on(){gl.setAttribute('data-club',k);if(er){er.setAttribute('data-club',k);er.querySelectorAll('.tee-club').forEach(function(s){s.hidden=s.getAttribute('data-club')!==k})}}function off(){gl.setAttribute('data-club','');if(er){er.setAttribute('data-club','');er.querySelectorAll('.tee-club').forEach(function(s){s.hidden=true})}}t.addEventListener('mouseenter',on);t.addEventListener('mouseleave',off);t.addEventListener('focusin',on);t.addEventListener('focusout',off)})}}
+var er=r.querySelector('.home-earned'),selT='1k',showT=function(){};
+if(er){var sets=[].slice.call(er.querySelectorAll('.tset')),tbs=[].slice.call(er.querySelectorAll('.tier-btn')),tn=er.querySelector('.tier-now'),names={};
+tbs.forEach(function(b){names[b.getAttribute('data-club')]=b.getAttribute('data-name')});
+showT=function(k){sets.forEach(function(s){s.classList.toggle('is-active',s.getAttribute('data-club')===k)});tbs.forEach(function(b){b.setAttribute('aria-pressed',b.getAttribute('data-club')===k?'true':'false')});if(tn){tn.textContent=names[k]||''}er.setAttribute('data-club',k)};
+tbs.forEach(function(b){b.addEventListener('click',function(){selT=b.getAttribute('data-club');showT(selT)})});
+window.addEventListener('load',function(){setTimeout(function(){er.querySelectorAll('.tset img').forEach(function(i){i.loading='eager'})},600)})}
+var gl=r.querySelector('.goal');if(gl){if(window.matchMedia('(hover:hover) and (pointer:fine)').matches){r.querySelectorAll('.tile[data-club]').forEach(function(t){var k=t.getAttribute('data-club');function on(){gl.setAttribute('data-club',k);showT(k)}function off(){gl.setAttribute('data-club','');showT(selT)}t.addEventListener('mouseenter',on);t.addEventListener('mouseleave',off);t.addEventListener('focusin',on);t.addEventListener('focusout',off)})}}
 var g=r.querySelector('#calc-goal');if(g){var a=r.querySelector('#calc-avg'),dy=r.querySelector('#calc-days'),o=r.querySelector('#calc-out'),pp=r.querySelector('#calc-per');
 function num(v){v=parseFloat(String(v).replace(/[^0-9.]/g,''));return isFinite(v)?v:0}
 function fmt(v){return '$'+Math.round(v).toLocaleString('en-US')}
@@ -57,9 +63,20 @@ export function shell(body) {
   return `<!-- wp:html -->\n${inner}\n<!-- /wp:html -->`;
 }
 
+/** v3 page shell (2026-10-03 migration): page-only composition CSS + the .s3 root. Tokens/components come from chrome/v3.css, printed site-wide.
+    Newlines in the body collapse to a space (not to nothing) so text written across lines keeps its word breaks. */
+export function s3shell(body, css = '', script = '') {
+  // WordPress can mangle '&' inside inline scripts in page content, so page scripts must avoid it.
+  if (script.includes('&')) throw new Error('s3shell: page script must not contain &');
+  const inner = `${css ? `<style id="s3-page">${min(css)}</style>` : ''}<div class="s3"><div id="main">${body.replace(/\n\s*/g, ' ').replace(/> </g, '><').trim()}</div></div>${script ? `<script id="s3-js">${script}</script>` : ''}`;
+  return `<!-- wp:html -->\n${inner}\n<!-- /wp:html -->`;
+}
+
 /** Local preview document (never published; no global chrome here). */
 export function previewDoc(html, title) {
-  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${title}</title></head><body style="margin:0">${html}</body></html>`;
+  // v3 pages (.s3) rely on the site-wide foundation the chrome snippet prints on the live site; inline it here so the preview matches.
+  const v3 = /class="s3[ "]/.test(html) ? `<style>${fs.readFileSync(path.join(here, 'chrome', 'v3.css'), 'utf8')}</style>` : '';
+  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${title}</title>${v3}</head><body style="margin:0">${html}</body></html>`;
 }
 
 export const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
@@ -88,8 +105,8 @@ export const railSection = ({ id, title, link, linkText = 'View all', cards, ext
 export const merchCards = (items) =>
   items.map((p) => `<a class="card merch" href="${p.href}"><div class="cv ph"><img src="${p.image.src}" alt="${esc(p.image.alt || p.name + ' t-shirt')}" width="${p.image.w}" height="${p.image.h}" loading="lazy"></div><h3>${esc(p.name)}</h3>${p.price ? `<div class="pr">${p.price}</div>` : ''}</a>`).join('');
 
-export const endCta = ({ h = 'Go get ’em,', h2 = 'Tiger', btn = 'Explore Clubs + Challenges', href = '/#clubs', eyebrow = 'Your next move' } = {}) =>
-  `<section class="next"><img class="sw" src="${img('stripes-swoosh.png')}" alt="" width="846" height="484" loading="lazy"><img class="tg" src="${img('tiger-leap.png')}" alt="Tiger leaping" width="1200" height="754" loading="lazy"><div class="cta"><div class="e">${eyebrow}</div><h2 class="disp">${h}</h2><h2 class="disp it or"><span>${h2}</span>!</h2><a class="btn btn-pill" href="${href}"><span>${btn}</span></a></div></section>`;
+export const endCta = ({ h = 'Go get ’em,', h2 = 'Tiger', btn = 'Explore Clubs + Challenges', href = '/#clubs', eyebrow = 'Your next move', wide = false } = {}) =>
+  `<section class="next${wide ? ' wide' : ''}"><img class="sw" src="${img('stripes-swoosh.png')}" alt="" width="846" height="484" loading="lazy">${wide ? `<img class="tg" src="${img('cta-tiger.webp')}" alt="Tiger leaping" width="2000" height="667" loading="lazy">` : `<img class="tg" src="${img('tiger-leap.png')}" alt="Tiger leaping" width="1200" height="754" loading="lazy">`}<div class="cta"><div class="e">${eyebrow}</div><h2 class="disp">${h}</h2><h2 class="disp it or"><span>${h2}</span>!</h2><a class="btn btn-pill" href="${href}"><span>${btn}</span></a></div></section>`;
 
 /** Style-only prelude for pages whose body content is NOT authored by us (WooCommerce, legacy sales pages, legal). */
 export function pageStyle({ woo = false, extraCss = '' } = {}) {

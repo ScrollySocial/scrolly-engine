@@ -1,0 +1,128 @@
+{
+ "default": {
+  "id": 1398,
+  "url": "https://scrollyseo.com/wp-content/uploads/2026/10/scrolly-og-default.jpg",
+  "w": 1200,
+  "h": 630
+ },
+ "home": {
+  "id": 1399,
+  "url": "https://scrollyseo.com/wp-content/uploads/2026/10/scrolly-og-home.jpg",
+  "w": 1200,
+  "h": 630
+ },
+ "1k-club": {
+  "id": 1400,
+  "url": "https://scrollyseo.com/wp-content/uploads/2026/10/scrolly-og-1k-club.jpg",
+  "w": 1200,
+  "h": 630
+ },
+ "1k-challenge": {
+  "id": 1401,
+  "url": "https://scrollyseo.com/wp-content/uploads/2026/10/scrolly-og-1k-challenge.jpg",
+  "w": 1200,
+  "h": 630
+ },
+ "calculators": {
+  "id": 1402,
+  "url": "https://scrollyseo.com/wp-content/uploads/2026/10/scrolly-og-calculators.jpg",
+  "w": 1200,
+  "h": 630
+ },
+ "calc-income-goal": {
+  "id": 1403,
+  "url": "https://scrollyseo.com/wp-content/uploads/2026/10/scrolly-og-calc-income-goal.jpg",
+  "w": 1200,
+  "h": 630
+ },
+ "calc-price-to-customers": {
+  "id": 1404,
+  "url": "https://scrollyseo.com/wp-content/uploads/2026/10/scrolly-og-calc-price-to-customers.jpg",
+  "w": 1200,
+  "h": 630
+ },
+ "calc-sales-goal": {
+  "id": 1405,
+  "url": "https://scrollyseo.com/wp-content/uploads/2026/10/scrolly-og-calc-sales-goal.jpg",
+  "w": 1200,
+  "h": 630
+ },
+ "calc-traffic-to-sales": {
+  "id": 1406,
+  "url": "https://scrollyseo.com/wp-content/uploads/2026/10/scrolly-og-calc-traffic-to-sales.jpg",
+  "w": 1200,
+  "h": 630
+ },
+ "calc-conversion-rate": {
+  "id": 1407,
+  "url": "https://scrollyseo.com/wp-content/uploads/2026/10/scrolly-og-calc-conversion-rate.jpg",
+  "w": 1200,
+  "h": 630
+ },
+ "calc-content-output": {
+  "id": 1408,
+  "url": "https://scrollyseo.com/wp-content/uploads/2026/10/scrolly-og-calc-content-output.jpg",
+  "w": 1200,
+  "h": 630
+ },
+ "calc-profit": {
+  "id": 1409,
+  "url": "https://scrollyseo.com/wp-content/uploads/2026/10/scrolly-og-calc-profit.jpg",
+  "w": 1200,
+  "h": 630
+ },
+ "calc-break-even": {
+  "id": 1410,
+  "url": "https://scrollyseo.com/wp-content/uploads/2026/10/scrolly-og-calc-break-even.jpg",
+  "w": 1200,
+  "h": 630
+ },
+ "calc-average-order-value": {
+  "id": 1411,
+  "url": "https://scrollyseo.com/wp-content/uploads/2026/10/scrolly-og-calc-average-order-value.jpg",
+  "w": 1200,
+  "h": 630
+ },
+ "digital-products": {
+  "id": 1412,
+  "url": "https://scrollyseo.com/wp-content/uploads/2026/10/scrolly-og-digital-products.jpg",
+  "w": 1200,
+  "h": 630
+ },
+ "shop": {
+  "id": 1413,
+  "url": "https://scrollyseo.com/wp-content/uploads/2026/10/scrolly-og-shop.jpg",
+  "w": 1200,
+  "h": 630
+ },
+ "seo-tools": {
+  "id": 1414,
+  "url": "https://scrollyseo.com/wp-content/uploads/2026/10/scrolly-og-seo-tools.jpg",
+  "w": 1200,
+  "h": 630
+ },
+ "seo-site-audit": {
+  "id": 1415,
+  "url": "https://scrollyseo.com/wp-content/uploads/2026/10/scrolly-og-seo-site-audit.jpg",
+  "w": 1200,
+  "h": 630
+ },
+ "shopify-seo-workbook": {
+  "id": 1416,
+  "url": "https://scrollyseo.com/wp-content/uploads/2026/10/scrolly-og-shopify-seo-workbook.jpg",
+  "w": 1200,
+  "h": 630
+ },
+ "pinterest-seo-workbook": {
+  "id": 1417,
+  "url": "https://scrollyseo.com/wp-content/uploads/2026/10/scrolly-og-pinterest-seo-workbook.jpg",
+  "w": 1200,
+  "h": 630
+ },
+ "implementation": {
+  "id": 1418,
+  "url": "https://scrollyseo.com/wp-content/uploads/2026/10/scrolly-og-implementation.jpg",
+  "w": 1200,
+  "h": 630
+ }
+}

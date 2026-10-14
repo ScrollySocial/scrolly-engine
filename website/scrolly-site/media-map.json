@@ -120,5 +120,485 @@
  "checkout-shirt-size-v2.png": {
   "id": 631,
   "url": "https://scrollyseo.com/wp-content/uploads/2026/09/checkout-shirt-size-v2.png"
+ },
+ "hero-strokes.webp": {
+  "id": 795,
+  "url": "https://scrollyseo.com/wp-content/uploads/2026/09/scrolly-hero-strokes.webp",
+  "w": 1774,
+  "h": 887
+ },
+ "hero-tiger.webp": {
+  "id": 796,
+  "url": "https://scrollyseo.com/wp-content/uploads/2026/09/scrolly-hero-tiger.webp",
+  "w": 1774,
+  "h": 887
+ },
+ "cat-strokes.webp": {
+  "id": 799,
+  "url": "https://scrollyseo.com/wp-content/uploads/2026/09/scrolly-cat-strokes.webp",
+  "w": 2000,
+  "h": 667
+ },
+ "cat-tiger.webp": {
+  "id": 800,
+  "url": "https://scrollyseo.com/wp-content/uploads/2026/09/scrolly-cat-tiger.webp",
+  "w": 2000,
+  "h": 667
+ },
+ "cta-tiger.webp": {
+  "id": 804,
+  "url": "https://scrollyseo.com/wp-content/uploads/2026/09/scrolly-cta-tiger.webp",
+  "w": 2000,
+  "h": 667
+ },
+ "design-1k.webp": {
+  "id": 808,
+  "url": "https://scrollyseo.com/wp-content/uploads/2026/09/scrolly-design-1k.webp",
+  "w": 1254,
+  "h": 1254
+ },
+ "design-10k.webp": {
+  "id": 809,
+  "url": "https://scrollyseo.com/wp-content/uploads/2026/09/scrolly-design-10k.webp",
+  "w": 1254,
+  "h": 1254
+ },
+ "design-24k.webp": {
+  "id": 810,
+  "url": "https://scrollyseo.com/wp-content/uploads/2026/09/scrolly-design-24k.webp",
+  "w": 1254,
+  "h": 1254
+ },
+ "k1-strokes.webp": {
+  "id": 812,
+  "url": "https://scrollyseo.com/wp-content/uploads/2026/09/scrolly-k1-strokes.webp",
+  "w": 1536,
+  "h": 1024
+ },
+ "k1-tiger.webp": {
+  "id": 813,
+  "url": "https://scrollyseo.com/wp-content/uploads/2026/09/scrolly-k1-tiger.webp",
+  "w": 1774,
+  "h": 887
+ },
+ "k10-clouds.webp": {
+  "id": 817,
+  "url": "https://scrollyseo.com/wp-content/uploads/2026/09/scrolly-k10-clouds.webp",
+  "w": 1774,
+  "h": 887
+ },
+ "k10-tiger.webp": {
+  "id": 818,
+  "url": "https://scrollyseo.com/wp-content/uploads/2026/09/scrolly-k10-tiger.webp",
+  "w": 1536,
+  "h": 1024
+ },
+ "k24-strokes.webp": {
+  "id": 825,
+  "url": "https://scrollyseo.com/wp-content/uploads/2026/09/scrolly-k24-strokes.webp",
+  "w": 1774,
+  "h": 887
+ },
+ "k24-tiger.webp": {
+  "id": 826,
+  "url": "https://scrollyseo.com/wp-content/uploads/2026/09/scrolly-k24-tiger.webp",
+  "w": 1536,
+  "h": 1024
+ },
+ "shirt-1k-challenge-back-teal.webp": {
+  "id": 841,
+  "url": "https://scrollyseo.com/wp-content/uploads/2026/09/scrolly-shirt-1k-challenge-back-teal.webp",
+  "w": 1485,
+  "h": 1527
+ },
+ "shirt-1k-challenge-front-teal.webp": {
+  "id": 842,
+  "url": "https://scrollyseo.com/wp-content/uploads/2026/09/scrolly-shirt-1k-challenge-front-teal.webp",
+  "w": 1487,
+  "h": 1536
+ },
+ "hp3-hero-tiger.webp": {
+  "id": 1076,
+  "url": "https://scrollyseo.com/wp-content/uploads/2026/10/scrolly-hp3-hero-tiger.webp",
+  "w": 1422,
+  "h": 1106
+ },
+ "hp3-club-1k-tiger.webp": {
+  "id": 1077,
+  "url": "https://scrollyseo.com/wp-content/uploads/2026/10/scrolly-hp3-club-1k-tiger.webp",
+  "w": 1000,
+  "h": 363
+ },
+ "hp3-club-10k-tiger.webp": {
+  "id": 1078,
+  "url": "https://scrollyseo.com/wp-content/uploads/2026/10/scrolly-hp3-club-10k-tiger.webp",
+  "w": 1000,
+  "h": 357
+ },
+ "hp3-club-24k-tiger.webp": {
+  "id": 1079,
+  "url": "https://scrollyseo.com/wp-content/uploads/2026/10/scrolly-hp3-club-24k-tiger.webp",
+  "w": 1000,
+  "h": 347
+ },
+ "hp3-earned-shirt.webp": {
+  "id": 1080,
+  "url": "https://scrollyseo.com/wp-content/uploads/2026/10/scrolly-hp3-earned-shirt.webp",
+  "w": 1600,
+  "h": 800
+ },
+ "hp3-res-blog.webp": {
+  "id": 1081,
+  "url": "https://scrollyseo.com/wp-content/uploads/2026/10/scrolly-hp3-res-blog.webp",
+  "w": 1000,
+  "h": 379
+ },
+ "hp3-res-downloads.webp": {
+  "id": 1082,
+  "url": "https://scrollyseo.com/wp-content/uploads/2026/10/scrolly-hp3-res-downloads.webp",
+  "w": 1000,
+  "h": 379
+ },
+ "hp3-res-calculators.webp": {
+  "id": 1083,
+  "url": "https://scrollyseo.com/wp-content/uploads/2026/10/scrolly-hp3-res-calculators.webp",
+  "w": 1000,
+  "h": 383
+ },
+ "hp3-merch.webp": {
+  "id": 1084,
+  "url": "https://scrollyseo.com/wp-content/uploads/2026/10/scrolly-hp3-merch.webp",
+  "w": 1800,
+  "h": 675
+ },
+ "hp3-footer-tiger.webp": {
+  "id": 1085,
+  "url": "https://scrollyseo.com/wp-content/uploads/2026/10/scrolly-hp3-footer-tiger.webp",
+  "w": 1800,
+  "h": 600
+ },
+ "calc-tiger-climb.webp": {
+  "id": 1150,
+  "url": "https://scrollyseo.com/wp-content/uploads/2026/10/scrolly-calc-tiger-climb.webp",
+  "w": 2000,
+  "h": 757
+ },
+ "ws-pinterest-1.webp": {
+  "id": 1273,
+  "url": "https://scrollyseo.com/wp-content/uploads/2026/10/scrolly-ws-pinterest-1.webp",
+  "w": 1122,
+  "h": 1022
+ },
+ "ws-pinterest-2.webp": {
+  "id": 1274,
+  "url": "https://scrollyseo.com/wp-content/uploads/2026/10/scrolly-ws-pinterest-2.webp",
+  "w": 1122,
+  "h": 438
+ },
+ "ws-pinterest-3.webp": {
+  "id": 1275,
+  "url": "https://scrollyseo.com/wp-content/uploads/2026/10/scrolly-ws-pinterest-3.webp",
+  "w": 1122,
+  "h": 884
+ },
+ "ws-pinterest-4.webp": {
+  "id": 1276,
+  "url": "https://scrollyseo.com/wp-content/uploads/2026/10/scrolly-ws-pinterest-4.webp",
+  "w": 1122,
+  "h": 430
+ },
+ "ws-pinterest-5.webp": {
+  "id": 1277,
+  "url": "https://scrollyseo.com/wp-content/uploads/2026/10/scrolly-ws-pinterest-5-scaled.webp",
+  "w": 1091,
+  "h": 2560
+ },
+ "ws-pinterest-6.webp": {
+  "id": 1278,
+  "url": "https://scrollyseo.com/wp-content/uploads/2026/10/scrolly-ws-pinterest-6.webp",
+  "w": 1122,
+  "h": 1114
+ },
+ "ws-shopify-1.webp": {
+  "id": 1279,
+  "url": "https://scrollyseo.com/wp-content/uploads/2026/10/scrolly-ws-shopify-1.webp",
+  "w": 1122,
+  "h": 2180
+ },
+ "ws-shopify-2.webp": {
+  "id": 1280,
+  "url": "https://scrollyseo.com/wp-content/uploads/2026/10/scrolly-ws-shopify-2.webp",
+  "w": 1122,
+  "h": 1406
+ },
+ "ws-shopify-3.webp": {
+  "id": 1281,
+  "url": "https://scrollyseo.com/wp-content/uploads/2026/10/scrolly-ws-shopify-3.webp",
+  "w": 1122,
+  "h": 2140
+ },
+ "ws-shopify-4.webp": {
+  "id": 1282,
+  "url": "https://scrollyseo.com/wp-content/uploads/2026/10/scrolly-ws-shopify-4-scaled.webp",
+  "w": 529,
+  "h": 2560
+ },
+ "ws-shopify-5.webp": {
+  "id": 1283,
+  "url": "https://scrollyseo.com/wp-content/uploads/2026/10/scrolly-ws-shopify-5.webp",
+  "w": 1122,
+  "h": 2210
+ },
+ "ws-shopify-6.webp": {
+  "id": 1284,
+  "url": "https://scrollyseo.com/wp-content/uploads/2026/10/scrolly-ws-shopify-6-scaled.webp",
+  "w": 1027,
+  "h": 2560
+ },
+ "ws-pinterest-1b.webp": {
+  "id": 1292,
+  "url": "https://scrollyseo.com/wp-content/uploads/2026/10/scrolly-ws-pinterest-1b.webp",
+  "w": 1122,
+  "h": 1022
+ },
+ "ws-pinterest-2b.webp": {
+  "id": 1293,
+  "url": "https://scrollyseo.com/wp-content/uploads/2026/10/scrolly-ws-pinterest-2b.webp",
+  "w": 1122,
+  "h": 438
+ },
+ "ws-pinterest-3b.webp": {
+  "id": 1294,
+  "url": "https://scrollyseo.com/wp-content/uploads/2026/10/scrolly-ws-pinterest-3b.webp",
+  "w": 1122,
+  "h": 884
+ },
+ "ws-pinterest-4b.webp": {
+  "id": 1295,
+  "url": "https://scrollyseo.com/wp-content/uploads/2026/10/scrolly-ws-pinterest-4b.webp",
+  "w": 1122,
+  "h": 430
+ },
+ "ws-pinterest-5b.webp": {
+  "id": 1296,
+  "url": "https://scrollyseo.com/wp-content/uploads/2026/10/scrolly-ws-pinterest-5b-scaled.webp",
+  "w": 1091,
+  "h": 2560
+ },
+ "ws-pinterest-6b.webp": {
+  "id": 1297,
+  "url": "https://scrollyseo.com/wp-content/uploads/2026/10/scrolly-ws-pinterest-6b.webp",
+  "w": 1122,
+  "h": 1114
+ },
+ "ws-shopify-1b.webp": {
+  "id": 1298,
+  "url": "https://scrollyseo.com/wp-content/uploads/2026/10/scrolly-ws-shopify-1b.webp",
+  "w": 1122,
+  "h": 2180
+ },
+ "ws-shopify-2b.webp": {
+  "id": 1299,
+  "url": "https://scrollyseo.com/wp-content/uploads/2026/10/scrolly-ws-shopify-2b.webp",
+  "w": 1122,
+  "h": 1406
+ },
+ "ws-shopify-3b.webp": {
+  "id": 1300,
+  "url": "https://scrollyseo.com/wp-content/uploads/2026/10/scrolly-ws-shopify-3b.webp",
+  "w": 1122,
+  "h": 2140
+ },
+ "ws-shopify-4b.webp": {
+  "id": 1301,
+  "url": "https://scrollyseo.com/wp-content/uploads/2026/10/scrolly-ws-shopify-4b-scaled.webp",
+  "w": 529,
+  "h": 2560
+ },
+ "ws-shopify-5b.webp": {
+  "id": 1302,
+  "url": "https://scrollyseo.com/wp-content/uploads/2026/10/scrolly-ws-shopify-5b.webp",
+  "w": 1122,
+  "h": 2210
+ },
+ "ws-shopify-6b.webp": {
+  "id": 1303,
+  "url": "https://scrollyseo.com/wp-content/uploads/2026/10/scrolly-ws-shopify-6b-scaled.webp",
+  "w": 1027,
+  "h": 2560
+ },
+ "k1-cover-playbook.webp": {
+  "id": 1319,
+  "url": "https://scrollyseo.com/wp-content/uploads/2026/10/scrolly-k1-cover-playbook.webp",
+  "w": 900,
+  "h": 900
+ },
+ "k1-cover-quality-tips.webp": {
+  "id": 1320,
+  "url": "https://scrollyseo.com/wp-content/uploads/2026/10/scrolly-k1-cover-quality-tips.webp",
+  "w": 900,
+  "h": 900
+ },
+ "k1-cover-playbook-34.webp": {
+  "id": 1322,
+  "url": "https://scrollyseo.com/wp-content/uploads/2026/10/scrolly-k1-cover-playbook-34.webp",
+  "w": 900,
+  "h": 1200
+ },
+ "k1-cover-quality-tips-34.webp": {
+  "id": 1323,
+  "url": "https://scrollyseo.com/wp-content/uploads/2026/10/scrolly-k1-cover-quality-tips-34.webp",
+  "w": 900,
+  "h": 1200
+ },
+ "k1-cover-playbook-fill.webp": {
+  "id": 1324,
+  "url": "https://scrollyseo.com/wp-content/uploads/2026/10/scrolly-k1-cover-playbook-fill.webp",
+  "w": 900,
+  "h": 1200
+ },
+ "k1-cover-quality-tips-fill.webp": {
+  "id": 1381,
+  "url": "https://scrollyseo.com/wp-content/uploads/2026/10/scrolly-k1-cover-quality-tips-fill-1.webp",
+  "w": 900,
+  "h": 1200
+ },
+ "k1-tile-templates.webp": {
+  "id": 1329,
+  "url": "https://scrollyseo.com/wp-content/uploads/2026/10/scrolly-k1-tile-templates.webp",
+  "w": 900,
+  "h": 1200
+ },
+ "k1-tile-calculator.webp": {
+  "id": 1330,
+  "url": "https://scrollyseo.com/wp-content/uploads/2026/10/scrolly-k1-tile-calculator.webp",
+  "w": 900,
+  "h": 1200
+ },
+ "k1-tile-plan.webp": {
+  "id": 1331,
+  "url": "https://scrollyseo.com/wp-content/uploads/2026/10/scrolly-k1-tile-plan.webp",
+  "w": 900,
+  "h": 1200
+ },
+ "k1-tile-reels.webp": {
+  "id": 1332,
+  "url": "https://scrollyseo.com/wp-content/uploads/2026/10/scrolly-k1-tile-reels.webp",
+  "w": 900,
+  "h": 1200
+ },
+ "k1-tile-templates-filled.webp": {
+  "id": 1334,
+  "url": "https://scrollyseo.com/wp-content/uploads/2026/10/scrolly-k1-tile-templates-filled.webp",
+  "w": 900,
+  "h": 1200
+ },
+ "k1-tile2-calculator.webp": {
+  "id": 1335,
+  "url": "https://scrollyseo.com/wp-content/uploads/2026/10/scrolly-k1-tile2-calculator.webp",
+  "w": 900,
+  "h": 1200
+ },
+ "k1-tile2-plan.webp": {
+  "id": 1336,
+  "url": "https://scrollyseo.com/wp-content/uploads/2026/10/scrolly-k1-tile2-plan.webp",
+  "w": 900,
+  "h": 1200
+ },
+ "k1-tile2-reels.webp": {
+  "id": 1337,
+  "url": "https://scrollyseo.com/wp-content/uploads/2026/10/scrolly-k1-tile2-reels.webp",
+  "w": 900,
+  "h": 1200
+ },
+ "k1-tile2-notion.webp": {
+  "id": 1338,
+  "url": "https://scrollyseo.com/wp-content/uploads/2026/10/scrolly-k1-tile2-notion.webp",
+  "w": 900,
+  "h": 1200
+ },
+ "k1-tile2-autopost.webp": {
+  "id": 1339,
+  "url": "https://scrollyseo.com/wp-content/uploads/2026/10/scrolly-k1-tile2-autopost.webp",
+  "w": 900,
+  "h": 1200
+ },
+ "k1-tile3-notion.webp": {
+  "id": 1341,
+  "url": "https://scrollyseo.com/wp-content/uploads/2026/10/scrolly-k1-tile3-notion.webp",
+  "w": 900,
+  "h": 1200
+ },
+ "k1-hero-products.webp": {
+  "id": 1345,
+  "url": "https://scrollyseo.com/wp-content/uploads/2026/10/scrolly-k1-hero-products.webp",
+  "w": 1536,
+  "h": 1024
+ },
+ "hp3-res-blog-v2.webp": {
+  "id": 1355,
+  "url": "https://scrollyseo.com/wp-content/uploads/2026/10/scrolly-hp3-res-blog-v2.webp",
+  "w": 1200,
+  "h": 480
+ },
+ "hp3-res-downloads-v2.webp": {
+  "id": 1356,
+  "url": "https://scrollyseo.com/wp-content/uploads/2026/10/scrolly-hp3-res-downloads-v2.webp",
+  "w": 1200,
+  "h": 480
+ },
+ "hp3-res-calculators-v2.webp": {
+  "id": 1357,
+  "url": "https://scrollyseo.com/wp-content/uploads/2026/10/scrolly-hp3-res-calculators-v2.webp",
+  "w": 1200,
+  "h": 480
+ },
+ "hp3-res-blog-v3.webp": {
+  "id": 1359,
+  "url": "https://scrollyseo.com/wp-content/uploads/2026/10/scrolly-hp3-res-blog-v3.webp",
+  "w": 1200,
+  "h": 480
+ },
+ "hp3-res-downloads-v3.webp": {
+  "id": 1360,
+  "url": "https://scrollyseo.com/wp-content/uploads/2026/10/scrolly-hp3-res-downloads-v3.webp",
+  "w": 1200,
+  "h": 480
+ },
+ "k1-tile3-autopost.webp": {
+  "id": 1378,
+  "url": "https://scrollyseo.com/wp-content/uploads/2026/10/scrolly-k1-tile3-autopost.webp",
+  "w": 900,
+  "h": 1200
+ },
+ "shirt-1k-graphite-front-cut.webp": {
+  "id": 1433,
+  "url": "https://scrollyseo.com/wp-content/uploads/2026/10/scrolly-shirt-1k-graphite-front-cut.webp",
+  "w": 1553,
+  "h": 1594
+ },
+ "shirt-1k-graphite-model.webp": {
+  "id": 1434,
+  "url": "https://scrollyseo.com/wp-content/uploads/2026/10/scrolly-shirt-1k-graphite-model.webp",
+  "w": 1400,
+  "h": 1400
+ },
+ "hp3-res-quizzes.webp": {
+  "id": 1440,
+  "url": "https://scrollyseo.com/wp-content/uploads/2026/10/scrolly-hp3-res-quizzes.webp",
+  "w": 1200,
+  "h": 480
+ },
+ "hp3-res-blog-tiger.webp": {
+  "id": 1444,
+  "url": "https://scrollyseo.com/wp-content/uploads/2026/10/scrolly-hp3-res-blog-tiger.webp",
+  "w": 1200,
+  "h": 480
+ },
+ "hp3-res-quiz-offer.webp": {
+  "id": 1445,
+  "url": "https://scrollyseo.com/wp-content/uploads/2026/10/scrolly-hp3-res-quiz-offer.webp",
+  "w": 1200,
+  "h": 480
  }
 }

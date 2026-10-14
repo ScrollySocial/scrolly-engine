@@ -1,0 +1,132 @@
+{
+ "id": 538,
+ "date": "2026-09-21T21:16:45",
+ "date_gmt": "2026-09-21T21:16:45",
+ "guid": {
+  "rendered": "https://scrollyseo.com/scrolly-chrome-js/",
+  "raw": "https://scrollyseo.com/scrolly-chrome-js/"
+ },
+ "modified": "2026-09-24T00:12:32",
+ "modified_gmt": "2026-09-24T00:12:32",
+ "password": "",
+ "slug": "scrolly-chrome-js",
+ "status": "private",
+ "type": "page",
+ "link": "https://scrollyseo.com/scrolly-chrome-js/",
+ "title": {
+  "raw": "Scrolly chrome JS",
+  "rendered": "Scrolly chrome JS"
+ },
+ "content": {
+  "raw": "(function(){\rif(window.__scxg)return;window.__scxg=1;\rvar root=function(){return document.querySelector('.scxg.scxg-head')};\rfunction set(o){var r=root();if(!r)return;r.classList.toggle('scxg-open',o);var b=r.querySelector('[data-scxg-open]');if(b)b.setAttribute('aria-expanded',o?'true':'false');var d=r.querySelector('.scxg-drawer');if(d)d.setAttribute('aria-hidden',o?'false':'true');document.documentElement.style.overflow=o?'hidden':'';if(o){var c=r.querySelector('.scxg-dclose');c&&c.focus()}else if(b&&r.__was){b.focus()}r.__was=o}\rdocument.addEventListener('click',function(e){\rvar t=e.target.closest('[data-scxg-open],[data-scxg-close]');\rif(t){set(t.hasAttribute('data-scxg-open'));return}\rvar a=e.target.closest('.scxg-drawer a');if(a)set(false);\r});\r/* Desktop dropdowns: built from the drawer's nested menu lists (the WP Main Menu's child items), so no snippet change is needed. */\rfunction dd(){var r=root();if(!r||r.__dd)return;r.__dd=1;var nav=r.querySelector('.scxg-hdr nav');if(!nav)return;\rr.querySelectorAll('.scxg-drawer .top>li').forEach(function(li){var sub=li.querySelector(':scope>ul');var a=li.querySelector(':scope>a');if(!sub||!a)return;\rvar t=[].slice.call(nav.querySelectorAll(':scope>a')).filter(function(x){return x.getAttribute('href')===a.getAttribute('href')&&x.textContent===a.textContent})[0];if(!t)return;\rvar w=document.createElement('div');w.className='scxg-dd';t.parentNode.insertBefore(w,t);w.appendChild(t);t.setAttribute('aria-haspopup','true');\rvar p=document.createElement('div');p.className='scxg-ddp';var u=sub.cloneNode(true);p.appendChild(u);w.appendChild(p);});}\rif(document.readyState==='loading')document.addEventListener('DOMContentLoaded',dd);else dd();\r/* Cart drawer: a header cart button opens a side panel filled from the WooCommerce Store API (no page change). */\rvar API='/wp-json/wc/store/v1/cart',nonce='',cd,cbg,cbtn;\rfunction money(v,c){var d=Math.pow(10,c.currency_minor_unit||2);return (c.currency_prefix||'$')+(Number(v)/d).toFixed(2)+(c.currency_suffix||'')}\rfunction esc(t){var e=document.createElement('div');e.textContent=t==null?'':String(t);return e.innerHTML}\rfunction badge(n){if(!cbtn)return;var b=cbtn.querySelector('b');b.textContent=n;b.hidden=!n;cbtn.setAttribute('aria-label','Cart, '+n+' item'+(n===1?'':'s'))}\rfunction row(i){var im=i.images&&i.images[0]?'<img src=\"'+esc(i.images[0].thumbnail)+'\" alt=\"\">':'<span class=\"ph\"></span>';var v=(i.variation||[]).map(function(x){return esc(x.attribute)+': '+esc(x.value)}).join(', ');\rreturn '<div class=\"it\">'+im+'<div><div class=\"n\">'+i.name+'</div>'+(v?'<div class=\"v\">'+v+'</div>':'')+(i.quantity>1?'<div class=\"q\">Qty '+i.quantity+'</div>':'')+'<button class=\"rm\" type=\"button\" data-key=\"'+esc(i.key)+'\">Remove</button></div><div class=\"p\">'+money(i.totals.line_subtotal,i.totals)+'</div></div>'}\rfunction render(c){if(!cd)return;var box=cd.querySelector('.items'),ft=cd.querySelector('.ft');badge(c.items_count||0);\rif(!c.items||!c.items.length){box.innerHTML='<p class=\"empty\">Your cart is empty.</p>';ft.hidden=true;return}\rft.hidden=false;box.innerHTML=c.items.map(row).join('');cd.querySelector('.sub b').textContent=money(c.totals.total_items,c.totals)}\rfunction keep(r){var n=r.headers.get('Nonce');if(n)nonce=n;return r.json()}\rfunction load(){return fetch(API,{credentials:'same-origin'}).then(keep).then(function(c){render(c);return c}).catch(function(){})}\rfunction remove(key){fetch(API+'/remove-item',{method:'POST',credentials:'same-origin',headers:{'Content-Type':'application/json','Nonce':nonce},body:JSON.stringify({key:key})}).then(keep).then(function(c){if(c.items){render(c)}else{load()}}).catch(load)}\rfunction cset(o){if(!cd)return;cd.classList.toggle('open',o);cbg.classList.toggle('open',o);cd.setAttribute('aria-hidden',o?'false':'true');document.documentElement.style.overflow=o?'hidden':'';if(o){load();cd.querySelector('.x').focus()}else if(cbtn){cbtn.focus()}}\rfunction cart(){var r=root();if(!r||r.__cart)return;r.__cart=1;var right=r.querySelector('.scxg-right');if(!right)return;\rcbtn=document.createElement('button');cbtn.type='button';cbtn.className='scxg-cart';cbtn.setAttribute('aria-label','Cart');\rcbtn.innerHTML='<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.2\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M5 8h14l-1.2 12H6.2z\"/><path d=\"M9 8V6.5a3 3 0 0 1 6 0V8\"/></svg><b hidden>0</b>';\rright.insertBefore(cbtn,right.querySelector('.scxg-burger'));\rcbg=document.createElement('div');cbg.className='scxg-cbg';\rcd=document.createElement('aside');cd.className='scxg-cd';cd.setAttribute('aria-label','Your cart');cd.setAttribute('aria-hidden','true');\rcd.innerHTML='<div class=\"hd\"><span>Your cart</span><button class=\"x\" type=\"button\" aria-label=\"Close cart\">&times;</button></div><div class=\"items\"></div><div class=\"ft\" hidden><div class=\"sub\"><span>Subtotal</span><b></b></div><div class=\"note\">Shipping and tax are shown at checkout.</div><a class=\"go\" href=\"/checkout/\">Checkout</a><a class=\"vc\" href=\"/cart/\">View full cart</a></div>';\rdocument.body.appendChild(cbg);document.body.appendChild(cd);\rcbtn.addEventListener('click',function(){cset(true)});cbg.addEventListener('click',function(){cset(false)});cd.querySelector('.x').addEventListener('click',function(){cset(false)});\rcd.addEventListener('click',function(e){var b=e.target.closest('.rm');if(b)remove(b.getAttribute('data-key'))});\rdocument.addEventListener('keydown',function(e){if(e.key==='Escape'){if(cd.classList.contains('open'))cset(false)}});\rload()}\rif(document.readyState==='loading')document.addEventListener('DOMContentLoaded',cart);else cart();\r/* Checkout: give the Challenge shirt-size field (registered in the Contact section) its own \"Your stripe shirt\" heading.\rFinds the select by id, climbs to the row that sits beside the email field, and tags it; CSS draws the heading. */\rfunction shirtSec(){var s=document.querySelector('select[id*=\"shirt-size\"]');if(!s)return;var el=s;\rwhile(el.parentElement){if(el.parentElement.querySelector('input[type=\"email\"]'))break;el=el.parentElement}\rif(el.parentElement){if(!el.classList.contains('scxg-shirt-sec'))el.classList.add('scxg-shirt-sec')}}\rif(document.querySelector('.wp-block-woocommerce-checkout,.wc-block-checkout')){shirtSec();new MutationObserver(function(){shirtSec()}).observe(document.body,{childList:true,subtree:true})}\rdocument.addEventListener('keydown',function(e){var r=root();if(e.key==='Escape'&&r&&r.classList.contains('scxg-open'))set(false)});\r})();\r",
+  "rendered": "<p>(function(){<br />\nif(window.__scxg)return;window.__scxg=1;<br />\nvar root=function(){return document.querySelector(&#8216;.scxg.scxg-head&#8217;)};<br />\nfunction set(o){var r=root();if(!r)return;r.classList.toggle(&#8216;scxg-open&#8217;,o);var b=r.querySelector(&#8216;[data-scxg-open]&#8217;);if(b)b.setAttribute(&#8216;aria-expanded&#8217;,o?&#8217;true&#8217;:&#8217;false&#8217;);var d=r.querySelector(&#8216;.scxg-drawer&#8217;);if(d)d.setAttribute(&#8216;aria-hidden&#8217;,o?&#8217;false&#8217;:&#8217;true&#8217;);document.documentElement.style.overflow=o?&#8217;hidden&#8217;:&#8221;;if(o){var c=r.querySelector(&#8216;.scxg-dclose&#8217;);c&#038;&#038;c.focus()}else if(b&#038;&#038;r.__was){b.focus()}r.__was=o}<br />\ndocument.addEventListener(&#8216;click&#8217;,function(e){<br />\nvar t=e.target.closest(&#8216;[data-scxg-open],[data-scxg-close]&#8217;);<br />\nif(t){set(t.hasAttribute(&#8216;data-scxg-open&#8217;));return}<br />\nvar a=e.target.closest(&#8216;.scxg-drawer a&#8217;);if(a)set(false);<br />\n});<br />\n/* Desktop dropdowns: built from the drawer&#8217;s nested menu lists (the WP Main Menu&#8217;s child items), so no snippet change is needed. */<br />\nfunction dd(){var r=root();if(!r||r.__dd)return;r.__dd=1;var nav=r.querySelector(&#8216;.scxg-hdr nav&#8217;);if(!nav)return;<br />\nr.querySelectorAll(&#8216;.scxg-drawer .top>li&#8217;).forEach(function(li){var sub=li.querySelector(&#8216;:scope>ul&#8217;);var a=li.querySelector(&#8216;:scope>a&#8217;);if(!sub||!a)return;<br />\nvar t=[].slice.call(nav.querySelectorAll(&#8216;:scope>a&#8217;)).filter(function(x){return x.getAttribute(&#8216;href&#8217;)===a.getAttribute(&#8216;href&#8217;)&#038;&#038;x.textContent===a.textContent})[0];if(!t)return;<br />\nvar w=document.createElement(&#8216;div&#8217;);w.className=&#8217;scxg-dd&#8217;;t.parentNode.insertBefore(w,t);w.appendChild(t);t.setAttribute(&#8216;aria-haspopup&#8217;,&#8217;true&#8217;);<br />\nvar p=document.createElement(&#8216;div&#8217;);p.className=&#8217;scxg-ddp&#8217;;var u=sub.cloneNode(true);p.appendChild(u);w.appendChild(p);});}<br />\nif(document.readyState===&#8217;loading&#8217;)document.addEventListener(&#8216;DOMContentLoaded&#8217;,dd);else dd();<br />\n/* Cart drawer: a header cart button opens a side panel filled from the WooCommerce Store API (no page change). */<br />\nvar API=&#8217;/wp-json/wc/store/v1/cart&#8217;,nonce=&#8221;,cd,cbg,cbtn;<br />\nfunction money(v,c){var d=Math.pow(10,c.currency_minor_unit||2);return (c.currency_prefix||&#8217;$&#8217;)+(Number(v)/d).toFixed(2)+(c.currency_suffix||&#8221;)}<br />\nfunction esc(t){var e=document.createElement(&#8216;div&#8217;);e.textContent=t==null?&#8221;:String(t);return e.innerHTML}<br />\nfunction badge(n){if(!cbtn)return;var b=cbtn.querySelector(&#8216;b&#8217;);b.textContent=n;b.hidden=!n;cbtn.setAttribute(&#8216;aria-label&#8217;,&#8217;Cart, &#8216;+n+&#8217; item&#8217;+(n===1?&#8221;:&#8217;s&#8217;))}<br />\nfunction row(i){var im=i.images&#038;&#038;i.images[0]?&#8217;<img decoding=\"async\" src=\"'+esc(i.images[0].thumbnail)+'\" alt=\"\">&#8216;:&#8217;<span class=\"ph\"></span>&#8216;;var v=(i.variation||[]).map(function(x){return esc(x.attribute)+&#8217;: &#8216;+esc(x.value)}).join(&#8216;, &#8216;);<br />\nreturn &#8216;</p>\n<div class=\"it\">&#8216;+im+&#8217;</p>\n<div>\n<div class=\"n\">&#8216;+i.name+&#8217;</div>\n<p>&#8216;+(v?&#8217;</p>\n<div class=\"v\">&#8216;+v+&#8217;</div>\n<p>&#8216;:&#8221;)+(i.quantity>1?&#8217;</p>\n<div class=\"q\">Qty &#8216;+i.quantity+&#8217;</div>\n<p>&#8216;:&#8221;)+&#8217;<button class=\"rm\" type=\"button\" data-key=\"'+esc(i.key)+'\">Remove</button></div>\n<div class=\"p\">&#8216;+money(i.totals.line_subtotal,i.totals)+&#8217;</div>\n</div>\n<p>&#8216;}<br />\nfunction render(c){if(!cd)return;var box=cd.querySelector(&#8216;.items&#8217;),ft=cd.querySelector(&#8216;.ft&#8217;);badge(c.items_count||0);<br />\nif(!c.items||!c.items.length){box.innerHTML=&#8217;</p>\n<p class=\"empty\">Your cart is empty.</p>\n<p>&#8216;;ft.hidden=true;return}<br />\nft.hidden=false;box.innerHTML=c.items.map(row).join(&#8221;);cd.querySelector(&#8216;.sub b&#8217;).textContent=money(c.totals.total_items,c.totals)}<br />\nfunction keep(r){var n=r.headers.get(&#8216;Nonce&#8217;);if(n)nonce=n;return r.json()}<br />\nfunction load(){return fetch(API,{credentials:&#8217;same-origin&#8217;}).then(keep).then(function(c){render(c);return c}).catch(function(){})}<br />\nfunction remove(key){fetch(API+&#8217;/remove-item&#8217;,{method:&#8217;POST&#8217;,credentials:&#8217;same-origin&#8217;,headers:{&#8216;Content-Type&#8217;:&#8217;application/json&#8217;,&#8217;Nonce&#8217;:nonce},body:JSON.stringify({key:key})}).then(keep).then(function(c){if(c.items){render(c)}else{load()}}).catch(load)}<br />\nfunction cset(o){if(!cd)return;cd.classList.toggle(&#8216;open&#8217;,o);cbg.classList.toggle(&#8216;open&#8217;,o);cd.setAttribute(&#8216;aria-hidden&#8217;,o?&#8217;false&#8217;:&#8217;true&#8217;);document.documentElement.style.overflow=o?&#8217;hidden&#8217;:&#8221;;if(o){load();cd.querySelector(&#8216;.x&#8217;).focus()}else if(cbtn){cbtn.focus()}}<br />\nfunction cart(){var r=root();if(!r||r.__cart)return;r.__cart=1;var right=r.querySelector(&#8216;.scxg-right&#8217;);if(!right)return;<br />\ncbtn=document.createElement(&#8216;button&#8217;);cbtn.type=&#8217;button&#8217;;cbtn.className=&#8217;scxg-cart&#8217;;cbtn.setAttribute(&#8216;aria-label&#8217;,&#8217;Cart&#8217;);<br />\ncbtn.innerHTML=&#8217;<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.2\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M5 8h14l-1.2 12H6.2z\"/><path d=\"M9 8V6.5a3 3 0 0 1 6 0V8\"/></svg><b hidden>0</b>&#8216;;<br />\nright.insertBefore(cbtn,right.querySelector(&#8216;.scxg-burger&#8217;));<br />\ncbg=document.createElement(&#8216;div&#8217;);cbg.className=&#8217;scxg-cbg&#8217;;<br />\ncd=document.createElement(&#8216;aside&#8217;);cd.className=&#8217;scxg-cd&#8217;;cd.setAttribute(&#8216;aria-label&#8217;,&#8217;Your cart&#8217;);cd.setAttribute(&#8216;aria-hidden&#8217;,&#8217;true&#8217;);<br />\ncd.innerHTML=&#8217;</p>\n<div class=\"hd\"><span>Your cart</span><button class=\"x\" type=\"button\" aria-label=\"Close cart\">&times;</button></div>\n<div class=\"items\"></div>\n<div class=\"ft\" hidden>\n<div class=\"sub\"><span>Subtotal</span><b></b></div>\n<div class=\"note\">Shipping and tax are shown at checkout.</div>\n<p><a class=\"go\" href=\"/checkout/\">Checkout</a><a class=\"vc\" href=\"/cart/\">View full cart</a></div>\n<p>&#8216;;<br />\ndocument.body.appendChild(cbg);document.body.appendChild(cd);<br />\ncbtn.addEventListener(&#8216;click&#8217;,function(){cset(true)});cbg.addEventListener(&#8216;click&#8217;,function(){cset(false)});cd.querySelector(&#8216;.x&#8217;).addEventListener(&#8216;click&#8217;,function(){cset(false)});<br />\ncd.addEventListener(&#8216;click&#8217;,function(e){var b=e.target.closest(&#8216;.rm&#8217;);if(b)remove(b.getAttribute(&#8216;data-key&#8217;))});<br />\ndocument.addEventListener(&#8216;keydown&#8217;,function(e){if(e.key===&#8217;Escape&#8217;){if(cd.classList.contains(&#8216;open&#8217;))cset(false)}});<br />\nload()}<br />\nif(document.readyState===&#8217;loading&#8217;)document.addEventListener(&#8216;DOMContentLoaded&#8217;,cart);else cart();<br />\n/* Checkout: give the Challenge shirt-size field (registered in the Contact section) its own &#8220;Your stripe shirt&#8221; heading.<br />\nFinds the select by id, climbs to the row that sits beside the email field, and tags it; CSS draws the heading. */<br />\nfunction shirtSec(){var s=document.querySelector(&#8216;select[id*=&#8221;shirt-size&#8221;]&#8217;);if(!s)return;var el=s;<br />\nwhile(el.parentElement){if(el.parentElement.querySelector(&#8216;input[type=&#8221;email&#8221;]&#8217;))break;el=el.parentElement}<br />\nif(el.parentElement){if(!el.classList.contains(&#8216;scxg-shirt-sec&#8217;))el.classList.add(&#8216;scxg-shirt-sec&#8217;)}}<br />\nif(document.querySelector(&#8216;.wp-block-woocommerce-checkout,.wc-block-checkout&#8217;)){shirtSec();new MutationObserver(function(){shirtSec()}).observe(document.body,{childList:true,subtree:true})}<br />\ndocument.addEventListener(&#8216;keydown&#8217;,function(e){var r=root();if(e.key===&#8217;Escape&#8217;&#038;&#038;r&#038;&#038;r.classList.contains(&#8216;scxg-open&#8217;))set(false)});<br />\n})();</p>\n",
+  "protected": false,
+  "block_version": 0
+ },
+ "excerpt": {
+  "raw": "",
+  "rendered": "<p>(function(){ if(window.__scxg)return;window.__scxg=1; var root=function(){return document.querySelector(&#8216;.scxg.scxg-head&#8217;)}; function set(o){var r=root();if(!r)return;r.classList.toggle(&#8216;scxg-open&#8217;,o);var b=r.querySelector(&#8216;[data-scxg-open]&#8217;);if(b)b.setAttribute(&#8216;aria-expanded&#8217;,o?&#8217;true&#8217;:&#8217;false&#8217;);var d=r.querySelector(&#8216;.scxg-drawer&#8217;);if(d)d.setAttribute(&#8216;aria-hidden&#8217;,o?&#8217;false&#8217;:&#8217;true&#8217;);document.documentElement.style.overflow=o?&#8217;hidden&#8217;:&#8221;;if(o){var c=r.querySelector(&#8216;.scxg-dclose&#8217;);c&#038;&#038;c.focus()}else if(b&#038;&#038;r.__was){b.focus()}r.__was=o} document.addEventListener(&#8216;click&#8217;,function(e){ var t=e.target.closest(&#8216;[data-scxg-open],[data-scxg-close]&#8217;); if(t){set(t.hasAttribute(&#8216;data-scxg-open&#8217;));return} var a=e.target.closest(&#8216;.scxg-drawer a&#8217;);if(a)set(false); }); /* Desktop dropdowns: built from the drawer&#8217;s nested menu lists (the WP Main Menu&#8217;s child items), so no snippet change is needed. */ function dd(){var r=root();if(!r||r.__dd)return;r.__dd=1;var nav=r.querySelector(&#8216;.scxg-hdr nav&#8217;);if(!nav)return; r.querySelectorAll(&#8216;.scxg-drawer .top>li&#8217;).forEach(function(li){var sub=li.querySelector(&#8216;:scope>ul&#8217;);var a=li.querySelector(&#8216;:scope>a&#8217;);if(!sub||!a)return; var t=[].slice.call(nav.querySelectorAll(&#8216;:scope>a&#8217;)).filter(function(x){return x.getAttribute(&#8216;href&#8217;)===a.getAttribute(&#8216;href&#8217;)&#038;&#038;x.textContent===a.textContent})[0];if(!t)return; <a href=\"https://scrollyseo.com/scrolly-chrome-js/\" class=\"more-link\" aria-label=\"Read more about Private: Scrolly chrome JS\">Read more</a></p>\n",
+  "protected": false
+ },
+ "author": 1,
+ "featured_media": 0,
+ "parent": 0,
+ "menu_order": 0,
+ "comment_status": "closed",
+ "ping_status": "closed",
+ "template": "",
+ "meta": {
+  "footnotes": "",
+  "_elementor_edit_mode": "",
+  "_elementor_template_type": "",
+  "_elementor_data": "",
+  "_elementor_page_settings": null
+ },
+ "permalink_template": "https://scrollyseo.com/%pagename%/",
+ "generated_slug": "scrolly-chrome-js",
+ "class_list": [
+  "post-538",
+  "page",
+  "type-page",
+  "status-private",
+  "hentry"
+ ],
+ "jetpack_sharing_enabled": true,
+ "_links": {
+  "self": [
+   {
+    "href": "https://scrollyseo.com/wp-json/wp/v2/pages/538",
+    "targetHints": {
+     "allow": [
+      "GET",
+      "POST",
+      "PUT",
+      "PATCH",
+      "DELETE"
+     ]
+    }
+   }
+  ],
+  "collection": [
+   {
+    "href": "https://scrollyseo.com/wp-json/wp/v2/pages"
+   }
+  ],
+  "about": [
+   {
+    "href": "https://scrollyseo.com/wp-json/wp/v2/types/page"
+   }
+  ],
+  "author": [
+   {
+    "embeddable": true,
+    "href": "https://scrollyseo.com/wp-json/wp/v2/users/1"
+   }
+  ],
+  "replies": [
+   {
+    "embeddable": true,
+    "href": "https://scrollyseo.com/wp-json/wp/v2/comments?post=538"
+   }
+  ],
+  "version-history": [
+   {
+    "count": 4,
+    "href": "https://scrollyseo.com/wp-json/wp/v2/pages/538/revisions"
+   }
+  ],
+  "predecessor-version": [
+   {
+    "id": 630,
+    "href": "https://scrollyseo.com/wp-json/wp/v2/pages/538/revisions/630"
+   }
+  ],
+  "wp:attachment": [
+   {
+    "href": "https://scrollyseo.com/wp-json/wp/v2/media?parent=538"
+   }
+  ],
+  "wp:action-publish": [
+   {
+    "href": "https://scrollyseo.com/wp-json/wp/v2/pages/538"
+   }
+  ],
+  "wp:action-unfiltered-html": [
+   {
+    "href": "https://scrollyseo.com/wp-json/wp/v2/pages/538"
+   }
+  ],
+  "wp:action-assign-author": [
+   {
+    "href": "https://scrollyseo.com/wp-json/wp/v2/pages/538"
+   }
+  ],
+  "curies": [
+   {
+    "name": "wp",
+    "href": "https://api.w.org/{rel}",
+    "templated": true
+   }
+  ]
+ }
+}

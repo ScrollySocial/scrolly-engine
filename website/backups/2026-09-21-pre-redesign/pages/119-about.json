@@ -1,0 +1,132 @@
+{
+ "id": 119,
+ "date": "2026-08-22T16:20:54",
+ "date_gmt": "2026-08-22T16:20:54",
+ "guid": {
+  "rendered": "https://scrollyseo.com/?page_id=119",
+  "raw": "https://scrollyseo.com/?page_id=119"
+ },
+ "modified": "2026-08-25T16:27:40",
+ "modified_gmt": "2026-08-25T16:27:40",
+ "password": "",
+ "slug": "about",
+ "status": "publish",
+ "type": "page",
+ "link": "https://scrollyseo.com/about/",
+ "title": {
+  "raw": "About",
+  "rendered": "About"
+ },
+ "content": {
+  "raw": "<style id=\"scrolly-shared-shell-v1\">#site-header{background:#f5f7fc!important;border-bottom:4px solid transparent!important;border-image:linear-gradient(90deg,#4f46e5,#8b5cf6,#db2777,#ef4444) 1!important}#site-header .site-navigation .menu{display:flex!important;align-items:center!important;gap:8px!important}#menu-item-34,#menu-item-34>a,#menu-item-34>a:link,#menu-item-34>a:visited,#menu-item-34>a:hover,#menu-item-34>a:focus,#menu-item-34>a:active,#menu-item-34>a *{color:#fff!important;-webkit-text-fill-color:#fff!important;opacity:1!important;filter:none!important}#menu-item-34>a{background:#4f46e5!important;border-radius:999px!important;padding:12px 24px!important}.menu-cart-icon>a,.menu-account-icon>a{font-size:0!important;width:44px!important;height:44px!important;display:grid!important;place-items:center!important}.menu-cart-icon>a:before{content:\"🛒\";font-size:21px!important}.menu-account-icon>a:before{content:\"👤\";font-size:20px!important}.menu-disabled>a{opacity:.72!important;cursor:default!important;pointer-events:none!important}#site-footer{background:#11131b!important;border-top:4px solid transparent!important;border-image:linear-gradient(90deg,#4f46e5,#8b5cf6,#db2777,#ef4444) 1!important;margin-top:-18px!important;position:relative!important;z-index:5!important;padding:30px clamp(22px,5vw,72px)!important;display:flex!important;align-items:center!important;justify-content:center!important;gap:0!important;text-align:left!important}#site-footer:before{content:\"Scrolly\";font:900 clamp(1.3rem,2.5vw,1.8rem) Manrope,sans-serif;line-height:1;color:#fff!important;white-space:nowrap}#site-footer:after{display:none!important}#site-footer .site-navigation{display:flex!important;align-items:center!important;gap:30px!important}#site-footer .site-navigation:before{content:\"SEO\";font:900 clamp(1.3rem,2.5vw,1.8rem) Manrope,sans-serif;line-height:1;background:linear-gradient(90deg,#818cf8,#a78bfa,#e879f9,#fb7185);-webkit-background-clip:text;background-clip:text;color:transparent;white-space:nowrap}#site-footer .menu{display:flex!important;align-items:center!important;justify-content:center!important;flex-wrap:wrap!important;gap:10px 24px!important;margin:0!important}#site-footer a,#site-footer a:visited{color:#fff!important;-webkit-text-fill-color:#fff!important;text-decoration:none!important}#site-footer a:hover,#site-footer a:focus{color:#fda4af!important;-webkit-text-fill-color:#fda4af!important}body.home #site-footer{margin-top:-18px!important;position:relative!important;z-index:5!important;position:relative!important;z-index:5!important}@media(max-width:850px){#site-header .site-navigation .menu{flex-wrap:wrap!important}#site-footer{flex-wrap:wrap!important;row-gap:18px!important}#site-footer .site-navigation{flex-wrap:wrap!important;justify-content:center!important;gap:18px 24px!important}}</style><style id=\"scrolly-header-accessibility-fix\">#menu-item-34>a,#menu-item-34>a:link,#menu-item-34>a:visited,#menu-item-34>a:hover,#menu-item-34>a:focus,#menu-item-34>a:active{color:#fff!important;-webkit-text-fill-color:#fff!important}</style><main class=\"about-wrap\"><span class=\"about-eyebrow\">About</span><h1>About Scrolly SEO</h1><p class=\"about-lede\">Scrolly SEO helps small business owners understand how customers find them and what to improve next.</p><h2>Clear SEO guidance grounded in evidence</h2><p>SEO advice can quickly become overwhelming. Scrolly SEO turns the available evidence into practical priorities, with a clear distinction between verified facts and professional judgment.</p><h2>What we offer</h2><div class=\"method-list\"><ul><li><strong>Personalized SEO Site Audit:</strong> a 29-section analysis of search visibility, technical performance, competitors, content, local search, and growth opportunities.</li><li><strong>Guided workbooks:</strong> practical Shopify and Pinterest resources for business owners who want to research, plan, and implement their own strategy.</li></ul></div><h2>How the analysis works</h2><p>Every audit finding explains how it was produced:</p><ul><li><strong>Observed:</strong> analyzed directly on your site.</li><li><strong>Retrieved:</strong> pulled from a documented data source.</li><li><strong>Calculated:</strong> derived from retrieved information.</li><li><strong>Inference:</strong> professional analysis, clearly identified as judgment.</li><li><strong>Pending:</strong> not yet verified.</li></ul><p>We do not invent metrics or present guesses as data. If something cannot be verified, we say so.</p><p><a href=\"/contact/\">Contact Scrolly SEO</a> if you have a question before purchasing.</p></main>",
+  "rendered": "\t\t<div data-elementor-type=\"wp-page\" data-elementor-id=\"119\" class=\"elementor elementor-119\">\n\t\t\t\t<div class=\"elementor-element elementor-element-0768e51 e-flex e-con-boxed e-con e-parent\" data-id=\"0768e51\" data-element_type=\"container\" data-e-type=\"container\">\n\t\t\t\t\t<div class=\"e-con-inner\">\n\t\t\t\t<div class=\"elementor-element elementor-element-3be1790 elementor-widget elementor-widget-html\" data-id=\"3be1790\" data-element_type=\"widget\" data-e-type=\"widget\" data-widget_type=\"html.default\">\n\t\t\t\t\t<style id=\"scrolly-shared-shell-v1\">#site-header{background:#f5f7fc!important;border-bottom:4px solid transparent!important;border-image:linear-gradient(90deg,#4f46e5,#8b5cf6,#db2777,#ef4444) 1!important}#site-header .site-navigation .menu{display:flex!important;align-items:center!important;gap:8px!important}#menu-item-34,#menu-item-34>a,#menu-item-34>a:link,#menu-item-34>a:visited,#menu-item-34>a:hover,#menu-item-34>a:focus,#menu-item-34>a:active,#menu-item-34>a *{color:#fff!important;-webkit-text-fill-color:#fff!important;opacity:1!important;filter:none!important}#menu-item-34>a{background:#4f46e5!important;border-radius:999px!important;padding:12px 24px!important}.menu-cart-icon>a,.menu-account-icon>a{font-size:0!important;width:44px!important;height:44px!important;display:grid!important;place-items:center!important}.menu-cart-icon>a:before{content:\"🛒\";font-size:21px!important}.menu-account-icon>a:before{content:\"👤\";font-size:20px!important}.menu-disabled>a{opacity:.72!important;cursor:default!important;pointer-events:none!important}#site-footer{background:#11131b!important;border-top:4px solid transparent!important;border-image:linear-gradient(90deg,#4f46e5,#8b5cf6,#db2777,#ef4444) 1!important;margin-top:-18px!important;position:relative!important;z-index:5!important;padding:30px clamp(22px,5vw,72px)!important;display:flex!important;align-items:center!important;justify-content:center!important;gap:0!important;text-align:left!important}#site-footer:before{content:\"Scrolly\";font:900 clamp(1.3rem,2.5vw,1.8rem) Manrope,sans-serif;line-height:1;color:#fff!important;white-space:nowrap}#site-footer:after{display:none!important}#site-footer .site-navigation{display:flex!important;align-items:center!important;gap:30px!important}#site-footer .site-navigation:before{content:\"SEO\";font:900 clamp(1.3rem,2.5vw,1.8rem) Manrope,sans-serif;line-height:1;background:linear-gradient(90deg,#818cf8,#a78bfa,#e879f9,#fb7185);-webkit-background-clip:text;background-clip:text;color:transparent;white-space:nowrap}#site-footer .menu{display:flex!important;align-items:center!important;justify-content:center!important;flex-wrap:wrap!important;gap:10px 24px!important;margin:0!important}#site-footer a,#site-footer a:visited{color:#fff!important;-webkit-text-fill-color:#fff!important;text-decoration:none!important}#site-footer a:hover,#site-footer a:focus{color:#fda4af!important;-webkit-text-fill-color:#fda4af!important}body.home #site-footer{margin-top:-18px!important;position:relative!important;z-index:5!important;position:relative!important;z-index:5!important}@media(max-width:850px){#site-header .site-navigation .menu{flex-wrap:wrap!important}#site-footer{flex-wrap:wrap!important;row-gap:18px!important}#site-footer .site-navigation{flex-wrap:wrap!important;justify-content:center!important;gap:18px 24px!important}}</style><style>\r\n  :root{\r\n    --bg-alt:#eef1fa; --surface:#ffffff; --ink:#10152b; --ink-soft:#5c6478; --line:#e1e5f2;\r\n    --indigo:#4f46e5; --indigo-dark:#3c34b5; --indigo-bg:#edeafe;\r\n  }\r\n  .about-wrap{max-width:720px;margin:0 auto;padding:72px 24px 96px;font-family:\"Inter\",-apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif;color:var(--ink);line-height:1.65;}\r\n  .about-wrap h1,.about-wrap h2,.about-wrap h3{font-family:\"Manrope\",sans-serif;font-weight:800;line-height:1.15;letter-spacing:-.02em;color:var(--ink);}\r\n  .about-wrap h1{font-size:clamp(2rem,4vw,2.6rem);margin:0 0 .4em;}\r\n  .about-wrap h2{font-size:1.5rem;margin:1.6em 0 .5em;}\r\n  .about-eyebrow{display:inline-block;font-family:\"Manrope\",sans-serif;font-size:.95rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--indigo);margin-bottom:16px;}\r\n  .about-lede{font-size:1.1rem;color:var(--ink-soft);margin-bottom:1.2em;}\r\n  .about-wrap p{margin:0 0 1em;}\r\n  .about-wrap ul{margin:0 0 1em;padding-left:22px;}\r\n  .about-wrap li{margin-bottom:.6em;}\r\n  .about-wrap a{color:var(--indigo);font-weight:600;text-decoration:underline;text-decoration-color:var(--indigo-bg);text-underline-offset:2px;}\r\n  .about-wrap a:hover{text-decoration-color:var(--indigo);}\r\n  .method-list{background:var(--bg-alt);border-radius:16px;padding:24px 28px;margin:1.2em 0;}\r\n  .method-list ul{margin:0;}\r\n</style>\r\n\r\n<div class=\"about-wrap\">\r\n  <div class=\"about-eyebrow\">About</div>\r\n  <h1>About Scrolly SEO</h1>\r\n  <p class=\"about-lede\">Scrolly SEO helps small businesses get found by the customers already searching for what they sell &mdash; starting with a clear, evidence-based picture of where they stand today.</p>\r\n\r\n  <h2>What we do</h2>\r\n  <p>We build two kinds of tools:</p>\r\n  <ul>\r\n    <li>A <a href=\"https://scrollyseo.com/\">Personalized SEO Site Audit</a> &mdash; a 29-section, evidence-based analysis of your site's search visibility, technical performance, and growth opportunities, delivered within 2 business days.</li>\r\n    <li>Guided workbooks &mdash; the <a href=\"https://scrollyseo.com/shopify-seo-workbook/\">Shopify SEO Workbook</a> and the <a href=\"https://scrollyseo.com/pinterest-seo-workbook/\">Pinterest SEO Workbook</a> &mdash; for business owners who'd rather do the research and strategy work themselves.</li>\r\n  </ul>\r\n\r\n  <h2>How we work</h2>\r\n  <p>Every finding we hand you is labeled by exactly how it was produced, so you always know what's fact and what's judgment:</p>\r\n  <div class=\"method-list\">\r\n    <ul>\r\n      <li><strong>Observed</strong> &mdash; we analyzed it directly.</li>\r\n      <li><strong>Retrieved</strong> &mdash; pulled from real data sources.</li>\r\n      <li><strong>Calculated</strong> &mdash; calculated from retrieved data.</li>\r\n      <li><strong>Inference</strong> &mdash; our analysis, clearly labeled as judgment.</li>\r\n      <li><strong>Pending</strong> &mdash; not yet verified, and clearly marked as such.</li>\r\n    </ul>\r\n  </div>\r\n  <p>We don't invent metrics or dress up guesses as data. If something can't be verified, we say so.</p>\r\n\r\n  <h2>Get in touch</h2>\r\n  <p>Questions before you buy? <a href=\"https://scrollyseo.com/contact/\">Contact us</a> or check the <a href=\"https://scrollyseo.com/#faq\">FAQ</a>.</p>\r\n</div>\r\n\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t",
+  "protected": false,
+  "block_version": 0
+ },
+ "excerpt": {
+  "raw": "",
+  "rendered": "<p>About About Scrolly SEO Scrolly SEO helps small business owners understand how customers find them and what to improve next. Clear SEO guidance grounded in evidence SEO advice can quickly become overwhelming. Scrolly SEO turns the available evidence into practical priorities, with a clear distinction between verified facts and professional judgment. What we offer Personalized [&hellip;]</p>\n",
+  "protected": false
+ },
+ "author": 1,
+ "featured_media": 0,
+ "parent": 0,
+ "menu_order": 0,
+ "comment_status": "closed",
+ "ping_status": "closed",
+ "template": "",
+ "meta": {
+  "footnotes": "",
+  "_elementor_edit_mode": "builder",
+  "_elementor_template_type": "wp-page",
+  "_elementor_data": "[{\"id\":\"0768e51\",\"elType\":\"container\",\"settings\":[],\"elements\":[{\"id\":\"3be1790\",\"elType\":\"widget\",\"settings\":{\"html\":\"<style id=\\\"scrolly-shared-shell-v1\\\">#site-header{background:#f5f7fc!important;border-bottom:4px solid transparent!important;border-image:linear-gradient(90deg,#4f46e5,#8b5cf6,#db2777,#ef4444) 1!important}#site-header .site-navigation .menu{display:flex!important;align-items:center!important;gap:8px!important}#menu-item-34,#menu-item-34>a,#menu-item-34>a:link,#menu-item-34>a:visited,#menu-item-34>a:hover,#menu-item-34>a:focus,#menu-item-34>a:active,#menu-item-34>a *{color:#fff!important;-webkit-text-fill-color:#fff!important;opacity:1!important;filter:none!important}#menu-item-34>a{background:#4f46e5!important;border-radius:999px!important;padding:12px 24px!important}.menu-cart-icon>a,.menu-account-icon>a{font-size:0!important;width:44px!important;height:44px!important;display:grid!important;place-items:center!important}.menu-cart-icon>a:before{content:\\\"🛒\\\";font-size:21px!important}.menu-account-icon>a:before{content:\\\"👤\\\";font-size:20px!important}.menu-disabled>a{opacity:.72!important;cursor:default!important;pointer-events:none!important}#site-footer{background:#11131b!important;border-top:4px solid transparent!important;border-image:linear-gradient(90deg,#4f46e5,#8b5cf6,#db2777,#ef4444) 1!important;margin-top:-18px!important;position:relative!important;z-index:5!important;padding:30px clamp(22px,5vw,72px)!important;display:flex!important;align-items:center!important;justify-content:center!important;gap:0!important;text-align:left!important}#site-footer:before{content:\\\"Scrolly\\\";font:900 clamp(1.3rem,2.5vw,1.8rem) Manrope,sans-serif;line-height:1;color:#fff!important;white-space:nowrap}#site-footer:after{display:none!important}#site-footer .site-navigation{display:flex!important;align-items:center!important;gap:30px!important}#site-footer .site-navigation:before{content:\\\"SEO\\\";font:900 clamp(1.3rem,2.5vw,1.8rem) Manrope,sans-serif;line-height:1;background:linear-gradient(90deg,#818cf8,#a78bfa,#e879f9,#fb7185);-webkit-background-clip:text;background-clip:text;color:transparent;white-space:nowrap}#site-footer .menu{display:flex!important;align-items:center!important;justify-content:center!important;flex-wrap:wrap!important;gap:10px 24px!important;margin:0!important}#site-footer a,#site-footer a:visited{color:#fff!important;-webkit-text-fill-color:#fff!important;text-decoration:none!important}#site-footer a:hover,#site-footer a:focus{color:#fda4af!important;-webkit-text-fill-color:#fda4af!important}body.home #site-footer{margin-top:-18px!important;position:relative!important;z-index:5!important;position:relative!important;z-index:5!important}@media(max-width:850px){#site-header .site-navigation .menu{flex-wrap:wrap!important}#site-footer{flex-wrap:wrap!important;row-gap:18px!important}#site-footer .site-navigation{flex-wrap:wrap!important;justify-content:center!important;gap:18px 24px!important}}</style><style>\\r\\n  :root{\\r\\n    --bg-alt:#eef1fa; --surface:#ffffff; --ink:#10152b; --ink-soft:#5c6478; --line:#e1e5f2;\\r\\n    --indigo:#4f46e5; --indigo-dark:#3c34b5; --indigo-bg:#edeafe;\\r\\n  }\\r\\n  .about-wrap{max-width:720px;margin:0 auto;padding:72px 24px 96px;font-family:\\\"Inter\\\",-apple-system,BlinkMacSystemFont,\\\"Segoe UI\\\",sans-serif;color:var(--ink);line-height:1.65;}\\r\\n  .about-wrap h1,.about-wrap h2,.about-wrap h3{font-family:\\\"Manrope\\\",sans-serif;font-weight:800;line-height:1.15;letter-spacing:-.02em;color:var(--ink);}\\r\\n  .about-wrap h1{font-size:clamp(2rem,4vw,2.6rem);margin:0 0 .4em;}\\r\\n  .about-wrap h2{font-size:1.5rem;margin:1.6em 0 .5em;}\\r\\n  .about-eyebrow{display:inline-block;font-family:\\\"Manrope\\\",sans-serif;font-size:.95rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--indigo);margin-bottom:16px;}\\r\\n  .about-lede{font-size:1.1rem;color:var(--ink-soft);margin-bottom:1.2em;}\\r\\n  .about-wrap p{margin:0 0 1em;}\\r\\n  .about-wrap ul{margin:0 0 1em;padding-left:22px;}\\r\\n  .about-wrap li{margin-bottom:.6em;}\\r\\n  .about-wrap a{color:var(--indigo);font-weight:600;text-decoration:underline;text-decoration-color:var(--indigo-bg);text-underline-offset:2px;}\\r\\n  .about-wrap a:hover{text-decoration-color:var(--indigo);}\\r\\n  .method-list{background:var(--bg-alt);border-radius:16px;padding:24px 28px;margin:1.2em 0;}\\r\\n  .method-list ul{margin:0;}\\r\\n</style>\\r\\n\\r\\n<div class=\\\"about-wrap\\\">\\r\\n  <div class=\\\"about-eyebrow\\\">About</div>\\r\\n  <h1>About Scrolly SEO</h1>\\r\\n  <p class=\\\"about-lede\\\">Scrolly SEO helps small businesses get found by the customers already searching for what they sell &mdash; starting with a clear, evidence-based picture of where they stand today.</p>\\r\\n\\r\\n  <h2>What we do</h2>\\r\\n  <p>We build two kinds of tools:</p>\\r\\n  <ul>\\r\\n    <li>A <a href=\\\"https://scrollyseo.com/\\\">Personalized SEO Site Audit</a> &mdash; a 29-section, evidence-based analysis of your site's search visibility, technical performance, and growth opportunities, delivered within 2 business days.</li>\\r\\n    <li>Guided workbooks &mdash; the <a href=\\\"https://scrollyseo.com/shopify-seo-workbook/\\\">Shopify SEO Workbook</a> and the <a href=\\\"https://scrollyseo.com/pinterest-seo-workbook/\\\">Pinterest SEO Workbook</a> &mdash; for business owners who'd rather do the research and strategy work themselves.</li>\\r\\n  </ul>\\r\\n\\r\\n  <h2>How we work</h2>\\r\\n  <p>Every finding we hand you is labeled by exactly how it was produced, so you always know what's fact and what's judgment:</p>\\r\\n  <div class=\\\"method-list\\\">\\r\\n    <ul>\\r\\n      <li><strong>Observed</strong> &mdash; we analyzed it directly.</li>\\r\\n      <li><strong>Retrieved</strong> &mdash; pulled from real data sources.</li>\\r\\n      <li><strong>Calculated</strong> &mdash; calculated from retrieved data.</li>\\r\\n      <li><strong>Inference</strong> &mdash; our analysis, clearly labeled as judgment.</li>\\r\\n      <li><strong>Pending</strong> &mdash; not yet verified, and clearly marked as such.</li>\\r\\n    </ul>\\r\\n  </div>\\r\\n  <p>We don't invent metrics or dress up guesses as data. If something can't be verified, we say so.</p>\\r\\n\\r\\n  <h2>Get in touch</h2>\\r\\n  <p>Questions before you buy? <a href=\\\"https://scrollyseo.com/contact/\\\">Contact us</a> or check the <a href=\\\"https://scrollyseo.com/#faq\\\">FAQ</a>.</p>\\r\\n</div>\\r\\n\"},\"elements\":[],\"widgetType\":\"html\"}],\"isInner\":false}]",
+  "_elementor_page_settings": null
+ },
+ "permalink_template": "https://scrollyseo.com/%pagename%/",
+ "generated_slug": "about",
+ "class_list": [
+  "post-119",
+  "page",
+  "type-page",
+  "status-publish",
+  "hentry"
+ ],
+ "jetpack_sharing_enabled": true,
+ "_links": {
+  "self": [
+   {
+    "href": "https://scrollyseo.com/wp-json/wp/v2/pages/119",
+    "targetHints": {
+     "allow": [
+      "GET",
+      "POST",
+      "PUT",
+      "PATCH",
+      "DELETE"
+     ]
+    }
+   }
+  ],
+  "collection": [
+   {
+    "href": "https://scrollyseo.com/wp-json/wp/v2/pages"
+   }
+  ],
+  "about": [
+   {
+    "href": "https://scrollyseo.com/wp-json/wp/v2/types/page"
+   }
+  ],
+  "author": [
+   {
+    "embeddable": true,
+    "href": "https://scrollyseo.com/wp-json/wp/v2/users/1"
+   }
+  ],
+  "replies": [
+   {
+    "embeddable": true,
+    "href": "https://scrollyseo.com/wp-json/wp/v2/comments?post=119"
+   }
+  ],
+  "version-history": [
+   {
+    "count": 5,
+    "href": "https://scrollyseo.com/wp-json/wp/v2/pages/119/revisions"
+   }
+  ],
+  "predecessor-version": [
+   {
+    "id": 225,
+    "href": "https://scrollyseo.com/wp-json/wp/v2/pages/119/revisions/225"
+   }
+  ],
+  "wp:attachment": [
+   {
+    "href": "https://scrollyseo.com/wp-json/wp/v2/media?parent=119"
+   }
+  ],
+  "wp:action-publish": [
+   {
+    "href": "https://scrollyseo.com/wp-json/wp/v2/pages/119"
+   }
+  ],
+  "wp:action-unfiltered-html": [
+   {
+    "href": "https://scrollyseo.com/wp-json/wp/v2/pages/119"
+   }
+  ],
+  "wp:action-assign-author": [
+   {
+    "href": "https://scrollyseo.com/wp-json/wp/v2/pages/119"
+   }
+  ],
+  "curies": [
+   {
+    "name": "wp",
+    "href": "https://api.w.org/{rel}",
+    "templated": true
+   }
+  ]
+ }
+}

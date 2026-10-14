@@ -1,0 +1,177 @@
+{
+ "id": 1,
+ "date": "2026-08-18T19:40:48",
+ "date_gmt": "2026-08-18T19:40:48",
+ "guid": {
+  "rendered": "https://scrollyseo.com/?p=1",
+  "raw": "https://scrollyseo.com/?p=1"
+ },
+ "modified": "2026-08-18T19:40:48",
+ "modified_gmt": "2026-08-18T19:40:48",
+ "password": "",
+ "slug": "hello-world",
+ "status": "publish",
+ "type": "post",
+ "link": "https://scrollyseo.com/hello-world/",
+ "title": {
+  "raw": "Hello world!",
+  "rendered": "Hello world!"
+ },
+ "content": {
+  "raw": "<!-- wp:paragraph -->\n<p>Welcome to WordPress. This is your first post. Edit or delete it, then start writing!</p>\n<!-- /wp:paragraph -->",
+  "rendered": "\n<p class=\"wp-block-paragraph\">Welcome to WordPress. This is your first post. Edit or delete it, then start writing!</p>\n",
+  "protected": false,
+  "block_version": 1
+ },
+ "excerpt": {
+  "raw": "",
+  "rendered": "<p>Welcome to WordPress. This is your first post. Edit or delete it, then start writing!</p>\n",
+  "protected": false
+ },
+ "author": 1,
+ "featured_media": 0,
+ "comment_status": "open",
+ "ping_status": "open",
+ "sticky": false,
+ "template": "",
+ "format": "standard",
+ "meta": {
+  "_jetpack_newsletter_access": "",
+  "_jetpack_dont_email_post_to_subs": false,
+  "_jetpack_newsletter_tier_id": 0,
+  "_jetpack_memberships_contains_paywalled_content": false,
+  "_jetpack_feature_clip_id": 0,
+  "_jetpack_memberships_contains_paid_content": false,
+  "footnotes": "",
+  "jetpack_post_was_ever_published": false,
+  "_elementor_edit_mode": "",
+  "_elementor_template_type": "",
+  "_elementor_data": "",
+  "_elementor_page_settings": null
+ },
+ "categories": [
+  1
+ ],
+ "tags": [],
+ "permalink_template": "https://scrollyseo.com/%postname%/",
+ "generated_slug": "hello-world",
+ "class_list": [
+  "post-1",
+  "post",
+  "type-post",
+  "status-publish",
+  "format-standard",
+  "hentry",
+  "category-uncategorized"
+ ],
+ "jetpack_sharing_enabled": true,
+ "jetpack_featured_media_url": "",
+ "_links": {
+  "self": [
+   {
+    "href": "https://scrollyseo.com/wp-json/wp/v2/posts/1",
+    "targetHints": {
+     "allow": [
+      "GET",
+      "POST",
+      "PUT",
+      "PATCH",
+      "DELETE"
+     ]
+    }
+   }
+  ],
+  "collection": [
+   {
+    "href": "https://scrollyseo.com/wp-json/wp/v2/posts"
+   }
+  ],
+  "about": [
+   {
+    "href": "https://scrollyseo.com/wp-json/wp/v2/types/post"
+   }
+  ],
+  "author": [
+   {
+    "embeddable": true,
+    "href": "https://scrollyseo.com/wp-json/wp/v2/users/1"
+   }
+  ],
+  "replies": [
+   {
+    "embeddable": true,
+    "href": "https://scrollyseo.com/wp-json/wp/v2/comments?post=1"
+   }
+  ],
+  "version-history": [
+   {
+    "count": 0,
+    "href": "https://scrollyseo.com/wp-json/wp/v2/posts/1/revisions"
+   }
+  ],
+  "wp:attachment": [
+   {
+    "href": "https://scrollyseo.com/wp-json/wp/v2/media?parent=1"
+   }
+  ],
+  "wp:term": [
+   {
+    "taxonomy": "category",
+    "embeddable": true,
+    "href": "https://scrollyseo.com/wp-json/wp/v2/categories?post=1"
+   },
+   {
+    "taxonomy": "post_tag",
+    "embeddable": true,
+    "href": "https://scrollyseo.com/wp-json/wp/v2/tags?post=1"
+   }
+  ],
+  "wp:action-publish": [
+   {
+    "href": "https://scrollyseo.com/wp-json/wp/v2/posts/1"
+   }
+  ],
+  "wp:action-unfiltered-html": [
+   {
+    "href": "https://scrollyseo.com/wp-json/wp/v2/posts/1"
+   }
+  ],
+  "wp:action-sticky": [
+   {
+    "href": "https://scrollyseo.com/wp-json/wp/v2/posts/1"
+   }
+  ],
+  "wp:action-assign-author": [
+   {
+    "href": "https://scrollyseo.com/wp-json/wp/v2/posts/1"
+   }
+  ],
+  "wp:action-create-categories": [
+   {
+    "href": "https://scrollyseo.com/wp-json/wp/v2/posts/1"
+   }
+  ],
+  "wp:action-assign-categories": [
+   {
+    "href": "https://scrollyseo.com/wp-json/wp/v2/posts/1"
+   }
+  ],
+  "wp:action-create-tags": [
+   {
+    "href": "https://scrollyseo.com/wp-json/wp/v2/posts/1"
+   }
+  ],
+  "wp:action-assign-tags": [
+   {
+    "href": "https://scrollyseo.com/wp-json/wp/v2/posts/1"
+   }
+  ],
+  "curies": [
+   {
+    "name": "wp",
+    "href": "https://api.w.org/{rel}",
+    "templated": true
+   }
+  ]
+ }
+}

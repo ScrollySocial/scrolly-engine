@@ -1,0 +1,333 @@
+
+
+
+
+:root{
+  --si-indigo:#4f46e5;
+  --si-indigo-dark:#3c34b5;
+  --si-cyan:#0891b2;
+  --si-ink:#10152b;
+  --si-ink-soft:#5c6478;
+  --si-line:#e1e5f2;
+  --si-bg-alt:#eef1fa;
+}
+
+body, input, button, select, textarea {
+  font-family:Arial,Helvetica,sans-serif;
+}
+h1,h2,h3,h4,h5,h6,.product_title,.page-title {
+  font-family:Arial,Helvetica,sans-serif !important;
+  font-weight:800 !important;
+  color:var(--si-ink);
+}
+
+/* Buttons must not fall back to the browser's default visited-link grey */
+.btn-primary:visited, .btn:visited, a.button:visited, .single_add_to_cart_button:visited,
+.menu-cta-btn a:visited, .woocommerce a.button:visited {
+  color:#fefeff !important;
+}
+/* Nav links must not fall back to the browser's default visited-link color either */
+.nav-links a, .nav-links a:visited, .site-header nav a:visited, .main-navigation a:visited {
+  color:var(--si-ink-soft) !important;
+}
+/* The inverted buttons on gradient backgrounds (white bg, indigo text) need the opposite fix */
+.section-gradient .btn-primary:visited, .final-cta .btn-primary:visited {
+  color:var(--si-indigo) !important;
+}
+
+/* Logo: two-tone "Scrolly" + "SEO" to match homepage. Plain solid color (not a
+   background-clip:text gradient) - kept simple to avoid compositing glitches in
+   the sticky, blurred header. */
+.site-branding .site-title a {
+  font-size:0;
+  line-height:1;
+  display:inline-block;
+  text-decoration:none;
+}
+.site-branding .site-title a::before {
+  content:"Scrolly";
+  font-size:1.3rem;
+  font-weight:800;
+  color:var(--si-ink);
+  font-family:Arial,Helvetica,sans-serif;
+}
+.site-branding .site-title a::after {
+  content:"SEO";
+  font-size:1.3rem;
+  font-weight:800;
+  color:var(--si-indigo);
+  font-family:Arial,Helvetica,sans-serif;
+}
+
+/* Header bar + rainbow strip under it, matching homepage. Sticky + z-index so the
+   Guides dropdown (and the strip) always paint above page content below it. */
+.site-header {
+  position:sticky;
+  top:0;
+  z-index:30;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  flex-wrap:wrap;
+  background:rgba(245,247,252,.92);
+  /* backdrop-filter disabled for test */
+  border-bottom:none;
+  padding:14px max(24px, calc((100% - 1160px)/2));
+}
+.site-header::after {
+  content:"";
+  position:absolute;
+  left:0; right:0; bottom:-4px;
+  height:4px;
+  background:linear-gradient(90deg,var(--si-indigo),#2563eb,var(--si-cyan),#7c3aed,#db2777);
+}
+
+/* Nav row: flex + centered so every item (single-line or not) lines up on the
+   same baseline, regardless of its own content height. */
+.site-header .site-navigation {
+  display:flex;
+  align-items:center;
+}
+.site-header #menu-main-menu {
+  display:flex;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:4px;
+}
+.site-header #menu-main-menu > li {
+  display:flex;
+  align-items:center;
+}
+
+.site-header nav a, .main-navigation a {
+  color:var(--si-ink-soft) !important;
+  font-weight:600;
+  font-size:.92rem;
+  text-decoration:none;
+  line-height:1;
+}
+.site-header nav a:hover {
+  color:var(--si-indigo) !important;
+}
+
+.site-header .menu-cta-btn {
+  margin-left:8px;
+}
+.site-header .menu-cta-btn a {
+  display:inline-block;
+  background:#4f46e5 !important;
+  color:#ffffff !important;
+  padding:13px 26px !important;
+  border-radius:999px !important;
+  font-family:Arial,Helvetica,sans-serif !important;
+  font-weight:800 !important;
+  font-size:.95rem !important;
+  line-height:1;
+  border:none !important;
+  text-decoration:none !important;
+}
+.site-header .menu-cta-btn a:hover {
+  background:var(--si-indigo-dark) !important;
+}
+
+/* Guides dropdown: wide enough that workbook titles never wrap/clip */
+.site-header .sub-menu {
+  min-width:230px;
+  background:#fefeff;
+  border:1px solid var(--si-line);
+  border-radius:12px;
+  box-shadow:0 14px 30px rgba(16,21,43,.14);
+  padding:6px;
+}
+.site-header .sub-menu li {
+  list-style:none;
+}
+.site-header .sub-menu a {
+  white-space:nowrap;
+  display:block;
+  padding:10px 14px !important;
+  border-radius:8px;
+  font-size:.88rem !important;
+}
+.site-header .sub-menu a:hover {
+  background:var(--si-bg-alt);
+}
+
+/* Implementation nav item: plain de-emphasized link with a small inline "soon"
+   tag - deliberately NOT a second button, so it doesn't compete with the CTA. */
+.site-header .menu-implementation-btn {
+  margin-left:14px;
+}
+.site-header .menu-implementation-btn a {
+  display:inline-flex !important;
+  align-items:center;
+  gap:7px;
+  line-height:1;
+  color:var(--si-ink-soft) !important;
+  font-weight:600 !important;
+  padding:0 !important;
+  background:none !important;
+  border:none !important;
+}
+.site-header .menu-implementation-btn a:hover {
+  color:var(--si-indigo) !important;
+}
+.site-header .menu-implementation-btn a::after {
+  content:"Soon";
+  display:inline-flex;
+  align-items:center;
+  line-height:1;
+  font-size:.62rem;
+  font-weight:800;
+  text-transform:uppercase;
+  letter-spacing:.03em;
+  color:var(--si-cyan);
+  background:var(--si-bg-alt);
+  border-radius:999px;
+  padding:4px 8px;
+}
+
+/* Hide breadcrumb, category/meta, and quantity selector for a cleaner product page */
+.woocommerce-breadcrumb {
+  display:none !important;
+}
+.product_meta, span.posted_in {
+  display:none !important;
+}
+.woocommerce div.product form.cart .quantity {
+  display:none !important;
+}
+
+.price, p.price, .woocommerce-Price-amount {
+  color:var(--si-indigo) !important;
+  font-family:Arial,Helvetica,sans-serif;
+  font-weight:800;
+}
+
+.woocommerce a.button, .woocommerce button.button, .woocommerce input.button,
+.single_add_to_cart_button, .added_to_cart {
+  background:var(--si-indigo) !important;
+  border-color:var(--si-indigo) !important;
+  color:#fefeff !important;
+  border-radius:999px !important;
+  font-weight:700 !important;
+  padding:14px 30px !important;
+  box-shadow:0 10px 24px rgba(79,70,229,.28);
+  transition:transform .12s ease, background .12s ease;
+  border-width:1.5px;
+}
+.woocommerce a.button:hover, .woocommerce button.button:hover, .woocommerce input.button:hover,
+.single_add_to_cart_button:hover {
+  background:var(--si-indigo-dark) !important;
+  border-color:var(--si-indigo-dark) !important;
+  transform:translateY(-2px);
+}
+
+/* Tabs: modern pill switcher instead of thin underline */
+.woocommerce-tabs ul.tabs, ul.wc-tabs {
+  border-bottom:none;
+  background:var(--si-bg-alt);
+  padding:6px;
+  margin:0 0 32px;
+  display:inline-flex;
+  gap:4px;
+  list-style:none;
+  border-radius:999px;
+}
+.woocommerce-tabs ul.tabs li, ul.wc-tabs li {
+  background:none !important;
+  border:none !important;
+  margin:0 !important;
+  padding:0 !important;
+}
+.woocommerce-tabs ul.tabs li:before, ul.wc-tabs li:before { display:none !important; }
+.woocommerce-tabs ul.tabs li a, ul.wc-tabs li a {
+  display:inline-block;
+  padding:10px 22px;
+  font-family:Arial,Helvetica,sans-serif;
+  font-weight:700;
+  font-size:.92rem;
+  color:var(--si-ink-soft);
+  border-radius:999px;
+  text-decoration:none;
+  transition:background .12s ease, color .12s ease;
+}
+.woocommerce-tabs ul.tabs li.active a, ul.wc-tabs li.active a {
+  background:#fefeff;
+  color:var(--si-indigo);
+  box-shadow:0 4px 14px rgba(16,21,43,.1);
+}
+.woocommerce-Tabs-panel, .woocommerce-tabs .panel {
+  border:none !important;
+  padding:0 !important;
+}
+.woocommerce-Tabs-panel h2 {
+  font-size:1.5rem;
+  margin-bottom:16px;
+}
+.woocommerce-Tabs-panel p {
+  color:var(--si-ink-soft);
+  line-height:1.6;
+}
+
+.woocommerce div.product div.images img {
+  border-radius:20px;
+}
+
+.content-area, .site-content, main#main {
+  max-width:1160px;
+  margin:0 auto;
+  padding-left:24px;
+  padding-right:24px;
+  box-sizing:border-box;
+}
+
+.site-footer, footer {
+  padding:14px max(24px, calc((100% - 1160px)/2));
+}
+
+
+/* Scrolly approved theme — September 2026 */
+:root{--sc-ink:#081129;--sc-paper:#fbf8f3;--sc-orange:#ff6338;--sc-orange-soft:#ffb38f;--sc-purple:#735cff;--sc-purple-soft:#bca5fb;--sc-pink:#fac0d5;--sc-aqua:#9cebe1;--si-indigo:var(--sc-orange);--si-indigo-dark:var(--sc-ink);--si-cyan:var(--sc-purple);--si-ink:var(--sc-ink);--si-ink-soft:#535866;--si-line:#e7e3dd;--si-bg-alt:var(--sc-paper)}
+body{background:var(--sc-paper);color:var(--sc-ink)}
+body,input,button,select,textarea{font-family:Arial,Helvetica,sans-serif}
+h1,h2,h3,h4,h5,h6,.product_title,.page-title{font-family:"Arial Black",Arial,Helvetica,sans-serif!important;font-weight:900!important}
+body #site-header{background:var(--sc-paper)!important;border:0!important;border-bottom:1px solid #e7e3dd!important;border-image:none!important}
+body #site-header::after{display:none}
+body #site-header .site-branding .site-title a{font-size:0!important}
+body #site-header .site-branding .site-title a::before{content:"scrolly";font:900 36px/1 "Arial Black",Arial,sans-serif;letter-spacing:-2.5px;color:var(--sc-ink)}
+body #site-header .site-branding .site-title a::after{content:none!important}
+body #site-header .site-branding .site-title a>*{display:none}
+.site-header nav a,.site-header nav a:visited{color:var(--sc-ink)!important}
+body #site-footer{background:var(--sc-ink)!important;border:0!important;border-image:none!important;color:var(--sc-paper)}
+body #site-footer a{color:var(--sc-paper)!important}
+.woocommerce a.button,.woocommerce button.button,.woocommerce input.button,.single_add_to_cart_button,.added_to_cart,.menu-cta-btn a{background:var(--sc-orange)!important;border-color:var(--sc-orange)!important;color:var(--sc-ink)!important;border-radius:0!important;box-shadow:none!important;font-family:Arial,Helvetica,sans-serif!important}
+body .sc-launch{--ink:var(--sc-ink);--muted:#535866;--blue:var(--sc-purple);--line:#e7e3dd;--stripe:linear-gradient(90deg,var(--sc-orange),var(--sc-pink),var(--sc-aqua),var(--sc-purple-soft));font-family:Arial,Helvetica,sans-serif;background:var(--sc-paper)}
+body .sc-launch .sc-hero,body .sc-launch .sc-banner{background:var(--sc-ink)}
+body .sc-launch .sc-gradient{background:none;color:var(--sc-orange);-webkit-text-fill-color:var(--sc-orange)}
+body .sc-launch .sc-eyebrow,body .sc-launch .sc-num{color:var(--sc-purple)}
+body .sc-launch .sc-hero .sc-eyebrow,body .sc-launch .sc-banner .sc-eyebrow{color:var(--sc-aqua)}
+body .sc-launch .sc-hero p,body .sc-launch .sc-banner p,body .sc-launch .sc-hero .sc-small{color:var(--sc-paper)}
+body .sc-launch .sc-btn{background:var(--sc-orange);color:var(--sc-ink);border-radius:0}
+body .sc-launch .sc-btn:hover{background:var(--sc-orange-soft);color:var(--sc-ink)}
+body .sc-launch .sc-btn-light,body .sc-launch .sc-btn-outline{background:var(--sc-paper);color:var(--sc-ink);border-color:var(--sc-ink)}
+body .sc-launch .sc-btn-ghost{background:transparent;color:var(--sc-paper);border-color:var(--sc-paper)}
+body .sc-launch a:not(.sc-btn){color:var(--sc-ink)}
+body .sc-launch .sc-card{border-radius:0;box-shadow:none}
+body .sc-launch .sc-tier{background:var(--sc-aqua);border:0}
+body .sc-launch .sc-tier:nth-child(2){background:var(--sc-purple-soft)}
+body .sc-launch .sc-tier:nth-child(3){background:var(--sc-orange)}
+body .sc-launch .sc-tier p{color:var(--sc-ink)}
+body .sc-launch .sc-tag{background:var(--sc-paper);border-color:var(--sc-ink);color:var(--sc-ink)}
+body .sc-launch .sc-goalboard{background:var(--sc-purple-soft);border:0;box-shadow:none}
+body .sc-launch .sc-goalboard,body .sc-launch .sc-number,body .sc-launch .sc-board-label,body .sc-launch .sc-board-bottom,body .sc-launch .sc-board-path{color:var(--sc-ink)}
+body .sc-launch .sc-stripes i{background:var(--sc-orange)}
+body .sc-launch .sc-stripes i:nth-child(2){background:var(--sc-pink)}
+body .sc-launch .sc-stripes i:nth-child(3){background:var(--sc-aqua)}
+body .sc-launch .sc-stripes i:nth-child(4){background:var(--sc-purple)}
+body .sc-launch .sc-stripes i:nth-child(5){background:var(--sc-orange-soft)}
+body .sc-launch .sc-note{background:var(--sc-paper);border-color:var(--sc-purple)}
+body .sc-launch .sc-cover{background:var(--sc-paper)}
+/* Accessibility toolbar button: brand colors instead of theme pink */
+#raccess-toggle.raccess-toolbar-toggle{background:#000;color:#fbf8f3;border:0;border-radius:50%;width:52px;height:52px;padding:0}
+#raccess-toggle.raccess-toolbar-toggle:focus-visible{outline:3px solid #000;outline-offset:3px;box-shadow:0 0 0 3px #fbf8f3}

@@ -1,0 +1,132 @@
+{
+ "id": 7,
+ "date": "2026-08-18T19:40:53",
+ "date_gmt": "2026-08-18T19:40:53",
+ "guid": {
+  "rendered": "https://scrollyseo.com/?page_id=7",
+  "raw": "https://scrollyseo.com/?page_id=7"
+ },
+ "modified": "2026-08-25T16:27:55",
+ "modified_gmt": "2026-08-25T16:27:55",
+ "password": "",
+ "slug": "checkout",
+ "status": "publish",
+ "type": "page",
+ "link": "https://scrollyseo.com/checkout/",
+ "title": {
+  "raw": "Checkout",
+  "rendered": "Checkout"
+ },
+ "content": {
+  "raw": "<style id=\"scrolly-shared-shell-v1\">#site-header{background:#f5f7fc!important;border-bottom:4px solid transparent!important;border-image:linear-gradient(90deg,#4f46e5,#8b5cf6,#db2777,#ef4444) 1!important}#site-header .site-navigation .menu{display:flex!important;align-items:center!important;gap:8px!important}#menu-item-34,#menu-item-34>a,#menu-item-34>a:link,#menu-item-34>a:visited,#menu-item-34>a:hover,#menu-item-34>a:focus,#menu-item-34>a:active,#menu-item-34>a *{color:#fff!important;-webkit-text-fill-color:#fff!important;opacity:1!important;filter:none!important}#menu-item-34>a{background:#4f46e5!important;border-radius:999px!important;padding:12px 24px!important}.menu-cart-icon>a,.menu-account-icon>a{font-size:0!important;width:44px!important;height:44px!important;display:grid!important;place-items:center!important}.menu-cart-icon>a:before{content:\"🛒\";font-size:21px!important}.menu-account-icon>a:before{content:\"👤\";font-size:20px!important}.menu-disabled>a{opacity:.72!important;cursor:default!important;pointer-events:none!important}#site-footer{background:#11131b!important;border-top:4px solid transparent!important;border-image:linear-gradient(90deg,#4f46e5,#8b5cf6,#db2777,#ef4444) 1!important;margin-top:-18px!important;position:relative!important;z-index:5!important;padding:30px clamp(22px,5vw,72px)!important;display:flex!important;align-items:center!important;justify-content:center!important;gap:0!important;text-align:left!important}#site-footer:before{content:\"Scrolly\";font:900 clamp(1.3rem,2.5vw,1.8rem) Manrope,sans-serif;line-height:1;color:#fff!important;white-space:nowrap}#site-footer:after{display:none!important}#site-footer .site-navigation{display:flex!important;align-items:center!important;gap:30px!important}#site-footer .site-navigation:before{content:\"SEO\";font:900 clamp(1.3rem,2.5vw,1.8rem) Manrope,sans-serif;line-height:1;background:linear-gradient(90deg,#818cf8,#a78bfa,#e879f9,#fb7185);-webkit-background-clip:text;background-clip:text;color:transparent;white-space:nowrap}#site-footer .menu{display:flex!important;align-items:center!important;justify-content:center!important;flex-wrap:wrap!important;gap:10px 24px!important;margin:0!important}#site-footer a,#site-footer a:visited{color:#fff!important;-webkit-text-fill-color:#fff!important;text-decoration:none!important}#site-footer a:hover,#site-footer a:focus{color:#fda4af!important;-webkit-text-fill-color:#fda4af!important}body.home #site-footer{margin-top:-18px!important;position:relative!important;z-index:5!important;position:relative!important;z-index:5!important}@media(max-width:850px){#site-header .site-navigation .menu{flex-wrap:wrap!important}#site-footer{flex-wrap:wrap!important;row-gap:18px!important}#site-footer .site-navigation{flex-wrap:wrap!important;justify-content:center!important;gap:18px 24px!important}}</style><style id=\"scrolly-header-accessibility-fix\">#menu-item-34>a,#menu-item-34>a:link,#menu-item-34>a:visited,#menu-item-34>a:hover,#menu-item-34>a:focus,#menu-item-34>a:active{color:#fff!important;-webkit-text-fill-color:#fff!important}</style><!-- wp:html --><style>a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:4px solid #f59e0b!important;outline-offset:3px!important}.wc-block-components-button,.wc-block-cart-item__remove-link,input,select{min-height:44px}.wc-block-cart-item__remove-link{display:inline-flex!important;visibility:visible!important;opacity:1!important;font-weight:800!important}@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;animation:none!important;transition:none!important}}@media(forced-colors:active){a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid Highlight!important}}</style><!-- /wp:html -->\n<!-- wp:heading {\"level\":1} --><h1 class=\"wp-block-heading\">Checkout</h1><!-- /wp:heading -->\n<!-- wp:woocommerce/checkout -->\n<div class=\"wp-block-woocommerce-checkout alignwide wc-block-checkout is-loading\"><!-- wp:woocommerce/checkout-fields-block -->\n<div class=\"wp-block-woocommerce-checkout-fields-block\"><!-- wp:woocommerce/checkout-express-payment-block -->\n<div class=\"wp-block-woocommerce-checkout-express-payment-block\"></div>\n<!-- /wp:woocommerce/checkout-express-payment-block -->\n\n<!-- wp:woocommerce/checkout-contact-information-block -->\n<div class=\"wp-block-woocommerce-checkout-contact-information-block\"></div>\n<!-- /wp:woocommerce/checkout-contact-information-block -->\n\n<!-- wp:woocommerce/checkout-shipping-method-block -->\n<div class=\"wp-block-woocommerce-checkout-shipping-method-block\"></div>\n<!-- /wp:woocommerce/checkout-shipping-method-block -->\n\n<!-- wp:woocommerce/checkout-pickup-options-block -->\n<div class=\"wp-block-woocommerce-checkout-pickup-options-block\"></div>\n<!-- /wp:woocommerce/checkout-pickup-options-block -->\n\n<!-- wp:woocommerce/checkout-shipping-address-block -->\n<div class=\"wp-block-woocommerce-checkout-shipping-address-block\"></div>\n<!-- /wp:woocommerce/checkout-shipping-address-block -->\n\n<!-- wp:woocommerce/checkout-billing-address-block -->\n<div class=\"wp-block-woocommerce-checkout-billing-address-block\"></div>\n<!-- /wp:woocommerce/checkout-billing-address-block -->\n\n<!-- wp:woocommerce/checkout-shipping-methods-block -->\n<div class=\"wp-block-woocommerce-checkout-shipping-methods-block\"></div>\n<!-- /wp:woocommerce/checkout-shipping-methods-block -->\n\n<!-- wp:woocommerce/checkout-payment-block -->\n<div class=\"wp-block-woocommerce-checkout-payment-block\"></div>\n<!-- /wp:woocommerce/checkout-payment-block -->\n\n<!-- wp:woocommerce/checkout-additional-information-block -->\n<div class=\"wp-block-woocommerce-checkout-additional-information-block\"></div>\n<!-- /wp:woocommerce/checkout-additional-information-block -->\n\n<!-- wp:woocommerce/checkout-order-note-block -->\n<div class=\"wp-block-woocommerce-checkout-order-note-block\"></div>\n<!-- /wp:woocommerce/checkout-order-note-block -->\n\n<!-- wp:woocommerce/checkout-terms-block -->\n<div class=\"wp-block-woocommerce-checkout-terms-block\"></div>\n<!-- /wp:woocommerce/checkout-terms-block -->\n\n<!-- wp:woocommerce/checkout-actions-block -->\n<div class=\"wp-block-woocommerce-checkout-actions-block\"></div>\n<!-- /wp:woocommerce/checkout-actions-block --></div>\n<!-- /wp:woocommerce/checkout-fields-block -->\n\n<!-- wp:woocommerce/checkout-totals-block -->\n<div class=\"wp-block-woocommerce-checkout-totals-block\"><!-- wp:woocommerce/checkout-order-summary-block -->\n<div class=\"wp-block-woocommerce-checkout-order-summary-block\"><!-- wp:woocommerce/checkout-order-summary-cart-items-block -->\n<div class=\"wp-block-woocommerce-checkout-order-summary-cart-items-block\"></div>\n<!-- /wp:woocommerce/checkout-order-summary-cart-items-block -->\n\n<!-- wp:woocommerce/checkout-order-summary-coupon-form-block -->\n<div class=\"wp-block-woocommerce-checkout-order-summary-coupon-form-block\"></div>\n<!-- /wp:woocommerce/checkout-order-summary-coupon-form-block -->\n\n<!-- wp:woocommerce/checkout-order-summary-subtotal-block -->\n<div class=\"wp-block-woocommerce-checkout-order-summary-subtotal-block\"></div>\n<!-- /wp:woocommerce/checkout-order-summary-subtotal-block -->\n\n<!-- wp:woocommerce/checkout-order-summary-fee-block -->\n<div class=\"wp-block-woocommerce-checkout-order-summary-fee-block\"></div>\n<!-- /wp:woocommerce/checkout-order-summary-fee-block -->\n\n<!-- wp:woocommerce/checkout-order-summary-discount-block -->\n<div class=\"wp-block-woocommerce-checkout-order-summary-discount-block\"></div>\n<!-- /wp:woocommerce/checkout-order-summary-discount-block -->\n\n<!-- wp:woocommerce/checkout-order-summary-shipping-block -->\n<div class=\"wp-block-woocommerce-checkout-order-summary-shipping-block\"></div>\n<!-- /wp:woocommerce/checkout-order-summary-shipping-block -->\n\n<!-- wp:woocommerce/checkout-order-summary-taxes-block -->\n<div class=\"wp-block-woocommerce-checkout-order-summary-taxes-block\"></div>\n<!-- /wp:woocommerce/checkout-order-summary-taxes-block --></div>\n<!-- /wp:woocommerce/checkout-order-summary-block --></div>\n<!-- /wp:woocommerce/checkout-totals-block --></div>\n<!-- /wp:woocommerce/checkout -->",
+  "rendered": "<style id=\"scrolly-shared-shell-v1\">#site-header{background:#f5f7fc!important;border-bottom:4px solid transparent!important;border-image:linear-gradient(90deg,#4f46e5,#8b5cf6,#db2777,#ef4444) 1!important}#site-header .site-navigation .menu{display:flex!important;align-items:center!important;gap:8px!important}#menu-item-34,#menu-item-34>a,#menu-item-34>a:link,#menu-item-34>a:visited,#menu-item-34>a:hover,#menu-item-34>a:focus,#menu-item-34>a:active,#menu-item-34>a *{color:#fff!important;-webkit-text-fill-color:#fff!important;opacity:1!important;filter:none!important}#menu-item-34>a{background:#4f46e5!important;border-radius:999px!important;padding:12px 24px!important}.menu-cart-icon>a,.menu-account-icon>a{font-size:0!important;width:44px!important;height:44px!important;display:grid!important;place-items:center!important}.menu-cart-icon>a:before{content:\"🛒\";font-size:21px!important}.menu-account-icon>a:before{content:\"👤\";font-size:20px!important}.menu-disabled>a{opacity:.72!important;cursor:default!important;pointer-events:none!important}#site-footer{background:#11131b!important;border-top:4px solid transparent!important;border-image:linear-gradient(90deg,#4f46e5,#8b5cf6,#db2777,#ef4444) 1!important;margin-top:-18px!important;position:relative!important;z-index:5!important;padding:30px clamp(22px,5vw,72px)!important;display:flex!important;align-items:center!important;justify-content:center!important;gap:0!important;text-align:left!important}#site-footer:before{content:\"Scrolly\";font:900 clamp(1.3rem,2.5vw,1.8rem) Manrope,sans-serif;line-height:1;color:#fff!important;white-space:nowrap}#site-footer:after{display:none!important}#site-footer .site-navigation{display:flex!important;align-items:center!important;gap:30px!important}#site-footer .site-navigation:before{content:\"SEO\";font:900 clamp(1.3rem,2.5vw,1.8rem) Manrope,sans-serif;line-height:1;background:linear-gradient(90deg,#818cf8,#a78bfa,#e879f9,#fb7185);-webkit-background-clip:text;background-clip:text;color:transparent;white-space:nowrap}#site-footer .menu{display:flex!important;align-items:center!important;justify-content:center!important;flex-wrap:wrap!important;gap:10px 24px!important;margin:0!important}#site-footer a,#site-footer a:visited{color:#fff!important;-webkit-text-fill-color:#fff!important;text-decoration:none!important}#site-footer a:hover,#site-footer a:focus{color:#fda4af!important;-webkit-text-fill-color:#fda4af!important}body.home #site-footer{margin-top:-18px!important;position:relative!important;z-index:5!important;position:relative!important;z-index:5!important}@media(max-width:850px){#site-header .site-navigation .menu{flex-wrap:wrap!important}#site-footer{flex-wrap:wrap!important;row-gap:18px!important}#site-footer .site-navigation{flex-wrap:wrap!important;justify-content:center!important;gap:18px 24px!important}}</style><style id=\"scrolly-header-accessibility-fix\">#menu-item-34>a,#menu-item-34>a:link,#menu-item-34>a:visited,#menu-item-34>a:hover,#menu-item-34>a:focus,#menu-item-34>a:active{color:#fff!important;-webkit-text-fill-color:#fff!important}</style><style>a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:4px solid #f59e0b!important;outline-offset:3px!important}.wc-block-components-button,.wc-block-cart-item__remove-link,input,select{min-height:44px}.wc-block-cart-item__remove-link{display:inline-flex!important;visibility:visible!important;opacity:1!important;font-weight:800!important}@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;animation:none!important;transition:none!important}}@media(forced-colors:active){a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid Highlight!important}}</style>\n<h1 class=\"wp-block-heading\">Checkout</h1>\n\n<div data-block-name=\"woocommerce/checkout\" class=\"wp-block-woocommerce-checkout alignwide wc-block-checkout is-loading\">\n<div data-block-name=\"woocommerce/checkout-fields-block\" class=\"wp-block-woocommerce-checkout-fields-block\">\n<div data-block-name=\"woocommerce/checkout-express-payment-block\" class=\"wp-block-woocommerce-checkout-express-payment-block\"></div>\n\n\n\n<div data-block-name=\"woocommerce/checkout-contact-information-block\" class=\"wp-block-woocommerce-checkout-contact-information-block\"></div>\n\n\n\n<div data-block-name=\"woocommerce/checkout-shipping-method-block\" class=\"wp-block-woocommerce-checkout-shipping-method-block\"></div>\n\n\n\n<div data-block-name=\"woocommerce/checkout-pickup-options-block\" class=\"wp-block-woocommerce-checkout-pickup-options-block\"></div>\n\n\n\n<div data-block-name=\"woocommerce/checkout-shipping-address-block\" class=\"wp-block-woocommerce-checkout-shipping-address-block\"></div>\n\n\n\n<div data-block-name=\"woocommerce/checkout-billing-address-block\" class=\"wp-block-woocommerce-checkout-billing-address-block\"></div>\n\n\n\n<div data-block-name=\"woocommerce/checkout-shipping-methods-block\" class=\"wp-block-woocommerce-checkout-shipping-methods-block\"></div>\n\n\n\n<div data-block-name=\"woocommerce/checkout-payment-block\" class=\"wp-block-woocommerce-checkout-payment-block\"></div>\n\n\n\n<div data-block-name=\"woocommerce/checkout-additional-information-block\" class=\"wp-block-woocommerce-checkout-additional-information-block\"></div>\n\n\n\n<div data-block-name=\"woocommerce/checkout-order-note-block\" class=\"wp-block-woocommerce-checkout-order-note-block\"></div>\n\n\n\n<div data-block-name=\"woocommerce/checkout-terms-block\" class=\"wp-block-woocommerce-checkout-terms-block\"></div>\n\n\n\n<div data-block-name=\"woocommerce/checkout-actions-block\" class=\"wp-block-woocommerce-checkout-actions-block\"></div>\n</div>\n\n\n\n<div data-block-name=\"woocommerce/checkout-totals-block\" class=\"wp-block-woocommerce-checkout-totals-block\">\n<div data-block-name=\"woocommerce/checkout-order-summary-block\" class=\"wp-block-woocommerce-checkout-order-summary-block\">\n<div data-block-name=\"woocommerce/checkout-order-summary-cart-items-block\" class=\"wp-block-woocommerce-checkout-order-summary-cart-items-block\"></div><div data-block-name=\"woocommerce/checkout-order-summary-coupon-form-block\" class=\"wp-block-woocommerce-checkout-order-summary-coupon-form-block\"></div><div data-block-name=\"woocommerce/checkout-order-summary-totals-block\" class=\"wp-block-woocommerce-checkout-order-summary-totals-block\">\n<div data-block-name=\"woocommerce/checkout-order-summary-subtotal-block\" class=\"wp-block-woocommerce-checkout-order-summary-subtotal-block\"></div>\n<div data-block-name=\"woocommerce/checkout-order-summary-discount-block\" class=\"wp-block-woocommerce-checkout-order-summary-discount-block\"></div>\n<div data-block-name=\"woocommerce/checkout-order-summary-fee-block\" class=\"wp-block-woocommerce-checkout-order-summary-fee-block\"></div>\n<div data-block-name=\"woocommerce/checkout-order-summary-shipping-block\" class=\"wp-block-woocommerce-checkout-order-summary-shipping-block\"></div>\n<div data-block-name=\"woocommerce/checkout-order-summary-taxes-block\" class=\"wp-block-woocommerce-checkout-order-summary-taxes-block\"></div></div>\n</div>\n</div>\n</div>\n",
+  "protected": false,
+  "block_version": 1
+ },
+ "excerpt": {
+  "raw": "",
+  "rendered": "<p>Checkout</p>\n",
+  "protected": false
+ },
+ "author": 1,
+ "featured_media": 0,
+ "parent": 0,
+ "menu_order": 0,
+ "comment_status": "closed",
+ "ping_status": "closed",
+ "template": "",
+ "meta": {
+  "footnotes": "",
+  "_elementor_edit_mode": "",
+  "_elementor_template_type": "",
+  "_elementor_data": "",
+  "_elementor_page_settings": null
+ },
+ "permalink_template": "https://scrollyseo.com/%pagename%/",
+ "generated_slug": "checkout",
+ "class_list": [
+  "post-7",
+  "page",
+  "type-page",
+  "status-publish",
+  "hentry"
+ ],
+ "jetpack_sharing_enabled": true,
+ "_links": {
+  "self": [
+   {
+    "href": "https://scrollyseo.com/wp-json/wp/v2/pages/7",
+    "targetHints": {
+     "allow": [
+      "GET",
+      "POST",
+      "PUT",
+      "PATCH",
+      "DELETE"
+     ]
+    }
+   }
+  ],
+  "collection": [
+   {
+    "href": "https://scrollyseo.com/wp-json/wp/v2/pages"
+   }
+  ],
+  "about": [
+   {
+    "href": "https://scrollyseo.com/wp-json/wp/v2/types/page"
+   }
+  ],
+  "author": [
+   {
+    "embeddable": true,
+    "href": "https://scrollyseo.com/wp-json/wp/v2/users/1"
+   }
+  ],
+  "replies": [
+   {
+    "embeddable": true,
+    "href": "https://scrollyseo.com/wp-json/wp/v2/comments?post=7"
+   }
+  ],
+  "version-history": [
+   {
+    "count": 4,
+    "href": "https://scrollyseo.com/wp-json/wp/v2/pages/7/revisions"
+   }
+  ],
+  "predecessor-version": [
+   {
+    "id": 233,
+    "href": "https://scrollyseo.com/wp-json/wp/v2/pages/7/revisions/233"
+   }
+  ],
+  "wp:attachment": [
+   {
+    "href": "https://scrollyseo.com/wp-json/wp/v2/media?parent=7"
+   }
+  ],
+  "wp:action-publish": [
+   {
+    "href": "https://scrollyseo.com/wp-json/wp/v2/pages/7"
+   }
+  ],
+  "wp:action-unfiltered-html": [
+   {
+    "href": "https://scrollyseo.com/wp-json/wp/v2/pages/7"
+   }
+  ],
+  "wp:action-assign-author": [
+   {
+    "href": "https://scrollyseo.com/wp-json/wp/v2/pages/7"
+   }
+  ],
+  "curies": [
+   {
+    "name": "wp",
+    "href": "https://api.w.org/{rel}",
+    "templated": true
+   }
+  ]
+ }
+}

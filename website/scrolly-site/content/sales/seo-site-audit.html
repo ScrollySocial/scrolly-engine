@@ -1,0 +1,812 @@
+<!-- seo-site-audit: v3 source (from the live page 2026-10-03, dashes fixed). Edit copy here; colors are remapped at build. -->
+<!-- wp:html -->
+<div class="s3 s3s"><link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#f5f7fc;
+    --bg-alt:#eef1fa;
+    --surface:#ffffff;
+    --ink:#10152b;
+    --ink-soft:#5c6478;
+    --line:#e1e5f2;
+
+    --indigo:#c23c14;
+    --indigo-dark:#3c34b5;
+    --indigo-bg:#ffe6dc;
+    --blue:#5a44e6;
+    --blue-bg:#e7f0fe;
+    --cyan:#0f766e;
+    --cyan-bg:#e1f6fb;
+    --violet:#7c3aed;
+    --violet-bg:#f2ecfe;
+    --pink:#c93a70;
+    --pink-bg:#fde7f2;
+    --mint:#0d9488;
+    --mint-bg:#dff5f1;
+    --amber:#d97706;
+    --amber-bg:#fdf0dc;
+    --gray:#6b7280;
+    --gray-bg:#eef0f4;
+
+    --radius:16px;
+    --maxw:1160px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    font-family:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    color:var(--ink);
+    background:var(--surface);
+    line-height:1.55;
+  }
+  img,svg{max-width:100%;display:block;}
+  a{color:inherit;}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px;}
+  h1,h2,h3,h4{font-family:"Manrope",sans-serif;font-weight:800;line-height:1.1;margin:0 0 .5em;color:var(--ink);letter-spacing:-.02em;}
+  h1{font-size:clamp(2.6rem,5.4vw,4.2rem);font-weight:800;}
+  h2{font-size:clamp(2.1rem,4.2vw,3.1rem);}
+  h3{font-size:1.3rem;margin-bottom:.5em;}
+  h4{font-size:1.05rem;margin-bottom:.3em;}
+  p{margin:0 0 1em;}
+  section{padding:88px 0;}
+  .section-white{background:var(--surface);}
+  .section-tint{background:var(--bg-alt);}
+  .section-dark{background:var(--ink);color:#e7e9f5;}
+  .section-dark h2,.section-dark h3,.section-dark h4{color:#fff;}
+  .section-gradient{background:linear-gradient(120deg,#a93312 0%,#c23c14 45%,#0f766e 100%);color:#fff;}
+  .section-gradient h2{color:#fff;}
+  .section-pricing{background:linear-gradient(180deg,#f3eeff 0%,#e5f6fb 100%);}
+  .lede{font-size:1.15rem;color:var(--ink-soft);max-width:640px;margin-bottom:1.5em;}
+  .section-dark .lede{color:#b6bcd8;}
+  .section-gradient .lede{color:#efeaff;}
+  .center{text-align:center;margin-left:auto;margin-right:auto;}
+  .cite{font-size:.62em;vertical-align:super;line-height:0;color:var(--indigo);font-weight:700;text-decoration:none;margin-left:1px;}
+  .eyebrow{display:inline-block;font-size:clamp(.95rem,1.6vw,1.05rem);font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--indigo);margin-bottom:20px;}
+  .section-dark .eyebrow{color:#c1aefc;}
+  .section-gradient .eyebrow{color:#e6dcff;}
+  .head-center{text-align:center;max-width:760px;margin:0 auto 48px;}
+  .head-center .lede{margin-left:auto;margin-right:auto;}
+  .subhead{font-family:"Manrope",sans-serif;font-weight:700;font-size:clamp(1.25rem,2.4vw,1.6rem);color:var(--ink-soft);margin:0 0 18px;}
+  .section-gradient .subhead{color:#efeaff;}
+
+  .color-strip{height:4px;background:linear-gradient(90deg,var(--indigo),var(--blue),var(--cyan),var(--violet),var(--pink));}
+
+  /* Buttons */
+  .btn{
+    display:inline-block;padding:16px 32px;border-radius:999px;font-weight:800;
+    text-decoration:none;font-size:1rem;border:1.5px solid transparent;
+    transition:transform .12s ease, box-shadow .12s ease;font-family:"Manrope",sans-serif;
+  }
+  .btn:hover{transform:translateY(-2px);}
+  .btn-primary{background:var(--indigo);color:#fff;box-shadow:0 10px 24px rgba(79,70,229,.28);}
+  .btn-primary:hover{background:var(--indigo-dark);box-shadow:0 12px 28px rgba(79,70,229,.34);}
+  .btn-outline{border-color:var(--line);color:var(--ink);}
+  .btn-outline:hover{border-color:var(--indigo);color:var(--indigo);}
+  .cta-note{font-size:.82rem;color:var(--ink-soft);margin-top:10px;}
+  .section-dark .cta-note{color:#8991b8;}
+  .section-gradient .btn-primary,.final-cta .btn-primary{background:#fff;color:var(--indigo);box-shadow:0 14px 30px rgba(16,21,43,.22);}
+  .section-gradient .btn-primary:hover,.final-cta .btn-primary:hover{background:#f2f4ff;}
+
+  /* Header */
+  header.site{position:sticky;top:0;z-index:30;background:rgba(245,247,252,.88);backdrop-filter:saturate(160%) blur(8px);border-bottom:1px solid var(--line);}
+  header.site .wrap{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:20px;padding-top:14px;padding-bottom:14px;}
+  .brand{font-family:"Manrope",sans-serif;font-weight:800;font-size:1.25rem;color:var(--ink);text-decoration:none;}
+  .brand span{background:linear-gradient(135deg,var(--indigo),var(--cyan));-webkit-background-clip:text;background-clip:text;color:transparent;}
+  header.site .btn{padding:10px 22px;font-size:.86rem;}
+  .nav-links{display:flex;gap:26px;font-size:.88rem;font-weight:600;color:var(--ink-soft);justify-self:center;}
+  .nav-links a{text-decoration:none;}
+  .nav-links a:hover{color:var(--indigo);}
+
+  /* Hero */
+  .hero{position:relative;overflow:hidden;padding:64px 0 60px;background:linear-gradient(180deg,#eef1fc 0%,var(--surface) 75%);}
+  .hero .wrap{position:relative;z-index:1;display:grid;grid-template-columns:1.05fr .95fr;gap:52px;align-items:center;}
+  .hero-visual-slot{min-height:440px;display:flex;align-items:center;justify-content:center;overflow:visible;}
+  .blob{position:absolute;border-radius:50%;filter:blur(90px);opacity:.16;z-index:0;pointer-events:none;}
+  .blob-1{width:520px;height:520px;background:var(--blue);top:-240px;right:-180px;}
+  .hero-actions{margin-top:28px;display:flex;flex-wrap:wrap;gap:14px;align-items:center;}
+  .trust-line{margin-top:22px;font-size:.82rem;color:var(--ink-soft);font-weight:600;}
+  .trust-line span{margin:0 4px;color:var(--line);}
+
+  /* Hero report stack */
+  .report-stack{position:relative;max-width:420px;margin:0 auto;height:440px;}
+  .stack-card{position:absolute;background:#fff;border-radius:16px;box-shadow:0 24px 50px rgba(16,21,43,.16);border:1px solid var(--line);padding:18px 20px;}
+  .stack-card .rp-tag{font-size:.6rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;margin-bottom:6px;}
+  .stack-card .rp-page-title{font-family:"Manrope",sans-serif;font-weight:800;font-size:.85rem;margin-bottom:12px;color:var(--ink);}
+  .card-back-left{top:64px;left:6px;width:260px;min-height:170px;transform:rotate(-2deg);z-index:1;opacity:.9;}
+  .card-back-right{top:40px;right:6px;width:260px;min-height:170px;transform:rotate(2deg);z-index:2;opacity:.95;}
+  .card-front{top:0;left:50%;transform:translateX(-50%) rotate(0deg);z-index:3;width:260px;min-height:190px;}
+  .rp-score-row{display:flex;justify-content:space-between;align-items:center;font-size:.74rem;padding:7px 0;border-bottom:1px solid var(--bg-alt);}
+  .rp-score-row .pill{font-size:.6rem;font-weight:800;padding:3px 9px;border-radius:999px;white-space:nowrap;}
+  .rp-mini-bars{display:flex;align-items:flex-end;gap:6px;height:64px;margin-top:4px;}
+  .rp-mini-bars .mbar{flex:1;border-radius:3px 3px 0 0;}
+  .rp-mini-timeline{position:relative;height:50px;display:flex;align-items:center;justify-content:space-between;padding:0 4px;}
+  .rp-mini-timeline::before{content:"";position:absolute;left:4px;right:4px;top:50%;height:2px;background:var(--line);}
+  .mt-dot{width:11px;height:11px;border-radius:50%;position:relative;z-index:1;}
+  .float-badge{
+    position:absolute;background:#fff;border-radius:999px;padding:10px 16px;
+    font-size:.72rem;font-weight:800;color:var(--ink);box-shadow:0 14px 30px rgba(16,21,43,.16);
+    display:flex;align-items:center;gap:8px;z-index:4;border:1px solid var(--line);white-space:nowrap;
+  }
+  .float-badge .fdot{width:8px;height:8px;border-radius:50%;flex:0 0 auto;}
+  .badge-1{top:-16px;left:-36px;transform:rotate(-3deg);}
+  .badge-2{bottom:36px;right:-40px;transform:rotate(3deg);}
+  .badge-3{bottom:-16px;left:20px;transform:rotate(-2deg);}
+
+  /* How it works */
+  .steps-row{display:grid;grid-template-columns:repeat(3,1fr);gap:40px;margin-top:16px;position:relative;}
+  .step-col{text-align:center;position:relative;}
+  .step-visual{width:112px;height:112px;border-radius:26px;margin:0 auto 22px;display:flex;align-items:center;justify-content:center;position:relative;}
+  .step-col h3{font-size:1.15rem;}
+  .step-col p{font-size:.92rem;color:var(--ink-soft);max-width:260px;margin:0 auto;}
+  .step-arrow{position:absolute;top:50px;right:-32px;width:64px;color:var(--line);z-index:1;}
+  /* mini illustrations */
+  .mini-browser{width:82px;background:#fff;border-radius:8px;box-shadow:0 8px 20px rgba(16,21,43,.1);overflow:hidden;}
+  .mini-browser .bar{display:flex;gap:3px;padding:6px 7px;background:var(--bg-alt);}
+  .mini-browser .bar span{width:5px;height:5px;border-radius:50%;background:var(--line);}
+  .mini-browser .body{padding:8px 8px 10px;}
+  .mini-browser .field{height:6px;border-radius:3px;background:var(--bg-alt);margin-bottom:6px;}
+  .mini-browser .submit{height:12px;width:60%;border-radius:6px;background:var(--indigo);margin-top:4px;}
+  .mini-scan{position:relative;width:78px;height:78px;}
+  .mini-scan .ring{position:absolute;border-radius:50%;border:2px solid;}
+  .mini-scan .r1{width:78px;height:78px;left:0;top:0;border-color:var(--blue-bg);}
+  .mini-scan .r2{width:56px;height:56px;left:11px;top:11px;border-color:var(--cyan-bg);}
+  .mini-scan .r3{width:34px;height:34px;left:22px;top:22px;border-color:var(--violet-bg);}
+  .mini-scan svg{position:absolute;top:24px;left:24px;width:30px;height:30px;}
+  .mini-report{width:78px;}
+  .mini-report .page{background:#fff;border-radius:6px;box-shadow:0 8px 20px rgba(16,21,43,.1);padding:8px;margin-bottom:0;}
+  .mini-report .row{height:5px;border-radius:3px;background:var(--bg-alt);margin-bottom:5px;}
+  .mini-report .check{display:flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:var(--mint);position:relative;margin:-14px auto 0;box-shadow:0 4px 10px rgba(13,148,136,.4);}
+
+  /* Search is changing / orbit6 */
+  .orbit6-wrap{max-width:520px;margin:44px auto 0;}
+  .orbit6{position:relative;width:100%;aspect-ratio:1/1;}
+  .orbit6-svg{position:absolute;inset:0;width:100%;height:100%;z-index:0;}
+  .orbit6-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:30%;height:30%;border-radius:50%;background:#fff;color:var(--indigo);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;font-family:"Manrope",sans-serif;font-weight:800;font-size:.8rem;box-shadow:0 0 0 7px rgba(255,255,255,.2),0 20px 46px rgba(0,0,0,.3);z-index:2;}
+  .orbit6-center svg{width:26px;height:26px;margin-bottom:4px;}
+  .orbit6-node{position:absolute;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:9px;z-index:1;}
+  .orbit6-node .circle{width:58px;height:58px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:#fff;box-shadow:0 12px 26px rgba(16,21,43,.22);}
+  .orbit6-node .circle svg{width:24px;height:24px;}
+  .orbit6-node span{font-size:.76rem;font-weight:700;color:#fff;white-space:nowrap;}
+
+  /* SEO still works — big stats */
+  .stat-trio{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;margin-top:16px;}
+  .stat-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:36px 20px;text-align:center;box-shadow:0 10px 28px rgba(16,21,43,.05);}
+  .stat-card .big{font-family:"Manrope",sans-serif;font-weight:800;font-size:clamp(2.4rem,5vw,3.2rem);line-height:1;margin-bottom:12px;}
+  .stat-card p{font-size:.98rem;color:var(--ink-soft);margin:0;}
+  .stat-foot{margin-top:32px;font-size:.88rem;color:var(--ink-soft);text-align:center;max-width:640px;margin-left:auto;margin-right:auto;}
+  .sources-block{margin-top:22px;font-size:.76rem;color:var(--gray);text-align:center;}
+  .sources-block a{color:var(--gray);text-decoration:underline;}
+
+  /* What's inside */
+  .report-row{display:flex;justify-content:center;align-items:stretch;gap:20px;margin:12px 0 64px;flex-wrap:wrap;}
+  .report-row .report-page{
+    background:var(--surface);border:1px solid var(--line);border-top:5px solid var(--line);border-radius:14px;
+    padding:20px;box-shadow:0 16px 34px rgba(16,21,43,.08);width:230px;height:220px;position:relative;
+    display:flex;flex-direction:column;
+  }
+  .rp-tag{font-size:.62rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;margin-bottom:6px;}
+  .rp-page-title{font-family:"Manrope",sans-serif;font-weight:800;font-size:.9rem;margin-bottom:14px;color:var(--ink);}
+
+  .module-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:26px;}
+  .module-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:32px 34px;box-shadow:0 10px 28px rgba(16,21,43,.05);}
+  .module-icon{width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;margin-bottom:18px;}
+  .module-icon svg{width:26px;height:26px;}
+  .module-card .cluster-num{display:inline-block;font-size:.68rem;font-weight:800;letter-spacing:.04em;text-transform:uppercase;margin-bottom:10px;padding:5px 12px;border-radius:999px;}
+  .module-card h3{margin-bottom:14px;}
+  .module-card ul{margin:0;list-style:none;padding:0;display:flex;flex-wrap:wrap;gap:8px;}
+  .module-card li{background:var(--bg-alt);color:var(--ink-soft);font-size:.82rem;font-weight:600;padding:7px 13px;border-radius:999px;}
+
+  /* Methodology */
+  .method-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:16px;margin-top:16px;}
+  .method-card{border-radius:14px;padding:22px 18px;}
+  .method-card .tag{display:inline-block;font-size:.74rem;font-weight:800;letter-spacing:.03em;padding:5px 12px;border-radius:999px;margin-bottom:12px;}
+  .method-card p{font-size:.86rem;color:#c3cae2;margin:0;}
+
+  /* Timeline */
+  .timeline{display:flex;position:relative;margin-top:52px;padding-top:6px;gap:12px;}
+  .timeline-road{position:absolute;top:0px;left:0;width:100%;height:60px;z-index:0;pointer-events:none;}
+  .timeline-step{flex:1;text-align:center;position:relative;padding:0 6px;}
+  .timeline-dot{width:38px;height:38px;border-radius:11px;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.9rem;font-family:"Manrope",sans-serif;margin:0 auto 18px;position:relative;z-index:1;border:5px solid var(--surface);box-shadow:0 6px 16px rgba(16,21,43,.14);}
+  .timeline-step h4{margin:0 0 6px;font-size:1rem;}
+  .timeline-step p{font-size:.84rem;color:var(--ink-soft);margin:0;}
+  .timeline-note{margin-top:14px;}
+
+  /* Who this is for */
+  .fit-split{display:grid;grid-template-columns:.85fr 1.15fr;gap:56px;align-items:start;}
+  .fit-cards{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+  .fit-usecase{border-radius:var(--radius);padding:26px 24px;border:1px solid var(--line);}
+  .fit-usecase .fu-icon{width:40px;height:40px;border-radius:11px;display:flex;align-items:center;justify-content:center;margin-bottom:14px;}
+  .fit-usecase .fu-icon svg{width:20px;height:20px;}
+  .fit-usecase p{font-size:.9rem;color:var(--ink-soft);margin:0;}
+
+  /* Value / pricing */
+  .value-box{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:40px 44px 0;margin:16px auto 0;max-width:640px;overflow:hidden;box-shadow:0 24px 60px rgba(16,21,43,.1);text-align:center;}
+  .value-list{list-style:none;margin:0;padding:0;}
+  .value-list li{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:14px 0;border-bottom:1px solid var(--bg-alt);font-size:.98rem;}
+  .value-list li .vi-name{display:flex;align-items:center;gap:10px;color:var(--ink);font-weight:600;}
+  .value-list li .vi-check{width:20px;height:20px;border-radius:6px;background:var(--mint-bg);color:var(--mint);font-size:.7rem;font-weight:800;display:flex;align-items:center;justify-content:center;flex:0 0 auto;}
+  .value-list li .vi-price{color:var(--gray);font-weight:600;font-size:.84rem;white-space:nowrap;}
+  .value-list li .vi-sub{display:block;font-size:.78rem;font-weight:400;color:var(--ink-soft);margin-top:2px;}
+  .value-total{display:flex;justify-content:space-between;align-items:center;padding:18px 0;border-top:2px solid var(--line);margin-top:2px;font-size:.94rem;color:var(--ink-soft);}
+  .value-total b{font-family:"Manrope",sans-serif;text-decoration:line-through;font-weight:700;}
+  .value-price{display:flex;flex-direction:column;align-items:center;text-align:center;background:linear-gradient(135deg,var(--indigo-bg),var(--cyan-bg));margin:0 -44px;padding:28px 30px 32px;}
+  .value-price span{font-weight:700;color:var(--ink-soft);font-size:.86rem;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px;}
+  .value-price b{font-family:"Manrope",sans-serif;font-size:clamp(3.2rem,7vw,4.4rem);color:var(--indigo);line-height:1;}
+  .value-price .sub{font-size:.86rem;color:var(--ink-soft);font-weight:600;margin-top:8px;text-transform:none;letter-spacing:0;}
+  .value-box .btn{margin:24px 0 8px;}
+  .value-box .cta-note{padding-bottom:28px;}
+
+  .scope-grid{display:grid;grid-template-columns:1fr 1fr;gap:32px;margin-top:48px;max-width:640px;margin-left:auto;margin-right:auto;}
+  .scope-grid h3{text-align:center;}
+  .scope-list{margin:0;padding:0;list-style:none;}
+  .scope-list li{margin-bottom:9px;padding-left:26px;position:relative;font-size:.92rem;}
+  .scope-list.yes li::before{content:"✓";position:absolute;left:0;color:var(--mint);font-weight:800;}
+  .scope-list.no li::before{content:"–";position:absolute;left:2px;color:var(--gray);font-weight:800;}
+  .scope-list.no li{color:var(--ink-soft);}
+
+  /* FAQ */
+  .faq-list{max-width:720px;margin:0 auto;}
+  details{border-bottom:1px solid var(--line);padding:18px 2px;}
+  details summary{cursor:pointer;font-weight:700;color:var(--ink);list-style:none;display:flex;justify-content:space-between;align-items:center;gap:16px;font-family:"Manrope",sans-serif;font-size:1.02rem;}
+  details summary::-webkit-details-marker{display:none;}
+  details summary::after{content:"+";font-size:1.3rem;color:var(--indigo);font-weight:400;flex:0 0 auto;}
+  details[open] summary::after{content:"–";}
+  details p{margin-top:10px;color:var(--ink-soft);font-size:.94rem;}
+
+  /* Final CTA */
+  .final-cta{background:linear-gradient(120deg,#a93312,#c23c14 45%,#0f766e);color:#fff;text-align:center;padding:96px 0;}
+  .final-cta h2{color:#fff;}
+  .final-cta .lede{margin:0 auto 30px;color:#efeaff;}
+
+  footer{padding:36px 0;font-size:.84rem;color:var(--ink-soft);background:var(--surface);border-top:1px solid var(--line);}
+  footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;}
+
+  @media (min-width:901px) and (max-width:1100px){
+    .stat-trio{grid-template-columns:repeat(2,1fr);}
+  }
+  @media (max-width:900px){
+    .hero .wrap{grid-template-columns:1fr;}
+    .hero-visual-slot{display:none;}
+    .nav-links{display:none;}
+    header.site .wrap{grid-template-columns:auto auto;}
+    .steps-row{grid-template-columns:1fr;gap:56px;}
+    .step-arrow{display:none;}
+    .stat-trio{grid-template-columns:1fr;gap:20px;}
+    .module-grid{grid-template-columns:1fr;}
+    .method-grid{grid-template-columns:repeat(2,1fr);}
+    .fit-split{grid-template-columns:1fr;gap:32px;}
+    .fit-cards{grid-template-columns:1fr 1fr;}
+    .scope-grid{grid-template-columns:1fr;}
+    .report-row{gap:14px;}
+    .timeline{flex-direction:column;gap:28px;align-items:flex-start;}
+    .timeline-road{display:none;}
+    .timeline::before{content:"";position:absolute;top:0;bottom:0;left:18px;right:auto;width:3px;height:auto;background:var(--line);z-index:0;}
+    .timeline-step{text-align:left;padding-left:56px;}
+    .timeline-dot{position:absolute;left:0;margin:0;}
+  }
+  @media (max-width:560px){
+    .fit-cards{grid-template-columns:1fr;}
+    section{padding:64px 0;}
+  }
+</style>
+
+
+
+<style id="scrolly-audit-flow-v2">body.page-id-16 #content.site-main,body.page-id-16 #content .page-content{margin-top:0!important;padding-top:0!important}.hero-actions .cta-link{display:inline-flex!important;align-items:center!important;color:var(--indigo)!important;font-weight:750!important;text-decoration:none!important;background:transparent!important;border:0!important;padding:8px 2px!important}.hero-actions .cta-link:hover{text-decoration:underline!important}</style><section class="hero" id="top">
+  <div class="blob blob-1"></div>
+  <div class="wrap">
+    <div>
+      <h1>Find out how to increase your traffic, without paying for clicks.</h1>
+      <p class="lede">A prioritized expert audit of your website, competitors, technical performance, content, and search opportunities.</p>
+      <div class="hero-actions">
+        <a href="https://scrollyseo.com/checkout/?add-to-cart=24" class="btn btn-primary">Purchase the SEO Audit</a>
+        <a href="#inside" class="cta-link">See a sample ↓</a>
+        <a href="#lm-inline-audit" class="cta-link">Not ready yet? Start with the free scorecard.</a>
+      </div>
+      <p class="trust-line">29-section custom analysis<span>•</span>Delivered within 2 business days<span>•</span>Every finding sourced</p>
+    </div>
+    <div class="hero-visual-slot"><img src="https://scrollyseo.com/wp-content/uploads/2026/08/homepage-seo-computer-hero-v2.png" alt="Desktop website review with layered SEO audit pages and recommendations" style="width:125%;max-width:none;margin-left:-12%;border:0;filter:drop-shadow(0 26px 34px rgba(16,21,43,.18))"></div>
+  </div>
+</section>
+
+<section class="section-white">
+  <div class="wrap">
+    <div class="head-center">
+      <div class="eyebrow">Search Still Sells</div>
+      <h2>Organic search still reaches people already looking for what you sell.</h2>
+    </div>
+    <div class="stat-trio">
+      <div class="stat-card">
+        <div class="big" style="color:var(--blue);">54.4%</div>
+        <p>of all clicks go to the top three organic results.<a class="cite" href="#sources">[2]</a></p>
+      </div>
+      <div class="stat-card">
+        <div class="big" style="color:var(--mint);">9×</div>
+        <p>higher close rate for search-driven leads vs. outbound.<a class="cite" href="#sources">[2]</a></p>
+      </div>
+      <div class="stat-card">
+        <div class="big" style="color:var(--violet);">1,000%+</div>
+        <p>more traffic from organic search than organic social.<a class="cite" href="#sources">[2]</a></p>
+      </div>
+      <div class="stat-card">
+        <div class="big" style="color:var(--indigo);">70%</div>
+        <p>of marketers say SEO beats PPC for driving sales, and 60% call inbound/SEO their best source of high-quality leads.<a class="cite" href="#sources">[2]</a></p>
+      </div>
+    </div>
+
+    <p class="sources-block" id="sources">Sources: Semrush, <a href="https://www.semrush.com/blog/ai-seo-statistics/" target="_blank" rel="noopener">"AI SEO Statistics"</a> · Intergrowth, <a href="https://intergrowth.com/seo/stats/" target="_blank" rel="noopener">"SEO Statistics"</a></p>
+  </div>
+</section>
+
+<section class="section-gradient" id="why-now">
+  <div class="wrap">
+    <div class="head-center">
+      <h2>Search has changed.</h2>
+      <p class="subhead center">Your customers aren't just searching Google anymore.</p>
+      <p class="lede center">Nearly 35% of Gen Z already ask an AI instead of Googling, and the average AI-search visitor is worth 4.4x a traditional organic one.<a class="cite" href="#sources" style="color:#e6dcff;">[1]</a></p>
+    </div>
+
+    <div class="orbit6-wrap">
+      <div class="orbit6">
+        <svg class="orbit6-svg" viewBox="0 0 100 100">
+          <line x1="50" y1="50" x2="50" y2="10" stroke="rgba(255,255,255,.28)" stroke-width="1"/>
+          <line x1="50" y1="50" x2="84.6" y2="30" stroke="rgba(255,255,255,.28)" stroke-width="1"/>
+          <line x1="50" y1="50" x2="84.6" y2="70" stroke="rgba(255,255,255,.28)" stroke-width="1"/>
+          <line x1="50" y1="50" x2="50" y2="90" stroke="rgba(255,255,255,.28)" stroke-width="1"/>
+          <line x1="50" y1="50" x2="15.4" y2="70" stroke="rgba(255,255,255,.28)" stroke-width="1"/>
+          <line x1="50" y1="50" x2="15.4" y2="30" stroke="rgba(255,255,255,.28)" stroke-width="1"/>
+        </svg>
+        <div class="orbit6-center">
+          <svg viewBox="0 0 24 24" fill="none" stroke="var(--indigo)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21V9l9-6 9 6v12"/><path d="M9 21v-6h6v6"/></svg>
+          Your Business
+        </div>
+        <div class="orbit6-node" style="top:10%;left:50%;">
+          <div class="circle"><svg viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.5 3.5 6 3.5 9s-1 6.5-3.5 9c-2.5-2.5-3.5-6-3.5-9s1-6.5 3.5-9Z"/></svg></div>
+          <span>Google</span>
+        </div>
+        <div class="orbit6-node" style="top:30%;left:84.6%;">
+          <div class="circle"><svg viewBox="0 0 24 24" fill="none" stroke="var(--mint)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11Z"/><circle cx="12" cy="10" r="2.4"/></svg></div>
+          <span>Maps</span>
+        </div>
+        <div class="orbit6-node" style="top:70%;left:84.6%;">
+          <div class="circle"><svg viewBox="0 0 24 24" fill="none" stroke="var(--violet)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="5" width="16" height="12" rx="2"/><circle cx="9" cy="10" r="1.2" fill="var(--violet)" stroke="none"/><circle cx="15" cy="10" r="1.2" fill="var(--violet)" stroke="none"/><line x1="12" y1="3" x2="12" y2="5"/></svg></div>
+          <span>AI Overviews</span>
+        </div>
+        <div class="orbit6-node" style="top:90%;left:50%;">
+          <div class="circle"><svg viewBox="0 0 24 24" fill="none" stroke="var(--pink)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-8.5 8.4 8.5 8.5 0 0 1-4-1L3 20l1.1-5.4A8.4 8.4 0 1 1 21 11.5Z"/></svg></div>
+          <span>AI Chat</span>
+        </div>
+        <div class="orbit6-node" style="top:70%;left:15.4%;">
+          <div class="circle"><svg viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="10 8 16 12 10 16 10 8"/><rect x="3" y="4" width="18" height="16" rx="3"/></svg></div>
+          <span>YouTube</span>
+        </div>
+        <div class="orbit6-node" style="top:30%;left:15.4%;">
+          <div class="circle"><svg viewBox="0 0 24 24" fill="none" stroke="var(--cyan)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"/></svg></div>
+          <span>Social Search</span>
+        </div>
+      </div>
+    </div>
+
+    <p class="lede center" style="margin:40px auto 0;color:#efeaff;">Your audit looks across the places customers actually discover businesses now, not just traditional Google rankings.</p>
+  </div>
+</section>
+
+<section class="section-tint" id="inside">
+  <div class="wrap">
+    <div class="head-center">
+      <div class="eyebrow">What You Get</div>
+      <h2>Your Personalized SEO Site Audit</h2>
+      <p class="lede center">29 sections. Hundreds of data points. Every finding sourced. Every opportunity prioritized.</p>
+    </div>
+
+    <div class="report-row">
+      <div class="report-page" style="border-top-color:var(--blue);">
+        <div class="rp-tag" style="color:var(--blue);">Page 01</div>
+        <div class="rp-page-title">Where You Stand</div>
+        <div class="rp-score-row"><span>Technical</span><span class="pill" style="background:var(--mint-bg);color:var(--mint);font-size:.6rem;font-weight:800;padding:3px 8px;border-radius:999px;">Strong</span></div>
+        <div class="rp-score-row"><span>On-Page</span><span class="pill" style="background:var(--amber-bg);color:var(--amber);font-size:.6rem;font-weight:800;padding:3px 8px;border-radius:999px;">Needs Work</span></div>
+        <div class="rp-score-row" style="border-bottom:none;"><span>Backlinks</span><span class="pill" style="background:var(--pink-bg);color:var(--pink);font-size:.6rem;font-weight:800;padding:3px 8px;border-radius:999px;">Critical</span></div>
+      </div>
+      <div class="report-page" style="border-top-color:var(--cyan);">
+        <div class="rp-tag" style="color:var(--cyan);">Page 02</div>
+        <div class="rp-page-title">The Opportunity</div>
+        <div class="rp-mini-bars">
+          <div class="mbar" style="height:30%;background:var(--cyan-bg);"></div>
+          <div class="mbar" style="height:70%;background:var(--cyan);"></div>
+          <div class="mbar" style="height:50%;background:var(--cyan-bg);"></div>
+          <div class="mbar" style="height:85%;background:var(--cyan);"></div>
+          <div class="mbar" style="height:40%;background:var(--cyan-bg);"></div>
+        </div>
+      </div>
+      <div class="report-page" style="border-top-color:var(--pink);">
+        <div class="rp-tag" style="color:var(--pink);">Page 03</div>
+        <div class="rp-page-title">What To Build</div>
+        <div style="display:flex;align-items:center;gap:8px;font-size:.72rem;color:var(--ink-soft);padding:4px 0;"><span style="width:13px;height:13px;border-radius:4px;background:var(--pink);flex:0 0 auto;"></span>Homepage rebuild</div>
+        <div style="display:flex;align-items:center;gap:8px;font-size:.72rem;color:var(--ink-soft);padding:4px 0;"><span style="width:13px;height:13px;border-radius:4px;background:var(--pink);flex:0 0 auto;"></span>4 service pages</div>
+        <div style="display:flex;align-items:center;gap:8px;font-size:.72rem;color:var(--ink-soft);padding:4px 0;"><span style="width:13px;height:13px;border-radius:4px;background:var(--pink);flex:0 0 auto;"></span>12 content pieces</div>
+      </div>
+      <div class="report-page" style="border-top-color:var(--violet);">
+        <div class="rp-tag" style="color:var(--violet);">Page 04</div>
+        <div class="rp-page-title">The Plan</div>
+        <div class="rp-mini-timeline">
+          <span class="mt-dot" style="background:var(--violet);"></span>
+          <span class="mt-dot" style="background:var(--violet);"></span>
+          <span class="mt-dot" style="background:var(--violet);"></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="module-grid">
+      <div class="module-card">
+        <div class="module-icon" style="background:var(--blue-bg);"><svg viewBox="0 0 24 24" fill="none" stroke="#5a44e6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M9 9h6v6H9z"/></svg></div>
+        <span class="cluster-num" style="background:var(--blue-bg);color:var(--blue);">Where you stand</span>
+        <h3>The honest starting point</h3>
+        <ul>
+          <li>Executive Summary</li>
+          <li>Current Wins</li>
+          <li>Technical SEO Audit</li>
+          <li>Performance Testing</li>
+          <li>Measurement Readiness</li>
+        </ul>
+      </div>
+      <div class="module-card">
+        <div class="module-icon" style="background:var(--cyan-bg);"><svg viewBox="0 0 24 24" fill="none" stroke="#0f766e" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.2" y2="16.2"/></svg></div>
+        <span class="cluster-num" style="background:var(--cyan-bg);color:var(--cyan);">Where the opportunity is</span>
+        <h3>What demand actually exists</h3>
+        <ul>
+          <li>Keyword Opportunity Map</li>
+          <li>Ranking Difficulty</li>
+          <li>AI Overviews &amp; Zero-Click Risk</li>
+          <li>Competitive Landscape</li>
+          <li>Local &amp; GBP Analysis</li>
+        </ul>
+      </div>
+      <div class="module-card">
+        <div class="module-icon" style="background:var(--pink-bg);"><svg viewBox="0 0 24 24" fill="none" stroke="#c93a70" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10l8-6 8 6v10"/><path d="M9 20v-7h6v7"/></svg></div>
+        <span class="cluster-num" style="background:var(--pink-bg);color:var(--pink);">What to build</span>
+        <h3>Concrete steps, not a checklist</h3>
+        <ul>
+          <li>Site &amp; Page Architecture</li>
+          <li>Conversion Readiness</li>
+          <li>Content Opportunity Map</li>
+          <li>Backlink &amp; Authority Analysis</li>
+          <li>AI Discovery &amp; Entity Readiness</li>
+        </ul>
+      </div>
+      <div class="module-card">
+        <div class="module-icon" style="background:var(--violet-bg);"><svg viewBox="0 0 24 24" fill="none" stroke="#7c3aed" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19h16M4 19V9l5-4 5 4v10M14 19v-6h6v6"/></svg></div>
+        <span class="cluster-num" style="background:var(--violet-bg);color:var(--violet);">Your growth plan</span>
+        <h3>What to expect, and when</h3>
+        <ul>
+          <li>Traffic Scenarios</li>
+          <li>Business Impact</li>
+          <li>Quick Wins</li>
+          <li>30/60/90-Day Roadmap</li>
+          <li>Measurement Checkpoints</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section-dark">
+  <div class="wrap">
+    <div class="head-center">
+      <div class="eyebrow">Methodology</div>
+      <h2>Every finding, clearly explained.</h2>
+      <p class="lede center">Every finding is labeled by exactly how it was derived, so you always know what's fact and what's judgment.</p>
+    </div>
+
+    <div class="method-grid">
+      <div class="method-card" style="background:rgba(37,99,235,.16);border:1px solid rgba(37,99,235,.35);">
+        <span class="tag" style="background:var(--blue);color:#fff;">Observed</span>
+        <p>We analyzed it directly.</p>
+      </div>
+      <div class="method-card" style="background:rgba(8,145,178,.18);border:1px solid rgba(8,145,178,.35);">
+        <span class="tag" style="background:var(--cyan);color:#fff;">Retrieved</span>
+        <p>Pulled from real data sources.</p>
+      </div>
+      <div class="method-card" style="background:rgba(124,58,237,.18);border:1px solid rgba(124,58,237,.4);">
+        <span class="tag" style="background:var(--violet);color:#fff;">Calculated</span>
+        <p>Calculated from retrieved data.</p>
+      </div>
+      <div class="method-card" style="background:rgba(219,39,119,.16);border:1px solid rgba(219,39,119,.35);">
+        <span class="tag" style="background:var(--pink);color:#fff;">Inference</span>
+        <p>Our analysis, clearly labeled as judgment.</p>
+      </div>
+      <div class="method-card" style="background:rgba(107,114,128,.2);border:1px solid rgba(107,114,128,.4);">
+        <span class="tag" style="background:var(--gray);color:#fff;">Pending</span>
+        <p>Not verified, and clearly marked.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section-white" id="how-it-works">
+  <div class="wrap">
+    <div class="head-center">
+      <div class="eyebrow">How It Works</div>
+      <h2>From your website to a prioritized growth plan, delivered within 2 business days.</h2>
+    </div>
+    <div class="steps-row">
+      <div class="step-col">
+        <div class="step-visual" style="background:var(--blue-bg);">
+          <div class="mini-browser">
+            <div class="bar"><span></span><span></span><span></span></div>
+            <div class="body">
+              <div class="field"></div>
+              <div class="field" style="width:70%;"></div>
+              <div class="submit"></div>
+            </div>
+          </div>
+        </div>
+        <svg class="step-arrow" viewBox="0 0 64 24" fill="none"><path d="M2 12h54M48 4l10 8-10 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <h3>Tell us about your business</h3>
+        <p>Website + location. Two minutes, that's it.</p>
+      </div>
+      <div class="step-col">
+        <div class="step-visual" style="background:var(--violet-bg);">
+          <div class="mini-scan">
+            <div class="ring r1"></div>
+            <div class="ring r2"></div>
+            <div class="ring r3"></div>
+            <svg viewBox="0 0 24 24" fill="none" stroke="#7c3aed" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.2" y2="16.2"/></svg>
+          </div>
+        </div>
+        <svg class="step-arrow" viewBox="0 0 64 24" fill="none"><path d="M2 12h54M48 4l10 8-10 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <h3>We analyze your search presence</h3>
+        <p>Technical crawl, keyword research, local check, AI-discovery read, every finding labeled as we go.</p>
+      </div>
+      <div class="step-col">
+        <div class="step-visual" style="background:var(--mint-bg);">
+          <div class="mini-report">
+            <div class="page">
+              <div class="row" style="width:90%;"></div>
+              <div class="row" style="width:70%;"></div>
+              <div class="row" style="width:80%;"></div>
+              <div class="row" style="width:55%;margin-bottom:0;"></div>
+            </div>
+            <div class="check"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+          </div>
+        </div>
+        <h3>Get your growth roadmap</h3>
+        <p>A full written report + appendix, straight to your inbox within 2 business days.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section-white">
+  <div class="wrap">
+    <div class="head-center">
+      <div class="eyebrow">Your Roadmap</div>
+      <h2>29 sections of analysis. One clear path forward.</h2>
+      <p class="lede center">Your findings are prioritized into a practical roadmap you can work through day by day and week by week, starting with the actions most likely to matter first.</p>
+    </div>
+
+    <div class="timeline">
+      <svg class="timeline-road" viewBox="0 0 1000 60" preserveAspectRatio="none">
+        <path d="M0,32 C120,10 220,54 340,30 C460,6 560,54 660,30 C780,6 880,54 1000,28" stroke="var(--indigo)" stroke-width="28" fill="none" stroke-linecap="round" opacity=".12"/>
+        <path d="M0,32 C120,10 220,54 340,30 C460,6 560,54 660,30 C780,6 880,54 1000,28" stroke="#fff" stroke-width="3" stroke-dasharray="9 11" fill="none" stroke-linecap="round" opacity=".55"/>
+      </svg>
+      <div class="timeline-step">
+        <div class="timeline-dot" style="background:var(--blue);">1</div>
+        <h4>Week 1</h4>
+        <p>Tracking set up + critical fixes</p>
+      </div>
+      <div class="timeline-step">
+        <div class="timeline-dot" style="background:var(--cyan);">2</div>
+        <h4>Week 2</h4>
+        <p>On-page + Google Business Profile</p>
+      </div>
+      <div class="timeline-step">
+        <div class="timeline-dot" style="background:var(--violet);">3</div>
+        <h4>Weeks 3–4</h4>
+        <p>Highest-priority page, built</p>
+      </div>
+      <div class="timeline-step">
+        <div class="timeline-dot" style="background:var(--pink);">4</div>
+        <h4>Weeks 5–8</h4>
+        <p>Core pages + first content</p>
+      </div>
+      <div class="timeline-step">
+        <div class="timeline-dot" style="background:var(--indigo);">5</div>
+        <h4>Weeks 9–13</h4>
+        <p>Content + authority + new markets</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="fit-split">
+      <div>
+        <div class="eyebrow">Who This Is For</div>
+        <h2 style="font-size:clamp(1.9rem,3.4vw,2.5rem);">Built for business owners who need answers before spending more.</h2>
+        <p class="lede">Whether you're protecting an existing site or starting from scratch, the audit gives you a real read before you commit budget.</p>
+      </div>
+      <div class="fit-cards">
+        <div class="fit-usecase" style="background:var(--blue-bg);border-color:transparent;">
+          <div class="fu-icon" style="background:#fff;"><svg viewBox="0 0 24 24" fill="none" stroke="#5a44e6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21V9l9-6 9 6v12"/><path d="M9 21v-6h6v6"/></svg></div>
+          <p>You have an existing site and want proof before spending more on marketing</p>
+        </div>
+        <div class="fit-usecase" style="background:var(--cyan-bg);border-color:transparent;">
+          <div class="fu-icon" style="background:#fff;"><svg viewBox="0 0 24 24" fill="none" stroke="#0f766e" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg></div>
+          <p>You're building a new site or location and want a real structure to start from</p>
+        </div>
+        <div class="fit-usecase" style="background:var(--violet-bg);border-color:transparent;">
+          <div class="fu-icon" style="background:#fff;"><svg viewBox="0 0 24 24" fill="none" stroke="#7c3aed" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.2" y2="16.2"/></svg></div>
+          <p>You're evaluating a new market and need a real go/no-go read</p>
+        </div>
+        <div class="fit-usecase" style="background:var(--pink-bg);border-color:transparent;">
+          <div class="fu-icon" style="background:#fff;"><svg viewBox="0 0 24 24" fill="none" stroke="#c93a70" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div>
+          <p>You want a plan your dev, freelancer, or team can actually execute</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section-pricing" id="get-started">
+  <div class="wrap">
+    <div class="head-center">
+      <div class="eyebrow">One Audit. One Price.</div>
+      <h2>Get the research. Know exactly where to invest next.</h2>
+    </div>
+
+    <div class="value-box">
+      <ul class="value-list">
+        <li><span class="vi-name"><span class="vi-check">✓</span>Technical Site Analysis</span><span class="vi-price">$450</span></li>
+        <li><span class="vi-name"><span class="vi-check">✓</span>Keyword + Search Opportunity Research</span><span class="vi-price">$250</span></li>
+        <li><span class="vi-name"><span class="vi-check">✓</span>Competitor Analysis</span><span class="vi-price">$150</span></li>
+        <li><span class="vi-name"><span class="vi-check">✓</span>Content Opportunity Map<span class="vi-sub">Up to 400 ideas, sized to evidence</span></span><span class="vi-price">$500</span></li>
+        <li><span class="vi-name"><span class="vi-check">✓</span>Local + AI Search Analysis</span><span class="vi-price">$150</span></li>
+        <li><span class="vi-name"><span class="vi-check">✓</span>Prioritized 30/60/90-Day Growth Roadmap</span><span class="vi-price">$200</span></li>
+      </ul>
+      <div class="value-total"><span>Typical cost, hired separately</span><b>$1,700</b></div>
+      <div class="value-price">
+        <span>Your price today</span>
+        <b>$299</b>
+        <div class="sub">One-time payment. No subscription.</div>
+      </div>
+      <a href="https://scrollyseo.com/checkout/?add-to-cart=24" class="btn btn-primary">Purchase the SEO Audit</a>
+      <p class="cta-note"><!-- TODO: replace this href with the live Tally intake form link once it's set up --> After payment, submit our short intake form to initiate the process. You'll receive your completed site audit in two business days or less.</p>
+    </div>
+
+    <div class="scope-grid">
+      <div>
+        <h3 style="font-size:1.1rem;">What's included</h3>
+        <ul class="scope-list yes">
+          <li>Full SEO Site Audit + appendix, all 29 sections</li>
+          <li>Technical, competitive, content, and local analysis</li>
+          <li>Prioritized 30/60/90-day roadmap</li>
+          <li>Delivered within 2 business days</li>
+        </ul>
+      </div>
+      <div>
+        <h3 style="font-size:1.1rem;">Not included</h3>
+        <ul class="scope-list no">
+          <li>Full website implementation or redesign</li>
+          <li>Writing every recommended page or blog post</li>
+          <li>Ongoing SEO management or link building</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section-white" id="faq">
+  <div class="wrap">
+    <div class="head-center">
+      <h2>Questions? We've got answers.</h2>
+    </div>
+    <div class="faq-list">
+      <details>
+        <summary>How is this different from a free SEO audit tool?</summary>
+        <p>Free tools dump raw data and leave you to interpret it. This turns it into decisions (what to fix, what to build, in what order), with every finding labeled by how it was produced.</p>
+      </details>
+      <details>
+        <summary>Do I need to give you Analytics or Search Console access?</summary>
+        <p>Helps, not required. Only your domain and location are needed. GA4/GSC access improves confidence on the measurement sections.</p>
+      </details>
+      <details>
+        <summary>What if I don't have a website yet?</summary>
+        <p>You'll get an evidence-based starting structure and keyword strategy instead of an audit of an existing site.</p>
+      </details>
+      <details>
+        <summary>How long does delivery take?</summary>
+        <p>Within 2 business days of a completed intake form and payment.</p>
+      </details>
+      <details>
+        <summary>Do you guarantee rankings?</summary>
+        <p>No, nobody honestly can. You get range-based scenarios with the assumptions shown, not a guarantee.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<section class="final-cta">
+  <div class="wrap">
+    <h2>Stop guessing, and start growing with SEO!</h2>
+    <p class="lede center">Every finding sourced. Delivered within 2 business days.</p>
+    <a href="https://scrollyseo.com/checkout/?add-to-cart=24" class="btn btn-primary">Purchase the SEO Audit</a>
+  </div>
+</section>
+
+
+<style>a:focus-visible,button:focus-visible,summary:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:4px solid #f59e0b!important;outline-offset:3px!important}@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;animation:none!important;transition:none!important}}@media(forced-colors:active){a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid Highlight!important}}</style>
+
+<!-- MailerLite Universal -->
+<script>
+    (function(w,d,e,u,f,l,n){w[f]=w[f]||function(){(w[f].q=w[f].q||[])
+    .push(arguments);},l=d.createElement(e),l.async=1,l.src=u,
+    n=d.getElementsByTagName(e)[0],n.parentNode.insertBefore(l,n);})
+    (window,document,'script','https://assets.mailerlite.com/js/universal.js','ml');
+    ml('account', '2596740');
+</script>
+<!-- End MailerLite Universal -->
+
+<section class="section-tint lm-o-section" id="lm-inline-audit" aria-labelledby="lm-o-heading"><div class="wrap"><div class="lm-o-layout"><div class="lm-o-copy"><span class="eyebrow lm-o-badge">FREE RESOURCE</span><h2 id="lm-o-heading"><span>Want to see where your</span><span>site stands right now?</span></h2><i class="lm-o-rule" aria-hidden="true"></i><p class="lm-o-intro">Check 10 areas of your website to identify visible organic-search gaps, what you can evaluate yourself, and where deeper data or analysis is needed.</p><div class="lm-o-benefits"><div class="lm-o-benefit"><b><svg viewBox="0 0 24 24"><path d="M8 4h8v3H8zM6 6H4v15h16V6h-2M8 12l2 2 4-4M8 18h8"/></svg></b><p><strong>10 areas of your site</strong>Review search visibility, structure, content, technical foundations, local search, authority, AI discovery, measurement, and more.</p></div><div class="lm-o-benefit"><b><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M12 7v5l3 2"/></svg></b><p><strong>30–40 minutes</strong>A focused self-assessment you can complete in one sitting.</p></div><div class="lm-o-benefit"><b><svg viewBox="0 0 24 24"><path d="M7 3h7l4 4v14H7zM14 3v5h5M10 13h5M10 17h5"/></svg></b><p><strong>Instant PDF</strong>Get the scorecard immediately and start identifying your lowest-scoring areas.</p></div></div></div><div class="lm-o-card"><div class="lm-o-cover s3-cover" role="img" aria-label="Cover of the Organic Traffic Opportunity Scorecard"><span class="c-top" aria-hidden="true"><span>ScrollySEO</span><b class="c-num">10<small>AREAS</small></b></span><span class="c-title" aria-hidden="true">The Organic Traffic Opportunity Scorecard</span><span class="c-foot" aria-hidden="true">Free PDF</span></div><div class="lm-o-form"><h3><span>Get the Free Organic</span><span>Traffic Opportunity Scorecard</span></h3><p>Enter your email and get immediate access to the PDF.</p><div class="ml-embedded" data-form="nKe7Rs"></div><p class="lm-o-privacy"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="10" width="12" height="10" rx="2"/><path d="M9 10V7a3 3 0 0 1 6 0v3"/></svg> We respect your privacy. <a href="/privacy/">Unsubscribe</a> anytime.</p></div></div></div></div></section>
+
+<script id="scrolly-organic-button-runtime-v4">
+(function(){
+  var root=document.getElementById('lm-inline-audit');
+  if(!root)return;
+  function blueButton(){
+    var buttons=root.querySelectorAll('button[type="submit"],input[type="submit"],.ml-form-embedSubmit button,.ml-block-form-submit');
+    buttons.forEach(function(button){
+      if(button.style.getPropertyValue('background-color')!=='#ff4b16'){
+        button.style.setProperty('background','#ff4b16','important');
+        button.style.setProperty('background-color','#ff4b16','important');
+        button.style.setProperty('border-color','#ff4b16','important');
+        button.style.setProperty('color','#000000','important');
+      }
+    });
+  }
+  blueButton();
+  var observer=new MutationObserver(blueButton);
+  observer.observe(root,{childList:true,subtree:true});
+  window.addEventListener('load',blueButton,{once:true});
+  setTimeout(blueButton,500);
+  setTimeout(blueButton,1500);
+})();
+</script><style id="scrolly-organic-visual-fix-v3">
+/* Keep both columns aligned at their top and bottom edges. */
+.lm-o-layout{align-items:stretch!important}
+.lm-o-copy{align-self:stretch!important}
+.lm-o-card{align-self:stretch!important;height:100%!important;min-height:0!important;padding:38px 34px 38px 38px!important;grid-template-columns:230px minmax(320px,1fr)!important;gap:36px!important}
+.lm-o-cover{width:220px!important}
+.lm-o-copy h2{font-size:clamp(2.35rem,3.35vw,2.9rem)!important}
+.lm-o-copy h2 span{display:block;white-space:nowrap}
+.lm-o-form h3{font-size:clamp(1.42rem,1.8vw,1.68rem)!important}
+.lm-o-form h3 span{display:block;white-space:nowrap}
+/* MailerLite's button rules load later, so target the rendered control directly. */
+#lm-inline-audit .ml-form-embedSubmit button,
+#lm-inline-audit .ml-form-embedSubmit button.primary,
+#lm-inline-audit .ml-form-embedSubmit button[type="submit"],
+#lm-inline-audit button.ml-block-form-submit,
+#lm-inline-audit .lm-o-form button[type="submit"]{
+  background:#5a44e6!important;background-color:#5a44e6!important;color:#fff!important;
+  border:1px solid #5a44e6!important;box-shadow:0 8px 18px rgba(37,99,235,.20)!important;
+}
+#lm-inline-audit .ml-form-embedSubmit button:hover,
+#lm-inline-audit .ml-form-embedSubmit button:focus,
+#lm-inline-audit .lm-o-form button[type="submit"]:hover,
+#lm-inline-audit .lm-o-form button[type="submit"]:focus{
+  background:#4a35cf!important;background-color:#4a35cf!important;border-color:#4a35cf!important;
+}
+@media(max-width:1120px){.lm-o-layout{align-items:initial!important}.lm-o-card{height:auto!important}}
+@media(max-width:680px){
+  .lm-o-copy h2 span,.lm-o-form h3 span{white-space:normal}
+  .lm-o-form h3 span{display:inline}
+  .lm-o-form h3 span+span:before{content:" "}
+}
+</style><style id="scrolly-organic-lead-magnet-v4">.lm-o-section{--lm-blue:#5a44e6;background:linear-gradient(105deg,#fbfbff 0%,#f4f5ff 52%,#fafcff 100%)!important;padding:72px 0!important;border-top:1px solid rgba(37,99,235,.12);border-bottom:1px solid rgba(37,99,235,.12)}.lm-o-section .wrap{max-width:1320px}.lm-o-layout{display:grid;grid-template-columns:minmax(420px,.82fr) minmax(650px,1.18fr);gap:62px;align-items:center}.lm-o-copy{max-width:550px}.lm-o-badge{color:#5a44e6!important;background:rgba(37,99,235,.11)!important;border:0!important;padding:8px 13px!important;border-radius:9px!important}.lm-o-copy h2{margin:20px 0 0;font-size:clamp(2.55rem,3.8vw,3.35rem);line-height:1.08;letter-spacing:-.045em}.lm-o-rule{display:block;width:48px;height:5px;border-radius:9px;background:#5a44e6;margin:25px 0 24px}.lm-o-intro{margin:0;color:var(--ink);font-size:1.04rem;line-height:1.65}.lm-o-benefits{display:grid;gap:22px;margin-top:31px}.lm-o-benefit{display:grid;grid-template-columns:50px 1fr;gap:16px;align-items:center}.lm-o-benefit>b{display:grid;place-items:center;width:50px;height:50px;border-radius:50%;background:rgba(37,99,235,.10)}.lm-o-benefit svg{width:27px;height:27px;fill:none;stroke:#5a44e6;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}.lm-o-benefit p{margin:0;color:var(--ink);font-size:.9rem;line-height:1.45}.lm-o-benefit strong{display:block;font:800 1rem/1.3 Manrope;margin-bottom:3px}.lm-o-card{display:grid;grid-template-columns:250px minmax(310px,1fr);gap:44px;align-items:center;min-height:485px;background:#fff;border:1px solid rgba(37,99,235,.13);border-radius:18px;padding:40px 34px 40px 40px;box-shadow:0 18px 44px rgba(32,31,85,.13)}.lm-o-cover{display:block;width:235px;transform:rotate(-4deg);filter:drop-shadow(0 18px 22px rgba(16,21,43,.22));transition:transform .2s ease}.lm-o-cover:hover{transform:rotate(-2deg) translateY(-2px)}.lm-o-cover img{display:block;width:100%;height:auto;border-radius:2px}.lm-o-form h3{margin:0 0 20px;font-size:clamp(1.5rem,2.1vw,1.9rem);line-height:1.18;letter-spacing:-.035em}.lm-o-form>p{margin:0 0 26px;color:var(--ink);font-size:.97rem;line-height:1.65}.lm-o-card .ml-form-embedContainer,.lm-o-card .ml-form-align-center,.lm-o-card .ml-form-embedWrapper{width:100%!important;max-width:none!important;margin:0!important;background:transparent!important}.lm-o-card .ml-form-embedWrapper,.lm-o-card .ml-form-embedBody,.lm-o-card .ml-form-successBody{padding:0!important;border:0!important;box-shadow:none!important}.lm-o-card .ml-form-embedContent{display:none!important}.lm-o-card .ml-form-fieldRow{margin:0 0 14px!important}.lm-o-card input[type=email]{width:100%!important;min-height:56px!important;padding:15px 16px!important;border:1.5px solid #bdc8d0!important;border-radius:6px!important;background:#fff!important;color:var(--ink)!important;font:500 16px Inter!important}.lm-o-card input[type=email]:focus{outline:3px solid rgba(37,99,235,.16)!important;outline-offset:1px!important;border-color:#5a44e6!important}.lm-o-card button.primary{width:100%!important;min-height:57px!important;border:0!important;border-radius:6px!important;background:#5a44e6!important;color:#fff!important;font:800 1rem Manrope!important;box-shadow:0 8px 18px rgba(37,99,235,.24)!important}.lm-o-card button.primary:hover{background:#4a35cf!important}.lm-o-privacy{display:flex;align-items:center;gap:5px;margin:18px 0 0!important;color:#344054!important;font-size:.77rem!important;line-height:1.5!important}.lm-o-privacy svg{width:15px;height:15px;flex:0 0 15px;fill:none;stroke:#10152b;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}.lm-o-privacy a{color:#5a44e6!important}.lm-o-download{display:inline-flex;padding:14px 20px;border-radius:6px;background:#5a44e6;color:#fff!important;text-decoration:none!important;font-weight:800}.lm-o-card .ml-form-successBody h3{margin:0 0 10px!important;font-size:1.42rem!important}.lm-o-card .ml-form-successBody p{margin:0 0 18px!important;color:var(--ink-soft)!important}@media(max-width:1120px){.lm-o-layout{grid-template-columns:1fr;gap:42px}.lm-o-copy{max-width:720px}.lm-o-card{max-width:740px;width:100%;margin:auto}}@media(max-width:680px){.lm-o-section{padding:58px 0!important}.lm-o-copy h2{font-size:2.25rem}.lm-o-card{grid-template-columns:1fr;gap:34px;min-height:0;padding:30px 24px}.lm-o-cover{width:min(68%,230px);margin:auto;transform:rotate(-2deg)}.lm-o-form h3{font-size:1.55rem}.lm-o-privacy{align-items:flex-start}}@media(max-width:420px){.lm-o-copy h2{font-size:2rem}.lm-o-benefit{grid-template-columns:44px 1fr}.lm-o-benefit>b{width:44px;height:44px}}</style><style id="scrolly-organic-alignment-v2">.lm-o-layout{align-items:end!important}.lm-o-copy h2{font-size:clamp(2.35rem,3.35vw,2.9rem)!important}.lm-o-copy h2 span{display:block;white-space:nowrap}.lm-o-card{min-height:0!important;padding:34px 32px 34px 36px!important;grid-template-columns:230px minmax(320px,1fr)!important;gap:36px!important}.lm-o-cover{width:220px!important}.lm-o-form h3{font-size:clamp(1.42rem,1.8vw,1.68rem)!important}.lm-o-form h3 span{display:block;white-space:nowrap}@media(max-width:1120px){.lm-o-layout{align-items:initial!important}}@media(max-width:680px){.lm-o-copy h2 span,.lm-o-form h3 span{white-space:normal}.lm-o-form h3 span{display:inline}.lm-o-form h3 span+span:before{content:" "}}</style><script id="scrolly-organic-lead-magnet-behavior-v4">(function(){var r=document.querySelector('#lm-inline-audit .ml-embedded[data-form="nKe7Rs"]');if(!r)return;function loadFallback(){if(r.childElementCount)return;fetch('https://assets.mailerlite.com/jsonp/2596740/forms/nKe7Rs',{mode:'cors'}).then(function(v){return v.json()}).then(function(v){if(r.childElementCount||!v.data||!v.data.template)return;r.innerHTML=v.data.template;r.querySelectorAll('script').forEach(function(old){var n=document.createElement('script');if(old.src)n.src=old.src;n.text=old.text;document.head.appendChild(n);old.remove()});sync()}).catch(function(){})}function sync(){r.querySelectorAll('.ml-form-embedContent').forEach(function(e){e.setAttribute('aria-hidden','true')});var e=r.querySelector('input[type=email]');if(e){e.placeholder='Enter your email address';e.setAttribute('aria-label','Email address')}r.querySelectorAll('button.primary').forEach(function(b){var l=b.querySelector('.label');if(l&&l.textContent!=='Send Me the Free Scorecard')l.textContent='Send Me the Free Scorecard';else if(!l&&!b.querySelector('.loading')&&b.textContent.trim()!=='Send Me the Free Scorecard')b.textContent='Send Me the Free Scorecard'});r.querySelectorAll('.ml-form-successBody').forEach(function(x){if(x.dataset.scrollyReady)return;x.dataset.scrollyReady=1;x.innerHTML='<h3>Check your inbox.</h3><p>We’ve emailed your Organic Traffic Opportunity Scorecard. Confirm your subscription if asked, then use the link in the email to access the PDF.</p>'})}sync();setTimeout(loadFallback,1200);new MutationObserver(sync).observe(r,{childList:true,subtree:true})})();</script>
+<div class="scrolly-resource-popup" id="scrolly-popup-organic" aria-hidden="true"><div class="srp-backdrop" data-srp-close></div><section class="srp-dialog" role="dialog" aria-modal="true" aria-labelledby="srp-title-organic"><button class="srp-close" type="button" aria-label="Close" data-srp-close>×</button><div class="srp-art" aria-hidden="true"><span>ScrollySEO</span><b>FREE SEO RESOURCE</b><i>PDF</i></div><div class="srp-content"><span class="srp-label">FREE SEO RESOURCE</span><h2 id="srp-title-organic">Get the Organic Traffic Opportunity Scorecard</h2><p>Assess ten important SEO areas and identify where your strongest opportunities may be.</p><form class="srp-form" action="https://assets.mailerlite.com/jsonp/2596740/forms/196813052092351669/subscribe" method="post"><label class="screen-reader-text" for="srp-email-organic">Email address</label><input id="srp-email-organic" name="fields[email]" type="email" placeholder="Enter your email address" autocomplete="email" required><input type="hidden" name="fields[source_page]" value="organic-popup"><input type="hidden" name="ml-submit" value="1"><input type="hidden" name="anticsrf" value="true"><button type="submit">Email Me the Free Scorecard</button></form><small>We’ll email the PDF. Unsubscribe anytime.</small></div></section></div>
+<style id="scrolly-resource-popup-organic-v1">#scrolly-popup-organic{position:fixed;inset:0;z-index:99999;display:none;align-items:center;justify-content:center;padding:22px}#scrolly-popup-organic.is-open{display:flex}#scrolly-popup-organic .srp-backdrop{position:absolute;inset:0;background:rgba(10,18,38,.62);backdrop-filter:blur(4px)}#scrolly-popup-organic .srp-dialog{position:relative;width:min(760px,100%);display:grid;grid-template-columns:230px 1fr;gap:32px;align-items:center;background:#fff;border:1px solid #dce5f3;border-radius:20px;padding:32px;box-shadow:0 30px 90px rgba(5,15,38,.3)}#scrolly-popup-organic .srp-close{position:absolute;right:14px;top:10px;border:0;background:transparent;color:#526078;font-size:30px;line-height:1;cursor:pointer;padding:7px}#scrolly-popup-organic .srp-art{aspect-ratio:4/5.35;padding:22px 18px;border-radius:8px;background:linear-gradient(155deg,#5a44e6,#101f45);color:#fff;display:flex;flex-direction:column;box-shadow:0 14px 30px rgba(14,31,66,.24);transform:rotate(-3deg)}#scrolly-popup-organic .srp-art span{font-size:.7rem;font-weight:700}#scrolly-popup-organic .srp-art b{margin:auto 0;font-size:1.35rem;line-height:1.12}#scrolly-popup-organic .srp-art i{align-self:flex-end;border:2px solid rgba(255,255,255,.75);border-radius:999px;padding:9px 7px;font-size:.7rem;font-style:normal;font-weight:800}#scrolly-popup-organic .srp-label{display:inline-flex;padding:6px 10px;border-radius:8px;background:#e8f0ff;color:#5a44e6;font-size:.7rem;font-weight:800;letter-spacing:.07em}#scrolly-popup-organic h2{margin:13px 0 10px;font:800 clamp(1.65rem,3vw,2.25rem)/1.1 Manrope,sans-serif;color:#10152b;letter-spacing:-.03em}#scrolly-popup-organic p{margin:0 0 18px;color:#526078;line-height:1.55}#scrolly-popup-organic .srp-form{display:grid;gap:10px}#scrolly-popup-organic input{height:52px;border:1px solid #b9c7dc;border-radius:9px;padding:0 14px;font:inherit}#scrolly-popup-organic .srp-form button{height:52px;border:0;border-radius:9px;background:#5a44e6!important;color:#fff!important;font:800 .95rem Manrope,sans-serif;cursor:pointer}#scrolly-popup-organic small{display:block;margin-top:11px;color:#667085}#scrolly-popup-organic .srp-success{padding:18px;border-radius:12px;background:#e8f0ff;color:#10152b}body.srp-lock{overflow:hidden}@media(max-width:640px){#scrolly-popup-organic{padding:14px}#scrolly-popup-organic .srp-dialog{grid-template-columns:1fr;padding:26px 22px;max-height:92vh;overflow:auto}#scrolly-popup-organic .srp-art{display:none}}</style>
+<script id="scrolly-resource-popup-organic-behavior-v1">(function(){var root=document.getElementById('scrolly-popup-organic');if(!root)return;var key='scrolly_organic_resource_dismissed';var days=604800;function hasCookie(){return document.cookie.split('; ').some(function(v){return v.indexOf(key+'=')===0})}function remember(){document.cookie=key+'=1;max-age='+days+';path=/;SameSite=Lax'}function openPopup(){if(hasCookie()||root.classList.contains('is-open'))return;root.classList.add('is-open');root.setAttribute('aria-hidden','false');document.body.classList.add('srp-lock');setTimeout(function(){var i=root.querySelector('input[type=email]');if(i)i.focus()},50)}function closePopup(save){root.classList.remove('is-open');root.setAttribute('aria-hidden','true');document.body.classList.remove('srp-lock');if(save)remember()}root.querySelectorAll('[data-srp-close]').forEach(function(b){b.addEventListener('click',function(){closePopup(true)})});document.addEventListener('keydown',function(e){if(e.key==='Escape'&&root.classList.contains('is-open'))closePopup(true)});var seen=false;function check(){if(seen||hasCookie())return;var max=document.documentElement.scrollHeight-innerHeight;if(max>0&&scrollY/max>=.6){seen=true;openPopup()}}addEventListener('scroll',check,{passive:true});check();var form=root.querySelector('.srp-form');form.addEventListener('submit',async function(e){e.preventDefault();var b=form.querySelector('button'),old=b.textContent;b.disabled=true;b.textContent='Sending…';try{var res=await fetch(form.action,{method:'POST',body:new FormData(form)}),j=await res.json();if(!j.success)throw new Error((j.errors&&j.errors.fields&&j.errors.fields.email&&j.errors.fields.email[0])||'Please check your email.');remember();form.parentElement.innerHTML='<div class="srp-success"><h2>Check your inbox.</h2><p>We’ve emailed your free resource. Confirm your subscription first if MailerLite asks you to.</p></div>'}catch(err){b.disabled=false;b.textContent=old;var p=document.createElement('p');p.textContent=err.message;p.style.color='#0a0a0a';form.insertAdjacentElement('afterend',p)}});var obs=new MutationObserver(function(){document.querySelectorAll('#lm-inline-audit .ml-form-successBody').forEach(function(s){if(getComputedStyle(s).display!=='none'){remember();closePopup(false)}})});var inline=document.getElementById('lm-inline-audit');if(inline)obs.observe(inline,{childList:true,subtree:true,attributes:true,attributeFilter:['style','class']})})();</script></div>
+<!-- /wp:html -->

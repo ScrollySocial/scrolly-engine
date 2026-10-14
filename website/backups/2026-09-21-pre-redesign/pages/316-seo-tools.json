@@ -1,0 +1,132 @@
+{
+ "id": 316,
+ "date": "2026-09-20T18:57:59",
+ "date_gmt": "2026-09-20T18:57:59",
+ "guid": {
+  "rendered": "https://scrollyseo.com/seo-tools/",
+  "raw": "https://scrollyseo.com/seo-tools/"
+ },
+ "modified": "2026-09-20T19:15:14",
+ "modified_gmt": "2026-09-20T19:15:14",
+ "password": "",
+ "slug": "seo-tools",
+ "status": "publish",
+ "type": "page",
+ "link": "https://scrollyseo.com/seo-tools/",
+ "title": {
+  "raw": "SEO Tools",
+  "rendered": "SEO Tools"
+ },
+ "content": {
+  "raw": "<!-- wp:html --><style id=\"scrolly-launch-system\">@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');\nbody:has(.sc-launch) .page-header{display:none}body:has(.sc-launch) #content{max-width:none;padding:0;width:100%}body:has(.sc-launch) .page-content{margin:0}body:has(.sc-launch){margin:0}\n.sc-launch{--ink:#0b1f4d;--muted:#52617a;--blue:#2458d6;--line:#dce5f3;--stripe:linear-gradient(90deg,#5540e8,#2563eb,#06b6d4,#16c7a3,#8c5cff,#ef5cab);font-family:Manrope,Arial,sans-serif;color:var(--ink);background:#f5f8ff;font-size:16px;line-height:1.65;width:100%}.sc-launch *{box-sizing:border-box}.sc-launch h1,.sc-launch h2,.sc-launch h3,.sc-launch p{margin:0}.sc-launch h1,.sc-launch h2,.sc-launch h3{font-family:inherit;letter-spacing:-.045em;font-weight:800;line-height:1.13;color:var(--ink)}.sc-launch h1{font-size:clamp(40px,4.6vw,68px)}.sc-launch h2{font-size:clamp(30px,3.2vw,44px)}.sc-launch h3{font-size:24px}.sc-launch p{color:var(--muted)}.sc-launch a{color:#2458b8;text-underline-offset:4px}.sc-launch a:focus-visible,.sc-launch summary:focus-visible{outline:3px solid #06a9bf;outline-offset:5px}.sc-wrap{width:min(1120px,calc(100% - 48px));margin:auto}.sc-section{padding:80px 0}.sc-white{background:#fff}.sc-eyebrow{display:block;color:#3658ad;font-size:12px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;margin-bottom:20px}.sc-hero{padding:84px 0 76px;background:radial-gradient(ellipse at 86% 15%,#254888 0,transparent 53%),#0b1f4d;color:#fff;position:relative}.sc-hero:after,.sc-banner:after{content:'';position:absolute;bottom:0;left:0;right:0;height:5px;background:var(--stripe)}.sc-hero h1,.sc-banner h2{color:#fff}.sc-hero .sc-eyebrow{color:#82eee1}.sc-hero p{color:#d1ddf3;font-size:18px;max-width:620px;margin-top:25px}.sc-hero .sc-small{font-size:13px;color:#b7c9e8;margin-top:20px}.sc-split{display:grid;grid-template-columns:1.2fr 1fr;gap:64px;align-items:center}.sc-gradient{background:linear-gradient(100deg,#8fece2,#93bbff,#b5a0ff);background-clip:text;-webkit-background-clip:text;color:transparent}.sc-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:30px}.sc-launch .sc-btn{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:13px 22px;border-radius:9px;font-size:14px;font-weight:800;text-decoration:none;background:#4f46e5;color:#fff;border:1px solid transparent}.sc-launch .sc-btn:hover{background:#3931bb;transform:translateY(-1px)}.sc-launch .sc-btn-light{background:#fff;color:#192c60}.sc-launch .sc-btn-ghost{background:transparent;border-color:#7085aa;color:#fff}.sc-launch .sc-btn-outline{background:#fff;border-color:#b8c9e6;color:#163370}.sc-tag{display:inline-flex;font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;border:1px solid #a8bcda;background:#edf3ff;color:#244780;border-radius:999px;padding:5px 10px;margin-bottom:22px}.sc-hero .sc-tag{background:#203c64;border-color:#506b93;color:#d6f9f4}.sc-goalboard{padding:30px;border:1px solid #526590;border-radius:22px;background:linear-gradient(145deg,#264376,#142750);box-shadow:0 24px 65px #040d2933;transform:rotate(2deg)}.sc-board-label{font-size:11px;text-transform:uppercase;letter-spacing:.15em;color:#b5cce9}.sc-number{font-size:clamp(62px,7vw,94px);line-height:1.15;font-weight:800;letter-spacing:-.06em;color:#fff;margin:15px 0}.sc-stripes{display:flex;gap:7px;height:72px;align-items:end;margin:24px 0}.sc-stripes i{display:block;flex:1;background:#50d4cd;transform:skewX(-15deg);border-radius:3px;height:45%}.sc-stripes i:nth-child(2){height:60%;background:#3c9cea}.sc-stripes i:nth-child(3){height:75%;background:#7474fb}.sc-stripes i:nth-child(4){height:90%;background:#ac85ff}.sc-stripes i:nth-child(5){height:100%;background:#cf8fcc}.sc-board-bottom{border-top:1px solid #50638c;padding-top:20px;font-size:13px;color:#d1def4}.sc-board-path{display:flex;justify-content:space-between;gap:12px;font-weight:800;color:#fff;margin-top:14px}.sc-intro{max-width:700px;margin-bottom:36px}.sc-intro p{margin-top:18px;font-size:17px}.sc-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px}.sc-grid-2{grid-template-columns:repeat(2,minmax(0,1fr))}.sc-card{padding:30px;background:#fff;border:1px solid var(--line);border-radius:16px;box-shadow:0 6px 22px #0b1f4d05;position:relative}.sc-card p{margin-top:15px}.sc-card .sc-actions{margin-top:22px}.sc-tier{border-top:4px solid #168e9b}.sc-tier:nth-child(2){border-top-color:#4f60df}.sc-tier:nth-child(3){border-top-color:#9464dc}.sc-tier-amount{font-size:52px;line-height:1;font-weight:800;letter-spacing:-.05em;margin:0 0 22px;color:var(--ink)}.sc-card .sc-tag{margin-bottom:20px}.sc-card h3{font-size:23px}.sc-card a.sc-textlink{display:block;margin-top:16px;font-weight:800}.sc-num{font-weight:800;color:#4f46e5;font-size:14px;margin-bottom:20px}.sc-banner{background:linear-gradient(110deg,#26257a,#354fbb,#087c91);padding:65px 0;position:relative}.sc-banner p{color:#dfebff;margin-top:20px;max-width:720px}.sc-banner .sc-eyebrow{color:#9deee6}.sc-note{padding:24px 28px;border-left:4px solid #36b3ae;background:#eaf4fb;border-radius:0 10px 10px 0;margin-top:30px}.sc-note p{font-size:14px}.sc-faq{margin-top:28px}.sc-faq details{padding:20px 0;border-bottom:1px solid var(--line)}.sc-faq summary{cursor:pointer;font-weight:800}.sc-faq details p{margin-top:12px;max-width:850px}.sc-cover{width:100%;height:250px;object-fit:contain;background:#f2f5fc;border-radius:10px;margin-bottom:26px}.sc-footerline{background:#080f20;padding:32px 0;color:#c4d1e7}.sc-footerline .sc-wrap{display:flex;justify-content:space-between;align-items:center;gap:24px}.sc-footerline strong{color:#fff;font-size:25px;letter-spacing:-.04em}.sc-footerline p{color:#b3c3df;font-size:13px}.sc-mini-links{display:flex;gap:20px;flex-wrap:wrap}.sc-mini-links a{color:#d1dff7;font-size:13px}.sc-launch .sc-small{font-size:13px}.sc-linkrow{display:flex;flex-wrap:wrap;gap:18px;margin-top:25px}.sc-linkrow a{font-weight:700}.sc-inline-links{margin-top:20px;display:flex;gap:20px;flex-wrap:wrap}\n#site-header{background:#f5f7fc!important;border-bottom:4px solid transparent!important;border-image:linear-gradient(90deg,#4f46e5,#2563eb,#06b6d4,#8c5cff,#db2777) 1!important}#site-header .site-navigation .menu{gap:4px!important}#site-footer{background:#080b12!important;margin-top:0!important;border-top:3px solid transparent!important;border-image:linear-gradient(90deg,#4f46e5,#06b6d4,#8c5cff,#db2777) 1!important}#site-footer a{color:#fff!important}#site-footer .site-navigation:before{content:none!important}\n@media(max-width:900px){.sc-split{gap:35px}.sc-section{padding:60px 0}.sc-hero{padding:60px 0}.sc-grid{gap:16px}.sc-card{padding:24px}.sc-goalboard{padding:24px}.sc-footerline .sc-wrap{align-items:flex-start;flex-direction:column}}\n@media(max-width:700px){.sc-wrap{width:calc(100% - 36px)}.sc-split,.sc-grid,.sc-grid-2{grid-template-columns:1fr}.sc-split{gap:38px}.sc-hero h1{font-size:42px}.sc-hero{padding:48px 0}.sc-hero p{font-size:17px}.sc-goalboard{transform:none;max-width:480px;width:100%;margin:auto}.sc-number{font-size:72px}.sc-stripes{height:48px;margin:18px 0}.sc-section{padding:50px 0}.sc-launch h2{font-size:32px}.sc-banner{padding:48px 0}.sc-actions .sc-btn{flex:1 1 auto;text-align:center}.sc-cover{height:230px}.sc-footerline .sc-wrap{gap:20px}}\n.sc-launch .sc-btn-light:hover,.sc-launch .sc-btn-light:focus{background:#e5ecff;color:#192c60}.sc-launch .sc-btn-outline:hover,.sc-launch .sc-btn-outline:focus{background:#e5ecff;color:#163370}.sc-launch .sc-btn-ghost:hover,.sc-launch .sc-btn-ghost:focus{background:#ffffff18;color:#fff}\n@media(prefers-reduced-motion:reduce){.sc-launch *{scroll-behavior:auto!important;transition:none!important;transform:none!important}}\n</style><div class=\"sc-launch\"><section class=\"sc-hero\"><div class=\"sc-wrap sc-split\"><div><span class=\"sc-eyebrow\">SEO tools & services</span><h1>Be easier<br><span class=\"sc-gradient\">to discover.</span></h1><p>SEO is one part of organic growth. Keep moving with a site audit, implementation help, or a practical platform workbook.</p><div class=\"sc-actions\"><a class=\"sc-btn sc-btn-light\" href=\"#tools\">Explore the tools</a></div><p class=\"sc-small\">Revenue figures are goals, not guaranteed results.</p></div><div class=\"sc-goalboard\"><div class=\"sc-board-label\">Your next revenue goal</div><div class=\"sc-number\">Grow</div><div class=\"sc-stripes\" aria-hidden=\"true\"><i></i><i></i><i></i><i></i><i></i></div><div class=\"sc-board-bottom\">Build → Grow → Earn Your Stripes<div class=\"sc-board-path\"><span>$1K</span><span>→ $10K</span><span>→ $24K</span></div></div></div></div></section><section class=\"sc-section \" id=\"tools\"><div class=\"sc-wrap\"><div class=\"sc-intro\"><span class=\"sc-eyebrow\">Find the right support</span><h2>A focused plan for your search presence.</h2></div><div class=\"sc-grid sc-grid-2\"><article class=\"sc-card\"><span class=\"sc-eyebrow\">Understand your priorities</span><h3>SEO Site Audit</h3><p>Explore a personalized analysis of your site and a prioritized roadmap for what to improve.</p><div class=\"sc-actions\"><a class=\"sc-btn \" href=\"/seo-site-audit/\">View the SEO Audit</a></div></article><article class=\"sc-card\"><span class=\"sc-eyebrow\">Put the plan into practice</span><h3>Implementation</h3><p>Explore support for making the recommended changes to your website.</p><div class=\"sc-actions\"><a class=\"sc-btn \" href=\"/implementation/\">View Implementation</a></div></article></div></div></section><section class=\"sc-section sc-white\" ><div class=\"sc-wrap\"><div class=\"sc-intro\"><span class=\"sc-eyebrow\">Prefer to work through it yourself?</span><h2>Build with a workbook.</h2><p>Choose Shopify or Pinterest.</p></div><div class=\"sc-grid sc-grid-2\"><article class=\"sc-card\"><img class=\"sc-cover\" src=\"https://scrollyseo.com/wp-content/uploads/2026/08/real-shopify-workbook-preview.png\" alt=\"Pages from the Shopify SEO Workbook\" loading=\"lazy\"><span class=\"sc-eyebrow\">For your online store</span><h3>Shopify SEO Workbook</h3><p>Research keywords, organize your store, improve product pages, and build a practical SEO plan.</p><div class=\"sc-actions\"><a class=\"sc-btn \" href=\"/shopify-seo-workbook/\">Explore Shopify workbook</a></div></article><article class=\"sc-card\"><img class=\"sc-cover\" src=\"https://scrollyseo.com/wp-content/uploads/2026/08/real-pinterest-workbook-preview.png\" alt=\"Pages from the Pinterest SEO Workbook\" loading=\"lazy\"><span class=\"sc-eyebrow\">For visual discovery</span><h3>Pinterest SEO Workbook</h3><p>Turn audience research into an intentional keyword, board, Pin, and publishing system.</p><div class=\"sc-actions\"><a class=\"sc-btn \" href=\"/pinterest-seo-workbook/\">Explore Pinterest workbook</a></div></article></div></div></section></div><!-- /wp:html -->",
+  "rendered": "<style id=\"scrolly-launch-system\">@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');\nbody:has(.sc-launch) .page-header{display:none}body:has(.sc-launch) #content{max-width:none;padding:0;width:100%}body:has(.sc-launch) .page-content{margin:0}body:has(.sc-launch){margin:0}\n.sc-launch{--ink:#0b1f4d;--muted:#52617a;--blue:#2458d6;--line:#dce5f3;--stripe:linear-gradient(90deg,#5540e8,#2563eb,#06b6d4,#16c7a3,#8c5cff,#ef5cab);font-family:Manrope,Arial,sans-serif;color:var(--ink);background:#f5f8ff;font-size:16px;line-height:1.65;width:100%}.sc-launch *{box-sizing:border-box}.sc-launch h1,.sc-launch h2,.sc-launch h3,.sc-launch p{margin:0}.sc-launch h1,.sc-launch h2,.sc-launch h3{font-family:inherit;letter-spacing:-.045em;font-weight:800;line-height:1.13;color:var(--ink)}.sc-launch h1{font-size:clamp(40px,4.6vw,68px)}.sc-launch h2{font-size:clamp(30px,3.2vw,44px)}.sc-launch h3{font-size:24px}.sc-launch p{color:var(--muted)}.sc-launch a{color:#2458b8;text-underline-offset:4px}.sc-launch a:focus-visible,.sc-launch summary:focus-visible{outline:3px solid #06a9bf;outline-offset:5px}.sc-wrap{width:min(1120px,calc(100% - 48px));margin:auto}.sc-section{padding:80px 0}.sc-white{background:#fff}.sc-eyebrow{display:block;color:#3658ad;font-size:12px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;margin-bottom:20px}.sc-hero{padding:84px 0 76px;background:radial-gradient(ellipse at 86% 15%,#254888 0,transparent 53%),#0b1f4d;color:#fff;position:relative}.sc-hero:after,.sc-banner:after{content:'';position:absolute;bottom:0;left:0;right:0;height:5px;background:var(--stripe)}.sc-hero h1,.sc-banner h2{color:#fff}.sc-hero .sc-eyebrow{color:#82eee1}.sc-hero p{color:#d1ddf3;font-size:18px;max-width:620px;margin-top:25px}.sc-hero .sc-small{font-size:13px;color:#b7c9e8;margin-top:20px}.sc-split{display:grid;grid-template-columns:1.2fr 1fr;gap:64px;align-items:center}.sc-gradient{background:linear-gradient(100deg,#8fece2,#93bbff,#b5a0ff);background-clip:text;-webkit-background-clip:text;color:transparent}.sc-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:30px}.sc-launch .sc-btn{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:13px 22px;border-radius:9px;font-size:14px;font-weight:800;text-decoration:none;background:#4f46e5;color:#fff;border:1px solid transparent}.sc-launch .sc-btn:hover{background:#3931bb;transform:translateY(-1px)}.sc-launch .sc-btn-light{background:#fff;color:#192c60}.sc-launch .sc-btn-ghost{background:transparent;border-color:#7085aa;color:#fff}.sc-launch .sc-btn-outline{background:#fff;border-color:#b8c9e6;color:#163370}.sc-tag{display:inline-flex;font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;border:1px solid #a8bcda;background:#edf3ff;color:#244780;border-radius:999px;padding:5px 10px;margin-bottom:22px}.sc-hero .sc-tag{background:#203c64;border-color:#506b93;color:#d6f9f4}.sc-goalboard{padding:30px;border:1px solid #526590;border-radius:22px;background:linear-gradient(145deg,#264376,#142750);box-shadow:0 24px 65px #040d2933;transform:rotate(2deg)}.sc-board-label{font-size:11px;text-transform:uppercase;letter-spacing:.15em;color:#b5cce9}.sc-number{font-size:clamp(62px,7vw,94px);line-height:1.15;font-weight:800;letter-spacing:-.06em;color:#fff;margin:15px 0}.sc-stripes{display:flex;gap:7px;height:72px;align-items:end;margin:24px 0}.sc-stripes i{display:block;flex:1;background:#50d4cd;transform:skewX(-15deg);border-radius:3px;height:45%}.sc-stripes i:nth-child(2){height:60%;background:#3c9cea}.sc-stripes i:nth-child(3){height:75%;background:#7474fb}.sc-stripes i:nth-child(4){height:90%;background:#ac85ff}.sc-stripes i:nth-child(5){height:100%;background:#cf8fcc}.sc-board-bottom{border-top:1px solid #50638c;padding-top:20px;font-size:13px;color:#d1def4}.sc-board-path{display:flex;justify-content:space-between;gap:12px;font-weight:800;color:#fff;margin-top:14px}.sc-intro{max-width:700px;margin-bottom:36px}.sc-intro p{margin-top:18px;font-size:17px}.sc-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px}.sc-grid-2{grid-template-columns:repeat(2,minmax(0,1fr))}.sc-card{padding:30px;background:#fff;border:1px solid var(--line);border-radius:16px;box-shadow:0 6px 22px #0b1f4d05;position:relative}.sc-card p{margin-top:15px}.sc-card .sc-actions{margin-top:22px}.sc-tier{border-top:4px solid #168e9b}.sc-tier:nth-child(2){border-top-color:#4f60df}.sc-tier:nth-child(3){border-top-color:#9464dc}.sc-tier-amount{font-size:52px;line-height:1;font-weight:800;letter-spacing:-.05em;margin:0 0 22px;color:var(--ink)}.sc-card .sc-tag{margin-bottom:20px}.sc-card h3{font-size:23px}.sc-card a.sc-textlink{display:block;margin-top:16px;font-weight:800}.sc-num{font-weight:800;color:#4f46e5;font-size:14px;margin-bottom:20px}.sc-banner{background:linear-gradient(110deg,#26257a,#354fbb,#087c91);padding:65px 0;position:relative}.sc-banner p{color:#dfebff;margin-top:20px;max-width:720px}.sc-banner .sc-eyebrow{color:#9deee6}.sc-note{padding:24px 28px;border-left:4px solid #36b3ae;background:#eaf4fb;border-radius:0 10px 10px 0;margin-top:30px}.sc-note p{font-size:14px}.sc-faq{margin-top:28px}.sc-faq details{padding:20px 0;border-bottom:1px solid var(--line)}.sc-faq summary{cursor:pointer;font-weight:800}.sc-faq details p{margin-top:12px;max-width:850px}.sc-cover{width:100%;height:250px;object-fit:contain;background:#f2f5fc;border-radius:10px;margin-bottom:26px}.sc-footerline{background:#080f20;padding:32px 0;color:#c4d1e7}.sc-footerline .sc-wrap{display:flex;justify-content:space-between;align-items:center;gap:24px}.sc-footerline strong{color:#fff;font-size:25px;letter-spacing:-.04em}.sc-footerline p{color:#b3c3df;font-size:13px}.sc-mini-links{display:flex;gap:20px;flex-wrap:wrap}.sc-mini-links a{color:#d1dff7;font-size:13px}.sc-launch .sc-small{font-size:13px}.sc-linkrow{display:flex;flex-wrap:wrap;gap:18px;margin-top:25px}.sc-linkrow a{font-weight:700}.sc-inline-links{margin-top:20px;display:flex;gap:20px;flex-wrap:wrap}\n#site-header{background:#f5f7fc!important;border-bottom:4px solid transparent!important;border-image:linear-gradient(90deg,#4f46e5,#2563eb,#06b6d4,#8c5cff,#db2777) 1!important}#site-header .site-navigation .menu{gap:4px!important}#site-footer{background:#080b12!important;margin-top:0!important;border-top:3px solid transparent!important;border-image:linear-gradient(90deg,#4f46e5,#06b6d4,#8c5cff,#db2777) 1!important}#site-footer a{color:#fff!important}#site-footer .site-navigation:before{content:none!important}\n@media(max-width:900px){.sc-split{gap:35px}.sc-section{padding:60px 0}.sc-hero{padding:60px 0}.sc-grid{gap:16px}.sc-card{padding:24px}.sc-goalboard{padding:24px}.sc-footerline .sc-wrap{align-items:flex-start;flex-direction:column}}\n@media(max-width:700px){.sc-wrap{width:calc(100% - 36px)}.sc-split,.sc-grid,.sc-grid-2{grid-template-columns:1fr}.sc-split{gap:38px}.sc-hero h1{font-size:42px}.sc-hero{padding:48px 0}.sc-hero p{font-size:17px}.sc-goalboard{transform:none;max-width:480px;width:100%;margin:auto}.sc-number{font-size:72px}.sc-stripes{height:48px;margin:18px 0}.sc-section{padding:50px 0}.sc-launch h2{font-size:32px}.sc-banner{padding:48px 0}.sc-actions .sc-btn{flex:1 1 auto;text-align:center}.sc-cover{height:230px}.sc-footerline .sc-wrap{gap:20px}}\n.sc-launch .sc-btn-light:hover,.sc-launch .sc-btn-light:focus{background:#e5ecff;color:#192c60}.sc-launch .sc-btn-outline:hover,.sc-launch .sc-btn-outline:focus{background:#e5ecff;color:#163370}.sc-launch .sc-btn-ghost:hover,.sc-launch .sc-btn-ghost:focus{background:#ffffff18;color:#fff}\n@media(prefers-reduced-motion:reduce){.sc-launch *{scroll-behavior:auto!important;transition:none!important;transform:none!important}}\n</style><div class=\"sc-launch\"><section class=\"sc-hero\"><div class=\"sc-wrap sc-split\"><div><span class=\"sc-eyebrow\">SEO tools &#038; services</span><h1>Be easier<br><span class=\"sc-gradient\">to discover.</span></h1><p>SEO is one part of organic growth. Keep moving with a site audit, implementation help, or a practical platform workbook.</p><div class=\"sc-actions\"><a class=\"sc-btn sc-btn-light\" href=\"#tools\">Explore the tools</a></div><p class=\"sc-small\">Revenue figures are goals, not guaranteed results.</p></div><div class=\"sc-goalboard\"><div class=\"sc-board-label\">Your next revenue goal</div><div class=\"sc-number\">Grow</div><div class=\"sc-stripes\" aria-hidden=\"true\"><i></i><i></i><i></i><i></i><i></i></div><div class=\"sc-board-bottom\">Build → Grow → Earn Your Stripes<div class=\"sc-board-path\"><span>$1K</span><span>→ $10K</span><span>→ $24K</span></div></div></div></div></section><section class=\"sc-section \" id=\"tools\"><div class=\"sc-wrap\"><div class=\"sc-intro\"><span class=\"sc-eyebrow\">Find the right support</span><h2>A focused plan for your search presence.</h2></div><div class=\"sc-grid sc-grid-2\"><article class=\"sc-card\"><span class=\"sc-eyebrow\">Understand your priorities</span><h3>SEO Site Audit</h3><p>Explore a personalized analysis of your site and a prioritized roadmap for what to improve.</p><div class=\"sc-actions\"><a class=\"sc-btn \" href=\"/seo-site-audit/\">View the SEO Audit</a></div></article><article class=\"sc-card\"><span class=\"sc-eyebrow\">Put the plan into practice</span><h3>Implementation</h3><p>Explore support for making the recommended changes to your website.</p><div class=\"sc-actions\"><a class=\"sc-btn \" href=\"/implementation/\">View Implementation</a></div></article></div></div></section><section class=\"sc-section sc-white\" ><div class=\"sc-wrap\"><div class=\"sc-intro\"><span class=\"sc-eyebrow\">Prefer to work through it yourself?</span><h2>Build with a workbook.</h2><p>Choose Shopify or Pinterest.</p></div><div class=\"sc-grid sc-grid-2\"><article class=\"sc-card\"><img decoding=\"async\" class=\"sc-cover\" src=\"https://scrollyseo.com/wp-content/uploads/2026/08/real-shopify-workbook-preview.png\" alt=\"Pages from the Shopify SEO Workbook\" loading=\"lazy\"><span class=\"sc-eyebrow\">For your online store</span><h3>Shopify SEO Workbook</h3><p>Research keywords, organize your store, improve product pages, and build a practical SEO plan.</p><div class=\"sc-actions\"><a class=\"sc-btn \" href=\"/shopify-seo-workbook/\">Explore Shopify workbook</a></div></article><article class=\"sc-card\"><img decoding=\"async\" class=\"sc-cover\" src=\"https://scrollyseo.com/wp-content/uploads/2026/08/real-pinterest-workbook-preview.png\" alt=\"Pages from the Pinterest SEO Workbook\" loading=\"lazy\"><span class=\"sc-eyebrow\">For visual discovery</span><h3>Pinterest SEO Workbook</h3><p>Turn audience research into an intentional keyword, board, Pin, and publishing system.</p><div class=\"sc-actions\"><a class=\"sc-btn \" href=\"/pinterest-seo-workbook/\">Explore Pinterest workbook</a></div></article></div></div></section></div>",
+  "protected": false,
+  "block_version": 1
+ },
+ "excerpt": {
+  "raw": "",
+  "rendered": "<p>SEO tools &#038; services Be easierto discover. SEO is one part of organic growth. Keep moving with a site audit, implementation help, or a practical platform workbook. Explore the tools Revenue figures are goals, not guaranteed results. Your next revenue goal Grow Build → Grow → Earn Your Stripes $1K→ $10K→ $24K Find the right [&hellip;]</p>\n",
+  "protected": false
+ },
+ "author": 1,
+ "featured_media": 0,
+ "parent": 0,
+ "menu_order": 0,
+ "comment_status": "closed",
+ "ping_status": "closed",
+ "template": "",
+ "meta": {
+  "footnotes": "",
+  "_elementor_edit_mode": "",
+  "_elementor_template_type": "",
+  "_elementor_data": "",
+  "_elementor_page_settings": null
+ },
+ "permalink_template": "https://scrollyseo.com/%pagename%/",
+ "generated_slug": "seo-tools",
+ "class_list": [
+  "post-316",
+  "page",
+  "type-page",
+  "status-publish",
+  "hentry"
+ ],
+ "jetpack_sharing_enabled": true,
+ "_links": {
+  "self": [
+   {
+    "href": "https://scrollyseo.com/wp-json/wp/v2/pages/316",
+    "targetHints": {
+     "allow": [
+      "GET",
+      "POST",
+      "PUT",
+      "PATCH",
+      "DELETE"
+     ]
+    }
+   }
+  ],
+  "collection": [
+   {
+    "href": "https://scrollyseo.com/wp-json/wp/v2/pages"
+   }
+  ],
+  "about": [
+   {
+    "href": "https://scrollyseo.com/wp-json/wp/v2/types/page"
+   }
+  ],
+  "author": [
+   {
+    "embeddable": true,
+    "href": "https://scrollyseo.com/wp-json/wp/v2/users/1"
+   }
+  ],
+  "replies": [
+   {
+    "embeddable": true,
+    "href": "https://scrollyseo.com/wp-json/wp/v2/comments?post=316"
+   }
+  ],
+  "version-history": [
+   {
+    "count": 2,
+    "href": "https://scrollyseo.com/wp-json/wp/v2/pages/316/revisions"
+   }
+  ],
+  "predecessor-version": [
+   {
+    "id": 356,
+    "href": "https://scrollyseo.com/wp-json/wp/v2/pages/316/revisions/356"
+   }
+  ],
+  "wp:attachment": [
+   {
+    "href": "https://scrollyseo.com/wp-json/wp/v2/media?parent=316"
+   }
+  ],
+  "wp:action-publish": [
+   {
+    "href": "https://scrollyseo.com/wp-json/wp/v2/pages/316"
+   }
+  ],
+  "wp:action-unfiltered-html": [
+   {
+    "href": "https://scrollyseo.com/wp-json/wp/v2/pages/316"
+   }
+  ],
+  "wp:action-assign-author": [
+   {
+    "href": "https://scrollyseo.com/wp-json/wp/v2/pages/316"
+   }
+  ],
+  "curies": [
+   {
+    "name": "wp",
+    "href": "https://api.w.org/{rel}",
+    "templated": true
+   }
+  ]
+ }
+}

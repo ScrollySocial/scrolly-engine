@@ -1,0 +1,106 @@
+{
+ "id": 280,
+ "name": "$1K Challenge — Another Attempt (members only)",
+ "slug": "1k-challenge-another-attempt-members-only",
+ "permalink": "https://scrollyseo.com/product/1k-challenge-another-attempt-members-only/",
+ "date_created": "2026-09-11T21:49:36",
+ "date_created_gmt": "2026-09-11T21:49:36",
+ "date_modified": "2026-09-29T00:45:14",
+ "date_modified_gmt": "2026-09-29T00:45:14",
+ "type": "simple",
+ "status": "publish",
+ "featured": false,
+ "catalog_visibility": "hidden",
+ "description": "<p>Placeholder description -- replace before publishing. A 30-day guided execution attempt for $1K Club members. Requires an active $1K Club purchase. Does not auto-renew -- each attempt is purchased separately.</p>\n",
+ "short_description": "<p>For $1K Club members who want a fresh 30-day $1K Challenge window: new weekly reel ideas and another shot at earning your stripe shirt. Requires the $1K Club. No auto-renewal.</p>\n",
+ "sku": "",
+ "price": "35",
+ "regular_price": "35",
+ "sale_price": "",
+ "date_on_sale_from": null,
+ "date_on_sale_from_gmt": null,
+ "date_on_sale_to": null,
+ "date_on_sale_to_gmt": null,
+ "on_sale": false,
+ "purchasable": true,
+ "total_sales": 0,
+ "virtual": false,
+ "downloadable": false,
+ "downloads": [],
+ "download_limit": -1,
+ "download_expiry": -1,
+ "external_url": "",
+ "button_text": "",
+ "tax_status": "taxable",
+ "tax_class": "",
+ "manage_stock": false,
+ "stock_quantity": null,
+ "backorders": "no",
+ "backorders_allowed": false,
+ "backordered": false,
+ "low_stock_amount": null,
+ "sold_individually": false,
+ "weight": "0.4",
+ "dimensions": {
+  "length": "",
+  "width": "",
+  "height": ""
+ },
+ "shipping_required": true,
+ "shipping_taxable": true,
+ "shipping_class": "challenge-shirt",
+ "shipping_class_id": 29,
+ "reviews_allowed": true,
+ "average_rating": "0.00",
+ "rating_count": 0,
+ "upsell_ids": [],
+ "cross_sell_ids": [],
+ "parent_id": 0,
+ "purchase_note": "",
+ "categories": [
+  {
+   "id": 15,
+   "name": "Uncategorized",
+   "slug": "uncategorized"
+  }
+ ],
+ "brands": [],
+ "tags": [],
+ "images": [],
+ "attributes": [],
+ "default_attributes": [],
+ "variations": [],
+ "grouped_products": [],
+ "menu_order": 0,
+ "price_html": "<span class=\"woocommerce-Price-amount amount\"><bdi><span class=\"woocommerce-Price-currencySymbol\" translate=\"no\">&#36;</span>35.00</bdi></span>",
+ "related_ids": [
+  774
+ ],
+ "meta_data": [],
+ "stock_status": "instock",
+ "has_options": false,
+ "post_password": "",
+ "global_unique_id": "",
+ "jetpack_sharing_enabled": true,
+ "_links": {
+  "self": [
+   {
+    "href": "https://scrollyseo.com/wp-json/wc/v3/products/280",
+    "targetHints": {
+     "allow": [
+      "GET",
+      "POST",
+      "PUT",
+      "PATCH",
+      "DELETE"
+     ]
+    }
+   }
+  ],
+  "collection": [
+   {
+    "href": "https://scrollyseo.com/wp-json/wc/v3/products"
+   }
+  ]
+ }
+}

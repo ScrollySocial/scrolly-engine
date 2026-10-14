@@ -1,0 +1,132 @@
+{
+ "id": 5,
+ "date": "2026-08-18T19:40:53",
+ "date_gmt": "2026-08-18T19:40:53",
+ "guid": {
+  "rendered": "https://scrollyseo.com/?page_id=5",
+  "raw": "https://scrollyseo.com/?page_id=5"
+ },
+ "modified": "2026-08-25T16:27:57",
+ "modified_gmt": "2026-08-25T16:27:57",
+ "password": "",
+ "slug": "shop",
+ "status": "publish",
+ "type": "page",
+ "link": "https://scrollyseo.com/shop/",
+ "title": {
+  "raw": "Shop",
+  "rendered": "Shop"
+ },
+ "content": {
+  "raw": "<style id=\"scrolly-shared-shell-v1\">#site-header{background:#f5f7fc!important;border-bottom:4px solid transparent!important;border-image:linear-gradient(90deg,#4f46e5,#8b5cf6,#db2777,#ef4444) 1!important}#site-header .site-navigation .menu{display:flex!important;align-items:center!important;gap:8px!important}#menu-item-34,#menu-item-34>a,#menu-item-34>a:link,#menu-item-34>a:visited,#menu-item-34>a:hover,#menu-item-34>a:focus,#menu-item-34>a:active,#menu-item-34>a *{color:#fff!important;-webkit-text-fill-color:#fff!important;opacity:1!important;filter:none!important}#menu-item-34>a{background:#4f46e5!important;border-radius:999px!important;padding:12px 24px!important}.menu-cart-icon>a,.menu-account-icon>a{font-size:0!important;width:44px!important;height:44px!important;display:grid!important;place-items:center!important}.menu-cart-icon>a:before{content:\"🛒\";font-size:21px!important}.menu-account-icon>a:before{content:\"👤\";font-size:20px!important}.menu-disabled>a{opacity:.72!important;cursor:default!important;pointer-events:none!important}#site-footer{background:#11131b!important;border-top:4px solid transparent!important;border-image:linear-gradient(90deg,#4f46e5,#8b5cf6,#db2777,#ef4444) 1!important;margin-top:-18px!important;position:relative!important;z-index:5!important;padding:30px clamp(22px,5vw,72px)!important;display:flex!important;align-items:center!important;justify-content:center!important;gap:0!important;text-align:left!important}#site-footer:before{content:\"Scrolly\";font:900 clamp(1.3rem,2.5vw,1.8rem) Manrope,sans-serif;line-height:1;color:#fff!important;white-space:nowrap}#site-footer:after{display:none!important}#site-footer .site-navigation{display:flex!important;align-items:center!important;gap:30px!important}#site-footer .site-navigation:before{content:\"SEO\";font:900 clamp(1.3rem,2.5vw,1.8rem) Manrope,sans-serif;line-height:1;background:linear-gradient(90deg,#818cf8,#a78bfa,#e879f9,#fb7185);-webkit-background-clip:text;background-clip:text;color:transparent;white-space:nowrap}#site-footer .menu{display:flex!important;align-items:center!important;justify-content:center!important;flex-wrap:wrap!important;gap:10px 24px!important;margin:0!important}#site-footer a,#site-footer a:visited{color:#fff!important;-webkit-text-fill-color:#fff!important;text-decoration:none!important}#site-footer a:hover,#site-footer a:focus{color:#fda4af!important;-webkit-text-fill-color:#fda4af!important}body.home #site-footer{margin-top:-18px!important;position:relative!important;z-index:5!important;position:relative!important;z-index:5!important}@media(max-width:850px){#site-header .site-navigation .menu{flex-wrap:wrap!important}#site-footer{flex-wrap:wrap!important;row-gap:18px!important}#site-footer .site-navigation{flex-wrap:wrap!important;justify-content:center!important;gap:18px 24px!important}}</style>",
+  "rendered": "<style id=\"scrolly-shared-shell-v1\">#site-header{background:#f5f7fc!important;border-bottom:4px solid transparent!important;border-image:linear-gradient(90deg,#4f46e5,#8b5cf6,#db2777,#ef4444) 1!important}#site-header .site-navigation .menu{display:flex!important;align-items:center!important;gap:8px!important}#menu-item-34,#menu-item-34>a,#menu-item-34>a:link,#menu-item-34>a:visited,#menu-item-34>a:hover,#menu-item-34>a:focus,#menu-item-34>a:active,#menu-item-34>a *{color:#fff!important;-webkit-text-fill-color:#fff!important;opacity:1!important;filter:none!important}#menu-item-34>a{background:#4f46e5!important;border-radius:999px!important;padding:12px 24px!important}.menu-cart-icon>a,.menu-account-icon>a{font-size:0!important;width:44px!important;height:44px!important;display:grid!important;place-items:center!important}.menu-cart-icon>a:before{content:\"🛒\";font-size:21px!important}.menu-account-icon>a:before{content:\"👤\";font-size:20px!important}.menu-disabled>a{opacity:.72!important;cursor:default!important;pointer-events:none!important}#site-footer{background:#11131b!important;border-top:4px solid transparent!important;border-image:linear-gradient(90deg,#4f46e5,#8b5cf6,#db2777,#ef4444) 1!important;margin-top:-18px!important;position:relative!important;z-index:5!important;padding:30px clamp(22px,5vw,72px)!important;display:flex!important;align-items:center!important;justify-content:center!important;gap:0!important;text-align:left!important}#site-footer:before{content:\"Scrolly\";font:900 clamp(1.3rem,2.5vw,1.8rem) Manrope,sans-serif;line-height:1;color:#fff!important;white-space:nowrap}#site-footer:after{display:none!important}#site-footer .site-navigation{display:flex!important;align-items:center!important;gap:30px!important}#site-footer .site-navigation:before{content:\"SEO\";font:900 clamp(1.3rem,2.5vw,1.8rem) Manrope,sans-serif;line-height:1;background:linear-gradient(90deg,#818cf8,#a78bfa,#e879f9,#fb7185);-webkit-background-clip:text;background-clip:text;color:transparent;white-space:nowrap}#site-footer .menu{display:flex!important;align-items:center!important;justify-content:center!important;flex-wrap:wrap!important;gap:10px 24px!important;margin:0!important}#site-footer a,#site-footer a:visited{color:#fff!important;-webkit-text-fill-color:#fff!important;text-decoration:none!important}#site-footer a:hover,#site-footer a:focus{color:#fda4af!important;-webkit-text-fill-color:#fda4af!important}body.home #site-footer{margin-top:-18px!important;position:relative!important;z-index:5!important;position:relative!important;z-index:5!important}@media(max-width:850px){#site-header .site-navigation .menu{flex-wrap:wrap!important}#site-footer{flex-wrap:wrap!important;row-gap:18px!important}#site-footer .site-navigation{flex-wrap:wrap!important;justify-content:center!important;gap:18px 24px!important}}</style>\n",
+  "protected": false,
+  "block_version": 0
+ },
+ "excerpt": {
+  "raw": "",
+  "rendered": "",
+  "protected": false
+ },
+ "author": 1,
+ "featured_media": 0,
+ "parent": 0,
+ "menu_order": 0,
+ "comment_status": "closed",
+ "ping_status": "closed",
+ "template": "",
+ "meta": {
+  "footnotes": "",
+  "_elementor_edit_mode": "",
+  "_elementor_template_type": "",
+  "_elementor_data": "",
+  "_elementor_page_settings": null
+ },
+ "permalink_template": "https://scrollyseo.com/%pagename%/",
+ "generated_slug": "shop",
+ "class_list": [
+  "post-5",
+  "page",
+  "type-page",
+  "status-publish",
+  "hentry"
+ ],
+ "jetpack_sharing_enabled": true,
+ "_links": {
+  "self": [
+   {
+    "href": "https://scrollyseo.com/wp-json/wp/v2/pages/5",
+    "targetHints": {
+     "allow": [
+      "GET",
+      "POST",
+      "PUT",
+      "PATCH",
+      "DELETE"
+     ]
+    }
+   }
+  ],
+  "collection": [
+   {
+    "href": "https://scrollyseo.com/wp-json/wp/v2/pages"
+   }
+  ],
+  "about": [
+   {
+    "href": "https://scrollyseo.com/wp-json/wp/v2/types/page"
+   }
+  ],
+  "author": [
+   {
+    "embeddable": true,
+    "href": "https://scrollyseo.com/wp-json/wp/v2/users/1"
+   }
+  ],
+  "replies": [
+   {
+    "embeddable": true,
+    "href": "https://scrollyseo.com/wp-json/wp/v2/comments?post=5"
+   }
+  ],
+  "version-history": [
+   {
+    "count": 2,
+    "href": "https://scrollyseo.com/wp-json/wp/v2/pages/5/revisions"
+   }
+  ],
+  "predecessor-version": [
+   {
+    "id": 235,
+    "href": "https://scrollyseo.com/wp-json/wp/v2/pages/5/revisions/235"
+   }
+  ],
+  "wp:attachment": [
+   {
+    "href": "https://scrollyseo.com/wp-json/wp/v2/media?parent=5"
+   }
+  ],
+  "wp:action-publish": [
+   {
+    "href": "https://scrollyseo.com/wp-json/wp/v2/pages/5"
+   }
+  ],
+  "wp:action-unfiltered-html": [
+   {
+    "href": "https://scrollyseo.com/wp-json/wp/v2/pages/5"
+   }
+  ],
+  "wp:action-assign-author": [
+   {
+    "href": "https://scrollyseo.com/wp-json/wp/v2/pages/5"
+   }
+  ],
+  "curies": [
+   {
+    "name": "wp",
+    "href": "https://api.w.org/{rel}",
+    "templated": true
+   }
+  ]
+ }
+}

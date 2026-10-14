@@ -1,125 +1,118 @@
-import { shell, img, ICON_UR, ICON_L, ICON_R, productCard, railSection, merchCards, endCta } from '../lib.mjs';
-import { club1k, challenge1k } from '../status.mjs';
-import { merch, digital, CATS, DIGITAL_MAP } from '../shop-data.mjs';
+// Homepage v3 (2026-10-03): approved reference = scrolly-claude-package.zip / scrolly-homepage-reference.html (copy in dist/ref.html, gitignored).
+// Self-contained page (home.css, not shared.css). Header + footer are the global chrome (chrome/), not part of this page.
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import { img, min } from '../lib.mjs';
+import { merch } from '../shop-data.mjs';
+const here = path.dirname(fileURLToPath(import.meta.url));
+const CSS = min(fs.readFileSync(path.join(here, '..', 'home.css'), 'utf8'));
 
-const tile = (cls, amt, h3, p, club, ch) =>
-  `<div class="tile ${cls}" data-club="${club[0].split('/')[1].split('-')[0]}"><div><div class="amt">${amt}</div><h3>${h3}</h3><p>${p}</p></div><div class="links"><a class="ulink stretch" href="${club[0]}">${club[1]} ↗</a>${ch ? `<a class="ulink" href="${ch[0]}">${ch[1]} ↗</a>` : ''}</div></div>`;
+// Real member quotes only (with permission). The section stays hidden while this is empty. Shape: { q: 'quote text', who: 'Name, business' }
+const TESTIMONIALS = [];
 
-const reelCells = [
-  '<div class="cell">Learn &amp; earn!</div>',
-  '<div class="cell"><span>Less scrolling,</span><em>More Scrolly!</em></div>',
+// Free Resources (images 2026-10-07: real calculator screenshot, the three real free PDF titles, a B&W tiger; the old photos showed books and mugs that aren't products). href: a URL, a list of [label, URL] links (Downloads = the free MailerLite lead magnets), or null, which renders "Coming soon" instead of an arrow link (tracked in Notion: scrollyseo.com missing links).
+const RESOURCES = [
+  // 2026-10-10: Blog card removed (no blog yet, and no image matched the phone-screen cards). The old Downloads card linked to free
+  // scorecards that no longer exist on the workbook pages, so the row is now the two free quizzes + calculators, all real screens.
+  ['Offer Quiz', 'hp3-res-quiz-offer.webp', '/quiz/', 'Find your first offer'],
+  ['Next Move Quiz', 'hp3-res-quizzes.webp', '/next-move/', 'Find your next move'],
+  ['Calculators', 'hp3-res-calculators-v2.webp', '/calculators/'],
 ];
-const reel = `<section class="reel" id="reel" aria-label="Less scrolling, More Scrolly"><div class="perf" aria-hidden="true"></div><div class="track">${[...reelCells, ...reelCells, ...reelCells, ...reelCells].join('')}</div><div class="perf b" aria-hidden="true"></div></section>`;
 
-// Goal slider that sits directly under the hero. Only the $1K Club is purchasable today (status.mjs); the others say "Coming soon".
-const SLIDES = [
-  ['1k', '$1K', 'Prove it.', 'Make your first $1K month using organic marketing.', 'tiger-stride.png', () => club1k.open],
-  ['10k', '$10K', 'Make it your living.', 'Reach consistent $10K profit months using organic marketing.', 'tiger-leap.png', () => false],
-  ['24k', '$24K', 'Scale it.', 'Grow to $24K profit months using paid advertising for the next level.', 'tiger-stride.png', () => false],
+const CLUBS = [
+  ['$1K', 'Make your first $1,000.', 'hp3-club-1k-tiger.webp', 'Tiger walking', '/1k-club/', 'Start here.'],
+  ['$10K', 'Make $10,000 organically.', 'hp3-club-10k-tiger.webp', 'Tiger running', '/10k-club/', 'Grow here.'],
+  ['$24K', 'Make $24,000 and beyond.', 'hp3-club-24k-tiger.webp', 'Tiger leaping', '/24k-club/', 'Scale here.'],
 ];
-function heroCarousel() {
-  const first = `<div class="hsl-slide hero is-active" data-club="stripes" role="group" aria-roledescription="slide" aria-label="1 of 4: Earn your Stripes"><div class="txt"><h1 class="disp h-xl"><span>Earn your</span><span class="it or">Stripes</span></h1><p class="lede">Online-marketing systems, Clubs and Challenges to help you build, grow and put your goals to work.</p><div class="actions"><a class="btn" href="#clubs"><span>Explore Clubs + Challenges</span>${ICON_UR(20)}</a></div></div><div class="art"><img src="${img('tiger-hero.png')}" alt="Illustrated tiger" width="638" height="418" fetchpriority="high"></div></div>`;
-  const rest = SLIDES.map(([k, amt, tag, desc, art, open], i) => `<div class="hsl-slide" data-club="${k}" role="group" aria-roledescription="slide" aria-label="${i + 2} of 4: ${amt}"><div><span class="pill pill-navy">${amt} Club · ${open() ? 'Available now' : 'Coming soon'}</span><h2 class="disp">I want to<br><span class="it">make ${amt}</span></h2><p class="sub"><strong>${tag}</strong> ${desc}</p><a class="btn btn-black" href="/${k}-club/"><span>Show me how</span>${ICON_UR(20)}</a></div><div class="hsl-art" aria-hidden="true"><img src="${img(art)}" alt="" width="1200" height="754" loading="lazy"></div></div>`).join('');
-  const tabs = [['stripes', 'Home'], ...SLIDES.map(([k, amt]) => [k, amt])].map(([k, label], i) => `<button type="button" class="hsl-tab" role="tab" aria-selected="${i === 0}" data-club="${k}">${label}</button>`).join('');
-  return `<section class="hsl" data-club="stripes" aria-roledescription="carousel" aria-label="Scrolly highlights">${first}${rest}<div class="hsl-bar"><button type="button" class="hsl-nav hsl-prev" aria-label="Previous slide">${ICON_L}</button><div class="hsl-tabs" role="tablist" aria-label="Choose a slide">${tabs}</div><button type="button" class="hsl-nav hsl-next" aria-label="Next slide">${ICON_R}</button><button type="button" class="hsl-pause" aria-pressed="false" hidden>Pause slideshow</button></div></section>`;
+
+const pic = (name, alt, cls, extra = '') => {
+  const m = JSON.parse(fs.readFileSync(path.join(here, '..', 'media-map.json'), 'utf8'))[name];
+  return `<img class="${cls}" src="${img(name)}" alt="${alt}" width="${m.w}" height="${m.h}"${extra}>`;
+};
+
+function quotes() {
+  if (!TESTIMONIALS.length) return '';
+  const many = TESTIMONIALS.length > 1;
+  const items = TESTIMONIALS.map((t, i) => `<blockquote${i ? ' hidden' : ''}><p class="q">“${t.q}”</p>${t.who ? `<p class="who eyebrow">${t.who}</p>` : ''}</blockquote>`).join('');
+  return `<section class="hp-quotes" aria-labelledby="hp-quotes-h"><div class="wrap"><h2 id="hp-quotes-h">What customers are saying</h2>
+<div class="row">${many ? '<button type="button" class="prev" aria-label="Previous testimonial">←</button>' : '<span></span>'}<div aria-live="polite">${items}</div>${many ? '<button type="button" class="next" aria-label="Next testimonial">→</button>' : '<span></span>'}</div>
+${many ? `<div class="dots" aria-hidden="true">${TESTIMONIALS.map((_, i) => `<span${i ? '' : ' class="on"'}></span>`).join('')}</div>` : ''}</div></section>`;
 }
 
-// Real Challenge shirts (same cut-out art as the tier pages). $1K shows by default; hovering a club tile swaps in that club's shirt.
-const TEES = {
-  '1k': ['shirt-1k-challenge-back-cut.webp', 'Back of the $1K Challenge stripe shirt: Earned my first stripe. Built it. Proved it. Scrolly $1K Club.', 1367],
-  '10k': ['shirt-10k-challenge-back-cut.webp', 'Back of the $10K Challenge stripe shirt: Higher goals ahead. Built it. Living it. Scrolly $10K Club.', 1374],
-  '24k': ['shirt-24k-challenge-back-cut.webp', 'Back of the $24K Challenge stripe shirt: Turns out, I could reach them. Scrolly $24K Club.', 1374],
-};
-const tee = (k) => `<img class="tee-club" data-club="${k}" src="${img(TEES[k][0])}" alt="${TEES[k][1]}" width="${TEES[k][2]}" height="1400" loading="lazy" hidden>`;
+// Inline page script. Keep it free of '&': WordPress can mangle it inside page content.
+const SCRIPT = `(function(){var r=document.querySelector('.hp');if(!r||r.__init)return;r.__init=1;
+var f=r.querySelector('#hp-calc-form');if(f){var g=r.querySelector('#hp-goal'),a=r.querySelector('#hp-aov'),o=r.querySelector('#hp-sales'),c=r.querySelector('#hp-caption'),w=r.querySelector('#hp-word');
+function calc(){var G=Math.max(1,Number(g.value)||1000),A=Math.max(1,Number(a.value)||50),n=Math.ceil(G/A);o.textContent=n.toLocaleString('en-US');w.textContent=n===1?'sale':'sales';c.textContent='to make '+G.toLocaleString('en-US',{style:'currency',currency:'USD',maximumFractionDigits:0})}
+f.addEventListener('submit',function(e){e.preventDefault();calc()});g.addEventListener('input',calc);a.addEventListener('input',calc);calc()}
+var qs=r.querySelector('.hp-quotes');if(qs){var bq=[].slice.call(qs.querySelectorAll('blockquote')),ds=[].slice.call(qs.querySelectorAll('.dots span')),ix=0;
+function show(n){ix=(n+bq.length)%bq.length;bq.forEach(function(b,i){b.hidden=i!==ix});ds.forEach(function(d,i){d.classList.toggle('on',i===ix)})}
+var p=qs.querySelector('.prev'),nx=qs.querySelector('.next');if(p)p.addEventListener('click',function(){show(ix-1)});if(nx)nx.addEventListener('click',function(){show(ix+1)})}
+})();`;
+if (SCRIPT.includes('&')) throw new Error('home script must not contain &');
 
-export const title ='Scrolly — Earn your Stripes';
+export const title = 'Scrolly: Make your first $1,000';
 export const slug = 'scrolly-home';
 export const id = 161;
 
 export function build() {
   const body = `
-${heroCarousel()}
-
-
-<section class="goal" data-club="">
- <div class="disp big">Big goals.</div>
- <div class="disp big2">One stripe at a time...</div>
- <div class="hand yg" aria-hidden="true"><div>You got this!</div><svg viewBox="0 0 70 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"><path d="M4 8L60 3M12 20L66 15"/></svg></div>
- <div class="prog">
-  <div class="bar"><div class="track" role="img" aria-label="Illustration: a progress bar filled 62 percent"><i></i></div>
-   <ol><li><em>01</em> Start</li><li><em>02</em> Build</li><li class="on"><em>03</em> Progress</li><li><em>04</em> Verify</li><li><em>05</em> Stripe earned</li></ol></div>
-  <div class="pct"><b>62%</b><span>towards goal</span></div>
+<section class="hp-hero"><div class="wrap">
+ <div class="copy">
+  <h1><span>Build an audience</span> <span><em class="or">that buys.</em></span></h1>
+  <div class="act"><p class="lede"><span>Find your path to more customers</span> <span>without depending on paid ads.</span></p>
+  <a class="btn" href="/next-move/">Find my starting point <span aria-hidden="true">→</span></a></div>
  </div>
-</section>
+ ${pic('hp3-hero-tiger.webp', 'Black and white tiger walking forward', 'tiger', ' fetchpriority="high"')}
+</div></section>
 
-<section class="tilesec" id="clubs">
- <h2 class="disp h-md">Choose your challenge</h2>
- <div class="tiles">
-  ${tile('t1', '$1K', 'Prove it.', 'Make your first $1K month using organic marketing.', ['/1k-club/', '$1K Club + Challenge'], null)}
-  ${tile('t2', '$10K', 'Make it<br>your living.', 'Reach consistent $10K profit months using organic marketing.', ['/10k-club/', '$10K Club + Challenge'], null)}
-  ${tile('t3', '$24K', 'Scale it.', 'Grow to $24K profit months using paid advertising for the next level.', ['/24k-club/', '$24K Club + Challenge'], null)}
- </div>
- <p class="fine">Revenue figures are goals, not guaranteed results.</p>
-</section>
-
-<section class="earned home-earned" id="earned" data-club="">
- <div class="l">
-  <div class="k">Some things can’t be bought.</div>
-  <h2 class="disp">They’re earned</h2>
-  <a class="btn btn-pill btn-or" href="/1k-club/#join"><span>EARN YOUR FREE SHIRT</span></a>
- </div>
- <div class="r">
-  <div class="hand sl" aria-hidden="true"><div>Success</div><div>looks good</div><div>on you!</div></div>
-  <img class="tee-photo" src="${img(TEES['1k'][0])}" alt="${TEES['1k'][1]}" width="1367" height="1400" loading="lazy">${Object.keys(TEES).map(tee).join('')}
-  <p>FREE, EXCLUSIVE T-SHIRTS FOR CHALLENGE WINNERS!</p>
- </div>
-</section>
-
-<section class="steps3" aria-label="How Scrolly works">
- <div><b>Build</b><span>Clarify your offer</span></div>
- <div><b>Grow</b><span>Try, learn, repeat</span></div>
- <div><b>Earn</b><span>Earn your Stripes</span></div>
-</section>
-
-<section class="cat">
- <img src="${img('tiger-stride.png')}" alt="Tiger mid-stride" width="1774" height="887" loading="lazy">
- <h2 class="disp">Big cat<br>Energy.</h2>
-</section>
-
-<section class="calc" id="calculator">
+<section class="hp-calc" id="calculator" aria-labelledby="hp-calc-h"><div class="wrap">
  <div>
-  <div class="hd"><div class="disp a">Goal planning made</div><div class="disp b or it">Easy tiger<span>.</span></div></div>
-  <form class="calcard" onsubmit="return false" aria-label="Sales goal calculator">
-   <div class="r2">
-    <div><label for="calc-goal">Your goal</label><input class="f" id="calc-goal" inputmode="decimal" autocomplete="off" value="$10,000"></div>
-    <div><label for="calc-avg">Average sale amount</label><input class="f" id="calc-avg" inputmode="decimal" autocomplete="off" value="$200"></div>
-   </div>
-   <div class="tf"><label for="calc-days">Timeframe</label>
-    <select class="f" id="calc-days"><option value="7">7 days</option><option value="14">14 days</option><option value="30" selected>30 days</option><option value="60">60 days</option><option value="90">90 days</option></select></div>
-   <div class="out"><b id="calc-out" aria-live="polite">50</b><span>sales required</span></div>
-   <div class="per" id="calc-per" aria-live="polite"></div>
-   <div class="note">Illustrative calculation. Revenue before costs.</div>
+  <h2 id="hp-calc-h">What would it take?</h2>
+  <form id="hp-calc-form" novalidate>
+   <div><input id="hp-goal" type="number" inputmode="numeric" value="1000" min="1" step="50"><label for="hp-goal">Revenue goal</label></div>
+   <div><input id="hp-aov" type="number" inputmode="numeric" value="50" min="1" step="1"><label for="hp-aov">Average order value</label></div>
+   <button class="go" type="submit" aria-label="Calculate sales needed">→</button>
   </form>
  </div>
- <div class="side">
-  <h2 class="disp">Free business<br>Calculators</h2>
-  <a class="btn btn-pill" href="#calculator" data-focus-calc><span>TRY IT OUT</span></a>
+ <div class="res" aria-live="polite"><div class="row"><div class="num" id="hp-sales">20</div><div class="word" id="hp-word">sales</div></div><div class="cap" id="hp-caption">to make $1,000</div></div>
+</div></section>
+
+<section class="hp-clubs" id="clubs" aria-labelledby="hp-clubs-h"><div class="wrap">
+ <h2 id="hp-clubs-h">Make your next move.</h2>
+ <div class="grid">
+  ${CLUBS.map(([amt, head, f, alt, href, cta]) => `<article class="hp-club"><h3>${head}</h3>${pic(f, alt, '', ' loading="lazy"')}<div class="cta"><a class="btn" href="${href}" aria-label="${cta.replace('.', '')}: ${amt} Club">${cta} <span aria-hidden="true">→</span></a></div></article>`).join('')}
  </div>
-</section>
+</div></section>
 
-<section class="tag"><h2 class="disp"><span>Less scrolling,</span><span class="it or">More Scrolly!</span></h2></section>
+<section class="hp-earned" id="earned"><div class="wrap">
+ <div class="copy">
+  <h2><span>Some things can’t be bought.</span> <span><em class="or">They’re earned.</em></span></h2>
+  <p>Reach your verified Challenge goal and earn the exclusive Club T-shirt.</p>
+  <nav class="tabs" aria-label="Challenges"><a href="/1k-club/#join">$1K Club</a><a href="/10k-club/">$10K Club</a><a href="/24k-club/">$24K Club</a></nav>
+ </div>
+ <!-- 2026-10-10: the graphite winner shirt (Printify) replaced the teal one; same shirt as /1k-club/. -->
+ ${pic('shirt-1k-graphite-model.webp', 'A man wearing the graphite $1K Club winner shirt: a white line tiger above The $1k Club and Earn your stripes.', 'shot', ' loading="lazy"')}
+</div></section>
 
-${railSection({
-  id: 'products', title: 'Digital products', link: '/digital-products/',
-  live: ` data-live="${CATS.digital}" data-live-map='${JSON.stringify(DIGITAL_MAP)}'`,
-  cards: digital.map((p) => productCard({ href: p.href, title: p.name, sub: p.sub, price: p.price, image: p.image })).join(''),
-})}
+${quotes()}
 
-${railSection({ id: 'shop-merch', title: 'Merch', link: '/scrolly-shop/', cards: merchCards(merch), live: ` data-live="${CATS.merch}" data-live-kind="merch"` })}
+<section class="hp-res" id="resources" aria-labelledby="hp-res-h"><div class="wrap">
+ <h2 id="hp-res-h">Free Resources</h2>
+ <div class="grid">
+  ${RESOURCES.map(([t, f, href, label]) => `<article>${pic(f, '', 'thumb', ' loading="lazy"')}<h3>${t}</h3>${Array.isArray(href) ? `<ul class="dl">${href.map(([l, u]) => `<li><a href="${u}">${l} <span aria-hidden="true">→</span></a></li>`).join('')}</ul>` : href ? `<a class="arrow" href="${href}">${label || `Open the ${t.toLowerCase()}`} <span aria-hidden="true">→</span></a>` : '<span class="soon eyebrow">Coming soon</span>'}</article>`).join('')}
+ </div>
+</div></section>
 
-${reel}
-
-${endCta()}
+<section class="hp-merch" id="products"><div class="wrap">
+ <div class="grid">
+  <div><h2>Less scrolling.<br><em class="or">More Scrolly.</em></h2>
+  <div class="links"><a href="/digital-products/">Digital products <span aria-hidden="true">→</span></a><a href="/scrolly-shop/">Shop <span aria-hidden="true">→</span></a></div></div>
+  <!-- Real shop tees (2026-10-07): replaced the hp3-merch.webp photo, whose cap, mug and bottle aren't real products. -->
+  <ul class="tees">${merch.slice(0, 4).map((p) => `<li><a href="${p.href}"><img src="${p.image.src}" alt="${p.image.alt.replace(/"/g, '&quot;')}" width="${p.image.w}" height="${p.image.h}" loading="lazy"><span>${p.name.trim()}</span></a></li>`).join('')}</ul>
+ </div>
+</div></section>
 `;
-  return shell(body);
+  const inner = `<style id="hp-css">${CSS}</style><div class="hp"><div id="main">${body.replace(/\n\s*/g, '')}</div></div><script id="hp-js">${SCRIPT}</script>`;
+  return `<!-- wp:html -->\n${inner}\n<!-- /wp:html -->`;
 }

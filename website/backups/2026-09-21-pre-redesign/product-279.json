@@ -1,0 +1,107 @@
+{
+ "id": 279,
+ "name": "$1K Club",
+ "slug": "1k-club",
+ "permalink": "https://scrollyseo.com/product/1k-club/",
+ "date_created": "2026-09-11T21:49:30",
+ "date_created_gmt": "2026-09-11T21:49:30",
+ "date_modified": "2026-09-14T17:49:56",
+ "date_modified_gmt": "2026-09-14T17:49:56",
+ "type": "simple",
+ "status": "publish",
+ "featured": false,
+ "catalog_visibility": "hidden",
+ "description": "<p>Scrolly helps your business get organic traffic to your website or online offer, understand what actually happens once people show up, and use that data to move toward more revenue &#8212; without ad spend and without guessing.</p>\n<p>The $1K Club is a one-time, structured system built around your specific business: your starting-point math, your offer, your customer discovery map, your channel plan, your messaging, your sales path, and your feedback loop &#8212; seven connected steps, built from your own answers, not a generic playbook.</p>\n<p><strong>$50 one-time. No subscription, no auto-renewal, ever.</strong></p>\n<p>Results depend on your offer, your market, and the work you put in &#8212; Scrolly provides the system and the guidance, not a guaranteed outcome.</p>\n",
+ "short_description": "<p>A one-time, $50 system to get organic traffic to your offer, understand what happens when people show up, and move toward real revenue &#8212; no subscription, ever.</p>\n",
+ "sku": "",
+ "price": "50",
+ "regular_price": "50",
+ "sale_price": "",
+ "date_on_sale_from": null,
+ "date_on_sale_from_gmt": null,
+ "date_on_sale_to": null,
+ "date_on_sale_to_gmt": null,
+ "on_sale": false,
+ "purchasable": true,
+ "total_sales": 0,
+ "virtual": true,
+ "downloadable": false,
+ "downloads": [],
+ "download_limit": -1,
+ "download_expiry": -1,
+ "external_url": "",
+ "button_text": "",
+ "tax_status": "taxable",
+ "tax_class": "",
+ "manage_stock": false,
+ "stock_quantity": null,
+ "backorders": "no",
+ "backorders_allowed": false,
+ "backordered": false,
+ "low_stock_amount": null,
+ "sold_individually": false,
+ "weight": "",
+ "dimensions": {
+  "length": "",
+  "width": "",
+  "height": ""
+ },
+ "shipping_required": false,
+ "shipping_taxable": false,
+ "shipping_class": "",
+ "shipping_class_id": 0,
+ "reviews_allowed": true,
+ "average_rating": "0.00",
+ "rating_count": 0,
+ "upsell_ids": [],
+ "cross_sell_ids": [],
+ "parent_id": 0,
+ "purchase_note": "",
+ "categories": [
+  {
+   "id": 15,
+   "name": "Uncategorized",
+   "slug": "uncategorized"
+  }
+ ],
+ "brands": [],
+ "tags": [],
+ "images": [],
+ "attributes": [],
+ "default_attributes": [],
+ "variations": [],
+ "grouped_products": [],
+ "menu_order": 0,
+ "price_html": "<span class=\"woocommerce-Price-amount amount\"><bdi><span class=\"woocommerce-Price-currencySymbol\" translate=\"no\">&#36;</span>50.00</bdi></span>",
+ "related_ids": [
+  58,
+  69
+ ],
+ "meta_data": [],
+ "stock_status": "instock",
+ "has_options": false,
+ "post_password": "",
+ "global_unique_id": "",
+ "jetpack_sharing_enabled": true,
+ "_links": {
+  "self": [
+   {
+    "href": "https://scrollyseo.com/wp-json/wc/v3/products/279",
+    "targetHints": {
+     "allow": [
+      "GET",
+      "POST",
+      "PUT",
+      "PATCH",
+      "DELETE"
+     ]
+    }
+   }
+  ],
+  "collection": [
+   {
+    "href": "https://scrollyseo.com/wp-json/wc/v3/products"
+   }
+  ]
+ }
+}

@@ -99,7 +99,7 @@ body:has(.scx-woo) .page-content>:not(.scx):not(style):not(script){max-width:126
 body:has(.scx-woo) .page-content>h1:first-of-type,body:has(.scx-woo) .page-content>.wp-block-heading:first-of-type{padding-top:clamp(28px,4vw,56px)!important}
 body:has(.scx-woo) .page-content>.woocommerce,body:has(.scx-woo) .page-content>.wp-block-woocommerce-cart,body:has(.scx-woo) .page-content>.wp-block-woocommerce-checkout{padding-bottom:80px!important}
 body:has(.scx-woo) .page-content>h1,body:has(.scx-woo) .page-content .wp-block-heading:first-child{font-family:'Archivo','Arial Black',sans-serif;font-weight:900;text-transform:uppercase;letter-spacing:-.02em;font-size:clamp(2.2rem,4.6vw,3.6rem);line-height:1;margin:0 0 .6em;color:#000}
-body:has(.scx-woo) .wc-block-components-button:not(.is-link),body:has(.scx-woo) .woocommerce a.button,body:has(.scx-woo) .woocommerce button.button,body:has(.scx-woo) .woocommerce input.button,body:has(.scx-woo) .woocommerce #respond input#submit{background:#f95f34!important;color:#fff!important;border:0!important;border-radius:32px!important;font-weight:700!important}
+body:has(.scx-woo) .wc-block-components-button:not(.is-link),body:has(.scx-woo) .woocommerce a.button,body:has(.scx-woo) .woocommerce button.button,body:has(.scx-woo) .woocommerce input.button,body:has(.scx-woo) .woocommerce #respond input#submit{background:#f95f34!important;color:#000!important;border:0!important;border-radius:32px!important;font-weight:700!important}
 body:has(.scx-woo) .woocommerce a.button:hover,body:has(.scx-woo) .woocommerce button.button:hover,body:has(.scx-woo) .wc-block-components-button:not(.is-link):hover{background:#d94a1e!important}
 body:has(.scx-woo) .page-content a:not(.button):not(.wc-block-components-button){color:#000}
 `;
@@ -153,18 +153,10 @@ function refundEdit(html) {
 export function buildAll() {
   const un = { _elementor_edit_mode: '' };
   return [
-    salesPage({ file: '16-seo-site-audit.json', key: 'seo-site-audit', id: 16, active: '' }),
-    salesPage({ file: '50-shopify-seo-workbook.json', key: 'shopify-seo-workbook', id: 50, active: '' }),
-    salesPage({ file: '71-pinterest-seo-workbook.json', key: 'pinterest-seo-workbook', id: 71, active: '' }),
-    wrapPage({ file: '263-implementation.json', key: 'implementation', id: 263, css: CSS_IMPL, meta: un, palette: true }),
-    wrapPage({ file: '119-about.json', key: 'about', id: 119, css: CSS_ABOUT, meta: un }),
-    wrapPage({ file: '124-contact.json', key: 'contact', id: 124, css: CSS_FOOTERPAGE, meta: un }),
-    wrapPage({ file: '171-accessibility.json', key: 'accessibility', id: 171, css: CSS_FOOTERPAGE }),
-    wrapPage({ file: '64-privacy.json', key: 'privacy', id: 64, css: CSS_FOOTERPAGE }),
-    wrapPage({ file: '65-terms.json', key: 'terms', id: 65, css: CSS_FOOTERPAGE }),
-    wrapPage({ file: '66-refund.json', key: 'refund', id: 66, css: CSS_FOOTERPAGE, edit: refundEdit }),
+    // Moved to v3 (2026-10-03/04): Privacy, Terms, Refund, Accessibility, Contact, About -> pages/legal.mjs;
+    // SEO Site Audit, Shopify + Pinterest workbooks, Implementation -> pages/sales.mjs; My Account -> pages/account.mjs.
+    // Cart + Checkout below are owned by the commerce session; never publish them from here (stale 2026-09-21 baseline).
     wrapPage({ file: '6-cart.json', key: 'cart', id: 6, css: CSS_WOO, woo: true }),
     wrapPage({ file: '7-checkout.json', key: 'checkout', id: 7, css: CSS_WOO, woo: true }),
-    wrapPage({ file: '8-my-account.json', key: 'my-account', id: 8, css: CSS_WOO, woo: true }),
   ];
 }

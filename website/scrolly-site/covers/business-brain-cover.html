@@ -1,0 +1,50 @@
+<!doctype html>
+<!-- Business Brain cover, matching the workbook cover set (1024x1536). Render: node covers/render-cover.mjs. ?v=lilac|teal -->
+<html><head><meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@700&family=Archivo+Black&display=block" rel="stylesheet">
+<style>
+:root{--navy:#0b1820;--orange:#ff5a1a;--cream:#f8efdd;--teal:#5ee9dc;--lilac:#b48fd0}
+html,body{margin:0}
+.c{position:relative;width:1024px;height:1536px;overflow:hidden;background:var(--bg)}
+.lilac{--bg:var(--lilac);--t1:var(--navy);--t2:var(--cream);--sub:var(--navy);--w1:var(--orange);--w2:var(--navy);--w3:var(--teal);--w4:var(--cream)}
+.teal{--bg:var(--teal);--t1:var(--navy);--t2:var(--cream);--sub:var(--navy);--w1:var(--orange);--w2:var(--navy);--w3:var(--lilac);--w4:var(--cream)}
+.logo{position:absolute;left:92px;top:96px;font:400 92px/1 'Archivo Black';letter-spacing:-.04em;color:var(--navy)}
+.t{position:absolute;left:86px;right:86px;font-family:Anton;text-transform:uppercase;line-height:.86;white-space:nowrap}
+.t1{top:220px;color:var(--t1)} .t2{top:520px;color:var(--t2)}
+.sub{position:absolute;left:92px;right:92px;top:920px;font:700 64px/1 Archivo;letter-spacing:.2em;color:var(--sub);white-space:nowrap}
+svg.w{position:absolute;left:0;bottom:0;width:1024px;height:620px}
+.grain{position:absolute;inset:0;mix-blend-mode:multiply;opacity:.6;pointer-events:none}
+.wear{position:absolute;inset:0;mix-blend-mode:screen;opacity:.22;pointer-events:none}
+.edge{position:absolute;inset:0;box-shadow:inset 0 0 90px rgba(11,24,32,.35);pointer-events:none}
+</style></head><body>
+<div class="c" id="c">
+ <div class="logo">scrolly</div>
+ <div class="t t1" data-fit>Business</div>
+ <div class="t t2" data-fit>Brain</div>
+ <div class="sub" data-fit-sub>NOTION TEMPLATE</div>
+ <svg class="w" viewBox="0 0 1024 620" preserveAspectRatio="none">
+  <defs><filter id="rough" x="-5%" y="-5%" width="110%" height="110%"><feTurbulence type="fractalNoise" baseFrequency="0.02 0.5" numOctaves="4" seed="4"/><feDisplacementMap in="SourceGraphic" scale="16"/></filter></defs>
+  <g filter="url(#rough)">
+   <path fill="var(--w1)" d="M-20 300 C 160 330, 330 300, 540 190 S 900 40, 1044 20 L1044 640 L-20 640Z"/>
+   <path fill="var(--w2)" d="M-20 380 C 170 410, 350 380, 560 270 S 900 120, 1044 105 L1044 640 L-20 640Z"/>
+   <path fill="var(--w3)" d="M-20 405 C 170 435, 350 405, 560 295 S 900 145, 1044 130 L1044 640 L-20 640Z"/>
+   <path fill="var(--w2)" d="M-20 490 C 180 515, 360 490, 570 385 S 900 235, 1044 220 L1044 640 L-20 640Z"/>
+   <path fill="var(--w4)" d="M-20 515 C 180 540, 360 515, 570 410 S 900 260, 1044 245 L1044 640 L-20 640Z"/>
+   <path fill="var(--w2)" d="M-20 590 C 190 610, 370 590, 580 490 S 900 345, 1044 330 L1044 640 L-20 640Z"/>
+  </g>
+ </svg>
+ <svg class="wear" width="1024" height="1536"><filter id="s"><feTurbulence type="fractalNoise" baseFrequency=".02 .12" numOctaves="4" seed="11"/><feColorMatrix values="0 0 0 0 .97  0 0 0 0 .94  0 0 0 0 .87  0 0 0 9 -5.6"/></filter><rect width="100%" height="100%" filter="url(#s)"/></svg>
+ <div class="edge"></div>
+ <svg class="grain" width="1024" height="1536"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="1.1" numOctaves="3" seed="7"/><feColorMatrix values="0 0 0 0 .5  0 0 0 0 .45  0 0 0 0 .4  0 0 0 -1.4 1.1"/></filter><rect width="100%" height="100%" filter="url(#n)"/></svg>
+</div>
+<script>
+document.getElementById('c').className='c '+(new URLSearchParams(location.search).get('v')||'lilac');
+document.fonts.ready.then(()=>{
+ const W=1024-172;
+ for(const e of document.querySelectorAll('[data-fit]')){let s=400;e.style.fontSize=s+'px';while(e.scrollWidth>W&&s>40){s-=2;e.style.fontSize=s+'px'}e.style.fontSize=Math.min(s,360)+'px'}
+ const t1=document.querySelector('.t1'),t2=document.querySelector('.t2'),sub=document.querySelector('.sub');
+ t2.style.top=(t1.offsetTop+t1.offsetHeight-6)+'px';
+ sub.style.top=(t2.offsetTop+t2.offsetHeight+34)+'px';
+ document.body.dataset.ready=1;
+});
+</script></body></html>
