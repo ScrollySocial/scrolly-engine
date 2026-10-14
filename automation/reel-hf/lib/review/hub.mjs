@@ -54,12 +54,13 @@ const LABEL = {
   edit: ['Edit it', 'Your turn'],
   approve: ['Approve it', 'Your turn'],
   revise: ['Claude is making your changes', "Claude's turn"],
+  sounds: ['Claude is adding sounds', "Claude's turn"],
   render: ['Video gets made tonight', "Claude's turn"],
   post: ['Claude adds it to Buffer', "Claude's turn"],
   'no-page': ['Being drafted', "Claude's turn"],
   done: ['Done', 'Queued or posted'],
 };
-const GROUPS = [['Your turn', ['approve', 'edit', 'plan']], ["Claude's turn", ['revise', 'render', 'post', 'no-page']], ['Done', ['done']]];
+const GROUPS = [['Your turn', ['approve', 'edit', 'plan']], ["Claude's turn", ['revise', 'sounds', 'render', 'post', 'no-page']], ['Done', ['done']]];
 const STEPS = [['look', 'Plan it'], ['sound', 'Edit it'], ['video', 'Approve it']];
 const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;');
 const when = (iso) => new Date(iso).toLocaleString('en-US', { weekday: 'short', hour: 'numeric', minute: '2-digit' });
@@ -90,6 +91,7 @@ function line(r) {
     case 'edit': return r.pass?.revised ? `Claude made your changes (${when(r.pass.revised)}). Check them in Edit it.` : `Plan it is done. Next: sounds, captions, music and transitions.${saved}`;
     case 'approve': return 'The video is ready. Watch it and approve the caption.';
     case 'revise': return `You sent changes${r.savedAt ? ' ' + when(r.savedAt) : ''}. Claude makes them, then it comes back to you.`;
+    case 'sounds': return 'You approved the plan. Claude adds the sounds, music and transitions, then Edit it opens.';
     case 'render': return 'You approved the edit. The video gets made in the overnight run.';
     case 'post': return 'You approved it. Claude adds it to the Buffer queue.';
     case 'no-page': return 'Claude is still drafting this one.';
@@ -101,7 +103,7 @@ function page() {
   const rows = allReels().map(reelStatus);
   const title = (slug) => { try { return JSON.parse(readFileSync(path.join(ROOT, slug, 'review/reel.json'), 'utf8')).title || slug; } catch { return slug; } };
   const yours = rows.filter((r) => ['plan', 'edit', 'approve'].includes(r.stage)).length;
-  const claude = rows.filter((r) => ['revise', 'render', 'post', 'no-page'].includes(r.stage)).length;
+  const claude = rows.filter((r) => ['revise', 'sounds', 'render', 'post', 'no-page'].includes(r.stage)).length;
   const item = (r) => {
     const hasPage = existsSync(path.join(ROOT, r.slug, 'review/reel.json'));
     const open = hasPage ? `<a class="go" href="/open/${encodeURIComponent(r.slug)}">Open</a>` : '';

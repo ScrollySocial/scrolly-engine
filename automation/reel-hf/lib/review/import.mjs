@@ -57,6 +57,7 @@ if (process.argv.includes('--done')) {
   Object.assign(D, { cut: [], pins: [], videoNotes: [], soundRequests: '', notes: '' });
   D.handled = [...(D.handled || []), done];
   writeFileSync(decFile, JSON.stringify(D, null, 1));
-  writeFileSync(path.join(dir, 'review/pass.json'), JSON.stringify({ at, revised: at }));
+  const pf = path.join(dir, 'review/pass.json'), prev = existsSync(pf) ? JSON.parse(readFileSync(pf, 'utf8')) : {};
+  writeFileSync(pf, JSON.stringify({ ...prev, at, revised: at }));
   console.log(`Filed ${out.length} item(s) as handled; marked revised (her earlier approvals need giving again).`);
 }

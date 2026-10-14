@@ -4,8 +4,11 @@
 // Usage: node lib/pipeline.mjs            → table
 //        node lib/pipeline.mjs --json     → JSON (for scripts)
 //        node lib/pipeline.mjs --mark <reel> → record that Claude has acted on her latest decisions
-// Stages: plan (waiting on her: Plan it) · edit (waiting on her: Edit it) · render (evening run renders it) ·
-//         approve (waiting on her: Approve it) · post (Claude posts it, skill step 7) · done · no-page (no review data)
+//        node lib/pipeline.mjs --mark <reel> --sounds → the sound pass is done for the plan she approved (Edit it opens)
+// Stages, in order: plan (her: Plan it) · revise (Claude: make the changes she sent) · sounds (Claude: add sounds,
+//         music and transitions to the approved plan) · edit (her: Edit it) · render (overnight run renders it) ·
+//         approve (her: Approve it) · post (Claude posts it, skill step 7) · done · no-page (no review data)
+// Drafts stop at Plan it (no sounds yet): sounds only go on once she approves the plan, so they're placed once.
 import { createHash } from 'node:crypto';
 import { existsSync, readFileSync, readdirSync, statSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
@@ -60,6 +63,7 @@ export function reelStatus(slug) {
   else if (!hasPage) stage = 'no-page';
   else if (newDecisions && asks && (ok('look') || ok('sound') || ok('video'))) stage = 'revise'; // she sent changes from any step
   else if (!ok('look')) stage = 'plan';
+  else if (!(pass?.sounds && pass.sounds >= A.look)) stage = 'sounds'; // sound pass after her latest plan approval
   else if (!ok('sound')) stage = 'edit';
   else if (!renderCurrent) stage = 'render';
   else if (!ok('video')) stage = 'approve';
@@ -73,7 +77,8 @@ const NEXT = {
   'no-page': 'no review page yet (overnight run drafts it, or legacy Reel)',
   plan: 'waiting on Mercedes: Plan it',
   edit: 'waiting on Mercedes: Edit it',
-  revise: "Claude's turn: apply her change requests, then she reviews again",
+  revise: "Claude's turn: apply her change requests (import.mjs --done), then she reviews again",
+  sounds: "Claude's turn: sound pass (sounds, music, transitions), then pipeline --mark <reel> --sounds",
   render: 'evening run renders it',
   approve: 'waiting on Mercedes: Approve it',
   post: 'Claude posts it (skill step 7)',
@@ -87,8 +92,10 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
     if (!existsSync(path.join(ROOT, slug, 'review'))) throw new Error(`no review folder for ${slug}`);
     const at = new Date().toISOString();
     // --revised: Claude changed what she approved, so her approvals before now must be given again
-    writeFileSync(path.join(ROOT, slug, 'review/pass.json'), JSON.stringify(args.includes('--revised') ? { at, revised: at } : { at }));
-    console.log(`${slug}: marked as acted on${args.includes('--revised') ? ' (revised: she reviews again)' : ''}`);
+    // --sounds: the sound pass is done, so Edit it opens. Earlier marks are kept (merged).
+    const f = path.join(ROOT, slug, 'review/pass.json'), prev = read(f, {});
+    writeFileSync(f, JSON.stringify({ ...prev, at, ...(args.includes('--revised') ? { revised: at } : {}), ...(args.includes('--sounds') ? { sounds: at } : {}) }));
+    console.log(`${slug}: marked as acted on${args.includes('--revised') ? ' (revised: she reviews again)' : ''}${args.includes('--sounds') ? ' (sound pass done: Edit it is open)' : ''}`);
   } else {
     const rows = allReels().map(reelStatus);
     if (args.includes('--json')) console.log(JSON.stringify(rows, null, 1));

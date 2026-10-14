@@ -161,6 +161,7 @@ textarea{min-height:42px;margin-top:8px}
 .vnote{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:10px;align-items:start;padding:6px 0;border-top:1px dashed var(--line)}
 .x{border:0;background:none;color:var(--muted);font-size:18px;line-height:1;padding:2px 4px}
 [hidden]{display:none!important}
+.locked{display:none!important}
 @media (max-width:900px){.wrap{grid-template-columns:minmax(0,1fr)}.side{position:static}}
 </style>
 </head>
@@ -247,6 +248,7 @@ textarea{min-height:42px;margin-top:8px}
 
     <!-- STEP 2: SOUND & MOTION -->
     <div data-s="2">
+      <section class="panel" id="s2lock" hidden><h2>Edit it opens soon</h2><p class="sub" style="margin:0" id="s2locktext"></p></section>
       <section class="panel"><p class="sub" style="margin:0" id="s2note"></p></section>
       <section data-p="screen" class="panel">
         <h2>Moments &amp; sounds</h2>
@@ -364,6 +366,7 @@ function showStep(n) {
   renderApprovals();
   $$('[data-s]').forEach((d) => (d.hidden = +d.dataset.s !== n));
   $('#tabs2').hidden = n !== 2; $('#tabs1').hidden = n !== 1; $('#side').hidden = n === 1; $('#wrap').classList.toggle('full', n === 1);
+  applyLock();
   setMode(n === 3 ? 'video' : 'plan');
   try { localStorage.setItem('reelStep', n); } catch {}
 }
@@ -397,6 +400,12 @@ async function approve(key, next) {
     } catch { pill("Couldn't save: is the review page still running?", 'bad'); }
     return;
   }
+  if (key === 'look') { // plan approved: Claude adds the sounds next, so back to the list
+    clearTimeout(saveTimer); pill('Saving…');
+    try { const r = await fetch('/api/decisions', { method: 'PUT', body: JSON.stringify(D) }).then((r) => r.json()); if (!r.ok) throw new Error(r.error); location.href = 'http://localhost:4320/'; }
+    catch { pill("Couldn't save: is the review page still running?", 'bad'); }
+    return;
+  }
   save(); renderApprovals(); if (next) { showStep(next); window.scrollTo(0, 0); }
 }
 // her open change requests per step (same rules as openAsks in lib/pipeline.mjs)
@@ -416,10 +425,10 @@ function renderApprovals() {
   const open = { look: n1, sound: n2, video: A.video };
   $$('.step').forEach((b) => { const k = ['look', 'sound', 'video'][+b.dataset.step - 1]; b.classList.toggle('done', !!valid(k) && !open[k]); });
   // step 1: change requests make it "send to Claude", not "looks good"
-  $('#ok1').textContent = n1 ? 'Send my changes to Claude →' : 'Plan looks good, on to editing →';
+  $('#ok1').textContent = n1 ? 'Send my changes to Claude →' : 'Plan looks good: add the sounds →';
   $('#ok1text').textContent = n1
     ? (valid('look') ? `Sent to Claude ${when(D.approved.look)}. Anything you add now goes too.` : `${plural(n1, 'change')} for Claude. Sending takes you back to your list of Reels; this one comes back to you once they're made.`)
-    : (valid('look') ? `Approved ${when(D.approved.look)}.` : fixed ? fixed + 'approve the plan.' : 'Happy with the plan? Then sounds get picked to match.');
+    : (valid('look') ? `Approved ${when(D.approved.look)}.` : fixed ? fixed + 'approve the plan.' : 'Happy with the plan? Claude then adds sounds, music and transitions to it, and Edit it opens.');
   // step 2: it's a live preview, never the video
   $('#s2note').textContent = 'This is a live preview: your footage with the current graphics and sounds, playing right in the page. It is not the final video. That only gets made after you finish this step.'
     + (n1 ? ` Your step 1 changes aren't in it yet: Claude makes those first.` : '');
@@ -438,6 +447,19 @@ function renderApprovals() {
     : A.video ? `${plural(A.video, 'note')} for Claude. Claude fixes them and makes the video again for you to approve.`
     : valid('video') ? `Approved ${when(D.approved.video)}.` : 'Video and caption ready? Approving starts the posting step.';
 }
+// Edit it only opens once she approved the plan and Claude added the sounds, music and transitions to it
+const editOpen = () => ['edit', 'render', 'approve', 'post', 'done'].includes(ST.stage);
+function applyLock() {
+  const locked = ST.stage != null && !editOpen();
+  $('#s2lock').hidden = !locked;
+  $('#s2locktext').textContent = {
+    plan: 'First approve Plan it (step 1). Then Claude adds the sounds, music and transitions to your plan, and this step opens.',
+    revise: 'Claude is making the changes you sent. Then you check Plan it again, and once you approve it Claude adds the sounds.',
+    sounds: 'You approved the plan. Claude is adding the sounds, music and transitions now; this step opens when that is done.',
+  }[ST.stage] || 'This step opens after Plan it is approved and Claude adds the sounds.';
+  $$('[data-s="2"] > section').forEach((sec) => { if (sec.id !== 's2lock') sec.classList.toggle('locked', locked); });
+  if (step === 2) $('#tabs2').hidden = locked; $('#side').hidden = step === 1 || (step === 2 && locked);
+}
 // where the Reel really stands (lib/pipeline.mjs) and Claude's last pass; reloads her choices if Claude filed some away
 async function refreshStatus() {
   try {
@@ -445,6 +467,7 @@ async function refreshStatus() {
     const pass = st.status?.pass || null, revisedNow = !!(ST.pass !== undefined && pass?.revised && pass.at !== ST.pass?.at);
     ST = { stage: st.status?.stage || null, pass };
     if (revisedNow) { loadDecisions(st.decisions || {}); renderAll(); pill('Claude updated this Reel', 'good'); } else renderApprovals();
+    applyLock();
   } catch {}
 }
 $('#ok1').addEventListener('click', () => approve('look', 2));

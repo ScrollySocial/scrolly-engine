@@ -55,11 +55,13 @@ moment, like Reel #2. Stills of her per moment in `sketch/fNN.jpg`; cut-outs whe
 lines into `COVERS` (the viewer's problem in their words, never internal names; `<m>` = marker) and pick `coverCut`.
 Start the page: `node build.mjs review`, then the `reel-review` launch config (http://localhost:4321).
 ◆ **Step 1 on the page, Plan it:** brand kit, cover (frame + style + text), script (cuts), moments (keep/change/remove).
-Read back with `node lib/review/import.mjs <reel>`; fix what she marked, rebuild, until she approves the plan.
+Read back with `node lib/review/import.mjs <reel>`; fix what she marked, rebuild, then `node lib/review/import.mjs <reel> --done`
+(files her requests away; she checks and approves again). Repeat until she approves the plan with no changes. Step 2
+stays locked on her page until step 5 is done.
 
 **5. Edit it (sounds and motion, on the approved visuals).** Sound effects per event in build.mjs (`R.fx`, one per
-event; repeats are fine only when she chooses them), music (25s samples if the track is open; one track, template volume
-+ fades), captions (`R.captions`), transitions (`R.cam.whip` / `punch`). Then `node build.mjs review` again.
+event; repeats only when she chooses them, or for the items of a list she says, which share one sound), music (25s samples if the track is open; one track, template volume
++ fades), captions (`R.captions`), transitions (`R.cam.whip` / `punch`). Then `node build.mjs review` again and `node lib/pipeline.mjs --mark <reel> --sounds` (opens Edit it).
 ◆ **Step 2 on the page, Edit it:** live preview (real footage + graphics + sounds + music, no render). Her sound,
 music, caption, transition and filter choices apply on the next build automatically (lib/reel.mjs reads
 review/decisions.json); word cuts need the take re-cut (plan.json + prep-footage). Never send an animatic.

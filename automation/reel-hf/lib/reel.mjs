@@ -10,7 +10,7 @@
 //   R.fx('fx-pop1', 'pop-light', t); R.music('assets/music/music-a.mp3');
 //   R.captions({ hide: [4, 9], top: (t) => 128 });
 //   R.write();                                    // → index.html
-import { readFileSync, writeFileSync, existsSync, copyFileSync } from 'node:fs';
+import { readFileSync, writeFileSync, existsSync, copyFileSync, mkdirSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { makeComponents, componentCss } from './components.mjs';
@@ -272,6 +272,7 @@ ${stage ? '' : `${sfx.join('\n')}\n${music}`}
 <script>${js}</script>
 </body>
 </html>`;
+      mkdirSync(path.dirname(path.resolve(file)), { recursive: true }); // a new Reel has no review/ folder yet
       writeFileSync(file, html);
       console.log(`${file}: ${DUR}s, ${scenes.length} scene layers, ${capHtml ? capHtml.split('\n').length : 0} captions, ${sfx.length} sfx`);
     },
