@@ -7,7 +7,7 @@ import { createReadStream, existsSync, readFileSync, readdirSync, statSync, writ
 import { createHash } from 'node:crypto';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { coverHtml } from '../cover.mjs';
+import { coverHtml, COVER_STYLES } from '../cover.mjs';
 import { BRANDS } from '../brand/index.mjs';
 import { reelStatus } from '../pipeline.mjs';
 
@@ -90,7 +90,7 @@ createServer((req, res) => {
   if (p === '/api/cutout' && req.method === 'POST') { makeCut(+url.searchParams.get('frame')); return json(res, { ok: true }); }
   // live cover preview: frame, style (cut | photo), background, text, aside
   if (p === '/cover') {
-    const q = url.searchParams, n = +q.get('frame') || 1, style = q.get('style') === 'photo' ? 'photo' : 'cut';
+    const q = url.searchParams, n = +q.get('frame') || 1, style = COVER_STYLES[q.get('style')] ? q.get('style') : 'cut';
     const cut = cutFor(n), photo = `sketch/f${nn(n)}.jpg`;
     const html = coverHtml({ brand: BRANDS[q.get('brand')] || BRANDS.scrolly, text: q.get('text') || '', aside: q.get('aside') || '', style, bg: q.get('bg') || 'cream', cut: cut && path.join(DIR, cut), photo: path.join(DIR, photo), asset: urlFor });
     res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-store' }); return res.end(html);

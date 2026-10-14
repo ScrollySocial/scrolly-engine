@@ -541,13 +541,21 @@ function renderCover() {
     b.style.backgroundImage = `url('/reel/${f.still}')`; b.addEventListener('click', () => setCover({ frame: f.n })); fr.append(b);
   }
   const sty = $('#cstyles'); sty.textContent = '';
-  const cutLbl = el('span', 'sub', 'You cut out, on:'); cutLbl.style.margin = '0 4px 0 0'; sty.append(cutLbl);
-  for (const bg of R.coverBgs || Object.keys(BG)) {
-    const b = el('button', 'sw'); b.type = 'button'; b.title = bg; b.setAttribute('aria-label', 'Cut-out on ' + bg); b.style.background = BG[bg] || bg;
-    b.setAttribute('aria-pressed', c.style === 'cut' && c.bg === bg); b.addEventListener('click', () => setCover({ style: 'cut', bg })); sty.append(b);
+  // style (lib/cover.mjs COVER_STYLES), then the background color for the cut-out styles
+  const STY = { cut: 'Centered', behind: 'Text behind you', side: 'Off-center', photo: 'Full video frame' };
+  const row1 = el('div', 'cstyles'); row1.style.width = '100%';
+  for (const [k, label] of Object.entries(STY)) {
+    const b = el('button', 'btn small' + (c.style === k ? ' main' : ' quiet'), label); b.type = 'button'; b.setAttribute('aria-pressed', c.style === k);
+    b.addEventListener('click', () => setCover({ style: k, ...(k === 'behind' && c.style !== 'behind' ? { bg: 'ink' } : {}) })); row1.append(b);
   }
-  const ph = el('button', 'btn small' + (c.style === 'photo' ? ' main' : ' quiet'), 'Full video frame'); ph.type = 'button'; ph.style.marginLeft = '8px';
-  ph.addEventListener('click', () => setCover({ style: 'photo' })); sty.append(ph);
+  sty.append(row1);
+  if (c.style !== 'photo') {
+    const cutLbl = el('span', 'sub', 'Background:'); cutLbl.style.margin = '0 4px 0 0'; sty.append(cutLbl);
+    for (const bg of R.coverBgs || Object.keys(BG)) {
+      const b = el('button', 'sw'); b.type = 'button'; b.title = bg; b.setAttribute('aria-label', 'Background ' + bg); b.style.background = BG[bg] || bg;
+      b.setAttribute('aria-pressed', c.bg === bg); b.addEventListener('click', () => setCover({ bg })); sty.append(b);
+    }
+  }
   const tx = $('#ctexts'); tx.textContent = '';
   for (const o of R.covers) {
     const l = el('label', 'ctext' + (!c.own && c.plain === o.plain ? ' on' : ''));
@@ -558,7 +566,7 @@ function renderCover() {
   $('#coverAside').checked = !!c.aside; if (document.activeElement !== $('#asideText') && c.aside) $('#asideText').value = c.aside;
   // preview (cut-out style needs a cut-out of her from that frame: made once, 2 to 3 minutes)
   const msg = $('#cpmsg'), hasCut = cutState.cuts?.includes(c.frame);
-  if (c.style === 'cut' && !hasCut) {
+  if (c.style !== 'photo' && !hasCut) {
     msg.hidden = false; msg.textContent = cutState.cutJob?.running ? `Cutting you out of F${cutState.cutJob.frame} (2 to 3 minutes; you can keep reviewing)…` : `Cutting you out of F${c.frame} (2 to 3 minutes; you can keep reviewing)…`;
     if (!cutState.cutJob?.running) fetch('/api/cutout?frame=' + c.frame, { method: 'POST' });
     clearTimeout(coverTimer); coverTimer = setTimeout(async () => { await refreshCuts(); renderCover(); }, 3000);

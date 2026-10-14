@@ -42,7 +42,7 @@ if (D.look) out.push(`LOOK ${JSON.stringify(D.look)} (applies on next build; che
 for (const [n, L] of Object.entries(D.lookByFrame || {})) out.push(`LOOK for F${n}: ${L ? JSON.stringify(L) : 'as filmed'} (applies on next build)`);
 if (D.post?.caption || D.post?.hashtags) out.push(`POST CAPTION (her edit): ${(D.post.caption ?? R.post?.caption ?? '').replace(/\s+/g, ' ').slice(0, 160)}… | hashtags: ${D.post.hashtags ?? R.post?.hashtags ?? ''}`);
 if (D.postAfter) out.push(`AFTER APPROVAL: ${D.postAfter === 'queue' ? 'set the Notion row to Ready (adds it to the Buffer queue; needs a live video URL)' : 'hold: set the Notion row to Approved'}`);
-if (D.cover) out.push(`COVER: frame F${D.cover.frame}, ${D.cover.style === 'photo' ? 'full video frame' : 'cut-out on ' + D.cover.bg}, text “${D.cover.text}”${D.cover.aside ? ' + aside “' + D.cover.aside + '”' : ''} (render with lib/cover.mjs renderCovers)`);
+if (D.cover) out.push(`COVER: frame F${D.cover.frame}, ${D.cover.style === 'photo' ? 'full video frame' : `${{ behind: 'text behind her', side: 'off-center' }[D.cover.style] || 'centered'} cut-out on ${D.cover.bg}`}, text “${D.cover.text}”${D.cover.aside ? ' + aside “' + D.cover.aside + '”' : ''} (render with lib/cover.mjs renderCovers)`);
 else if (D.coverText) out.push(`COVER TEXT: ${D.coverText}${R.coverOptions?.includes(D.coverText) ? '' : ' (her own wording)'}`);
 if (D.notes?.trim()) out.push(`GENERAL: ${D.notes.trim()}`);
 if (D.rule?.trim()) out.push(`RULE FOR EVERY REEL (add to the handoff spec's Her rules after confirming): ${D.rule.trim()}`);

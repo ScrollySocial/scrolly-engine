@@ -58,7 +58,7 @@ for (const { slug } of todo) {
     const n = D.cover.frame || 1;
     const cut = [`review/cover-cuts/f${nn(n)}.png`, `sketch/f${nn(n)}-cut.png`].map((p) => path.join(dir, p)).find(existsSync);
     const photo = path.join(dir, `sketch/f${nn(n)}.jpg`);
-    const style = D.cover.style === 'photo' || !cut ? 'photo' : 'cut';
+    const style = D.cover.style === 'photo' || !cut ? 'photo' : D.cover.style || 'cut';
     try {
       mkdirSync(path.dirname(coverFile(slug)), { recursive: true });
       rmSync(coverFile(slug), { force: true });

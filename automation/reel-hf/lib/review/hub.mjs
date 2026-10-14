@@ -50,43 +50,97 @@ async function ensure(slug) {
 }
 
 const LABEL = {
-  plan: ['Plan it', 'Your turn: check the moments, script and cover'],
-  edit: ['Edit it', 'Your turn: sounds, captions, music, transitions'],
-  revise: ['Claude is revising', 'Your changes are next; then it comes back to you'],
-  render: ['Rendering', 'Renders in the evening run'],
-  approve: ['Approve it', 'Your turn: watch the video, approve the caption'],
-  post: ['Posting', 'Claude adds it to Buffer'],
+  plan: ['Plan it', 'Your turn'],
+  edit: ['Edit it', 'Your turn'],
+  approve: ['Approve it', 'Your turn'],
+  revise: ['Claude is making your changes', "Claude's turn"],
+  render: ['Video gets made tonight', "Claude's turn"],
+  post: ['Claude adds it to Buffer', "Claude's turn"],
+  'no-page': ['Being drafted', "Claude's turn"],
   done: ['Done', 'Queued or posted'],
-  'no-page': ['Not ready', 'No review page yet'],
 };
-const ORDER = ['approve', 'plan', 'edit', 'revise', 'render', 'post', 'no-page', 'done'];
+const GROUPS = [['Your turn', ['approve', 'edit', 'plan']], ["Claude's turn", ['revise', 'render', 'post', 'no-page']], ['Done', ['done']]];
+const STEPS = [['look', 'Plan it'], ['sound', 'Edit it'], ['video', 'Approve it']];
 const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;');
+const when = (iso) => new Date(iso).toLocaleString('en-US', { weekday: 'short', hour: 'numeric', minute: '2-digit' });
+
+// one Reel's three steps: done ✓ / sent to Claude ↺ / you've started ● / not yet
+function tracker(r) {
+  const A = r.approved || {}, k = r.asks || {}, revised = r.pass?.revised;
+  const valid = (s) => A[s] && !(revised && A[s] < revised);
+  const open = { look: k.look + k.general, sound: k.look + k.general + k.sound, video: k.video };
+  const current = { plan: 'look', edit: 'sound', approve: 'video', revise: null }[r.stage];
+  return STEPS.map(([s, name]) => {
+    let cls = 'todo', note = 'Not yet';
+    if (r.stage === 'done') { cls = 'ok'; note = 'Done'; }
+    else if (valid(s) && open[s]) { cls = 'sent'; note = 'Sent to Claude'; }
+    else if (valid(s)) { cls = 'ok'; note = 'Approved'; }
+    else if (s === current && r.savedAt && (!revised || r.savedAt > revised)) { cls = 'wip'; note = "You've started"; }
+    else if (s === current) { cls = 'next'; note = revised ? 'Check the changes' : 'Ready for you'; }
+    return `<span class="stp ${cls}" title="${name}: ${note}"><i></i>${name}<small>${note}</small></span>`;
+  }).join('');
+}
+
+// the one plain sentence under the title
+function line(r) {
+  const saved = r.savedAt ? ` Last saved ${when(r.savedAt)}.` : '';
+  switch (r.stage) {
+    case 'plan': return r.pass?.revised ? `Claude made your changes (${when(r.pass.revised)}). Check them in Plan it.` : r.savedAt ? `You're partway through Plan it.${saved}` : 'Not started. Start with Plan it: moments, script and cover.';
+    case 'edit': return r.pass?.revised ? `Claude made your changes (${when(r.pass.revised)}). Check them in Edit it.` : `Plan it is done. Next: sounds, captions, music and transitions.${saved}`;
+    case 'approve': return 'The video is ready. Watch it and approve the caption.';
+    case 'revise': return `You sent changes${r.savedAt ? ' ' + when(r.savedAt) : ''}. Claude makes them, then it comes back to you.`;
+    case 'render': return 'You approved the edit. The video gets made in the overnight run.';
+    case 'post': return 'You approved it. Claude adds it to the Buffer queue.';
+    case 'no-page': return 'Claude is still drafting this one.';
+    default: return 'Queued or posted.';
+  }
+}
 
 function page() {
-  const rows = allReels().map(reelStatus).sort((a, b) => ORDER.indexOf(a.stage) - ORDER.indexOf(b.stage) || a.slug.localeCompare(b.slug));
-  const yours = rows.filter((r) => ['plan', 'edit', 'approve'].includes(r.stage)).length;
+  const rows = allReels().map(reelStatus);
   const title = (slug) => { try { return JSON.parse(readFileSync(path.join(ROOT, slug, 'review/reel.json'), 'utf8')).title || slug; } catch { return slug; } };
-  const li = rows.map((r) => {
-    const [tag, sub] = LABEL[r.stage];
-    const open = ['no-page', 'done'].includes(r.stage) && !existsSync(path.join(ROOT, r.slug, 'review/reel.json')) ? '' : `<a class="go" href="/open/${encodeURIComponent(r.slug)}">Open</a>`;
-    return `<li class="s-${r.stage}"><div><b>${esc(title(r.slug))}</b><span>${esc(r.slug)}</span></div><div class="st"><em>${tag}</em><span>${sub}${r.redoSounds.length ? ` · sounds to redo on F${r.redoSounds.join(', F')}` : ''}</span></div>${open}</li>`;
+  const yours = rows.filter((r) => ['plan', 'edit', 'approve'].includes(r.stage)).length;
+  const claude = rows.filter((r) => ['revise', 'render', 'post', 'no-page'].includes(r.stage)).length;
+  const item = (r) => {
+    const hasPage = existsSync(path.join(ROOT, r.slug, 'review/reel.json'));
+    const open = hasPage ? `<a class="go" href="/open/${encodeURIComponent(r.slug)}">Open</a>` : '';
+    return `<li class="s-${r.stage}"><div class="who"><b title="${esc(r.slug)}">${esc(title(r.slug))}</b><em>${LABEL[r.stage][0]}</em><p>${esc(line(r))}</p></div><div class="trk">${tracker(r)}</div>${open}</li>`;
+  };
+  const sections = GROUPS.map(([name, stages]) => {
+    const list = rows.filter((r) => stages.includes(r.stage)).sort((a, b) => stages.indexOf(a.stage) - stages.indexOf(b.stage) || a.slug.localeCompare(b.slug));
+    return list.length ? `<h2>${name} <span>${list.length}</span></h2><ul>${list.map(item).join('')}</ul>` : '';
   }).join('');
-  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Reels to review</title><style>
+  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta http-equiv="refresh" content="30"><title>Reels to review</title><style>
 @font-face{font-family:B;src:url('/lib/assets/fonts/bricolage-800.woff2') format('woff2');font-weight:800;font-stretch:75% 100%}
 @font-face{font-family:F;src:url('/lib/assets/fonts/figtree.woff2') format('woff2');font-weight:300 900}
-:root{--cream:#F6EEE5;--ink:#161210;--peach:#FFC9A8;--mist:#E7EEF5;--line:#d9cfc2}
+:root{--cream:#F6EEE5;--ink:#161210;--peach:#FFC9A8;--mist:#E7EEF5;--line:#d9cfc2;--ok:#2e7d4f}
 body{margin:0;background:var(--cream);color:var(--ink);font:16px/1.45 F,system-ui,sans-serif}
-main{max-width:860px;margin:0 auto;padding:32px 16px 64px}
-h1{font:800 44px/1 B,sans-serif;font-stretch:75%;margin:0 0 6px}p.sub{margin:0 0 24px;font-size:17px}
+main{max-width:900px;margin:0 auto;padding:32px 16px 64px}
+h1{font:800 44px/1 B,sans-serif;font-stretch:75%;margin:0 0 6px}p.sub{margin:0 0 8px;font-size:17px}
+h2{font:800 26px/1 B,sans-serif;font-stretch:78%;margin:28px 0 10px}h2 span{font:700 15px F,sans-serif;background:#fff;border:1px solid var(--line);border-radius:99px;padding:2px 10px;vertical-align:middle;margin-left:6px}
 ul{list-style:none;margin:0;padding:0;display:grid;gap:10px}
-li{display:grid;grid-template-columns:1fr 1.1fr auto;gap:14px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px 16px}
-li b{display:block;font-size:17px}li span{display:block;font-size:15px;opacity:.75}
-.st em{font-style:normal;font-weight:700;display:inline-block;padding:2px 10px;border-radius:99px;background:var(--mist);font-size:15px;margin-bottom:2px}
-.s-plan .st em,.s-edit .st em,.s-approve .st em{background:var(--peach)}
+li{display:grid;grid-template-columns:1fr auto auto;gap:16px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px 16px}
+.who b{display:block;font-size:17px;line-height:1.3}
+.who em{font-style:normal;font-weight:700;display:inline-block;padding:2px 10px;border-radius:99px;background:var(--mist);font-size:15px;margin:6px 0 2px}
+.who p{margin:2px 0 0;font-size:15px;opacity:.8}
+.s-plan .who em,.s-edit .who em,.s-approve .who em{background:var(--peach)}
 .s-done{opacity:.6}
+.trk{display:flex;gap:6px}
+.stp{display:flex;flex-direction:column;align-items:center;width:92px;font-size:15px;font-weight:700;text-align:center;line-height:1.2}
+.stp small{font-size:15px;font-weight:400;opacity:.75;margin-top:2px}
+.stp i{width:26px;height:26px;border-radius:50%;border:2px solid var(--line);margin-bottom:4px;display:grid;place-items:center;font-style:normal;font-size:15px;background:#fff}
+.stp.ok i{background:var(--ok);border-color:var(--ok)}.stp.ok i::after{content:'✓';color:#fff}
+.stp.sent i{background:var(--mist);border-color:#8aa3bd}.stp.sent i::after{content:'↺'}
+.stp.wip i{border-color:var(--ink);background:var(--peach)}.stp.wip i::after{content:'●';font-size:11px}
+.stp.next i{border-color:var(--ink)}
+.stp.todo{opacity:.5}
 a.go{background:var(--ink);color:#fff;text-decoration:none;padding:10px 18px;border-radius:99px;font-weight:700;font-size:15px}
-@media (max-width:640px){li{grid-template-columns:1fr}a.go{justify-self:start}}
-</style></head><body><main><h1>Reels to review</h1><p class="sub">${yours ? `${yours} waiting on you.` : 'Nothing waiting on you right now.'} Refresh to see new ones.</p><ul>${li}</ul></main></body></html>`;
+.key{font-size:15px;opacity:.8;margin:0 0 4px}
+@media (max-width:760px){li{grid-template-columns:1fr}a.go{justify-self:start}.stp{width:auto;flex:1}}
+</style></head><body><main><h1>Reels to review</h1>
+<p class="sub">${yours ? `<b>${yours} waiting on you.</b>` : 'Nothing waiting on you right now.'}${claude ? ` Claude is working on ${claude}.` : ''} This page updates by itself.</p>
+<p class="key">✓ approved · ↺ sent to Claude for changes · ● you've started</p>
+${sections}</main></body></html>`;
 }
 
 createServer(async (req, res) => {
