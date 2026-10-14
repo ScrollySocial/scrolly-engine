@@ -24,6 +24,19 @@ export function decisionsHash(D = {}) {
   return createHash('sha1').update(JSON.stringify(rest)).digest('hex').slice(0, 10);
 }
 
+// her open change requests per step (not picks like a sound swap, which the build applies by itself).
+// The review page counts the same things. `node lib/review/import.mjs <reel> --done` files them away once made.
+export function openAsks(D = {}) {
+  const txt = (x) => String(x || '').trim();
+  const changed = (o) => Object.values(o || {}).filter((b) => b.state === 'c' || b.state === 'r' || txt(b.note)).length;
+  return {
+    look: changed(D.visual) + ((D.cut || []).length ? 1 : 0),
+    sound: changed(D.board) + (txt(D.soundRequests) ? 1 : 0) + (D.pins || []).length,
+    video: (D.videoNotes || []).length,
+    general: txt(D.notes) ? 1 : 0,
+  };
+}
+
 export function reelStatus(slug) {
   const dir = path.join(ROOT, slug);
   const D = read(path.join(dir, 'review/decisions.json'), {});
@@ -39,8 +52,7 @@ export function reelStatus(slug) {
   // moments she changed or removed after sounds were placed: their sounds need a redo
   const redoSounds = Object.entries({ ...(D.board || {}), ...(D.visual || {}) }).filter(([, b]) => b.state === 'c' || b.state === 'r').map(([n]) => +n);
   // change requests (not just picks): a step approved with these goes back to Claude, never on to the render
-  const asks = redoSounds.length || String(D.notes || '').trim() || (D.videoNotes || []).length || String(D.soundRequests || '').trim()
-    || Object.values({ ...(D.board || {}), ...(D.visual || {}) }).some((b) => String(b.note || '').trim());
+  const asks = Object.values(openAsks(D)).some(Boolean);
   // once Claude revises (pipeline --mark <reel> --revised), approvals given before that need giving again
   const ok = (k) => A[k] && !(pass?.revised && A[k] < pass.revised);
   let stage;
@@ -52,7 +64,7 @@ export function reelStatus(slug) {
   else if (!renderCurrent) stage = 'render';
   else if (!ok('video')) stage = 'approve';
   else stage = 'post';
-  return { slug, stage, approved: A, newDecisions, savedAt: D.savedAt || null, redoSounds, rendered: rendered?.at || null, final: final ? finalFile(slug) : null, posted: posted || null, postAfter: D.postAfter || null };
+  return { slug, stage, approved: A, pass: pass || null, asks: openAsks(D), newDecisions, savedAt: D.savedAt || null, redoSounds, rendered: rendered?.at || null, final: final ? finalFile(slug) : null, posted: posted || null, postAfter: D.postAfter || null };
 }
 
 export const allReels = () => readdirSync(ROOT).filter((d) => /^\d{4}-\d{2}-\d{2}-/.test(d) && existsSync(path.join(ROOT, d, 'build.mjs'))).sort();

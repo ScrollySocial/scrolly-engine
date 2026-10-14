@@ -3,7 +3,9 @@
 // Sound and music changes already apply on the next build (lib/reel.mjs reads decisions.json); cuts need the take
 // re-cut (find the words in plan.json's source transcript, adjust the keep list, re-run prep-footage).
 // Usage: node lib/review/import.mjs <reel-folder>
-import { existsSync, readFileSync } from 'node:fs';
+//        node lib/review/import.mjs <reel-folder> --done   (after making her change requests: files them under
+//        "handled" so the page stops counting them, and marks the Reel revised so she checks it and approves again)
+import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 
 const dir = path.resolve(process.argv[2] || '.');
@@ -46,3 +48,15 @@ if (D.notes?.trim()) out.push(`GENERAL: ${D.notes.trim()}`);
 if (D.rule?.trim()) out.push(`RULE FOR EVERY REEL (add to the handoff spec's Her rules after confirming): ${D.rule.trim()}`);
 
 console.log(out.length ? `${R.slug}: ${out.length} item(s), saved ${D.savedAt}\n` + out.map((l) => '- ' + l).join('\n') : 'Nothing changed: she approved as is.');
+
+if (process.argv.includes('--done')) {
+  // file away what was asked (notes, change/remove marks, word cuts, pins, video notes, sound requests); picks stay
+  const at = new Date().toISOString(), txt = (x) => String(x || '').trim();
+  const take = (o) => { const out = {}; for (const [n, b] of Object.entries(o || {})) if (b.state === 'c' || b.state === 'r' || txt(b.note)) { out[n] = b; if (b.state === 'k') o[n] = { state: 'k' }; else delete o[n]; } return out; };
+  const done = { at, visual: take(D.visual), board: take(D.board), cut: D.cut || [], pins: D.pins || [], videoNotes: D.videoNotes || [], soundRequests: D.soundRequests || '', notes: D.notes || '' };
+  Object.assign(D, { cut: [], pins: [], videoNotes: [], soundRequests: '', notes: '' });
+  D.handled = [...(D.handled || []), done];
+  writeFileSync(decFile, JSON.stringify(D, null, 1));
+  writeFileSync(path.join(dir, 'review/pass.json'), JSON.stringify({ at, revised: at }));
+  console.log(`Filed ${out.length} item(s) as handled; marked revised (her earlier approvals need giving again).`);
+}

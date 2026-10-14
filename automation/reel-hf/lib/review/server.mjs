@@ -9,6 +9,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { coverHtml } from '../cover.mjs';
 import { BRANDS } from '../brand/index.mjs';
+import { reelStatus } from '../pipeline.mjs';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.join(HERE, '../..');
@@ -77,7 +78,8 @@ createServer((req, res) => {
   if (p === '/api/state') {
     const dec = existsSync(DEC) ? JSON.parse(readFileSync(DEC, 'utf8')) : {};
     const b = existsSync(BUILD) ? JSON.parse(readFileSync(BUILD, 'utf8')) : null;
-    return json(res, { slug, cutJob, cuts: Array.from({ length: 30 }, (_, i) => i + 1).filter((n) => cutFor(n)), decisions: dec, build: b, current: soundHash(dec), job: { running: job.running, ok: job.ok, started: job.started, tail: job.log.split('\n').filter(Boolean).slice(-3) } });
+    let status = null; try { status = reelStatus(slug); } catch {}
+    return json(res, { slug, status, cutJob, cuts: Array.from({ length: 30 }, (_, i) => i + 1).filter((n) => cutFor(n)), decisions: dec, build: b, current: soundHash(dec), job: { running: job.running, ok: job.ok, started: job.started, tail: job.log.split('\n').filter(Boolean).slice(-3) } });
   }
   if (p === '/api/decisions' && req.method === 'PUT') {
     let body = '';

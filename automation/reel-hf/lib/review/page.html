@@ -244,6 +244,7 @@ textarea{min-height:42px;margin-top:8px}
 
     <!-- STEP 2: SOUND & MOTION -->
     <div data-s="2">
+      <section class="panel"><p class="sub" style="margin:0" id="s2note"></p></section>
       <section data-p="screen" class="panel">
         <h2>Moments &amp; sounds</h2>
         <p class="sub">Press ▶ Play on a moment and watch it on the left; the card you're on lights up.</p>
@@ -334,7 +335,7 @@ const fmt = (t) => `${Math.floor(t / 60)}:${(Math.max(0, t) % 60).toFixed(1).pad
 const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
 const pretty = (n) => n.replace(/-/g, ' ');
 const blank = () => ({ lookByFrame: {}, cover: null, cut: [], visual: {}, board: {}, sound: {}, music: {}, transitions: {}, look: null, captions: {}, captionFont: null, addedSfx: [], soundRequests: '', videoNotes: [], approved: {}, coverText: '', notes: '', rule: '' });
-let R = null, D = blank(), step = 1, mode = 'plan', saveTimer = null;
+let R = null, D = blank(), step = 1, mode = 'plan', saveTimer = null, ST = { stage: null, pass: null };
 
 // ---------- saving (some changes also refresh the preview / pictures) ----------
 const pill = (text, cls) => { const p = $('#save'); p.textContent = text; p.className = 'pill' + (cls ? ' ' + cls : ''); };
@@ -346,7 +347,7 @@ function save(rebuild) {
     try {
       const r = await fetch('/api/decisions', { method: 'PUT', body: JSON.stringify(D) }).then((r) => r.json());
       if (!r.ok) throw new Error(r.error);
-      pill('Saved ' + new Date().toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }), 'good');
+      pill('Saved ' + new Date().toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }), 'good'); refreshStatus();
       if (rebuildAfterSave) { rebuildAfterSave = false; pill('Updating…'); await fetch('/api/rebuild', { method: 'POST' }); }
     } catch { pill("Couldn't save: is the review page still running?", 'bad'); }
   }, 400);
@@ -355,7 +356,8 @@ function save(rebuild) {
 // ---------- steps + tabs ----------
 function showStep(n) {
   step = n; stop(); v.pause();
-  $$('.step').forEach((b) => { b.setAttribute('aria-current', +b.dataset.step === n ? 'step' : 'false'); b.classList.toggle('done', !!D.approved[['look', 'sound', 'video'][+b.dataset.step - 1]]); });
+  $$('.step').forEach((b) => b.setAttribute('aria-current', +b.dataset.step === n ? 'step' : 'false'));
+  renderApprovals();
   $$('[data-s]').forEach((d) => (d.hidden = +d.dataset.s !== n));
   $('#tabs2').hidden = n !== 2; $('#tabs1').hidden = n !== 1; $('#side').hidden = n === 1; $('#wrap').classList.toggle('full', n === 1);
   setMode(n === 3 ? 'video' : 'plan');
@@ -380,14 +382,55 @@ function tabDots() {
 }
 function approve(key, next) {
   D.approved = { ...D.approved, [key]: new Date().toISOString() }; save();
-  $$('.step').forEach((b) => b.classList.toggle('done', !!D.approved[['look', 'sound', 'video'][+b.dataset.step - 1]]));
   renderApprovals(); if (next) { showStep(next); window.scrollTo(0, 0); }
 }
+// her open change requests per step (same rules as openAsks in lib/pipeline.mjs)
+function asks() {
+  const txt = (x) => String(x || '').trim();
+  const changed = (o) => Object.values(o || {}).filter((b) => b.state === 'c' || b.state === 'r' || txt(b.note)).length;
+  return { look: changed(D.visual) + (D.cut.length ? 1 : 0), sound: changed(D.board) + (txt(D.soundRequests) ? 1 : 0) + (D.pins || []).length, video: D.videoNotes.length, general: txt(D.notes) ? 1 : 0 };
+}
+const when = (iso) => new Date(iso).toLocaleString([], { weekday: 'short', hour: 'numeric', minute: '2-digit' });
+// an approval given before Claude's last revision doesn't count: she checks the changes first
+const valid = (k) => D.approved[k] && !(ST.pass?.revised && D.approved[k] < ST.pass.revised);
+const plural = (n, w) => `${n} ${w}${n === 1 ? '' : 's'}`;
 function renderApprovals() {
-  const t = (k) => (D.approved[k] ? 'Approved ' + new Date(D.approved[k]).toLocaleString([], { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' }) + '. Change anything and Claude picks it up.' : null);
-  $('#ok1text').textContent = t('look') || 'Happy with the plan? Then sounds get picked to match.';
-  $('#ok2text').textContent = t('sound') || 'Edit right? Then Claude makes the video.';
-  $('#ok3text').textContent = t('video') || 'Video and caption ready? Approving starts the posting step.';
+  const A = asks(), n1 = A.look + A.general, n2 = n1 + A.sound;
+  const fixed = ST.pass?.revised ? `Claude made your changes (${when(ST.pass.revised)}). Check them, then ` : '';
+  // a step only shows as done when approved with nothing left for Claude to change
+  const open = { look: n1, sound: n2, video: A.video };
+  $$('.step').forEach((b) => { const k = ['look', 'sound', 'video'][+b.dataset.step - 1]; b.classList.toggle('done', !!valid(k) && !open[k]); });
+  // step 1: change requests make it "send to Claude", not "looks good"
+  $('#ok1').textContent = n1 ? 'Send my changes to Claude →' : 'Plan looks good, on to editing →';
+  $('#ok1text').textContent = n1
+    ? (valid('look') ? `Sent to Claude ${when(D.approved.look)}. Anything you add now goes too. You can keep going to step 2.` : `${plural(n1, 'change')} for Claude. Send them, then carry on to step 2 if you like. This Reel comes back to you once they're made.`)
+    : (valid('look') ? `Approved ${when(D.approved.look)}.` : fixed ? fixed + 'approve the plan.' : 'Happy with the plan? Then sounds get picked to match.');
+  // step 2: it's a live preview, never the video
+  $('#s2note').textContent = 'This is a live preview: your footage with the current graphics and sounds, playing right in the page. It is not the final video. That only gets made after you finish this step.'
+    + (n1 ? ` Your step 1 changes aren't in it yet: Claude makes those first.` : '');
+  $('#ok2').textContent = n2 ? 'Send my changes to Claude →' : 'Edit done, make the video →';
+  $('#ok2text').textContent = n2
+    ? (valid('sound') ? `Sent to Claude ${when(D.approved.sound)}. Claude makes your changes, then you check them here before any video gets made.` : `${plural(n2, 'change')} for Claude (steps 1 and 2). You check them here before any video gets made.`)
+    : (valid('sound') ? `Approved ${when(D.approved.sound)}. The video gets made in the overnight run.` : fixed ? fixed + 'approve the edit.' : 'Edit right? Then the video gets made in the overnight run.');
+  // step 3: only real once a video with all her choices exists
+  const ready = ['approve', 'post'].includes(ST.stage);
+  const why = { revise: 'Claude is making your changes first. Then you check steps 1 and 2 again.', render: 'It gets made in the overnight run (about 15 minutes per Reel).', plan: 'Finish step 1 (Plan it) and step 2 (Edit it) first.', edit: 'Finish step 2 (Edit it) first.' }[ST.stage] || 'Finish steps 1 and 2 first.';
+  $('#ok3').disabled = !ready;
+  $('#ok3').textContent = ready && A.video ? 'Send my notes to Claude →' : 'Approve the Reel ✓';
+  $('#vsub').textContent = ready ? 'The finished Reel. Pause where something is off and add a note at that moment.' : 'No video yet. ' + why;
+  $('#novideo').textContent = 'No video yet. ' + why;
+  $('#ok3text').textContent = !ready ? 'Nothing to approve yet.'
+    : A.video ? `${plural(A.video, 'note')} for Claude. Claude fixes them and makes the video again for you to approve.`
+    : valid('video') ? `Approved ${when(D.approved.video)}.` : 'Video and caption ready? Approving starts the posting step.';
+}
+// where the Reel really stands (lib/pipeline.mjs) and Claude's last pass; reloads her choices if Claude filed some away
+async function refreshStatus() {
+  try {
+    const st = await fetch('/api/state').then((r) => r.json());
+    const pass = st.status?.pass || null, revisedNow = !!(ST.pass !== undefined && pass?.revised && pass.at !== ST.pass?.at);
+    ST = { stage: st.status?.stage || null, pass };
+    if (revisedNow) { loadDecisions(st.decisions || {}); renderAll(); pill('Claude updated this Reel', 'good'); } else renderApprovals();
+  } catch {}
 }
 $('#ok1').addEventListener('click', () => approve('look', 2));
 $('#ok2').addEventListener('click', () => approve('sound', 3));
@@ -819,7 +862,14 @@ async function loadReel() {
   document.title = `Reel review · ${R.title || R.slug}`; $('#title').textContent = R.title || R.slug;
   $('#scrub').max = R.dur;
 }
+function loadDecisions(saved) {
+  D = { ...blank(), ...saved };
+  for (const k of ['lookByFrame', 'visual', 'board', 'sound', 'music', 'transitions', 'captions', 'approved']) D[k] ||= {};
+  for (const k of ['cut', 'addedSfx', 'videoNotes']) D[k] ||= [];
+  $('#notes').value = D.notes || ''; $('#rule').value = D.rule || '';
+}
 async function watch() {
+  await refreshStatus();
   try { const r = await fetch('/api/reel').then((r) => r.json()); if (r.made !== R.made) { const keep = t, ae = document.activeElement; stop(); await loadReel(); t = keep; if (!ae || !/INPUT|TEXTAREA/.test(ae.tagName)) renderAll(); else { renderMoments(); renderCover(); } setMode(mode); pill('Updated', 'good'); } } catch {}
   setTimeout(watch, 2500);
 }
@@ -827,10 +877,8 @@ async function watch() {
   try { await loadReel(); } catch { pill('No review data yet. Ask Claude to run: node build.mjs review', 'bad'); return; }
   const st = await fetch('/api/state').then((r) => r.json());
   const saved = st.decisions || {};
-  D = { ...blank(), ...saved };
-  for (const k of ['lookByFrame', 'visual', 'board', 'sound', 'music', 'transitions', 'captions', 'approved']) D[k] ||= {};
-  for (const k of ['cut', 'addedSfx', 'videoNotes']) D[k] ||= [];
-  $('#notes').value = D.notes || ''; $('#rule').value = D.rule || '';
+  ST = { stage: st.status?.stage || null, pass: st.status?.pass || null };
+  loadDecisions(saved);
   await refreshCuts(); renderAll(); fitStage();
   let s = 1, tb = 'screen'; try { s = +(localStorage.getItem('reelStep') || 1); tb = localStorage.getItem('reelTab') || 'screen'; } catch {}
   if (!['screen', 'caps', 'audio', 'trans', 'look'].includes(tb)) tb = 'screen';
