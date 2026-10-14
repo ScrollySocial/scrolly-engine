@@ -3,7 +3,7 @@
 // Usage: node lib/review/server.mjs [<reel-folder>] [--port 4321]   (default: the most recently built Reel)
 import { createServer } from 'node:http';
 import { spawn } from 'node:child_process';
-import { createReadStream, existsSync, readFileSync, readdirSync, statSync, writeFileSync, mkdirSync } from 'node:fs';
+import { createReadStream, existsSync, readFileSync, readdirSync, statSync, writeFileSync, mkdirSync, rmSync } from 'node:fs';
 import { createHash } from 'node:crypto';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -30,15 +30,21 @@ let job = { running: false, log: '', ok: null };
 let cutJob = { running: false, frame: null, ok: null };
 const nn = (n) => String(n).padStart(2, '0');
 // the cut-out of her for cover frame n: made on the review page, or the storyboard's existing one
-const cutFor = (n) => [`review/cover-cuts/f${nn(n)}.png`, `sketch/f${nn(n)}-cut.png`].find((p) => existsSync(path.join(DIR, p)));
+// a cover frame is a video frame number, or 'own-N' = a photo she added (review/cover-photos/own-N.jpg, 1080×1920)
+const own = (n) => typeof n === 'string' && /^own-\d+$/.test(n);
+const frameId = (v) => (own(v) ? v : +v || 1);
+const stillFor = (n) => (own(n) ? `review/cover-photos/${n}.jpg` : `sketch/f${nn(n)}.jpg`);
+const cutOut = (n) => `review/cover-cuts/${own(n) ? n : 'f' + nn(n)}.png`;
+const cutFor = (n) => (own(n) ? [cutOut(n)] : [cutOut(n), `sketch/f${nn(n)}-cut.png`]).find((p) => existsSync(path.join(DIR, p)));
+const ownPhotos = () => { try { return readdirSync(path.join(DIR, 'review/cover-photos')).filter((f) => /^own-\d+\.jpg$/.test(f)).map((f) => f.slice(0, -4)).sort((a, b) => +a.slice(4) - +b.slice(4)); } catch { return []; } };
 const slash = (p) => p.split(path.sep).join('/');
 const urlFor = (abs) => { const a = path.resolve(abs); if (a.startsWith(DIR)) return '/reel/' + slash(path.relative(DIR, a)); if (a.startsWith(path.join(HERE, '..'))) return '/lib/' + slash(path.relative(path.join(HERE, '..'), a)); return ''; };
 function makeCut(n) {
   if (cutJob.running || cutFor(n)?.startsWith('review/')) return;
   cutJob = { running: true, frame: n, ok: null };
   mkdirSync(path.join(DIR, 'review/cover-cuts'), { recursive: true });
-  const p = spawn('npx', ['--yes', 'hyperframes@0.8.150', 'remove-background', `sketch/f${nn(n)}.jpg`, '-o', `review/cover-cuts/f${nn(n)}.png`], { cwd: DIR, shell: true, env: { ...process.env, PATH: `${path.join(ROOT, '../hyperframes-test/bin')}${path.delimiter}${process.env.PATH}` } });
-  p.on('close', (code) => { cutJob = { running: false, frame: n, ok: code === 0 && existsSync(path.join(DIR, `review/cover-cuts/f${nn(n)}.png`)) }; });
+  const p = spawn('npx', ['--yes', 'hyperframes@0.8.150', 'remove-background', stillFor(n), '-o', cutOut(n)], { cwd: DIR, shell: true, env: { ...process.env, PATH: `${path.join(ROOT, '../hyperframes-test/bin')}${path.delimiter}${process.env.PATH}` } });
+  p.on('close', (code) => { cutJob = { running: false, frame: n, ok: code === 0 && existsSync(path.join(DIR, cutOut(n))) }; });
 }
 
 function sendFile(req, res, file) {
@@ -79,7 +85,7 @@ createServer((req, res) => {
     const dec = existsSync(DEC) ? JSON.parse(readFileSync(DEC, 'utf8')) : {};
     const b = existsSync(BUILD) ? JSON.parse(readFileSync(BUILD, 'utf8')) : null;
     let status = null; try { status = reelStatus(slug); } catch {}
-    return json(res, { slug, status, cutJob, cuts: Array.from({ length: 30 }, (_, i) => i + 1).filter((n) => cutFor(n)), decisions: dec, build: b, current: soundHash(dec), job: { running: job.running, ok: job.ok, started: job.started, tail: job.log.split('\n').filter(Boolean).slice(-3) } });
+    return json(res, { slug, status, cutJob, cuts: [...Array.from({ length: 30 }, (_, i) => i + 1), ...ownPhotos()].filter((n) => cutFor(n)), ownPhotos: ownPhotos(), decisions: dec, build: b, current: soundHash(dec), job: { running: job.running, ok: job.ok, started: job.started, tail: job.log.split('\n').filter(Boolean).slice(-3) } });
   }
   if (p === '/api/decisions' && req.method === 'PUT') {
     let body = '';
@@ -87,11 +93,25 @@ createServer((req, res) => {
     return req.on('end', () => { try { const d = JSON.parse(body); writeFileSync(DEC, JSON.stringify({ ...d, savedAt: new Date().toISOString() }, null, 1)); json(res, { ok: true, current: soundHash(d) }); } catch (e) { json(res, { ok: false, error: e.message }, 400); } });
   }
   if (p === '/api/rebuild' && req.method === 'POST') { rebuild(); return json(res, { ok: true }); }
-  if (p === '/api/cutout' && req.method === 'POST') { makeCut(+url.searchParams.get('frame')); return json(res, { ok: true }); }
+  if (p === '/api/cutout' && req.method === 'POST') { makeCut(frameId(url.searchParams.get('frame'))); return json(res, { ok: true }); }
+  // her own cover photo: the image bytes in the body → fitted to 1080×1920 (fills the frame, centered) as own-N.jpg
+  if (p === '/api/cover-photo' && req.method === 'POST') {
+    const chunks = []; let size = 0;
+    req.on('data', (d) => { size += d.length; if (size <= 40e6) chunks.push(d); });
+    return req.on('end', () => {
+      if (size > 40e6) return json(res, { ok: false, error: 'That photo is over 40 MB.' }, 400);
+      const dir = path.join(DIR, 'review/cover-photos'); mkdirSync(dir, { recursive: true });
+      const id = 'own-' + (Math.max(0, ...ownPhotos().map((x) => +x.slice(4))) + 1), tmp = path.join(dir, '.upload-' + Date.now());
+      writeFileSync(tmp, Buffer.concat(chunks));
+      const ff = spawn(path.join(ROOT, '../hyperframes-test/bin/ffmpeg'), ['-loglevel', 'error', '-y', '-i', tmp, '-frames:v', '1', '-vf', 'scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920', '-q:v', '2', path.join(dir, id + '.jpg')]);
+      let err = ''; ff.stderr.on('data', (d) => (err += d));
+      ff.on('close', (code) => { rmSync(tmp, { force: true }); code === 0 ? json(res, { ok: true, id }) : json(res, { ok: false, error: "Couldn't read that photo. Try a JPG or PNG (iPhone HEIC photos: export as JPG first)." }, 400); });
+    });
+  }
   // live cover preview: frame, style (cut | photo), background, text, aside
   if (p === '/cover') {
-    const q = url.searchParams, n = +q.get('frame') || 1, style = COVER_STYLES[q.get('style')] ? q.get('style') : 'cut', pos = q.get('pos') === 'top' ? 'top' : 'bottom';
-    const cut = cutFor(n), photo = `sketch/f${nn(n)}.jpg`;
+    const q = url.searchParams, n = frameId(q.get('frame')), style = COVER_STYLES[q.get('style')] ? q.get('style') : 'cut', pos = q.get('pos') === 'top' ? 'top' : 'bottom';
+    const cut = cutFor(n), photo = stillFor(n);
     const html = coverHtml({ brand: BRANDS[q.get('brand')] || BRANDS.scrolly, text: q.get('text') || '', aside: q.get('aside') || '', style, pos, bg: q.get('bg') || 'cream', cut: cut && path.join(DIR, cut), photo: path.join(DIR, photo), asset: urlFor });
     res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-store' }); return res.end(html);
   }

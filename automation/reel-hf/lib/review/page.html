@@ -88,6 +88,7 @@ textarea{min-height:42px;margin-top:8px}
 .caprow.big .cw{font:800 20px B;font-stretch:80%}
 .capgroup{font:800 14px B;font-stretch:85%;color:var(--muted);margin:12px 0 2px}
 .brandrow{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:6px 0 10px}
+.cfr.addphoto{display:grid;place-items:center;cursor:pointer;border:2px dashed var(--line);background:#fff;font:700 15px/1.2 F,sans-serif;text-align:center;padding:4px}
 #brandSel{font:inherit;font-size:15px;border:1.5px solid var(--line);border-radius:10px;padding:5px 8px;background:#fff}
 .swatches{display:inline-flex;gap:4px}
 .swatches i{width:18px;height:18px;border-radius:50%;border:1.5px solid #fff;box-shadow:0 0 0 1px var(--line);display:inline-block}
@@ -610,6 +611,23 @@ function renderCover() {
     const b = el('button', 'cfr'); b.type = 'button'; b.title = `F${f.n}: ${f.title}`; b.setAttribute('aria-label', 'Use frame F' + f.n); b.setAttribute('aria-pressed', c.frame === f.n);
     b.style.backgroundImage = `url('/reel/${f.still}')`; b.addEventListener('click', () => setCover({ frame: f.n })); fr.append(b);
   }
+  // her own photos (review/cover-photos/own-N.jpg), then a tile to add one
+  for (const id of cutState.ownPhotos || []) {
+    const b = el('button', 'cfr'); b.type = 'button'; b.title = 'Your photo'; b.setAttribute('aria-label', 'Use your photo ' + id.slice(4)); b.setAttribute('aria-pressed', c.frame === id);
+    b.style.backgroundImage = `url('/reel/review/cover-photos/${id}.jpg')`; b.addEventListener('click', () => setCover({ frame: id })); fr.append(b);
+  }
+  const add = el('label', 'cfr addphoto'); add.title = 'Use your own photo for the cover';
+  add.innerHTML = '<span>+ Your photo</span><input type="file" accept="image/jpeg,image/png,image/webp" hidden>';
+  add.querySelector('input').addEventListener('change', async (e) => {
+    const file = e.target.files[0]; if (!file) return;
+    add.querySelector('span').textContent = 'Adding…';
+    try {
+      const r = await fetch('/api/cover-photo', { method: 'POST', headers: { 'Content-Type': file.type || 'application/octet-stream' }, body: file }).then((r) => r.json());
+      if (!r.ok) throw new Error(r.error);
+      await refreshCuts(); setCover({ frame: r.id });
+    } catch (err) { add.querySelector('span').textContent = '+ Your photo'; pill(err.message || "Couldn't add that photo", 'bad'); }
+  });
+  fr.append(add);
   const sty = $('#cstyles'); sty.textContent = '';
   // styles (lib/cover.mjs): cut-outs of her on a color, or layouts on her full video frame (the Oct 10 covers, no italics)
   const CUTS = { cut: 'Centered', behind: 'Text behind you', side: 'Off-center' };
