@@ -58,7 +58,7 @@ export function reelStatus(slug) {
   let stage;
   if (posted) stage = 'done';
   else if (!hasPage) stage = 'no-page';
-  else if (newDecisions && asks && ok('look')) stage = 'revise';
+  else if (newDecisions && asks && (ok('look') || ok('sound') || ok('video'))) stage = 'revise'; // she sent changes from any step
   else if (!ok('look')) stage = 'plan';
   else if (!ok('sound')) stage = 'edit';
   else if (!renderCurrent) stage = 'render';

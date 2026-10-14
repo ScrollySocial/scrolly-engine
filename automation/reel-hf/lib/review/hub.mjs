@@ -69,11 +69,12 @@ function tracker(r) {
   const A = r.approved || {}, k = r.asks || {}, revised = r.pass?.revised;
   const valid = (s) => A[s] && !(revised && A[s] < revised);
   const open = { look: k.look + k.general, sound: k.look + k.general + k.sound, video: k.video };
+  const sent = r.stage === 'revise';
   const current = { plan: 'look', edit: 'sound', approve: 'video', revise: null }[r.stage];
   return STEPS.map(([s, name]) => {
     let cls = 'todo', note = 'Not yet';
     if (r.stage === 'done') { cls = 'ok'; note = 'Done'; }
-    else if (valid(s) && open[s]) { cls = 'sent'; note = 'Sent to Claude'; }
+    else if (open[s] && (valid(s) || sent)) { cls = 'sent'; note = 'Sent to Claude'; } // a later step's send carries this step's changes too
     else if (valid(s)) { cls = 'ok'; note = 'Approved'; }
     else if (s === current && r.savedAt && (!revised || r.savedAt > revised)) { cls = 'wip'; note = "You've started"; }
     else if (s === current) { cls = 'next'; note = revised ? 'Check the changes' : 'Ready for you'; }
