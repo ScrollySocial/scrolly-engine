@@ -1,0 +1,65 @@
+{
+  "_about": "Everything that belongs to YOUR Reel setup lives here; lib/ holds no names, paths or ids. Paths are relative to this folder unless absolute. The 'set up my Reel engine' skill (.claude/skills/reel-engine-setup) fills this file in with you; lib/doctor.mjs checks it and fixes what it can.",
+
+  "owner": {
+    "name": "",
+    "instagram": "",
+    "_note": "name shows in status lines ('waiting on <name>'); instagram is the handle on the review page's post preview"
+  },
+
+  "brand": "my-brand",
+  "_brand": "default brand kit id from lib/brand/index.mjs (the review page's Brand kit dropdown can still switch per Reel)",
+
+  "folders": {
+    "footage": "",
+    "exports": "",
+    "_note": "footage = raw takes, one subfolder per series. exports = final/<slug>.mp4, <slug>/cover.png, previews/. A synced folder (OneDrive, Dropbox, iCloud) gets the finished Reels onto your phone; keep it 'always on this device'."
+  },
+
+  "tools": {
+    "browser": "",
+    "hyperframes": "0.8.150",
+    "hyperframesDir": "tools/hf",
+    "bin": "tools/hf/bin",
+    "python": "tools/.venv/Scripts/python.exe",
+    "transcribeScript": "tools/transcribe.py",
+    "transcripts": "work/audio",
+    "cutScript": "tools/cut/prep.mjs",
+    "_note": "browser = Edge or Chrome for headless stills and covers (empty = doctor finds it). hyperframesDir holds puppeteer; bin holds ffmpeg + ffprobe (doctor installs both). python = the venv with faster-whisper (on a Mac: tools/.venv/bin/python). Leave the rest as shipped."
+  },
+
+  "review": {
+    "shared": false,
+    "hubPort": 4320,
+    "pagePort": 4321,
+    "firstReelPort": 4331,
+    "_note": "shared false = the local review page (fast, private). true = a hosted page others can open (not built yet)."
+  },
+
+  "posting": {
+    "videoHost": "none",
+    "wordpressClient": "",
+    "scheduler": "",
+    "_note": "videoHost 'none' = the engine makes the posting copy (cover baked in as the first frame) and you post it. 'wordpress' uploads it to WordPress media through wordpressClient (a module exporting wp() and BASE; your credentials stay in its own .env). scheduler names your queue on the review page; empty = no queue option."
+  },
+
+  "tracker": {
+    "app": "none",
+    "database": "",
+    "name": "",
+    "statuses": { "edit": "Edit", "approved": "Approved", "ready": "Ready", "scheduled": "Scheduled" },
+    "rows": "rows.json",
+    "_note": "Where Reel ideas and posts are tracked. app 'none' = start Reels from chat. 'notion' = a Notion database (collection id in database). ready = the status that adds a post to the scheduler's queue. rows = row id → Reel folder ledger."
+  },
+
+  "rules": {
+    "doc": "",
+    "section": "",
+    "list": [],
+    "_note": "list = your 'never do this' rules, one short line each, read before every Reel. doc + section = a longer rules document, if you keep one."
+  },
+
+  "templates": {
+    "_note": "your overrides of lib/templates/*.mjs (deep-merged), e.g. { \"studio\": { \"music\": { \"volume\": 0.02 } } } for very quiet music."
+  }
+}

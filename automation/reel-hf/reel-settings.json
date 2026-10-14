@@ -1,0 +1,72 @@
+{
+  "_about": "Everything that belongs to ONE person's Reel setup lives here; lib/ holds no names, paths or ids. Paths are relative to automation/reel-hf unless absolute. The 'set up my Reel engine' skill (.claude/skills/reel-engine-setup) writes this file, lib/doctor.mjs checks it and fixes what it can. These values are Mercedes's (Scrolly).",
+
+  "owner": {
+    "name": "Mercedes",
+    "instagram": "scrollysocial",
+    "_note": "name shows in status lines ('waiting on <name>'); instagram is the handle on the review page's post preview"
+  },
+
+  "brand": "scrolly",
+  "_brand": "default brand kit id from lib/brand/index.mjs (the review page's Brand kit dropdown can still switch per Reel)",
+
+  "folders": {
+    "footage": "C:/Users/merce/OneDrive/Scrolly Media/videos",
+    "exports": "C:/Users/merce/OneDrive/Scrolly Media/exports/reels",
+    "_note": "footage = raw takes, one subfolder per series. exports = final/<slug>.mp4, <slug>/cover.png, previews/. A synced folder (OneDrive, Dropbox, iCloud) gets the finished Reels onto the phone; keep it 'always on this device'."
+  },
+
+  "tools": {
+    "browser": "C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe",
+    "hyperframes": "0.8.150",
+    "hyperframesDir": "../hyperframes-test",
+    "bin": "../hyperframes-test/bin",
+    "python": "../carousels/.venv/Scripts/python.exe",
+    "transcribeScript": "../carousels/transcribe.py",
+    "transcripts": "../carousels/reels/_work/audio",
+    "cutScript": "../reel-studio/prep.mjs",
+    "_note": "browser = Edge or Chrome for headless stills and covers (empty = auto-detect). hyperframesDir holds puppeteer; bin holds ffmpeg + ffprobe (put on PATH for HyperFrames). python = the venv with faster-whisper."
+  },
+
+  "review": {
+    "shared": false,
+    "hubPort": 4320,
+    "pagePort": 4321,
+    "firstReelPort": 4331,
+    "_note": "shared false = the local review page (fast, private). true = a hosted page others can open (not built yet)."
+  },
+
+  "posting": {
+    "videoHost": "wordpress",
+    "wordpressClient": "../../website/scrolly-site/wp-client.mjs",
+    "scheduler": "Buffer",
+    "_note": "videoHost: 'wordpress' uploads the posting copy to WordPress media through wordpressClient (exports wp() and BASE; credentials stay in that client's .env), or 'none' to stop at the posting copy file. scheduler names the queue on the review page; empty = no queue option."
+  },
+
+  "tracker": {
+    "app": "notion",
+    "database": "collection://d2cc8645-5399-4d65-91e2-d535e5cc98bc",
+    "name": "Content Pipeline",
+    "statuses": { "edit": "Edit", "approved": "Approved", "ready": "Ready", "scheduled": "Scheduled" },
+    "rows": "rows.json",
+    "_note": "Where Reel ideas and posts are tracked. app 'none' = start Reels from chat only. ready = the status that adds a post to the scheduler's queue. rows = row id → Reel folder ledger."
+  },
+
+  "rules": {
+    "doc": "../../Scrolly Organic Engine/products/content-engine/reel-engine-handoff.md",
+    "section": "Her rules",
+    "list": [
+      "Statements: condensed heavy grotesque; emphasis = marker swipe (<m>word</m>); asides handwritten. Never italic serif accents or color-changed words. No eyebrow cards.",
+      "Graphics around the body (above the head first), never over the face. Circles and scribbles never cross the text they mark.",
+      "One music track, one static volume + fades. Never the SAME sound effect back to back, except list items: each item of a spoken list can share one sound.",
+      "No em dashes or '|' on screen. No fake proof.",
+      "Business Brain CTA = name + scrollyseo.com, never the price. IG bio link = $1K Challenge."
+    ],
+    "_note": "list = the short version baked into every build plan; doc + section = the full, growing rule list (new 'love this / never do that' rules go there)."
+  },
+
+  "templates": {
+    "studio": { "music": { "volume": 0.02, "fadeIn": 4.22, "fadeOut": 1.95 } },
+    "_note": "per-person overrides of lib/templates/*.mjs (deep-merged). Studio music: turned way down with a slow fade-in."
+  }
+}

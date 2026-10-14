@@ -11,10 +11,10 @@ import { COVER_BGS } from '../cover.mjs';
 import { brandList } from '../brand/index.mjs';
 import { renderFrames } from './frames.mjs';
 import { lookFilter } from '../reel.mjs';
+import { P, tool } from '../settings.mjs';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
-const FF = path.join(HERE, '../../../hyperframes-test/bin/ffmpeg.exe');
-const MEDIA = JSON.parse(readFileSync(path.join(HERE, '../../../carousels/config/media.json'), 'utf8'));
+const FF = tool('ffmpeg');
 const r2 = (x) => +(+x).toFixed(3);
 export const PROXY = 'review/talk-proxy.mp4';
 const newer = (a, b) => existsSync(a) && (!existsSync(b) || statSync(a).mtimeMs > statSync(b).mtimeMs);
@@ -51,7 +51,7 @@ export async function reviewExport(R, { notes = {}, title = '', covers = [], cov
     if (twin) musicNames[f] = nice(twin);
   }
   const musicLibOut = musicLib.filter((f) => !(f.includes('candidates') && musicLib.some((g) => g.startsWith('assets/music/') && musicNames[g] === musicNames[f])));
-  const draft = [path.join(MEDIA.reelExportsDir, 'final', `${slug}.mp4`)].find(existsSync);
+  const draft = [path.join(P.exports, 'final', `${slug}.mp4`)].find(existsSync);
   const reel = {
     slug, title, made: new Date().toISOString(), dur: R.DUR,
     covers: covers.map((c) => ({ text: c.text, plain: c.text.replace(/<\/?m>/g, ''), aside: c.aside || '' })), coverDefault: coverCut ? +(coverCut.match(/f(\d+)/)?.[1] || 1) : 1, post: post || null, coverBgs: COVER_BGS, brands: brandList(), brand: R.B.name,

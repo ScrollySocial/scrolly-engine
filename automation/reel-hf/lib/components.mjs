@@ -1,11 +1,11 @@
-// Studio component library: real-looking objects and marks that sit AROUND her body (never over her face).
+// Studio component library: real-looking objects and marks that sit AROUND the speaker's body (never over the face).
 // Each component returns { html, anim } where anim is a list of timeline lines using the helpers in motion.mjs
 // (pop, up, draw, swipe, words, typeLines). Pass `in` (seconds) to animate the entrance; leave it out for a static piece.
 // Sizes are in cqw (1cqw = 10.8px on the 1080 canvas). First proven in 2026-10-13-bb-voice-file (storyboard v4).
 //
 // Catalog (slots → what it looks like):
-//   fade(h)                      soft top darkening behind anything above her head
-//   fill(color)                  full-frame panel (background swap, sits under a cut-out of her)
+//   fade(h)                      soft top darkening behind anything above the head
+//   fill(color)                  full-frame panel (background swap, sits under a cut-out of the speaker)
 //   statement(id, text, …)       big condensed statement; <m>word</m> = peach marker swipe
 //   hand(id, text, …)            handwritten aside
 //   arrow / ring / spark         drawn arrow, drawn circle (goes AROUND text, never across it), sparkle sticker
@@ -13,11 +13,11 @@
 //   paper(id, items, …)          lined-paper checklist with ✓ / ✗ ticks
 //   badge(id, …)                 HELLO name badge
 //   folder(id, label, …)         manila folder with a handwritten tab
-//   post(id, src, …)             her real IG cover as a white-bordered print
+//   post(id, src, …)             a real IG cover as a white-bordered print
 //   receipt(id, title, lines, …) receipt that unrolls
 //   prompt(id, text, …)          AI prompt bar that types
 //   mdFile(id, file, lines, …)   a .md file being edited (lines type in; + added, ✗ banned)
-//   scrollPage(id, src, …)       a full-page screenshot scrolling behind her (pair with a cut-out)
+//   scrollPage(id, src, …)       a full-page screenshot scrolling behind the speaker (pair with a cut-out)
 //   cursor(id, …)                mouse cursor that glides in and clicks
 //   urlBar(id, text, …)          browser URL pill (end card)
 
@@ -103,7 +103,7 @@ export function makeComponents(B) {
     return h(`<div id="${id}" class="md" style="top:${top}cqw"><div class="md-bar"><i></i><i></i><i></i><span>${file}</span></div><div class="md-body">${body}</div></div>`, anim);
   };
 
-  // A tall screenshot that scrolls up by `to` percent over `dur` seconds. Put a cut-out of her on top.
+  // A tall screenshot that scrolls up by `to` percent over `dur` seconds. Put a cut-out of the speaker on top.
   K.scrollPage = (id, src, { in: t, dur, to = -38, tint = 0.12 } = {}) =>
     h(`<div class="brainwrap"><img id="${id}" class="brain" src="${src}" data-layout-allow-overflow></div><div class="fill" style="background:rgba(22,18,16,${tint})"></div>`,
       t != null ? [`tl.fromTo('#${id}', { yPercent: 0 }, { yPercent: ${to}, duration: ${dur}, ease: 'none' }, ${t});`] : []);

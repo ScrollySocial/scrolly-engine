@@ -5,7 +5,7 @@
 //   const R = reel({ brand, template });          // reads assets/words.json from the Reel folder (cwd)
 //   R.frames([0, 3.4, R.at('and funny'), …]);     // frame windows from the storyboard; R.win(n) = { s, d }
 //   R.scene(1, [K.fade(48), K.statement(…)]);    // components from lib/components.mjs (R.K)
-//   R.cutout(4, 'assets/cut/f04-cut.webm');       // her, background removed, over that frame's panel
+//   R.cutout(4, 'assets/cut/f04-cut.webm');       // the speaker, background removed, over that frame's panel
 //   R.cam.alternate(); R.cam.punch(t); R.cam.whip(t);
 //   R.fx('fx-pop1', 'pop-light', t); R.music('assets/music/music-a.mp3');
 //   R.captions({ hide: [4, 9], top: (t) => 128 });
@@ -14,8 +14,7 @@ import { readFileSync, writeFileSync, existsSync, copyFileSync, mkdirSync } from
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { makeComponents, componentCss } from './components.mjs';
-import scrolly from './brand/scrolly.mjs';
-import { BRANDS } from './brand/index.mjs';
+import { BRANDS, defaultBrand } from './brand/index.mjs';
 import studio from './templates/studio.mjs';
 
 const LIB_SFX = path.join(path.dirname(fileURLToPath(import.meta.url)), 'assets/sfx');
@@ -46,10 +45,10 @@ const capFonts = (B) => ({ body: `'${B.font.body}'`, statement: `'${B.font.state
 const norm = (s) => s.toLowerCase().replace(/[^a-z0-9$']/g, '');
 
 export function reel({ brand, template = studio, words = 'assets/words.json', out = 'index.html' } = {}) {
-  // her review-page choices (review/decisions.json); the env override lets Claude test without touching her file
+  // review-page choices (review/decisions.json); the env override lets Claude test without touching the real file
   const DEC = process.env.REEL_DECISIONS || 'review/decisions.json';
   const D = existsSync(DEC) ? JSON.parse(readFileSync(DEC, 'utf8')) : {};
-  const T = template, B = brand || BRANDS[D.brand] || scrolly; // brand kit picked in step 1 (default Scrolly)
+  const T = template, B = brand || BRANDS[D.brand] || defaultBrand(); // brand kit picked in step 1 (default: reel-settings.json)
   const P = JSON.parse(readFileSync(words, 'utf8'));
   const W = P.words, DUR = +P.duration.toFixed(2);
   const K = makeComponents(B);
@@ -114,6 +113,8 @@ export function reel({ brand, template = studio, words = 'assets/words.json', ou
       if (ed.off) { sfxOff.push({ id, name: file, base, t: +t, vol, baseVol, d: d ?? T.sfxLen[file], off: true }); return; }
       if (ed.name && ed.name !== file) { file = ed.name; d = T.sfxLen[file] ?? d; }
       if (!existsSync(`assets/sfx/${file}.mp3`) && existsSync(path.join(LIB_SFX, `${file}.mp3`))) copyFileSync(path.join(LIB_SFX, `${file}.mp3`), `assets/sfx/${file}.mp3`);
+      // a sound that isn't downloaded yet stays silent (the Reel still builds and renders); sounds.md lists the files
+      if (!existsSync(`assets/sfx/${file}.mp3`)) { console.log(`sound off: assets/sfx/${file}.mp3 not found (${id})`); sfxOff.push({ id, name: file, base, t: +t, vol, baseVol, d: d ?? T.sfxLen[file], off: true, missing: true }); return; }
       if (ed.vol != null) vol = ed.vol;
       sfxData.push({ id, name: file, base, file: `assets/sfx/${file}.mp3`, t: +t, vol, baseVol, d: d ?? T.sfxLen[file] });
       sfx.push(`<audio id="${id}" src="assets/sfx/${file}.mp3" data-start="${(+t).toFixed(2)}" data-duration="${d ?? T.sfxLen[file]}" data-track-index="${12 + (sfx.length % 4)}" data-volume="${vol}"></audio>`);
@@ -156,7 +157,7 @@ export function reel({ brand, template = studio, words = 'assets/words.json', ou
     get musicData() { return musicData; },
     get captionList() { return capList.map((c, i) => ({ i, s: c.s, e: c.e, t: c.t })); },
     get look() { return look; },
-    // beat-to-beat transitions (frame 2 onward): what build.mjs planned and what she chose, for the review page
+    // beat-to-beat transitions (frame 2 onward): what build.mjs planned and what the reviewer chose, for the review page
     get transitions() { return F.slice(1, -1).map((t, i) => ({ frame: i + 2, t: +t, planned: camEvents.find((e) => Math.abs(e.t - t) < 0.06)?.type || 'cut', chosen: transEdits['F' + (i + 2)] })); },
     // Storyboard sheet: each frame drawn with the SAME components over a real still of the take, in its final
     // (end-of-entrance) state. stills(n) → image path; notes[n] = { title, sound } (text under each frame).
@@ -192,11 +193,11 @@ ${cells}
 </div></body></html>`);
       console.log(`${file}: ${n} frames`);
     },
-    // stage = { stills: (n) => image path }: the review stage (no video). Her still per frame instead of the take, cut-outs
+    // stage = { stills: (n) => image path }: the review stage (no video). A still per frame instead of the take, cut-outs
     // as PNGs, no audio (the review page plays voice + sounds itself), paths relative to the Reel root via <base>, and
     // window.stage.seek(t) to show the right clips and pose the timeline at any moment. Written to review/stage.html.
     write(file = out, { stage } = {}) {
-      // sounds she added on the review page ({ id, name, t, vol }), once per build
+      // sounds added on the review page ({ id, name, t, vol }), once per build
       if (!addedDone) { addedDone = true; for (const a of D.addedSfx || []) R.fx(a.id, a.name, a.t, a.vol ?? 0.6); }
       // a different look for single moments (the review page previews these live, so only the real build sets them)
       const lookJs = () => {
@@ -215,7 +216,7 @@ ${cells}
         }
         return [...lines.filter((l) => l != null), ...extra];
       };
-      // her take as muted segments (assets/talk-seg/talk-<i>.mp4, made by lib/prep-footage.mjs) + one voice track
+      // the take as muted segments (assets/talk-seg/talk-<i>.mp4, made by lib/prep-footage.mjs) + one voice track
       const SEG = T.segment;
       const talk = stage?.video ? `<video id="talkv" class="clip talk" src="${stage.video}" muted playsinline preload="auto" data-start="0" data-duration="${DUR}"></video>`
         : stage ? F.slice(0, -1).map((s, i) => `<img class="clip talk" src="${stage.stills(i + 1)}" data-start="${s}" data-duration="${+(F[i + 1] - s).toFixed(3)}">`).join('') : Array.from({ length: Math.ceil(DUR / SEG) }, (_, i) => {

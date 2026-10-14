@@ -1,6 +1,6 @@
-// Where every Reel stands, for the overnight (1am) and evening (7pm) runs and the review hub.
-// Reads each Reel folder's review/decisions.json (her page choices), review/render.json (last render) and
-// review/posted.json (queued in Buffer), and prints one line per Reel with the next action.
+// Where every Reel stands, for the scheduled runs and the review hub.
+// Reads each Reel folder's review/decisions.json (page choices), review/render.json (last render) and
+// review/posted.json (queued for posting), and prints one line per Reel with the next action.
 // Usage: node lib/pipeline.mjs            → table
 //        node lib/pipeline.mjs --json     → JSON (for scripts)
 //        node lib/pipeline.mjs --mark <reel> → record that Claude has acted on her latest decisions
@@ -13,12 +13,11 @@ import { createHash } from 'node:crypto';
 import { existsSync, readFileSync, readdirSync, statSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { P, ROOT, ownerName } from './settings.mjs';
 
-const HERE = path.dirname(fileURLToPath(import.meta.url));
-export const ROOT = path.join(HERE, '..');
-const MEDIA = JSON.parse(readFileSync(path.join(ROOT, '../carousels/config/media.json'), 'utf8'));
-export const finalFile = (slug) => path.join(MEDIA.reelExportsDir, 'final', `${slug}.mp4`);
-export const coverFile = (slug) => path.join(MEDIA.reelExportsDir, slug, 'cover.png');
+export { ROOT };
+export const finalFile = (slug) => path.join(P.exports, 'final', `${slug}.mp4`);
+export const coverFile = (slug) => path.join(P.exports, slug, 'cover.png');
 const read = (f, d = null) => { try { return JSON.parse(readFileSync(f, 'utf8')); } catch { return d; } };
 
 // what the render depends on: every choice except approvals, timestamps and the post caption
@@ -75,12 +74,12 @@ export const allReels = () => readdirSync(ROOT).filter((d) => /^\d{4}-\d{2}-\d{2
 
 const NEXT = {
   'no-page': 'no review page yet (overnight run drafts it, or legacy Reel)',
-  plan: 'waiting on Mercedes: Plan it',
-  edit: 'waiting on Mercedes: Edit it',
+  plan: `waiting on ${ownerName}: Plan it`,
+  edit: `waiting on ${ownerName}: Edit it`,
   revise: "Claude's turn: apply her change requests (import.mjs --done), then she reviews again",
   sounds: "Claude's turn: sound pass (sounds, music, transitions), then pipeline --mark <reel> --sounds",
   render: 'evening run renders it',
-  approve: 'waiting on Mercedes: Approve it',
+  approve: `waiting on ${ownerName}: Approve it`,
   post: 'Claude posts it (skill step 7)',
   done: 'queued / posted',
 };

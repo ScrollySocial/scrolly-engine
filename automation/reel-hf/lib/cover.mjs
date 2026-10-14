@@ -1,4 +1,4 @@
-// Reel covers (Mercedes 2026-10-13): she picks 1) a frame from the video, 2) a style, 3) the text.
+// Reel covers: the reviewer picks 1) a frame from the video, 2) a style, 3) the text.
 // Styles (rotate them so grid neighbors never match: brand/writing-and-content-rules.md, Reel covers):
 //   'cut'    = centered: her cut-out on a flat brand color (bg), title above her head
 //   'behind' = text behind her: huge capitals fill the top, she stands in front of the lower lines (ink looks best)
@@ -9,13 +9,13 @@
 // serif, never color-changed words, never a solid band or box behind the text.
 //   await renderCovers({ options: [{ text: 'Stop rewriting <m>every caption</m> AI gives you', aside: "here's the fix" }],
 //                        cut: 'sketch/f05-cut.png', bg: 'cream', outDir: 'review/covers' })   → cover-1.png …
-// cut = a 1080×1920 transparent PNG of her (hyperframes remove-background); photo = a 1080×1920 still.
+// cut = a 1080×1920 transparent PNG of the speaker (hyperframes remove-background); photo = a 1080×1920 still.
 // asset(path) → URL: file URLs for rendering here, http paths when the review page shows a live preview.
 import { mkdirSync, writeFileSync, rmSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
-import { launch } from '../../carousels/lib/common.mjs';
-import scrolly from './brand/scrolly.mjs';
+import { launch } from './settings.mjs';
+import { defaultBrand } from './brand/index.mjs';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const u = (p) => pathToFileURL(path.resolve(p)).href;
@@ -23,14 +23,14 @@ const esc = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, 
 export const COVER_BGS = ['cream', 'blush', 'mist', 'peach', 'ink'];
 // cut-out styles (need a cut-out of her) and photo layouts (her full video frame, text straight on the photo).
 // The photo layouts are the Oct 10 Reel cover templates (automation/carousels/lib/reel-covers.mjs) without the italic
-// serif (Mercedes 2026-10-14): big lines in Bricolage, the *accent* on the peach marker, notes handwritten.
+// serif (2026-10-14): big lines in Bricolage, the *accent* on the peach marker, notes handwritten.
 export const CUT_STYLES = { cut: 'Centered', behind: 'Text behind you', side: 'Off-center' };
-// 'number' = one big number OR word (Mercedes 2026-10-14 merged "Big number" and "One big word"); 'word' still renders
+// 'number' = one big number OR word (2026-10-14: merged "Big number" and "One big word"); 'word' still renders
 // as 'number' for any older pick.
 export const PHOTO_STYLES = { photo: 'Title on top', stack: 'Stack', title: 'Big title', number: 'Big number or word', label: 'Label' };
 export const COVER_STYLES = { ...CUT_STYLES, ...PHOTO_STYLES };
 
-export function coverHtml({ text, aside, cut, photo, style = photo && !cut ? 'photo' : 'cut', bg = 'cream', pos = 'bottom', brand = scrolly, asset = u }) {
+export function coverHtml({ text, aside, cut, photo, style = photo && !cut ? 'photo' : 'cut', bg = 'cream', pos = 'bottom', brand = defaultBrand(), asset = u }) {
   const C = brand.C;
   if (style === 'word') style = 'number';
   if (PHOTO_STYLES[style] && style !== 'photo') return photoLayoutHtml({ text, aside, photo, style, pos, brand, asset });
@@ -190,7 +190,7 @@ window.coverReady = (async () => {
 // options: [{ text, aside, style, bg, cut, photo, pos }] (each falls back to the shared cut / bg)
 export async function renderCovers({ options, cut, bg = 'cream', outDir = 'review/covers', names }) {
   mkdirSync(outDir, { recursive: true });
-  const browser = await launch();
+  const browser = await launch({ headless: 'shell', args: ['--allow-file-access-from-files'] });
   const files = [];
   try {
     const pg = await browser.newPage();

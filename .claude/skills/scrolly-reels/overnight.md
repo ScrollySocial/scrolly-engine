@@ -21,7 +21,7 @@ Write a running log to `automation/reel-hf/_runs/<yyyy-mm-dd>-overnight.md` as y
 ## Before anything
 1. Read the skill `SKILL.md` (this folder), its **Read first** list (handoff spec Her rules, writing rules, graphics
    memory, lib/README, the last approved Reel's build.mjs) and `review/README.md`. Her rules override this file.
-2. `node lib/doctor.mjs`. If anything fails that blocks Reels, write it in the log, notify her (see Wrap up) and stop.
+2. `node lib/doctor.mjs` (fixes what it can). If anything is left as NEEDS YOU, write it in the log, notify her (see Wrap up) and stop.
 3. `node lib/pipeline.mjs` to see every Reel's stage.
 4. **Resume, don't restart:** read `automation/reel-hf/_runs/progress/`. Each file is one Reel a run started and
    didn't finish (see D). Continue each from its next unfinished step before starting anything new.
@@ -84,7 +84,7 @@ moments she kept and redo only the changed moments. Then `node build.mjs && npm 
    `node lib/schedule.mjs <slug> order=<Publish Order or -> date=<Publish Date or ->` (Notion is the only place the order
    is set; the hub at localhost:4320 numbers the Reels from this copy).
 2. A row is a **Studio** Reel when its footage is talking-head take(s) of her. The footage is named in **Filming Notes**
-   (paths relative to the footage folder, `carousels/config/media.json` → `reelFootageDir`, e.g. `videos/Business
+   (paths relative to the footage folder, `reel-settings.json` → `folders.footage`, e.g. `videos/Business
    Brain/IMG_2008` → find the file by name). Skip and log (with the reason) rows where: the footage file isn't there
    (OneDrive not synced), it's a screen recording (Demo), b-roll or short intro clips (Quick Cut / Chill), multi-angle
    (Film), the Notes say it was already edited, or no footage is named. These types aren't built yet.

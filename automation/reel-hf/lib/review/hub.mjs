@@ -1,5 +1,5 @@
-// One link for every Reel in review: http://localhost:4320 lists each Reel with where it stands (lib/pipeline.mjs)
-// and opens its own review page (lib/review/server.mjs), started on demand on a fixed port per Reel (4331, 4332, …;
+// One link for every Reel in review: http://localhost:<hubPort> (4320 by default) lists each Reel with where it stands (lib/pipeline.mjs)
+// and opens its own review page (lib/review/server.mjs), started on demand on a fixed port per Reel (firstReelPort, +1, …;
 // kept in _runs/hub-ports.json so links stay the same across days). New Reel folders show up on refresh.
 // Usage: node lib/review/hub.mjs            (runs in this terminal)
 //        node lib/review/hub.mjs --start    (starts it in the background if it isn't running yet, then exits;
@@ -11,8 +11,9 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { allReels, reelStatus, ROOT, coverFile } from '../pipeline.mjs';
 import { readSchedule } from '../schedule.mjs';
+import { S, ports as PORTS_SET } from '../settings.mjs';
 
-const HUB = 4320, FIRST = 4331;
+const HUB = PORTS_SET.hub, FIRST = PORTS_SET.firstReel;
 const SELF = fileURLToPath(import.meta.url);
 const RUNS = path.join(ROOT, '_runs');
 mkdirSync(RUNS, { recursive: true });
@@ -57,7 +58,7 @@ const LABEL = {
   revise: ['Claude is making your changes', "Claude's turn"],
   sounds: ['Claude is adding sounds', "Claude's turn"],
   render: ['Video gets made tonight', "Claude's turn"],
-  post: ['Claude adds it to Buffer', "Claude's turn"],
+  post: [S.posting.scheduler ? `Claude adds it to ${S.posting.scheduler}` : 'Claude gets it ready to post', "Claude's turn"],
   'no-page': ['Being drafted', "Claude's turn"],
   done: ['Done', 'Queued or posted'],
 };
@@ -94,7 +95,7 @@ function line(r) {
     case 'revise': return `You sent changes${r.savedAt ? ' ' + when(r.savedAt) : ''}. Claude makes them, then it comes back to you.`;
     case 'sounds': return 'You approved the plan. Claude adds the sounds, music and transitions, then Edit it opens.';
     case 'render': return 'You approved the edit. The video gets made in the overnight run.';
-    case 'post': return 'You approved it. Claude adds it to the Buffer queue.';
+    case 'post': return S.posting.scheduler ? `You approved it. Claude adds it to the ${S.posting.scheduler} queue.` : 'You approved it. Claude gets it ready to post.';
     case 'no-page': return 'Claude is still drafting this one.';
     default: return 'Queued or posted.';
   }

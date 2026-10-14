@@ -1,0 +1,22 @@
+# tools installed by lib/doctor.mjs, working files and renders stay out of git
+node_modules/
+tools/hf/
+tools/.venv/
+tools/cut/public/
+tools/cut/.cache/
+work/
+*/assets/talk*.mp4
+*/assets/talk-audio.m4a
+*/assets/talk-seg/
+*/assets/cut/
+*/assets/music/
+*/review/
+*/animatic/
+*/snapshots/
+*/renders/
+*/.backups/
+*/*.mp4
+# sound effects are each person's own downloads (sounds.md)
+lib/assets/sfx/*.mp3
+lib/assets/sfx/*.wav
+!lib/review/
