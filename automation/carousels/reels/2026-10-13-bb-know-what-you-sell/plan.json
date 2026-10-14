@@ -1,0 +1,78 @@
+{
+ "kit": "yap",
+ "segments": [
+  {
+   "src": "Business Brain/IMG_1996.MOV",
+   "in": 0.62,
+   "out": 3.18,
+   "transcript": "audio/Business_Brain__IMG_1996.json"
+  },
+  {
+   "src": "Business Brain/IMG_1996.MOV",
+   "in": 4.56,
+   "out": 7.68,
+   "transcript": "audio/Business_Brain__IMG_1996.json"
+  },
+  {
+   "src": "Business Brain/IMG_1996.MOV",
+   "in": 14.42,
+   "out": 17.28,
+   "transcript": "audio/Business_Brain__IMG_1996.json"
+  },
+  {
+   "src": "Business Brain/IMG_1996.MOV",
+   "in": 18.16,
+   "out": 24.18,
+   "transcript": "audio/Business_Brain__IMG_1996.json"
+  },
+  {
+   "src": "Business Brain/IMG_1996.MOV",
+   "in": 39.38,
+   "out": 46.46,
+   "transcript": "audio/Business_Brain__IMG_1996.json"
+  },
+  {
+   "src": "Business Brain/IMG_1996.MOV",
+   "in": 52.62,
+   "out": 67.9,
+   "transcript": "audio/Business_Brain__IMG_1996.json"
+  },
+  {
+   "src": "Business Brain/IMG_1996.MOV",
+   "in": 71.54,
+   "out": 77.7,
+   "transcript": "audio/Business_Brain__IMG_1996.json"
+  },
+  {
+   "src": "Business Brain/IMG_1996.MOV",
+   "in": 82.1,
+   "out": 89.52,
+   "transcript": "audio/Business_Brain__IMG_1996.json"
+  },
+  {
+   "src": "Business Brain/IMG_1996.MOV",
+   "in": 90.24,
+   "out": 97.46,
+   "transcript": "audio/Business_Brain__IMG_1996.json"
+  }
+ ],
+ "fix": {
+  "scrolling": "Scrolly"
+ },
+ "maxPause": 0.45,
+ "insert": [
+  {
+   "after": "guessing",
+   "before": "course",
+   "word": "Of"
+  },
+  {
+   "after": "to",
+   "before": "otherwise",
+   "word": "Because"
+  }
+ ],
+ "exact": {
+  "otherwise": "otherwise"
+ }
+}

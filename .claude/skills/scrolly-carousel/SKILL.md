@@ -91,12 +91,31 @@ know exactly what to do? Is the caption adding context, an example, a caveat or 
 grid; the files sync to her phone through OneDrive). Nothing goes to Notion or the ledger before she approves.
 
 **9. After approval.**
-- Create a row in Content Pipeline: Content = short title; Format = Carousel; Platforms = Instagram; Status = Ready;
+- Create a row in Content Pipeline: Content = short title; Format = Carousel; Platforms = Instagram; Status = Approved (NEVER "Ready": any row set to Ready gets added to the Buffer posting queue (no longer Make, 2026-10-13), so Ready means "post this"; Edit while stand-ins remain);
   Carousel Style = matching option (e.g. "A · One photo"); Hook = slide 1 text; Instagram Caption = caption + hashtags;
   CTA = CTA in words; Carousel ID = post id; Media Used = comma-separated media ids (from `posts/<id>/build.json`);
   Product = the offer's club if the CTA sells one; Notes = export folder path. Link Source Ideas if it came from one.
 - `node ledger.mjs add <id> <notion-page-url>` (also marks the source idea card `used`).
 - If she changes copy after approval, rebuild and re-run `ledger.mjs add` (it replaces the entry).
+
+## Reels → covers + twin carousels (2026-10-10)
+Every Reel gets a cover and a matching carousel from ONE spec, so carousels never need their own ideas.
+- Spec: `reels/<id>/reel.json` (`series`, `hook`, `altHook`, `swipeLine`, `cover {clip, at, pos, focus, label}`, `beats [{text, clip, at, pos}]`,
+  `carouselExtras [{after, ...}]` = the long-version slides, `cta {text, clip, at}`, `caption`, `hashtags`, `brief`).
+  Template: `reels/sample-what-to-post/reel.json`. Clip paths are relative to `media.json → reelFootageDir`.
+- Series: `reels/series.json` gives each series one cover template + palette + offer. `lintReel` errors when the offer
+  isn't live in `destinations.json` (Business Brain, Threads kit, Pin generator are blocked until they are).
+- `node reel-cover.mjs <id>|--all` → `exports/reels/<id>/cover.png` (1080×1920; text kept in the grid's middle 3:4,
+  y 300 to 1620) + `cover-grid.png` + `exports/reels/covers.html` (grid view of every cover). Cover = a frame from the reel.
+- `node reel-to-carousel.mjs <id>` → writes `posts/<id>/post.json` in the established style D templates (NOT photo-dump B;
+  Mercedes 2026-10-10): big-type cover = hook, `hook2` = `altHook` + `swipeLine`, one slide per beat (+ extras), CTA on the
+  cover look. A beat's `carousel` object sets its layout like a post.json slide (`photo` and `phone` + `useFrame` get a 3:4
+  Reel frame from `photos/frames/<id>/`); beats without one alternate photo/text, so add phone/chat/checklist layouts to
+  pass 7c. Then the normal check → build → overview → show Mercedes → approval steps. `--force` overwrites a hand-edited post.json.
+- Upcoming products (`upcoming: true` in destinations.json, e.g. Threads kit, Pin generator): teaser Reels/carousels allowed
+  with a follow/save CTA, no link, no price. Business Brain is live ($47).
+- `node reel-preview.mjs <id>` → `exports/reels/previews/<id>.mp4`: b-roll segments (hook, beats, CTA; per segment clip/at/dur/reelPos) with white-box text, no music (she adds audio in Edits). Check a frame per segment for text over her face and bad footage (notebook-hand-01 is only usable 0 to 2.4s).
+- Frames need `pip install imageio-ffmpeg` in `.venv` (already done); rendering needs the Bash sandbox off.
 
 ## Files
 - `posts/<id>/post.json` + `research.md`: source of each carousel (in git).

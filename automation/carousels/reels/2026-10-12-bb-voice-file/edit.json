@@ -1,0 +1,59 @@
+{
+ "segments": [
+  {
+   "src": "Business Brain/IMG_1995.MOV",
+   "in": 0.58,
+   "out": 16.080000000000002,
+   "transcript": "audio/Business_Brain__IMG_1995.json"
+  },
+  {
+   "src": "Business Brain/IMG_1995.MOV",
+   "in": 16.68,
+   "out": 20.42,
+   "transcript": "audio/Business_Brain__IMG_1995.json"
+  },
+  {
+   "src": "Business Brain/IMG_1995.MOV",
+   "in": 20.86,
+   "out": 45.54,
+   "transcript": "audio/Business_Brain__IMG_1995.json"
+  },
+  {
+   "src": "Business Brain/IMG_1995.MOV",
+   "in": 45.94,
+   "out": 61.82,
+   "transcript": "audio/Business_Brain__IMG_1995.json"
+  },
+  {
+   "src": "Business Brain/IMG_1995.MOV",
+   "in": 62.22,
+   "out": 66.44,
+   "transcript": "audio/Business_Brain__IMG_1995.json"
+  },
+  {
+   "src": "Business Brain/IMG_1995.MOV",
+   "in": 67.02,
+   "out": 79.56,
+   "transcript": "audio/Business_Brain__IMG_1995.json"
+  },
+  {
+   "src": "Business Brain/IMG_1995.MOV",
+   "in": 88.24,
+   "out": 95.32,
+   "transcript": "audio/Business_Brain__IMG_1995.json"
+  }
+ ],
+ "title": {
+  "text": "Give your AI a voice file",
+  "dur": 3.5
+ },
+ "end": {
+  "text": "Business Brain is $47 at scrollyseo.com",
+  "dur": 4.5
+ },
+ "captions": true,
+ "fix": {},
+ "exact": {
+  "Redwood,": "Read what"
+ }
+}

@@ -1,0 +1,11 @@
+{
+ "kit": "yap",
+ "segments": [
+  { "src": "Business Brain/IMG_2004.MOV", "in": 14.81, "out": 22.11, "transcript": "audio/Business_Brain__IMG_2004.json" },
+  { "src": "Business Brain/IMG_2004.MOV", "in": 29.11, "out": 50.89, "transcript": "audio/Business_Brain__IMG_2004.json" },
+  { "src": "Business Brain/IMG_2007.MOV", "in": 4.04, "out": 8.70, "transcript": "audio/Business_Brain__IMG_2007.json" }
+ ],
+ "fix": { "scrolly": "Scrolly" },
+ "exact": { "Squirrely": "Scrolly" },
+ "maxPause": 0.45
+}

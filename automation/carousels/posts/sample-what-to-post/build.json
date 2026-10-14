@@ -1,0 +1,76 @@
+{
+  "builtAt": "2026-10-10T19:59:17.908Z",
+  "exportDir": "C:\\Users\\merce\\OneDrive\\Scrolly Media\\exports\\carousels\\sample-what-to-post",
+  "mediaUsed": [
+    "b01077b718",
+    "645d2c85d7",
+    "8c4a79d757",
+    "a96deabe1c"
+  ],
+  "fit": [
+    {
+      "i": 0,
+      "size": 168,
+      "min": 72,
+      "ok": true,
+      "lines": 3
+    },
+    {
+      "i": 1,
+      "size": 132,
+      "min": 48,
+      "ok": true,
+      "lines": 8
+    },
+    {
+      "i": 2,
+      "size": 94,
+      "min": 48,
+      "ok": true,
+      "lines": 5
+    },
+    {
+      "i": 3,
+      "size": 86,
+      "min": 48,
+      "ok": true,
+      "lines": 3
+    },
+    {
+      "i": 4,
+      "size": 94,
+      "min": 48,
+      "ok": true,
+      "lines": 4
+    },
+    {
+      "i": 5,
+      "size": 94,
+      "min": 48,
+      "ok": true,
+      "lines": 3
+    },
+    {
+      "i": 6,
+      "size": 94,
+      "min": 48,
+      "ok": true,
+      "lines": 4
+    },
+    {
+      "i": 7,
+      "size": 94,
+      "min": 48,
+      "ok": true,
+      "lines": 1
+    },
+    {
+      "i": 8,
+      "size": 136,
+      "min": 72,
+      "ok": true,
+      "lines": 5
+    }
+  ],
+  "problems": []
+}

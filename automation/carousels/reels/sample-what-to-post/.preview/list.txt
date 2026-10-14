@@ -1,0 +1,6 @@
+file 'C:/Users/merce/Scrolly Organic Engine/automation/carousels/reels/sample-what-to-post/.preview/s0.mp4'
+file 'C:/Users/merce/Scrolly Organic Engine/automation/carousels/reels/sample-what-to-post/.preview/s1.mp4'
+file 'C:/Users/merce/Scrolly Organic Engine/automation/carousels/reels/sample-what-to-post/.preview/s2.mp4'
+file 'C:/Users/merce/Scrolly Organic Engine/automation/carousels/reels/sample-what-to-post/.preview/s3.mp4'
+file 'C:/Users/merce/Scrolly Organic Engine/automation/carousels/reels/sample-what-to-post/.preview/s4.mp4'
+file 'C:/Users/merce/Scrolly Organic Engine/automation/carousels/reels/sample-what-to-post/.preview/s5.mp4'

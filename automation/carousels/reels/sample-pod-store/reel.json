@@ -1,0 +1,28 @@
+{
+  "id": "sample-pod-store",
+  "series": "pod-store",
+  "status": "sample",
+  "hook": "A brand new store. Can our templates get its *first sale*?",
+  "cover": {
+    "clip": "broll/desk-typing-01.mp4",
+    "at": 1,
+    "pos": "center",
+    "lines": [
+      [
+        "script",
+        "store sales so far:"
+      ],
+      [
+        "serif",
+        "$0"
+      ],
+      [
+        "small",
+        "a brand new POD store + our templates"
+      ]
+    ]
+  },
+  "cta": {
+    "text": "Link in bio"
+  }
+}

@@ -1,0 +1,61 @@
+{
+  "id": "sample-business-brain",
+  "series": "business-brain",
+  "status": "sample",
+  "hook": "I got tired of re-explaining my business to *AI*",
+  "cover": {
+    "clip": "broll/typing-overhead-01.mp4",
+    "at": 1,
+    "lines": [
+      [
+        "title",
+        "I got tired of re-explaining my business to *AI*"
+      ]
+    ]
+  },
+  "cta": {
+    "type": "save",
+    "text": "Business Brain is $47 at scrollyseo.com",
+    "clip": "broll/couch-lookup-smile-01.mp4",
+    "at": 0,
+    "dur": 3,
+    "pos": "bottom"
+  },
+  "altHook": "My AI finally knows my prices",
+  "swipeLine": "Here is what changed →",
+  "hookPos": "top",
+  "beats": [
+    {
+      "text": "So I gave it a Brain in Notion.",
+      "clip": "broll/desk-typing-01.mp4",
+      "at": 8,
+      "pos": "center"
+    },
+    {
+      "text": "It knows my offers, my prices and how I sound.",
+      "clip": "broll/couch-writing-01.mp4",
+      "at": 6,
+      "pos": "bottom"
+    },
+    {
+      "text": "Now every caption starts from what is true about my business.",
+      "clip": "broll/kitchen-smoothie-sip-01.mp4",
+      "at": 1.5,
+      "pos": "bottom"
+    }
+  ],
+  "caption": "Business Brain is $47 at scrollyseo.com. It is a Notion template your ChatGPT or Claude fills in by interviewing you, then uses every time you ask for a caption, a DM reply or a plan for the week.",
+  "hashtags": [
+    "#notiontemplate",
+    "#chatgptforbusiness",
+    "#smallbusinesstools"
+  ],
+  "brief": {
+    "source": "Business Brain live product page scrollyseo.com/product/business-brain (checked 2026-10-10)",
+    "reader": "Small business owners who use AI for captions",
+    "problem": "They retype their business details in every chat",
+    "outcome": "Their AI starts from their real offers and voice",
+    "topic": "Business Brain",
+    "mainPoint": "One Notion Brain your AI reads every time"
+  }
+}

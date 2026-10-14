@@ -1,0 +1,18 @@
+{
+ "kit": "yap",
+ "segments": [
+  {
+   "src": "Business Brain/Just don't use the part, and that is how you build a brain, at the end.MOV",
+   "in": 0.4,
+   "out": 24.9,
+   "transcript": "audio/Business_Brain__Just_don't_use_the_part,_and_that_is_how_you_build_a_brain,_at_the_end.json"
+  }
+ ],
+ "maxPause": 0.45,
+ "drop": [
+  {
+   "after": "way",
+   "word": "and"
+  }
+ ]
+}

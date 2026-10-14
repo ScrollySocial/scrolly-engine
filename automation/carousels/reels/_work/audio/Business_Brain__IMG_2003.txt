@@ -1,0 +1,23 @@
+[   0.43-   7.05] I changed one thing in my business, and now every time I use AI, it's a completely different experience.
+[   8.03-  12.81] What I did is I made a business brain, and you might be thinking, what the heck is a business brain?
+[  13.31-  22.48] That is, and you might be thinking, what the heck is a business brain?
+[  23.18-  27.66] Well, I got tired of explaining my business to chat GPT and Claude over and over again,
+[  28.00-  29.74] so I gave them both the same brain.
+[  29.74-  36.90] And you probably, and I use more than one AI, you might only use one, but it will help you too.
+[  37.74-  39.80] Because you probably know what I'm talking about.
+[  40.68-  46.38] You just spent hours working on a project, and you figured out what you're selling, what the price is, how to market it,
+[  46.60-  51.76] but not all of that gets saved in the AI's memory, or it's kind of spotty what makes it in there.
+[  54.72-  59.98] And suddenly I find myself explaining the product over and over again, or I find myself saying,
+[  59.98-  66.10] I told you not to do this every single time, and you continue to do it, anyone else for me.
+[  68.89-  74.03] So instead, I tracked all that information in something I call my business brain,
+[  74.51-  80.05] and I like to use Notion as a part of it, because it's free, it's simple to use,
+[  80.05-  84.93] and it can be used by multiple AI's, which of course I do like to use multiple AI's.
+[  87.62-  95.67] That way when something changes in my business, and that way when something changes in my business,
+[  97.09- 105.62] both, and that way when something changes in my business, the AI is constantly referencing my source materials
+[ 105.62- 116.46] on how I want something built, and that way, and that way every time I go to use AI,
+[ 116.76- 121.54] they can reference the correct file so that they always know what's up to date and what's going on.
+[ 121.76- 126.38] And I find myself having to repeat myself less, there's less mistakes and a higher quality output.
+[ 126.96- 129.38] I'm using less tokens and getting a better product.
+[ 129.38- 133.12] So if you want to build a business brain, you can do it too.
+[ 136.08- 141.52] And I've actually created a scrolling business brain to help other business owners make their own system.
+[ 142.16- 143.46] You can find it on my website.

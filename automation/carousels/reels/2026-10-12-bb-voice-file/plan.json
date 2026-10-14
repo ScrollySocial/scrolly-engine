@@ -1,0 +1,69 @@
+{
+ "kit": "yap",
+ "segments": [
+  {
+   "src": "Business Brain/IMG_1995.MOV",
+   "in": 0.66,
+   "out": 15.96,
+   "transcript": "audio/Business_Brain__IMG_1995.json"
+  },
+  {
+   "src": "Business Brain/IMG_1995.MOV",
+   "in": 16.76,
+   "out": 20.3,
+   "transcript": "audio/Business_Brain__IMG_1995.json"
+  },
+  {
+   "src": "Business Brain/IMG_1995.MOV",
+   "in": 20.94,
+   "out": 45.42,
+   "transcript": "audio/Business_Brain__IMG_1995.json"
+  },
+  {
+   "src": "Business Brain/IMG_1995.MOV",
+   "in": 46.02,
+   "out": 66.32,
+   "transcript": "audio/Business_Brain__IMG_1995.json"
+  },
+  {
+   "src": "Business Brain/IMG_1995.MOV",
+   "in": 67.1,
+   "out": 79.44,
+   "transcript": "audio/Business_Brain__IMG_1995.json"
+  },
+  {
+   "src": "Business Brain/IMG_1995.MOV",
+   "in": 88.32,
+   "out": 95.2,
+   "transcript": "audio/Business_Brain__IMG_1995.json"
+  }
+ ],
+ "title": {
+  "caps": "Why AI doesn't",
+  "serif": "sound like you"
+ },
+ "emphasis": [
+  "it just doesn't sound like you",
+  "doesn't automatically know your personality",
+  "create your own voice file",
+  "you would absolutely never use",
+  "every single thing your AI writes"
+ ],
+ "end": {
+  "lines": [
+   "Scrolly Business Brain",
+   "$47 at scrollyseo.com"
+  ],
+  "dur": 4.5
+ },
+ "exact": {
+  "Redwood,": "Read what"
+ },
+ "music": null,
+ "sfx": null,
+ "grade": {
+  "warmth": 0.04,
+  "contrast": 1.06,
+  "saturation": 0.95
+ }
+}

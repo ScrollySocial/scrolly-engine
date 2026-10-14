@@ -1,0 +1,23 @@
+{
+  "id": "sample-pinterest",
+  "series": "pinterest",
+  "status": "sample",
+  "hook": "Pins that write themselves. *Coming soon*",
+  "cover": {
+    "clip": "broll/fall-berries-path-01.mp4",
+    "at": 1,
+    "lines": [
+      [
+        "title",
+        "Pins that make *themselves*"
+      ],
+      [
+        "script",
+        "coming soon"
+      ]
+    ]
+  },
+  "cta": {
+    "text": "Link in bio"
+  }
+}

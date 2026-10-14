@@ -1,0 +1,5 @@
+file 'C:/Users/merce/Scrolly Organic Engine/automation/carousels/reels/sample-start-here/.preview/s0.mp4'
+file 'C:/Users/merce/Scrolly Organic Engine/automation/carousels/reels/sample-start-here/.preview/s1.mp4'
+file 'C:/Users/merce/Scrolly Organic Engine/automation/carousels/reels/sample-start-here/.preview/s2.mp4'
+file 'C:/Users/merce/Scrolly Organic Engine/automation/carousels/reels/sample-start-here/.preview/s3.mp4'
+file 'C:/Users/merce/Scrolly Organic Engine/automation/carousels/reels/sample-start-here/.preview/s4.mp4'

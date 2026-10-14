@@ -47,7 +47,12 @@ export function lint(post) {
     if (t.length > 160) Wn(`slide ${i + 1} is ${t.length} characters; likely overloaded`);
   });
   if (/\b(zero|0|no|few)\s+(followers|audience)\b|nobody'?s watching|how many followers/i.test(allText)) Wn('audience-size angle; avoid unless Mercedes asked for it (content-rules 1c)');
-  if (/business brain|pin generator/i.test(allText)) E('mentions an unlaunched product');
+  for (const o of dest.offers.filter((x) => !x.live)) {
+    const name = new RegExp(o.name.replace(/[^a-z0-9 ]/gi, '').split(' ').filter(Boolean).join('\\s+'), 'i');
+    if (!name.test(allText)) continue;
+    if (!o.upcoming) E(`mentions ${o.name}, which isn't live`);
+    else if (!['follow', 'save'].includes(post.cta?.type)) E(`${o.name} is upcoming: teaser posts use a follow or save CTA, not ${post.cta?.type}`);
+  }
   // Slide 2 = second hook (content-rules 5): a new angle on slide 1's promise, not the first content point or a reword.
   if (slides.length > 1) {
     const s2 = slides[1].text || [slides[1].top, slides[1].bottom].filter(Boolean).join(' ');

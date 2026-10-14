@@ -1,0 +1,51 @@
+<!doctype html><html><head><meta charset="utf-8">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@500;600;700;800&family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,200..800&family=Instrument+Serif:ital@0;1&family=Covered+By+Your+Grace&family=Inter+Tight:wght@700;800&family=Fraunces:ital,opsz,wght@1,9..144,500;1,9..144,600&display=block">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{width:1080px;height:1920px;overflow:hidden;background:#222}
+.c{position:relative;width:1080px;height:1920px;overflow:hidden;--k:1}
+.ph,.matte{position:absolute;inset:0;background-size:cover;background-position:center}
+.ph{background-image:url('file:///C:/Users/merce/Scrolly%20Organic%20Engine/automation/carousels/reels/sample-pinterest/.cover-frame.jpg');filter:saturate(.92) contrast(1.02)}
+.dim{position:absolute;inset:0;background:rgba(20,14,10,.2)}
+.shade{position:absolute;left:0;right:0;height:900px;background:radial-gradient(ellipse 75% 50% at 50% 50%,rgba(15,10,8,.58),rgba(15,10,8,0) 74%)}
+.shade.top{top:180px}.shade.center{top:510px}.shade.bottom{top:840px}
+.matte{background-image:url('')}
+.doodles{position:absolute;inset:0;width:100%;height:100%;color:#FFF4DC;opacity:.9}
+.t{position:absolute;left:80px;right:80px;display:flex;flex-direction:column;align-items:center;text-align:center;color:#FFF4DC;text-shadow:0 3px 24px rgba(0,0,0,.28)}
+.t.top{top:310px}.t.center{top:50%;transform:translateY(-50%)}.t.bottom{bottom:310px}
+.l{position:relative}
+em{font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;text-transform:none;letter-spacing:0;color:#FFC9A8;font-size:1.25em;line-height:.8}
+.caps{font:800 calc(104px*var(--k))/1.0 'Bricolage Grotesque',sans-serif;font-stretch:88%;text-transform:uppercase;letter-spacing:-.01em}
+.serif{font:italic 400 calc(230px*var(--k))/.86 'Instrument Serif',serif;color:#FFC9A8;letter-spacing:-.01em;margin:.02em 0 .06em}
+.title{font:400 calc(150px*var(--k))/.95 'Instrument Serif',serif;letter-spacing:-.015em}
+.title em{font-size:1em}
+.word{font:800 calc(280px*var(--k))/.9 'Inter Tight',sans-serif;letter-spacing:-.06em;text-transform:lowercase}
+.small{font:500 calc(44px*var(--k))/1.25 'Figtree',sans-serif;margin-top:18px;letter-spacing:.005em}
+.script{font:400 calc(76px*var(--k))/1.02 'Covered By Your Grace',cursive;letter-spacing:.03em;text-transform:uppercase;transform:rotate(-5deg);align-self:flex-start;margin:0 0 6px 40px;text-align:left;max-width:560px}
+.t.title-t .script{align-self:center;transform:none;margin:14px 0 0;text-transform:none;letter-spacing:.06em;font-size:calc(58px*var(--k))}
+.script .arrow{position:absolute;left:38%;top:92%;width:96px;color:#FFF4DC;transform:rotate(8deg)}
+.script:has(.arrow){margin-bottom:120px}
+.label{font:400 calc(92px*var(--k))/1.18 'Instrument Serif',serif;color:#161210;text-shadow:none;margin-top:10px}
+.label span{background:#FFC9A8;padding:.02em .22em .06em;border-radius:.18em;-webkit-box-decoration-break:clone;box-decoration-break:clone}
+.label em{color:#161210;font-size:1em}
+.behind-t .serif,.behind-t .caps{font-size:calc(330px*var(--k));line-height:.82}
+.number-t .serif{font-size:calc(320px*var(--k));font-style:normal}
+.serif,.c em:not(.label em){text-shadow:0 0 46px rgba(0,0,0,.55),0 4px 16px rgba(0,0,0,.45)}
+
+</style></head><body><div class="c">
+<div class="ph"></div><div class="dim"></div><div class="shade top"></div>
+<div class="t top title-t"><p class="l title">Pins that make <em>themselves</em></p><p class="l script">coming soon</p></div>
+
+
+</div>
+<script>
+// Scale the whole text block down until it fits the grid-safe band (y 300 to 1620) and the 920px width.
+(async () => {
+  await document.fonts.ready;
+  const c = document.querySelector('.c'), t = document.querySelector('.t');
+  let k = 1;
+  const ok = () => { const r = t.getBoundingClientRect(); return r.top >= 300 && r.bottom <= 1620 && [...t.children].every((el) => el.scrollWidth <= t.clientWidth + 4); };
+  while (!ok() && k > .5) { k -= .03; c.style.setProperty('--k', k); }
+  document.body.dataset.fit = (ok() ? 'ok:' : 'fail:') + k.toFixed(2);
+})();
+</script></body></html>

@@ -40,14 +40,32 @@
     {
       "id": "business-brain",
       "name": "Business Brain",
-      "live": false,
-      "notes": "Planned launch later this week (Mercedes 2026-10-06). Do not CTA until live and confirmed."
+      "price": 47,
+      "live": true,
+      "url": "https://scrollyseo.com/product/business-brain/",
+      "source": "Live product page checked 2026-10-10; Mercedes confirmed live 2026-10-10",
+      "notes": "link in bio goes to the $1K Challenge checkout. A Business Brain CTA needs the bio to also link here (IG allows up to 5 bio links); confirm with Mercedes before using \"link in bio\" for it.",
+      "includes": [
+        "My Business Brain Notion template (works on Notion free, no Notion AI needed)",
+        "Scrolly Brain Skills file: interview, Brain sweep, morning check-in, Monday reset",
+        "2-page Quick Start guide + copy-and-paste settings note",
+        "Skill updates as they improve",
+        "Works with ChatGPT Plus, Claude chat and Claude Code; setup about 20 minutes"
+      ]
     },
     {
       "id": "pinterest-pin-generator",
       "name": "Pinterest pin generator",
       "live": false,
-      "notes": "Likely next launch, possibly before the Brain. Do not CTA until live."
+      "notes": "Not live. Upcoming teaser allowed (Mercedes 2026-10-10): drive interest with a follow/save CTA, never link in bio, no price.",
+      "upcoming": true
+    },
+    {
+      "id": "threads-kit",
+      "name": "Threads kit",
+      "live": false,
+      "upcoming": true,
+      "notes": "Going live or into testing 2026-10-10 night (Mercedes). Until live: upcoming teaser only (follow/save CTA, no link, no price). Flip live:true + add price/url once she confirms."
     }
   ],
   "freeResources": [],

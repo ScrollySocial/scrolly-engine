@@ -1,0 +1,28 @@
+{
+  "id": "sample-calculator",
+  "series": "calculator",
+  "status": "sample",
+  "hook": "Your price decides how many *views* you need",
+  "cover": {
+    "clip": "broll/kitchen-walk-to-camera-01.mp4",
+    "at": 1,
+    "pos": "bottom",
+    "lines": [
+      [
+        "script",
+        "views you need for $1K:"
+      ],
+      [
+        "serif",
+        "10,667"
+      ],
+      [
+        "small",
+        "at $50, if 7.5% visit and 2.5% of them buy"
+      ]
+    ]
+  },
+  "cta": {
+    "text": "Link in bio"
+  }
+}

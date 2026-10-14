@@ -27,7 +27,9 @@ export function loadPost(id) {
 // Puppeteer's Chrome headless shell (Edge can be mid-update and refuse to launch). Set CHROME to override.
 export async function launch() {
   const { default: puppeteer } = await import('puppeteer-core');
-  let exe = process.env.CHROME;
+  // Edge first: the bundled chrome-headless-shell hangs silently after a Windows restart (2026-10-13).
+  const EDGE = 'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe';
+  let exe = process.env.CHROME || (existsSync(EDGE) ? EDGE : null);
   if (!exe) {
     const base = path.join(os.homedir(), '.cache/puppeteer/chrome-headless-shell');
     const { readdirSync } = await import('node:fs');

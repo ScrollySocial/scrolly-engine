@@ -1,0 +1,38 @@
+[   0.53-   6.75] I actually use both chat GPT and cloud on a daily basis in my business, and I know some
+[   6.75-  11.23] people prefer to pick one AI and stick with it, but personally I like to use different
+[  11.23-  12.37] tools for different things.
+[  12.85-  16.67] And the problem that I was running into is that I don't want to have to keep explaining
+[  16.67-  21.27] my business over and over again, especially when I'm making dynamic decisions like adding
+[  21.27-  27.63] in new products or posts or series ideas, I needed one central repository where all
+[  27.63-  38.51] that information could live, but be referenced from either AI, no matter what, because maybe
+[  38.51-  43.23] I've just spent an hour working on something in cloud, and I made some decisions based on
+[  43.23-  46.45] that output, and I want to touch UPT to know what happened.
+[  48.73-  51.75] And I want to touch UPT to know what happened when I go and I switch over.
+[  52.61-  56.25] Well, right now I need to explain what I'm working on, what I've decided.
+[  62.54-  68.18] So one thing I started doing is I started organizing my business outside of the AI system.
+[  70.34-  74.74] Both of those AI's have a built-in memory, so they do learn your business as it goes.
+[  77.55-  79.59] Both of those AI's do have a memory.
+[  80.05-  84.23] So they do learn your business as you use them, but it can be spotty.
+[  84.39-  87.55] It doesn't always remember the right thing or the most up-to-date thing.
+[  88.05-  91.43] And sometimes they can remember things that you really didn't want to, like they weren't
+[  91.43-  92.13] a final decision.
+[  96.53- 101.19] So I started organizing my business information outside of the AI itself.
+[ 101.93- 108.51] I use Notion, and that is a central place where a lot of my business information lives.
+[ 109.05- 113.21] And I've connected it to the AI tools that I use, which is chat, GPT, and quad.
+[ 113.91- 119.31] And that means I either tell my AI to build, and that means that I can just tell my AI to
+[ 119.31- 122.21] reference my business brain before it actually builds something.
+[ 124.09- 129.79] And then when I update information in Notion, both tools can reference that updated version
+[ 129.79- 130.45] of the text.
+[ 131.21- 139.90] And then when that information is updated in Notion, both tools are able to update the
+[ 139.90- 140.10] app.
+[ 141.08- 147.54] And then when I update, and then once the information is updated in Notion, both tools
+[ 147.54- 148.94] are able to reference that.
+[ 149.42- 166.49] And when I update that information in Notion, both tools are then able to use that same
+[ 166.49- 170.71] reference material, so that nothing ever gets stale or out of date between the doodit.
+[ 178.95- 183.73] So then when the information gets updated in Notion, I make sure that both tools are
+[ 183.73- 186.57] referencing up-to-date information, and nothing's getting stale.
+[ 187.37- 193.19] I really like this approach because I have more control over what information my AI is using,
+[ 193.63- 197.97] rather than relying on the application's internal memory that is kind of mysterious.
+[ 199.19- 204.29] The best part is that this is actually a pretty simple setup, and you can make it
+[ 204.29- 207.49] more complex if you want to use additional tools.
+[ 211.13- 212.09] And if you're really...

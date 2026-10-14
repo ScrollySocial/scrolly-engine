@@ -1,0 +1,122 @@
+{
+  "id": "sample-what-to-post",
+  "series": "what-to-post",
+  "status": "sample",
+  "hook": "No idea what to post today? *Film this*",
+  "altHook": "A 5 minute Reel any business can post today",
+  "cover": {
+    "clip": "broll/kitchen-smoothie-sip-01.mp4",
+    "at": 1,
+    "pos": "bottom",
+    "lines": [
+      [
+        "script",
+        "no idea what to post?"
+      ],
+      [
+        "label",
+        "Film *this* in 5 minutes"
+      ]
+    ]
+  },
+  "beats": [
+    {
+      "text": "Film 5 to 8 seconds of something ordinary: your product, your desk, your finished work.",
+      "clip": "broll/desk-typing-01.mp4",
+      "at": 1,
+      "pos": "center",
+      "carousel": {
+        "layout": "photo"
+      }
+    },
+    {
+      "text": "Add one line on screen: \"This is your sign to\" + the thing you sell or fix.",
+      "clip": "broll/notebook-hand-01.mp4",
+      "at": 0,
+      "pos": "center",
+      "carousel": {
+        "layout": "phone",
+        "useFrame": true,
+        "screen": {
+          "type": "reel",
+          "onscreen": "This is your sign to...",
+          "caption": "One line, one clip"
+        }
+      },
+      "dur": 2.4
+    },
+    {
+      "text": "Photographer: \"This is your sign to book fall photos before the leaves drop.\"",
+      "clip": "broll/fall-berries-path-01.mp4",
+      "at": 0,
+      "pos": "top",
+      "carousel": {
+        "layout": "photo"
+      }
+    },
+    {
+      "text": "End on your next step, like link in bio. That's the whole Reel.",
+      "clip": "broll/typing-overhead-01.mp4",
+      "at": 1,
+      "pos": "top",
+      "carousel": {
+        "layout": "checklist",
+        "items": [
+          "One ordinary clip",
+          "One \"This is your sign to\" line",
+          "Your next step, like link in bio"
+        ]
+      },
+      "carouselText": "That's the whole Reel:"
+    }
+  ],
+  "carouselExtras": [
+    {
+      "after": 3,
+      "text": "Cleaner: \"This is your sign to come home to a clean house on Friday.\"",
+      "clip": "broll/home-vacuuming-02.mp4",
+      "at": 1,
+      "pos": "top",
+      "carousel": {
+        "layout": "text",
+        "pattern": "dots"
+      }
+    },
+    {
+      "after": 3,
+      "text": "Clothing shop: \"This is your sign to own one outfit that's just for doing nothing.\"",
+      "clip": "broll/outfit-sunglasses-01.mp4",
+      "at": 1,
+      "pos": "bottom",
+      "carousel": {
+        "layout": "photo"
+      }
+    }
+  ],
+  "cta": {
+    "type": "link-in-bio",
+    "text": "25 Reel ideas like this every week come with the $1K Challenge. Link in bio.",
+    "clip": "broll/outfit-sunglasses-01.mp4",
+    "at": 1,
+    "pos": "bottom",
+    "reelPos": "bottom"
+  },
+  "caption": "The $1K Challenge gives you 25 Reel ideas like this every week, ready to film. Link in bio. This one works on a busy day because it takes one ordinary clip and one line. Swap in what you sell, keep the line short enough to read in two seconds, and end on the step you want people to take.",
+  "hashtags": [
+    "#reelideas",
+    "#contentideas",
+    "#smallbusinessmarketing"
+  ],
+  "brief": {
+    "source": "Challenge Reels library, week 1 #1 'This is your sign' (automation/k1-launch/content/week-01-reels.mjs); photographer example from that card",
+    "reader": "Small business owners who freeze on what to post",
+    "problem": "They skip posting because they have no idea for today",
+    "outcome": "They film and post a 5 minute Reel today",
+    "topic": "This is your sign Reel format",
+    "mainPoint": "One ordinary clip + one 'This is your sign to' line is a complete Reel",
+    "structure": "format recipe + examples",
+    "ending": "sell the weekly Reel ideas in the Challenge"
+  },
+  "swipeLine": "Steal this one for *today* →",
+  "hookPos": "bottom"
+}

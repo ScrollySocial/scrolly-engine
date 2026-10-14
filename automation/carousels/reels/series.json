@@ -1,0 +1,96 @@
+{
+  "_note": "Mercedes's Reel series (content plan 2026-10-10). Each series owns one cover template + palette so it's recognizable on the grid; every Reel still gets its own frame and hook, so no two covers match. offer = what the Reel's CTA sells; it must be live in config/destinations.json (lintReel errors otherwise). Templates v2 (2026-10-10, from her inspiration screenshots): stack, title, word, behind, label, number (lib/reel-covers.mjs); theme christmas adds hand-drawn snowflakes + gift; accent peach = peach serif words. Twin carousels use style D templates (reel-to-carousel.mjs). Covers v2 approved in principle 2026-10-10 (peach accent, shadow serif).",
+  "series": [
+    {
+      "id": "brother",
+      "name": "Secret account for my brother",
+      "offer": "1k-club-challenge",
+      "cover": {
+        "template": "stack",
+        "theme": "christmas",
+        "accent": "peach"
+      },
+      "note": "Numbered days. Real progress only; no invented sales."
+    },
+    {
+      "id": "pod-store",
+      "name": "New POD store from zero",
+      "offer": "1k-club-challenge",
+      "cover": {
+        "template": "number"
+      },
+      "note": "Numbered days, tangerine so it never gets confused with the brother series."
+    },
+    {
+      "id": "what-to-post",
+      "name": "Don't know what to post? Try this",
+      "offer": "1k-club-challenge",
+      "cover": {
+        "template": "label"
+      }
+    },
+    {
+      "id": "business-brain",
+      "name": "Business Brain",
+      "offer": "business-brain",
+      "cover": {
+        "template": "title"
+      },
+      "note": "Live at $47 (2026-10-10). Bio link must reach it before using a link-in-bio CTA."
+    },
+    {
+      "id": "calculator",
+      "name": "Business math",
+      "offer": "1k-club-challenge",
+      "cover": {
+        "template": "number",
+        "accent": "peach"
+      },
+      "note": "Wide funnel. Built on the $1K Math (views → visitors → sales), never basic arithmetic."
+    },
+    {
+      "id": "quality-tips",
+      "name": "Social Media Quality Tips",
+      "offer": "1k-club",
+      "cover": {
+        "template": "word"
+      }
+    },
+    {
+      "id": "start-here",
+      "name": "Start here",
+      "offer": "1k-club-challenge",
+      "cover": {
+        "template": "stack"
+      },
+      "note": "Reframe of idea 7: each episode is one step of the method for someone starting from scratch."
+    },
+    {
+      "id": "threads",
+      "name": "Selling with Threads",
+      "offer": "threads-kit",
+      "cover": {
+        "template": "behind",
+        "accent": "peach"
+      },
+      "note": "Upcoming teaser until live: follow/save CTA. Flip destinations.json when live."
+    },
+    {
+      "id": "pinterest",
+      "name": "Pinterest pin generator (coming soon)",
+      "offer": "pinterest-pin-generator",
+      "cover": {
+        "template": "title"
+      },
+      "note": "Upcoming teaser: drive interest, follow/save CTA, no link."
+    },
+    {
+      "id": "tutorial",
+      "name": "60-second tutorial",
+      "offer": "1k-club-challenge",
+      "cover": {
+        "template": "label"
+      }
+    }
+  ]
+}

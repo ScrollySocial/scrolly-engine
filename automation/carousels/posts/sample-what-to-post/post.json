@@ -1,0 +1,83 @@
+{
+  "id": "sample-what-to-post",
+  "style": "D",
+  "palette": "warm",
+  "fromReel": "sample-what-to-post",
+  "brief": {
+    "source": "Reel sample-what-to-post (series: Don't know what to post? Try this). Challenge Reels library, week 1 #1 'This is your sign' (automation/k1-launch/content/week-01-reels.mjs); photographer example from that card",
+    "reader": "Small business owners who freeze on what to post",
+    "problem": "They skip posting because they have no idea for today",
+    "outcome": "They film and post a 5 minute Reel today",
+    "topic": "This is your sign Reel format",
+    "mainPoint": "One ordinary clip + one 'This is your sign to' line is a complete Reel",
+    "structure": "format recipe + examples",
+    "ending": "sell the weekly Reel ideas in the Challenge",
+    "slide2Check": "hook2 format (top right-aligned, bottom left-aligned) from the Reel's altHook + swipeLine; same promise as the cover, new angle."
+  },
+  "media": {},
+  "slides": [
+    {
+      "text": "No idea what to post today? *Film this*",
+      "pattern": "rays"
+    },
+    {
+      "layout": "hook2",
+      "top": "A 5 minute Reel any business can post today",
+      "bottom": "Steal this one for *today* →"
+    },
+    {
+      "text": "Film 5 to 8 seconds of something ordinary: your product, your desk, your finished work.",
+      "layout": "photo",
+      "media": "b01077b718"
+    },
+    {
+      "text": "Add one line on screen: \"This is your sign to\" + the thing you sell or fix.",
+      "layout": "phone",
+      "screen": {
+        "type": "reel",
+        "onscreen": "This is your sign to...",
+        "caption": "One line, one clip"
+      },
+      "media": "645d2c85d7"
+    },
+    {
+      "text": "Photographer: \"This is your sign to book fall photos before the leaves drop.\"",
+      "layout": "photo",
+      "media": "8c4a79d757"
+    },
+    {
+      "text": "Cleaner: \"This is your sign to come home to a clean house on Friday.\"",
+      "layout": "text",
+      "pattern": "dots"
+    },
+    {
+      "text": "Clothing shop: \"This is your sign to own one outfit that's just for doing nothing.\"",
+      "layout": "photo",
+      "media": "a96deabe1c"
+    },
+    {
+      "text": "That's the whole Reel:",
+      "layout": "checklist",
+      "items": [
+        "One ordinary clip",
+        "One \"This is your sign to\" line",
+        "Your next step, like link in bio"
+      ]
+    },
+    {
+      "text": "25 Reel ideas like this every week come with the $1K Challenge. Link in bio."
+    }
+  ],
+  "cta": {
+    "type": "link-in-bio",
+    "offer": "1k-club-challenge"
+  },
+  "tigerNod": null,
+  "caption": "The $1K Challenge gives you 25 Reel ideas like this every week, ready to film. Link in bio. This one works on a busy day because it takes one ordinary clip and one line. Swap in what you sell, keep the line short enough to read in two seconds, and end on the step you want people to take.",
+  "hashtags": [
+    "#reelideas",
+    "#contentideas",
+    "#smallbusinessmarketing"
+  ],
+  "notionUrl": null
+}

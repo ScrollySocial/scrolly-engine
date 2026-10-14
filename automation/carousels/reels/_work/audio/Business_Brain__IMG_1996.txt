@@ -1,0 +1,25 @@
+[   0.62-   3.18] your AI should know what you're selling.
+[   4.56-   7.68] Imagine that you're using AI to help market your business.
+[   9.12-  11.04] You ask it to write an Instagram prompt.
+[  11.56-  13.42] You ask it to write an Instagram prompt.
+[  14.42-  17.28] You ask it to write an Instagram post for one of your products.
+[  18.16-  21.88] Well, does it know how much it costs or what's included?
+[  22.52-  24.18] Does it know who you're actually trying to sell it to?
+[  25.26-  28.46] And maybe more importantly, does it even know
+[  35.94-  41.90] because otherwise, because otherwise you can end up spending more money
+[  41.90-  46.46] and time correcting your AI than you would have spent just writing post yourself.
+[  47.58-  49.14] So one of the things that I've done,
+[  49.14-  57.06] so one of the things that I've done is I've created a central place
+[  57.06-  59.18] for all of my business information.
+[  59.98-  66.40] It has my offers, my prices, my customers, things I'm currently working on.
+[  66.40-  67.90] It all has a place to live.
+[  69.44-  71.02] And then when I want,
+[  71.54-  74.68] and then when I want AI to help me with something,
+[  75.26-  77.70] it can reference that information instead of guessing.
+[  78.64-  81.58] Of course, you still need to check your output.
+[  81.92-  83.72] Of course, you still need to check your output,
+[  84.56-  87.52] but having the right information available to your AI
+[  87.52-  89.52] makes that process so much easier.
+[  90.24-  93.34] I created the scrolling business brain to help other business owners
+[  93.34-  95.46] set up this same kind of system.
+[  96.18-  97.46] You can check it out on my website.

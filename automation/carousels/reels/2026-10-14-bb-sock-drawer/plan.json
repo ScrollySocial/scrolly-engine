@@ -1,0 +1,175 @@
+{
+ "kit": "yap",
+ "segments": [
+  {
+   "src": "Business Brain/IMG_2005.MOV",
+   "in": 0.5,
+   "out": 2,
+   "transcript": "audio/Business_Brain__IMG_2005.json",
+   "note": "So what exactly is a business brain"
+  },
+  {
+   "src": "Business Brain/IMG_2005.MOV",
+   "in": 10.2,
+   "out": 12.48,
+   "transcript": "audio/Business_Brain__IMG_2005.json",
+   "note": "Because I think when people hear making a brain for their AI (first take, restart dropped)"
+  },
+  {
+   "src": "Business Brain/IMG_2005.MOV",
+   "in": 14.75,
+   "out": 18.92,
+   "transcript": "audio/Business_Brain__IMG_2005.json",
+   "note": "they think that sounds incredibly complicated and they are not techy. They could not possibly do that"
+  },
+  {
+   "src": "Business Brain/IMG_2005.MOV",
+   "in": 19.95,
+   "out": 25.34,
+   "transcript": "audio/Business_Brain__IMG_2005.json",
+   "note": "Well, really? I am just here to tell you if you can organize your sock drawer, you can definitely build a business brain"
+  },
+  {
+   "src": "Business Brain/IMG_2005.MOV",
+   "in": 28.35,
+   "out": 30.36,
+   "transcript": "audio/Business_Brain__IMG_2005.json",
+   "note": "Because all we are doing is organizing files (pitch aside dropped: steps for you, plug it in)"
+  },
+  {
+   "src": "Business Brain/IMG_2005.MOV",
+   "in": 38.5,
+   "out": 46.54,
+   "transcript": "audio/Business_Brain__IMG_2005.json",
+   "note": "The first one is about your business ... the second is of course what you are selling"
+  },
+  {
+   "src": "Business Brain/IMG_2005.MOV",
+   "in": 51.55,
+   "out": 54.71,
+   "transcript": "audio/Business_Brain__IMG_2005.json",
+   "note": "What are your products? What are your prices? What do customers get?"
+  },
+  {
+   "src": "Business Brain/IMG_2005.MOV",
+   "in": 58.1,
+   "out": 61.91,
+   "transcript": "audio/Business_Brain__IMG_2005.json",
+   "note": "Anything else your AI needs to know ... (second take)"
+  },
+  {
+   "src": "Business Brain/IMG_2005.MOV",
+   "in": 65.17,
+   "out": 70.57,
+   "transcript": "audio/Business_Brain__IMG_2005.json",
+   "note": "I would also recommend a file for your voice. And I think this is one of the more important ones"
+  },
+  {
+   "src": "Business Brain/IMG_2005.MOV",
+   "in": 71.5,
+   "out": 88.63,
+   "transcript": "audio/Business_Brain__IMG_2005.json",
+   "note": "Because you can include things ... six months from now"
+  },
+  {
+   "src": "Business Brain/IMG_2005.MOV",
+   "in": 89.7,
+   "out": 98.93,
+   "transcript": "audio/Business_Brain__IMG_2005.json",
+   "note": "And once you have all of this organized ... how to keep it up to date"
+  },
+  {
+   "src": "Business Brain/IMG_2005.MOV",
+   "in": 100.8,
+   "out": 112.65,
+   "transcript": "audio/Business_Brain__IMG_2005.json",
+   "note": "You absolutely could build this yourself ... multiple AI platforms (first take)"
+  },
+  {
+   "src": "Business Brain/IMG_2005.MOV",
+   "in": 126.7,
+   "out": 128.22,
+   "transcript": "audio/Business_Brain__IMG_2005.json",
+   "note": "and it helps keep itself up to date"
+  },
+  {
+   "src": "Business Brain/IMG_2005.MOV",
+   "in": 129.84,
+   "out": 138.66,
+   "transcript": "audio/Business_Brain__IMG_2005.json",
+   "note": "I also made sure ... using less tokens"
+  }
+ ],
+ "maxPause": 0.45,
+ "insert": [
+  {
+   "after": "brain",
+   "before": "i",
+   "word": "Because"
+  },
+  {
+   "after": "brain",
+   "before": "think",
+   "word": "they"
+  },
+  {
+   "after": "that",
+   "before": "really",
+   "word": "Well,"
+  },
+  {
+   "after": "brain",
+   "before": "all",
+   "word": "Because"
+  },
+  {
+   "after": "and",
+   "before": "first",
+   "word": "The"
+  },
+  {
+   "after": "selling",
+   "before": "are",
+   "word": "What"
+  },
+  {
+   "after": "get",
+   "before": "your",
+   "word": "else"
+  },
+  {
+   "after": "get",
+   "before": "else",
+   "word": "Anything"
+  },
+  {
+   "after": "ones",
+   "before": "you",
+   "word": "Because"
+  },
+  {
+   "after": "now",
+   "before": "once",
+   "word": "And"
+  },
+  {
+   "after": "date",
+   "before": "absolutely",
+   "word": "You"
+  },
+  {
+   "after": "and",
+   "before": "helps",
+   "word": "it"
+  },
+  {
+   "after": "date",
+   "before": "also",
+   "word": "I"
+  }
+ ],
+ "exact": {
+  "Brain": "AI",
+  "really": "Scrolly"
+ }
+}

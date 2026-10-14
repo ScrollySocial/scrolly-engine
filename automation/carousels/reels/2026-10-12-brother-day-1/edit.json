@@ -1,0 +1,92 @@
+{
+ "segments": [
+  {
+   "src": "Brother/Day 1 talking Head/IMG_1984.MOV",
+   "in": 0.6,
+   "out": 18.25,
+   "transcript": "audio/Day_1_talking_Head__IMG_1984.json"
+  },
+  {
+   "src": "Brother/Day 1 talking Head/IMG_1984.MOV",
+   "in": 27.65,
+   "out": 34.35,
+   "transcript": "audio/Day_1_talking_Head__IMG_1984.json"
+  },
+  {
+   "src": "Brother/Day 1 talking Head/IMG_1984.MOV",
+   "in": 35.25,
+   "out": 40.4,
+   "transcript": "audio/Day_1_talking_Head__IMG_1984.json"
+  },
+  {
+   "src": "Brother/Day 1 talking Head/Taking Quiz Talking Head.MOV",
+   "in": 1.15,
+   "out": 8.1,
+   "transcript": "audio/Day_1_talking_Head__Taking_Quiz_Talking_Head.json",
+   "cutaway": {
+    "src": "Brother/Day 1 talking Head/Filling out business idea quiz on desktop.mp4",
+    "at": 15,
+    "crop": [
+     394,
+     700,
+     460,
+     200
+    ]
+   }
+  },
+  {
+   "src": "Brother/Day 1 talking Head/Taking Quiz Talking Head.MOV",
+   "in": 86.5,
+   "out": 95.35,
+   "transcript": "audio/Day_1_talking_Head__Taking_Quiz_Talking_Head.json",
+   "cutaway": {
+    "src": "Brother/Day 1 talking Head/Filling out business idea quiz on desktop.mp4",
+    "at": 56,
+    "crop": [
+     394,
+     700,
+     460,
+     200
+    ]
+   }
+  },
+  {
+   "src": "Brother/Day 1 talking Head/digital product direction.MOV",
+   "in": 24,
+   "out": 34.5,
+   "transcript": "audio/Day_1_talking_Head__digital_product_direction.json"
+  },
+  {
+   "src": "Brother/Day 1 talking Head/digital product direction.MOV",
+   "in": 36.9,
+   "out": 47.8,
+   "transcript": "audio/Day_1_talking_Head__digital_product_direction.json"
+  },
+  {
+   "src": "Brother/Day 1 talking Head/IMG_1984.MOV",
+   "in": 48.75,
+   "out": 54.25,
+   "transcript": "audio/Day_1_talking_Head__IMG_1984.json"
+  }
+ ],
+ "title": {
+  "text": "Day 1: a secret account for my brother",
+  "dur": 3.5
+ },
+ "end": {
+  "text": "Follow for Day 2. My plan is the $1K Challenge. Link in bio.",
+  "dur": 5.5
+ },
+ "captions": true,
+ "fix": {
+  "squirly": "Scrolly",
+  "gpt": "GPT"
+ },
+ "insert": [
+  {
+   "after": "idea",
+   "before": "gave",
+   "word": "it"
+  }
+ ]
+}

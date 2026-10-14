@@ -1,0 +1,69 @@
+{
+  "id": "sample-start-here",
+  "series": "start-here",
+  "status": "sample",
+  "hook": "Want to make money online? *Start* with one number",
+  "cover": {
+    "clip": "broll/couch-writing-01.mp4",
+    "at": 2,
+    "pos": "bottom",
+    "lines": [
+      [
+        "caps",
+        "Want to make money online?"
+      ],
+      [
+        "serif",
+        "start here"
+      ],
+      [
+        "small",
+        "one number decides your whole plan"
+      ]
+    ]
+  },
+  "cta": {
+    "type": "link-in-bio",
+    "text": "The $1K Challenge walks you through it for 30 days. Link in bio.",
+    "clip": "broll/kitchen-oven-tray-01.mp4",
+    "at": 2,
+    "pos": "top"
+  },
+  "altHook": "The first number every new business needs",
+  "swipeLine": "Here are the *3 steps* →",
+  "beats": [
+    {
+      "text": "Pick one thing to sell and its price.",
+      "clip": "broll/notebook-hand-01.mp4",
+      "at": 0,
+      "pos": "center",
+      "dur": 2.4
+    },
+    {
+      "text": "Work out how many sales make $1,000.",
+      "clip": "broll/typing-overhead-01.mp4",
+      "at": 6,
+      "pos": "top"
+    },
+    {
+      "text": "Then how many views it takes to get those sales.",
+      "clip": "broll/desk-typing-01.mp4",
+      "at": 5,
+      "pos": "center"
+    }
+  ],
+  "caption": "The $1K Challenge walks you through your $1K plan for 30 days. Link in bio. Start with one product and its price, work backward to the number of sales that makes $1,000, then to the views it takes to get there. That number tells you how much content you actually need.",
+  "hashtags": [
+    "#makemoneyonline",
+    "#smallbusinesstips",
+    "#organicmarketing"
+  ],
+  "brief": {
+    "source": "$1K Club Playbook $1K Math (views → visitors → sales, worked backward from $1,000)",
+    "reader": "People who want to make money online and do not know where to start",
+    "problem": "They start posting without a goal number",
+    "outcome": "They work out their sales and views target first",
+    "topic": "Start here: the $1K number",
+    "mainPoint": "Work backward from $1,000 to sales to views"
+  }
+}

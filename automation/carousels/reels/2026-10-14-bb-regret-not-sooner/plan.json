@@ -1,0 +1,97 @@
+{
+ "kit": "yap",
+ "segments": [
+  {
+   "src": "Business Brain/IMG_2008.MOV",
+   "in": 0.69,
+   "out": 7.67,
+   "transcript": "audio/Business_Brain__IMG_2008.json"
+  },
+  {
+   "src": "Business Brain/IMG_2008.MOV",
+   "in": 16.38,
+   "out": 28.07,
+   "transcript": "audio/Business_Brain__IMG_2008.json"
+  },
+  {
+   "src": "Business Brain/IMG_2008.MOV",
+   "in": 32.5,
+   "out": 40.3,
+   "transcript": "audio/Business_Brain__IMG_2008.json"
+  },
+  {
+   "src": "Business Brain/IMG_2008.MOV",
+   "in": 42.62,
+   "out": 52.1,
+   "transcript": "audio/Business_Brain__IMG_2008.json"
+  },
+  {
+   "src": "Business Brain/IMG_2008.MOV",
+   "in": 52.4,
+   "out": 63.42,
+   "transcript": "audio/Business_Brain__IMG_2008.json"
+  },
+  {
+   "src": "Business Brain/IMG_2008.MOV",
+   "in": 69.2,
+   "out": 78.24,
+   "transcript": "audio/Business_Brain__IMG_2008.json"
+  },
+  {
+   "src": "Business Brain/IMG_2008.MOV",
+   "in": 85.7,
+   "out": 92.62,
+   "transcript": "audio/Business_Brain__IMG_2008.json"
+  },
+  {
+   "src": "Business Brain/IMG_2008.MOV",
+   "in": 93.56,
+   "out": 96.58,
+   "transcript": "audio/Business_Brain__IMG_2008.json"
+  },
+  {
+   "src": "Business Brain/IMG_2008.MOV",
+   "in": 101.7,
+   "out": 107.86,
+   "transcript": "audio/Business_Brain__IMG_2008.json"
+  },
+  {
+   "src": "Business Brain/IMG_2008.MOV",
+   "in": 108.28,
+   "out": 120.47,
+   "transcript": "audio/Business_Brain__IMG_2008.json"
+  },
+  {
+   "src": "Business Brain/IMG_2008.MOV",
+   "in": 121.35,
+   "out": 126.95,
+   "transcript": "audio/Business_Brain__IMG_2008.json"
+  }
+ ],
+ "fix": {
+  "scrolly": "Scrolly"
+ },
+ "maxPause": 0.45,
+ "insert": [
+  {
+   "after": "place",
+   "before": "youre",
+   "word": "If"
+  },
+  {
+   "after": "track",
+   "before": "way",
+   "word": "That"
+  }
+ ],
+ "exact": {
+  "You're": "you're",
+  "Way": "way"
+ },
+ "drop": [
+  {
+   "after": "use",
+   "word": "at"
+  }
+ ]
+}

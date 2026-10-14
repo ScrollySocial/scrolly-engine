@@ -1,0 +1,25 @@
+{
+  "id": "sample-quality-tips",
+  "series": "quality-tips",
+  "status": "sample",
+  "hook": "Fix your Reel lighting before you hit record",
+  "cover": {
+    "clip": "broll/desk-smile-01.mp4",
+    "at": 0.5,
+    "pos": "bottom",
+    "focus": "30% 50%",
+    "lines": [
+      [
+        "small",
+        "fix this before you hit record"
+      ],
+      [
+        "word",
+        "lighting."
+      ]
+    ]
+  },
+  "cta": {
+    "text": "Link in bio"
+  }
+}

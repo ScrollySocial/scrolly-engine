@@ -1,0 +1,125 @@
+{
+ "kit": "yap",
+ "segments": [
+  {
+   "src": "Business Brain/IMG_1998.MOV",
+   "in": 0.94,
+   "out": 3.78,
+   "transcript": "audio/Business_Brain__IMG_1998.json"
+  },
+  {
+   "src": "Business Brain/IMG_1997.MOV",
+   "in": 6.13,
+   "out": 12.37,
+   "transcript": "audio/Business_Brain__IMG_1997.json"
+  },
+  {
+   "src": "Business Brain/IMG_1997.MOV",
+   "in": 12.85,
+   "out": 18.3,
+   "transcript": "audio/Business_Brain__IMG_1997.json"
+  },
+  {
+   "src": "Business Brain/IMG_1997.MOV",
+   "in": 25.05,
+   "out": 32.75,
+   "transcript": "audio/Business_Brain__IMG_1997.json"
+  },
+  {
+   "src": "Business Brain/IMG_1997.MOV",
+   "in": 38.33,
+   "out": 43.69,
+   "transcript": "audio/Business_Brain__IMG_1997.json"
+  },
+  {
+   "src": "Business Brain/IMG_1997.MOV",
+   "in": 48.73,
+   "out": 51.75,
+   "transcript": "audio/Business_Brain__IMG_1997.json"
+  },
+  {
+   "src": "Business Brain/IMG_1997.MOV",
+   "in": 77.55,
+   "out": 79.59,
+   "transcript": "audio/Business_Brain__IMG_1997.json"
+  },
+  {
+   "src": "Business Brain/IMG_1997.MOV",
+   "in": 80.05,
+   "out": 87.55,
+   "transcript": "audio/Business_Brain__IMG_1997.json"
+  },
+  {
+   "src": "Business Brain/IMG_1997.MOV",
+   "in": 96.53,
+   "out": 101.19,
+   "transcript": "audio/Business_Brain__IMG_1997.json"
+  },
+  {
+   "src": "Business Brain/IMG_1997.MOV",
+   "in": 101.93,
+   "out": 102.75,
+   "transcript": "audio/Business_Brain__IMG_1997.json"
+  },
+  {
+   "src": "Business Brain/IMG_1997.MOV",
+   "in": 105.45,
+   "out": 108.51,
+   "transcript": "audio/Business_Brain__IMG_1997.json"
+  },
+  {
+   "src": "Business Brain/IMG_1997.MOV",
+   "in": 109.05,
+   "out": 113.21,
+   "transcript": "audio/Business_Brain__IMG_1997.json"
+  },
+  {
+   "src": "Business Brain/IMG_1997.MOV",
+   "in": 117.05,
+   "out": 122.21,
+   "transcript": "audio/Business_Brain__IMG_1997.json"
+  },
+  {
+   "src": "Business Brain/IMG_1997.MOV",
+   "in": 178.95,
+   "out": 186.57,
+   "transcript": "audio/Business_Brain__IMG_1997.json"
+  },
+  {
+   "src": "Business Brain/IMG_1997.MOV",
+   "in": 187.37,
+   "out": 193.19,
+   "transcript": "audio/Business_Brain__IMG_1997.json"
+  },
+  {
+   "src": "Business Brain/IMG_1997.MOV",
+   "in": 199.19,
+   "out": 202.41,
+   "transcript": "audio/Business_Brain__IMG_1997.json"
+  }
+ ],
+ "maxPause": 0.45,
+ "fix": {
+  "cloud": "Claude",
+  "quad": "Claude"
+ },
+ "drop": [
+  {
+   "after": "chad",
+   "word": "gpt"
+  },
+  {
+   "after": "touch",
+   "word": "upt"
+  },
+  {
+   "after": "chat",
+   "word": "gpt"
+  }
+ ],
+ "exact": {
+  "Chad": "ChatGPT",
+  "touch": "ChatGPT",
+  "chat,": "ChatGPT"
+ }
+}

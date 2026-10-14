@@ -3,6 +3,9 @@
   "photosDir": "C:/Users/merce/OneDrive/Scrolly Media/photos",
   "inspirationDir": "C:/Users/merce/OneDrive/Scrolly Media/inspiration",
   "exportsDir": "C:/Users/merce/OneDrive/Scrolly Media/exports/carousels",
+  "reelExportsDir": "C:/Users/merce/OneDrive/Scrolly Media/exports/reels",
+  "reelFootageDir": "C:/Users/merce/OneDrive/Scrolly Media/videos",
+  "_reelNote": "Reel covers export to reelExportsDir/<reel-id>/. reel.json clip paths are relative to reelFootageDir (e.g. broll/desk-smile-01.mp4). Carousel frames grabbed from reels go to photosDir/frames/<reel-id>/.",
   "videoDir": null,
   "_videoDirNote": "Set to the external drive's footage folder (e.g. E:/Scrolly Media/video) once the drive is set up.",
   "photoReuseWeeks": 3

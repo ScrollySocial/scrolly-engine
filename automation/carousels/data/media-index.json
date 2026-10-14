@@ -1,6 +1,196 @@
 {
   "items": [
     {
+      "id": "8cd7fa8494",
+      "type": "photo",
+      "root": "photosDir",
+      "file": "frames/sample-what-to-post/01.jpg",
+      "folder": "frames",
+      "width": 1080,
+      "height": 1440,
+      "addedAt": "2026-10-10",
+      "tags": [
+        "reel-frame",
+        "sample-what-to-post"
+      ],
+      "notes": "frame from broll/kitchen-smoothie-sip-01.mp4 at 1s",
+      "textSpace": [
+        "bottom"
+      ],
+      "missing": true
+    },
+    {
+      "id": "b01077b718",
+      "type": "photo",
+      "root": "photosDir",
+      "file": "frames/sample-what-to-post/01.jpg",
+      "folder": "frames",
+      "width": 1080,
+      "height": 1440,
+      "addedAt": "2026-10-10",
+      "tags": [
+        "reel-frame",
+        "sample-what-to-post"
+      ],
+      "notes": "frame from broll/desk-typing-01.mp4 at 1s",
+      "textSpace": [
+        "center"
+      ],
+      "missing": false
+    },
+    {
+      "id": "9c812a08f7",
+      "type": "photo",
+      "root": "photosDir",
+      "file": "frames/sample-what-to-post/02.jpg",
+      "folder": "frames",
+      "width": 1080,
+      "height": 1440,
+      "addedAt": "2026-10-10",
+      "tags": [
+        "reel-frame",
+        "sample-what-to-post"
+      ],
+      "notes": "frame from broll/kitchen-smoothie-sip-01.mp4 at 2.6s",
+      "textSpace": [
+        "bottom"
+      ],
+      "missing": true
+    },
+    {
+      "id": "52917da299",
+      "type": "photo",
+      "root": "photosDir",
+      "file": "frames/sample-what-to-post/02.jpg",
+      "folder": "frames",
+      "width": 1080,
+      "height": 1440,
+      "addedAt": "2026-10-10",
+      "tags": [
+        "reel-frame",
+        "sample-what-to-post"
+      ],
+      "notes": "frame from broll/kitchen-oven-tray-01.mp4 at 1s",
+      "textSpace": [
+        "top"
+      ],
+      "missing": true
+    },
+    {
+      "id": "645d2c85d7",
+      "type": "photo",
+      "root": "photosDir",
+      "file": "frames/sample-what-to-post/02.jpg",
+      "folder": "frames",
+      "width": 1080,
+      "height": 1440,
+      "addedAt": "2026-10-10",
+      "tags": [
+        "reel-frame",
+        "sample-what-to-post"
+      ],
+      "notes": "frame from broll/notebook-hand-01.mp4 at 2s",
+      "textSpace": [
+        "center"
+      ],
+      "missing": false
+    },
+    {
+      "id": "8c4a79d757",
+      "type": "photo",
+      "root": "photosDir",
+      "file": "frames/sample-what-to-post/03.jpg",
+      "folder": "frames",
+      "width": 1080,
+      "height": 1440,
+      "addedAt": "2026-10-10",
+      "tags": [
+        "reel-frame",
+        "sample-what-to-post"
+      ],
+      "notes": "frame from broll/fall-young-tree-01.mp4 at 1s",
+      "textSpace": [
+        "top"
+      ],
+      "missing": false
+    },
+    {
+      "id": "a96deabe1c",
+      "type": "photo",
+      "root": "photosDir",
+      "file": "frames/sample-what-to-post/04.jpg",
+      "folder": "frames",
+      "width": 1080,
+      "height": 1440,
+      "addedAt": "2026-10-10",
+      "tags": [
+        "reel-frame",
+        "sample-what-to-post"
+      ],
+      "notes": "frame from broll/outfit-sunglasses-01.mp4 at 1s",
+      "textSpace": [
+        "bottom"
+      ],
+      "missing": false
+    },
+    {
+      "id": "fe3d5cecec",
+      "type": "photo",
+      "root": "photosDir",
+      "file": "frames/sample-what-to-post/06.jpg",
+      "folder": "frames",
+      "width": 1080,
+      "height": 1440,
+      "addedAt": "2026-10-10",
+      "tags": [
+        "reel-frame",
+        "sample-what-to-post"
+      ],
+      "notes": "frame from broll/home-vacuuming-02.mp4 at 1s",
+      "textSpace": [
+        "top"
+      ],
+      "missing": true
+    },
+    {
+      "id": "c8cd419bd9",
+      "type": "photo",
+      "root": "photosDir",
+      "file": "frames/sample-what-to-post/08.jpg",
+      "folder": "frames",
+      "width": 1080,
+      "height": 1440,
+      "addedAt": "2026-10-10",
+      "tags": [
+        "reel-frame",
+        "sample-what-to-post"
+      ],
+      "notes": "frame from broll/typing-overhead-01.mp4 at 1s",
+      "textSpace": [
+        "top"
+      ],
+      "missing": true
+    },
+    {
+      "id": "b4bc3ee901",
+      "type": "photo",
+      "root": "photosDir",
+      "file": "frames/sample-what-to-post/09.jpg",
+      "folder": "frames",
+      "width": 1080,
+      "height": 1440,
+      "addedAt": "2026-10-10",
+      "tags": [
+        "reel-frame",
+        "sample-what-to-post"
+      ],
+      "notes": "frame from broll/kitchen-walk-to-camera-01.mp4 at 1.2s",
+      "textSpace": [
+        "bottom"
+      ],
+      "missing": true
+    },
+    {
       "id": "5ac0d7d04d",
       "type": "photo",
       "root": "photosDir",

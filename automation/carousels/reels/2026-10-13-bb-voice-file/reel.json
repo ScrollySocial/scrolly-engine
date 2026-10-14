@@ -1,0 +1,13 @@
+{
+  "id": "2026-10-13-bb-voice-file",
+  "series": "business-brain",
+  "status": "edited",
+  "hook": "Give your AI a *voice file*",
+  "cover": {
+    "clip": "C:/Users/merce/Scrolly Organic Engine/automation/reel-hf/2026-10-13-bb-voice-file/assets/talk.mp4",
+    "at": 80,
+    "template": "title",
+    "lines": [["title", "Give your AI a *voice file*"], ["script", "so it sounds like you"]]
+  },
+  "cta": { "type": "save", "text": "Business Brain at scrollyseo.com" }
+}

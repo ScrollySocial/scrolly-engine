@@ -1,0 +1,24 @@
+{
+  "id": "sample-threads",
+  "series": "threads",
+  "status": "sample",
+  "hook": "How I would sell with *Threads* this week",
+  "cover": {
+    "clip": "broll/outfit-sunglasses-01.mp4",
+    "at": 1.5,
+    "lines": [
+      [
+        "small",
+        "how I would sell with it this week"
+      ],
+      [
+        "serif",
+        "threads"
+      ]
+    ],
+    "pos": "top"
+  },
+  "cta": {
+    "text": "Link in bio"
+  }
+}

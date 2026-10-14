@@ -1,0 +1,36 @@
+{
+  "id": "sample-brother",
+  "series": "brother",
+  "status": "sample",
+  "hook": "Building my brother an account that sells *$1,000* in 30 days",
+  "cover": {
+    "clip": "broll/couch-lookup-smile-01.mp4",
+    "at": 1,
+    "pos": "bottom",
+    "lines": [
+      [
+        "script",
+        "early christmas present"
+      ],
+      [
+        "caps",
+        "Building my brother an account that makes"
+      ],
+      [
+        "serif",
+        "$1,000"
+      ],
+      [
+        "caps",
+        "in 30 days"
+      ],
+      [
+        "small",
+        "day 1. here is the plan"
+      ]
+    ]
+  },
+  "cta": {
+    "text": "Link in bio"
+  }
+}
