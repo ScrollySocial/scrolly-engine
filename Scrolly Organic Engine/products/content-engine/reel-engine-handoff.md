@@ -134,7 +134,9 @@ unless marked **open**. Not logged to the Business Brain yet: she said it's stil
    uploads. Yes = a hosted, shareable page (claude.ai Artifact like getgitgirl's, or on the customer's own site): opens
    on a phone, co-workers/VA/client can leave notes; slower (video uploads + draft renders per change). Same page and
    decisions file either way; switchable later.
-**Overnight runs need three things on the customer's computer (learned 2026-10-13, Mercedes's first unattended setup):**
+**Optional feature: overnight runs.** Customers can skip it and run every step during the day, with Claude asking
+as it goes. If they turn it on, it needs three things on their computer (learned 2026-10-13, Mercedes's first
+unattended setup):
 1. **Pre-approved permissions** in `<their project>/.claude/settings.local.json` (local only, never shared). Without them
    the nightly run stops at the first command and waits for a click until morning. The list (adjust IDs to their
    connectors): `Bash(cd *)`, `Bash(node *)`, `Bash(npx --yes hyperframes@<version> *)`, `Bash(npx hyperframes *)`,
