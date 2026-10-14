@@ -15,5 +15,8 @@ Scrolly Organic Engine/
 *.m4a
 **/.edit/
 
-# Shared photo library (~1,200 images): media, not code
-automation/k1-launch/content/library/
+# Challenge template library: the code (src/, build scripts) is in git; the ~1,000 images and PPTX files
+# that build.mjs makes are not (rebuild them with `node build.mjs`). Raw footage and finished exports
+# are backed up in OneDrive "Scrolly Media", not here.
+automation/k1-launch/content/library/dist/
+automation/k1-launch/content/library/node_modules/

@@ -1,0 +1,843 @@
+<title>Challenge Template Library</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@600&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;1,9..40,500&family=DM+Serif+Display&family=IBM+Plex+Mono:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: a review board. Quiet chrome (Plex) around horizontal strips of the actual template designs (DM Serif / DM Sans / Caveat, all Canva-free fonts). */
+:root{
+  --bg:#f3f3f1; --surface:#ffffff; --fg:#1d1d20; --muted:#5f5f66; --line:#dcdcd8; --chip:#e9e9e5; --accent:#2f6bff; --accent-fg:#ffffff;
+  --f-ui:'IBM Plex Sans',system-ui,-apple-system,Segoe UI,Arial,sans-serif; --f-mono:'IBM Plex Mono',ui-monospace,Consolas,monospace;
+  /* template starter palette: fixed, identical in both themes (these are the designs) */
+  --s-paper:#f4f2ec; --s-paper2:#e7e3d9; --s-ink:#17171a; --s-hi:#f3d24e; --s-white:#fbfaf7; --s-zone:#2f6bff;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#151517;--surface:#1e1e21;--fg:#ececea;--muted:#a3a3a9;--line:#323236;--chip:#2a2a2e;--accent:#7a9dff;--accent-fg:#0d0d10;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#151517;--surface:#1e1e21;--fg:#ececea;--muted:#a3a3a9;--line:#323236;--chip:#2a2a2e;--accent:#7a9dff;--accent-fg:#0d0d10;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font:15px/1.5 var(--f-ui);margin:0}
+.wrap{max-width:1240px;margin:0 auto;padding-inline:20px;padding-block:28px 80px}
+h1{font:700 clamp(26px,4vw,38px)/1.1 var(--f-ui);margin:0 0 8px;text-wrap:balance;letter-spacing:-.01em}
+.lede{max-width:70ch;color:var(--muted);margin:0 0 18px}
+.lede b{color:var(--fg)}
+.legend{display:flex;flex-wrap:wrap;gap:10px 22px;font-size:13px;color:var(--muted);margin:0 0 22px}
+.legend span{display:inline-flex;align-items:center;gap:8px}
+.lg-box{width:22px;height:14px;border:2px dashed var(--s-zone);border-radius:3px}
+.lg-br{font-family:var(--f-mono);color:var(--fg)}
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);border-bottom:1px solid var(--line);display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;padding-block:12px;margin-bottom:8px}
+.seg{display:inline-flex;background:var(--chip);border-radius:999px;padding:3px}
+.seg button{border:0;background:none;color:var(--fg);font:600 13px var(--f-ui);padding:7px 14px;border-radius:999px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--surface);box-shadow:0 1px 2px rgba(0,0,0,.18)}
+.tog{display:inline-flex;gap:8px;align-items:center;font:500 13px var(--f-ui);cursor:pointer}
+.tog input{width:16px;height:16px;accent-color:var(--accent)}
+button:focus-visible,input:focus-visible,.slidebtn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.jump{display:flex;flex-wrap:wrap;gap:6px;margin:14px 0 6px}
+.jump a{font:500 12.5px var(--f-ui);color:var(--fg);text-decoration:none;background:var(--chip);padding:5px 10px;border-radius:999px}
+.jump a:hover{background:var(--line)}
+.grouphead{font:600 12px var(--f-mono);letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin:42px 0 4px;padding-top:6px;border-top:2px solid var(--fg)}
+.groupnote{color:var(--muted);margin:0 0 6px;font-size:14px}
+.tpl{padding-block:26px;border-bottom:1px solid var(--line)}
+.tpl-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 14px;margin-bottom:10px}
+.tpl-num{font:600 13px var(--f-mono);color:var(--muted)}
+.tpl-name{font:700 21px/1.2 var(--f-ui);margin:0}
+.pill{font:600 11.5px var(--f-mono);letter-spacing:.04em;background:var(--chip);padding:3px 9px;border-radius:999px;text-transform:uppercase}
+.proto{background:var(--accent);color:var(--accent-fg)}
+.meta{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:8px 26px;margin:0 0 14px;font-size:14px}
+.meta div{min-width:0}
+.meta dt{font:600 11px var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:2px}
+.meta dd{margin:0}
+.strip{display:flex;gap:14px;overflow-x:auto;padding:4px 2px 12px;scroll-snap-type:x proximity}
+.cell{flex:0 0 auto;width:232px;scroll-snap-align:start;display:flex;flex-direction:column;gap:6px}
+.cell.st{width:178px}
+.role{font:500 11.5px var(--f-mono);color:var(--muted);line-height:1.35}
+.role b{color:var(--fg);font-weight:600}
+.slidebtn{all:unset;display:block;cursor:zoom-in;border-radius:8px}
+.foot{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:8px 26px;font-size:14px;margin-top:6px}
+.foot div{min-width:0}
+.foot dt{font:600 11px var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.foot dd{margin:2px 0 0}
+.howto{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px 18px;margin:14px 0 4px;display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:6px 28px;font-size:14px}
+.howto h3{grid-column:1/-1;margin:0 0 4px;font:700 15px var(--f-ui)}
+.howto ol{margin:0;padding-left:20px}
+.howto li{margin:0 0 4px}
+
+/* ============ TEMPLATE DESIGNS ============ */
+.slide{position:relative;container-type:inline-size;width:100%;aspect-ratio:3/4;overflow:hidden;background:var(--s-paper);color:var(--s-ink);font-family:'DM Sans',Arial,sans-serif;border-radius:6px;box-shadow:0 1px 3px rgba(0,0,0,.18)}
+.slide.story{aspect-ratio:9/16;border-radius:10px}
+.serif{font-family:'DM Serif Display',Georgia,serif;font-weight:400;line-height:1.03;letter-spacing:-.005em;margin:0;text-wrap:balance}
+.hand{font-family:'Caveat','Comic Sans MS',cursive;font-weight:600}
+.sans{font-family:'DM Sans',Arial,sans-serif}
+.pad{position:absolute;inset:7cqw;display:flex;flex-direction:column;gap:3.5cqw}
+.ph{position:absolute;background:repeating-linear-gradient(135deg,#d6d1c6 0 2.2cqw,#cdc7bb 2.2cqw 4.4cqw);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.6cqw;text-align:center;color:#56524a;font:700 3.3cqw/1.25 'DM Sans',Arial,sans-serif;padding:7cqw;text-transform:uppercase;letter-spacing:.03em}
+.ph i{font-style:normal;font-size:7cqw;line-height:1;opacity:.6}
+.ph.ex{background:linear-gradient(155deg,var(--t1),var(--t2));color:rgba(255,255,255,.88);text-transform:none;letter-spacing:0;font:italic 500 3.4cqw/1.3 'DM Sans',Arial,sans-serif}
+.ph.ex i{display:none}
+.story .ph.full{justify-content:flex-end;padding-bottom:16cqw}
+.full{inset:0}
+.shade{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,0) 38%,rgba(0,0,0,.62) 100%)}
+.pt-txt{position:absolute;left:7cqw;right:7cqw;bottom:8cqw;color:#fff;display:flex;flex-direction:column;gap:2.4cqw}
+.kick{font:700 3.3cqw/1.2 'DM Sans',Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase}
+.hl{background:var(--s-hi);color:var(--s-ink);padding:.12em .4em;border-radius:.2em;align-self:flex-start}
+.sub{font:500 4.4cqw/1.35 'DM Sans',Arial,sans-serif;margin:0;text-wrap:pretty}
+.dark{background:var(--s-ink);color:var(--s-white)}
+.yel{background:var(--s-hi)}
+.p2{background:var(--s-paper2)}
+.white{background:var(--s-white)}
+/* annotated */
+.ann-title{position:absolute;left:7cqw;right:7cqw;top:6cqw;font:700 5.4cqw/1.15 'DM Sans',Arial,sans-serif;margin:0;text-wrap:balance}
+.ann-ph{left:7cqw;right:7cqw;top:24cqw;bottom:7cqw;border-radius:2cqw}
+.tag{position:absolute;font:600 6cqw/1 'Caveat',cursive;background:var(--s-hi);color:var(--s-ink);padding:1.2cqw 2.6cqw;border-radius:1cqw;transform:rotate(-2.5deg);box-shadow:0 .6cqw 1.6cqw rgba(0,0,0,.18);max-width:58cqw}
+.tag:nth-of-type(2n){transform:rotate(2deg)}
+/* notes app */
+.notes-top{position:absolute;left:0;right:0;top:0;height:13cqw;display:flex;justify-content:space-between;align-items:center;padding:0 6cqw;color:#c9971a;font:500 4.6cqw 'DM Sans',Arial,sans-serif}
+.notes-body{position:absolute;left:8cqw;right:8cqw;top:18cqw;bottom:8cqw;display:flex;flex-direction:column;gap:3cqw}
+.notes-body h3{font:700 7cqw/1.12 'DM Sans',Arial,sans-serif;margin:0 0 2cqw;text-wrap:balance}
+.notes-body p{margin:0;font:400 5cqw/1.3 'DM Sans',Arial,sans-serif;display:flex;gap:3cqw}
+.notes-body p.lead{font-weight:700}
+.notes-body .dot{flex:0 0 auto;width:4.4cqw;height:4.4cqw;border:.5cqw solid #b9b4a9;border-radius:50%;margin-top:.9cqw}
+/* scrapbook */
+.polaroid{position:absolute;left:13cqw;right:13cqw;top:14cqw;background:#fff;padding:3cqw 3cqw 13cqw;transform:rotate(-3deg);box-shadow:0 1.2cqw 3cqw rgba(0,0,0,.2)}
+.polaroid .ph{position:relative;aspect-ratio:1/1;width:100%}
+.polaroid .cap{position:absolute;left:3cqw;right:3cqw;bottom:2.4cqw;font:600 6.6cqw/1.05 'Caveat',cursive;text-align:center;color:#2a2a2a}
+.tape{position:absolute;width:20cqw;height:6cqw;background:rgba(243,210,78,.75);top:-2.5cqw;left:50%;transform:translateX(-50%) rotate(4deg)}
+.scrap-h{position:absolute;left:8cqw;right:8cqw;bottom:7cqw;font-size:6.4cqw}
+/* quote */
+.qmark{font:400 34cqw/0.7 'DM Serif Display',Georgia,serif;color:var(--s-hi);height:20cqw}
+/* ask */
+.ask-pill{align-self:flex-start;background:var(--s-hi);color:var(--s-ink);font:700 4.6cqw/1.2 'DM Sans',Arial,sans-serif;padding:3cqw 5cqw;border-radius:99cqw;margin-top:2cqw}
+.ask-sub{font:500 4.2cqw/1.35 'DM Sans',Arial,sans-serif;opacity:.82;margin:0}
+.ask-mark{font:600 7cqw/1 'Caveat',cursive;color:var(--s-hi)}
+/* bignum */
+.num{font:400 30cqw/.9 'DM Serif Display',Georgia,serif;letter-spacing:-.02em;margin:0;white-space:nowrap}
+.num.sm{font-size:17cqw}
+.bn-h{font:700 6.2cqw/1.15 'DM Sans',Arial,sans-serif;margin:0;text-wrap:balance}
+/* split */
+.split-a,.split-b{top:7cqw;bottom:34cqw;border-radius:1.6cqw}
+.split-a{left:7cqw;right:51cqw}.split-b{left:51cqw;right:7cqw}
+.split-lab{position:absolute;top:58cqw;font:600 6.6cqw/1 'Caveat',cursive;background:var(--s-white);padding:1cqw 2.6cqw;border-radius:1cqw;box-shadow:0 .5cqw 1.4cqw rgba(0,0,0,.15);max-width:36cqw}
+.split-h{position:absolute;left:7cqw;right:7cqw;bottom:7cqw}
+/* list */
+.li{display:grid;grid-template-columns:9cqw 1fr;gap:2cqw;align-items:baseline;font:500 5.2cqw/1.3 'DM Sans',Arial,sans-serif}
+.li .n{font:400 8cqw/1 'DM Serif Display',Georgia,serif}
+.box{display:inline-block;width:5.4cqw;height:5.4cqw;border:.7cqw solid var(--s-ink);border-radius:1cqw;transform:translateY(.8cqw)}
+.list-h{font:700 6.4cqw/1.15 'DM Sans',Arial,sans-serif;margin:0 0 2cqw;text-wrap:balance}
+/* steps */
+.step-n{position:absolute;left:6cqw;top:2cqw;font:400 40cqw/1 'DM Serif Display',Georgia,serif;color:transparent;-webkit-text-stroke:.5cqw var(--s-ink)}
+.step-h{position:absolute;left:34cqw;right:7cqw;top:9cqw;font-size:6.8cqw}
+.step-ph{left:7cqw;right:7cqw;top:47cqw;bottom:7cqw;border-radius:2cqw}
+/* before / after */
+.ba-1{left:0;right:0;top:0;height:50%}.ba-2{left:0;right:0;top:50%;height:50%;border-top:.8cqw solid var(--s-paper)}
+.ba-lab{position:absolute;left:5cqw;font:700 3.4cqw/1 'DM Sans',Arial,sans-serif;letter-spacing:.12em;background:var(--s-white);color:var(--s-ink);padding:1.6cqw 2.6cqw;border-radius:99cqw}
+.ba-h{position:absolute;right:5cqw;bottom:5cqw;left:28cqw;background:var(--s-ink);color:var(--s-white);padding:3cqw 4cqw;border-radius:1.6cqw;font:700 4.6cqw/1.25 'DM Sans',Arial,sans-serif;text-align:right}
+/* myth */
+.strike{position:relative;display:inline;background:linear-gradient(transparent 52%,var(--s-hi) 52%,var(--s-hi) 64%,transparent 64%)}
+/* table */
+.tbl{display:grid;grid-template-columns:26cqw 1fr 1fr;border-top:.5cqw solid var(--s-ink)}
+.tbl div{padding:2.6cqw 1.6cqw;border-bottom:.3cqw solid #cfcabf;font:500 4cqw/1.25 'DM Sans',Arial,sans-serif;min-width:0;overflow-wrap:anywhere}
+.tbl .th{font:700 4.2cqw/1.2 'DM Sans',Arial,sans-serif}
+.tbl .rl{font:700 3.3cqw/1.2 'DM Sans',Arial,sans-serif;text-transform:uppercase;letter-spacing:.05em;color:#5a564e}
+/* qa */
+.bub{max-width:80%;padding:4cqw 5cqw;border-radius:5cqw;font:500 5.4cqw/1.3 'DM Sans',Arial,sans-serif}
+.bub.q{background:var(--s-white);border-bottom-left-radius:1cqw;align-self:flex-start;box-shadow:0 .5cqw 1.5cqw rgba(0,0,0,.08)}
+.bub.a{background:var(--s-ink);color:var(--s-white);border-bottom-right-radius:1cqw;align-self:flex-end}
+
+/* stories */
+.ig{position:absolute;left:8cqw;right:8cqw;font:700 6.6cqw/1.42 'DM Sans',Arial,sans-serif;text-align:center}
+.ig span{background:#fff;color:#111;padding:.14em .42em;border-radius:.28em;-webkit-box-decoration-break:clone;box-decoration-break:clone}
+.ig.plain span{background:none;color:#fff;text-shadow:0 .3cqw 1.6cqw rgba(0,0,0,.55)}
+.ig.left{text-align:left}
+.ig small{display:block;margin-top:2.4cqw;font:600 4.6cqw/1.4 'DM Sans',Arial,sans-serif}
+.ig small span{background:rgba(0,0,0,.6);color:#fff}
+.vid{position:absolute;top:16cqw;left:6cqw;font:700 3.2cqw/1 'IBM Plex Mono',monospace;background:rgba(0,0,0,.55);color:#fff;padding:1.4cqw 2.2cqw;border-radius:99cqw;letter-spacing:.06em}
+.st-txt{position:absolute;left:9cqw;right:9cqw;top:22%;display:flex;flex-direction:column;gap:5cqw}
+.st-big{font:700 10cqw/1.06 'DM Sans',Arial,sans-serif;margin:0;letter-spacing:-.01em;text-wrap:balance}
+.st-big.serif{font:400 12cqw/1.02 'DM Serif Display',Georgia,serif}
+.st-sub{font:500 5.6cqw/1.35 'DM Sans',Arial,sans-serif;margin:0}
+.zone{position:absolute;left:12cqw;right:12cqw;border:.7cqw dashed var(--s-zone);border-radius:3.4cqw;background:rgba(255,255,255,.86);color:#13204a;padding:3.6cqw 3cqw;text-align:center;font:600 3.7cqw/1.3 'IBM Plex Mono',monospace}
+.zone em{display:block;font:italic 500 4.2cqw/1.3 'DM Sans',Arial,sans-serif;color:#222;margin-top:1.4cqw}
+.zone small{display:block;font:500 2.7cqw/1.3 'DM Sans',Arial,sans-serif;color:#5a5a66;margin-top:1.6cqw;text-transform:none}
+.s-split1{left:0;right:0;top:0;height:50%}.s-split2{left:0;right:0;top:50%;height:50%;border-top:.8cqw solid #fff}
+
+/* guides */
+.show-guides .slide:not(.story)::after{content:'';position:absolute;inset:5cqw;border:.45cqw dashed var(--s-zone);pointer-events:none;z-index:9}
+.show-guides .slide.story::after{content:'';position:absolute;inset:0;pointer-events:none;z-index:9;background:linear-gradient(rgba(47,107,255,.26) 0 14%,transparent 14% 65%,rgba(47,107,255,.26) 65%),linear-gradient(90deg,rgba(47,107,255,.26) 0 6%,transparent 6% 94%,rgba(47,107,255,.26) 94%)}
+
+/* lightbox */
+dialog{border:0;padding:0;background:transparent;max-width:none;max-height:none}
+dialog::backdrop{background:rgba(10,10,12,.82)}
+.lb{display:flex;flex-direction:column;align-items:center;gap:12px}
+.lb-stage{width:min(88vw,calc(78vh * .75))}
+.lb-stage.st{width:min(88vw,calc(80vh * .5625))}
+.lb-bar{display:flex;gap:10px;align-items:center;color:#fff;font:500 13px var(--f-mono)}
+.lb-bar button{border:1px solid rgba(255,255,255,.4);background:rgba(255,255,255,.08);color:#fff;font:600 14px var(--f-ui);padding:8px 14px;border-radius:999px;cursor:pointer}
+@media (max-width:520px){.cell{width:200px}.cell.st{width:150px}.wrap{padding-inline:16px}}
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+</style>
+
+<div class="wrap" id="app">
+  <h1>Challenge Template Library</h1>
+  <p class="lede">A visual review of every proposed template: <b>10 carousels</b> and <b>20 Stories</b>. These are mockups, so we can agree on the structure, prompts and look before any Canva files are built. The words inside the slides are the real starter copy: <b>Prompts</b> shows what the customer opens, and <b>Example</b> shows the same template filled in for an illustrative business. Tap any slide to enlarge it.</p>
+  <div class="legend">
+    <span><span class="lg-br">[LIKE THIS]</span> a prompt the customer replaces</span>
+    <span><span class="lg-box"></span> where a real Instagram sticker goes. The customer deletes this box before exporting.</span>
+    <span>Striped boxes are photo or video placeholders. In the examples, color blocks stand in for real photos.</span>
+  </div>
+
+  <div class="bar" role="toolbar" aria-label="View options">
+    <div class="seg" id="lib" aria-label="Library">
+      <button type="button" data-v="c" aria-pressed="true">Carousels (10)</button>
+      <button type="button" data-v="s" aria-pressed="false">Stories (20)</button>
+    </div>
+    <div class="seg" id="mode" aria-label="Show">
+      <button type="button" data-v="t" aria-pressed="true">Prompts</button>
+      <button type="button" data-v="e" aria-pressed="false">Example</button>
+    </div>
+    <label class="tog"><input type="checkbox" id="guides"> Safe-zone guides</label>
+  </div>
+
+  <div id="out"></div>
+</div>
+
+<dialog id="lbx" aria-label="Enlarged slide">
+  <div class="lb">
+    <div class="lb-stage" id="lbStage"></div>
+    <div class="lb-bar"><button type="button" id="lbPrev">‹ Prev</button><span id="lbPos"></span><button type="button" id="lbNext">Next ›</button><button type="button" id="lbClose">Close</button></div>
+  </div>
+</dialog>
+
+<script>
+/* ---------------- DATA ---------------- */
+const CR = ['Hook 1','Hook 2 · works alone','Middle','Middle','Proof','Middle','Action'];
+const CAROUSELS = [
+{ id:'C1', name:'Problem → explanation → solution', job:'Trust + Sell', t:['#7b8f5a','#3e4d2c'],
+  forr:'Showing people the problem they have before they know they have it.',
+  when:'Your buyers wait until something breaks, or don’t realize a small sign means a bigger problem.',
+  also:'Plumber, dentist, car detailer, dog trainer, accountant', maps:'Problem → solution · 3 signs you need… · Price explained',
+  caption:'“DM me a photo of your [THING] and I’ll tell you if it’s [OPTION A] or [OPTION B].”',
+  tip:'Slides 1 and 2 should both work as a first slide. Read slide 2 alone: does it still hook?',
+  s:[
+   {k:'photoType', photo:'[PHOTO: the problem, close up]', h:'Your [THING] isn’t “just [WHAT PEOPLE CALL IT].” Here’s what happens next.'},
+   {k:'statement', h:'If [THE VISIBLE SIGN], the real problem is already [THE HIDDEN CAUSE].'},
+   {k:'annotated', photo:'[PHOTO: you checking it]', title:'What I check first', notes:['[CHECK #1]','[CHECK #2]','[CHECK #3]']},
+   {k:'notes', title:'Sometimes you don’t need [THE BIG, EXPENSIVE FIX].', lead:'A simple fix works when:', items:['[CONDITION 1]','[CONDITION 2]','[CONDITION 3]']},
+   {k:'beforeAfter', before:'[BEFORE PHOTO, your own job]', after:'[AFTER PHOTO, same angle]', h:'[WHAT YOU DID]. [HOW LONG IT TOOK].'},
+   {k:'statement', bg:'p2', h:'Not sure which yours needs?', sub:'[SIGN A]? [SIGN B]? [SIGN C]?'},
+   {k:'ask', h:'[YOUR ONE NEXT STEP, e.g. DM me a photo.]', step:'[BUTTON WORDS]', sub:'or [SECOND WAY TO REACH YOU] from my profile.'} ],
+  ex:{biz:'Northside Lawn Care (lawn service)', s:[
+   {photo:'photo: a brown, peeling patch of lawn', h:'Your lawn isn’t “just thirsty.” Here’s what happens next.'},
+   {h:'If the brown patches peel up like carpet, the problem is grubs, not water.'},
+   {photo:'photo: hand lifting a patch of turf', notes:['roots lift right up','brown in patches, not all over','birds digging at dawn']},
+   {title:'Sometimes you don’t need to reseed.', lead:'Treatment alone works when:', items:['patches are smaller than a doormat','the roots are still white','it’s early fall']},
+   {before:'photo: the patchy lawn in September', after:'photo: same lawn, green in October', h:'Treated in September. Green by October.'},
+   {h:'Not sure which yours has?', sub:'Peeling patches? Birds digging? Brown after rain?'},
+   {h:'DM me a photo of your lawn.', step:'Free estimate', sub:'or request one from my profile.'} ]} },
+
+{ id:'C2', name:'Before → process → after', job:'Trust', t:['#b48a6a','#5b3d2b'],
+  forr:'Proving your process works by showing the change step by step.',
+  when:'Your work is visible: hair, rooms, yards, pets, cakes, websites, closets.',
+  also:'Hair stylist, cleaner, organizer, groomer, web designer, painter', maps:'Before → process → after · How it’s made',
+  caption:'“Want this for your [THING]? [NEXT STEP] on my profile.”',
+  tip:'Shoot the before and after from the same spot, in the same light. That match is what makes it believable.',
+  s:[
+   {k:'photoType', photo:'[BEFORE PHOTO]', h:'“[THE STARTING POINT, in your client’s words].”'},
+   {k:'statement', h:'[THE RESULT IN ONE SENTENCE]. Here’s how.'},
+   {k:'steps', n:'1', h:'[STEP 1: what you did first]', photo:'[PHOTO: step 1]'},
+   {k:'steps', n:'2', h:'[STEP 2]', photo:'[PHOTO: step 2]'},
+   {k:'steps', n:'3', h:'[STEP 3]', photo:'[PHOTO: step 3]'},
+   {k:'beforeAfter', before:'[BEFORE]', after:'[AFTER, same angle and light]', h:'[TIME OR VISITS IT TOOK].'},
+   {k:'ask', h:'Want this for your [THING]?', step:'[YOUR NEXT STEP]', sub:'[WHERE TO FIND IT].'} ],
+  ex:{biz:'Wren Hair Studio (salon)', s:[
+   {photo:'photo: orange-toned box-dyed hair', h:'“My box dye went orange.”'},
+   {h:'Soft brunette in one visit. Here’s how.'},
+   {h:'Gently lift out the old dye', photo:'photo: foils going in'},
+   {h:'Tone out the orange', photo:'photo: toner being brushed on'},
+   {h:'Gloss for shine', photo:'photo: rinse at the bowl'},
+   {before:'photo: the orange box dye', after:'photo: soft brunette, same angle', h:'One appointment. 3½ hours.'},
+   {h:'Fixing a box-dye mistake?', step:'Book a color consult', sub:'Link on my profile. Consults are free.'} ]} },
+
+{ id:'C3', name:'Objection → answer → proof', job:'Trust + Sell', t:['#8a7fa6','#3f3756'],
+  forr:'Answering the one worry that stops people from buying.',
+  when:'People say “I’d love to, but…” Common with higher-priced offers.',
+  also:'Photographer, coach, contractor, therapist, wedding vendor', maps:'Objection → answer → proof · Common question, full answer · Who it’s for',
+  caption:'“[BOOKING / BUYING LINK] on my profile. [ONE REASSURING FACT].”',
+  tip:'Slide 5 must be a real customer’s words, used with permission. If you don’t have one yet, use a real photo of your work there instead.',
+  s:[
+   {k:'photoType', photo:'[PHOTO: your work, mid-moment]', h:'“[THE OBJECTION, word for word].” Good.'},
+   {k:'statement', h:'[YOUR ONE-LINE ANSWER. It has to make sense on its own.]'},
+   {k:'scrap', photo:'[REAL PHOTO from your work]', cap:'[WHAT’S HAPPENING IN IT]'},
+   {k:'notes', title:'What I do about it', items:['[THING YOU DO #1]','[THING YOU DO #2]','[THING YOU DO #3]']},
+   {k:'quote', q:'[A REAL CUSTOMER’S WORDS]', who:'[FIRST NAME], shared with permission'},
+   {k:'list', title:'After you book:', items:['[STEP 1]','[STEP 2]','[STEP 3]']},
+   {k:'ask', h:'[REAL AVAILABILITY OR NEXT STEP]', step:'[BUTTON WORDS]', sub:'[WHERE TO FIND IT]'} ],
+  ex:{biz:'Field Notes Photography (weddings)', s:[
+   {photo:'photo: couple laughing, mid-walk', h:'“We’re so awkward in photos.” Good.'},
+   {h:'Awkward couples make the best photos. You’re watching each other, not the camera.'},
+   {photo:'photo: the laugh after a stumble', cap:'the laugh after he stepped on her dress'},
+   {items:['No posing for the first 10 minutes','I give you something to do, not a pose','I shoot the moments in between']},
+   {q:'We forgot she was even there. Every photo looks like us.', who:'Ana, shared with permission'},
+   {items:['A 15-minute call about your day','A shot list we write together','Sneak peeks within 48 hours']},
+   {h:'2 spring dates left.', step:'Check my calendar', sub:'Booking link on my profile.'} ]} },
+
+{ id:'C4', name:'Mistakes → consequences → fix', job:'Trust + Sell', proto:true, t:['#c9a36b','#7a5a2e'],
+  forr:'Teaching people what goes wrong, then showing your product or service as the fix.',
+  when:'Your customers make predictable mistakes before they buy from you. Strong for digital products, food, and education.',
+  also:'Bakery, Etsy seller, coach, realtor, web designer, bookkeeper', maps:'Mistakes → consequences → fix · Things I’d never do',
+  caption:'“Comment [WORD] and I’ll send you the link.” (only if you’ll reply to every comment)',
+  tip:'Each mistake should be something your customer actually does, in their words. If it sounds like a textbook, rewrite it.',
+  s:[
+   {k:'photoType', photo:'[PHOTO: your product, or the result going wrong]', h:'[NUMBER] [TOPIC] mistakes that [BAD RESULT YOUR CUSTOMER WANTS TO AVOID].'},
+   {k:'statement', kick:'Mistake #1', h:'[MISTAKE #1: the common thing your customer does].', sub:'[WHAT IT CAUSES]'},
+   {k:'annotated', photo:'[PHOTO showing mistake #2]', title:'Mistake #2: [THE MISTAKE]', notes:['[WHAT GOES WRONG]','[WHY]','[WHAT IT COSTS THEM]']},
+   {k:'bignum', n:'#3', h:'[MISTAKE #3].', sub:'[WHAT IT CAUSES, one line]'},
+   {k:'scrap', photo:'[PHOTO: your product or service fixing all three]', cap:'All three, fixed.'},
+   {k:'checklist', title:'Do this instead:', items:['[FIX FOR #1]','[FIX FOR #2]','[FIX FOR #3]']},
+   {k:'ask', h:'[YOUR OFFER]. [PRICE]. [HOW FAST].', step:'[YOUR NEXT STEP]', sub:'[WHERE TO FIND IT]'} ],
+  ex:{biz:'Rise Bakery (custom cakes)', s:[
+   {photo:'photo: a lopsided cake at an outdoor party', h:'3 cake-ordering mistakes that leave you with the wrong cake.'},
+   {h:'Ordering the week of the party.', sub:'Custom cakes book up 2 to 3 weeks out.'},
+   {photo:'photo: a small cake, a big crowd', title:'Mistake #2: guessing how many it feeds', notes:['a 6" cake feeds 12, not 20','the last 8 guests get nothing','order by servings, not size']},
+   {h:'Buttercream flowers at an outdoor July party.', sub:'They melt before the toasts.'},
+   {photo:'photo: a finished 3-tier cake on the counter', cap:'All three, fixed.'},
+   {items:['Order 3 weeks ahead','Tell us your guest count','Ask what holds up outside']},
+   {h:'Custom cakes from $65. Pickup Saturdays.', step:'Order form on my profile', sub:'Comment CAKE and I’ll send it to you.'} ]} },
+
+{ id:'C5', name:'Comparison: which one is for you', job:'Sell', t:['#6f9aa3','#2f5158'],
+  forr:'Helping people pick between two of your options instead of picking neither.',
+  when:'You sell two packages, sizes or products, and people ask “which one should I get?”',
+  also:'Yoga studio, photographer, Etsy seller, consultant, cleaner', maps:'Comparison · This or that',
+  caption:'“Both are linked on my profile. Not sure? DM me [THE DECIDING QUESTION].”',
+  tip:'Keep the side-by-side table to 3 or 4 rows. Price always gets a row.',
+  s:[
+   {k:'split', a:'[PHOTO: option A]', al:'[OPTION A]', b:'[PHOTO: option B]', bl:'[OPTION B]', h:'[OPTION A] or [OPTION B]?'},
+   {k:'statement', h:'It depends on one thing: [THE DECIDING QUESTION].'},
+   {k:'photoType', photo:'[PHOTO: someone using option A]', kick:'[OPTION A] is for you if…', h:'[WHO IT FITS, one line]'},
+   {k:'photoType', photo:'[PHOTO: someone using option B]', kick:'[OPTION B] is for you if…', h:'[WHO IT FITS, one line]'},
+   {k:'table', title:'Side by side', cols:['[A]','[B]'], rows:[['Price','[$]','[$]'],['Includes','[WHAT]','[WHAT]'],['Best for','[WHO]','[WHO]']]},
+   {k:'statement', bg:'yel', kick:'Most people pick', h:'[THE COMMON PICK], because [THE REASON].'},
+   {k:'ask', h:'Both are on my profile.', step:'[YOUR NEXT STEP]', sub:'[ONE REASSURING FACT]'} ],
+  ex:{biz:'Still Water Yoga (studio)', s:[
+   {a:'photo: one mat, one class', al:'Drop-in', b:'photo: a stack of class cards', bl:'8-class pack', h:'Drop-in or the 8-class pack?'},
+   {h:'It depends on one thing: how often you’ll really come.'},
+   {photo:'photo: a first-timer unrolling a mat', kick:'Drop-in is for you if…', h:'you’re trying it out, or your week changes a lot.'},
+   {photo:'photo: a regular in a full class', kick:'The 8-pack is for you if…', h:'you want two classes a week to become a habit.'},
+   {cols:['Drop-in','8-pack'], rows:[['Price','$22','$136 ($17 each)'],['Use within','anytime','8 weeks'],['Best for','trying it','a habit']]},
+   {h:'the 8-pack after their second drop-in.'},
+   {h:'Both are on my booking page.', step:'Book your first class', sub:'Mats and water are on us.'} ]} },
+
+{ id:'C6', name:'Mini case study', job:'Trust + Sell', t:['#7d8c99','#36414b'],
+  forr:'Showing how you solved one real problem, start to finish.',
+  when:'You sell a service where people need to see how you think before they trust you.',
+  also:'Consultant, bookkeeper, coach, marketer, contractor, trainer', maps:'Mini case study · Results in numbers · Why I started',
+  caption:'“Reply with the number that sounds like you.” + your booking link',
+  tip:'Use real numbers only with the client’s OK. Otherwise write “illustrative example” on slide 5. Never guess a result.',
+  s:[
+   {k:'photoType', photo:'[PHOTO: the setting. No client names without permission]', h:'A [TYPE OF CLIENT] who [THE STARTING PROBLEM].'},
+   {k:'statement', h:'[THAT PROBLEM] is usually a [REAL CAUSE] problem, not a [WHAT PEOPLE BLAME] problem.'},
+   {k:'list', title:'The starting point: [WHAT YOU FOUND]', items:['[FINDING 1]','[FINDING 2]','[FINDING 3]']},
+   {k:'notes', title:'The 3 changes', items:['[CHANGE 1]','[CHANGE 2]','[CHANGE 3]']},
+   {k:'bignum', n:'[BEFORE] → [AFTER]', sm:true, h:'[WHAT THE NUMBER MEASURES]', sub:'[HOW LONG IT TOOK] · real and approved, or label it illustrative'},
+   {k:'statement', bg:'p2', h:'Which of these sounds like you?', sub:'1. [FINDING 1]  2. [FINDING 2]  3. [FINDING 3]'},
+   {k:'ask', h:'[YOUR CALL OFFER: how long, and what they get].', step:'Book from my profile', sub:''} ],
+  ex:{biz:'Ledger Lane Bookkeeping', s:[
+   {photo:'photo: a café counter with a shoebox of receipts', h:'A café owner 9 months behind on her books.'},
+   {h:'Messy books are usually a habit problem, not a math problem.'},
+   {title:'The starting point: 3 leaks', items:['Receipts in 4 different places','Personal and business on one card','No weekly check']},
+   {items:['One receipt app','A separate business card','A 15-minute Friday check']},
+   {n:'9 → 0', h:'months behind', sub:'caught up in 6 weeks · illustrative example'},
+   {sub:'1. Receipts everywhere  2. One card for everything  3. No weekly check'},
+   {h:'Book a free 20-minute call. I’ll show you where your receipts get lost.'} ]} },
+
+{ id:'C7', name:'Use case → result → product', job:'Reach + Sell', t:['#a5775f','#4f3324'],
+  forr:'Selling a physical product by showing the moment it’s for.',
+  when:'You sell things people use or wear. Feature lists don’t sell them; moments do.',
+  also:'Candle maker, clothing shop, bakery, home decor, Etsy seller', maps:'Use case → result → product · Gift guide · Launch or restock · Photo dump',
+  caption:'“Send this to your [PERSON WHO’D LOVE IT].” (for reach) + “[PRODUCT] linked on my profile.” (the sale)',
+  tip:'Slides 3 to 5 are the same product in three real moments. Time-stamp captions (“6:40pm, soup on”) make them feel real.',
+  s:[
+   {k:'photoType', photo:'[PHOTO: product in the moment it’s for]', h:'The [PRODUCT] for [THE MOMENT].'},
+   {k:'split', a:'[PHOTO: moment 1]', al:'', b:'[PHOTO: moment 2]', bl:'', h:'[HOW IT FEELS, two sides of one idea].'},
+   {k:'scrap', photo:'[IN USE: place or time 1]', cap:'[TIME OR PLACE 1]'},
+   {k:'scrap', photo:'[IN USE: place or time 2]', cap:'[TIME OR PLACE 2]', tilt:true},
+   {k:'photoType', photo:'[IN USE: place or time 3]', kick:'[TIME OR PLACE 3]', h:''},
+   {k:'bignum', bg:'p2', n:'[$PRICE]', h:'[PRODUCT OR BUNDLE]', sub:'[THE OFFER, e.g. Buy 2 and save]'},
+   {k:'ask', h:'Tap [WHERE] on my profile.', step:'[YOUR NEXT STEP]', sub:'[SHIPPING OR PICKUP FACT]'} ],
+  ex:{biz:'Juniper Candle Co. (handmade candles)', s:[
+   {photo:'photo: a lit candle by a rainy window', h:'The candle for the first cold night of the year.'},
+   {a:'photo: wool socks by the fire', b:'photo: a cedar log, close up', h:'Smells like a cabin. Without the smoke alarm.'},
+   {photo:'photo: candle beside a soup pot', cap:'6:40pm, soup on'},
+   {photo:'photo: candle beside an open book', cap:'8:15pm, book night'},
+   {photo:'photo: candle on a Sunday-morning table', kick:'Sunday, still burning'},
+   {n:'$34', h:'Cabin candle + matches', sub:'Buy 2, save $8'},
+   {h:'Tap the shop link on my profile.', step:'Shop the Cabin candle', sub:'Ships in 2 days.'} ]} },
+
+{ id:'C8', name:'Myth → fact', job:'Trust', t:['#9c8f6e','#4d4530'],
+  forr:'Correcting a common belief that stops people from buying, or from buying right.',
+  when:'Your industry has a belief you correct over and over in conversations.',
+  also:'Groomer, trainer, realtor, dentist, financial pro, nutrition coach', maps:'Myth vs. fact · Unpopular opinion',
+  caption:'“Save this for [WHEN THEY’LL NEED IT].”',
+  tip:'State the myth the way your customer would say it. Be kind about it: they believed it for a reason.',
+  s:[
+   {k:'myth', myth:'[THE COMMON BELIEF, stated plainly]'},
+   {k:'statement', h:'Here’s what’s actually true: [THE FACT, one line].'},
+   {k:'photoType', photo:'[PHOTO that shows the fact]', kick:'Why', h:'[REASON 1]'},
+   {k:'annotated', photo:'[PHOTO showing reason 2]', title:'[REASON 2]', notes:['[DETAIL 1]','[DETAIL 2]','[DETAIL 3]']},
+   {k:'qa', q:'“But [WHAT PEOPLE SAY BACK]?”', a:'[YOUR ANSWER]'},
+   {k:'checklist', title:'What to do instead', items:['[DO THIS]','[AND THIS]','[AND THIS]']},
+   {k:'ask', h:'Save this for [WHEN THEY’LL NEED IT].', step:'[YOUR NEXT STEP]', sub:'[WHERE TO FIND IT]'} ],
+  ex:{biz:'Pawsh Grooming (dog groomer)', s:[
+   {myth:'Shaving a husky keeps it cool in summer.'},
+   {h:'Here’s what’s actually true: a double coat is their air conditioning.'},
+   {photo:'photo: close-up of a thick undercoat', h:'The undercoat traps cool air against the skin.'},
+   {photo:'photo: patchy regrowth on a shaved coat', title:'Shaved coats grow back wrong', notes:['patchy regrowth','sunburn risk','can take a year']},
+   {q:'“But he’s panting so much?”', a:'A de-shed brush-out removes the loose undercoat. That’s what actually cools him.'},
+   {items:['De-shed every 6 to 8 weeks','Shade and water on hot walks','No clippers on a double coat']},
+   {h:'Save this for June.', step:'Book a de-shed', sub:'Booking link on my profile.'} ]} },
+
+{ id:'C9', name:'How-to & checklist', job:'Trust', t:['#6d8f7c','#2d4a3b'],
+  forr:'Teaching one small, useful task, so people save it and trust you with the bigger one.',
+  when:'Your buyers try to DIY first, or there’s a checklist you give every new customer.',
+  also:'Realtor, handyman, groomer, planner, bookkeeper, stylist', maps:'Step-by-step how-to · Save this cheat sheet · Seasonal checklist · Care guide',
+  caption:'“Save this. For [THE BIG VERSION], [NEXT STEP] on my profile.”',
+  tip:'Steps or a checklist? Use slides 3 to 5 for steps that go in order. Prefer a checklist? Delete them and keep the extra checklist slide at the end.',
+  roles:['Hook 1','Hook 2 · works alone','Step','Step','Step','Middle','Action','Alternate · checklist (use instead of 3–5)'],
+  s:[
+   {k:'photoType', photo:'[PHOTO: the finished result]', h:'How to [SMALL TASK] in [TIME].'},
+   {k:'checklist', title:'What you’ll need:', items:['[ITEM 1]','[ITEM 2]','[ITEM 3]']},
+   {k:'steps', n:'1', h:'[STEP 1]', photo:'[PHOTO: step 1]'},
+   {k:'steps', n:'2', h:'[STEP 2]', photo:'[PHOTO: step 2]'},
+   {k:'steps', n:'3', h:'[STEP 3]', photo:'[PHOTO: step 3]'},
+   {k:'statement', bg:'p2', kick:'When to call a pro', h:'[THE SIGN THAT IT’S TIME TO HIRE YOU OR BUY THE KIT].'},
+   {k:'ask', h:'[YOUR NEXT STEP, tied to the task]', step:'[BUTTON WORDS]', sub:'[WHERE TO FIND IT]'},
+   {k:'notes', title:'[THE CHECKLIST’S NAME]', check:true, items:['[ITEM 1]','[ITEM 2]','[ITEM 3]','[ITEM 4]']} ],
+  ex:{biz:'Dana Hart, realtor', s:[
+   {photo:'photo: keys on a kitchen counter', h:'How to get pre-approved in one week.'},
+   {items:['Your last 2 pay stubs','2 years of W-2s','2 months of bank statements']},
+   {h:'Ask 2 lenders for a quote on the same day', photo:'photo: two lender emails side by side'},
+   {h:'Send every document in one email', photo:'photo: a folder of PDFs'},
+   {h:'Don’t open new credit until you close', photo:'photo: a credit card in a drawer'},
+   {h:'The day your pre-approval letter arrives.'},
+   {h:'Pre-approved? Let’s make your shortlist.', step:'DM me “LIST”', sub:'I reply within a day.'},
+   {title:'First-home checklist', items:['Pre-approval letter','Your max monthly payment','3 must-haves','3 deal-breakers']} ]} },
+
+{ id:'C10', name:'Offer explainer', job:'Sell', t:['#8c7a9b','#3e3349'],
+  forr:'Explaining exactly what people get, what it costs and what happens next.',
+  when:'People are interested but keep asking the same questions in your DMs before buying.',
+  also:'Web designer, coach, photographer, planner, service package, digital kit', maps:'What’s included · What happens when you book · FAQ · Tools I use · Customer question',
+  caption:'“[PRICE], [TIMELINE]. [NEXT STEP] on my profile.”',
+  tip:'Lead with the result they want, not the package name. Slides 5 and 6 are the two questions you answer most in DMs.',
+  s:[
+   {k:'photoType', photo:'[PHOTO: the finished result]', h:'[THE RESULT THEY WANT], for [PRICE].'},
+   {k:'statement', h:'[PRICE]. [HOW LONG IT TAKES]. [WHAT THEY HAVE TO DO].'},
+   {k:'list', title:'What’s included', items:['[ITEM 1]','[ITEM 2]','[ITEM 3]','[ITEM 4]']},
+   {k:'notes', title:'What happens after you [BOOK / BUY]', items:['[STEP 1 + WHEN]','[STEP 2 + WHEN]','[STEP 3 + WHEN]']},
+   {k:'qa', q:'“[THE QUESTION YOU GET MOST]?”', a:'[YOUR SHORT ANSWER]'},
+   {k:'qa', bg:'p2', q:'“[THE SECOND QUESTION]?”', a:'[YOUR SHORT ANSWER]'},
+   {k:'ask', h:'[REAL AVAILABILITY OR NEXT STEP]', step:'[BUTTON WORDS]', sub:'[WHERE TO FIND IT]'} ],
+  ex:{biz:'Studio Ten Web (freelance web designer)', s:[
+   {photo:'photo: a website on a phone, in hand', h:'A website you’re not embarrassed to share, for $900.'},
+   {h:'$900. Live in 10 days. You send photos and answer 8 questions.'},
+   {items:['One scrolling page, made for phones','A booking or contact button','Words written with you','30 days of fixes']},
+   {title:'What happens after you book', items:['Day 1: a 20-minute call','Day 3: your first draft','Day 10: live']},
+   {q:'“Can I update it myself?”', a:'Yes. It’s built in Squarespace, and I record a 5-minute how-to for you.'},
+   {q:'“What if I hate the draft?”', a:'Two full rounds of changes are included.'},
+   {h:'2 spots open in November.', step:'Book a 20-minute call', sub:'Booking link on my profile.'} ]} },
+];
+
+const SR = ['1 · Question or problem','2 · Proof or demo','3 · Answer or result','4 · The ask'];
+const STORIES = [
+/* A. ENGAGEMENT */
+{ g:'A', id:'S1', name:'Poll quote nudge', job:'Sell', t:['#6f8797','#2e3f4b'],
+  forr:'Getting warm people to raise their hand about a problem you fix.', when:'You fix things people put off.', also:'Plumber, handyman, mechanic, dentist, groomer', maps:'Quote nudge', check:'Poll votes, link taps, quote requests',
+  f:[
+   {k:'photo', photo:'[PHOTO: something “fine for now”]', text:'Anything in your [PLACE] that’s “fine for now”?', pos:'top', st:{kind:'POLL', note:'[YES] / [DEFINITELY YES]'}},
+   {k:'photo', video:true, photo:'[8-SECOND VIDEO: a small problem that got big]', text:'this started as [THE SMALL THING]', pos:'top', plain:true},
+   {k:'text', bg:'dark', big:'Most [FIXES LIKE THIS] cost less than [$] when caught early.', sub:'(only if true)'},
+   {k:'photo', photo:'[PHOTO: you at work]', text:'[ONE LINE ABOUT YOUR OFFER]', pos:'top', link:'[FREE QUOTE, SAME-DAY REPLY]'} ],
+  ex:{biz:'Bright Pipe Plumbing', f:[
+   {photo:'photo: under a kitchen sink', text:'Anything under your sink that’s “fine for now”?', st:{kind:'POLL', note:'Yes / Definitely yes'}},
+   {photo:'video: water pooling in a cabinet', text:'this started as one slow drip'},
+   {big:'Most leaks like this cost under $200 when caught early.', sub:''},
+   {photo:'photo: plumber with a wrench', text:'same-day visits this week', link:'FREE QUOTE, SAME-DAY REPLY'} ]} },
+
+{ g:'A', id:'S2', name:'This or that', job:'Reach + Trust', t:['#b08a73','#5a3e2e'],
+  forr:'Easy taps that also tell you what people want.', when:'You have product options, colors, styles or flavors.', also:'Candle maker, bakery, boutique, florist, Etsy seller', maps:'This or that · Which should I make next?', check:'Poll votes, link taps',
+  f:[
+   {k:'split', a:'[PHOTO: option A]', b:'[PHOTO: option B]', text:'This or that?', st:{kind:'POLL', note:'[A] / [B]'}},
+   {k:'split', a:'[PHOTO: option C]', b:'[PHOTO: option D]', text:'[ROUND 2]', st:{kind:'POLL', note:'[C] / [D]'}},
+   {k:'photo', photo:'[PHOTO: the winners together]', text:'you picked: [THE WINNERS]', pos:'top'},
+   {k:'photo', photo:'[PHOTO: the winning item]', text:'[WHERE TO GET IT]', pos:'top', link:'[GET THE WINNER]'} ],
+  roles:['1 · Easy tap','2 · Another tap','3 · The result','4 · The ask'],
+  ex:{biz:'Juniper Candle Co.', f:[
+   {a:'photo: cedar candle', b:'photo: fig candle', st:{kind:'POLL', note:'Cedar / Fig'}},
+   {a:'photo: tin', b:'photo: glass jar', text:'Tin or glass?', st:{kind:'POLL', note:'Tin / Glass'}},
+   {photo:'photo: cedar in a glass jar', text:'you picked: cedar, in glass'},
+   {photo:'photo: the cedar glass candle lit', text:'restocked this morning', link:'GET THE WINNER'} ]} },
+
+{ g:'A', id:'S3', name:'Ask me anything', job:'Trust', t:['#8d9a7a','#414b34'],
+  forr:'Collecting real questions you can answer now and reuse as content later.', when:'Any week. Great when you don’t know what to post.', also:'Stylist, coach, realtor, trainer, any expert', maps:'Ask me anything · Customer question of the week', check:'Questions received, DMs',
+  f:[
+   {k:'photo', photo:'[PHOTO: you, at work]', text:'Ask me anything about [YOUR WORK]', pos:'top', st:{kind:'QUESTION BOX', note:'[PROMPT, e.g. “Ask me…”]'}},
+   {k:'text', bg:'paper', big:'“[QUESTION 1]”', sub:'[ANSWER 1, two lines max]', serif:true},
+   {k:'photo', video:true, photo:'[VIDEO: you answering question 2 on camera]', text:'“[QUESTION 2]”', pos:'top'},
+   {k:'photo', photo:'[PHOTO: your work]', text:'[ONE LINE LEADING TO YOUR OFFER]', pos:'top', link:'[YOUR NEXT STEP]'} ],
+  ex:{biz:'Wren Hair Studio', f:[
+   {photo:'photo: stylist mid-cut', text:'Ask me anything about going lighter', st:{kind:'QUESTION BOX', note:'Ask me…'}},
+   {big:'“Will it wreck my hair?”', sub:'Not if we go in 2 sessions and use a bond builder.'},
+   {photo:'video: stylist talking to camera', text:'“How often do I need a gloss?”'},
+   {photo:'photo: soft blonde, finished', text:'free color consults this month', link:'BOOK A CONSULT'} ]} },
+
+{ g:'A', id:'S4', name:'Quiz: guess the price', job:'Trust + Sell', t:['#c39a6b','#6d4f2c'],
+  forr:'Turning your price into a game, then explaining what it includes.', when:'People underestimate the work, or are scared to ask the price.', also:'Bakery, photographer, designer, contractor, groomer', maps:'Quiz: guess the price · Price reveal', check:'Quiz answers, link taps',
+  f:[
+   {k:'photo', photo:'[PHOTO: the product or result]', text:'What does [PRODUCT / SERVICE] cost?', pos:'top', st:{kind:'QUIZ', note:'[3 OPTIONS, one correct]'}},
+   {k:'text', bg:'yel', big:'[THE REAL PRICE]', sub:'here’s what that covers →', serif:true},
+   {k:'photo', photo:'[PHOTO: what’s included]', text:'for that you get: [1], [2], [3]', pos:'top'},
+   {k:'photo', photo:'[PHOTO: happy result]', text:'[WHEN / HOW TO GET ONE]', pos:'top', link:'[ORDER / BOOK]'} ],
+  ex:{biz:'Rise Bakery', f:[
+   {photo:'photo: a 3-tier birthday cake', text:'What does a 3-tier birthday cake cost?', st:{kind:'QUIZ', note:'$85 / $160 / $240'}},
+   {big:'$160', sub:'feeds 40, made from scratch'},
+   {photo:'photo: cake box, board and piping bags', text:'for that you get: 3 flavors, hand-piped flowers, a board and box'},
+   {photo:'photo: cake on a party table', text:'booking 3 weeks out', link:'ORDER YOURS'} ]} },
+
+{ g:'A', id:'S5', name:'Slider check-in', job:'Reach', t:['#7f9aa8','#36505c'],
+  forr:'A one-tap reaction that warms people up before a seasonal offer.', when:'Before a season, holiday or event your business is tied to.', also:'Lawn care, planner, bakery, tax pro, fitness coach', maps:'Slider check-in', check:'Slider responses, link taps',
+  f:[
+   {k:'photo', photo:'[PHOTO: the season or event]', text:'How ready are you for [SEASON / EVENT]?', pos:'top', st:{kind:'EMOJI SLIDER', note:'[PICK AN EMOJI]'}},
+   {k:'photo', video:true, photo:'[VIDEO: a relatable moment]', text:'[A RELATABLE LINE]', pos:'top', plain:true},
+   {k:'text', bg:'dark', big:'[ONE WAY YOU HELP]', sub:'[WHAT IT INCLUDES, short]'},
+   {k:'photo', photo:'[PHOTO: your work]', text:'[DEADLINE, only if real]', pos:'top', link:'[BOOK / ORDER]'} ],
+  ex:{biz:'Northside Lawn Care', f:[
+   {photo:'photo: frost on grass', text:'How ready is your yard for the first freeze?', st:{kind:'EMOJI SLIDER', note:'snowflake emoji'}},
+   {photo:'video: digging a frozen hose out of a bush', text:'me, finding the hose in December'},
+   {big:'Aeration + winterizing in one visit.', sub:'Hoses, beds and the last mow.'},
+   {photo:'photo: neat lawn with leaves cleared', text:'booking until Nov 15', link:'BOOK FALL CLEANUP'} ]} },
+
+/* B. AUTHORITY */
+{ g:'B', id:'S6', name:'Quick tip', job:'Trust', t:['#94806b','#4a3b2d'],
+  forr:'One useful tip that shows you know your stuff.', when:'Any week. Easy to make between other posts.', also:'Groomer, stylist, trainer, cook, bookkeeper', maps:'Tip of the day', check:'Sends, replies',
+  f:[
+   {k:'text', bg:'dark', big:'Quick tip: [THE PROBLEM]', sub:''},
+   {k:'photo', video:true, photo:'[VIDEO: the tip, shown]', text:'[THE TIP, about 6 words]', pos:'top'},
+   {k:'photo', photo:'[PHOTO: the result]', text:'[THE RESULT]', pos:'top'},
+   {k:'photo', photo:'[PHOTO: your work]', text:'[WHEN TO CALL YOU INSTEAD]', pos:'top', link:'[YOUR NEXT STEP]'} ],
+  ex:{biz:'Pawsh Grooming', f:[
+   {big:'Quick tip: nail trims without the fight'},
+   {photo:'video: dog licking a lick mat during a trim', text:'lick mat + 2 nails a day'},
+   {photo:'photo: neatly trimmed paws', text:'a week later: all 18 done'},
+   {photo:'photo: groomer with a happy dog', text:'or let us do all of it', link:'BOOK A FULL GROOM'} ]} },
+
+{ g:'B', id:'S7', name:'Myth buster', job:'Trust', t:['#7a8b6a','#36422b'],
+  forr:'Correcting a common belief with a quick true/false.', when:'People believe something about your work that isn’t quite right.', also:'Bookkeeper, dentist, trainer, realtor, groomer', maps:'Myth buster', check:'Poll votes, sends',
+  f:[
+   {k:'photo', photo:'[PHOTO: related to the myth]', text:'True or false: [THE MYTH]?', pos:'top', st:{kind:'POLL', note:'TRUE / FALSE'}},
+   {k:'text', bg:'yel', big:'[TRUE / FALSE].', sub:'[THE FACT, one line]', serif:true},
+   {k:'photo', photo:'[PHOTO showing why]', text:'[WHY IT MATTERS]', pos:'top'},
+   {k:'photo', photo:'[PHOTO: your work]', text:'[HOW YOU HELP]', pos:'top', link:'[YOUR NEXT STEP]'} ],
+  ex:{biz:'Ledger Lane Bookkeeping', f:[
+   {photo:'photo: a shoebox of receipts', text:'True or false: you only need a bookkeeper at tax time?'},
+   {big:'False.', sub:'Catching up on 12 months costs more than keeping up monthly.'},
+   {photo:'photo: receipts spread on a table', text:'one shoebox = about 9 hours of catch-up'},
+   {photo:'photo: tidy laptop and coffee', text:'monthly plans from $150', link:'GET A MONTHLY QUOTE'} ]} },
+
+{ g:'B', id:'S8', name:'FAQ in 4 frames', job:'Trust', t:['#8a9aa6','#3c4952'],
+  forr:'Answering the questions you get every week, once, then saving it to Highlights.', when:'The same DMs keep coming in.', also:'Yoga studio, Etsy seller, photographer, contractor', maps:'FAQ in 4 frames', check:'Replies, link taps',
+  f:[
+   {k:'text', bg:'paper', big:'You asked:', sub:'“[QUESTION #1]”', serif:true},
+   {k:'photo', video:true, photo:'[VIDEO or PHOTO: the answer, shown]', text:'[SHORT ANSWER]', pos:'top'},
+   {k:'text', bg:'dark', big:'“[QUESTION #2]”', sub:'[ANSWER #2]'},
+   {k:'photo', photo:'[PHOTO: your work]', text:'everything else is here', pos:'top', link:'[LINK TO FAQ / BOOKING]'} ],
+  ex:{biz:'Still Water Yoga', f:[
+   {sub:'“Do I need to be flexible?”'},
+   {photo:'video: a beginner class, laughing', text:'nope. that’s what class is for.'},
+   {big:'“What should I bring?”', sub:'Water. We have mats.'},
+   {photo:'photo: studio with mats laid out', link:'FIRST CLASS $10'} ]} },
+
+{ g:'B', id:'S9', name:'Stop doing this, do this instead', job:'Trust', t:['#a3836d','#53392a'],
+  forr:'Calling out one common mistake and giving the better move.', when:'You watch customers make the same mistake before they come to you.', also:'Realtor, stylist, trainer, web designer, bakery', maps:'Mistakes → fix (Story version)', check:'Sends, replies, link taps',
+  f:[
+   {k:'photo', photo:'[PHOTO: the mistake happening]', text:'Stop [THE COMMON MISTAKE].', pos:'top'},
+   {k:'photo', video:true, photo:'[VIDEO: what it causes]', text:'[WHAT IT CAUSES]', pos:'top', plain:true},
+   {k:'text', bg:'yel', big:'Do this instead:', sub:'[THE BETTER MOVE]', serif:true},
+   {k:'photo', photo:'[PHOTO: your work]', text:'[HOW YOU HELP WITH IT]', pos:'top', link:'[YOUR NEXT STEP]'} ],
+  roles:['1 · The problem','2 · What it causes','3 · The fix','4 · The ask'],
+  ex:{biz:'Dana Hart, realtor', f:[
+   {photo:'photo: couple at an open house', text:'Stop touring houses before you’re pre-approved.'},
+   {photo:'video: couple looking deflated in a car', text:'you fall for a house you can’t offer on'},
+   {big:'Do this instead:', sub:'pre-approval first, then tours.'},
+   {photo:'photo: realtor with a clipboard', text:'my free checklist gets you there in a week', link:'GET THE CHECKLIST'} ]} },
+
+{ g:'B', id:'S10', name:'Demo / mini tutorial', job:'Trust + Sell', t:['#7b8aa0','#343f50'],
+  forr:'Showing your product or process working, in 10 seconds.', when:'People don’t believe it’s as easy, fast or good as you say.', also:'Web designer, digital product seller, cook, stylist, app maker', maps:'Demo · How it’s made', check:'Link taps, sales',
+  f:[
+   {k:'text', bg:'dark', big:'[DEADLINE] and no [THING] yet?', sub:''},
+   {k:'photo', video:true, photo:'[10-SECOND DEMO or SCREEN RECORDING]', text:'[WHAT’S HAPPENING]: [HOW LONG]', pos:'top'},
+   {k:'photo', photo:'[PHOTO: the finished result]', text:'[WHAT THE CUSTOMER GETS]', pos:'top'},
+   {k:'photo', photo:'[PHOTO: product or you]', text:'[ONE LINE OFFER]', pos:'top', link:'[PRICE + WHAT IT IS]'} ],
+  ex:{biz:'Studio Ten Web', f:[
+   {big:'Launching in 2 weeks and no website yet?'},
+   {photo:'screen recording: adding a booking button', text:'adding your booking button: 40 seconds'},
+   {photo:'photo: finished site on a phone', text:'your price, your photos, one button'},
+   {photo:'photo: designer at a laptop', text:'2 spots in November', link:'$900 SITE, LIVE IN 10 DAYS'} ]} },
+
+/* C. SALES */
+{ g:'C', id:'S11', name:'Real availability', job:'Sell', proto:true, t:['#c4956a','#6b4527'],
+  forr:'Telling warm followers you have real openings, and making booking one tap.', when:'You have actual dates, spots or stock open. Only when it’s true.', also:'Photographer, salon, groomer, tutor, bakery, Etsy restock', maps:'Real availability (Playbook Ch. 13, Golden Hour)', check:'Link taps, bookings',
+  roles:['1 · Nurture','2 · Trust','3 · Offer','4 · Action'],
+  f:[
+   {k:'photo', photo:'[A FAVORITE PHOTO from recent work]', text:'[WHEN / WHERE], [ONE SMALL DETAIL]', pos:'top', plain:true},
+   {k:'photo', video:true, photo:'[BEHIND-THE-SCENES VIDEO]', text:'[WHAT IT’S LIKE, 2 short lines]', pos:'top', st:{kind:'QUESTION BOX', note:'What do you want to know before [BOOKING]?'}},
+   {k:'text', bg:'dark', big:'[NUMBER] [DATES / SPOTS] left', sub:'[THE ACTUAL DATES] · only if true', serif:true},
+   {k:'photo', photo:'[PHOTO: your work or you]', text:'[booking page is open]', pos:'top', link:'[PICK YOUR DATE]'} ],
+  ex:{biz:'Field Notes Photography', f:[
+   {photo:'photo: couple at sunset in a field', text:'last Saturday, 6:52pm'},
+   {photo:'video: photographer walking with a couple', text:'8 hours. no stiff poses.', st:{kind:'QUESTION BOX', note:'What do you want to know before booking?'}},
+   {big:'2 spring dates left', sub:'April 12 and May 3'},
+   {photo:'photo: photographer reviewing the camera screen', text:'booking page is open', link:'PICK YOUR DATE'} ]} },
+
+{ g:'C', id:'S12', name:'Launch or restock countdown', job:'Sell', t:['#9b7f9e','#4b364d'],
+  forr:'Building up to a real launch, restock or open date.', when:'Something real is coming on a specific day.', also:'Etsy seller, boutique, bakery drop, course launch, booking calendar opening', maps:'Launch countdown · Restock · New product teaser', check:'Reminder taps, launch-day link taps',
+  f:[
+   {k:'photo', photo:'[TEASER PHOTO: part of the new thing]', text:'[“something’s coming” / “it’s back”]', pos:'top', plain:true},
+   {k:'text', bg:'yel', big:'Back [DAY] at [TIME].', sub:'', serif:true, st:{kind:'COUNTDOWN', note:'[THE REAL LAUNCH TIME]'}},
+   {k:'photo', video:true, photo:'[VIDEO: making or packing it]', text:'[A DETAIL PEOPLE CARE ABOUT]', pos:'top'},
+   {k:'photo', photo:'[PHOTO: the product]', text:'[on launch day: it’s live]', pos:'top', link:'[SHOP / BOOK NOW]'} ],
+  roles:['1 · Tease','2 · The date','3 · Proof','4 · The ask (launch day)'],
+  ex:{biz:'Juniper Candle Co.', f:[
+   {photo:'photo: close-up of a candle label', text:'the one you kept asking about'},
+   {big:'Cabin is back Friday at 9am.', st:{kind:'COUNTDOWN', note:'Cabin restock, Fri 9:00am'}},
+   {photo:'video: pouring wax into jars', text:'pouring 200 this week. that’s all of them.'},
+   {photo:'photo: Cabin candles lined up', text:'it’s live', link:'SHOP CABIN'} ]} },
+
+{ g:'C', id:'S13', name:'Before / after', job:'Trust + Sell', t:['#87a08f','#3a5243'],
+  forr:'A fast transformation that makes people want the same.', when:'You have a visible result from a real job.', also:'Groomer, cleaner, stylist, detailer, landscaper, organizer', maps:'Before / after', check:'Slider responses, link taps',
+  f:[
+   {k:'photo', photo:'[BEFORE PHOTO]', text:'before: [THE STARTING POINT]', pos:'top', st:{kind:'EMOJI SLIDER', note:'“How bad is this?”'}},
+   {k:'photo', video:true, photo:'[VIDEO: the process in 5 seconds]', text:'[TIME IT TOOK]', pos:'top', plain:true},
+   {k:'photo', photo:'[AFTER PHOTO, same angle]', text:'after.', pos:'top'},
+   {k:'photo', photo:'[PHOTO: you or your work]', text:'[WHO THIS IS FOR]', pos:'top', link:'[BOOK / GET A QUOTE]'} ],
+  ex:{biz:'Pawsh Grooming', f:[
+   {photo:'photo: a matted doodle', text:'before: 4 months of matting', st:{kind:'EMOJI SLIDER', note:'“How bad is this?”'}},
+   {photo:'video: grooming time-lapse', text:'3 hours, 1 very patient doodle'},
+   {photo:'photo: the same doodle, fluffy and clean', text:'after.'},
+   {photo:'photo: groomer hugging the dog', text:'matted pup? no judgment here', link:'BOOK A GROOM'} ]} },
+
+{ g:'C', id:'S14', name:'Objection answered on camera', job:'Trust + Sell', t:['#7f8a9e','#373f4f'],
+  forr:'Answering the real reason people don’t buy, in your own voice.', when:'People are interested but hesitate. Higher-priced services especially.', also:'Consultant, coach, therapist, contractor, photographer', maps:'Objection answered on camera', check:'Question-box replies, DMs, bookings',
+  f:[
+   {k:'text', bg:'paper', big:'What stops you from [BUYING / BOOKING]?', sub:'', st:{kind:'QUESTION BOX', note:'[PROMPT, e.g. “Be honest…”]'}},
+   {k:'photo', video:true, photo:'[VIDEO: you answering the top reply on camera]', text:'“[THE TOP REPLY]”', pos:'top'},
+   {k:'text', bg:'dark', big:'[A REAL, APPROVED RESULT]', sub:'or label it illustrative'},
+   {k:'photo', photo:'[PHOTO: you]', text:'[ONE REASSURING LINE]', pos:'top', link:'[BOOK A CALL]'} ],
+  ex:{biz:'Ledger Lane Bookkeeping', f:[
+   {big:'What stops you from getting help with your books?', st:{kind:'QUESTION BOX', note:'Be honest…'}},
+   {photo:'video: bookkeeper talking to camera', text:'“I’m embarrassed how behind I am.”'},
+   {big:'Most clients start 6+ months behind.', sub:'illustrative example'},
+   {photo:'photo: bookkeeper smiling at a desk', text:'zero judgment, I promise', link:'BOOK A FREE CALL'} ]} },
+
+{ g:'C', id:'S15', name:'Proof: review or customer photo', job:'Trust + Sell', t:['#b0927a','#5b4433'],
+  forr:'Letting a happy customer do the selling, with their permission.', when:'A customer sends a photo, review or kind message.', also:'Any business with happy customers', maps:'Customer photo · Review of the week · Milestone thank-you', check:'Link taps, replies',
+  f:[
+   {k:'photo', photo:'[CUSTOMER’S PHOTO or REVIEW, shared with permission]', text:'[FIRST NAME] sent this', pos:'top', plain:true},
+   {k:'photo', photo:'[PHOTO: what they bought]', text:'[WHAT THEY BOUGHT]', pos:'top'},
+   {k:'text', bg:'paper', big:'[YOUR THANK-YOU, one line]', sub:'', serif:true},
+   {k:'photo', photo:'[PHOTO: the same product or service]', text:'[HOW TO GET THE SAME]', pos:'top', link:'[GET YOURS]'} ],
+  roles:['1 · The proof','2 · What it was','3 · Thank you','4 · The ask'],
+  ex:{biz:'Rise Bakery', f:[
+   {photo:'customer photo: cake at a party, shared with permission', text:'Maya sent this from her party'},
+   {photo:'photo: lemon-raspberry 3-tier cake', text:'the lemon-raspberry 3-tier'},
+   {big:'Thank you for letting us be part of it.'},
+   {photo:'photo: cake on the bakery counter', text:'booking 3 weeks out', link:'ORDER YOURS'} ]} },
+
+{ g:'C', id:'S16', name:'How to order / work with me', job:'Sell', t:['#7d9a96','#33504c'],
+  forr:'Removing the “how do I even buy this?” friction.', when:'People ask how to order, or your booking has more than one step.', also:'Salon, coach, Etsy seller, consultant, bakery', maps:'How to order (walkthrough) · What happens when you book', check:'Link taps, checkout or booking starts',
+  f:[
+   {k:'text', bg:'yel', big:'Here’s how to [ORDER / BOOK] in [30 SECONDS].', sub:'', serif:true},
+   {k:'photo', video:true, photo:'[SCREEN RECORDING: your checkout or booking page]', text:'tap [X], pick [Y], done', pos:'top'},
+   {k:'text', bg:'dark', big:'Then:', sub:'[WHAT HAPPENS NEXT: confirmation, shipping, prep]'},
+   {k:'photo', photo:'[PHOTO: you or the product]', text:'[ONE LINE]', pos:'top', link:'[BOOK NOW / ORDER]'} ],
+  ex:{biz:'Wren Hair Studio', f:[
+   {big:'How to book a color appointment in 30 seconds.'},
+   {photo:'screen recording: the booking page', text:'tap Color, pick a time, add a hair photo'},
+   {sub:'I text you within a day about your color plan.'},
+   {photo:'photo: salon chair', text:'Tuesdays are wide open', link:'BOOK NOW'} ]} },
+
+{ g:'C', id:'S17', name:'Direct ask', job:'Sell', t:['#a07c6c','#4f3529'],
+  forr:'A clear offer with one action. No warm-up.', when:'After a week of proof and help, or when a real deadline is coming. Has a “last call” variant, only if the deadline is real.', also:'Any business', maps:'Direct ask · Weekly special · Last call', check:'Link taps, orders or bookings',
+  f:[
+   {k:'photo', photo:'[PHOTO: your ideal customer’s situation]', text:'For [WHO], who [THE PROBLEM].', pos:'top'},
+   {k:'photo', photo:'[PHOTO: the product or service]', text:'You get: [WHAT THEY GET]', pos:'top'},
+   {k:'text', bg:'dark', big:'[PRICE]. [WHAT HAPPENS NEXT].', sub:'last-call version: [WHAT ENDS + WHEN, only if true]'},
+   {k:'photo', photo:'[PHOTO: you]', text:'', pos:'top', link:'[SPECIFIC ACTION, e.g. Save my spot]'} ],
+  roles:['1 · Who it’s for','2 · What they get','3 · Price + next','4 · The ask'],
+  ex:{biz:'Still Water Yoga', f:[
+   {photo:'photo: someone stretching at a desk', text:'For desk people whose back hurts by 3pm.'},
+   {photo:'photo: lunchtime class', text:'You get: 6 weeks of 30-minute lunchtime classes'},
+   {big:'$90. Starts Monday, Nov 3.', sub:'8 spots, then it’s full'},
+   {photo:'photo: teacher at the studio door', link:'SAVE MY SPOT'} ]} },
+
+/* D. RELATIONSHIP */
+{ g:'D', id:'S18', name:'Meet the maker', job:'Trust', t:['#a58a6f','#544230'],
+  forr:'Putting a face and a reason behind the business.', when:'New followers are arriving, or you haven’t introduced yourself in a while.', also:'Any small business, especially makers and solo services', maps:'Meet the maker · Why I started', check:'Replies, follows',
+  f:[
+   {k:'photo', photo:'[PHOTO: you at work]', text:'Hi, I’m [NAME].', pos:'top'},
+   {k:'photo', photo:'[PHOTO: your hands, tools or space]', text:'I [WHAT YOU DO] because [ONE-LINE WHY].', pos:'top'},
+   {k:'photo', video:true, photo:'[VIDEO: a detail of the work]', text:'something people don’t know: [A FACT ABOUT THE WORK]', pos:'top', plain:true},
+   {k:'text', bg:'paper', big:'What do you want to know?', sub:'', serif:true, st:{kind:'QUESTION BOX', note:'[PROMPT, e.g. “Ask me…”]'}} ],
+  roles:['1 · Hello','2 · Why','3 · A real detail','4 · Invite replies'],
+  ex:{biz:'Juniper Candle Co.', f:[
+   {photo:'photo: maker pouring wax', text:'Hi, I’m Jo. I pour every candle.'},
+   {photo:'photo: wicks and jars on a bench', text:'I started because every “cozy” candle gave me a headache.'},
+   {photo:'video: candles curing on shelves', text:'something people don’t know: each batch cures 2 weeks before it ships'},
+   {st:{kind:'QUESTION BOX', note:'Ask me…'}} ]} },
+
+{ g:'D', id:'S19', name:'Behind the scenes / day in the business', job:'Trust', t:['#b39c78','#5e4c30'],
+  forr:'Showing the real work, so people feel like they know you.', when:'A normal workday. No special event needed.', also:'Bakery, groomer, photographer, Etsy seller, contractor', maps:'Behind the scenes · Day in the life · Packing orders', check:'Replies, profile visits',
+  f:[
+   {k:'photo', photo:'[PHOTO: where you are right now]', text:'[TIME]: [WHERE YOU ARE]', pos:'top', plain:true},
+   {k:'photo', video:true, photo:'[VIDEO: the main work]', text:'[WHAT YOU’RE DOING]', pos:'top'},
+   {k:'photo', photo:'[PHOTO: a small funny or real moment]', text:'[ONE LINE]', pos:'top', plain:true},
+   {k:'text', bg:'dark', big:'What should I show tomorrow?', sub:'', st:{kind:'QUESTION BOX', note:'[PROMPT]'}} ],
+  roles:['1 · Where I am','2 · The work','3 · A real moment','4 · Invite replies'],
+  ex:{biz:'Rise Bakery', f:[
+   {photo:'photo: dark bakery, ovens glowing', text:'4:30am. ovens on.'},
+   {photo:'video: shaping dough', text:'shaping 80 loaves'},
+   {photo:'photo: baker biting a croissant', text:'quality control (it’s me)'},
+   {st:{kind:'QUESTION BOX', note:'Show me…'}} ]} },
+
+{ g:'D', id:'S20', name:'Something I changed my mind about', job:'Trust', t:['#8f8a7c','#45423a'],
+  forr:'Sharing a real lesson from running your business.', when:'You learned something the hard way. Builds trust because it’s honest.', also:'Any business owner', maps:'Mistake I made', check:'Replies',
+  f:[
+   {k:'text', bg:'paper', big:'Something I changed my mind about:', sub:'[WHAT YOU USED TO BELIEVE OR DO]', serif:true},
+   {k:'photo', photo:'[PHOTO from that time]', text:'what happened: [ONE LINE]', pos:'top'},
+   {k:'photo', photo:'[PHOTO: how you work now]', text:'what I do now: [THE NEW WAY]', pos:'top'},
+   {k:'text', bg:'dark', big:'Ever done this?', sub:'', st:{kind:'QUESTION BOX', note:'[PROMPT]'}} ],
+  roles:['1 · The old belief','2 · What happened','3 · What changed','4 · Invite replies'],
+  ex:{biz:'Field Notes Photography', f:[
+   {sub:'saying yes to every wedding'},
+   {photo:'photo: laptop glowing at 2am', text:'by October I was editing at 2am, and galleries were late'},
+   {photo:'photo: calm desk in daylight', text:'now: 20 weddings a year, galleries in 3 weeks'},
+   {big:'Ever said yes to too much?', st:{kind:'QUESTION BOX', note:'Tell me…'}} ]} },
+];
+
+const GROUPS = { A:['Engagement','Easy taps that keep warm followers seeing you, and tell you what they want.'], B:['Authority / education','Show you know your stuff, so buying from you feels safe.'], C:['Sales / conversion','Proof, offers and one clear action. Stories are where warm people decide to buy.'], D:['Relationship / personality','The person behind the business. These usually end with a question box instead of a link.'] };
+
+/* ---------------- RENDER ---------------- */
+const state = { lib:'c', mode:'t' };
+try { const s = JSON.parse(localStorage.getItem('k1lib') || '{}'); Object.assign(state, s); } catch (e) {}
+const save = () => { try { localStorage.setItem('k1lib', JSON.stringify({ lib:state.lib, mode:state.mode })); } catch (e) {} };
+
+const esc = (s) => String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+const fit = (s, base) => { const n = String(s||'').length; const m = n < 28 ? 1.15 : n < 48 ? 1 : n < 75 ? .84 : n < 105 ? .72 : .62; return (base*m).toFixed(2)+'cqw'; };
+const isT = (v) => /^\s*\[/.test(v || '');
+function ph(v, cls) {
+  if (!v) return '';
+  const vid = /^\[?(\d+-SECOND|VIDEO|SCREEN|BEHIND|10-SEC)|video|screen recording/i.test(v);
+  return isT(v) ? `<div class="ph ${cls}"><i>${vid ? '▶' : '◻'}</i>${esc(v)}</div>` : `<div class="ph ex ${cls}">${esc(v)}</div>`;
+}
+
+const C = {
+  photoType: (d) => `${ph(d.photo,'full')}<div class="shade"></div><div class="pt-txt">${d.kick ? `<span class="kick hl">${esc(d.kick)}</span>` : ''}${d.h ? `<h2 class="serif" style="font-size:${fit(d.h,9)}">${esc(d.h)}</h2>` : ''}</div>`,
+  statement: (d) => `<div class="pad" style="justify-content:center">${d.kick ? `<span class="kick hl">${esc(d.kick)}</span>` : ''}<h2 class="serif" style="font-size:${fit(d.h,10)}">${esc(d.h)}</h2>${d.sub ? `<p class="sub">${esc(d.sub)}</p>` : ''}</div>`,
+  annotated: (d) => { const pos = [[9,40],[40,62],[12,82]]; return `<h2 class="ann-title">${esc(d.title)}</h2>${ph(d.photo,'ann-ph')}${(d.notes||[]).map((n,i)=>`<span class="tag" style="left:${pos[i][0]}cqw;top:${pos[i][1]}%">${esc(n)}</span>`).join('')}`; },
+  notes: (d) => `<div class="notes-top"><span>‹ Notes</span><span>Done</span></div><div class="notes-body"><h3 style="font-size:${fit(d.title,7)}">${esc(d.title)}</h3>${d.lead ? `<p class="lead">${esc(d.lead)}</p>` : ''}${(d.items||[]).map((x)=>`<p>${d.check ? '<span class="dot"></span>' : '<span>–</span>'}<span>${esc(x)}</span></p>`).join('')}</div>`,
+  scrap: (d) => `<div class="polaroid" style="${d.tilt ? 'transform:rotate(2.5deg)' : ''}"><span class="tape"></span>${ph(d.photo,'')}<div class="cap">${esc(d.cap)}</div></div>`,
+  quote: (d) => `<div class="pad" style="justify-content:center"><div class="qmark">“</div><h2 class="serif" style="font-size:${fit(d.q,9)}">${esc(d.q)}</h2><p class="sub" style="font-weight:700">— ${esc(d.who)}</p></div>`,
+  ask: (d) => `<div class="pad" style="justify-content:center"><span class="ask-mark">→</span><h2 class="serif" style="font-size:${fit(d.h,10)}">${esc(d.h)}</h2>${d.step ? `<span class="ask-pill">${esc(d.step)}</span>` : ''}${d.sub ? `<p class="ask-sub">${esc(d.sub)}</p>` : ''}</div>`,
+  bignum: (d) => `<div class="pad" style="justify-content:flex-end">${d.kick ? `<span class="kick">${esc(d.kick)}</span>` : ''}<p class="num ${d.sm || String(d.n).length > 5 ? 'sm' : ''}">${esc(d.n)}</p><h2 class="bn-h">${esc(d.h)}</h2>${d.sub ? `<p class="sub">${esc(d.sub)}</p>` : ''}</div>`,
+  split: (d) => `${ph(d.a,'split-a')}${ph(d.b,'split-b')}${d.al ? `<span class="split-lab" style="left:9cqw;transform:rotate(-3deg)">${esc(d.al)}</span>` : ''}${d.bl ? `<span class="split-lab" style="left:53cqw;transform:rotate(2deg)">${esc(d.bl)}</span>` : ''}<h2 class="serif split-h" style="font-size:${fit(d.h,8)}">${esc(d.h)}</h2>`,
+  list: (d) => `<div class="pad" style="justify-content:center"><h2 class="list-h">${esc(d.title)}</h2>${(d.items||[]).map((x,i)=>`<div class="li"><span class="n">${i+1}</span><span>${esc(x)}</span></div>`).join('')}</div>`,
+  checklist: (d) => `<div class="pad" style="justify-content:center"><h2 class="list-h">${esc(d.title)}</h2>${(d.items||[]).map((x)=>`<div class="li"><span><span class="box"></span></span><span>${esc(x)}</span></div>`).join('')}</div>`,
+  steps: (d) => `<span class="step-n">${esc(d.n)}</span><h2 class="serif step-h" style="font-size:${fit(d.h,7)}">${esc(d.h)}</h2>${ph(d.photo,'step-ph')}`,
+  beforeAfter: (d) => `${ph(d.before,'ba-1')}${ph(d.after,'ba-2')}<span class="ba-lab" style="top:4cqw">BEFORE</span><span class="ba-lab" style="top:calc(50% + 4cqw)">AFTER</span>${d.h ? `<div class="ba-h">${esc(d.h)}</div>` : ''}`,
+  myth: (d) => `<div class="pad" style="justify-content:center"><span class="kick hl">Myth</span><h2 class="serif" style="font-size:${fit(d.myth,10)}"><span class="strike">${esc(d.myth)}</span></h2><p class="sub">The truth is on the next slide.</p></div>`,
+  table: (d) => `<div class="pad" style="justify-content:center"><h2 class="list-h">${esc(d.title)}</h2><div class="tbl"><div></div><div class="th">${esc(d.cols[0])}</div><div class="th">${esc(d.cols[1])}</div>${d.rows.map((r)=>`<div class="rl">${esc(r[0])}</div><div>${esc(r[1])}</div><div>${esc(r[2])}</div>`).join('')}</div></div>`,
+  qa: (d) => `<div class="pad" style="justify-content:center;gap:5cqw"><div class="bub q">${esc(d.q)}</div><div class="bub a">${esc(d.a)}</div></div>`,
+};
+const BG = { photoType:'', statement:'', annotated:'white', notes:'white', scrap:'p2', quote:'', ask:'dark', bignum:'yel', split:'', list:'', checklist:'p2', steps:'', beforeAfter:'', myth:'', table:'white', qa:'p2' };
+
+function zone(st) { return `<div class="zone" style="top:${st.top||46}%">[ADD INSTAGRAM ${esc(st.kind)} HERE]${st.note ? `<em>${esc(st.note)}</em>` : ''}<small>Delete this box, export, then add the real sticker in Instagram.</small></div>`; }
+function linkZone(l) { return `<div class="zone" style="top:52%">[ADD LINK STICKER HERE]<em>${esc(l)}</em><small>Delete this box, export, then add the link sticker in Instagram.</small></div>`; }
+const SBG = { dark:'dark', yel:'yel', paper:'' };
+function story(d) {
+  let h = '';
+  if (d.k === 'text') {
+    h = `<div class="st-txt">${d.big ? `<p class="st-big ${d.serif ? 'serif' : ''}" style="font-size:${fit(d.big, d.serif ? 12 : 10)}">${esc(d.big)}</p>` : ''}${d.sub ? `<p class="st-sub">${esc(d.sub)}</p>` : ''}</div>`;
+    if (d.st) h += zone({ ...d.st, top: 52 });
+  } else {
+    h = d.k === 'split' ? `${ph(d.a,'s-split1')}${ph(d.b,'s-split2')}` : ph(d.photo,'full');
+    if (d.video) h += `<span class="vid">▶ VIDEO</span>`;
+    if (d.text) h += `<div class="ig ${d.plain ? 'plain' : ''}" style="top:${d.k === 'split' ? 44 : 20}%;font-size:${fit(d.text,6.6)}"><span>${esc(d.text)}</span></div>`;
+    if (d.st) h += zone({ ...d.st, top: d.k === 'split' ? 22 : 40 });
+    if (d.link) h += linkZone(d.link);
+  }
+  return { cls: d.k === 'text' ? (SBG[d.bg] ?? '') : '', html: h };
+}
+
+function merged(arr, ex) { return arr.map((s, i) => ({ ...s, ...((ex && ex[i]) || {}) })); }
+
+function slideHTML(d, isStory) {
+  if (isStory) { const r = story(d); return `<div class="slide story ${r.cls}">${r.html}</div>`; }
+  const cls = d.bg || BG[d.k] || '';
+  return `<div class="slide ${cls}">${C[d.k](d)}</div>`;
+}
+
+const all = []; // for lightbox: [{tplIdx, html, story}]
+function renderTpl(t, i, isStory) {
+  const ex = state.mode === 'e';
+  const list = isStory ? merged(t.f, ex ? t.ex.f : null) : merged(t.s, ex ? t.ex.s : null);
+  const roles = t.roles || (isStory ? SR : CR);
+  const cells = list.map((d, j) => {
+    const html = slideHTML(d, isStory);
+    const idx = all.push({ t: t.id, html, story: isStory, label: `${t.id} · ${t.name} · ${j+1}/${list.length}` }) - 1;
+    return `<div class="cell ${isStory ? 'st' : ''}"><button type="button" class="slidebtn" data-i="${idx}" aria-label="Enlarge ${esc(t.name)}, ${isStory ? 'frame' : 'slide'} ${j+1}">${html}</button><div class="role"><b>${j+1}</b> · ${esc((roles[j] || '').replace(/^\d+ · /, ''))}</div></div>`;
+  }).join('');
+  const meta = `<dl class="meta"><div><dt>What it’s for</dt><dd>${esc(t.forr)}</dd></div><div><dt>When to use it</dt><dd>${esc(t.when)}</dd></div><div><dt>Also works for</dt><dd>${esc(t.also)}</dd></div><div><dt>Written templates it serves</dt><dd>${esc(t.maps)}</dd></div></dl>`;
+  const foot = isStory
+    ? `<dl class="foot"><div><dt>Did it do its job?</dt><dd>Look at ${esc(t.check)}.</dd></div><div><dt>${ex ? 'Example business' : 'Customize'}</dt><dd>${ex ? esc(t.ex.biz) + ' · illustrative example' : 'Swap the photo or video, replace each [PROMPT], delete the dashed boxes, export as PNG (or MP4 if you used video), then add the real stickers in Instagram.'}</dd></div></dl>`
+    : `<dl class="foot"><div><dt>Caption ask</dt><dd>${esc(t.caption)}</dd></div><div><dt>${ex ? 'Example business' : 'Tip'}</dt><dd>${ex ? esc(t.ex.biz) + ' · illustrative example' : esc(t.tip)}</dd></div></dl>`;
+  return `<section class="tpl" id="${t.id}"><div class="tpl-head"><span class="tpl-num">${t.id}</span><h2 class="tpl-name">${esc(t.name)}</h2><span class="pill">${esc(t.job)}</span>${t.proto ? '<span class="pill proto">Recommended first prototype</span>' : ''}</div>${meta}<div class="strip">${cells}</div>${foot}</section>`;
+}
+
+function render() {
+  all.length = 0;
+  const out = document.getElementById('out');
+  let h = '';
+  if (state.lib === 'c') {
+    h += `<div class="howto"><h3>How customers use a carousel template</h3><ol><li>Pick the structure that fits what you want to say.</li><li>Open the file in Canva: drag the .pptx onto canva.com in a desktop browser, once. After that it opens on your phone too.</li><li>Replace every [PROMPT] with your words. Keep about 25 words or fewer per slide.</li></ol><ol start="4"><li>Swap each striped box for your own photo (select it, then Replace).</li><li>Change colors: click a color, then “Change all.”</li><li>Download as PNG, post as one carousel, and put the action in the caption too.</li></ol></div>`;
+    h += `<nav class="jump" aria-label="Jump to carousel">${CAROUSELS.map((t)=>`<a href="#${t.id}">${t.id} ${esc(t.name)}</a>`).join('')}</nav>`;
+    h += CAROUSELS.map((t, i) => renderTpl(t, i, false)).join('');
+  } else {
+    h += `<div class="howto"><h3>How customers use a Story template</h3><ol><li>Pick what you’re trying to do: engage, teach, sell or connect.</li><li>Open the file in Canva (desktop once, then phone).</li><li>Swap the photo or video and replace each [PROMPT].</li></ol><ol start="4"><li>Delete every dashed blue box. They mark where real stickers go.</li><li>Download each frame as PNG (or MP4 if it has video).</li><li>Upload to Instagram, then add the real poll, question, quiz, slider, countdown or link sticker where the box was.</li></ol></div>`;
+    h += `<nav class="jump" aria-label="Jump to Story">${STORIES.map((t)=>`<a href="#${t.id}">${t.id} ${esc(t.name)}</a>`).join('')}</nav>`;
+    for (const g of ['A','B','C','D']) {
+      h += `<h2 class="grouphead">${g}. ${esc(GROUPS[g][0])}</h2><p class="groupnote">${esc(GROUPS[g][1])}</p>`;
+      h += STORIES.filter((t)=>t.g===g).map((t, i) => renderTpl(t, i, true)).join('');
+    }
+  }
+  out.innerHTML = h;
+  out.querySelectorAll('.tpl').forEach((sec) => {
+    const t = [...CAROUSELS, ...STORIES].find((x) => x.id === sec.id);
+    if (t) { sec.style.setProperty('--t1', t.t[0]); sec.style.setProperty('--t2', t.t[1]); }
+  });
+  for (const [id, key] of [['lib','lib'],['mode','mode']]) document.querySelectorAll(`#${id} button`).forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.v === state[key])));
+}
+
+for (const [id, key] of [['lib','lib'],['mode','mode']]) {
+  document.getElementById(id).addEventListener('click', (e) => { const b = e.target.closest('button'); if (!b) return; state[key] = b.dataset.v; save(); render(); });
+}
+document.getElementById('guides').addEventListener('change', (e) => { document.body.classList.toggle('show-guides', e.target.checked); });
+
+/* lightbox */
+const dlg = document.getElementById('lbx'); let cur = 0;
+function show(i) {
+  cur = (i + all.length) % all.length; const it = all[cur];
+  const st = document.getElementById('lbStage'); st.className = 'lb-stage' + (it.story ? ' st' : '');
+  const sec = document.getElementById(it.t); st.style.setProperty('--t1', sec.style.getPropertyValue('--t1')); st.style.setProperty('--t2', sec.style.getPropertyValue('--t2'));
+  st.innerHTML = it.html; document.getElementById('lbPos').textContent = it.label;
+}
+document.getElementById('out').addEventListener('click', (e) => { const b = e.target.closest('.slidebtn'); if (!b) return; show(+b.dataset.i); if (dlg.showModal) dlg.showModal(); else dlg.setAttribute('open', ''); });
+document.getElementById('lbPrev').onclick = () => show(cur - 1);
+document.getElementById('lbNext').onclick = () => show(cur + 1);
+document.getElementById('lbClose').onclick = () => dlg.close();
+dlg.addEventListener('click', (e) => { if (e.target === dlg) dlg.close(); });
+dlg.addEventListener('keydown', (e) => { if (e.key === 'ArrowRight') show(cur + 1); if (e.key === 'ArrowLeft') show(cur - 1); });
+
+render();
+</script>

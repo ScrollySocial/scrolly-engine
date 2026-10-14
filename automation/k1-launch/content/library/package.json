@@ -1,0 +1,1 @@
+﻿{ "name": "k1-challenge-library", "private": true, "type": "module", "description": "Builds the $1K Challenge carousel + Story template files (PPTX for Canva import) and previews.", "scripts": { "build": "node build.mjs" }, "dependencies": { "pptxgenjs": "4.0.1" } }
