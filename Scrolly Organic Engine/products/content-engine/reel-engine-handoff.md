@@ -180,7 +180,27 @@ unless marked **open**. Not logged to the Business Brain yet: she said it's stil
 - **Reel #2** ("Your AI should know what you're selling") was finished and posted in another chat; it was the test bed
   for the page. A third Reel folder (`2026-10-13-bb-jumbo-shrimp`) belongs to another chat.
 
-## Next: overnight scheduling (start a new chat from here)
+## Session 4 (2026-10-13): overnight scheduling BUILT
+- **Changed from the plan (Mercedes):** she works at 7pm, so there is no evening run. ONE nightly run, scheduled task
+  `reels-overnight` at 12:30am: A post what she approved → B apply her page choices → C render → D draft every new
+  Studio row (no cap) → E hub + morning note + notification. Runbook: `.claude/skills/scrolly-reels/overnight.md`.
+- **Auto-queue decided:** "Approve the Reel" + "Add to the Buffer queue" on the page = her yes. The run uploads the
+  posting copy to WordPress media (link never expires: this settles the "where MP4s live for Buffer" question) and
+  queues it in Buffer, row → Scheduled. "Hold" → row Approved.
+- **New pieces:** `lib/pipeline.mjs` (stage per Reel), `lib/render-ready.mjs`, `lib/post-reel.mjs` (cover as frame 0
+  fixed: the first version dropped the cover frame), `lib/review/hub.mjs` (one link, http://localhost:4320, every
+  Reel's page on 4331+), `automation/reel-hf/rows.json` (row → folder ledger). Already-queued Reels #1/#2 carry
+  `review/posted.json`.
+- **End-to-end proof (render honors page choices):** Reel #2 rebuilt with its saved page choices and rendered
+  (`renders/e2e-page-choices.mp4`, 11.3 min): the look filter shows up in the real render (frames 4-7% brighter,
+  softer contrast), the F10 zoom transition and the swapped pop sound are in. Captions and the brand kit dropdown
+  were not exercised (no choices saved); the first overnight Reel with those choices is their proof. Posted
+  index.html restored after the test.
+- **Laptop:** sleep on AC was 20 min; must be Never (her to change) + app open + lid open for 12:30am to fire.
+- Still open: approvals on the page don't notify Claude (the nightly run picks them up); Holiday kit colors;
+  marker auto-contrast; Film/Chill/Demo/Quick Cut (overnight skips those rows and says so); Trial variants on hold.
+
+## Next: overnight scheduling (planned 2026-10-13, superseded by Session 4 above)
 Mercedes's idea (2026-10-13), agreed in shape:
 - **Overnight run (~1am):** for every Content Pipeline row with Format Reel, Status Edit and footage: transcribe, rough
   cut (her rough-cut checkpoint moves onto the page: she fixes cuts in Plan it's Script tab), plan the moments, cover
