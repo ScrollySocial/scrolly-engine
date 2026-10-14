@@ -380,9 +380,20 @@ function tabDots() {
   const has = { screen: Object.keys(D.board).length || Object.keys(D.sound).length || D.addedSfx.length, script: D.cut.length, cover: !!D.cover, moments: Object.keys(D.visual).length, audio: D.music.file || D.music.volume != null || D.soundRequests, trans: Object.keys(D.transitions).length, caps: Object.keys(D.captions).length || D.captionFont, look: !!D.look || Object.keys(D.lookByFrame || {}).length > 0 };
   $$('.tab').forEach((b) => { b.querySelector('.dot')?.remove(); if (has[b.dataset.tab || b.dataset.tab1]) b.append(el('span', 'dot')); });
 }
-function approve(key, next) {
-  D.approved = { ...D.approved, [key]: new Date().toISOString() }; save();
-  renderApprovals(); if (next) { showStep(next); window.scrollTo(0, 0); }
+async function approve(key, next) {
+  D.approved = { ...D.approved, [key]: new Date().toISOString() };
+  const A = asks(), sending = { look: A.look + A.general, sound: A.look + A.general + A.sound, video: A.video }[key] > 0;
+  if (sending) {
+    // changes go to Claude: save now (not after the usual pause), then back to the list of Reels
+    clearTimeout(saveTimer); pill('Sending to Claude…');
+    try {
+      const r = await fetch('/api/decisions', { method: 'PUT', body: JSON.stringify(D) }).then((r) => r.json());
+      if (!r.ok) throw new Error(r.error);
+      location.href = 'http://localhost:4320/';
+    } catch { pill("Couldn't save: is the review page still running?", 'bad'); }
+    return;
+  }
+  save(); renderApprovals(); if (next) { showStep(next); window.scrollTo(0, 0); }
 }
 // her open change requests per step (same rules as openAsks in lib/pipeline.mjs)
 function asks() {
@@ -403,14 +414,14 @@ function renderApprovals() {
   // step 1: change requests make it "send to Claude", not "looks good"
   $('#ok1').textContent = n1 ? 'Send my changes to Claude →' : 'Plan looks good, on to editing →';
   $('#ok1text').textContent = n1
-    ? (valid('look') ? `Sent to Claude ${when(D.approved.look)}. Anything you add now goes too. You can keep going to step 2.` : `${plural(n1, 'change')} for Claude. Send them, then carry on to step 2 if you like. This Reel comes back to you once they're made.`)
+    ? (valid('look') ? `Sent to Claude ${when(D.approved.look)}. Anything you add now goes too.` : `${plural(n1, 'change')} for Claude. Sending takes you back to your list of Reels; this one comes back to you once they're made.`)
     : (valid('look') ? `Approved ${when(D.approved.look)}.` : fixed ? fixed + 'approve the plan.' : 'Happy with the plan? Then sounds get picked to match.');
   // step 2: it's a live preview, never the video
   $('#s2note').textContent = 'This is a live preview: your footage with the current graphics and sounds, playing right in the page. It is not the final video. That only gets made after you finish this step.'
     + (n1 ? ` Your step 1 changes aren't in it yet: Claude makes those first.` : '');
   $('#ok2').textContent = n2 ? 'Send my changes to Claude →' : 'Edit done, make the video →';
   $('#ok2text').textContent = n2
-    ? (valid('sound') ? `Sent to Claude ${when(D.approved.sound)}. Claude makes your changes, then you check them here before any video gets made.` : `${plural(n2, 'change')} for Claude (steps 1 and 2). You check them here before any video gets made.`)
+    ? (valid('sound') ? `Sent to Claude ${when(D.approved.sound)}. Claude makes your changes, then you check them here before any video gets made.` : `${plural(n2, 'change')} for Claude (steps 1 and 2). Sending takes you back to your list; you check them here before any video gets made.`)
     : (valid('sound') ? `Approved ${when(D.approved.sound)}. The video gets made in the overnight run.` : fixed ? fixed + 'approve the edit.' : 'Edit right? Then the video gets made in the overnight run.');
   // step 3: only real once a video with all her choices exists
   const ready = ['approve', 'post'].includes(ST.stage);
