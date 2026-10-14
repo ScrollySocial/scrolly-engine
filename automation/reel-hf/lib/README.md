@@ -15,6 +15,7 @@ asks a few questions, writes the file and runs `doctor.mjs`, which installs what
 | `settings.mjs` | Reads `../reel-settings.json` (`REEL_SETTINGS=<file>` to test another): resolved paths, ffmpeg/ffprobe, browser, puppeteer launch, template overrides |
 | `reel.mjs` | Engine core: frames, scenes, cut-outs, camera (alternate / punch / whip), captions, sfx, music → `index.html` |
 | `components.mjs` | Component catalog (list at the top of the file) + all component CSS |
+| `cta.mjs` | Every Reel's purpose: the 6 actions (Follow, Comment a word, Share, Save, Link in bio, Comment for a freebie), their end-card text, caption line and hook tip. `R.endCard({ kind, word, detail })` in build.mjs; her Ending pick (decisions.json `cta`) wins |
 | `brand/scrolly.mjs` | Brand kit: colors by role, fonts, site. A customer swaps this one file |
 | `brand/index.mjs` | Every kit the review page's Brand kit dropdown offers (Scrolly, Scrolly Holiday draft); a customer kit = one file + one line; the default kit comes from settings `brand` |
 | `templates/studio.mjs` | Studio template: segment length, framing, caption rules, music level, sfx lengths (settings `templates.studio` overrides) |
@@ -29,9 +30,11 @@ asks a few questions, writes the file and runs `doctor.mjs`, which installs what
 | `post-reel.mjs` | Posting copy (cover as frame 0, CRF 20, ≤9 Mbps) → WordPress media (never-expiring link for Buffer) when settings `posting.videoHost` = wordpress; `--buffer <id>` records it |
 | `review/hub.mjs` | One page for every Reel: http://localhost:4320 (`--start` runs it in the background); opens each Reel's page on 4331+ (settings `review`) |
 | `../rows.json` | Tracker row → Reel folder ledger (settings `tracker.rows`), so the overnight run never drafts a row twice |
-| `animatic.mjs` | Storyboard stills timed to voice + music + sound effects (review before the full build) |
-| `assets/` | Shared fonts, gsap, the 10 approved sound effects (a missing sound is skipped, never a broken build) |
 | `../../reel-package/` | Builds the customer copy: `node build-package.mjs` → `dist/reel-engine/` (blank settings + brand kit, no sounds, licenses) |
+| `loudness.mjs` | Music level, measured: Quiet / Normal / Up front = 25 / 21 / 17 dB under the voice (ffmpeg ebur128, cached in `<reel>/assets/.loudness.json`); warns when music is over 26 dB under |
+| `sounds.mjs` | The sound library: 25 sounds grouped by job, with Mixkit sources. `--md` writes `sounds.md` (customer download checklist), `--get` fills missing files into `assets/sfx` |
+| `animatic.mjs` | Storyboard stills timed to voice + music + sound effects (review before the full build) |
+| `assets/` | Shared fonts, gsap, the sound effects listed in `sounds.mjs` |
 
 ## New Reel
 ```bash

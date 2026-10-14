@@ -9,6 +9,7 @@
 //   R.cam.alternate(); R.cam.punch(t); R.cam.whip(t);
 //   R.fx('fx-pop1', 'pop-light', t); R.music('assets/music/music-a.mp3');
 //   R.captions({ hide: [4, 9], top: (t) => 128 });
+//   R.endCard({ kind: 'save', detail: 'for your next post' });  // the Reel's purpose (lib/cta.mjs); her Plan-step pick wins
 //   R.write();                                    // → index.html
 import { readFileSync, writeFileSync, existsSync, copyFileSync, mkdirSync } from 'node:fs';
 import path from 'node:path';
@@ -16,6 +17,8 @@ import { fileURLToPath } from 'node:url';
 import { makeComponents, componentCss } from './components.mjs';
 import { BRANDS, defaultBrand } from './brand/index.mjs';
 import studio from './templates/studio.mjs';
+import { CTAS, resolveCta, ctaCaption } from './cta.mjs';
+import { musicMix, LEVELS, WARN_UNDER } from './loudness.mjs';
 
 const LIB_SFX = path.join(path.dirname(fileURLToPath(import.meta.url)), 'assets/sfx');
 // Review stage runtime: only clips whose window holds t are visible; the GSAP timeline is posed at t.
@@ -55,6 +58,7 @@ export function reel({ brand, template = studio, words = 'assets/words.json', ou
   const scenes = [], cuts = [], sfx = [], camJs = [], animJs = [], rawJs = [];
   let capRender = () => null;
   let F = [0, DUR], music = '', capHtml = '', capList = [], capHide = [];
+  let END = DUR, endInfo = null; // the end card adds a short tail after she stops talking: END = DUR + tail
   const byFrame = {}, cutStill = {}, cutMeta = []; // for the storyboard sheet
   const sfxData = [], sfxOff = []; let musicData = null; // for the animatic mix (+ switched-off sounds, for the review page)
   // sound changes she made on the review page (review/decisions.json): { sound: { <fx id>: { off, name, vol } }, music: { volume } }
@@ -119,11 +123,20 @@ export function reel({ brand, template = studio, words = 'assets/words.json', ou
       sfxData.push({ id, name: file, base, file: `assets/sfx/${file}.mp3`, t: +t, vol, baseVol, d: d ?? T.sfxLen[file] });
       sfx.push(`<audio id="${id}" src="assets/sfx/${file}.mp3" data-start="${(+t).toFixed(2)}" data-duration="${d ?? T.sfxLen[file]}" data-track-index="${12 + (sfx.length % 4)}" data-volume="${vol}"></audio>`);
     },
-    music(file, { volume = T.music.volume, fadeIn = T.music.fadeIn, fadeOut = T.music.fadeOut } = {}) {
-      const baseVolume = volume, baseFile = file;
+    // ONE track, ONE level + fades. The level is measured (lib/loudness.mjs): Quiet / Normal / Up front = a fixed number of
+    // dB under her voice, whatever the track's own loudness. A fixed `volume` (build.mjs) or an older page's
+    // Quieter/Louder number (decisions music.volume) still wins when set; her page level (music.level) beats both.
+    music(file, { level = T.music.level, volume, fadeIn = T.music.fadeIn, fadeOut = T.music.fadeOut } = {}) {
+      const baseFile = file, baseLevel = level;
       if (musicEdit.file && existsSync(musicEdit.file)) file = musicEdit.file;
-      if (musicEdit.volume != null) volume = musicEdit.volume;
-      musicData = { file, baseFile, volume, baseVolume, fadeIn, fadeOut };
+      const chosen = musicEdit.level || (musicEdit.volume != null || volume != null ? null : level);
+      const mix = musicMix({ voiceFile: 'assets/talk-audio.m4a', musicFile: file, seconds: DUR, level: chosen, volume: musicEdit.level ? undefined : musicEdit.volume ?? volume });
+      const baseVolume = volume ?? mix.levels?.[baseLevel] ?? T.music.fallbackVolume;
+      volume = mix.measured ? mix.volume : musicEdit.volume ?? volume ?? T.music.fallbackVolume;
+      musicData = { file, baseFile, volume, baseVolume, level: chosen, baseLevel, levels: mix.levels || null, mix, fadeIn, fadeOut };
+      if (!mix.measured) console.warn(`⚠ music level not measured (ffmpeg missing or unreadable file): using volume ${volume}`);
+      else if (mix.tooQuiet) console.warn(`⚠ MUSIC TOO QUIET: ${mix.out} LUFS is ${mix.under} dB under her voice (${mix.voice} LUFS); over ${WARN_UNDER} dB under can't be heard on a phone. Pick Quiet/Normal/Up front on the review page or drop the fixed volume.`);
+      else console.log(`music: ${chosen ? LEVELS[chosen].label : 'fixed volume'} → volume ${volume}, ${mix.out} LUFS, ${mix.under} dB under her voice (${mix.voice} LUFS)`);
       music = `<audio id="music-a" src="${file}" data-start="0" data-duration="${DUR}" data-track-index="10" data-volume="${volume}" data-fade-in="${fadeIn}" data-fade-out="${fadeOut}"></audio>`;
     },
     // relaxed lower-third captions; hide = frame numbers that carry their own type
@@ -151,6 +164,34 @@ export function reel({ brand, template = studio, words = 'assets/words.json', ou
       capHtml = caps.map((c, i) => { const r = capRender(i); if (!r) return null; const d = Math.max(0.3, Math.min((caps[i + 1]?.s ?? c.e + 0.6) - c.s - 0.02, Math.max(0.6, c.e - c.s + 0.5))); return `<div id="cap${i}" class="${r.cls}" data-start="${c.s.toFixed(2)}" data-duration="${d.toFixed(2)}" data-track-index="6" style="top:${top(c.s)}cqw"><span>${r.inner}</span></div>`; }).filter((x) => x != null).join('\n');
       return caps;
     },
+    // End card for the Reel's purpose (lib/cta.mjs). def = the plan's default (Notion row CTA); her Plan-step choice
+    // (decisions.json cta) wins. Adds one frame AFTER her last word: her cut-out (the last moment's, or the frame she
+    // picked) on a flat brand color, the ask above her head, a real-looking Instagram piece and a handwritten aside.
+    // Call after R.frames() and before R.captions(). No CTA picked = no card and a warning (Plan it asks for one).
+    endCard(def = {}, { tail = T.endCard?.tail ?? 2.8 } = {}) {
+      const c = resolveCta(D.cta?.kind ? D.cta : def);
+      if (!c) { endInfo = { missing: true }; console.warn('⚠ NO CTA: pick what this Reel should get people to do (review page, Plan it → Ending).'); return null; }
+      const d = CTAS[c.kind], card = d.card(c, B), s = DUR, n = F.length;
+      F = [...F, +(DUR + tail).toFixed(2)]; END = F.at(-1);
+      const bgKey = B.C[c.bg] ? c.bg : T.endCard?.bg || 'cream', dark = bgKey === 'ink', ink = dark ? B.C.cream : B.C.ink;
+      const nn = (k) => String(k).padStart(2, '0'), fr = c.frame || n - 1;
+      const cut = [`review/cover-cuts/f${nn(fr)}.png`, `sketch/f${nn(fr)}-cut.png`].find((f) => existsSync(f));
+      const parts = [K.fill(B.C[bgKey]),
+        { html: cut ? `<img id="endcut" class="abs blk" src="${cut}" style="left:0;top:0;width:100%;height:100%;object-fit:cover${look ? `;filter:${lookFilter(look)}` : ''}">` : '', anim: cut ? [`up('#endcut', ${s}, 40);`] : [] },
+        K.statement('endb', card.text, { top: 7, size: 13, color: ink, in: s + 0.1, swipe: s + 0.6 }),
+        K.ctaUi('endui', card.ui, { top: 30, word: c.word, handle: B.handle || '', site: B.site || '', name: B.label || '', in: s + 0.9 })];
+      if (card.aside) parts.push(K.hand('endh', card.aside, { x: 8, y: 50, size: 7, r: -3, color: dark ? B.C.peach : B.C.orange, in: s + 1.5 }));
+      R.scene(n, parts);
+      if (!cut) console.warn(`⚠ end card: no cut-out of frame F${fr} yet (review/cover-cuts or sketch/f${nn(fr)}-cut.png); card shows the ask on color only`);
+      // one entrance sound + one on the UI; never the same as the sound right before it
+      const last = sfxData.filter((x) => x.t < s).sort((a, b) => a.t - b.t).at(-1)?.name;
+      R.fx('fx-end-in', last === 'whoosh-air' ? 'whoosh-fast' : 'whoosh-air', s, 0.4);
+      R.fx('fx-end-ui', card.ui === 'save' || card.ui === 'follow' ? 'check' : 'pop-bubble', s + 0.9, 0.5);
+      endInfo = { n, title: `End card: ${d.label}`, cta: c, caption: ctaCaption(c, B), hook: d.hook, manual: d.manual || '' };
+      return endInfo;
+    },
+    get END() { return END; },
+    get endInfo() { return endInfo; },
     js(code) { rawJs.push(code); },
     get sfxData() { return sfxData; },
     get sfxOff() { return sfxOff; },
@@ -158,19 +199,19 @@ export function reel({ brand, template = studio, words = 'assets/words.json', ou
     get captionList() { return capList.map((c, i) => ({ i, s: c.s, e: c.e, t: c.t })); },
     get look() { return look; },
     // beat-to-beat transitions (frame 2 onward): what build.mjs planned and what the reviewer chose, for the review page
-    get transitions() { return F.slice(1, -1).map((t, i) => ({ frame: i + 2, t: +t, planned: camEvents.find((e) => Math.abs(e.t - t) < 0.06)?.type || 'cut', chosen: transEdits['F' + (i + 2)] })); },
+    get transitions() { return F.slice(1, endInfo?.n ? -2 : -1).map((t, i) => ({ frame: i + 2, t: +t, planned: camEvents.find((e) => Math.abs(e.t - t) < 0.06)?.type || 'cut', chosen: transEdits['F' + (i + 2)] })); },
     // Storyboard sheet: each frame drawn with the SAME components over a real still of the take, in its final
     // (end-of-entrance) state. stills(n) → image path; notes[n] = { title, sound } (text under each frame).
     // full: one 1080px-wide frame per row with id=f<k>, no notes (the animatic screenshots these)
     storyboard(file, { stills, notes = {}, title = '', version = 'v1', full = false } = {}) {
       const n = F.length - 1;
       const cells = Array.from({ length: n }, (_, i) => {
-        const k = i + 1, w = win(k), note = notes[k] || {};
+        const k = i + 1, w = win(k), note = notes[k] || (endInfo?.n === k ? { title: endInfo.title } : {});
         const layers = byFrame[k] || [];
         const main = layers.filter((l) => !l.layer).map((l) => l.html).join(''), top = layers.filter((l) => l.layer).map((l) => l.html).join('');
         const ci = capHide.includes(k) ? -1 : capList.findIndex((c) => c.s >= w.s && c.s < w.s + w.d), cr = ci >= 0 ? capRender(ci) : null, cap = cr && capList[ci];
         const said = W.filter((x) => x.s >= w.s && x.s < w.s + w.d).map((x) => x.w).join(' ');
-        return `<figure class="cell"><div class="frame" id="f${k}"><img class="bg" src="${stills(k)}"><div class="scene">${main}</div>${cutStill[k] ? `<img class="bg" src="${cutStill[k]}">` : ''}<div class="scene">${top}</div>${cap ? `<div class="${cr.cls.replace('clip ', '')}" style="top:${T.captions.top}cqw"><span>${cr.inner}</span></div>` : ''}</div>
+        return `<figure class="cell"><div class="frame" id="f${k}">${existsSync(stills(k)) ? `<img class="bg" src="${stills(k)}">` : ''}<div class="scene">${main}</div>${cutStill[k] ? `<img class="bg" src="${cutStill[k]}">` : ''}<div class="scene">${top}</div>${cap ? `<div class="${cr.cls.replace('clip ', '')}" style="top:${T.captions.top}cqw"><span>${cr.inner}</span></div>` : ''}</div>
 <figcaption><b>F${k}</b> <span class="t">${w.s.toFixed(1)}–${(w.s + w.d).toFixed(1)}s</span>${note.title ? ` ${note.title}` : ''}<br><i>“${said}”</i>${note.sound ? `<br><span class="snd">♪ ${note.sound}</span>` : ''}</figcaption></figure>`;
       }).join('\n');
       writeFileSync(file, `<!doctype html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>${title} storyboard ${version}</title>
@@ -199,6 +240,8 @@ ${cells}
     write(file = out, { stage } = {}) {
       // sounds added on the review page ({ id, name, t, vol }), once per build
       if (!addedDone) { addedDone = true; for (const a of D.addedSfx || []) R.fx(a.id, a.name, a.t, a.vol ?? 0.6); }
+      // a CTA she picked always gets its card, even in a build.mjs written before R.endCard existed
+      if (!endInfo && D.cta?.kind) R.endCard();
       // a different look for single moments (the review page previews these live, so only the real build sets them)
       const lookJs = () => {
         const by = D.lookByFrame || {};
@@ -219,7 +262,7 @@ ${cells}
       // the take as muted segments (assets/talk-seg/talk-<i>.mp4, made by lib/prep-footage.mjs) + one voice track
       const SEG = T.segment;
       const talk = stage?.video ? `<video id="talkv" class="clip talk" src="${stage.video}" muted playsinline preload="auto" data-start="0" data-duration="${DUR}"></video>`
-        : stage ? F.slice(0, -1).map((s, i) => `<img class="clip talk" src="${stage.stills(i + 1)}" data-start="${s}" data-duration="${+(F[i + 1] - s).toFixed(3)}">`).join('') : Array.from({ length: Math.ceil(DUR / SEG) }, (_, i) => {
+        : stage ? F.slice(0, endInfo?.n ? -2 : -1).map((s, i) => `<img class="clip talk" src="${stage.stills(i + 1)}" data-start="${s}" data-duration="${+(F[i + 1] - s).toFixed(3)}">`).join('') : Array.from({ length: Math.ceil(DUR / SEG) }, (_, i) => {
         const st = i * SEG, d = Math.min(SEG, DUR - st);
         return `<video id="talk-${i}" class="clip talk" src="assets/talk-seg/talk-${i}.mp4" muted playsinline data-start="${st}" data-duration="${+d.toFixed(3)}" data-track-index="${i % 2}"></video>`;
       }).join('');
@@ -263,12 +306,12 @@ ${look ? `.talk,.cutvid{filter:${lookFilter(look)}}
 ` : ''}${capCss()}</style>
 </head>
 <body>
-<div id="root" data-composition-id="main" data-start="0" data-duration="${DUR}" data-width="1080" data-height="1920">
+<div id="root" data-composition-id="main" data-start="0" data-duration="${END}" data-width="1080" data-height="1920">
 <div id="cam">${talk}</div>
 ${stage ? '' : `<audio id="voice" src="assets/talk-audio.m4a" data-start="0" data-duration="${DUR}" data-track-index="9" data-volume="1"></audio>\n`}${scenes.join('\n')}
 ${stage ? cutMeta.map((c, k) => (existsSync(c.file) ? cuts[k].replace('<video ', '<video preload="auto" ') : c.still ? `<img class="clip cutvid" src="${c.still}" data-start="${win(c.n).s}" data-duration="${win(c.n).d}" style="z-index:${c.z}">` : '')).join('\n') : cuts.join('\n')}
 ${capHtml}
-${stage ? '' : `${sfx.join('\n')}\n${music}`}
+${stage ? '' : `${sfx.join('\n')}\n${music.replace(`data-duration="${DUR}"`, `data-duration="${END}"`)}`}
 </div>
 <script>${js}</script>
 </body>

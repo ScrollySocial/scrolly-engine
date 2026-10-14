@@ -100,8 +100,10 @@ moments she kept and redo only the changed moments. Then `node build.mjs && npm 
    - Slug `yyyy-mm-dd-<series>-<topic>` (today's date), `plan.json`, `node lib/new-reel.mjs <slug>`,
      `node lib/prep-footage.mjs <slug> <slug>`; check `assets/words.json` reads clean.
    - Plan the moments in build.mjs (follow the last approved Reel's build.mjs as the pattern), stills + cut-out stills,
-     5-6 `COVERS` lines (the viewer's problem in their words) + `coverCut`, the `POST` caption (writing rules; CTA from
-     the row; Business Brain = name + scrollyseo.com, never the price; exactly 3 hashtags; no em dashes).
+     5-6 `COVERS` lines (the viewer's problem in their words) + `coverCut`, the `POST` caption (writing rules; no CTA
+     line in it: the build adds it; Business Brain = name + scrollyseo.com, never the price; exactly 3 hashtags; no
+     em dashes). `R.endCard({ kind, word, detail })` from the row's CTA (`lib/cta.mjs` kinds); no CTA on the row =
+     leave it out, the page makes her pick one before she can approve the plan. Write the hook to set up that CTA.
    - Captions yes; **no** `R.fx`, music or transitions yet (B2 adds them after she approves the plan).
    - `node build.mjs && npm run check` (long footage: the PRODUCER_* timeouts), then `node build.mjs review`.
    - Add the row to `rows.json` (page id → slug). Notion row: Status stays **Edit**; Script / Working File and Edit

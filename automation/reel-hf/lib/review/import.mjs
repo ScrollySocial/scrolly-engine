@@ -34,7 +34,8 @@ for (const [id, e] of Object.entries(D.sound || {})) {
   const what = [e.off && 'switched off', e.name && `swapped to ${e.name}`, e.vol != null && `volume ${Math.round((s?.baseVol ?? 0) * 100)}% → ${Math.round(e.vol * 100)}%`].filter(Boolean).join(', ');
   out.push(`SOUND ${s ? fmt(s.t) + ' F' + s.frame + ' ' + s.base : id}: ${what} (applies on next build)`);
 }
-if (D.music?.volume != null) out.push(`MUSIC volume ${R.music.baseVolume} → ${D.music.volume} (applies on next build)`);
+if (D.music?.level) out.push(`MUSIC level → ${D.music.level} (applies on next build)`);
+else if (D.music?.volume != null) out.push(`MUSIC volume ${R.music.baseVolume} → ${D.music.volume} (applies on next build)`);
 for (const a of D.addedSfx || []) out.push(`ADDED SOUND ${fmt(a.t)}: ${a.name} (applies on next build)`);
 if (D.soundRequests?.trim()) out.push(`SOUND REQUESTS (find options, list file/source/size, ask before downloading): ${D.soundRequests.trim().split(/\s*\n\s*/).join(' | ')}`);
 if (D.music?.file) out.push(`MUSIC track → ${D.music.file} (applies on next build)`);
@@ -45,6 +46,7 @@ if (D.post?.caption || D.post?.hashtags) out.push(`POST CAPTION (edited): ${(D.p
 if (D.postAfter) out.push(`AFTER APPROVAL: ${D.postAfter === 'queue' ? `set the tracker row to ${S.tracker.statuses?.ready || 'Ready'} (adds it to the ${S.posting.scheduler || 'posting'} queue; needs a live video URL)` : `hold: set the tracker row to ${S.tracker.statuses?.approved || 'Approved'}`}`);
 if (D.cover) out.push(`COVER: frame F${D.cover.frame}, ${{ cut: `centered cut-out on ${D.cover.bg}`, behind: `text-behind cut-out on ${D.cover.bg}`, side: `off-center cut-out on ${D.cover.bg}` }[D.cover.style || 'cut'] || `'${D.cover.style}' layout on the video frame, text ${D.cover.pos || 'bottom'}`}, text “${D.cover.text}”${D.cover.aside ? ' + aside “' + D.cover.aside + '”' : ''} (render with lib/cover.mjs renderCovers)`);
 else if (D.coverText) out.push(`COVER TEXT: ${D.coverText}${R.coverOptions?.includes(D.coverText) ? '' : ' (own wording)'}`);
+if (D.cta?.kind) out.push(`CTA: ${D.cta.kind}${D.cta.word ? ' word “' + D.cta.word + '”' : ''}${D.cta.detail ? ' · ' + D.cta.detail : ''}${D.cta.bg ? ' · end card on ' + D.cta.bg : ''} (applies on next build; record it in the tracker row's CTA field)`);
 if (D.notes?.trim()) out.push(`GENERAL: ${D.notes.trim()}`);
 if (D.rule?.trim()) out.push(`RULE FOR EVERY REEL (add to ${S.rules.doc ? `"${S.rules.section || 'rules'}" in ${path.relative(process.cwd(), P.rulesDoc)}` : 'reel-settings.json rules.list'} after confirming): ${D.rule.trim()}`);
 

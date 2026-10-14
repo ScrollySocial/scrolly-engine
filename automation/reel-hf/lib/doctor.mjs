@@ -15,6 +15,7 @@ import { createRequire } from 'node:module';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { FILE, P, S, exe, findBrowser, hf, pythonCmd, saveSettings, tool } from './settings.mjs';
+import { SOUNDS, SFX_DIR } from './sounds.mjs';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const args = process.argv.slice(2);
@@ -146,12 +147,11 @@ for (const [mod, pkg, why] of [['faster_whisper', 'faster-whisper', 'transcripti
 for (const [label, file] of [['transcribe script', P.transcribeScript], ['silence-aware cut script', P.cutScript]]) {
   await step(`${label} ${rel(file)}`, () => existsSync(file), { needs: 'part of the Reel engine package: restore it from git, or fix the path in reel-settings.json tools' });
 }
-const studio = (await import('./templates/studio.mjs')).default;
-const sfxDir = path.join(HERE, 'assets/sfx');
+const sfxDir = SFX_DIR;
 // sounds are downloaded by the person (their own Mixkit license), so missing ones don't block: they stay silent.
 // A download dropped in lib/assets/sfx (Mixkit names it e.g. mixkit-air-woosh-1489.wav; sfx/sources.json maps the
 // number to the engine's name), or one already renamed to <name>.wav, is saved as <name>.mp3.
-const sounds = Object.keys(studio.sfxLen), sfxPath = (s) => path.join(sfxDir, `${s}.mp3`);
+const sounds = SOUNDS.map((s) => s.name), sfxPath = (s) => path.join(sfxDir, `${s}.mp3`);
 const missingSfx = () => sounds.filter((s) => !existsSync(sfxPath(s)));
 const sfxSources = existsSync(path.join(sfxDir, 'sources.json')) ? JSON.parse(readFileSync(path.join(sfxDir, 'sources.json'), 'utf8')) : {};
 // downloads dropped in the folder are converted first (fix mode), so the count below is what's really there

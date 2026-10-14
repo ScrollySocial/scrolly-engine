@@ -58,7 +58,7 @@
     "list": [
       "Statements: condensed heavy grotesque; emphasis = marker swipe (<m>word</m>); asides handwritten. Never italic serif accents or color-changed words. No eyebrow cards.",
       "Graphics around the body (above the head first), never over the face. Circles and scribbles never cross the text they mark.",
-      "One music track, one static volume + fades. Never the SAME sound effect back to back, except list items: each item of a spoken list can share one sound.",
+      "One music track, one level (Quiet / Normal / Up front, measured against the voice) + fades. Never the SAME sound effect back to back, except list items: each item of a spoken list can share one sound.",
       "No em dashes or '|' on screen. No fake proof.",
       "Business Brain CTA = name + scrollyseo.com, never the price. IG bio link = $1K Challenge."
     ],
@@ -66,7 +66,7 @@
   },
 
   "templates": {
-    "studio": { "music": { "volume": 0.02, "fadeIn": 4.22, "fadeOut": 1.95 } },
-    "_note": "per-person overrides of lib/templates/*.mjs (deep-merged). Studio music: turned way down with a slow fade-in."
+    "studio": { "music": { "level": "normal", "fallbackVolume": 0.07, "fadeIn": 4.22, "fadeOut": 1.95 } },
+    "_note": "per-person overrides of lib/templates/*.mjs (deep-merged). Studio music: measured level Normal (about 21 dB under her voice), slow fade-in."
   }
 }

@@ -37,6 +37,10 @@ for every ◆. Don't hard-code a review format into the steps.
   Content = working title, Format = Reel, Platforms = Instagram, Status = Edit, Series, Product if it sells one.
 - From Notion: "next Reel" = the first row with Format Reel and Status Edit (sort by Publish Order, then created);
   or the row she names. Read Hook, CTA, Series, Edit Notes, Filming Notes.
+**Every Reel has a purpose (required).** One action it asks for: Follow, Comment a word, Share, Save, Link in bio, or
+Comment for a freebie (`lib/cta.mjs`). Take it from the row's CTA; if the row has none, ask her (chat) or leave it for
+the Plan step, which won't let her approve without one. Write the hook with it in mind (the hook tip per action is in
+`lib/cta.mjs`). "Comment for a freebie" = she DMs by hand until ManyChat is set up.
 Slug = `yyyy-mm-dd-<series>-<topic>` (e.g. `2026-10-13-bb-know-what-you-sell`). Footage lives under the footage folder
 (`reel-settings.json` → `folders.footage`), one subfolder per series.
 
@@ -52,11 +56,13 @@ Read the .txt. Pick the best take of each line; drop retakes, false starts, "che
 **4. Plan it (visuals first, no sounds yet).** Split into moments by meaning (a new idea = a new moment; something
 new on screen every 1-2s, one focal point at a time). Per moment: components and copy (real-looking objects and UI,
 specific example copy that follows her rules) and camera moves. Write it into `build.mjs` with a `note(n, title)` per
-moment, like Reel #2. Stills of her per moment in `sketch/fNN.jpg`; cut-outs where a moment needs one:
+moment, like Reel #2. Add the ending: `R.endCard({ kind, word, detail })` right after `R.frames(…)` (her pick on the
+page's Ending tab overrides it; the card, its two sounds and the caption line come from the library). Stills of her per moment in `sketch/fNN.jpg`; cut-outs where a moment needs one:
 `hyperframes remove-background sketch/fNN.jpg -o sketch/fNN-cut.png` (hyperframes-test/bin on PATH). Write 5-6 cover
 lines into `COVERS` (the viewer's problem in their words, never internal names; `<m>` = marker) and pick `coverCut`.
 Start the page: `node build.mjs review`, then the `reel-review` launch config (http://localhost:4321).
-◆ **Step 1 on the page, Plan it:** brand kit, cover (frame + style + text), script (cuts), moments (keep/change/remove).
+◆ **Step 1 on the page, Plan it:** brand kit, cover (frame + style + text), script (cuts), moments (keep/change/remove),
+ending (the action, its word/detail, end-card color; required before approving).
 Read back with `node lib/review/import.mjs <reel>`; fix what she marked, rebuild, then `node lib/review/import.mjs <reel> --done`
 (files her requests away; she checks and approves again). Repeat until she approves the plan with no changes. Step 2
 stays locked on her page until step 5 is done.
@@ -79,10 +85,11 @@ Then `node build.mjs review` so step 3 plays the render. Fine-tuning can also ha
 ◆ **Step 3 on the page, Approve it:** the video, notes at a moment, the post caption, and "When you approve".
 
 **7. Posting (after she approves step 3, "Approve it", on the review page).** Draft the post caption into `POST` in
-build.mjs before step 3 (brand voice; CTA in the first two sentences; Business Brain = name + scrollyseo.com, never
+build.mjs before step 3 (brand voice; leave the CTA line out: the build inserts it as the second sentence from the
+Ending pick; Business Brain = name + scrollyseo.com, never
 the price; bio link = $1K Challenge; exactly 3 hashtags; no em dashes; no "It's X, not Y"). She edits it on the page.
 `node lib/review/import.mjs <reel>` gives her final caption, hashtags and "When you approve" choice. Update the row:
-Hook (on-screen hook), Instagram Caption (her final caption + hashtags), CTA, Series, Media Used (footage + b-roll ids),
+Hook (on-screen hook), Instagram Caption (her final caption + hashtags), CTA (her Ending pick + word), Series, Media Used (footage + b-roll ids),
 Script / Working File (the Reel folder), Notes (final MP4 + cover paths). Status: **Ready** only if she chose "Add to
 the Buffer queue" (Ready = added to the Buffer queue), otherwise **Approved**. Buffer only takes media by a live,
 non-expiring URL (no Notion file links); how the queue picks up the video file is **open**: confirm with her the first time.

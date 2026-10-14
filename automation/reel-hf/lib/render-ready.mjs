@@ -43,6 +43,9 @@ for (const { slug } of todo) {
   if (existsSync(stamp) && existsSync(path.join(dir, 'index.html')) && readFileSync(stamp, 'utf8').trim() !== sha(path.join(dir, 'index.html'))) { fail('index.html was edited in Studio: diff it into build.mjs first'); continue; }
   if (!run(process.execPath, ['build.mjs'], 5)) { fail('build.mjs failed'); continue; }
   writeFileSync(stamp, sha(path.join(dir, 'index.html')));
+  // music level check (lib/loudness.mjs): over 26 dB under her voice can't be heard on a phone. Warn, don't block.
+  const quiet = readFileSync(log, 'utf8').match(/⚠ MUSIC TOO QUIET.*/)?.[0];
+  if (quiet) console.log(`  ${slug}: ${quiet}`);
   if (!run('npx', ['--yes', hf, 'check'], 15)) { fail('hyperframes check failed'); continue; }
   const local = path.join(dir, 'renders', `${slug}.mp4`);
   if (!run('npx', ['--yes', hf, 'render', '.', '-o', `renders/${slug}.mp4`], 45) || !existsSync(local)) { fail('render failed'); continue; }
@@ -69,7 +72,7 @@ for (const { slug } of todo) {
   run(process.execPath, ['build.mjs', 'review'], 10); // step 3 now plays the render
   const secs = Math.round((Date.now() - t0) / 1000);
   writeFileSync(path.join(dir, 'review/render.json'), JSON.stringify({ at: new Date().toISOString(), ok: true, hash: decisionsHash(D), file: finalFile(slug), cover, seconds: secs }, null, 1));
-  results.push({ slug, ok: true, file: finalFile(slug), cover, minutes: +(secs / 60).toFixed(1) });
+  results.push({ slug, ok: true, file: finalFile(slug), cover, minutes: +(secs / 60).toFixed(1), ...(quiet ? { warn: quiet } : {}) });
   console.log(`✓ ${slug}: ${(secs / 60).toFixed(1)} min → ${finalFile(slug)}${cover ? '' : ' (no cover picked yet)'}`);
 }
 const runs = path.join(ROOT, '_runs');
