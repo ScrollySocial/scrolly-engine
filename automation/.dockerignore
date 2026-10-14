@@ -1,0 +1,45 @@
+# Build context for automation/Dockerfile.club (the $1K Club private-beta
+# image on Fly.io). Deliberately excludes everything the Club runtime does
+# not need and everything that must never enter a built image: real member
+# data, secrets, node_modules (installed fresh in-image), other products'
+# working files, and test/dev scratch output.
+
+node_modules/
+
+# Secrets and local config -- never bake these into an image. Real secrets
+# reach the running container only via the host's secret manager (Fly
+# secrets), set at deploy/runtime, never at build time.
+.env
+.env.*
+!.env.example
+
+# Real (or QA) member data -- gitignored locally for the same reason; a
+# fresh deployment starts with an empty, freshly-mounted volume instead.
+club/members/
+
+# Test/dev scratch, logs, local-only artifacts.
+.test-scratch/
+*.log
+bridge-forever.log
+tunnel-alert-state.json
+
+# Version control and editor noise.
+.git/
+.gitignore
+.dockerignore
+
+# Everything below is real, working code for OTHER Scrolly products that
+# share this automation/ directory but that this image never runs and does
+# not need to build (the Club-only image only needs bridge-server.mjs,
+# club-public-proxy.mjs, club/, and the small subset of lib/ those two files
+# import). Excluding them keeps the image small and keeps unrelated product
+# code/data out of a Club-only deployment artifact, per the requirement not
+# to package unrelated customer data.
+implementation/
+runner/
+n8n/
+wordpress/
+email-templates/
+scripts/
+dashboard/
+docs/

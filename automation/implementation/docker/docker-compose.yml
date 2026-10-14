@@ -1,0 +1,70 @@
+version: "3.8"
+
+# Disposable, dev-only WordPress + MySQL + WooCommerce environment for
+# validating the Implementation Agent against a real (non-mock) site —
+# methodology/implementation-agent.md §12 Checkpoint 1. Not production-grade,
+# not public, not branded, not meant to persist beyond this testing window.
+# Tear down with: docker compose down -v   (wipes the DB volume too)
+
+services:
+  db:
+    # MySQL 8.0's InnoDB init hung indefinitely (0% CPU, no progress) twice
+    # in a row on this machine after the earlier Docker Desktop crash —
+    # switched to MariaDB, which is what most real WordPress hosts actually
+    # run anyway, fully WP/WooCommerce-compatible, and initializes lighter.
+    image: mariadb:11
+    restart: unless-stopped
+    # This machine's WSL2 kernel has io_uring disabled (kernel.io_uring_disabled=2),
+    # which made both MySQL 8 and MariaDB hang trying to init native AIO and
+    # fall back — confirmed via db container logs. Skipping native AIO
+    # entirely avoids the hang; InnoDB just uses simple synchronous I/O,
+    # which is plenty for a disposable dev/test dataset this small.
+    command: --innodb-use-native-aio=0
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpass
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wordpress
+      MYSQL_PASSWORD: wordpress
+    volumes:
+      - scrolly_impl_db:/var/lib/mysql
+
+  wordpress:
+    image: wordpress:apache
+    restart: unless-stopped
+    depends_on:
+      - db
+    ports:
+      - "8890:80"
+    environment:
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_NAME: wordpress
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: wordpress
+    volumes:
+      - scrolly_impl_wp:/var/www/html
+      # Real, production REST-bridge mu-plugin — single source of truth, not copied.
+      - ../scripts/wp-rest-bridge-mu-plugin.php:/var/www/html/wp-content/mu-plugins/wp-rest-bridge-mu-plugin.php:ro
+      # Dev-only mu-plugin(s) — e.g. the HTTP Application Passwords override.
+      - ./mu-plugins/local-dev-allow-http-app-passwords.php:/var/www/html/wp-content/mu-plugins/local-dev-allow-http-app-passwords.php:ro
+      # Apache+Basic-Auth header-passthrough fix for mod_php on this image.
+      - ./apache-conf/passauth.conf:/etc/apache2/conf-enabled/zz-passauth.conf:ro
+
+  wpcli:
+    image: wordpress:cli
+    depends_on:
+      - db
+      - wordpress
+    user: "33:33" # www-data, matches file ownership from the wordpress:apache container
+    environment:
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_NAME: wordpress
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: wordpress
+    volumes:
+      - scrolly_impl_wp:/var/www/html
+      - ./fixtures:/fixtures:ro
+    entrypoint: ["tail", "-f", "/dev/null"] # stay up so we can `docker compose exec wpcli wp ...` on demand
+
+volumes:
+  scrolly_impl_db:
+  scrolly_impl_wp:

@@ -5,8 +5,9 @@
  * Runs one client's full Discover engagement unattended, per
  * methodology/discover-engine.md's "Automated / Unattended Mode" section
  * (V0.5). Invoked by n8n's "Intake & Kickoff" workflow after a Tally
- * submission has been verified against a paid Stripe session and
- * clients/<slug>/discover/input.md has been written.
+ * submission has been verified against a paid WooCommerce order (Stripe
+ * runs through WooCommerce's own checkout as of 2026-08-24 — see
+ * ../stripe-setup.md) and clients/<slug>/discover/input.md has been written.
  *
  * Usage:
  *   node runner/run-discover.mjs <client-slug>
@@ -22,11 +23,16 @@
 
 import { query } from '@anthropic-ai/claude-agent-sdk';
 import { mdToPdf } from 'md-to-pdf';
-import { readFile, writeFile, appendFile, mkdir } from 'node:fs/promises';
+import { readFile, writeFile, appendFile, mkdir, stat } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import 'dotenv/config';
+
+import { recordRunStarted, recordFailure, recordReadyForReview, setCurrentStep, updateOrder } from '../lib/order-state.mjs';
+import { classifyStepFromPath, stepLabel, impliedCompletedSteps, evaluateRunOutcome } from '../lib/discover-completeness.mjs';
+import { recordDataForSeoCall, loadDataForSeoCalls } from '../lib/dataforseo-call-log.mjs';
+import { syncOrderToWordPress } from '../lib/wp-tracker-sync.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const VAULT_DIR = path.resolve(__dirname, '..', '..', 'Scrolly Organic Engine');
@@ -56,6 +62,77 @@ async function log(line) {
   process.stdout.write(stamped);
   await appendFile(logPath, stamped);
 }
+
+// Best-effort projection of the customer-safe status to WordPress after each
+// meaningful order-state transition — see lib/wp-tracker-sync.mjs. Never
+// throws (the module itself catches everything); this wrapper only adds a
+// run-log line so sync outcomes are visible alongside the rest of the run.
+async function syncTracker(reason) {
+  const result = await syncOrderToWordPress(slug);
+  if (result.ok) {
+    await log(`[wp-tracker] synced (${reason}) -> ${result.customerStatus}`);
+  } else if (result.skipped) {
+    await log(`[wp-tracker] skipped (${reason}): ${result.reason}`);
+  } else {
+    await log(`[wp-tracker] FAILED (${reason}): ${result.reason || result.error || result.status}`);
+  }
+}
+
+// --- Canonical order state ---------------------------------------------------
+// order.json is the deterministic, application-code-owned record of this
+// order's lifecycle (see lib/order-state.mjs's header comment for why this
+// exists — mulberry-creek-2, 2026-08-26, got marked ready_for_delivery: true
+// off a crashed run because the old logic trusted regex-parsed prose). The
+// Claude Agent SDK session below never writes to order.json directly; every
+// write in this file happens from runner code, driven by deterministic
+// signals (process exit state, which file was just written, file mtimes).
+//
+// runStartedAt is captured BEFORE the agent starts and is the baseline for
+// the stale-artifact freshness check below — report.md/appendix.md are only
+// ever trusted as THIS run's output if their mtime is later than this.
+const runStartedAt = new Date();
+let contact = {};
+try {
+  contact = JSON.parse(await readFile(path.join(engagementDir, 'contact.json'), 'utf8'));
+} catch {
+  // contact.json is written by create-engagement.mjs before the runner is
+  // ever launched — its absence here would be a real upstream bug, but this
+  // runner shouldn't crash over it; order.json just starts with null identity fields.
+}
+await recordRunStarted(slug, 'discover', {
+  orderId: contact.orderId || null,
+  orderKey: contact.orderKey || null,
+  businessName: contact.businessName || null,
+  contactName: contact.contactName || null,
+  contactEmail: contact.contactEmail || null,
+});
+await syncTracker('run_started');
+
+// --- Step observability (best-effort — see discover-completeness.mjs's ------
+// impliedCompletedSteps/STEP_FILE_HINTS doc comment for exactly what this
+// can and cannot distinguish inside one continuous agent session).
+function extractFilePath(toolInput) {
+  if (!toolInput || typeof toolInput !== 'object') return null;
+  return toolInput.file_path || toolInput.path || null;
+}
+const trackStepFromToolUse = async (input) => {
+  if (input.hook_event_name !== 'PreToolUse') return {};
+  if (input.tool_name !== 'Write' && input.tool_name !== 'Edit') return {};
+  const step = classifyStepFromPath(extractFilePath(input.tool_input));
+  if (!step) return {};
+  const changed = await setCurrentStep(slug, 'discover', { id: step, label: stepLabel(step) });
+  if (changed) {
+    const implied = impliedCompletedSteps(step);
+    if (implied.length > 0) {
+      await updateOrder(slug, 'discover', (order) => {
+        order.completedSteps = Array.from(new Set([...(order.completedSteps || []), ...implied]));
+      });
+    }
+    await log(`[order-state] step -> ${step} (${stepLabel(step)})`);
+    await syncTracker('step_changed');
+  }
+  return {};
+};
 
 // --- DataForSEO call-ceiling enforcement -----------------------------------
 // Automated Mode (discover-engine.md, V0.5) replaces live manual approval of
@@ -90,7 +167,44 @@ const enforceCeiling = async (input) => {
   return {};
 };
 
+// --- DataForSEO structured call recording -----------------------------------
+// dataforseo-mcp-server 3.x's mcp__dataforseo__api_request(method, path, data)
+// is a generic passthrough — recording it here (PostToolUse, once the real
+// response is known) is what lets the Completeness Gate ask "was capability
+// X obtained?" instead of regexing for a 2.x tool name that no longer exists.
+// A 404/auth error inside a "successful" tool call must not read as success —
+// recordDataForSeoCall parses DataForSEO's own status_code out of the
+// response body for that reason, not just whether the tool call itself threw.
+const recordDataForSeoResult = async (input) => {
+  if (input.tool_name !== 'mcp__dataforseo__api_request') return {};
+  const { method, path: reqPath } = input.tool_input || {};
+  if (input.hook_event_name === 'PostToolUse') {
+    const record = await recordDataForSeoCall(engagementDir, { method, path: reqPath, toolResponse: input.tool_response });
+    await log(`[dataforseo] ${method} ${reqPath} -> capability=${record.capability} success=${record.success} statusCode=${record.statusCode}`);
+  } else if (input.hook_event_name === 'PostToolUseFailure') {
+    const record = await recordDataForSeoCall(engagementDir, { method, path: reqPath, harnessError: input.error });
+    await log(`[dataforseo] ${method} ${reqPath} -> capability=${record.capability} success=false (harness error: ${input.error})`);
+  }
+  return {};
+};
+
 // --- MCP servers -------------------------------------------------------------
+// Pinned to 3.1.1 (2026-08-27) -- npx -y with no version was silently
+// resolving to whatever npm's "latest" tag currently points to. The prior
+// pin attempt (2.9.11 -- the last version before dataforseo-mcp-server's
+// 3.0.0 tool-surface redesign, 2026-08-11) turned out to be a dead end: its
+// bundled @modelcontextprotocol/sdk (1.29.0, exact) can no longer complete
+// an MCP handshake with the currently-installed @anthropic-ai/claude-agent-sdk
+// (confirmed live: 2.9.11 connects with status "failed"; 3.1.1, whose
+// @modelcontextprotocol/sdk is ^1.30.0, connects successfully). 3.1.1's tool
+// surface is a generic api_request(method,path,data) passthrough, not the
+// named per-endpoint tools (serp_locations, kw_data_google_ads_search_volume,
+// etc.) data-sources.md was written against -- lib/dataforseo-capability-map.mjs
+// bridges that gap by classifying each api_request call's REST path into the
+// same logical capabilities the methodology and completeness gate expect, so
+// neither had to be rewritten. Do not change this pin without re-verifying
+// against that map first -- same class of failure already documented for
+// n8nio/n8n:latest in this repo.
 const mcpServers = {};
 if (DATAFORSEO_ENABLED) {
   if (!process.env.DATAFORSEO_USERNAME || !process.env.DATAFORSEO_PASSWORD) {
@@ -99,7 +213,7 @@ if (DATAFORSEO_ENABLED) {
   }
   mcpServers.dataforseo = {
     command: process.platform === 'win32' ? 'npx.cmd' : 'npx',
-    args: ['-y', 'dataforseo-mcp-server'],
+    args: ['-y', 'dataforseo-mcp-server@3.1.1'],
     env: {
       DATAFORSEO_USERNAME: process.env.DATAFORSEO_USERNAME,
       DATAFORSEO_PASSWORD: process.env.DATAFORSEO_PASSWORD,
@@ -121,6 +235,7 @@ Run a complete Discover engagement for clients/${slug}/discover, whose input.md 
 - Run the full Opportunity Engine (O1-O10) and every applicable Supporting Audit category (A-N) for the determined mode, per discover.md and report-contract.md. Never silently drop a required section — mark it "Not Evaluated / Data Required" if evidence is unavailable, per report-contract.md's Core Rule and Final Quality Gate.
 - Run the Final Quality Gate (Step 12) before finishing. Record its result in status.md.
 - Generate report.md and appendix.md from the completed findings.md, structured per report-contract.md, per Step 13.
+- Also write clients/${slug}/discover/findings.json: a JSON array with one object per findings.md table row (every row across Categories A-J and the O2/O4/O9/O10 Opportunity Engine tables), using each table's own documented column headers as JSON keys exactly (e.g. {"table":"A","category":"A","finding":"...","recommended_action":"...","evidence":"...","evidence_type":"...","source":"...","confidence":"...","priority":"...","expected_impact":"...","effort":"...","dependencies_limitations":"..."} for an A-J row; O2/O4/O9/O10 rows use their own documented columns the same way, plus "table":"O2"/"O4"/"O9"/"O10"). This is the machine-readable source of truth downstream automation (e.g. the Implementation Agent) consumes instead of re-parsing findings.md or report.md — it must contain every row findings.md contains, exactly, never a summarized or reduced subset.
 - Update status.md throughout so it accurately reflects the step reached, ceiling-limited status (if applicable), Quality Gate result, and completion state at the end.
 
 Work autonomously start to finish. Do not stop to ask a question — where the protocol would normally pause for human input, apply Automated Mode's rules instead and keep going. When finished (or if you determine the engagement cannot reasonably continue), stop.`;
@@ -131,18 +246,34 @@ await log(`Starting Discover engagement for "${slug}" — DATAFORSEO_ENABLED=${D
 let result = { is_error: true, num_turns: 0, total_cost_usd: 0 };
 let runError = null;
 
+// The `tools` allowlist governs BOTH built-in tools AND MCP-server tools —
+// it's not scoped to built-ins only despite the SDK's own doc comment
+// suggesting otherwise. Confirmed the hard way: mulberry-creek-2's real run
+// (2026-08-26) had DATAFORSEO_ENABLED=true with real credentials and a
+// correctly-built `mcpServers.dataforseo` entry, yet the agent's own
+// data-plan.md reported zero mcp__dataforseo__* tools in its actual tool
+// set — this array (missing any dataforseo entry) is why. `mcp__<server>`
+// (bare, no suffix) is the same server-level wildcard pattern the SDK's
+// disallowedTools doc documents for the inverse (blocking) case.
+const BASE_TOOLS = ['Read', 'Write', 'Edit', 'Glob', 'Grep', 'WebFetch'];
+const agentTools = DATAFORSEO_ENABLED ? [...BASE_TOOLS, 'mcp__dataforseo'] : BASE_TOOLS;
+
 try {
   const q = query({
     prompt,
     options: {
       cwd: VAULT_DIR,
-      tools: ['Read', 'Write', 'Edit', 'Glob', 'Grep', 'WebFetch'],
+      tools: agentTools,
       mcpServers,
       permissionMode: 'bypassPermissions',
       allowDangerouslySkipPermissions: true,
       maxTurns: 250,
       maxBudgetUsd: ANTHROPIC_MAX_BUDGET_USD,
-      hooks: { PreToolUse: [{ hooks: [enforceCeiling] }] },
+      hooks: {
+        PreToolUse: [{ hooks: [enforceCeiling, trackStepFromToolUse] }],
+        PostToolUse: [{ hooks: [recordDataForSeoResult] }],
+        PostToolUseFailure: [{ hooks: [recordDataForSeoResult] }],
+      },
       stderr: (data) => log(`[stderr] ${data}`),
     },
   });
@@ -163,6 +294,45 @@ try {
 
 await log(`Finished — is_error=${result.is_error}, num_turns=${result.num_turns}, total_cost_usd=${result.total_cost_usd}, dataforseo_calls=${dataforseoCallCount}, ceiling_hit=${ceilingHit}`);
 
+// --- Failure check — deliberately the FIRST thing decided after the run ----
+// finishes, and recorded to order.json before completeness parsing, PDF
+// readiness, status-markdown interpretation, or the engagement-complete
+// notification even run. This is the actual fix for the mulberry-creek-2
+// bug (2026-08-26): a crashed/errored run must be structurally incapable of
+// reaching any code path that could produce ready_for_delivery: true — not
+// just "should" via a downstream flag check.
+const runFailed = Boolean(result.is_error || runError);
+// One call either way — when runFailed is true this short-circuits before
+// touching statusText/queryLogText/etc (all undefined here, which is fine,
+// since evaluateRunOutcome never reads them on the failure path). The
+// non-failure path re-derives the full outcome below once status.md/
+// query-log.md/etc are actually read, but the failure branch's own
+// classification never has to happen twice or risk drifting.
+if (runFailed) {
+  const { failure } = evaluateRunOutcome({ result, runError });
+  await log(`RUN FAILED — error class: ${failure.errorClass} — ${failure.message}. Recording order.json failure state before any completeness/PDF/status-markdown handling runs.`);
+  await recordFailure(slug, 'discover', failure);
+  await syncTracker('run_failed');
+}
+
+// --- Stale-artifact protection ----------------------------------------------
+// report.md/appendix.md are only ever trusted as THIS run's output if their
+// mtime is later than runStartedAt (captured before the agent started).
+// Least-fragile mechanism available without asking the methodology/agent to
+// embed a run id in markdown — see lib/order-state.mjs's header comment.
+async function isFreshArtifact(p) {
+  try {
+    const st = await stat(p);
+    return st.mtimeMs > runStartedAt.getTime();
+  } catch {
+    return false;
+  }
+}
+const reportFresh = await isFreshArtifact(path.join(engagementDir, 'report.md'));
+const appendixFresh = await isFreshArtifact(path.join(engagementDir, 'appendix.md'));
+if (!reportFresh) await log('report.md was NOT modified by this run (mtime <= runStartedAt) — treating as a stale artifact from a previous run, not this run\'s output.');
+if (!appendixFresh) await log('appendix.md was NOT modified by this run (mtime <= runStartedAt) — treating as a stale artifact from a previous run, not this run\'s output.');
+
 // --- PDF generation ----------------------------------------------------------
 // Scrolly SEO brand stylesheet (methodology/report-design-system.md is the
 // companion spec the report-writing agent reads; this is the implementation).
@@ -175,11 +345,15 @@ const displayName = slug
   .join(' ');
 const renderDate = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
 
-async function renderPdf(mdName, pdfName) {
+async function renderPdf(mdName, pdfName, fresh) {
   const mdPath = path.join(engagementDir, mdName);
   const pdfPath = path.join(engagementDir, pdfName);
   if (!existsSync(mdPath)) {
     await log(`Skipping PDF render — ${mdName} does not exist.`);
+    return false;
+  }
+  if (!fresh) {
+    await log(`Skipping PDF render for ${mdName} — stale artifact (not written by this run); rendering it would risk presenting the wrong report as current.`);
     return false;
   }
   try {
@@ -215,30 +389,18 @@ async function renderPdf(mdName, pdfName) {
   }
 }
 
-const reportPdfOk = await renderPdf('report.md', 'report.pdf');
-const appendixPdfOk = await renderPdf('appendix.md', 'appendix.pdf');
+const reportPdfOk = await renderPdf('report.md', 'report.pdf', reportFresh);
+const appendixPdfOk = await renderPdf('appendix.md', 'appendix.pdf', appendixFresh);
 
-// --- Read status.md for the completion summary --------------------------
-let statusText = '';
-try {
-  statusText = await readFile(path.join(engagementDir, 'status.md'), 'utf8');
-} catch {
-  statusText = '';
-}
-const qualityGateRan = /Final Quality Gate run.*yes/i.test(statusText);
-// \s* alone doesn't span markdown emphasis markers (e.g. "Completed: **yes"),
-// which the agent's own status.md writes commonly use — allow optional **.
-const completed = /Completed:\s*\*{0,2}\s*yes/i.test(statusText);
+// Cost/usage/artifact-path fields are persisted regardless of outcome —
+// useful on a failed run too (e.g. "$2.05 spent before hitting the ceiling").
+await updateOrder(slug, 'discover', (order) => {
+  order.costUsd = result.total_cost_usd ?? order.costUsd;
+  order.dataforseoCallsUsed = dataforseoCallCount;
+  if (reportPdfOk) order.reportPdfPath = `clients/${slug}/discover/report.pdf`;
+  if (appendixPdfOk) order.appendixPdfPath = `clients/${slug}/discover/appendix.pdf`;
+});
 
-// --- Minimum Paid-Report Completeness Gate (added 2026-08-17) ------------
-// Per methodology/discover-engine.md's REQUIRED TO SHIP classification.
-// Mechanical, conservative check over query-log.md/input.md/findings.md —
-// not a re-run of the full Final Quality Gate's judgment (that's Step 12,
-// performed by the agent itself), but a hard backstop specifically for the
-// failure mode that step is meant to catch but an unattended run could
-// still miss: a required source failing silently while the report ships
-// anyway. Never manufactures data to pass — a failed check here means the
-// engagement is genuinely blocked pending retry, fallback, or human review.
 async function readIfExists(p) {
   try {
     return await readFile(p, 'utf8');
@@ -247,74 +409,50 @@ async function readIfExists(p) {
   }
 }
 
-const inputText = await readIfExists(path.join(engagementDir, 'input.md'));
-const queryLogText = await readIfExists(path.join(engagementDir, 'query-log.md'));
-const findingsText = await readIfExists(path.join(engagementDir, 'findings.md'));
-
-const modeMatch = inputText.match(/Determined mode:\s*Mode\s*(\d)/i);
-const mode = modeMatch ? modeMatch[1] : null;
-const hasExistingSite = mode === '1';
-const isLocalRegional = /service area|physical location/i.test(inputText) && !/national|e-?commerce only/i.test(inputText);
-
-// tool-name -> [label, applies-when] — mirrors data-sources.md's mapping.
-// A tool counts as "failed" only if query-log.md logs it with an explicit
-// failure marker (402, "FAILED", "error") and no later successful retry of
-// the same tool for the same target follows it.
-function toolFailed(toolNamePattern) {
-  const re = new RegExp(`${toolNamePattern}[^\\n]*(FAILED|402|Payment Required|error)`, 'gi');
-  const failures = [...queryLogText.matchAll(re)];
-  if (failures.length === 0) return false;
-  const successRe = new RegExp(`${toolNamePattern}(?![^\\n]*(FAILED|402|Payment Required|error))`, 'i');
-  return !successRe.test(queryLogText);
-}
-
-const requiredChecks = [
-  ['Geographically appropriate keyword-demand validation', () => !toolFailed('kw_data_google_ads_search_volume')],
-  ['Ranking difficulty / SERP competition validation', () => !toolFailed('(bulk_keyword_difficulty|search_intent)')],
-  ['Competitor comparison / keyword-gap data', () => !toolFailed('domain_intersection')],
-  ['Backlink baseline', () => !toolFailed('backlinks_summary')],
-  // TODO (added 2026-08-19, not yet enforced): discover-engine.md's Completeness
-  // Gate table now also requires the individual-record backlink endpoint
-  // (distinct from the backlinks_summary aggregate above — see
-  // methodology/data-sources.md). Not wired in here yet because this session
-  // has no DataForSEO access to confirm the real MCP tool name against the
-  // live tool list — guessing wrong would silently make this check always
-  // fail (or never fire) for every future engagement. Verify the exact name
-  // first, then add: ['Backlink individual-record list', () => toolCalled('<verified-name>') && !toolFailed('<verified-name>')]
-  // (toolCalled would need to be added alongside toolFailed above — currently
-  // only "called and failed" is detected, not "never called at all").
-];
-if (hasExistingSite) {
-  requiredChecks.push(
-    ['Current visibility / ranking baseline', () => !toolFailed('ranked_keywords')],
-    ['Technical crawl', () => !toolFailed('on_page_content_parsing')],
-    [
-      'Lighthouse / Core Web Vitals',
-      () => !toolFailed('on_page_lighthouse') || /Lighthouse|Core Web Vitals/i.test(findingsText), // 3-tier fallback satisfies this if ANY tier produced real findings
-    ]
-  );
-}
-if (isLocalRegional) {
-  requiredChecks.push(
-    ['GBP category/profile completeness', () => !toolFailed('business_data_google_my_business_info')],
-    ['Review analysis', () => !toolFailed('business_data_google_reviews')]
-  );
-}
-
-const failedRequired = requiredChecks.filter(([, test]) => !test()).map(([label]) => label);
-const readyForDelivery = failedRequired.length === 0 && qualityGateRan && completed;
-const engagementStatus = readyForDelivery ? 'COMPLETE' : 'INCOMPLETE_REVIEW_REQUIRED';
-
-if (!readyForDelivery) {
-  const reasons = [
-    ...failedRequired.map((r) => `required source failed: ${r}`),
-    !qualityGateRan ? 'Final Quality Gate not confirmed run in status.md' : null,
-    !completed ? 'status.md does not confirm Completed: yes' : null,
-  ].filter(Boolean);
-  await log(`COMPLETENESS GATE: engagement marked INCOMPLETE_REVIEW_REQUIRED — ${reasons.join('; ')}. Automatic delivery blocked; human review required. No substitute data was manufactured to pass this gate.`);
+// --- Completeness parsing — SKIPPED ENTIRELY when the run already failed ---
+// (runFailed was decided and recorded to order.json above, before this
+// point). This is the literal enforcement of "the failure check must occur
+// before completeness parsing / status-markdown interpretation": a failed
+// run never calls readIfExists()/parseStatusSignals() on status.md at all.
+//
+// Per methodology/discover-engine.md's REQUIRED TO SHIP classification —
+// see lib/discover-completeness.mjs's evaluateRunOutcome for the actual
+// logic (Minimum Paid-Report Completeness Gate, added 2026-08-17, now also
+// gated on reportFresh/appendixFresh). Never manufactures data to pass — a
+// failed check here means the engagement is genuinely blocked pending
+// retry, fallback, or human review.
+let outcome;
+if (runFailed) {
+  outcome = { readyForDelivery: false, engagementStatus: 'FAILED', qualityGateRan: false, completed: false, failedRequired: [] };
 } else {
-  await log('COMPLETENESS GATE: all REQUIRED TO SHIP sources present, Final Quality Gate confirmed run, engagement marked COMPLETE — ready for delivery.');
+  const statusText = await readIfExists(path.join(engagementDir, 'status.md'));
+  const inputText = await readIfExists(path.join(engagementDir, 'input.md'));
+  const findingsText = await readIfExists(path.join(engagementDir, 'findings.md'));
+  // Structured DataForSEO evidence (dataforseo-calls.ndjson), not query-log.md
+  // prose — see dataforseo-call-log.mjs. query-log.md still gets written by
+  // the agent as human-readable documentation; it just no longer feeds the gate.
+  const dataforseoCalls = await loadDataForSeoCalls(engagementDir);
+  outcome = evaluateRunOutcome({ result, runError, statusText, dataforseoCalls, inputText, findingsText, reportFresh, appendixFresh });
+
+  if (!outcome.readyForDelivery) {
+    await log(`COMPLETENESS GATE: engagement marked ${outcome.engagementStatus} — ${outcome.failure?.message}. Automatic delivery blocked; human review required. No substitute data was manufactured to pass this gate.`);
+    await recordFailure(slug, 'discover', outcome.failure);
+    await syncTracker('completeness_gate_failed');
+  } else {
+    await log('COMPLETENESS GATE: all REQUIRED TO SHIP sources present, Final Quality Gate confirmed run, report/appendix confirmed freshly written by this run — engagement marked COMPLETE, ready for delivery.');
+    await recordReadyForReview(slug, 'discover', {
+      reportPdfPath: reportPdfOk ? `clients/${slug}/discover/report.pdf` : null,
+      appendixPdfPath: appendixPdfOk ? `clients/${slug}/discover/appendix.pdf` : null,
+    });
+    await syncTracker('ready_for_review');
+  }
 }
+
+const readyForDelivery = outcome.readyForDelivery;
+const engagementStatus = outcome.engagementStatus;
+const failedRequired = outcome.failedRequired || [];
+const qualityGateRan = outcome.qualityGateRan;
+const completed = outcome.completed;
 
 // --- Notify n8n ----------------------------------------------------------
 // NOTE: `success` means only "the agent run completed without crashing" —

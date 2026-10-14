@@ -1,0 +1,60 @@
+# Fly.io app config for the $1K Club private-beta deployment ONLY.
+# Does not describe or affect any other Scrolly product, the local
+# bridge-server.mjs instance n8n depends on, or anything running on
+# Mercedes's own machine. See automation/DEPLOY_CLUB_FLY.md before running
+# any `fly` command against this file -- none of these commands have been
+# run as part of preparing this file.
+#
+# Build context is this directory (automation/) -- run `fly deploy` from
+# inside automation/ so Dockerfile.club's COPY paths resolve correctly.
+#
+# app name below is a PLACEHOLDER -- it is not a registered Fly app. Change
+# it to whatever real, available name Mercedes chooses before running
+# `fly launch`/`fly deploy`.
+app = "scrolly-1k-club-beta"
+primary_region = "iad"  # placeholder -- pick the region closest to expected beta users
+
+[build]
+  dockerfile = "Dockerfile.club"
+
+# Non-secret runtime config only. CLUB_ACCESS_TOKEN_SECRET is deliberately
+# ABSENT from this file -- it must be set via `fly secrets set
+# CLUB_ACCESS_TOKEN_SECRET=...` (see DEPLOY_CLUB_FLY.md), never written here.
+[env]
+  BRIDGE_PORT = "5679"
+  CLUB_PROXY_PORT = "8080"
+  CLUB_PROXY_UPSTREAM = "http://127.0.0.1:5679"
+
+# The ONLY port this app exposes publicly. bridge-server.mjs's own port
+# (5679) is never declared anywhere in this file, so Fly's edge has no route
+# to it at all -- the private/public split from the task's requirement #3 is
+# enforced by omission here, not by a firewall rule that has to be
+# remembered separately.
+[http_service]
+  internal_port = 8080
+  force_https = true
+  auto_stop_machines = false   # a private beta should stay warm, not cold-start on first request
+  auto_start_machines = true
+  min_machines_running = 1
+
+  [[http_service.checks]]
+    interval = "15s"
+    timeout = "5s"
+    grace_period = "10s"
+    method = "GET"
+    path = "/health"
+    protocol = "http"
+
+# Persistent volume for automation/club/members -- the file-backed JSON
+# member data store (club-state.mjs's MEMBERS_DIR resolves to
+# <app root>/club/members, i.e. /app/club/members in this image). Must be
+# created once with `fly volumes create` before the first deploy that
+# references it (see DEPLOY_CLUB_FLY.md) -- `fly deploy` does not create
+# volumes on its own.
+[[mounts]]
+  source = "club_members_data"
+  destination = "/app/club/members"
+
+[[vm]]
+  size = "shared-cpu-1x"
+  memory = "256mb"

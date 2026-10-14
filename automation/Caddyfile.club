@@ -1,0 +1,20 @@
+# $1K Club -- Caddy reverse proxy config for the DigitalOcean Droplet.
+# Installed natively on the Droplet (not run as a Docker container -- see
+# DEPLOY_CLUB_DROPLET.md), copied to /etc/caddy/Caddyfile there.
+#
+# Deliberately does nothing beyond TLS + reverse proxy: the public
+# route allow-list and fail-closed behavior already live in
+# club-public-proxy.mjs (unchanged) -- duplicating any of that logic here
+# would create two places that could drift out of sync. Caddy's only job
+# is terminating HTTPS and forwarding everything to the one loopback port
+# the Club container publishes.
+#
+# Caddy automatically requests and renews a real TLS certificate for
+# whatever domain is listed below (via Let's Encrypt/ZeroSSL) the moment
+# it can see the domain pointed at this server on port 80 -- no manual
+# certbot/cron setup needed. Nothing here has been applied to DNS yet;
+# this config only becomes live once club.scrollyseo.com's DNS record
+# points at this Droplet's IP (a later, explicit step).
+club.scrollyseo.com {
+	reverse_proxy 127.0.0.1:8080
+}

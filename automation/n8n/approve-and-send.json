@@ -12,7 +12,8 @@
       "name": "Approve Click Webhook",
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2,
-      "position": [0, 0]
+      "position": [0, 0],
+      "webhookId": "8fecd78b-8e52-4587-af57-ab3d4b3133f1"
     },
     {
       "parameters": {

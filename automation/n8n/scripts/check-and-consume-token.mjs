@@ -10,6 +10,8 @@ import { readFile, unlink } from 'node:fs/promises';
 import path from 'node:path';
 import { timingSafeEqual } from 'node:crypto';
 import { engagementDir } from './_paths.mjs';
+import { recordApproval } from '../../lib/order-state.mjs';
+import { syncOrderToWordPress } from '../../lib/wp-tracker-sync.mjs';
 
 const [slug, token] = process.argv.slice(2);
 if (!slug || !token) {
@@ -33,6 +35,15 @@ const valid = a.length === b.length && timingSafeEqual(a, b);
 
 if (valid) {
   await unlink(tokenPath).catch(() => {});
+  // The token being validated IS the real approval event -- an operator
+  // clicked the actual link. Best-effort: must never block the send.
+  await recordApproval(slug, 'discover', { approvedBy: 'mercedes' }).catch((err) => {
+    console.error(`[order-state] recordApproval failed for "${slug}": ${err.message}`);
+  });
+  const syncResult = await syncOrderToWordPress(slug);
+  if (!syncResult.ok && !syncResult.skipped) {
+    console.error(`[wp-tracker] sync failed after approval for "${slug}": ${syncResult.reason || syncResult.error || syncResult.status}`);
+  }
 }
 
 process.stdout.write(JSON.stringify({ valid }));

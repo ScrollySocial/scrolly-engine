@@ -1,11 +1,13 @@
 # Tally Intake Form — Build Spec
 
+**Already built.** Live at **https://tally.so/r/D4OVlE** ("Tally Intake Form," form id `D4OVlE`) — confirmed 2026-08-24 by inspecting its public page config. Do not rebuild it. As of that date it still has the **old** hidden field (`session_id`, singular) — needs the two-field edit described in "Form settings" below before the WooCommerce order-verification flow will work. This section otherwise remains the reference spec for what fields the form should have (useful if the form is ever rebuilt or edited).
+
 Build this in your own Tally account (I can't create the account for you). Fields map 1:1 to `methodology/engagement-template/input.md`, with a few operational fields added that aren't part of the Discover methodology itself (name, email, the Stripe link-back).
 
-**Form settings:**
-- Redirect target after a Stripe payment success (see `stripe-setup.md`) — this form is reached only after payment, so no separate payment step lives inside Tally.
+**Form settings (updated 2026-08-24 — Stripe now runs through WooCommerce's own checkout, not a standalone Payment Link, so this form is reached via a button on WooCommerce's thank-you page, not a Stripe redirect — see `stripe-setup.md`):**
+- No "redirect after payment" setting inside Tally itself — the customer reaches this form by clicking "Start Your Intake Form" on WooCommerce's order-received/thank-you page (see `automation/woocommerce-thankyou-snippet.php`), which appends `order_id` and `order_key` as URL params.
 - Under Tally's "Integrations" → enable a Webhook pointing at your n8n `Intake & Kickoff` workflow's webhook URL, firing on submit.
-- Add a **hidden field** named `session_id`. Tally supports populating hidden fields from the URL query string automatically (`?session_id=...`) — no visible form field, just carries the Stripe Checkout session id through to the webhook payload so n8n can verify payment before doing anything else.
+- Add two **hidden fields**: `order_id` and `order_key`. Tally supports populating hidden fields from the URL query string automatically (`?order_id=...&order_key=...`) — not shown to the client, just carries WooCommerce's order proof through to the webhook payload so n8n can independently re-verify payment before doing anything else.
 
 ---
 
@@ -15,7 +17,8 @@ Build this in your own Tally account (I can't create the account for you). Field
 | Business name | Short text | **Required** | Used for the client-folder slug and every report heading. |
 | Contact name | Short text | **Required** | Who the report/emails address. |
 | Contact email | Email | **Required** | Where the finished report is delivered. |
-| `session_id` | Hidden field | required | Populated from URL param, not shown to the client. |
+| `order_id` | Hidden field | required | Populated from URL param, not shown to the client. |
+| `order_key` | Hidden field | required | Populated from URL param, not shown to the client. |
 
 ## Section 1 — Absolute Minimum (input.md's only hard requirement)
 | Field | Type | Required | input.md target |
@@ -66,4 +69,4 @@ These three answers double as the trigger for the automated access-request email
 Make clear up front that **only the website/domain and location are ever required** — every other field is optional and the report still runs without them, per `discover.md`'s O1 absolute-minimum rule. This matters for conversion: don't let the form feel mandatory-heavy.
 
 ## What n8n does with the submission
-The `Intake & Kickoff` workflow (see `n8n/intake-and-kickoff.json`) reads this payload, verifies `session_id` against Stripe, slugifies "Business name" into `clients/<slug>/`, and writes every answered field into that client's `input.md` in the same section layout as `engagement-template/input.md` — blank fields stay blank, never guessed.
+The `Intake & Kickoff` workflow (see `n8n/intake-and-kickoff.json`) reads this payload, verifies `order_id`/`order_key` against the WooCommerce Order REST API, slugifies "Business name" into `clients/<slug>/`, and writes every answered field into that client's `input.md` in the same section layout as `engagement-template/input.md` — blank fields stay blank, never guessed.

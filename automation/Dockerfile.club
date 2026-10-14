@@ -1,0 +1,71 @@
+# $1K Club private-beta image. Runs a SEPARATE, Club-only copy of
+# bridge-server.mjs (private, loopback-reachable only) fronted by
+# club-public-proxy.mjs (the only publicly exposed process), in one
+# container. Does NOT replace or touch the local bridge-server.mjs instance
+# n8n's workflows depend on (automation/n8n/*.json hardcode
+# host.docker.internal to reach that separate, still-local process) --
+# this image is an independent deployment of the same source, nothing more.
+#
+# Pinned Node version: 22.12.0 (Active LTS as of this image's authoring;
+# Node 20's LTS window has since closed). Bumped from an initial 22.11.0 pin
+# after a local build showed `npm warn EBADENGINE` -- one dependency
+# declares `engines.node: "^20.19.0 || ^22.12.0 || >=23"`, which 22.11.0
+# does not satisfy. Re-pin to the current 22.x patch before the real deploy
+# -- see automation/DEPLOY_CLUB_FLY.md.
+FROM node:22.12.0-alpine3.20
+
+# Runs as a non-root user -- nothing in this image needs root once installed.
+# Switched to BEFORE any COPY/npm ci (rather than a `chown -R /app` pass
+# after the fact) so every file lands with the right owner as it's written,
+# with zero recursive chown over node_modules -- that recursive chown, over
+# Docker Desktop's virtualized filesystem on this machine, was observed to
+# hang for 50+ minutes on a real local build. COPY --chown does the same
+# per-file, cheaply, at copy time instead.
+RUN addgroup -S scrolly && adduser -S scrolly -G scrolly
+WORKDIR /app
+RUN chown scrolly:scrolly /app
+USER scrolly
+
+# Keeps npm's cache off whatever home directory busybox's `adduser -S` did
+# or didn't create, avoiding a permissions surprise on the first `npm ci`.
+ENV NPM_CONFIG_CACHE=/app/.npm-cache
+
+# Dependency install layer, cached separately from app code so a source
+# change doesn't force a reinstall. Uses the repo's own lockfile (`npm ci`)
+# for a reproducible install -- no dependency set is hand-picked here; this
+# is the exact same package.json every other automation/ entrypoint uses,
+# even though the Club path only exercises a subset of it (see
+# DEPLOY_CLUB_FLY.md for which env vars actually matter at runtime).
+COPY --chown=scrolly:scrolly package.json package-lock.json ./
+RUN npm ci --omit=dev
+
+# App code actually needed to run the Club: bridge-server.mjs (also serves
+# other products' routes, all of which stay unreachable -- see fly.toml's
+# http_service and the entrypoint script), club-public-proxy.mjs (the
+# fail-closed allow-list proxy), club/ (all Club lib/public code), and the
+# small slice of lib/ that bridge-server.mjs imports at module load time
+# (order-state.mjs and friends -- never called on this deployment, but
+# still imported, so still needed for the process to start).
+COPY --chown=scrolly:scrolly bridge-server.mjs club-public-proxy.mjs club-fly-entrypoint.sh ./
+COPY --chown=scrolly:scrolly lib ./lib
+COPY --chown=scrolly:scrolly club ./club
+
+# club/members is the mount point for a persistent volume in production
+# (see fly.toml's [[mounts]]) -- created here, empty, so a fresh container
+# with no volume attached (e.g. local `docker run` without -v) still boots
+# instead of failing on a missing directory. .dockerignore already excludes
+# any real member data from ever entering the build context. Already owned
+# by scrolly (created as scrolly, under a dir scrolly owns) -- no chown needed.
+RUN mkdir -p club/members && chmod +x club-fly-entrypoint.sh
+
+# Internal-only; never published by fly.toml or `docker run -p`. The proxy
+# reaches it over loopback inside this same container.
+ENV BRIDGE_PORT=5679
+# The only port this image's supervisor (fly.toml's http_service, or a
+# local `docker run -p`) should ever map to the outside world.
+ENV CLUB_PROXY_PORT=8080
+ENV CLUB_PROXY_UPSTREAM=http://127.0.0.1:5679
+
+EXPOSE 8080
+
+ENTRYPOINT ["./club-fly-entrypoint.sh"]

@@ -13,7 +13,65 @@
       "name": "Runner Webhook",
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2,
-      "position": [0, 0]
+      "position": [0, 0],
+      "webhookId": "4a4168de-5476-4642-ae7c-269fd4c20a6d"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=http://host.docker.internal:{{ $env.BRIDGE_PORT || 5679 }}/order-status",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ slug: $json.body.slug }) }}",
+        "options": {}
+      },
+      "id": "http_check_order_status",
+      "name": "Check order state (bridge, authoritative)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [220, 0],
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "jsCode": "// order.json (read fresh from disk by /order-status) is the ONLY source of\n// truth checked here — deliberately NOT the runner's webhook payload\n// ($json.body.ready_for_delivery from the original trigger) and NEVER any\n// historical run-result.json (this route doesn't read that file at all).\n// order.json's status is only ever set to 'awaiting_final_review' by\n// run-discover.mjs's recordReadyForReview(), which only runs when\n// evaluateRunOutcome() found readyForDelivery === true post-Phase-1-fix.\n// A lookup failure (network error, missing order.json, malformed JSON) is\n// treated as NOT ready — fail closed, never fail open.\nconst orderState = $json;\nconst hasError = Boolean(orderState?.error) || typeof orderState?.status !== 'string';\nconst readyForReview = !hasError && orderState.status === 'awaiting_final_review';\nreturn [{\n  json: {\n    slug: $('Runner Webhook').item.json.body.slug,\n    readyForReview,\n    orderStatus: hasError ? null : orderState.status,\n    lookupError: hasError ? (orderState?.error || 'order.json missing or malformed') : null\n  }\n}];"
+      },
+      "id": "code_evaluate_readiness",
+      "name": "Evaluate readiness (order.json authoritative)",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [440, 0]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": { "caseSensitive": true, "leftValue": "", "typeValidation": "strict" },
+          "combinator": "and",
+          "conditions": [
+            {
+              "leftValue": "={{ $json.readyForReview }}",
+              "rightValue": true,
+              "operator": { "type": "boolean", "operation": "equals" }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "if_ready_for_review",
+      "name": "Ready for review? (order.json authoritative)",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [660, 0]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Terminal no-op: a failed/needs_attention/incomplete engagement (per\n// order.json) stops here. No operator-review email, no client-delivery\n// email, nothing sent. The dashboard (Phase 2) is where this now surfaces\n// for a human instead.\nreturn [{ json: { blocked: true, slug: $json.slug, orderStatus: $json.orderStatus, lookupError: $json.lookupError } }];"
+      },
+      "id": "code_blocked",
+      "name": "Log blocked (not ready for review)",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [880, 160]
     },
     {
       "parameters": {
@@ -34,7 +92,7 @@
       "name": "Require manual approval?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2,
-      "position": [220, 0]
+      "position": [880, -140]
     },
     {
       "parameters": {
@@ -49,7 +107,7 @@
       "name": "Build operator review email (bridge)",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
-      "position": [440, -140]
+      "position": [1100, -280]
     },
     {
       "parameters": {
@@ -71,7 +129,7 @@
       "name": "Send operator review email",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
-      "position": [660, -140]
+      "position": [1320, -280]
     },
     {
       "parameters": {
@@ -86,7 +144,7 @@
       "name": "Build client delivery email (bridge, auto-send)",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
-      "position": [440, 140]
+      "position": [1100, 0]
     },
     {
       "parameters": {
@@ -108,7 +166,7 @@
       "name": "Send client email (auto-send)",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
-      "position": [660, 140]
+      "position": [1320, 0]
     },
     {
       "parameters": {
@@ -123,11 +181,19 @@
       "name": "Mark delivered (bridge, auto-send)",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
-      "position": [880, 140]
+      "position": [1540, 0]
     }
   ],
   "connections": {
-    "Runner Webhook": { "main": [[{ "node": "Require manual approval?", "type": "main", "index": 0 }]] },
+    "Runner Webhook": { "main": [[{ "node": "Check order state (bridge, authoritative)", "type": "main", "index": 0 }]] },
+    "Check order state (bridge, authoritative)": { "main": [[{ "node": "Evaluate readiness (order.json authoritative)", "type": "main", "index": 0 }]] },
+    "Evaluate readiness (order.json authoritative)": { "main": [[{ "node": "Ready for review? (order.json authoritative)", "type": "main", "index": 0 }]] },
+    "Ready for review? (order.json authoritative)": {
+      "main": [
+        [{ "node": "Require manual approval?", "type": "main", "index": 0 }],
+        [{ "node": "Log blocked (not ready for review)", "type": "main", "index": 0 }]
+      ]
+    },
     "Require manual approval?": {
       "main": [
         [{ "node": "Build operator review email (bridge)", "type": "main", "index": 0 }],

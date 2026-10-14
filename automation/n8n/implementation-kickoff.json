@@ -1,0 +1,122 @@
+{
+  "name": "Implementation — Purchase Kickoff",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "implementation-order",
+        "responseMode": "onReceived",
+        "responseData": "{\"received\": true}",
+        "options": {}
+      },
+      "id": "webhook_wc_order",
+      "name": "WooCommerce Order Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [0, 0]
+    },
+    {
+      "parameters": {
+        "jsCode": "const order = $json.body;\nconst expectedProductId = String($env.WC_IMPLEMENTATION_PRODUCT_ID || '');\nconst statusOk = ['processing', 'completed'].includes(order.status);\nconst productOk = Array.isArray(order.line_items) && order.line_items.some(li => String(li.product_id) === expectedProductId);\nconst verified = Boolean(statusOk && productOk && expectedProductId);\nreturn [{ json: {\n  verified,\n  orderId: order.id,\n  orderKey: order.order_key,\n  businessName: order.billing?.company || `${order.billing?.first_name || ''} ${order.billing?.last_name || ''}`.trim(),\n  contactName: order.billing?.first_name || '',\n  contactEmail: order.billing?.email || '',\n  existingDiscoverSlug: null\n} }];"
+      },
+      "id": "code_evaluate_order",
+      "name": "Evaluate order (native WC webhook payload — no Tally needed for this product)",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [220, 0]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": { "caseSensitive": true, "leftValue": "", "typeValidation": "strict" },
+          "combinator": "and",
+          "conditions": [
+            { "leftValue": "={{ $json.verified }}", "rightValue": true, "operator": { "type": "boolean", "operation": "equals" } }
+          ]
+        },
+        "options": {}
+      },
+      "id": "if_verified",
+      "name": "Order verified?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [440, 0]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=http://host.docker.internal:{{ $env.BRIDGE_PORT || 5679 }}/create-implementation-engagement",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify($json) }}",
+        "options": {}
+      },
+      "id": "http_create_engagement",
+      "name": "Create implementation engagement (bridge)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [660, -80]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=http://host.docker.internal:{{ $env.BRIDGE_PORT || 5679 }}/build-connect-email",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ slug: $json.slug }) }}",
+        "options": {}
+      },
+      "id": "http_build_connect_email",
+      "name": "Build connect-site email (bridge)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [880, -80]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.resend.com/emails",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Authorization", "value": "=Bearer {{ $env.RESEND_API_KEY }}" },
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify($json) }}",
+        "options": {}
+      },
+      "id": "http_send_connect_email",
+      "name": "Send connect-site email",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1100, -80]
+    },
+    {
+      "parameters": {
+        "jsCode": "return [{ json: { rejected: true, reason: 'WooCommerce order not paid, wrong product, or missing WC_IMPLEMENTATION_PRODUCT_ID', orderId: $json.orderId || null } }];"
+      },
+      "id": "code_rejected",
+      "name": "Log rejected submission",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [660, 120]
+    }
+  ],
+  "connections": {
+    "WooCommerce Order Webhook": { "main": [[{ "node": "Evaluate order (native WC webhook payload — no Tally needed for this product)", "type": "main", "index": 0 }]] },
+    "Evaluate order (native WC webhook payload — no Tally needed for this product)": { "main": [[{ "node": "Order verified?", "type": "main", "index": 0 }]] },
+    "Order verified?": {
+      "main": [
+        [{ "node": "Create implementation engagement (bridge)", "type": "main", "index": 0 }],
+        [{ "node": "Log rejected submission", "type": "main", "index": 0 }]
+      ]
+    },
+    "Create implementation engagement (bridge)": { "main": [[{ "node": "Build connect-site email (bridge)", "type": "main", "index": 0 }]] },
+    "Build connect-site email (bridge)": { "main": [[{ "node": "Send connect-site email", "type": "main", "index": 0 }]] }
+  },
+  "active": false,
+  "settings": { "executionOrder": "v1" }
+}

@@ -1,2 +1,10 @@
 node_modules/
 .env
+pending-intake-reminders.json
+implementation/.secrets/
+club/members/
+
+.test-scratch/
+
+# Instagram saved-post batches (other creators' captions); the ledger imported.json stays tracked
+ig-saved/data/batches/

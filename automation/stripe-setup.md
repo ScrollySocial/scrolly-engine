@@ -1,33 +1,69 @@
-# Stripe Setup — Build Spec
+# Stripe / WooCommerce Setup — Build Spec
 
-Create these yourself in your own Stripe account (I can't create the account or enter payment details for you). This spec is exactly what to configure so the rest of the pipeline lines up.
+**Rewritten 2026-08-24.** The original version of this doc assumed a standalone
+Stripe Payment Link (Stripe-hosted checkout, redirecting to Tally with a
+`{CHECKOUT_SESSION_ID}`). That's no longer the architecture — Stripe is now
+connected *through WooCommerce's own checkout* on scrollyseo.com, so there is
+no Stripe Checkout Session for the pipeline to verify against. Verification
+now happens against the **WooCommerce Order REST API** instead. See
+`automation/n8n/intake-and-kickoff.json` for the current logic and
+`automation/woocommerce-thankyou-snippet.php` for the piece that hands off to
+Tally after payment.
 
-## 1. Product & Price
-- Product name: `SEO Discovery Report` (or your preferred client-facing name).
-- Price: **$299.00 USD**, one-time (not recurring).
+## 1. Confirm Stripe is actually connected in WooCommerce
+In wp-admin → WooCommerce → Settings → Payments, the Stripe gateway should
+show as **enabled** with live keys entered (test keys first — see §5). As of
+this doc's last check, the live checkout's "Payment methods" section was
+still empty/loading — this step isn't finished yet. Nothing else in this spec
+works until it is.
 
-## 2. Payment Link
-Create a Payment Link for that price. Under its settings:
-- **After payment, redirect customers to a URL** (not the default confirmation page) → set to your Tally form URL with the Checkout Session id appended:
-  ```
-  https://tally.so/r/<your-form-id>?session_id={CHECKOUT_SESSION_ID}
-  ```
-  Stripe automatically substitutes `{CHECKOUT_SESSION_ID}` at redirect time. This is what lets Tally's hidden `session_id` field (see `tally-form-spec.md`) carry the payment proof through to n8n.
-- Collect the customer's email at checkout (Stripe Payment Links do this by default) — useful as a fallback/cross-check against the email the client types into Tally, but the Tally-entered email is what delivery actually uses.
+## 2. WooCommerce REST API key (read-only, for order verification)
+In wp-admin → WooCommerce → Settings → Advanced → REST API → **Add key**:
+- Description: `Scrolly automation — order verification`
+- Permissions: **Read** (never needs to write)
+- Generate, then copy the **Consumer key** and **Consumer secret** into
+  `automation/.env` as `WC_AUDIT_CONSUMER_KEY` / `WC_AUDIT_CONSUMER_SECRET`.
+  These are separate from any WooCommerce keys used by the (unrelated)
+  Implementation Agent workstream — don't reuse one pair for both.
 
-## 3. Webhook
-In Stripe Dashboard → Developers → Webhooks, add an endpoint:
-- URL: your n8n `Intake & Kickoff` workflow's Stripe-verification webhook path (n8n workflow exposes this — see `n8n/intake-and-kickoff.json`).
-- Events to send: `checkout.session.completed` (this is what confirms payment; n8n also independently re-verifies the `session_id` from the Tally submission against Stripe's API directly, so the webhook is a secondary signal / logging, not the sole trust boundary).
-- Copy the **Signing secret** shown after creating the endpoint into `automation/.env` as `STRIPE_WEBHOOK_SECRET` — n8n uses it to verify the webhook is genuinely from Stripe, not spoofed.
+## 3. Confirm the product ID
+`WC_AUDIT_PRODUCT_ID` in `.env` should match the live "SEO Site Audit"
+product's ID (24 as of 2026-08-20, per `current-state.md` — re-check in
+wp-admin → Products before relying on it, in case it changed).
 
-## 4. API keys
-Copy your **Secret key** (starts `sk_live_...` in live mode, `sk_test_...` in test mode) into `automation/.env` as `STRIPE_SECRET_KEY`. n8n uses this to call Stripe's API and confirm a given `session_id` is actually `payment_status: paid` before kicking off any work — this is the real gate, not just trusting the redirect happened.
+## 4. The thank-you-page hand-off
+WooCommerce's checkout no longer redirects anywhere external after payment —
+the customer lands on WooCommerce's own order-received/thank-you page. Install
+`automation/woocommerce-thankyou-snippet.php` (via WPCode or your child
+theme's `functions.php`) so that page shows a "Start Your Intake Form" button
+linking to Tally with `order_id` + `order_key` appended — see that file's
+header comment for exact steps, and `tally-form-spec.md` for the matching
+Tally-side hidden fields.
 
-## 5. Test before going live
-Stripe's test mode uses a parallel set of keys/webhooks and Stripe's documented test card numbers. Run the full pipeline in test mode first (see the plan's Build Order step 6 — full dry run) before switching `.env` to live keys and making the Payment Link public. **Do not take the live Payment Link public until:**
+## 5. What n8n does with this
+`n8n/intake-and-kickoff.json`, once a Tally submission arrives: reads the
+`order_id`/`order_key` hidden fields, calls WooCommerce's
+`GET /wp-json/wc/v3/orders/{order_id}` (authenticated with
+`WC_AUDIT_CONSUMER_KEY`/`SECRET`), and only proceeds if **all** of: the
+returned `order_key` matches, `status` is `processing` or `completed`,
+`total` is exactly `299`, and the order's line items include
+`WC_AUDIT_PRODUCT_ID`. An unpaid, forged, or mismatched submission never
+reaches the agent runner — same trust-boundary shape as the old Stripe
+session check, just against a different API.
+
+## 6. Test before going live
+Stripe's test mode uses parallel test keys and Stripe's documented test card
+numbers — WooCommerce's Stripe gateway supports test mode natively (a
+checkbox in its settings). Run one full test-mode purchase through the whole
+pipeline (checkout → thank-you button → Tally → n8n → runner → your review →
+delivery) before switching to live Stripe keys. **Do not take live payment
+public until:**
 - A full test-mode run has produced a correct report end-to-end, and
-- DataForSEO has been funded and one full live engagement has been verified (plan step 7) — selling before that means selling something never confirmed to work.
+- DataForSEO has been funded and one full live engagement has been verified —
+  selling before that means selling something never confirmed to work.
 
-## What n8n does with this
-`n8n/intake-and-kickoff.json`'s first real step, once a Tally submission arrives, is calling Stripe's `GET /v1/checkout/sessions/{session_id}` with `STRIPE_SECRET_KEY` and checking `payment_status === "paid"` and that the amount matches $299. Only then does it create the client folder and start the runner — an unpaid or forged submission never reaches the agent runner.
+## Leftover test cart data
+While checking the live checkout page, it showed 3 stale "SEO Site Audit"
+items ($897 total) sitting in a guest session cart — harmless (never became
+an order), but worth clearing/testing with a fresh private/incognito window
+so a real customer's cart isn't polluted by leftover test-browsing state.

@@ -1,0 +1,102 @@
+{
+  "name": "Implementation — Site Connection",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "implementation-connect",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "webhook_connect",
+      "name": "Connector Plugin Webhook (public — this is the callback_url the plugin posts to)",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [0, 0]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=http://host.docker.internal:{{ $env.BRIDGE_PORT || 5679 }}/register-site-connection",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify($json.body) }}",
+        "options": {}
+      },
+      "id": "http_register",
+      "name": "Register site connection (bridge — real credential validation happens here)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [220, 0]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": { "caseSensitive": true, "leftValue": "", "typeValidation": "strict" },
+          "combinator": "and",
+          "conditions": [
+            { "leftValue": "={{ $json.ok }}", "rightValue": true, "operator": { "type": "boolean", "operation": "equals" } }
+          ]
+        },
+        "options": {}
+      },
+      "id": "if_ok",
+      "name": "Connection accepted?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [440, 0]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=http://host.docker.internal:{{ $env.BRIDGE_PORT || 5679 }}/run-implementation",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ slug: $json.slug }) }}",
+        "options": {}
+      },
+      "id": "http_run_implementation",
+      "name": "Launch implementation run (bridge, detached)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [660, -80]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify({ ok: true, message: \"Connected. Your implementation is starting.\" }) }}",
+        "options": { "responseCode": 200 }
+      },
+      "id": "respond_ok",
+      "name": "Respond — connected",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [880, -80]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify({ ok: false, reason: $json.reason || 'Connection could not be verified.' }) }}",
+        "options": { "responseCode": 400 }
+      },
+      "id": "respond_invalid",
+      "name": "Respond — rejected",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [660, 120]
+    }
+  ],
+  "connections": {
+    "Connector Plugin Webhook (public — this is the callback_url the plugin posts to)": { "main": [[{ "node": "Register site connection (bridge — real credential validation happens here)", "type": "main", "index": 0 }]] },
+    "Register site connection (bridge — real credential validation happens here)": { "main": [[{ "node": "Connection accepted?", "type": "main", "index": 0 }]] },
+    "Connection accepted?": {
+      "main": [
+        [{ "node": "Launch implementation run (bridge, detached)", "type": "main", "index": 0 }],
+        [{ "node": "Respond — rejected", "type": "main", "index": 0 }]
+      ]
+    },
+    "Launch implementation run (bridge, detached)": { "main": [[{ "node": "Respond — connected", "type": "main", "index": 0 }]] }
+  },
+  "active": false,
+  "settings": { "executionOrder": "v1" }
+}

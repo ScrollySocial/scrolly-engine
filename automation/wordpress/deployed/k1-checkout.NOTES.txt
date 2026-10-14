@@ -1,0 +1,15 @@
+
+2026-09-29: the country-field gap rule in k1-checkout.php was NOT re-pasted into WPCode (editor would not accept the paste).
+It is live instead as one CSS rule in the checkout page (page 7) style block, added by website/scrolly-site/fix-k1co-country-gap.mjs.
+The live snippet = this file except that one CSS line (it has the older, weaker rule). Harmless duplicate once re-pasted.
+
+2026-09-29 (later): WPCode still refused edits. Also done via page content instead of the snippet:
+- Brand-styled notices/field errors: website/scrolly-site/k1co-notices.css, inserted into checkout page 7 style block by fix-k1co-notices-and-links.mjs.
+- /1k-club/ (page 291) Join buttons now use long-form links (add-to-cart=279&variation_id=58x&attribute_package=...), handled by the LIVE snippet.
+NOT live yet (needs WPCode): k1-checkout.php support for short ?add-to-cart=583 links + hiding the "added to cart" banner for them. No page links use the short form now.
+
+Member tabs snippet: WPCode title "My $1k Plan Snippet" (source: automation/k1-launch/dist/my-account-1k-tabs.php, record: wordpress/deployed/my-account-1k-tabs.php). Updated 2026-09-29 with the combined My $1K Plan calculator + Sept 28 changes.
+
+2026-09-30: keyboard-order fix pasted into WPCode (verified live). Live = this file = the previous live version + only the
+keyboard-order block (add-on, shirt-address toggle and shirt address moved after Payment in the DOM; Tab/Shift+Tab routed
+through coupons before Terms) and two CSS order rules. The other k1-launch/php/k1-checkout.php changes listed above are still NOT live.

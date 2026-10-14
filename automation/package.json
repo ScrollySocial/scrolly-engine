@@ -4,8 +4,15 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "test": "node --test test/*.test.mjs",
     "discover": "node runner/run-discover.mjs",
-    "bridge": "node bridge-server.mjs"
+    "bridge": "node bridge-server.mjs",
+    "check-pending-intakes": "node n8n/scripts/check-pending-intakes.mjs",
+    "implement:backfill": "node implementation/scripts/backfill-findings-json.mjs",
+    "implement:propose": "node implementation/propose.mjs",
+    "implement:approve": "node implementation/approve.mjs",
+    "implement:apply": "node implementation/apply.mjs",
+    "implement:rollback": "node implementation/rollback.mjs"
   },
   "keywords": [],
   "author": "",

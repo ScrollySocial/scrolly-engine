@@ -1,0 +1,60 @@
+# $1K Club -- DigitalOcean Basic Droplet deployment (single instance).
+# Reuses Dockerfile.club UNMODIFIED -- the image is platform-neutral (no
+# Fly-specific code inside it), so this is the only new file needed to run
+# it under plain Docker instead of Fly. See DEPLOY_CLUB_DROPLET.md for the
+# full setup sequence this file is one part of.
+#
+# Caddy is NOT run as a container here (see DEPLOY_CLUB_DROPLET.md) --
+# installed natively on the Droplet instead, per the "no unnecessary Docker
+# images" constraint on a 512MB box. Caddy is the only public listener;
+# this container's port is published to the host's loopback only.
+services:
+  club:
+    build:
+      context: .
+      dockerfile: Dockerfile.club
+    image: scrolly-club:latest
+    container_name: scrolly-club
+    restart: unless-stopped
+
+    # 127.0.0.1 only -- never 0.0.0.0. Caddy (native, on the same host)
+    # reverse-proxies HTTPS traffic to this loopback address; nothing else
+    # can reach this port even before the firewall rules in
+    # DEPLOY_CLUB_DROPLET.md are applied. Port 5679 (bridge-server.mjs)
+    # is never published here at all -- it stays reachable only from
+    # inside this container, exactly as in the Fly deployment.
+    ports:
+      - "127.0.0.1:8080:8080"
+
+    # CLUB_ACCESS_TOKEN_SECRET lives ONLY in this file on the server,
+    # created by hand over SSH (see DEPLOY_CLUB_DROPLET.md's Secret
+    # section) -- never in this repo, never in this compose file directly.
+    env_file:
+      - .env.club
+
+    # Bind mount, not a Docker named volume and NOT a DigitalOcean Volume
+    # (explicitly ruled out) -- the Droplet's own included SSD, at a host
+    # path outside any web-served directory. Survives container
+    # rebuilds/restarts because it's real files on the host disk, entirely
+    # independent of the container's own lifecycle.
+    volumes:
+      - /opt/club-app/data/members:/app/club/members
+
+    # Conservative caps for a 512MB host running Docker + Caddy + this
+    # container simultaneously -- see DEPLOY_CLUB_DROPLET.md's Resource
+    # Constraints section for the full memory budget this is based on.
+    # There are TWO Node processes inside this one container
+    # (bridge-server.mjs + club-public-proxy.mjs), each independently
+    # reading NODE_OPTIONS -- 64MB heap x2 leaves real headroom under the
+    # 256MB container cap once each process's own non-heap overhead is
+    # added, rather than the two figures being just barely consistent.
+    mem_limit: 256m
+    memswap_limit: 256m
+    environment:
+      - NODE_OPTIONS=--max-old-space-size=64
+
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
