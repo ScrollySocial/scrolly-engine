@@ -30,6 +30,21 @@ It's done when this says **All set**:
 node lib/doctor.mjs --check
 ```
 
+### Your brand kit (part of setup)
+Setup asks about your look and saves it as your **brand kit** (`lib/brand/my-brand.mjs`), so every Reel, caption and
+cover uses it:
+- **Colors:** seven, by job (background, a warmer light tone, the highlighter behind key words, text, one accent, two
+  soft panel colors). Give Claude your hex codes or a link to your website and it maps them for you.
+- **Fonts:** a clean font for captions, a big bold one for statements, a handwritten one for notes. No fonts of your
+  own? Keep the starter fonts (free, licensed for video). A font you paid for may not allow video: setup asks.
+- **Caption style:** clean, big and bold, or handwritten, and how many words per line.
+- **Never-do rules:** anything you never want in a Reel ("no emojis", "never say hustle", "no text over my face").
+- **Holiday kits:** Halloween, Thanksgiving, Christmas and Valentine's Day versions of your kit (same fonts, festive
+  colors). Pick one for a single Reel on the review page; your normal kit stays the default.
+
+**Change any of it later:** tell Claude "change my brand colors", "use a different caption font", "add a never-do
+rule" or "add an Easter kit". The next Reel uses it; Reels you already made stay as they are.
+
 ## 3. Add the sounds (optional, 5 minutes)
 Follow [sounds.md](sounds.md): download 10 files from Mixkit, drop them in `lib/assets/sfx/`, run `node lib/doctor.mjs`.
 
@@ -52,7 +67,8 @@ What happens:
 | Folder / file | What it is |
 |---|---|
 | `reel-settings.json` | Your setup: name, folders, posting, rules. Setup writes it; edit it any time |
-| `lib/brand/my-brand.mjs` | Your look: 7 colors by role + 3 fonts |
+| `lib/brand/my-brand.mjs` | Your look: 7 colors by role, 3 fonts, caption style |
+| `lib/brand/holidays.mjs` | Holiday versions of your kit (colors you can change) |
 | `lib/` | The engine: components, Studio template, review page, cover maker, doctor |
 | `lib/assets/sfx/` | Your downloaded sound effects ([sounds.md](sounds.md)) |
 | `tools/` | Transcription and the silence-aware cut (doctor installs their helpers here) |
@@ -69,6 +85,18 @@ node lib/prep-footage.mjs 2026-11-02-my-first-reel 2026-11-02-my-first-reel   # 
 cd 2026-11-02-my-first-reel && node build.mjs && npm run check && npm run render
 ```
 The engine reference (every file in `lib/`) is in [lib/README.md](lib/README.md).
+
+## Updating to a new version
+Each update is a new download (the folder name says the version, e.g. `reel-engine-v0.1.0`; `VERSION` inside says it
+too). Unzip it next to your current folder, then copy these from the old folder into the new one:
+- `reel-settings.json` (your setup)
+- `lib/brand/my-brand.mjs`, `lib/brand/holidays.mjs` and any other kit you made, plus your own font files in
+  `lib/assets/fonts/` (with their license files)
+- `lib/assets/sfx/` (your downloaded sounds)
+- `plans/`, `work/` and your Reel folders (`yyyy-mm-dd-…`) if you want to keep editing old Reels there
+
+Then open the new folder in Claude Code and run `node lib/doctor.mjs`. Or just say **"move my setup from
+<old folder>"** and Claude copies them for you.
 
 ## Trouble?
 - Run `node lib/doctor.mjs`. Every line says OK, FIXED, NOTE (doesn't block) or NEEDS YOU (with what to do).

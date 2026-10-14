@@ -9,6 +9,8 @@
 
   "brand": "my-brand",
   "_brand": "default brand kit id from lib/brand/index.mjs (the review page's Brand kit dropdown can still switch per Reel)",
+  "holidays": ["halloween", "thanksgiving", "christmas", "valentines"],
+  "_holidays": "holiday versions of your kit shown in the Brand kit dropdown (colors in lib/brand/holidays.mjs); [] hides them",
 
   "folders": {
     "footage": "",

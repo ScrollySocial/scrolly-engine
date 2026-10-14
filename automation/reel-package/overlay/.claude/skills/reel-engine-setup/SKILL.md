@@ -1,6 +1,6 @@
 ---
 name: reel-engine-setup
-description: Set up the Reel engine in this folder for the person on this computer. Asks a few plain questions (name, footage and export folders, review, tracker, posting, look, rules), writes reel-settings.json and their brand kit, then runs lib/doctor.mjs, which installs what's missing (HyperFrames helpers, puppeteer, ffmpeg, the Python transcription venv, folders, browser path) and, with permission, system software. Use when someone says "set up my Reel engine", "install the Reel engine", "get Reels working on this computer", opens this folder for the first time, or when doctor.mjs says NEEDS YOU.
+description: Set up the Reel engine in this folder for the person on this computer. Asks a few plain questions (name, footage and export folders, review, tracker, posting, look, rules), writes reel-settings.json and their brand kit, then runs lib/doctor.mjs, which installs what's missing (HyperFrames helpers, puppeteer, ffmpeg, the Python transcription venv, folders, browser path) and, with permission, system software. Use when someone says "set up my Reel engine", "change my brand kit / colors / fonts / caption style", "add a holiday kit", "install the Reel engine", "get Reels working on this computer", opens this folder for the first time, or when doctor.mjs says NEEDS YOU.
 ---
 
 # Set up my Reel engine
@@ -50,13 +50,25 @@ Use AskUserQuestion for choices, chat for free text. Recommended option first. D
 9. "Which fonts do you use?" Keep the starter fonts if they have none. For their own: get the font files into
    `lib/assets/fonts` **with their license file next to each**, and update `fontFaces` + `fontFiles`. A Google Font
    is always fine. A paid font: ask whether its license covers video; if unsure, pick a close Google Font instead.
-10. Set `name`, `label` and `site`, and keep `brand` in settings equal to `name` (rename the key in
-    `lib/brand/index.mjs` to match if it changes). Show them a cover rendered with the kit (`renderCovers` in
-    `lib/cover.mjs`) before calling it done.
+10. Set `label` (the name shown in the Brand kit dropdown) and `site` (shown on end cards, or empty). Keep `name`
+    as `my-brand`: `lib/brand/index.mjs` and `reel-settings.json` → `brand` use that id.
+10a. "How should your captions look?" → `captionFont` in the kit (AskUserQuestion, show each in their fonts if you can):
+    - Clean (recommended): the body font, `'body'`.
+    - Big and bold: the statement font, `'statement'`.
+    - Handwritten: `'hand'`.
+    Then "How many words per caption line?" 3 = punchy, 5 = relaxed (the default) → `templates.studio.captions.maxWords`
+    in settings (leave it unset for 5). They can still make single words Big or Highlighted per Reel on the review page.
+10b. **Holiday kits.** Explain: for a seasonal Reel they can switch to a holiday version of their kit on the review
+    page (Brand kit dropdown), same fonts, festive colors. Starter set: Halloween, Thanksgiving, Christmas, Valentine's
+    Day (colors in `lib/brand/holidays.mjs`). Show the four color sets as swatches (a small rendered cover per kit is
+    best), ask which to keep → settings `holidays` (`[]` hides them all), and whether any colors should change (edit
+    `HOLIDAYS` in `holidays.mjs`; another holiday = one more entry there).
+10c. Show them a cover rendered with their kit (`renderCovers` in `lib/cover.mjs`) before calling the look done.
 11. "How loud should background music be under your voice?" → `templates.studio.music.volume`
     (Quiet bed = the template's 0.05, leave it unset / Very quiet = 0.02). They can still change it per Reel on the
     review page.
-12. "Anything you never want in a Reel?" (free text, optional) → `rules.list`, one short line each. If they keep a
+12. "Anything you never want in a Reel?" (free text, optional; examples: a word or phrase, a color, emojis, text over
+    their face, a kind of sound) → `rules.list`, one short line each. If they keep a
     longer rules doc, point `rules.doc` + `rules.section` at it; otherwise leave `doc` empty.
 
 Leave `tools` as shipped unless doctor says otherwise (it fills in `tools.browser` itself). On a Mac, set
@@ -91,6 +103,16 @@ and show them the transcript's first lines. First run downloads the speech model
 ## 5. Hand over
 One short message: what's set up, where finished Reels will land, how to start ("say *make a Reel from <file>*"),
 whether the sounds are still to download, and anything still open. The Reel workflow is in `CLAUDE.md`.
+
+## Changing it later
+Everything here can change any time; the next Reel uses the new values (Reels already rendered stay as they are).
+- "change my brand colors / fonts / caption style": edit `lib/brand/my-brand.mjs` (steps 8-10a), show a cover.
+- "add / change a holiday kit": `lib/brand/holidays.mjs` + settings `holidays` (step 10b).
+- "add a never-do rule": append to `rules.list`.
+- "I moved my footage / exports folder": `folders` in settings, then `node lib/doctor.mjs --check`.
+- A second brand (a client, a side project): copy `my-brand.mjs` to a new file with a new `name`, add one line to
+  `lib/brand/index.mjs`, and pick it per Reel in the dropdown.
+- Updating to a new engine version: see "Updating" in `README.md` (their settings, kits and sounds move across).
 
 ## Never
 - Never put passwords, API keys or tokens into chat or into `reel-settings.json`.

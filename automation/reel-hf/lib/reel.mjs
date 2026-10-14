@@ -61,7 +61,7 @@ export function reel({ brand, template = studio, words = 'assets/words.json', ou
   // caption edits from the page: { <caption #>: { text, style: 'big' | 'hide', mark: [word #], big: [word #] } },
   // captionFont: 'body' | 'statement' | 'hand'. style 'big' = the whole line (older pages); big = single big words,
   // which can also carry the marker.
-  const capEdits = D.captions || {}, capFont = D.captionFont;
+  const capEdits = D.captions || {}, capFont = D.captionFont || B.captionFont; // B.captionFont: the kit's default
   const soundEdits = D.sound || {}, musicEdit = D.music || {}, transEdits = D.transitions || {}, look = D.look;
   let addedDone = false;
   const camEvents = []; // whips and punch-ins, so the review page can swap transitions

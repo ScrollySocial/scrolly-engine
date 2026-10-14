@@ -14,7 +14,7 @@
 // all fine; a paid desktop font may not be: check before using it). Keep the license file next to the font.
 // The starter fonts below are SIL Open Font License 1.1 (license files in lib/assets/fonts).
 export default {
-  name: 'my-brand', // EDIT ME: a short id, letters and dashes (also the line in brand/index.mjs)
+  name: 'my-brand', // keep this id: brand/index.mjs and reel-settings.json use it (change label instead)
   label: 'My brand', // EDIT ME: the name shown in the review page's Brand kit dropdown
   C: {
     cream: '#F4F1EC', // EDIT ME
@@ -35,5 +35,8 @@ export default {
 @font-face{font-family:'BrandStatement';src:url('assets/fonts/bricolage-800.woff2') format('woff2');font-weight:800;font-stretch:75% 100%}
 @font-face{font-family:'BrandHand';src:url('assets/fonts/covered-by-your-grace.woff2') format('woff2')}`,
   fontFiles: ['figtree.woff2', 'bricolage-800.woff2', 'covered-by-your-grace.woff2'],
+  // EDIT ME: the default caption font, by role: 'body' (clean, the default), 'statement' (big and bold) or 'hand'
+  // (handwritten). The review page can still switch it for one Reel.
+  captionFont: 'body',
   site: '', // EDIT ME: your website, shown on end cards (e.g. 'yoursite.com'), or leave empty
 };

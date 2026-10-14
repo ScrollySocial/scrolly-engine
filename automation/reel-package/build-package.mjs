@@ -1,4 +1,5 @@
-// Builds the customer copy of the Reel engine: dist/reel-engine/ (or the folder given), ready to zip.
+// Builds the customer copy of the Reel engine: dist/reel-engine-v<VERSION>/ (or the folder given), ready to zip.
+// Bump overlay/VERSION for each release; every update is a fresh build of this script, never a hand-edited copy.
 //   from ../reel-hf/lib     the engine, minus the Scrolly brand kits, the Mixkit sound files and the lib README
 //   from ../reel-studio     prep.mjs → tools/cut/prep.mjs, rewired to the package's settings (plans/, work/audio)
 //   from overlay/           what only customers get: README, CLAUDE.md, sounds.md, THIRD-PARTY-NOTICES, a blank
@@ -6,6 +7,7 @@
 //                           the customer version of the reel-engine-setup skill
 // Then it checks the result: no sound/music/ffmpeg files, no Mixkit fetching code, nothing that names Scrolly or
 // Mercedes, every font with its OFL file. Any failure stops the build.
+// Writes FILES.txt (every shipped file + size) into the package: show it to Mercedes before anything is shared.
 // Usage: node build-package.mjs [out-dir]
 import { cpSync, existsSync, mkdirSync, readdirSync, readFileSync, rmSync, statSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
@@ -13,7 +15,8 @@ import { fileURLToPath } from 'node:url';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const ENGINE = path.join(HERE, '../reel-hf');
-const OUT = path.resolve(process.argv[2] || path.join(HERE, 'dist/reel-engine'));
+const VERSION = readFileSync(path.join(HERE, 'overlay/VERSION'), 'utf8').trim();
+const OUT = path.resolve(process.argv[2] || path.join(HERE, `dist/reel-engine-v${VERSION}`));
 const fail = (msg) => { console.error(`build-package: ${msg}`); process.exit(1); };
 
 // ---- 1. engine library ----
@@ -78,8 +81,15 @@ for (const font of readdirSync(path.join(OUT, 'lib/assets/fonts')).filter((f) =>
   if (!stem || !existsSync(path.join(OUT, 'lib/assets/fonts', `OFL-${stem}.txt`))) problems.push(`font without a license file: ${font}`);
 }
 if (!readFileSync(path.join(OUT, 'lib/assets/js/gsap.min.js'), 'utf8').match(/^\/\*!\r?\n \* GSAP/)) problems.push('gsap.min.js lost its license header');
-for (const must of ['README.md', 'THIRD-PARTY-NOTICES.md', 'sounds.md', 'reel-settings.json', 'lib/brand/my-brand.mjs', 'tools/transcribe.py', 'tools/cut/prep.mjs', 'licenses/Apache-2.0-HyperFrames.txt', '.claude/skills/reel-engine-setup/SKILL.md']) {
+for (const must of ['README.md', 'THIRD-PARTY-NOTICES.md', 'sounds.md', 'reel-settings.json', 'lib/brand/my-brand.mjs', 'lib/brand/holidays.mjs', 'VERSION', 'tools/transcribe.py', 'tools/cut/prep.mjs', 'licenses/Apache-2.0-HyperFrames.txt', '.claude/skills/reel-engine-setup/SKILL.md']) {
   if (!files.includes(must)) problems.push(`missing ${must}`);
 }
 if (problems.length) fail(`${problems.length} problem(s):\n  ${problems.join('\n  ')}`);
-console.log(`package built: ${OUT} (${files.length} files, checks passed)`);
+
+// ---- 5. file list ----
+const kb = (f) => `${Math.max(1, Math.round(statSync(path.join(OUT, f)).size / 1024))} KB`;
+const list = files.sort();
+const total = list.reduce((n, f) => n + statSync(path.join(OUT, f)).size, 0);
+writeFileSync(path.join(OUT, 'FILES.txt'), `Reel Engine v${VERSION}: ${list.length + 1} files, ${(total / 1048576).toFixed(1)} MB (built ${new Date().toISOString().slice(0, 10)})\n\n` +
+  list.map((f) => `${f.padEnd(60)} ${kb(f)}`).join('\n') + '\nFILES.txt\n');
+console.log(`package built: ${OUT} (v${VERSION}, ${list.length + 1} files, ${(total / 1048576).toFixed(1)} MB, checks passed; list in FILES.txt)`);
