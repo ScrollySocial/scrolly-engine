@@ -59,8 +59,9 @@ for (const { slug } of todo) {
   let cover = null;
   if (D.cover?.text) {
     const n = D.cover.frame || 1;
-    const cut = [`review/cover-cuts/f${nn(n)}.png`, `sketch/f${nn(n)}-cut.png`].map((p) => path.join(dir, p)).find(existsSync);
-    const photo = path.join(dir, `sketch/f${nn(n)}.jpg`);
+    const own = typeof n === 'string' && n.startsWith('own-'); // a photo she added on the page
+    const cut = (own ? [`review/cover-cuts/${n}.png`] : [`review/cover-cuts/f${nn(n)}.png`, `sketch/f${nn(n)}-cut.png`]).map((p) => path.join(dir, p)).find(existsSync);
+    const photo = path.join(dir, own ? `review/cover-photos/${n}.jpg` : `sketch/f${nn(n)}.jpg`);
     const want = D.cover.style || 'cut', style = PHOTO_STYLES[want] ? want : cut ? want : 'photo'; // photo layouts need no cut-out
     try {
       mkdirSync(path.dirname(coverFile(slug)), { recursive: true });

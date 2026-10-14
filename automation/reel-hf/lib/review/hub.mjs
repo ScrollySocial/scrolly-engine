@@ -174,7 +174,8 @@ createServer(async (req, res) => {
     let frame = 1; try { const D = JSON.parse(readFileSync(path.join(dir, 'review/decisions.json'), 'utf8')); frame = D.cover?.frame || frame; } catch {}
     try { if (frame === 1) frame = JSON.parse(readFileSync(path.join(dir, 'review/reel.json'), 'utf8')).coverDefault || 1; } catch {}
     const nn = String(frame).padStart(2, '0');
-    const f = [coverFile(slug), path.join(dir, `sketch/f${nn}.jpg`), path.join(dir, 'sketch/f01.jpg')].find(existsSync);
+    const still = String(frame).startsWith('own-') ? path.join(dir, `review/cover-photos/${frame}.jpg`) : path.join(dir, `sketch/f${nn}.jpg`);
+    const f = [coverFile(slug), still, path.join(dir, 'sketch/f01.jpg')].find(existsSync);
     if (f) { res.writeHead(200, { 'Content-Type': f.endsWith('.png') ? 'image/png' : 'image/jpeg', 'Cache-Control': 'no-store' }); return res.end(readFileSync(f)); }
   }
   if (p === '/api/status') { res.writeHead(200, { 'Content-Type': 'application/json' }); return res.end(JSON.stringify(allReels().map(reelStatus))); }
