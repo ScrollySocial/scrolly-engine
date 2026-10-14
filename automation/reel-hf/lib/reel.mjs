@@ -19,6 +19,7 @@ import scrolly from './brand/scrolly.mjs';
 import { BRANDS } from './brand/index.mjs';
 import studio from './templates/studio.mjs';
 import { CTAS, resolveCta, ctaCaption } from './cta.mjs';
+import { musicMix, LEVELS, WARN_UNDER } from './loudness.mjs';
 
 const LIB_SFX = path.join(path.dirname(fileURLToPath(import.meta.url)), 'assets/sfx');
 // Review stage runtime: only clips whose window holds t are visible; the GSAP timeline is posed at t.
@@ -121,11 +122,20 @@ export function reel({ brand, template = studio, words = 'assets/words.json', ou
       sfxData.push({ id, name: file, base, file: `assets/sfx/${file}.mp3`, t: +t, vol, baseVol, d: d ?? T.sfxLen[file] });
       sfx.push(`<audio id="${id}" src="assets/sfx/${file}.mp3" data-start="${(+t).toFixed(2)}" data-duration="${d ?? T.sfxLen[file]}" data-track-index="${12 + (sfx.length % 4)}" data-volume="${vol}"></audio>`);
     },
-    music(file, { volume = T.music.volume, fadeIn = T.music.fadeIn, fadeOut = T.music.fadeOut } = {}) {
-      const baseVolume = volume, baseFile = file;
+    // ONE track, ONE level + fades. The level is measured (lib/loudness.mjs): Quiet / Normal / Up front = a fixed number of
+    // dB under her voice, whatever the track's own loudness. A fixed `volume` (build.mjs) or an older page's
+    // Quieter/Louder number (decisions music.volume) still wins when set; her page level (music.level) beats both.
+    music(file, { level = T.music.level, volume, fadeIn = T.music.fadeIn, fadeOut = T.music.fadeOut } = {}) {
+      const baseFile = file, baseLevel = level;
       if (musicEdit.file && existsSync(musicEdit.file)) file = musicEdit.file;
-      if (musicEdit.volume != null) volume = musicEdit.volume;
-      musicData = { file, baseFile, volume, baseVolume, fadeIn, fadeOut };
+      const chosen = musicEdit.level || (musicEdit.volume != null || volume != null ? null : level);
+      const mix = musicMix({ voiceFile: 'assets/talk-audio.m4a', musicFile: file, seconds: DUR, level: chosen, volume: musicEdit.level ? undefined : musicEdit.volume ?? volume });
+      const baseVolume = volume ?? mix.levels?.[baseLevel] ?? T.music.fallbackVolume;
+      volume = mix.measured ? mix.volume : musicEdit.volume ?? volume ?? T.music.fallbackVolume;
+      musicData = { file, baseFile, volume, baseVolume, level: chosen, baseLevel, levels: mix.levels || null, mix, fadeIn, fadeOut };
+      if (!mix.measured) console.warn(`⚠ music level not measured (ffmpeg missing or unreadable file): using volume ${volume}`);
+      else if (mix.tooQuiet) console.warn(`⚠ MUSIC TOO QUIET: ${mix.out} LUFS is ${mix.under} dB under her voice (${mix.voice} LUFS); over ${WARN_UNDER} dB under can't be heard on a phone. Pick Quiet/Normal/Up front on the review page or drop the fixed volume.`);
+      else console.log(`music: ${chosen ? LEVELS[chosen].label : 'fixed volume'} → volume ${volume}, ${mix.out} LUFS, ${mix.under} dB under her voice (${mix.voice} LUFS)`);
       music = `<audio id="music-a" src="${file}" data-start="0" data-duration="${DUR}" data-track-index="10" data-volume="${volume}" data-fade-in="${fadeIn}" data-fade-out="${fadeOut}"></audio>`;
     },
     // relaxed lower-third captions; hide = frame numbers that carry their own type

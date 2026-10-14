@@ -3,6 +3,7 @@
 //   node build.mjs review  →  R.write('review/stage.html', { stage: { video: PROXY, stills } }); await reviewExport(R, {…})
 // Makes review/talk-proxy.mp4 (a light 540×960 copy of the prepped take, muted, for smooth live playback),
 // review/covers/cover-N.png (one per cover option) and review/reel.json. All times are on the Reel's own timeline.
+import { LEVELS } from '../loudness.mjs';
 import { execFileSync } from 'node:child_process';
 import { existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync, statSync } from 'node:fs';
 import path from 'node:path';
@@ -61,7 +62,8 @@ export async function reviewExport(R, { notes = {}, title = '', covers = [], cov
     post: post ? { ...post, caption: withCtaLine(post.caption, R.endInfo?.caption) } : null,
     cta: R.endInfo?.cta || null, ctaLine: R.endInfo?.caption || '', ctaFrame: R.endInfo?.n || null, ctas: ctaList(), coverBgs: COVER_BGS, brands: brandList(), brand: R.B.name,
     frames, words, captions: R.captionList.map((c) => ({ i: c.i, s: r2(c.s), e: r2(c.e), t: c.t, frame: frameAt(c.s) })), sfx, sfxLib, sfxReel: mp3s('assets/sfx'),
-    music: m && { file: m.baseFile, volume: m.volume, baseVolume: m.baseVolume, fadeIn: m.fadeIn, fadeOut: m.fadeOut },
+    music: m && { file: m.baseFile, volume: m.volume, baseVolume: m.baseVolume, level: m.level, baseLevel: m.baseLevel, levels: m.levels, mix: m.mix, fadeIn: m.fadeIn, fadeOut: m.fadeOut },
+    musicLevels: LEVELS,
     musicLib: musicLibOut, musicNames, transitions: R.transitions, look: R.look || null, lookFilter: lookFilter(R.look || {}),
     hasVideo: existsSync(PROXY), draft: draft ? { at: statSync(draft).mtime.toISOString() } : null,
   };

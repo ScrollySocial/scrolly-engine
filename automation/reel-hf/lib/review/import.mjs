@@ -33,7 +33,8 @@ for (const [id, e] of Object.entries(D.sound || {})) {
   const what = [e.off && 'switched off', e.name && `swapped to ${e.name}`, e.vol != null && `volume ${Math.round((s?.baseVol ?? 0) * 100)}% → ${Math.round(e.vol * 100)}%`].filter(Boolean).join(', ');
   out.push(`SOUND ${s ? fmt(s.t) + ' F' + s.frame + ' ' + s.base : id}: ${what} (applies on next build)`);
 }
-if (D.music?.volume != null) out.push(`MUSIC volume ${R.music.baseVolume} → ${D.music.volume} (applies on next build)`);
+if (D.music?.level) out.push(`MUSIC level → ${D.music.level} (applies on next build)`);
+else if (D.music?.volume != null) out.push(`MUSIC volume ${R.music.baseVolume} → ${D.music.volume} (applies on next build)`);
 for (const a of D.addedSfx || []) out.push(`ADDED SOUND ${fmt(a.t)}: ${a.name} (applies on next build)`);
 if (D.soundRequests?.trim()) out.push(`SOUND REQUESTS (find options, list file/source/size, ask before downloading): ${D.soundRequests.trim().split(/\s*\n\s*/).join(' | ')}`);
 if (D.music?.file) out.push(`MUSIC track → ${D.music.file} (applies on next build)`);

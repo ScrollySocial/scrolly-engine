@@ -6,7 +6,7 @@ import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import { createRequire } from 'node:module';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import studio from './templates/studio.mjs';
+import { SOUNDS, SFX_DIR } from './sounds.mjs';
 import scrolly from './brand/scrolly.mjs';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
@@ -41,9 +41,11 @@ check(fw, 'faster-whisper in carousels/.venv (transcription)', 'cd automation/ca
 
 check(existsSync(path.join(AUTO, 'reel-studio/prep.mjs')), 'reel-studio/prep.mjs (silence-aware cuts)', 'restore automation/reel-studio/prep.mjs from git');
 
-const sfxDir = path.join(HERE, 'assets/sfx');
-const missingSfx = Object.keys(studio.sfxLen).filter((s) => !existsSync(path.join(sfxDir, `${s}.mp3`)));
-check(!missingSfx.length, `sound effects (${Object.keys(studio.sfxLen).length} in the Studio template)`, `missing in lib/assets/sfx: ${missingSfx.join(', ')}`);
+// sound library (lib/sounds.mjs): a missing sound only matters once a Reel uses it, so this is a note, not a stop
+const missingSfx = SOUNDS.filter((s) => !existsSync(path.join(SFX_DIR, `${s.name}.mp3`))).map((s) => s.name);
+if (!missingSfx.length) ok(`sound effects (${SOUNDS.length} in lib/sounds.mjs)`);
+else console.log(`NOTE  sound effects: ${SOUNDS.length - missingSfx.length} of ${SOUNDS.length}; missing ${missingSfx.join(', ')}
+      → download them from the links in lib/sounds.md into lib/assets/sfx (a Reel can't use a sound until it's there)`);
 const missingFonts = scrolly.fontFiles.filter((f) => !existsSync(path.join(HERE, 'assets/fonts', f)));
 check(!missingFonts.length, `brand fonts (${scrolly.fontFiles.join(', ')})`, `missing in lib/assets/fonts: ${missingFonts.join(', ')}`);
 check(existsSync(path.join(HERE, 'assets/js')) && readdirSync(path.join(HERE, 'assets/js')).length, 'GSAP in lib/assets/js', 'copy gsap.min.js from the voice-file Reel into lib/assets/js');

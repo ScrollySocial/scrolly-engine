@@ -22,8 +22,10 @@ Spec and decisions: vault `products/content-engine/reel-engine-handoff.md`. Work
 | `post-reel.mjs` | Posting copy (cover as frame 0, CRF 20, ≤9 Mbps) → WordPress media (never-expiring link for Buffer); `--buffer <id>` records it |
 | `review/hub.mjs` | One page for every Reel: http://localhost:4320 (`--start` runs it in the background); opens each Reel's page on 4331+ |
 | `../rows.json` | Notion row → Reel folder ledger, so the overnight run never drafts a row twice |
+| `loudness.mjs` | Music level, measured: Quiet / Normal / Up front = 25 / 21 / 17 dB under her voice (ffmpeg ebur128, cached in `<reel>/assets/.loudness.json`); warns when music is over 26 dB under |
+| `sounds.mjs` | The sound library: 25 sounds grouped by job, with Mixkit sources. `--md` writes `sounds.md` (customer download checklist), `--get` fills missing files into `assets/sfx` |
 | `animatic.mjs` | Storyboard stills timed to voice + music + sound effects (review before the full build) |
-| `assets/` | Shared fonts, gsap, the 10 approved sound effects |
+| `assets/` | Shared fonts, gsap, the sound effects listed in `sounds.mjs` |
 
 ## New Reel
 ```bash
@@ -42,7 +44,7 @@ all 145 GSAP timeline calls identical in value and per-target order (2026-10-13)
 ## Rules baked in (Mercedes)
 - Statements: condensed heavy grotesque; emphasis = peach marker swipe (`<m>word</m>`); asides handwritten. Never italic serif accents or color-changed words. No eyebrow cards.
 - Graphics around her body (above her head first), never over her face. Circles/scribbles never cross the text they mark.
-- One music track, one static volume + fades. Never the SAME sound effect back to back, except list items: when she says a list, each item can share one sound (Mercedes 2026-10-14).
+- One music track, one level (Quiet / Normal / Up front, measured against her voice; default Normal ≈ -36 LUFS) + fades. Never the SAME sound effect back to back, except list items: when she says a list, each item can share one sound (Mercedes 2026-10-14).
 - No em dashes or "|" on screen. Business Brain CTA = name + scrollyseo.com, never the price.
 
 ## Growing the library

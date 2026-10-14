@@ -290,9 +290,10 @@ textarea{min-height:42px;margin-top:8px}
       <section data-p="audio" class="panel">
         <h2>Music &amp; sound library</h2>
         <h3>Music</h3>
-        <p class="sub">Listen to a track on its own, then pick one. In the Reel it plays far under your voice.</p>
+        <p class="sub">Listen to a track on its own, then pick one. In the Reel it plays under your voice at the level you pick below (press Play on the left to hear the mix).</p>
         <div id="tracks"></div>
-        <div class="ctl" style="justify-content:flex-start;margin-top:10px"><span class="sub" style="margin:0">Level under your voice:</span><div class="mini" id="mlevel"></div></div>
+        <div class="ctl" style="justify-content:flex-start;margin-top:10px;flex-wrap:wrap;gap:8px"><span class="sub" style="margin:0">Music level under your voice:</span><div id="mlevel"></div></div>
+        <p class="sub" id="mlevelsay" style="margin-top:6px"></p>
         <h3>Sound library</h3>
         <p class="sub">Every sound you can use. Click to hear it. To use one, press "+ Add a sound" on a moment.</p>
         <div class="lib" id="sfxlib"></div>
@@ -409,7 +410,7 @@ function showTab(t) {
 }
 $$('[data-tab]').forEach((b) => b.addEventListener('click', () => showTab(b.dataset.tab)));
 function tabDots() {
-  const has = { screen: Object.keys(D.board).length || Object.keys(D.sound).length || D.addedSfx.length, script: D.cut.length, cover: !!D.cover, ending: !!D.cta?.kind, moments: Object.keys(D.visual).length, audio: D.music.file || D.music.volume != null || D.soundRequests, trans: Object.keys(D.transitions).length, caps: Object.keys(D.captions).length || D.captionFont, look: !!D.look || Object.keys(D.lookByFrame || {}).length > 0 };
+  const has = { screen: Object.keys(D.board).length || Object.keys(D.sound).length || D.addedSfx.length, script: D.cut.length, cover: !!D.cover, ending: !!D.cta?.kind, moments: Object.keys(D.visual).length, audio: D.music.file || D.music.volume != null || D.music.level || D.soundRequests, trans: Object.keys(D.transitions).length, caps: Object.keys(D.captions).length || D.captionFont, look: !!D.look || Object.keys(D.lookByFrame || {}).length > 0 };
   $$('.tab').forEach((b) => { b.querySelector('.dot')?.remove(); if (has[b.dataset.tab || b.dataset.tab1]) b.append(el('span', 'dot')); });
 }
 async function approve(key, next) {
@@ -514,7 +515,10 @@ function playSfx(name, vol, dur) {
 }
 const sfxDur = (s, st) => (st.name === s.base ? s.d : Math.min(s.d || 2, 2));
 const musicFile = () => D.music.file || R.music?.file;
-function musicVol(x) { if (!R.music) return 0; const base = D.music.volume ?? R.music.baseVolume; return Math.min(1, ($('#boost').checked ? 6 : 1) * base * Math.min(1, x / R.music.fadeIn) * Math.min(1, Math.max(0, (R.dur - x) / R.music.fadeOut))); }
+// the level she picked (Quiet / Normal / Up front, measured per track at build time), an older page's fixed number, or the plan
+const musicLevel = () => D.music.level || (D.music.volume != null ? null : R.music?.baseLevel);
+const musicBase = () => (D.music.level && R.music.levels?.[D.music.level]) ?? D.music.volume ?? R.music.baseVolume;
+function musicVol(x) { if (!R.music) return 0; const base = musicBase(); return Math.min(1, ($('#boost').checked ? 6 : 1) * base * Math.min(1, x / R.music.fadeIn) * Math.min(1, Math.max(0, (R.dur - x) / R.music.fadeOut))); }
 const stage = () => { try { return stageEl.contentWindow.stage; } catch { return null; } };
 function play(from = t, until = null, slow = 1) {
   listen.pause();
@@ -524,7 +528,7 @@ function play(from = t, until = null, slow = 1) {
   if (rate === 1) {
     voice.currentTime = t; voice.play().catch(() => {});
     if (step === 1) { if (until != null) timers.push(setTimeout(stop, (until - t) * 1000 + 40)); $('#play').textContent = 'Pause'; markScript(); return; }
-    if (R.music) { music.currentTime = t; music.volume = musicVol(t); music.play().catch(() => {}); $('#musicname').textContent = `${(R.musicNames || {})[musicFile()] || 'music'} · ${$('#boost').checked ? 'boosted for review' : 'very quiet under your voice'}`; $('#musicbadge').hidden = false; }
+    if (R.music) { music.currentTime = t; music.volume = musicVol(t); music.play().catch(() => {}); $('#musicname').textContent = `${(R.musicNames || {})[musicFile()] || 'music'} · ${$('#boost').checked ? 'boosted for review' : (R.musicLevels?.[musicLevel()]?.label || 'set level') + ' under your voice'}`; $('#musicbadge').hidden = false; }
     for (const s of R.sfx) { const st = soundState(s); if (!st.off && s.t >= t - 0.01 && (until == null || s.t < until)) timers.push(setTimeout(() => playSfx(st.name, st.vol, sfxDur(s, st)), (s.t - t) * 1000)); }
   }
   if (until != null) timers.push(setTimeout(stop, ((until - t) / rate) * 1000 + 40));
@@ -862,12 +866,14 @@ function renderAudio() {
   }
   const lv = $('#mlevel'); lv.textContent = '';
   if (R.music) {
-    const vol = D.music.volume ?? R.music.baseVolume;
-    const set = (x) => { const y = +Math.max(0, Math.min(0.2, x)).toFixed(3); if (y === R.music.baseVolume) delete D.music.volume; else D.music.volume = y; renderAudio(); tabDots(); save(); };
-    const q = el('button', '', 'Quieter'); q.type = 'button'; q.addEventListener('click', () => set(vol * 0.75));
-    const l = el('button', '', 'Louder'); l.type = 'button'; l.addEventListener('click', () => set(vol * 1.33));
-    const vv = el('span', 'v', vol === R.music.baseVolume ? 'as planned' : Math.round(vol / R.music.baseVolume * 100) + '%'); vv.style.minWidth = '80px';
-    lv.append(q, vv, l);
+    const cur = musicLevel(), seg = el('div', 'seg');
+    for (const [k, L] of Object.entries(R.musicLevels || {})) {
+      const b = el('button', '', L.label + (k === R.music.baseLevel ? ' ·' : '')); b.type = 'button'; b.title = L.say + (k === R.music.baseLevel ? ' (what Claude planned)' : ''); b.setAttribute('aria-pressed', cur === k);
+      b.addEventListener('click', () => { delete D.music.volume; if (k === R.music.baseLevel) delete D.music.level; else D.music.level = k; renderAudio(); tabDots(); save(); });
+      seg.append(b);
+    }
+    lv.append(seg);
+    const say = $('#mlevelsay'); say.textContent = cur ? R.musicLevels[cur].say : 'A fixed volume from an older version of this page. Pick a level to replace it.';
   }
   const lib = $('#sfxlib'); lib.textContent = '';
   for (const n of R.sfxLib) { const b = el('button', 'libsnd'); b.type = 'button'; b.title = 'Hear it'; b.append(el('span', 'pl', '▶'), el('span', '', pretty(n))); b.addEventListener('click', () => playSfx(n, 0.6)); lib.append(b); }
