@@ -115,7 +115,7 @@ const COMPARE = {
 // the "Video coming soon" slot looked unfinished on the live /1k-club/ page).
 const VIDEO = { '1k': '', '10k': '', '24k': '' };
 // Hero product image per tier (media-map.json file). '' = show the image slot until the collage exists; a tier missing here keeps its tiger.
-const HERO_IMG = { '1k': 'k1-hero-products.webp', '10k': '', '24k': '' };
+const HERO_IMG = { '1k': 'k1-hero-fan.webp', '10k': '', '24k': '' };
 const slot = (label, cls = '') => `<div class="cl-slot ${cls}" aria-hidden="true"><span>${label}</span></div>`;
 
 const calc = CALCS.find((c) => c.slug === 'income-goal');
