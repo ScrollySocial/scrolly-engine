@@ -32,7 +32,7 @@ export const CALCS = [
     slug: 'income-goal', id: 1151, group: 'make', name: 'Income Goal Calculator',
     short: 'Set an income goal and an offer price. See how many sales, visitors and views it takes.',
     lede: 'Set your income goal and offer price. See how many sales, website visitors and views it takes to get there.',
-    fields: [$('goal', 'Monthly revenue goal', 1000, 50), $('aov', 'Average order value', 50), P('conv', 'Visitors who buy', 1.4, 0.1, BUY), P('view', 'Viewers who visit your website', 0.3, 0.1, VISIT)],
+    fields: [$('goal', 'Monthly revenue goal', 1000, 50), $('aov', 'Average order value', 50), P('view', 'Viewers who visit your website', 0.3, 0.1, VISIT), P('conv', 'Visitors who buy', 1.4, 0.1, BUY)],
     outs: ['Sales needed', 'Website visitors needed', 'Estimated views needed'],
     fn: `function(v,H){var s=H.up(H.div(v.goal,v.aov)),vi=H.up(H.div(s,v.conv/100)),vw=H.up(H.div(vi,v.view/100));
 return [[H.num(s),'You’ll need '+H.num(s)+' sales at '+H.money(v.aov)+' to reach '+H.money(v.goal)+'.'],

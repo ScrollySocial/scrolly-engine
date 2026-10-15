@@ -5,6 +5,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { img, min } from '../lib.mjs';
 import { merch } from '../shop-data.mjs';
+import { CALCS, HELPERS, compute } from '../calculators-data.mjs';
 const here = path.dirname(fileURLToPath(import.meta.url));
 const CSS = min(fs.readFileSync(path.join(here, '..', 'home.css'), 'utf8'));
 
@@ -41,10 +42,15 @@ ${many ? `<div class="dots" aria-hidden="true">${TESTIMONIALS.map((_, i) => `<sp
 }
 
 // Inline page script. Keep it free of '&': WordPress can mangle it inside page content.
+// The calculator runs the Income Goal calculator's own math and defaults (calculators-data.mjs), so the two never disagree.
+const IG = CALCS.find((c) => c.slug === 'income-goal');
+const IG_RES = compute(IG);
 const SCRIPT = `(function(){var r=document.querySelector('.hp');if(!r||r.__init)return;r.__init=1;
-var f=r.querySelector('#hp-calc-form');if(f){var g=r.querySelector('#hp-goal'),a=r.querySelector('#hp-aov'),o=r.querySelector('#hp-sales'),c=r.querySelector('#hp-caption'),w=r.querySelector('#hp-word');
-function calc(){var G=Math.max(1,Number(g.value)||1000),A=Math.max(1,Number(a.value)||50),n=Math.ceil(G/A);o.textContent=n.toLocaleString('en-US');w.textContent=n===1?'sale':'sales';c.textContent='to make '+G.toLocaleString('en-US',{style:'currency',currency:'USD',maximumFractionDigits:0})}
-f.addEventListener('submit',function(e){e.preventDefault();calc()});g.addEventListener('input',calc);a.addEventListener('input',calc);calc()}
+var f=r.querySelector('#hp-calc-form');if(f){var H=${HELPERS},C=${IG.fn},K=${JSON.stringify(IG.fields.map((x) => x.k))};
+function calc(){var v={};K.forEach(function(k){var x=parseFloat(r.querySelector('#hp-'+k).value);v[k]=isFinite(x)?x:0});var o=C(v,H),n=Math.ceil(v.goal/v.aov);
+r.querySelector('#hp-sales').textContent=o[0][0];r.querySelector('#hp-word').textContent=n===1?'sale':'sales';r.querySelector('#hp-caption').textContent='to make '+H.money(v.goal);
+r.querySelector('#hp-visitors').textContent=o[1][0];r.querySelector('#hp-views').textContent=o[2][0]}
+f.addEventListener('submit',function(e){e.preventDefault();calc()});f.addEventListener('input',calc);calc()}
 var qs=r.querySelector('.hp-quotes');if(qs){var bq=[].slice.call(qs.querySelectorAll('blockquote')),ds=[].slice.call(qs.querySelectorAll('.dots span')),ix=0;
 function show(n){ix=(n+bq.length)%bq.length;bq.forEach(function(b,i){b.hidden=i!==ix});ds.forEach(function(d,i){d.classList.toggle('on',i===ix)})}
 var p=qs.querySelector('.prev'),nx=qs.querySelector('.next');if(p)p.addEventListener('click',function(){show(ix-1)});if(nx)nx.addEventListener('click',function(){show(ix+1)})}
@@ -70,12 +76,12 @@ export function build() {
  <div>
   <h2 id="hp-calc-h">What would it take?</h2>
   <form id="hp-calc-form" novalidate>
-   <div><input id="hp-goal" type="number" inputmode="numeric" value="1000" min="1" step="50"><label for="hp-goal">Revenue goal</label></div>
-   <div><input id="hp-aov" type="number" inputmode="numeric" value="50" min="1" step="1"><label for="hp-aov">Average order value</label></div>
-   <button class="go" type="submit" aria-label="Calculate sales needed">→</button>
+   ${IG.fields.map((x) => `<div><div class="in${x.suf ? ' suf' : ''}"><input id="hp-${x.k}" type="number" inputmode="decimal" value="${x.val}" min="0" step="${x.step}">${x.suf ? '<span aria-hidden="true">%</span>' : ''}</div><label for="hp-${x.k}">${x.k === 'goal' ? 'Revenue goal' : x.label}${x.suf ? '<span class="sr"> (percent)</span>' : ''}</label></div>`).join('')}
+   <button class="go" type="submit" aria-label="Calculate sales, visitors and views">→</button>
   </form>
  </div>
- <div class="res" aria-live="polite"><div class="row"><div class="num" id="hp-sales">20</div><div class="word" id="hp-word">sales</div></div><div class="cap" id="hp-caption">to make $1,000</div></div>
+ <div class="res" aria-live="polite"><div class="row"><div class="num" id="hp-sales">${IG_RES[0][0]}</div><div class="word" id="hp-word">sales</div></div><div class="cap" id="hp-caption">to make $1,000</div>
+  <dl class="more"><div><dt class="n" id="hp-visitors">${IG_RES[1][0]}</dt><dd>website visitors</dd></div><div><dt class="n" id="hp-views">${IG_RES[2][0]}</dt><dd>views</dd></div></dl></div>
 </div></section>
 
 <section class="hp-clubs" id="clubs" aria-labelledby="hp-clubs-h"><div class="wrap">
