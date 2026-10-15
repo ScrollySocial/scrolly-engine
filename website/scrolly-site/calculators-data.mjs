@@ -1,4 +1,4 @@
-// The 9 free calculators (2026-10-03). One entry per page at /calculators/<slug>/, rendered by pages/calculators.mjs from Mercedes's
+// The free calculators (9 on 2026-10-03; Views Per Post added 2026-10-15). One entry per page at /calculators/<slug>/, rendered by pages/calculators.mjs from Mercedes's
 // "Income Goal Calculator" wireframe. `fn` is real JS that runs twice: in Node for the first paint, and as the inline page script.
 // Keep every fn free of '&' (WordPress mangles it in page content) and make it return one [value, sentence] pair per entry in `outs`.
 // id: the WordPress page id once created (null = not published yet).
@@ -33,11 +33,12 @@ export const CALCS = [
     short: 'Set an income goal and an offer price. See how many sales, visitors and views it takes.',
     lede: 'Set your income goal and offer price. See how many sales, website visitors and views it takes to get there.',
     fields: [$('goal', 'Monthly revenue goal', 1000, 50), $('aov', 'Average order value', 50), P('view', 'Viewers who visit your website', 0.3, 0.1, VISIT), P('conv', 'Visitors who buy', 1.4, 0.1, BUY)],
-    outs: ['Sales needed', 'Website visitors needed', 'Estimated views needed'],
+    // Results run in the same order as the inputs and the funnel: views, then visitors, then sales (Mercedes, 2026-10-15).
+    outs: ['Estimated views needed', 'Website visitors needed', 'Sales needed'],
     fn: `function(v,H){var s=H.up(H.div(v.goal,v.aov)),vi=H.up(H.div(s,v.conv/100)),vw=H.up(H.div(vi,v.view/100));
-return [[H.num(s),'You’ll need '+H.num(s)+' sales at '+H.money(v.aov)+' to reach '+H.money(v.goal)+'.'],
-[H.num(vi),'At '+H.pct(v.conv)+' of visitors buying, that’s '+H.num(vi)+' visitors.'],
-[H.num(vw),'If '+H.pct(v.view)+' of viewers visit your site, that’s about '+H.num(vw)+' views across your content.']]}`,
+return [[H.num(vw),'You’ll need about '+H.num(vw)+' views across your content.'],
+[H.num(vi),'If '+H.pct(v.view)+' of viewers visit your site, that’s about '+H.num(vi)+' visitors.'],
+[H.num(s),'If '+H.pct(v.conv)+' of them buy, that’s '+H.num(s)+(s===1?' sale':' sales')+' at '+H.money(v.aov)+', enough for '+H.money(v.goal)+'.']]}`,
     why: 'Working backwards from a goal turns a vague number into a daily plan: how many sales, how many visitors, how much content.',
     tips: ['Raise your average order value with a bundle or an add-on.', 'Make your offer page clear and specific so more visitors buy.', 'Post consistently on the platforms where your buyers already are.', 'Swap in your real numbers once you have them: website clicks are in your Instagram Insights.'],
     related: ['price-to-customers', 'sales-goal', 'conversion-rate'],
@@ -74,10 +75,11 @@ return [[H.num(s),'At '+H.money(v.aov)+' each, '+H.money(v.goal)+' a month is '+
     lede: 'Turn your website traffic and conversion rate into estimated sales and revenue.',
     fields: [N('vis', 'Website visitors per month', 1000, 10), P('conv', 'Visitors who buy', 1.4, 0.1, BUY), $('aov', 'Average order value', 50)],
     outs: ['Estimated sales', 'Estimated revenue', 'Revenue per visitor'],
-    fn: `function(v,H){var s=v.vis*v.conv/100,r=s*v.aov,rv=H.div(r,v.vis);
-return [[H.dec(s),H.num(v.vis)+' visitors at '+H.pct(v.conv)+' is about '+H.dec(s)+' sales a month.'],
-[H.money(Math.round(r)),'At '+H.money(v.aov)+' per order, that’s about '+H.money(Math.round(r))+' a month.'],
-[H.money(Math.round(rv*100)/100),'Each visitor is worth about '+H.money(Math.round(rv*100)/100)+' to your business.']]}`,
+    // Sales are whole (nobody makes 0.7 of a sale); revenue per visitor is the exact rate x order value, so rounding never skews it.
+    fn: `function(v,H){var s=Math.round(v.vis*v.conv/100),r=s*v.aov,rv=Math.round(v.conv*v.aov)/100;
+return [[H.num(s),H.num(v.vis)+' visitors at '+H.pct(v.conv)+' is about '+H.num(s)+(s===1?' sale':' sales')+' a month.'],
+[H.money(r),'At '+H.money(v.aov)+' per order, that’s about '+H.money(r)+' a month.'],
+[H.money(rv),'Each visitor is worth about '+H.money(rv)+'. Paying more than that per click loses money.']]}`,
     why: 'Knowing what one visitor is worth tells you how much effort a new traffic source deserves.',
     tips: ['Find which pages your buyers visit before they buy.', 'Small conversion gains add up as traffic grows.', 'Compare revenue per visitor across your traffic sources.'],
     related: ['conversion-rate', 'income-goal', 'content-output'],
@@ -108,6 +110,21 @@ return [[H.num(d*v.days),H.num(v.per)+' a day on '+H.num(v.plat)+' platforms is 
     why: 'Sharing one piece of content in more places multiplies your chances to be found without multiplying the work of creating it.',
     tips: ['Create once, then adapt the format for each platform.', 'Pick a pace you can keep for months, not days.', 'Batch filming or writing on one day a week.'],
     related: ['income-goal', 'traffic-to-sales', 'sales-goal'],
+  },
+  {
+    // 2026-10-15 (Mercedes): Income Goal + Content Output in one, so the views goal becomes a per-post number. A month is 30 days.
+    slug: 'views-per-post', id: null, group: 'grow', name: 'Views Per Post Calculator',
+    short: 'See how many views each post needs to reach your income goal.',
+    lede: 'Put in your income goal, your rates and how often you post. See how many views each post needs, on average, to get there.',
+    fields: [$('goal', 'Monthly revenue goal', 1000, 50), $('aov', 'Average order value', 50), P('view', 'Viewers who visit your website', 0.3, 0.1, VISIT), P('conv', 'Visitors who buy', 1.4, 0.1, BUY), N('per', 'New posts per day', 1), N('plat', 'Platforms you share each post on', 3)],
+    outs: ['Views needed a month', 'Posts a month', 'Average views per post'],
+    fn: `function(v,H){var s=H.up(H.div(v.goal,v.aov)),vi=H.up(H.div(s,v.conv/100)),vw=H.up(H.div(vi,v.view/100)),p=Math.round(v.per*v.plat*30),a=H.up(H.div(vw,p));
+return [[H.num(vw),H.num(s)+(s===1?' sale':' sales')+' at '+H.money(v.aov)+' takes about '+H.num(vi)+' visitors, which is about '+H.num(vw)+' views.'],
+[H.num(p),H.num(v.per)+' a day on '+H.num(v.plat)+(v.plat===1?' platform':' platforms')+' is '+H.num(p)+' posts in 30 days.'],
+[H.num(a),'Each post needs about '+H.num(a)+' views, on average, to reach '+H.money(v.goal)+' a month.']]}`,
+    why: 'A monthly views goal is hard to picture. A views-per-post number is something you can check against your own analytics after every post.',
+    tips: ['Compare the answer with what your posts actually get in your insights.', 'Sharing each post on one more platform lowers the views each one needs.', 'A higher order value means fewer sales, so fewer views per post.', 'A clear link and a reason to click raise the share of viewers who visit.'],
+    related: ['income-goal', 'content-output', 'traffic-to-sales'],
   },
   {
     slug: 'profit', id: 1157, group: 'know', name: 'Profit Calculator',

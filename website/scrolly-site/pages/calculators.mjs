@@ -36,12 +36,13 @@ const ICONS = {
 const ico = (k) => `<span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24">${ICONS[k]}</svg></span>`;
 // [card icon, result-row icons] per calculator
 const ICON_BY_SLUG = {
-  'income-goal': ['target', ['cart', 'people', 'eye']],
+  'income-goal': ['target', ['eye', 'people', 'cart']],
   'price-to-customers': ['tag', ['people', 'people', 'people']],
   'sales-goal': ['bars', ['cart', 'calendar', 'clock']],
   'traffic-to-sales': ['people', ['cart', 'dollar', 'people']],
   'conversion-rate': ['funnel', ['percent', 'people']],
   'content-output': ['layers', ['layers', 'calendar', 'trend']],
+  'views-per-post': ['eye', ['eye', 'layers', 'trend']],
   'profit': ['dollar', ['dollar', 'dollar', 'percent']],
   'break-even': ['scale', ['dollar', 'flag', 'receipt']],
   'average-order-value': ['receipt', ['receipt', 'trend']],
@@ -62,7 +63,7 @@ var H=${HELPERS},C=${c.fn},K=${JSON.stringify(c.fields.map((x) => x.k))};
 function read(){var v={};K.forEach(function(k){var x=parseFloat(document.getElementById('cdir-'+k).value);v[k]=isFinite(x)?x:0});return v}
 function sz(t){return t.length>7?' l':t.length>5?' m':''}
 ${PRESET_JS}
-function run(){C(read(),H).forEach(function(r,i){var e=document.getElementById('cdir-v'+i);e.textContent=r[0];e.className='v'+sz(r[0]);var t=document.getElementById('cdir-t'+i);if(t)t.textContent=r[1]});presetSync(f)}
+function run(){var o=C(read(),H),z=sz(o.reduce(function(m,r){return r[0].length>m.length?r[0]:m},''));o.forEach(function(r,i){var e=document.getElementById('cdir-v'+i);e.textContent=r[0];e.className='v'+z;var t=document.getElementById('cdir-t'+i);if(t)t.textContent=r[1]});presetSync(f)}
 presets(f,run);
 f.addEventListener('submit',function(e){e.preventDefault();run()});f.addEventListener('input',run)})();`;
 
@@ -73,8 +74,10 @@ const field = (x, presets) => {
   const extra = pre ? presetHtml(x, 'cdir-') : '';
   return `<div class="s3-field"><label for="cdir-${x.k}">${x.label}${unit ? `<span class="s3-sr">${unit}</span>` : ''}</label><div class="cdir-in${x.pre ? ' pre' : ''}${x.suf ? ' suf' : ''}">${x.pre ? '<span aria-hidden="true">$</span>' : ''}<input id="cdir-${x.k}" type="number" inputmode="decimal" value="${x.val}" min="0" step="${x.step}"${pre ? ` aria-describedby="cdir-h-${x.k}"` : ''}>${x.suf ? '<span aria-hidden="true">%</span>' : ''}</div>${extra}</div>`;
 };
-// Long result numbers (views can run to six or seven digits) step down a size so they never break mid-number. Same rule as sz() in the page script.
+// Long result numbers (views can run to six or seven digits) step down a size so they never break mid-number. The longest result sets the
+// size for every row, so one calculator's numbers always match (Mercedes, 2026-10-15). Same rule as sz() in the page script.
 const sz = (t) => (t.length > 7 ? ' l' : t.length > 5 ? ' m' : '');
+const szAll = (res) => sz(res.reduce((m, [v]) => (v.length > m.length ? v : m), ''));
 const NOTE = '<p class="s3-fine cdir-note">Estimates, not guarantees. Change the numbers to match your business.</p>';
 const BTN = '<button class="s3-btn" type="submit">Calculate <span aria-hidden="true">→</span></button>';
 
@@ -154,7 +157,7 @@ function tool(c) {
  <div>
   <h2 class="s3-h3">Your results</h2>
   <p class="sub">Here’s what it takes.</p>
-  <div class="cdir-rows" aria-live="polite">${res.map(([v, t], i) => `<div><div class="v${sz(v)}" id="cdir-v${i}">${v}</div>${ico(ICON_BY_SLUG[c.slug][1][i])}<div><p class="s3-label">${c.outs[i]}</p><p class="t" id="cdir-t${i}">${t}</p></div></div>`).join('')}</div>
+  <div class="cdir-rows" aria-live="polite">${res.map(([v, t], i) => `<div><div class="v${szAll(res)}" id="cdir-v${i}">${v}</div>${ico(ICON_BY_SLUG[c.slug][1][i])}<div><p class="s3-label">${c.outs[i]}</p><p class="t" id="cdir-t${i}">${t}</p></div></div>`).join('')}</div>
   <div class="cdir-adjust">${ico('trend')}<p><b>Want to adjust your assumptions?</b>Change any number to see how your results move.</p></div>
  </div>
 </div></div></section>

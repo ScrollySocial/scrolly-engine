@@ -165,6 +165,7 @@ const TIER_CSS = `
 .s3 .cl-calc .s3-lede{margin-top:8px}
 .s3 .cl-form{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px 20px;align-items:start;margin-top:20px}
 .s3 .cl-form .s3-btn{grid-column:1/-1;justify-self:start}
+.s3 .cl-form .s3-pres{gap:4px}.s3 .cl-form .s3-pre{padding:8px 2px}
 .s3 .cl-form label{font-size:var(--s3-fs-ui)!important;letter-spacing:.01em!important}
 .s3 .cl-in{position:relative}
 .s3 .cl-in input{min-height:52px;background:#fff;border-color:#cdb6a3;font:400 var(--s3-fs-num)/1.2 var(--s3-serif)}
@@ -223,7 +224,8 @@ const TIER_CSS = `
 .s3 .cl-opts .s3-link{align-self:flex-start;white-space:nowrap;letter-spacing:.1em}
 .s3 .cl-opts .amt small{margin-left:8px;font:700 var(--s3-fs-label)/1 var(--s3-sans);letter-spacing:.2em;text-transform:uppercase}
 .s3 .cl-opts p{margin:12px 0 8px;font:var(--s3-fs-body-serif)/1.5 var(--s3-serif)}
-@media(max-width:1100px){.s3 .cl-form{grid-template-columns:1fr 1fr}.s3 .cl-form .s3-btn{grid-column:1/-1;justify-self:start}}
+/* two columns until the rate pills fit four across (they need about 290px each) */
+@media(max-width:1439px){.s3 .cl-form{grid-template-columns:1fr 1fr}.s3 .cl-form .s3-btn{grid-column:1/-1;justify-self:start}}
 @media(max-width:900px){
  .s3 .cl-hero .s3-wrap,.s3 .cl-offers,.s3 .cl-earned .s3-split,.s3 .cl-faq .s3-faq,.s3 .cl-end .s3-split{grid-template-columns:1fr}
  .s3 .cl-hero .tiger{width:112%;margin:8px -12% 0 0}
