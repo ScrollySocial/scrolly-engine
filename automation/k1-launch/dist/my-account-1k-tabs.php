@@ -1155,19 +1155,19 @@ K1CALC;
 	//   below the table was easy to miss). The setup steps follow the table.
 	/** Setup steps for the Content Tracker + AI auto-posting rows above. */
 	function scrolly_k1_automation_html( $uid ) {
-		$h   = '<h2>Set up your Content Tracker + auto-posting</h2><p>The Content Tracker and the Auto-Posting with Your AI guide in the list above work together. Plan your posts in Notion, and your AI sends them to Buffer.</p>';
+		$h   = '<h2>Set up your Content Planner + auto-posting</h2><p>The Content Planner and the Auto-Posting with Your AI guide in the list above work together. Plan your posts in Notion, and your AI sends them to Buffer.</p>';
 		if ( SCROLLY_K1_TRACKER_VIDEO ) {
 			$h .= '<p><a href="' . esc_url( SCROLLY_K1_TRACKER_VIDEO ) . '" target="_blank" rel="noopener">Watch the setup video</a></p>';
 		}
 		$h  .= '<h3>Set it up in 4 steps</h3><ol>'
-			. '<li><strong>Duplicate the Content Tracker.</strong> Click its button in the list above, then click Duplicate at the top right in Notion.</li>'
+			. '<li><strong>Duplicate the Content Planner.</strong> Click its button in the list above, then click Duplicate at the top right in Notion.</li>'
 			. '<li><strong>Connect Notion and Buffer to your AI.</strong> Step 2 of the guide has the settings for Claude and ChatGPT.</li>'
 			. '<li><strong>Get one post ready.</strong> Delete the example rows, fill in one finished post with its captions and media, and set its Status to Ready.</li>'
 			. '<li><strong>Send it.</strong> Copy the message from Step 5 of the guide to your AI. Check that the post shows up in Buffer and its Status changes to Queued.</li></ol>';
 		$h  .= '<div class="sec teal"><h3>How it works</h3>'
 			. '<p>Your AI takes your Ready posts in Publish Order (lowest number first), adds them to your Buffer queue, and marks them Queued. Ask for it any time, or set it to run once a day (Step 6 of the guide).</p>'
 			. '<p><strong>Status:</strong> Idea → Ready → Queued → Published. Mark a post Published once it’s live, or ask your AI to check Buffer and update it.</p>'
-			. '<p style="margin:16px 0 0;padding-left:14px;border-left:4px solid var(--s3-orange);font-size:var(--s3-fs-fine)"><strong>Keep these field names:</strong> Status, Publish Order, Platforms, Instagram Caption, TikTok Caption, YouTube Title, YouTube Description, Media Links. Your AI reads them by name. Everything else in the tracker is yours to change.</p></div>';
+			. '<p style="margin:16px 0 0;padding-left:14px;border-left:4px solid var(--s3-orange);font-size:var(--s3-fs-fine)"><strong>Keep these field names:</strong> Status, Publish Order, Platforms, Instagram Caption, TikTok Caption, YouTube Title, YouTube Description, Media Links. Your AI reads them by name. Everything else in the planner is yours to change.</p></div>';
 		return $h;
 	}
 	// Adds the Content Tracker as a row just before the guide row, for Challenge buyers who have the guide.
@@ -1178,10 +1178,10 @@ K1CALC;
 				$out[] = array_merge( $d, array(
 					'download_url'        => SCROLLY_K1_TRACKER_URL,
 					'download_id'         => 'k1-content-tracker',
-					'download_name'       => 'Content Tracker (Notion template)',
+					'download_name'       => 'Content Planner (Notion template)',
 					'downloads_remaining' => '',
 					'access_expires'      => null,
-					'file'                => array( 'name' => 'Content Tracker (Notion template)', 'file' => SCROLLY_K1_TRACKER_URL ),
+					'file'                => array( 'name' => 'Content Planner (Notion template)', 'file' => SCROLLY_K1_TRACKER_URL ),
 				) );
 			}
 			$out[] = $d;
