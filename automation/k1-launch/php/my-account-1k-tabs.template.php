@@ -28,7 +28,7 @@ if ( ! defined( 'SCROLLY_K1_PRODUCT' ) ) {
 	// Content Tracker (public Notion template, never a private workspace URL) + its companion guide, Auto-Posting with Your AI
 	// (2026-10-08, replaced the Make blueprint): a protected WooCommerce download on 583 and 280 whose file name contains
 	// SCROLLY_K1_GUIDE_FILE. Video URL: set once recorded.
-	define( 'SCROLLY_K1_TRACKER_URL', 'https://antique-sweater-bd0.notion.site/Content-Tracker-3f0ab38f4c5881e2a658f557f4f34d03' );
+	define( 'SCROLLY_K1_TRACKER_URL', 'https://antique-sweater-bd0.notion.site/Content-Planner-3f6ab38f4c58814aa91cc340ceb304d6' );
 	define( 'SCROLLY_K1_GUIDE_FILE', 'Auto-Posting-With-Your-AI' );
 	define( 'SCROLLY_K1_TRACKER_VIDEO', '' );
 	define( 'SCROLLY_K1_EP_PLAN', 'my-1k-plan' );
