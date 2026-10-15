@@ -2,7 +2,7 @@
 // $1K copy comes from Mercedes's offer breakdown (2026-09-21). $10K/$24K stay "preview" copy: their contents are not decided yet, so nothing is invented.
 // Purchase CTAs render ONLY when the WooCommerce product is published + in stock (status.mjs, checked at build time).
 import { shell, s3shell, media, img, ICON_UR, esc, endCta, min } from '../lib.mjs';
-import { CALCS, HELPERS, compute } from '../calculators-data.mjs';
+import { CALCS, HELPERS, PRESET_JS, compute, presetHtml } from '../calculators-data.mjs';
 import { club1k, challenge1k, club1kVariations } from '../status.mjs';
 
 const TIERS = {
@@ -122,7 +122,9 @@ const calc = CALCS.find((c) => c.slug === 'income-goal');
 const CALC_SCRIPT = `(function(){var f=document.getElementById('cl-form');if(!f||f.__init)return;f.__init=1;
 var H=${HELPERS},C=${calc.fn},K=${JSON.stringify(calc.fields.map((x) => x.k))};
 function read(){var v={};K.forEach(function(k){var x=parseFloat(document.getElementById('cl-'+k).value);v[k]=isFinite(x)?x:0});return v}
-function run(){C(read(),H).forEach(function(r,i){document.getElementById('cl-v'+i).textContent=r[0]})}
+${PRESET_JS}
+function run(){C(read(),H).forEach(function(r,i){document.getElementById('cl-v'+i).textContent=r[0]});presetSync(f)}
+presets(f,run);
 f.addEventListener('submit',function(e){e.preventDefault();run()});f.addEventListener('input',run)})();`;
 
 const TIER_CSS = `
@@ -161,7 +163,8 @@ const TIER_CSS = `
 .s3 .cl-calc .panel{background:#f8ece2;padding:clamp(20px,2.6vw,40px)}
 .s3 .cl-calc h2{font-size:var(--s3-fs-h3)!important;line-height:1.1!important}
 .s3 .cl-calc .s3-lede{margin-top:8px}
-.s3 .cl-form{display:grid;grid-template-columns:repeat(4,minmax(0,1fr)) auto;gap:16px;align-items:end;margin-top:20px}
+.s3 .cl-form{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px 20px;align-items:start;margin-top:20px}
+.s3 .cl-form .s3-btn{grid-column:1/-1;justify-self:start}
 .s3 .cl-form label{font-size:var(--s3-fs-ui)!important;letter-spacing:.01em!important}
 .s3 .cl-in{position:relative}
 .s3 .cl-in input{min-height:52px;background:#fff;border-color:#cdb6a3;font:400 var(--s3-fs-num)/1.2 var(--s3-serif)}
@@ -265,7 +268,7 @@ function tierPage(tk) {
   const goal = { '1k': 1000, '10k': 10000, '24k': 24000 }[tk];
   const vals = Object.fromEntries(calc.fields.map((f) => [f.k, f.k === 'goal' ? goal : f.val]));
   const res = compute(calc, vals);
-  const field = (x) => `<div class="s3-field"><label for="cl-${x.k}">${x.label}${x.pre ? '<span class="s3-sr"> (dollars)</span>' : x.suf ? '<span class="s3-sr"> (percent)</span>' : ''}</label><div class="cl-in${x.pre ? ' pre' : ''}${x.suf ? ' suf' : ''}">${x.pre ? '<span aria-hidden="true">$</span>' : ''}<input id="cl-${x.k}" type="number" inputmode="decimal" min="0" step="${x.step}" value="${vals[x.k]}">${x.suf ? '<span aria-hidden="true">%</span>' : ''}</div></div>`;
+  const field = (x) => `<div class="s3-field"><label for="cl-${x.k}">${x.label}${x.pre ? '<span class="s3-sr"> (dollars)</span>' : x.suf ? '<span class="s3-sr"> (percent)</span>' : ''}</label><div class="cl-in${x.pre ? ' pre' : ''}${x.suf ? ' suf' : ''}">${x.pre ? '<span aria-hidden="true">$</span>' : ''}<input id="cl-${x.k}" type="number" inputmode="decimal" min="0" step="${x.step}" value="${vals[x.k]}"${x.presets ? ` aria-describedby="cl-h-${x.k}"` : ''}>${x.suf ? '<span aria-hidden="true">%</span>' : ''}</div>${x.presets ? presetHtml(x, 'cl-', vals[x.k]) : ''}</div>`;
   const pic = (p) => {
     if (!p.img) return `<div class="pic" aria-hidden="true">${p.n}</div>`;
     const im = media[p.img];

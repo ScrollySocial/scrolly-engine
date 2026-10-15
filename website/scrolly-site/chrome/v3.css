@@ -110,6 +110,15 @@ body:has(.s3){background:var(--s3-cream)!important}
 .s3-prose strong{font-weight:700}
 .s3-prose table{width:100%;border-collapse:collapse;font-size:var(--s3-fs-fine)}
 .s3-prose th,.s3-prose td{text-align:left;vertical-align:top;padding:10px 12px 10px 0;border-bottom:1px solid var(--s3-line)}
+/* rate presets under a number field (calculators, Club pages): Weak / Typical / Strong pills that fill the box; the chosen one is black.
+   Markup + script: presetHtml() / PRESET_JS in calculators-data.mjs. */
+.s3-pres{display:flex;gap:6px;margin-top:10px}
+.s3 .s3-pre{flex:1 1 0;display:inline-flex;align-items:center;justify-content:center;gap:4px;min-height:44px;padding:8px 6px;border:1px solid #cdb6a3;border-radius:999px;background:#fff;color:var(--s3-ink);font:400 var(--s3-fs-label)/1 var(--s3-sans);white-space:nowrap;cursor:pointer}
+.s3 .s3-pre b{font-weight:700}
+.s3 .s3-pre:hover{border-color:var(--s3-ink)}
+.s3 .s3-pre[aria-pressed=true]{background:var(--s3-ink);border-color:var(--s3-ink);color:#fff}
+.s3 .s3-pre:focus-visible{outline:2px solid var(--s3-ink);outline-offset:2px}
+.s3 .s3-hint{margin-top:10px;font-size:var(--s3-fs-fine);line-height:1.45;color:#55514c}
 @media(max-width:900px){
  .s3-split,.s3-split.flip{grid-template-columns:1fr}
  .s3-split.flip>:first-child{order:0}

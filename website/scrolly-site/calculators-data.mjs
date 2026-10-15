@@ -14,7 +14,15 @@ money:function(n){var d=Math.round(n)===n||Math.abs(n)>=1000?0:2;return (n<0?'-'
 }`;
 
 const $ = (k, label, val, step = 1) => ({ k, label, val, step, pre: '$' });
-const P = (k, label, val, step = 0.1) => ({ k, label, val, step, suf: '%' });
+const P = (k, label, val, step = 0.1, extra = {}) => ({ k, label, val, step, suf: '%', ...extra });
+
+// Weak / Typical / Strong presets for the two rates people can't guess (Mercedes, 2026-10-15). Typical is the default.
+// Visitors who buy: Littledata Shopify benchmark (427 stores, Jul-Oct 2026): median 1.4%, top 20% 2.6%+, under 0.5% = bottom 20%.
+//   ThoughtMetric Q3 2025 puts organic social traffic at 1.42%, so the median holds for visitors who came from social.
+// Viewers who visit your website: no published benchmark exists. Built from Reels profile visits (~3-10% of reach, onimator.com)
+//   times bio-link taps (~1-3% of profile visits, 1.8% median, hopp.co), plus Stories/YouTube/Pinterest links lifting it. A judgement call.
+const BUY = { presets: [['Weak', 0.5], ['Typical', 1.4], ['Strong', 2.6]], hint: 'Most online stores: 1.4%. The top 20%: 2.6% or more.' };
+const VISIT = { presets: [['Weak', 0.1], ['Typical', 0.3], ['Strong', 1]], hint: 'Most viewers never leave the app. Well under 1% is normal.' };
 const N = (k, label, val, step = 1) => ({ k, label, val, step });
 
 export const GROUPS = [['make', 'Make money'], ['grow', 'Grow'], ['know', 'Know your numbers']];
@@ -24,14 +32,14 @@ export const CALCS = [
     slug: 'income-goal', id: 1151, group: 'make', name: 'Income Goal Calculator',
     short: 'Set an income goal and an offer price. See how many sales, visitors and views it takes.',
     lede: 'Set your income goal and offer price. See how many sales, website visitors and views it takes to get there.',
-    fields: [$('goal', 'Monthly revenue goal', 1000, 50), $('aov', 'Average order value', 50), P('conv', 'Visitors who buy', 2.5), P('view', 'Viewers who visit your website', 7.5)],
+    fields: [$('goal', 'Monthly revenue goal', 1000, 50), $('aov', 'Average order value', 50), P('conv', 'Visitors who buy', 1.4, 0.1, BUY), P('view', 'Viewers who visit your website', 0.3, 0.1, VISIT)],
     outs: ['Sales needed', 'Website visitors needed', 'Estimated views needed'],
     fn: `function(v,H){var s=H.up(H.div(v.goal,v.aov)),vi=H.up(H.div(s,v.conv/100)),vw=H.up(H.div(vi,v.view/100));
 return [[H.num(s),'You’ll need '+H.num(s)+' sales at '+H.money(v.aov)+' to reach '+H.money(v.goal)+'.'],
 [H.num(vi),'At '+H.pct(v.conv)+' of visitors buying, that’s '+H.num(vi)+' visitors.'],
 [H.num(vw),'If '+H.pct(v.view)+' of viewers visit your site, that’s about '+H.num(vw)+' views across your content.']]}`,
     why: 'Working backwards from a goal turns a vague number into a daily plan: how many sales, how many visitors, how much content.',
-    tips: ['Raise your average order value with a bundle or an add-on.', 'Make your offer page clear and specific so more visitors buy.', 'Post consistently on the platforms where your buyers already are.', 'Swap in your real numbers once you have them.'],
+    tips: ['Raise your average order value with a bundle or an add-on.', 'Make your offer page clear and specific so more visitors buy.', 'Post consistently on the platforms where your buyers already are.', 'Swap in your real numbers once you have them: website clicks are in your Instagram Insights.'],
     related: ['price-to-customers', 'sales-goal', 'conversion-rate'],
   },
   {
@@ -64,7 +72,7 @@ return [[H.num(s),'At '+H.money(v.aov)+' each, '+H.money(v.goal)+' a month is '+
     slug: 'traffic-to-sales', id: 1154, group: 'grow', name: 'Traffic to Sales Calculator',
     short: 'Turn website visitors and a conversion rate into estimated sales.',
     lede: 'Turn your website traffic and conversion rate into estimated sales and revenue.',
-    fields: [N('vis', 'Website visitors per month', 1000, 10), P('conv', 'Visitors who buy', 2.5), $('aov', 'Average order value', 50)],
+    fields: [N('vis', 'Website visitors per month', 1000, 10), P('conv', 'Visitors who buy', 1.4, 0.1, BUY), $('aov', 'Average order value', 50)],
     outs: ['Estimated sales', 'Estimated revenue', 'Revenue per visitor'],
     fn: `function(v,H){var s=v.vis*v.conv/100,r=s*v.aov,rv=H.div(r,v.vis);
 return [[H.dec(s),H.num(v.vis)+' visitors at '+H.pct(v.conv)+' is about '+H.dec(s)+' sales a month.'],
@@ -144,6 +152,13 @@ return [[H.money(Math.round(a*100)/100),H.money(v.rev)+' from '+H.num(v.orders)+
     related: ['profit', 'price-to-customers', 'income-goal'],
   },
 ];
+
+// Preset pills for a field with `presets` (styles: .s3-pres in chrome/v3.css). id = the input's id prefix ('cdir-' or 'cl-').
+// The hint gets its own id so the input can point at it with aria-describedby.
+export const presetHtml = (x, id, val = x.val) => `<div class="s3-pres" role="group" aria-label="Suggested rates for ${x.label.toLowerCase()}">${x.presets.map(([n, v]) => `<button type="button" class="s3-pre" data-for="${id}${x.k}" data-v="${v}" aria-pressed="${v === val}">${n} <b>${v}%</b></button>`).join('')}</div><p class="s3-hint" id="${id}h-${x.k}">${x.hint}</p>`;
+// Page-script part: presets(form, run) wires clicks (fill the box, recalculate); presetSync(form) marks the pill matching each box. No '&' (s3shell).
+export const PRESET_JS = `function presetSync(f){[].forEach.call(f.querySelectorAll('.s3-pre'),function(b){var x=parseFloat(document.getElementById(b.getAttribute('data-for')).value);b.setAttribute('aria-pressed',x===parseFloat(b.getAttribute('data-v'))?'true':'false')})}
+function presets(f,run){f.addEventListener('click',function(e){var b=e.target.closest('.s3-pre');if(!b)return;document.getElementById(b.getAttribute('data-for')).value=b.getAttribute('data-v');run()})}`;
 
 // Runs an entry's fn in Node with the given (or default) values.
 const H = new Function('return ' + HELPERS)();

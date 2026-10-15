@@ -70,8 +70,10 @@
 .cdir-tool h2{margin-bottom:10px}
 .cdir-tool .sub{font:var(--cx-body);margin-bottom:28px}
 .cdir-tool .cdir-form{grid-template-columns:1fr}
-.cdir-rows>div{display:grid;grid-template-columns:minmax(0,.85fr) 56px minmax(0,1.3fr);gap:24px;align-items:center;padding:24px 0;border-top:1px solid var(--cx-rule)}
+.cdir-rows>div{display:grid;grid-template-columns:minmax(0,1.1fr) 56px minmax(0,1.2fr);gap:24px;align-items:center;padding:24px 0;border-top:1px solid var(--cx-rule)}
 .cdir-rows .v{font:400 clamp(3rem,5vw,5rem)/.9 var(--s3-serif);letter-spacing:-.03em;overflow-wrap:anywhere}
+.cdir-rows .v.m{font-size:clamp(2.4rem,3vw,3.2rem);white-space:nowrap;overflow-wrap:normal}
+.cdir-rows .v.l{font-size:clamp(2rem,2.3vw,2.5rem);white-space:nowrap;overflow-wrap:normal}
 .cdir-rows .t{margin-top:6px;font:var(--cx-body)}
 .cdir-adjust{display:flex;gap:18px;align-items:center;margin-top:24px;padding:22px 24px;background:var(--cx-warm2)}
 .cdir-adjust .ico{background:var(--cx-warm)}
@@ -127,7 +129,7 @@
  .cdir-form,.cdir-form.row,.cdir-res,.cdir-cards,.cdir-clubs{grid-template-columns:1fr}
  .cdir-res{gap:20px}
  .cdir-rows>div{grid-template-columns:56px 1fr;gap:6px 18px}
- .cdir-rows .v{grid-column:1/-1}
+ .cdir-rows .v,.cdir-rows .v.m,.cdir-rows .v.l{grid-column:1/-1;font-size:clamp(3rem,5vw,5rem)}
  .cdir-cards li{padding:24px 20px}
  .cdir-clubs li{padding:20px 0;border-left:0;border-top:1px solid var(--cx-rule)}
 }

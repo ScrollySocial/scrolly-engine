@@ -7,7 +7,7 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { img, media, s3shell } from '../lib.mjs';
-import { CALCS, GROUPS, HELPERS, compute } from '../calculators-data.mjs';
+import { CALCS, GROUPS, HELPERS, PRESET_JS, compute, presetHtml } from '../calculators-data.mjs';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const DIR_ID = 1132; // https://scrollyseo.com/calculators/
@@ -60,13 +60,21 @@ const CSS = fs.readFileSync(path.join(here, '..', 'calculators.css'), 'utf8');
 const script = (c) => `(function(){var f=document.getElementById('cdir-form');if(!f||f.__init)return;f.__init=1;
 var H=${HELPERS},C=${c.fn},K=${JSON.stringify(c.fields.map((x) => x.k))};
 function read(){var v={};K.forEach(function(k){var x=parseFloat(document.getElementById('cdir-'+k).value);v[k]=isFinite(x)?x:0});return v}
-function run(){C(read(),H).forEach(function(r,i){document.getElementById('cdir-v'+i).textContent=r[0];var t=document.getElementById('cdir-t'+i);if(t)t.textContent=r[1]})}
+function sz(t){return t.length>7?' l':t.length>5?' m':''}
+${PRESET_JS}
+function run(){C(read(),H).forEach(function(r,i){var e=document.getElementById('cdir-v'+i);e.textContent=r[0];e.className='v'+sz(r[0]);var t=document.getElementById('cdir-t'+i);if(t)t.textContent=r[1]});presetSync(f)}
+presets(f,run);
 f.addEventListener('submit',function(e){e.preventDefault();run()});f.addEventListener('input',run)})();`;
 
-const field = (x) => {
+// presets: Weak / Typical / Strong buttons that fill the box (calculator pages only; the directory's one-row form keeps plain inputs).
+const field = (x, presets) => {
   const unit = x.pre ? ' (dollars)' : x.suf ? ' (percent)' : '';
-  return `<div class="s3-field"><label for="cdir-${x.k}">${x.label}${unit ? `<span class="s3-sr">${unit}</span>` : ''}</label><div class="cdir-in${x.pre ? ' pre' : ''}${x.suf ? ' suf' : ''}">${x.pre ? '<span aria-hidden="true">$</span>' : ''}<input id="cdir-${x.k}" type="number" inputmode="decimal" value="${x.val}" min="0" step="${x.step}">${x.suf ? '<span aria-hidden="true">%</span>' : ''}</div></div>`;
+  const pre = presets ? x.presets : null;
+  const extra = pre ? presetHtml(x, 'cdir-') : '';
+  return `<div class="s3-field"><label for="cdir-${x.k}">${x.label}${unit ? `<span class="s3-sr">${unit}</span>` : ''}</label><div class="cdir-in${x.pre ? ' pre' : ''}${x.suf ? ' suf' : ''}">${x.pre ? '<span aria-hidden="true">$</span>' : ''}<input id="cdir-${x.k}" type="number" inputmode="decimal" value="${x.val}" min="0" step="${x.step}"${pre ? ` aria-describedby="cdir-h-${x.k}"` : ''}>${x.suf ? '<span aria-hidden="true">%</span>' : ''}</div>${extra}</div>`;
 };
+// Long result numbers (views can run to six or seven digits) step down a size so they never break mid-number. Same rule as sz() in the page script.
+const sz = (t) => (t.length > 7 ? ' l' : t.length > 5 ? ' m' : '');
 const NOTE = '<p class="s3-fine cdir-note">Estimates, not guarantees. Change the numbers to match your business.</p>';
 const BTN = '<button class="s3-btn" type="submit">Calculate <span aria-hidden="true">→</span></button>';
 
@@ -110,7 +118,7 @@ function directory() {
   <p class="s3-lede">Turn a revenue goal into sales, website visitors and views.</p>
  </div>
  <div>
-  <form id="cdir-form" class="cdir-form row" novalidate>${feat.fields.map(field).join('')}${BTN}</form>
+  <form id="cdir-form" class="cdir-form row" novalidate>${feat.fields.map((x) => field(x)).join('')}${BTN}</form>
   <div class="cdir-res" aria-live="polite">${res.map(([v], i) => `<div>${ico(ICON_BY_SLUG[feat.slug][1][i])}<div><div class="v" id="cdir-v${i}">${v}</div><div class="s3-label">${feat.outs[i].replace(/ needed$/, '').replace(/^Estimated v/, 'V')}</div></div></div>`).join('')}</div>
   <p class="s3-fine">Estimates, not guarantees. Change the numbers to match your business.</p>
   ${feat.id ? `<a class="s3-link more" href="${href(feat)}"><span class="tx">Open the full calculator</span> <span aria-hidden="true">→</span></a>` : ''}
@@ -141,12 +149,12 @@ function tool(c) {
  <div class="left">
   <h2 class="s3-h3">Your numbers</h2>
   <p class="sub">Enter your numbers to see what it takes.</p>
-  <form id="cdir-form" class="cdir-form" novalidate>${c.fields.map(field).join('')}${NOTE}${BTN}</form>
+  <form id="cdir-form" class="cdir-form" novalidate>${c.fields.map((x) => field(x, true)).join('')}${NOTE}${BTN}</form>
  </div>
  <div>
   <h2 class="s3-h3">Your results</h2>
   <p class="sub">Here’s what it takes.</p>
-  <div class="cdir-rows" aria-live="polite">${res.map(([v, t], i) => `<div><div class="v" id="cdir-v${i}">${v}</div>${ico(ICON_BY_SLUG[c.slug][1][i])}<div><p class="s3-label">${c.outs[i]}</p><p class="t" id="cdir-t${i}">${t}</p></div></div>`).join('')}</div>
+  <div class="cdir-rows" aria-live="polite">${res.map(([v, t], i) => `<div><div class="v${sz(v)}" id="cdir-v${i}">${v}</div>${ico(ICON_BY_SLUG[c.slug][1][i])}<div><p class="s3-label">${c.outs[i]}</p><p class="t" id="cdir-t${i}">${t}</p></div></div>`).join('')}</div>
   <div class="cdir-adjust">${ico('trend')}<p><b>Want to adjust your assumptions?</b>Change any number to see how your results move.</p></div>
  </div>
 </div></div></section>
