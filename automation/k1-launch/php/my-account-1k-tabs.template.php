@@ -1137,21 +1137,44 @@ K1CALC;
 			. '<p style="margin:16px 0 0;padding-left:14px;border-left:4px solid var(--s3-orange);font-size:var(--s3-fs-fine)"><strong>Keep these field names:</strong> Status, Publish Order, Platforms, Instagram Caption, TikTok Caption, YouTube Title, YouTube Description, Media Links. Your AI reads them by name. Everything else in the planner is yours to change.</p></div>';
 		return $h;
 	}
-	// Adds the Content Tracker as a row just before the guide row, for Challenge buyers who have the guide.
+	// Adds the Content Planner as a row for Challenge buyers: just before the guide row when the order has the guide,
+	// otherwise after the last Challenge row (2026-10-15: an order without the guide row showed no planner button at all).
 	add_filter( 'woocommerce_customer_get_downloadable_products', function ( $downloads ) {
-		$out = array();
+		$uid = get_current_user_id();
+		if ( ! $uid || ! scrolly_k1_access( $uid )['challenge'] ) {
+			return $downloads;
+		}
+		$row = function ( $d ) {
+			return array_merge( (array) $d, array(
+				'download_url'        => SCROLLY_K1_TRACKER_URL,
+				'download_id'         => 'k1-content-tracker',
+				'download_name'       => 'Content Planner (Notion template)',
+				'downloads_remaining' => '',
+				'access_expires'      => null,
+				'file'                => array( 'name' => 'Content Planner (Notion template)', 'file' => SCROLLY_K1_TRACKER_URL ),
+			) );
+		};
+		$out  = array();
+		$done = false;
+		$last = null; // index in $out of the last row from a $1K Challenge product
 		foreach ( (array) $downloads as $d ) {
-			if ( isset( $d['file']['file'] ) && false !== strpos( $d['file']['file'], SCROLLY_K1_GUIDE_FILE ) && get_current_user_id() && scrolly_k1_access( get_current_user_id() )['challenge'] ) {
-				$out[] = array_merge( $d, array(
-					'download_url'        => SCROLLY_K1_TRACKER_URL,
-					'download_id'         => 'k1-content-tracker',
-					'download_name'       => 'Content Planner (Notion template)',
-					'downloads_remaining' => '',
-					'access_expires'      => null,
-					'file'                => array( 'name' => 'Content Planner (Notion template)', 'file' => SCROLLY_K1_TRACKER_URL ),
-				) );
+			if ( ! $done && isset( $d['file']['file'] ) && false !== strpos( $d['file']['file'], SCROLLY_K1_GUIDE_FILE ) ) {
+				$out[] = $row( $d );
+				$done  = true;
 			}
 			$out[] = $d;
+			if ( isset( $d['product_name'] ) && false !== stripos( $d['product_name'], 'Challenge' ) ) {
+				$last = count( $out ) - 1;
+			}
+		}
+		if ( ! $done ) {
+			$base = null !== $last ? $out[ $last ] : ( $out ? end( $out ) : array( 'product_name' => '$1K Challenge', 'product_url' => '', 'order_id' => 0, 'order_key' => '', 'product_id' => 0 ) );
+			$new  = $row( $base );
+			if ( null !== $last ) {
+				array_splice( $out, $last + 1, 0, array( $new ) );
+			} else {
+				$out[] = $new;
+			}
 		}
 		return $out;
 	} );
