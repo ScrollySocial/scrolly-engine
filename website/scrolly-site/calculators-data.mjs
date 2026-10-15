@@ -113,7 +113,7 @@ return [[H.num(d*v.days),H.num(v.per)+' a day on '+H.num(v.plat)+' platforms is 
   },
   {
     // 2026-10-15 (Mercedes): Income Goal + Content Output in one, so the views goal becomes a per-post number. A month is 30 days.
-    slug: 'views-per-post', id: null, group: 'grow', name: 'Views Per Post Calculator',
+    slug: 'views-per-post', id: 1479, group: 'grow', name: 'Views Per Post Calculator',
     short: 'See how many views each post needs to reach your income goal.',
     lede: 'Put in your income goal, your rates and how often you post. See how many views each post needs, on average, to get there.',
     fields: [$('goal', 'Monthly revenue goal', 1000, 50), $('aov', 'Average order value', 50), P('view', 'Viewers who visit your website', 0.3, 0.1, VISIT), P('conv', 'Visitors who buy', 1.4, 0.1, BUY), N('per', 'New posts per day', 1), N('plat', 'Platforms you share each post on', 3)],
