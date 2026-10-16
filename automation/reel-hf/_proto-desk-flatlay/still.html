@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <!-- Still frame for approval: graphics-only scene on "if you can organize your sock drawer, you can build a business brain".
-     v2 (2026-10-16, Mercedes's notes): the business brain line is the hero; no sock drawer; fewer stickers; nothing overlaps.
+     v4 (2026-10-16): organizer option B picked; earlier v2 notes:: the business brain line is the hero; no sock drawer; fewer stickers; nothing overlaps.
      Stickers: Microsoft Fluent Emoji (MIT). Fonts: Scrolly brand kit. Doodles: inline SVG. -->
 <style>
 @font-face{font-family:'ScrollyFigtree';src:url('assets/fonts/figtree.woff2') format('woff2');font-weight:300 900}
@@ -27,6 +27,12 @@ html,body{width:1080px;height:1920px;overflow:hidden}
 .mkt{position:relative}
 .label{font:800 46px/1 'ScrollyFigtree';letter-spacing:.22em;color:#fff;background:#161210;padding:16px 22px 14px 30px;border-radius:6px;box-shadow:0 8px 14px rgba(0,0,0,.25)}
 </style>
+<style>
+.label.cream{background:#FFF4DC;color:#161210;border:2px solid rgba(0,0,0,.08)}
+.peel{position:relative}
+.peel::after{content:'';position:absolute;right:-2px;top:-2px;width:34px;height:34px;background:linear-gradient(225deg,#F8DCE5 0 50%,#E9DCC6 50% 100%);box-shadow:-3px 3px 5px rgba(0,0,0,.18)}
+.small{font-size:30px;letter-spacing:.16em;padding:12px 18px 10px 22px}
+</style>
 </head>
 <body>
 <div id="root">
@@ -44,17 +50,19 @@ html,body{width:1080px;height:1920px;overflow:hidden}
   <!-- the hero -->
   <div class="abs big" style="left:150px;right:20px;top:650px;font-size:136px;rotate:-1deg">you can build a<br><span class="mk"><span class="mkbg"></span><span class="mkt">business brain</span></span></div>
 
-  <!-- arrow down to the payoff, clear of the text and the folder -->
   <svg class="abs" style="left:230px;top:1000px" width="150" height="190" viewBox="0 0 150 190" fill="none" stroke="#161210" stroke-width="7" stroke-linecap="round" stroke-linejoin="round">
     <path d="M30 14 C 10 70, 40 130, 112 160"/><path d="M80 170 L 116 162 L 100 128"/>
   </svg>
-
-  <!-- payoff: the brain filed in a folder, label printed -->
-  <img class="abs stk" src="assets/stickers/file_folder_color.svg" style="left:380px;top:1080px;width:440px;rotate:6deg">
-  <img class="abs stk" src="assets/stickers/brain_3d.png" style="left:460px;top:1110px;width:260px;rotate:-10deg">
-  <div class="abs" style="left:420px;top:1380px;rotate:-4deg"><div class="label">BRAIN</div></div>
-  <div class="tape" style="left:388px;top:1368px;width:70px;height:40px;rotate:-60deg"></div>
-  <img class="abs stk" src="assets/stickers/sparkles_3d.png" style="left:850px;top:1110px;width:120px;rotate:10deg">
+  <svg class="abs" style="left:380px;top:1060px;rotate:4deg;filter:drop-shadow(0 16px 18px rgba(80,30,20,.22))" width="620" height="470" viewBox="0 0 620 470" fill="none" stroke="#161210" stroke-width="6" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M14 18 C 200 10, 420 12, 604 16 L 606 452 C 400 458, 210 456, 12 452 Z" fill="#FFF4DC"/>
+    <path d="M210 18 C 212 160, 208 300, 212 452 M408 16 C 406 160, 410 300, 406 452 M14 236 C 200 230, 420 240, 606 232"/>
+  </svg>
+  <div class="abs hand" style="left:430px;top:1180px;font-size:50px;rotate:4deg">offers</div>
+  <div class="abs hand" style="left:630px;top:1190px;font-size:50px;rotate:4deg">prices</div>
+  <div class="abs hand" style="left:812px;top:1200px;font-size:50px;rotate:4deg">my voice</div>
+  <div class="abs hand" style="left:404px;top:1404px;font-size:40px;rotate:4deg">customers</div>
+  <div class="abs hand" style="left:622px;top:1410px;font-size:50px;rotate:4deg">ideas</div>
+  <img class="abs stk" src="assets/stickers/socks_3d.png" style="left:832px;top:1350px;width:130px;rotate:-12deg">
 </div>
 </body>
 </html>
