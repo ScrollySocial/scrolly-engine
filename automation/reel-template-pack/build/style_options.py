@@ -18,6 +18,7 @@ W, H = 1080, 1920
 FONTS = {  # name: CapCut resource id
     'satisfy': '7563929797689167105', 'bodoni': '7580184437816675601', 'imbue': '7533523619876523280',
     'montserrat': '7541303466296184080', 'inter': '7533517738157886721',
+    'ellios': '7527221190125948161', 'truefate': '7525720839577144577',
 }
 BUTTER, INK, CREAM = (246, 228, 160), (24, 22, 20), (255, 250, 238)
 
@@ -113,6 +114,87 @@ SHOTS = [  # kind, clip, second, words
     ('cta', 'IMG_1421', 19.0, ('Stick vacuum', 'Shop at the link in my bio')),
 ]
 
+# ---- variations on B (Mercedes liked B most, 2026-10-16) ---------------------------------------------------------
+def shadowed(img, draw_fn, radius=18, strength=2):
+    return glow(img, text_layer(draw_fn), (0, 0, 0), radius, strength)
+
+def b1_tall(kind, img, words):
+    """B1. Tall: Imbue (tall condensed serif), white with a soft shadow, butter-yellow key word."""
+    if kind == 'hook':
+        img = shadowed(img, lambda d: centered(d, 330, words[0], F('imbue', 150), 'white'))
+        return shadowed(img, lambda d: centered(d, 480, words[1], F('imbue', 260), BUTTER))
+    if kind == 'label':
+        n, rest = words[0].split(' ', 1)
+        img = shadowed(img, lambda d: centered(d, 1080, n.rstrip('.'), F('imbue', 380), BUTTER))
+        return shadowed(img, lambda d: centered(d, 1450, rest, F('imbue', 130), 'white'))
+    img = shadowed(img, lambda d: centered(d, 1220, words[0], F('imbue', 170), 'white'))
+    return shadowed(img, lambda d: centered(d, 1420, words[1], F('imbue', 84), BUTTER))
+
+def highlight(d, cx, y, text, font, fg, bg, pad=22):
+    w = d.textlength(text, font=font); b = font.getbbox(text)
+    d.rectangle((cx - w / 2 - pad, y + b[1] - pad * 0.6, cx + w / 2 + pad, y + b[3] + pad * 0.6), fill=bg)
+    d.text((cx - w / 2, y), text, font=font, fill=fg)
+
+def b2_highlight(kind, img, words):
+    """B2. Highlight: bold high-contrast serif (DV Ellios) in ink on butter-yellow highlight bars."""
+    if kind == 'hook':
+        def d(dr):
+            highlight(dr, W / 2, 380, words[0], F('ellios', 96), INK, BUTTER)
+            highlight(dr, W / 2, 520, words[1], F('ellios', 150), INK, BUTTER)
+        return Image.alpha_composite(img, text_layer(d))
+    if kind == 'label':
+        return Image.alpha_composite(img, text_layer(lambda dr: highlight(dr, W / 2, 1360, words[0], F('ellios', 96), INK, BUTTER)))
+    def d(dr):
+        highlight(dr, W / 2, 1280, words[0], F('ellios', 100), INK, BUTTER)
+        highlight(dr, W / 2, 1430, words[1], F('inter', 46), INK, CREAM, pad=16)
+    return Image.alpha_composite(img, text_layer(d))
+
+def b3_script(kind, img, words):
+    """B3. Serif + script: Bodoni Moda in white, the key word in butter-yellow script (Satisfy)."""
+    if kind == 'hook':
+        img = shadowed(img, lambda d: centered(d, 360, words[0], F('bodoni', 116), 'white'))
+        return shadowed(img, lambda d: centered(d, 470, words[1], F('satisfy', 220), BUTTER))
+    if kind == 'label':
+        n, rest = words[0].split(' ', 1)
+        img = shadowed(img, lambda d: centered(d, 1140, n.rstrip('.'), F('bodoni', 300), 'white'))
+        return shadowed(img, lambda d: centered(d, 1440, rest, F('satisfy', 130), BUTTER))
+    img = shadowed(img, lambda d: centered(d, 1240, words[0], F('bodoni', 116), 'white'))
+    return shadowed(img, lambda d: centered(d, 1390, words[1], F('satisfy', 80), BUTTER))
+
+def frosted(img, box, tint=(255, 250, 238), alpha=150, radius=28):
+    x0, y0, x1, y1 = map(int, box)
+    region = img.crop((x0, y0, x1, y1)).filter(ImageFilter.GaussianBlur(radius))
+    over = Image.new('RGBA', region.size, tint + (alpha,))
+    img = img.copy(); img.paste(Image.alpha_composite(region, over), (x0, y0)); return img
+
+def b4_frosted(kind, img, words):
+    """B4. Frosted: serif (True Fate) in ink on a soft frosted cream band; readable on any footage."""
+    if kind == 'hook':
+        img = frosted(img, (0, 330, W, 700))
+        def d(dr):
+            centered(dr, 350, words[0], F('truefate', 110), INK)
+            centered(dr, 480, words[1], F('truefate', 170), INK)
+        return Image.alpha_composite(img, text_layer(d))
+    if kind == 'label':
+        img = frosted(img, (0, 1330, W, 1500))
+        return Image.alpha_composite(img, text_layer(lambda dr: centered(dr, 1345, words[0], F('truefate', 110), INK)))
+    img = frosted(img, (0, 1250, W, 1520))
+    def d(dr):
+        centered(dr, 1265, words[0], F('truefate', 120), INK)
+        centered(dr, 1420, words[1], F('inter', 44), INK)
+    return Image.alpha_composite(img, text_layer(d))
+
+def make_sheet(options, path):
+    rows = []
+    for name, fn in options:
+        rows.append((name, [fn(k, frame(c, t), w).convert('RGB') for k, c, t, w in SHOTS]))
+    out = Image.new('RGB', (W * 3 + 40, (H + 120) * len(rows)), 'white'); d = ImageDraw.Draw(out)
+    for i, (name, frames) in enumerate(rows):
+        d.text((20, i * (H + 120) + 20), name, font=F('inter', 80), fill='black')
+        for j, f in enumerate(frames):
+            out.paste(f, (j * (W + 20), i * (H + 120) + 120))
+    out.resize((out.width // 3, out.height // 3)).save(path, quality=88)
+
 def main():
     OUT.mkdir(parents=True, exist_ok=True)
     rows = []
@@ -129,6 +211,8 @@ def main():
         d.text((20, i * (H + 120) + 20), name, font=F('inter', 80), fill='black')
         sheet.paste(row, (0, i * (H + 120) + 120))
     sheet.resize((sheet.width // 3, sheet.height // 3)).save(OUT / 'all-options.jpg', quality=88)
+    make_sheet([('B1 Tall', b1_tall), ('B2 Highlight', b2_highlight), ('B3 Serif + script', b3_script),
+           ('B4 Frosted', b4_frosted)], OUT / 'b-variations.jpg')
     for p in OUT.glob('_*.png'):
         p.unlink()
     print('saved', OUT)
