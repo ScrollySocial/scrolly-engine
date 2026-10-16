@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<!-- Still frame for approval: "sock drawer" graphics-only scene, whimsical collage direction (2026-10-16).
+<!-- Still frame for approval: graphics-only scene on "if you can organize your sock drawer, you can build a business brain".
+     v2 (2026-10-16, Mercedes's notes): the business brain line is the hero; no sock drawer; fewer stickers; nothing overlaps.
      Stickers: Microsoft Fluent Emoji (MIT). Fonts: Scrolly brand kit. Doodles: inline SVG. -->
 <style>
 @font-face{font-family:'ScrollyFigtree';src:url('assets/fonts/figtree.woff2') format('woff2');font-weight:300 900}
@@ -11,19 +12,18 @@
 *{margin:0;padding:0;box-sizing:border-box}
 html,body{width:1080px;height:1920px;overflow:hidden}
 #root{position:relative;width:1080px;height:1920px;overflow:hidden;background:#F8DCE5}
-/* lined paper: peach rules + a pink margin line + soft grain */
 .paper{position:absolute;inset:0;background:
   linear-gradient(90deg,transparent 118px,#EE9FB5 118px,#EE9FB5 122px,transparent 122px),
-  repeating-linear-gradient(180deg,transparent 0 78px,rgba(224,90,51,.18) 78px 81px);}
+  repeating-linear-gradient(180deg,transparent 0 78px,rgba(224,90,51,.16) 78px 81px);}
 .grain{position:absolute;inset:0;opacity:.35;mix-blend-mode:multiply}
 .abs{position:absolute}
-.hand{font-family:'ScrollyHand';color:#161210;line-height:1}
-/* die-cut sticker: white edge + soft lift shadow */
+.hand{font-family:'ScrollyHand';color:#161210;line-height:1.05}
 .stk{filter:drop-shadow(5px 0 0 #fff) drop-shadow(-5px 0 0 #fff) drop-shadow(0 5px 0 #fff) drop-shadow(0 -5px 0 #fff) drop-shadow(0 16px 18px rgba(80,30,20,.28))}
 .tape{position:absolute;width:150px;height:46px;background:repeating-linear-gradient(45deg,rgba(255,201,168,.85) 0 14px,rgba(255,236,224,.85) 14px 28px);box-shadow:0 2px 4px rgba(0,0,0,.08)}
-.big{font-family:'ScrollyBricolage';font-weight:800;font-stretch:78%;color:#161210;line-height:.9;letter-spacing:-.01em}
-.mk{position:relative;display:inline-block;padding:0 .12em;rotate:-1.5deg}
-.mkbg{position:absolute;left:-.04em;right:-.04em;top:.12em;bottom:.02em;background:#FFC9A8;border-radius:.08em;skew:-6deg}
+/* hero statement: wider letters + a touch of tracking so it reads at a glance */
+.big{font-family:'ScrollyBricolage';font-weight:800;font-stretch:88%;color:#161210;line-height:.95;letter-spacing:.012em;text-align:center}
+.mk{position:relative;display:inline-block;white-space:nowrap;padding:0 .14em;rotate:-1.5deg}
+.mkbg{position:absolute;left:-.02em;right:-.02em;top:.14em;bottom:.04em;background:#FFC9A8;border-radius:.08em;skew:-6deg}
 .mkt{position:relative}
 .label{font:800 46px/1 'ScrollyFigtree';letter-spacing:.22em;color:#fff;background:#161210;padding:16px 22px 14px 30px;border-radius:6px;box-shadow:0 8px 14px rgba(0,0,0,.25)}
 </style>
@@ -33,54 +33,26 @@ html,body{width:1080px;height:1920px;overflow:hidden}
   <div class="paper"></div>
   <svg class="grain" width="1080" height="1920"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" stitchTiles="stitch"/><feColorMatrix values="0 0 0 0 .55  0 0 0 0 .4  0 0 0 0 .35  0 0 0 .5 0"/></filter><rect width="1080" height="1920" filter="url(#n)"/></svg>
 
-  <!-- washi tape on the corner, like the page is stuck down -->
   <div class="tape" style="left:-24px;top:70px;rotate:-32deg"></div>
-  <div class="tape" style="right:-30px;top:1250px;rotate:28deg;width:180px"></div>
 
-  <!-- handwriting writes on first -->
-  <div class="abs hand" style="left:160px;top:150px;font-size:96px;rotate:-2deg">if you can organize</div>
-  <div class="abs hand" style="left:190px;top:262px;font-size:120px;rotate:-2deg">your sock drawer...</div>
-  <!-- orange squiggle under "sock drawer" -->
-  <svg class="abs" style="left:430px;top:388px" width="520" height="50" viewBox="0 0 520 50"><path d="M6 30 C 60 6, 90 46, 150 24 S 250 6, 300 28 S 420 44, 512 18" fill="none" stroke="#E05A33" stroke-width="9" stroke-linecap="round"/></svg>
+  <!-- the setup line: a small handwritten aside -->
+  <div class="abs hand" style="left:170px;top:330px;font-size:78px;rotate:-2deg">if you can organize<br>your sock drawer...</div>
+  <img class="abs stk" src="assets/stickers/star_3d.png" style="left:850px;top:230px;width:140px;rotate:14deg">
 
-  <!-- doodled drawer, pulled open -->
-  <svg class="abs" style="left:150px;top:540px" width="620" height="440" viewBox="0 0 620 440" fill="none" stroke="#161210" stroke-width="7" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M40 150 L 578 142 L 586 420 L 34 428 Z" fill="#FFF4DC"/>
-    <path d="M40 150 L 120 70 L 500 64 L 578 142"/>
-    <path d="M120 70 L 124 150 M500 64 L 504 144" stroke-width="5"/>
-    <rect x="250" y="262" width="120" height="34" rx="17" fill="#FFC9A8"/>
-    <!-- motion ticks: socks just popped out -->
-    <path d="M70 40 L 40 10 M150 24 L 140 -10 M560 30 L 594 4" stroke="#E05A33" stroke-width="6"/>
+  <!-- the hero -->
+  <div class="abs big" style="left:150px;right:20px;top:650px;font-size:136px;rotate:-1deg">you can build a<br><span class="mk"><span class="mkbg"></span><span class="mkt">business brain</span></span></div>
+
+  <!-- arrow down to the payoff, clear of the text and the folder -->
+  <svg class="abs" style="left:230px;top:1000px" width="150" height="190" viewBox="0 0 150 190" fill="none" stroke="#161210" stroke-width="7" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M30 14 C 10 70, 40 130, 112 160"/><path d="M80 170 L 116 162 L 100 128"/>
   </svg>
-  <!-- socks bursting out of the drawer -->
-  <img class="abs stk" src="assets/stickers/socks_3d.png" style="left:250px;top:470px;width:330px;rotate:-14deg">
-  <img class="abs stk" src="assets/stickers/socks_3d.png" style="left:520px;top:520px;width:250px;rotate:22deg;transform:scaleX(-1)">
 
-  <!-- curly arrow from drawer down to the folder -->
-  <svg class="abs" style="left:800px;top:950px;scale:.8;transform-origin:0 0" width="300" height="330" viewBox="0 0 300 330" fill="none" stroke="#161210" stroke-width="7" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M30 20 C 210 10, 280 120, 170 150 C 90 172, 120 60, 200 110 C 260 150, 230 250, 190 300"/>
-    <path d="M160 270 L 190 304 L 228 278"/>
-  </svg>
-  <div class="abs hand" style="left:770px;top:880px;font-size:58px;rotate:8deg;color:#E05A33">same idea!</div>
-
-  <!-- statement -->
-  <div class="abs big" style="left:150px;top:1030px;font-size:104px;width:720px;rotate:-1deg">you can build a<br><span class="mk"><span class="mkbg"></span><span class="mkt">business brain</span></span></div>
-
-  <!-- folder with the brain sticker + printed label -->
-  <img class="abs stk" src="assets/stickers/file_folder_color.svg" style="left:580px;top:1250px;width:400px;rotate:7deg">
-  <img class="abs stk" src="assets/stickers/brain_3d.png" style="left:650px;top:1280px;width:240px;rotate:-10deg">
-  <div class="abs" style="left:615px;top:1520px;rotate:-4deg"><div class="label">BRAIN</div></div>
-  <div class="tape" style="left:590px;top:1510px;width:70px;height:40px;rotate:-60deg"></div>
-
-  <!-- whimsy: stars, sparkles, a little smiley doodle -->
-  <img class="abs stk" src="assets/stickers/star_3d.png" style="left:860px;top:110px;width:150px;rotate:14deg">
-  <img class="abs stk" src="assets/stickers/sparkles_3d.png" style="left:420px;top:1300px;width:120px;rotate:-8deg">
-  <img class="abs stk" src="assets/stickers/glowing_star_3d.png" style="left:860px;top:720px;width:120px;rotate:-12deg">
-  <svg class="abs" style="left:170px;top:1290px;scale:.9;transform-origin:0 0" width="210" height="210" viewBox="0 0 210 210" fill="none" stroke="#161210" stroke-width="6" stroke-linecap="round">
-    <circle cx="105" cy="105" r="80" fill="#FFF4DC"/><path d="M80 82 v18 M130 82 v18" stroke-width="9"/><path d="M62 126 C 84 160, 128 160, 150 126"/>
-  </svg>
-  <div class="abs hand" style="left:150px;top:1490px;font-size:54px;rotate:-6deg">you, organized</div>
-  <svg class="abs" style="left:150px;top:470px" width="110" height="110" viewBox="0 0 110 110" fill="none" stroke="#E05A33" stroke-width="7" stroke-linejoin="round"><path d="M55 8 L 68 42 L 104 44 L 76 66 L 86 102 L 55 82 L 24 102 L 34 66 L 6 44 L 42 42 Z"/></svg>
+  <!-- payoff: the brain filed in a folder, label printed -->
+  <img class="abs stk" src="assets/stickers/file_folder_color.svg" style="left:380px;top:1080px;width:440px;rotate:6deg">
+  <img class="abs stk" src="assets/stickers/brain_3d.png" style="left:460px;top:1110px;width:260px;rotate:-10deg">
+  <div class="abs" style="left:420px;top:1380px;rotate:-4deg"><div class="label">BRAIN</div></div>
+  <div class="tape" style="left:388px;top:1368px;width:70px;height:40px;rotate:-60deg"></div>
+  <img class="abs stk" src="assets/stickers/sparkles_3d.png" style="left:850px;top:1110px;width:120px;rotate:10deg">
 </div>
 </body>
 </html>
