@@ -26,7 +26,7 @@ def scrap_hook(img):
 def scrap_label(img_clip):
     bg = C.paper((W, H), CREAM, seed=21)
     pol = C.polaroid(img_clip, (700, 860), seed=22)
-    d = ImageDraw.Draw(pol); f = F('satisfy', 92); t = 'the couch'
+    d = ImageDraw.Draw(pol); f = F('hand', 96); t = 'the couch'
     d.text((350 - d.textlength(t, font=f) / 2, 860 - 140), t, font=f, fill=INK)
     bg = C.place(bg, C.shadow(pol, blur=18, alpha=80), (560, 1000), -4)
     bg = C.place(bg, C.tape(240, 70, seed=23), (560, 560), 3)
@@ -49,8 +49,8 @@ def list_hook(clips):
     bg = C.paper((W, H), CREAM, seed=41)
     d = ImageDraw.Draw(bg)
     centered(d, 300, 'One stick vacuum,', F('imbue', 150), INK)
-    centered(d, 470, '3 ways', F('imbue', 300), INK)
-    bg = C.place(bg, C.hand_circle((720, 360), INK, 5, seed=42), (540, 660), -3)
+    centered(d, 540, '3 ways', F('imbue', 300), INK)
+    bg = C.place(bg, C.pen_loop((800, 440), INK, 8, seed=43), (540, 745), -4)
     names = ['FLOORS', 'COUCH', 'HANDHELD']
     for i, (clip, name) in enumerate(zip(clips, names)):
         cx = 190 + i * 350; cy = 1230
@@ -73,7 +73,7 @@ def list_cta(clip):
     bg = C.place(bg, C.shadow(C.round_photo(clip, 380, (255, 255, 255), 12), blur=12, alpha=60), (540, 620), -4)
     d = ImageDraw.Draw(bg)
     centered(d, 900, 'Stick vacuum', F('imbue', 190), INK)
-    centered(d, 1130, 'shop at the link in my bio', F('satisfy', 90), INK)
+    centered(d, 1130, 'shop at the link in my bio', F('hand', 78), INK)
     bg = C.place(bg, C.arrow(170, INK, 6, 40, seed=62).rotate(-70, expand=True), (540, 1420))
     return bg
 

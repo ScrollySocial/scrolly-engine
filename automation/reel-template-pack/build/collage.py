@@ -169,3 +169,20 @@ def hand_circle(size=(300, 140), color=(24, 22, 20), width=5, seed=9):
            for a in [i / 40 * 2.15 * math.pi - 0.3 for i in range(41)]]
     ImageDraw.Draw(im).line(pts, fill=color, width=width, joint='curve')
     return im
+
+def pen_loop(size=(760, 380), color=(24, 22, 20), width=9, turns=1.12, start_deg=200, seed=10, ss=3):
+    """A smooth hand-drawn loop: one pen stroke going around once and a bit, ends crossing, tapered at both ends.
+    Drawn 3x larger and scaled down so the edge is smooth."""
+    r = rng(seed); w, h = size; W2, H2 = (w + 40) * ss, (h + 40) * ss
+    im = Image.new('RGBA', (W2, H2), (0, 0, 0, 0)); d = ImageDraw.Draw(im)
+    ph1, ph2 = r.uniform(0, 6.28), r.uniform(0, 6.28)
+    n = 400; total = turns * 2 * math.pi; a0 = math.radians(start_deg)
+    for i in range(n + 1):
+        t = i / n; a = a0 + total * t
+        wob = 1 + 0.035 * math.sin(2 * a + ph1) + 0.02 * math.sin(3 * a + ph2) + 0.05 * t  # drifts outward a little
+        x = W2 / 2 + (w / 2) * ss * wob * math.cos(a)
+        y = H2 / 2 + (h / 2) * ss * wob * math.sin(a) * (1 - 0.06 * math.cos(a))  # slightly egg-shaped
+        taper = min(1, t / 0.08, (1 - t) / 0.12)
+        rad = max(1, width * ss / 2 * (0.35 + 0.65 * taper))
+        d.ellipse((x - rad, y - rad, x + rad, y + rad), fill=color + (255,) if len(color) == 3 else color)
+    return im.resize((w + 40, h + 40), Image.LANCZOS)

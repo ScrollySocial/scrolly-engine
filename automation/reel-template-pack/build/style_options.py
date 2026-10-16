@@ -19,6 +19,7 @@ FONTS = {  # name: CapCut resource id
     'satisfy': '7563929797689167105', 'bodoni': '7580184437816675601', 'imbue': '7533523619876523280',
     'montserrat': '7541303466296184080', 'inter': '7533517738157886721',
     'ellios': '7527221190125948161', 'truefate': '7525720839577144577',
+    'hand': '7480848031034772791',  # JS Arirang PPURI, casual pen handwriting
 }
 BUTTER, INK, CREAM = (246, 228, 160), (24, 22, 20), (255, 250, 238)
 
