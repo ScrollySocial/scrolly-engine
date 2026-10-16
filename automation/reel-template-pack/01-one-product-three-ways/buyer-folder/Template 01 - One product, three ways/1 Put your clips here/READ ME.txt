@@ -1,0 +1,10 @@
+Put your clips in this folder, then double-click "2 Double-click to install".
+
+They go into the shots in name order, so name them 1, 2, 3, 4, 5 (for example 1.mov, 2.mov).
+Start each clip right on the action. Anything extra at the end gets trimmed.
+
+1: Hold the product up to the camera (2 seconds)
+2: Way one, in use (3 seconds)
+3: Way two, in use (3 seconds)
+4: Way three, in use (3 seconds)
+5: The product on a table (3 seconds)

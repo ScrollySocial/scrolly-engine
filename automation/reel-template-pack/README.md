@@ -10,7 +10,7 @@ the paid-ad front door to the AI-assisted Reel Editor. Brain row: My offers, "Re
 |---|---|
 | `physical-pack-list.md` | The approved 25 for physical sellers (Phase 2) |
 | `build/build_01.py` | Builds template 01. Run from this folder: `python build/build_01.py` |
-| `01-one-product-three-ways/capcut-project/` | Delivery A: a CapCut desktop project folder (CapCut 8.9 draft format) |
+| `01-one-product-three-ways/buyer-folder/` | Delivery A, what a buyer downloads: the CapCut project, `1 Put your clips here`, `2 Double-click to install` (Windows), recipe card, guide |
 | `01-one-product-three-ways/phone-kit/` | Delivery B: shot guide video, slot clips, recipe card for CapCut on a phone |
 | `01-one-product-three-ways/preview/` | `before.mp4` (the template) and `after.mp4` (finished test Reel) |
 | `guide/how-to-use.html` / `.pdf` | One-page beginner guide |
@@ -26,14 +26,22 @@ Rubik Bold font) and never changes them. Slot clips live inside the project fold
 own folder token (`##_draftpath_placeholder_..._##`), so the folder can be copied to another computer. Text is Rubik
 Bold, a CapCut library font that downloads by id, white on a 60% black rounded box.
 
-## Phase 3 test checklist (Mercedes, in CapCut desktop)
+## How a buyer installs it (Windows)
 
-1. CapCut home screen: does "Scrolly 01 One product three ways" show in your projects? (Installed 2026-10-16.)
-2. Open it: five colored SHOT cards and five text boxes, 14 seconds total?
-3. Right-click SHOT 1, Replace, pick any clip: does it swap and keep the 2-second length?
-4. Double-click a text box and type: is it Rubik Bold on a dark box?
-5. Export, and send the file over so it can be compared with `preview/before.mp4`.
-6. Phone: open CapCut on your phone and see whether this project appears there (cloud sync). If not, the phone kit is the phone route.
+CapCut for computer has no "import project" button: a project appears on CapCut's home screen when its folder is in
+CapCut's projects folder. The installer (`build/installer/`) copies the template there under a new name each run, and
+drops the clips from `1 Put your clips here` into the shots in name order. It never touches other projects.
+Mac buyers: not supported yet (no installer, folder path unverified).
+
+## Phase 3 test (Mercedes, in CapCut desktop)
+
+Installed in her CapCut on 2026-10-16: "Scrolly 01 One product three ways" (empty template) and
+"Scrolly 01 One product three ways (3)" (installed by the installer with five of her July vacuum clips).
+
+1. Close CapCut fully and reopen it. Are both on the home screen?
+2. Open "(3)": are the vacuum clips in the five shots, with the five text boxes, 14 seconds total?
+3. Double-click a text box and type: Rubik Bold on a dark box?
+4. Export, and send the file over to compare with `preview/after.mp4`.
 
 ## Open items
 

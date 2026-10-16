@@ -1,7 +1,7 @@
 """Build template 01 "One product, three ways" for the Reel Template Pack (physical sellers).
 
 Makes, inside automation/reel-template-pack/01-one-product-three-ways/:
-  capcut-project/Scrolly 01 One product three ways/   a CapCut desktop project (drafts-folder format)
+  buyer-folder/Template 01 .../                      what a buyer downloads: CapCut project + installer
   phone-kit/                                          shot guide video + recipe card for CapCut on a phone
   preview/before.mp4, preview/after.mp4               template with slot cards, and a finished test Reel
 
@@ -230,7 +230,7 @@ def build_capcut(folder, slot_files):
                 draft_id=uid(), draft_name=NAME, draft_fold_path=str(folder).replace('\\', '/'),
                 draft_root_path=str(folder.parent), tm_duration=total, tm_draft_create=now_us,
                 tm_draft_modified=now_us, draft_timeline_materials_size_=0, draft_cover='draft_cover.jpg')
-    (folder / 'draft_meta_info.json').write_text(json.dumps(meta, ensure_ascii=False), encoding='utf-8')
+    (folder / 'draft_meta_info.json').write_text(json.dumps(meta, ensure_ascii=False, separators=(',', ':')), encoding='utf-8')
     run([FFMPEG, '-v', 'error', '-y', '-i', str(slot_files[0]), '-frames:v', '1', str(folder / 'draft_cover.jpg')])
 
 # ---- 3. previews (ffmpeg, mirroring the CapCut layout) ------------------------------------------------------------
@@ -306,7 +306,11 @@ def main():
             sys.exit(f'missing: {p}')
     work = OUT / '_work'
     slot_files = build_slots(work / 'slots')
-    project = OUT / 'capcut-project' / NAME
+    # the folder a buyer downloads (zipped at release): template + installer + their clips folder + card + guide
+    buyer = OUT / 'buyer-folder' / 'Template 01 - One product, three ways'
+    if buyer.exists():
+        shutil.rmtree(buyer)
+    project = buyer / NAME
     build_capcut(project, slot_files)
     kit = OUT / 'phone-kit'; kit.mkdir(parents=True, exist_ok=True)
     (OUT / 'preview').mkdir(exist_ok=True)
@@ -316,6 +320,19 @@ def main():
     for f in slot_files:
         shutil.copy2(f, kit / f.name)
     recipe_card(kit / '01-recipe-card.png')
+    (buyer / '1 Put your clips here').mkdir(parents=True)
+    (buyer / '1 Put your clips here' / 'READ ME.txt').write_text(
+        'Put your clips in this folder, then double-click "2 Double-click to install".\n\n'
+        'They go into the shots in name order, so name them 1, 2, 3, 4, 5 (for example 1.mov, 2.mov).\n'
+        'Start each clip right on the action. Anything extra at the end gets trimmed.\n\n'
+        + '\n'.join(f'{i + 1}: {what} ({secs} seconds)' for i, (secs, what, _) in enumerate(SLOTS)) + '\n',
+        encoding='utf-8')
+    for f in ('install.ps1', '2 Double-click to install.cmd'):
+        shutil.copy2(HERE / 'installer' / f, buyer / f)
+    shutil.copy2(kit / '01-recipe-card.png', buyer / 'Recipe card.png')
+    guide_pdf = PACK / 'guide' / 'how-to-use.pdf'
+    if guide_pdf.exists():
+        shutil.copy2(guide_pdf, buyer / 'How to use.pdf')
     test = [(FOOTAGE / f'{n}.MOV', st, s[0], True) for (n, st), s in zip(TEST_CLIPS, SLOTS)]
     render(test, [(a, b, k, t) for a, b, k, _, t in TEXTS], OUT / 'preview' / 'after.mp4', work / 'a')
     shutil.rmtree(work)
