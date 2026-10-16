@@ -1,9 +1,10 @@
-# Reel Template Pack: core list (draft for approval)
+# Reel Template Packs: physical product pack (draft for approval)
 
-**Status:** Phase 2 draft, 2026-10-16. Waiting for Mercedes's OK. Nothing is built yet.
-**What this is:** 25 evergreen CapCut Reel templates for small business owners who sell a product (physical or digital).
+**Status:** Phase 2 draft, revised 2026-10-16 for physical sellers. Waiting for Mercedes's OK. Nothing is built yet.
+**What this is:** 25 evergreen CapCut Reel templates for small business owners who sell physical products.
 The buyer films their own version of each idea and drops the clips into the template's slots.
-**Decided in Phase 1:** CapCut. Core 25 first, then a Halloween pack, then a Thanksgiving pack. One test template
+**Decided in Phase 1:** CapCut. Three packs of 25 by seller type, built one at a time: physical (this list), then digital,
+then service. Shared Halloween and Thanksgiving packs with templates for each seller type. One test template
 before the rest. Price TBD. No music in the files: each template names a sound mood, and the guide shows where to find
 business-safe sound (Instagram's audio picker on a business account, Meta Sound Collection, Mixkit).
 
@@ -22,7 +23,7 @@ business-safe sound (Instagram's audio picker on a business account, Meta Sound 
 ## The 25
 
 ### 01. One product, three ways
-- **For:** anything with more than one use: scarves, mugs, totes, planners, printables.
+- **For:** anything with more than one use: scarves, mugs, totes, jewelry, home decor.
 - **Length:** 14 seconds
 - **On-screen hook:** One [product], 3 ways
 - **Spoken hook:** "Three ways to use one [product]. Number three is the one people miss."
@@ -34,7 +35,6 @@ business-safe sound (Instagram's audio picker on a business account, Meta Sound 
   5. 11 to 14s: the product on a table, your hand placing it down. (CTA)
 - **On-screen text:** "1. [way one]" · "2. [way two]" · "3. [way three]"
 - **CTA slot:** "[Product name]. Shop at [where to buy]."
-- **Digital sellers:** three ways to use one template, filmed as screen recordings.
 - **Sound mood:** light, upbeat acoustic.
 
 ### 02. Pack an order with me
@@ -53,7 +53,7 @@ business-safe sound (Instagram's audio picker on a business account, Meta Sound 
 - **Sound mood:** the natural packing sounds up front, soft lo-fi underneath.
 
 ### 03. Before and after
-- **For:** products that change something you can see: cleaning, skincare, organizers, decor, photo presets.
+- **For:** products that change something you can see: cleaning, skincare, organizers, decor, car care.
 - **Length:** 10 seconds
 - **On-screen hook:** Before [product]
 - **Spoken hook:** "Watch this [surface/space] change in two seconds."
@@ -64,7 +64,6 @@ business-safe sound (Instagram's audio picker on a business account, Meta Sound 
 - **On-screen text:** "Before" · "After [real time it took]"
 - **CTA slot:** "[Product name]. Find it at [where to buy]."
 - **Rule:** same light and angle for both shots, no filter on the "after" only.
-- **Digital sellers:** a photo before and after your preset, or a messy plan before and after your template.
 - **Sound mood:** a beat that drops right at the reveal.
 
 ### 04. A or B?
@@ -92,7 +91,6 @@ business-safe sound (Instagram's audio picker on a business account, Meta Sound 
   5. 10 to 12s: the whole product, pulled back. (CTA)
 - **On-screen text:** one short line per detail, for example "Hand-stitched edges".
 - **CTA slot:** "[Product name]. [Where to buy]."
-- **Digital sellers:** zoom into the four best parts of your file.
 - **Sound mood:** soft piano or ambient.
 
 ### 06. Start to finish
@@ -124,7 +122,6 @@ business-safe sound (Instagram's audio picker on a business account, Meta Sound 
   5. 8 to 10s: the product on a ruler or tape measure. (CTA)
 - **On-screen text:** "In my hand" · "Next to a phone" · "[Exact size]"
 - **CTA slot:** "[Exact size]. [Where to buy]."
-- **Digital sellers:** a printable at actual size on a desk, or the file on a phone next to a laptop.
 - **Sound mood:** light and simple.
 
 ### 08. A real customer question
@@ -185,7 +182,6 @@ business-safe sound (Instagram's audio picker on a business account, Meta Sound 
   5. 12 to 15s: the product put away or resting. (CTA)
 - **On-screen text:** "[7am]" · "[12pm]" · "[4pm]" · "[9pm]"
 - **CTA slot:** "[Product name]. [Where to buy]."
-- **Digital sellers:** a day with your planner or template, filmed on a phone or laptop.
 - **Sound mood:** lo-fi.
 
 ### 12. Your order just arrived
@@ -204,7 +200,7 @@ business-safe sound (Instagram's audio picker on a business account, Meta Sound 
 - **Sound mood:** the natural unboxing sound, soft music under it.
 
 ### 13. How to use it in 3 steps
-- **For:** anything that needs a little how-to: skincare, kits, tools, templates.
+- **For:** anything that needs a little how-to: skincare, kits, tools, craft supplies.
 - **Length:** 15 seconds
 - **On-screen hook:** How to use [product] in 3 steps
 - **Spoken hook:** "Just got one of these? Here's how to use it."
@@ -216,7 +212,6 @@ business-safe sound (Instagram's audio picker on a business account, Meta Sound 
   5. 12.5 to 15s: the result. (CTA)
 - **On-screen text:** "1. [step]" · "2. [step]" · "3. [step]"
 - **CTA slot:** "[Product name]. [Where to buy]."
-- **Digital sellers:** screen-record each step.
 - **Sound mood:** clean, light beat.
 
 ### 14. The annoying moment
@@ -248,21 +243,19 @@ business-safe sound (Instagram's audio picker on a business account, Meta Sound 
 - **Rule:** real dates only.
 - **Sound mood:** build, then drop at the reveal.
 
-### 16. Look inside
-- **For:** digital sellers: templates, ebooks, courses, printables. (Physical: flip through a book, kit or box.)
-- **Length:** 15 seconds
-- **On-screen hook:** Look inside the [product]
-- **Spoken hook:** "Here's exactly what you get when you open it."
-- **Shots:**
-  1. 0 to 2s: the cover or first screen.
-  2. 2 to 5s: page or screen one, scrolling.
-  3. 5 to 8s: page or screen two.
-  4. 8 to 11s: page or screen three.
-  5. 11 to 13s: the most useful page, close.
-  6. 13 to 15s: the product on a phone or laptop. (CTA)
-- **On-screen text:** one short label per page, for example "The weekly planner".
-- **CTA slot:** "[Product name]. Instant download at [where to buy]."
-- **Sound mood:** soft lo-fi.
+### 16. What it feels like
+- **For:** products people want to touch before they buy: knits, candles, soaps, ceramics, leather, slime, bedding.
+- **Length:** 12 seconds
+- **On-screen hook:** What [product] feels like
+- **Spoken hook:** "You can't touch it through a screen, so here's the next best thing."
+- **Shots:** film close, with the sound on.
+  1. 0 to 3s: a squeeze, press or stretch.
+  2. 3 to 6s: a hand running across the surface.
+  3. 6 to 9s: the most satisfying moment (a pour, a fold, a tap, a drape).
+  4. 9 to 12s: the whole product, pulled back. (CTA)
+- **On-screen text:** one word per shot, in your own words, for example "Soft" · "Heavy" · "Smooth".
+- **CTA slot:** "[Product name]. [Where to buy]."
+- **Sound mood:** the product's own sound up front, very quiet music or none.
 
 ### 17. Everything that goes into one
 - **For:** handmade and small-batch products.
@@ -399,5 +392,5 @@ business-safe sound (Instagram's audio picker on a business account, Meta Sound 
 
 ## Suggested test template for Phase 3
 
-**01. One product, three ways.** It's the "One Reel, Three Ways" series already in the Brain, it works for physical and
-digital sellers, and its five even slots make a clean test of both CapCut delivery methods.
+**01. One product, three ways.** It's the "One Reel, Three Ways" series already in the Brain, it fits almost any physical
+product, and its five even slots make a clean test of both CapCut delivery methods.
