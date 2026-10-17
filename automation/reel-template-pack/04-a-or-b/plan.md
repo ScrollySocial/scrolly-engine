@@ -38,3 +38,30 @@ lens wipe (A to B), the pull-back (into both), the chart rising (into the CTA).
 2. **Trial lens**, one round optical lens in a thin metal ring with a short handle tab, front view.
 3. **Blank eye chart**, a paper wall chart, straight-on, white with a thin black border, NO letters (the letters are
    editable text so buyers can change the CTA), optionally a red and green strip near the bottom.
+
+## v2 stills rejected (2026-10-17): "couldn't be less impressed"
+
+Video-first cards sliding over a blurred copy of the clip: too plain, no real layered scene, no visual hook. Her brief
+in her words: bold fun written hook + a visual hook; layered backgrounds that do the transitions (some elements
+disappear, some take over, as part of the story); graphics on top are accents (photos/videos with no background,
+emoji, drawings); the video of the person or product is the story. No cutouts of the test product: it's a template.
+
+## v3 plan, built from the Lisa references (DdCHHDABNZ_, DclZJhSIxGY, DZh6_zCSk-5, DehPKeah0AP)
+
+What those Reels actually do: the video stays full screen most of the time and words appear one at a time in the empty
+space (mixed fonts, one accent word big); then it cuts to a paper collage scene where the video sits in a window with
+real objects and stickers around it; a grid wall of tiles; a star-shaped shatter that breaks one shot to reveal the
+next; one sticky note that stays put while the video behind it changes.
+
+1. Hook (0-2 s): a grid wall of tiles, each one playing A or B, flipping; the tiles fly off and leave A full screen.
+   Words one at a time: "which one" / "would YOU" / "pick?" (YOU big in the bold fun font).
+2. A (2-5 s): A full screen; a real sticky note taped on, "[name] + one word", stays on.
+3. A to B: A shatters into star-shaped pieces that fly off, B underneath.
+4. B (5-8 s): B full screen; a second sticky note (other colour) slaps on over the first.
+5. Both (8-10 s): cut to a real notebook-paper scene: A and B in two round windows, real desk objects slide in at the
+   edges, a hand-drawn arrow and "or", emoji stickers.
+6. CTA (10-12.5 s): the pick clip full screen, "Comment" / "[KEYWORD]" one word at a time, both sticky notes at the edges.
+
+Images needed (her): lined notebook paper (flat, straight-on, full frame), a yellow and a pink sticky note (flat, a
+little curl, on white), a strip of clear tape (on white), 3 or 4 everyday desk objects on white (pen, paper clip,
+earbuds, lip balm or similar, no brands).
