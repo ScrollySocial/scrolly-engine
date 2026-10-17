@@ -37,8 +37,11 @@ Mac buyers: not supported yet (no installer, folder path unverified).
 
 ## Phase 3 test (Mercedes, in CapCut desktop)
 
-Template 01 v2 (collage look, 4 clips) installed in her CapCut on 2026-10-16 as "Scrolly 01 One product three ways (2)",
-filled by the installer with four of her July vacuum clips. Older test copies (no suffix, "(3)") are the v1 look.
+Template 01 v3 (collage look, bigger Polaroids, keyframe motion, 4 clips) installed in her CapCut on 2026-10-16 as
+"Scrolly 01 One product three ways (4)", filled by the installer with four of her July vacuum clips. "(2)" is v2 (no
+motion); the unnumbered copy and "(3)" are v1. Motion uses CapCut keyframes (position, rotation, scale) and the
+Typewriter text animation; only scale keyframes were seen in her own drafts, so position and rotation keyframes are
+the first thing to check.
 
 1. Close CapCut fully and reopen it. Open "(2)" from the home screen.
 2. Do the opener's three round windows, the three Polaroids and the CTA circle show the vacuum clips?
