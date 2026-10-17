@@ -8,7 +8,7 @@ from PIL import Image
 
 HW = Path(__file__).resolve().parent.parent / 'halloween'
 T = [('h6-once-in-a-blood-moon', 'h6 Once in a blood moon'), ('h3-caught-in-our-web', 'h3 Caught in our web'),
-     ('h2-batty-about', "h2 Things I'm batty about"), ('h4-whats-inside', "h4 What's inside?"), ('h5-trick-or-treat', 'h5 Trick or treat')]
+     ('h2-batty-about', "h2 Things I'm batty about"), ('h5-trick-or-treat', 'h5 Trick or treat')]
 
 def data_uri(p):
     im = Image.open(p).convert('RGB'); im.thumbnail((640, 1140)); b = io.BytesIO(); im.save(b, 'JPEG', quality=82)
@@ -34,12 +34,12 @@ textarea.all{height:48px;margin-bottom:10px;max-width:960px}
 #bar{position:fixed;left:0;right:0;bottom:0;background:#1b1a19;color:#fff;padding:12px 20px;display:flex;gap:14px;align-items:center}
 button{font:bold 15px Arial;padding:10px 18px;border:0;border-radius:6px;background:#ec7824;color:#fff;cursor:pointer}
 #big{position:fixed;inset:0;background:rgba(0,0,0,.85);display:none;align-items:center;justify-content:center} #big img{max-height:94vh;width:auto}
-</style></head><body><h1>Halloween storyboards, round 3</h1>
+</style></head><body><h1>Halloween storyboards, round 4</h1>
 <p>Type notes under any frame (they save in this browser). Click a frame to see it big. Notes go to Claude automatically as you type (watch the message at the bottom).</p>
 ROWS<div id="bar"><button id="copy">Copy all notes</button><button id="save">Send notes to Claude</button><span id="msg"></span></div><div id="big"><img></div>
 <script>
 const tas=[...document.querySelectorAll('textarea')], msg=document.getElementById('msg');
-tas.forEach(t=>{try{t.value=localStorage.getItem('hw3:'+t.dataset.k)||''}catch(e){}; t.oninput=()=>{try{localStorage.setItem('hw3:'+t.dataset.k,t.value)}catch(e){}; clearTimeout(window._s); window._s=setTimeout(send,600)}});
+tas.forEach(t=>{try{t.value=localStorage.getItem('hw4:'+t.dataset.k)||''}catch(e){}; t.oninput=()=>{try{localStorage.setItem('hw4:'+t.dataset.k,t.value)}catch(e){}; clearTimeout(window._s); window._s=setTimeout(send,600)}});
 function send(){const o={};tas.forEach(t=>{if(t.value.trim())o[t.dataset.k]=t.value.trim()});
  fetch('/notes',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(o)}).then(r=>{msg.textContent=r.ok?'Notes saved. Claude can read them.':'Could not save notes.'}).catch(()=>{msg.textContent='Could not save notes.'})}
 send();
