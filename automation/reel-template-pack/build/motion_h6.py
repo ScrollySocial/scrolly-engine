@@ -41,6 +41,16 @@ cl = B.clouds(1800); tree = B.src('Twisted Haunted Tree Silhouette.png').convert
 wolf = B.white_on_clear('Howling Wolf Silhouette.png', (14, 10, 16))
 bat = B.cut('Cute Kawaii Bat with Spread Wings.png'); hang = B.cut('Cute Upside-Down Wrapped Bat.png')
 branch = B.fit_w(B.cut('Cute Twisted Spooky Tree Branch.png'), 900)
+BR_X, BR_Y = W - 760, 0                     # where the branch sits once it has slid in
+HANG_X = W - 300
+def _branch_bottom(x):
+    col = branch.split()[3].crop((int(x - BR_X) - 6, 0, int(x - BR_X) + 6, branch.height))
+    ys = [y for y in range(col.height) if max(col.crop((0, y, col.width, y + 1)).getdata()) > 120]
+    return BR_Y + (max(ys) if ys else branch.height // 2)
+HANG_TOP = _branch_bottom(HANG_X) - 14
+# Instagram Reels UI (1080x1920): header ~220 px at the top, caption/username/audio ~420 px at the bottom, buttons
+# ~140 px on the right in the lower half. Every word is placed inside y 300-1480 and x 60-940.
+IG_TOP, IG_BOTTOM, IG_RIGHT = 220, 1920 - 420, 1080 - 140
 _cache = {}
 def sized(im, w, key):
     k = (key, int(w))
@@ -109,8 +119,8 @@ def frame(t):
     if t < 2.2:
         im = vid('a', t)
         for k_, (w_, x_) in enumerate((('once', W / 2 - 250), ('in', W / 2 + 40), ('a', W / 2 + 230))):
-            slam(im, t, -0.1 + k_ * 0.2, (x_, 300), w_, 150, CREAM)
-        letters(im, t, 0.55, (W / 2, 560), 'blood', 270, RED); letters(im, t, 0.85, (W / 2, 820), 'moon', 270, RED)
+            slam(im, t, -0.1 + k_ * 0.2, (x_, 360), w_, 150, CREAM)
+        letters(im, t, 0.55, (W / 2, 610), 'blood', 270, RED); letters(im, t, 0.85, (W / 2, 860), 'moon', 270, RED)
         im = shake(im, t, 1.2)
     # 2.2-3.2  the black night closes in on the video into a circle, and the circle becomes the moon
     elif t < 3.2:
@@ -125,14 +135,14 @@ def frame(t):
         im.paste(inner, (0, 0), m.filter(ImageFilter.GaussianBlur(3)))
         k = 1 - clamp((t - 2.2) / 0.5)
         if k > 0:
-            for k_, (w_, x_) in enumerate((('once', W / 2 - 250), ('in', W / 2 + 40), ('a', W / 2 + 230))): slam(im, 3.0, 0.0, (x_, 300), w_, 150, CREAM)
-            letters(im, 3.0, 0.0, (W / 2, 560), 'blood', 270, RED); letters(im, 3.0, 0.0, (W / 2, 820), 'moon', 270, RED)
+            for k_, (w_, x_) in enumerate((('once', W / 2 - 250), ('in', W / 2 + 40), ('a', W / 2 + 230))): slam(im, 3.0, 0.0, (x_, 360), w_, 150, CREAM)
+            letters(im, 3.0, 0.0, (W / 2, 610), 'blood', 270, RED); letters(im, 3.0, 0.0, (W / 2, 860), 'moon', 270, RED)
     # 3.2-5.0  graphics break: the huge moon, clouds drift, it turns blood red; "our once-a-year SALE"
     elif t < 5.0:
         u = (t - 3.2) / 1.8; im = sky.copy()
         B.moon_glow(im, 1000, ((W - 1000) // 2, 640)); put(im, Image.blend(MOON, BLOOD, 0.3 + 0.7 * ease(u * 1.5)), (W / 2, 1140))
         put(im, cl, (-300 + 500 * u, 1650), 0.9, key='cl'); put(im, cl, (1350 - 500 * u, 700), 0.8, 180, key='cl2')
-        word(im, t, 3.45, (W / 2, 300), 'our once-a-year', 66, CREAM); word(im, t, 3.85, (W / 2, 450), 'SALE', 210, RED, serif=True)
+        word(im, t, 3.45, (W / 2, 350), 'our once-a-year', 66, CREAM); word(im, t, 3.85, (W / 2, 500), 'SALE', 210, RED, serif=True)
     # 5.0-6.0  the moon becomes a round window on clip B, then opens to full screen
     elif t < 6.0:
         u = ease((t - 5.0) / 1.0); im = sky.copy()
@@ -144,7 +154,7 @@ def frame(t):
         k = back_out((t - 6.3) / 0.5); lift = (1 - min(1.0, k)) * 900          # a blood moon rises with the wolf in front of it
         mc = (360, 1420 + lift); B.moon_glow(im, 620, (int(mc[0] - 310), int(mc[1] - 310))); put(im, BLOOD, mc, 0.62, key='bm')
         wf = sized(wolf, 600, 'wolf'); im.alpha_composite(wf, (60, int(H - wf.height + 40 + lift)))
-        word(im, t, 6.5, (W / 2, 280), 'everything', 66, CREAM); word(im, t, 6.9, (W / 2, 440), '30% off', 210, RED, serif=True)
+        word(im, t, 6.5, (W / 2, 350), 'everything', 66, CREAM); word(im, t, 6.9, (W / 2, 500), '30% off', 210, RED, serif=True)
     # 8.4-9.2  a huge tree sweeps past the lens: the wipe to clip C
     elif t < 9.2:
         u = ease((t - 8.4) / 0.8); im = vid('b', t - 5.0) if u < 0.5 else vid('c', t - 8.4)
@@ -152,10 +162,12 @@ def frame(t):
     # 9.2-11.4  clip C full screen; the dates; one bat lands and hangs upside down
     elif t < 11.4:
         im = vid('c', t - 8.4)
-        bk = ease((t - 9.25) / 0.35); im.alpha_composite(branch, (int(W - 760 + (1 - bk) * 900), 40))      # a branch slides in
-        k = back_out((t - 9.6) / 0.35); sway = 5 * math.sin(t * 4)
-        put(im, hang, (W - 300, 330 + 4 * math.sin(t * 5)), 0.0 if k <= 0 else k * 230 / hang.width, sway, key='hang')
-        word(im, t, 9.4, (W / 2, 1460), 'this weekend only', 66, CREAM); word(im, t, 9.8, (W / 2, 1620), 'Oct 29-31', 170, RED, serif=True)
+        bk = ease((t - 9.25) / 0.35); im.alpha_composite(branch, (int(BR_X + (1 - bk) * 900), BR_Y))      # a branch slides in
+        k = back_out((t - 9.6) / 0.35); hw = sized(hang, 230, 'hang')
+        if k > 0:   # the bat drops onto the branch and hangs from its feet, swaying a little
+            hb = hw.resize((max(1, int(hw.width * k)), max(1, int(hw.height * k)))).rotate(4 * math.sin(t * 4), expand=True, resample=Image.BICUBIC)
+            im.alpha_composite(hb, (int(HANG_X - hb.width / 2), int(HANG_TOP)))
+        word(im, t, 9.4, (W / 2 - 40, 1180), 'this weekend only', 66, CREAM); word(im, t, 9.8, (W / 2 - 40, 1330), 'Oct 29-31', 170, RED, serif=True)
     # 11.4-14  CTA: the blood moon, bats settle, Comment MOON
     else:
         im = sky.copy(); B.moon_glow(im, 1000, ((W - 1000) // 2, 640)); put(im, BLOOD, (W / 2, 1140))
