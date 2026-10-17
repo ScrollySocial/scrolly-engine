@@ -1,18 +1,23 @@
 # Halloween pack (started 2026-10-17)
 
-Five templates, chosen by Mercedes 2026-10-17. Cute, not scary. Real photographed objects; only the playful layer
-(washi tape, white sticker edges, handwritten words, words on tape) is drawn. Build ids: `h1` to `h5`
-(`python build/make.py h1`).
+Buyers are online business owners and influencers, so every template is a whole Reel with a business job and a CTA,
+not just a Halloween look. Cute, not scary. Real photographed objects; only the playful layer (washi tape, white
+sticker edges, handwritten words, words on tape) is drawn. Build ids `h1` to `h5` (`python build/make.py h1`).
 
-| Id | Template | The idea, step by step |
-|---|---|---|
-| h1 | Jack-o'-lantern | A real carved pumpkin; the lid lifts off, the product clip glows through the carved face |
-| h2 | Candy bowl | Real candy lifted out one piece at a time; each gap reveals the product underneath ("trick or treat?") |
-| h3 | Floating candles | Real lit candles drift around 3 product clips; each candle blown out = cut to the next clip |
-| h4 | Caught in our web | A cute real spider drops on its thread; the cobweb peels away to reveal the product |
-| h5 | Knock knock | A real front door, a knock, the door swings open on each product clip; candy corn stickers |
+Round 1 (2026-10-17) rejected: candy bowl ("boring"), floating candles (too close to a Reel she already made), and
+concepts that were Halloween looks with no selling job. Candy and blown-out candles can still appear as props.
 
-## Images needed (Mercedes to make in ChatGPT or find royalty-free)
+**Round 2 proposal (waiting for her OK):**
+
+| Id | Template | Business job | Step by step | CTA |
+|---|---|---|---|---|
+| h1 | Now you see it | Scarcity: limited drop, last chance, sale ending | Buyer's clip with the product; a snap or clap; real smoke rolls in and the product (or the person) is gone; "gone at midnight" | Get it before it disappears |
+| h2 | Things I'm batty about | Favourites: best-sellers, gift guide, tools I use | Real cute bats fly in one at a time, each carrying a clip window with one favourite and a word on tape | Shop my faves / which one's yours? |
+| h3 | Caught in our web | What you get: features, what's included, why people get hooked | 1 a friendly spider drops in on its thread; 2 the web forms; 3 each point (clip + word) gets caught in it; 4 zoom out to a half-circle web holding all of them | Get caught: link in bio |
+| h4 | What's inside? | Reveal: new product, launch, behind the scenes | A real carved pumpkin; the lid lifts, the clip glows through the face, then fills the frame | New drop + date |
+| h5 | Trick or treat | Offer: myth vs fix, then a discount or freebie | Knock; door 1 opens on the TRICK (a common mistake); door 2 opens on the TREAT (your product or offer) | Comment TREAT for the code |
+
+## Images needed, round 1 list (to redo after the OK) (Mercedes to make in ChatGPT or find royalty-free)
 
 All: photorealistic product photo, pure white background (unless noted), soft even light, no cast shadow, object
 whole and not cropped, at least 2000 px, no brand names or logos anywhere. Save to `assets/props/source/`.
