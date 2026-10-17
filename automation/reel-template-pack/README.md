@@ -11,7 +11,9 @@ the paid-ad front door to the AI-assisted Reel Editor. Brain row: My offers, "Re
 | `physical-pack-list.md` | The approved 25 for physical sellers (Phase 2) |
 | `build/build_01.py` | Builds template 01. Run from this folder: `python build/build_01.py` |
 | `01-one-product-three-ways/buyer-folder/` | Delivery A, what a buyer downloads: the CapCut project, `1 Put your clips here`, `2 Double-click to install` (Windows), recipe card, guide |
-| `01-one-product-three-ways/phone-kit/` | Delivery B: shot guide video, slot clips, recipe card for CapCut on a phone |
+| `01-one-product-three-ways/phone-kit/` | Delivery B: shot guide video, artwork cards, recipe card for CapCut on a phone (artwork has to be added by hand there) |
+| `01-one-product-three-ways/style-options/` | The style rounds: options, B variations, collage concepts, handwriting and headline fonts |
+| `build/collage.py`, `build/style_options.py`, `build/whimsy_concepts.py` | Collage element drawing and the style-round renderers |
 | `01-one-product-three-ways/preview/` | `before.mp4` (the template) and `after.mp4` (finished test Reel) |
 | `guide/how-to-use.html` / `.pdf` | One-page beginner guide |
 
@@ -35,13 +37,14 @@ Mac buyers: not supported yet (no installer, folder path unverified).
 
 ## Phase 3 test (Mercedes, in CapCut desktop)
 
-Installed in her CapCut on 2026-10-16: "Scrolly 01 One product three ways" (empty template) and
-"Scrolly 01 One product three ways (3)" (installed by the installer with five of her July vacuum clips).
+Template 01 v2 (collage look, 4 clips) installed in her CapCut on 2026-10-16 as "Scrolly 01 One product three ways (2)",
+filled by the installer with four of her July vacuum clips. Older test copies (no suffix, "(3)") are the v1 look.
 
-1. Close CapCut fully and reopen it. Are both on the home screen?
-2. Open "(3)": are the vacuum clips in the five shots, with the five text boxes, 14 seconds total?
-3. Double-click a text box and type: Rubik Bold on a dark box?
-4. Export, and send the file over to compare with `preview/after.mp4`.
+1. Close CapCut fully and reopen it. Open "(2)" from the home screen.
+2. Do the opener's three round windows, the three Polaroids and the CTA circle show the vacuum clips?
+3. Are the words in the tall serif and Ink Free handwriting, in the right places and sizes? (Text size is calibrated
+   from one of her drafts, so small size differences from `preview/after.mp4` are expected.)
+4. Export and send the file to compare with `preview/after.mp4`.
 
 ## Open items
 

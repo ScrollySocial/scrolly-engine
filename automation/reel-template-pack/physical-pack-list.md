@@ -25,16 +25,18 @@ business-safe sound (Instagram's audio picker on a business account, Meta Sound 
 ### 01. One product, three ways
 - **For:** anything with more than one use: scarves, mugs, totes, jewelry, home decor.
 - **Length:** 14 seconds
-- **On-screen hook:** One [product], 3 ways
+- **Look (built 2026-10-16):** collage on paper, Imbue tall serif, Ink Free handwriting, butter yellow CTA card.
+- **On-screen hook:** One [product], 3 ways (opener card with three round windows previewing the three ways)
 - **Spoken hook:** "Three ways to use one [product]. Number three is the one people miss."
-- **Shots:**
-  1. 0 to 2s: the product held up to the camera on a plain background.
-  2. 2 to 5s: way one, in use.
-  3. 5 to 8s: way two, in use.
-  4. 8 to 11s: way three, in use.
-  5. 11 to 14s: the product on a table, your hand placing it down. (CTA)
-- **On-screen text:** "1. [way one]" · "2. [way two]" · "3. [way three]"
-- **CTA slot:** "[Product name]. Shop at [where to buy]."
+- **Clips (4, upright):**
+  1. Your product, held up or on a table (shows in the round window on the CTA card).
+  2. Way one, in use.
+  3. Way two, in use.
+  4. Way three, in use.
+- **Scenes:** 0 to 2.5s opener card (ways 1 to 3 in round windows, handwritten labels) · 2.5 to 11.5s three taped
+  Polaroids, one per way, with a big numeral and a handwritten caption · 11.5 to 14s butter CTA card.
+- **On-screen text:** "One [product]," · "3 ways" · "[way one]" · "[way two]" · "[way three]"
+- **CTA slot:** "[Product name]" + "shop at [where to buy]"
 - **Sound mood:** light, upbeat acoustic.
 
 ### 02. Pack an order with me
