@@ -410,3 +410,216 @@ def window_card(size, shape_pts, bg=None, seed=104, edge=(255, 255, 255), edge_w
     card.alpha_composite(s)
     card.putalpha(ImageChops.subtract(card.split()[3], hole))
     return card
+
+def sparkle_fill(size=120, color=(255, 255, 255)):
+    """A crisp four-point sparkle (filled, curved sides)."""
+    c = size / 2; pts = []
+    for i in range(80):
+        a = i / 80 * 2 * math.pi; k = abs(math.cos(2 * a)) ** 4
+        r = c * (0.12 + 0.88 * k); pts.append((c + r * math.cos(a), c + r * math.sin(a)))
+    im = Image.new('RGBA', (size * 2, size * 2), (0, 0, 0, 0))
+    ImageDraw.Draw(im).polygon([(x * 2, y * 2) for x, y in pts], fill=color + (255,))
+    return im.resize((size, size), Image.LANCZOS)
+
+def star_fill(size=160, color=(255, 255, 255), outline=None, ow=6):
+    big = size * 2; im = Image.new('RGBA', (big, big), (0, 0, 0, 0)); d = ImageDraw.Draw(im)
+    pts = star_points((big / 2, big / 2), big * 0.48, big * 0.21)
+    d.polygon(pts, fill=color + (255,))
+    if outline: d.line(pts + [pts[0]], fill=outline + (255,), width=ow * 2, joint='curve')
+    return im.resize((size, size), Image.LANCZOS)
+
+def blob_points(c, rx, ry, seed=105, n=14, wob=0.12):
+    """A soft organic blob (like a die-cut sticker shape)."""
+    r = rng(seed); ks = [1 + r.uniform(-wob, wob) for _ in range(n)]; pts = []
+    for i in range(180):
+        t = i / 180 * n; j = int(t) % n; f = t - int(t); k = ks[j] * (1 - f) + ks[(j + 1) % n] * f
+        a = i / 180 * 2 * math.pi; pts.append((c[0] + rx * k * math.cos(a), c[1] + ry * k * math.sin(a)))
+    return pts
+
+def window_frame(size, shape_pts, border=26, ink=(22, 21, 20), ink_w=5):
+    """Just the frame around a window (white border + wobbly ink outline), transparent elsewhere, to animate on its own."""
+    hole = Image.new('L', size, 0); ImageDraw.Draw(hole).polygon(shape_pts, fill=255)
+    white = hole.filter(ImageFilter.MaxFilter(border * 2 + 1))
+    outer = white.filter(ImageFilter.MaxFilter(ink_w * 2 + 1))
+    out = Image.new('RGBA', size, (0, 0, 0, 0))
+    i = Image.new('RGBA', size, ink + (255,)); i.putalpha(ImageChops.subtract(outer, white)); out.alpha_composite(i)
+    w = Image.new('RGBA', size, (255, 255, 255, 255)); w.putalpha(ImageChops.subtract(white, hole)); out.alpha_composite(w)
+    return out
+
+# ---- packing-story elements (2026-10-17): cardboard box, folding flaps, packing tape, label, tracker -------------------
+KRAFT_OUT = (196, 152, 104); KRAFT_IN = (214, 178, 132); KRAFT_RIM = (150, 110, 70)
+
+def cardboard(size, color=KRAFT_OUT, seed=110):
+    """Kraft cardboard: grain, faint corrugation lines, a few fibres."""
+    p = paper(size, color, seed, grain=9); d = ImageDraw.Draw(p); r = rng(seed)
+    for x in range(0, size[0], 9):
+        d.line((x, 0, x, size[1]), fill=tuple(max(0, v - 6) for v in color) + (40,), width=1)
+    for _ in range(size[0] * size[1] // 9000):
+        x, y = r.uniform(0, size[0]), r.uniform(0, size[1])
+        d.line((x, y, x + r.uniform(-14, 14), y + r.uniform(-14, 14)), fill=tuple(max(0, v - 30) for v in color) + (90,), width=1)
+    return p
+
+def _shade(img, k):
+    """Darken (k < 1) or lighten (k > 1) an RGBA image, keeping alpha."""
+    a = img.split()[3]; rgb = img.convert('RGB').point(lambda v: max(0, min(255, int(v * k))))
+    out = rgb.convert('RGBA'); out.putalpha(a); return out
+
+def _quad_fill(canvas, quad, tex, k=1.0, hinge=None, far=None):
+    """Fill a quad with cardboard, shaded darker toward the far edge, with a crease line at the hinge."""
+    m = Image.new('L', canvas.size, 0); ImageDraw.Draw(m).polygon(quad, fill=255)
+    t = _shade(tex, k)
+    if hinge and far:   # gradient from hinge (as is) to far edge (16% darker)
+        g = Image.new('L', canvas.size, 0); gd = ImageDraw.Draw(g)
+        (hx, hy), (fx, fy) = hinge, far; n = 24
+        for i in range(n, 0, -1):
+            f = i / n; cx_, cy_ = hx + (fx - hx) * f, hy + (fy - hy) * f
+            rad = max(abs(fx - hx), abs(fy - hy)) * f + 400
+            gd.ellipse((hx - rad, hy - rad, hx + rad, hy + rad), fill=int(40 * f))
+        dark = Image.new('RGBA', canvas.size, (40, 25, 10, 0)); dark.putalpha(ImageChops.multiply(g, m))
+        t = t.copy(); t.alpha_composite(dark)
+    t.putalpha(m); canvas.alpha_composite(t)
+    d = ImageDraw.Draw(canvas)
+    d.line(quad + [quad[0]], fill=(120, 84, 50, 255), width=2)
+    d.line([quad[0], quad[1]], fill=(110, 76, 44, 255), width=5)
+
+class Box:
+    """An open cardboard box seen from above, around a rectangular opening where the buyer's clip plays.
+    Flaps are hinged on the four edges; fold(angles) draws them at any angle (15 = resting open, 180 = closed)."""
+    def __init__(self, opening=(180, 640, 900, 1360), size=(1080, 1920), short=300, long_=372, rim=30, seed=111):
+        self.o, self.size, self.short, self.long, self.rim = opening, size, short, long_, rim
+        self.tex_out = cardboard(size, KRAFT_OUT, seed); self.tex_in = cardboard(size, KRAFT_IN, seed + 1)
+
+    def frame(self):
+        """The box rim around the opening (opening transparent), with a soft inner shadow on the clip's edges."""
+        x0, y0, x1, y1 = self.o; r = self.rim
+        im = Image.new('RGBA', self.size, (0, 0, 0, 0))
+        m = Image.new('L', self.size, 0); ImageDraw.Draw(m).rectangle((x0 - r, y0 - r, x1 + r, y1 + r), fill=255)
+        ImageDraw.Draw(m).rectangle((x0, y0, x1, y1), fill=0)
+        t = _shade(self.tex_out, 0.8); t.putalpha(m); im.alpha_composite(t)
+        ImageDraw.Draw(im).rectangle((x0 - r, y0 - r, x1 + r, y1 + r), outline=(110, 76, 44, 255), width=3)
+        inner = Image.new('L', self.size, 0); ImageDraw.Draw(inner).rectangle((x0, y0, x1, y1), outline=255, width=22)
+        sh = Image.new('RGBA', self.size, (30, 18, 8, 0)); sh.putalpha(inner.filter(ImageFilter.GaussianBlur(14)).point(lambda v: int(v * 0.55)))
+        im.alpha_composite(sh)
+        return im
+
+    def _quad(self, edge, length, theta):
+        x0, y0, x1, y1 = self.o; r = self.rim
+        th = math.radians(theta); c = math.cos(th); grow = 1 + 0.16 * math.sin(th)
+        if edge == 'top':    a, b, n = (x0 - r, y0 - r), (x1 + r, y0 - r), (0, -1)
+        if edge == 'bottom': a, b, n = (x0 - r, y1 + r), (x1 + r, y1 + r), (0, 1)
+        if edge == 'left':   a, b, n = (x0 - r, y0 - r), (x0 - r, y1 + r), (-1, 0)
+        if edge == 'right':  a, b, n = (x1 + r, y0 - r), (x1 + r, y1 + r), (1, 0)
+        mid = ((a[0] + b[0]) / 2, (a[1] + b[1]) / 2); half = ((b[0] - a[0]) / 2 * grow, (b[1] - a[1]) / 2 * grow)
+        far = (mid[0] + n[0] * length * c, mid[1] + n[1] * length * c)
+        return [a, b, (far[0] + half[0], far[1] + half[1]), (far[0] - half[0], far[1] - half[1])], mid, far, c
+
+    def fold(self, short_deg, long_deg):
+        """One frame: short flaps (top/bottom) at short_deg, long flaps (left/right) at long_deg."""
+        im = Image.new('RGBA', self.size, (0, 0, 0, 0))
+        order = [('top', self.short, short_deg), ('bottom', self.short, short_deg),
+                 ('left', self.long, long_deg), ('right', self.long, long_deg)]
+        if long_deg < 90 <= short_deg:
+            order = order[2:] + order[:2]
+        for e, L, d in order:
+            quad, mid, far, c = self._quad(e, L, d)
+            if d > 95:   # a flap over the opening casts a soft shadow onto what's inside
+                sm = Image.new('L', self.size, 0); ImageDraw.Draw(sm).polygon([(x, y + 14) for x, y in quad], fill=int(120 * min(1, (d - 95) / 40)))
+                sh = Image.new('RGBA', self.size, (20, 12, 5, 0)); sh.putalpha(sm.filter(ImageFilter.GaussianBlur(18))); im.alpha_composite(sh)
+            _quad_fill(im, quad, self.tex_in if d > 90 else self.tex_out, 0.7 + 0.3 * abs(c), hinge=mid, far=far)
+        if short_deg >= 179 and long_deg >= 179:   # closed: the seam where the long flaps meet
+            x0, y0, x1, y1 = self.o; cx = (x0 + x1) / 2
+            ImageDraw.Draw(im).line((cx, y0 - self.rim, cx, y1 + self.rim), fill=(96, 64, 36, 255), width=4)
+        return im
+
+def packing_tape(length=1000, width=150, seed=112):
+    """Clear brown packing tape with a sheen and torn ends."""
+    r = rng(seed); t = Image.new('RGBA', (width, length), (176, 128, 70, 150)); d = ImageDraw.Draw(t)
+    for x in range(width):
+        k = 0.5 + 0.5 * math.sin(x / width * math.pi)
+        d.line((x, 0, x, length), fill=(214, 170, 110, int(110 + 70 * k)))
+    d.rectangle((int(width * 0.18), 0, int(width * 0.26), length), fill=(255, 240, 210, 90))
+    m = Image.new('L', (width, length), 255); md = ImageDraw.Draw(m)
+    for y_end in (0, length):
+        pts = [(0, y_end)] + [(x, y_end + (r.uniform(4, 14) if y_end == 0 else -r.uniform(4, 14))) for x in range(0, width + 1, 10)] + [(width, y_end)]
+        md.polygon(pts, fill=0)
+    t.putalpha(ImageChops.multiply(t.split()[3], m))
+    return t
+
+def tracker_card(size=(860, 420)):
+    """A clean order-tracking card: three steps on a line (the words are separate text layers)."""
+    w, h = size; c = Image.new('RGBA', size, (255, 255, 255, 255)); d = ImageDraw.Draw(c)
+    y = int(h * 0.42)
+    d.line((110, y, w - 110, y), fill=(220, 214, 206, 255), width=10)
+    for i in range(3):
+        x = 110 + i * (w - 220) / 2
+        d.ellipse((x - 26, y - 26, x + 26, y + 26), fill=(255, 255, 255, 255), outline=(200, 194, 186, 255), width=6)
+    m = Image.new('L', size, 0); ImageDraw.Draw(m).rounded_rectangle((0, 0, w - 1, h - 1), radius=36, fill=255); c.putalpha(m)
+    return shadow(c, offset=(0, 12), blur=18, alpha=55)
+
+def tracker_fill(size=(860, 420), step=1, color=(212, 98, 127)):
+    """The filled part of the tracker up to a step (1 to 3), with check marks."""
+    w, h = size; im = Image.new('RGBA', size, (0, 0, 0, 0)); d = ImageDraw.Draw(im); y = int(h * 0.42)
+    xs = [110 + i * (w - 220) / 2 for i in range(3)]
+    if step > 1: d.line((xs[0], y, xs[step - 1], y), fill=color + (255,), width=10)
+    for i in range(step):
+        x = xs[i]; d.ellipse((x - 26, y - 26, x + 26, y + 26), fill=color + (255,))
+        d.line([(x - 11, y + 1), (x - 3, y + 9), (x + 12, y - 9)], fill=(255, 255, 255, 255), width=6, joint='curve')
+    pad = 44
+    out = Image.new('RGBA', (w + 2 * pad, h + 2 * pad), (0, 0, 0, 0)); out.alpha_composite(im, (pad, pad))
+    return out
+
+# ---- washi tape and a real-looking shipping label (flat printed things, so code can make them convincingly) ------------
+def washi(length=700, width=120, pattern='stripes', colors=((246, 182, 205), (255, 255, 255)), seed=120, alpha=228):
+    """Japanese washi tape: a printed pattern on thin fibrous paper, a little see-through, zig-zag torn ends."""
+    r = rng(seed); a, b = colors
+    t = Image.new('RGBA', (length, width), a + (255,)); d = ImageDraw.Draw(t)
+    if pattern == 'stripes':
+        for x in range(-width, length + width, 44): d.polygon([(x, 0), (x + 18, 0), (x + 18 + width, width), (x + width, width)], fill=b + (255,))
+    elif pattern == 'dots':
+        for yy, y in enumerate(range(14, width, 34)):
+            for x in range(14 + (17 if yy % 2 else 0), length, 34): d.ellipse((x - 7, y - 7, x + 7, y + 7), fill=b + (255,))
+    elif pattern == 'gingham':
+        lay = Image.new('RGBA', (length, width), (0, 0, 0, 0)); ld = ImageDraw.Draw(lay)
+        for x in range(0, length, 40): ld.rectangle((x, 0, x + 19, width), fill=b + (120,))
+        for y in range(0, width, 40): ld.rectangle((0, y, length, y + 19), fill=b + (120,))
+        t.alpha_composite(lay)
+    elif pattern == 'grid':
+        for x in range(0, length, 26): d.line((x, 0, x, width), fill=b + (255,), width=3)
+        for y in range(0, width, 26): d.line((0, y, length, y), fill=b + (255,), width=3)
+    elif pattern == 'hearts':
+        for yy, y in enumerate(range(26, width, 52)):
+            for x in range(26 + (26 if yy % 2 else 0), length, 52):
+                d.ellipse((x - 10, y - 9, x, y + 1), fill=b + (255,)); d.ellipse((x, y - 9, x + 10, y + 1), fill=b + (255,))
+                d.polygon([(x - 10, y - 3), (x + 10, y - 3), (x, y + 10)], fill=b + (255,))
+    fib = Image.effect_noise((length, width), 30).convert('L').point(lambda v: 255 - max(0, v - 150))   # paper fibres
+    t.putalpha(ImageChops.multiply(Image.new('L', (length, width), alpha), fib))
+    m = Image.new('L', (length, width), 255); md = ImageDraw.Draw(m)
+    for x_end, sgn in ((0, 1), (length, -1)):   # zig-zag torn ends
+        pts = [(x_end, 0)] + [(x_end + sgn * r.uniform(6, 14) * (i % 2), y) for i, y in enumerate(range(0, width + 1, 8))] + [(x_end, width)]
+        md.polygon(pts, fill=0)
+    t.putalpha(ImageChops.multiply(t.split()[3], m))
+    return shadow(t, offset=(3, 5), blur=5, alpha=45)
+
+def ship_label(size=(800, 1200), seed=121):
+    """A 4x6 thermal shipping label: ruled sections, empty fields for typed text, a barcode, a slight curl."""
+    w, h = size; r = rng(seed)
+    lab = paper(size, (252, 251, 247), seed, grain=3); d = ImageDraw.Draw(lab); ink = (28, 27, 26, 255)
+    f = lambda px, b=True: ImageFont.truetype('C:/Windows/Fonts/arialbd.ttf' if b else 'C:/Windows/Fonts/arial.ttf', px)
+    d.rectangle((20, 20, w - 21, h - 21), outline=ink, width=5)
+    d.rectangle((20, 20, 220, 220), fill=ink); d.text((120, 120), 'P', font=f(150), fill=(252, 251, 247), anchor='mm')
+    d.text((250, 60), 'STANDARD', font=f(56), fill=ink); d.text((250, 135), 'SHIPPING', font=f(40, False), fill=ink)
+    d.line((20, 240, w - 21, 240), fill=ink, width=5)
+    d.text((48, 262), 'FROM:', font=f(30), fill=ink)
+    d.line((20, 400, w - 21, 400), fill=ink, width=3)
+    d.text((48, 425), 'SHIP TO:', font=f(34), fill=ink)
+    d.line((20, 700, w - 21, 700), fill=ink, width=5)
+    d.text((48, 722), 'ITEMS:', font=f(30), fill=ink)
+    d.line((20, 820, w - 21, 820), fill=ink, width=5)
+    x = 70
+    while x < w - 90:
+        bw = r.choice([4, 4, 6, 9, 12]); d.rectangle((x, 860, x + bw, 1060), fill=ink); x += bw + r.choice([4, 6, 8])
+    d.text((w / 2, 1110), ' '.join(''.join(str(r.randint(0, 9)) for _ in range(4)) for _ in range(5)), font=f(30, False), fill=ink, anchor='mm')
+    curl = Image.new('RGBA', size, (0, 0, 0, 0)); cd = ImageDraw.Draw(curl)   # a faint lift on one corner
+    for i in range(60): cd.line((w - 140 + i * 2, h, w, h - 140 + i * 2), fill=(0, 0, 0, max(0, 18 - i // 4)), width=3)
+    lab.alpha_composite(curl)
+    return shadow(lab, offset=(8, 14), blur=14, alpha=70)
