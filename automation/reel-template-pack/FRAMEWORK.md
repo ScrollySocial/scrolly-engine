@@ -68,8 +68,8 @@ fix it first; don't show it. When she adds a rule, add it here the same day.
 ## Signature moves: reuse, but never more than 5 of 25 (Mercedes, 2026-10-17)
 
 An approved move (the peanut drop-in flood, the box closing, the typing label, the torn-paper split) can be reused to
-save time, but **one move appears in at most 5 of a pack's 25 templates**. Order in the pack doesn't matter, so back-to-back use is fine
-in the pack order. Log each use here when a template is approved.
+save time, but **one move appears in at most 5 of a pack's 25 templates**. Order in the pack doesn't matter, so back-to-back use is fine.
+Log each use here when a template is approved.
 
 | Move | Made in | Used in |
 |---|---|---|
