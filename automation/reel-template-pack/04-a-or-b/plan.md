@@ -71,3 +71,8 @@ Images needed from Mercedes (ChatGPT; straight-on, white background unless said,
 5. A long yellow pencil, sharpened, lying flat, seen from above.
 6. Six paper clips in six different colours, spread out, seen from above.
 7. A yellow and a pink highlighter, capped, seen from above (optional).
+
+## v3 stills rejected (2026-10-17): "I don't like it"
+
+Still not the A/B she pictured (stills commit d3f8a8a). On hold until she describes it or sends a reference Reel. Before
+the next round, check the FRAMEWORK.md moves table (torn split counts as a signature move: at most 5 of 25, never back to back).
