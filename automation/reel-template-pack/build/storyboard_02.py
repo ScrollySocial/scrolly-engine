@@ -118,7 +118,7 @@ def f2():
 def f3():
     """One packing peanut drops in, with a colourful border."""
     im, fl = box_scene(footage('IMG_1439', 2.6, (W, H)))
-    pea = bordered(prop('packing-peanut').resize((360, 360)), BUTTER, INK, 14, 8)
+    pea = bordered(prop('packing-peanut').resize((360, 360)), WHITE, WHITE, 16, 2)
     place(im, pea, (560, 980), -14)
     d = ImageDraw.Draw(im)
     for k in range(3): d.line((470 + 60 * k, 640, 470 + 60 * k, 740), fill=INK + (255,), width=6)   # motion ticks
@@ -134,8 +134,7 @@ def f4():
     im, fl = box_scene(footage('IMG_1439', 2.6, (W, H)))
     r = random.Random(4); pea = prop('packing-peanut')
     tints = [None, None, None, (250, 250, 246), (250, 232, 140), None, (250, 250, 246)]
-    styles = [(WHITE, INK, 12, 8), (BUTTER, INK, 14, 6), (WHITE, COBALT, 12, 10), (INK, WHITE, 6, 10),
-              (WHITE, TOMATO, 12, 10), (SAGE, INK, 12, 6), (WHITE, None, 16, 0)]
+    styles = [(WHITE, WHITE, 14, 2)]   # plain white die-cut sticker edge (no colours)
     for k in range(70):
         s = r.randint(230, 380); p = pea.resize((s, s))
         t = tints[k % len(tints)]
@@ -259,27 +258,46 @@ def f6a():
     tape_words(im, (W / 2, 160), 'all', 'tucked in', -2)
     return im
 
+def sealed_box():
+    """Her real closed box, tape across the lid wrapping over both side edges, the label on top. Transparent around."""
+    cb = prop('box-closed-top'); bb = cb.getbbox(); cb = cb.crop(bb)
+    s = 0.66 * W / cb.width; cb = cb.resize((int(cb.width * s), int(cb.height * s)))
+    pad = 140; out = Image.new('RGBA', (cb.width + 2 * pad, cb.height + 2 * pad), (0, 0, 0, 0))
+    out.alpha_composite(C.shadow(cb, offset=(10, 18), blur=20, alpha=70), (pad - 44, pad - 44))
+    for y, pat, seed in ((0.30, 'dots', 8), (0.70, 'stripes', 9)):   # two strips across the lid, over both edges
+        tape = C.washi(cb.width + 16, 150, pat, (BLUE, WHITE) if pat == 'dots' else (INK, WHITE), seed=seed, alpha=245)
+        place(out, tape, (out.width / 2, pad + cb.height * y), 0)
+    lab = C.ship_label().resize((470, 705)); d = ImageDraw.Draw(lab); m = F(MONO, 29)
+    d.text((52, 182), 'Sunday Studio', font=m, fill=INK); d.text((52, 282), 'YOU', font=F(MONO, 38), fill=INK)
+    d.text((52, 330), '123 YOUR HOME', font=m, fill=INK); d.text((52, 445), '1 x something nice', font=m, fill=INK)
+    place(out, lab, (out.width / 2 + 40, pad + cb.height * 0.5), -6)
+    return out
+
 def f6b(words=True, bg=BG):
-    """Closed: washi tape zips across the seam, the label slaps on."""
-    im = box_state(footage('IMG_1447', 1.0, (W, H)), 180, 180, bg)
-    bare = box_state(footage('IMG_1447', 1.0, (W, H)), 180, 180, (0, 0, 0, 0)); bb = bare.getbbox()
-    cx = (bb[0] + bb[2]) / 2; length = bb[3] - bb[1] + 30   # along the seam, overhanging the edges a little
-    place(im, C.washi(length, 150, 'dots', (BLUE, WHITE), seed=8, alpha=245), (cx, (bb[1] + bb[3]) / 2), 90)
-    lab = C.ship_label().resize((460, 690)); d = ImageDraw.Draw(lab); m = F(MONO, 29)
-    d.text((52, 180), 'Sunday Studio', font=m, fill=INK); d.text((52, 278), 'YOU', font=F(MONO, 38), fill=INK)
-    d.text((52, 325), '123 YOUR HOME', font=m, fill=INK); d.text((52, 440), '1 x something nice', font=m, fill=INK)
-    place(im, lab, (600, 1300), -6)
+    """Sealed: her closed box, washi tape across the lid and over the edges, label on."""
+    im = Image.new('RGBA', (W, H), bg)
+    place(im, sealed_box(), (W / 2, H / 2 + 60))
     if words: tape_words(im, (W / 2, 160), 'sealed +', 'on its way', 3)
     return im
 
+def f7():
+    """CTA: the sealed box shrinks and slides partly off-screen, the focus moves to the product name."""
+    im = Image.new('RGBA', (W, H), BG)
+    bx = sealed_box(); bx = bx.resize((int(bx.width * 0.55), int(bx.height * 0.55)))
+    place(im, bx, (290, 1480), -16)
+    place(im, C.washi(980, 300, 'gingham', (BUTTER, WHITE), seed=11, alpha=250), (W / 2, 450), -3)
+    word(im, (W / 2, 350), 'Spray cleaner', F(SERIF, 120), INK, anchor='ma')
+    word(im, (W / 2, 500), 'shop at the link in my bio', F(SANS, 50), INK, anchor='ma')
+    return im
+
 def main():
-    frames = [f1(), f2(), f3(), f4(), f5(), f5(True), f6a(), f6b(), f7()]
+    frames = [f1(), f2(), f3(), f4(), f5(), f5(True), f6b(), f7()]
     names = ['1 label types in + picking items', '2 real box, video on the floor', '3 one peanut drops in',
-             '4 peanuts take over', '5a shreds + the envelope lands', '5b the wax seal is brought in', '6a the flaps close over the video',
-             '6b sealed: washi tape + label', '7 CTA']
+             '4 peanuts take over', '5a shreds + the envelope lands', '5b the wax seal is brought in',
+             '6 sealed, washi tape + label', '7 CTA']
     for n, f in zip(names, frames): f.convert('RGB').save(OUT / f'{n}.jpg', quality=90)
-    sheet = Image.new('RGB', (W * 5 + 80, H * 2 + 20), 'white')
-    for i, f in enumerate(frames): sheet.paste(f.convert('RGB'), ((i % 5) * (W + 20), (i // 5) * (H + 20)))
+    sheet = Image.new('RGB', (W * 4 + 60, H * 2 + 20), 'white')
+    for i, f in enumerate(frames): sheet.paste(f.convert('RGB'), ((i % 4) * (W + 20), (i // 4) * (H + 20)))
     sheet.resize((sheet.width // 3, sheet.height // 3)).save(OUT / 'storyboard-02.jpg', quality=90)
     print('saved', OUT)
 
