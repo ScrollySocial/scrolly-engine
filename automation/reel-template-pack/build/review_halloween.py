@@ -34,14 +34,18 @@ textarea.all{height:48px;margin-bottom:10px;max-width:960px}
 #bar{position:fixed;left:0;right:0;bottom:0;background:#1b1a19;color:#fff;padding:12px 20px;display:flex;gap:14px;align-items:center}
 button{font:bold 15px Arial;padding:10px 18px;border:0;border-radius:6px;background:#ec7824;color:#fff;cursor:pointer}
 #big{position:fixed;inset:0;background:rgba(0,0,0,.85);display:none;align-items:center;justify-content:center} #big img{max-height:94vh;width:auto}
-</style></head><body><h1>Halloween storyboards, round 1</h1>
-<p>Type notes under any frame (they save in this browser). Click a frame to see it big. When done, press <b>Copy all notes</b> and paste them in the chat.</p>
-ROWS<div id="bar"><button id="copy">Copy all notes</button><span id="msg"></span></div><div id="big"><img></div>
+</style></head><body><h1>Halloween storyboards, round 2</h1>
+<p>Type notes under any frame (they save in this browser). Click a frame to see it big. Notes go to Claude automatically as you type (watch the message at the bottom).</p>
+ROWS<div id="bar"><button id="copy">Copy all notes</button><button id="save">Send notes to Claude</button><span id="msg"></span></div><div id="big"><img></div>
 <script>
 const tas=[...document.querySelectorAll('textarea')], msg=document.getElementById('msg');
-tas.forEach(t=>{try{t.value=localStorage.getItem('hw:'+t.dataset.k)||''}catch(e){}; t.oninput=()=>{try{localStorage.setItem('hw:'+t.dataset.k,t.value)}catch(e){}}});
+tas.forEach(t=>{try{t.value=localStorage.getItem('hw2:'+t.dataset.k)||''}catch(e){}; t.oninput=()=>{try{localStorage.setItem('hw2:'+t.dataset.k,t.value)}catch(e){}; clearTimeout(window._s); window._s=setTimeout(send,600)}});
+function send(){const o={};tas.forEach(t=>{if(t.value.trim())o[t.dataset.k]=t.value.trim()});
+ fetch('/notes',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(o)}).then(r=>{msg.textContent=r.ok?'Notes saved. Claude can read them.':'Could not save notes.'}).catch(()=>{msg.textContent='Could not save notes.'})}
+send();
 document.getElementById('copy').onclick=async()=>{const s=tas.filter(t=>t.value.trim()).map(t=>t.dataset.k+': '+t.value.trim()).join('\n');
  try{await navigator.clipboard.writeText(s);msg.textContent='Copied. Paste it in the chat.'}catch(e){msg.textContent='Copy failed. Select and copy this: '+s}};
+document.getElementById('save').onclick=send;
 const big=document.getElementById('big');document.querySelectorAll('figure img').forEach(i=>i.onclick=()=>{big.firstChild.src=i.src;big.style.display='flex'});big.onclick=()=>big.style.display='none';
 </script></body></html>'''.replace('ROWS', ''.join(rows))
 (HW / 'review.html').write_text(page, encoding='utf-8')

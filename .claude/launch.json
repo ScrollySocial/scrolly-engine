@@ -70,11 +70,8 @@
       "name": "template-pack",
       "runtimeExecutable": "python",
       "runtimeArgs": [
-        "-m",
-        "http.server",
-        "8950",
-        "--directory",
-        "automation/reel-template-pack"
+        "automation/reel-template-pack/build/review_server.py",
+        "8950"
       ],
       "port": 8950
     }
