@@ -55,3 +55,15 @@ measured circle, as if pushed into the cork) and `label-tape-black.png`. `build/
 with a soft light falloff, photos pinned flat, small words typed on label-maker tape (cut ends kept, middle stretched,
 raised white letters), big words Imbue in cobalt, a SNAP! label at the flash, the real timer beside the after labels.
 Waiting for her one round of feedback.
+
+## Storyboard v3, layered (2026-10-17)
+
+v2 rejected: one background all Reel, no layers, the story didn't add up (a photo pinned before it was taken, a video
+after it was a photo), frame 7 repeated frame 6. v3 acts the idea out in order and changes the layer every beat:
+1 through the lens (the before plays in the camera's lens, blurred clip behind) · 2 into the lens (the lens grows to
+fill the screen) · 3 snap (the flash burst is the cut) · 4 the print comes out of the slot dark (clip 2 starts with a
+hand over the lens) · 5 it develops while the top half of a giant see-through timer turns along the bottom · 6 the
+after breaks out of its photo window · 7 the before photo held up against the same spot (then / NOW) · 8 CTA on the
+cork, the before and after photos pinned at the edges, the camera prints the product: "Comment "[KEYWORD]"".
+Type (her pick from the sampler, `storyboard/font-options.jpg`, she liked 1 to 4): Corben Bold in mint (the camera's
+colour) with a black edge; small words on label-maker tape. CTA is ManyChat style (her default from now on).
