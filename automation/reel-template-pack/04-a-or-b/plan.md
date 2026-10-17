@@ -46,22 +46,28 @@ in her words: bold fun written hook + a visual hook; layered backgrounds that do
 disappear, some take over, as part of the story); graphics on top are accents (photos/videos with no background,
 emoji, drawings); the video of the person or product is the story. No cutouts of the test product: it's a template.
 
-## v3 plan, built from the Lisa references (DdCHHDABNZ_, DclZJhSIxGY, DZh6_zCSk-5, DehPKeah0AP)
+## v3 plan, to FRAMEWORK.md (2026-10-17)
 
-What those Reels actually do: the video stays full screen most of the time and words appear one at a time in the empty
-space (mixed fonts, one accent word big); then it cuts to a paper collage scene where the video sits in a window with
-real objects and stickers around it; a grid wall of tiles; a star-shaped shatter that breaks one shot to reveal the
-next; one sticky note that stays put while the video behind it changes.
+World (its own): a notebook desk. Real lined paper, sticky notes, an index card, a big pencil, coloured paper clips.
+Accent colours come from the props (highlighter yellow and pink); the keyword colour is the one buyers change.
+Business job (physical product owners): show both versions and make the comment the vote. "Comment [KEYWORD]" sends
+the link (ManyChat) and the vote count tells the seller which version to restock and push.
 
-1. Hook (0-2 s): a grid wall of tiles, each one playing A or B, flipping; the tiles fly off and leave A full screen.
-   Words one at a time: "which one" / "would YOU" / "pick?" (YOU big in the bold fun font).
-2. A (2-5 s): A full screen; a real sticky note taped on, "[name] + one word", stays on.
-3. A to B: A shatters into star-shaped pieces that fly off, B underneath.
-4. B (5-8 s): B full screen; a second sticky note (other colour) slaps on over the first.
-5. Both (8-10 s): cut to a real notebook-paper scene: A and B in two round windows, real desk objects slide in at the
-   edges, a hand-drawn arrow and "or", emoji stickers.
-6. CTA (10-12.5 s): the pick clip full screen, "Comment" / "[KEYWORD]" one word at a time, both sticky notes at the edges.
+| Time | Beat | What's on screen | Rules |
+|---|---|---|---|
+| 0-2 s | Hook | Diagonal split: A top-left, B bottom-right. A real oversized pencil (hand-drawn outline) rolls in from frame 1 and lies along the diagonal as the divider. "which one would" in bold type on a sticky note; YOU huge, letters filled with a lined-paper pattern; "pick?" writes itself on. | 1, 3, 5, 7, 8, 11, 12 |
+| 2-5 s | A | The pencil rolls down and pushes the split off-screen, A takes over. A yellow sticky note slaps on; "[name] = [one word]" writes itself on. Real paper clips, each a different colour, outlined, clip onto the frame edge one by one. | 4, 6, 9, 11, 12 |
+| 5-8 s | A to B | A lined notebook page turns over the screen from the right (page curl); B plays on its back and takes over. A pink sticky note slaps on over the yellow one. | 4, 6, 12 |
+| 8-10 s | Both | Torn-paper split: a real torn strip of lined paper down the middle, A left, B right. Oversized "or" in the strip. Tally marks are drawn under each side as if someone is counting votes; highlighter swipes. | 5, 7, 10, 11 |
+| 10-12.5 s | CTA | The pick clip full screen. A real index card slides up: "Comment" in bold, "[KEYWORD]" pattern-filled, "and I'll send you the link" handwritten. Both sticky notes and a few paper clips at the edges. | 3, 11, 12, 13 |
 
-Images needed (her): lined notebook paper (flat, straight-on, full frame), a yellow and a pink sticky note (flat, a
-little curl, on white), a strip of clear tape (on white), 3 or 4 everyday desk objects on white (pen, paper clip,
-earbuds, lip balm or similar, no brands).
+Footage is on screen in every beat (2). Nothing shows the product except the clips: it works for any product.
+
+Images needed from Mercedes (ChatGPT; straight-on, white background unless said, no brands):
+1. A lined notebook page, full frame, portrait, real paper texture, red margin line.
+2. A long torn strip of lined notebook paper, vertical, both long edges torn.
+3. One square sticky note in yellow and one in pink, flat with a slight curl at one corner.
+4. A white lined index card (red top line), flat.
+5. A long yellow pencil, sharpened, lying flat, seen from above.
+6. Six paper clips in six different colours, spread out, seen from above.
+7. A yellow and a pink highlighter, capped, seen from above (optional).
