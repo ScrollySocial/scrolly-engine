@@ -1,5 +1,14 @@
 # Halloween pack (started 2026-10-17)
 
+## Status (2026-10-17)
+- **h6 Once in a blood moon: APPROVED and checked in CapCut.** Motion test `build/motion_h6.py`, CapCut template
+  `build/templates/th6.py` (`python build/make.py h6`, `python build/install_test.py h6`). Test copy in her CapCut:
+  "Scrolly h6 Once in a blood moon".
+- **Lesson:** still storyboards (rounds 1 to 4) missed the point; the reference Reels are video-first with fun edits.
+  Go straight to a 10 to 15 s motion test per template (see motion_h6.py), then the CapCut build. Rules: FRAMEWORK.md.
+- h3 web, h2 bats, h5 trick or treat: concepts and round 4 notes in `halloween/notes-round4.md`; next as motion tests.
+- h1 smoke: waiting on a smoke video on black that we own. h4 pumpkin: parked ("maybe scratch").
+
 Buyers are online business owners and influencers, so every template is a whole Reel with a business job and a CTA,
 not just a Halloween look. Cute, not scary. Real photographed objects; only the playful layer (washi tape, white
 sticker edges, handwritten words, words on tape) is drawn. Build ids `h1` to `h5` (`python build/make.py h1`).
