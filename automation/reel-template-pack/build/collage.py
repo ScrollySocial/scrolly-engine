@@ -280,9 +280,11 @@ def sticker(name, size=300, border=10, shadow_alpha=60):
     pad = border + 4
     canvas = Image.new('RGBA', (size + 2 * pad, size + 2 * pad), (0, 0, 0, 0))
     a = Image.new('L', canvas.size, 0); a.paste(im.split()[3], (pad, pad))
-    edge = a.filter(ImageFilter.MaxFilter(border * 2 + 1)).filter(ImageFilter.GaussianBlur(1.2))
-    white = Image.new('RGBA', canvas.size, (255, 255, 255, 255)); white.putalpha(edge)
-    canvas.alpha_composite(white); canvas.alpha_composite(im, (pad, pad))
+    if border > 0:
+        edge = a.filter(ImageFilter.MaxFilter(border * 2 + 1)).filter(ImageFilter.GaussianBlur(1.2))
+        white = Image.new('RGBA', canvas.size, (255, 255, 255, 255)); white.putalpha(edge)
+        canvas.alpha_composite(white)
+    canvas.alpha_composite(im, (pad, pad))
     return shadow(canvas, offset=(6, 9), blur=10, alpha=shadow_alpha)
 
 def flood(names, size=(1200, 1000), count=9, sticker_px=330, seed=90):
@@ -350,3 +352,61 @@ def note_card(size=(420, 300), seed=95):
     c = paper(size, (253, 251, 245), seed, grain=4); d = ImageDraw.Draw(c)
     for y in range(90, size[1] - 20, 52): d.line((30, y, size[0] - 30, y), fill=(190, 205, 225, 255), width=2)
     return shadow(c, offset=(4, 8), blur=8, alpha=60)
+
+# ---- Lisa-language elements (2026-10-17): neutral paper, sticky notes, shape windows ------------------------------------
+def dot_paper(size, color=(244, 241, 236), dot=(214, 208, 200), step=34, seed=101):
+    p = paper(size, color, seed, grain=5); d = ImageDraw.Draw(p)
+    for y in range(step // 2, size[1], step):
+        for x in range(step // 2, size[0], step):
+            d.ellipse((x - 1.6, y - 1.6, x + 1.6, y + 1.6), fill=dot + (255,))
+    return p
+
+STICKY = {'yellow': (250, 232, 120), 'pink': (246, 182, 205), 'blue': (166, 206, 242), 'green': (190, 226, 170)}
+
+def sticky_note(size=420, color='yellow', seed=102, pin=True):
+    """A square sticky note with a slight lift at the bottom corner, optionally pinned with a 3D push pin."""
+    c = STICKY.get(color, color)
+    n = paper((size, size), c, seed, grain=5)
+    shade = Image.new('RGBA', (size, size), (0, 0, 0, 0)); sd = ImageDraw.Draw(shade)
+    for i in range(40):   # faint darkening toward the lifted corner
+        sd.line((size - i * 6, size, size, size - i * 6), fill=(0, 0, 0, max(0, 22 - i // 2)), width=6)
+    n.alpha_composite(shade)
+    out = shadow(n, offset=(10, 16), blur=14, alpha=70)
+    if pin:
+        p = sticker('pushpin', int(size * 0.22), border=0, shadow_alpha=50)
+        out.alpha_composite(p, (out.width // 2 - p.width // 2 + 10, 0))
+    return out
+
+def star_points(c, r_out, r_in, n=5, rot=-90):
+    pts = []
+    for i in range(n * 2):
+        r = r_out if i % 2 == 0 else r_in; a = math.radians(rot + i * 180 / n)
+        pts.append((c[0] + r * math.cos(a), c[1] + r * math.sin(a)))
+    return pts
+
+def torn_points(box, seed=103, depth=18):
+    r = rng(seed); x0, y0, x1, y1 = box; pts = []
+    for side in range(4):
+        steps = 26
+        for i in range(steps):
+            t = i / steps
+            if side == 0: x, y = x0 + (x1 - x0) * t, y0
+            elif side == 1: x, y = x1, y0 + (y1 - y0) * t
+            elif side == 2: x, y = x1 - (x1 - x0) * t, y1
+            else: x, y = x0, y1 - (y1 - y0) * t
+            off = r.uniform(-depth, depth)
+            pts.append((x + (off if side in (1, 3) else 0), y + (off if side in (0, 2) else 0)))
+    return pts
+
+def window_card(size, shape_pts, bg=None, seed=104, edge=(255, 255, 255), edge_w=0):
+    """Paper with a see-through hole in the given shape (footage plays through it from the layer below)."""
+    card = bg.copy() if bg is not None else dot_paper(size, seed=seed)
+    hole = Image.new('L', size, 0); ImageDraw.Draw(hole).polygon(shape_pts, fill=255)
+    if edge_w:
+        ring = hole.filter(ImageFilter.MaxFilter(edge_w * 2 + 1))
+        e = Image.new('RGBA', size, edge + (255,)); e.putalpha(ring); card.alpha_composite(e)
+    sh = hole.filter(ImageFilter.GaussianBlur(12)).point(lambda v: int(v * 0.35))   # soft inner shadow under the paper edge
+    s = Image.new('RGBA', size, (0, 0, 0, 0)); s.putalpha(ImageChops.subtract(sh, hole.filter(ImageFilter.MinFilter(9))))
+    card.alpha_composite(s)
+    card.putalpha(ImageChops.subtract(card.split()[3], hole))
+    return card
