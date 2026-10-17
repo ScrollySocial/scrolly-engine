@@ -186,3 +186,85 @@ def pen_loop(size=(760, 380), color=(24, 22, 20), width=9, turns=1.12, start_deg
         rad = max(1, width * ss / 2 * (0.35 + 0.65 * taper))
         d.ellipse((x - rad, y - rad, x + rad, y + rad), fill=color + (255,) if len(color) == 3 else color)
     return im.resize((w + 40, h + 40), Image.LANCZOS)
+
+# ---- batch 1 elements (2026-10-16) ------------------------------------------------------------------------------------
+from PIL import ImageFont
+
+def _f(px, bold=True):
+    return ImageFont.truetype('C:/Windows/Fonts/segoeuib.ttf' if bold else 'C:/Windows/Fonts/segoeui.ttf', px)
+
+def grid_paper(size, color=(250, 250, 246), line=(196, 214, 230), step=54, seed=71):
+    p = paper(size, color, seed, grain=6); d = ImageDraw.Draw(p)
+    for x in range(0, size[0], step): d.line((x, 0, x, size[1]), fill=line + (255,), width=2)
+    for y in range(0, size[1], step): d.line((0, y, size[0], y), fill=line + (255,), width=2)
+    return p
+
+def shipping_label(size=(860, 560), seed=81):
+    """A white shipping label: hairline box, a barcode, empty lines for the editable text to sit on."""
+    w, h = size; r = rng(seed)
+    lab = paper(size, (253, 252, 248), seed, grain=4); d = ImageDraw.Draw(lab)
+    d.rectangle((14, 14, w - 15, h - 15), outline=(40, 38, 35, 255), width=4)
+    d.text((40, 34), 'SHIP TO', font=_f(34), fill=(40, 38, 35))
+    d.line((40, 90, w - 40, 90), fill=(40, 38, 35, 255), width=3)
+    x = 40
+    while x < w - 60:
+        bw = r.choice([4, 4, 7, 10]); d.rectangle((x, h - 150, x + bw, h - 50), fill=(30, 28, 26, 255)); x += bw + r.choice([4, 6, 9])
+    m = Image.new('L', size, 0); ImageDraw.Draw(m).rounded_rectangle((0, 0, w - 1, h - 1), radius=18, fill=255)
+    lab.putalpha(m)
+    return shadow(lab, offset=(6, 10), blur=12, alpha=70)
+
+def stamp(text, size=(620, 220), color=(178, 62, 44), seed=82, round_=False):
+    """A rubber stamp with a double border and worn ink."""
+    w, h = size; r = rng(seed)
+    im = Image.new('RGBA', size, (0, 0, 0, 0)); d = ImageDraw.Draw(im)
+    if round_:
+        d.ellipse((6, 6, w - 7, h - 7), outline=color + (255,), width=10); d.ellipse((26, 26, w - 27, h - 27), outline=color + (255,), width=4)
+    else:
+        d.rounded_rectangle((6, 6, w - 7, h - 7), radius=20, outline=color + (255,), width=10)
+        d.rounded_rectangle((24, 24, w - 25, h - 25), radius=12, outline=color + (255,), width=4)
+    f = _f(int(h * (0.24 if round_ else 0.34)))
+    lines = text.split('\n'); lh = f.size * 1.05
+    for i, ln in enumerate(lines):
+        tw = d.textlength(ln, font=f)
+        d.text(((w - tw) / 2, h / 2 - lh * len(lines) / 2 + i * lh - f.size * 0.12), ln, font=f, fill=color + (255,))
+    wear = Image.effect_noise(size, 60).point(lambda v: 0 if v < 70 else 255)
+    im.putalpha(ImageChops.multiply(im.split()[3], wear.filter(ImageFilter.GaussianBlur(0.6))))
+    return im
+
+def letter_sticker(letter, d=200, color=(246, 228, 160), ink=(24, 22, 20), seed=83):
+    s = d + 24; im = Image.new('RGBA', (s, s), (0, 0, 0, 0)); dr = ImageDraw.Draw(im)
+    dr.ellipse((0, 0, s - 1, s - 1), fill=(255, 255, 255, 255))
+    face = paper((d, d), color, seed, grain=6); m = Image.new('L', (d, d), 0); ImageDraw.Draw(m).ellipse((0, 0, d - 1, d - 1), fill=255)
+    face.putalpha(m); im.alpha_composite(face, (12, 12))
+    f = _f(int(d * 0.6)); tw = dr.textlength(letter, font=f); bb = f.getbbox(letter)
+    dr.text(((s - tw) / 2, (s - (bb[3] + bb[1])) / 2), letter, font=f, fill=ink)
+    return shadow(im, offset=(5, 8), blur=8, alpha=70)
+
+def magnifier_handle(length=330, width=70, color=(250, 244, 230)):
+    im = Image.new('RGBA', (width + 20, length + 20), (0, 0, 0, 0))
+    ImageDraw.Draw(im).rounded_rectangle((10, 10, width + 9, length + 9), radius=width // 2, fill=color + (255,))
+    return im
+
+def heart(size=110, color=(24, 22, 20), width=6, seed=84):
+    r = rng(seed); c = size / 2; pts = []
+    for i in range(61):
+        t = i / 60 * 2 * math.pi
+        x = 16 * math.sin(t) ** 3; y = -(13 * math.cos(t) - 5 * math.cos(2 * t) - 2 * math.cos(3 * t) - math.cos(4 * t))
+        pts.append((c + x * size / 36, c + y * size / 36))
+    im = Image.new('RGBA', (size + 10, size + 10), (0, 0, 0, 0))
+    ImageDraw.Draw(im).line([(x + 5, y + 5) for x, y in _jit(r, pts, 1.2)], fill=color, width=width, joint='curve')
+    return im
+
+def check(size=120, color=(24, 22, 20), width=10):
+    im = Image.new('RGBA', (size, size), (0, 0, 0, 0))
+    ImageDraw.Draw(im).line([(size * 0.12, size * 0.55), (size * 0.4, size * 0.82), (size * 0.9, size * 0.18)], fill=color, width=width, joint='curve')
+    return im
+
+def burst(size=220, color=(24, 22, 20), width=6, rays=8, seed=85):
+    """Short strokes radiating out, like an 'it's done' pop. Leaves the middle empty for what it surrounds."""
+    r = rng(seed); im = Image.new('RGBA', (size, size), (0, 0, 0, 0)); d = ImageDraw.Draw(im); c = size / 2
+    for i in range(rays):
+        a = i / rays * 2 * math.pi + r.uniform(-0.1, 0.1)
+        r0, r1 = size * 0.30, size * r.uniform(0.44, 0.49)
+        d.line((c + r0 * math.cos(a), c + r0 * math.sin(a), c + r1 * math.cos(a), c + r1 * math.sin(a)), fill=color, width=width)
+    return im

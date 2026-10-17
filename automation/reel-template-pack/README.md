@@ -8,61 +8,63 @@ the paid-ad front door to the AI-assisted Reel Editor. Brain row: My offers, "Re
 
 | Path | What |
 |---|---|
-| `physical-pack-list.md` | The approved 25 for physical sellers (Phase 2) |
-| `build/build_01.py` | Builds template 01. Run from this folder: `python build/build_01.py` |
-| `01-one-product-three-ways/buyer-folder/` | Delivery A, what a buyer downloads: the CapCut project, `1 Put your clips here`, `2 Double-click to install` (Windows), recipe card, guide |
-| `01-one-product-three-ways/phone-kit/` | Delivery B: shot guide video, artwork cards, recipe card for CapCut on a phone (artwork has to be added by hand there) |
-| `01-one-product-three-ways/style-options/` | The style rounds: options, B variations, collage concepts, handwriting and headline fonts |
-| `build/collage.py`, `build/style_options.py`, `build/whimsy_concepts.py` | Collage element drawing and the style-round renderers |
-| `01-one-product-three-ways/preview/` | `before.mp4` (the template) and `after.mp4` (finished test Reel) |
+| `physical-pack-list.md` | The approved 25 ideas for physical sellers (Phase 2) |
+| `build/make.py` | Builds templates: `python build/make.py 01 02 ...` (from this folder) |
+| `build/engine.py` | The shared engine: CapCut project writer, preview renderer, recipe card, buyer folder |
+| `build/templates/tNN.py` | One file per template: its clips, layers, keyframes and test footage |
+| `build/collage.py` | Draws every artwork element (paper, tape, Polaroids, stamps, labels, stickers, doodles) |
+| `build/installer/` | The Windows installer a buyer double-clicks |
+| `build/style_options.py`, `build/whimsy_concepts.py` | Renderers from the style rounds (history) |
+| `NN-.../buyer-folder/` | What a buyer downloads: CapCut project, `1 Put your clips here`, `2 Double-click to install`, recipe card, guide |
+| `NN-.../phone-kit/` | Shot guide video, artwork, recipe card for CapCut on a phone (artwork has to be added by hand there) |
+| `NN-.../preview/` | `before.mp4` (the template) and `after.mp4` (a test Reel with placeholder footage) |
+| `01-one-product-three-ways/style-options/` | The style rounds: options, B variations, collage concepts, fonts |
 | `guide/how-to-use.html` / `.pdf` | One-page beginner guide |
 
-Video files are not in git (`*.mp4`); rerun the build to make them. The test footage in `after.mp4` is Mercedes's own
-July stick-vacuum clips (`OneDrive/Desktop/July Videos`). It's for this review only: the vacuum is another brand's
-product, so never use that preview in ads or on the sales page.
+Video files are not in git (`*.mp4`); rerun the build to make them. Test footage in the `after.mp4` previews is
+Mercedes's own July clips (`OneDrive/Desktop/July Videos`: vacuum, mop, cleaning products). It's a stand-in only: those
+are other brands' products and often don't match the template's idea, so never use the previews in ads or on a sales page.
 
 ## How the CapCut project is made
 
-The build copies the JSON shape of Mercedes's own CapCut 8.9 drafts (`Litter 1` for clips, `Old Soaps Short` for the
-Rubik Bold font) and never changes them. Slot clips live inside the project folder and are referenced with CapCut's
-own folder token (`##_draftpath_placeholder_..._##`), so the folder can be copied to another computer. Text is Rubik
-Bold, a CapCut library font that downloads by id, white on a 60% black rounded box.
+The engine copies the JSON shape of Mercedes's own CapCut 8.9 drafts (`Litter 1` for clips and text, `Stain Stick with
+Reviews` for image layers, `PGYT2` for the Typewriter text animation) and never changes them. Slot clips and artwork
+live inside the project folder, referenced with CapCut's own folder token (`##_draftpath_placeholder_..._##`), so the
+folder can be copied to another computer. Each clip is cropped (CapCut's material crop) to its window's shape and
+sits under its own frame layer, so frames and clips move together. Fast cuts reuse one buyer clip from different start
+points at 1.15x speed. Motion is CapCut keyframes (position, rotation, uniform scale), confirmed working in her CapCut
+on template 01. Fonts: Imbue and MADE Awelier (CapCut library, download by id), Ink Free (ships with Windows).
 
 ## How a buyer installs it (Windows)
 
 CapCut for computer has no "import project" button: a project appears on CapCut's home screen when its folder is in
-CapCut's projects folder. The installer (`build/installer/`) copies the template there under a new name each run, and
-drops the clips from `1 Put your clips here` into the shots in name order. It never touches other projects.
-Mac buyers: not supported yet (no installer, folder path unverified).
+CapCut's projects folder. The installer copies the template there under a new name each run, and drops the clips from
+`1 Put your clips here` into the template in name order. It never touches other projects. Mac buyers: not supported yet.
 
-## Phase 3 test (Mercedes, in CapCut desktop)
+## Status
 
-Template 01 v5 (stars stay on screen) installed in her CapCut on 2026-10-16 as "Scrolly 01 One product three ways (6)".
-v4 ("(5)": circles one at a time, Polaroids grow) was approved by Mercedes apart from the stars. v3 ("(4)", motion confirmed in CapCut by Mercedes) was, filled by the installer with four of her July vacuum clips. "(2)" is v2 (no
-motion); the unnumbered copy and "(3)" are v1. Motion uses CapCut keyframes (position, rotation, scale) and the
-Typewriter text animation; only scale keyframes were seen in her own drafts, so position and rotation keyframes are
-the first thing to check.
-
-1. Close CapCut fully and reopen it. Open "(2)" from the home screen.
-2. Do the opener's three round windows, the three Polaroids and the CTA circle show the vacuum clips?
-3. Are the words in the tall serif and Ink Free handwriting, in the right places and sizes? (Text size is calibrated
-   from one of her drafts, so small size differences from `preview/after.mp4` are expected.)
-4. Export and send the file to compare with `preview/after.mp4`.
+- **01 One product, three ways:** approved 2026-10-16 (v5, stars stay on screen). Test copy in her CapCut:
+  "Scrolly 01 One product three ways (6)".
+- **Batch 1, 02 to 06:** built 2026-10-16, each in its own world (kraft shipping, torn paper before/after, sky-blue
+  A/B, dark magnifier details, graph-paper progress). Waiting for Mercedes's review.
 
 ## Design notes for the batch (Mercedes, 2026-10-16)
 
 - **Look:** no Scrolly branding; collage (paper, tape, Polaroids, hand-drawn marks that never touch text), butter yellow,
   Ink Free handwriting. Headline font alternates: odd templates Imbue (tall serif), even templates MADE Awelier
   (curvy serif, CapCut id 7462241028796337414).
+- **Variety:** templates must not look alike. Each gets its own world (background, frame style, sticker set, pacing);
+  only the handwriting, a butter accent and the font alternation are shared.
 - **Motion everywhere:** pops with a bounce, things flying in and settling, growing to fill the frame, stickers that
   stay on screen and wiggle (01's stars vanished too fast; keep stickers up for the whole shot).
 - **Visual hooks through rapid change:** a very popular Reel style is about 14 seconds of 0.6-second clips at a little
   faster than 1x. Use lots of quick clip changes, switch between video and full-screen text cards, and add playful
   animations and stickers.
-- Captions on Polaroids: 1 to 3 words.
+- Captions and labels: 1 to 3 words.
 
 ## Open items
 
-- Mac projects folder path, and whether the font downloads on a computer that never used Rubik Bold: untested.
+- Mac support (projects folder path, installer).
 - Guide upsell line for the AI-assisted Reel Editor: left out until it has a name, link and launch.
 - Product description: written after the batch is approved (Phase 4).
+- Clean up the old template 01 test copies in her CapCut (unnumbered, (2) to (5)) when she says so.

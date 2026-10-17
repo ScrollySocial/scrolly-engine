@@ -1,9 +1,9 @@
 Put your clips in this folder, then double-click "2 Double-click to install".
 
-They go into the template in name order, so name them 1, 2, 3, 4 (for example 1.mov, 2.mov).
+They go into the template in name order, so name them 1 to 4 (for example 1.mov, 2.mov).
 Film upright (vertical) and start each clip right on the action.
 
-1: Your product, held up or on a table
-2: Way one, in use
-3: Way two, in use
-4: Way three, in use
+1: Your product, held up or on a table (at least 3 seconds)
+2: Way one, in use (at least 3 seconds)
+3: Way two, in use (at least 3 seconds)
+4: Way three, in use (at least 3 seconds)

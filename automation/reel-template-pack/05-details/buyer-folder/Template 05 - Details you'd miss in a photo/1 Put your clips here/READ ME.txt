@@ -1,0 +1,10 @@
+Put your clips in this folder, then double-click "2 Double-click to install".
+
+They go into the template in name order, so name them 1 to 5 (for example 1.mov, 2.mov).
+Film upright (vertical) and start each clip right on the action.
+
+1: Close-up of detail one (at least 3 seconds)
+2: Close-up of detail two (at least 3 seconds)
+3: Close-up of detail three (at least 3 seconds)
+4: Close-up of detail four (at least 3 seconds)
+5: The whole product (at least 3 seconds)
