@@ -51,6 +51,20 @@ fix it first; don't show it. When she adds a rule, add it here the same day.
   storyboard round of stills built from those images with all feedback applied in one pass, then animate. Ask
   instead of guessing.
 
+## Text placement and fonts (Mercedes, 2026-10-17)
+
+- **No text under Instagram's buttons.** Text never sits where Instagram draws over a Reel: the top bar (top 220 px),
+  the caption, username and audio strip (bottom 420 px) and the like/comment/share column (right 150 px, lower half).
+  Images, stickers and other elements may go there. The build checks this: `make.py` prints an `IG SAFE ZONE:` line
+  for any text that sits in a zone for 0.3 s or more (passing through on the way in or out is fine). Fix every one
+  before showing her anything.
+- **Two kinds of text, two kinds of font:**
+  - **Text the buyer edits** (product name, shop name, offer, keyword, [brackets]) uses a font every buyer already has
+    in CapCut (CapCut's library or a standard system font), so nobody has to install font files.
+  - **Text the buyer won't edit** (the template's built-in words: "packing an order", "watch this", "sealed") can be
+    EXTRA FUN, made as artwork: balloon letters, typewriter, letters filled with patterns, magazine cut-out letters,
+    letters made of objects. Reference: Creative Besties on Instagram (all the crazy, fun fonts).
+
 ## From her other chats (collected 2026-10-17: #3, #4, Halloween, the Lisa breakdown, her own Reels)
 
 **What the Reel is (her summary, #4 chat):** a written hook in a bold, fun font + a visual hook + layered backgrounds +
@@ -125,4 +139,6 @@ Showing her work
 - [ ] Every object moves like the real thing, is sharp, and sits on or hangs from something; nothing spat at the lens.
 - [ ] Only the images she made and the elements in the approved layout; the setting stays the same across frames.
 - [ ] Every joke or picture makes literal sense at a glance; no lines cross each other or the text.
+- [ ] The build printed no `IG SAFE ZONE:` lines (no text under Instagram's top bar, caption or buttons).
+- [ ] Editable text uses a font buyers already have; built-in words are extra-fun artwork lettering.
 - [ ] Would someone say "wow, I've never seen that on my feed"? If not, it isn't ready.

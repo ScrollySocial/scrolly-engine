@@ -479,6 +479,37 @@ def apply_centering(L):
         if 'y' in l['kf']: l['kf']['y'] = [(t, v + dy) for t, v in l['kf']['y']]
         l['centred'] = True
 
+# Where Instagram draws over a Reel (1080x1920): the top bar, the caption/username/audio strip at the bottom, and the
+# like/comment/share/remix column on the right. Text must stay out of these; images and stickers may go there.
+IG_ZONES = (('top bar', (0, 0, W, 220)), ('caption + username', (0, H - 420, W, H)),
+            ('like/comment/share buttons', (W - 150, H // 2 - 100, W, H)))
+
+def check_ig_safe(L, min_secs=0.3):
+    """Every text layer that sits in an Instagram zone for min_secs or more, sampled every 0.1 s (passing through on
+    the way in or out is fine). Returns readable warnings."""
+    bad = []
+    for l in L:
+        if l['kind'] != 'text': continue
+        im = text_img(l, False); pad = 40
+        hits = {}
+        t = l['t'][0]
+        while t < l['t'][1]:
+            lt = t - l['t'][0]
+            sc = interp(l['kf'].get('scale'), lt, 1.0)
+            x = interp(l['kf'].get('x'), lt, l['pos'][0]); y = interp(l['kf'].get('y'), lt, l['pos'][1])
+            w, h = (im.width - 2 * pad) * sc / 2, (im.height - 2 * pad) * sc / 2
+            box = (x - w, y - h, x + w, y + h)
+            on = max(0, min(box[2], W) - max(box[0], 0)) * max(0, min(box[3], H) - max(box[1], 0))
+            if sc > 0.3 and on > 0.5 * (4 * w * h):   # mostly on screen and readable size
+                for name, z in IG_ZONES:
+                    ov = max(0, min(box[2], z[2]) - max(box[0], z[0])) * max(0, min(box[3], z[3]) - max(box[1], z[1]))
+                    if ov > 0.15 * (4 * w * h):   # a sliver over the edge is fine; 15% of the words under it is not
+                        hits[name] = hits.get(name, 0) + 0.1
+            t += 0.1
+        words = l['words'][0].replace(chr(10), ' ')
+        bad += [f'"{words}" sits under Instagram\'s {name} for {s:.1f}s' for name, s in hits.items() if s >= min_secs]
+    return bad
+
 def build(spec, layers_fn):
     out = PACK / spec['dir']
     for p in (FFMPEG, PROTO / 'draft_content.json', PROTO_PHOTO / 'draft_content.json', PROTO_TYPE / 'draft_content.json'):
@@ -488,6 +519,7 @@ def build(spec, layers_fn):
     (work / 'slots').mkdir(parents=True); (work / 'art').mkdir()
     lay = layers_fn(); L, A = lay.L, lay.A
     apply_centering(L)
+    for w in check_ig_safe(L): print('IG SAFE ZONE:', w)
     n = len(spec['slots'])
     need = [0.0] * n
     for l in L:
