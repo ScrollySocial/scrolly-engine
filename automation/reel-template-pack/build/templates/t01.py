@@ -28,15 +28,16 @@ def layers():
     g.art('sparkle', C.sparkle(80, INK, 5), T, 11, (930, 250), kf={'scale': pop(0.85, 1.3), 'rot': [(0.85, -90), (1.2, 0)]})
     labels = [('[way one]', 'floors'), ('[way two]', 'couch'), ('[way three]', 'handheld')]
     for i, x in enumerate((190, 540, 890)):
+        lx = 820 if i == 2 else x   # third label nudged left, clear of Instagram's buttons
         t0 = 0.75 + 0.4 * i; tilt = [-6, 4, -3][i]
         k = {'scale': pop(t0, 1.2), 'rot': [(t0, tilt - 25), (t0 + 0.36, tilt)]}
         g.clip(i + 1, T, 2 + 2 * i, (x, 1240), (CD + 6, CD + 6), tilt, k)
         g.art(f'ring{i}', ring_frame(CD, CREAM, 44 + i), T, 3 + 2 * i, (x, 1240), tilt, copy.deepcopy(k))
-        g.text('ink', 10, labels[i], T, 22 + i, (x, 1440), kf={'scale': pop(t0 + 0.1)})
+        g.text('ink', 10, labels[i], T, 22 + i, (lx, 1440), kf={'scale': pop(t0 + 0.1)})
 
-    POL = [dict(c=(540, 1010), tilt=4, frm=(540, 2700), num=(150, 240), star=(920, 230)),
-           dict(c=(540, 1000), tilt=-3, frm=(1900, 980), num=(930, 240), star=(160, 230)),
-           dict(c=(540, 1010), tilt=2, frm=(540, -800), num=(150, 240), star=(920, 230))]
+    POL = [dict(c=(540, 850), tilt=4, frm=(540, 2540), num=(150, 345), star=(920, 230)),   # captions end above IG's caption
+           dict(c=(540, 840), tilt=-3, frm=(1900, 820), num=(930, 345), star=(160, 230)),   # strip, numbers below its top bar
+           dict(c=(540, 850), tilt=2, frm=(540, -960), num=(150, 345), star=(920, 230))]
     words = [('[way one]', 'floors'), ('[way two]', 'the couch'), ('[way three]', 'handheld')]
     GROW = [(0.5, 1.0), (0.8, 1.12), (1.1, 1.22), (1.4, 1.28), (1.6, 1.30), (3.0, 1.34)]
     for i, p in enumerate(POL):

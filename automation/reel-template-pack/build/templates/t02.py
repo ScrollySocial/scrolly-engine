@@ -63,9 +63,9 @@ def text(g, font, size, words, T, z, p, r, xfs, color=INK, typewriter=None):
     g.text(font, size, words, T, z, p, r, motion(xfs, p, r, T), typewriter=typewriter, color=color)
 
 # ---- the playful layer ---------------------------------------------------------------------------------------------------
-def tape_words(g, key, c, small, big, rot, T, z, xfs, seed=17):
+def tape_words(g, key, c, small, big, rot, T, z, xfs, seed=17, length=760):
     """A butter gingham washi strip with a small sans line and a big serif line (accent colour) on it."""
-    strip = C.washi(760, 250, 'gingham', (BUTTER, WHITE), seed=seed, alpha=250)
+    strip = C.washi(length, 250, 'gingham', (BUTTER, WHITE), seed=seed, alpha=250)
     art(g, f'tape-{key}', strip, T, z, c, rot, xfs)
     text(g, 'arial', 8.5, (small, small), T, z + 1, rot_pt((c[0], c[1] - 50), c, rot), rot, xfs)
     text(g, 'bodoni', 15.7, (big, big), T, z + 2, rot_pt((c[0], c[1] + 44), c, rot), rot, xfs, color=ACCENT)
@@ -183,26 +183,26 @@ def layers():
     g.clip(0, T1, 2, (540, 1450), (W, 940), 0, motion([push], (540, 1450), 0, T1), src=0.0, speed=1.0)
     art(g, 'washi-split', C.washi(1300, 120, 'stripes', (INK, WHITE), seed=3), T1, 3, (540, 985), 2,
         [xf((540, 985), [(0.1, -1500, 0, 1, 0), (0.4, 30, 0, 1, 0), (0.48, 0, 0, 1, 0)]), push])
-    printing = xf((760, 590), [(0.1, 0, -1100, 1, 0), (0.18, 0, -760, 1, 0), (0.22, 0, -760, 1, 0), (0.3, 0, -430, 1, 0),
+    printing = xf((790, 640), [(0.1, 0, -1100, 1, 0), (0.18, 0, -760, 1, 0), (0.22, 0, -760, 1, 0), (0.3, 0, -430, 1, 0),
                                (0.34, 0, -430, 1, 0), (0.42, 0, -120, 1, 0), (0.46, 0, -120, 1, 0), (0.54, 0, 0, 1, 0)])
-    label(g, 'print', (760, 590), 470, 4, T1, 4, [printing, push])
-    tape_words(g, 'packing', (330, 130), 'packing', 'an order', 6, T1, 9, [pop_in((330, 130), 0.3), push])
+    label(g, 'print', (790, 640), 470, 4, T1, 4, [printing, push])
+    tape_words(g, 'packing', (300, 320), 'packing', 'an order', 6, T1, 9, [pop_in((300, 320), 0.3), push], length=560)
 
     # ===== 2 the real box slides up, the product clip on its floor (2.4 to 6.15) =====
     rise = xf((540, 960), [(2.4, 0, 1950, 1, 0), (2.68, 0, -28, 1, 0), (2.76, 0, 0, 1, 0)])
     T2 = (2.4, 6.12)
     g.clip(1, T2, 10, floor_c, (fx1 - fx0, fy1 - fy0), 0, motion([rise], floor_c, 0, T2), src=0.0, speed=1.0)
     art(g, 'box-open', P['open'], (2.4, 8.9), 20, (540, 960), 0, [rise])
-    tape_words(g, 'goods', (540, 190), 'the goods', 'go in first', 3, (2.85, 4.45), 50,
-               [pop_in((540, 190), 2.85), pop_out((540, 190), 4.27)], seed=18)
+    tape_words(g, 'goods', (540, 310), 'the goods', 'go in first', 3, (2.85, 4.45), 50,
+               [pop_in((540, 310), 2.85), pop_out((540, 310), 4.27)], seed=18)
 
     # ===== 3 one peanut drops in (4.45 to 6.15) =====
     pea = S.bordered(S.prop('packing-peanut').resize((360, 360)), WHITE, WHITE, 16, 2)
     art(g, 'peanut-one', pea, (4.45, 6.15), 25, (540, 980), 14,
         [xf((540, 980), [(4.45, 0, -1350, 1, -30), (4.66, 0, 0, 1, 0), (4.74, 0, -46, 1, 6), (4.82, 0, 0, 1, 0)])])
     art(g, 'ticks-peanut', ticks(), (4.7, 6.15), 26, (500, 700), 0, [pop_in((500, 700), 4.7)])
-    tape_words(g, 'padding', (540, 1740), '+ a little', 'padding', -3, (4.85, 5.75), 50,
-               [pop_in((540, 1740), 4.85), pop_out((540, 1740), 5.55)], seed=19)   # gone before the flood covers it
+    tape_words(g, 'padding', (540, 310), '+ a little', 'padding', -3, (4.85, 5.75), 50,
+               [pop_in((540, 310), 4.85), pop_out((540, 310), 5.55)], seed=19)   # gone before the flood covers it
 
     # ===== 4 peanuts flood the screen, then fall away (5.55 to 6.85) =====
     clumps = peanut_clumps()
@@ -218,8 +218,8 @@ def layers():
     spot = (int(scx - sw / 2), int(scy - sh / 2), int(scx + sw / 2), int(scy + sh / 2))
     g.clip(2, T5, 10, (scx, scy), (sw, sh), src=0.0, speed=1.0)
     g.art('shreds', shreds_layer(P['floor'], spot), T5, 12, floor_c)
-    tape_words(g, 'extra', (540, 190), 'a little', 'extra', -2, (6.45, 8.9), 50,
-               [pop_in((540, 190), 6.45), pop_out((540, 190), 8.72)], seed=20)
+    tape_words(g, 'extra', (540, 310), 'a little', 'extra', -2, (6.45, 8.9), 50,
+               [pop_in((540, 310), 6.45), pop_out((540, 310), 8.72)], seed=20)
     env_c = (572, 1500)
     env = C.shadow(S.prop('envelope').resize((580, 334)), offset=(8, 14), blur=14, alpha=70)
     art(g, 'envelope', env, (6.85, 9.57), 25, env_c, -10,
@@ -242,7 +242,7 @@ def layers():
     zoom = max(W / (bx1 - bx0), H / (by1 - by0)) * 1.02; s7 = 0.95; c7 = (540, 1040)
     box_move = xf(body_c, [(9.57, 0, 0, 1, 0), (9.9, 0, 0, zoom, 0), (10.0, 0, 0, zoom, 0),
                            (10.32, c7[0] - body_c[0], c7[1] - body_c[1], s7, 0)])
-    cta = xf(c7, [(11.8, 0, 0, 1, 0), (12.15, 290 - c7[0] + 12, 1480 - c7[1] - 15, 0.6, 17), (12.25, 290 - c7[0], 1480 - c7[1], 0.58, 16)])
+    cta = xf(c7, [(11.8, 0, 0, 1, 0), (12.15, 290 - c7[0] + 12, 1250 - c7[1] - 15, 0.6, 17), (12.25, 290 - c7[0], 1250 - c7[1], 0.58, 16)])
     art(g, 'box-closed', P['closed_box'], (9.57, END), 32, body_c, 0, [box_move, cta])
     tape_len = int((by1 - by0) * s7) + 16
     tape = C.washi(tape_len, 170, 'dots', (BLUE, WHITE), seed=8, alpha=245).rotate(90, expand=True)
@@ -255,8 +255,8 @@ def layers():
     lab_c = (c7[0] + 150 * s7, c7[1] + 260 * s7)
     label(g, 'box', lab_c, int(430 * s7), 6, (10.8, END), 34,
           [xf(lab_c, [(10.8, 0, 0, 1.7, -12), (10.94, 0, 0, 0.94, 0), (11.02, 0, 0, 1.02, 0), (11.1, 0, 0, 1, 0)]), cta], typing=False)
-    tape_words(g, 'sealed', (540, 160), 'sealed +', 'on its way', -3, (10.45, 12.0), 50,
-               [pop_in((540, 160), 10.45), xf((540, 160), [(11.8, 0, 0, 1, 0), (12.0, 0, -500, 1, 0)])], seed=21)
+    tape_words(g, 'sealed', (540, 310), 'sealed +', 'on its way', -3, (10.45, 12.0), 50,
+               [pop_in((540, 310), 10.45), xf((540, 310), [(11.8, 0, 0, 1, 0), (12.0, 0, -500, 1, 0)])], seed=21)
 
     # ===== 8 CTA: tape strip with the product name, where to buy (11.95 to 14.4) =====
     T8 = (11.95, END)
