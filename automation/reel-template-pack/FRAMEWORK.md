@@ -68,7 +68,7 @@ fix it first; don't show it. When she adds a rule, add it here the same day.
 ## Signature moves: reuse, but never more than 5 of 25 (Mercedes, 2026-10-17)
 
 An approved move (the peanut drop-in flood, the box closing, the typing label, the torn-paper split) can be reused to
-save time, but **one move appears in at most 5 of a pack's 25 templates**, and never in two templates back to back
+save time, but **one move appears in at most 5 of a pack's 25 templates**. Order in the pack doesn't matter, so back-to-back use is fine
 in the pack order. Log each use here when a template is approved.
 
 | Move | Made in | Used in |
@@ -157,5 +157,5 @@ Showing her work
 - [ ] Every joke or picture makes literal sense at a glance; no lines cross each other or the text.
 - [ ] The build printed no `IG SAFE ZONE:` lines (no text under Instagram's top bar, caption or buttons).
 - [ ] Editable text uses a font buyers already have; built-in words are extra-fun artwork lettering.
-- [ ] Any reused move is under its 5-of-25 cap and not in the template just before it (see the moves table).
+- [ ] Any reused move is under its 5-of-25 cap (see the moves table).
 - [ ] Would someone say "wow, I've never seen that on my feed"? If not, it isn't ready.
