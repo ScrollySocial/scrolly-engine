@@ -5,7 +5,7 @@ Christmas). She has had to repeat these many times. **Every session working on a
 designs to it, and runs the checklist at the bottom before showing her anything.** If a storyboard fails one check,
 fix it first; don't show it. When she adds a rule, add it here the same day.
 
-## The 12 rules (Mercedes, 2026-10-17, her words tidied)
+## The rules (Mercedes, 2026-10-17, her words tidied)
 
 1. **Visual hook instantly.** Frame 1 is already interesting and moving: no empty opener, no title card that sits there.
 2. **Video-focused.** We are making Reels, not carousels. Footage (the buyer's clips) is on screen most of the time;
@@ -24,6 +24,9 @@ fix it first; don't show it. When she adds a rule, add it here the same day.
     drawn playful layer (outlines, doodles, tape), and motion on everything.
 11. **Text that looks handwritten** in places, as if someone is writing it as you watch (still readable over video).
 12. **Real-looking paper:** post-it notes, note cards, letters, lined paper, labels.
+13. **Every Reel has a purpose for someone who runs a business on Instagram** (an influencer or a business owner):
+    a clear business job (sell the product, show quality, answer a buying question). Each pack has one audience:
+    **the current pack is for physical product owners only.**
 
 ## Learned on templates 01 to 04 and the Halloween pack (keep)
 
@@ -60,4 +63,5 @@ fix it first; don't show it. When she adds a rule, add it here the same day.
 - [ ] Real photos + drawings + animation are all present; no object is drawn in code (10).
 - [ ] Some words look handwritten; some sit on real-looking paper (11, 12).
 - [ ] Its world is its own (not another template's look); the story is logical frame to frame.
+- [ ] It has a clear business purpose for this pack's audience (physical product owners) (13).
 - [ ] Would someone say "wow, I've never seen that on my feed"? If not, it isn't ready.
