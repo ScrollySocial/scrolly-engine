@@ -14,6 +14,8 @@ OUT = E.PACK / '02-pack-an-order' / 'storyboard'; OUT.mkdir(parents=True, exist_
 PROPS = E.PACK / 'assets' / 'props'
 W, H = 1080, 1920
 ROSE = (212, 98, 127); INK = (24, 23, 22); WHITE = (255, 255, 255)
+BG = (199, 209, 187, 255)          # soft sage backdrop (not white)
+BLUE, BUTTER, SAGE, COBALT, TOMATO = (166, 206, 242), (250, 232, 120), (190, 214, 170), (52, 86, 196), (228, 88, 56)
 SANS, SERIF, MONO = 'C:/Windows/Fonts/arial.ttf', E.font_file('7580184437816675601'), 'C:/Windows/Fonts/consola.ttf'
 HAND = E.INKFREE
 TONE = 'zscale=t=linear:npl=100,format=gbrpf32le,zscale=p=bt709,tonemap=hable:desat=0,zscale=t=bt709:m=bt709:r=tv,format=yuv420p'
@@ -38,10 +40,11 @@ def word(img, xy, text, font, fill, anchor='la', shadow=False):
 
 def tape_words(img, c, small, big, rot=-3):
     """Words on a strip of white paper tape stuck to the box: small sans line + accent serif line."""
-    strip = C.torn_strip((720, 250), (252, 250, 246), seed=17, edges='lr')
+    strip = C.washi(760, 250, 'gingham', (BUTTER, WHITE), seed=17, alpha=250)
     d = ImageDraw.Draw(strip)
-    d.text((360, 62), small, font=F(SANS, 52), fill=INK, anchor='mm'); d.text((360, 158), big, font=F(SERIF, 96), fill=ROSE, anchor='mm')
-    place(img, C.shadow(strip, offset=(4, 8), blur=8, alpha=60), c, rot)
+    cx = strip.width / 2; cy = strip.height / 2
+    d.text((cx, cy - 50), small, font=F(SANS, 52), fill=INK, anchor='mm'); d.text((cx, cy + 44), big, font=F(SERIF, 96), fill=INK, anchor='mm')
+    place(img, strip, c, rot)
 
 def place(img, item, c, rot=0):
     it = item.rotate(rot, expand=True, resample=Image.BICUBIC)
@@ -62,7 +65,7 @@ def bordered(item, inner=WHITE, outer=ROSE, w1=14, w2=10):
 # ---- the open white box, turned upright to fill the frame, with its floor as a video spot ---------------------------------
 def open_box(colour='white'):
     box = prop(f'box-open-{colour}').rotate(-90, expand=True)           # landscape photo -> upright
-    s = 1.3 * W / box.width; box = box.resize((int(box.width * s), int(box.height * s)))
+    s = 1.6 * W / box.width; box = box.resize((int(box.width * s), int(box.height * s)))
     y0 = (H - box.height) // 2; xo = (W - box.width) // 2   # bigger than the frame: flaps run off the edges
     full = Image.open(PROPS / 'source' / 'box-open-top.webp')           # floor rect, measured on the source photo
     fx0, fy0, fx1, fy1 = 322, 262, 1132, 752; ph = full.height
@@ -79,7 +82,7 @@ def C_bbox_offset():
     return bb[0], bb[1]
 
 def box_scene(video, colour='kraft', floor_pad=0):
-    canvas = Image.new('RGBA', (W, H), (246, 244, 240, 255))
+    canvas = Image.new('RGBA', (W, H), BG)
     box, (xo, y0), fl = open_box(colour)
     x0, y1_, x1, y2 = fl
     canvas.alpha_composite(ImageOps.fit(video, (x1 - x0, y2 - y1_)), (x0, y1_))   # the clip on the box floor
@@ -91,18 +94,19 @@ def box_scene(video, colour='kraft', floor_pad=0):
 # ---- the frames ------------------------------------------------------------------------------------------------------------
 def f1():
     """The label types itself in (top) while the video picks the items (bottom); washi tape on the seam."""
-    im = Image.new('RGBA', (W, H), (246, 244, 240, 255))
+    im = Image.new('RGBA', (W, H), BG)
+    cb = prop('box-closed-top'); bb = cb.split()[3].point(lambda v: 255 if v > 250 else 0).getbbox()
+    cb = cb.crop((bb[0] + 40, bb[1] + 40, bb[2] - 40, bb[3] - 40)).convert('RGB').convert('RGBA')   # just the cardboard
+    im.alpha_composite(ImageOps.fit(cb, (W, 1000)), (0, 0))      # the label sits on real cardboard, edge to edge
     im.alpha_composite(footage('IMG_1439', 1.0, (W, 940)), (0, 980))
     lab = C.ship_label().resize((520, 780))
     d = ImageDraw.Draw(lab); m = F(MONO, 34)
     d.text((60, 205), 'Sunday Studio', font=m, fill=INK)
     d.text((60, 315), 'YOU', font=F(MONO, 44), fill=INK); d.text((60, 368), '123 YOUR HOME', font=m, fill=INK)
     d.text((60, 495), '1 x somethin|', font=m, fill=INK)
-    lab = lab.resize((460, 690)); place(im, lab, (790, 600), -4)
-    word(im, (70, 150), 'packing', F(SANS, 64), INK)
-    word(im, (60, 230), 'an order', F(SERIF, 100), ROSE)
-    word(im, (70, 380), 'with me', F(SANS, 64), INK)
-    place(im, C.washi(1300, 120, 'stripes', ((246, 182, 205), WHITE), seed=3), (540, 985), -2)
+    lab = lab.resize((470, 705)); place(im, lab, (760, 590), -4)
+    tape_words(im, (330, 130), 'packing', 'an order', -6)
+    place(im, C.washi(1300, 120, 'stripes', (INK, WHITE), seed=3), (540, 985), -2)
     return im
 
 def f2():
@@ -114,11 +118,11 @@ def f2():
 def f3():
     """One packing peanut drops in, with a colourful border."""
     im, fl = box_scene(footage('IMG_1439', 2.6, (W, H)))
-    pea = bordered(prop('packing-peanut').resize((360, 360)))
+    pea = bordered(prop('packing-peanut').resize((360, 360)), BUTTER, INK, 14, 8)
     place(im, pea, (560, 980), -14)
     d = ImageDraw.Draw(im)
     for k in range(3): d.line((470 + 60 * k, 640, 470 + 60 * k, 740), fill=INK + (255,), width=6)   # motion ticks
-    word(im, (W / 2, 1650), '+ a little padding', F(HAND, 64), INK, anchor='ma')
+    tape_words(im, (W / 2, 1740), '+ a little', 'padding', 3)
     return im
 
 def recolour(img, tint):
@@ -129,18 +133,22 @@ def f4():
     """Peanuts take over the screen (the transition)."""
     im, fl = box_scene(footage('IMG_1439', 2.6, (W, H)))
     r = random.Random(4); pea = prop('packing-peanut')
-    tints = [None, None, (246, 182, 205), (250, 232, 140), (200, 190, 245), None]
+    tints = [None, None, None, (250, 250, 246), (250, 232, 140), None, (250, 250, 246)]
+    styles = [(WHITE, INK, 12, 8), (BUTTER, INK, 14, 6), (WHITE, COBALT, 12, 10), (INK, WHITE, 6, 10),
+              (WHITE, TOMATO, 12, 10), (SAGE, INK, 12, 6), (WHITE, None, 16, 0)]
     for k in range(70):
         s = r.randint(230, 380); p = pea.resize((s, s))
         t = tints[k % len(tints)]
         if t: p = recolour(p, t)
-        if k % 9 == 0: p = bordered(p)
+        if k % 2 == 0:
+            inner, outer, w1, w2 = styles[(k // 2) % len(styles)]
+            p = bordered(p, inner, outer or inner, w1, max(1, w2))
         place(im, p, (r.randint(-60, W + 60), r.randint(-60, H + 60)), r.randint(0, 359))
     return im
 
 def f5(seal_in=False):
     """The little extra: pink shreds fill the box around a smaller video spot; the thank-you envelope slides in."""
-    im = Image.new('RGBA', (W, H), (246, 244, 240, 255))
+    im = Image.new('RGBA', (W, H), BG)
     box, (xo, y0), fl = open_box('kraft'); x0, y1_, x1, y2 = fl
     shreds = ImageOps.fit(white_shreds(), (x1 - x0, y2 - y1_))
     im.alpha_composite(shreds, (x0, y1_))
@@ -179,7 +187,7 @@ def closed_box_with_tape():
 
 def f6():
     """Sealed: the flaps have closed over the video, washi tape and the label are on."""
-    im = Image.new('RGBA', (W, H), (246, 244, 240, 255))
+    im = Image.new('RGBA', (W, H), BG)
     place(im, closed_box_with_tape(), (540, 1080))
     word(im, (70, 150), 'sealed +', F(SANS, 64), INK)
     word(im, (60, 230), 'on its way', F(SERIF, 110), ROSE)
@@ -187,13 +195,13 @@ def f6():
 
 def f7():
     """CTA: the same sealed box shrinks and slides partly off-screen, the focus moves to the product name."""
-    im = Image.new('RGBA', (W, H), (246, 244, 240, 255))
+    im = Image.new('RGBA', (W, H), BG)
     sealed = f6b(words=False, bg=(0, 0, 0, 0)); box_only = sealed.crop(sealed.getbbox())
     box_only = box_only.resize((int(box_only.width * 0.62), int(box_only.height * 0.62)))
     place(im, C.shadow(box_only, offset=(10, 16), blur=18, alpha=70), (300, 1500), -16)
-    word(im, (W / 2, 330), 'Spray cleaner', F(SERIF, 120), ROSE, anchor='ma')
+    place(im, C.washi(980, 300, 'gingham', (BUTTER, WHITE), seed=11, alpha=250), (W / 2, 450), -3)
+    word(im, (W / 2, 350), 'Spray cleaner', F(SERIF, 120), INK, anchor='ma')
     word(im, (W / 2, 500), 'shop at the link in my bio', F(SANS, 50), INK, anchor='ma')
-    place(im, C.washi(560, 90, 'gingham', ((250, 232, 120), WHITE), seed=11), (W / 2, 610), -3)
     return im
 
 
@@ -214,7 +222,7 @@ def _fold_piece(flap, edge, theta):
         a = piece.split()[3]; piece = piece.convert('RGB').point(lambda v: int(v * 0.86)).convert('RGBA'); piece.putalpha(a)
     return piece
 
-def box_state(video, short_deg=15, long_deg=15, bg=(246, 244, 240, 255)):
+def box_state(video, short_deg=15, long_deg=15, bg=BG):
     """The kraft box (landscape, as photographed) with the clip on its floor and the flaps at the given angles,
     then turned upright and scaled to fill the frame like open_box()."""
     cut = prop('box-open-kraft'); ox, oy = C_bbox_offset()
@@ -239,7 +247,7 @@ def box_state(video, short_deg=15, long_deg=15, bg=(246, 244, 240, 255)):
             ImageDraw.Draw(m).rectangle((pos[0] + 10, pos[1] + 14, pos[0] + p.width + 10, pos[1] + p.height + 14), fill=110)
             sh.putalpha(m.filter(ImageFilter.GaussianBlur(16))); land.alpha_composite(sh)
         land.alpha_composite(p, (int(pos[0]), int(pos[1])))
-    up = land.rotate(-90, expand=True); s = 1.3 * W / up.width
+    up = land.rotate(-90, expand=True); s = 1.6 * W / up.width
     up = up.resize((int(up.width * s), int(up.height * s)))
     canvas = Image.new('RGBA', (W, H), bg)
     canvas.alpha_composite(up, ((W - up.width) // 2, (H - up.height) // 2))
@@ -251,11 +259,12 @@ def f6a():
     tape_words(im, (W / 2, 160), 'all', 'tucked in', -2)
     return im
 
-def f6b(words=True, bg=(246, 244, 240, 255)):
+def f6b(words=True, bg=BG):
     """Closed: washi tape zips across the seam, the label slaps on."""
     im = box_state(footage('IMG_1447', 1.0, (W, H)), 180, 180, bg)
-    place(im, C.washi(1150, 140, 'dots', ((166, 206, 242), WHITE), seed=8), (540, 900), 82)
-    place(im, C.washi(1150, 140, 'hearts', (WHITE, ROSE), seed=9), (560, 980), 98)
+    bare = box_state(footage('IMG_1447', 1.0, (W, H)), 180, 180, (0, 0, 0, 0)); bb = bare.getbbox()
+    cx = (bb[0] + bb[2]) / 2; length = bb[3] - bb[1] + 30   # along the seam, overhanging the edges a little
+    place(im, C.washi(length, 150, 'dots', (BLUE, WHITE), seed=8, alpha=245), (cx, (bb[1] + bb[3]) / 2), 90)
     lab = C.ship_label().resize((460, 690)); d = ImageDraw.Draw(lab); m = F(MONO, 29)
     d.text((52, 180), 'Sunday Studio', font=m, fill=INK); d.text((52, 278), 'YOU', font=F(MONO, 38), fill=INK)
     d.text((52, 325), '123 YOUR HOME', font=m, fill=INK); d.text((52, 440), '1 x something nice', font=m, fill=INK)
