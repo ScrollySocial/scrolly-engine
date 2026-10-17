@@ -1,6 +1,6 @@
 """Storyboard stills for the Halloween pack (h2 to h6), built from Mercedes's images (2026-10-17: ChatGPT-made props,
 Pexels photos, her cloud, house, wolf and tree PNGs).
-Round 2 applies all her round 1 notes (halloween/notes-round1.md): more video moments in every template, clear CTAs,
+Round 3 applies her round 1 notes and her round-3 rules (see the rules block below); round 2 applied all her round 1 notes (halloween/notes-round1.md): more video moments in every template, clear CTAs,
 and a different Halloween-themed text look per template (no cream labels): moonlit glowing serif (h6), words hanging
 on spider silk (h3), bold door-sign caps (h5), words carried by bats (h2), candle-glow carved serif (h4).
 Fonts stay Bodoni Moda, Arial and Ink Free; key words use one accent colour buyers can change.
@@ -77,7 +77,7 @@ def silk_words(img, x, top, y, small, big, big_px=120, color=WHITE):
     d = ImageDraw.Draw(img); bottom = y - big_px * 0.55 - (70 if small else 0)
     for dx in (-w / 3, w / 3): d.line((x + dx, top, x + dx, bottom), fill=(255, 255, 255, 210), width=3)
     if small: hand(img, (x, y - big_px * 0.55 - 25), small, 62, color)
-    lay = _layer(img, (x, y + 10), big, fb, ACCENT); halo(img, lay, (0, 0, 0), 10, 1.0); img.alpha_composite(lay)
+    lay = _layer(img, (x, y + 10), big, fb, SILK); halo(img, lay, (0, 0, 0), 10, 1.6); img.alpha_composite(lay)
 
 def bat_words(img, bat, c, small, big, bat_w=300, rot=0):
     """A bat carrying the words on two short threads (h2)."""
@@ -178,92 +178,6 @@ def web_layers():
 def masked(im, m):
     out = im.copy(); out.putalpha(ImageChops.multiply(im.split()[3], m.resize(im.size))); return out
 
-# ---- h6 Once in a blood moon --------------------------------------------------------------------------------------------
-def h6():
-    sky = night_sky(); D = 1000; moon = moon_disc(D); bm = blood(moon); cl = clouds(1800)
-    house, wolf = house_glowing(), white_on_clear('Howling Wolf Silhouette.png', (12, 10, 14))
-    tree = src('Twisted Haunted Tree Silhouette.png').convert('RGBA'); bat = cut('Cute Kawaii Bat with Spread Wings.png')
-    mp = ((W - D) // 2, 640)
-    def moonlit(im, t1, t2=None, big_px=200, y=330):
-        if t2: hand(im, (W / 2, y - 130), t1, 96, CREAM); glow_text(im, (W / 2, y + 30), t2, F(SERIF, big_px), ACCENT, (255, 140, 60))
-        else: glow_text(im, (W / 2, y), t1, F(SERIF, big_px), CREAM, (255, 230, 200), 22, 1.3)
-    def white_moon(im): moon_glow(im, D, mp, ((255, 240, 220), (220, 220, 230)), 70); im.alpha_composite(moon, mp)
-    def red_moon(im, video=None, tint=0.22):
-        moon_glow(im, D, mp)
-        if video is None: im.alpha_composite(bm, mp); return
-        v = disc(video, D); v = Image.blend(v.convert('RGB'), bm.convert('RGB'), tint).convert('RGBA'); v.putalpha(moon.split()[3]); im.alpha_composite(v, mp)
-    fr = []
-    im = sky.copy(); white_moon(im); moonlit(im, 'once in a', None, 230)
-    fr.append(('1 a huge full moon', im))
-    im = sky.copy(); white_moon(im)
-    place(im, fit_w(cl, 1100), (130, 1500), 0); place(im, fit_w(cl, 1000), (1000, 760), 180); moonlit(im, 'once in a', None, 230)
-    fr.append(('2 a few clouds creep in', im))
-    im = sky.copy(); white_moon(im)
-    place(im, cl, (W / 2, 1050), 0); place(im, cl, (W / 2 - 100, 1300), 180); place(im, cl, (W / 2 + 200, 820), 0)
-    moonlit(im, 'once in a', None, 230)
-    fr.append(('3 clouds cover the moon', im))
-    im = sky.copy(); red_moon(im); place(im, fit_w(cl, 1300), (-120, 1650), 0); place(im, fit_w(cl, 1200), (1180, 900), 180)
-    moonlit(im, 'once in a', 'blood moon', 165)
-    fr.append(('4 clouds part - ombre blood moon', im))
-    im = sky.copy(); red_moon(im, clip(0)); hs = fit_w(house, 980); im.alpha_composite(hs, ((W - hs.width) // 2, H - hs.height + 30))
-    moonlit(im, 'our once-a-year', 'SALE', 210)
-    fr.append(('5 the moon plays clip 1 behind the haunted house', im))
-    im = sky.copy(); red_moon(im, clip(3))
-    ground = Image.new('RGBA', (W, 260), (8, 8, 12, 255)); gm = Image.new('L', (W, 260), 0)
-    ImageDraw.Draw(gm).pieslice((-500, 40, W + 200, 900), 180, 360, fill=255); ground.putalpha(gm); im.alpha_composite(ground, (0, H - 260))
-    wf = fit_w(wolf, 560); im.alpha_composite(wf, (60, H - 200 - wf.height + 40))
-    moonlit(im, 'everything', '30% off', 200)
-    fr.append(('6 the wolf howls at clip 2 - the deal', im))
-    im = sky.copy(); red_moon(im, clip(2))
-    for (x, y, w_, r) in ((250, 900, 330, -14), (800, 1150, 260, 12), (430, 1420, 200, -6)): place(im, fit_w(bat, w_), (x, y), r)
-    moonlit(im, 'this weekend only', 'Oct 29-31', 170)
-    fr.append(('7 bats fly across clip 3 - the dates', im))
-    im = sky.copy(); red_moon(im); place(im, fit_w(cl, 1500), (W / 2, 1520), 0)
-    tr = fit_w(tree, 760); im.alpha_composite(tr, (W - tr.width + 200, H - tr.height + 30))
-    glow_text(im, (W / 2, 1080), 'Shop the sale', F(SERIF, 150), CREAM, (255, 140, 60))
-    sign_text(im, (W / 2, 1300), 'LINK IN BIO', 90, WHITE)
-    moonlit(im, 'once in a', 'blood moon', 150, 300)
-    fr.append(('8 CTA - shop the sale, link in bio', im))
-    return fr
-
-# ---- h3 Caught in our web -----------------------------------------------------------------------------------------------
-def h3():
-    web, spokes = web_layers(); spider = cut_white(src('Cute Fuzzy Pom-Pom Spider Craft-2.png'))
-    sp = lambda w: sticker(fit_w(spider, w), 10)
-    bgv = lambda n: dim(clip(n), 0.62)
-    fr = []
-    im = bgv(0); ImageDraw.Draw(im).line((0, 0, 330, 560), fill=WHITE + (230,), width=4)
-    place(im, sp(330), (380, 650), -28)
-    silk_words(im, 720, 0, 1250, "you're about to get", 'caught', 160)
-    fr.append(('1 the spider swings in from the top left', im))
-    big = fit_w(web, 1500)
-    im = bgv(0); place(im, masked(big, spokes), (W / 2, 980)); place(im, sp(230), (W / 2, 980))
-    hand(im, (W / 2, 260), 'first the spokes...', 80, WHITE, -3)
-    fr.append(('2 the spider spins the straight spokes', im))
-    sweep = Image.new('L', big.size, 0); ImageDraw.Draw(sweep).pieslice((0, 0, big.width, big.height), -90, 120, fill=255)
-    m = ImageChops.lighter(spokes.resize(big.size), sweep.filter(ImageFilter.GaussianBlur(25)))
-    im = bgv(0); place(im, masked(big, m), (W / 2, 980)); place(im, sp(230), (W / 2 + 360, 760), 40)
-    hand(im, (W / 2, 260), '...then the scallops', 80, WHITE, 3)
-    fr.append(('3 then the scalloped rings', im))
-    half = fit_w(web, 2600); half = half.crop((half.width // 2, 0, half.width, half.height))
-    def zoom_on(n, word_, tip_y):
-        im = dim(clip(n), 0.45).filter(ImageFilter.GaussianBlur(14))
-        im.alpha_composite(half, (-60, int(tip_y - half.height / 2)))
-        place(im, round_clip(n, 640), (W - 360, tip_y), -3)
-        silk_words(im, W - 360, tip_y + 330, tip_y + 560, f'point {n // 2 + 1}', word_, 130)
-        return im
-    fr.append(('4 zoom to end point 1 on the half web', zoom_on(0, 'the glow', 760)))
-    fr.append(('5 slide along the web to point 2', zoom_on(2, 'the scent', 760)))
-    im = dim(clip(1), 0.4).filter(ImageFilter.GaussianBlur(14)); fw = fit_w(web, 1060); place(im, fw, (W / 2, 900))
-    for j, a in enumerate((-150, -30, 90)):
-        t = math.radians(a); x, y = W / 2 + 360 * math.cos(t), 900 + 360 * math.sin(t)
-        place(im, round_clip(j, 300, 10), (x, y), (-6, 4, 6)[j])
-    place(im, sp(200), (W / 2, 900))
-    silk_words(im, W / 2, 1420, 1680, 'get caught:', 'link in bio', 120)
-    fr.append(('6 zoom out - the full web holds every point + CTA', im))
-    return fr
-
-# ---- h5 Trick or treat --------------------------------------------------------------------------------------------------
 def door1(name, video=None):
     """Door 1 (the TRICK), framed tall. With a video, the clip fills the hallway right down to the threshold."""
     im = src(name).convert('RGBA')
@@ -286,69 +200,6 @@ def house2(zoom=1.0):
     box = (int(cx - w / 2), int(y0), int(cx + w / 2), int(y0 + h))
     return im.crop(box).resize((W, H), Image.LANCZOS), box
 
-def arch_window(video, w, h, ring=16):
-    m = Image.new('L', (w, h), 0); d = ImageDraw.Draw(m); d.rectangle((0, w // 2, w - 1, h - 1), fill=255); d.ellipse((0, 0, w - 1, w - 1), fill=255)
-    v = ImageOps.fit(video, (w, h)); v.putalpha(m); return sticker(v, ring)
-
-def candy_spill(im, corn, worm, spots):
-    for j, (x, y, r) in enumerate(spots):
-        p = corn if j % 2 == 0 else worm
-        place(im, sticker(fit_w(p, 170 if p is corn else 290), 10), (x, y), r)
-
-def h5():
-    corn, worm = candy()
-    fr = []
-    im = door1('Warmly Lit Traditional Entryway.png')
-    hand(im, (W / 2 - 90, 560), 'knock', 120, WHITE, -10); hand(im, (W / 2 + 140, 760), 'knock', 120, WHITE, 8)
-    sign_text(im, (W / 2, 1500), 'TRICK', 190, WHITE, -3); hand(im, (W / 2, 1660), 'or treat?', 110, WHITE, -3)
-    fr.append(('1 knock knock on door 1', im))
-    im = door1('Warm Townhouse Entryway at Night.png', clip(2))
-    sign_text(im, (W / 2, 1480), 'TRICK', 170, ACCENT, -3); hand(im, (W / 2, 1650), 'cheap sponges', 100, WHITE, -2)
-    fr.append(('2 door 1 opens on the TRICK (clip to the floor)', im))
-    im, _ = house2(1.0)
-    hand(im, (W / 2 - 160, 600), 'knock', 110, WHITE, -10); hand(im, (W / 2 + 120, 760), 'knock', 110, WHITE, 8)
-    hand(im, (W / 2, 330), "let's try next door...", 80, WHITE, -2)
-    fr.append(('3 next door - knock on door 2', im))
-    im, box = house2(1.9); s = W / (box[2] - box[0])
-    dx, dy = (760 - box[0]) * s, (650 - box[1]) * s
-    place(im, arch_window(clip(0), 560, 760), (dx, dy - 40), 0)
-    candy_spill(im, corn, worm, ((220, 1330, 20), (880, 1240, -30), (760, 1520, 50), (320, 1560, -10), (560, 1720, 15)))
-    sign_text(im, (W / 2, 260), 'TREAT', 190, ACCENT, 3); hand(im, (W / 2, 430), 'our 5-minute scrub', 90, WHITE, 2)
-    fr.append(('4 door 2 opens on the TREAT, candy spills out', im))
-    im, _ = house2(1.0)
-    candy_spill(im, corn, worm, ((180, 1500, 20), (900, 1440, -30), (760, 1700, 50), (300, 1760, -10)))
-    sign_text(im, (W / 2, 330), 'COMMENT', 120, WHITE, -3); sign_text(im, (W / 2, 520), 'TREAT', 210, ACCENT, -3)
-    hand(im, (W / 2, 700), "and I'll send you 15% off", 82, WHITE, -2)
-    fr.append(('5 CTA at the same house - comment TREAT', im))
-    return fr
-
-# ---- h2 Things I'm batty about ------------------------------------------------------------------------------------------
-def h2():
-    branch = fit_w(cut('Cute Twisted Spooky Tree Branch.png'), 1150)
-    hang = cut('Cute Upside-Down Wrapped Bat.png'); fly = cut('Cute Kawaii Bat with Spread Wings.png'); fold = cut('Cozy Folded-Wing Kawaii Bat.png')
-    fr = []
-    im = dim(clip(0), 0.75); place(im, sticker(branch, 10), (W / 2 + 40, 190))
-    place(im, sticker(fit_w(hang, 230)), (330, 420), 4); place(im, sticker(fit_w(hang, 280)), (720, 450), -3)
-    sign_text(im, (W / 2, 900), "THINGS I'M", 110, WHITE, -2)
-    glow_text(im, (W / 2, 1090), 'batty about', F(SERIF, 170), ACCENT, (40, 20, 50), 14, 1.4)
-    fr.append(('1 bats hang over clip 1 - the title', im))
-    im = clip(0).copy(); place(im, sticker(fit_w(fly, 2200), 22), (W / 2, 980), -8)
-    fr.append(('2 a bat swoops at the camera - wing wipe', im))
-    for i, (bat, word_) in enumerate(((fly, 'THE SCRUB'), (fold, 'THE SPRAY'), (fly, 'THE MITT'))):
-        im = clip(i + 1).copy()
-        bat_words(im, bat, (W / 2 + (-170, 200, -120)[i], 330), f'favourite no. {i + 1}', word_, (300, 220, 260)[i], (-8, 6, 4)[i])
-        fr.append((f'{i + 3} full-screen favourite {i + 1}, a bat carries the word', im))
-    im = dim(clip(4), 0.55).filter(ImageFilter.GaussianBlur(10)); place(im, sticker(branch, 10), (W / 2 + 40, 190))
-    for j, x in enumerate((230, 540, 850)):
-        ImageDraw.Draw(im).line((x, 230, x, 560), fill=WHITE + (255,), width=4)
-        place(im, round_clip(j + 1, 290, 10), (x, 700), (-5, 3, 6)[j]); place(im, sticker(fit_w(hang, 150), 10), (x, 330))
-        sign_text(im, (x, 900), str(j + 1), 110, ACCENT)
-    sign_text(im, (W / 2, 1240), 'WHICH ONE?', 130, WHITE, -2)
-    hand(im, (W / 2, 1420), 'comment 1, 2 or 3', 96, WHITE, 2)
-    fr.append(('6 CTA - comment 1, 2 or 3', im))
-    return fr
-
-# ---- h4 What's inside? --------------------------------------------------------------------------------------------------
 def pumpkin_parts():
     """The jack-o'-lantern, its carved holes as a mask, and an uncarved face made by patching the holes with its own
     skin (until Mercedes sends a matching uncarved pumpkin photo)."""
@@ -366,43 +217,259 @@ def pumpkin_parts():
     whole = full.copy(); whole.paste(skin, (0, 0), rims.filter(ImageFilter.GaussianBlur(4))); whole.putalpha(a)
     return full, whole, holes.filter(ImageFilter.GaussianBlur(1.5)), rims
 
+# ---- round 3 rules (Mercedes 2026-10-17, via the #3 feedback) -----------------------------------------------------------
+# Every template is its own world. No white die-cut edges (template #2 owns them): cut-outs carry a real cast shadow,
+# and depth comes from props near the camera, big, blurred and half off-screen. The background changes clip to clip
+# and the layers ARE the transitions. Headline words are Bodoni Moda in a colour sampled from the scene's own props
+# (no glow); asides are Ink Free; door-sign caps are Arial Bold. CTAs are "Comment KEYWORD".
+SILK = (246, 246, 250)    # spider silk
+MOON_CREAM, MOON_RED = (240, 228, 204), (238, 112, 64)     # sampled from the moon photo, and its blood-moon grade
+BRASS = (222, 160, 72)                                       # the door's brass letter plate
+LILAC = (196, 160, 196)                                      # the bats' inner ears
+FLESH = (250, 196, 92)                                       # carved pumpkin flesh
+
+def cutout(im, w=None, rot=0, shadow=70):
+    if w: im = fit_w(im, w)
+    return C.shadow(im, offset=(10, 18), blur=18, alpha=shadow)
+
+def near(im, blur=10, alpha=0.85):
+    """A prop close to the camera: soft focus, a little see-through."""
+    out = im.filter(ImageFilter.GaussianBlur(blur)); out.putalpha(out.split()[3].point(lambda v: int(v * alpha))); return out
+
+def streak(im, dx=60, n=9):
+    """Directional motion blur (a door slamming, a strand sliding past)."""
+    acc = Image.new('RGBA', im.size, (0, 0, 0, 0))
+    for i in range(n):
+        sh = Image.new('RGBA', im.size, (0, 0, 0, 0)); sh.alpha_composite(im, (int(dx * (i / (n - 1) - 0.5)), 0))
+        acc = Image.blend(acc, sh, 1 / (i + 1))
+    return acc
+
+def head(img, xy, text, px, color, anchor='mm', shadow=1.3):
+    """Headline: Bodoni Moda, solid prop colour, a soft dark drop shadow for legibility (not a glow)."""
+    lay = _layer(img, xy, text, F(SERIF, px), color, anchor)
+    s = Image.new('RGBA', img.size, (0, 0, 0, 0)); s.alpha_composite(lay, (6, 10))
+    halo(img, s, (0, 0, 0), 12, shadow); img.alpha_composite(lay)
+
+def cocoon(n, d):
+    """A round clip wrapped in a few strands of spider silk (h3's own edge)."""
+    v = disc(clip(n), d); pad = 40; out = Image.new('RGBA', (d + 2 * pad, d + 2 * pad), (0, 0, 0, 0))
+    out.alpha_composite(C.shadow(v, offset=(8, 14), blur=16, alpha=80), (pad - 26, pad - 26))
+    dr = ImageDraw.Draw(out); c = out.width / 2
+    for k, (a0, a1, r) in enumerate(((200, 330, d / 2 + 8), (10, 140, d / 2 + 14), (120, 250, d / 2 + 4), (300, 420, d / 2 + 18))):
+        dr.arc((c - r, c - r, c + r, c + r), a0, a1, fill=SILK + (230,), width=3)
+    for a in (35, 160, 290):   # strands crossing over the clip
+        t = math.radians(a); dr.line((c + (d / 2 + 16) * math.cos(t), c + (d / 2 + 16) * math.sin(t),
+                                      c + (d / 2 + 16) * math.cos(t + 2.3), c + (d / 2 + 16) * math.sin(t + 2.3)), fill=SILK + (150,), width=2)
+    return out
+
+# ---- h6 Once in a blood moon --------------------------------------------------------------------------------------------
+def h6():
+    sky = night_sky(); D = 1000; moon = moon_disc(D); bm = blood(moon); cl = clouds(1800)
+    house, wolf = house_glowing(), white_on_clear('Howling Wolf Silhouette.png', (12, 10, 14))
+    tree = src('Twisted Haunted Tree Silhouette.png').convert('RGBA'); bat = cut('Cute Kawaii Bat with Spread Wings.png')
+    mp = ((W - D) // 2, 640)
+    def moon_clip(im, n, scale=1.0, at=None):
+        d = int(D * scale); p = at or ((W - d) // 2, mp[1] + (D - d) // 2)
+        moon_glow(im, d, p); v = disc(clip(n), d); v = Image.blend(v.convert('RGB'), blood(moon_disc(d)).convert('RGB'), 0.2).convert('RGBA')
+        v.putalpha(moon_disc(d).split()[3]); im.alpha_composite(v, p)
+    fr = []
+    im = sky.copy(); moon_glow(im, D, mp, ((255, 240, 220), (220, 220, 230)), 70); im.alpha_composite(moon, mp)
+    im.alpha_composite(near(fit_w(cl, 2200), 6, 0.7), (-500, 1350))
+    head(im, (W / 2, 330), 'once in a', 210, MOON_CREAM)
+    fr.append(('1 a huge full moon, a cloud drifts close to the camera', im))
+    im = sky.copy(); moon_glow(im, D, mp); im.alpha_composite(bm, mp)
+    big = fit_w(cl, 2600)
+    place(im, big, (W / 2 - 1250, 1000), 0); place(im, big, (W / 2 + 1300, 1100), 180)      # the clouds part like curtains
+    head(im, (W / 2, 250), 'once in a', 120, MOON_CREAM); head(im, (W / 2, 420), 'blood moon', 170, MOON_RED)
+    fr.append(('2 the clouds part like curtains - the moon has turned red', im))
+    im = sky.copy(); moon_clip(im, 0)
+    hs = fit_w(house, 1000); im.alpha_composite(hs, ((W - hs.width) // 2, H - hs.height + 30))
+    place(im, near(fit_w(bat, 900), 12, 0.8), (1040, 420), 18)
+    head(im, (W / 2, 250), 'our once-a-year', 110, MOON_CREAM); head(im, (W / 2, 420), 'SALE', 200, MOON_RED)
+    fr.append(('3 clip 1 plays inside the moon, a bat swoops past the lens', im))
+    im = clip(3).copy()          # the moon rushes at the camera: clip 2 breaks out of it to full screen
+    ring = blood(moon_disc(2600)); hole = Image.new('L', ring.size, 255); ImageDraw.Draw(hole).ellipse((330, 330, 2270, 2270), fill=0)
+    ring.putalpha(ImageChops.multiply(ring.split()[3], hole.filter(ImageFilter.GaussianBlur(30)))); im.alpha_composite(ring, ((W - 2600) // 2, (H - 2600) // 2))
+    wf = fit_w(wolf, 620); im.alpha_composite(C.shadow(wf, (0, 0), 30, 120), (-40, H - wf.height + 20))
+    head(im, (W / 2, 300), 'everything', 110, MOON_CREAM); head(im, (W / 2, 470), '30% off', 210, MOON_RED)
+    fr.append(('4 clip 2 breaks out of the moon to full screen, the wolf howls', im))
+    im = sky.copy(); moon_clip(im, 2, 0.8)
+    tr = fit_w(tree, 2400); im.alpha_composite(near(tr, 4, 0.95), (-1350, -200))     # we pan past a huge tree: the wipe
+    head(im, (W / 2 + 180, 1600), 'Oct 29-31', 160, MOON_RED); hand(im, (W / 2 + 180, 1440), 'this weekend only', 80, MOON_CREAM)
+    fr.append(('5 a huge tree sweeps past - clip 3 in the moon, the dates', im))
+    im = sky.copy(); moon_glow(im, D, mp); im.alpha_composite(bm, mp)
+    place(im, fit_w(cl, 1500), (W / 2, 1620), 0); tr = fit_w(tree, 760); im.alpha_composite(tr, (W - tr.width + 220, H - tr.height + 30))
+    for (x, y, w_, r, bl) in ((200, 560, 180, -10, 0), (860, 460, 140, 8, 0), (980, 1500, 520, 14, 9)):
+        b = cutout(bat, w_) if not bl else near(fit_w(bat, w_), bl, 0.85); place(im, b, (x, y), r)
+    sign_text(im, (W / 2, 1000), 'COMMENT', 120, MOON_CREAM); head(im, (W / 2, 1180), 'MOON', 230, MOON_RED)
+    hand(im, (W / 2, 1360), "and I'll send your code", 80, MOON_CREAM)
+    fr.append(('6 CTA - comment MOON', im))
+    return fr
+
+# ---- h3 Caught in our web -----------------------------------------------------------------------------------------------
+def h3():
+    web, spokes = web_layers(); spider = cut_white(src('Cute Fuzzy Pom-Pom Spider Craft-2.png'))
+    sp = lambda w, r=0: cutout(spider, w, r, 90)
+    fr = []
+    im = clip(0).copy(); ImageDraw.Draw(im).line((0, 0, 360, 520), fill=SILK + (230,), width=4)
+    place(im, near(fit_w(spider, 900), 9, 0.9), (330, 560), -28)          # right by the lens, half off-screen
+    silk_words(im, W / 2 + 120, 0, 1180, "you're about to get", 'CAUGHT', 140)
+    fr.append(('1 the spider drops in from the top left, right by the lens', im))
+    big = fit_w(web, 1700)
+    im = clip(0).copy(); place(im, masked(big, spokes), (W / 2, 980)); place(im, sp(230), (W / 2 + 420, 760), 40)
+    hand(im, (W / 2, 260), 'first the spokes...', 80, SILK, -3)
+    fr.append(('2 it spins the straight spokes across the video', im))
+    # each wedge between two spokes flips from clip 1 to clip 2 as the scallops are spun: the web IS the transition
+    im = clip(0).copy(); c2 = clip(4); wedge = Image.new('L', (W, H), 0); dw = ImageDraw.Draw(wedge)
+    for a in range(-90, 120, 30): dw.pieslice((W / 2 - 1700, 980 - 1700, W / 2 + 1700, 980 + 1700), a, a + 30, fill=255)
+    im.paste(c2, (0, 0), wedge)
+    sweep = Image.new('L', big.size, 0); ImageDraw.Draw(sweep).pieslice((0, 0, big.width, big.height), -90, 120, fill=255)
+    place(im, masked(big, ImageChops.lighter(spokes.resize(big.size), sweep)), (W / 2, 980)); place(im, sp(230), (W / 2 - 300, 1380), -130)
+    hand(im, (W / 2, 260), '...then the scallops', 80, SILK, 3)
+    fr.append(('3 each wedge it spins flips the video to clip 2', im))
+    half = fit_w(web, 2600); half = half.crop((half.width // 2, 0, half.width, half.height))
+    def zoom_on(n, word_, k):
+        im = dim(clip(4), 0.5).filter(ImageFilter.GaussianBlur(16))
+        im.alpha_composite(half, (-80, int(800 - half.height / 2)))
+        place(im, cocoon(n, 640), (W - 360, 800), -3)
+        silk_words(im, W / 2 + 120, 1140, 1400, f'point {k}', word_, 120)
+        return im
+    fr.append(('4 Prezi-zoom onto end point 1, wrapped in silk', zoom_on(1, 'THE GLOW', 1)))
+    im = zoom_on(2, 'THE SCENT', 2)
+    st = Image.new('RGBA', (W, H), (0, 0, 0, 0)); ImageDraw.Draw(st).line((0, 1500, W, 300), fill=SILK + (160,), width=6)
+    im.alpha_composite(streak(st, 220, 11))
+    fr.append(('5 we slide along a strand to point 2', im))
+    im = dim(clip(0), 0.55); place(im, fit_w(web, 1080), (W / 2, 860))
+    for j, a in enumerate((-150, -30, 90)):
+        t = math.radians(a); place(im, cocoon(j + 1, 300), (W / 2 + 360 * math.cos(t), 860 + 360 * math.sin(t)), (-6, 4, 6)[j])
+    place(im, sp(200), (W / 2, 860))
+    sign_text(im, (W / 2, 1520), 'COMMENT', 110, SILK); silk_words(im, W / 2, 1580, 1760, '', 'WEB', 170)
+    fr.append(('6 zoom out - the full web holds every point, comment WEB', im))
+    return fr
+
+# ---- h5 Trick or treat --------------------------------------------------------------------------------------------------
+def h5():
+    corn, worm = candy()
+    fr = []
+    im = door1('Warmly Lit Traditional Entryway.png')
+    hand(im, (W / 2 - 90, 560), 'knock', 120, WHITE, -10); hand(im, (W / 2 + 140, 760), 'knock', 120, WHITE, 8)
+    sign_text(im, (W / 2, 1500), 'TRICK', 190, BRASS, -3); hand(im, (W / 2, 1660), 'or treat?', 110, WHITE, -3)
+    fr.append(('1 knock knock on door 1', im))
+    im = door1('Warm Townhouse Entryway at Night.png', clip(2))
+    sign_text(im, (W / 2, 1480), 'TRICK', 170, BRASS, -3); hand(im, (W / 2, 1650), 'cheap sponges', 100, WHITE, -2)
+    fr.append(('2 door 1 swings open on the TRICK, clip down to the floor', im))
+    im = door1('Warm Townhouse Entryway at Night.png', clip(2)); shut = door1('Warmly Lit Traditional Entryway.png')
+    m = Image.new('L', (W, H), 0); ImageDraw.Draw(m).rectangle((0, 0, 820, H), fill=255)
+    sl = shut.copy(); sl.putalpha(m); im.alpha_composite(streak(sl, 160, 9))
+    hand(im, (W / 2 + 200, 330), 'nope.', 130, WHITE, 6)
+    fr.append(('3 the door slams shut over the clip - the wipe', im))
+    im, _ = house2(1.0)
+    hand(im, (W / 2 - 160, 600), 'knock', 110, WHITE, -10); hand(im, (W / 2 + 120, 760), 'knock', 110, WHITE, 8)
+    hand(im, (W / 2, 330), "let's try next door...", 80, WHITE, -2)
+    fr.append(('4 next door - knock on door 2', im))
+    im, box = house2(1.9); s = W / (box[2] - box[0])
+    arch = Image.new('L', (W, H), 0); ad = ImageDraw.Draw(arch)
+    ax0, ax1, ay0, ay1 = (650 - box[0]) * s, (832 - box[0]) * s, (470 - box[1]) * s, (775 - box[1]) * s
+    ad.rectangle((ax0, ay0 + (ax1 - ax0) / 2, ax1, ay1), fill=255); ad.ellipse((ax0, ay0, ax1, ay0 + (ax1 - ax0)), fill=255)
+    v = ImageOps.fit(clip(0), (W, H)); im.paste(v, (0, 0), arch.filter(ImageFilter.GaussianBlur(2)))   # the clip fills the real doorway
+    for (p, x, y, w_, r, bl) in ((corn, 430, 1250, 120, 20, 0), (worm, 640, 1330, 200, -30, 0), (corn, 560, 1500, 180, 50, 0),
+                                 (worm, 250, 1700, 420, -10, 6), (corn, 900, 1760, 520, 15, 10)):
+        place(im, cutout(p, w_) if not bl else near(fit_w(p, w_), bl, 0.9), (x, y), r)      # tumbling down the steps at the lens
+    sign_text(im, (W / 2, 260), 'TREAT', 190, BRASS, 3); hand(im, (W / 2, 430), 'our 5-minute scrub', 90, WHITE, 2)
+    fr.append(('5 door 2 opens on the TREAT, candy tumbles toward the lens', im))
+    im = clip(1).copy()
+    for (p, x, y, w_, r, bl) in ((worm, 120, 300, 520, 25, 9), (corn, 960, 1650, 560, -20, 10)): place(im, near(fit_w(p, w_), bl, 0.88), (x, y), r)
+    hand(im, (W / 2, 330), 'gone in 5 minutes', 110, WHITE, -2)
+    fr.append(('6 the treat clip bursts out of the doorway to full screen', im))
+    im, _ = house2(1.0)
+    for (p, x, y, w_, r) in ((corn, 180, 1520, 170, 20), (worm, 880, 1460, 290, -30), (corn, 760, 1720, 170, 50), (worm, 300, 1770, 290, -10)):
+        place(im, cutout(p, w_), (x, y), r)
+    sign_text(im, (W / 2, 330), 'COMMENT', 120, WHITE, -3); sign_text(im, (W / 2, 520), 'TREAT', 210, BRASS, -3)
+    hand(im, (W / 2, 700), "and I'll send you 15% off", 82, WHITE, -2)
+    fr.append(('7 CTA at door 2 - comment TREAT', im))
+    return fr
+
+# ---- h2 Things I'm batty about ------------------------------------------------------------------------------------------
+def h2():
+    branch = fit_w(cut('Cute Twisted Spooky Tree Branch.png'), 1150)
+    hang = cut('Cute Upside-Down Wrapped Bat.png'); fly = cut('Cute Kawaii Bat with Spread Wings.png'); fold = cut('Cozy Folded-Wing Kawaii Bat.png')
+    def bat_window(n, w):
+        """Clip 4 seen through a bat-shaped window (the bat's own silhouette)."""
+        b = fit_w(fly, w); v = ImageOps.fit(clip(n), b.size); v.putalpha(b.split()[3].point(lambda a: 255 if a > 100 else 0)); return v
+    fr = []
+    im = clip(0).copy(); place(im, cutout(branch), (W / 2 + 40, 190))
+    place(im, cutout(hang, 230), (330, 420), 4); place(im, cutout(hang, 280), (720, 450), -3)
+    hand(im, (W / 2, 880), "things I'm", 110, WHITE, -2); head(im, (W / 2, 1060), 'batty about', 190, LILAC)
+    fr.append(('1 bats asleep on a branch over clip 1', im))
+    im = clip(0).copy(); m = Image.new('L', (W, H), 0); ImageDraw.Draw(m).polygon([(560, 0), (W, 0), (W, H), (260, H)], fill=255)
+    im.paste(clip(1), (0, 0), m.filter(ImageFilter.GaussianBlur(30)))
+    for (x, y, w_, r, bl) in ((140, 380, 260, -20, 0), (620, 260, 200, 10, 0), (880, 820, 340, -8, 0), (380, 980, 900, 12, 12),
+                              (820, 1500, 260, 20, 0), (180, 1600, 640, -15, 8), (980, 1180, 180, 6, 0)):
+        place(im, cutout(fly, w_) if not bl else near(fit_w(fly, w_), bl, 0.9), (x, y), r)
+    fr.append(('2 they wake and swarm across - the swarm wipes to clip 2', im))
+    im = clip(1).copy(); hand(im, (W / 2, 190), 'no. 1', 90, WHITE)
+    head(im, (W / 2, 340), 'THE SCRUB', 150, LILAC); place(im, cutout(fold, 180), (W - 110, 130), 8)
+    fr.append(('3 favourite 1 - a bat lands on the word', im))
+    im = clip(1).copy(); m = Image.new('L', (W, H), 0); ImageDraw.Draw(m).ellipse((-900, -200, 760, 2200), fill=255)
+    im.paste(clip(2), (0, 0), m.filter(ImageFilter.GaussianBlur(20)))
+    place(im, near(fit_w(fly, 2600), 5, 0.97), (1220, 960), -20)          # one wing sweeps across the lens
+    head(im, (W / 2 - 140, 1500), 'THE SPRAY', 150, LILAC); hand(im, (W / 2 - 140, 1350), 'no. 2', 90, WHITE)
+    fr.append(('4 a wing sweeps past the lens to favourite 2', im))
+    im = dim(clip(2), 0.5).filter(ImageFilter.GaussianBlur(12)); bw = bat_window(1, 1300); place(im, C.shadow(bw, (0, 16), 22, 110), (W / 2, 820))
+    head(im, (W / 2, 1460), 'THE MITT', 160, LILAC); hand(im, (W / 2, 1310), 'no. 3', 90, WHITE)
+    fr.append(('5 favourite 3 flies in inside a bat-shaped window', im))
+    im = dim(clip(4), 0.6); place(im, cutout(branch), (W / 2 + 40, 190))
+    for j, x in enumerate((230, 540, 850)):
+        ImageDraw.Draw(im).line((x, 300, x, 540), fill=(40, 34, 40, 255), width=4)
+        place(im, C.shadow(disc(clip(j + 1), 270), (6, 12), 14, 90), (x, 690), (-5, 3, 6)[j]); place(im, cutout(hang, 150), (x, 330))
+        head(im, (x, 900), str(j + 1), 110, LILAC)
+    sign_text(im, (W / 2, 1200), 'COMMENT', 120, WHITE); head(im, (W / 2, 1390), 'BATTY', 200, LILAC)
+    hand(im, (W / 2, 1560), "and I'll send all 3 links", 80, WHITE)
+    fr.append(('6 CTA - comment BATTY for the links', im))
+    return fr
+
+# ---- h4 What's inside? --------------------------------------------------------------------------------------------------
 def h4():
     full, whole, holes, rims = pumpkin_parts()
     lit = cut('Bottom-Lit Jack-o’-Lantern on White.png', tol=20)
-    bg = lambda: dim(ImageOps.fit(src('pexels-katie-harp-636435-5646192.jpg').convert('RGBA'), (W, H)), 0.55).filter(ImageFilter.GaussianBlur(6))
+    bgs = [ImageOps.fit(src(n).convert('RGBA'), (W, H)) for n in ('pexels-olia-danilevich-5490803.jpg', 'pexels-pexels-user-2121223601-29365678.jpg')]
+    bg = lambda i=0: dim(bgs[i], 0.6).filter(ImageFilter.GaussianBlur(8))
     s = 1000 / full.width; sz = lambda im: im.resize((int(im.width * s), int(im.height * s)), Image.LANCZOS)
     P, Wh, Hm, Rm = sz(full), sz(whole), sz(holes), sz(rims)
-    pos = ((W - P.width) // 2, 620)
-    carved = lambda im, xy, t, px, fill=(255, 214, 120): glow_text(im, xy, t, F(SERIF, px), fill, (255, 130, 30), 20, 1.8)
-    def piece(box):
+    pos = ((W - P.width) // 2, 640)
+    def piece(box, scale=1.0):
         m = Image.new('L', Rm.size, 0); m.paste(Rm.crop(box), box[:2])
-        p = Wh.copy(); p.putalpha(ImageChops.multiply(p.split()[3], m)); p = p.crop(p.getbbox()); return sticker(fit_w(p, p.width * 1.6), 10)
+        p = Wh.copy(); p.putalpha(ImageChops.multiply(p.split()[3], m)); p = p.crop(p.getbbox()); return fit_w(p, p.width * scale)
     eyes_box = (0, 0, P.width, int(P.height * 0.47)); mouth_box = (0, int(P.height * 0.47), P.width, P.height)
     def lit_face(im, video, which):
         v = ImageOps.fit(video, P.size); m = Image.new('L', P.size, 0); m.paste(Hm.crop(which), which[:2]); v.putalpha(m)
         g = Image.new('RGBA', P.size, (255, 150, 40, 0)); g.putalpha(m.filter(ImageFilter.GaussianBlur(26)))
         im.alpha_composite(g, pos); im.alpha_composite(v, pos)
     fr = []
-    im = bg(); im.alpha_composite(Wh, pos); carved(im, (W / 2, 400), "what's inside?", 150)
-    fr.append(('1 a whole pumpkin - what is inside', im))
-    im = bg(); half = Wh.copy(); half.paste(P.crop(eyes_box), eyes_box[:2]); im.alpha_composite(half, pos)
-    lit_face(im, clip(0), eyes_box); place(im, piece(eyes_box), (W / 2 - 40, 430), -18)
-    carved(im, (W / 2, 1600), 'pop!', 170)
-    fr.append(('2 the eyes pop out, the clip glows through', im))
-    im = bg(); im.alpha_composite(P, pos); lit_face(im, clip(0), (0, 0, P.width, P.height))
-    place(im, piece(mouth_box), (W / 2 + 60, 1640), 14)
-    carved(im, (W / 2, 400), 'something new', 140)
+    im = bg(0); im.alpha_composite(C.shadow(Wh, (12, 22), 22, 110), (pos[0] - 22, pos[1] - 22))
+    head(im, (W / 2, 400), "what's inside?", 150, FLESH)
+    fr.append(('1 a whole pumpkin on the windowsill - what is inside', im))
+    im = bg(0); half = Wh.copy(); half.paste(P.crop(eyes_box), eyes_box[:2]); im.alpha_composite(half, pos)
+    lit_face(im, clip(0), eyes_box)
+    place(im, near(piece(eyes_box, 3.2), 7, 0.95), (W / 2 - 40, 330), -18)          # the eyes fly at the lens
+    fr.append(('2 the eyes pop out at the lens, clip 1 glows through', im))
+    im = bg(0); im.alpha_composite(P, pos); lit_face(im, clip(0), (0, 0, P.width, P.height))
+    place(im, near(piece(mouth_box, 2.4), 8, 0.95), (W / 2 + 80, 1700), 14)
+    head(im, (W / 2, 380), 'something new', 140, FLESH)
     fr.append(('3 the mouth pops out - the whole face glows', im))
     im = clip(0).copy(); big = P.resize((P.width * 3, P.height * 3), Image.LANCZOS); bh = Hm.resize(big.size)
     fr_ = big.copy(); fr_.putalpha(ImageChops.multiply(big.split()[3], ImageChops.invert(bh)))
     mx, my = int(big.width * 0.5), int(big.height * 0.70); im.alpha_composite(fr_.crop((mx - W // 2, my - H // 2, mx + W // 2, my + H // 2)))
-    fr.append(('4 zoom through the mouth into clip 1', im))
-    im = clip(1).copy(); carved(im, (W / 2, 250), 'launching', 110); carved(im, (W / 2, 420), 'Oct 24', 190)
-    fr.append(('5 full-screen clip 2 - the launch date', im))
-    im = bg(); Lt = fit_w(lit, 920); g = Image.new('RGBA', Lt.size, (255, 140, 40, 0)); g.putalpha(Lt.split()[3].filter(ImageFilter.GaussianBlur(60)))
+    fr.append(('4 we fly in through the mouth into clip 1', im))
+    im = clip(1).copy(); seeds = piece(eyes_box, 1.0)
+    for (x, y, w_, r) in ((140, 260, 420, -30), (980, 1700, 520, 25)): place(im, near(fit_w(seeds, w_), 9, 0.85), (x, y), r)
+    head(im, (W / 2, 220), 'launching', 120, FLESH); head(im, (W / 2, 390), 'Oct 24', 200, FLESH)
+    fr.append(('5 clip 2 full screen, carved pieces drift past - the date', im))
+    im = bg(1); Lt = fit_w(lit, 920); g = Image.new('RGBA', Lt.size, (255, 140, 40, 0)); g.putalpha(Lt.split()[3].filter(ImageFilter.GaussianBlur(60)))
     im.alpha_composite(g, ((W - Lt.width) // 2, 860)); im.alpha_composite(Lt, ((W - Lt.width) // 2, 860))
-    carved(im, (W / 2, 380), 'be the first inside', 120); sign_text(im, (W / 2, 600), 'LINK IN BIO', 100, WHITE)
-    fr.append(('6 CTA - lit pumpkin, link in bio', im))
+    sign_text(im, (W / 2, 330), 'COMMENT', 120, WHITE); head(im, (W / 2, 520), 'PUMPKIN', 190, FLESH)
+    hand(im, (W / 2, 690), 'to get in first', 90, WHITE)
+    fr.append(('6 CTA - lit pumpkin, comment PUMPKIN', im))
     return fr
 
 def save(tid, frames):
