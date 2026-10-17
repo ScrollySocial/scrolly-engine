@@ -1,0 +1,10 @@
+Put your clips in this folder, then double-click "2 Double-click to install".
+
+They go into the template in name order, so name them 1 to 5 (for example 1.mov, 2.mov).
+Film upright (vertical) and start each clip right on the action.
+
+1: Your product, held up (at least 15 seconds)
+2: Point 1 (at least 12 seconds)
+3: Point 2 (at least 10 seconds)
+4: Point 3 (at least 8 seconds)
+5: Point 4 (at least 6 seconds)

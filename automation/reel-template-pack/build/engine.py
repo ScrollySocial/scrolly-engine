@@ -2,7 +2,8 @@
 
 A template file in build/templates/ defines SPEC (title, the clips to film, test footage) and layers(), a list of:
   art   an image layer (paper, frame, sticker, doodle) drawn in code by collage.py
-  clip  one of the buyer's clips, cropped to a window shape; src = where in their clip it starts, speed (1.15 = fast)
+  clip  one of the buyer's clips, cropped to a window shape; src = where in their clip it starts, speed (1.15 = fast);
+        mask='circle' shows it through a round window (CapCut's Rectangle mask, square, corners fully rounded)
   text  an editable CapCut text layer (fonts: 'imbue', 'awelier', 'ink'), optional Typewriter animation and edge
         (stroke=(colour, width), CapCut's 0 to 0.2 scale)
 A clip with blur_bg=True gets CapCut's blurred background (only works on the lowest track, which CapCut calls the main
@@ -33,6 +34,7 @@ CACHE = LOCAL / 'CapCut' / 'User Data' / 'Cache' / 'effect'
 PROTO = DRAFTS / 'Litter 1'                        # clips and text layers (CapCut 8.9), read only
 PROTO_PHOTO = DRAFTS / 'Stain Stick with Reviews'  # image layer on an overlay track, read only
 PROTO_TYPE = DRAFTS / 'PGYT2'                      # Typewriter text animation, read only
+PROTO_MASK = DRAFTS / 'PGYT3'                      # CapCut's Rectangle mask on a clip, read only (round corners = circle)
 FOOTAGE = Path.home() / 'OneDrive' / 'Desktop' / 'July Videos'
 DRAFT_TOKEN = '##_draftpath_placeholder_0E685133-18CE-45ED-8CB8-2904A212EC80_##'
 W, H, FPS = 1080, 1920, 30
@@ -101,9 +103,9 @@ class Layers:
     def art(self, name, img, t, z, pos, rot=0, kf=None):
         if isinstance(rot, dict): rot, kf = 0, rot   # motion passed in the rotation's place
         self.A[name] = img; self.L.append(dict(kind='art', name=name, t=t, z=z, pos=pos, rot=rot, kf=kf or {}))
-    def clip(self, slot, t, z, pos, size, rot=0, kf=None, src=0.0, speed=1.0, blur_bg=False, crop=None):
+    def clip(self, slot, t, z, pos, size, rot=0, kf=None, src=0.0, speed=1.0, blur_bg=False, crop=None, mask=None):
         self.L.append(dict(kind='clip', slot=slot, t=t, z=z, pos=pos, size=size, rot=rot, kf=kf or {}, src=src, speed=speed,
-                           blur_bg=blur_bg, crop=crop))
+                           blur_bg=blur_bg, crop=crop, mask=mask))
     def text(self, font, size, words, t, z, pos, rot=0, kf=None, typewriter=None, color=INK, shadow=False, stroke=None):
         if isinstance(rot, dict): rot, kf = 0, rot
         self.L.append(dict(kind='text', font=font, size=size, words=words, t=t, z=z, pos=pos, rot=rot, kf=kf or {},
@@ -271,6 +273,12 @@ def build_capcut(folder, name, slot_files, slot_secs, art_files, L):
             s.update(material_id=m['id'], speed=l['speed'], volume=1.0, last_nonzero_volume=1.0,
                      source_timerange={'start': int(round(l['src'] * US)), 'duration': int(round(tdur * l['speed']))},
                      extra_material_refs=clone_refs(pm, mats, pv['extra_material_refs'], speed=l['speed']))
+            if l.get('mask') == 'circle':   # a square clip seen through a circle: Rectangle mask, square, corners fully round
+                mk = copy.deepcopy(load(PROTO_MASK / 'draft_content.json')['materials']['common_mask'][0])
+                mk.update(id=uid(), constant_material_id=uid())
+                mk['config'].update(width=1.0, height=1.0, centerX=0.0, centerY=0.0, rotation=0.0, feather=0.0, roundCorner=1.0,
+                                    invert=False, aspectRatio=1.0)
+                mats.setdefault('common_mask', []).append(mk); s['extra_material_refs'].append(mk['id'])
             if l.get('blur_bg'):   # CapCut's "Background > Blur": the clip itself, blurred, fills the rest of the frame
                 for c in mats.get('canvases', []):
                     if c['id'] in s['extra_material_refs']: c.update(type='canvas_blur', blur=0.375, color='')
@@ -430,6 +438,8 @@ def render(L, A, sources, out, work, test):
                     bl = frames[('blur', i)]
                     canvas.paste(Image.open(bl[min(int(lt * FPS), len(bl) - 1)]).convert('RGB').resize((W, H), Image.BILINEAR), (0, 0))
                 im = Image.open(fl[min(int(lt * FPS), len(fl) - 1)]).convert('RGBA')
+                if l.get('mask') == 'circle':
+                    m = Image.new('L', im.size, 0); ImageDraw.Draw(m).ellipse((0, 0, im.width - 1, im.height - 1), fill=255); im.putalpha(m)
             else:
                 tw = l.get('typewriter')
                 words = l['words'][1] if test else l['words'][0]
@@ -512,7 +522,8 @@ def check_ig_safe(L, min_secs=0.3):
 
 def build(spec, layers_fn):
     out = PACK / spec['dir']
-    for p in (FFMPEG, PROTO / 'draft_content.json', PROTO_PHOTO / 'draft_content.json', PROTO_TYPE / 'draft_content.json'):
+    for p in (FFMPEG, PROTO / 'draft_content.json', PROTO_PHOTO / 'draft_content.json', PROTO_TYPE / 'draft_content.json',
+              PROTO_MASK / 'draft_content.json'):
         if not Path(p).exists(): sys.exit(f'missing: {p}')
     work = out / '_work'
     if work.exists(): shutil.rmtree(work)

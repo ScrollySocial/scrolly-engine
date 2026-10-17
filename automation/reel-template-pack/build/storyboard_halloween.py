@@ -15,7 +15,7 @@ import engine as E
 import storyboard_02 as S          # footage(), place(), bordered(), F()
 from props import cut_white
 
-SRC = E.PACK / 'assets' / 'props' / 'source'
+SRC = E.PACK / 'assets' / 'props' / 'source' / 'halloween'   # Halloween images (moved into their own folder 2026-10-17)
 W, H = 1080, 1920
 INK, WHITE, CREAM = (24, 23, 22), (255, 255, 255), (250, 244, 230)
 ACCENT = (236, 120, 36)            # the one key-word colour (pumpkin orange); buyers swap it for their brand colour
