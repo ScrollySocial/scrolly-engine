@@ -35,3 +35,10 @@ Needed from Mercedes (ChatGPT or royalty-free), each on a plain white background
 2. **One blank instant photo**, portrait (Instax Mini shape), white frame, the picture area dark grey/undeveloped,
    flat and straight-on.
 3. **Kitchen timer** (the twist kind), front view. Optional: it sits next to "after [time]".
+
+## Storyboard v1 (2026-10-17)
+
+Props arrived (mint camera, blank instant photo, cream timer), cut out by `python build/props.py 03` (their pale floor
+shadows removed, the storyboard adds its own). Stills: `python build/storyboard_03.py` -> `storyboard/` (seven frames
+plus `storyboard-03.jpg`). Stand-in footage: sofa before/after and a vacuum from her July clips. Headline font Imbue (odd
+templates). Waiting for her one round of feedback before animating.

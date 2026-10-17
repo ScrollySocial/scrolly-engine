@@ -1,8 +1,9 @@
 """Real-object props for the packing templates (images Mercedes supplied 2026-10-17: ChatGPT-made, plus pink paper
 shreds from a royalty-free site and the open box from Pexels). Cuts each one out from its white background, makes the
 white version of the open box, and splits the open box into its floor and four flaps so the flaps can close on screen.
-Usage: python build/props.py  ->  assets/props/*.png
+Usage: python build/props.py  ->  assets/props/*.png   (python build/props.py 03 for #3's camera, instant photo, timer)
 """
+import sys
 from pathlib import Path
 from PIL import Image, ImageChops, ImageDraw, ImageFilter, ImageOps
 
@@ -63,5 +64,26 @@ def main():
     Image.open(SRC / 'paper-shreds-pink.webp').convert('RGB').save(PROPS / 'paper-shreds-pink.png')
     print('props ->', PROPS)
 
+# #3 Before and after (Mercedes, 2026-10-17, ChatGPT): file names as she saved them
+PROPS_03 = {'instant-camera': 'Mint Green Retro Instant Camera.png', 'kitchen-timer': 'Cream Retro Kitchen Timer Dial.png'}
+
+def drop_floor_shadow(im, band=0.16, light=175, grey=16):
+    """Remove the pale floor shadow under an object stood on white (it reads as a white smear on sage); the storyboard
+    adds its own soft shadow."""
+    im = im.copy(); px = im.load(); w, h = im.size
+    for y in range(int(h * (1 - band)), h):
+        for x in range(w):
+            r, g, b, a = px[x, y]
+            if a and (r + g + b) // 3 > light and max(r, g, b) - min(r, g, b) < grey:
+                px[x, y] = (r, g, b, 0)
+    return im.crop(im.getbbox())
+
+def main_03():
+    for name, f in PROPS_03.items():
+        drop_floor_shadow(cut_white(Image.open(SRC / f), tol=14)).save(PROPS / f'{name}.png')
+    # white frame on white: keep its rectangle (the frame is a touch greyer than the background)
+    rect_cut(Image.open(SRC / 'Blank Polaroid on White Background.png'), thresh=240, radius=6).save(PROPS / 'instant-photo-blank.png')
+    print('props 03 ->', PROPS)
+
 if __name__ == '__main__':
-    main()
+    main_03() if '03' in sys.argv[1:] else main()
