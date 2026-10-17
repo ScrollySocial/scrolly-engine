@@ -47,10 +47,89 @@ background, soft even lighting, no shadow, whole object in frame, no text or log
 | 26 | Latte art | Same cup as 24, straight down: a heart, a rosetta and a tulip (3 images) | The art changes from clip to clip |
 | 27 | Ink pen | A fountain pen, side view, cap off, nib clear; plus the same pen at a writing angle | Writes the handwritten words on screen |
 
-## Worth adding (from your fall ideas list)
+## Also needed (the rest of the pack)
 
-- **Mums** in a pot, 2 colours (rust and yellow), front view, on white.
-- **A hay bale**, 3/4 view, on white (hay rides).
-- **A chai** in a glass mug with a cinnamon stick, 3/4 view, on white.
-- **Pumpkin decorations** for "decorate it on screen": real rhinestone gems, a painted stripe brush stroke, a bow,
-  each on white (inspiration: the Grandin Road harvest stack).
+Same rules: objects on white, textures fill the frame, overlays on black. Numbered on from the list above.
+
+**Backgrounds that change from clip to clip (rule 6; fill the frame, straight on or straight down)**
+28. Weathered barn wood planks, warm brown.
+29. Burlap.
+30. Flannel shirt plaid (different from the blankets: green and black, or mustard).
+31. Corduroy, rust.
+32. Hay, close up.
+33. A pumpkin patch at golden hour, rows of pumpkins, no people.
+34. An apple orchard row, trees heavy with apples, no people.
+35. A path covered in fallen leaves, straight down.
+36. A golden wheat field against a soft sky.
+37. A misty fall forest, soft and blurry (a backdrop behind props).
+
+**Real-looking paper (rule 12; on white)**
+38. A blank recipe card, slightly worn, lined.
+39. A blank kraft gift tag with twine.
+40. A blank wooden farm-stand sign on a stake (where buyers type their sale).
+41. A small blank chalkboard sign, A-frame (cafe or market menu).
+42. A brown paper market bag, folded top.
+43. An October calendar page and a November page, real paper, no year printed.
+44. A blank seed packet (paper envelope).
+45. A notebook page with a pressed leaf taped on.
+
+**Selling and market props (the business job: products shown in a fall setting; on white)**
+46. A wooden apple crate, empty, 3/4 view (buyers' products go "in" it).
+47. A bushel basket, empty, 3/4 view.
+48. A kraft gift box tied with twine and a sprig of leaves.
+49. A takeaway coffee cup with a blank kraft sleeve.
+50. A wooden market table edge, front view (a shelf for products to sit on).
+
+**Food and drink (on white)**
+51. Cider donuts: 3 single donuts, each a bit different.
+52. Caramel apples: 3 (plain caramel, nuts, chocolate drizzle), on sticks.
+53. A mug of apple cider with a cinnamon stick, 3/4 view.
+54. A chai in a glass mug, 3/4 view.
+55. Cinnamon sticks tied in a bundle; star anise (2 or 3 single pieces).
+56. Pie-crust leaf cut-outs, 4 single ones, baked golden.
+57. Indian (flint) corn, 2 ears with husks pulled back.
+
+**Nature (on white)**
+58. Acorns: 4 single ones, each different (one with its cap off).
+59. Pinecones: 3 sizes.
+60. Cute mushrooms: 3 (red cap, brown, a small cluster).
+61. A small branch with fall leaves still on it, side view.
+62. A leaf pile, 3/4 view (something can jump or pop out of it).
+63. Sunflowers: 2 single stems, one facing front, one turned.
+64. Wheat stalks tied in a bundle.
+65. Mums in a pot, 2 colours (rust and yellow).
+66. A hay bale, 3/4 view; a cornstalk bundle, front view.
+67. A friendly scarecrow, whole, front view.
+
+**Cute animals (real-looking, whole body plus a peeking head pose, same chat for both)**
+68. A squirrel holding an acorn.
+69. A red fox, sitting.
+70. A hedgehog.
+
+**Cozy (on white)**
+71. A knit beanie with a pom-pom, 2 colours.
+72. Rain boots (wellies), a pair, mustard or forest green.
+73. A rolled chunky knit scarf.
+74. A stack of 3 old books with a leaf on top.
+75. A lit candle in a jar, on **black**.
+
+**Overlays and motion (on black, or a short Sora or Veo video; must be ones we own)**
+76. Steam rising from a cup (video best), on black.
+77. Bonfire sparks and embers floating up, on black.
+78. Fog or mist drifting, on black.
+79. Leaves blowing across the frame (video), on black.
+80. A warm sun flare or light leak, on black.
+
+**Pumpkin decorating on screen (on white; inspiration: the Grandin Road harvest stack)**
+81. Rhinestone gems, 6 single ones in fall colours.
+82. A painted stripe brush stroke in cream and in gold.
+83. A velvet bow and a satin bow.
+84. A pumpkin painted white with gold stripes (the "after" for the decorate move).
+
+**Thanksgiving (if it shares the fall pack; on white)**
+85. A real roast turkey on a platter, 3/4 view; a cute real-looking live turkey, side view.
+86. Turkey feathers: 5 single ones, each different.
+87. A cornucopia, empty and overflowing (2 images, same chat).
+88. Dinner rolls in a basket; one single roll.
+89. A place card, blank, on a folded linen napkin.
+90. A gratitude card or "thankful" note card, blank.
