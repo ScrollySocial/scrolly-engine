@@ -36,6 +36,13 @@ def word(img, xy, text, font, fill, anchor='la', shadow=False):
         img.alpha_composite(s)
     img.alpha_composite(lay)
 
+def tape_words(img, c, small, big, rot=-3):
+    """Words on a strip of white paper tape stuck to the box: small sans line + accent serif line."""
+    strip = C.torn_strip((720, 250), (252, 250, 246), seed=17, edges='lr')
+    d = ImageDraw.Draw(strip)
+    d.text((360, 62), small, font=F(SANS, 52), fill=INK, anchor='mm'); d.text((360, 158), big, font=F(SERIF, 96), fill=ROSE, anchor='mm')
+    place(img, C.shadow(strip, offset=(4, 8), blur=8, alpha=60), c, rot)
+
 def place(img, item, c, rot=0):
     it = item.rotate(rot, expand=True, resample=Image.BICUBIC)
     img.alpha_composite(it, (int(c[0] - it.width / 2), int(c[1] - it.height / 2)))
@@ -71,7 +78,7 @@ def C_bbox_offset():
     near = src.point(lambda v: 0 if v >= 237 else 255); bb = near.getbbox()
     return bb[0], bb[1]
 
-def box_scene(video, colour='white', floor_pad=0):
+def box_scene(video, colour='kraft', floor_pad=0):
     canvas = Image.new('RGBA', (W, H), (246, 244, 240, 255))
     box, (xo, y0), fl = open_box(colour)
     x0, y1_, x1, y2 = fl
@@ -89,8 +96,8 @@ def f1():
     lab = C.ship_label().resize((520, 780))
     d = ImageDraw.Draw(lab); m = F(MONO, 34)
     d.text((60, 205), 'Sunday Studio', font=m, fill=INK)
-    d.text((60, 315), 'Jess M.', font=m, fill=INK); d.text((60, 357), 'Portland, OR', font=m, fill=INK)
-    d.text((60, 495), '1 x spray clea|', font=m, fill=INK)
+    d.text((60, 315), 'YOU', font=F(MONO, 44), fill=INK); d.text((60, 368), '123 YOUR HOME', font=m, fill=INK)
+    d.text((60, 495), '1 x somethin|', font=m, fill=INK)
     lab = lab.resize((460, 690)); place(im, lab, (790, 600), -4)
     word(im, (70, 150), 'packing', F(SANS, 64), INK)
     word(im, (60, 230), 'an order', F(SERIF, 100), ROSE)
@@ -101,8 +108,7 @@ def f1():
 def f2():
     """The real open box fills the frame; the clip plays on its floor; words sit on the flaps."""
     im, fl = box_scene(footage('IMG_1439', 2.0, (W, H)))
-    word(im, (W / 2, 110), 'the goods', F(SANS, 64), INK, anchor='ma')
-    word(im, (W / 2, 190), 'go in first', F(SERIF, 104), ROSE, anchor='ma')
+    tape_words(im, (W / 2, 190), 'the goods', 'go in first')
     return im
 
 def f3():
@@ -132,11 +138,11 @@ def f4():
         place(im, p, (r.randint(-60, W + 60), r.randint(-60, H + 60)), r.randint(0, 359))
     return im
 
-def f5():
+def f5(seal_in=False):
     """The little extra: pink shreds fill the box around a smaller video spot; the thank-you envelope slides in."""
     im = Image.new('RGBA', (W, H), (246, 244, 240, 255))
-    box, (xo, y0), fl = open_box('white'); x0, y1_, x1, y2 = fl
-    shreds = ImageOps.fit(prop('paper-shreds-pink'), (x1 - x0, y2 - y1_))
+    box, (xo, y0), fl = open_box('kraft'); x0, y1_, x1, y2 = fl
+    shreds = ImageOps.fit(white_shreds(), (x1 - x0, y2 - y1_))
     im.alpha_composite(shreds, (x0, y1_))
     spot = ImageOps.fit(footage('IMG_1460', 2.0, (W, H)), (x1 - x0 - 150, int((x1 - x0 - 150) * 1.2)))
     m = Image.new('L', spot.size, 0); ImageDraw.Draw(m).rounded_rectangle((0, 0, spot.width - 1, spot.height - 1), radius=36, fill=255); spot.putalpha(m)
@@ -144,12 +150,21 @@ def f5():
     im.alpha_composite(sp, (int((x0 + x1) / 2 - sp.width / 2), int((y1_ + y2) / 2 - sp.height / 2) - 60))
     hole = Image.new('L', box.size, 255); ImageDraw.Draw(hole).rectangle((x0 - xo, y1_ - y0, x1 - xo, y2 - y0), fill=0)
     b = box.copy(); b.putalpha(ImageChops.multiply(b.split()[3], hole)); im.alpha_composite(b, (xo, y0))
-    env = prop('envelope').resize((620, 413)); seal = prop('wax-seal-thank-you').resize((230, 230))
-    env.alpha_composite(seal, (env.width // 2 - 115, env.height // 2 - 70))
+    env = prop('envelope').resize((620, 413))
     place(im, C.shadow(env, offset=(8, 14), blur=14, alpha=70), (660, 1560), 10)
-    word(im, (W / 2, 80), 'a little', F(SANS, 60), INK, anchor='ma')
-    word(im, (W / 2, 150), 'extra', F(SERIF, 110), ROSE, anchor='ma')
+    if seal_in:   # the wax seal is brought in after the envelope lands
+        seal = C.shadow(prop('wax-seal-thank-you').resize((300, 300)), offset=(10, 22), blur=20, alpha=70)
+        place(im, seal, (600, 1380), -8)
+        d = ImageDraw.Draw(im)
+        for k in range(3): d.line((420 + 30 * k, 1180 - 22 * k, 470 + 30 * k, 1240 - 22 * k), fill=INK + (255,), width=6)
+    tape_words(im, (W / 2, 190), 'a little', 'extra', 2)
     return im
+
+def white_shreds():
+    """White paper shreds from the pink photo: keep the light and shadow, drop the colour."""
+    g = ImageOps.grayscale(prop('paper-shreds-pink').convert('RGB'))
+    g = ImageOps.autocontrast(g, cutoff=1).point(lambda v: min(255, int(120 + v * 0.55)))
+    return Image.merge('RGB', (g, g, g.point(lambda v: max(0, v - 3)))).convert('RGBA')
 
 def closed_box_with_tape():
     b = prop('box-closed-top').resize((860, 1150))
@@ -171,22 +186,91 @@ def f6():
     return im
 
 def f7():
-    """CTA: the box slides partly off-screen, the focus moves to the product name."""
+    """CTA: the same sealed box shrinks and slides partly off-screen, the focus moves to the product name."""
     im = Image.new('RGBA', (W, H), (246, 244, 240, 255))
-    bx = closed_box_with_tape().resize((770, 980))
-    place(im, bx, (260, 1500), -16)
+    sealed = f6b(words=False, bg=(0, 0, 0, 0)); box_only = sealed.crop(sealed.getbbox())
+    box_only = box_only.resize((int(box_only.width * 0.62), int(box_only.height * 0.62)))
+    place(im, C.shadow(box_only, offset=(10, 16), blur=18, alpha=70), (300, 1500), -16)
     word(im, (W / 2, 330), 'Spray cleaner', F(SERIF, 120), ROSE, anchor='ma')
     word(im, (W / 2, 500), 'shop at the link in my bio', F(SANS, 50), INK, anchor='ma')
     place(im, C.washi(560, 90, 'gingham', ((250, 232, 120), WHITE), seed=11), (W / 2, 610), -3)
     return im
 
+
+# ---- the same box closing its own flaps over the video (flap pieces cut from the real photo) ------------------------------
+SRC_FLOOR = (322, 262, 1132, 752)
+SRC_FLAPS = {'top': (300, 60, 1140, 262), 'bottom': (318, 752, 1150, 1036), 'left': (74, 256, 322, 770), 'right': (1132, 254, 1376, 772)}
+
+def _fold_piece(flap, edge, theta):
+    """A real flap photo at a fold angle: foreshortened toward its hinge, mirrored and a bit darker once past 90."""
+    th = math.radians(theta); c = abs(math.cos(th)); widen = 1 + 0.12 * math.sin(th)
+    vert = edge in ('top', 'bottom')
+    w, h = flap.size
+    if vert: nw, nh = int(w * widen), max(1, int(h * c))
+    else:    nw, nh = max(1, int(w * c)), int(h * widen)
+    piece = flap.resize((nw, nh), Image.LANCZOS)
+    if theta > 90:
+        piece = ImageOps.flip(piece) if vert else ImageOps.mirror(piece)
+        a = piece.split()[3]; piece = piece.convert('RGB').point(lambda v: int(v * 0.86)).convert('RGBA'); piece.putalpha(a)
+    return piece
+
+def box_state(video, short_deg=15, long_deg=15, bg=(246, 244, 240, 255)):
+    """The kraft box (landscape, as photographed) with the clip on its floor and the flaps at the given angles,
+    then turned upright and scaled to fill the frame like open_box()."""
+    cut = prop('box-open-kraft'); ox, oy = C_bbox_offset()
+    land = Image.new('RGBA', cut.size, (0, 0, 0, 0))
+    fx0, fy0, fx1, fy1 = [v - o for v, o in zip(SRC_FLOOR, (ox, oy, ox, oy))]
+    vid = ImageOps.fit(video.rotate(90, expand=True), (fx1 - fx0, fy1 - fy0)); land.alpha_composite(vid, (fx0, fy0))
+    body = cut.copy(); hole = Image.new('L', cut.size, 255); hd = ImageDraw.Draw(hole)
+    hd.rectangle((fx0, fy0, fx1, fy1), fill=0)
+    rects = {k: tuple(v - o for v, o in zip(r, (ox, oy, ox, oy))) for k, r in SRC_FLAPS.items()}
+    for r in rects.values(): hd.rectangle(r, fill=0)     # the flaps are redrawn at their angle below
+    body.putalpha(ImageChops.multiply(body.split()[3], hole)); land.alpha_composite(body)
+    for edge in ('left', 'right', 'top', 'bottom'):     # short side flaps first, long flaps on top
+        theta = short_deg if edge in ('left', 'right') else long_deg
+        x0, y0, x1, y1 = rects[edge]; flap = cut.crop(rects[edge])
+        p = _fold_piece(flap, edge, theta); cx = (x0 + x1) / 2; cy = (y0 + y1) / 2
+        if edge == 'top':    pos = (cx - p.width / 2, (y1 - p.height) if theta <= 90 else y1)
+        if edge == 'bottom': pos = (cx - p.width / 2, y0 if theta <= 90 else y0 - p.height)
+        if edge == 'left':   pos = ((x1 - p.width) if theta <= 90 else x1, cy - p.height / 2)
+        if edge == 'right':  pos = (x0 if theta <= 90 else x0 - p.width, cy - p.height / 2)
+        if theta > 95:       # a flap over the opening casts a soft shadow on the clip
+            sh = Image.new('RGBA', land.size, (0, 0, 0, 0)); m = Image.new('L', land.size, 0)
+            ImageDraw.Draw(m).rectangle((pos[0] + 10, pos[1] + 14, pos[0] + p.width + 10, pos[1] + p.height + 14), fill=110)
+            sh.putalpha(m.filter(ImageFilter.GaussianBlur(16))); land.alpha_composite(sh)
+        land.alpha_composite(p, (int(pos[0]), int(pos[1])))
+    up = land.rotate(-90, expand=True); s = 1.3 * W / up.width
+    up = up.resize((int(up.width * s), int(up.height * s)))
+    canvas = Image.new('RGBA', (W, H), bg)
+    canvas.alpha_composite(up, ((W - up.width) // 2, (H - up.height) // 2))
+    return canvas
+
+def f6a():
+    """The flaps closing over the video: side flaps already in, the long flaps swinging shut."""
+    im = box_state(footage('IMG_1447', 1.0, (W, H)), 180, 115)
+    tape_words(im, (W / 2, 160), 'all', 'tucked in', -2)
+    return im
+
+def f6b(words=True, bg=(246, 244, 240, 255)):
+    """Closed: washi tape zips across the seam, the label slaps on."""
+    im = box_state(footage('IMG_1447', 1.0, (W, H)), 180, 180, bg)
+    place(im, C.washi(1150, 140, 'dots', ((166, 206, 242), WHITE), seed=8), (540, 900), 82)
+    place(im, C.washi(1150, 140, 'hearts', (WHITE, ROSE), seed=9), (560, 980), 98)
+    lab = C.ship_label().resize((460, 690)); d = ImageDraw.Draw(lab); m = F(MONO, 29)
+    d.text((52, 180), 'Sunday Studio', font=m, fill=INK); d.text((52, 278), 'YOU', font=F(MONO, 38), fill=INK)
+    d.text((52, 325), '123 YOUR HOME', font=m, fill=INK); d.text((52, 440), '1 x something nice', font=m, fill=INK)
+    place(im, lab, (600, 1300), -6)
+    if words: tape_words(im, (W / 2, 160), 'sealed +', 'on its way', 3)
+    return im
+
 def main():
-    frames = [f1(), f2(), f3(), f4(), f5(), f6(), f7()]
+    frames = [f1(), f2(), f3(), f4(), f5(), f5(True), f6a(), f6b(), f7()]
     names = ['1 label types in + picking items', '2 real box, video on the floor', '3 one peanut drops in',
-             '4 peanuts take over', '5 shreds + thank-you envelope', '6 sealed: tape + label', '7 CTA']
+             '4 peanuts take over', '5a shreds + the envelope lands', '5b the wax seal is brought in', '6a the flaps close over the video',
+             '6b sealed: washi tape + label', '7 CTA']
     for n, f in zip(names, frames): f.convert('RGB').save(OUT / f'{n}.jpg', quality=90)
-    sheet = Image.new('RGB', (W * 4 + 60, H * 2 + 20), 'white')
-    for i, f in enumerate(frames): sheet.paste(f.convert('RGB'), ((i % 4) * (W + 20), (i // 4) * (H + 20)))
+    sheet = Image.new('RGB', (W * 5 + 80, H * 2 + 20), 'white')
+    for i, f in enumerate(frames): sheet.paste(f.convert('RGB'), ((i % 5) * (W + 20), (i // 5) * (H + 20)))
     sheet.resize((sheet.width // 3, sheet.height // 3)).save(OUT / 'storyboard-02.jpg', quality=90)
     print('saved', OUT)
 
