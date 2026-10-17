@@ -62,6 +62,24 @@ CapCut's projects folder. The installer copies the template there under a new na
   animations and stickers.
 - Captions and labels: 1 to 3 words.
 
+## Handoff (2026-10-17): where #2 Pack an order stands
+
+- **Direction approved (about 60%, rising):** real photographed props (Mercedes's ChatGPT/royalty-free images in
+  `assets/props/source/`, cut out by `build/props.py`) with a playful drawn layer (washi tape, white die-cut sticker
+  edges, words on tape strips, a typing shipping label). Sage backdrop, no pink washi, no coloured outlines.
+- **Storyboard v5 approved to animate:** `02-pack-an-order/storyboard/` (made by `build/storyboard_02.py`). Beats:
+  label types in (TO: YOU / 123 YOUR HOME) over a split with the picking clip; the real kraft box (zoomed, flaps off
+  the edges) with the clip on its floor; one peanut drops in, then peanuts flood the screen; white shreds + envelope
+  lands, then the wax seal is brought in; the box closes; washi tape along the seam + label; CTA with tape behind text.
+- **Box close proven:** `build/test_close.py` makes `test-close.mp4` from real photo pieces only (short flaps fold in,
+  long flaps fold up, the two halves of `box-closed-seam` fold down and meet, camera pushes in to fill the frame).
+  In CapCut this becomes a flipbook (one image per frame on one track).
+- **Next:** animate all of #2 through the engine (`build/templates/t02.py` is the older v3 and must be rewritten to the
+  storyboard), add flipbook support to `engine.py`, sound recommendations, install a test copy, show the MP4.
+- **Rules from Mercedes:** one storyboard round + one animation round per template; ask instead of guessing; real
+  objects only (memory note feedback_reel_templates_real_objects). Holiday packs run in a separate chat
+  ("Halloween Reel Template Pack") from `holiday-ideas.md`.
+
 ## Open items
 
 - Mac support (projects folder path, installer).

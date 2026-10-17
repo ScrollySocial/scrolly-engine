@@ -28,13 +28,15 @@ def main():
     body = region(bx0, by0, bx1, by1)                       # walls + floor area (floor becomes the video spot)
     top, bottom = region(bx0, 0, bx1, by0), region(bx0, by1, bx1, H)               # short flaps
     left, right = region(0, by0 - 40, bx0, by1 + 40), region(bx1, by0 - 40, W, by1 + 40)   # long flaps
-    closed = S.prop('box-closed-seam').rotate(-90, expand=True).resize((bx1 - bx0, by1 - by0))
+    cs = S.prop('box-closed-seam').rotate(-90, expand=True)
+    cs = cs.crop((int(cs.width * 0.02), int(cs.height * 0.01), int(cs.width * 0.98), int(cs.height * 0.99)))   # trim the pale edge
+    closed = cs.resize((bx1 - bx0, by1 - by0))
     halfL, halfR = closed.crop((0, 0, closed.width // 2, closed.height)), closed.crop((closed.width // 2, 0, closed.width, closed.height))
     video = S.footage('IMG_1447', 1.0, (W, H))
     hole = Image.new('L', body.size, 255); ImageDraw.Draw(hole).rectangle((fx0 - bx0, fy0 - by0, fx1 - bx0, fy1 - by0), fill=0)
     body.putalpha(Image.composite(body.split()[3], Image.new('L', body.size, 0), hole))
 
-    def frame(short_f, long_f, close_f):
+    def frame(short_f, long_f, close_f, zoom=1.0):
         """short_f / long_f: 1 = flap lying open, 0 = folded away. close_f: 0 = closed halves not down, 1 = flat."""
         im = Image.new('RGBA', (W, H), S.BG)
         im.alpha_composite(ImageOps.fit(video, (fx1 - fx0, fy1 - fy0)), (fx0, fy0))
@@ -50,14 +52,20 @@ def main():
             w = max(1, int(halfL.width * close_f)); k = 0.72 + 0.28 * close_f
             im.alpha_composite(darken(halfL.resize((w, halfL.height)), k), (bx0, by0))
             im.alpha_composite(darken(halfR.resize((w, halfR.height)), k), (bx1 - w, by0))
+        if zoom > 1.001:   # push in on the box's centre so the closed box fills the frame
+            cx, cy = (bx0 + bx1) / 2, (by0 + by1) / 2
+            zw, zh = W / zoom, H / zoom
+            im = im.crop((int(cx - zw / 2), int(cy - zh / 2), int(cx + zw / 2), int(cy + zh / 2))).resize((W, H), Image.LANCZOS)
         return im.convert('RGB')
 
     ease = lambda x: x * x * (3 - 2 * x)
     seq = [frame(1, 1, 0)] * 9
     seq += [frame(1 - ease(i / 6), 1, 0) for i in range(1, 7)]        # short flaps fold in
     seq += [frame(0, 1 - ease(i / 6), 0) for i in range(1, 7)]        # long flaps fold up
-    seq += [frame(0, 0, ease(i / 8)) for i in range(1, 9)]            # closed halves fold down and meet
-    seq += [frame(0, 0, 1)] * 15
+    full_zoom = max(W / (bx1 - bx0), H / (by1 - by0)) * 1.02
+    seq += [frame(0, 0, ease(i / 8), 1 + (full_zoom - 1) * ease(i / 8) * 0.4) for i in range(1, 9)]   # halves meet
+    seq += [frame(0, 0, 1, 1 + (full_zoom - 1) * (0.4 + 0.6 * ease(i / 8))) for i in range(1, 9)]       # push in to fill
+    seq += [frame(0, 0, 1, full_zoom)] * 10
     out = S.OUT / 'test-close.mp4'
     p = subprocess.Popen([E.FFMPEG, '-v', 'error', '-y', '-f', 'rawvideo', '-pix_fmt', 'rgb24', '-s', f'{W}x{H}', '-r', str(FPS),
                           '-i', '-', '-c:v', 'libx264', '-pix_fmt', 'yuv420p', '-movflags', '+faststart', str(out)], stdin=subprocess.PIPE)
