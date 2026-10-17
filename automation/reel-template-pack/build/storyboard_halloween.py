@@ -296,6 +296,7 @@ def h6():
 
 def save(tid, frames):
     out = E.PACK / 'halloween' / DIRS[tid] / 'storyboard'; out.mkdir(parents=True, exist_ok=True)
+    frames = [(n.replace(':', ' -').replace('?', ''), f) for n, f in frames]   # Windows file names: no : or ?
     for n, f in frames: f.convert('RGB').save(out / f'{n}.jpg', quality=90)
     cols = len(frames); sheet = Image.new('RGB', (W * cols + 20 * (cols - 1), H + 140), (240, 236, 228)); d = ImageDraw.Draw(sheet)
     for i, (n, f) in enumerate(frames):

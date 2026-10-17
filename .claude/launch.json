@@ -65,6 +65,18 @@
         "4322"
       ],
       "port": 4322
+    },
+    {
+      "name": "template-pack",
+      "runtimeExecutable": "python",
+      "runtimeArgs": [
+        "-m",
+        "http.server",
+        "8950",
+        "--directory",
+        "automation/reel-template-pack"
+      ],
+      "port": 8950
     }
   ]
 }
