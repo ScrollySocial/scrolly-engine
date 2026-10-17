@@ -95,9 +95,10 @@ class Layers:
         self.A[name] = img; self.L.append(dict(kind='art', name=name, t=t, z=z, pos=pos, rot=rot, kf=kf or {}))
     def clip(self, slot, t, z, pos, size, rot=0, kf=None, src=0.0, speed=1.0):
         self.L.append(dict(kind='clip', slot=slot, t=t, z=z, pos=pos, size=size, rot=rot, kf=kf or {}, src=src, speed=speed))
-    def text(self, font, size, words, t, z, pos, rot=0, kf=None, typewriter=None, color=INK):
+    def text(self, font, size, words, t, z, pos, rot=0, kf=None, typewriter=None, color=INK, shadow=False):
+        if isinstance(rot, dict): rot, kf = 0, rot
         self.L.append(dict(kind='text', font=font, size=size, words=words, t=t, z=z, pos=pos, rot=rot, kf=kf or {},
-                           typewriter=typewriter, color=color))
+                           typewriter=typewriter, color=color, shadow=shadow))
 
 # ---- shared artwork ----------------------------------------------------------------------------------------------------
 def ring_frame(d, bg, seed, ring=12, ring_color=(255, 255, 255)):
@@ -262,7 +263,8 @@ def build_capcut(folder, name, slot_files, slot_secs, art_files, L):
             m.update(id=uid(), content=text_content(l['words'][0], l['size'], path, rid, l['color']),
                      font_size=float(l['size']), font_path=path, font_resource_id=rid, font_id='', fonts=[],
                      font_title='none', font_source_platform=1 if rid else 0, text_color='#%02x%02x%02x' % l['color'],
-                     border_width=0.0, has_shadow=False, background_alpha=0.0, background_style=0, alignment=1,
+                     border_width=0.0, has_shadow=bool(l.get('shadow')), shadow_color='#000000', shadow_alpha=0.55,
+                     shadow_smoothing=0.8, shadow_distance=3.0, background_alpha=0.0, background_style=0, alignment=1,
                      line_max_width=0.9, fixed_width=-1.0)
             mats['texts'].append(m)
             anim = None
@@ -324,16 +326,23 @@ def build_capcut(folder, name, slot_files, slot_secs, art_files, L):
 
 # ---- preview renderer ----------------------------------------------------------------------------------------------------
 def text_img(l, test, n_chars=None):
+    """Text drawn like CapCut lays it out: each line is a box of ascent + descent, centred on the layer's spot."""
     px = round(l['size'] * PX_PER_SIZE)
     f = ImageFont.truetype(font_path(l['font']), px)
+    asc, desc = f.getmetrics(); lh = asc + desc
     words = l['words'][1] if test else l['words'][0]
-    lines = words.split('\n')
-    width = int(max(f.getlength(x) for x in lines)) + 40
-    shown = words if n_chars is None else words[:n_chars]
-    im = Image.new('RGBA', (width, int(px * 1.25 * len(lines) + px * 0.3)), (0, 0, 0, 0))
+    lines = words.split(chr(10))
+    pad = 40
+    width = int(max(f.getlength(x) for x in lines)) + 2 * pad
+    shown = (words if n_chars is None else words[:n_chars]).split(chr(10))
+    im = Image.new('RGBA', (width, lh * len(lines) + 2 * pad), (0, 0, 0, 0))
     dr = ImageDraw.Draw(im)
-    for i, ln in enumerate(shown.split('\n')):
-        dr.text(((width - f.getlength(lines[i])) / 2, int(px * 0.12) + i * int(px * 1.25)), ln, font=f, fill=tuple(l['color']) + (255,))
+    for i, ln in enumerate(shown):
+        dr.text(((width - f.getlength(lines[i])) / 2, pad + i * lh), ln, font=f, fill=tuple(l['color']) + (255,), anchor='la')
+    if l.get('shadow'):
+        from PIL import ImageFilter
+        sh = Image.new('RGBA', im.size, (0, 0, 0, 0)); sh.putalpha(im.split()[3].filter(ImageFilter.GaussianBlur(px * 0.08)).point(lambda v: int(v * 0.55)))
+        base = Image.new('RGBA', im.size, (0, 0, 0, 0)); base.alpha_composite(sh, (0, 0)); base.alpha_composite(im); im = base
     return im
 
 def clip_frames(sources, L, work):
@@ -407,6 +416,20 @@ def recipe_card(path, spec, L):
         d.text((600, y), f"e.g. {l['words'][1]}".replace('\n', ' / '), font=F(36, INKFREE), fill=(85, 80, 72)); y += 52
     img.save(path)
 
+def center_offset(l):
+    """How far below its spot a text layer must sit so its letters (cap height to baseline) look centred."""
+    f = ImageFont.truetype(font_path(l['font']), round(l['size'] * PX_PER_SIZE))
+    asc, desc = f.getmetrics(); cap_top = f.getbbox('H', anchor='la')[1]
+    return (asc + desc) / 2 - (cap_top + asc) / 2
+
+def apply_centering(L):
+    for l in L:
+        if l['kind'] != 'text' or l.get('centred'): continue
+        dy = center_offset(l)
+        l['pos'] = (l['pos'][0], l['pos'][1] + dy)
+        if 'y' in l['kf']: l['kf']['y'] = [(t, v + dy) for t, v in l['kf']['y']]
+        l['centred'] = True
+
 def build(spec, layers_fn):
     out = PACK / spec['dir']
     for p in (FFMPEG, PROTO / 'draft_content.json', PROTO_PHOTO / 'draft_content.json', PROTO_TYPE / 'draft_content.json'):
@@ -415,6 +438,7 @@ def build(spec, layers_fn):
     if work.exists(): shutil.rmtree(work)
     (work / 'slots').mkdir(parents=True); (work / 'art').mkdir()
     lay = layers_fn(); L, A = lay.L, lay.A
+    apply_centering(L)
     n = len(spec['slots'])
     need = [0.0] * n
     for l in L:

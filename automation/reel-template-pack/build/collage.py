@@ -268,3 +268,85 @@ def burst(size=220, color=(24, 22, 20), width=6, rays=8, seed=85):
         r0, r1 = size * 0.30, size * r.uniform(0.44, 0.49)
         d.line((c + r0 * math.cos(a), c + r0 * math.sin(a), c + r1 * math.cos(a), c + r1 * math.sin(a)), fill=color, width=width)
     return im
+
+# ---- Fluent Emoji 3D stickers (Microsoft, MIT license: assets/fluent/LICENSE.txt) --------------------------------------
+from pathlib import Path as _P
+FLUENT = _P(__file__).resolve().parent.parent / 'assets' / 'fluent'
+
+def sticker(name, size=300, border=10, shadow_alpha=60):
+    """A Fluent 3D emoji as a die-cut sticker: white border, soft shadow."""
+    im = Image.open(FLUENT / f'{name}_3d.png').convert('RGBA')
+    im = im.resize((size, size), Image.LANCZOS)
+    pad = border + 4
+    canvas = Image.new('RGBA', (size + 2 * pad, size + 2 * pad), (0, 0, 0, 0))
+    a = Image.new('L', canvas.size, 0); a.paste(im.split()[3], (pad, pad))
+    edge = a.filter(ImageFilter.MaxFilter(border * 2 + 1)).filter(ImageFilter.GaussianBlur(1.2))
+    white = Image.new('RGBA', canvas.size, (255, 255, 255, 255)); white.putalpha(edge)
+    canvas.alpha_composite(white); canvas.alpha_composite(im, (pad, pad))
+    return shadow(canvas, offset=(6, 9), blur=10, alpha=shadow_alpha)
+
+def flood(names, size=(1200, 1000), count=9, sticker_px=330, seed=90):
+    """A cluster of stickers for a screen-filling flood (several of these fly up together)."""
+    r = rng(seed); im = Image.new('RGBA', size, (0, 0, 0, 0))
+    for k in range(count):
+        s = sticker(names[k % len(names)], sticker_px + r.randint(-40, 60))
+        s = s.rotate(r.uniform(-30, 30), resample=Image.BICUBIC, expand=True)
+        im.alpha_composite(s, (r.randint(-60, size[0] - s.width + 60) if size[0] > s.width else 0,
+                               r.randint(-40, size[1] - s.height + 40) if size[1] > s.height else 0) if False else
+                           (max(0, min(size[0] - s.width, r.randint(-60, size[0] - s.width + 60))),
+                            max(0, min(size[1] - s.height, r.randint(-40, size[1] - s.height + 40)))))
+    return im
+
+def lined_paper(size, color=(252, 249, 241), line=(176, 202, 226), margin=(232, 150, 150), step=64, seed=92):
+    p = paper(size, color, seed, grain=5); d = ImageDraw.Draw(p)
+    for y in range(220, size[1], step): d.line((0, y, size[0], y), fill=line + (255,), width=2)
+    d.line((120, 0, 120, size[1]), fill=margin + (255,), width=3)
+    return p
+
+def printer_slot(width=900, height=70):
+    im = Image.new('RGBA', (width, height), (0, 0, 0, 0)); d = ImageDraw.Draw(im)
+    d.rounded_rectangle((0, 0, width - 1, height - 1), radius=height // 2, fill=(38, 36, 34, 255))
+    d.rounded_rectangle((40, height // 2 - 5, width - 41, height // 2 + 5), radius=5, fill=(10, 10, 10, 255))
+    return shadow(im, offset=(0, 8), blur=10, alpha=80)
+
+def pattern_word(text, font_path, px, pattern='dots', fg=(246, 228, 160), dot=(217, 74, 61), outline=(24, 22, 20),
+                 stroke=10, seed=93):
+    """Big lettering filled with a pattern (polka dots, stripes or checks), an ink outline and a sticker shadow."""
+    f = ImageFont.truetype(font_path, px)
+    l, t, r_, b = f.getbbox(text, anchor='la'); w, h = r_ - l + 4 * stroke, b - t + 4 * stroke
+    mask = Image.new('L', (w, h), 0); ImageDraw.Draw(mask).text((2 * stroke - l, 2 * stroke - t), text, font=f, fill=255, anchor='la')
+    fill = Image.new('RGBA', (w, h), fg + (255,)); d = ImageDraw.Draw(fill); step = max(24, px // 6)
+    if pattern == 'dots':
+        rad = step * 0.28
+        for yy, y in enumerate(range(0, h + step, step)):
+            for x in range(-step, w + step, step):
+                cx = x + (step / 2 if yy % 2 else 0)
+                d.ellipse((cx - rad, y - rad, cx + rad, y + rad), fill=dot + (255,))
+    elif pattern == 'stripes':
+        for x in range(-h, w + h, step):
+            d.polygon([(x, 0), (x + step / 2, 0), (x + step / 2 + h, h), (x + h, h)], fill=dot + (255,))
+    else:
+        for yy, y in enumerate(range(0, h, step)):
+            for xx, x in enumerate(range(0, w, step)):
+                if (xx + yy) % 2: d.rectangle((x, y, x + step, y + step), fill=dot + (255,))
+    out = Image.new('RGBA', (w, h), (0, 0, 0, 0))
+    ring = mask.filter(ImageFilter.MaxFilter(stroke * 2 + 1))
+    ink = Image.new('RGBA', (w, h), outline + (255,)); ink.putalpha(ring); out.alpha_composite(ink)
+    fill.putalpha(mask); out.alpha_composite(fill)
+    return shadow(out, offset=(8, 12), blur=10, alpha=70)
+
+def dots_layer(size=(1080, 1920), count=26, colors=((246, 228, 160), (217, 74, 61), (252, 249, 241)), rmin=110, rmax=230, seed=94):
+    """Big polka dots scattered over a frame; several layers popping in cover the screen."""
+    r = rng(seed); im = Image.new('RGBA', size, (0, 0, 0, 0)); d = ImageDraw.Draw(im)
+    cols, rows = 4, 7
+    for i in range(rows):
+        for j in range(cols):
+            cx = (j + r.uniform(0.1, 0.9)) * size[0] / cols; cy = (i + r.uniform(0.1, 0.9)) * size[1] / rows
+            rad = r.uniform(rmin, rmax); c = colors[(i * cols + j + seed) % len(colors)]
+            d.ellipse((cx - rad, cy - rad, cx + rad, cy + rad), fill=c + (255,))
+    return im
+
+def note_card(size=(420, 300), seed=95):
+    c = paper(size, (253, 251, 245), seed, grain=4); d = ImageDraw.Draw(c)
+    for y in range(90, size[1] - 20, 52): d.line((30, y, size[0] - 30, y), fill=(190, 205, 225, 255), width=2)
+    return shadow(c, offset=(4, 8), blur=8, alpha=60)
