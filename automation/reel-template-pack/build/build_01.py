@@ -129,35 +129,41 @@ def layers():
     art('sparkle', C.sparkle(80, INK, 5), T, 11, (930, 250), kf={'scale': pop(0.85, 1.3), 'rot': [(0.85, -90), (1.2, 0)]})
     labels = [('[way one]', 'floors'), ('[way two]', 'couch'), ('[way three]', 'handheld')]
     for i, x in enumerate((190, 540, 890)):
-        t0 = 0.8 + 0.15 * i; tilt = [-6, 4, -3][i]
+        t0 = 0.75 + 0.4 * i; tilt = [-6, 4, -3][i]   # one at a time (Mercedes, 2026-10-16)
         k = {'scale': pop(t0, 1.2), 'rot': [(t0, tilt - 25), (t0 + 0.36, tilt)]}
         clip(i + 1, T, 2 + 2 * i, (x, 1240), (CD + 6, CD + 6), tilt, k)
         art(f'ring{i}', ring_frame(CD, CREAM, 44 + i), T, 3 + 2 * i, (x, 1240), tilt, copy.deepcopy(k))
         text('ink', 10, labels[i], T, 22 + i, (x, 1440), kf={'scale': pop(t0 + 0.1)})
 
     # three ways, 3 s each: the Polaroid flies in, settles at a tilt, then drifts
-    POL = [dict(c=(540, 1010), tilt=4, frm=(540, 2700), num=(150, 300), star=(930, 1700)),
-           dict(c=(540, 1000), tilt=-3, frm=(1900, 980), num=(930, 300), star=(150, 1700)),
-           dict(c=(540, 1010), tilt=2, frm=(540, -800), num=(150, 300), star=(930, 1700))]
-    words = [('[way one]', 'floors'), ('[way two]', 'the couch'), ('[way three]', 'handheld, anywhere')]
+    POL = [dict(c=(540, 1010), tilt=4, frm=(540, 2700), num=(150, 240), star=(930, 1700)),
+           dict(c=(540, 1000), tilt=-3, frm=(1900, 980), num=(930, 240), star=(150, 1700)),
+           dict(c=(540, 1010), tilt=2, frm=(540, -800), num=(150, 240), star=(930, 1700))]
+    words = [('[way one]', 'floors'), ('[way two]', 'the couch'), ('[way three]', 'handheld')]
     for i, p in enumerate(POL):
         T = (2.5 + 3 * i, 5.5 + 3 * i)
         frame, pad = polaroid_frame(22 + 3 * i)
         win_c = rot_pt((p['c'][0], p['c'][1] - PHT / 2 + PB + WIN[1] / 2), p['c'], p['tilt'])
         cap_c = rot_pt((p['c'][0], p['c'][1] + PHT / 2 - PBOT / 2), p['c'], p['tilt'])
         frame_c = rot_pt((p['c'][0], p['c'][1]), p['c'], p['tilt'])
+        GROW = [(0.5, 1.0), (0.8, 1.12), (1.1, 1.22), (1.4, 1.28), (1.6, 1.30), (3.0, 1.34)]  # grows to fill the frame
+        DROP = 40   # the Polaroid's centre moves down a little as it grows, so the numeral stays clear
         def motion(target):
             m = fly((target[0] + p['frm'][0] - p['c'][0], target[1] + p['frm'][1] - p['c'][1]), target)
             m['rot'] = [(0, p['tilt'] + 14 * (1 if i % 2 == 0 else -1)), (0.30, p['tilt'] - 3), (0.50, p['tilt'])]
-            m['scale'] = [(0.5, 1.0), (3.0, 1.04)]
+            m['scale'] = list(GROW)
+            for t_, s_ in GROW[1:]:   # every part scales around the Polaroid's centre, so they stay together
+                cx = p['c'][0]; cy = p['c'][1] + DROP * (s_ - 1) / 0.34
+                m['x'].append((t_, cx + (target[0] - p['c'][0]) * s_))
+                m['y'].append((t_, cy + (target[1] - p['c'][1]) * s_))
             return m
         art(f'bg-way{i + 1}', C.paper((W, H), CREAM, seed=21 + i), T, 0, (540, 960))
         clip(i + 1, T, 2, win_c, (WIN[0] + 6, WIN[1] + 6), p['tilt'], motion(win_c))
         art(f'polaroid{i + 1}', frame, T, 3, frame_c, p['tilt'], motion(frame_c))
-        text('ink', 16, words[i], T, 20, cap_c, p['tilt'], motion(cap_c))
+        text('ink', 14, words[i], T, 20, cap_c, p['tilt'], motion(cap_c))
         text('imbue', 69, (str(i + 1), str(i + 1)), T, 21, p['num'], kf={'scale': pop(0.35, 1.3)})
         art(f'star{i + 1}', C.star(110, INK, 6, seed=24 + i), T, 10, p['star'],
-            kf={'scale': pop(0.6, 1.3), 'rot': [(0.6, -120), (1.0, 0)]})
+            kf={'scale': pop(0.6, 1.3) + [(1.15, 1.0), (1.3, 0.0)], 'rot': [(0.6, -120), (1.0, 0)]})  # out before it grows
 
     # CTA 11.5 to 14
     T = (11.5, 14)
@@ -444,7 +450,7 @@ def recipe_card(path, L):
         d.text((200, y), what, font=F(46, segb), fill=INK)
         d.text((200, y + 62), tip, font=F(38, seg), fill=(85, 80, 72)); y += 170
     y += 30
-    d.text((90, y), 'Words to type over the [brackets]', font=F(46, segb), fill=INK); y += 80
+    d.text((90, y), 'Words to type over the [brackets] (1 to 3 words each)', font=F(46, segb), fill=INK); y += 80
     seen = set()
     for l in L:
         if l['kind'] != 'text' or '[' not in l['words'][0] or l['words'][0] in seen: continue

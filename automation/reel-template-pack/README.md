@@ -37,8 +37,8 @@ Mac buyers: not supported yet (no installer, folder path unverified).
 
 ## Phase 3 test (Mercedes, in CapCut desktop)
 
-Template 01 v3 (collage look, bigger Polaroids, keyframe motion, 4 clips) installed in her CapCut on 2026-10-16 as
-"Scrolly 01 One product three ways (4)", filled by the installer with four of her July vacuum clips. "(2)" is v2 (no
+Template 01 v4 (circles one at a time, Polaroids grow to fill the frame) installed in her CapCut on 2026-10-16 as
+"Scrolly 01 One product three ways (5)". v3 ("(4)", motion confirmed in CapCut by Mercedes) was, filled by the installer with four of her July vacuum clips. "(2)" is v2 (no
 motion); the unnumbered copy and "(3)" are v1. Motion uses CapCut keyframes (position, rotation, scale) and the
 Typewriter text animation; only scale keyframes were seen in her own drafts, so position and rotation keyframes are
 the first thing to check.
