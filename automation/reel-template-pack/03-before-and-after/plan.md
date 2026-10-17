@@ -67,3 +67,8 @@ after breaks out of its photo window · 7 the before photo held up against the s
 cork, the before and after photos pinned at the edges, the camera prints the product: "Comment "[KEYWORD]"".
 Type (her pick from the sampler, `storyboard/font-options.jpg`, she liked 1 to 4): Corben Bold in mint (the camera's
 colour) with a black edge; small words on label-maker tape. CTA is ManyChat style (her default from now on).
+
+**v3.1 (her note "more video of what is happening, something on the timer that shows it being cleaned"):** a 4th clip,
+the work (cleaning, sped up), plays full screen right after the snap with the giant half timer turning over it,
+see-through. The order is now before > the work > after prints and develops > breaks out > then/now > CTA. The develop
+beat no longer has the timer. 4 clips: before, the work, after (starts with a hand over the lens), product.

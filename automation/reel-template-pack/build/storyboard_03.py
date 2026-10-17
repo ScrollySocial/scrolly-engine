@@ -24,7 +24,7 @@ HEAD = 'C:/Users/merce/AppData/Local/CapCut/User Data/Cache/AITextTemplate/Resou
 HAND = E.INKFREE
 TONE = 'zscale=t=linear:npl=100,format=gbrpf32le,zscale=p=bt709,tonemap=hable:desat=0,zscale=t=bt709:m=bt709:r=tv,format=yuv420p'
 SCR = OUT / '_frames'; SCR.mkdir(exist_ok=True)
-BEFORE, AFTER, PRODUCT = ('IMG_1398', 0.5), ('IMG_1408', 0.5), ('IMG_1417', 0.5)
+BEFORE, WORK, AFTER, PRODUCT = ('IMG_1398', 0.5), ('IMG_1460', 2.0), ('IMG_1408', 0.5), ('IMG_1417', 0.5)   # 4 clips
 
 PHOTO_PIC = (65, 97, 719, 939)     # the picture area inside instant-photo-blank.png (measured)
 CAM_SLOT = (270, 22, 715, 32)      # the print slot on top of instant-camera.png (measured)
@@ -163,14 +163,22 @@ def f4():
     im.alpha_composite(shadow(cam, (0, 24), 26, 90), (int(left - 76), int(top - 76)))
     return im
 
+def f_work():
+    """The work: the cleaning plays full screen (sped up); the top half of the timer, giant and see-through, turns along
+    the bottom with the clip showing through it (its other half is off-screen). Time passing, while you see it happen."""
+    im = footage(WORK)
+    t = timer(1700, minutes_left=12, opacity=0.42); k = 1700 / (2 * DIAL[2])
+    im.alpha_composite(t, (int(W / 2 - DIAL[0] * k), int(H + 380 - DIAL[1] * k)))   # dial centre well below the bottom edge
+    place(im, label('CLEANING IT'), (W / 2, 260), -2)
+    return im
+
 def f5():
-    """It develops while the timer turns: the photo brightens as the hand pulls away; the top half of the timer, giant and
-    see-through, turns down along the bottom with the clip showing through it (its other half is off-screen)."""
+    """It develops: the photo is out of the camera, the after coming up through the dark as the hand pulls away;
+    the camera drops away below."""
     im = blur_bg(AFTER, 0.6)
-    ph, _ = instant_photo(AFTER, 700, develop=0.55)
-    place(im, shadow(ph), (W / 2 - 40, 820), -3)
-    t = timer(1800, minutes_left=8, opacity=0.66); k = 1800 / (2 * DIAL[2])
-    im.alpha_composite(t, (int(W / 2 - DIAL[0] * k), int(H + 120 - DIAL[1] * k)))   # dial centre below the bottom edge
+    cam, s = camera(1000); im.alpha_composite(shadow(cam, (0, 24), 26, 90), (int(W / 2 - cam.width / 2 - 76), int(H - cam.height * 0.22 - 76)))
+    ph, _ = instant_photo(AFTER, 800, develop=0.5)
+    place(im, shadow(ph), (W / 2, 860), 3)
     return im
 
 def f6():
@@ -215,14 +223,14 @@ def f8():
     return im
 
 def main():
-    frames = [f1(), f2(), f3(), f4(), f5(), f6(), f7(), f8()]
-    names = ['1 through the lens', '2 into the lens', '3 snap', '4 the print comes out dark',
-             '5 it develops as the timer turns', '6 the after breaks out', '7 then, held against now', '8 CTA']
+    frames = [f1(), f2(), f3(), f_work(), f4(), f5(), f6(), f7(), f8()]
+    names = ['1 through the lens', '2 into the lens', '3 snap', '4 the work, timer turning over it', '5 the after prints out dark',
+             '6 it develops', '7 the after breaks out', '8 then, held against now', '9 CTA']
     for old in OUT.glob('*.jpg'):
         if old.name != 'font-options.jpg': old.unlink()
     for n, f in zip(names, frames): f.convert('RGB').save(OUT / f'{n}.jpg', quality=90)
-    sheet = Image.new('RGB', (W * 4 + 60, H * 2 + 20), 'white')
-    for i, f in enumerate(frames): sheet.paste(f.convert('RGB'), ((i % 4) * (W + 20), (i // 4) * (H + 20)))
+    sheet = Image.new('RGB', (W * 5 + 80, H * 2 + 20), 'white')
+    for i, f in enumerate(frames): sheet.paste(f.convert('RGB'), ((i % 5) * (W + 20), (i // 5) * (H + 20)))
     sheet.resize((sheet.width // 3, sheet.height // 3)).save(OUT / 'storyboard-03.jpg', quality=90)
     print('saved', OUT)
 
