@@ -14,7 +14,9 @@ W, H, FPS = 1080, 1920, 30
 def darken(im, k):
     a = im.split()[3]; out = im.convert('RGB').point(lambda v: int(v * k)).convert('RGBA'); out.putalpha(a); return out
 
-def main():
+def pieces():
+    """The real-photo pieces of the box on screen (upright, flaps off the edges): body with the floor cut out, the four
+    flaps, the two halves of the closed-box photo, and where they sit. Shared with templates/t02.py."""
     box, (xo, y0), fl = S.open_box('kraft')
     fx0, fy0, fx1, fy1 = fl
     wall_x = int((fx1 - fx0) * 0.08); wall_y = int((fy1 - fy0) * 0.05)
@@ -32,9 +34,15 @@ def main():
     cs = cs.crop((int(cs.width * 0.02), int(cs.height * 0.01), int(cs.width * 0.98), int(cs.height * 0.99)))   # trim the pale edge
     closed = cs.resize((bx1 - bx0, by1 - by0))
     halfL, halfR = closed.crop((0, 0, closed.width // 2, closed.height)), closed.crop((closed.width // 2, 0, closed.width, closed.height))
-    video = S.footage('IMG_1447', 1.0, (W, H))
     hole = Image.new('L', body.size, 255); ImageDraw.Draw(hole).rectangle((fx0 - bx0, fy0 - by0, fx1 - bx0, fy1 - by0), fill=0)
     body.putalpha(Image.composite(body.split()[3], Image.new('L', body.size, 0), hole))
+    return dict(floor=fl, body_box=(bx0, by0, bx1, by1), body=body, top=top, bottom=bottom, left=left, right=right,
+                halfL=halfL, halfR=halfR, closed=closed)
+
+def main():
+    P = pieces(); fx0, fy0, fx1, fy1 = P['floor']; bx0, by0, bx1, by1 = P['body_box']
+    body, top, bottom, left, right, halfL, halfR = (P[k] for k in ('body', 'top', 'bottom', 'left', 'right', 'halfL', 'halfR'))
+    video = S.footage('IMG_1447', 1.0, (W, H))
 
     def frame(short_f, long_f, close_f, zoom=1.0):
         """short_f / long_f: 1 = flap lying open, 0 = folded away. close_f: 0 = closed halves not down, 1 = flat."""

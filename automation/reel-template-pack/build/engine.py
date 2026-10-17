@@ -38,7 +38,8 @@ PX_PER_SIZE = 6.1   # CapCut text size 15 measured at ~92 px on a 1080-wide fram
 
 INK = (24, 22, 20); BUTTER = (246, 228, 160); CREAM = (250, 244, 230)
 FONT_IDS = {'imbue': '7533523619876523280', 'awelier': '7462241028796337414', 'bodoni': '7580184437816675601'}   # CapCut library, download by id
-SYSTEM_FONTS = {'ink': 'C:/Windows/Fonts/Inkfree.ttf', 'arial': 'C:/Windows/Fonts/arial.ttf'}             # ship with Windows
+SYSTEM_FONTS = {'ink': 'C:/Windows/Fonts/Inkfree.ttf', 'arial': 'C:/Windows/Fonts/arial.ttf',
+                'mono': 'C:/Windows/Fonts/consola.ttf'}                                                  # ship with Windows
 INKFREE = 'C:/Windows/Fonts/Inkfree.ttf'                                        # ships with Windows 10 and 11
 SEG, SEGB = 'C:/Windows/Fonts/segoeui.ttf', 'C:/Windows/Fonts/segoeuib.ttf'
 SLOT_COLORS = [(243, 233, 220), (228, 236, 242), (237, 228, 240), (227, 239, 230), (246, 232, 214), (232, 230, 244)]
@@ -100,6 +101,17 @@ class Layers:
         if isinstance(rot, dict): rot, kf = 0, rot
         self.L.append(dict(kind='text', font=font, size=size, words=words, t=t, z=z, pos=pos, rot=rot, kf=kf or {},
                            typewriter=typewriter, color=color, shadow=shadow))
+    def flip(self, name, frames, t0, z, rot=0, fps=FPS):
+        """A flipbook: pre-rendered images played one per frame on one track. frames = [(img, centre), ...]; a frame
+        that repeats the previous one (same image object, same centre) just holds longer. Returns the end time."""
+        runs = []
+        for img, c in frames:
+            if runs and runs[-1][0] is img and runs[-1][1] == c: runs[-1][2] += 1
+            else: runs.append([img, c, 1])
+        k = 0
+        for i, (img, c, n) in enumerate(runs):
+            self.art(f'{name}-{i:02d}', img, (t0 + k / fps, t0 + (k + n) / fps), z, c, rot); k += n
+        return t0 + k / fps
 
 # ---- shared artwork ----------------------------------------------------------------------------------------------------
 def ring_frame(d, bg, seed, ring=12, ring_color=(255, 255, 255)):

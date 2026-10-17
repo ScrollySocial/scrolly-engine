@@ -1,146 +1,269 @@
-"""02 Pack an order with me, v3 (2026-10-17): Lisa's language, layered.
-Neutral dotted paper, one accent colour on key words (buyers change that text colour to their brand), words placed
-around the subject, framed clips stacked at different depths, stickers and words in front. Transitions are layers
-leaving: torn paper halves closing, a whole scene sliding away to reveal the next, a zoom through a star window,
-a diagonal panel slicing in, Polaroids dealt onto paper. Scenes later in time sit lower in the stack so they can be
-revealed from underneath."""
-from engine import Layers, pop, wiggle, rot_pt, polaroid_frame, W, H, INK, CREAM
+"""02 Pack an order with me, v5 animated (2026-10-17), following the approved storyboard (build/storyboard_02.py).
+Real photographed props (box, flaps, peanuts, shreds, envelope, wax seal, closed box) with a playful layer (washi tape,
+words on tape strips, a shipping label whose fields type in). Sage backdrop. The big serif words use the accent colour:
+buyers change that text colour to their brand.
+
+Beats: 1 the label prints and types in above the picking clip; 2 the real box slides up, the product clip plays on its
+floor; 3 one peanut drops in; 4 peanuts flood the screen (the transition); 5 white shreds, the envelope lands, the wax
+seal is pressed on; 6 the box closes (flipbooks of the real flaps folding, test_close.py); 7 the camera pushes in, pulls
+back to the sealed box, washi tape zips along the seam, the label slaps on; 8 CTA: the box slides to the corner, tape
+strip with the product name."""
+import random
+from PIL import Image, ImageDraw, ImageFont
+from engine import Layers, rot_pt, interp, font_path, PX_PER_SIZE, W, H
 import collage as C
+import storyboard_02 as S
+import test_close as TC
 
-ROSE = (212, 98, 127)          # stand-in accent: the buyer's brand colour
-WHITE = (255, 255, 255)
-SPEC = dict(num='02', title='Pack an order with me', subtitle='14.4 seconds. Four clips, filmed from above or close.',
+ACCENT = (44, 78, 168)        # stand-in for the buyer's brand colour (the big serif words)
+INK, WHITE, BLUE, BUTTER = (24, 23, 22), (255, 255, 255), (166, 206, 242), (250, 232, 120)
+SPEC = dict(num='02', title='Pack an order with me', subtitle='14.4 seconds. Three clips, filmed from above or close.',
             font='bodoni', dir='02-pack-an-order', folder='Template 02 - Pack an order with me',
-            project='Scrolly 02 Pack an order with me', cover_at=1.2,
-            slots=[('The empty box or mailer, from above', 'Clear the table first'),
-                   ('Your product, held up or going in', 'Your bestseller'),
-                   ('The extras: tissue, a note, a sticker', 'Whatever you really add'),
-                   ('Sealing it up', 'Keep the shipping label out of frame')],
-            test_clips=[('IMG_1462', 0.3), ('IMG_1439', 0.3), ('IMG_1460', 0.3), ('IMG_1447', 0.3)])
+            project='Scrolly 02 Pack an order with me', cover_at=1.9,
+            slots=[('Picking the order', 'Hands taking your product off the shelf'),
+                   ('Your product going into the box', 'Film from above, box fills the frame'),
+                   ('The extras going in', 'Tissue, a note, a sticker: what you really add')],
+            test_clips=[('IMG_1439', 0.5), ('IMG_1439', 1.8), ('IMG_1460', 1.2)])
+END = 14.4
 
-def card(g, key, slot, src, t, z, c, tilt, size=(420, 520), border=20, bottom=90, motion=None, speed=1.0):
-    """A framed clip (Polaroid-style print): the clip is cropped to the window and moves with its frame."""
-    pw, ph = size; win = (pw - 2 * border, ph - border - bottom)
-    wc = rot_pt((c[0], c[1] - ph / 2 + border + win[1] / 2), c, tilt)
-    g.clip(slot, t, z, wc, (win[0] + 4, win[1] + 4), tilt, motion(wc) if motion else {}, src=src, speed=speed)
-    g.art(f'print-{key}', polaroid_frame(size, border, bottom, seed=sum(map(ord, key)) % 89, tape=True), t, z + 1, c, tilt,
-          motion(c) if motion else {})
+# ---- moving groups -----------------------------------------------------------------------------------------------------
+# A transform is (pivot, [(t, dx, dy, scale, rot_cw)]) in absolute seconds; children of a group get keyframes that move,
+# scale and turn them around the pivot together, like one object.
+def xf(pivot, pts): return (pivot, pts)
+def pop_in(pivot, t0, peak=1.18): return (pivot, [(t0, 0, 0, 0, 0), (t0 + .16, 0, 0, peak, 0), (t0 + .27, 0, 0, .94, 0), (t0 + .36, 0, 0, 1, 0)])
+def pop_out(pivot, t0): return (pivot, [(t0, 0, 0, 1, 0), (t0 + .08, 0, 0, 1.1, 0), (t0 + .18, 0, 0, 0, 0)])
 
-def slide(start, end, t0=0.0, dur=0.45):
-    return {'x': [(t0, start[0]), (t0 + dur * 0.75, end[0] + (end[0] - start[0]) * 0.03), (t0 + dur, end[0])],
-            'y': [(t0, start[1]), (t0 + dur * 0.75, end[1] + (end[1] - start[1]) * 0.03), (t0 + dur, end[1])]}
+def at(xfs, p, r, t):
+    x, y = p; s, rr = 1.0, r
+    for pivot, pts in xfs:
+        dx, dy, sc, ro = (interp([(q[0], q[i]) for q in pts], t, 0) for i in (1, 2, 3, 4))
+        x, y = rot_pt((pivot[0] + (x - pivot[0]) * sc, pivot[1] + (y - pivot[1]) * sc), pivot, ro)
+        x, y, s, rr = x + dx, y + dy, s * sc, rr + ro
+    return x, y, s, rr
 
-def leave(kf, pos, t0, dx=0, dy=-2400, dur=0.3):
-    """Add an exit (flying off-screen) to a layer's keyframes."""
-    kf = {k: list(v) for k, v in kf.items()}
-    for axis, d_, i in (('x', dx, 0), ('y', dy, 1)):
-        if not d_: continue
-        base = kf[axis][-1][1] if kf.get(axis) else pos[i]
-        if not kf.get(axis): kf[axis] = [(0, base)]
-        kf[axis] += [(t0, base), (t0 + dur, base + d_)]
+def motion(xfs, p, r, T, k=1.0):
+    """Keyframes (layer-relative) for a child at rest position p, rest rotation r, own scale k."""
+    keys = sorted({q[0] for _, pts in xfs for q in pts})
+    ts = set(keys)
+    for a, b in zip(keys, keys[1:]):                     # in-betweens so turning groups follow an arc
+        if b - a > 0.02: ts.update(a + (b - a) * f for f in (0.25, 0.5, 0.75))
+    ts = sorted(t for t in ts if T[0] < t < T[1]); ts = [T[0]] + ts
+    kf = {'x': [], 'y': [], 'scale': [], 'rot': []}
+    for t in ts:
+        x, y, s, rr = at(xfs, p, r, t)
+        kf['x'].append((t - T[0], x)); kf['y'].append((t - T[0], y)); kf['scale'].append((t - T[0], s * k)); kf['rot'].append((t - T[0], rr))
+    for prop in list(kf):                                # drop keyframes that never change
+        if len({round(v, 3) for _, v in kf[prop]}) == 1: kf[prop] = [kf[prop][0]] if prop != 'scale' else []
     return kf
 
+def art(g, name, img, T, z, p, r, xfs, k=1.0):
+    g.art(name, img, T, z, p, r, motion(xfs, p, r, T, k))
+
+def text(g, font, size, words, T, z, p, r, xfs, color=INK, typewriter=None):
+    g.text(font, size, words, T, z, p, r, motion(xfs, p, r, T), typewriter=typewriter, color=color)
+
+# ---- the playful layer ---------------------------------------------------------------------------------------------------
+def tape_words(g, key, c, small, big, rot, T, z, xfs, seed=17):
+    """A butter gingham washi strip with a small sans line and a big serif line (accent colour) on it."""
+    strip = C.washi(760, 250, 'gingham', (BUTTER, WHITE), seed=seed, alpha=250)
+    art(g, f'tape-{key}', strip, T, z, c, rot, xfs)
+    text(g, 'arial', 8.5, (small, small), T, z + 1, rot_pt((c[0], c[1] - 50), c, rot), rot, xfs)
+    text(g, 'bodoni', 15.7, (big, big), T, z + 2, rot_pt((c[0], c[1] + 44), c, rot), rot, xfs, color=ACCENT)
+
+def letters_centre(font, size, x_left, y_top, words):
+    """Where a left-aligned line drawn at (x_left, y_top) has its centre (the engine centres text on its spot)."""
+    f = ImageFont.truetype(font_path(font), round(size * PX_PER_SIZE))
+    asc, _ = f.getmetrics(); cap = f.getbbox('H', anchor='la')[1]
+    return (x_left + f.getlength(words) / 2, y_top + (cap + asc) / 2)
+
+LABEL_FIELDS = [   # (y in the 520-wide label drawing, size, template words, test words, typing starts, typing seconds)
+    (205, 34, '[Your shop]', 'Sunday Studio', 0.62, 0.35),
+    (315, 44, 'YOU', 'YOU', 1.02, 0.18),
+    (368, 34, '123 YOUR HOME', '123 YOUR HOME', 1.24, 0.4),
+    (495, 34, '1 x something nice', '1 x something nice', 1.7, 0.45)]
+
+def label(g, key, c, width, rot, T, z, xfs, typing=True):
+    """The real-looking 4x6 shipping label; its fields are editable CapCut text (mono), typing in when typing=True."""
+    k = width / 520; hgt = int(780 * k)
+    art(g, f'label-{key}', C.ship_label().resize((width, hgt)), T, z, c, rot, xfs)
+    for i, (y, px, words, test, t0, secs) in enumerate(LABEL_FIELDS):
+        size = round(px * k / PX_PER_SIZE, 2)
+        p = rot_pt(letters_centre('mono', size, c[0] - width / 2 + 60 * k, c[1] - hgt / 2 + y * k, words), c, rot)
+        text(g, 'mono', size, (words, test), (T[0] + t0, T[1]) if typing else T, z + 1 + i, p, rot, xfs,
+             typewriter=secs if typing else None)
+
+def ticks(n=3, length=90, gap=34, width=7):
+    im = Image.new('RGBA', (gap * (n - 1) + 2 * width + 40, length + 20), (0, 0, 0, 0)); d = ImageDraw.Draw(im)
+    for i in range(n):
+        x = width + 20 + i * gap; d.line((x, 10 + (i % 2) * 12, x, 10 + length - (i % 2) * 12), fill=INK + (255,), width=width)
+    return im
+
+# ---- the box, cut from her real photo (same pieces as test_close.py) --------------------------------------------------------
+def box_parts():
+    P = TC.pieces(); bx0, by0, bx1, by1 = P['body_box']
+    P['spots'] = {'top': (bx0, by0 - P['top'].height), 'bottom': (bx0, by1), 'left': (bx0 - P['left'].width, by0 - 40),
+                  'right': (bx1, by0 - 40)}
+    open_ = Image.new('RGBA', (W, H), (0, 0, 0, 0)); open_.alpha_composite(P['body'], (bx0, by0))
+    for e in ('top', 'bottom', 'left', 'right'): open_.alpha_composite(P[e], P['spots'][e])
+    P['open'] = open_
+    closed = P['body'].copy(); closed.alpha_composite(P['closed']); P['closed_box'] = C.shadow(closed, offset=(10, 18), blur=20, alpha=70)
+    return P
+
+def flap_frames(P, edges, n=6):
+    """Flipbook frames of flaps folding away toward their hinge (foreshortened, darkening), each cropped to the flap."""
+    ease = lambda x: x * x * (3 - 2 * x)
+    bx0, by0, bx1, by1 = P['body_box']; books = {e: [] for e in edges}
+    for i in range(n):
+        f = 1 - ease(i / n)
+        for e in edges:
+            im = P[e]; vert = e in ('top', 'bottom')
+            piece = im.resize((im.width, max(1, int(im.height * f))) if vert else (max(1, int(im.width * f)), im.height))
+            piece = TC.darken(piece, 0.7 + 0.3 * f)
+            x, y = P['spots'][e]
+            if e == 'top': y = by0 - piece.height
+            if e == 'left': x = bx0 - piece.width
+            books[e].append((piece, (x + piece.width / 2, y + piece.height / 2)))
+    return books
+
+def halves_frames(P, n=8):
+    ease = lambda x: x * x * (3 - 2 * x)
+    bx0, by0, bx1, by1 = P['body_box']; cy = (by0 + by1) / 2; L, R = [], []
+    for i in range(1, n + 1):
+        f = ease(i / n); k = 0.72 + 0.28 * f; w = max(1, int(P['halfL'].width * f))
+        L.append((TC.darken(P['halfL'].resize((w, P['halfL'].height)), k), (bx0 + w / 2, cy)))
+        R.append((TC.darken(P['halfR'].resize((w, P['halfR'].height)), k), (bx1 - w / 2, cy)))
+    return L, R
+
+def shreds_layer(floor, spot):
+    """White paper shreds filling the box floor, with a rounded window for the extras clip and its shadow."""
+    fx0, fy0, fx1, fy1 = floor; sx0, sy0, sx1, sy1 = spot
+    im = S.ImageOps.fit(S.white_shreds(), (fx1 - fx0, fy1 - fy0))
+    sh = Image.new('L', im.size, 0); ImageDraw.Draw(sh).rounded_rectangle((sx0 - fx0, sy0 - fy0 + 12, sx1 - fx0, sy1 - fy0 + 12), 36, fill=95)
+    dark = Image.new('RGBA', im.size, (0, 0, 0, 255)); dark.putalpha(sh.filter(S.ImageFilter.GaussianBlur(14))); im.alpha_composite(dark)
+    hole = Image.new('L', im.size, 255); ImageDraw.Draw(hole).rounded_rectangle((sx0 - fx0, sy0 - fy0, sx1 - fx0, sy1 - fy0), 36, fill=0)
+    im.putalpha(S.ImageChops.multiply(im.split()[3], hole))
+    return im
+
+def peanut_clumps(n_bands=10, seed=4):
+    """The flood: real peanut photos (some with a white die-cut edge) laid over the whole screen, grouped in bands."""
+    r = random.Random(seed); pea = S.prop('packing-peanut')
+    tints = [None, None, None, (250, 250, 246), (250, 232, 140), None, (250, 250, 246)]
+    spots = [(int((cx + .5) * W / 6 + r.randint(-50, 50)), int((cy + .5) * H / 10 + r.randint(-50, 50))) for cy in range(10) for cx in range(6)]
+    spots += [(r.randint(0, W), r.randint(0, H)) for _ in range(22)]
+    spots += [(r.randint(220, W - 220), r.randint(500, H - 500)) for _ in range(12)]   # no gap in the middle
+    pieces = []
+    for k, (x, y) in enumerate(spots):
+        s = r.randint(240, 380); p = pea.resize((s, s)); t = tints[k % len(tints)]
+        if t: p = S.recolour(p, t)
+        if k % 2 == 0: p = S.bordered(p, WHITE, WHITE, 14, 2)
+        pieces.append((y, p.rotate(r.randint(0, 359), expand=True, resample=Image.BICUBIC), x))
+    pieces.sort(key=lambda q: q[0])
+    out = []
+    for b in range(n_bands):
+        band = pieces[b * len(pieces) // n_bands:(b + 1) * len(pieces) // n_bands]
+        x0 = min(x - p.width // 2 for _, p, x in band); y0 = min(y - p.height // 2 for y, p, _ in band)
+        x1 = max(x + p.width // 2 for _, p, x in band); y1 = max(y + p.height // 2 for y, p, _ in band)
+        im = Image.new('RGBA', (x1 - x0 + 2, y1 - y0 + 2), (0, 0, 0, 0))
+        for y, p, x in band: im.alpha_composite(p, (x - p.width // 2 - x0, y - p.height // 2 - y0))
+        cut = im.crop((max(0, -x0 - 60), 0, min(im.width, W + 60 - x0), im.height))   # off-screen parts aren't needed
+        out.append((cut, (max(x0, -60) + cut.width / 2, y0 + im.height / 2)))
+    return out   # top band first
+
+# ---- the template ---------------------------------------------------------------------------------------------------------
 def layers():
-    g = Layers()
-    # ===== S1 hook 0 to 2.4 (top of the stack: base 60) =====================================================
-    t = 0.0
-    for slot, src in [(1, 0.0), (0, 0.0), (1, 1.0), (2, 0.0)]:
-        g.clip(slot, (t, t + 0.6), 60, (540, 960), (W, H), src=src, speed=1.15); t += 0.6
-    T = (0, 2.4)
-    card(g, 'h1', 0, 0.5, T, 61, (215, 1430), -8, (380, 470), motion=lambda p: slide((p[0] - 700, p[1] + 200), p, 0.3))
-    card(g, 'h2', 2, 0.5, T, 63, (860, 1520), 7, (380, 470), motion=lambda p: slide((p[0] + 700, p[1] + 300), p, 0.5))
-    g.text('arial', 16, ('packing', 'packing'), T, 70, (250, 300), kf={'scale': pop(0.1, 1.15)}, color=WHITE, shadow=True)
-    g.text('bodoni', 30, ('an order', 'an order'), T, 71, (620, 450), kf=slide((1500, 450), (620, 450), 0.3), color=ROSE, shadow=True)
-    g.text('arial', 16, ('with me', 'with me'), T, 72, (820, 620), kf={'scale': pop(0.65, 1.15)}, color=WHITE, shadow=True)
-    for k, (x, y, s, t0) in enumerate([(120, 470, 90, 0.8), (960, 330, 70, 1.0), (520, 1180, 60, 1.2)]):
-        g.art(f'tw{k}', C.sparkle_fill(s, WHITE), T, 65 + k, (x, y),
-              {'scale': [(0, 0), (t0, 0), (t0 + 0.15, 1.3), (t0 + 0.3, 0.8), (t0 + 0.5, 1.15), (t0 + 0.7, 0.9), (2.4, 1.0)],
-               'rot': [(t0, 0), (2.4, 90)]})
-    # torn halves slam together over the end of the hook
-    left = C.torn_strip((560, 1920), CREAM, seed=31, edges='r'); right = C.torn_strip((560, 1920), CREAM, seed=32, edges='l')
-    g.art('half-l', left, (2.1, 2.45), 90, (280, 960), 0, {'x': [(0, -400), (0.25, 290), (0.32, 280)]})
-    g.art('half-r', right, (2.1, 2.45), 91, (800, 960), 0, {'x': [(0, 1480), (0.25, 790), (0.32, 800)]})
+    g = Layers(); P = box_parts()
+    fx0, fy0, fx1, fy1 = P['floor']; bx0, by0, bx1, by1 = P['body_box']
+    floor_c = ((fx0 + fx1) / 2, (fy0 + fy1) / 2); body_c = ((bx0 + bx1) / 2, (by0 + by1) / 2)
+    g.art('sage', Image.new('RGBA', (W, H), S.BG), (0, END), 0, (540, 960))
 
-    # ===== S2 the goods 2.4 to 5.0 (base 40): blob window, a print peeking, aside + arrow; leaves upward ==========
-    T = (2.4, 5.0); out = 2.3
-    blob = C.blob_points((560, 1020), 330, 400, seed=7)
-    g.clip(1, T, 40, (560, 1020), (760, 900), 0, leave({'scale': [(0, 1.0), (2.3, 1.08)]}, (560, 1020), out), src=0.4)
-    g.art('blob-card', C.window_card((W, H), blob, seed=33), T, 41, (540, 960), 0, leave({}, (540, 960), out))
-    g.art('blob-frame', C.window_frame((W, H), blob), T, 42, (540, 960), 0,
-          leave({'scale': [(0, 1.15), (0.15, 0.97), (0.25, 1.0)]}, (540, 960), out))
-    card(g, 'g1', 0, 1.5, T, 43, (180, 1650), -10, (300, 370), border=16, bottom=70,
-         motion=lambda p: leave(slide((p[0] - 500, p[1] + 300), p, 0.4), p, out))
-    g.text('arial', 14, ('the goods', 'the goods'), T, 50, (300, 310), kf=leave({'scale': pop(0.2, 1.15)}, (300, 310), out))
-    g.text('bodoni', 24, ('go in first', 'go in first'), T, 51, (560, 450), typewriter=0.45,
-           kf=leave({}, (560, 450), out), color=ROSE)
-    g.art('arrow-g', C.arrow(200, INK, 6, 50, seed=34).rotate(200, expand=True), T, 45, (860, 1530),
-          leave({'scale': pop(0.8)}, (860, 1530), out))
-    g.text('ink', 14, ('[my bestseller]', 'my bestseller'), T, 52, (820, 1700), -4,
-           leave({'scale': pop(0.95, 1.15)}, (820, 1700), out))
-    g.art('tape-blob', C.tape(260, 80, seed=35), T, 46, (360, 640), -30, leave({'scale': pop(0.3)}, (360, 640), out))
+    # ===== 1 the label prints and types in, above the picking clip (0 to 2.75) =====
+    # text always renders above images in CapCut, so the rising box pushes this whole scene up and out
+    T1 = (0, 2.75); push = xf((540, 960), [(2.4, 0, 0, 1, 0), (2.68, 0, -1980, 1, 0)])
+    g.clip(0, T1, 2, (540, 1450), (W, 940), 0, motion([push], (540, 1450), 0, T1), src=0.0, speed=1.0)
+    art(g, 'washi-split', C.washi(1300, 120, 'stripes', (INK, WHITE), seed=3), T1, 3, (540, 985), 2,
+        [xf((540, 985), [(0.1, -1500, 0, 1, 0), (0.4, 30, 0, 1, 0), (0.48, 0, 0, 1, 0)]), push])
+    printing = xf((760, 590), [(0.1, 0, -1100, 1, 0), (0.18, 0, -760, 1, 0), (0.22, 0, -760, 1, 0), (0.3, 0, -430, 1, 0),
+                               (0.34, 0, -430, 1, 0), (0.42, 0, -120, 1, 0), (0.46, 0, -120, 1, 0), (0.54, 0, 0, 1, 0)])
+    label(g, 'print', (760, 590), 470, 4, T1, 4, [printing, push])
+    tape_words(g, 'packing', (330, 130), 'packing', 'an order', 6, T1, 9, [pop_in((330, 130), 0.3), push])
 
-    # ===== S3 a little extra 4.7 to 7.6 (base 20): star window, stars take over, zoom through ====================
-    T = (4.7, 7.6); zoom = 2.55
-    star = C.star_points((540, 960), 470, 215)
-    g.clip(2, T, 20, (540, 960), (W, H), src=0.2)
-    zk = {'scale': [(0, 1.0), (zoom, 1.0), (zoom + 0.35, 3.2)]}
-    g.art('star-card', C.window_card((W, H), star, seed=36), T, 21, (540, 960), 0, dict(zk))
-    g.art('star-frame', C.window_frame((W, H), star, border=18), T, 22, (540, 960), 0, dict(zk))
-    spots = [(150, 300, ROSE, 210), (930, 260, CREAM, 170), (110, 1500, WHITE, 190), (960, 1620, ROSE, 230),
-             (300, 1820, CREAM, 160), (820, 120, WHITE, 140), (80, 900, ROSE, 150), (1000, 1050, WHITE, 160),
-             (560, 140, ROSE, 120), (560, 1840, WHITE, 130), (250, 620, CREAM, 120), (860, 1330, CREAM, 140)]
-    for k, (x, y, col, s) in enumerate(spots):
-        t0 = 0.35 + 0.1 * k
-        g.art(f'st{k}', C.star_fill(s, col, outline=INK if col != ROSE else None, ow=3), T, 23 + k, (x, y), (k * 17) % 40 - 20,
-              {'scale': [(0, 0.0), (t0, 0.0), (t0 + 0.15, 1.25), (t0 + 0.25, 0.95), (t0 + 0.32, 1.0), (zoom, 1.0), (zoom + 0.3, 0.0)]})
-    g.text('arial', 14, ('a little', 'a little'), T, 30, (270, 230), kf={'scale': pop(0.2, 1.15) + [(zoom, 1.0), (zoom + 0.2, 0.0)]})
-    g.text('bodoni', 34, ('extra', 'extra'), T, 31, (640, 360), color=ROSE,
-           kf={'scale': [(0, 0), (0.4, 0), (0.55, 1.3), (0.65, 0.95), (0.72, 1.0), (zoom, 1.0), (zoom + 0.2, 0.0)]})
-    for k, (x, y, t0) in enumerate([(380, 1180, 1.6), (720, 760, 1.85), (620, 1330, 2.1)]):
-        g.art(f'sp3-{k}', C.sparkle_fill(110, WHITE), T, 36 + k, (x, y),
-              {'scale': [(0, 0), (t0, 0), (t0 + 0.15, 1.3), (t0 + 0.3, 0.9), (zoom, 1.0), (zoom + 0.2, 0)], 'rot': [(t0, 0), (zoom, 60)]})
+    # ===== 2 the real box slides up, the product clip on its floor (2.4 to 6.15) =====
+    rise = xf((540, 960), [(2.4, 0, 1950, 1, 0), (2.68, 0, -28, 1, 0), (2.76, 0, 0, 1, 0)])
+    T2 = (2.4, 6.12)
+    g.clip(1, T2, 10, floor_c, (fx1 - fx0, fy1 - fy0), 0, motion([rise], floor_c, 0, T2), src=0.0, speed=1.0)
+    art(g, 'box-open', P['open'], (2.4, 8.9), 20, (540, 960), 0, [rise])
+    tape_words(g, 'goods', (540, 190), 'the goods', 'go in first', 3, (2.85, 4.45), 50,
+               [pop_in((540, 190), 2.85), pop_out((540, 190), 4.27)], seed=18)
 
-    # ===== S4 the extras 7.6 to 10.2 (base 0): pinned note over fast cuts, prints stacked in the corner ============
-    t = 7.6
-    for slot, src in [(2, 1.2), (2, 2.2), (0, 1.0), (2, 3.0)]:
-        g.clip(slot, (t, t + 0.65), 0, (540, 960), (W, H), src=src, speed=1.15); t += 0.65
-    T = (7.6, 10.2)
-    nk = {'y': [(0, -400), (0.3, 1010), (0.4, 990), (0.48, 1000)], 'rot': [(0, -20)] + wiggle(0.5, 2.6, 3, base=-4)}
-    g.art('note', C.sticky_note(500, 'yellow', seed=37), T, 5, (540, 1000), -4, nk)
-    g.text('ink', 17, ('[tissue +\na thank-you note]', 'tissue +\na thank-you note'), T, 60, (540, 1010), -4,
-           {'y': [(0, -390), (0.3, 1020), (0.4, 1000), (0.48, 1010)], 'rot': [(0, -20)] + wiggle(0.5, 2.6, 3, base=-4)})
-    for k in range(3):
-        g.text('arial', 10, (f'{k + 1}/3', f'{k + 1}/3'), (7.6 + 0.65 * (k + 1), 7.6 + 0.65 * (k + 2)), 61, (540, 1360),
-               color=WHITE, shadow=True)
-    g.text('arial', 12, ('the', 'the'), T, 62, (300, 300), kf={'scale': pop(0.1)}, color=WHITE, shadow=True)
-    g.text('bodoni', 26, ('extras', 'extras'), T, 63, (560, 420), kf={'scale': pop(0.25, 1.2)}, color=ROSE, shadow=True)
-    card(g, 'e1', 1, 2.0, T, 1, (880, 1650), 9, (300, 370), border=16, bottom=70,
-         motion=lambda p: slide((p[0] + 500, p[1] + 200), p, 0.6))
-    card(g, 'e2', 0, 2.0, T, 3, (790, 1720), -5, (300, 370), border=16, bottom=70,
-         motion=lambda p: slide((p[0] + 500, p[1] + 300), p, 0.8))
+    # ===== 3 one peanut drops in (4.45 to 6.15) =====
+    pea = S.bordered(S.prop('packing-peanut').resize((360, 360)), WHITE, WHITE, 16, 2)
+    art(g, 'peanut-one', pea, (4.45, 6.15), 25, (560, 980), 14,
+        [xf((560, 980), [(4.45, 0, -1350, 1, -30), (4.66, 0, 0, 1, 0), (4.74, 0, -46, 1, 6), (4.82, 0, 0, 1, 0)])])
+    art(g, 'ticks-peanut', ticks(), (4.7, 6.15), 26, (520, 700), 0, [pop_in((520, 700), 4.7)])
+    tape_words(g, 'padding', (540, 1740), '+ a little', 'padding', -3, (4.85, 5.75), 50,
+               [pop_in((540, 1740), 4.85), pop_out((540, 1740), 5.55)], seed=19)   # gone before the flood covers it
 
-    # ===== S5 sealed 10.2 to 11.6 (base 80): a tilted panel of video slices in diagonally ===========================
-    T = (10.2, 11.6)
-    g.clip(1, (10.2, 12.0), 80, (540, 960), (W, H), src=2.5, speed=1.15)   # runs on under the paper wipe
-    g.clip(3, (10.2, 12.0), 81, (560, 1520), (1500, 1100), -18, slide((1900, 2500), (560, 1520), 0.0, 0.4), src=0.0, speed=1.15)
-    g.art('seam', C.tape(1800, 26, seed=38, color=WHITE, alpha=255), T, 82, (560, 980), -18,
-          slide((1900, 1960), (560, 980), 0.0, 0.4))
-    g.art('band-sealed', C.torn_strip((640, 300), WHITE, seed=39), T, 83, (380, 1520), -6, slide((-700, 1520), (380, 1520), 0.45))
-    g.text('bodoni', 26, ('sealed', 'sealed'), T, 64, (330, 1480), -6, slide((-750, 1480), (330, 1480), 0.45), color=ROSE)
-    g.text('arial', 13, ('+ ready', '+ ready'), T, 65, (520, 1590), -6, slide((-560, 1590), (520, 1590), 0.45))
+    # ===== 4 peanuts flood the screen, then fall away (5.55 to 6.85) =====
+    clumps = peanut_clumps()
+    for j, (im, c) in enumerate(reversed(clumps)):    # the bottom band lands first, the top band last
+        t0 = 5.55 + j * 0.035; t1 = 6.2 + j * 0.03
+        art(g, f'flood-{j}', im, (t0, t1 + 0.32), 60 + (len(clumps) - j), c, 0,
+            [xf(c, [(t0, 0, -2100, 1, 0), (t0 + 0.2, 0, 22, 1, 0), (t0 + 0.26, 0, 0, 1, 0),
+                    (t1, 0, 0, 1, 0), (t1 + 0.14, 0, 380, 1, 0), (t1 + 0.3, 0, 2300, 1, 0)])])
 
-    # ===== S6 CTA 11.6 to 14.4 (base 100): paper wipes in, three Polaroids dealt, name types on =====================
-    T = (11.6, 14.4)
-    g.art('cta-paper', C.dot_paper((W, H), seed=40), T, 100, (540, 960), 0, {'x': [(0, 1700), (0.3, 520), (0.38, 540)]})
-    deal = [((520, 760), -9, 0.35), ((580, 740), 6, 0.6), ((540, 730), -2, 0.85)]
-    for k, (c, tilt, t0) in enumerate(deal):
-        card(g, f'd{k}', [1, 2, 1][k], [0.6, 1.4, 2.6][k], T, 101 + 2 * k, c, tilt, (560, 680), border=24, bottom=110,
-             motion=lambda p, t0=t0: slide((p[0] + 300, p[1] + 1500), p, t0, 0.35))
-    g.text('bodoni', 24, ('[Product name]', 'Spray cleaner'), (12.7, 14.4), 70, (540, 1300), typewriter=0.5, color=ROSE)
-    g.text('arial', 11, ('shop at [where to buy]', 'shop at the link in my bio'), T, 71, (540, 1430), kf={'scale': pop(1.6)})
-    y = 1600
-    g.art('arrow-cta', C.arrow(170, INK, 6, 40, seed=41).rotate(-70, expand=True), T, 110, (540, y),
-          {'scale': pop(1.8), 'y': [(2.0, y), (2.2, y + 30), (2.4, y), (2.6, y + 30), (2.8, y)]})
-    for k, (x, yy, t0) in enumerate([(170, 330, 1.2), (960, 1120, 1.5)]):
-        g.art(f'sp6-{k}', C.sparkle_fill(100, ROSE), T, 111 + k, (x, yy), {'scale': pop(t0, 1.3), 'rot': [(t0, 0), (2.8, 90)]})
+    # ===== 5 white shreds, the extras clip, the envelope lands, the wax seal is pressed on (6.1 to 9.57) =====
+    T5 = (6.12, 9.57)
+    sw = fx1 - fx0 - 150; sh = int(sw * 1.2); scx, scy = floor_c[0], floor_c[1] - 60
+    spot = (int(scx - sw / 2), int(scy - sh / 2), int(scx + sw / 2), int(scy + sh / 2))
+    g.clip(2, T5, 10, (scx, scy), (sw, sh), src=0.0, speed=1.0)
+    g.art('shreds', shreds_layer(P['floor'], spot), T5, 12, floor_c)
+    tape_words(g, 'extra', (540, 190), 'a little', 'extra', -2, (6.45, 8.9), 50,
+               [pop_in((540, 190), 6.45), pop_out((540, 190), 8.72)], seed=20)
+    env_c = (640, 1500)
+    env = C.shadow(S.prop('envelope').resize((580, 334)), offset=(8, 14), blur=14, alpha=70)
+    art(g, 'envelope', env, (6.85, 9.57), 25, env_c, -10,
+        [xf(env_c, [(6.85, 900, 700, 1, 25), (7.15, -20, -14, 1, -2), (7.25, 0, 0, 1, 0)])])
+    seal_c = (585, 1325)
+    seal = C.shadow(S.prop('wax-seal-thank-you').resize((300, 300)), offset=(10, 22), blur=20, alpha=70)
+    art(g, 'seal', seal, (7.6, 9.57), 26, seal_c, 8,
+        [xf(seal_c, [(7.6, 0, 0, 1.8, -10), (7.74, 0, 0, 0.93, 0), (7.82, 0, 0, 1.03, 0), (7.9, 0, 0, 1, 0)])])
+    art(g, 'ticks-seal', ticks().rotate(35, expand=True), (7.75, 9.0), 27, (420, 1180), 0, [pop_in((420, 1180), 7.75)])
+
+    # ===== 6 the box closes: real flaps fold away, the closed lid's halves fold down and meet (8.9 to 9.57) =====
+    g.art('box-body', P['body'], (8.9, 9.57), 20, body_c)
+    books = flap_frames(P, ('top', 'bottom', 'left', 'right'))
+    for z, e in enumerate(('top', 'bottom')): g.flip(f'flap-{e}', books[e], 8.9, 21 + z)
+    for z, e in enumerate(('left', 'right')): g.flip(f'flap-{e}', books[e], 8.9 + 6 / 30, 23 + z)
+    hl, hr = halves_frames(P)
+    g.flip('half-l', hl, 9.57 - 8 / 30, 30); g.flip('half-r', hr, 9.57 - 8 / 30, 31)
+
+    # ===== 7 push in, pull back to the sealed box, tape zips along the seam, the label slaps on (9.57 to 11.8) =====
+    zoom = max(W / (bx1 - bx0), H / (by1 - by0)) * 1.02; s7 = 0.95; c7 = (540, 1040)
+    box_move = xf(body_c, [(9.57, 0, 0, 1, 0), (9.9, 0, 0, zoom, 0), (10.0, 0, 0, zoom, 0),
+                           (10.32, c7[0] - body_c[0], c7[1] - body_c[1], s7, 0)])
+    cta = xf(c7, [(11.8, 0, 0, 1, 0), (12.15, 290 - c7[0] + 12, 1480 - c7[1] - 15, 0.6, 17), (12.25, 290 - c7[0], 1480 - c7[1], 0.58, 16)])
+    art(g, 'box-closed', P['closed_box'], (9.57, END), 32, body_c, 0, [box_move, cta])
+    tape_len = int((by1 - by0) * s7) + 16
+    tape = C.washi(tape_len, 170, 'dots', (BLUE, WHITE), seed=8, alpha=245).rotate(90, expand=True)
+    top_y = c7[1] - tape.height / 2; zip_frames = []
+    for i in range(1, 10):
+        part = tape.crop((0, 0, tape.width, max(2, int(tape.height * i / 9))))
+        zip_frames.append((part, (c7[0], top_y + part.height / 2)))
+    t_zip = g.flip('tape-zip', zip_frames[:-1], 10.4, 33)
+    art(g, 'tape-seam', tape, (t_zip, END), 33, c7, 0, [cta])
+    lab_c = (c7[0] + 150 * s7, c7[1] + 260 * s7)
+    label(g, 'box', lab_c, int(430 * s7), 6, (10.8, END), 34,
+          [xf(lab_c, [(10.8, 0, 0, 1.7, -12), (10.94, 0, 0, 0.94, 0), (11.02, 0, 0, 1.02, 0), (11.1, 0, 0, 1, 0)]), cta], typing=False)
+    tape_words(g, 'sealed', (540, 160), 'sealed +', 'on its way', -3, (10.45, 12.0), 50,
+               [pop_in((540, 160), 10.45), xf((540, 160), [(11.8, 0, 0, 1, 0), (12.0, 0, -500, 1, 0)])], seed=21)
+
+    # ===== 8 CTA: tape strip with the product name, where to buy (11.95 to 14.4) =====
+    T8 = (11.95, END)
+    strip = C.washi(980, 300, 'gingham', (BUTTER, WHITE), seed=11, alpha=250)
+    art(g, 'tape-cta', strip, T8, 40, (540, 450), 3, [xf((540, 450), [(11.95, 1300, 0, 1, 0), (12.25, -25, 0, 1, 0), (12.33, 0, 0, 1, 0)])])
+    name_c = letters_centre('bodoni', 19.7, 0, 350, '[Product name]'); name_c = (540, name_c[1])
+    g.text('bodoni', 19.7, ('[Product name]', 'Spray cleaner'), (12.3, END), 41, name_c, typewriter=0.5, color=ACCENT)
+    shop_c = (540, letters_centre('arial', 8.2, 0, 500, 'shop')[1])
+    text(g, 'arial', 8.2, ('shop at [where to buy]', 'shop at the link in my bio'), (12.75, END), 42, shop_c, 0,
+         [pop_in(shop_c, 12.75, 1.12)])
     return g
