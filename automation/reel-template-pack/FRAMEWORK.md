@@ -102,6 +102,18 @@ Log each use here when a template is approved.
 | Instant camera snaps, the after photo prints and develops | 03 | 03 |
 | Torn-paper diagonal split | 04 (draft) | |
 
+## Pattern and doodle style (Mercedes, 2026-10-17, from Creative Market references)
+
+The references aren't free to use; they show the **style** only. Make our own in ChatGPT in this style.
+- **Polka dots look hand-painted:** imperfect, slightly wobbly round dots, varied sizes, scattered (not a perfect
+  grid), black on cream, or big chunky dots with rough edges. Never perfect computer circles.
+- **Patterns are modern and bold:** big flat florals on dark or saturated grounds; marker textures (stripes,
+  zigzags, checks, crosses, dots) that look drawn with a thick marker.
+- **Doodles look drawn by hand with a marker or pen:** scribbles, arrows, bursts, speech bubbles, stars, hearts,
+  crowns, circles and boxes for framing, underlines (straight, wavy, dotted), squiggles. Thick, slightly uneven
+  lines with dry-brush edges. Watercolour blobs are fine too.
+- She loved the **peanut drop-in and flood** (#2).
+
 ## From her other chats (collected 2026-10-17: #3, #4, Halloween, the Lisa breakdown, her own Reels)
 
 **What the Reel is (her summary, #4 chat):** a written hook in a bold, fun font + a visual hook + layered backgrounds +

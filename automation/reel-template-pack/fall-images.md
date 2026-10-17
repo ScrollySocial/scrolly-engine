@@ -3,6 +3,9 @@
 Save everything to `automation/reel-template-pack/assets/props/source/fall/` (full path:
 `C:\Users\merce\Scrolly Organic Engine\automation\reel-template-pack\assets\props\source\fall\`). Any file name is fine.
 
+**Status 2026-10-17:** most of the list is made. To redo: sheep, highland cow, the pumpkins you didn't like, and the pie
+(now a single slice, see #9). No inventory needed until saving is done.
+
 ## Rules for every image
 
 - Photorealistic, soft even light, at least 2000 px, no text, brand names or logos anywhere.
@@ -23,18 +26,17 @@ background, soft even lighting, no shadow, whole object in frame, no text or log
 | 2 | Picnic blanket, flat | Red or rust plaid, straight down, fills the frame | Background layer |
 | 3 | Picnic blanket, second | A different plaid (cream and brown, or green), straight down, fills the frame | A second background to change to between clips |
 | 4 | Picnic blanket, folded | The #2 blanket folded in a neat square, 3/4 view, on white | Prop on top of footage |
-| 5 | Pumpkins | 4 single pumpkins: classic orange, white, pale green heirloom, a small squat one; front view | Pumpkin stack; decorating on screen |
+| 5 | Pumpkins (REDO the ones you didn't like) | 4 single pumpkins: classic orange, white, pale green heirloom, a small squat one; front view | Pumpkin stack; decorating on screen |
 | 6 | Gourds | 4 single gourds: warty yellow, striped green, bottle gourd, two-tone; front view | Scatter around the frame |
 | 7 | Carved pumpkin, lit | Friendly (not scary) face, glowing warm inside, front view, on **black** | The glow reads on black |
 | 8 | Carved gourds, lit | 2 small carved gourds glowing, front view, on **black** | Same as 7, smaller |
-| 9 | Pumpkin pie, whole | Straight down (top view), in its pie dish, crimped crust | The pie-slice reveal |
-| 10 | The same pie, slices gone | Same chat, same angle: 1 slice gone, then 2, 3 and 4 gone (4 images); the gaps show white | Each slice comes away to reveal the clip behind |
+| 9 | Pumpkin pie slice (REDO 2026-10-17) | ONE slice, straight down (top view), **no plate**, soft real cut edges with crumbs (not the sharp wedge you get by removing a slice from a whole pie). 2 to 3 versions | The slice lifts away to reveal the clip underneath |
 | 11 | Pie slices with whipped cream | 3 single slices with a whipped-cream swirl, 3/4 view, each a bit different | Pop-ups, CTA |
 | 12 | Clock | A vintage wall clock, straight on, **no hands** | Clock face |
 | 13 | Clock hands | That clock's hour and minute hands alone, on white | Lets the hands turn in CapCut |
 | 14 | Yarn | 3 balls: mustard, rust, cream; each with a loose strand trailing out | The strand can draw a line across the screen |
-| 15 | Sheep | A cute, fluffy, real-looking sheep, whole body, side view; plus the same sheep's head and shoulders, front view | Peeks in from the frame edge |
-| 16 | Highland cow | Same as 15: whole body side view, plus head-on with the fringe | Same |
+| 15 | Sheep (REDO) | A cute, fluffy, real-looking sheep, whole body, side view; plus the same sheep's head and shoulders, front view | Peeks in from the frame edge |
+| 16 | Highland cow (REDO) | Same as 15: whole body side view, plus head-on with the fringe | Same |
 | 17 | S'more | One whole s'more, 3/4 view; plus its pieces apart (2 graham crackers, chocolate square, toasted marshmallow) | Builds itself layer by layer |
 | 18 | Bonfire | Real flames, front view, on **black**. A short video (3 to 5 s, from Sora or Veo, or filmed by you) is even better | Flames screen over the clip |
 | 19 | Leaves | 6 single leaves: maple red, maple orange, oak brown, yellow birch, a curled dry one, a two-tone one; flat, top view | Many leaves, each different |
