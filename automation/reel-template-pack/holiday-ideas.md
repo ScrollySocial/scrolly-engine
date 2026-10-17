@@ -40,3 +40,19 @@ real objects, with pieces removed or added to reveal or change what's underneath
 - Cornucopia.
 - Rolls.
 - Leaves.
+
+## Christmas (Mercedes, 2026-10-17)
+- Nutcrackers.
+- The Nutcracker ballet.
+- The nativity.
+- Santa and elves.
+- Snowmen and cardinals.
+- Gingerbread.
+- Peppermint.
+- Christmas trees.
+- Sleighs.
+- Reindeer.
+- Snowflakes.
+- Silent Night (church), music and carolling.
+- Hot cocoa.
+- Advent calendar. Open question: should the whole pack be an advent calendar series?
