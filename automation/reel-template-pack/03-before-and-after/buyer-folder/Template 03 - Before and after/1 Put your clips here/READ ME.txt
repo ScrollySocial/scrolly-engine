@@ -1,8 +1,9 @@
 Put your clips in this folder, then double-click "2 Double-click to install".
 
-They go into the template in name order, so name them 1 to 3 (for example 1.mov, 2.mov).
+They go into the template in name order, so name them 1 to 4 (for example 1.mov, 2.mov).
 Film upright (vertical) and start each clip right on the action.
 
-1: The before (at least 3 seconds)
-2: The after (at least 3 seconds)
-3: The product in your hand (at least 3 seconds)
+1: The before (at least 5 seconds)
+2: Doing the work (at least 5 seconds)
+3: The after (at least 6 seconds)
+4: Your product (at least 3 seconds)

@@ -3,7 +3,10 @@
 A template file in build/templates/ defines SPEC (title, the clips to film, test footage) and layers(), a list of:
   art   an image layer (paper, frame, sticker, doodle) drawn in code by collage.py
   clip  one of the buyer's clips, cropped to a window shape; src = where in their clip it starts, speed (1.15 = fast)
-  text  an editable CapCut text layer (fonts: 'imbue', 'awelier', 'ink'), optional Typewriter animation
+  text  an editable CapCut text layer (fonts: 'imbue', 'awelier', 'ink'), optional Typewriter animation and edge
+        (stroke=(colour, width), CapCut's 0 to 0.2 scale)
+A clip with blur_bg=True gets CapCut's blurred background (only works on the lowest track, which CapCut calls the main
+track); crop=(x0, y0, x1, y1) shows that part of the buyer's frame (0 to 1) instead of the centred window shape.
 Every layer can move with keyframes {'scale' | 'x' | 'y' | 'rot': [(seconds from layer start, value)]}.
 
 From that, build() makes:
@@ -39,7 +42,9 @@ PX_PER_SIZE = 6.1   # CapCut text size 15 measured at ~92 px on a 1080-wide fram
 INK = (24, 22, 20); BUTTER = (246, 228, 160); CREAM = (250, 244, 230)
 FONT_IDS = {'imbue': '7533523619876523280', 'awelier': '7462241028796337414', 'bodoni': '7580184437816675601'}   # CapCut library, download by id
 SYSTEM_FONTS = {'ink': 'C:/Windows/Fonts/Inkfree.ttf', 'arial': 'C:/Windows/Fonts/arial.ttf',
-                'mono': 'C:/Windows/Fonts/consola.ttf'}                                                  # ship with Windows
+                'mono': 'C:/Windows/Fonts/consola.ttf', 'arialbd': 'C:/Windows/Fonts/arialbd.ttf'}      # ship with Windows
+# fonts not in CapCut's library: shipped inside the project folder (SIL Open Font License, free to bundle)
+BUNDLED_FONTS = {'corben': LOCAL / 'CapCut' / 'User Data' / 'Cache' / 'AITextTemplate' / 'Resource' / '4624078377714242870' / 'Corben-Bold.ttf'}
 INKFREE = 'C:/Windows/Fonts/Inkfree.ttf'                                        # ships with Windows 10 and 11
 SEG, SEGB = 'C:/Windows/Fonts/segoeui.ttf', 'C:/Windows/Fonts/segoeuib.ttf'
 SLOT_COLORS = [(243, 233, 220), (228, 236, 242), (237, 228, 240), (227, 239, 230), (246, 232, 214), (232, 230, 244)]
@@ -48,6 +53,7 @@ def font_file(rid):
     return next(p for p in glob.glob(str(CACHE / rid / '*' / '*')) if p.lower().endswith(('.ttf', '.otf'))).replace('\\', '/')
 
 def font_path(name):
+    if name in BUNDLED_FONTS: return str(BUNDLED_FONTS[name]).replace('\\', '/')
     return SYSTEM_FONTS[name] if name in SYSTEM_FONTS else font_file(FONT_IDS[name])
 
 def F(px, name='imbue'):
@@ -95,12 +101,13 @@ class Layers:
     def art(self, name, img, t, z, pos, rot=0, kf=None):
         if isinstance(rot, dict): rot, kf = 0, rot   # motion passed in the rotation's place
         self.A[name] = img; self.L.append(dict(kind='art', name=name, t=t, z=z, pos=pos, rot=rot, kf=kf or {}))
-    def clip(self, slot, t, z, pos, size, rot=0, kf=None, src=0.0, speed=1.0):
-        self.L.append(dict(kind='clip', slot=slot, t=t, z=z, pos=pos, size=size, rot=rot, kf=kf or {}, src=src, speed=speed))
-    def text(self, font, size, words, t, z, pos, rot=0, kf=None, typewriter=None, color=INK, shadow=False):
+    def clip(self, slot, t, z, pos, size, rot=0, kf=None, src=0.0, speed=1.0, blur_bg=False, crop=None):
+        self.L.append(dict(kind='clip', slot=slot, t=t, z=z, pos=pos, size=size, rot=rot, kf=kf or {}, src=src, speed=speed,
+                           blur_bg=blur_bg, crop=crop))
+    def text(self, font, size, words, t, z, pos, rot=0, kf=None, typewriter=None, color=INK, shadow=False, stroke=None):
         if isinstance(rot, dict): rot, kf = 0, rot
         self.L.append(dict(kind='text', font=font, size=size, words=words, t=t, z=z, pos=pos, rot=rot, kf=kf or {},
-                           typewriter=typewriter, color=color, shadow=shadow))
+                           typewriter=typewriter, color=color, shadow=shadow, stroke=stroke))
     def flip(self, name, frames, t0, z, rot=0, fps=FPS):
         """A flipbook: pre-rendered images played one per frame on one track. frames = [(img, centre), ...]; a frame
         that repeats the previous one (same image object, same centre) just holds longer. Returns the end time."""
@@ -202,11 +209,13 @@ def keyframes(kf, base_scale, dur):
             for t, v in pts]})
     return out
 
-def text_content(text, size, path, rid, color):
-    return json.dumps({'text': text, 'styles': [{
-        'fill': {'content': {'render_type': 'solid', 'solid': {'color': [round(c / 255, 4) for c in color]}}},
-        'font': {'path': path, 'id': rid}, 'size': size, 'useLetterColor': True, 'range': [0, len(text)]}]},
-        ensure_ascii=False)
+def text_content(text, size, path, rid, color, stroke=None):
+    style = {'fill': {'content': {'render_type': 'solid', 'solid': {'color': [round(c / 255, 4) for c in color]}}},
+             'font': {'path': path, 'id': rid}, 'size': size, 'useLetterColor': True, 'range': [0, len(text)]}
+    if stroke:   # the same shape as the white edge on her "Litter 1" cover text
+        style['strokes'] = [{'content': {'render_type': 'solid', 'solid': {'color': [round(c / 255, 4) for c in stroke[0]]}},
+                             'width': stroke[1], 'mode': 0}]
+    return json.dumps({'text': text, 'styles': [style]}, ensure_ascii=False)
 
 def fit(w, h):
     return min(W / w, H / h)
@@ -246,13 +255,14 @@ def build_capcut(folder, name, slot_files, slot_secs, art_files, L):
             cw, ch = l['size']; aspect = cw / ch
             fh = min(1.0, (W / aspect) / H); fw = min(1.0, (H * aspect) / W)
             x0, y0 = (1 - fw) / 2, (1 - fh) / 2
+            if l.get('crop'): x0, y0, fw, fh = l['crop'][0], l['crop'][1], l['crop'][2] - l['crop'][0], l['crop'][3] - l['crop'][1]
             m = copy.deepcopy(pvmat)
             m.update(id=uid(), path=f'{DRAFT_TOKEN}/Resources/slots/{slot_files[l["slot"]].name}',
                      duration=int(slot_secs[l['slot']] * US), width=W, height=H, has_audio=False,
                      material_name=f'SHOT {l["slot"] + 1} - replace me.mp4', local_material_id=str(uuid.uuid4()),
                      category_name='local', media_path='', type='video',
-                     crop={'upper_left_x': x0, 'upper_left_y': y0, 'upper_right_x': 1 - x0, 'upper_right_y': y0,
-                           'lower_left_x': x0, 'lower_left_y': 1 - y0, 'lower_right_x': 1 - x0, 'lower_right_y': 1 - y0},
+                     crop={'upper_left_x': x0, 'upper_left_y': y0, 'upper_right_x': x0 + fw, 'upper_right_y': y0,
+                           'lower_left_x': x0, 'lower_left_y': y0 + fh, 'lower_right_x': x0 + fw, 'lower_right_y': y0 + fh},
                      crop_ratio='free', crop_scale=1.0)
             mats['videos'].append(m)
             sw, sh = W * fw, H * fh
@@ -261,6 +271,9 @@ def build_capcut(folder, name, slot_files, slot_secs, art_files, L):
             s.update(material_id=m['id'], speed=l['speed'], volume=1.0, last_nonzero_volume=1.0,
                      source_timerange={'start': int(round(l['src'] * US)), 'duration': int(round(tdur * l['speed']))},
                      extra_material_refs=clone_refs(pm, mats, pv['extra_material_refs'], speed=l['speed']))
+            if l.get('blur_bg'):   # CapCut's "Background > Blur": the clip itself, blurred, fills the rest of the frame
+                for c in mats.get('canvases', []):
+                    if c['id'] in s['extra_material_refs']: c.update(type='canvas_blur', blur=0.375, color='')
         elif l['kind'] == 'art':
             f = art_files[l['name']]; img = Image.open(f)
             m = copy.deepcopy(ph_mat)
@@ -272,13 +285,16 @@ def build_capcut(folder, name, slot_files, slot_secs, art_files, L):
                      extra_material_refs=clone_refs(php['materials'], mats, ph_seg['extra_material_refs']))
         else:
             path = font_path(l['font']); rid = FONT_IDS.get(l['font'], '')
+            if l['font'] in BUNDLED_FONTS: path = f'{DRAFT_TOKEN}/Resources/fonts/{BUNDLED_FONTS[l["font"]].name}'
             m = copy.deepcopy(ptmat)
-            m.update(id=uid(), content=text_content(l['words'][0], l['size'], path, rid, l['color']),
+            m.update(id=uid(), content=text_content(l['words'][0], l['size'], path, rid, l['color'], l.get('stroke')),
                      font_size=float(l['size']), font_path=path, font_resource_id=rid, font_id='', fonts=[],
                      font_title='none', font_source_platform=1 if rid else 0, text_color='#%02x%02x%02x' % l['color'],
                      border_width=0.0, has_shadow=bool(l.get('shadow')), shadow_color='#000000', shadow_alpha=0.85,
                      shadow_smoothing=1.0, shadow_distance=2.0, background_alpha=0.0, background_style=0, alignment=1,
                      line_max_width=0.9, fixed_width=-1.0)
+            if l.get('stroke'):
+                m.update(border_color='#%02x%02x%02x' % l['stroke'][0], border_width=l['stroke'][1], border_alpha=1.0, border_mode=0)
             mats['texts'].append(m)
             anim = None
             if l['typewriter']:
@@ -287,6 +303,9 @@ def build_capcut(folder, name, slot_files, slot_secs, art_files, L):
             s.update(material_id=m['id'], extra_material_refs=clone_refs(pm, mats, pt['extra_material_refs'], anim))
         by_z.setdefault((l['kind'] == 'text', l['z']), []).append(s)
 
+    lowest = min(z for (is_text, z) in by_z if not is_text)
+    if any(l['kind'] == 'clip' and l.get('blur_bg') and l['z'] != lowest for l in L):
+        sys.exit('a blurred-background clip must be on the lowest track (CapCut only blurs the main track)')
     tracks, vi, ti = [], 0, 0
     for (is_text, z) in sorted(by_z):
         segs = sorted(by_z[(is_text, z)], key=lambda s: s['target_timerange']['start'])
@@ -305,6 +324,8 @@ def build_capcut(folder, name, slot_files, slot_secs, art_files, L):
 
     if folder.exists(): shutil.rmtree(folder)
     (folder / 'Resources' / 'slots').mkdir(parents=True); (folder / 'Resources' / 'art').mkdir(parents=True)
+    for key in {l['font'] for l in L if l['kind'] == 'text'} & set(BUNDLED_FONTS):
+        (folder / 'Resources' / 'fonts').mkdir(exist_ok=True); shutil.copy2(BUNDLED_FONTS[key], folder / 'Resources' / 'fonts')
     for f in slot_files: shutil.copy2(f, folder / 'Resources' / 'slots' / f.name)
     for f in art_files.values(): shutil.copy2(f, folder / 'Resources' / 'art' / f.name)
     content = json.dumps(d, ensure_ascii=False, separators=(',', ':'))
@@ -350,8 +371,10 @@ def text_img(l, test, n_chars=None):
     shown = (words if n_chars is None else words[:n_chars]).split(chr(10))
     im = Image.new('RGBA', (width, lh * len(lines) + 2 * pad), (0, 0, 0, 0))
     dr = ImageDraw.Draw(im)
+    sw = round(l['stroke'][1] * px * 0.6) if l.get('stroke') else 0   # CapCut's edge width, measured on her "Litter 1" cover
     for i, ln in enumerate(shown):
-        dr.text(((width - f.getlength(lines[i])) / 2, pad + i * lh), ln, font=f, fill=tuple(l['color']) + (255,), anchor='la')
+        dr.text(((width - f.getlength(lines[i])) / 2, pad + i * lh), ln, font=f, fill=tuple(l['color']) + (255,), anchor='la',
+                stroke_width=sw, stroke_fill=tuple(l['stroke'][0]) + (255,) if sw else None)
     if l.get('shadow'):
         from PIL import ImageFilter
         sh = Image.new('RGBA', im.size, (0, 0, 0, 0)); sh.putalpha(im.split()[3].filter(ImageFilter.GaussianBlur(px * 0.1)).point(lambda v: min(255, int(v * 0.9))))
@@ -365,10 +388,20 @@ def clip_frames(sources, L, work):
         if l['kind'] != 'clip': continue
         p, st, hdr = sources[l['slot']]; w, h = l['size']; dur = l['t'][1] - l['t'][0]
         d = work / f'clip{n}'; d.mkdir(parents=True, exist_ok=True)
+        pre = f'{tone if hdr else ""}setpts=PTS/{l["speed"]},'
+        if l.get('crop'):
+            x0, y0, x1, y1 = l['crop']
+            pre += (f'scale={W}:{H}:force_original_aspect_ratio=increase,crop={W}:{H},'
+                    f'crop={int((x1 - x0) * W)}:{int((y1 - y0) * H)}:{int(x0 * W)}:{int(y0 * H)},')
         run([FFMPEG, '-v', 'error', '-y', '-ss', str(st + l['src']), '-t', str(dur * l['speed'] + 0.2), '-i', str(p), '-vf',
-             f'{tone if hdr else ""}setpts=PTS/{l["speed"]},scale={w}:{h}:force_original_aspect_ratio=increase,crop={w}:{h},fps={FPS}',
-             '-q:v', '3', str(d / '%04d.jpg')])
+             f'{pre}scale={w}:{h}:force_original_aspect_ratio=increase,crop={w}:{h},fps={FPS}', '-q:v', '3', str(d / '%04d.jpg')])
         out[n] = sorted(d.glob('*.jpg'))
+        if l.get('blur_bg'):   # what CapCut's blurred background looks like: the whole frame, filled and blurred
+            b = work / f'blur{n}'; b.mkdir(parents=True, exist_ok=True)
+            run([FFMPEG, '-v', 'error', '-y', '-ss', str(st + l['src']), '-t', str(dur * l['speed'] + 0.2), '-i', str(p), '-vf',
+                 f'{tone if hdr else ""}setpts=PTS/{l["speed"]},scale=270:480:force_original_aspect_ratio=increase,crop=270:480,'
+                 f'gblur=sigma=9,fps={FPS}', '-q:v', '4', str(b / '%04d.jpg')])
+            out[('blur', n)] = sorted(b.glob('*.jpg'))
     return out
 
 def render(L, A, sources, out, work, test):
@@ -393,6 +426,9 @@ def render(L, A, sources, out, work, test):
             elif l['kind'] == 'clip':
                 fl = frames[i]
                 if not fl: continue
+                if ('blur', i) in frames:
+                    bl = frames[('blur', i)]
+                    canvas.paste(Image.open(bl[min(int(lt * FPS), len(bl) - 1)]).convert('RGB').resize((W, H), Image.BILINEAR), (0, 0))
                 im = Image.open(fl[min(int(lt * FPS), len(fl) - 1)]).convert('RGBA')
             else:
                 tw = l.get('typewriter')

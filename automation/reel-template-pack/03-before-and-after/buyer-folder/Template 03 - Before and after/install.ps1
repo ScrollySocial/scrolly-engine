@@ -53,6 +53,15 @@ if ($used -gt 0) {
         [IO.File]::WriteAllText($f, $text, (New-Object Text.UTF8Encoding $false))
     }
 }
+# fonts shipped inside the template: point their text at this copy's own folder
+$fontDir = Join-Path $dest 'Resources\fonts'
+if (Test-Path $fontDir) {
+    foreach ($f in $files) {
+        $text = [IO.File]::ReadAllText($f)
+        $text = $text.Replace("$token/Resources/fonts/", (($dest -replace '\\', '/') + '/Resources/fonts/'))
+        [IO.File]::WriteAllText($f, $text, (New-Object Text.UTF8Encoding $false))
+    }
+}
 # the project name and folder CapCut shows
 $meta = Join-Path $dest 'draft_meta_info.json'
 $text = [IO.File]::ReadAllText($meta)

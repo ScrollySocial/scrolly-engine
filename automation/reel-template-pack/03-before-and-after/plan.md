@@ -77,3 +77,17 @@ beat no longer has the timer. 4 clips: before, the work, after (starts with a ha
 engine as `build/templates/t03.py` (the old batch-1 t03 is replaced), the way #2 was done: flipbooks for the print
 sliding out, the develop and the dial turning; the lens zoom, the break-out and the then/now slide as keyframes.
 Corben Bold needs its CapCut font id (the cache folder is AITextTemplate/Resource/4624078377714242870).
+
+## Animated v3.1 (2026-10-17), waiting for her one round of feedback
+
+`build/templates/t03.py` follows the 9 beats in order, 14.6 s, four clips (before, the work at 1.5x, after, product).
+`python build/make.py 03` (about 9 minutes). Keyframes for every move (camera rise, lens zoom, camera push, the print
+sliding out of the slot behind the camera, the lift, the break-out, the then photo, the cork); the dial turns by
+rotation keyframes (it is cut from the timer photo as its own disc, the body keeps the pointer); the develop and the
+flash fade are flipbooks. The blurred clip behind is CapCut's own Background > Blur, which only works on the main
+(lowest) track, so the main track runs: before in the lens, the work, the after in its photo, the after full screen,
+the cork. The break-out is a second copy of the after clip above the frame. The then photo shows the same spot of the
+before clip (a clip crop matching the photo window). Corben Bold is not in CapCut's font library, so the font file
+ships inside the project (`Resources/fonts`, SIL OFL) and the installer points the text at it. Big words: mint with a
+black edge (CapCut stroke 0.07); small words: editable Arial Bold on label-maker tape. Sounds: `sounds.md`.
+Test copy in her CapCut: "Scrolly 03 Before and after (2)". Preview: `preview/after.mp4`.
