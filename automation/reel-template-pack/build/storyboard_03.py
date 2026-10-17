@@ -134,7 +134,7 @@ def f1():
     cam, s = camera(1180, BEFORE)
     place(im, shadow(cam), (W / 2 + 30, 1230), -8)
     big(im, (W / 2, 330), 'before', 190)
-    place(im, label('WATCH THIS COUCH'), (W / 2, 500), -2)
+    place(im, label('WATCH THIS TRANSFORMATION', 50), (W / 2, 500), -2)
     return im
 
 def f2():

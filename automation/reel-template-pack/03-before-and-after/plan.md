@@ -72,3 +72,8 @@ colour) with a black edge; small words on label-maker tape. CTA is ManyChat styl
 the work (cleaning, sped up), plays full screen right after the snap with the giant half timer turning over it,
 see-through. The order is now before > the work > after prints and develops > breaks out > then/now > CTA. The develop
 beat no longer has the timer. 4 clips: before, the work, after (starts with a hand over the lens), product.
+
+**Approved 2026-10-17** (v3.1, with the hook label changed to "WATCH THIS TRANSFORMATION"). Next: animate through the
+engine as `build/templates/t03.py` (the old batch-1 t03 is replaced), the way #2 was done: flipbooks for the print
+sliding out, the develop and the dial turning; the lens zoom, the break-out and the then/now slide as keyframes.
+Corben Bold needs its CapCut font id (the cache folder is AITextTemplate/Resource/4624078377714242870).
