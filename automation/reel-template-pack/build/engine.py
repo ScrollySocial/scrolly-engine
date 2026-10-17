@@ -37,7 +37,8 @@ US = 1_000_000
 PX_PER_SIZE = 6.1   # CapCut text size 15 measured at ~92 px on a 1080-wide frame (her "Litter 1" cover)
 
 INK = (24, 22, 20); BUTTER = (246, 228, 160); CREAM = (250, 244, 230)
-FONT_IDS = {'imbue': '7533523619876523280', 'awelier': '7462241028796337414'}   # CapCut library, download by id
+FONT_IDS = {'imbue': '7533523619876523280', 'awelier': '7462241028796337414', 'bodoni': '7580184437816675601'}   # CapCut library, download by id
+SYSTEM_FONTS = {'ink': 'C:/Windows/Fonts/Inkfree.ttf', 'arial': 'C:/Windows/Fonts/arial.ttf'}             # ship with Windows
 INKFREE = 'C:/Windows/Fonts/Inkfree.ttf'                                        # ships with Windows 10 and 11
 SEG, SEGB = 'C:/Windows/Fonts/segoeui.ttf', 'C:/Windows/Fonts/segoeuib.ttf'
 SLOT_COLORS = [(243, 233, 220), (228, 236, 242), (237, 228, 240), (227, 239, 230), (246, 232, 214), (232, 230, 244)]
@@ -46,7 +47,7 @@ def font_file(rid):
     return next(p for p in glob.glob(str(CACHE / rid / '*' / '*')) if p.lower().endswith(('.ttf', '.otf'))).replace('\\', '/')
 
 def font_path(name):
-    return INKFREE if name == 'ink' else font_file(FONT_IDS[name])
+    return SYSTEM_FONTS[name] if name in SYSTEM_FONTS else font_file(FONT_IDS[name])
 
 def F(px, name='imbue'):
     return ImageFont.truetype(name if '/' in name else font_path(name), px)
@@ -263,8 +264,8 @@ def build_capcut(folder, name, slot_files, slot_secs, art_files, L):
             m.update(id=uid(), content=text_content(l['words'][0], l['size'], path, rid, l['color']),
                      font_size=float(l['size']), font_path=path, font_resource_id=rid, font_id='', fonts=[],
                      font_title='none', font_source_platform=1 if rid else 0, text_color='#%02x%02x%02x' % l['color'],
-                     border_width=0.0, has_shadow=bool(l.get('shadow')), shadow_color='#000000', shadow_alpha=0.55,
-                     shadow_smoothing=0.8, shadow_distance=3.0, background_alpha=0.0, background_style=0, alignment=1,
+                     border_width=0.0, has_shadow=bool(l.get('shadow')), shadow_color='#000000', shadow_alpha=0.85,
+                     shadow_smoothing=1.0, shadow_distance=2.0, background_alpha=0.0, background_style=0, alignment=1,
                      line_max_width=0.9, fixed_width=-1.0)
             mats['texts'].append(m)
             anim = None
@@ -341,7 +342,7 @@ def text_img(l, test, n_chars=None):
         dr.text(((width - f.getlength(lines[i])) / 2, pad + i * lh), ln, font=f, fill=tuple(l['color']) + (255,), anchor='la')
     if l.get('shadow'):
         from PIL import ImageFilter
-        sh = Image.new('RGBA', im.size, (0, 0, 0, 0)); sh.putalpha(im.split()[3].filter(ImageFilter.GaussianBlur(px * 0.08)).point(lambda v: int(v * 0.55)))
+        sh = Image.new('RGBA', im.size, (0, 0, 0, 0)); sh.putalpha(im.split()[3].filter(ImageFilter.GaussianBlur(px * 0.1)).point(lambda v: min(255, int(v * 0.9))))
         base = Image.new('RGBA', im.size, (0, 0, 0, 0)); base.alpha_composite(sh, (0, 0)); base.alpha_composite(im); im = base
     return im
 

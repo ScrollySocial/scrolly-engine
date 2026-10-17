@@ -95,9 +95,6 @@ def box_scene(video, colour='kraft', floor_pad=0):
 def f1():
     """The label types itself in (top) while the video picks the items (bottom); washi tape on the seam."""
     im = Image.new('RGBA', (W, H), BG)
-    cb = prop('box-closed-top'); bb = cb.split()[3].point(lambda v: 255 if v > 250 else 0).getbbox()
-    cb = cb.crop((bb[0] + 40, bb[1] + 40, bb[2] - 40, bb[3] - 40)).convert('RGB').convert('RGBA')   # just the cardboard
-    im.alpha_composite(ImageOps.fit(cb, (W, 1000)), (0, 0))      # the label sits on real cardboard, edge to edge
     im.alpha_composite(footage('IMG_1439', 1.0, (W, 940)), (0, 980))
     lab = C.ship_label().resize((520, 780))
     d = ImageDraw.Draw(lab); m = F(MONO, 34)
@@ -259,24 +256,25 @@ def f6a():
     return im
 
 def sealed_box():
-    """Her real closed box, tape across the lid wrapping over both side edges, the label on top. Transparent around."""
-    cb = prop('box-closed-top'); bb = cb.getbbox(); cb = cb.crop(bb)
-    s = 0.66 * W / cb.width; cb = cb.resize((int(cb.width * s), int(cb.height * s)))
-    pad = 140; out = Image.new('RGBA', (cb.width + 2 * pad, cb.height + 2 * pad), (0, 0, 0, 0))
+    """The same box as frames 2-5, flaps closed (her closed-box photo, seam down the middle, turned upright to match),
+    sized to the open box's body. Packing washi tape runs along the seam and over both ends. Transparent around."""
+    cb = prop('box-closed-seam').rotate(-90, expand=True)
+    _, _, fl = open_box('kraft'); body_w = int((fl[2] - fl[0]) * 1.16)       # the open box's body, walls included
+    s = body_w / cb.width; cb = cb.resize((body_w, int(cb.height * s)))
+    pad = 120; out = Image.new('RGBA', (cb.width + 2 * pad, cb.height + 2 * pad), (0, 0, 0, 0))
     out.alpha_composite(C.shadow(cb, offset=(10, 18), blur=20, alpha=70), (pad - 44, pad - 44))
-    for y, pat, seed in ((0.30, 'dots', 8), (0.70, 'stripes', 9)):   # two strips across the lid, over both edges
-        tape = C.washi(cb.width + 16, 150, pat, (BLUE, WHITE) if pat == 'dots' else (INK, WHITE), seed=seed, alpha=245)
-        place(out, tape, (out.width / 2, pad + cb.height * y), 0)
-    lab = C.ship_label().resize((470, 705)); d = ImageDraw.Draw(lab); m = F(MONO, 29)
-    d.text((52, 182), 'Sunday Studio', font=m, fill=INK); d.text((52, 282), 'YOU', font=F(MONO, 38), fill=INK)
-    d.text((52, 330), '123 YOUR HOME', font=m, fill=INK); d.text((52, 445), '1 x something nice', font=m, fill=INK)
-    place(out, lab, (out.width / 2 + 40, pad + cb.height * 0.5), -6)
+    tape = C.washi(cb.height + 16, 170, 'dots', (BLUE, WHITE), seed=8, alpha=245)   # along the seam, over the ends
+    place(out, tape, (out.width / 2, out.height / 2), 90)
+    lab = C.ship_label().resize((430, 645)); d = ImageDraw.Draw(lab); m = F(MONO, 27)
+    d.text((48, 166), 'Sunday Studio', font=m, fill=INK); d.text((48, 258), 'YOU', font=F(MONO, 35), fill=INK)
+    d.text((48, 302), '123 YOUR HOME', font=m, fill=INK); d.text((48, 408), '1 x something nice', font=m, fill=INK)
+    place(out, lab, (out.width / 2 + 150, out.height / 2 + 260), -6)
     return out
 
 def f6b(words=True, bg=BG):
     """Sealed: her closed box, washi tape across the lid and over the edges, label on."""
     im = Image.new('RGBA', (W, H), bg)
-    place(im, sealed_box(), (W / 2, H / 2 + 60))
+    place(im, sealed_box(), (W / 2, H / 2 + 80))
     if words: tape_words(im, (W / 2, 160), 'sealed +', 'on its way', 3)
     return im
 
