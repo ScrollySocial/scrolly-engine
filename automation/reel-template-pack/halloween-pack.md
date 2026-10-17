@@ -7,7 +7,7 @@ sticker edges, handwritten words, words on tape) is drawn. Build ids `h1` to `h5
 Round 1 (2026-10-17) rejected: candy bowl ("boring"), floating candles (too close to a Reel she already made), and
 concepts that were Halloween looks with no selling job. Candy and blown-out candles can still appear as props.
 
-**Round 2 proposal (waiting for her OK):**
+**Round 2, approved 2026-10-17** (h1 "love"; the rest "will work"):
 
 | Id | Template | Business job | Step by step | CTA |
 |---|---|---|---|---|
@@ -17,40 +17,45 @@ concepts that were Halloween looks with no selling job. Candy and blown-out cand
 | h4 | What's inside? | Reveal: new product, launch, behind the scenes | A real carved pumpkin; the lid lifts, the clip glows through the face, then fills the frame | New drop + date |
 | h5 | Trick or treat | Offer: myth vs fix, then a discount or freebie | Knock; door 1 opens on the TRICK (a common mistake); door 2 opens on the TREAT (your product or offer) | Comment TREAT for the code |
 
-## Images needed, round 1 list (to redo after the OK) (Mercedes to make in ChatGPT or find royalty-free)
+## Images needed (Mercedes to make in ChatGPT or find royalty-free)
 
 All: photorealistic product photo, pure white background (unless noted), soft even light, no cast shadow, object
 whole and not cropped, at least 2000 px, no brand names or logos anywhere. Save to `assets/props/source/`.
+Make the poses of one object in the same ChatGPT chat ("the same bat, now with wings up") so they match.
 
-Prompt that works in ChatGPT: *"Photorealistic studio product photo of [object], [angle], isolated on a pure white
-background, soft even lighting, no shadow, whole object in frame, no text or logos."*
+Prompt: *"Photorealistic studio product photo of [object], [angle], isolated on a pure white background, soft even
+lighting, no shadow, whole object in frame, no text or logos."*
 
-**h1 Jack-o'-lantern**
-1. Carved pumpkin, straight-on front view, lid already off, classic face (triangle eyes, triangle nose, toothy smile),
-   inside dark and unlit. The face holes become the video windows, so the cut edges should be clean.
-2. The same pumpkin's lid with its stem, on its own, same front angle.
-3. The same pumpkin lit from inside (warm candle glow through the face), same angle. For the glow at the end.
+**h1 Now you see it**
+1. A smoke puff video on a black background, 3 to 5 seconds, rolling outward from the centre. It ships inside the
+   template, so it must be one we own (filmed by Mercedes, or AI-made in Sora/Veo), not a stock clip.
+2. Three still smoke puffs on black (small, medium, big), for the storyboard and the edge wisps.
 
-**h2 Candy bowl**
-4. A bowl seen from directly above, empty (black, orange or wooden; not white).
-5. The same bowl from above, full of wrapped candy.
-6. 8 to 10 single wrapped candies from above, plain foil or cellophane wrappers in orange, black, purple, gold,
-   no brand names. One image per candy, or one image with the pieces spread out so none touch.
-7. Candy corn: 5 pieces spread out, not touching (also used in h5).
+**h2 Things I'm batty about**
+3. A cute bat (felt or plush look, friendly face), front view, wings spread wide.
+4. The same bat, wings folded up (the second flap pose).
+5. The same bat hanging upside down, wings wrapped.
+6. A bare dark twig or branch, side view, for the bats to hang from at the end.
 
-**h3 Floating candles**
-8. One tall white taper candle, lit, straight-on, no holder.
-9. The same candle just blown out, with a thin wisp of smoke.
-10. Background (not white): a dark dusky night sky or a deep plum wall texture, 1080 x 1920 or larger. Royalty-free.
+**h3 Caught in our web**
+7. A cute fuzzy toy spider (googly eyes welcome) hanging from one thread, straight on.
+8. A full round orb cobweb filling the frame, front on, on a **black** background (spokes and spiral clear).
+9. A corner cobweb (a quarter or half circle spanning a corner), front on, on black. For the zoom-out ending.
 
-**h4 Caught in our web**
-11. A cobweb filling the frame, front-on, on a **black** background (a white web vanishes on white).
-12. A cute fuzzy or felt toy spider (googly eyes welcome), straight-on, hanging from a single thread, white background.
+**h4 What's inside?**
+10. A carved pumpkin, straight on, lid already off, classic face (triangle eyes and nose, toothy smile), dark and
+    unlit inside, clean cut edges (the holes become video windows).
+11. That pumpkin's lid with its stem, alone, same angle.
+12. The same pumpkin lit from inside, warm glow through the face, same angle.
 
-**h5 Knock knock**
-13. A front door with its frame, straight-on, closed (warm painted colour: black, dark green or plum).
-14. The same door wide open, warm light inside, same angle. (Back-up in case the swing looks flat when I fake it.)
-15. Two or three small pumpkins in a cluster for the doorstep, front view.
+**h5 Trick or treat**
+13. Door 1 (TRICK): a front door with its frame, straight on, closed, black or plum.
+14. Door 1 again, wide open, dark inside, same angle.
+15. Door 2 (TREAT): a different front door, straight on, closed, warm orange or dark green.
+16. Door 2 again, wide open, warm light inside, same angle.
+17. 6 wrapped candies from above in plain orange, purple, gold wrappers, spread out so none touch.
+18. 5 candy corn pieces, spread out so none touch.
+19. Two or three small pumpkins in a cluster for the doorstep, front view.
 
 ## Sounds (to recommend, not bundle)
 
