@@ -100,7 +100,8 @@ def ticks(n=3, length=90, gap=34, width=7):
 
 # ---- the box, cut from her real photo (same pieces as test_close.py) --------------------------------------------------------
 def box_parts():
-    P = TC.pieces(); bx0, by0, bx1, by1 = P['body_box']
+    b = TC.pieces()['body_box']; P = TC.pieces(dx=round(W / 2 - (b[0] + b[2]) / 2))   # the box centred on screen
+    bx0, by0, bx1, by1 = P['body_box']
     P['spots'] = {'top': (bx0, by0 - P['top'].height), 'bottom': (bx0, by1), 'left': (bx0 - P['left'].width, by0 - 40),
                   'right': (bx1, by0 - 40)}
     open_ = Image.new('RGBA', (W, H), (0, 0, 0, 0)); open_.alpha_composite(P['body'], (bx0, by0))
@@ -197,9 +198,9 @@ def layers():
 
     # ===== 3 one peanut drops in (4.45 to 6.15) =====
     pea = S.bordered(S.prop('packing-peanut').resize((360, 360)), WHITE, WHITE, 16, 2)
-    art(g, 'peanut-one', pea, (4.45, 6.15), 25, (560, 980), 14,
-        [xf((560, 980), [(4.45, 0, -1350, 1, -30), (4.66, 0, 0, 1, 0), (4.74, 0, -46, 1, 6), (4.82, 0, 0, 1, 0)])])
-    art(g, 'ticks-peanut', ticks(), (4.7, 6.15), 26, (520, 700), 0, [pop_in((520, 700), 4.7)])
+    art(g, 'peanut-one', pea, (4.45, 6.15), 25, (540, 980), 14,
+        [xf((540, 980), [(4.45, 0, -1350, 1, -30), (4.66, 0, 0, 1, 0), (4.74, 0, -46, 1, 6), (4.82, 0, 0, 1, 0)])])
+    art(g, 'ticks-peanut', ticks(), (4.7, 6.15), 26, (500, 700), 0, [pop_in((500, 700), 4.7)])
     tape_words(g, 'padding', (540, 1740), '+ a little', 'padding', -3, (4.85, 5.75), 50,
                [pop_in((540, 1740), 4.85), pop_out((540, 1740), 5.55)], seed=19)   # gone before the flood covers it
 
@@ -219,15 +220,15 @@ def layers():
     g.art('shreds', shreds_layer(P['floor'], spot), T5, 12, floor_c)
     tape_words(g, 'extra', (540, 190), 'a little', 'extra', -2, (6.45, 8.9), 50,
                [pop_in((540, 190), 6.45), pop_out((540, 190), 8.72)], seed=20)
-    env_c = (640, 1500)
+    env_c = (572, 1500)
     env = C.shadow(S.prop('envelope').resize((580, 334)), offset=(8, 14), blur=14, alpha=70)
     art(g, 'envelope', env, (6.85, 9.57), 25, env_c, -10,
         [xf(env_c, [(6.85, 900, 700, 1, 25), (7.15, -20, -14, 1, -2), (7.25, 0, 0, 1, 0)])])
-    seal_c = (585, 1325)
-    seal = C.shadow(S.prop('wax-seal-thank-you').resize((300, 300)), offset=(10, 22), blur=20, alpha=70)
+    seal_c = rot_pt((env_c[0], env_c[1] + 70), env_c, -10)   # on the point of the envelope flap, where a real seal goes
+    seal = C.shadow(S.prop('wax-seal-thank-you').resize((250, 250)), offset=(10, 22), blur=20, alpha=70)
     art(g, 'seal', seal, (7.6, 9.57), 26, seal_c, 8,
         [xf(seal_c, [(7.6, 0, 0, 1.8, -10), (7.74, 0, 0, 0.93, 0), (7.82, 0, 0, 1.03, 0), (7.9, 0, 0, 1, 0)])])
-    art(g, 'ticks-seal', ticks().rotate(35, expand=True), (7.75, 9.0), 27, (420, 1180), 0, [pop_in((420, 1180), 7.75)])
+    art(g, 'ticks-seal', ticks().rotate(35, expand=True), (7.75, 9.0), 27, (380, 1330), 0, [pop_in((380, 1330), 7.75)])
 
     # ===== 6 the box closes: real flaps fold away, the closed lid's halves fold down and meet (8.9 to 9.57) =====
     g.art('box-body', P['body'], (8.9, 9.57), 20, body_c)

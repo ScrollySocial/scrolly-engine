@@ -14,10 +14,12 @@ W, H, FPS = 1080, 1920, 30
 def darken(im, k):
     a = im.split()[3]; out = im.convert('RGB').point(lambda v: int(v * k)).convert('RGBA'); out.putalpha(a); return out
 
-def pieces():
+def pieces(dx=0):
     """The real-photo pieces of the box on screen (upright, flaps off the edges): body with the floor cut out, the four
-    flaps, the two halves of the closed-box photo, and where they sit. Shared with templates/t02.py."""
+    flaps, the two halves of the closed-box photo, and where they sit. dx shifts the box sideways (t02 centres it).
+    Shared with templates/t02.py."""
     box, (xo, y0), fl = S.open_box('kraft')
+    xo += dx; fl = (fl[0] + dx, fl[1], fl[2] + dx, fl[3])
     fx0, fy0, fx1, fy1 = fl
     wall_x = int((fx1 - fx0) * 0.08); wall_y = int((fy1 - fy0) * 0.05)
     bx0, by0, bx1, by1 = fx0 - wall_x, fy0 - wall_y, fx1 + wall_x, fy1 + wall_y          # the box body on screen
@@ -31,7 +33,7 @@ def pieces():
     top, bottom = region(bx0, 0, bx1, by0), region(bx0, by1, bx1, H)               # short flaps
     left, right = region(0, by0 - 40, bx0, by1 + 40), region(bx1, by0 - 40, W, by1 + 40)   # long flaps
     cs = S.prop('box-closed-seam').rotate(-90, expand=True)
-    cs = cs.crop((int(cs.width * 0.02), int(cs.height * 0.01), int(cs.width * 0.98), int(cs.height * 0.99)))   # trim the pale edge
+    cs = cs.crop((int(cs.width * 0.075), int(cs.height * 0.01), int(cs.width * 0.99), int(cs.height * 0.99)))   # trim the pale edge (left)
     closed = cs.resize((bx1 - bx0, by1 - by0))
     halfL, halfR = closed.crop((0, 0, closed.width // 2, closed.height)), closed.crop((closed.width // 2, 0, closed.width, closed.height))
     hole = Image.new('L', body.size, 255); ImageDraw.Draw(hole).rectangle((fx0 - bx0, fy0 - by0, fx1 - bx0, fy1 - by0), fill=0)

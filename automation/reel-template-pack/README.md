@@ -83,7 +83,7 @@ CapCut's projects folder. The installer copies the template there under a new na
   is ten bands of real peanut photos dropping in with keyframes (full-screen flipbook frames would add ~90 MB).
   CapCut always draws text above images, so text has to leave before an image covers it (the box pushes the opener up
   and out). Sounds per beat: `02-pack-an-order/sounds.md` (none bundled). Test copy in her CapCut:
-  "Scrolly 02 Pack an order with me (3)".
+  "Scrolly 02 Pack an order with me (4)". Round 1 fixes: seal on the envelope flap point, box centred, pale edge trimmed off the closed-box photo.
 - **Rules from Mercedes:** one storyboard round + one animation round per template; ask instead of guessing; real
   objects only (memory note feedback_reel_templates_real_objects). Holiday packs run in a separate chat
   ("Halloween Reel Template Pack") from `holiday-ideas.md`.
