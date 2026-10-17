@@ -1,5 +1,8 @@
 # Reel Template Packs (CapCut)
 
+> **Read [FRAMEWORK.md](FRAMEWORK.md) before working on any template, and run its checklist before showing Mercedes anything.**
+
+
 Drag-and-drop CapCut Reel templates. The buyer films their own clips and drops them in. Three packs of 25 by seller
 type (physical first, then digital, then service), plus shared Halloween and Thanksgiving packs. Price TBD. The pack is
 the paid-ad front door to the AI-assisted Reel Editor. Brain row: My offers, "Reel Template Packs (CapCut)", Idea.
