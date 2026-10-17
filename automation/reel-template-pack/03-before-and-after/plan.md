@@ -42,3 +42,8 @@ Props arrived (mint camera, blank instant photo, cream timer), cut out by `pytho
 shadows removed, the storyboard adds its own). Stills: `python build/storyboard_03.py` -> `storyboard/` (seven frames
 plus `storyboard-03.jpg`). Stand-in footage: sofa before/after and a vacuum from her July clips. Headline font Imbue (odd
 templates). Waiting for her one round of feedback before animating.
+
+**v1 rejected (Mercedes, 2026-10-17):** it reused #2's colours and elements (sage, washi tape, butter gingham, die-cut
+edges), and she doesn't want 100% solid backgrounds. New world for #3, her pick: **corkboard**. A real cork-board
+backdrop, photos held by real push pins, words typed on real label-maker tape (black tape, white letters), cobalt
+accent. Camera, instant photo and timer stay. Props needed from her: cork texture, push pins, a blank label-maker strip.
