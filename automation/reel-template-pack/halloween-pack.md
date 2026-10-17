@@ -6,7 +6,8 @@
   "Scrolly h6 Once in a blood moon".
 - **Lesson:** still storyboards (rounds 1 to 4) missed the point; the reference Reels are video-first with fun edits.
   Go straight to a 10 to 15 s motion test per template (see motion_h6.py), then the CapCut build. Rules: FRAMEWORK.md.
-- h3 web, h2 bats, h5 trick or treat: concepts and round 4 notes in `halloween/notes-round4.md`; next as motion tests.
+- **h3 Caught in our web: motion test liked** ("super cute and fun", 2026-10-17); `build/motion_h3.py`. CapCut build next.
+- h2 bats, h5 trick or treat: concepts and round 4 notes in `halloween/notes-round4.md`; next as motion tests.
 - h1 smoke: waiting on a smoke video on black that we own. h4 pumpkin: parked ("maybe scratch").
 
 Buyers are online business owners and influencers, so every template is a whole Reel with a business job and a CTA,
