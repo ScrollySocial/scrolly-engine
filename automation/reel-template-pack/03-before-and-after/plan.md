@@ -91,3 +91,24 @@ before clip (a clip crop matching the photo window). Corben Bold is not in CapCu
 ships inside the project (`Resources/fonts`, SIL OFL) and the installer points the text at it. Big words: mint with a
 black edge (CapCut stroke 0.07); small words: editable Arial Bold on label-maker tape. Sounds: `sounds.md`.
 Test copy in her CapCut: "Scrolly 03 Before and after (2)". Preview: `preview/after.mp4`.
+
+**Framework pass (same day, FRAMEWORK.md):** the first animation failed rules 2 (small lens, small CTA clip), 3 (plain
+hero type), 5 (no real split), 8 to 11 (no outlines, few objects, no drawn layer, no write-on handwriting), plus the
+later rules on IG safe zones and editable fonts. Fixed in one pass, beat order unchanged:
+- Camera, timer, pins and every photo have a sketchy ink outline that boils (three drawings swapped every 0.2 s).
+- before / after / Comment are artwork lettering: Corben letters filled with mint halftone dots, black edge, popping
+  in one by one at different angles. Editable text uses fonts buyers have: the keyword in MADE Awelier (CapCut
+  library) on a strip of real label tape, Arial Bold on the tape labels, Ink Free for the handwriting. No font
+  file ships with the project any more.
+- Nine real instant photos (sizes, tilts, outlines, pins all different) fan out of the flash white into the work.
+- Split: during the work, the before stays in an outlined photo in the top-left corner.
+- Drawn layer: burst on the camera's flash, sparkles and stars over the work and the break-out, motion lines on both
+  prints, shake ticks while it develops, arrows to NOW and to the product.
+- Handwriting writes itself on (Typewriter): "before" on the corner photo, "then", "now", and the real time
+  "[20 min]" above the timer (editable).
+- Bigger lens in beat 1 (camera 1400 px wide, zoom starts sooner); the product prints bigger at the CTA.
+- Text moved out of Instagram's top bar, caption strip and buttons column (the build's check prints nothing).
+
+Checklist re-run: all items pass. Notes: the hooks are "before" + "WATCH THIS TRANSFORMATION" (huge and animated);
+the CTA cork is the one stretch without full-screen video, but three clips play in the photos there; "wow" is
+Mercedes's call.

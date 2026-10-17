@@ -4,20 +4,33 @@ label-maker tape. Big words: Corben Bold in mint (the camera's colour) with a bl
 their brand. Small words: editable text on label-maker tape.
 
 Beats: 1 through the lens (the before plays in the camera's lens, CapCut blurs the same clip behind); 2 the lens grows
-to fill the screen; 3 the flash burst is the cut; 4 the work full screen, the giant see-through timer half off the
-bottom with its dial turning; 5 the camera pushes in and pulls back, the after prints out of the slot dark; 6 it
-develops (flipbook); 7 the after breaks out of its photo window; 8 the before photo held against the same spot
-(then / NOW); 9 CTA on the cork: the before and after photos pinned, the camera prints the product, Comment "KEYWORD".
+to fill the screen; 3 the flash burst is the cut, a stack of instant photos fans out of the white; 4 the work full
+screen, the before kept in a corner photo (the split), the giant see-through timer half off the bottom with its dial
+turning; 5 the camera pushes in and pulls back, the after prints out of the slot dark; 6 it develops (flipbook); 7 the
+after breaks out of its photo window; 8 the before photo held against the same spot (then / NOW); 9 CTA on the cork:
+the before and after photos pinned, the camera prints the product big, Comment "KEYWORD" on label tape.
+
+Instagram safe zones (FRAMEWORK.md): no text in the top 220 px, the bottom 420 px, or the right 150 px of the lower
+half. Editable text uses fonts buyers already have (MADE Awelier from CapCut's library, Arial Bold, Ink Free); the
+built-in big words are artwork lettering.
 
 CapCut only blurs the background of its lowest (main) track, so the main track runs: before in the lens, the work,
 the after in its photo, the after full screen, the cork. CapCut draws text above every image, so each word leaves
-before an image passes over it."""
-from PIL import Image, ImageDraw, ImageFilter, ImageFont
+before an image passes over it.
+
+Framework pass (FRAMEWORK.md, 2026-10-17): the camera, timer, pins and photos have a sketchy hand-drawn ink outline
+that boils (three drawings swapped every few frames); the fixed big words (before, after, Comment) are Corben letters
+filled with mint halftone dots that pop in one by one at different angles; a drawn layer (burst, sparkles, shake and
+motion ticks, arrows, stars) pops on and off with the beats; then / now / the time it took write themselves on
+(editable handwriting with Typewriter); many real photos and pins, each a little different."""
+import math, random
+from PIL import Image, ImageChops, ImageDraw, ImageFilter, ImageFont
 from engine import Layers, rot_pt, interp, W, H, PX_PER_SIZE
 import collage as C
 import storyboard_03 as S
 
-MINT, INK, TAPE_TEXT = S.MINT, S.INK, (236, 236, 232)
+MINT, INK, TAPE_TEXT, WHITE = S.MINT, S.INK, (236, 236, 232), (255, 255, 255)
+HALFTONE = (128, 196, 160)          # a darker mint for the dot pattern
 SPEC = dict(num='03', title='Before and after', subtitle='14.6 seconds. Four clips, filmed from the same spot.',
             font='corben', dir='03-before-and-after', folder='Template 03 - Before and after',
             project='Scrolly 03 Before and after', cover_at=1.0,
@@ -28,6 +41,7 @@ SPEC = dict(num='03', title='Before and after', subtitle='14.6 seconds. Four cli
             test_clips=[('IMG_1398', 0.5), ('IMG_1460', 2.0), ('IMG_1408', 0.5), ('IMG_1417', 0.5)])
 END = 14.6
 EDGE = (INK, 0.07)                  # the black edge on the big words (CapCut's 0 to 0.2 scale)
+HAND_EDGE = (INK, 0.09)             # handwriting over video: white with a dark edge so it reads
 
 # ---- moving groups (same as 02) --------------------------------------------------------------------------------------------
 # A transform is (pivot, [(t, dx, dy, scale, rot_cw)]) in absolute seconds; children of a group get keyframes that move,
@@ -35,6 +49,7 @@ EDGE = (INK, 0.07)                  # the black edge on the big words (CapCut's 
 def xf(pivot, pts): return (pivot, pts)
 def pop_in(pivot, t0, peak=1.18): return (pivot, [(t0, 0, 0, 0, 0), (t0 + .16, 0, 0, peak, 0), (t0 + .27, 0, 0, .94, 0), (t0 + .36, 0, 0, 1, 0)])
 def pop_out(pivot, t0): return (pivot, [(t0, 0, 0, 1, 0), (t0 + .08, 0, 0, 1.1, 0), (t0 + .18, 0, 0, 0, 0)])
+def pin_in(pc, t0): return xf(pc, [(t0, 0, -10, 1.8, 0), (t0 + .1, 0, 0, 0.92, 0), (t0 + .16, 0, 0, 1, 0)])
 
 def at(xfs, p, r, t):
     x, y = p; s, rr = 1.0, r
@@ -62,25 +77,59 @@ def motion(xfs, p, r, T, k=1.0):
 def art(g, name, img, T, z, p, r, xfs, k=1.0):
     g.art(name, img, T, z, p, r, motion(xfs, p, r, T, k))
 
+def boil(g, name, imgs, T, z, p, r, xfs, k=1.0, step=0.2):
+    """A prop whose hand-drawn outline boils: its drawings take turns every few frames, one segment each, with the
+    same motion. Each drawing is saved once (segments reuse it by name)."""
+    t, i = T[0], 0
+    while t < T[1] - 1e-6:
+        t1 = min(T[1], round(t + step, 4)); art(g, f'{name}-{i % len(imgs)}', imgs[i % len(imgs)], (t, t1), z, p, r, xfs, k)
+        t, i = t1, i + 1
+
 def clip(g, slot, T, z, p, size, r, xfs, src=0.0, speed=1.0, **kw):
     g.clip(slot, T, z, p, size, r, motion(xfs, p, r, T), src=src, speed=speed, **kw)
 
-def text(g, font, size, words, T, z, p, r, xfs, color=INK, stroke=None):
-    g.text(font, size, words, T, z, p, r, motion(xfs, p, r, T), color=color, stroke=stroke)
+def text(g, font, size, words, T, z, p, r, xfs, color=INK, stroke=None, typewriter=None):
+    g.text(font, size, words, T, z, p, r, motion(xfs, p, r, T), color=color, stroke=stroke, typewriter=typewriter)
 
 def ease(a, b, t0, t1, n=4):
     """Eased (smooth start and stop) values from a to b between t0 and t1, as (t, value) steps."""
     return [(t0 + (t1 - t0) * i / n, a + (b - a) * (3 * (i / n) ** 2 - 2 * (i / n) ** 3)) for i in range(n + 1)]
 
-# ---- the props, cut from her photos -------------------------------------------------------------------------------------------
+# ---- the playful layer on her real props ----------------------------------------------------------------------------------------
+def outlined(img, gap=22, width=6, seed=1, thresh=110):
+    """A real photo with a sketchy hand-drawn ink line around it (two slightly offset passes, like a pen going round
+    twice), outside edge only. Padded evenly, so the object's centre stays the image's centre."""
+    pad = gap + width + 12; w, h = img.size
+    m = Image.new('L', (w + 2 * pad, h + 2 * pad), 0); m.paste(img.split()[3].point(lambda v: 255 if v > thresh else 0), (pad, pad))
+    ImageDraw.floodfill(m, (0, 0), 128); m = m.point(lambda v: 0 if v == 128 else 255)   # no line inside a window
+    m = m.filter(ImageFilter.MaxFilter(2 * (gap // 2) + 1)).filter(ImageFilter.MaxFilter(2 * (gap - gap // 2) + 1))
+    m = m.filter(ImageFilter.GaussianBlur(gap * 1.1)).point(lambda v: 255 if v > 128 else 0)
+    ring = ImageChops.subtract(m.filter(ImageFilter.MaxFilter(2 * width + 1)), m).filter(ImageFilter.GaussianBlur(0.8))
+    out = Image.new('RGBA', m.size, (0, 0, 0, 0)); r = random.Random(seed)
+    for k, a in ((0, 255), (1, 170)):
+        dx, dy = (r.choice((-2, 2)), r.choice((-2, 2))) if k == 0 else (r.choice((-7, 7)), r.choice((-5, 5)))
+        line = Image.new('RGBA', m.size, INK + (0,)); line.putalpha(ImageChops.offset(ring, dx, dy).point(lambda v: v * a // 255))
+        out.alpha_composite(line)
+    out.alpha_composite(img, (pad, pad))
+    return out
+
+def drawings(img, gap=22, width=6, **kw):
+    """Three drawings of the same outline (a little wider, narrower, shifted) for the boil."""
+    return [outlined(img, gap + d, width, seed=i + 1, **kw) for i, d in enumerate((0, -3, 3))]
+
+def camera(width):
+    cam, s = S.camera(width); return [S.shadow(o, (0, 24), 26, 90) for o in drawings(cam)], s
+
 def holed_camera(width):
     """The real camera with its lens disc cut open (the clip plays in the hole) and a thin dark glass rim."""
-    cam, s = S.camera(width); full = S.shadow(cam); pad = (full.width - cam.width) // 2
-    cx, cy, r = [v * s for v in S.CAM_LENS]; cx += pad; cy += pad
-    a = full.split()[3]; ImageDraw.Draw(a).ellipse((cx - r, cy - r, cx + r, cy + r), fill=0); full.putalpha(a)
-    rim = max(5, int(r / 20))
-    ImageDraw.Draw(full).ellipse((cx - r, cy - r, cx + r, cy + r), outline=(12, 12, 14, 235), width=rim)
-    return full, s
+    cam, s = S.camera(width); out = []
+    for o in drawings(cam):
+        full = S.shadow(o); pad = (full.width - cam.width) // 2
+        cx, cy, r = [v * s for v in S.CAM_LENS]; cx += pad; cy += pad
+        a = full.split()[3]; ImageDraw.Draw(a).ellipse((cx - r, cy - r, cx + r, cy + r), fill=0); full.putalpha(a)
+        ImageDraw.Draw(full).ellipse((cx - r, cy - r, cx + r, cy + r), outline=(12, 12, 14, 235), width=max(5, int(r / 20)))
+        out.append(full)
+    return out, s
 
 def lens_offset(s):
     """Where the lens centre sits relative to the camera image's centre, at camera scale s."""
@@ -88,50 +137,98 @@ def lens_offset(s):
     return ((S.CAM_LENS[0] - cam.width / 2) * s, (S.CAM_LENS[1] - cam.height / 2) * s)
 
 def photo(width):
-    """The real instant photo with its picture area open; returns the image (with shadow), the picture's size, and
-    the picture centre's offset from the photo centre."""
+    """The real instant photo with its picture area open, outlined three ways for the boil; returns the drawings
+    (with shadow), the picture's size, the picture centre's offset from the photo centre, and the photo's own size."""
     ph, (x0, y0, x1, y1) = S.instant_photo(None, width, window=True)
-    return S.shadow(ph, (8, 14), 16, 95), (x1 - x0, y1 - y0), ((x0 + x1) / 2 - ph.width / 2, (y0 + y1) / 2 - ph.height / 2), ph.size
+    return ([S.shadow(o, (8, 14), 16, 95) for o in drawings(ph, 14, 5)], (x1 - x0, y1 - y0),
+            ((x0 + x1) / 2 - ph.width / 2, (y0 + y1) / 2 - ph.height / 2), ph.size)
+
+def blank_photo(width, rot_seed):
+    """A real undeveloped instant photo (dark picture), for the stack that fans out at the flash."""
+    ph = S.prop('instant-photo-blank'); ph = ph.resize((width, int(ph.height * width / ph.width)), Image.LANCZOS)
+    if rot_seed % 2: ph = outlined(ph, 12, 4, seed=rot_seed)
+    if rot_seed % 3 == 0:
+        pin = S.prop(['pin-head-blue', 'pin-head-white', 'pin-head-cream'][rot_seed // 3 % 3]).resize((70, 70), Image.LANCZOS)
+        ph.alpha_composite(pin, (ph.width // 2 - 35, 6))
+    return S.shadow(ph, (8, 12), 14, 90)
+
+def pins(col, d):
+    return [S.shadow(o, (10, 14), 7, 110) for o in drawings(S.prop(f'pin-head-{col}').resize((d, d), Image.LANCZOS), 6, 3)]
 
 def strip_offset(width):
     """Centre of the photo's white writing strip, relative to the photo centre."""
     k = width / S.prop('instant-photo-blank').width; ph_h = S.prop('instant-photo-blank').height
     return (0, ((S.PHOTO_PIC[3] + ph_h) / 2 - ph_h / 2) * k)
 
-def label_tape(words, px):
-    """Blank label-maker tape (the real photo's cut ends kept, middle stretched) long enough for the longest words;
-    the words themselves are editable CapCut text on top."""
-    tape = S.prop('label-tape-black'); f = ImageFont.truetype(S.LABEL, px)
-    tw = max(f.getlength(w) for w in words)
-    h = int(px * 1.75); s = h / tape.height; tape = tape.resize((int(tape.width * s), h), Image.LANCZOS)
-    end = int(h * 0.5); length = int(max(tw + 2 * px * 0.8, 2 * end + 10))
-    out = Image.new('RGBA', (length, h), (0, 0, 0, 0))
+def tape_strip(length, h):
+    """Blank label-maker tape from her real photo: the cut ends kept, the middle stretched."""
+    tape = S.prop('label-tape-black'); s = h / tape.height; tape = tape.resize((int(tape.width * s), h), Image.LANCZOS)
+    end = int(h * 0.5); out = Image.new('RGBA', (length, h), (0, 0, 0, 0))
     out.alpha_composite(tape.crop((0, 0, end, h)), (0, 0))
     out.alpha_composite(tape.crop((end, 0, tape.width - end, h)).resize((length - 2 * end, h)), (end, 0))
     out.alpha_composite(tape.crop((tape.width - end, 0, tape.width, h)), (length - end, 0))
     return C.shadow(out, offset=(4, 7), blur=6, alpha=90)
 
 def label(g, key, words, c, rot, px, T, z, xfs):
-    art(g, f'tape-{key}', label_tape(words, px), T, z, c, rot, xfs)
+    """Words on label-maker tape: the tape is long enough for the longest words; the words are editable text."""
+    tw = max(ImageFont.truetype(S.LABEL, px).getlength(w) for w in words)
+    art(g, f'tape-{key}', tape_strip(int(tw + 1.6 * px), int(px * 1.75)), T, z, c, rot, xfs)
     text(g, 'arialbd', round(px / PX_PER_SIZE, 2), words, T, z, c, rot, xfs, color=TAPE_TEXT)
 
+def letters(word, px, stroke=9, step=None):
+    """A fixed big word as lettering, one image per letter: Corben filled with mint halftone dots, a black ink edge.
+    Returns [(image, x offset of its centre from the word's centre)]; all letters share the word's vertical centre."""
+    f = ImageFont.truetype(str(S.HEAD), px); _, t, _, b = f.getbbox(word, anchor='ls'); total = f.getlength(word)
+    step = step or max(24, px // 6); out = []
+    for i, ch in enumerate(word):
+        bl, _, br, _ = f.getbbox(ch, anchor='ls'); w, h = br - bl + 4 * stroke, b - t + 4 * stroke
+        mask = Image.new('L', (w, h), 0); ImageDraw.Draw(mask).text((2 * stroke - bl, 2 * stroke - t), ch, font=f, fill=255, anchor='ls')
+        fill = Image.new('RGBA', (w, h), MINT + (255,)); d = ImageDraw.Draw(fill); rad = step * 0.28
+        for yy, y in enumerate(range(0, h + step, step)):
+            for x in range(-step, w + step, step):
+                cx = x + (step / 2 if yy % 2 else 0); d.ellipse((cx - rad, y - rad, cx + rad, y + rad), fill=HALFTONE + (255,))
+        im = Image.new('RGBA', (w, h), (0, 0, 0, 0))
+        ink = Image.new('RGBA', (w, h), INK + (255,)); ink.putalpha(mask.filter(ImageFilter.MaxFilter(stroke * 2 + 1))); im.alpha_composite(ink)
+        fill.putalpha(mask); im.alpha_composite(fill)
+        out.append((C.shadow(im, offset=(8, 12), blur=10, alpha=70), f.getlength(word[:i]) + bl - 2 * stroke + w / 2 - total / 2))
+    return out
+
+TILTS = (-6, 4, -3, 7, -5, 3, -4)
+def hero(g, name, word, c, px, t0, t_out, z, extra=()):
+    """The letters pop in one by one, each at its own slight angle, and pop out together."""
+    for i, (im, dx) in enumerate(letters(word, px)):
+        p = (c[0] + dx, c[1]); t1 = t_out + 0.18 if t_out else END
+        art(g, f'word-{name}-{i}', im, (t0 + 0.06 * i, t1), z + i, p, TILTS[i % len(TILTS)],
+            [pop_in(p, t0 + 0.06 * i, 1.25)] + ([pop_out(p, t_out)] if t_out else []) + list(extra))
+
+def doodle(g, name, img, c, rot, t0, t1, z, xfs=()):
+    """A drawn mark that pops on, wiggles a little, and pops off."""
+    w = xf(c, [(t0 + 0.4 + i * 0.3, 0, 0, 1, (4 if i % 2 else -4)) for i in range(int((t1 - t0 - 0.6) / 0.3))] or [(t0, 0, 0, 1, 0)])
+    art(g, name, img, (t0, t1), z, c, rot, [pop_in(c, t0), w, pop_out(c, t1 - 0.18), *xfs])
+
+def ticks(n=3, length=80, gap=30, width=7, color=WHITE):
+    im = Image.new('RGBA', (gap * (n - 1) + 2 * width + 40, length + 20), (0, 0, 0, 0)); d = ImageDraw.Draw(im)
+    for i in range(n):
+        x = width + 20 + i * gap; d.line((x, 10 + (i % 2) * 12, x, 10 + length - (i % 2) * 12), fill=color + (255,), width=width)
+    return im
+
 def big(g, words, c, px, T, z, xfs, rot=0):
-    text(g, 'corben', round(px / PX_PER_SIZE, 2), words, T, z, c, rot, xfs, color=MINT, stroke=EDGE)
+    """Editable big words: MADE Awelier (CapCut's library, every buyer has it) in mint with a black edge."""
+    text(g, 'awelier', round(px / PX_PER_SIZE, 2), words, T, z, c, rot, xfs, color=MINT, stroke=EDGE)
 
 def timer_parts(scale=0.5):
-    """The real kitchen timer split into its body (with the pointer) and its turning dial, see-through."""
+    """The real kitchen timer split into its body (pointer, outlined three ways) and its turning dial, see-through."""
     t = S.prop('kitchen-timer'); cx, cy, r = S.DIAL
     m = Image.new('L', t.size, 0); ImageDraw.Draw(m).ellipse((cx - r, cy - r, cx + r, cy + r), fill=255)
     m = m.filter(ImageFilter.GaussianBlur(1))
     body, dial = t.copy(), t.copy()
-    body.putalpha(Image.eval(Image.merge('L', [t.split()[3]]), lambda v: v).point(lambda v: v));
     body.putalpha(Image.composite(Image.new('L', t.size, 0), t.split()[3], m))
     dial.putalpha(Image.composite(t.split()[3], Image.new('L', t.size, 0), m)); dial = dial.crop((cx - r, cy - r, cx + r, cy + r))
-    out = []
-    for im in (body, dial):
+    def see_through(im):
         im = im.resize((int(im.width * scale), int(im.height * scale)), Image.LANCZOS)
-        im.putalpha(im.split()[3].point(lambda v: int(v * 0.42))); out.append(im)
-    return out[0], out[1], ((t.width / 2 - cx) * scale, (t.height / 2 - cy) * scale)
+        im.putalpha(im.split()[3].point(lambda v: int(v * 0.42))); return im
+    bodies = [outlined(see_through(body), 5, 2, seed=i + 1, thresh=30) for i in range(3)]
+    return bodies, see_through(dial), ((t.width / 2 - cx) * scale, (t.height / 2 - cy) * scale)
 
 def glow(size=600, core=0.25):
     im = Image.new('RGBA', (size, size), (255, 255, 250, 0)); m = Image.new('L', (size, size), 0)
@@ -152,46 +249,71 @@ def shadow_only(size, off=(0, 16), blur=20, alpha=110):
 def layers():
     g = Layers()
 
-    # ===== 1 through the lens: the camera rises, the before plays in its lens, CapCut blurs it behind (0 to 1.95) =====
-    cam1, s1 = holed_camera(1180); C1, R1 = (570, 1230), 8
+    # ===== 1 through the lens: the camera rises, the before plays in its big lens, CapCut blurs it behind (0 to 1.95) =====
+    cam1, s1 = holed_camera(1400); C1, R1 = (560, 1330), 8
     ox, oy = lens_offset(s1); L1 = rot_pt((C1[0] + ox, C1[1] + oy), C1, R1); d1 = int(2 * S.CAM_LENS[2] * s1) + 6
     cam_in = xf(C1, [(0, 0, 640, 1, 0), (0.3, 0, -24, 1, 0), (0.4, 0, 0, 1, 0)])
-    # ===== 2 into the lens: the lens grows until the before fills the screen (1.95 to 2.45) =====
+    # ===== 2 into the lens: the lens grows until the before fills the screen (1.85 to 2.4) =====
     Z = 1120 / (S.CAM_LENS[2] * s1)
-    zoom = xf(L1, [(t, (540 - L1[0]) * f, (960 - L1[1]) * f, 1 + (Z - 1) * f ** 2, -R1 * f) for t, f in ease(0, 1, 1.95, 2.45, 5)])
+    zoom = xf(L1, [(t, (540 - L1[0]) * f, (960 - L1[1]) * f, 1 + (Z - 1) * f ** 2, -R1 * f) for t, f in ease(0, 1, 1.85, 2.4, 5)])
     T1 = (0, 2.62)
     clip(g, 0, T1, 0, L1, (d1, d1), R1, [cam_in, zoom], blur_bg=True)
-    art(g, 'camera-lens', cam1, T1, 20, C1, R1, [cam_in, zoom])
-    big(g, ('before', 'before'), (540, 330), 190, (0.25, 1.95), 1, [pop_in((540, 330), 0.25), pop_out((540, 330), 1.72)])
-    label(g, 'watch', ('WATCH THIS TRANSFORMATION', 'WATCH THIS TRANSFORMATION'), (540, 500), -2, 48, (0.45, 1.95), 60,
-          [xf((540, 500), [(0.45, -1200, 0, 1, 0), (0.72, 20, 0, 1, 0), (0.8, 0, 0, 1, 0), (1.72, 0, 0, 1, 0), (1.9, 1300, 0, 1, 0)])])
+    boil(g, 'camera-lens', cam1, T1, 20, C1, R1, [cam_in, zoom])
+    hero(g, 'before', 'before', (540, 300), 190, 0.2, 1.62, 80)
+    fl = rot_pt((C1[0] + (S.CAM_FLASH[0] - 491.5) * s1, C1[1] + (S.CAM_FLASH[1] - 503.5) * s1), C1, R1)
+    doodle(g, 'burst-flash', C.burst(360, INK, 9, 9, seed=31), fl, R1, 0.9, 1.85, 21, [cam_in])
+    doodle(g, 'sparkle-a', C.sparkle(110, WHITE, 7), (85, 170), 0, 0.6, 1.85, 22)
+    doodle(g, 'star-a', C.star(90, WHITE, 6, seed=32), (995, 160), 12, 0.8, 1.85, 23)
+    label(g, 'watch', ('WATCH THIS TRANSFORMATION', 'WATCH THIS TRANSFORMATION'), (540, 470), -2, 48, (0.45, 1.85), 60,
+          [xf((540, 470), [(0.45, -1200, 0, 1, 0), (0.72, 20, 0, 1, 0), (0.8, 0, 0, 1, 0), (1.62, 0, 0, 1, 0), (1.8, 1300, 0, 1, 0)])])
 
-    # ===== 3 snap: the flash bursts from the corner and whites out the screen; the cut lands on the white (2.42 to 2.9) =====
+    # ===== 3 snap: the flash whites out the screen, the cut lands on the white, a stack of photos fans out (2.4 to 3.1) =====
     fc = (120, 260)
-    art(g, 'flash-burst', glow(), (2.42, 2.62), 40, fc, 0, [xf(fc, [(2.42, 0, 0, 0.3, 0), (2.62, 0, 0, 12, 0)])])
+    art(g, 'flash-burst', glow(), (2.4, 2.62), 40, fc, 0, [xf(fc, [(2.4, 0, 0, 0.3, 0), (2.62, 0, 0, 12, 0)])])
     whites = [(Image.new('RGBA', (W, H), (255, 255, 250, a)), (540, 960)) for a in (255, 255, 230, 190, 140, 90, 45)]
     g.flip('flash-white', [x for x in whites for _ in (0, 1)], 2.62, 40)
+    rnd = random.Random(7)
+    for i in range(9):                                   # each one a little different: size, tilt, outline, pin
+        im = blank_photo(rnd.randint(250, 400), i); a = i / 9 * 6.283 + rnd.uniform(-0.25, 0.25)
+        end = (540 + 1250 * math.cos(a), 960 + 1500 * math.sin(a)); t0 = 2.6 + 0.02 * i
+        art(g, f'fan-{i}', im, (t0, 3.12), 41 + i, (540, 960), rnd.randint(-25, 25),
+            [xf((540, 960), [(t0, 0, 0, 0.3, 0), (t0 + 0.12, (end[0] - 540) * 0.25, (end[1] - 960) * 0.25, 1, rnd.randint(-15, 15)),
+                             (3.1, end[0] - 540, end[1] - 960, 1.1, rnd.randint(-40, 40))])])
 
-    # ===== 4 the work, full screen and sped up; the giant see-through timer turns along the bottom (2.62 to 5.6) =====
+    # ===== 4 the work, sped up; the before stays in a corner photo; the giant see-through timer turns (2.62 to 5.6) =====
     T4 = (2.62, 5.6)
     g.clip(1, T4, 0, (540, 960), (W, H), src=0.0, speed=1.5)
-    body, dial, boff = timer_parts(); k4 = 1700 / (2 * S.DIAL[2]) / 0.5
+    PC, RC = (190, 330), -7                              # the split: the before, kept in a photo in the corner
+    phC, picC, poffC, phsC = photo(330)
+    corner = [xf(PC, [(3.05, -560, -40, 1, -20), (3.3, 14, 0, 1, 2), (3.38, 0, 0, 1, 0), (5.05, 0, 0, 1, 0), (5.28, -600, 0, 1, -15)])]
+    clip(g, 0, (3.05, 5.3), 26, rot_pt((PC[0] + poffC[0], PC[1] + poffC[1]), PC, RC), picC, RC, corner, src=1.0)
+    boil(g, 'photo-corner', phC, (3.05, 5.3), 27, PC, RC, corner)
+    soC = strip_offset(330)
+    text(g, 'ink', round(330 * 0.15 / PX_PER_SIZE, 2), ('before', 'before'), (3.35, 5.3), 7, rot_pt((PC[0], PC[1] + soC[1]), PC, RC), RC,
+         corner, typewriter=0.35)
+    bodies, dial, boff = timer_parts(); k4 = 1700 / (2 * S.DIAL[2]) / 0.5
     dial_c = (540, H + 380); body_c = (dial_c[0] + boff[0] * k4, dial_c[1] + boff[1] * k4)
     t_in = xf(dial_c, [(2.7, 0, 900, 1, 0), (2.98, 0, -20, 1, 0), (3.06, 0, 0, 1, 0), (5.3, 0, 0, 1, 0), (5.48, 0, 900, 1, 0)])
-    art(g, 'timer-body', body, (2.7, 5.5), 8, body_c, 0, [t_in], k4)
+    boil(g, 'timer-body', bodies, (2.7, 5.5), 8, body_c, 0, [t_in], k4)
     art(g, 'timer-dial', dial, (2.7, 5.5), 9, dial_c, -90, [t_in, xf(dial_c, [(2.9, 0, 0, 1, 0), (5.25, 0, 0, 1, 90)])], k4)
-    label(g, 'work', ('[CLEANING IT]', 'CLEANING IT'), (540, 260), -2, 56, (2.95, 5.3), 61,
-          [pop_in((540, 260), 2.95, 1.12), pop_out((540, 260), 5.1)])
+    tc = (540, 1120)                                    # the real time it took, written on above the pointer
+    text(g, 'ink', 14, ('[20 min]', '20 min'), (3.3, 5.3), 8, tc, -3, [pop_out(tc, 5.1)], color=WHITE, stroke=HAND_EDGE, typewriter=0.5)
+    for i, (c, im, t0) in enumerate((((900, 560), C.sparkle(150, WHITE, 9), 3.5),
+                                     ((160, 860), C.sparkle(100, WHITE, 7), 3.9),
+                                     ((880, 1040), C.star(110, WHITE, 7, seed=33), 4.3))):
+        doodle(g, f'shine-{i}', im, c, 0, t0, 5.25, 28 + i)
+    label(g, 'work', ('[CLEANING IT]', 'CLEANING IT'), (680, 310), -2, 56, (3.15, 5.3), 61,
+          [pop_in((680, 310), 3.15, 1.12), pop_out((680, 310), 5.1)])
 
     # ===== 5 the camera pushes in and pulls back; the after prints out of the slot, still dark (5.3 to 6.95) =====
-    cam5, s5 = S.camera(1300); cam5 = S.shadow(cam5, (0, 24), 26, 90)
+    cam5, s5 = camera(1300)
     top5 = H - S.prop('instant-camera').height * s5 * 0.40
     C5 = (540, top5 + S.prop('instant-camera').height * s5 / 2)
     slot_cx = 540 + ((S.CAM_SLOT[0] + S.CAM_SLOT[2]) / 2 - S.prop('instant-camera').width / 2) * s5
     slot_y = top5 + S.CAM_SLOT[1] * s5 + 8
     push = xf(C5, [(5.3, 0, 1700, 2.6, 0), (5.55, 0, 960 - C5[1], 2.6, 0), (5.62, 0, 960 - C5[1], 2.6, 0),
                    (5.8, 0, 120, 1.15, 0), (5.92, 0, -10, 0.99, 0), (5.98, 0, 0, 1, 0), (6.95, 0, 0, 1, 0), (7.25, 0, 900, 1, 0)])
-    art(g, 'camera-print', cam5, (5.3, 7.25), 20, C5, 0, [push])
+    boil(g, 'camera-print', cam5, (5.3, 7.25), 20, C5, 0, [push])
 
     pw5 = int((S.CAM_SLOT[2] - S.CAM_SLOT[0]) * s5 * 0.96)
     ph5, pic5, poff5, phs5 = photo(pw5)
@@ -199,6 +321,8 @@ def layers():
     out_by = slot_y + phs5[1] / 2 - P5[1]                              # how far down it starts (hidden in the camera)
     printing = xf(P5, [(6.0, 0, out_by, 1, 0), (6.14, 0, out_by * 0.68, 1, 0), (6.24, 0, out_by * 0.68, 1, 0),
                        (6.38, 0, out_by * 0.34, 1, 0), (6.48, 0, out_by * 0.34, 1, 0), (6.68, 0, 0, 1, 0)])
+    for side in (-1, 1):                                # motion lines beside the print as it slides out
+        doodle(g, f'print-lines-{side}', ticks(3, 110, 28, 7), (slot_cx + side * (pw5 / 2 + 80), slot_y - 170), side * 6, 6.0, 6.9, 22 + (side > 0))
     # ===== 6 it develops: the camera drops away, the photo lifts to the middle and the after comes up (6.95 to 8.3) =====
     P6, k6, R6 = (540, 860), 800 / pw5, 3
     lift = xf(P5, [(6.95, 0, 0, 1, 0), (7.22, P6[0] - P5[0], P6[1] - P5[1] - 20, k6 * 1.03, R6), (7.3, P6[0] - P5[0], P6[1] - P5[1], k6, R6)])
@@ -211,7 +335,7 @@ def layers():
     T5 = (5.6, 9.65)
     clip(g, 2, T5, 0, win5, pic5, 0, group, src=0.0, blur_bg=True)
     art(g, 'vignette', vignette(), (5.6, 8.3), 5, (540, 960), 0, [])
-    art(g, 'photo-after', ph5, T5, 10, P5, 0, group)
+    boil(g, 'photo-after', ph5, T5, 10, P5, 0, group)
     dark = Image.new('RGBA', pic5, (52, 50, 52, 240))
     art(g, 'photo-dark', dark, (5.6, 7.3), 11, win5, 0, group)
     wx, wy, ws, wr = at(group, win5, 0, 7.3)
@@ -221,6 +345,9 @@ def layers():
         im = Image.new('RGBA', (int(pic5[0] * ws), int(pic5[1] * ws)), tint + (a,))
         develop += [(im, (wx, wy))] * 3
     g.flip('develop', develop, 7.3, 11, rot=wr)
+    half = pic5[0] * ws / 2 + 150
+    doodle(g, 'shake-l', ticks(), (wx - half, wy - 40), -12, 7.35, 8.25, 12)
+    doodle(g, 'shake-r', ticks(), (wx + half, wy - 40), 12, 7.45, 8.25, 13)
 
     # the after bursts up past the window's top and sides (above the frame), the main track's copy blurs behind
     px0 = P7[0] - phs5[0] * k7 / 2; py0 = P7[1] - h7 / 2
@@ -232,13 +359,18 @@ def layers():
     T7 = (8.55, 9.65)
     art(g, 'breakout-shadow', shadow_only(tall), T7, 14, tall_c, 0, [burst, cover])
     clip(g, 2, T7, 15, tall_c, tall, 0, [burst, cover], src=8.55 - 5.6)
-    big(g, ('after', 'after'), (540, (wy1 + P7[1] + h7 / 2) / 2 - 6), 170, (8.7, 9.42), 2,
-        [pop_in((540, (wy1 + P7[1] + h7 / 2) / 2), 8.7), pop_out((540, (wy1 + P7[1] + h7 / 2) / 2), 9.24)])
+    ac = (540, (wy1 + P7[1] + h7 / 2) / 2)
+    hero(g, 'after', 'after', ac, 170, 8.68, 9.24, 86)
+    for i, (c, im, rot, t0) in enumerate((((tall_c[0] - tall[0] / 2 + 60, 260), C.sparkle(130, WHITE, 8), 0, 8.62),
+                                          ((tall_c[0] + tall[0] / 2 - 60, 480), C.star(120, WHITE, 7, seed=34), 10, 8.7),
+                                          ((tall_c[0] + tall[0] / 2 - 90, 160), ticks(3, 70, 26, 6), 30, 8.66),
+                                          ((tall_c[0] - tall[0] / 2 + 90, 700), C.sparkle(90, WHITE, 6), 0, 8.78))):
+        doodle(g, f'shine-out-{i}', im, c, rot, t0, 9.42, 17 + i)
 
     # ===== 8 then / NOW: the before photo slides in over the after, lined up with the same spot (9.65 to 11.35) =====
     T8 = (9.65, 11.6)
     g.clip(2, T8, 0, (540, 960), (W, H), src=9.65 - 5.6)
-    pw8 = 660; ph8, pic8, poff8, phs8 = photo(pw8); P8 = (540, 900)
+    pw8 = 660; ph8, pic8, poff8, phs8 = photo(pw8); P8 = (540, 820)
     win8 = (P8[0] + poff8[0], P8[1] + poff8[1])
     crop8 = ((win8[0] - pic8[0] / 2) / W, (win8[1] - pic8[1] / 2) / H, (win8[0] + pic8[0] / 2) / W, (win8[1] + pic8[1] / 2) / H)
     slide = xf(P8, [(9.65, -1100, 60, 1, -14), (9.9, 24, -6, 1, 1.5), (9.98, 0, 0, 1, 0)])
@@ -247,32 +379,37 @@ def layers():
     pin_left = xf(P8, [(11.35, 0, 0, 1, 0), (11.6, PL[0] - P8[0], PL[1] - P8[1], kL, RL)])
     before_grp = [slide, pin_left]
     clip(g, 0, (9.65, END), 30, win8, pic8, 0, before_grp, src=0.0, crop=crop8)
-    art(g, 'photo-then', ph8, (9.65, END), 31, P8, 0, before_grp)
+    boil(g, 'photo-then', ph8, (9.65, END), 31, P8, 0, before_grp)
     so8 = strip_offset(pw8)
-    text(g, 'ink', round(pw8 * 0.11 / PX_PER_SIZE, 2), ('then', 'then'), (9.65, END), 3, (P8[0], P8[1] + so8[1]), 0, before_grp)
-    label(g, 'now', ('NOW', 'NOW'), (850, 1560), 4, 72, (10.05, 11.3), 62, [pop_in((850, 1560), 10.05), pop_out((850, 1560), 11.1)])
+    text(g, 'ink', round(pw8 * 0.15 / PX_PER_SIZE, 2), ('then', 'then'), (10.0, END), 3, (P8[0], P8[1] + so8[1]), 0, before_grp, typewriter=0.4)
+    doodle(g, 'arrow-now', C.arrow(200, WHITE, 9, 50, seed=35), (430, 1440), 0, 10.15, 11.3, 39)
+    label(g, 'now', ('NOW', 'NOW'), (720, 1425), 4, 72, (10.05, 11.3), 62, [pop_in((720, 1425), 10.05), pop_out((720, 1425), 11.1)])
 
-    # ===== 9 CTA on the cork: then and now pinned, the camera prints the product (11.35 to the end) =====
+    # ===== 9 CTA on the cork: then and now pinned, the camera prints the product big (11.35 to the end) =====
     cork = S.cork()
     art(g, 'cork-in', cork, (11.35, 11.6), 28, (540, 960), 0, [xf((540, 960), [(11.35, 1100, 0, 1, 0), (11.6, 0, 0, 1, 0)])])
     g.art('cork', cork, (11.6, END), 0, (540, 960))
-    PR, RR = (985, 1080), 10
+    PR, RR, pwR = (905, 1000), 10, 380
     after_grp = [xf(PR, [(11.35, 1100, 0, 1, RR - 4), (11.6, -14, 0, 1, 1), (11.68, 0, 0, 1, 0)])]
-    phR, picR, poffR, phsR = photo(420)
+    phR, picR, poffR, phsR = photo(pwR)
     clip(g, 2, (11.35, END), 32, (PR[0] + poffR[0], PR[1] + poffR[1]), picR, 0, [xf(PR, [(11.35, 0, 0, 1, RR)])] + after_grp, src=1.0)
-    art(g, 'photo-now', phR, (11.35, END), 33, PR, RR, after_grp)
-    soR = strip_offset(420)
-    text(g, 'ink', round(420 * 0.11 / PX_PER_SIZE, 2), ('now', 'now'), (11.35, END), 4, rot_pt((PR[0], PR[1] + soR[1]), PR, RR), RR, after_grp)
-    for key, c, rot, t0, col in (('l', PL, RL, 11.68, 'blue'), ('r', PR, RR, 11.78, 'white')):
-        reach = phs8[1] * kL / 2 - 26 if key == 'l' else phsR[1] / 2 - 26
+    boil(g, 'photo-now', phR, (11.35, END), 33, PR, RR, after_grp)
+    soR = strip_offset(pwR)
+    text(g, 'ink', round(pwR * 0.15 / PX_PER_SIZE, 2), ('now', 'now'), (11.75, END), 4, rot_pt((PR[0], PR[1] + soR[1]), PR, RR), RR,
+         after_grp, typewriter=0.35)
+    pinned = [('l', PL, RL, 11.68, 'blue', 96, phs8[1] * kL / 2 - 26), ('r', PR, RR, 11.78, 'white', 96, phsR[1] / 2 - 26)]
+    for key, c, rot, t0, col, d, reach in pinned:
         pc = rot_pt((c[0], c[1] - reach), c, rot)
-        pin = S.shadow(S.prop(f'pin-head-{col}').resize((96, 96), Image.LANCZOS), (12, 16), 8, 110)
-        art(g, f'pin-{key}', pin, (t0, END), 34 + (key == 'r'), pc, 0, [xf(pc, [(t0, 0, -10, 1.8, 0), (t0 + .1, 0, 0, 0.92, 0), (t0 + .16, 0, 0, 1, 0)])])
-
-    cam9, s9 = S.camera(980); cam9 = S.shadow(cam9, (0, 24), 26, 90)
-    camh9 = S.prop('instant-camera').height * s9; top9 = H - camh9 * 0.48; C9 = (540, top9 + camh9 / 2)
+        boil(g, f'pin-{key}', pins(col, d), (t0, END), 34 + (key == 'r'), pc, 0, [pin_in(pc, t0)])
+    corners = ((PL, RL, phs8[0] * kL, phs8[1] * kL, 1, 'cream', 11.84), (PR, RR, phsR[0], phsR[1], -1, 'black', 11.9),
+               (PR, RR, phsR[0], phsR[1], 1, 'blue', 11.96))
+    for i, (c, rot, w, h, side, col, t0) in enumerate(corners):   # more real pins, each colour different, in the corners
+        pc = rot_pt((c[0] + side * (w / 2 - 30), c[1] + h / 2 - 30), c, rot)
+        boil(g, f'pin-spare-{i}', pins(col, 78), (t0, END), 24 + i, pc, 0, [pin_in(pc, t0)])
+    cam9, s9 = camera(1150)
+    camh9 = S.prop('instant-camera').height * s9; top9 = H - camh9 * 0.46; C9 = (540, top9 + camh9 / 2)
     rise = xf(C9, [(11.75, 0, 800, 1, 0), (12.02, 0, -18, 1, 0), (12.1, 0, 0, 1, 0)])
-    art(g, 'camera-cta', cam9, (11.75, END), 38, C9, 0, [rise])
+    boil(g, 'camera-cta', cam9, (11.75, END), 38, C9, 0, [rise])
     pw9 = int((S.CAM_SLOT[2] - S.CAM_SLOT[0]) * s9 * 0.96); ph9, pic9, poff9, phs9 = photo(pw9)
     slot9 = top9 + S.CAM_SLOT[1] * s9 + 8
     P9 = (540 + ((S.CAM_SLOT[0] + S.CAM_SLOT[2]) / 2 - S.prop('instant-camera').width / 2) * s9, slot9 - phs9[1] * 0.9 + phs9[1] / 2)
@@ -280,8 +417,14 @@ def layers():
     print9 = xf(P9, [(12.15, 0, by9, 1, 0), (12.3, 0, by9 * 0.66, 1, 0), (12.4, 0, by9 * 0.66, 1, 0), (12.55, 0, by9 * 0.33, 1, 0),
                      (12.65, 0, by9 * 0.33, 1, 0), (12.85, 0, 0, 1, 0)])
     clip(g, 3, (12.1, END), 36, (P9[0] + poff9[0], P9[1] + poff9[1]), pic9, 0, [rise, print9])
-    art(g, 'photo-product', ph9, (12.1, END), 37, P9, 0, [rise, print9])
-    label(g, 'want', ('WANT THE [PRODUCT]?', 'WANT THE VACUUM?'), (540, 190), -2, 56, (12.3, END), 63, [pop_in((540, 190), 12.3, 1.12)])
-    big(g, ('Comment', 'Comment'), (540, 345), 150, (12.48, END), 5, [pop_in((540, 345), 12.48)])
-    big(g, ('"[WORD]"', '"CLEAN"'), (540, 505), 150, (12.66, END), 6, [pop_in((540, 505), 12.66)])
+    boil(g, 'photo-product', ph9, (12.1, END), 37, P9, 0, [rise, print9])
+    for side in (-1, 1):
+        doodle(g, f'print9-lines-{side}', ticks(3, 100, 26, 7, INK), (P9[0] + side * (pw9 / 2 + 70), slot9 - 150), side * 6, 12.15, 13.0, 42 + (side > 0))
+    arrow_c = (205, 1345)                                # a drawn arrow pointing up at the product
+    art(g, 'arrow-cta', C.arrow(140, INK, 8, 35, seed=37), (13.1, END), 44, arrow_c, -25, [pop_in(arrow_c, 13.1)])
+    label(g, 'want', ('WANT THE [PRODUCT]?', 'WANT THE VACUUM?'), (540, 285), -2, 56, (12.3, END), 63, [pop_in((540, 285), 12.3, 1.12)])
+    hero(g, 'comment', 'Comment', (540, 420), 150, 12.45, None, 91)
+    kw_c = (540, 625)                                   # the buyer's keyword stays editable, on a strip of label tape
+    art(g, 'tape-keyword', tape_strip(840, 190), (12.62, END), 98, kw_c, -2, [pop_in(kw_c, 12.62, 1.1)])
+    big(g, ('"[WORD]"', '"CLEAN"'), kw_c, 165, (12.66, END), 6, [pop_in(kw_c, 12.66)], rot=-2)
     return g
