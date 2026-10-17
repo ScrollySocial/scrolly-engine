@@ -152,8 +152,8 @@ def frame(t):
     elif t < 8.4:
         im = vid('b', t - 5.0)
         k = back_out((t - 6.3) / 0.5); lift = (1 - min(1.0, k)) * 900          # a blood moon rises with the wolf in front of it
-        mc = (380, 1180 + lift); B.moon_glow(im, 620, (int(mc[0] - 310), int(mc[1] - 310))); put(im, BLOOD, mc, 0.62, key='bm')
-        wf = sized(wolf, 430, 'wolf'); im.alpha_composite(wf, (int(mc[0] - wf.width / 2), int(mc[1] + 300 - wf.height)))   # centred in its moon
+        mc = (360, 1420 + lift); B.moon_glow(im, 620, (int(mc[0] - 310), int(mc[1] - 310))); put(im, BLOOD, mc, 0.62, key='bm')
+        wf = sized(wolf, 430, 'wolf'); im.alpha_composite(wf, (int(mc[0] - wf.width / 2), int(mc[1] + 290 - wf.height)))   # the moon stays low, as in v4; the wolf sits centred in it
         word(im, t, 6.5, (W / 2, 350), 'everything', 66, CREAM); word(im, t, 6.9, (W / 2, 500), '30% off', 210, RED, serif=True)
     # 8.4-9.2  a huge tree sweeps past the lens: the wipe to clip C
     elif t < 9.2:
