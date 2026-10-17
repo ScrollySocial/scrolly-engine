@@ -65,24 +65,36 @@ def main():
     print('props ->', PROPS)
 
 # #3 Before and after (Mercedes, 2026-10-17, ChatGPT): file names as she saved them
-PROPS_03 = {'instant-camera': 'Mint Green Retro Instant Camera.png', 'kitchen-timer': 'Cream Retro Kitchen Timer Dial.png'}
+PROPS_03 = {'instant-camera': ('Mint Green Retro Instant Camera.png', lambda r, g, b: g - r < 8),      # mint: green above red
+            'kitchen-timer': ('Cream Retro Kitchen Timer Dial.png', lambda r, g, b: r - b < 7 and r > 90)}   # cream: red above blue
 
-def drop_floor_shadow(im, band=0.16, light=175, grey=16):
-    """Remove the pale floor shadow under an object stood on white (it reads as a white smear on sage); the storyboard
-    adds its own soft shadow."""
+def drop_floor_shadow(im, is_shadow, band=0.1):
+    """Remove the grey floor shadow under an object stood on white (it reads as a smear on a backdrop); is_shadow tells
+    the neutral shadow from the object's own tinted colour. Only the bottom band is touched."""
     im = im.copy(); px = im.load(); w, h = im.size
     for y in range(int(h * (1 - band)), h):
         for x in range(w):
             r, g, b, a = px[x, y]
-            if a and (r + g + b) // 3 > light and max(r, g, b) - min(r, g, b) < grey:
+            if a and is_shadow(r, g, b):
                 px[x, y] = (r, g, b, 0)
     return im.crop(im.getbbox())
 
+# the four pin heads in the push pin photo (x, y, radius), measured; white and cream barely differ from the background
+PIN_HEADS = {'blue': (352, 270, 123), 'white': (1053, 306, 122), 'cream': (385, 660, 129), 'black': (1089, 695, 121)}
+
 def main_03():
-    for name, f in PROPS_03.items():
-        drop_floor_shadow(cut_white(Image.open(SRC / f), tol=14)).save(PROPS / f'{name}.png')
+    for name, (f, is_shadow) in PROPS_03.items():
+        drop_floor_shadow(cut_white(Image.open(SRC / f), tol=14), is_shadow).save(PROPS / f'{name}.png')
     # white frame on white: keep its rectangle (the frame is a touch greyer than the background)
     rect_cut(Image.open(SRC / 'Blank Polaroid on White Background.png'), thresh=240, radius=6).save(PROPS / 'instant-photo-blank.png')
+    # corkboard world (v2): cork backdrop, push pins (whole + head only, as if pushed into the cork), label-maker tape
+    Image.open(SRC / 'Warm Natural Corkboard Texture.png').convert('RGB').save(PROPS / 'cork.jpg', quality=92)
+    pins = Image.open(SRC / 'Glossy Push Pin Quartet.png').convert('RGBA')
+    for name, (cx, cy, r) in PIN_HEADS.items():      # each head is a sphere: cut it as a circle (its floor shadow stays behind)
+        m = Image.new('L', pins.size, 0); ImageDraw.Draw(m).ellipse((cx - r, cy - r, cx + r, cy + r), fill=255)
+        head = pins.copy(); head.putalpha(m.filter(ImageFilter.GaussianBlur(1.2)))
+        head.crop((cx - r - 3, cy - r - 3, cx + r + 3, cy + r + 3)).save(PROPS / f'pin-head-{name}.png')
+    cut_white(Image.open(SRC / 'Glossy Black Strip on White.png'), tol=14).save(PROPS / 'label-tape-black.png')
     print('props 03 ->', PROPS)
 
 if __name__ == '__main__':

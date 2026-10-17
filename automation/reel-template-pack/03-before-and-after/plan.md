@@ -47,3 +47,11 @@ templates). Waiting for her one round of feedback before animating.
 edges), and she doesn't want 100% solid backgrounds. New world for #3, her pick: **corkboard**. A real cork-board
 backdrop, photos held by real push pins, words typed on real label-maker tape (black tape, white letters), cobalt
 accent. Camera, instant photo and timer stay. Props needed from her: cork texture, push pins, a blank label-maker strip.
+
+## Storyboard v2, corkboard (2026-10-17)
+
+`python build/props.py 03` now also makes `cork.jpg`, `pin-head-{blue,white,cream,black}.png` (each head cut as a
+measured circle, as if pushed into the cork) and `label-tape-black.png`. `build/storyboard_03.py` rebuilt: cork backdrop
+with a soft light falloff, photos pinned flat, small words typed on label-maker tape (cut ends kept, middle stretched,
+raised white letters), big words Imbue in cobalt, a SNAP! label at the flash, the real timer beside the after labels.
+Waiting for her one round of feedback.
