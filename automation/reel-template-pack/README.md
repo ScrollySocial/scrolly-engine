@@ -76,7 +76,7 @@ CapCut's projects folder. The installer copies the template there under a new na
   In CapCut this becomes a flipbook (one image per frame on one track).
 - **Next:** animate all of #2 through the engine (`build/templates/t02.py` is the older v3 and must be rewritten to the
   storyboard), add flipbook support to `engine.py`, sound recommendations, install a test copy, show the MP4.
-- **Animated 2026-10-17 (v5, waiting for her one round of feedback):** `build/templates/t02.py` follows the storyboard
+- **Approved 2026-10-17 (v5 animated, after one feedback round):** `build/templates/t02.py` follows the storyboard
   beat by beat, 14.4 s, three clips (picking, product going in, extras). The engine has flipbooks (`Layers.flip`: one
   image per frame on one track) for the flaps folding, the lid halves meeting and the tape zipping along the seam. The
   label fields are editable CapCut text (Consolas) with Typewriter, so buyers can type their shop name. The peanut flood
