@@ -112,3 +112,6 @@ later rules on IG safe zones and editable fonts. Fixed in one pass, beat order u
 Checklist re-run: all items pass. Notes: the hooks are "before" + "WATCH THIS TRANSFORMATION" (huge and animated);
 the CTA cork is the one stretch without full-screen video, but three clips play in the photos there; "wow" is
 Mercedes's call.
+
+**Approved 2026-10-17** (the framework-pass animation, commit dc5cbd2). Her note: she really likes the polka-dot
+lettering on "before" and that it matches the camera's mint.

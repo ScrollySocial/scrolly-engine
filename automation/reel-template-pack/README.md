@@ -90,7 +90,8 @@ CapCut's projects folder. The installer copies the template there under a new na
 - **#3 Before and after animated 2026-10-17** (storyboard v3.1): `build/templates/t03.py`, 14.6 s, four clips. Engine
   additions: text edge (`stroke`), CapCut's blurred background on the main track (`blur_bg`), a clip crop for "the same
   spot" (`crop`), and fonts shipped inside the project (`BUNDLED_FONTS`; unused now that editable text must use fonts
-  buyers already have; Corben only appears as artwork lettering). Framework pass applied the same day. Details in `03-before-and-after/plan.md`. Waiting for her one round of feedback.
+  buyers already have; Corben only appears as artwork lettering). Framework pass applied the same day. **Approved 2026-10-17** (she loves the polka-dot "before" lettering in the
+  camera's mint). Test copy: "Scrolly 03 Before and after (3)". Details in `03-before-and-after/plan.md`.
 - **Rules from Mercedes:** one storyboard round + one animation round per template; ask instead of guessing; real
   objects only (memory note feedback_reel_templates_real_objects). Holiday packs run in a separate chat
   ("Halloween Reel Template Pack") from `holiday-ideas.md`.

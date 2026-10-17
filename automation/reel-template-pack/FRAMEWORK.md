@@ -43,6 +43,8 @@ fix it first; don't show it. When she adds a rule, add it here the same day.
 - **No blurry hero props.** No clipart next to real photos. Nothing flying at the lens like it's being spat out.
 - **Rejected looks:** code-drawn objects (boxes, magnifiers), emoji as main graphics, coloured outlines on objects in
   #2 (white die-cut edges only there), pink washi, Imbue condensed in cobalt with a glow.
+- **Loved (#3, approved 2026-10-17):** big built-in words as Corben letters filled with polka dots in the hero prop's
+  colour (the camera's mint), black edge, popping in one by one at slight angles.
 - **Fonts and colours come from the scene's props** (e.g. the mint of the camera), and the accent text colour is the
   one buyers change to their brand.
 - **CTA:** "Comment [KEYWORD]" (ManyChat style) is the default for most templates.
