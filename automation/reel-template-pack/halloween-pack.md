@@ -16,6 +16,10 @@ concepts that were Halloween looks with no selling job. Candy and blown-out cand
 | h3 | Caught in our web | What you get: features, what's included, why people get hooked | 1 a friendly spider drops in on its thread; 2 the web forms; 3 each point (clip + word) gets caught in it; 4 zoom out to a half-circle web holding all of them | Get caught: link in bio |
 | h4 | What's inside? | Reveal: new product, launch, behind the scenes | A real carved pumpkin; the lid lifts, the clip glows through the face, then fills the frame | New drop + date |
 | h5 | Trick or treat | Offer: myth vs fix, then a discount or freebie | Knock; door 1 opens on the TRICK (a common mistake); door 2 opens on the TREAT (your product or offer) | Comment TREAT for the code |
+| h6 | Once in a blood moon (added 2026-10-17) | A rare, once-a-year sale opening | A huge full moon; clouds drift over; it turns blood red; the moon becomes the clip; haunted house, bats, wolf and tree pop up with the deal | Once-a-year sale: link in bio |
+
+Candy: Mercedes kept only candy corn and gummy worms from the ChatGPT candy sheets. Storyboards (round 1) are in
+`halloween/hN-*/storyboard/`, made by `python build/storyboard_halloween.py`. h1 waits on the smoke video.
 
 ## Images needed (Mercedes to make in ChatGPT or find royalty-free)
 
