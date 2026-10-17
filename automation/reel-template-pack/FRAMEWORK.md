@@ -76,6 +76,8 @@ Source: `Scrolly Organic Engine/products/content-engine/reel-reference-breakdown
 - **What the buyer changes (Mercedes, 2026-10-17):** their clips, the text, and maybe some colours for their brand.
   Keep the brand colour in places that are easy to change in CapCut (text fill and outline); artwork in the brand
   colour needs a simple way to switch it (to be decided).
+  Text that can't be edited (built-in artwork words like BEFORE) must work for ANY brand: generic words, and
+  colours that sit well next to any brand colour.
 - **Real prop reveals the buyer must perform on camera** (peeling a sticky note, flipping a board): she'd rather
   not. At most 1 of 25, and only if it's clearly worth it.
 - **Transitions: the library's list is a starting point, not a limit.** Video shrinking to a card, shape takeovers
