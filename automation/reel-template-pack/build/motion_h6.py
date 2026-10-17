@@ -1,7 +1,7 @@
 """Rough motion test for h6 "Once in a blood moon", in Mercedes's reference style (Lisa Gorbunova contact sheets,
 2026-10-17): the VIDEO is the star and stays full screen; words pop in one at a time (small clean Arial + one big
-Bodoni key word in the accent colour, no outlines or dark bands); the fun is in the edits: bats pop around the subject
-like her stars, a bat flood fills the screen and clears as a transition (like her smileys), the moon becomes a round
+Bodoni key word in the accent colour, no outlines or dark bands); the fun is in the edits: the black night closes in on the
+video into a circle that becomes the moon (round 2: no opening bats, big hook words from frame 1), the moon becomes a round
 window that opens to full screen, a huge tree sweeps past as a wipe. Stand-in footage: her July clips.
 Usage: python build/motion_h6.py  ->  halloween/h6-once-in-a-blood-moon/preview/motion-test.mp4
 """
@@ -59,7 +59,7 @@ def word(img, t, t0, xy, text, px, color, serif=False, anchor='mm'):
     if t < t0: return
     font = B.F(SERIF if serif else SANS, max(4, int(px * (0.6 + 0.4 * k))))
     lay = Image.new('RGBA', (W, H), (0, 0, 0, 0)); ImageDraw.Draw(lay).text(xy, text, font=font, fill=color + (int(255 * clamp((t - t0) / 0.08)),), anchor=anchor)
-    sh = Image.new('RGBA', (W, H), (0, 0, 0, 0)); sh.putalpha(lay.split()[3].filter(ImageFilter.GaussianBlur(8)).point(lambda v: int(v * 0.55)))
+    sh = Image.new('RGBA', (W, H), (0, 0, 0, 0)); sh.putalpha(lay.split()[3].filter(ImageFilter.GaussianBlur(9)).point(lambda v: min(255, int(v * 1.1))))
     img.alpha_composite(sh); img.alpha_composite(lay)
 
 def moon_window(img, key, t, d, c, tint=0.15):
@@ -71,26 +71,29 @@ FLOOD = [(random.uniform(-100, W + 100), random.uniform(-100, H + 100), random.u
          for _ in range(46)]
 
 def frame(t):
-    # 0.0-2.2  clip A full screen; bats pop around her like stars; words one at a time
+    # 0.0-2.2  clip A full screen; a big bold hook from the first frame
     if t < 2.2:
         im = vid('a', t)
-        for i, (x, y, w, r) in enumerate(((180, 420, 200, -14), (900, 360, 170, 12), (130, 1180, 150, 8), (950, 1250, 190, -10))):
-            k = back_out((t - 0.15 - i * 0.12) / 0.3); put(im, bat, (x, y + 8 * math.sin(t * 9 + i)), 0.0 if k <= 0 else k * w / bat.width, r + 6 * math.sin(t * 7 + i), key='bat')
-        word(im, t, 0.25, (W / 2, 250), 'once', 64, CREAM); word(im, t, 0.55, (W / 2, 330), 'in a', 64, CREAM)
-        word(im, t, 0.95, (W / 2, 470), 'blood moon', 170, RED, serif=True)
-    # 2.2-3.2  bat flood fills the screen, then clears onto the moon
+        word(im, t, -0.25, (W / 2, 300), 'once in a', 150, CREAM, serif=True)
+        word(im, t, 0.3, (W / 2, 500), 'blood moon', 172, RED, serif=True)
+    # 2.2-3.2  the black night closes in on the video into a circle, and the circle becomes the moon
     elif t < 3.2:
-        u = (t - 2.2) / 1.0
-        im = vid('a', t) if u < 0.5 else sky.copy()
-        if u >= 0.5:
-            put(im, BLOOD if u > 0.8 else MOON, (W / 2, 1140))
-        for (x, y, w, r, dl) in FLOOD:
-            k = clamp((u - dl) / 0.35) if u < 0.55 else 1 - clamp((u - 0.55 - dl * 0.6) / 0.3)
-            put(im, bat, (x + (1 - k) * (x - W / 2) * 0.6, y + (1 - k) * (y - H / 2) * 0.6), k * w / bat.width, r, key='bat')
+        u = ease((t - 2.2) / 1.0); r = 1150 - u * 650; cx, cy = W / 2, 1140 - (1 - u) * 180
+        im = sky.copy(); d = int(2 * r)
+        inner = vid('a', t)
+        if u > 0.55:   # the clip inside the circle dissolves into the real moon, then it starts to redden
+            mo = B.fit_w(Image.blend(MOON, BLOOD, clamp((u - 0.8) / 0.2) * 0.3), 1000)
+            moon_full = Image.new('RGBA', (W, H), (0, 0, 0, 255)); moon_full.alpha_composite(sky); moon_full.alpha_composite(mo, (int(cx - 500), int(cy - 500)))
+            inner = Image.blend(inner, moon_full, clamp((u - 0.55) / 0.4))
+        m = Image.new('L', (W, H), 0); ImageDraw.Draw(m).ellipse((cx - r, cy - r, cx + r, cy + r), fill=255)
+        im.paste(inner, (0, 0), m.filter(ImageFilter.GaussianBlur(3)))
+        k = 1 - clamp((t - 2.2) / 0.5)
+        if k > 0:
+            word(im, 3.0, 0.0, (W / 2, 300), 'once in a', 150, CREAM, serif=True); word(im, 3.0, 0.0, (W / 2, 500), 'blood moon', 172, RED, serif=True)
     # 3.2-5.0  graphics break: the huge moon, clouds drift, it turns blood red; "our once-a-year SALE"
     elif t < 5.0:
         u = (t - 3.2) / 1.8; im = sky.copy()
-        B.moon_glow(im, 1000, ((W - 1000) // 2, 640)); put(im, Image.blend(MOON, BLOOD, ease(u * 1.5)), (W / 2, 1140))
+        B.moon_glow(im, 1000, ((W - 1000) // 2, 640)); put(im, Image.blend(MOON, BLOOD, 0.3 + 0.7 * ease(u * 1.5)), (W / 2, 1140))
         put(im, cl, (-300 + 500 * u, 1650), 0.9, key='cl'); put(im, cl, (1350 - 500 * u, 700), 0.8, 180, key='cl2')
         word(im, t, 3.45, (W / 2, 300), 'our once-a-year', 66, CREAM); word(im, t, 3.85, (W / 2, 450), 'SALE', 210, RED, serif=True)
     # 5.0-6.0  the moon becomes a round window on clip B, then opens to full screen
