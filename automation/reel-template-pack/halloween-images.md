@@ -9,20 +9,17 @@ the same ChatGPT chat. Cute, not scary.
 house, the haunted trees, the wolf, the clouds, the lit and unlit jack-o'-lanterns, the 3 doors, candy (the pieces you
 picked), the moon photos.
 
-## Still missing for the approved templates
+## Still missing for the approved templates (updated 2026-10-17)
+
+Done or not needed: the moon and its orange glow (done), the h3 web pieces (not needed), doorstep pumpkins
+(cut out of the Pexels doorstep and windowsill photos already in `source/`).
 
 | # | Image | For |
 |---|---|---|
-| 1 | Smoke rolling outward from the centre, 3 to 5 s **video** on black (Sora, Veo or filmed by you: it ships in the template, so it must be ours) | h1 Now you see it |
+| 1 | (Mercedes is getting it) Smoke rolling outward from the centre, 3 to 5 s **video** on black (Sora, Veo or filmed by you: it ships in the template, so it must be ours) | h1 Now you see it |
 | 2 | 3 still smoke puffs on black: small, medium, big | h1 (edge wisps) |
-| 3 | A corner cobweb (a quarter circle spanning a corner), front on, on black | h3 zoom-out ending |
-| 4 | The round web again with **straight spokes only**, no spiral (same chat as the round one) | h3 web lines draw in one at a time |
-| 5 | A thin hanging spider thread, a single strand, on black | h3 spider swings in |
-| 6 | 5 single candy corn pieces, each slightly different, spread so none touch | h5 |
-| 7 | 3 single gummy worms (different colours), each whole | h5 (they were cut off last time) |
-| 8 | A full moon, straight on, very sharp, filling a square frame, on black | h6 (the moon becomes the clip; needs edge-to-edge detail) |
-| 9 | The same moon with a warm orange ombre glow around it (same chat) | h6 (instead of the rejected red border) |
-| 10 | 2 or 3 small pumpkins in a cluster for the doorstep, front view | h5 porch |
+| 3 | 5 single candy corn pieces, each slightly different, spread so none touch | h5 |
+| 4 | 3 single gummy worms (different colours), each whole | h5 (they were cut off last time) |
 
 ## For layered backgrounds that change clip to clip (fill the frame)
 

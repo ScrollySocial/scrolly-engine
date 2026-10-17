@@ -65,6 +65,22 @@ fix it first; don't show it. When she adds a rule, add it here the same day.
     EXTRA FUN, made as artwork: balloon letters, typewriter, letters filled with patterns, magazine cut-out letters,
     letters made of objects. Reference: Creative Besties on Instagram (all the crazy, fun fonts).
 
+## Signature moves: reuse, but never more than 5 of 25 (Mercedes, 2026-10-17)
+
+An approved move (the peanut drop-in flood, the box closing, the typing label, the torn-paper split) can be reused to
+save time, but **one move appears in at most 5 of a pack's 25 templates**, and never in two templates back to back
+in the pack order. Log each use here when a template is approved.
+
+| Move | Made in | Used in |
+|---|---|---|
+| Peanut drop-in, then the flood takes over the screen | 02 | 02 |
+| Box flaps fold and the lid halves meet (flipbook) | 02 | 02 |
+| Shipping label typing in (TO: YOU) | 02 | 02 |
+| Washi tape zipping along a seam | 02 | 02 |
+| Polaroids pinned, growing to fill the frame | 01 | 01 |
+| Instant camera snaps, the after photo prints and develops | 03 | 03 |
+| Torn-paper diagonal split | 04 (draft) | |
+
 ## From her other chats (collected 2026-10-17: #3, #4, Halloween, the Lisa breakdown, her own Reels)
 
 **What the Reel is (her summary, #4 chat):** a written hook in a bold, fun font + a visual hook + layered backgrounds +
@@ -141,4 +157,5 @@ Showing her work
 - [ ] Every joke or picture makes literal sense at a glance; no lines cross each other or the text.
 - [ ] The build printed no `IG SAFE ZONE:` lines (no text under Instagram's top bar, caption or buttons).
 - [ ] Editable text uses a font buyers already have; built-in words are extra-fun artwork lettering.
+- [ ] Any reused move is under its 5-of-25 cap and not in the template just before it (see the moves table).
 - [ ] Would someone say "wow, I've never seen that on my feed"? If not, it isn't ready.
