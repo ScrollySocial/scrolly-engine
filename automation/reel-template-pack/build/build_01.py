@@ -136,9 +136,9 @@ def layers():
         text('ink', 10, labels[i], T, 22 + i, (x, 1440), kf={'scale': pop(t0 + 0.1)})
 
     # three ways, 3 s each: the Polaroid flies in, settles at a tilt, then drifts
-    POL = [dict(c=(540, 1010), tilt=4, frm=(540, 2700), num=(150, 240), star=(930, 1700)),
-           dict(c=(540, 1000), tilt=-3, frm=(1900, 980), num=(930, 240), star=(150, 1700)),
-           dict(c=(540, 1010), tilt=2, frm=(540, -800), num=(150, 240), star=(930, 1700))]
+    POL = [dict(c=(540, 1010), tilt=4, frm=(540, 2700), num=(150, 240), star=(920, 230)),
+           dict(c=(540, 1000), tilt=-3, frm=(1900, 980), num=(930, 240), star=(160, 230)),
+           dict(c=(540, 1010), tilt=2, frm=(540, -800), num=(150, 240), star=(920, 230))]
     words = [('[way one]', 'floors'), ('[way two]', 'the couch'), ('[way three]', 'handheld')]
     for i, p in enumerate(POL):
         T = (2.5 + 3 * i, 5.5 + 3 * i)
@@ -163,7 +163,7 @@ def layers():
         text('ink', 14, words[i], T, 20, cap_c, p['tilt'], motion(cap_c))
         text('imbue', 69, (str(i + 1), str(i + 1)), T, 21, p['num'], kf={'scale': pop(0.35, 1.3)})
         art(f'star{i + 1}', C.star(110, INK, 6, seed=24 + i), T, 10, p['star'],
-            kf={'scale': pop(0.6, 1.3) + [(1.15, 1.0), (1.3, 0.0)], 'rot': [(0.6, -120), (1.0, 0)]})  # out before it grows
+            kf={'scale': pop(0.6, 1.3), 'rot': [(0.6, -120), (1.0, 0), (1.6, 10), (2.2, -8), (2.8, 6)]})  # stays, wiggles
 
     # CTA 11.5 to 14
     T = (11.5, 14)

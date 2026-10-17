@@ -37,8 +37,8 @@ Mac buyers: not supported yet (no installer, folder path unverified).
 
 ## Phase 3 test (Mercedes, in CapCut desktop)
 
-Template 01 v4 (circles one at a time, Polaroids grow to fill the frame) installed in her CapCut on 2026-10-16 as
-"Scrolly 01 One product three ways (5)". v3 ("(4)", motion confirmed in CapCut by Mercedes) was, filled by the installer with four of her July vacuum clips. "(2)" is v2 (no
+Template 01 v5 (stars stay on screen) installed in her CapCut on 2026-10-16 as "Scrolly 01 One product three ways (6)".
+v4 ("(5)": circles one at a time, Polaroids grow) was approved by Mercedes apart from the stars. v3 ("(4)", motion confirmed in CapCut by Mercedes) was, filled by the installer with four of her July vacuum clips. "(2)" is v2 (no
 motion); the unnumbered copy and "(3)" are v1. Motion uses CapCut keyframes (position, rotation, scale) and the
 Typewriter text animation; only scale keyframes were seen in her own drafts, so position and rotation keyframes are
 the first thing to check.
@@ -48,6 +48,18 @@ the first thing to check.
 3. Are the words in the tall serif and Ink Free handwriting, in the right places and sizes? (Text size is calibrated
    from one of her drafts, so small size differences from `preview/after.mp4` are expected.)
 4. Export and send the file to compare with `preview/after.mp4`.
+
+## Design notes for the batch (Mercedes, 2026-10-16)
+
+- **Look:** no Scrolly branding; collage (paper, tape, Polaroids, hand-drawn marks that never touch text), butter yellow,
+  Ink Free handwriting. Headline font alternates: odd templates Imbue (tall serif), even templates MADE Awelier
+  (curvy serif, CapCut id 7462241028796337414).
+- **Motion everywhere:** pops with a bounce, things flying in and settling, growing to fill the frame, stickers that
+  stay on screen and wiggle (01's stars vanished too fast; keep stickers up for the whole shot).
+- **Visual hooks through rapid change:** a very popular Reel style is about 14 seconds of 0.6-second clips at a little
+  faster than 1x. Use lots of quick clip changes, switch between video and full-screen text cards, and add playful
+  animations and stickers.
+- Captions on Polaroids: 1 to 3 words.
 
 ## Open items
 
