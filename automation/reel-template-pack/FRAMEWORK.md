@@ -67,6 +67,20 @@ fix it first; don't show it. When she adds a rule, add it here the same day.
     EXTRA FUN, made as artwork: balloon letters, typewriter, letters filled with patterns, magazine cut-out letters,
     letters made of objects. Reference: Creative Besties on Instagram (all the crazy, fun fonts).
 
+## From the 6-Reel technique library (Mercedes, 2026-10-17)
+
+Source: `Scrolly Organic Engine/products/content-engine/reel-reference-breakdown.md` (all 6 Reels are @li.gorbunova).
+
+- **Drag and drop, and it looks chic.** The buyer drops in their own clips and the template makes them look good.
+  Don't design templates that need special filming or extra footage.
+- **Real prop reveals the buyer must perform on camera** (peeling a sticky note, flipping a board): she'd rather
+  not. At most 1 of 25, and only if it's clearly worth it.
+- **Transitions: the library's list is a starting point, not a limit.** Video shrinking to a card, shape takeovers
+  (star shards), pattern wipes (checker), photo floods and pieces wiping off are ideas to borrow; every template can
+  still invent its own. Only a huge menu (around 100) could ever become the set to pick from.
+- **Photo inside the letters** is OK when the buyer can swap the photo in CapCut, or the photo fits the Reel's theme
+  so it never needs changing. Outlined prices and red pill labels are fine in the text kit too.
+
 ## Signature moves: reuse, but never more than 5 of 25 (Mercedes, 2026-10-17)
 
 An approved move (the peanut drop-in flood, the box closing, the typing label, the torn-paper split) can be reused to
@@ -160,4 +174,6 @@ Showing her work
 - [ ] The build printed no `IG SAFE ZONE:` lines (no text under Instagram's top bar, caption or buttons).
 - [ ] Editable text uses a font buyers already have; built-in words are extra-fun artwork lettering.
 - [ ] Any reused move is under its 5-of-25 cap (see the moves table).
+- [ ] The buyer only drops in their clips: no special filming, no on-camera prop reveal (unless it's the 1 of 25).
+- [ ] Any photo inside letters can be swapped by the buyer, or fits the theme as is.
 - [ ] Would someone say "wow, I've never seen that on my feed"? If not, it isn't ready.
