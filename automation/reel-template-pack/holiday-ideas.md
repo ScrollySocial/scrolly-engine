@@ -56,3 +56,6 @@ real objects, with pieces removed or added to reveal or change what's underneath
 - Silent Night (church), music and carolling.
 - Hot cocoa.
 - Advent calendar. Open question: should the whole pack be an advent calendar series?
+
+Decision (2026-10-17): the nativity and Silent Night stay in the Christmas pack as full templates. "That's the reason
+for the season"; buyers who don't want them don't have to use them. Don't suggest cutting or watering them down.
