@@ -48,3 +48,6 @@ Halloween). Next round = motion tests, fewer and bigger props.
   small pill label ("2 pm - 10 am").
 - **Coffee, loved** (`06`): "which is your style?" over the person's clip; real drink cut-outs pop in one at a time,
   each with a short label ("ice americano", "sweet latte"); ends "swipe up your answer!"
+- **Lots of one thing (correction, 2026-10-17):** not "fewer props". One kind, many of them: real leaves framing the
+  clip on all sides (`07`), a screen full of paper stars (`08`), acorns all along the ground, mushrooms all along the
+  ground.

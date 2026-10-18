@@ -199,8 +199,9 @@ Showing her work
   camera zooms into the full image.
 - **A real prop that rises and falls between clips** (a fringed blanket) and can grow into the full-page background.
 - **Overlays on an object stay inside its shape** (dots, stars, stripes on an apple never spill off it).
-- **Not a collage:** her round 1 Fall stills were rejected as busy. A few big, clean props with the video as the
-  hero, not leaves, tags and stickers piled everywhere. Check cut-outs: white objects on white backgrounds (cards,
+- **Not a mixed collage, but lots of ONE thing is good:** her round 1 Fall stills were rejected as busy (leaves, tags,
+  stickers, cards all piled together). Many props are fine when they are one kind: a frame of leaves all round the
+  clip, a screen full of stars, acorns or mushrooms all along the ground (`fall/inspo/07`, `08`). The video stays the hero. Check cut-outs: white objects on white backgrounds (cards,
   cups) need a careful cut, and holes (tag loops) must be see-through.
 
 ## Checklist: run before showing any storyboard or preview
@@ -227,5 +228,5 @@ Showing her work
 - [ ] Any reused move is under its 5-of-25 cap (see the moves table).
 - [ ] The buyer only drops in their clips: no special filming, no on-camera prop reveal (unless it's the 1 of 25).
 - [ ] Any photo inside letters can be swapped by the buyer, or fits the theme as is.
-- [ ] Not a collage: a few big, clean props; cut-outs checked at full size (no white edges or blobs).
+- [ ] Not a mixed collage (lots of ONE kind of prop is fine); cut-outs checked at full size (no white edges or blobs).
 - [ ] Would someone say "wow, I've never seen that on my feed"? If not, it isn't ready.
