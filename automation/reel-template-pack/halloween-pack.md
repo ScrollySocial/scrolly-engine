@@ -8,12 +8,12 @@
   Go straight to a 10 to 15 s motion test per template (see motion_h6.py), then the CapCut build. Rules: FRAMEWORK.md.
 - **h3 Caught in our web: APPROVED and checked in CapCut** (bubbles round). `build/motion_h3.py`, `build/templates/th3.py`.
   Engine now supports `mask='circle'` on clips (CapCut Rectangle mask, corners fully rounded).
-- **Upload zips:** `halloween/for-upload/` (h6, h3, h2), made from the buyer folders; not in git (rebuild with Compress-Archive).
+- **Upload zips:** `halloween/for-upload/` (h6, h3, h2, h5), made from the buyer folders; not in git (rebuild with Compress-Archive).
   Still missing before selling: sound picks per template, Mac support, the product listing (Mercedes does that).
 - h2 bats, h5 trick or treat: concepts and round 4 notes in `halloween/notes-round4.md`; next as motion tests.
-- **h5 Trick or treat:** motion test v8 (`build/motion_h5.py`, Snap ITC taffy lettering, candy corn + taffy pop up out of
-  door 2, no outlines; her doodles; two-tone strip slice to door 2). 2026-10-18: she's not happy with the knock-knock
-  part and will come back to it; don't change h5 until she does.
+- **h5 Trick or treat: APPROVED 2026-10-18 (motion test v10) and built.** `build/motion_h5.py`, `build/templates/th5.py`;
+  test copy in her CapCut ("Scrolly h5 Trick or treat"); zip in `halloween/for-upload/`. Clips are real layers (door 1's
+  glass, hallway, door 2's arch, doorbell view); graphics are flipbooks rendered from the motion test. Not yet checked in CapCut.
 - **h2 Things I'm batty about: APPROVED 2026-10-18 and built.** `build/motion_h2.py` (v5), `build/templates/th2.py`;
   test copy in her CapCut ("Scrolly h2 Things I'm batty about"); zip in `halloween/for-upload/`. The bat-shaped window is
   a big dotted-night sheet with a bat-shaped hole, scaled with keyframes (CapCut has no bat mask). Not yet checked in CapCut.
