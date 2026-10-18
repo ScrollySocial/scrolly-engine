@@ -7,8 +7,9 @@ Beats (balanced: full-frame video with accents, a words-only intermission, colla
  2 intermission: dark textured backdrop, a bat lands on a branch, "my top 3"
  3 favourite 1 flies in inside a big bat-shaped window, then we zoom into it; a bat brings a real kraft tag with its name
  4 a flock of bats passes across the screen: the transition to favourite 2
- 5 favourite 3: we zoom into the kraft tag and it becomes the clip
- 6 CTA: three bats hang from the branch, each holding a tag with its clip; Comment BATTY
+ 5 the bats swirl in, close over the clip and swirl open onto favourite 3
+ 6 CTA: three bats hang from the branch above three video tiles; Comment BATTY
+v2 (her note): only favourite 1 gets a kraft tag ("1 was cute, then it took over the theme").
 Usage: python build/motion_h2.py  ->  halloween/h2-batty-about/preview/motion-test.mp4
 """
 import math, random, subprocess, sys
@@ -47,7 +48,20 @@ def cached(name, fn):
     return Image.open(p).convert('RGBA')
 FLY = cached('bat-fly', lambda: B.cut('Cute Kawaii Bat with Spread Wings.png', tol=8))
 HANG = cached('bat-hang', lambda: B.cut('Cute Upside-Down Wrapped Bat.png', tol=8))
-BRANCH = cached('branch', lambda: B.cut('Cute Twisted Spooky Tree Branch.png', tol=8))
+def _real_branch():
+    """v2 (more mixed media): a real bare limb, cut from her bare-tree photo, instead of the drawn branch."""
+    im = Image.open(B.SRC / 'Twisting bare tree on white-46.png').convert('RGB').crop((260, 30, 1300, 470))
+    g = ImageOps.grayscale(im); out = im.convert('RGBA')
+    out.putalpha(g.point(lambda v: max(0, min(255, (232 - v) * 4))))      # keyed by darkness: fine twigs keep, white goes
+    return out.crop(out.getbbox())
+BRANCH = cached('branch-real', _real_branch)
+def _ticket():
+    t = B.cut_white(Image.open(LIB / 'images' / 'Blank cream ticket stub on white-18.png'), tol=8); return t.crop(t.getbbox())
+TICKET = cached('ticket', _ticket)
+def ticket(text, w=620):
+    """A real cream ticket stub with the favourite's name on it (editable words in Arial Bold)."""
+    tk = sized(TICKET, w, f'tk{w}').copy(); f = E.ImageFont.truetype(BOLD, int(w * 0.085))
+    ImageDraw.Draw(tk).text((tk.width * 0.4, tk.height * 0.5), text, font=f, fill=INK + (255,), anchor='mm'); return tk
 def _tag():
     im = B.cut_white(Image.open(LIB / 'images' / 'Blank kraft hang tag with twine-114.png'), tol=8)
     a = im.split()[3]; g = ImageOps.grayscale(im.convert('RGB'))
@@ -171,25 +185,29 @@ def frame(t):
             y = r.uniform(-100, H + 100); w = r.uniform(180, 420); sp = r.uniform(0.9, 1.3)
             x = -400 + (W + 800) * clamp(u * sp - r.uniform(0, 0.25) + 0.15)
             put(im, sized(FLY, w, f'f{int(w)}'), (x, y + 30 * math.sin(t * 9 + i)), r.uniform(-15, 15), shadow=False)
-    # 6.5-9.0 favourite 2 full screen
+    # 6.5-9.0 favourite 2 full screen: the big glossy number and its name (v2: only favourite 1 gets a tag)
     elif t < 9.0:
         im = vid('c', t - 5.8)
-        bat_carry(im, t, 6.6, tag_with('[favourite 2]'), (780, 560), from_x=-250)
-        pop_word(im, t, 6.9, '2', (260, 420), 220, -6)
-    # 9.0-9.8 we zoom into the tag: it becomes favourite 3
-    elif t < 9.8:
-        u = ease((t - 9.0) / 0.8); im = vid('c', t - 5.8)
-        tg = tag_with('', 380, vid('d', t - 9.0)); s = 1 + 5.2 * u
-        tg = tg.resize((int(tg.width * s), int(tg.height * s)), Image.BICUBIC)
-        c = (780 + (540 - 780) * u, 760 + (960 - 760) * u - tg.height * 0.03 * u)
-        im.alpha_composite(tg, (int(c[0] - tg.width / 2), int(c[1] - tg.height * (0.61 - 0.0 * u))))
-        if u > 0.85: im = Image.blend(im, vid('d', t - 9.0), (u - 0.85) / 0.15)
-    # 9.8-12.0 favourite 3 full screen
+        pop_word(im, t, 6.6, '2', (540, 420), 240, -6)
+        if t > 6.95: put(im, ticket('[favourite 2]'), (540, 650 + 30 * (1 - back_out((t - 6.95) / 0.35))), -3)
+        put(im, sized(FLY, 230, 'f230'), (220 + 40 * math.sin(t * 2), 330 + 20 * math.sin(t * 5)), -8 * math.sin(t * 4), shadow=False)
+    # 9.0-9.9 the bats swirl in from the edges, close over favourite 2, and swirl open onto favourite 3
+    elif t < 9.9:
+        u = (t - 9.0) / 0.9; close = ease(u / 0.5) if u < 0.5 else 1 - ease((u - 0.5) / 0.5)
+        im = vid('c', t - 5.8) if u < 0.5 else vid('d', t - 9.0); th = 0.0
+        while th < 4.6 * math.pi:
+            r0 = 40 + 60 * th; r = r0 + (1 - close) * 1400; a = th + u * 5
+            x, y = W / 2 + r * math.cos(a), 960 + r * math.sin(a) * 1.15
+            if -150 < x < W + 150 and -150 < y < H + 150:
+                put(im, sized(FLY, 80 + r0 * 0.32, f'f{int(80 + r0 * 0.32)}'), (x, y), -math.degrees(a) - 90, shadow=False)
+            th += 0.5 + 100 / (60 * th + 160)
+    # 9.9-12.0 favourite 3 full screen
     elif t < 12.0:
         im = vid('d', t - 9.0)
-        bat_carry(im, t, 9.9, tag_with('[favourite 3]'), (300, 560))
-        pop_word(im, t, 10.2, '3', (820, 420), 220, 6)
-    # 12.0-15.0 CTA: three bats hang from the branch, each with a tag playing its clip; Comment BATTY
+        pop_word(im, t, 10.0, '3', (540, 420), 240, 6)
+        if t > 10.35: put(im, ticket('[favourite 3]'), (540, 650 + 30 * (1 - back_out((t - 10.35) / 0.35))), 3)
+        put(im, sized(FLY, 230, 'f230'), (860 - 40 * math.sin(t * 2), 330 + 20 * math.sin(t * 5)), 8 * math.sin(t * 4), shadow=False)
+    # 12.0-15.0 CTA: three bats hang from the branch above three video tiles (1, 2, 3); Comment BATTY
     else:
         im = BACKDROP.copy(); put(im, sized(BRANCH, 1150, 'br'), (600, 260))
         for j, (x, key, st) in enumerate(((230, 'b', 3.0), (540, 'c', 5.8), (850, 'd', 9.0))):
@@ -197,11 +215,12 @@ def frame(t):
             if k <= 0: continue
             sw = 3 * math.sin(t * 3 + j)
             put(im, sized(HANG, 170, 'h170'), (x, 410 + 4 * math.sin(t * 5 + j)), sw)
-            tg = tag_with('', int(260 * max(0.1, k)), vid(key, t - st)); ImageDraw.Draw(im).line((x, 480, x, 560), fill=(150, 120, 80, 255), width=4)
-            put(im, tg, (x, 700), sw)
-        line(im, t, 12.7, 'comment', (540, 1000), 80)
-        pop_word(im, t, 12.95, 'BATTY', (540, 1170), 122, -3)
-        line(im, t, 13.4, "and I'll send all 3 links", (540, 1360), 66)
+            tw, th_ = int(270 * max(0.1, k)), int(400 * max(0.1, k))
+            put(im, ImageOps.fit(vid(key, t - st), (tw, th_)), (x, 720), (-3, 2, 4)[j])
+            pop_word(im, t, 12.3 + j * 0.15, str(j + 1), (x, 960), 110, (-6, 4, 6)[j])
+        line(im, t, 12.8, 'comment', (540, 1130), 80)
+        pop_word(im, t, 13.0, 'BATTY', (540, 1290), 122, -3)
+        line(im, t, 13.4, "and I'll send all 3 links", (540, 1450), 62)
     return im.convert('RGB')
 
 def main():
