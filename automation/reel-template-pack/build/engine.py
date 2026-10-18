@@ -47,6 +47,8 @@ SYSTEM_FONTS = {'ink': 'C:/Windows/Fonts/Inkfree.ttf', 'arial': 'C:/Windows/Font
                 'mono': 'C:/Windows/Fonts/consola.ttf', 'arialbd': 'C:/Windows/Fonts/arialbd.ttf'}      # ship with Windows
 # fonts not in CapCut's library: shipped inside the project folder (SIL Open Font License, free to bundle)
 BUNDLED_FONTS = {'corben': LOCAL / 'CapCut' / 'User Data' / 'Cache' / 'AITextTemplate' / 'Resource' / '4624078377714242870' / 'Corben-Bold.ttf'}
+_anton = sorted((LOCAL / 'CapCut' / 'User Data' / 'Cache' / 'AITextTemplate' / 'Resource').glob('*/Anton-Regular.ttf'))
+if _anton: BUNDLED_FONTS['anton'] = _anton[0]       # Fall f2's editable caps (OFL); not in CapCut's font library
 INKFREE = 'C:/Windows/Fonts/Inkfree.ttf'                                        # ships with Windows 10 and 11
 SEG, SEGB = 'C:/Windows/Fonts/segoeui.ttf', 'C:/Windows/Fonts/segoeuib.ttf'
 SLOT_COLORS = [(243, 233, 220), (228, 236, 242), (237, 228, 240), (227, 239, 230), (246, 232, 214), (232, 230, 244)]

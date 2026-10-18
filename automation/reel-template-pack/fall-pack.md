@@ -92,3 +92,9 @@ Her summary of the look: "mixed-media video collages, hyper interesting and visu
 - From her Pinterest board picks (FRAMEWORK "Collage techniques" / "Her picks from the board", 2026-10-18): double
   skyline top and bottom; different backgrounds combined in one frame; a swarm orbiting a person or product (real
   leaves orbiting the product clip); a two-tone strip-slice transition (f2's stripes reveal is close to this).
+
+## f2 The fall drop: APPROVED 2026-10-18 (motion test v5, "love it... finally")
+
+Motion test `build/motion_f2.py`; CapCut build `build/templates/tf2.py` (`python build/make.py f2`). Editable caps in
+Anton, shipped inside the project folder (not in CapCut's font library); Bodoni Moda for "meet the / maple candle" and
+"comment". Moves log: collage tile build, tile flip to clip, zoom into a tile that becomes the clip, stripes reveal.

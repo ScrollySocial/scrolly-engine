@@ -1,0 +1,9 @@
+Put your clips in this folder, then double-click "2 Double-click to install".
+
+They go into the template in name order, so name them 1 to 4 (for example 1.mov, 2.mov).
+Film upright (vertical) and start each clip right on the action.
+
+1: Your product, held up (at least 4 seconds)
+2: Your product, hero shot (at least 9 seconds)
+3: A detail (at least 3 seconds)
+4: It in use (at least 7 seconds)
