@@ -168,6 +168,15 @@ Photo collages, turned into video moves. This is the layering she means:
   handwritten labels and sparkles. The closest match for physical-product templates.
 - **Mixed media:** black-and-white photo with one colour element, grid paper, maps, old book text, stamps.
 
+**Her picks from the board (2026-10-18), do these first:**
+- **Skyscrapers top AND bottom:** skylines hanging down from the top and rising from the bottom, meeting in the
+  middle with a starry or pattern sky between them (the buyer's clip can sit in that middle).
+- **Different backgrounds and images combined** in one frame, not one photo behind everything.
+- **Birds circling the head:** a swarm of cut-outs (birds, butterflies, leaves) animated orbiting around a person
+  or product.
+- **Two-tone strip slice as a transition:** clip A cut into strips, alternating strips tinted two tones, sliding
+  apart to reveal clip B.
+
 ## Her idea bank (Mercedes, 2026-10-17): use these when they fit
 
 **In one line: mixed-media video collages, hyper interesting and visually hooky.**
