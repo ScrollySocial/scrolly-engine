@@ -3,8 +3,8 @@ have nothing to do with each other, arrows at nothing, no overlays or patterns o
 
 Written from a script, the way her references work: every object arrives WITH the word it pictures, and they belong
 to one story, a lab notebook test log. Patterns and stickers sit ON the objects (rule 9): the test tubes fill with
-three different patterns of her hand-painted marks, the stopwatch wears a dotted No.1 sticker, the real stamp prints
-PASSED. Cut-outs come from the rembg model (build/cutout_hq.py). Her picks from the Pinterest board used here:
+three different patterns of her hand-painted marks, the camera wears a REC sticker, the real stamp prints PASSED.
+All words are die-cut stickers (solid letters, thick white edge) so they read over any footage (her note, round 2). Cut-outs come from the rembg model (build/cutout_hq.py). Her picks from the Pinterest board used here:
 combined backgrounds (graph paper + ruled notebook paper + a strip of her checks), the two-tone strip slice, a swarm
 orbiting the product, a shape window (the magnifier's lens), big sticker type.
 
@@ -12,8 +12,8 @@ orbiting the product, a shape window (the magnifier's lens), big sticker type.
   2.0  the clip shrinks to a photo card on the notebook; "let's TEST it": the tubes slide in and fill with patterns;
        her arrow from TEST to the tubes
   3.0  two-tone strip slice (red / navy) into the test
-  3.3  the test in ONE uncut take, full frame; "one take, no cuts"; the stopwatch (No.1 sticker) with outlined seconds
-       counting beside it; her circle drawn round the stopwatch
+  3.3  the test in ONE uncut take, full frame; "one take, no cuts"; a real camera with a blinking REC sticker (filmed
+       live; no timer, since most tests aren't timed: her note); her dashed arrow; the claim comes back; watch closely
   8.3  black-and-white freeze: "and the RESULT"; her burst
   8.8  the magnifying glass slides in carrying the result in its lens; the lens opens to full screen
   9.6  the result, full frame: her ticks orbit the product; the stamp comes down: PASSED; [IT STAYED DRY]
@@ -49,13 +49,14 @@ def die_cut(im, edge=12, shadow=True):
 
 def dots(base, dot, scale=0.8): return LB.dots_fill(base, dot, scale)
 
-def big_word(text, px, fill='dots', color=RED):
-    """Big sticker type: Anton caps filled with her hand-painted dots (or plain), a white die-cut edge."""
+def big_word(text, px, fill='dots', color=RED, edge=10):
+    """Big sticker type: Anton caps filled with her hand-painted dots (or plain), a white die-cut edge. Plain with a
+    thick edge for anything that sits over busy footage (her note: the dotted claim over granite couldn't be read)."""
     f = S.F(ANTON, px); l, t, r, b = f.getbbox(text); w, h = r - l + 40, b - t + 40
     m = Image.new('L', (w, h), 0); ImageDraw.Draw(m).text((20 - l, 20 - t), text, font=f, fill=255)
     fl = dots(color, CREAM)((w, h), len(text)) if fill == 'dots' else Image.new('RGBA', (w, h), color + (255,))
     word = Image.new('RGBA', (w, h), (0, 0, 0, 0)); fl.putalpha(m); word.alpha_composite(fl)
-    return die_cut(word, 10)
+    return die_cut(word, edge)
 
 def small(img, t, t0, xy, text, px=78, color=WHITE, out=None, shadow=True, font=None):
     """A small connecting word, popping in on its beat (one or two words at a time, like her references)."""
@@ -111,13 +112,11 @@ def tubes(g, level):
         part = f.copy(); part.putalpha(ImageChops.multiply(f.split()[3], m)); rack.alpha_composite(part)
     return die_cut(rack, 10)
 
-def stopwatch(w):
-    """The real stopwatch wearing a round red sticker with her dots and No.1 on it."""
-    sw = hq('Vintage Silver Mechanical Stopwatch-233.png', w); d = int(w * 0.34)
-    st = dots(RED, CREAM, 0.5)((d, d), 3); st.putalpha(circle_mask((d, d), (d / 2, d / 2), d / 2 - 1, 1))
-    ImageDraw.Draw(st).text((d / 2, d / 2), 'No.1', font=S.F(ANTON, int(d * 0.34)), fill=WHITE, anchor='mm', stroke_width=3, stroke_fill=INK)
-    sw.alpha_composite(die_cut(st, 6, False), (int(w * 0.6), int(sw.height * 0.66)))
-    return die_cut(sw, 10)
+def rec_sticker():
+    """A REC sticker for the camera (filmed in one take): a red dot and REC on a white die-cut label, blinking."""
+    im = Image.new('RGBA', (300, 120), (255, 255, 255, 255)); d = ImageDraw.Draw(im)
+    d.ellipse((24, 30, 84, 90), fill=RED); d.text((190, 60), 'REC', font=S.F(ANTON, 76), fill=INK, anchor='mm')
+    im.putalpha(S.round_rect((300, 120), 24)); return C.shadow(im, (6, 10), 10, 100)
 
 LENS = (247, 237, 212)                     # the magnifier's glass in its cut-out (measured): centre, radius
 def magnifier(w):
@@ -134,11 +133,11 @@ def passed_ink(px=150):
     ink = Image.new('RGBA', (w, h), RED + (0,)); ink.putalpha(m.point(lambda v: int(v * 0.9))); return ink
 
 def paper_bg():
-    """Combined backgrounds (her pick): graph paper above, ruled notebook paper below, a strip of her checks between."""
-    im = Image.new('RGBA', (W, H)); graph = ImageOps.fit(S.raw('images', 'Creased pale blue graph paper-7.png'), (W, 1000)).convert('RGBA')
-    ruled = ImageOps.fit(S.raw('physical', 'Blank Ruled Notebook Paper.png'), (W, 820)).convert('RGBA')
-    chk = ImageOps.fit(ImageOps.colorize(ImageOps.grayscale(S.raw('doodles', 'Wobbly hand-drawn black and white checkerboard-24.png')), RED, CREAM), (W, 110)).convert('RGBA')
-    im.alpha_composite(graph, (0, 0)); im.alpha_composite(ruled, (0, 1100)); im.alpha_composite(chk, (0, 990)); return im
+    """Combined backgrounds, made to look intentional (her note: graph + lined paper looked like a mistake): one graph-
+    paper page, and her red checkerboard, a clearly different material, showing along a torn edge at the bottom."""
+    im = ImageOps.fit(S.raw('images', 'Creased pale blue graph paper-7.png'), (W, H)).convert('RGBA')
+    chk = ImageOps.fit(ImageOps.colorize(ImageOps.grayscale(S.raw('doodles', 'Wobbly hand-drawn black and white checkerboard-24.png')), RED, CREAM), (W + 72, 520)).convert('RGBA')
+    chk.putalpha(C.torn_mask((W + 72, 520), 7, 22, 't')); im.alpha_composite(C.shadow(chk, (0, -6), 10, 90), (-36 - 36, H - 520 - 36)); return im
 
 def card(clip_im, w, h, border=18):
     """The clip printed as a photo card (white border), like her reference's video shrinking to a card."""
@@ -158,52 +157,54 @@ def slice_wipe(old, new, u, n=8):
 def setup():
     g = {'c': [Clip('IMG_1430', 1.0), Clip('IMG_1460', 0.0, 6.0), Clip('IMG_1463', 1.0), Clip('IMG_1431', 1.0)]}
     g['rack'], g['fills'] = tubes_parts(440)
-    g['watch'] = stopwatch(300); g['watch_s'] = stopwatch(230)
+    cam = hq('Black mirrorless camera, three-quarter view-51.png'); g['camera'] = die_cut(S.fitw(cam, 420), 10); g['camera_s'] = die_cut(S.fitw(cam, 300), 8)
+    g['rec'] = rec_sticker()
     g['mag'], g['lens'] = magnifier(1100); g['mag_s'], g['lens_s'] = magnifier(380)
     st = hq('Vintage Rubber Stamp and Ink Pad-17.png'); g['stamp'] = die_cut(S.fitw(st.crop((0, 0, int(st.width * 0.42), st.height)), 330), 8)
     g['ink'] = passed_ink(150); g['ink_s'] = passed_ink(70)
-    g['claim'] = big_word('[STAY DRY]?', 170); g['test'] = big_word('TEST', 250); g['result'] = big_word('RESULT', 260)
+    g['claim'] = big_word('[STAY DRY]?', 170, 'plain', RED, 16)
+    g['hook_w'] = [big_word(w, 96, 'plain', INK, 12) for w in ('does', 'it', 'really')]
+    g['lets'] = big_word("let's", 96, 'plain', INK, 12); g['it'] = big_word('it', 96, 'plain', INK, 12)
+    g['andthe'] = big_word('and the', 96, 'plain', INK, 12)
+    g['take'] = [big_word(w, 80, 'plain', INK, 12) for w in ('one take,', 'no cuts', 'watch closely')]; g['test'] = big_word('TEST', 250); g['result'] = big_word('RESULT', 260)
     g['said'] = big_word('[IT STAYED DRY]', 120, 'plain', NAVY); g['comment'] = big_word('COMMENT', 190); g['kw'] = big_word('"[KEYWORD]"', 110, 'plain', NAVY)
     g['paper'] = paper_bg()
     g['d_under'] = doodle('under', 4, 600, WHITE); g['d_arrow'] = doodle('arrow', 9, 250, NAVY); g['d_circle'] = doodle('frame', 1, 430, WHITE)
     g['d_burst'] = doodle('burst', 3, 300, WHITE); g['d_ticks'] = [doodle('tick', i % 3, 150, RED) for i in range(6)]; g['d_under_n'] = doodle('under', 2, 520, NAVY)
     g['secs'] = [big_word(f'0:0{i}', 170, 'plain', RED) for i in range(7)]          # the seconds as red stickers: white outlines vanished on a white wall
     g['q'] = S.fitw(S.ink_cut(S.raw('doodles', 'Playful Marker Glyphs Asset Sheet-11.png').crop(tuple(S.pieces('Playful Marker Glyphs Asset Sheet-11.png')[8])), RED), 130)
-    g['d_dash'] = doodle('path', 6, 340, WHITE); g['claim_s'] = big_word('[STAY DRY]?', 100)
+    g['d_dash'] = doodle('path', 6, 340, WHITE); g['claim_s'] = big_word('[STAY DRY]?', 100, 'plain', RED, 12)
     return g
 
 def frame(g, t):
     c = g['c']
     if t < 2.0:                                                   # the setup, full frame; the question, word by word
         im = c[0].at(t)
-        small(im, t, 0.05, (230, 300), 'does', 84); small(im, t, 0.25, (450, 300), 'it', 84); small(im, t, 0.45, (680, 300), 'really', 84)
-        pop(im, g['claim'], t, 0.75, (540, 470), -3)
-        doodle_on(im, t, 1.05, g['d_under'], (540, 640), -2); doodle_on(im, t, 1.2, g['q'], (960, 230), 12)
+        for i, x in enumerate((250, 470, 700)): pop(im, g['hook_w'][i], t, 0.05 + 0.2 * i, (x, 310), (-3, 2, -2)[i])
+        pop(im, g['claim'], t, 0.75, (540, 480), -3)
+        doodle_on(im, t, 1.05, g['d_under'], (540, 660), -2); doodle_on(im, t, 1.2, g['q'], (965, 230), 12)
         return im
     if t < 3.3:                                                   # shrink to a card on the notebook; TEST brings the tubes, they fill
         im = g['paper'].copy(); u = ease(seg(t, 2.0, 2.35))
         cw, ch = int(lerp(W, 500, u)), int(lerp(H, 690, u)); cc = lerp2((W / 2, H / 2), (330, 1080), u)
         put(im, card(c[0].at(t), cw, ch, int(18 * u)), cc, 1, -3 * u)
-        small(im, t, 2.3, (250, 420), "let's", 90, INK, shadow=False)
-        pop(im, g['test'], t, 2.45, (560, 560), -4)
-        small(im, t, 2.65, (880, 560), 'it', 90, INK, shadow=False)
+        pop(im, g['lets'], t, 2.3, (420, 380), -3); pop(im, g['test'], t, 2.45, (540, 560), -4); pop(im, g['it'], t, 2.65, (880, 690), 4)
         if t >= 2.45: slide_in = back_out(seg(t, 2.45, 2.75), 1.4); put(im, tubes(g, seg(t, 2.6, 3.0)), (lerp(1400, 810, slide_in), 1080), 1, 4)
         doodle_on(im, t, 2.75, g['d_arrow'], (690, 770), 0)
         if t >= 3.0: im = slice_wipe(im, c[1].at(0), seg(t, 3.0, 3.3))
         return im
-    if t < 8.3:                                                   # the test, ONE uncut take; the stopwatch counts beside it
+    if t < 8.3:                                                   # the test, ONE uncut take; the camera records it
         im = c[1].at(t - 3.3)
-        small(im, t, 3.4, (240, 300), 'one take,', 80, out=5.1); small(im, t, 3.7, (240, 390), 'no cuts', 80, out=5.1)   # something new every second,
-        doodle_on(im, t, 4.3, g['d_dash'], (330, 760), 20, 7.2)                         # nothing that cuts the take
+        pop(im, g['take'][0], t, 3.4, (260, 310), -3, out=5.1); pop(im, g['take'][1], t, 3.7, (300, 420), 2, out=5.1)   # something new every second,
+        pop(im, g['camera'], t, 3.5, (820, 1180), 8, wiggle=2)                           # nothing that cuts the take; no timer:
+        if t >= 3.7 and int(t * 2) % 2 == 0: put(im, g['rec'], (820, 960), 1, 0)          # most tests aren't timed (her note)
+        doodle_on(im, t, 4.3, g['d_dash'], (330, 760), 20, 7.2)
         pop(im, g['claim_s'], t, 5.3, (420, 330), -3, out=8.1)
-        small(im, t, 6.4, (330, 1200), 'still going...', 76, out=8.1)
-        pop(im, g['watch'], t, 3.5, (840, 1040), 6, wiggle=2)
-        doodle_on(im, t, 3.8, g['d_circle'], (840, 1060), 0)
-        s = min(6, int(t - 3.3)); put(im, g['secs'][s], (760, 1360), 1 + 0.12 * (1 - seg((t - 3.3) % 1, 0, 0.15)), -4)
+        pop(im, g['take'][2], t, 6.4, (330, 1300), -2, out=8.1)
         return im
     if t < 8.8:                                                   # black-and-white freeze: and the RESULT
         im = ImageOps.grayscale(c[1].at(5.0)).convert('RGBA')
-        small(im, t, 8.35, (540, 620), 'and the', 90)
+        pop(im, g['andthe'], t, 8.35, (540, 640), -2)
         pop(im, g['result'], t, 8.5, (540, 820), 3); doodle_on(im, t, 8.6, g['d_burst'], (900, 520), 0)
         return im
     if t < 9.6:                                                   # the magnifier slides in carrying the result in its lens; the lens opens
@@ -225,7 +226,7 @@ def frame(g, t):
     im = g['paper'].copy(); u = ease(seg(t, 10.7, 11.0))          # CTA: the clip as a card on the notebook, the kit round it
     cw, ch = int(lerp(W, 560, u)), int(lerp(H, 760, u)); put(im, card(c[3].at(t - 10.7), cw, ch, int(18 * u)), lerp2((W / 2, H / 2), (540, 1000), u), 1, 2 * u)
     if t >= 11.0: put(im, g['ink_s'], (700, 700), 1, -14)
-    pop(im, tubes(g, 1.0), t, 11.0, (190, 1500), -6); pop(im, g['watch_s'], t, 11.1, (900, 1460), 8)
+    pop(im, tubes(g, 1.0), t, 11.0, (190, 1500), -6); pop(im, g['camera_s'], t, 11.1, (880, 1480), 8)
     pop(im, g['mag_s'], t, 11.2, (860, 760), -20); pop(im, g['stamp'], t, 11.3, (180, 760), 10)
     pop(im, g['comment'], t, 11.15, (540, 330), -2); pop(im, g['kw'], t, 11.4, (540, 500), 2)
     doodle_on(im, t, 11.55, g['d_under_n'], (540, 600), -2)

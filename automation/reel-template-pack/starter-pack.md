@@ -12,7 +12,7 @@ one rough motion-test MP4, one round of Mercedes's notes, then the CapCut build 
 | 11 | A day with it | motion test round 3, waiting for her notes |
 | 20 | What buyers said | motion test round 3, waiting for her notes (lettering pick open) |
 | 10 | Three people to gift it to | motion test 1 |
-| 22 | Put it to the test | rebuilt 2026-10-18 (`build/motion_22.py`), waiting for her notes |
+| 22 | Put it to the test | rebuilt 2026-10-18 (`build/motion_22.py`), round 2 (readable sticker words, camera + REC instead of a timer, one paper + torn checkerboard), waiting for her notes |
 | 23 | Every option in 10 seconds | motion test 1 |
 
 Review page for everything in motion: `batch2-motion.html` at `http://localhost:8950/batch2-motion.html`
