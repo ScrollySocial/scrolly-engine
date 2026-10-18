@@ -94,3 +94,12 @@ accents (multiple in different parts of the screen), and full screen words - no 
 
 Moves to log in FRAMEWORK's table once approved: clock wheel of clips with the hand as the story (11), dive into a
 tile or phone screen to the next clip (11, 20), tiles flipping tone (11), gold star takeover and gold paint wipe (20).
+
+## #11 sky + birds transition (2026-10-17, her idea)
+
+Her sky videos (`assets/props/source/images/*.mp4`, Pexels files) as the transition layer, with whimsical doodle birds
+(thick boiling ink line, paper fill, butter beak, blush cheek) that stay on screen while the clip fades to the sky and
+back, both ways round: birds over the clip, then the sky fades in under them (and out to the next clip); one bird
+loops with a dotted trail; at sunset they fly off into the sun. `python build/sky_birds.py` ->
+`11-.../preview/sky-birds-test.mp4`. Open: the sky clips are Pexels downloads, and FRAMEWORK says the shipped sky layer
+must be one we own (AI-made or filmed), so check the licence before they go into a paid pack.
