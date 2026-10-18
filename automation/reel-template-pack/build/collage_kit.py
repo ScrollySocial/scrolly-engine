@@ -116,3 +116,58 @@ def takeover(img, t, t0, items, n=14, seed=12, t_in=0.35, hold=0.05, t_out=0.4, 
         if a <= 0 or b >= 1: continue
         dx, dy = x - W / 2, y - H / 2; nn = math.hypot(dx, dy) + 1; fx, fy = dx / nn * 1500, dy / nn * 1500
         put(img, items[k], (x + fx * (1 - a) + fx * b, y + fy * (1 - a) + fy * b), 1, rot + 80 * b)
+
+# ---- her doodles, used visibly (FRAMEWORK checklist, 2026-10-17: at least 3 doodle moments per template, each with a job)
+SHEETS = {'arrow': ('Hand-drawn arrow doodle sheet-1.png', 9), 'burst': ('Playful hand-drawn burst asset sheet-2.png', 9),
+          'icon': ('Playful black doodle icon sheet-6.png', 9), 'under': ('Hand-Drawn Underline Asset Sheet-5.png', 9),
+          'bubble': ('Eight playful speech and thought bubbles-3.png', 3), 'frame': ('Ten hand-drawn doodle frames-4.png', 3),
+          'scribble': ('Eight playful black scribble patches-9.png', 9), 'tick': ('Hand-drawn checks, Xs, and tick boxes-8.png', 9),
+          'path': ('Eight playful marker doodle paths-10.png', 9)}
+_dcache = {}
+def doodle(kind, i, w, color=INK):
+    """One shape cut off one of her marker sheets, recoloured to the template's palette, sized to width w."""
+    k = (kind, i, int(w), color)
+    if k not in _dcache:
+        sheet, join = SHEETS[kind]; x0, y0, x1, y1 = S.pieces(sheet, join)[i]; im = S.raw('doodles', sheet)
+        _dcache[k] = S.fitw(S.ink_cut(im.crop((max(0, x0 - 8), max(0, y0 - 8), x1 + 8, y1 + 8)), color), w)
+    return _dcache[k]
+
+def doodle_on(img, t, t0, item, c, rot=0, out=None, dur=0.35):
+    """A doodle drawn on while you watch (left to right), held, then popped off at `out`."""
+    if t < t0 or (out is not None and t > out + 0.15): return
+    if out is not None and t > out: put(img, item, c, 1 - ease(seg(t, out, out + 0.15)), rot); return
+    draw_on(img, item, c, seg(t, t0, t0 + dur), rot)
+
+def pattern(name, dark, light, scale=1.0):
+    """One of her hand-drawn pattern sheets (dots, checks, stripes, zigzag) recoloured to two palette colours."""
+    g = ImageOps.grayscale(S.raw('doodles', name))
+    if scale != 1: g = g.resize((int(g.width * scale), int(g.height * scale)), Image.LANCZOS)
+    return still(ImageOps.colorize(g, dark, light).convert('RGBA'), f'pat-{name}-{dark}-{light}-{scale}')
+
+EDGE = {'bottom': lambda s: ((0, 0, W, H - s), (0, H - s, W, H), (0, s + 40)), 'top': lambda s: ((0, s, W, H), (0, 0, W, s), (0, -s - 40)),
+        'right': lambda s: ((0, 0, W - s, H), (W - s, 0, W, H), (s + 40, 0)), 'left': lambda s: ((s, 0, W, H), (0, 0, s, H), (-s - 40, 0))}
+
+def vbeat(img, t, t0, t1, clip_fill, side, fills, size=430):
+    """A full-frame video beat made into a collage: the clip starts full frame, gives up one edge to one or two pattern
+    / photo tiles that slide in, and is full frame again by t1 (so the next move starts from a full clip).
+    Returns the clip's box and the strip's box, for the paper note and the cut-out that cross the seam."""
+    box, strip, (dx, dy) = EDGE[side](size); full = (0, 0, W, H)
+    keys = [(t0, full), (t0 + 0.3, box), (t1 - 0.3, box), (t1, full)]
+    parts = []
+    if len(fills) == 1: parts = [(strip, fills[0])]
+    else:
+        x0, y0, x1, y1 = strip
+        if side in ('bottom', 'top'): parts = [((x0, y0, W * 0.55, y1), fills[0]), ((W * 0.55, y0, x1, y1), fills[1])]
+        else: parts = [((x0, y0, x1, H * 0.55), fills[0]), ((x0, H * 0.55, x1, y1), fills[1])]
+    spec = [{'keys': keys, 'fill': clip_fill}]
+    for j, (b, f) in enumerate(parts):
+        o = (b[0] + dx, b[1] + dy, b[2] + dx, b[3] + dy)
+        spec.append({'keys': [(t0 + j * 0.05, o), (t0 + 0.3 + j * 0.05, b), (t1 - 0.3, b), (t1, o)], 'fill': f})
+    tiles(img, t, spec)
+    return box, strip
+
+def note(paper, text, w, px, color=INK):
+    """A real paper note with editable words on it in Anton (never the serif on paper: FRAMEWORK)."""
+    p = S.fitw(paper, w).copy(); d = ImageDraw.Draw(p); f = S.F(ANTON, px); lines = text.split('\n'); lh = px * 1.08
+    for k, l in enumerate(lines): d.text((p.width / 2, p.height / 2 + (k - (len(lines) - 1) / 2) * lh), l, font=f, fill=color, anchor='mm')
+    return C.shadow(p, (6, 10), 10, 100)

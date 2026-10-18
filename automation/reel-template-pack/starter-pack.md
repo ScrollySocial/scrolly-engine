@@ -12,7 +12,7 @@ one rough motion-test MP4, one round of Mercedes's notes, then the CapCut build 
 | 11 | A day with it | motion test round 3, waiting for her notes |
 | 20 | What buyers said | motion test round 3, waiting for her notes (lettering pick open) |
 | 10 | Three people to gift it to | motion test 1 |
-| 22 | Put it to the test | motion test 1 |
+| 22 | Put it to the test | rebuilt 2026-10-18 (`build/motion_22.py`), waiting for her notes |
 | 23 | Every option in 10 seconds | motion test 1 |
 
 Review page for everything in motion: `batch2-motion.html` at `http://localhost:8950/batch2-motion.html`
@@ -47,6 +47,23 @@ moves fit a template's job (apply with her notes on that template, not as an ext
 - **#10 Gift:** butterfly wings opening onto a person's clip, or the patchwork quilt dissolving one fabric at a time
   into the gift-wrap clip. Careful: she sees butterflies, quilt, street lamp, cathedral and skyline as fall ideas
   first, and the physical pack must not look seasonal, so use them in neutral colours or ask.
+
+## The #22 rebuild (2026-10-18): how every template is made from now on
+
+Her notes on the first #10/#22/#23 tests: no patterns or overlays on the objects (rule 9, asked many times), props
+unrelated to each other or the words (a stopwatch, then test tubes), arrows at nothing, poor cut-outs, nothing like her
+sample videos. The rebuild works the way her references do, and each template follows the same steps:
+1. A script first: each beat names its words, and each object arrives WITH the word it pictures (TEST brings the
+   tubes, the time brings the stopwatch, RESULT brings the magnifier, PASSED is the real stamp). One story per Reel.
+2. Patterns and stickers ON the objects: the tubes fill with three different patterns of her marks, the stopwatch
+   wears a dotted No.1 sticker, the stamp prints PASSED in rough ink, the key words are her dots in red.
+3. Clean cut-outs from the rembg model (`build/cutout_hq.py`, model in `~/.rembg/models`), with a white die-cut edge.
+4. Something new every 1 to 1.5 s, even inside an uncut take; arrows point at a real thing (the shot guide asks
+   buyers to keep the product centred).
+5. Before she sees it: a 1 fps strip and a side-by-side sheet against her TOP-15 references
+   (`22-.../preview/side-by-side.jpg`). If it doesn't hold up, it doesn't go to her.
+
+#10 and #23 wait for her verdict on #22 before being rebuilt the same way.
 
 ## Open
 
