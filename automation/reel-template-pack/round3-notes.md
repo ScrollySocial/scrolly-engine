@@ -140,3 +140,7 @@ of #09, #10, #12, #22, #08, #20, #23 (her notes say they are all too fast).
 - Underline doodle: index 4 is a DOUBLE line; use 'under' index 0 (single). Burst index 2 = rays only (good behind a ringing object).
 - Built-in words on light stages (paper, marble, pegboard, butter) need a dark fill (wine / deep blue) with a white edge;
   white words with a thin edge only read on footage or dark stages.
+- #08 A real customer question: "super cute" (approved).
+- Her notes on the others (#10, #12, #22, #23): "No changes". #20 fixes: pink-toned marble (white cards were lost on white),
+  black pins, arrow turned to point at the phone (arrow 9 at rot 90), ONE wine burst (index 3) centred behind the circle
+  and behind the review cards.

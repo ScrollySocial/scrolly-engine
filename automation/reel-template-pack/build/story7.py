@@ -614,18 +614,18 @@ SETUP['08'] = setup_08; FRAME['08'] = frame_08; SECS['08'] = 17.0
 def setup_20():
     PK = PAL['pink']
     g = {'c': {'prod': Clip('IMG_1388', 0.5, 6.0), 'use': Clip('IMG_1390', 1.0, 6.0), 'cta': Clip('IMG_1388', 3.0, 6.0)}}
-    g['marble'] = ImageOps.fit(S.raw('images', 'Soft veined white marble texture-1.png'), (W, H)).convert('RGBA')
+    g['marble'] = toned('images', 'Soft veined white marble texture-1.png', (196, 120, 150), PK)   # pink marble: the white review cards stand out (her note)
     st = P.raw_cut('Gold foil star sticker-95.png', 160); g['stars'] = [C.shadow(st.rotate(r, expand=True), (4, 8), 6, 90) for r in (-12, 8, -4, 10, -18)]
     g['bigstars'] = [S.fitw(st, 380).rotate(r, expand=True) for r in (-20, 0, 15, 30, -35)]
     g['rev'] = [P.pinned(P.proof_card(l, 520, WINE, '[buyer]', 'review'), r, pn) for l, r, pn in
-                ((['[the review, word for word]'], -4, 'pin-head-cream'), (['[review two]'], 5, 'pin-head-black'), (['[review three]'], -6, 'pin-head-white'), (['[review four]'], 7, 'pin-head-cream'))]
-    g['rev1big'] = P.pinned(P.proof_card(['[the review, word', 'for word]'], 820, WINE, '[buyer]', 'review'), -4)
+                ((['[the review, word for word]'], -4, 'pin-head-black'), (['[review two]'], 5, 'pin-head-black'), (['[review three]'], -6, 'pin-head-black'), (['[review four]'], 7, 'pin-head-black'))]
+    g['rev1big'] = P.pinned(P.proof_card(['[the review, word', 'for word]'], 820, WINE, '[buyer]', 'review'), -4, 'pin-head-black')
     g['rev_raw'] = P.proof_card(['[review two, word', 'for word]'], 560, WINE, '[buyer]', 'review')
     g['trophy'] = P.thing('Plain gold trophy on black base-223.png', 380, None, None, label=dsticker('No.1', 44, WINE, WHITE), label_at=(0.5, 0.3))
     g['what'] = P.pill_m('what', 78); g['buyers'] = P.caption('buyers', 230, PK, edge=WINE); g['said'] = P.pill_m('said', 78, PK)
-    g['num'] = P.pill_m('[200]', 110, PK); g['happy'] = P.caption('happy buyers', 128, WINE, edge=WHITE)
+    g['num'] = P.pill_m('[200]', 110); g['happy'] = P.caption('happy buyers', 128, WINE, edge=WHITE)
     g['see'] = P.pill_m('see why', 78); g['comment'] = P.caption('Comment', 210, WHITE, edge=WINE, italic_last=False); g['kw'] = P.pill_once('"[KEYWORD]"', 78, WINE)
-    g['d_arrow'] = doodle('arrow', 9, 230, WINE); g['d_burst'] = doodle('burst', 1, 820, PK); g['d_under'] = doodle('under', 0, 520, WINE)
+    g['d_arrow'] = doodle('arrow', 9, 230, WINE); g['d_burst'] = doodle('burst', 3, 900, WINE); g['d_under'] = doodle('under', 0, 520, WINE)
     return g
 
 def frame_20(g, t):
@@ -643,12 +643,12 @@ def frame_20(g, t):
         im = c['prod'].at(t - 2.4); sw, sh = P.screen_size(PHONE, 440); scr = Image.new('RGBA', (sw, sh), (245, 245, 247, 255))
         rw = S.fitw(g['rev_raw'], int(sw * 0.94)); scr.alpha_composite(rw, (int(sw * 0.03), int(sh * 0.3)))
         put(im, P.on_screen(PHONE, 440, scr), (lerp(W + 400, 790, ease(seg(t, 4.4, 4.75))), 1150), 1, 6)
-        doodle_on(im, t, 5.0, g['d_arrow'], (460, 1150), 0)
+        doodle_on(im, t, 5.0, g['d_arrow'], (450, 1190), 90)   # points right, at the review on the phone
         return im
     if t < 8.4:                                                   # 4: the clip in a round window, one burst behind it; cards fanned round
         im = g['marble'].copy()
-        for i, (xy) in enumerate(((260, 520), (830, 640))): pop(im, g['rev'][i + 1], t, 6.5 + i * 0.3, xy, 0)       # behind
-        if t >= 6.7: put(im, g['d_burst'], (540, 1020), 0.9 + 0.1 * back_out(seg(t, 6.7, 7.0), 1.5))
+        if t >= 6.5: put(im, g['d_burst'], (540, 1020), 0.9 + 0.1 * back_out(seg(t, 6.5, 6.8), 1.5))     # ONE burst, centred behind the circle and the cards
+        for i, (xy) in enumerate(((260, 520), (830, 640))): pop(im, g['rev'][i + 1], t, 6.6 + i * 0.3, xy, 0)
         put(im, roundwin(c['prod'].at(t - 2.4, (600, 600)), 600), (540, 1020), back_out(seg(t, 6.4, 6.7), 1.5))
         pop(im, g['rev'][3], t, 7.1, (330, 1520), 0)                                                                  # in front
         return im
