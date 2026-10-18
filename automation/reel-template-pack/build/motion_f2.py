@@ -125,9 +125,9 @@ def serif_words(lines):
 
 HERO = collage_word('the fall', 'DROP')
 MEET = serif_words([('meet the', 90, BROWN), ('maple candle', 150, BURGUNDY)])
-BATCH = collage_word('small', 'BATCH', 'plaid', 360)
-NOTE = paper('Blank ivory note card-121.png', 760, [('3 scents', SERIF, 90, BURGUNDY), ('small batch', SERIF, 70, BROWN)], tol=6)
-TAG = paper('Blank kraft gift tag with twine-34.png', 520, [('', B.MONT, 50, INK), ('', B.MONT, 50, INK), ('hand-poured', SERIF, 62, BURGUNDY), ('soy wax', SERIF, 96, BURGUNDY)])
+BATCH = B.shadowed(text_img([('SMALL', ANTON, 220, CREAM, 10, BURGUNDY), ('BATCH', ANTON, 360, CREAM, 12, BURGUNDY)], 20), (6, 10), 10, 120)   # editable in CapCut
+NOTE = paper('Blank ivory note card-121.png', 760, [('3 SCENTS', ANTON, 120, BURGUNDY), ('MAPLE · CIDER · PINE', ANTON, 64, RUST)], tol=6)
+TAG = paper('Blank kraft gift tag with twine-34.png', 520, [('', B.MONT, 50, INK), ('', B.MONT, 50, INK), ('HAND-POURED', ANTON, 64, BURGUNDY), ('SOY WAX', ANTON, 104, BURGUNDY)])
 CTA_S = serif_words([('comment', 110, BURGUNDY)])
 CTA_B = B.shadowed(text_img([('DROP', ANTON, 230, CREAM, 10, BURGUNDY)], 16), (6, 10), 10, 120)
 ACORNS = (('Plump Chestnut Acorn Study-66.png', (720, 1650), 18), ('Golden acorn on white-65.png', (880, 1780), -10), ('Elongated dark brown acorn-69.png', (1000, 1610), 30))
@@ -197,9 +197,9 @@ def frame(t):
         tile(im, 'd', t - 7.0, (540, 520, 1080, 1100), ease((t - 5.6) / 0.3), 'r')
         if peel < 1: tile(im, 'cord', t, (540, int(520 + peel * 600), 1080, 1100), ease((t - 5.6) / 0.3), 'r')
         tile(im, 'wool', t, (0, 1100, 1080, 1920), ease((t - 5.7) / 0.3), 'b')
-        put(im, cut('Twine-Tied Cinnamon Stick Bundle-55.png', 300, seed=7), (560, 1100), pop(t, 6.1), -20)
-        put(im, cut('Single sunflower on white-79.png', 260, seed=8), (980, 980), pop(t, 6.3), 10)
-        put(im, NOTE, (480, 1330), pop(t, 6.2, None, 0.35), -3)
+        put(im, cut('Single sunflower on white-79.png', 240, seed=8), (900, 900), pop(t, 6.3), 8)
+        put(im, NOTE, (480, 1360), pop(t, 6.2, None, 0.35), -3)
+        put(im, cut('Twine-Tied Cinnamon Stick Bundle-55.png', 300, seed=7), (210, 1110), pop(t, 6.4), -20)
         return im
     # ---- text only (8.2-9.4): the cream knit fills the screen, big lettering
     if t < 9.4:
