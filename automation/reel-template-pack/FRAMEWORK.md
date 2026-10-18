@@ -186,7 +186,9 @@ Holiday packs
 - Keep faith themes (nativity, Silent Night) in the Christmas pack; never suggest cutting them.
 
 Showing her work
-- She judges visually: storyboard stills, then a preview MP4. Never a text description of a Reel.
+- She judges visually and **can't picture motion from stills or wireframes** (2026-10-17). Show rough motion-test
+  MP4s (8 to 12 s, stand-in footage, every transition and the layers moving) instead of still storyboards, then the
+  CapCut build preview. Never a text description of a Reel.
 - Use the side-by-side review page with notes per frame (`halloween/review.html` pattern); read her notes from the
   page; give full file paths when she needs to load images, and say exactly where to save them.
 - Her manual choices on a review page beat these rules: flag, never undo.
