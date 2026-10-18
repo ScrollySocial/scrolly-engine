@@ -69,6 +69,21 @@ piece with the words, laid on a real base (graph paper, her dots on black, red v
 - Lettering option sheets: `11-.../preview/font-options.jpg`, `20-.../preview/font-options.jpg`
   (`python build/lettering_b2.py`). The new general rules are in FRAMEWORK.md (Consistency).
 
+## Round 3 (her notes on the v2 motion tests, 2026-10-17)
+
+Her words: #11 "looks too much like fall"; "I don't like the shape/block outlines and it looks a bit too girly and like
+7 years old trend wise"; transitions getting better; "there needs to be a balance of 1 large full frame video with
+accents (multiple in different parts of the screen), and full screen words - no user video". Now in FRAMEWORK.md.
+- **#11 v3:** no fall images (wheat, sunflower, latte, amber gone) and no watercolour or dotted letters: light grey
+  concrete, black and white Anton with the clock's brass as the one accent, the real clock without outlines. Beats:
+  morning full frame + accents (small brass clock telling the time, the time stamp, a doodle) > clock-hand wipe to
+  a full-screen NOON (no video) > dive through its O to midday + accents > the clock wheel (the one collage moment), the
+  hand to 4, dive in > afternoon + accents > clock-hand wipe to NIGHT on dark concrete > night + accents > CTA in the
+  clock face. NOON / NIGHT are built-in generic words; the buyer's times stay editable on the video beats.
+- **#20 v3:** full-frame video with accents for most of it (stars, seal, phones with the screenshots), one full-screen
+  words beat (IN THEIR WORDS on marble, gold paint), one collage moment for the CTA. No lines round tiles or objects.
+- Tile seams are off by default now (`collage_motion.py`).
+
 ## Open questions for Mercedes
 
 - #11 frame 2 "not two clicks": read as "not two clocks". Right?

@@ -7,7 +7,7 @@ Usage: python build/collage_b2.py 11 [seconds ...]  ->  NN-.../preview/motion-te
 """
 import math, random, sys
 from pathlib import Path
-from PIL import Image, ImageDraw, ImageFilter, ImageOps
+from PIL import Image, ImageChops, ImageDraw, ImageEnhance, ImageFilter, ImageOps
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import collage as C
 import storyboard_b2 as S
@@ -28,148 +28,152 @@ def enter(box, t0, dx=0, dy=0, dur=0.28): return [(t0, off(box, dx, dy)), (t0 + 
 SETUP, FRAME, SECS = {}, {}, {}
 
 # ======================================================================================================================
-# 11 A day with it, v2 after her notes (13 s). One texture tells the day: her butter watercolour and a real sky/wheat
-# photo, both toned morning cream > noon butter > afternoon amber > night navy (no mix of washes and dots). The clock's
-# hour hand carries the story: 7 (morning slice) > 12 (midday) > 4 (afternoon) > 9 (night), each slice lighting up and
-# the camera diving into it. Only one alarm clock (the hook); the day's other real objects: latte, sunflower,
-# hourglass, candle. Lettering: Alfa Slab One in the clock's brass, filled with her painted dots.
+# 11 A day with it, v3 (13 s), after her notes on v2 ("looks too much like fall", "a bit too girly and like 7 years
+# old", no shape/block outlines, balance full-frame video with accents + full-screen words with no video).
+# Modern and not seasonal: light grey concrete (her shared background), black and white type in Anton with the clock's
+# brass as the one accent, the real brass clock without outlines. Beats:
+#   morning video full frame + accents | clock-hand wipe to a full-screen NOON card | dive through its O into midday
+#   video + accents | zoom out to the clock wheel (the collage moment), the hand moves 12 > 4, dive into the slice |
+#   afternoon video + accents | clock-hand wipe to a dark NIGHT card | night video + accents | CTA in the clock face.
+# Accents on every video beat, in different parts of the screen: the small brass clock telling the time, the time
+# stamp, one of her doodles.
 # ======================================================================================================================
 import lettering_b2 as LB
 
-TONES = {'morning': ((176, 146, 98), (255, 248, 230)), 'noon': ((196, 146, 30), (255, 236, 150)),
-         'afternoon': ((150, 78, 30), (250, 194, 118)), 'night': ((10, 14, 38), (74, 90, 146))}
+ANTON = LB.FONT['anton']; BRASS = (222, 176, 92)
 
-def toned(im, tone):
-    lo, hi = TONES[tone]; g = ImageOps.autocontrast(ImageOps.grayscale(im), cutoff=1)
-    return ImageOps.colorize(g, lo, hi).convert('RGBA')
+def word(img, t, t0, xy, text, px, color=WHITE, font=None, out=None, anchor='mm', shadow=True):
+    """A word that pops in at t0 (quick scale-up with a little overshoot), soft shadow only, no outline."""
+    if t < t0: return
+    k = back_out(seg(t, t0, t0 + 0.22))
+    if out is not None: k *= 1 - ease(seg(t, out, out + 0.18))
+    if k <= 0.02: return
+    f = S.F(font or ANTON, max(6, int(px * (0.6 + 0.4 * k))))
+    lay = Image.new('RGBA', (W, H), (0, 0, 0, 0)); ImageDraw.Draw(lay).text(xy, text, font=f, fill=color + (int(255 * clamp(k * 1.5)),), anchor=anchor)
+    if shadow:
+        sh = Image.new('RGBA', (W, H), (0, 0, 0, 0)); sh.putalpha(lay.split()[3].filter(ImageFilter.GaussianBlur(10)).point(lambda v: min(255, int(v * 0.9))))
+        img.alpha_composite(sh, (4, 8))
+    img.alpha_composite(lay)
 
 def setup_11():
     g = M.setup_11()
-    wash = S.raw('doodles', 'Butter Yellow Watercolor Wash-23.png'); sky = raw('fall', 'Autumn Sky Over Golden Wheat-31.png', (0, 0, 1, 0.55))
-    wheat = raw('fall', 'Autumn Sky Over Golden Wheat-31.png', (0, 0.5, 1, 1))
-    for tn in TONES:
-        g['wash_' + tn] = still(toned(wash, tn), 'wash' + tn); g['sky_' + tn] = still(toned(sky, tn), 'sky' + tn); g['wheat_' + tn] = still(toned(wheat, tn), 'wheat' + tn)
-        g['base_' + tn] = ImageOps.fit(toned(wash, tn), (W, H), Image.LANCZOS)
-    g['candle'] = still(raw('fall', 'Glowing Ivory Candle in Glass Jar-96.png', (0.2, 0.05, 0.8, 0.95)), 'candle')
-    g['latte'] = S.obj('fall', 'Rosetta latte in an ivory cup-20.png', 330, 14, 6, 60)
-    g['sunflower'] = S.obj('fall', 'Single sunflower on white-79.png', 420, 14, 6, 61)
-    g['hour_s'] = S.obj('images', 'Classic wooden hourglass with flowing sand-238.png', 330, 14, 6, 62)
-    g['alarm_m'] = S.alarm(560, 0, 42, WHITE)
-    fill = LB.dots_fill(LB.BRASS, CREAM)
-    g['a_day'] = S.letters('A DAY', LB.FONT['alfa'], 180, fill, 9); g['with_my'] = S.letters('WITH MY', LB.FONT['alfa'], 130, fill, 9)
-    g['comment'] = S.letters('Comment', LB.FONT['alfa'], 140, fill, 9)
+    g['concrete'] = M.tex('images', 'Light gray concrete mineral texture-4.png', (W, H))
+    g['concrete_dark'] = ImageEnhance.Brightness(ImageEnhance.Contrast(g['concrete']).enhance(1.4)).enhance(0.16)
+    clk = S.fitw(S.cut('fall', 'Handless vintage brass wall clock-24.png'), 1320)
+    g['clock'] = C.shadow(clk, (12, 18), 22, 100)                    # no outline (her note)
+    g['alarm_m'] = C.shadow(S.fitw(S.cut('images', S.ALARMS[0]), 520), (10, 16), 16, 100)
+    g['arrow_w'] = dd(ARROWS, 9, 170, WHITE); g['spark_w'] = dd(ICONS, 9, 110, WHITE); g['under_w'] = dd(LINES, 2, 320, WHITE)
+    g['burst_w'] = dd(BURSTS, 5, 200, WHITE)
     return g
 
-ORDER = (1, 2, 0, 3)          # the clock's slices: top-right midday, bottom-right afternoon, bottom-left morning, top-left night
+ORDER = (1, 2, 0, 3)          # slices: top-right midday, bottom-right afternoon, bottom-left morning, top-left night
 SLICE = {1: (1, -1), 2: (1, 1), 0: (-1, 1), 3: (-1, -1)}
 
 def wheel(g, t, bright):
     d = g['d']; h = d // 2; disc = Image.new('RGBA', (d, d), (0, 0, 0, 0))
     for q, (ci, (x, y)) in enumerate(zip(ORDER, ((h, 0), (h, h), (0, h), (0, 0)))):
         f = g['clips'][ci].at(t, (h, h)); k = bright.get(ci, 0.5)
-        if k < 1: f = M.ImageEnhance.Brightness(f).enhance(k)
-        lay = Image.new('RGBA', (d, d), (0, 0, 0, 0)); lay.alpha_composite(f, (x, y)); lay.putalpha(M.ImageChops.multiply(lay.split()[3], g['qmask'][q]))
+        if k < 1: f = ImageEnhance.Brightness(f).enhance(k)
+        lay = Image.new('RGBA', (d, d), (0, 0, 0, 0)); lay.alpha_composite(f, (x, y)); lay.putalpha(ImageChops.multiply(lay.split()[3], g['qmask'][q]))
         disc.alpha_composite(lay)
     put(disc, g['div'], (h, h)); put(disc, g['div'], (h, h), 1, 90)
     return disc
 
-def quad_tiles(g, t, tone_at):
-    """Four tiles behind the clock (wash, sky, wheat, wash); tone_at(i) gives each tile's tone (they flip as it changes)."""
-    boxes = ((0, 0, 540, 900), (540, 0, W, 900), (0, 900, 540, H), (540, 900, W, H)); kinds = ('wash', 'sky', 'wheat', 'wash')
-    im = g['base_' + tone_at(0)].copy()
-    for i, (b, k) in enumerate(zip(boxes, kinds)):
-        tn = tone_at(i)
-        fill = g['candle'] if (tn == 'night' and i == 2) else g[f'{k}_{tn}']
-        tiles(im, t, [{'keys': [(0, b)], 'fill': fill}])
-    return im
-
 def hour_deg(t):
-    keys = [(0, 210), (3.2, 210), (4.0, 360), (6.4, 360), (7.1, 480), (9.6, 480), (10.3, 630), (11.3, 630), (11.8, 720)]
+    keys = [(0, 210), (2.3, 210), (2.9, 360), (6.0, 360), (6.6, 480), (8.2, 480), (8.9, 630), (11.0, 630), (11.6, 720)]
     for (t0, a0), (t1, a1) in zip(keys, keys[1:]):
         if t0 <= t < t1: return lerp(a0, a1, ease(seg(t, t0, t1)))
     return keys[-1][1]
 
-def clock11(g, img, t, c, scale, bright, disc=None):
-    h = hour_deg(t); M.clock_at(g, img, c, scale, disc if disc is not None else wheel(g, t, bright), h, (h * 12) % 360)
+def clock(g, img, t, c, scale, disc=None, h=None):
+    h = hour_deg(t) if h is None else h
+    put(img, g['clock'], c, scale)
+    if disc is not None: put(img, disc, c, scale)
+    put(img, g['hands']['hour'], c, scale * 0.62 * 0.8, -h); put(img, g['hands']['minute'], c, scale * 0.62, -((h * 12) % 360))
 
-def flip_tone(t, t0, a, b, step=0.15): return lambda i: b if t >= t0 + i * step + 0.15 else a
+def accents(g, img, t, t0, stamp, doodle_at, t_end):
+    """The accents on a full-frame video beat: the small brass clock top-right telling the time, the time stamp
+    bottom-left, one of her doodles somewhere else."""
+    k = back_out(seg(t, t0, t0 + 0.3), 1.6) * (1 - ease(seg(t, t_end - 0.15, t_end)))
+    if k > 0: clock(g, img, t, (890, 1000), 0.24 * k)
+    word(img, t, t0 + 0.15, (70, 1390), stamp, 150, WHITE, anchor='lm', out=t_end - 0.2)
+    if doodle_at: draw_on(img, doodle_at[0], doodle_at[1], seg(t, t0 + 0.4, t0 + 0.8), doodle_at[2])
+
+def radial(old, new, u, c=(540, 960)):
+    """The clock-hand wipe: the new scene sweeps in clockwise from 12, like a hand going round."""
+    if u <= 0: return old
+    if u >= 1: return new
+    m = Image.new('L', (W, H), 0); ImageDraw.Draw(m).pieslice((c[0] - 1500, c[1] - 1500, c[0] + 1500, c[1] + 1500), -90, -90 + 360 * u, fill=255)
+    out = old.copy(); out.paste(new, (0, 0), m); return out
+
+def card(g, t, text, dark=False, h=None):
+    """A full-screen words beat (no user video): a built-in word huge on concrete (NOON, NIGHT: generic, so it fits any
+    buyer; their own times stay editable on the video beats), the brass clock half off the edge behind it."""
+    im = (g['concrete_dark'] if dark else g['concrete']).copy()
+    clock(g, im, t, (1010, 1300), 1.05, h=h)
+    f = S.F(ANTON, 470); col = WHITE if dark else INK
+    lay = Image.new('RGBA', (W, H), (0, 0, 0, 0)); ImageDraw.Draw(lay).text((540, 900), text, font=f, fill=col + (255,), anchor='mm')
+    sh = Image.new('RGBA', (W, H), (0, 0, 0, 0)); sh.putalpha(lay.split()[3].filter(ImageFilter.GaussianBlur(14)).point(lambda v: int(v * 0.5)))
+    im.alpha_composite(sh, (6, 12)); im.alpha_composite(lay)
+    return im, lay
+
+def counter_mask(lay, glyph_xy):
+    """The hole inside a letter (the 0 of 12PM): flood fill from its centre, stopped by the letter's ink."""
+    m = lay.split()[3].point(lambda v: 255 if v > 100 else 0); ImageDraw.floodfill(m, glyph_xy, 128)
+    return m.point(lambda v: 255 if v == 128 else 0).filter(ImageFilter.GaussianBlur(1))
 
 def frame_11(g, t):
-    cl = g['clips']; c = (540, 900); d = g['d']; sc = lambda ci: (c[0] + SLICE[ci][0] * d / 4, c[1] + SLICE[ci][1] * d / 4)
-    if t < 2.1:                                                    # morning collage; the one alarm clock rings across the seams
-        im = g['base_morning'].copy()
-        A, TOPB, R1, R2, BOT = (0, 260, 760, 1420), (0, 0, W, 260), (760, 260, W, 820), (760, 820, W, 1420), (0, 1420, W, H)
-        tiles(im, t, [{'keys': [(0, A)], 'fill': video(cl[0], 0)}, {'keys': enter(TOPB, 0, dy=-300), 'fill': g['wash_morning']},
-                      {'keys': enter(R1, 0.04, dx=400), 'fill': g['sky_morning']}, {'keys': enter(R2, 0.08, dx=400), 'fill': g['wash_morning']},
-                      {'keys': enter(BOT, 0.02, dy=560), 'fill': g['wheat_morning']}])
-        ring = 1 - seg(t, 1.3, 1.6)
-        put(im, g['alarm_m'], (830 + 6 * math.sin(t * 61) * ring, 1400), 1, 12 + 5 * math.sin(t * 55) * ring)
-        for k, (x, y, r) in enumerate(((560, 1180, -10), (1010, 1120, 80))):
-            if ring > 0 and int(t * 6 + k) % 2 == 0: put(im, g['burst'][k], (x, y), 1, r)
-        pop(im, g['latte'], t, 0.5, (210, 1450), -8, wiggle=2)
-        hero(im, t, 0.1, g['a_day'], (470, 330), out=1.85); hero(im, t, 0.45, g['with_my'], (470, 520), out=1.9)
-        slide(im, g['product'], t, 0.8, 1.1, (-400, 720), (380, 720), -3)
-        if t >= 1.2: put(im, M.text_img('[7am]', HAND, 70, INK, CREAM, 5), (920, 560), back_out(seg(t, 1.2, 1.45), 2.2), 6)
+    cl = g['clips']; d = g['d']; c = (540, 900); sc = lambda ci: (c[0] + SLICE[ci][0] * d / 4, c[1] + SLICE[ci][1] * d / 4)
+    if t < 2.3:                                                    # morning, full frame, the hook words and accents
+        im = cl[0].at(t)
+        for i, (w_, xy) in enumerate((('A DAY', (540, 320)), ('WITH MY', (540, 545)))): word(im, t, 0.05 + i * 0.18, xy, w_, 210, WHITE, out=2.1)
+        word(im, t, 0.5, (540, 750), '[PRODUCT]', 160, BRASS, out=2.1)
+        accents(g, im, t, 0.8, '[7AM]', (g['burst_w'], (860, 1180), 0), 2.25)
+        u = ease(seg(t, 2.0, 2.3))
+        return radial(im, card(g, t, 'NOON')[0], u) if u > 0 else im
+    if t < 3.6:                                                    # full-screen words, then dive through the 0
+        im, lay = card(g, t, 'NOON'); f = S.F(ANTON, 470)
+        o = (int(540 - f.getlength('NOON') / 2 + f.getlength('N') + f.getlength('O') / 2), 900)    # the first O
+        im.paste(cl[1].at(t - 3.0), (0, 0), counter_mask(lay, o))
+        z = ease(seg(t, 2.9, 3.6)); out = camera(im, o, lerp(1, 24.0, z ** 1.5)) if z > 0 else im
+        fade = seg(t, 3.4, 3.6)
+        return Image.blend(out, cl[1].at(t - 3.0), fade) if fade > 0 else out
+    if t < 5.6:                                                    # midday, full frame + accents
+        im = cl[1].at(t - 3.0); accents(g, im, t, 3.6, '[12PM]', (g['spark_w'], (220, 560), 0), 5.6)
         return im
-    if t < 4.1:                                                    # zoom out to the clock; the hand sweeps 7 to 12, the tiles turn to noon
-        tone = flip_tone(t, 3.2, 'morning', 'noon'); im = quad_tiles(g, t, tone); u = ease(seg(t, 3.2, 4.0))
-        clock11(g, im, t, c, 1, {0: 1 - 0.5 * u, 1: 0.5 + 0.5 * u})
-        draw_on(im, g['arc'], (900, 380), seg(t, 3.2, 3.7), -20); pop(im, g['t12'], t, 3.8, (800, 560), 6)
-        if t < 3.1:
-            z = ease(seg(t, 2.1, 3.0)); out = camera(im, lerp2(sc(0), (W / 2, H / 2), z), lerp(2.0, 1.0, z)); fade = 1 - seg(t, 2.1, 2.45)
-            return Image.blend(out, cl[0].at(t), fade) if fade > 0 else out
+    if t < 7.1:                                                    # the collage moment: zoom out to the clock wheel, the hand goes to 4, dive in
+        im = g['concrete'].copy(); u = ease(seg(t, 6.0, 6.6))
+        clock(g, im, t, c, 1, wheel(g, t, {1: 1 - 0.5 * u, 2: 0.5 + 0.5 * u}))
+        if t < 6.0:
+            z = ease(seg(t, 5.6, 5.95)); out = camera(im, lerp2(sc(1), (W / 2, H / 2), z), lerp(2.0, 1.0, z)); fade = 1 - seg(t, 5.6, 5.8)
+            return Image.blend(out, cl[1].at(t - 3.0), fade) if fade > 0 else out
+        if t >= 6.6:
+            z = ease(seg(t, 6.6, 7.05)); out = camera(im, sc(2), lerp(1.0, 2.0, z)); fade = seg(t, 6.85, 7.1)
+            return Image.blend(out, cl[2].at(t - 6.85), fade) if fade > 0 else out
         return im
-    if t < 4.8: return dive(g, t, 4.1, 4.8, 1, 'noon', {1: 1}, 4.45, cl[1].at(t - 4.45))
-    if t < 6.0:                                                    # midday collage
-        im = g['base_noon'].copy(); A0, A, BL, BR = (0, 0, W, H), (0, 0, W, 1300), (0, 1300, 540, H), (540, 1300, W, H)
-        tiles(im, t, [{'keys': [(4.8, A0), (5.1, A)], 'fill': video(cl[1], 4.45)},
-                      {'keys': enter(BL, 4.8, dy=650), 'fill': g['wash_noon']}, {'keys': enter(BR, 4.9, dy=650), 'fill': g['wheat_noon']}])
-        pop(im, g['sunflower'], t, 5.1, (840, 1300), 10, wiggle=3); put(im, g['sun'], (860, 330), 1, t * 30)
-        pop(im, g['t12'], t, 5.15, (330, 1300), -4); draw_on(im, g['under'], (330, 1420), seg(t, 5.4, 5.8))
+    if t < 8.4:                                                    # afternoon, full frame + accents; the hand wipes to night
+        im = cl[2].at(t - 6.85); accents(g, im, t, 7.1, '[4PM]', (g['arrow_w'], (700, 1200), -20), 8.4)
+        u = ease(seg(t, 8.1, 8.4))
+        return radial(im, card(g, t, 'NIGHT', dark=True)[0], u) if u > 0 else im
+    if t < 9.4:                                                    # full-screen words at night
+        im, _ = card(g, t, 'NIGHT', dark=True)
+        u = ease(seg(t, 9.15, 9.4))
+        return radial(im, cl[3].at(t - 9.15), u) if u > 0 else im
+    if t < 10.9:                                                   # night, full frame + accents
+        im = cl[3].at(t - 9.15); accents(g, im, t, 9.4, '[9PM]', (g['under_w'], (240, 1500), 0), 10.9)
         return im
-    if t < 7.1:                                                    # zoom back out to the clock; the hand moves on to 4
-        tone = flip_tone(t, 6.3, 'noon', 'afternoon'); im = quad_tiles(g, t, tone); u = ease(seg(t, 6.4, 7.1))
-        clock11(g, im, t, c, 1, {1: 1 - 0.5 * u, 2: 0.5 + 0.5 * u})
-        pop(im, g['t4'], t, 6.9, (800, 1240), -4)
-        z = ease(seg(t, 6.0, 6.5)); out = camera(im, lerp2(sc(1), (W / 2, H / 2), z), lerp(2.0, 1.0, z)); fade = 1 - seg(t, 6.0, 6.3)
-        return Image.blend(out, cl[1].at(t - 4.45), fade) if fade > 0 else out
-    if t < 7.8: return dive(g, t, 7.1, 7.8, 2, 'afternoon', {2: 1}, 7.45, cl[2].at(t - 7.45))
-    if t < 9.6:                                                    # afternoon collage; then its tiles flip to night
-        tone = 'afternoon' if t < 9.0 else 'night'; im = g['base_' + tone].copy()
-        A0, A, L1, L2, BOT = (0, 0, W, H), (300, 0, W, 1350), (0, 0, 300, 700), (0, 700, 300, 1350), (0, 1350, W, H)
-        tiles(im, t, [{'keys': [(7.8, A0), (8.1, A)], 'fill': video(cl[2], 7.45), 'flip': (9.2, 0.3, g['candle'])},
-                      {'keys': enter(L1, 7.85, dx=-350), 'fill': g['sky_afternoon'], 'flip': (8.9, 0.3, g['sky_night'])},
-                      {'keys': enter(L2, 7.9, dx=-350), 'fill': g['wash_afternoon'], 'flip': (9.0, 0.3, g['wash_night'])},
-                      {'keys': enter(BOT, 7.95, dy=600), 'fill': g['wheat_afternoon'], 'flip': (9.1, 0.3, g['wheat_night'])}])
-        if t < 9.2: pop(im, g['hour_s'], t, 8.1, (300, 1180), -6, wiggle=2); pop(im, g['t4'], t, 8.2, (640, 1350), -4, out=9.0)
-        return im
-    if t < 11.3:                                                   # night: the clock returns, the hand moves on to 9
-        im = quad_tiles(g, t, lambda i: 'night'); k = back_out(seg(t, 9.6, 10.0), 1.6); u = ease(seg(t, 9.6, 10.3))
-        if k > 0: clock11(g, im, t, c, k, {2: 1 - 0.5 * u, 3: 0.5 + 0.5 * u})
-        pop(im, g['t9'], t, 10.2, (330, 600), -6)
-        return im
-    im = g['base_night'].copy()                                    # CTA: the resting product fills the clock face
-    tiles(im, t, [{'keys': [(11.3, (0, 0, W, 240))], 'fill': g['wash_night']}, {'keys': enter((0, 1560, 540, H), 11.3, dx=-560), 'fill': g['candle']},
-                  {'keys': enter((540, 1560, W, H), 11.35, dx=560), 'fill': g['wheat_night']}])
-    u = ease(seg(t, 11.3, 11.8)); full = cl[4].at(t - 11.3, (d, d))
-    disc = Image.blend(wheel(g, t, {3: 1}), full, u); disc.putalpha(M.circle_mask((d, d), (d / 2, d / 2), d / 2, 1))
-    clock11(g, im, t, (540, lerp(900, 1060, u)), lerp(1.0, 0.76, u), {}, disc)
-    for i, (key, (x, y), r) in enumerate((('latte', (170, 1560), -8), ('sunflower', (540, 1600), 6), ('hour_s', (900, 1560), 8))):
-        pop(im, g[key], t, 11.6 + i * 0.12, (x, y), r, wiggle=2)
-    hero(im, t, 11.5, g['comment'], (540, 330)); slide(im, g['kw'], t, 11.8, 12.1, (540, -200), (540, 500), -2)
+    im = g['concrete_dark'].copy()                                 # CTA: the resting product fills the clock face; the hands meet at 12
+    u = back_out(seg(t, 10.9, 11.3), 1.4); full = cl[4].at(t - 10.9, (d, d)); full.putalpha(M.circle_mask((d, d), (d / 2, d / 2), d / 2, 1))
+    clock(g, im, t, (540, 1060), 0.8 * u, full)
+    word(im, t, 11.3, (540, 330), 'COMMENT', 210, WHITE); word(im, t, 11.6, (540, 530), '"[KEYWORD]"', 130, BRASS)
+    draw_on(im, g['arrow_w'], (900, 700), seg(t, 11.9, 12.3), 200)
     return im
-
-def dive(g, t, t0, t1, ci, tone, bright, t_clip, clip_im):
-    """The camera dives into one slice of the clock until it is that clip, full screen."""
-    im = quad_tiles(g, t, lambda i: tone); clock11(g, im, t, (540, 900), 1, bright)
-    d = g['d']; f = (540 + SLICE[ci][0] * d / 4, 900 + SLICE[ci][1] * d / 4)
-    z = ease(seg(t, t0, t1 - 0.1)); out = camera(im, f, lerp(1.0, 2.0, z)); fade = seg(t, t0 + 0.35, t1)
-    return Image.blend(out, clip_im, fade) if fade > 0 else out
 
 SETUP['11'] = setup_11; FRAME['11'] = frame_11; SECS['11'] = 13.0
 
 # ======================================================================================================================
-# 20 What buyers said, v2 after her notes (12 s). World: the prize table on white marble: gold foil, her painted dots,
+# 20 What buyers said, v2/v3 after her notes (12 s). v3 balances the beats: full-frame video with accents, one
+# full-screen words beat, one collage moment (CTA); no lines round tiles or objects. World: the prize table on white marble: gold foil, her painted dots,
 # a trophy photo. Reviews are the buyer's own screenshots, shown in real phones (her green-screen phone photos), not
 # typed on cards. Lettering: magazine cut-outs on real paper (gold foil, black, cream card, kraft, marble).
 # No marker numbers; fewer, bigger stars; the third review comes from diving into the second phone's screen; the CTA
@@ -214,8 +218,9 @@ def setup_20():
     g['phones'] = [phone(i, screenshot(n), w) for i, (n, w) in enumerate((('one', 470), ('two', 480), ('three', 640)))]
     g['shot2'] = screenshot('two')
     g['big_stars'] = [S.star(430, i) for i in range(5)]
-    g['gem'] = S.obj('fall', 'Warm champagne faceted rhinestone-107.png', 230, 12, 5, 70)
-    g['trophy1'] = S.trophy(380, 0, 88); g['seal_c'] = S.seal(250, 2)
+    g['gem'] = C.shadow(S.fitw(S.cut('fall', 'Warm champagne faceted rhinestone-107.png'), 230), (6, 10), 10, 90)   # no outlines (her note)
+    g['trophy1'] = C.shadow(S.fitw(S.cut('images', S.TROPHIES[0]), 380), (8, 14), 14, 100); g['seal_c'] = S.seal(250, 2)
+    g['in_their'] = LB.magazine('IN THEIR', 128, kinds, seed=5); g['words'] = LB.magazine('WORDS', 180, kinds, seed=9)
     strip = S.raw('images', 'Blank gold foil seal sticker-175.png').crop((300, 520, 960, 700)).convert('RGBA')
     g['kw'] = C.shadow(S.words_on(strip, '"[KEYWORD]"', BOLD, 64))
     r = random.Random(12)
@@ -223,73 +228,75 @@ def setup_20():
     return g
 
 def frame_20(g, t):
+    """v3 (her balance note): full-frame video with accents (stars, seal, phones with the screenshots) for most of it,
+    one full-screen words beat with no video ("IN THEIR WORDS" on marble), and one collage moment for the CTA.
+    No lines round tiles or objects."""
     cl = g['clips']
-    if t < 3.6:                                                   # the prize-table collage; five stars stick on; review one in a phone
-        im = g['marble'].copy()
-        A, TOPB, R1, R2, BOT = (0, 300, 760, 1450), (0, 0, W, 300), (760, 300, W, 850), (760, 850, W, 1450), (0, 1450, W, H)
-        tiles(im, t, [{'keys': [(0, A)], 'fill': video(cl[0], 0)}, {'keys': enter(TOPB, 0, dy=-320), 'fill': g['dots']},
-                      {'keys': enter(R1, 0.04, dx=400), 'fill': g['gold']}, {'keys': enter(R2, 0.08, dx=400), 'fill': g['troph']},
-                      {'keys': enter(BOT, 0.02, dy=500), 'fill': g['parch']}])
-        roll = ease(seg(t, 0.3, 0.9)); put(im, g['seal_big'], (lerp(W + 500, 960, roll), 1500), 0.8, lerp(220, 0, roll))
+    if t < 3.6:                                                   # review one: full frame + accents
+        im = cl[0].at(t)
+        roll = ease(seg(t, 0.3, 0.9)); put(im, g['seal_big'], (lerp(W + 500, 1000, roll), 1760), 0.7, lerp(220, 0, roll))
         for i in range(5):
             t0 = 0.1 + 0.15 * i
-            if t < t0 or t > 2.05: continue
-            k = 1 + 0.8 * (1 - back_out(seg(t, t0, t0 + 0.2), 1.2)); up = ease(seg(t, 1.85, 2.05)) * 500
-            put(im, g['stars'][i], (170 + i * 185, 300 - (30 if i in (1, 3) else 0) - up), k, (-12, 8, -4, 10, -18)[i])
+            if t < t0: continue
+            k = 1 + 0.8 * (1 - back_out(seg(t, t0, t0 + 0.2), 1.2)) - ease(seg(t, 1.85, 2.05)) * 0.45
+            y = lerp(300 - (30 if i in (1, 3) else 0), 270, ease(seg(t, 1.85, 2.05)))
+            x = lerp(170 + i * 185, 120 + i * 95, ease(seg(t, 1.85, 2.05)))
+            put(im, g['stars'][i], (x, y), k, (-12, 8, -4, 10, -18)[i])
         hero(im, t, 0.5, g['what'], (540, 560), out=1.85); hero(im, t, 0.85, g['said'], (520, 760), out=1.9)
         if t >= 2.0:
-            ph, _ = g['phones'][0]; slide(im, ph, t, 2.0, 2.4, (520, H + 700), (520, 1180), -5, fn=lambda x: back_out(x, 1.3))
-            pop(im, g['seal_s'][0], t, 2.5, (300, 760), 0); draw_on(im, g['arrow'], (870, 980), seg(t, 2.7, 3.1), 200)
+            ph, _ = g['phones'][0]; slide(im, ph, t, 2.0, 2.4, (W + 500, 1150), (760, 1150), -6, fn=lambda x: back_out(x, 1.3))
+            draw_on(im, g['arrow'], (330, 1100), seg(t, 2.5, 2.9), -10)
         return im
-    if t < 4.4:                                                   # fewer, bigger gold stars rush in, cover it all, fly off
-        im = frame_20(g, 3.59) if t < 4.0 else split2(g, t)
+    if t < 5.0:                                                   # a few big stars sweep across to the words beat
+        im = frame_20(g, 3.59) if t < 4.0 else words_card(g, t)
         for i, (x, y, r, k) in enumerate(g['cover12']):
             a = ease(seg(t, 3.6 + (i % 5) * 0.03, 3.95)); b = ease(seg(t, 4.0 + (i % 4) * 0.03, 4.4))
             if a <= 0 or b >= 1: continue
             dx, dy = x - W / 2, y - H / 2; n = math.hypot(dx, dy) + 1; fx, fy = dx / n * 1500, dy / n * 1500
             put(im, g['big_stars'][k], (x + fx * (1 - a) + fx * b, y + fy * (1 - a) + fy * b), 1, r + 80 * b)
+        u = ease(seg(t, 4.7, 5.0))                                # a stroke of gold paint wipes to the next clip
+        if u > 0:
+            m = Image.new('L', (W, H), 0); ImageDraw.Draw(m).rectangle((0, 0, int(W * u), H), fill=255); im.paste(cl[1].at(t - 4.7), (0, 0), m)
+            put(im, g['stroke_big'], (W * u, 960), 1, 90)
         return im
-    if t < 6.0:                                                   # review two: clip above, two tiles below, gold drawn on the seam, the second phone
-        im = split2(g, t); draw_on(im, g['stroke'], (540, 1120), seg(t, 4.4, 4.75), -2)
-        ph, _ = g['phones'][1]; slide(im, ph, t, 4.55, 4.95, (540, H + 700), (560, 1180), 4, fn=lambda x: back_out(x, 1.3))
-        draw_on(im, g['arrow'], (210, 1000), seg(t, 5.1, 5.5), -20)
+    if t < 6.4:                                                   # review two: full frame + accents
+        im = cl[1].at(t - 4.7)
+        ph, _ = g['phones'][1]; slide(im, ph, t, 5.0, 5.4, (-500, 1150), (320, 1150), 5, fn=lambda x: back_out(x, 1.3))
+        pop(im, g['seal_s'][1], t, 5.3, (900, 380)); draw_on(im, g['arrow'], (760, 1050), seg(t, 5.5, 5.9), 180)
         return im
-    if t < 6.8:                                                   # the camera dives into the phone's screen: it becomes the third clip
-        im = split2(g, t); ph, off_ = g['phones'][1]; put(im, ph, (560, 1180), 1, 4)
-        f = (560 + off_[0], 1180 + off_[1]); z = ease(seg(t, 6.0, 6.65)); out = camera(im, f, lerp(1, 3.4, z))
-        fade = seg(t, 6.4, 6.8)
-        return Image.blend(out, cl[2].at(t - 6.4), fade) if fade > 0 else out
-    if t < 8.4:                                                   # review three: the clip, tiles slide in, a hand brings the phone
-        im = g['marble'].copy(); A0, A, BL, BR = (0, 0, W, H), (0, 0, W, 1350), (0, 1350, 540, H), (540, 1350, W, H)
-        tiles(im, t, [{'keys': [(6.8, A0), (7.1, A)], 'fill': video(cl[2], 6.4)}, {'keys': enter(BL, 6.85, dy=600), 'fill': g['gold']},
-                      {'keys': enter(BR, 6.9, dy=600), 'fill': g['dots']}])
-        ph, _ = g['phones'][2]; slide(im, ph, t, 7.1, 7.5, (W + 600, 1300), (780, 1300), -4)
+    if t < 7.2:                                                   # dive into the phone's screen: it becomes the third clip
+        im = cl[1].at(t - 4.7); ph, off_ = g['phones'][1]; put(im, ph, (320, 1150), 1, 5)
+        f = (320 + off_[0], 1150 + off_[1]); z = ease(seg(t, 6.4, 7.05)); out = camera(im, f, lerp(1, 3.4, z))
+        fade = seg(t, 6.8, 7.2)
+        return Image.blend(out, cl[2].at(t - 6.8), fade) if fade > 0 else out
+    if t < 8.6:                                                   # review three: full frame, a hand brings the phone
+        im = cl[2].at(t - 6.8)
+        ph, _ = g['phones'][2]; slide(im, ph, t, 7.3, 7.7, (W + 600, 1250), (760, 1250), -4)
+        for i, (x, y) in enumerate(((200, 600), (330, 1300))):
+            if int(t * 5 + i) % 3: put(im, g['spark'][i], (x, y))
         return im
-    if t < 9.2:                                                   # three sweeps of real gold paint wipe to the CTA
-        im = frame_20(g, 8.39) if t < 8.8 else cta2(g, t)
-        for i, y in enumerate((300, 960, 1620)):
-            u = ease(seg(t, 8.4 + i * 0.08, 9.15 + i * 0.05)); x = lerp(-1500, W + 1500, u) if i % 2 == 0 else lerp(W + 1500, -1500, u)
-            put(im, g['stroke_big'], (x, y), 1, (-3, 2, -2)[i])
-        return im
-    return cta2(g, t)
+    return cta3(g, t)
 
-def split2(g, t):
+def words_card(g, t):
+    """The full-screen words beat: no video, IN THEIR WORDS in magazine cut-outs on marble, gold paint under it."""
     im = g['marble'].copy()
-    tiles(im, t, [{'keys': [(4.0, (0, 0, W, 1120))], 'fill': video(g['clips'][1], 4.0)},
-                  {'keys': [(4.0, (0, 1120, 540, H))], 'fill': g['dots']}, {'keys': [(4.0, (540, 1120, W, H))], 'fill': g['gold']}])
+    draw_on(im, g['stroke'], (540, 1160), seg(t, 4.3, 4.6), -3)
+    hero(im, t, 4.05, g['in_their'], (540, 760)); hero(im, t, 4.3, g['words'], (540, 1000))
     return im
 
-def cta2(g, t):
+def cta3(g, t):
+    """The collage moment, for the CTA: the clip shrinks into a tile as the other tiles slide in round it."""
     im = g['marble'].copy()
-    tiles(im, t, [{'keys': enter((0, 240, W, 1350), 8.8, dx=-W), 'fill': video(g['clips'][3], 9.0)}, {'keys': enter((0, 0, W, 240), 8.9, dy=-260), 'fill': g['dots']},
-                  {'keys': enter((0, 1350, 540, H), 8.95, dy=600), 'fill': g['parch']}, {'keys': enter((540, 1350, W, H), 9.0, dy=600), 'fill': g['gold']}])
-    slide(im, g['trophy1'], t, 9.5, 9.85, (200, H + 400), (200, 1620), -5, fn=lambda x: back_out(x, 1.4))
-    pop(im, g['gem'], t, 9.7, (560, 1700), 8, wiggle=3); pop(im, g['seal_c'], t, 9.85, (900, 1620), 0)
-    hero(im, t, 9.6, g['comment'], (540, 400)); slide(im, g['kw'], t, 10.0, 10.3, (-400, 1330), (540, 1330), -2)
-    draw_on(im, g['arrow'], (900, 1150), seg(t, 10.3, 10.7))
+    tiles(im, t, [{'keys': [(8.6, (0, 0, W, H)), (9.0, (0, 240, W, 1350))], 'fill': video(g['clips'][3], 8.6)},
+                  {'keys': enter((0, 0, W, 240), 8.7, dy=-260), 'fill': g['dots']},
+                  {'keys': enter((0, 1350, 540, H), 8.75, dy=600), 'fill': g['parch']}, {'keys': enter((540, 1350, W, H), 8.8, dy=600), 'fill': g['gold']}])
+    slide(im, g['trophy1'], t, 9.2, 9.55, (200, H + 400), (200, 1620), -5, fn=lambda x: back_out(x, 1.4))
+    pop(im, g['gem'], t, 9.4, (560, 1700), 8, wiggle=3); pop(im, g['seal_c'], t, 9.55, (900, 1620), 0)
+    hero(im, t, 9.3, g['comment'], (540, 400)); slide(im, g['kw'], t, 9.7, 10.0, (-400, 1330), (540, 1330), -2)
+    draw_on(im, g['arrow'], (900, 1150), seg(t, 10.0, 10.4))
     return im
 
-SETUP['20'] = setup_20; FRAME['20'] = frame_20; SECS['20'] = 11.5
+SETUP['20'] = setup_20; FRAME['20'] = frame_20; SECS['20'] = 11.0
 
 def main():
     tid = sys.argv[1]; g = SETUP[tid](); fr = lambda t: FRAME[tid](g, t)

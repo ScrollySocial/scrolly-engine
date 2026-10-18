@@ -67,4 +67,4 @@ def tiles(img, t, ts):
             if u >= 1: continue
             c = ((b[0] + b[2]) / 2 + pe[2] * 900 * u, (b[1] + b[3]) / 2 + 1500 * u * u)
             M.put(img, M.C.shadow(im.copy(), (16, 24), 18, 120), c, 1 + 0.12 * math.sin(math.pi * min(1, u * 2)), pe[2] * 30 * u); continue
-        draw_tile(img, im, b, tl.get('seam', True))
+        draw_tile(img, im, b, tl.get('seam', False))          # no lines round tiles (her note, 2026-10-17)

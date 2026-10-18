@@ -7,28 +7,28 @@ import html
 from pathlib import Path
 
 PACK = Path(__file__).resolve().parent.parent
-T = [('11-a-day-with-it', '#11 A day with it',
-      ['the morning collage, all one texture toned cream; the one alarm clock rings across the seams, a latte crosses a seam',
-       'zoom out: the clock wheel of four clips; the hour hand points at 7, the morning slice is lit',
-       'the hand sweeps to 12 and the tiles turn butter one by one; the camera dives into the midday slice',
-       'the midday collage slides up, a sunflower crosses the seam',
-       'back out to the clock: the hand moves on to 4 (your note), the tiles turn amber; dive into the afternoon slice',
-       'the afternoon collage, the hourglass on the seam; its tiles flip to night navy',
-       'night: the clock returns, the hand moves to 9', 'CTA: the resting product fills the clock face; latte, sunflower and hourglass gather round']),
-     ('20-what-buyers-said', '#20 What buyers said',
-      ['the prize-table collage on marble: the clip tile, gold foil, a trophy photo, painted dots, parchment; five gold stars stick on',
-       "review one: the buyer's own screenshot in a real phone (no card, no marker numbers)", 'fewer, bigger gold stars rush in and cover everything, then fly off',
-       'review two: the clip above two tiles, gold paint drawn along the seam, the second phone',
-       'the camera dives into the phone screen and it becomes the third clip (replaces the "meh" seal)',
-       'review three: a hand brings the third phone in', 'three sweeps of gold paint wipe to the CTA: one trophy, a gem and a gold seal (all different)'])]
+T = [('11-a-day-with-it', '#11 A day with it', False,
+      ['morning, full frame: A DAY WITH MY [PRODUCT] pops in; accents: the small brass clock at 7, the time, a burst',
+       'the clock hand sweeps round and wipes to a full-screen word (no video): NOON on concrete',
+       'the camera dives through the O of NOON into the midday clip; accents: clock at 12, time, sparkle',
+       'zoom out to the clock wheel of four clips (the one collage moment); the hand moves to 4; dive into that slice',
+       'afternoon, full frame + accents; the hand wipes to a full-screen NIGHT on dark concrete',
+       'night, full frame + accents', 'CTA: the resting product fills the clock face, COMMENT "[KEYWORD]"']),
+     ('20-what-buyers-said', '#20 What buyers said', True,
+      ['full frame: five gold stars stick on, WHAT BUYERS SAID, a gold seal rolls into the corner',
+       "review one: the buyer's screenshot in a real phone slides in beside the clip",
+       'a few big stars sweep across to a full-screen word beat (no video): IN THEIR WORDS on marble, gold paint under it',
+       'a stroke of gold paint wipes to review two, full frame, the phone on the other side',
+       'the camera dives into the phone screen: it becomes the third clip; a hand brings the third phone',
+       'the CTA is the collage moment: the clip becomes a tile, the tiles slide in; a trophy, a gem, a gold seal'])]
 
 cards = []
-for d, title, beats in T:
+for d, title, fonts, beats in T:
     num = d[:2]; li = ''.join(f'<li>{html.escape(b)}</li>' for b in beats)
+    opts = (f'<p class="w">Lettering options (the video uses option 1). Pick a number:</p><img class="fo" src="{d}/preview/font-options.jpg">' if fonts else '')
     cards.append(f'<section><h2>{html.escape(title)}</h2><div class="pair"><video src="{d}/preview/motion-test.mp4" controls loop muted playsinline preload="metadata"></video>'
-                 f'<div class="side"><p class="w">What happens, in order:</p><ol>{li}</ol>'
-                 f'<p class="w">Lettering options (the video uses option 1). Pick a number:</p><img class="fo" src="{d}/preview/font-options.jpg">'
-                 f'<textarea data-k="{num}" placeholder="Notes on #{num} (say the second, e.g. 4s: ...), and your lettering pick"></textarea></div></div></section>')
+                 f'<div class="side"><p class="w">What happens, in order:</p><ol>{li}</ol>{opts}'
+                 f'<textarea data-k="{num}" placeholder="Notes on #{num} (say the second, e.g. 4s: ...)"></textarea></div></div></section>')
 
 page = '''<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Physical pack motion tests</title><style>
@@ -40,9 +40,9 @@ video{width:300px;max-width:100%;border-radius:8px;background:#000} img.fo{width
 textarea{width:100%;box-sizing:border-box;height:120px;font:14px Arial;padding:8px;border:1px solid #c9bfb2;border-radius:6px}
 #bar{position:fixed;left:0;right:0;bottom:0;background:#1b1a19;color:#fff;padding:12px 20px;display:flex;gap:14px;align-items:center;flex-wrap:wrap}
 button{font:bold 15px Arial;padding:10px 18px;border:0;border-radius:6px;background:#ec7824;color:#fff;cursor:pointer}
-</style></head><body><h1>Physical pack: #11 and #20 motion tests (your notes applied)</h1>
+</style></head><body><h1>Physical pack: #11 and #20 motion tests, round 3</h1>
 <p>Rough renders to show the motion as a living collage: tiles that slide, flip, peel and swap, real cut-outs across the seams, every transition, the doodles drawing on. The footage is
-a stand-in from your July clips; buyers drop in their own. Notes reach Claude as you type. #07 and #15 are dropped, as you said.</p>
+a stand-in from your July clips; buyers drop in their own. Notes reach Claude as you type. #11 is now modern and not seasonal (no fall images, no washes or dotted letters, no outlines); both mix full-frame video with accents, full-screen words and one collage moment.</p>
 CARDS<div id="bar"><button id="copy">Copy all notes</button><button id="save">Send notes to Claude</button><span id="msg"></span></div>
 <script>
 const tas=[...document.querySelectorAll('textarea')], msg=document.getElementById('msg');
