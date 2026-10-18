@@ -65,3 +65,19 @@ She says "continued": more notes on #08/#20 (and maybe #23) to follow. Collect a
 - Built-in story words: she isn't loving the Bodoni italic captions. Try smaller, neutral, trendier type; letter-by-letter
   entry for key words. Show 3 to 4 type options before rebuilding.
 - No lone floating props (camera); every prop sits on/interacts with something.
+
+### #20 What buyers said (third message)
+- LOVES the five gold stars sticking on at the start, and LOVES all the stars rushing in as the transition: keep both.
+- The words ("what / buyers / said") are not good enough: two fonts at once, doesn't look like her inspo. She is
+  very upset about the font situation overall.
+- Too much gold: the five stars repeated on the review scene plus the gold foil seal. Don't duplicate the stars; drop
+  the seal (or the extra stars).
+- In general: too fast to read.
+
+## THE FONT PROBLEM (top priority before any rebuild)
+Rounds 1-3 kept inventing type (Coiny, Sigmar, DynaPuff, Alfa Slab, Anton+serif, Bodoni italic + Montserrat pills)
+and she has rejected each. Next step: a type sheet built ONLY from her approved references, rendered on her real
+clips, 3-4 options, ONE type system per option (not two fonts fighting). References she has approved: Lisa's Reels
+(bold white sans word-by-word, one big serif key word, red pill labels, outlined numbers), #3's Corben letters filled
+with polka dots in the hero prop's colour with a black edge, f2's Anton caps filled with a real textile photo with a
+thick cream edge. She picks one; then rebuild all templates with it.
