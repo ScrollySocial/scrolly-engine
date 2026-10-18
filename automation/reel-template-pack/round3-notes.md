@@ -114,3 +114,8 @@ DM Sans, Manrope, DM Serif Display are free Google Fonts (SIL OFL) that would ne
 CapCut's library has them for editable text.
 - On type-pairings.jpg: "would maybe not do those [colours] all together, but don't HATE it". Palette now butter
   #F7E6A9, wine #7A1732, pink #F9C9DF + baby blue (~#BFD9F2). Each template uses ONE or TWO of them, never all at once.
+- CapCut font check (her CapCut's downloaded cache, read by each file's family name): Bodoni Moda IS there (library id
+  7580184437816675601) = editable OK. Instrument Serif, DM Sans, Manrope, DM Serif Display are NOT in her cache (the
+  cache only holds fonts she has used, so CapCut's online library may still have them: search the font panel to
+  confirm). Until confirmed they are built-in words only. Sans fonts confirmed in CapCut for editable text: Montserrat,
+  Inter, Poppins.

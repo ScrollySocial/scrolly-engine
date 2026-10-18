@@ -18,6 +18,7 @@ def font(name, px, wght=None):
         except Exception: pass
     return f
 
+NOTES = ['serif + sans: built-in words only (not found in CapCut)', 'Bodoni Moda: editable OK  |  Manrope: built-in only', 'serif + sans: built-in words only (not found in CapCut)']
 PAIRS = [('Instrument Serif + DM Sans', FD / 'instrumentserif-InstrumentSerif-Regular.ttf', FD / 'instrumentserif-InstrumentSerif-Italic.ttf', FD / 'dmsans-DMSans[opsz,wght].ttf'),
          ('Bodoni Moda + Manrope', S.E.font_file('7580184437816675601'), S.E.font_file('7580184437816675601'), FD / 'manrope-Manrope[wght].ttf'),
          ('DM Serif Display + Manrope', FD / 'dmserifdisplay-DMSerifDisplay-Regular.ttf', FD / 'dmserifdisplay-DMSerifDisplay-Italic.ttf', FD / 'manrope-Manrope[wght].ttf')]
@@ -49,10 +50,10 @@ def frame(clip, pair):
 
 def main():
     clips = [('IMG_1469', 1.0), ('IMG_1388', 0.5)]
-    sheet = Image.new('RGB', (3 * 540 + 40, 2 * 960 + 100), 'white'); d = ImageDraw.Draw(sheet); f = S.F('C:/Windows/Fonts/segoeuib.ttf', 28)
+    sheet = Image.new('RGB', (3 * 540 + 40, 2 * 960 + 140), 'white'); d = ImageDraw.Draw(sheet); f = S.F('C:/Windows/Fonts/segoeuib.ttf', 28); fs = S.F('C:/Windows/Fonts/segoeui.ttf', 22)
     for c, pair in enumerate(PAIRS):
-        d.text((c * 560 + 6, 20), pair[0], font=f, fill=INK)
-        for r, cl in enumerate(clips): sheet.paste(frame(cl, pair).convert('RGB').resize((540, 960)), (c * 560, 70 + r * 970))
+        d.text((c * 560 + 6, 14), pair[0], font=f, fill=INK); d.text((c * 560 + 6, 56), NOTES[c], font=fs, fill=(122, 23, 50))
+        for r, cl in enumerate(clips): sheet.paste(frame(cl, pair).convert('RGB').resize((540, 960)), (c * 560, 110 + r * 970))
     out = S.E.PACK / 'type-pairings.jpg'; sheet.save(out, quality=88); print(out)
 
 if __name__ == '__main__':
