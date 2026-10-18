@@ -231,7 +231,6 @@ def frame(t):
     elif t < 12.0:
         im = vid('treat', t - 6.1)
         candy_flood(im, t, 7.0)
-        word_art(im, t, 8.45, 'or', 520, 330, 130, 'taffy', 'pop')
         word_art(im, t, 8.65, 'TREAT', 520, 520, 230, 'taffy', 'drop', 0.09)
         line(im, t, 9.3, '[our 5-minute scrub]', (520, 740), 80)
     # 12.0-15.0 CTA over clip 3: COMMENT + the editable keyword
