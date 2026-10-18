@@ -12,7 +12,7 @@ Cut-outs come from the rembg model (build/cutout_hq.py; run it for any new objec
 """
 import math, random
 from pathlib import Path
-from PIL import Image, ImageChops, ImageDraw, ImageFilter, ImageOps
+from PIL import Image, ImageChops, ImageDraw, ImageFilter, ImageFont, ImageOps
 import collage as C
 import storyboard_b2 as S
 import lettering_b2 as LB
@@ -298,3 +298,65 @@ def sandwich(img, t, t0, c, top, big, bottom, gap=None):
     say(img, top, t, t0, (c[0], c[1] - bh / 2 - top.height / 2 + 30 - gap), -2)
     say(img, big, t, t0 + 0.15, c, 0)
     say(img, bottom, t, t0 + 0.35 + 0.13 * (len(big) if isinstance(big, list) else 1), (c[0], c[1] + bh / 2 + bottom.height / 2 - 30 + gap), 2)
+
+# ---- LOCKED type and palette (FRAMEWORK.md, Mercedes 2026-10-18): DM Serif Display + Manrope -------------------------
+# These replace the earlier helpers of the same names, so every recipe picks up the locked look:
+#   story_word / caption: DM Serif Display (Italic for the key word), solid fill, thin outline, soft shadow; no stripes
+#   pill_m: now a tight highlight box in Manrope Medium (she: highlight underused, pill overused)
+#   pill_once: the one pill allowed per template, for emphasis
+FD = Path(__file__).resolve().parent.parent / 'assets' / 'fonts'
+DMS, DMS_I, MANROPE = str(FD / 'dmserifdisplay-DMSerifDisplay-Regular.ttf'), str(FD / 'dmserifdisplay-DMSerifDisplay-Italic.ttf'), str(FD / 'manrope-Manrope[wght].ttf')
+PAL = {'butter': (247, 230, 169), 'wine': (122, 23, 50), 'pink': (249, 201, 223), 'blue': (191, 217, 242)}
+
+def manrope(px, wght=500):
+    f = ImageFont.truetype(MANROPE, px)
+    try: f.set_variation_by_axes([wght])
+    except Exception: pass
+    return f
+
+def story_word(text, px, color=WHITE, fill='soft', edge=None, shadow=(28, 27, 26), italic=False):
+    """A built-in word: DM Serif Display, solid fill, thin outline in `edge` (default wine), soft shadow."""
+    edge = edge or PAL['wine']; f = ImageFont.truetype(DMS_I if italic else DMS, px); l, t, r, b = f.getbbox(text); pad = 40; w, h = r - l + 2 * pad, b - t + 2 * pad
+    m = Image.new('L', (w, h), 0); ImageDraw.Draw(m).text((pad - l, pad - t), text, font=f, fill=255); ew = 2 * max(3, px // 55) + 1
+    out = Image.new('RGBA', (w, h), (0, 0, 0, 0))
+    sh = Image.new('RGBA', (w, h), (0, 0, 0, 0)); sh.putalpha(m.filter(ImageFilter.MaxFilter(ew)).filter(ImageFilter.GaussianBlur(12)).point(lambda v: int(v * 0.55))); out.alpha_composite(sh, (0, 8))
+    e = Image.new('RGBA', (w, h), edge + (255,)); e.putalpha(m.filter(ImageFilter.MaxFilter(ew))); out.alpha_composite(e)
+    fl = Image.new('RGBA', (w, h), color + (255,)); fl.putalpha(m); out.alpha_composite(fl); return out
+
+def caption(text, px, color=WHITE, fill='soft', gap=0.1, edge=None, italic_last=True):
+    """A built-in line as separate words (for word-by-word entry); the last word in Italic."""
+    ws = text.split(); ims = [story_word(w_, px, color, edge=edge, italic=(italic_last and i == len(ws) - 1 and len(ws) > 1)) for i, w_ in enumerate(ws)]
+    sp = px * gap; total = sum(w.width for w in ims) + sp * (len(ims) - 1); out, x = [], -total / 2
+    for w in ims: out.append((w, x + w.width / 2)); x += w.width + sp
+    return out
+
+def pill_m(text, px, bg=None, fg=None, rot=-2):
+    """Highlight box: Manrope Medium on a tight rectangle (white box, ink text by default); size floor 54 px."""
+    bg = bg or (255, 255, 255); fg = fg or ((24, 23, 22) if sum(bg) > 450 else (255, 255, 255)); px = max(54, px)
+    f = manrope(px); boxes = []
+    for l in text.split('\n'):
+        a, t, b, bt = f.getbbox(l); w, h = int(b - a + px * 0.4), int(px * 1.28)
+        im = Image.new('RGBA', (w, h), bg + (255,)); ImageDraw.Draw(im).text((w / 2, h / 2), l, font=f, fill=fg, anchor='mm'); boxes.append(im)
+    out = Image.new('RGBA', (max(b.width for b in boxes) + 16, sum(b.height for b in boxes) + 16), (0, 0, 0, 0)); y = 8
+    for b in boxes: out.alpha_composite(b, (8, y)); y += b.height
+    out = C.shadow(out, (3, 6), 6, 60); return out.rotate(rot, expand=True, resample=Image.BICUBIC) if rot else out
+
+def pill_once(text, px, bg, fg=None):
+    """The one pill per template (emphasis only)."""
+    fg = fg or ((24, 23, 22) if sum(bg) > 450 else WHITE); f = manrope(px, 650); l, t, r, b_ = f.getbbox(text)
+    w, h = int(r - l + px * 1.0), int(b_ - t + px * 0.8); im = Image.new('RGBA', (w, h), (0, 0, 0, 0)); d = ImageDraw.Draw(im)
+    d.rounded_rectangle((0, 0, w - 1, h - 1), h // 2, fill=bg + (255,)); d.text((w / 2, h / 2), text, font=f, fill=fg, anchor='mm')
+    return die_cut(im, 6, True)
+
+# ---- reading time for the motion tests (must-do 14) --------------------------------------------------------------------
+# The motion tests aren't built by engine.build, so they slow down as a whole: frames are drawn at t / SLOW, and clips
+# are read at real speed (Clip.at gets t * SLOW back), so footage isn't slow-motion; every word stays on screen SLOW
+# times longer (a 0.9 s word becomes 1.3 s). Templates run longer, which she allows.
+SLOW = 1.4
+
+def slowed(frame_fn):
+    """Wrap a motion-test frame function so the whole Reel plays SLOW times longer while clips keep real speed."""
+    import motion_b2 as _M
+    if not getattr(_M.Clip, '_slowed', False):
+        _orig = _M.Clip.at; _M.Clip.at = lambda self, t, size=(W, H): _orig(self, t * SLOW, size); _M.Clip._slowed = True
+    return lambda t: frame_fn(t / SLOW)

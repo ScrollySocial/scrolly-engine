@@ -132,3 +132,11 @@ text not; cut words or hold longer (templates may run past 15 s). engine.build p
 at, secs) inserts a pause without changing the look. #02 and #03 re-timed with holds (02: 17.2 s, 03: 14.9 s), rebuilt
 and reinstalled. The motion_*/story*.py tests don't go through the engine: apply the same rule by hand in the rebuild
 of #09, #10, #12, #22, #08, #20, #23 (her notes say they are all too fast).
+
+## Round 4 (build/story7.py, 2026-10-18)
+- #09 Who it's for: "LOVE" (approved). Next: CapCut build, test copy, upload zip.
+- #12 now uses her front-facing mailbox (assets/props/source/images/Pristine cherry-red mailbox, front-facing (1).png),
+  recoloured wine, door drops open on its hinge, the clip zooms out of the opening.
+- Underline doodle: index 4 is a DOUBLE line; use 'under' index 0 (single). Burst index 2 = rays only (good behind a ringing object).
+- Built-in words on light stages (paper, marble, pegboard, butter) need a dark fill (wine / deep blue) with a white edge;
+  white words with a thin edge only read on footage or dark stages.
