@@ -27,3 +27,24 @@ Notes for the round:
   from them), lit carved pumpkins (f6 glow), wispy cloud overlay (f3); `doodles/` polka dots (f4 stickers).
 - Each one has its own world: f1 rust plaid + cinnamon, f2 barn wood + kraft tags, f3 misty forest + leaf path,
   f4 apple crate + red plaid, f5 cream knit + gold, f6 night + embers, f7 corduroy + steam, f8 paper + pen + burlap.
+
+## Round 1 storyboards: rejected (2026-10-17)
+
+Mercedes: "this is looking BAD". Stills for f2, f3, f4, f6, f7 (`fall/fN-*/storyboard/`, `build/storyboard_fall.py`)
+read as busy collages: too many props piled on, white cards and cups cut away on white, white blobs in tag loops, the
+same stand-in clip everywhere. Still storyboards also can't show these ideas, which live in the motion (same lesson as
+Halloween). Next round = motion tests, fewer and bigger props.
+
+## Her direction (2026-10-17), with her Canva mock-ups in `fall/inspo/`
+
+- **Blanket** (`01`): a real plaid blanket with fringe rises up and falls between clips, and can grow into (or shrink
+  out of) a full-page background. Ignore the background video and font in the mock-up.
+- **Apples with shape overlays** (`02`): polka dots, stars, stripes that stay ON the apple (clipped to its shape).
+  Work in progress: she isn't happy with how they look yet.
+- **2 or 3 clips per screen** (`02`, `03`): stacked vertical, side by side, or diagonal; clips in frames (stamp edges).
+- **Look through, then zoom in** (`04`, loved): the clip seen through an airplane window, then zoom into the full image.
+  Fall version: through a tree knot hole. More "look through" ideas needed.
+- **Day in my life** (`05`): fast, about 4 clips in 2 seconds, with big bold outlined words, halftone sparkles and a
+  small pill label ("2 pm - 10 am").
+- **Coffee, loved** (`06`): "which is your style?" over the person's clip; real drink cut-outs pop in one at a time,
+  each with a short label ("ice americano", "sweet latte"); ends "swipe up your answer!"

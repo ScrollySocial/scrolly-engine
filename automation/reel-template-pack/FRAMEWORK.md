@@ -191,6 +191,18 @@ Showing her work
   page; give full file paths when she needs to load images, and say exactly where to save them.
 - Her manual choices on a review page beat these rules: flag, never undo.
 
+## From the Fall pack, round 1 (Mercedes, 2026-10-17)
+
+- **Several clips per screen** is a core layout: 2 or 3 clips at once, stacked, side by side or diagonal, in frames.
+- **Fast cuts are a hook:** a "day in my life" run of about 4 clips in 2 seconds under big bold words.
+- **Look through, then zoom in:** the clip first seen through something (airplane window, tree knot hole), then the
+  camera zooms into the full image.
+- **A real prop that rises and falls between clips** (a fringed blanket) and can grow into the full-page background.
+- **Overlays on an object stay inside its shape** (dots, stars, stripes on an apple never spill off it).
+- **Not a collage:** her round 1 Fall stills were rejected as busy. A few big, clean props with the video as the
+  hero, not leaves, tags and stickers piled everywhere. Check cut-outs: white objects on white backgrounds (cards,
+  cups) need a careful cut, and holes (tag loops) must be see-through.
+
 ## Checklist: run before showing any storyboard or preview
 
 - [ ] Frame 1 hooks instantly and is already moving (rule 1).
@@ -215,4 +227,5 @@ Showing her work
 - [ ] Any reused move is under its 5-of-25 cap (see the moves table).
 - [ ] The buyer only drops in their clips: no special filming, no on-camera prop reveal (unless it's the 1 of 25).
 - [ ] Any photo inside letters can be swapped by the buyer, or fits the theme as is.
+- [ ] Not a collage: a few big, clean props; cut-outs checked at full size (no white edges or blobs).
 - [ ] Would someone say "wow, I've never seen that on my feed"? If not, it isn't ready.
