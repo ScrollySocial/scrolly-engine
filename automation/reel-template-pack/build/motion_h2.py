@@ -197,8 +197,14 @@ def frame(t):
         im = vid('c', t - 5.8)
         pop_word(im, t, 6.6, '2', (540, 420), 240, -6)
         if t > 6.95: put(im, ticket('[favourite 2]'), (540, 650 + 30 * (1 - back_out((t - 6.95) / 0.35))), -3)
-        put(im, sized(FLY, 230, 'f230'), (220 + 40 * math.sin(t * 2), 330 + 20 * math.sin(t * 5)), -8 * math.sin(t * 4), shadow=False)
-        D.draw_on(im, DOO['heart'], (850, 1150), t, 7.4, 0.35, -8)        # loved
+        for i in range(9):   # a swarm of bats orbiting the product (her Pinterest pick: birds circling the head)
+            a = t * 2.4 + i * 2 * math.pi / 9; depth = (math.sin(a) + 1) / 2
+            k = clamp((t - 6.7 - i * 0.05) / 0.3)
+            if k <= 0: continue
+            x, y = 540 + 400 * math.cos(a) * k, 1080 + 170 * math.sin(a) * k
+            w = (110 + 120 * depth) * back_out(k)
+            put(im, sized(FLY, w, f'f{int(w)}'), (x, y), -12 * math.cos(a), shadow=False)
+        D.draw_on(im, DOO['heart'], (850, 1500), t, 7.4, 0.35, -8)        # loved
     # 9.0-9.9 the bats swirl in from the edges, close over favourite 2, and swirl open onto favourite 3
     elif t < 9.9:
         u = (t - 9.0) / 0.9; close = ease(u / 0.5) if u < 0.5 else 1 - ease((u - 0.5) / 0.5)

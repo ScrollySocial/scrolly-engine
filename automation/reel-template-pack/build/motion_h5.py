@@ -255,12 +255,16 @@ def frame(t):
         line(im, t, 3.3, '[cheap sponges]', (520, 680), 80)
         word_art(im, t, 4.0, 'or...', 520, 880, 150, 'taffy', 'pop', 0.08)
         D.draw_on(im, DOO['x'], (820, 1240), t, 3.55, 0.3, -6)      # the trick, crossed out
-    # 4.8-5.3 whip pan along the street to door 2
+    # 4.8-5.3 two-tone strip slice (her Pinterest pick): the TRICK clip cuts into strips, alternately tinted
+    # lavender and plum, that slide apart left and right to reveal door 2
     elif t < 5.3:
-        u = ease((t - 4.8) / 0.5); a = vid('trick', t - 1.3); im = Image.new('RGBA', (W, H), (0, 0, 0, 255))
-        im.alpha_composite(a, (int(-u * W), 0)); im.alpha_composite(HOUSE, (int(W - u * W), 0))
-        im = B.streak(im, int(260 * math.sin(u * math.pi)) or 1, 9) if 0.05 < u < 0.95 else im
-        im = im.convert('RGBA')
+        u = ease((t - 4.8) / 0.5); a = vid('trick', t - 1.3); im = HOUSE.copy(); n = 12; sh = H // n
+        tints = [Image.new('RGBA', (W, sh), (196, 170, 232, 255)), Image.new('RGBA', (W, sh), (70, 44, 96, 255))]
+        for k in range(n):
+            strip = a.crop((0, k * sh, W, (k + 1) * sh))
+            strip = Image.blend(strip, tints[k % 2], 0.35 + 0.25 * u)
+            dx = int((W + 40) * u * (1 if k % 2 else -1) * (0.85 + 0.03 * k))
+            im.alpha_composite(strip, (dx, k * sh))
     # 5.3-6.1 door 2: a quick knock
     elif t < 6.1:
         im = HOUSE.copy()
