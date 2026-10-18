@@ -125,6 +125,23 @@ boards (they're the style, not the density):
 - **Animate the collage, hyper creatively:** text pops onto an element (a note, a tile, a tag), then the camera
   zooms into that element and it becomes the next clip; collage pieces switch from a still photo to video (or back);
   tiles flip, slide, peel or swap. Invent freely: every move should feel like the collage is alive.
+- **Collage lettering she picked (f2, 2026-10-17), reusable in other packs:** the big word in Anton caps filled
+  with a real textile photo (the rust plaid) with a thick cream edge, plus a small line above it in the tall serif
+  (CapCut font id 7580184437816675601) in burgundy with a cream edge. No paper needed behind it; set it on a calm tile
+  (cream knit) so it stands out. Rejected: Alfa Slab on a postcard ("homemade"), the serif on torn paper.
+  Code: `build/fonts_f2.py` `hero2()`.
+- **Collage pieces that worked:** tiles of plaid, cream cable knit, wheat field, leaves, gingham (her checkerboard
+  doodle in rust/cream), corduroy, wool; cut-outs as a SET (three different acorns) placed on a contrasting tile
+  (acorns vanish on leaves); a real kraft tag used ONCE as the emphasis; she liked the zoom into the card that becomes
+  the clip and the tile animations.
+- **Balance the beats (Mercedes, 2026-10-17, on the #11/#20 motion tests):** a Reel mixes three kinds of beat:
+  **one large full-frame video with accents** (several small accents in different parts of the screen), **full-screen
+  words with no user video**, and collage moments. Not a collage in every frame.
+- **Each pack looks like its own pack:** the physical pack must not look seasonal (the #11 test with wheat, sunflower,
+  latte and amber tones "looks too much like fall"). Keep fall images for the fall pack.
+- **Modern, not girly or dated:** the #11 test read "a bit too girly and like 7 years old trend wise" (watercolour
+  washes, dotted bubbly letters). She didn't like the shape/block outlines there either (dark lines round the tiles,
+  ink lines round the cut-outs).
 
 ## Her idea bank (Mercedes, 2026-10-17): use these when they fit
 

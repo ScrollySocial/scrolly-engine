@@ -73,3 +73,8 @@ product, I don't like it." The drinks were the subject instead of the buyer's pr
 Not collage (one forest photo behind the whole Reel, one flat background), too empty (small clip windows, tiny leaves,
 small captions), and the torn strips over the clip read as random. Not to be patched. Next test: f2 "The fall drop" in
 the collage look (`build/motion_f2.py`).
+
+## Plan (2026-10-17, from Mercedes via the main chat)
+
+Halloween (5) and the physical starter pack (8) ship first. Fall: finish f2 only (background pick, motion test with
+her notes, then CapCut), then pause. No new Fall templates until she says.
