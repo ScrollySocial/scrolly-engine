@@ -54,7 +54,7 @@ def _real_branch():
     g = ImageOps.grayscale(im); out = im.convert('RGBA')
     out.putalpha(g.point(lambda v: max(0, min(255, (232 - v) * 4))))      # keyed by darkness: fine twigs keep, white goes
     return out.crop(out.getbbox())
-BRANCH = cached('branch-real', _real_branch)
+BRANCH = cached('branch', lambda: B.cut('Cute Twisted Spooky Tree Branch.png', tol=8))   # v3: her drawn branch (the real tree was a no)
 def _ticket():
     t = B.cut_white(Image.open(LIB / 'images' / 'Blank cream ticket stub on white-18.png'), tol=8); return t.crop(t.getbbox())
 TICKET = cached('ticket', _ticket)
@@ -95,13 +95,11 @@ def glossy(text, px):
     m = Image.new('L', (w, h), 0); ImageDraw.Draw(m).text(org, text, font=f, fill=255)
     e = Image.new('L', (w, h), 0); ImageDraw.Draw(e).text(org, text, font=f, fill=255, stroke_width=max(6, px // 11))
     out = Image.new('RGBA', (w, h), (0, 0, 0, 0))
-    sh = Image.new('RGBA', (w, h), INK + (255,)); sh.putalpha(e.point(lambda v: int(v * 0.6))); out.alpha_composite(sh, (px // 18, px // 12))
-    k = Image.new('RGBA', (w, h), DEEP + (255,)); k.putalpha(e); out.alpha_composite(k)
+    sh = Image.new('RGBA', (w, h), INK + (255,)); sh.putalpha(e); out.alpha_composite(sh, (px // 18, px // 12))
+    k = Image.new('RGBA', (w, h), INK + (255,)); k.putalpha(e); out.alpha_composite(k)
     fill = Image.new('RGBA', (w, h)); d = ImageDraw.Draw(fill)
-    for y in range(h):
-        u = y / h; c = tuple(int(LILAC[i] * (1 - 0.35 * u) + DEEP[i] * 0.35 * u) for i in range(3)); d.line((0, y, w, y), fill=c + (255,))
-    d.ellipse((w * 0.04, h * 0.18, w * 0.96, h * 0.46), fill=(255, 255, 255, 90))       # the glossy shine
-    fill.putalpha(ImageChops.multiply(m, fill.split()[3])); out.alpha_composite(fill)
+    d.rectangle((0, 0, w, h), fill=(200, 160, 216, 255))      # v3: solid, opaque lilac (the glossy version read as see-through)
+    fill.putalpha(m); out.alpha_composite(fill)
     _L[(text, px)] = out; return out
 def pop_word(img, t, t0, text, c, px, rot=0):
     if t < t0: return
@@ -197,14 +195,7 @@ def frame(t):
         im = vid('c', t - 5.8)
         pop_word(im, t, 6.6, '2', (540, 420), 240, -6)
         if t > 6.95: put(im, ticket('[favourite 2]'), (540, 650 + 30 * (1 - back_out((t - 6.95) / 0.35))), -3)
-        for i in range(9):   # a swarm of bats orbiting the product (her Pinterest pick: birds circling the head)
-            a = t * 2.4 + i * 2 * math.pi / 9; depth = (math.sin(a) + 1) / 2
-            k = clamp((t - 6.7 - i * 0.05) / 0.3)
-            if k <= 0: continue
-            x, y = 540 + 400 * math.cos(a) * k, 1080 + 170 * math.sin(a) * k
-            w = (110 + 120 * depth) * back_out(k)
-            put(im, sized(FLY, w, f'f{int(w)}'), (x, y), -12 * math.cos(a), shadow=False)
-        D.draw_on(im, DOO['heart'], (850, 1500), t, 7.4, 0.35, -8)        # loved
+        D.draw_on(im, DOO['heart'], (850, 1150), t, 7.4, 0.35, -8)        # loved
     # 9.0-9.9 the bats swirl in from the edges, close over favourite 2, and swirl open onto favourite 3
     elif t < 9.9:
         u = (t - 9.0) / 0.9; close = ease(u / 0.5) if u < 0.5 else 1 - ease((u - 0.5) / 0.5)
@@ -235,8 +226,8 @@ def frame(t):
             pop_word(im, t, 12.3 + j * 0.15, str(j + 1), (x, 960), 110, (-6, 4, 6)[j])
         line(im, t, 12.8, 'comment', (540, 1100), 80)
         pop_word(im, t, 13.0, 'BATTY', (540, 1240), 122, -3)
-        line(im, t, 13.4, "and I'll send all 3 links", (540, 1440), 62)
-        D.draw_on(im, DOO['arrow2'], (150, 1100), t, 13.1, 0.3); D.draw_on(im, DOO['under'], (540, 1350), t, 13.3, 0.3)   # point at it, underline BATTY
+        line(im, t, 13.4, "and I'll send all 3 links", (540, 1455), 60)
+        D.draw_on(im, DOO['arrow2'], (150, 1100), t, 13.1, 0.3); D.draw_on(im, DOO['under'], (540, 1372), t, 13.3, 0.3)   # point at it, underline BATTY
     return im.convert('RGB')
 
 def main():
