@@ -198,6 +198,15 @@ Consistency
 - **Real objects must look good:** if a ChatGPT image is weak (whole candy sheets), use only the pieces she picked.
 - Decorative lines never touch or cross each other or the text. Too many stickers reads juvenile; keep a few.
 - Colours come from what is in the shot (Lisa: graphics never add a colour that isn't already there).
+- **The backgrounds of one Reel tell one story** (batch 2 notes, 2026-10-17): complementary colour and texture
+  across all frames, not a mix (sky-blue watercolour + terracotta watercolour + polka dots was rejected on #11). One
+  texture that changes tone with the story works (her wash toned morning cream > noon butter > amber > night navy).
+- **Variety in repeated objects:** not three clocks, not three identical trophies. Use different real objects that
+  belong to the story (#11: latte, sunflower, hourglass, candle; #20: a trophy, a gem, a gold seal).
+- **No visual jokes that can read sexual** (the banana "for scale" was rejected on #07), and no idea that buyers
+  would find hard to film consistently.
+- Fonts she rejected on built-in words: Coiny (banana fill), Sigmar One, DynaPuff ("a tad girly"), her marker
+  numbers as review numbers. Show 3 to 4 lettering options on a sheet when the font is in question.
 
 Holiday packs
 - Keep faith themes (nativity, Silent Night) in the Christmas pack; never suggest cutting them.
