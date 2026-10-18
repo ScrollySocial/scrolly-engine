@@ -102,6 +102,16 @@ Log each use here when a template is approved.
 | Instant camera snaps, the after photo prints and develops | 03 | 03 |
 | Torn-paper diagonal split | 04 (draft) | |
 
+## Her idea bank (Mercedes, 2026-10-17): use these when they fit
+
+- **Wheel or pie of videos:** a round wheel (or pie) cut into a few slices (fewer than a Wheel of Fortune, about 3
+  to 6), each slice playing its own clip. The whole wheel rotates to bring the next slice up. It can carry one
+  section of a Reel or be the whole Reel's theme. Works for a **clock** too (each hour wedge a clip; the hands sweep
+  from slice to slice): fits #11 A day with it, and the fall pie.
+- **Balloons of videos:** balloons floating up above a person, each balloon its own clip.
+- **Intermissions:** a full-screen background with HUGE text and no footage is 100% OK between clips (a pause beat,
+  a list title, a big statement). It doesn't break the "video-focused" rule as long as footage carries most of the Reel.
+
 ## Pattern and doodle style (Mercedes, 2026-10-17, from Creative Market references)
 
 The references aren't free to use; they show the **style** only. Make our own in ChatGPT in this style.
