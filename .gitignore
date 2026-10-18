@@ -26,3 +26,5 @@ automation/reel-template-pack/halloween/for-upload/
 
 # Template pack: cut-out cache made by build/storyboard_b2.py (rebuilt from assets/props/source)
 automation/reel-template-pack/build/.cache/
+# Physical pack: zips made for upload (rebuild from the buyer folders)
+automation/reel-template-pack/for-upload/

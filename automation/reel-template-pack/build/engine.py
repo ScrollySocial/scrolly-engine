@@ -49,6 +49,8 @@ SYSTEM_FONTS = {'ink': 'C:/Windows/Fonts/Inkfree.ttf', 'arial': 'C:/Windows/Font
 BUNDLED_FONTS = {'corben': LOCAL / 'CapCut' / 'User Data' / 'Cache' / 'AITextTemplate' / 'Resource' / '4624078377714242870' / 'Corben-Bold.ttf'}
 _anton = sorted((LOCAL / 'CapCut' / 'User Data' / 'Cache' / 'AITextTemplate' / 'Resource').glob('*/Anton-Regular.ttf'))
 if _anton: BUNDLED_FONTS['anton'] = _anton[0]       # Fall f2's editable caps (OFL); not in CapCut's font library
+_mont = sorted((LOCAL / 'CapCut' / 'User Data' / 'Cache' / 'AITextTemplate' / 'Resource').glob('*/Montserrat-Bold.otf'))
+if _mont: BUNDLED_FONTS['montserrat'] = _mont[0]   # the locked editable font (FRAMEWORK, 2026-10-18), OFL, shipped with the project
 INKFREE = 'C:/Windows/Fonts/Inkfree.ttf'                                        # ships with Windows 10 and 11
 SEG, SEGB = 'C:/Windows/Fonts/segoeui.ttf', 'C:/Windows/Fonts/segoeuib.ttf'
 SLOT_COLORS = [(243, 233, 220), (228, 236, 242), (237, 228, 240), (227, 239, 230), (246, 232, 214), (232, 230, 244)]
@@ -108,10 +110,12 @@ class Layers:
     def clip(self, slot, t, z, pos, size, rot=0, kf=None, src=0.0, speed=1.0, blur_bg=False, crop=None, mask=None):
         self.L.append(dict(kind='clip', slot=slot, t=t, z=z, pos=pos, size=size, rot=rot, kf=kf or {}, src=src, speed=speed,
                            blur_bg=blur_bg, crop=crop, mask=mask))
-    def text(self, font, size, words, t, z, pos, rot=0, kf=None, typewriter=None, color=INK, shadow=False, stroke=None):
+    def text(self, font, size, words, t, z, pos, rot=0, kf=None, typewriter=None, color=INK, shadow=False, stroke=None, box=None):
+        """box=(colour, roundness 0..1): CapCut's own text background behind the words (a highlight box that grows
+        with whatever the buyer types; roundness 1 = a pill)."""
         if isinstance(rot, dict): rot, kf = 0, rot
         self.L.append(dict(kind='text', font=font, size=size, words=words, t=t, z=z, pos=pos, rot=rot, kf=kf or {},
-                           typewriter=typewriter, color=color, shadow=shadow, stroke=stroke))
+                           typewriter=typewriter, color=color, shadow=shadow, stroke=stroke, box=box))
     def flip(self, name, frames, t0, z, rot=0, fps=FPS):
         """A flipbook: pre-rendered images played one per frame on one track. frames = [(img, centre), ...]; a frame
         that repeats the previous one (same image object, same centre) just holds longer. Returns the end time."""
@@ -305,6 +309,10 @@ def build_capcut(folder, name, slot_files, slot_secs, art_files, L):
                      line_max_width=0.9, fixed_width=-1.0)
             if l.get('stroke'):
                 m.update(border_color='#%02x%02x%02x' % l['stroke'][0], border_width=l['stroke'][1], border_alpha=1.0, border_mode=0)
+            if l.get('box'):   # CapCut text background (style 1), sized to the words, so it grows with the buyer's text
+                m.update(background_style=1, background_color='#%02x%02x%02x' % l['box'][0], background_alpha=1.0,
+                         background_round_radius=float(l['box'][1]), background_height=0.14, background_width=0.14,
+                         background_horizontal_offset=0.0, background_vertical_offset=0.0)
             mats['texts'].append(m)
             anim = None
             if l['typewriter']:
@@ -387,6 +395,12 @@ def text_img(l, test, n_chars=None):
     for i, ln in enumerate(shown):
         dr.text(((width - f.getlength(lines[i])) / 2, pad + i * lh), ln, font=f, fill=tuple(l['color']) + (255,), anchor='la',
                 stroke_width=sw, stroke_fill=tuple(l['stroke'][0]) + (255,) if sw else None)
+    if l.get('box'):   # preview of CapCut's text background: a tight box round the words
+        ink = im.getbbox() or (0, 0, im.width, im.height); px_ = round(l['size'] * PX_PER_SIZE); bx, by = int(px_ * 0.22), int(px_ * 0.14)
+        bg = Image.new('RGBA', (ink[2] - ink[0] + 2 * bx, ink[3] - ink[1] + 2 * by), tuple(l['box'][0]) + (255,))
+        if l['box'][1] > 0:
+            mk = Image.new('L', bg.size, 0); ImageDraw.Draw(mk).rounded_rectangle((0, 0, bg.width - 1, bg.height - 1), int(l['box'][1] * bg.height / 2), fill=255); bg.putalpha(mk)
+        base = Image.new('RGBA', im.size, (0, 0, 0, 0)); base.alpha_composite(bg, (max(0, ink[0] - bx), max(0, ink[1] - by))); base.alpha_composite(im); im = base
     if l.get('shadow'):
         from PIL import ImageFilter
         sh = Image.new('RGBA', im.size, (0, 0, 0, 0)); sh.putalpha(im.split()[3].filter(ImageFilter.GaussianBlur(px * 0.1)).point(lambda v: min(255, int(v * 0.9))))

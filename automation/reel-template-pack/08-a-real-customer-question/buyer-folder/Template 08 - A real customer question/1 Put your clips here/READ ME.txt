@@ -1,0 +1,8 @@
+Put your clips in this folder, then double-click "2 Double-click to install".
+
+They go into the template in name order, so name them 1 to 3 (for example 1.mov, 2.mov).
+Film upright (vertical) and start each clip right on the action.
+
+1: The answer, shown (at least 7 seconds)
+2: More of the answer (at least 4 seconds)
+3: In use (at least 3 seconds)

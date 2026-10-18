@@ -254,7 +254,7 @@ def frame_09(g, t):
     for i, (pt, bf) in enumerate(zip(P.crown_points(6, 170), g['bf'])):
         a0 = i * math.pi / 3 + t * 2; orbit = (540 + 430 * math.cos(a0), 800 + 430 * math.sin(a0))
         u = ease(seg(t, 14.7 + i * 0.08, 15.5 + i * 0.08)); P.butterfly(im, bf, t, lerp2(orbit, pt, u), (i - 2.5) * 10, flap=1 - 0.6 * u, phase=i)
-    pop(im, g['sound'], t, 15.4, (540, 1150), -2); pop(im, g['comment'], t, 15.7, (540, 1320)); pop(im, g['kw'], t, 16.1, (540, 1480), 2)
+    pop(im, g['sound'], t, 15.4, (540, 1030), -2); pop(im, g['comment'], t, 15.7, (540, 1200)); pop(im, g['kw'], t, 16.1, (540, 1360), 2)   # clear of IG's caption
     return im
 
 def sum_word(ws):
@@ -576,7 +576,7 @@ def frame_08(g, t):
         return im
     if t < 14.4: return c['use'].at(t - 13.0)                     # 7: in use
     im = g['stage'].copy(); u = ease(seg(t, 14.4, 14.75))         # 8: CTA: the clip pinned as a photo; words grouped at the top
-    cw, ch = int(lerp(W, 620, u)), int(lerp(H, 800, u)); cd = card(c['cta'].at(t - 14.4, (cw, ch)), cw, ch, int(16 * u))
+    cw, ch = int(lerp(1488, 620, u)), int(lerp(H, 800, u)); cd = card(c['cta'].at(t - 14.4, (cw, ch)), cw, ch, int(16 * u))   # keeps its shape (CapCut)
     put(im, P.pinned(cd, 3 * u, 'pin-head-black') if u > 0.9 else cd, lerp2((W / 2, H / 2), (540, 1180), u))
     pop(im, g['comment'], t, 14.8, (540, 330)); pop(im, g['kw'], t, 15.1, (540, 500), 2); pop(im, g['more'], t, 15.3, (540, 630), -2)
     return im

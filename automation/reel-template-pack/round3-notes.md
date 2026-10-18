@@ -144,3 +144,9 @@ of #09, #10, #12, #22, #08, #20, #23 (her notes say they are all too fast).
 - Her notes on the others (#10, #12, #22, #23): "No changes". #20 fixes: pink-toned marble (white cards were lost on white),
   black pins, arrow turned to point at the phone (arrow 9 at rot 90), ONE wine burst (index 3) centred behind the circle
   and behind the review cards.
+- CapCut builds (2026-10-18): #09 (build/templates/t09.py) and #08 (t08.py), made with build/motion_capcut.py: clips are
+  real CapCut clip layers found by key colour in the approved motion test; graphics play as a 15 fps flipbook; highlight
+  lines and [brackets] are editable Montserrat Bold (bundled, OFL) on CapCut's own text background (engine box=...).
+  Test copies installed: "Scrolly 09 Who its for", "Scrolly 08 A real customer question". Zips: for-upload/ (not in git).
+  CapCut limits: #09's problem window is colour, straight-edged; swipes are plain slides. #09's end words moved up 120 px
+  (keyword was under IG's caption). The text-background fields (background_style=1) are unverified in CapCut's UI: check the boxes show.
