@@ -109,6 +109,20 @@ template: a fall leaf in a physical template, a tech prop in Halloween, doodles 
 Each template still has its own overall look (its own world), so reuse images freely but don't copy another
 template's whole scene.
 
+## The look: collage (Mercedes, 2026-10-17, from her fall mood boards)
+
+The overall aesthetic is **collage**, like a Pinterest mood board, but with **less going on in each frame** than her
+boards (they're the style, not the density):
+- Photos as rectangular tiles butted edge to edge or slightly overlapping; the buyer's clip is one tile, and tiles
+  grow, slide or swap to become the next clip.
+- A few real cut-out objects that **cross the tile seams** (a bow, wax seal, butterfly, acorn, pinecone, candle,
+  plaid heart, street sign), so the layers feel stacked.
+- One or two paper pieces with words (a postcard, a note card, a torn quote strip, a striped card with big type).
+- Textile and pattern tiles mixed in (gingham, plaid, stars, stripes, knit).
+- Palette from the scene (fall boards: rust, burgundy, cream, warm brown).
+- Rough density per frame: 3 to 5 tiles, 2 to 3 cut-outs, 1 paper piece. Readable over everything; the video stays
+  the story.
+
 ## Her idea bank (Mercedes, 2026-10-17): use these when they fit
 
 - **Wheel or pie of videos:** a round wheel (or pie) cut into a few slices (fewer than a Wheel of Fortune, about 3
