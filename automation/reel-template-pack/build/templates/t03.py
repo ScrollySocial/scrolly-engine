@@ -25,7 +25,7 @@ motion ticks, arrows, stars) pops on and off with the beats; then / now / the ti
 (editable handwriting with Typewriter); many real photos and pins, each a little different."""
 import math, random
 from PIL import Image, ImageChops, ImageDraw, ImageFilter, ImageFont
-from engine import Layers, rot_pt, interp, W, H, PX_PER_SIZE
+from engine import Layers, rot_pt, interp, W, H, PX_PER_SIZE, hold
 import collage as C
 import storyboard_03 as S
 
@@ -427,4 +427,5 @@ def layers():
     kw_c = (540, 625)                                   # the buyer's keyword stays editable, on a strip of label tape
     art(g, 'tape-keyword', tape_strip(840, 190), (12.62, END), 98, kw_c, -2, [pop_in(kw_c, 12.62, 1.1)])
     big(g, ('"[WORD]"', '"CLEAN"'), kw_c, 165, (12.66, END), 6, [pop_in(kw_c, 12.66)], rot=-2)
+    hold(g.L, 1.5, 0.3)          # reading time (must-do 14): the hook label holds 0.3 s longer; same look
     return g

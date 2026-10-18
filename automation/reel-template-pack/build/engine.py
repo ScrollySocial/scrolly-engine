@@ -538,6 +538,18 @@ def check_read_time(L, wps=3.0, base=0.6, floor=1.2):
             bad.append(f'"{words}" is readable for {shown:.1f}s, needs {need:.1f}s')
     return bad
 
+def hold(L, at, secs):
+    """Insert a pause of `secs` at time `at` in a finished timeline (for must-do 14, reading time): layers that start
+    later shift by secs; a layer on screen at `at` stays on screen secs longer, its keyframes after `at` shift too, so
+    nothing changes look or order, the moment just holds. Clips keep playing through the hold."""
+    for l in L:
+        t0, t1 = l['t']
+        if t0 >= at: l['t'] = (t0 + secs, t1 + secs); continue
+        if t1 <= at: continue
+        l['t'] = (t0, t1 + secs)
+        l['kf'] = {p: [(k + secs if t0 + k >= at else k, v) for k, v in pts] for p, pts in (l.get('kf') or {}).items()}
+    return L
+
 def build(spec, layers_fn):
     out = PACK / spec['dir']
     for p in (FFMPEG, PROTO / 'draft_content.json', PROTO_PHOTO / 'draft_content.json', PROTO_TYPE / 'draft_content.json',

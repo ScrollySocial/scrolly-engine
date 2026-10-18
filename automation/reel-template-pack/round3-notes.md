@@ -125,3 +125,10 @@ CapCut's library has them for editable text.
 - No empty marker circles; one starburst only, BEHIND something; a single underline, never double.
 - Objects must make sense for any business.
 - Two-tone strip slice is at 4 of 5 (22, 04, 05, 07): one use left in the pack.
+
+## Must-do 14, reading time (2026-10-18)
+Every text fully visible at least max(1.2, 0.6 + words/3) seconds after any typing ends. Fast scene changes OK, fast
+text not; cut words or hold longer (templates may run past 15 s). engine.build prints TOO FAST TO READ; engine.hold(L,
+at, secs) inserts a pause without changing the look. #02 and #03 re-timed with holds (02: 17.2 s, 03: 14.9 s), rebuilt
+and reinstalled. The motion_*/story*.py tests don't go through the engine: apply the same rule by hand in the rebuild
+of #09, #10, #12, #22, #08, #20, #23 (her notes say they are all too fast).

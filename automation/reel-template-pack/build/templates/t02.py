@@ -10,7 +10,7 @@ back to the sealed box, washi tape zips along the seam, the label slaps on; 8 CT
 strip with the product name."""
 import random
 from PIL import Image, ImageDraw, ImageFont
-from engine import Layers, rot_pt, interp, font_path, PX_PER_SIZE, W, H
+from engine import Layers, rot_pt, interp, font_path, PX_PER_SIZE, W, H, hold
 import collage as C
 import storyboard_02 as S
 import test_close as TC
@@ -267,4 +267,6 @@ def layers():
     shop_c = (540, letters_centre('arial', 8.2, 0, 500, 'shop')[1])
     text(g, 'arial', 8.2, ('shop at [where to buy]', 'shop at the link in my bio'), (12.75, END), 42, shop_c, 0,
          [pop_in(shop_c, 12.75, 1.12)])
+    # reading time (must-do 14, Mercedes 2026-10-18): holds, latest first, so every word is readable; same look and order
+    for at, secs in ((14.3, 0.7), (5.5, 0.75), (2.39, 1.35)): hold(g.L, at, secs)
     return g
