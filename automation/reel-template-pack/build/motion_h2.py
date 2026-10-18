@@ -76,6 +76,18 @@ def _backdrop():
         for x in range(0, W, 720): tile.paste(g, (x, y))
     return ImageOps.colorize(tile, (24, 16, 32), (92, 66, 112)).convert('RGBA')
 BACKDROP = _backdrop()
+def _backdrop_two_tone():
+    """End screen (v4, her note): the top, where the branch and bats hang, is a light lavender version of the same
+    dotted night so the dark bats show; it fades into the dark dots lower down, where the words sit."""
+    g = ImageOps.grayscale(Image.open(LIB / 'doodles' / 'Playful hand-painted dots on black-13.png')).resize((720, 720))
+    tile = Image.new('L', (W, H))
+    for y in range(0, H, 720):
+        for x in range(0, W, 720): tile.paste(g, (x, y))
+    light = ImageOps.colorize(tile, (214, 196, 228), (238, 228, 244)).convert('RGBA')
+    m = Image.new('L', (1, H)); mp = m.load()
+    for y in range(H): mp[0, y] = int(255 * (1 - ease((y - 820) / 260)))
+    out = BACKDROP.copy(); out.paste(light, (0, 0), m.resize((W, H))); return out
+BACKDROP_END = _backdrop_two_tone()
 _c = {}
 def sized(im, w, key):
     k = (key, int(w))
@@ -215,7 +227,7 @@ def frame(t):
         D.draw_on(im, DOO['burst'], (200, 1180), t, 10.8, 0.3)         # wow
     # 12.0-15.0 CTA: three bats hang from the branch above three video tiles (1, 2, 3); Comment BATTY
     else:
-        im = BACKDROP.copy(); put(im, sized(BRANCH, 1150, 'br'), (600, 260))
+        im = BACKDROP_END.copy(); put(im, sized(BRANCH, 1150, 'br'), (600, 260))
         for j, (x, key, st) in enumerate(((230, 'b', 3.0), (540, 'c', 5.8), (850, 'd', 9.0))):
             k = back_out((t - 12.05 - j * 0.15) / 0.35)
             if k <= 0: continue
