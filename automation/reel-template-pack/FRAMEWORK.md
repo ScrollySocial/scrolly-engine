@@ -23,6 +23,13 @@ The long rules below are reference. These ten are where drafts keep failing. A d
 9. **Compare with the winners before showing:** f2 The fall drop, h3 Caught in our web, h6 Once in a blood moon,
    #3 Before and after (camera). Side by side, at least as rich as these, but not the same look (don't make every
    template theme-y).
+11. **Scene structure (Mercedes: "10000000000% This is it!!", 2026-10-18):** 7 to 10 scenes, a new one about every
+    2 s; two home bases that recur (the buyer's video + ONE graphic stage like Lisa's notebook, with a new setup each
+    visit); a designed transition at every change; one element carried into the next scene; interplay with the
+    person. Details in "Scene structure" below.
+12. **Graphics-only scenes are welcome:** scenes with no video at all, just real objects and text on the graphic
+    stage (Lisa's notebook, the smiley swarm, the money stack). Use several per template; they also mean less
+    footage for the buyer to film.
 10. **Motion test first,** checked on a 1-frame-per-second strip against this list and the checklist at the bottom.
 
 **Head interplay needs a filming guide:** templates where something lands on or around the head ship with a guide
