@@ -92,78 +92,134 @@ def paper(name, w, lines, rot=0, tol=8):
         d.text((p.width / 2, y + px * 0.55), text, font=B.F(font, px), fill=col + (255,), anchor='mm'); y += px * 1.1
     return B.shadowed(p, (8, 14), 10, 90)
 
-POSTCARD = paper('Blank vintage cream postcard-111.png', 760, [('THE FALL', B.ALFA, 128, BURGUNDY), ('DROP', B.ALFA, 190, RUST)])
-POST2 = paper('Blank vintage cream postcard-111.png', 760, [('meet the', B.MONT, 60, BROWN), ('maple candle', B.MONT, 92, BURGUNDY)])
-STRIP = paper('Torn White Paper on White Background.png', 900, [('3 scents  ·  small batch', B.MONT, 54, BROWN)], tol=6)
-TAG = paper('Blank kraft gift tag with twine-34.png', 330, [('', B.MONT, 10, INK), ('', B.MONT, 10, INK), ('$28', B.ALFA, 92, BURGUNDY)])
-CTA_TAG = paper('Blank kraft gift tag with twine-34.png', 460, [('', B.MONT, 30, INK), ('', B.MONT, 30, INK), ('COMMENT', B.ALFA, 58, BURGUNDY), ('DROP', B.MONT, 92, RUST)])
-SEAL = None
+R_FONTS = E.LOCAL / 'CapCut' / 'User Data' / 'Cache' / 'AITextTemplate' / 'Resource'
+SERIF = E.font_file('7580184437816675601')                       # the tall serif (CapCut library: buyers have it)
+ANTON = str(next(R_FONTS.glob('*/Anton-Regular.ttf')))
+from PIL import ImageFilter, ImageFont
+
+def text_img(lines, pad=30):
+    """lines = [(text, font, px, fill, stroke, stroke_fill)] stacked and centred, with room for the strokes."""
+    fs = [(t, ImageFont.truetype(f, px), fill, sw, sf) for t, f, px, fill, sw, sf in lines]
+    ws = [f.getbbox(t, stroke_width=sw) for t, f, _, sw, _ in fs]
+    w = max(b[2] - b[0] for b in ws) + 2 * pad; h = sum(b[3] - b[1] for b in ws) + pad * (len(fs) + 1)
+    im = Image.new('RGBA', (int(w), int(h)), (0, 0, 0, 0)); d = ImageDraw.Draw(im); y = pad
+    for (t, f, fill, sw, sf), b in zip(fs, ws):
+        d.text((w / 2, y - b[1]), t, font=f, fill=fill + (255,), anchor='ma', stroke_width=sw, stroke_fill=(sf or fill) + (255,)); y += b[3] - b[1] + pad
+    return im
+
+def collage_word(small, big, tex='plaid', px=400, spx=150):
+    """Her pick (f2, 2026-10-17): a small line in the tall serif (burgundy, cream edge) over a big Anton word filled with
+    a real textile photo, with a thick cream edge. Padded so the edge is never cut off."""
+    sm = text_img([(small, SERIF, spx, BURGUNDY, 9, CREAM)], 20)
+    bg = text_img([(big, ANTON, px, (255, 255, 255), 0, None)], 24); a = bg.split()[3]
+    fill = Image.new('RGBA', bg.size, (0, 0, 0, 0)); fill.paste(ImageOps.fit(TEX[tex], bg.size), (0, 0), a)
+    edge = Image.new('RGBA', bg.size, CREAM + (255,)); edge.putalpha(a.filter(ImageFilter.MaxFilter(17))); edge.alpha_composite(fill)
+    edge = B.shadowed(edge, (6, 10), 10, 120)
+    out = Image.new('RGBA', (max(sm.width, edge.width), sm.height + edge.height - 70), (0, 0, 0, 0))
+    out.alpha_composite(edge, ((out.width - edge.width) // 2, sm.height - 70)); out.alpha_composite(sm, ((out.width - sm.width) // 2, 0))
+    return out
+
+def serif_words(lines):
+    """Words the buyer edits, in the tall serif (burgundy, cream edge), so they match the hero lettering."""
+    return B.shadowed(text_img([(t, SERIF, px, col, max(6, px // 14), CREAM) for t, px, col in lines], 8), (4, 8), 8, 90)
+
+HERO = collage_word('the fall', 'DROP')
+MEET = serif_words([('meet the', 90, BROWN), ('maple candle', 150, BURGUNDY)])
+BATCH = collage_word('small', 'BATCH', 'plaid', 360)
+NOTE = paper('Blank ivory note card-121.png', 760, [('3 scents', SERIF, 90, BURGUNDY), ('small batch', SERIF, 70, BROWN)], tol=6)
+TAG = paper('Blank kraft gift tag with twine-34.png', 520, [('', B.MONT, 50, INK), ('', B.MONT, 50, INK), ('hand-poured', SERIF, 62, BURGUNDY), ('soy wax', SERIF, 96, BURGUNDY)])
+CTA_S = serif_words([('comment', 110, BURGUNDY)])
+CTA_B = B.shadowed(text_img([('DROP', ANTON, 230, CREAM, 10, BURGUNDY)], 16), (6, 10), 10, 120)
+ACORNS = (('Plump Chestnut Acorn Study-66.png', (720, 1650), 18), ('Golden acorn on white-65.png', (880, 1780), -10), ('Elongated dark brown acorn-69.png', (1000, 1610), 30))
+
+def stripes_reveal(t, under, t0):
+    """The striped tile: its cream stripes open first as windows onto the clip, then the red stripes slide apart off
+    screen, alternate bands left and right."""
+    st = content('stripes', t, W, H); g = ImageOps.grayscale(st.convert('RGB'))
+    red = st.copy(); red.putalpha(g.point(lambda v: 255 if v < 150 else 0))
+    u1 = ease((t - t0) / 0.35); u2 = ease((t - t0 - 0.45) / 0.6)
+    out = under.copy()
+    if u1 < 1:
+        cream = st.copy(); cream.putalpha(g.point(lambda v, u1=u1: int(255 * (1 - u1)) if v >= 150 else 0)); out.alpha_composite(cream)
+    for i, (y0, y1) in enumerate(STRIPE_ROWS):                # each red stripe slides off whole, alternate sides
+        band = red.crop((0, y0, W, y1)); dx = int((1 if i % 2 else -1) * u2 * (W + 60)); out.alpha_composite(band, (dx, y0))
+    return out
+
+def _stripe_rows():
+    """The y ranges of the red stripes on the striped tile (cut between stripes, not through them)."""
+    g = ImageOps.grayscale(content('stripes', 0, W, H).convert('RGB')).resize((60, H))
+    dark = [sum(1 for x in range(60) if g.getpixel((x, y)) < 150) > 6 for y in range(H)]
+    rows, y = [], 0
+    while y < H:
+        if dark[y]:
+            y0 = y
+            while y < H and dark[y]: y += 1
+            rows.append((max(0, y0 - 6), min(H, y + 6)))
+        y += 1
+    return rows
+STRIPE_ROWS = _stripe_rows()
 
 def frame(t):
     im = Image.new('RGBA', (W, H), CREAM + (255,))
-    # ---- collage A (0-3.4): tiles slide in one by one; clip a is a tile from frame 1; the knit tile flips to clip c
+    # ---- collage A (0-3.4): tiles slide in; clip a is a tile from frame 1; the knit tile flips to clip c;
+    # THE FALL DROP on the wheat tile; then new words land on the wheat tile, it turns into clip b and we zoom into it
     if t < 3.4:
         tile(im, 'a', t, (0, 0, 640, 820), ease(t / 0.35), 'l')
-        tile(im, 'plaid', t, (640, 0, 1080, 430), ease((t - 0.12) / 0.35), 'r')
-        tile(im, 'knit', t, (640, 430, 1080, 820), ease((t - 0.24) / 0.35), 'r', flip=clamp((t - 1.3) / 0.5), src2='c')
-        tile(im, 'wheat', t, (0, 820, 440, 1380), ease((t - 0.36) / 0.35), 'l')
-        tile(im, 'b', t, (440, 820, 1080, 1380), ease((t - 0.48) / 0.35), 'b')
-        tile(im, 'leaves', t, (0, 1380, 1080, 1920), ease((t - 0.6) / 0.35), 'b')
-        put(im, cut('Large open pinecone on white-68.png', 230, seed=2), (640, 830), pop(t, 0.8), -12)
-        put(im, cut('Plump Chestnut Acorn Study-66.png', 190, seed=3), (420, 1380), pop(t, 0.95), 18)
-        put(im, cut('Red maple leaf on white-38.png', 220, seed=4), (1010, 440), pop(t, 1.1), 25)
-        # the postcard lands across the seams with the hook words; at 2.2 s new words land on it
-        if t < 2.5: put(im, POSTCARD, (420, 1180), pop(t, 0.15, 2.3, 0.35), -4)
-        else:
-            u = ease((t - 2.95) / 0.45)                # 2.95-3.4: we zoom into the postcard, now playing clip b
-            # the postcard stays; its face turns into clip b, then we zoom into it until it fills the screen
-            pc = POST2.copy()
-            if t > 2.85:
-                face = ImageOps.fit(vid('b', t), (pc.width - 60, pc.height - 60)); face.putalpha(int(255 * ease((t - 2.85) / 0.12)))
-                pc.alpha_composite(face, (30, 30))
-            put(im, pc, (420, 1180), pop(t, 2.45, None, 0.3), 0)
-            if u > 0:
-                z = 1 + u * 3.2; cx, cy = 420, 1180
-                im = im.resize((int(W * z), int(H * z)), Image.BILINEAR).crop((int(cx * z - cx), int(cy * z - cy), int(cx * z - cx) + W, int(cy * z - cy) + H))
-                if u > 0.75: im = Image.blend(im, vid('b', t), (u - 0.75) / 0.25)
+        tile(im, 'plaid', t, (640, 0, 1080, 430), ease((t - 0.1) / 0.35), 'r')
+        tile(im, 'knit', t, (640, 430, 1080, 820), ease((t - 0.2) / 0.35), 'r', flip=clamp((t - 1.3) / 0.5), src2='c')
+        tile(im, 'b' if t > 2.9 else 'wheat', t, (0, 820, 1080, 1400), ease((t - 0.3) / 0.35), 'l')
+        if 2.75 < t <= 2.9:
+            v = content('b', t, 1080, 580); v.putalpha(int(255 * ease((t - 2.75) / 0.15))); im.alpha_composite(v, (0, 820))
+        tile(im, 'b', t, (0, 1400, 600, 1920), ease((t - 0.4) / 0.35), 'b')
+        tile(im, 'knit', t, (600, 1400, 1080, 1920), ease((t - 0.5) / 0.35), 'b')
+        put(im, cut('Large open pinecone on white-68.png', 210, seed=2), (1000, 440), pop(t, 0.8), -12)
+        put(im, cut('Red maple leaf on white-38.png', 200, seed=4), (620, 820), pop(t, 0.95), 25)
+        for i, (n, c, r) in enumerate(ACORNS): put(im, cut(n, 170, seed=10 + i), c, pop(t, 1.0 + 0.12 * i), r)
+        put(im, HERO, (540, 1110), pop(t, 0.15, 2.3, 0.35), -2)
+        put(im, MEET, (540, 1110), pop(t, 2.4, 2.8, 0.3), 2)
+        u = ease((t - 2.95) / 0.45)
+        if u > 0:
+            z = 1 + u * 2.4; cx, cy = 540, 1110
+            im = im.resize((int(W * z), int(H * z)), Image.BILINEAR).crop((int(cx * z - cx), int(cy * z - cy), int(cx * z - cx) + W, int(cy * z - cy) + H))
+            if u > 0.7: im = Image.blend(im, vid('b', t), (u - 0.7) / 0.3)
         return im
-    # ---- clip b full (3.4-5.4); the real price tag swings in with an acorn on it
+    # ---- clip b full (3.4-5.4); the real kraft tag swings in once, big, with a feature
     if t < 5.4:
         im = vid('b', t)
-        put(im, TAG, (250, 1180), pop(t, 3.7, 5.2, 0.35), -8 + 3 * math.sin(t * 3))
-        put(im, cut('Golden acorn on white-65.png', 150, seed=6), (370, 980), pop(t, 3.9, 5.2), 14)
+        put(im, TAG, (300, 1100), pop(t, 3.7, 5.2, 0.35), -8 + 3 * math.sin(t * 3))
         return im
-    # ---- collage B (5.4-8.2): clip b shrinks into a tile, new tiles slide in; the gingham tile peels down to clip d
+    # ---- collage B (5.4-8.2): clip b shrinks into a tile, new tiles slide in; the cord tile peels down to clip d
     if t < 8.2:
-        k = ease((t - 5.4) / 0.5)
+        k = ease((t - 5.4) / 0.45)
         tile(im, 'b', t, (0, 0, int(1080 - 540 * k), int(1920 - 820 * k)))
-        tile(im, 'gingham', t, (540, 0, 1080, 520), ease((t - 5.6) / 0.35), 't')
+        tile(im, 'gingham', t, (540, 0, 1080, 520), ease((t - 5.5) / 0.3), 't')
         peel = ease((t - 7.0) / 0.6)
-        tile(im, 'd', t - 7.0, (540, 520, 1080, 1100), ease((t - 5.75) / 0.35), 'r')
-        if peel < 1: tile(im, 'cord', t, (540, int(520 + peel * 600), 1080, 1100), ease((t - 5.75) / 0.35), 'r')
-        tile(im, 'wool', t, (0, 1100, 1080, 1920), ease((t - 5.9) / 0.35), 'b')
-        put(im, cut('Twine-Tied Cinnamon Stick Bundle-55.png', 300, seed=7), (560, 1100), pop(t, 6.2), -20)
-        put(im, cut('Single sunflower on white-79.png', 260, seed=8), (980, 980), pop(t, 6.4), 10)
-        put(im, STRIP, (520, 1330), pop(t, 6.3, None, 0.35), 2)
+        tile(im, 'd', t - 7.0, (540, 520, 1080, 1100), ease((t - 5.6) / 0.3), 'r')
+        if peel < 1: tile(im, 'cord', t, (540, int(520 + peel * 600), 1080, 1100), ease((t - 5.6) / 0.3), 'r')
+        tile(im, 'wool', t, (0, 1100, 1080, 1920), ease((t - 5.7) / 0.3), 'b')
+        put(im, cut('Twine-Tied Cinnamon Stick Bundle-55.png', 300, seed=7), (560, 1100), pop(t, 6.1), -20)
+        put(im, cut('Single sunflower on white-79.png', 260, seed=8), (980, 980), pop(t, 6.3), 10)
+        put(im, NOTE, (480, 1330), pop(t, 6.2, None, 0.35), -3)
         return im
-    # ---- text only (8.2-9.4): a striped card fills the screen with big type
+    # ---- text only (8.2-9.4): the cream knit fills the screen, big lettering
     if t < 9.4:
-        tile(im, 'stripes', t, (0, 0, 1080, 1920), ease((t - 8.2) / 0.3), 'r')
-        card = paper('Blank ivory note card-121.png', 900, [('SMALL', B.ALFA, 190, BURGUNDY), ('BATCH', B.ALFA, 210, RUST)], 0, 6)
-        put(im, card, (540, 900), pop(t, 8.4, 9.2, 0.35), -3)
+        tile(im, 'knit', t, (0, 0, 1080, 1920), ease((t - 8.2) / 0.3), 'r')
+        put(im, BATCH, (540, 900), pop(t, 8.4, None, 0.35), -2)
         return im
-    # ---- the striped tile splits and slides apart to reveal clip d (9.4-10.2), then the CTA collage (10.2-12)
-    if t < 10.2:
-        im = vid('d', t - 7.0); u = ease((t - 9.4) / 0.6)
-        tile(im, 'stripes', t, (0, int(-960 * u), 1080, int(960 - 960 * u)))
-        tile(im, 'stripes', t, (0, int(960 + 960 * u), 1080, int(1920 + 960 * u)))
-        return im
-    k = ease((t - 10.2) / 0.5)
+    # ---- (9.4-10.6) the striped tile sweeps in over the words, its cream stripes open onto clip d, then the red
+    # stripes slide apart off screen
+    if t < 10.6:
+        if t < 9.65:
+            tile(im, 'knit', t, (0, 0, 1080, 1920)); put(im, BATCH, (540, 900), 1, -2)
+            tile(im, 'stripes', t, (0, 0, 1080, 1920), ease((t - 9.4) / 0.25), 'r'); return im
+        return stripes_reveal(t, vid('d', t - 7.0), 9.65)
+    # ---- CTA collage (10.6-12): clip d on top, plaid and wheat below; comment DROP across the seam
+    k = ease((t - 10.6) / 0.45)
     tile(im, 'd', t - 7.0, (0, 0, 1080, int(1920 - 760 * k)))
-    tile(im, 'plaid', t, (0, 1160, 540, 1920), ease((t - 10.4) / 0.35), 'l')
-    tile(im, 'knit', t, (540, 1160, 1080, 1920), ease((t - 10.5) / 0.35), 'r')
-    put(im, cut('Large open pinecone on white-68.png', 200, seed=9), (980, 1160), pop(t, 10.8), 20)
-    put(im, CTA_TAG, (330, 1060), pop(t, 10.7, None, 0.35), -6)
+    tile(im, 'plaid', t, (0, 1160, 540, 1920), ease((t - 10.75) / 0.3), 'l')
+    tile(im, 'wheat', t, (540, 1160, 1080, 1920), ease((t - 10.85) / 0.3), 'r')
+    put(im, cut('Large open pinecone on white-68.png', 200, seed=9), (990, 1170), pop(t, 11.1), 20)
+    put(im, CTA_S, (540, 1150), pop(t, 11.0, None, 0.3), -2); put(im, CTA_B, (540, 1330), pop(t, 11.15, None, 0.35), 0)
     return im
 
 def main():

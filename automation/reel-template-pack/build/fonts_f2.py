@@ -71,6 +71,7 @@ if __name__ == '__main__' and 'r1' in sys.argv:
 # her idea: move the leaves up behind the words) -------------------------------------------------------------------------
 from PIL import ImageFilter
 def hero2():
+    return M.collage_word('the fall', 'DROP')            # moved into motion_f2 (padded so the edge isn't cut off)
     """'the fall' in the tall serif (burgundy, thick cream edge) over DROP filled with the plaid photo (cream edge)."""
     small = text_img([('the fall', SERIF, 150, M.BURGUNDY, 9, M.CREAM)], 6)
     big = text_img([('DROP', ANTON, 400, (255, 255, 255), 0, None)], 0); plaid = ImageOps.fit(M.TEX['plaid'], big.size)

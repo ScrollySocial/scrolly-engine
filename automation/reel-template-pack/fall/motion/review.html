@@ -15,14 +15,16 @@ button{font:bold 15px Arial;padding:10px 18px;border:0;border-radius:6px;backgro
 <div id="bar"><button id="save">Send notes to Claude</button><span id="msg"></span></div>
 <script>
 const T=[
- {id:'f2',name:'The fall drop',job:'Product launch, collage look',src:'../f2-fall-drop/preview/motion-test.mp4',
-  beats:['0-0.8 s: the collage builds tile by tile (clip, plaid, knit, wheat, clip, leaves); the postcard lands: THE FALL DROP',
-         '0.8-2.5 s: pinecone, acorn, maple leaf cross the seams; the knit tile flips over and becomes a clip',
-         '2.5-3.4 s: new words land on the postcard, its face turns into a clip, and we zoom into it until it fills the screen',
-         '3.4-5.4 s: product clip; a real kraft price tag swings in with an acorn',
-         '5.4-8.2 s: the clip shrinks into a tile, a new collage slides in (gingham, cord, wool); the cord tile peels down to the next clip; torn paper note',
-         '8.2-9.4 s: text only on a striped card: SMALL BATCH',
-         '9.4-12 s: the stripes split apart to the last clip; CTA collage with the kraft tag: COMMENT DROP']}
+ {id:'f2',name:'The fall drop',job:'Product launch, collage look',src:'../f2-fall-drop/preview/motion-test.mp4?v=2',
+  beats:['v2 (your notes applied): wheat tile behind the words, plaid-filled DROP + serif "the fall", outline no longer cut off',
+         '0-1 s: the collage builds tile by tile; 3 different acorns sit on the cream knit tile (they stand out)',
+         '1-2.4 s: pinecone and maple leaf cross the seams; the knit tile flips into a clip',
+         '2.4-3.4 s: "meet the maple candle" lands on the wheat tile, the tile turns into the clip, we zoom into it',
+         '3.4-5.4 s: product clip; the kraft tag swings in once, big, with a feature (hand-poured soy wax), no price',
+         '5.4-8.2 s: the clip shrinks into a tile, a new collage slides in; the cord tile peels down to the next clip; note card',
+         '8.2-9.4 s: text only on cream knit: small BATCH',
+         '9.4-10.6 s: stripes sweep in, the cream stripes open onto the clip, then the red stripes slide off, alternating sides',
+         '10.6-12 s: CTA collage: comment DROP across the seam (no tag, no acorn repeated)']}
 ];
 const row=document.getElementById('row'), msg=document.getElementById('msg');
 T.forEach(t=>{const c=document.createElement('div');c.className='card';
@@ -32,8 +34,8 @@ T.forEach(t=>{const c=document.createElement('div');c.className='card';
  <textarea data-k="${t.id} notes" placeholder="Notes on ${t.id}"></textarea>`;row.appendChild(c)});
 const els=[...document.querySelectorAll('textarea,input[type=checkbox]')];
 const val=e=>e.type==='checkbox'?(e.checked?'yes':''):e.value.trim();
-els.forEach(e=>{try{const v=localStorage.getItem('fm1:'+e.dataset.k);if(v!==null){if(e.type==='checkbox')e.checked=v==='yes';else e.value=v}}catch(x){}
- const h=()=>{try{localStorage.setItem('fm1:'+e.dataset.k,val(e))}catch(x){};clearTimeout(window._s);window._s=setTimeout(send,600)};e.oninput=h;e.onchange=h});
+els.forEach(e=>{try{const v=localStorage.getItem('fm2:'+e.dataset.k);if(v!==null){if(e.type==='checkbox')e.checked=v==='yes';else e.value=v}}catch(x){}
+ const h=()=>{try{localStorage.setItem('fm2:'+e.dataset.k,val(e))}catch(x){};clearTimeout(window._s);window._s=setTimeout(send,600)};e.oninput=h;e.onchange=h});
 function send(){const o={};els.forEach(e=>{if(val(e))o[e.dataset.k]=val(e)});
  fetch('/notes?to=fall/motion/notes.json',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(o)}).then(r=>{msg.textContent=r.ok?'Notes saved. Claude can read them.':'Could not save notes.'}).catch(()=>{msg.textContent='Could not save notes.'})}
 document.getElementById('save').onclick=send;
