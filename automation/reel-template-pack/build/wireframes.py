@@ -7,7 +7,7 @@ A panel spec (all positions on the 1080 x 1920 frame):
   bg:     [('img', folder, file, box) | ('pat', doodle_file, dark, light, box) | ('fill', rgb, box)]
   open:   [('rect'|'circle'|'round'|'grey', box, clip) | ('screen', folder, file, center, width, clip)]   where the footage goes
   items:  [(folder, file, (x, y), width, rot)]                                                     real cut-outs
-  lens:   [(box, clip)]   a round window drawn over an object (the clip in colour inside a loupe / lens)
+  lens:   [(box, clip[, 'rect'])]   a window drawn over an object (inside a loupe, a TV screen, a card page)
   doodles:[(kind, index, (x, y), width, rgb, rot)]                                                 her marker shapes
   text:   [(words, (x, y), px, 'E' editable | 'B' built-in, rgb)]
   label:  [background, opening, main action, doodles, carried into next beat, transition out]
@@ -103,7 +103,10 @@ def panel(p):
         place(im, C.shadow(obj(it[0], it[1], it[3]), (4, 6), 6, 90), it[2], it[4] if len(it) > 4 else 0)
     for o in p.get('lens', []):                       # a window drawn over an object (a loupe or lens): the clip in colour inside it
         bx = box_k(o[0]); w, h = bx[2] - bx[0], bx[3] - bx[1]; v = ImageOps.fit(still(o[1], (w, h)), (w, h))
-        m = Image.new('L', (w, h), 0); ImageDraw.Draw(m).ellipse((0, 0, w - 1, h - 1), fill=255); v.putalpha(m); im.alpha_composite(v, bx[:2])
+        m = Image.new('L', (w, h), 0); dm = ImageDraw.Draw(m)
+        if len(o) > 2 and o[2] == 'rect': dm.rounded_rectangle((0, 0, w - 1, h - 1), 10, fill=255)
+        else: dm.ellipse((0, 0, w - 1, h - 1), fill=255)
+        v.putalpha(m); im.alpha_composite(v, bx[:2])
     for d in p.get('doodles', []):
         place(im, doodle(d[0], d[1], sc(d[3]), d[4]), d[2], d[5] if len(d) > 5 else 0)
     for tx in p.get('text', []):
