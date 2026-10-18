@@ -54,6 +54,12 @@ same idea:**
 4. **A Reel thumbnail over her head** (the thing she's talking about, shown above her).
 5. **Text keeps changing type and colour:** a small plain line + one big word in a serif (italic, glow, outline);
    words stacked and offset; a red starburst, a disco ball or chrome stars beside the key word.
+More frames from the same Reel (2026-10-18): real screenshot cards (her DMs) fan out around her head, each pinned with
+a tomato push pin, tilted, some behind her and some in front; a word sandwich (small plain line on top, one big italic
+serif word in the middle, a small line in a second colour under it); a three-word recap ("1 flow 3 jobs") in big
+offset italic serif; a hands-on b-roll shot (laptop) with a sticker star on the screen; the CTA "comment Empire
+below" built the same way, with the app logo as a sticker. For templates: pinned proof cards (reviews, DMs, orders)
+the buyer swaps in suit #08 A real customer question and #20 What buyers said.
 Also seen: a circle mask on her over a flat pastel with real UI cards around it; a split screen with the real
 Instagram UI on top and her below; chrome stars drifting and blurring in the foreground; a phone with the real DM
 thread on a striped curtain; motion-blur swipes between scenes.
