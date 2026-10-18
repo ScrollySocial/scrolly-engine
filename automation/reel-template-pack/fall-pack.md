@@ -22,5 +22,8 @@ Notes for the round:
 - f3 (and the embers in f6) need one engine addition: opacity keyframes (fade layers in and out). Small, additive.
 - f3: a simple moving background we own (sky or misty forest, 5 s, Sora/Veo) would be better than a still. Optional.
 - f4: bobbing works over the buyer's own clip; a tub-of-water image is optional.
+- The whole image library is shared (FRAMEWORK). Useful from other folders: `images/` Crystal Clear Splash on Black
+  (f4 dunk), hourglass and alarm clocks (f2), gold foil seals and stars (f5); `halloween/` bare trees (f3, leaves fall
+  from them), lit carved pumpkins (f6 glow), wispy cloud overlay (f3); `doodles/` polka dots (f4 stickers).
 - Each one has its own world: f1 rust plaid + cinnamon, f2 barn wood + kraft tags, f3 misty forest + leaf path,
   f4 apple crate + red plaid, f5 cream knit + gold, f6 night + embers, f7 corduroy + steam, f8 paper + pen + burlap.
