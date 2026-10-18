@@ -89,3 +89,6 @@ Her summary of the look: "mixed-media video collages, hyper interesting and visu
 - A gas street lamp as a sliding divider between two clips.
 - A cathedral video cut along the steeple line (clips revealed above or below the cut).
 - A skyline cut out of the sky (the sky becomes the clip).
+- From her Pinterest board picks (FRAMEWORK "Collage techniques" / "Her picks from the board", 2026-10-18): double
+  skyline top and bottom; different backgrounds combined in one frame; a swarm orbiting a person or product (real
+  leaves orbiting the product clip); a two-tone strip-slice transition (f2's stripes reveal is close to this).
