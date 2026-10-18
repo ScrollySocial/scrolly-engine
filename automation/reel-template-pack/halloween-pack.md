@@ -11,7 +11,13 @@
 - **Upload zips:** `halloween/for-upload/` (h6, h3), made from the buyer folders; not in git (rebuild with Compress-Archive).
   Still missing before selling: sound picks per template, Mac support, the product listing (Mercedes does that).
 - h2 bats, h5 trick or treat: concepts and round 4 notes in `halloween/notes-round4.md`; next as motion tests.
-- h1 smoke: waiting on a smoke video on black that we own. h4 pumpkin: parked ("maybe scratch").
+- **h5 Trick or treat:** motion test v8 (`build/motion_h5.py`, Snap ITC taffy lettering, candy corn + taffy pop up out of
+  door 2, no outlines). Waiting for her OK, then the CapCut build.
+- **h2 Things I'm batty about:** motion test v1 (`build/motion_h2.py`). She wants changes (notes not given yet).
+- **h1 Now you see it:** motion test v2 (`build/motion_h1.py`): same shot twice, snap, empty shot + smoke where the
+  person stood; Bodoni Moda. ON HOLD until her `smoke.mp4` (white smoke on black, 3 to 5 s) is in
+  `assets/props/source/halloween/`; the script uses it automatically.
+- h4 pumpkin: parked ("maybe scratch"). The pack is 5 templates: h6, h3, h5, h2, h1.
 
 Buyers are online business owners and influencers, so every template is a whole Reel with a business job and a CTA,
 not just a Halloween look. Cute, not scary. Real photographed objects; only the playful layer (washi tape, white
