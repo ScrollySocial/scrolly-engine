@@ -113,3 +113,44 @@ def crown_points(n, spread=150):
     cx, cy, rx, ry = HEAD; top = cy - ry
     return [(cx + rx * 1.05 * math.cos(math.radians(a)), top - 70 + ry * 0.28 * (1 - math.sin(math.radians(-a)))) for a in
             [lerp(-90 - spread / 2, -90 + spread / 2, i / (n - 1)) for i in range(n)]]
+
+# ---- after her notes on #09/#10/#12 (2026-10-18): readable words, a neutral colour story buyers can change -------------
+# Words are never pattern-filled and never thin over busy footage: solid colour on a solid pill or real paper.
+# Each template has neutrals + ONE accent (the colour buyers change to their brand); patterns use the neutrals or the
+# accent, never the same pattern on an object and right behind it.
+NEUTRAL = {'cream': (246, 241, 232), 'stone': (196, 188, 176), 'ink': (28, 27, 26), 'paper': (252, 250, 245)}
+
+def pill(text, px, bg, fg, font=None, pad=0.55, rot=0, outline=WHITE):
+    """Words on a solid pill (her ManyChat note: an embellished shape behind the words) with a white die-cut edge."""
+    f = S.F(font or ANTON, px); l, t, r, b = f.getbbox(text); w, h = int(r - l + px * pad * 2), int(b - t + px * pad * 1.2)
+    im = Image.new('RGBA', (w, h), (0, 0, 0, 0)); d = ImageDraw.Draw(im); d.rounded_rectangle((0, 0, w - 1, h - 1), h // 2, fill=bg + (255,))
+    d.text((w / 2, h / 2), text, font=f, fill=fg, anchor='mm')
+    out = die_cut(im, 8, True) if outline else C.shadow(im, (6, 10), 10, 90)
+    return out.rotate(rot, expand=True, resample=Image.BICUBIC) if rot else out
+
+def big_text(text, px, color, edge=WHITE, edge_w=None, font=None):
+    """Big solid lettering with a thick contrasting edge and a soft shadow: always readable."""
+    f = S.F(font or ANTON, px); ew = edge_w or max(8, px // 9); l, t, r, b = f.getbbox(text)
+    im = Image.new('RGBA', (r - l + 4 * ew + 20, b - t + 4 * ew + 20), (0, 0, 0, 0))
+    ImageDraw.Draw(im).text((im.width / 2, im.height / 2), text, font=f, fill=color, anchor='mm', stroke_width=ew, stroke_fill=edge)
+    return C.shadow(im, (5, 10), 10, 110)
+
+PIN = Path(__file__).resolve().parent.parent / 'assets' / 'props'
+def sticky(text, w=380, tint=None, px=None, seed=1, pin='pin-head-black'):
+    """A real yellow sticky note (tinted to the template's accent if asked) with the words in marker, pinned."""
+    n = S.fitw(S.cut('physical', 'Blank Yellow Sticky Note on White.png', tol=10), w)
+    if tint:
+        g = ImageOps.grayscale(n.convert('RGB')); c = ImageOps.colorize(ImageOps.autocontrast(g), tuple(int(v * 0.55) for v in tint), tint).convert('RGBA'); c.putalpha(n.split()[3]); n = c
+    d = ImageDraw.Draw(n); px = px or int(w * 0.17); f = S.F(S.HAND, px); lines = text.split('\n'); lh = px * 1.15
+    for k, l in enumerate(lines): d.text((n.width / 2, n.height * 0.52 + (k - (len(lines) - 1) / 2) * lh), l, font=f, fill=NEUTRAL['ink'], anchor='mm')
+    p = S.fitw(Image.open(PIN / f'{pin}.png').convert('RGBA'), int(w * 0.16)); n.alpha_composite(p, (int(n.width / 2 - p.width / 2), int(w * 0.03)))
+    return C.shadow(n, (8, 14), 12, 100)
+
+TV_SCREEN = (104, 432, 903, 993)        # the walnut TV cut-out's screen (measured), at its full cut-out size
+def tv_with(clip_im, w):
+    """The real walnut TV with the clip fitted INTO its screen (rounded like the glass)."""
+    tv = Image.open(HQ / 'Vintage Walnut Rabbit-Ear Television.png').convert('RGBA'); k = w / tv.width
+    x0, y0, x1, y1 = [int(v * k) for v in TV_SCREEN]; tv = S.fitw(tv, w); ins = int(14 * k * 2)
+    sw, shh = x1 - x0 - 2 * ins, y1 - y0 - 2 * ins; v = ImageOps.fit(clip_im, (sw, shh)).convert('RGBA')
+    m = Image.new('L', (sw, shh), 0); ImageDraw.Draw(m).rounded_rectangle((0, 0, sw - 1, shh - 1), int(70 * k), fill=255); v.putalpha(m)
+    tv.alpha_composite(v, (x0 + ins, y0 + ins)); return die_cut(tv, 8)
