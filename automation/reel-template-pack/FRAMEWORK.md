@@ -35,7 +35,26 @@ The long rules below are reference. These ten are where drafts keep failing. A d
     order, DM or review; a laptop shows the shop page. At least one tech moment in most templates, not all of them (Mercedes: "Most - but not 100%").
     **Scrolling on a screen:** a product list, shop grid or feed scrolling on the phone like a real thumb scroll,
     stopping on the product (buyer swaps in their own product photos).
+14. **Time to read (Mercedes, 2026-10-18: "the timing is too fast to read things"):** every piece of text stays
+    fully visible for at least 0.6 s + 1 s per 3 words, and never less than 1.2 s, counted after any typing reveal
+    ends. Fast scene changes are fine; text that changes too fast is not. If a scene is too short for its words, cut
+    words or hold the scene longer (templates can run past 15 s). The CapCut build prints `TOO FAST TO READ:` for any
+    text that misses this; motion-test scripts must follow the same timing. Watch the MP4 once at full speed before
+    sending and read every word.
 10. **Motion test first,** checked on a 1-frame-per-second strip against this list and the checklist at the bottom.
+
+**Her notes on the #04-#13 motion tests (2026-10-18), every template:**
+- **NEVER a hand holding the phone.** Phones, tablets and laptops stand or lie on the stage on their own.
+- **No empty marker circles.** A ring goes round one specific thing (a detail, a word); a circle round nothing is cut.
+- **Starbursts go BEHIND something** (the product, the key word) for emphasis. One burst; never two side by side
+  emphasising nothing.
+- **One underline, a single line.** Never the double underline.
+- **Objects must make sense together and work for every business in the pack** (measuring spoons + twine on a
+  smoothie didn't); if a buyer couldn't tell what the object means for their product, use the buyer's own clip or photo.
+- **Words stay up long enough to read**, especially handwriting writing itself in.
+- **Objects must be recognisable at a glance** (a plain white woven label read as "what is that?").
+- **Show things as video, not literal letters** (#04: the two versions as video overlays, not giant A and B).
+- She loved the strip-slice transitions.
 
 **Head interplay needs a filming guide:** templates where something lands on or around the head ship with a guide
 overlay (a dashed head outline) so buyers know how big and where to film their head; the buyer hides it before export.

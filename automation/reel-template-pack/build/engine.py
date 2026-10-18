@@ -524,6 +524,20 @@ def check_ig_safe(L, min_secs=0.3):
         bad += [f'"{words}" sits under Instagram\'s {name} for {s:.1f}s' for name, s in hits.items() if s >= min_secs]
     return bad
 
+def check_read_time(L, wps=3.0, base=0.6, floor=1.2):
+    """Text that isn't on screen long enough to read: needs base + words/wps seconds (at least `floor`), counted
+    after any typewriter reveal finishes. Mercedes 2026-10-18: "the timing is too fast to read things"."""
+    bad = []
+    for l in L:
+        if l['kind'] != 'text': continue
+        words = l['words'][0].replace(chr(10), ' ')
+        n = len(words.split())
+        need = max(floor, base + n / wps)
+        shown = (l['t'][1] - l['t'][0]) - (l.get('typewriter') or 0)
+        if shown + 0.05 < need:
+            bad.append(f'"{words}" is readable for {shown:.1f}s, needs {need:.1f}s')
+    return bad
+
 def build(spec, layers_fn):
     out = PACK / spec['dir']
     for p in (FFMPEG, PROTO / 'draft_content.json', PROTO_PHOTO / 'draft_content.json', PROTO_TYPE / 'draft_content.json',
@@ -535,6 +549,7 @@ def build(spec, layers_fn):
     lay = layers_fn(); L, A = lay.L, lay.A
     apply_centering(L)
     for w in check_ig_safe(L): print('IG SAFE ZONE:', w)
+    for w in check_read_time(L): print('TOO FAST TO READ:', w)
     n = len(spec['slots'])
     need = [0.0] * n
     for l in L:
