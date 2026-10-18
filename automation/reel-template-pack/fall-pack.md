@@ -53,3 +53,9 @@ Halloween). Next round = motion tests, fewer and bigger props.
   ground.
 - **Correction 2 (2026-10-17):** not strictly one kind either. Her apples (`02`) are the model: the same object,
   each decorated differently (tiny dots, tiny stars, a lined sticker label with words). What fails is a random pile.
+
+## f7 motion test 1: rejected (2026-10-17)
+
+`build/motion_f7.py` ("which is your style?" with fall drinks) was a poll about drinks: "This isn't selling a
+product, I don't like it." The drinks were the subject instead of the buyer's product. Rule 13: the buyer's product
+(their clips) must be what the Reel sells; fall props only dress it.
