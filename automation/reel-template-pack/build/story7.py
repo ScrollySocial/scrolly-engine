@@ -191,7 +191,7 @@ def setup_09():
     g['paper'] = bg('Blank Ruled Notebook Paper.png', 'physical')
     g['bf'] = [P.thing(P.BUTTERFLIES[i % 3], 220, ('stripes', 'dots', 'smalldots')[i % 3], (WINE, PINK, WINE)[i % 3], scale=0.3, strength=0.75, seed=i, edge=6) for i in range(6)]
     g['clock'] = P.thing('Classic Cream Twin-Bell Alarm Clock-185.png', 440, 'stripes', PINK, scale=0.5, strength=0.85)
-    g['burst'] = doodle('burst', 1, 620, WINE)
+    g['burst'] = doodle('burst', 3, 780, WINE)   # ONE rounded burst, centred behind the clock (her note)
     g['balls'] = [P.thing('Crumpled cream paper ball-58.png', 170 + 20 * (i % 3), ('stripes', 'dots', 'smalldots')[i % 3], (PINK, WINE, PINK)[i % 3], scale=0.3, strength=0.6, seed=i, edge=6) for i in range(5)]
     g['gift'] = P.thing('Kraft paper cube gift with twine-38.png', 260, 'dots', WINE, scale=0.4)
     g['mug'] = P.thing('Warm white ceramic coffee mug-140.png', 260, 'dots', PINK, scale=0.4, strength=0.85)
@@ -207,7 +207,7 @@ def stage_09(g, t):
     c = g['c']; im = g['paper'].copy()
     if t < 5.4:                                                   # 3: the clock rings, one burst behind it
         s = 6 * math.sin(t * 55) * (1 - seg(t, 4.4, 4.7)); k = back_out(seg(t, 3.6, 3.9), 1.6)
-        if t >= 3.8: put(im, g['burst'], (560, 960), 0.9 + 0.1 * back_out(seg(t, 3.8, 4.1), 1.5), 0)
+        if t >= 3.8: put(im, g['burst'], (540, 1000), 0.9 + 0.1 * back_out(seg(t, 3.8, 4.1), 1.5), 0)
         put(im, g['clock'], (540 + s, 1000), k, s)
         for i, b in enumerate(g['balls']):
             a = t * 1.1 + i * 2 * math.pi / 5; put(im, b, (540 + 400 * math.cos(a), 1000 + 480 * math.sin(a)), back_out(seg(t, 4.0 + i * 0.08, 4.25 + i * 0.08)), a * 30)
@@ -237,7 +237,7 @@ def frame_09(g, t):
         im = g['paper'].copy()
         P.balloon(im, roundwin(c['product'].at(t - 8.8, (520, 520)), 520), t, (560, 860), (560, 1900), 0, rise=(8.8, 9.3, 2400))
         P.balloon(im, g['gift'], t, (880, 1250), (580, 1900), 1.7, rise=(9.0, 9.5, 2400))
-        put(im, sum_word(g['meet']), (540, 340)); put(im, g['prod'], (540, 520), 1, -2); doodle_on(im, t, 9.5, g['d_arrow'], (250, 760), -100)   # from the name down to the product
+        put(im, sum_word(g['meet']), (540, 340)); put(im, g['prod'], (540, 520), 1, -2); doodle_on(im, t, 9.5, g['d_arrow'], (150, 900), 90)   # points right, at the product (her note)
         return im
     if t < 13.0:                                                  # 7: sticky notes, one at a time (no video)
         im = g['paper'].copy(); pop(im, g['mug'], t, 10.4, (820, 1560), 6, wiggle=2)
