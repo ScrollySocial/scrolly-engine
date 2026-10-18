@@ -1,7 +1,7 @@
 """Rough motion test for h5 "Trick or treat" (Halloween pack), following Mercedes's notes (rounds 1 to 4) and
 FRAMEWORK.md. The business job: a common mistake (the TRICK) next to your product (the TREAT), then a keyword CTA.
 Built-in words are extra-fun artwork lettering: Snap ITC in lavender taffy stripes (her pick, v2); KNOCK jumps on
-each knock, TRICK jitters, "or" teases, TREAT drops and bounces. Her candy photos rain down at door 2 (v2). Editable words are Arial Bold (every buyer has it).
+each knock, TRICK jitters, "or" teases, TREAT drops and bounces. No candy (v4: she hated the candy moment). Editable words are Arial Bold (every buyer has it).
 Moves (its own, not h6's or h3's): the door swings open on its hinge, we push into the doorway into clip 1; a whip pan
 along the street to door 2 (her generated Victorian house, same setting to the end); we fly through door 2's arch into
 clip 2. No door slam, no candy until her new single-piece candy images exist.
@@ -200,7 +200,7 @@ def frame(t):
         im = im.convert('RGBA')
     # 5.3-6.1 door 2: a quick knock
     elif t < 6.1:
-        im = HOUSE.copy(); candy(im, t, 5.45)
+        im = HOUSE.copy()
         word_art(im, t - 5.3 + 0.0, -0.0, 'KNOCK', 540, 560, 170, 'taffy', 'knock')
         line(im, t, 5.55, '[something sweet is coming]', (520, 820), 62)
         im = shake(im, t - 5.3)
@@ -208,18 +208,15 @@ def frame(t):
     elif t < 7.0:
         u = ease((t - 6.1) / 0.9); im = arch_house(1 + 5.5 * u * u, vid('treat', t - 6.1))
         if u > 0.75: im = Image.blend(im, vid('treat', t - 6.1), (u - 0.75) / 0.25)
-        candy(im, t, 5.45)
     # 7.0-11.0 clip 2 full screen: the TREAT (candy-corn letters drop and bounce)
     elif t < 11.0:
         im = vid('treat', t - 6.1)
-        candy(im, t, 5.45)   # the candy stays, framing the treat
         word_art(im, t, 7.05, 'or', 520, 330, 130, 'taffy', 'pop')
         word_art(im, t, 7.25, 'TREAT', 520, 520, 230, 'taffy', 'drop', 0.09)
         line(im, t, 7.9, '[our 5-minute scrub]', (520, 740), 80)
     # 11.0-14.0 CTA over clip 3: COMMENT (stripes) + the editable keyword
     else:
         im = vid('cta', t - 11.0)
-        candy(im, t, 5.45)
         word_art(im, t, 11.05, 'COMMENT', 520, 500, 150, 'taffy', 'pop', 0.06)
         line(im, t, 11.6, '[TREAT]', (520, 720), 150)
         line(im, t, 12.0, "for something sweet: 15% off", (520, 880), 66)
