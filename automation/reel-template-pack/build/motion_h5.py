@@ -112,17 +112,24 @@ import glob as _g
 CANDY = [B.cut_white(Image.open(f)) for f in sorted(_g.glob(str(B.SRC / '*'))) if any(k in Path(f).name.lower() for k in
          ('candy corn', 'gummy worm', 'taffy', 'peanut butter cup'))]
 _rng = random.Random(5)
-RAIN = [(_rng.choice(range(len(CANDY))), _rng.uniform(60, 1020), _rng.uniform(0, 1.2), _rng.uniform(105, 175),
-         _rng.uniform(-200, 200), _rng.uniform(900, 1500)) for _ in range(18)]
-def candy_rain(img, t, t0, until=None):
-    """Real candy tumbling down from the top (gravity, spin), each piece a little different; sharp, never at the lens."""
-    for i, (k, x, delay, w, spin, speed) in enumerate(RAIN):
+def _spot(n):
+    """Where each piece comes to rest: a pile along the bottom and a few up the sides, never over the middle of the video."""
+    r = random.Random(11 + n)
+    if n % 3: return (r.uniform(70, 1010), r.uniform(1600, 1860))           # the bottom pile
+    side = r.choice((r.uniform(60, 190), r.uniform(890, 1020)))
+    return (side, r.uniform(980, 1520))                                    # up the sides
+PIECES = [(_rng.choice(range(len(CANDY))), _spot(n), 0.12 * n + _rng.uniform(0, 0.08), _rng.uniform(110, 170),
+           _rng.uniform(-40, 40)) for n in range(20)]
+def candy(img, t, t0):
+    """Her real candy pops in one piece at a time: each drops a little onto its spot, squashes, bounces and stays."""
+    for k, (x, y), delay, w, rot in PIECES:
         tt = t - t0 - delay
-        if tt < 0 or (until and t > until): continue
-        y = -200 + speed * tt + 300 * tt * tt
-        if y > H + 300: continue
-        c = B.fit_w(CANDY[k], int(w)); c = c.rotate(spin * tt, expand=True, resample=Image.BICUBIC)
-        img.alpha_composite(E.C.shadow(c, (6, 10), 10, 70), (int(x - c.width / 2), int(y - c.height / 2)))
+        if tt < 0: continue
+        fall = 1 - back_out(tt / 0.32, 2.6)                      # a short drop with an overshoot bounce
+        sc = 0.4 + 0.6 * back_out(tt / 0.22, 2.2)                # pops up to size
+        wob = 4 * math.sin(t * 5 + delay * 7) if tt > 0.5 else 0
+        c = B.fit_w(CANDY[k], max(8, int(w * sc))).rotate(rot + wob, expand=True, resample=Image.BICUBIC)
+        img.alpha_composite(E.C.shadow(c, (5, 9), 9, 70), (int(x - c.width / 2), int(y - 260 * fall - c.height / 2)))
 
 # ---- the doors (her images) -----------------------------------------------------------------------------------------------
 DOOR_SHUT = B.door1('Warmly Lit Traditional Entryway.png')
@@ -193,7 +200,7 @@ def frame(t):
         im = im.convert('RGBA')
     # 5.3-6.1 door 2: a quick knock
     elif t < 6.1:
-        im = HOUSE.copy(); candy_rain(im, t, 5.45)
+        im = HOUSE.copy(); candy(im, t, 5.45)
         word_art(im, t - 5.3 + 0.0, -0.0, 'KNOCK', 540, 560, 170, 'taffy', 'knock')
         line(im, t, 5.55, '[something sweet is coming]', (520, 820), 62)
         im = shake(im, t - 5.3)
@@ -201,17 +208,18 @@ def frame(t):
     elif t < 7.0:
         u = ease((t - 6.1) / 0.9); im = arch_house(1 + 5.5 * u * u, vid('treat', t - 6.1))
         if u > 0.75: im = Image.blend(im, vid('treat', t - 6.1), (u - 0.75) / 0.25)
-        candy_rain(im, t, 5.45)
+        candy(im, t, 5.45)
     # 7.0-11.0 clip 2 full screen: the TREAT (candy-corn letters drop and bounce)
     elif t < 11.0:
         im = vid('treat', t - 6.1)
-        candy_rain(im, t, 5.45, until=8.6)   # the last pieces fall out of frame, then the treat clip is clear
+        candy(im, t, 5.45)   # the candy stays, framing the treat
         word_art(im, t, 7.05, 'or', 520, 330, 130, 'taffy', 'pop')
         word_art(im, t, 7.25, 'TREAT', 520, 520, 230, 'taffy', 'drop', 0.09)
         line(im, t, 7.9, '[our 5-minute scrub]', (520, 740), 80)
     # 11.0-14.0 CTA over clip 3: COMMENT (stripes) + the editable keyword
     else:
         im = vid('cta', t - 11.0)
+        candy(im, t, 5.45)
         word_art(im, t, 11.05, 'COMMENT', 520, 500, 150, 'taffy', 'pop', 0.06)
         line(im, t, 11.6, '[TREAT]', (520, 720), 150)
         line(im, t, 12.0, "for something sweet: 15% off", (520, 880), 66)
