@@ -33,6 +33,8 @@ The long rules below are reference. These ten are where drafts keep failing. A d
 13. **Use the tech props (easy wins):** the green-screen laptop, phone, tablet, desktop monitor, smartwatch, ring light
     and retro TV/monitor in `assets/props/source/tech/`. The buyer's clip plays on the screen; a phone shows the
     order, DM or review; a laptop shows the shop page. At least one tech moment in most templates.
+    **Scrolling on a screen:** a product list, shop grid or feed scrolling on the phone like a real thumb scroll,
+    stopping on the product (buyer swaps in their own product photos).
 10. **Motion test first,** checked on a 1-frame-per-second strip against this list and the checklist at the bottom.
 
 **Head interplay needs a filming guide:** templates where something lands on or around the head ship with a guide
