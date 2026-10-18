@@ -102,6 +102,13 @@ Log each use here when a template is approved.
 | Instant camera snaps, the after photo prints and develops | 03 | 03 |
 | Torn-paper diagonal split | 04 (draft) | |
 
+## The image library is shared (Mercedes, 2026-10-17)
+
+Every image in `assets/props/source/` (physical, fall, halloween, doodles, tech, ...) can be used in any pack or
+template: a fall leaf in a physical template, a tech prop in Halloween, doodles anywhere. The folders only sort them.
+Each template still has its own overall look (its own world), so reuse images freely but don't copy another
+template's whole scene.
+
 ## Her idea bank (Mercedes, 2026-10-17): use these when they fit
 
 - **Wheel or pie of videos:** a round wheel (or pie) cut into a few slices (fewer than a Wheel of Fortune, about 3
