@@ -179,7 +179,8 @@ def ig_check(tid, text, c, im):
     if y0 < 220 or y1 > 1500 or (x1 > 930 and y1 > 960): print(f'  IG SAFE ZONE: {tid} "{text[:30]}" {int(x0)},{int(y0)},{int(x1)},{int(y1)}')
 
 # ---- doodles ---------------------------------------------------------------------------------------------------------
-GRID = {'bubbles': ('Eight playful speech and thought bubbles-3.png', 2, 4), 'frames': ('Ten hand-drawn doodle frames-4.png', 2, 5)}
+GRID = {'bubbles': ('Eight playful speech and thought bubbles-3.png', 2, 4), 'frames': ('Ten hand-drawn doodle frames-4.png', 2, 5),
+        'glyphs': ('Playful Marker Glyphs Asset Sheet-11.png', 4, 3), 'scribbles': ('Eight playful black scribble patches-9.png', 3, 3)}
 def doodle(kind, i, w, color=INK):
     if kind in GRID:
         name, cols, rows = GRID[kind]; im = ImageOps.grayscale(raw('doodles/' + name, 1254)); cw, ch = im.width / cols, im.height / rows
