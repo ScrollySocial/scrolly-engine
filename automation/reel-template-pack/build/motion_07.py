@@ -30,30 +30,31 @@ from story4 import swipe, diagonal
 from collage_kit import doodle, doodle_on
 from motion_b2 import Clip, put, render, camera, torn_band, ease, back_out, seg, lerp, lerp2, W, H, WHITE
 
-INK, CRM = (28, 27, 26), (246, 241, 232); FOREST = (58, 90, 68)          # FOREST = the accent buyers change
+INK, CRM = (28, 27, 26), (246, 241, 232); FOREST = INK; LIGHT = X.BABY   # her palette: baby blue + ink (buyers change them)
+X.use_type(LIGHT, FOREST); X.enable_holds()
+HOLDS = [(1.4, 0.9), (2.8, 1.5), (4.3, 1.1), (5.8, 1.15), (7.3, 0.6), (8.6, 1.8), (11.95, 1.0)]   # reading time
 PHONE = 'Graphite Smartphone With Green Screen-38.png'
 DIR = '07-how-big-is-it'
 
 def setup():
-    g = {'c': {'alone': Clip('IMG_1471', 0.5), 'hand': Clip('IMG_1471', 6.0), 'use': Clip('IMG_1474', 2.0), 'set': Clip('IMG_1522', 0.0, 4.0)}}
+    g = {'c': {'alone': Clip('IMG_1471', 0.5), 'hand': Clip('IMG_1471', 6.0), 'use': Clip('IMG_1474', 10.0), 'set': Clip('IMG_1522', 0.0, 4.0)}}
     grid = ImageOps.fit(S.raw('images', 'White pegboard grid texture-5.png'), (W, H)).convert('RGBA')
-    checks = ImageOps.colorize(ImageOps.grayscale(S.raw('doodles', 'Wobbly hand-drawn black and white checkerboard-24.png')), FOREST, CRM).convert('RGBA')
+    checks = ImageOps.colorize(ImageOps.grayscale(S.raw('doodles', 'Wobbly hand-drawn black and white checkerboard-24.png')), FOREST, LIGHT).convert('RGBA')
     grid.alpha_composite(torn_band(checks, (240, H + 40), 9, 'l', 18), (W - 190, -20)); g['grid'] = grid
     g['phone_b'] = P.thing('Graphite smartphone back view-41.png', 300, 'smalldots', FOREST, scale=0.25, strength=0.5)
     g['mug'] = P.thing('Warm white ceramic coffee mug-140.png', 360, 'stripes', FOREST, scale=0.35, strength=0.7)
     g['ruler'] = P.thing('Pale wooden ruler on white-153.png', 900, None, None, label=P.sticker('INCHES', 34, INK), label_at=(0.82, 0.5))
     still = S.footage(('IMG_1471', 0.5)); g['still'] = X.clip_card(still.crop((0, 500, W, 1500)), 620, 574, 14)
-    g['shopshot'] = P.on_screen(PHONE, 340, P.feed([(still, '[Product]', '[$59]')], w=P.screen_size(PHONE, 340)[0], accent=FOREST)[0].crop((0, 0) + P.screen_size(PHONE, 340)))
-    g['howbig'] = P.caption('how big', 200, FOREST); g['really'] = P.caption('is it really?', 130, INK)
+    g['howbig'] = P.caption('how big', 200, INK); g['really'] = P.caption('is it really?', 130, INK)
     g['sizes'] = [P.pill_m(t, 54, INK, CRM) for t in ('this big?', 'this big?', 'this big?')]
-    g['next'] = P.caption('next to', 150, FOREST); g['own'] = P.pill_m('things you own', 56, INK, CRM)
+    g['next'] = P.caption('next to', 150, INK); g['own'] = P.pill_m('things you own', 56, INK, CRM)
     g['phone_p'] = P.pill_m('[6 in phone]', 44, CRM, INK); g['mug_p'] = P.pill_m('[mug]', 44, CRM, INK)
-    g['inhand'] = P.caption('in my hand', 125, FOREST); g['fits'] = P.pill_m('[fits in one hand]', 56, INK, CRM)
+    g['inhand'] = P.caption('in my hand', 125, FOREST); g['fits'] = P.pill_m('[one hand]', 60, INK, CRM)
     g['onscreen'] = P.pill_m('on screen', 50, INK, CRM); g['irl'] = P.pill_m('in real life', 50, FOREST, CRM)
-    g['inuse'] = P.pill_m('[the size of a water bottle]', 52, INK, CRM)
-    g['exact'] = P.caption('exactly', 170, FOREST); g['dims'] = P.big_text('[9 x 4 in]', 150, FOREST)
+    g['inuse'] = P.pill_m('[water-bottle size]', 56, INK, CRM)
+    g['exact'] = P.caption('exactly', 170, INK); g['dims'] = X.key('[9 x 4 in]', 150, INK, WHITE)
     g['dims_s'] = P.pill_m('[9 x 4 in]', 60, FOREST, CRM)
-    g['comment'] = P.caption('Comment', 180, FOREST, 'stripes'); g['kw'] = P.pill_m('"[SIZE]"', 64, CRM, INK); g['buy'] = P.pill_m('[for every size + the shop link]', 44, INK, CRM)
+    g['comment'] = P.caption('Comment', 180, FOREST, 'stripes'); g['kw'] = P.pill_m('"[SIZE]"', 64, CRM, INK); g['buy'] = P.pill_m('[shop link in bio]', 52, INK, CRM)
     g['mw'] = doodle('arrow', 5, 560, WHITE); g['mh'] = doodle('arrow', 6, 150, WHITE); g['mwI'] = doodle('arrow', 5, 520, INK)
     g['curve'] = doodle('arrow', 2, 230, INK); g['under'] = doodle('under', 4, 560, FOREST)
     return g
@@ -67,7 +68,7 @@ def frame(g, t):
         im = g['grid'].copy(); sizes = [(300, 420), (860, 1150), (520, 720)]; i = min(2, int(t / 0.45)); prev = sizes[max(0, i - 1)]
         k = back_out(seg(t, i * 0.45, i * 0.45 + 0.25), 1.6); w, h = lerp2(prev, sizes[i], k) if i else sizes[0]
         window(im, c['alone'].at(t, (max(40, w), max(40, h))), max(40, w), max(40, h), (520, 980), (-3, 2, -2)[i])
-        P.say(im, g['sizes'][i], t, i * 0.45 + 0.1, (820, 560 + i * 140), (6, -5, 4)[i], out=(i + 1) * 0.45 if i < 2 else 1.45)
+        P.say(im, g['sizes'][0], t, 0.1, (820, 600), 5)       # one 'this big?' that stays (time to read)
         P.say(im, g['howbig'], t, 0.0, (500, 330), -3); P.say(im, g['really'], t, 0.3, (520, 1440), 2)
         if t > 1.45: im = swipe(im, stage2(g, t), seg(t, 1.45, 1.7))
         return im
@@ -109,7 +110,7 @@ def stage2(g, t):
 def stage4(g, t):
     """On screen (the shop photo on a phone) vs in real life (the clip at the same height)."""
     c = g['c']; im = g['grid'].copy(); k = back_out(seg(t, 4.6, 4.9), 1.5)
-    put(im, g['shopshot'], (270, lerp(2400, 960, k)), 1, -3)
+    put(im, P.on_screen(PHONE, 340, c['alone'].at(t - 4.6)), (270, lerp(2400, 960, k)), 1, -3)   # whole screen = one video slot
     k2 = back_out(seg(t, 4.75, 5.05), 1.5)
     if k2 > 0: window(im, c['alone'].at(t - 4.6, (380, 680)), 380, 680, (lerp(1500, 740, k2), 960), 3)
     P.say(im, g['onscreen'], t, 5.0, (270, 1420), -3); P.say(im, g['irl'], t, 5.15, (720, 1420), 3)
@@ -132,7 +133,7 @@ def main():
         for i, im in enumerate(ims): sheet.paste(im.resize((360, 640)), (i * 360, 0))
         out.mkdir(parents=True, exist_ok=True); sheet.save(out / '_test.jpg', quality=85); print('test', out / '_test.jpg')
     else:
-        render('07', fr, 12.0, out); X.strip_sheet(DIR, 12)
+        render('07', X.with_holds(fr, HOLDS), 12.0 + sum(h for _, h in HOLDS), out); X.strip_sheet(DIR, 21)
 
 if __name__ == '__main__':
     main()

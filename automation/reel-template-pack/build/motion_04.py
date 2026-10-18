@@ -30,30 +30,32 @@ from story4 import roundwin, diagonal
 from collage_kit import doodle, doodle_on
 from motion_b2 import Clip, put, render, torn_band, camera, ease, back_out, seg, lerp, lerp2, W, H, WHITE
 
-INK, CRM = (28, 27, 26), (246, 241, 232); SLATE = (74, 96, 128)       # SLATE = the accent buyers change
+INK, CRM = (28, 27, 26), (246, 241, 232); SLATE = X.WINE; LIGHT = X.BABY   # her palette: wine + baby blue (buyers change them)
+X.use_type(LIGHT, SLATE); X.enable_holds()
+HOLDS = [(1.45, 0.6), (3.05, 1.0), (4.85, 0.9), (8.25, 0.9), (9.85, 0.8), (11.75, 0.85), (13.95, 0.8)]   # reading time (must-do 14)
 PHONE = 'Graphite Smartphone With Green Screen-38.png'
 DIR = '04-a-or-b'
 PAN = {'level': ((0.183, 0.70), (0.85, 0.70)), 'tilt': ((0.167, 0.745), (0.84, 0.64))}   # pan centres (share of w, h)
 
 def setup():
-    g = {'c': {'A': Clip('IMG_1422', 3.0), 'A2': Clip('IMG_1420', 0.5), 'B': Clip('IMG_1418', 2.0, 6.0), 'B2': Clip('IMG_1464', 1.0),
+    g = {'c': {'A': Clip('IMG_1422', 7.0), 'A2': Clip('IMG_1420', 0.5), 'B': Clip('IMG_1418', 2.0, 6.0), 'B2': Clip('IMG_1464', 1.0),
                'pick': Clip('IMG_1401', 0.5, 5.0)}}
     marble = ImageOps.fit(S.raw('images', 'Soft veined white marble texture-1.png'), (W, H)).convert('RGBA')
-    wav = ImageOps.colorize(ImageOps.grayscale(S.raw('doodles', 'Hand-drawn wavy line pattern-20.png')), SLATE, CRM).convert('RGBA')
+    wav = ImageOps.colorize(ImageOps.grayscale(S.raw('doodles', 'Hand-drawn wavy line pattern-20.png')), SLATE, LIGHT).convert('RGBA')
     marble.alpha_composite(torn_band(wav, (W + 40, 380), 7, 't', 20), (-20, H - 360)); g['stage'] = marble
     sc = P.raw_cut('Level vintage brass balance scale-105.png', 980); g['scale'] = P.style_object(sc, 'smalldots', SLATE, scale=0.25, strength=0.5)
     st = P.raw_cut('Tilted brass balance scale-124.png', 980); g['tiltA'] = P.style_object(st, 'smalldots', SLATE, scale=0.25, strength=0.5)
     g['tiltB'] = P.style_object(ImageOps.mirror(st), 'smalldots', SLATE, scale=0.25, strength=0.5)
-    g['tagA'] = P.pill_m('[Copper]', 60, SLATE, CRM); g['tagB'] = P.pill_m('[Mint]', 60, INK, CRM)          # the versions' names, editable
+    g['tagA'] = X.hl('[Copper]', 60, LIGHT); g['tagB'] = X.hl('[Mint]', 60, WHITE)          # the versions' names, editable
     g['noteA2'] = P.sticky('[copper +\ncordless]', 280, pin='pin-head-black'); g['noteB2'] = P.sticky('[mint +\nsteam]', 280, pin='pin-head-cream')
-    g['q1'] = P.caption('which one', 150, SLATE); g['q2'] = P.caption('are you?', 150, INK)
-    g['two'] = P.caption('two versions', 130, SLATE); g['moods'] = P.pill_m('[two very different moods]', 50, INK, CRM)
+    g['q1'] = P.caption('which one', 150, INK); g['q2'] = P.caption('are you?', 150, INK)
+    g['two'] = P.caption('two versions', 130, INK); g['moods'] = P.pill_m('[two very different moods]', 50, INK, CRM)
     g['nameA'] = P.pill_m('A: [Copper. Cordless.]', 58, SLATE, CRM); g['nameB'] = P.pill_m('B: [Mint. Steam-clean.]', 58, INK, CRM)
-    g['even'] = P.pill_m('even my followers', 54, INK, CRM); g['cant'] = P.caption("can't pick", 140, SLATE)
+    g['even'] = P.pill_m('even my followers', 54, INK, CRM); g['cant'] = P.caption("can't pick", 140, INK)
     g['both'] = P.caption('or both?', 170, SLATE)
     g['comment'] = P.caption('Comment', 180, SLATE, 'stripes'); g['kw'] = P.pill_m('"A" or "B"', 64, CRM, INK); g['shop'] = P.pill_m('[both in my shop]', 50, INK, CRM)
     g['d_arrow'] = doodle('arrow', 9, 250, WHITE); g['d_burst'] = doodle('burst', 2, 700, CRM)
-    g['noteA'] = P.sticky('[so light\nyou forget\nit is on]', 330, pin='pin-head-black')
+    g['noteA'] = P.sticky('[so light]', 330, pin='pin-head-black')
     g['d_arrowS'] = doodle('arrow', 2, 200, INK)
     return g
 
@@ -69,7 +71,7 @@ def stage2(g, t):
     for i, (s, t0) in enumerate(((g['noteA2'], 2.2), (g['noteB2'], 2.45))):
         d = back_out(seg(t, t0, t0 + 0.3), 1.6)
         if d > 0: put(im, s, (pans[i][0] + (40, -40)[i], lerp(-300, pans[i][1] - 110, d)), 1, (-8, 8)[i])
-    P.say(im, g['two'], t, 1.95, (540, 420), -2); P.say(im, g['moods'], t, 2.5, (540, 560), 1)
+    P.say(im, g['two'], t, 1.95, (540, 420), -2)
     return im
 
 def stage4(g, t):
@@ -121,10 +123,10 @@ def frame(g, t):
         return im
     if t < 10.2:                                                   # 6: the poll on a phone
         im = stage6(g, t)
-        if t > 9.9: im = X.slice_h(im, X.interleave(c['A'].at(t), c['B'].at(t), 0, 6, 14, INK), seg(t, 9.9, 10.2), (SLATE, INK))
+        if t > 9.9: im = X.slice_h(im, X.interleave(c['A'].at(t - 9.9), c['B'].at(t), 0, 6, 14, INK), seg(t, 9.9, 10.2), (SLATE, INK))
         return im
     if t < 11.8:                                                   # 7: strips sort into a half-and-half split
-        im = X.interleave(c['A'].at(t - 6.0), c['B'].at(t - 6.0), seg(t, 10.3, 11.0), 6, 14, INK); s = ease(seg(t, 11.0, 11.2))
+        im = X.interleave(c['A'].at(t - 10.3), c['B'].at(t - 6.0), seg(t, 10.3, 11.0), 6, 14, INK); s = ease(seg(t, 11.0, 11.2))
         if s > 0: put(im, g['tagA'], (270, 360), s, -4); put(im, g['tagB'], (810, 360), s, 4)
         P.say(im, g['both'], t, 11.05, (540, 1000), -3)
         return im
@@ -139,7 +141,7 @@ def main():
         for i, im in enumerate(ims): sheet.paste(im.resize((360, 640)), (i * 360, 0))
         out.mkdir(parents=True, exist_ok=True); sheet.save(out / '_test.jpg', quality=85); print('test', out / '_test.jpg')
     else:
-        render('04', fr, 14.0, out); X.strip_sheet(DIR, 14)
+        render('04', X.with_holds(fr, HOLDS), 14.0 + sum(h for _, h in HOLDS), out); X.strip_sheet(DIR, 20)
 
 if __name__ == '__main__':
     main()

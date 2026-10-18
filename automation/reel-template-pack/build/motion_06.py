@@ -31,7 +31,9 @@ from story4 import swipe, diagonal
 from collage_kit import doodle, doodle_on
 from motion_b2 import Clip, put, render, camera, ease, back_out, seg, lerp, lerp2, W, H, WHITE
 
-INK, CRM = (28, 27, 26), (246, 241, 232); OCHRE = (176, 128, 48)        # OCHRE = the accent buyers change
+INK, CRM = (28, 27, 26), (246, 241, 232); OCHRE = X.WINE; LIGHT = X.BUTTER   # her palette: wine + butter (buyers change them)
+X.use_type(LIGHT, OCHRE); X.enable_holds()
+HOLDS = [(1.7, 0.35), (3.3, 1.35), (4.9, 0.6), (6.3, 1.25), (7.9, 0.65), (9.5, 0.6), (10.75, 0.75), (14.9, 0.6)]   # reading time
 PHONE = 'Graphite Smartphone With Green Screen-38.png'
 DIR = '06-start-to-finish'
 BAR_Y = 300                                                             # just under Instagram's top bar
@@ -39,7 +41,7 @@ BAR_Y = 300                                                             # just u
 def bar(p, w=760, h=84):
     """The loading bar: a cream track with an ink edge, ochre fill, the percent in the track."""
     im = Image.new('RGBA', (w + 16, h + 16), (0, 0, 0, 0)); d = ImageDraw.Draw(im)
-    d.rounded_rectangle((8, 8, w + 8, h + 8), h // 2, fill=CRM + (255,), outline=INK + (255,), width=6)
+    d.rounded_rectangle((8, 8, w + 8, h + 8), h // 2, fill=LIGHT + (255,), outline=INK + (255,), width=6)
     fw = max(h, (w - 12) * p) if p > 0.01 else 0
     if fw: d.rounded_rectangle((14, 14, 14 + fw, h + 2), (h - 12) // 2, fill=OCHRE + (255,))
     d.text((w / 2 + 8, h / 2 + 8), f'{int(round(p * 100))}%', font=S.F(P.MONT, int(h * 0.55)), fill=INK, anchor='mm', stroke_width=3, stroke_fill=CRM)
@@ -57,12 +59,12 @@ def setup():
     g['bench'] = ImageOps.fit(S.raw('images', 'Warm worn workshop wood texture-15.png'), (W, H)).convert('RGBA')
     g['glass'] = P.thing('Classic wooden hourglass with flowing sand-238.png', 420, 'smalldots', OCHRE, scale=0.3, strength=0.6)
     g['making'] = P.pill_m('making one [smoothie]', 58, INK, CRM); g['start'] = P.caption('start to', 170, OCHRE); g['finish'] = P.caption('finish', 230, INK)
-    g['starts'] = P.caption('it starts as', 140, OCHRE); g['pile'] = P.pill_m('[a pile of fruit]', 58, INK, CRM)
+    g['starts'] = P.caption('it starts as', 140, INK); g['pile'] = P.pill_m('[a pile of fruit]', 58, INK, CRM)
     g['sp'] = [P.pill_m(t, 56, INK, CRM) for t in ('[stage one: prep]', '[stage two: mix]', '[stage three: blend]')]
-    g['later'] = P.sticky('[20 minutes\nlater]', 420, pin='pin-head-black'); g['speed'] = P.sticker('>> 2x', 70, INK, WHITE)
-    g['almost'] = P.caption('almost...', 160, OCHRE); g['fin'] = P.caption('finished.', 190, OCHRE)
-    g['comment'] = P.caption('Comment', 180, OCHRE, 'stripes'); g['kw'] = P.pill_m('"[KEYWORD]"', 64, CRM, INK); g['town'] = P.pill_m('[made by hand in Austin]', 48, INK, CRM)
-    g['d_under'] = doodle('under', 0, 600, OCHRE); g['d_arrow'] = doodle('arrow', 9, 250, WHITE); g['d_burst'] = doodle('burst', 2, 900, OCHRE)
+    g['later'] = P.sticky('[20 minutes\nlater]', 440, pin='pin-head-black'); g['speed'] = P.sticker('>> 2x', 70, INK, WHITE)
+    g['almost'] = P.caption('almost...', 160, INK); g['fin'] = P.caption('finished.', 190, OCHRE)
+    g['comment'] = P.caption('Comment', 180, OCHRE, 'stripes'); g['kw'] = P.pill_m('"[KEYWORD]"', 64, CRM, INK); g['town'] = P.pill_m('[handmade in Austin]', 50, INK, CRM)
+    g['d_under'] = doodle('under', 0, 600, OCHRE); g['d_arrow'] = doodle('arrow', 9, 250, WHITE); g['d_burst'] = doodle('burst', 2, 1250, OCHRE)
     g['d_tick'] = doodle('tick', 0, 240, INK)
     sw, sh = P.screen_size(PHONE, 640); g['sw'], g['sh'] = sw, sh
     g['feed'] = P.feed([(S.footage(cl), nm, pr) for cl, nm, pr in ((('IMG_1388', 2.0), '[Product 1]', '[$8]'), (('IMG_1395', 0.5), '[Product 2]', '[$9]'),
@@ -126,11 +128,10 @@ def frame(g, t):
     if t < 11.2: return bench7(g, t)                                # 7: the bar fills to 100%; dive in
     if t < 13.0:                                                   # 8: finished, one burst behind the word
         im = camera(c['done'].at(t - 11.2), (540, 960), lerp(1.4, 1, ease(seg(t, 11.2, 11.5)))) if t < 11.9 else c['done2'].at(t - 11.9)
-        doodle_on(im, t, 11.35, g['d_burst'], (540, 760), 0); P.say(im, g['fin'], t, 11.4, (540, 760), -3)
+        P.say(im, g['fin'], t, 11.4, (540, 700), -3)
         return im
-    im = g['bench'].copy(); f, ch, top = g['feed']                 # 9: CTA, the phone stands on the bench (no hand)
-    scr = P.phone_scroll(f, ch, top, seg(t, 13.1, 13.9), 3, g['sh'] / g['sw'])
-    put(im, P.on_screen(PHONE, 640, scr), (560, lerp(2300, 1340, ease(seg(t, 13.0, 13.3)))), 1, -3)
+    im = g['bench'].copy()      # 9: CTA, the phone stands on the bench (no hand); its whole screen is one video slot (the buyer's shop scroll)
+    put(im, P.on_screen(PHONE, 640, c['done2'].at(t - 13.0)), (560, lerp(2300, 1340, ease(seg(t, 13.0, 13.3)))), 1, -3)
     P.say(im, g['comment'], t, 13.3, (520, 330), -3); P.say(im, g['kw'], t, 13.55, (520, 480), 2); P.say(im, g['town'], t, 13.75, (520, 600), -2)
     return im
 
@@ -151,7 +152,7 @@ def main():
         for i, im in enumerate(ims): sheet.paste(im.resize((360, 640)), (i * 360, 0))
         out.mkdir(parents=True, exist_ok=True); sheet.save(out / '_test.jpg', quality=85); print('test', out / '_test.jpg')
     else:
-        render('06', fr, 15.0, out); X.strip_sheet(DIR, 15)
+        render('06', X.with_holds(fr, HOLDS), 15.0 + sum(h for _, h in HOLDS), out); X.strip_sheet(DIR, 22)
 
 if __name__ == '__main__':
     main()

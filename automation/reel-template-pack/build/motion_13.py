@@ -30,7 +30,9 @@ from story4 import swipe, diagonal, roundwin
 from collage_kit import doodle, doodle_on
 from motion_b2 import Clip, put, draw_on, render, camera, torn_band, ease, back_out, seg, lerp, lerp2, W, H, WHITE
 
-INK, CRM = (28, 27, 26), (246, 241, 232); PLUM = (110, 62, 92)           # PLUM = the accent buyers change
+INK, CRM = (28, 27, 26), (246, 241, 232); PLUM = X.WINE; LIGHT = X.PINK   # her palette: wine + pink (buyers change them)
+X.use_type(LIGHT, PLUM); X.enable_holds()
+HOLDS = [(1.5, 1.05), (2.9, 1.65), (4.55, 1.0), (6.5, 1.2), (7.8, 1.0), (9.7, 0.7), (11.3, 1.4), (12.7, 1.15), (14.95, 0.15)]   # reading time
 DIR = '13-how-to-use-it'
 CUBES = ('Engraved wooden number one cube-45.png', 'Natural Wooden Cube with Engraved 2-46.png', 'Wooden cube with engraved number 3-50.png')
 CARD_W = 980; CARD_C = (540, 1000); LINE_Y = (140, 218, 297); STEPS = ('1. [rinse the pad]', '2. [unwind + plug in]', '3. [glide]')
@@ -40,9 +42,9 @@ def card_xy(x, y):
 
 def setup():
     g = {'c': {'prod': Clip('IMG_1464', 1.0), 's1': Clip('IMG_1430', 0.5), 's2': Clip('IMG_1429', 5.0), 's3': Clip('IMG_1423', 2.0),
-               'res': Clip('IMG_1463', 0.5), 'cta': Clip('IMG_1375', 1.0)}}
+               'res': Clip('IMG_1432', 1.5), 'cta': Clip('IMG_1375', 1.0)}}
     oak = ImageOps.fit(S.raw('images', 'Light oak wood grain texture-2.png'), (W, H)).convert('RGBA')
-    dots = ImageOps.colorize(ImageOps.grayscale(S.raw('doodles', 'Playful hand-painted black polka dots-12.png')), PLUM, CRM).convert('RGBA')
+    dots = ImageOps.colorize(ImageOps.grayscale(S.raw('doodles', 'Playful hand-painted black polka dots-12.png')), PLUM, LIGHT).convert('RGBA')
     oak.alpha_composite(torn_band(dots, (W + 40, 300), 11, 't', 18), (-20, H - 280)); g['oak'] = oak
     g['card'] = P.die_cut(S.card('images', 'Blank Three-Line Recipe Card-56.png', CARD_W), 8)
     pats = (('stripes', PLUM), ('dots', INK), ('smalldots', PLUM))
@@ -53,10 +55,10 @@ def setup():
         im = Image.new('RGBA', (int(f.getlength(txt) + 20), 110), (0, 0, 0, 0)); ImageDraw.Draw(im).text((10, 55), txt, font=f, fill=INK, anchor='lm', stroke_width=1, stroke_fill=INK); g['lines'].append(im)
     g['strike'] = [doodle('under', 0, g['lines'][i].width, PLUM) for i in range(3)]
     g['howto'] = P.caption('how to use', 130, PLUM); g['prodname'] = P.pill_m('[your steam mop]', 58, INK, CRM); g['in3'] = P.caption('in 3 steps', 140, INK)
-    g['just'] = P.caption('just got one?', 130, PLUM)
+    g['just'] = P.caption('just got one?', 130, INK)
     g['sp'] = [P.pill_m(t, 58, INK if i != 1 else PLUM, CRM) for i, t in enumerate(STEPS)]
     g['done'] = P.sticky('done in\n[2 minutes]', 400, pin='pin-head-black'); g['result'] = P.caption('the result', 160, PLUM)
-    g['thats'] = P.caption("that's it.", 170, PLUM)
+    g['thats'] = P.caption("that's it.", 170, INK)
     g['comment'] = P.caption('Comment', 180, PLUM, 'stripes'); g['kw'] = P.pill_m('"[KEYWORD]"', 64, CRM, INK); g['name'] = P.pill_m('[Product name]', 54, PLUM, CRM)
     g['d_arrow'] = doodle('arrow', 3, 260, PLUM); g['d_ring'] = doodle('frame', 0, 460, PLUM); g['d_path'] = doodle('arrow', 7, 640, PLUM)
     g['d_burst'] = doodle('burst', 2, 760, PLUM); g['d_under'] = doodle('under', 3, 600, PLUM)
@@ -101,7 +103,7 @@ def frame(g, t):
         return im
     if t < 6.8:                                                    # 4: step 2
         im = c['s2'].at(t - 4.6); put(im, g['cubes_s'][1], (170, 330), back_out(seg(t, 5.0, 5.25)), 6)
-        P.say(im, g['sp'][1], t, 5.2, (560, 1380), 2); doodle_on(im, t, 5.5, g['d_ring'], (560, 1100), -4)
+        P.say(im, g['sp'][1], t, 5.2, (560, 1380), 2)       # no ring on the footage (her note)
         if t > 6.55: im = swipe(im, card_scene(g, t, None, 3, 2, 7.2), seg(t, 6.55, 6.8), -1)
         return im
     if t < 8.2:                                                    # 5: lines struck, line 3 written; cube 3 lands; dive
@@ -114,7 +116,7 @@ def frame(g, t):
         if t > 9.75: im = swipe(im, c['res'].at(t - 9.75), seg(t, 9.75, 10.0))
         return im
     if t < 11.6:                                                   # 7: the result
-        im = c['res'].at(t - 9.75); doodle_on(im, t, 10.05, g['d_burst'], (520, 330), 0)          # one burst, behind the words
+        im = c['res'].at(t - 9.75); doodle_on(im, t, 10.45, g['d_burst'], (760, 1180), 0)          # one burst, behind the proof note
         P.say(im, g['result'], t, 10.1, (520, 330), -3); P.say(im, g['done'], t, 10.5, (760, 1180), 7)
         if t > 11.35: im = diagonal(im, recap(g, t), seg(t, 11.35, 11.6))
         return im
@@ -124,7 +126,6 @@ def frame(g, t):
         return im
     im = c['cta'].at(t - 12.75)                                     # 9: CTA
     P.say(im, g['comment'], t, 13.1, (500, 1080), -3); P.say(im, g['kw'], t, 13.35, (500, 1230), 2); P.say(im, g['name'], t, 13.55, (500, 1350), -2)
-    doodle_on(im, t, 13.4, g['d_under'], (500, 1160), -2)
     return im
 
 def recap(g, t):
@@ -144,7 +145,7 @@ def main():
         for i, im in enumerate(ims): sheet.paste(im.resize((360, 640)), (i * 360, 0))
         out.mkdir(parents=True, exist_ok=True); sheet.save(out / '_test.jpg', quality=85); print('test', out / '_test.jpg')
     else:
-        render('13', fr, 15.0, out); X.strip_sheet(DIR, 15)
+        render('13', X.with_holds(fr, HOLDS), 15.0 + sum(h for _, h in HOLDS), out); X.strip_sheet(DIR, 25)
 
 if __name__ == '__main__':
     main()

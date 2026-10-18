@@ -32,7 +32,9 @@ from story4 import diagonal
 from collage_kit import doodle, doodle_on
 from motion_b2 import Clip, put, render, camera, torn_band, ease, back_out, seg, lerp, lerp2, W, H, WHITE
 
-INK, CRM = (28, 27, 26), (246, 241, 232); TEAL = (36, 98, 102)          # TEAL = the accent buyers change
+INK, CRM = (28, 27, 26), (246, 241, 232); TEAL = INK; LIGHT = X.BUTTER   # her palette: butter + ink (buyers change them)
+X.use_type(LIGHT, TEAL); X.enable_holds()
+HOLDS = [(1.3, 1.35), (2.65, 0.95), (4.45, 0.9), (5.7, 0.85), (7.55, 0.8), (8.95, 0.7), (10.05, 1.3), (11.95, 1.25), (13.95, 0.3)]   # reading time
 PHONE = 'Graphite Smartphone With Green Screen-38.png'
 DIR = '05-details'
 DET = [('IMG_1414', 4.0), ('IMG_1421', 5.0), ('IMG_1457', 1.5), ('IMG_1459', 0.5)]; WHOLE = ('IMG_1422', 3.0)
@@ -48,22 +50,20 @@ def setup():
     g = {'c': {f'd{i}': Clip(n, t0) for i, (n, t0) in enumerate(DET)}}; g['c']['whole'] = Clip(*WHOLE); g['c']['cta'] = Clip(WHOLE[0], WHOLE[1] + 1.0)
     pc = S.raw('images', 'Blank vintage cream postcard-111.png'); w_, h_ = pc.size
     paper = ImageOps.fit(pc.crop((int(w_ * 0.1), int(h_ * 0.12), int(w_ * 0.9), int(h_ * 0.88))), (W, H)).convert('RGBA')
-    dots = ImageOps.colorize(ImageOps.grayscale(S.raw('doodles', 'Hand-drawn black dot pattern-21.png')), TEAL, CRM).convert('RGBA')
+    dots = ImageOps.colorize(ImageOps.grayscale(S.raw('doodles', 'Hand-drawn black dot pattern-21.png')), (226, 200, 118), LIGHT)   # soft dots so the words read ON the band.convert('RGBA')
     paper.alpha_composite(torn_band(dots, (W + 40, 250), 3, 'tb', 18), (-20, 225))   # the words sit ON this band (her note)
     g['sheet'] = paper
     g['stills'] = [S.footage(d, (FW, FH)) for d in DET]; g['cards'] = [frame_card(s, i + 1) for i, s in enumerate(g['stills'])]
-    sw, sh = P.screen_size(PHONE, 620); f, _, _ = P.feed([(S.footage(WHOLE), '[Product name]', '[$129]')], w=sw, accent=TEAL); g['shop'] = f.crop((0, 0, sw, sh))
-    g['phone'] = P.on_screen(PHONE, 620, g['shop'])
     g['nums'] = [P.sticker(f'0{i + 1}', 64, TEAL, WHITE, 'circle') for i in range(4)]
-    g['details'] = P.caption('details', 190, TEAL); g['miss'] = P.caption("you'd miss", 150, INK); g['inphoto'] = P.pill_m('in a photo', 60, TEAL, CRM)
+    g['details'] = P.caption('details', 190, X.WINE); g['miss'] = P.caption("you'd miss", 150, INK); g['inphoto'] = P.pill_m('in a photo', 60, TEAL, CRM)
     g['photo'] = P.caption('the photo:', 140, INK); g['fine'] = P.sticky('looks...\nfine?', 360, pin='pin-head-black')
-    g['upclose'] = P.caption('up close:', 140, TEAL)
+    g['upclose'] = P.caption('up close:', 140, INK)
     g['p'] = [P.pill_m(t, 54, INK, CRM) for t in ('[brushed copper finish]', '[see-through dust bin]', '[one-touch controls]')]
     tag = P.raw_cut('Blank kraft hang tag with twine-116.png', 480).copy(); d = ImageDraw.Draw(tag)     # a kraft hang tag reads at a glance
     tag.alpha_composite(P.sticker('04', 64, TEAL, WHITE, 'circle'), (int(tag.width / 2 - 60), int(tag.height * 0.42)))
     d.multiline_text((tag.width / 2, tag.height * 0.74), '[LED head\nshows\nthe dust]', font=S.F(P.MONT, 52), fill=INK, anchor='mm', align='center')
     g['label'] = P.die_cut(tag, 8)
-    g['seen'] = P.caption('now you know', 88, TEAL)
+    g['seen'] = P.caption('now you know', 110, INK)
     g['comment'] = P.caption('Comment', 180, TEAL, 'stripes'); g['kw'] = P.pill_m('"[KEYWORD]"', 64, CRM, INK); g['name'] = P.pill_m('[Product name]', 54, TEAL, CRM)
     g['ring'] = doodle('frame', 0, 760, TEAL); g['ringS'] = doodle('frame', 0, 520, TEAL); g['ringW'] = doodle('frame', 0, 700, WHITE)
     g['d_arrow'] = doodle('arrow', 9, 260, WHITE); g['d_under'] = doodle('under', 0, 600, CRM)
@@ -71,7 +71,8 @@ def setup():
     return g
 
 def stage2(g, t):
-    im = g['sheet'].copy(); k = back_out(seg(t, 1.6, 1.9), 1.5); put(im, g['phone'], (560, lerp(2300, 1080, k)), 1, -6)
+    im = g['sheet'].copy(); k = back_out(seg(t, 1.6, 1.9), 1.5)       # the whole screen is one video slot: the buyer's listing
+    put(im, P.on_screen(PHONE, 620, g['c']['whole'].at(t - 1.6)), (560, lerp(2300, 1080, k)), 1, -6)
     P.say(im, g['photo'], t, 1.7, (540, 350), -3); P.say(im, g['fine'], t, 2.1, (250, 1350), -8)
     if t > 2.7: im = camera(im, (560, 1080), lerp(1, 3.2, ease(seg(t, 2.7, 3.2)) ** 2))
     return im
@@ -102,7 +103,7 @@ def stage8(g, t):
 def frame(g, t):
     c = g['c']
     if t < 1.6:                                                    # 1: the extreme close-up, ringed
-        im = c['d0'].at(t); doodle_on(im, t, 0.1, g['ring'], (540, 820), -4, dur=0.5)
+        im = c['d0'].at(t)                                   # no ring on the footage (her note)
         P.say(im, g['details'], t, 0.15, (540, 1160), -3); P.say(im, g['miss'], t, 0.45, (560, 1320), -2); P.say(im, g['inphoto'], t, 0.8, (560, 1450), 2)
         if t > 1.35: im = diagonal(im, stage2(g, t), seg(t, 1.35, 1.6))
         return im
@@ -144,7 +145,7 @@ def main():
         for i, im in enumerate(ims): sheet.paste(im.resize((360, 640)), (i * 360, 0))
         out.mkdir(parents=True, exist_ok=True); sheet.save(out / '_test.jpg', quality=85); print('test', out / '_test.jpg')
     else:
-        render('05', fr, 14.0, out); X.strip_sheet(DIR, 14)
+        render('05', X.with_holds(fr, HOLDS), 14.0 + sum(h for _, h in HOLDS), out); X.strip_sheet(DIR, 23)
 
 if __name__ == '__main__':
     main()

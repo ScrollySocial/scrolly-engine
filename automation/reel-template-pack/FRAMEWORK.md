@@ -56,6 +56,9 @@ The long rules below are reference. These ten are where drafts keep failing. A d
 
 **Her notes on the #04-#13 motion tests (2026-10-18), every template:**
 - **NEVER a hand holding the phone.** Phones, tablets and laptops stand or lie on the stage on their own.
+- **A device screen is ONE full-screen video slot** (video on video: the buyer's screen recording of their shop,
+  listing or DMs), never a mock UI of product squares (her note on #06, 2026-10-18).
+- **Words on a sticky note or tag stay inside it** (size them to fit).
 - **No empty marker circles.** A ring goes round one specific thing (a detail, a word); a circle round nothing is cut.
   No marker rings in the middle of footage at all ("circles in the middle of a video doing nothing look very odd");
   a ring may mark a photo on a graphic stage (e.g. the frame the camera then zooms into).
