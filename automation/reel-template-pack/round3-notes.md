@@ -33,3 +33,35 @@ More notes are coming (she couldn't view all the videos yet); wait for them, the
 - #23 rendered (`23-.../preview/motion-test.mp4`) but NOT yet checked on its 1 fps strip or sent. Its COMMENT also
   uses the striped fill: switch to solid before sending.
 - #15 (fresh) and #11 (clock wheel) not started.
+
+## More notes (2026-10-18, second message)
+
+### #12 (continued)
+- "the wait / is over": the olive-on-blue-tissue combination is ugly. Use a smaller, neutral font; "over" should come in
+  letter by letter.
+- Arrow placement on the unboxing clip is off (it points at nothing useful).
+- The tag text "[every order comes gift-wrapped]" is not fun enough: write something FUN.
+- End: instead of the doorbell on the CTA, maybe a package bow.
+- "get yours" text: not loving it at all.
+
+### #22 Put it to the test
+- The first frame (magnifier on graph paper) won't stop the scroll for trendy IG women: needs a far stronger hook.
+- The camera floating alone over the test clip looks low-grade: remove it or anchor it.
+- Too fast to read.
+- Hates the colours (brick red checkerboard + red). Two tick marks make no sense with one video and no points: remove.
+
+### #08 A real customer question
+- Unacceptable start: the first frame is an empty blue paper (nothing on it until things pop in). Frame 1 must already
+  be full and moving.
+- Elements come in too fast to read; the text is too spread out ("you all asked" across the top, cards scattered).
+
+### Still to come
+She says "continued": more notes on #08/#20 (and maybe #23) to follow. Collect all, then one pass.
+
+## Cross-cutting takeaways (apply to everything)
+- Frame 1 must be full, rich and moving: no empty or plain opening, ever.
+- Slow down: each beat must be readable; fewer elements at once, grouped, not spread out.
+- Colours: muted is right, but avoid clashing pairs (olive on periwinkle, brick + red); prefer neutrals with one accent.
+- Built-in story words: she isn't loving the Bodoni italic captions. Try smaller, neutral, trendier type; letter-by-letter
+  entry for key words. Show 3 to 4 type options before rebuilding.
+- No lone floating props (camera); every prop sits on/interacts with something.
