@@ -13,7 +13,7 @@ Scenes (15 s; graphics-only: 2, 5, 8):
  4 5.0  cube 2 rolls across as the wipe into step 2; 2. [step] pill; a marker ring round the click
  5 6.8  CARD, no video: lines 1-2 struck through, line 3 writes in; cube 3 lands; the camera dives into it...
  6 8.2  ...step 3 full frame; a marker path follows the glide; 3. [step] pill
- 7 10.0 the result full frame; burst; a sticky note: done in [2 minutes]
+ 7 10.0 the result full frame; a burst behind THE RESULT; a sticky note: done in [2 minutes]
  8 11.6 OAK, no video: recap: three round windows (the three steps) float over the three cubes; "1 2 3. that's it."
  9 13.0 CTA: the product full frame; Comment / "[KEYWORD]" / [Product name]
 Usage: python build/motion_13.py [seconds ...]  ->  13-how-to-use-it/preview/motion-test.mp4 (or a test sheet)
@@ -59,7 +59,7 @@ def setup():
     g['thats'] = P.caption("that's it.", 170, PLUM)
     g['comment'] = P.caption('Comment', 180, PLUM, 'stripes'); g['kw'] = P.pill_m('"[KEYWORD]"', 64, CRM, INK); g['name'] = P.pill_m('[Product name]', 54, PLUM, CRM)
     g['d_arrow'] = doodle('arrow', 3, 260, PLUM); g['d_ring'] = doodle('frame', 0, 460, PLUM); g['d_path'] = doodle('arrow', 7, 640, PLUM)
-    g['d_burst'] = doodle('burst', 1, 360, PLUM); g['d_under'] = doodle('under', 3, 600, PLUM)
+    g['d_burst'] = doodle('burst', 2, 760, PLUM); g['d_under'] = doodle('under', 3, 600, PLUM)
     return g
 
 def tumble(img, cube, t, t0, a, b, spins=1.0, dur=0.45):
@@ -114,7 +114,7 @@ def frame(g, t):
         if t > 9.75: im = swipe(im, c['res'].at(t - 9.75), seg(t, 9.75, 10.0))
         return im
     if t < 11.6:                                                   # 7: the result
-        im = c['res'].at(t - 9.75); doodle_on(im, t, 10.05, g['d_burst'], (300, 640), 0, 10.8)
+        im = c['res'].at(t - 9.75); doodle_on(im, t, 10.05, g['d_burst'], (520, 330), 0)          # one burst, behind the words
         P.say(im, g['result'], t, 10.1, (520, 330), -3); P.say(im, g['done'], t, 10.5, (760, 1180), 7)
         if t > 11.35: im = diagonal(im, recap(g, t), seg(t, 11.35, 11.6))
         return im

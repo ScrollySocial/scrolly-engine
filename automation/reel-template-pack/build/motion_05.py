@@ -36,20 +36,20 @@ INK, CRM = (28, 27, 26), (246, 241, 232); TEAL = (36, 98, 102)          # TEAL =
 PHONE = 'Graphite Smartphone With Green Screen-38.png'
 DIR = '05-details'
 DET = [('IMG_1414', 4.0), ('IMG_1421', 5.0), ('IMG_1457', 1.5), ('IMG_1459', 0.5)]; WHOLE = ('IMG_1422', 3.0)
-SLOTS = [(300, 560), (780, 600), (300, 1290), (780, 1250)]               # film frames on the sheet (centres)
-FW, FH = 400, 560
+SLOTS = [(290, 790), (790, 810), (290, 1330), (790, 1310)]               # film frames on the sheet (centres)
+FW, FH = 380, 470
 
 def frame_card(im, n, w=FW, h=FH):
     """A still as a film frame on the contact sheet: white border, frame number in marker underneath."""
-    c = Image.new('RGBA', (w + 28, h + 90), (252, 250, 245, 255)); c.alpha_composite(ImageOps.fit(im, (w, h)).convert('RGBA'), (14, 14))
-    ImageDraw.Draw(c).text((24, h + 52), f'0{n}', font=S.F(S.HAND, 52), fill=INK, anchor='lm'); return C.shadow(c, (6, 10), 10, 90)
+    c = Image.new('RGBA', (w + 28, h + 84), (252, 250, 245, 255)); c.alpha_composite(ImageOps.fit(im, (w, h)).convert('RGBA'), (14, 70))
+    ImageDraw.Draw(c).text((24, 38), f'0{n}', font=S.F(S.HAND, 50), fill=INK, anchor='lm'); return C.shadow(c, (6, 10), 10, 90)
 
 def setup():
     g = {'c': {f'd{i}': Clip(n, t0) for i, (n, t0) in enumerate(DET)}}; g['c']['whole'] = Clip(*WHOLE); g['c']['cta'] = Clip(WHOLE[0], WHOLE[1] + 1.0)
     pc = S.raw('images', 'Blank vintage cream postcard-111.png'); w_, h_ = pc.size
     paper = ImageOps.fit(pc.crop((int(w_ * 0.1), int(h_ * 0.12), int(w_ * 0.9), int(h_ * 0.88))), (W, H)).convert('RGBA')
     dots = ImageOps.colorize(ImageOps.grayscale(S.raw('doodles', 'Hand-drawn black dot pattern-21.png')), TEAL, CRM).convert('RGBA')
-    paper.alpha_composite(torn_band(dots, (W + 40, 240), 3, 'b', 18), (-20, -20))
+    paper.alpha_composite(torn_band(dots, (W + 40, 250), 3, 'tb', 18), (-20, 225))   # the words sit ON this band (her note)
     g['sheet'] = paper
     g['stills'] = [S.footage(d, (FW, FH)) for d in DET]; g['cards'] = [frame_card(s, i + 1) for i, s in enumerate(g['stills'])]
     sw, sh = P.screen_size(PHONE, 620); f, _, _ = P.feed([(S.footage(WHOLE), '[Product name]', '[$129]')], w=sw, accent=TEAL); g['shop'] = f.crop((0, 0, sw, sh))
@@ -59,26 +59,27 @@ def setup():
     g['photo'] = P.caption('the photo:', 140, INK); g['fine'] = P.sticky('looks...\nfine?', 360, pin='pin-head-black')
     g['upclose'] = P.caption('up close:', 140, TEAL)
     g['p'] = [P.pill_m(t, 54, INK, CRM) for t in ('[brushed copper finish]', '[see-through dust bin]', '[one-touch controls]')]
-    lab = P.raw_cut('Blank woven cotton care label-86.png', 400).copy(); d = ImageDraw.Draw(lab)
-    d.multiline_text((lab.width / 2, lab.height * 0.5), '04\n[LED head\nshows\nthe dust]', font=S.F(P.MONT, 50), fill=TEAL, anchor='mm', align='center')
-    g['label'] = P.die_cut(lab, 8)
-    g['seen'] = P.caption('now you know', 105, TEAL)
+    tag = P.raw_cut('Blank kraft hang tag with twine-116.png', 480).copy(); d = ImageDraw.Draw(tag)     # a kraft hang tag reads at a glance
+    tag.alpha_composite(P.sticker('04', 64, TEAL, WHITE, 'circle'), (int(tag.width / 2 - 60), int(tag.height * 0.42)))
+    d.multiline_text((tag.width / 2, tag.height * 0.74), '[LED head\nshows\nthe dust]', font=S.F(P.MONT, 52), fill=INK, anchor='mm', align='center')
+    g['label'] = P.die_cut(tag, 8)
+    g['seen'] = P.caption('now you know', 88, TEAL)
     g['comment'] = P.caption('Comment', 180, TEAL, 'stripes'); g['kw'] = P.pill_m('"[KEYWORD]"', 64, CRM, INK); g['name'] = P.pill_m('[Product name]', 54, TEAL, CRM)
     g['ring'] = doodle('frame', 0, 760, TEAL); g['ringS'] = doodle('frame', 0, 520, TEAL); g['ringW'] = doodle('frame', 0, 700, WHITE)
-    g['d_arrow'] = doodle('arrow', 9, 260, WHITE); g['d_under'] = doodle('under', 4, 600, CRM)
-    g['arrows'] = [doodle('arrow', i, 170, TEAL) for i in (1, 2, 3, 4)]
+    g['d_arrow'] = doodle('arrow', 9, 260, WHITE); g['d_under'] = doodle('under', 0, 600, CRM)
+    g['arrows'] = [doodle('arrow', 0, 150, TEAL) for i in range(4)]
     return g
 
 def stage2(g, t):
     im = g['sheet'].copy(); k = back_out(seg(t, 1.6, 1.9), 1.5); put(im, g['phone'], (560, lerp(2300, 1080, k)), 1, -6)
-    P.say(im, g['photo'], t, 1.7, (480, 330), -3); P.say(im, g['fine'], t, 2.1, (250, 1350), -8)
+    P.say(im, g['photo'], t, 1.7, (540, 350), -3); P.say(im, g['fine'], t, 2.1, (250, 1350), -8)
     if t > 2.7: im = camera(im, (560, 1080), lerp(1, 3.2, ease(seg(t, 2.7, 3.2)) ** 2))
     return im
 
 def stage4(g, t):
     im = g['sheet'].copy()
     for i, (cd, xy) in enumerate(zip(g['cards'], SLOTS)): put(im, cd, xy, back_out(seg(t, 4.8 + i * 0.1, 5.1 + i * 0.1), 1.5), (-3, 2, 3, -2)[i])
-    P.say(im, g['upclose'], t, 5.0, (540, 960), -2)
+    P.say(im, g['upclose'], t, 5.0, (540, 350), -2)
     doodle_on(im, t, 5.4, g['ringS'], SLOTS[1], 4)
     if t > 5.75: im = camera(im, SLOTS[1], lerp(1, 3.4, ease(seg(t, 5.75, 6.2)) ** 2))
     return im
@@ -92,10 +93,10 @@ def stage8(g, t):
     for i, xy in enumerate(corners):
         k = back_out(seg(t, 10.8 + i * 0.12, 11.1 + i * 0.12), 1.6)
         if k <= 0: continue
-        put(im, S.fitw(g['cards'][i], 290), xy, k, (-6, 5, 4, -5)[i]); put(im, g['nums'][i], (xy[0] + 100, xy[1] - 170), k * 0.8)
+        put(im, S.fitw(g['cards'][i], 290), xy, k, (-6, 5, 4, -5)[i])
     for i, (xy, r) in enumerate((((350, 820), -40), ((730, 840), 220), ((350, 1180), 40), ((730, 1160), 140))):
         doodle_on(im, t, 11.2 + i * 0.1, g['arrows'][i], xy, r)
-    P.say(im, g['seen'], t, 11.3, (540, 320), -2)
+    P.say(im, g['seen'], t, 11.3, (540, 350), -2)
     return im
 
 def frame(g, t):
@@ -133,7 +134,6 @@ def frame(g, t):
         return im
     if t < 12.0: return stage8(g, t)                                # 8: pull back to the whole
     im = c['cta'].at(t - 12.0)                                      # 9: CTA
-    doodle_on(im, t, 12.1, g['ringW'], (540, 760), 3)
     P.say(im, g['comment'], t, 12.2, (520, 1130), -3); P.say(im, g['kw'], t, 12.5, (520, 1280), 2); P.say(im, g['name'], t, 12.7, (520, 1400), -2)
     return im
 
