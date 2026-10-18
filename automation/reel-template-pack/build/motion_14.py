@@ -1,19 +1,19 @@
-"""#14 The annoying moment, motion test (2026-10-18). Built the way #04-#13 round 3 were (play_extra: locked type, palette,
-reading-time holds). World: the junk drawer: a real messy wooden drawer (the annoyance), her black scribble patches
-crowding the problem, black-and-white for the problem and colour for the fix, on butter tissue paper. Palette: butter +
-wine. No tech moment in this one (most templates, not all).
-Story (5 beats): hook "[the annoying moment]... again." / problem: every single time / product: the fix, in colour /
-proof: no more [annoyance] / CTA: comment [KEYWORD].
-Scenes (graphics-only: 2, 5):
- 1 0.0  the annoying moment in B&W, full frame; her scribbles crowd in round the edges; [the annoying moment] + "again."
- 2 1.8  STAGE, no video: the junk drawer slides up onto the butter paper; the tangled cord, plasters and paper ball drop
-        into it one by one; "we've all been there"
- 3 3.4  the camera dives into the drawer: the moment again, B&W, inside the drawer; the scribbles carried back in
- 4 5.0  THE SWITCH (one main action): the scribbles take over the screen, then wipe away one by one to the fix in colour;
-        "fixed." with a single underline
- 5 6.6  STAGE: the drawer drops away, the clutter tumbles out after it; the fix stays as a photo card; [no more ...]
+"""#14 The annoying moment, motion test round 2 (2026-10-18). Her notes on round 1: the copy came from the stand-in
+clip ("2am") and didn't sell a physical product; she hated the scribble swarm. Round 2: generic copy any seller can
+use, and one literal main move: the annoying moment plays in black and white on a real vintage TV, the channel
+flips (static) and the fix comes on in colour. A few crumpled paper balls stand for the frustration and get swept
+away. Calm butter stage (soft concrete), like the approved #08/#09. Palette: butter + wine. Built the #04-#13 round 3
+way (play_extra: locked type, palette, reading-time holds). No tech moment.
+Story (5 beats): hook "[when your ___ ] ... again." / problem: every single time / product: the fix / proof: no more
+[annoyance] / CTA: comment [KEYWORD].
+Scenes (graphics-only: 2):
+ 1 0.0  the annoying moment, B&W, full frame; [when your cord tangles] + "again."
+ 2 1.8  STAGE, no video: crumpled paper balls drop onto the butter concrete one by one; "we've all been there"
+ 3 3.4  STAGE: the real TV rolls in, playing the moment in B&W; "every single time"
+ 4 5.0  the channel flips: static, then the fix in colour fills the TV and grows to full frame; "fixed." + one underline
+ 5 6.6  STAGE: the TV now in colour; the paper balls are swept off one by one; [no more tangles] (one burst behind the TV)
  6 8.2  the fix in use, full frame; [how it fixes it] + one arrow up to the centre
- 7 9.8  CTA: the product on its own; Comment / [KEYWORD] / [Product name] with one burst behind the name
+ 7 9.8  CTA: the product on its own; Comment / [KEYWORD] / [Product name]
 Usage: python build/motion_14.py [seconds ...]  ->  14-the-annoying-moment/preview/motion-test.mp4 (or a test sheet)
 """
 import math, random, sys
@@ -31,101 +31,81 @@ from motion_b2 import Clip, put, render, camera, ease, back_out, seg, lerp, lerp
 INK, CRM = (24, 23, 22), (246, 241, 232); DARK, LIGHT = X.WINE, X.BUTTER           # her palette: wine + butter
 X.use_type(LIGHT, DARK); X.enable_holds()
 DIR = '14-the-annoying-moment'
-DRAWER_IN = (0.075, 0.06, 0.925, 0.89)          # the drawer's inside, as shares of the cropped photo
-HOLDS = [(1.5, 1.1), (2.95, 1.6), (4.95, 0.8), (6.3, 1.1), (7.9, 1.3), (9.5, 1.0), (11.95, 0.4)]   # just before each transition
+TV_W = 880; TV_C = (540, 940)
+HOLDS = [(1.55, 1.0), (3.15, 1.1), (4.75, 1.0), (6.35, 1.0), (7.95, 1.0), (9.55, 1.0), (12.45, 0.4)]
 
 def gray(im): return ImageOps.grayscale(im.convert('RGB')).convert('RGBA')
 
 def setup():
-    g = {'c': {'prob': Clip('IMG_1451', 0.0), 'prob2': Clip('IMG_1448', 0.0), 'fix': None, 'fix2': None, 'cta': None}}
-    lamp = Clip('IMG_1449', 0.0); g['c']['fix'] = g['c']['fix2'] = g['c']['cta'] = X.Window(lamp, 3.3, 5.8)   # the stand-in lamp is lit only 3.3-5.8 s
-    tis = ImageOps.grayscale(S.raw('images', 'Blush Pink Tissue Paper Texture-9.png'))
-    g['paper'] = ImageOps.fit(ImageOps.colorize(ImageOps.autocontrast(tis), (226, 205, 140), LIGHT), (W, H)).convert('RGBA')
-    raw = S.raw('images', 'Messy wooden junk drawer-66.png'); bb = (38, 84, 1275, 1151); d = raw.crop(bb); d = d.crop((0, 0, d.width, int(d.height * 0.948)))
-    g['drawer'] = C.shadow(S.fitw(d.convert('RGBA'), 960), (10, 18), 16, 110)
-    g['dw'], g['dh'] = 960, int(960 * d.height / d.width)
-    g['clutter'] = [P.thing('Compact tangled black cord knot-54.png', 300, 'smalldots', LIGHT, scale=0.3, strength=0.7),
-                    P.thing('Crossed beige adhesive plasters-63.png', 280, 'stripes', DARK, scale=0.3, strength=0.5),
-                    P.thing('Crumpled cream paper ball-58.png', 220, 'dots', DARK, scale=0.35, strength=0.6)]
-    r = random.Random(4); g['scrib'] = [P.die_cut(doodle('scribble', i % 8, r.randint(260, 380), DARK), 5, False) for i in range(10)]   # wine + cream edge: reads on any clip
-    g['spots'] = [(120, 420), (950, 380), (90, 1050), (980, 980), (200, 1520), (900, 1600), (540, 250), (520, 1700), (330, 760), (760, 1300)]
-    g['annoy'] = X.hl('[2am. can\'t see a thing.]', 58, WHITE); g['again'] = P.caption('again.', 230, DARK)
-    g['been'] = P.caption("we've all been there", 120, INK)
-    g['every'] = P.caption('every single time', 120, INK)
+    brush = X.Window(Clip('IMG_1381', 0.0), 0.5, 3.2)                 # stand-in: the hair tool (in frame 0.5-3.2 s)
+    g = {'c': {'prob': Clip('IMG_1378', 0.5), 'prob2': Clip('IMG_1377', 0.5), 'fix': brush, 'use': X.Window(Clip('IMG_1377', 0.0), 0.5, 3.0), 'cta': brush}}
+    cc = ImageOps.grayscale(S.raw('images', 'Light gray concrete mineral texture-4.png'))
+    g['bg'] = ImageOps.fit(ImageOps.colorize(ImageOps.autocontrast(cc), (214, 192, 120), LIGHT), (W, H)).convert('RGBA')
+    g['balls'] = [P.thing(n, w, p, col, scale=0.3, strength=0.55, seed=i) for i, (n, w, p, col) in enumerate((
+        ('Crumpled cream paper ball-58.png', 330, 'stripes', DARK), ('Crumpled cream paper ball-58.png', 290, 'dots', DARK),
+        ('Crumpled cream paper ball-58.png', 310, 'smalldots', DARK)))]
+    g['spots'] = [(230, 1600), (840, 1560), (540, 1680)]
+    g['static'] = [Image.effect_noise((TV_W // 3, TV_W // 4), 90 + 20 * i).convert('RGBA').resize((TV_W, int(TV_W * 0.75))) for i in range(3)]
+    g['annoy'] = X.hl('[when your cord tangles]', 60, WHITE); g['again'] = P.caption('again.', 230, DARK)
+    g['been'] = P.caption("we've all been there", 116, INK)
+    g['every'] = P.caption('every single time', 116, INK)
     g['fixed'] = P.caption('fixed.', 260, DARK); g['under'] = doodle('under', 0, 560, LIGHT)
-    g['nomore'] = X.hl('[no more fumbling]', 60, DARK)
-    g['how'] = X.hl('[one tap. soft light.]', 58, WHITE); g['arrow'] = doodle('arrow', 0, 190, WHITE)
+    g['nomore'] = X.hl('[no more tangles]', 62, DARK); g['burst'] = doodle('burst', 2, 1150, DARK)
+    g['how'] = X.hl('[one smooth pass]', 60, WHITE); g['arrow'] = doodle('arrow', 0, 190, WHITE)
     g['comment'] = P.caption('Comment', 190, DARK); g['kw'] = X.hl('"[KEYWORD]"', 64, WHITE); g['name'] = X.hl('[Product name]', 56, DARK)
-    g['burst'] = doodle('burst', 2, 480, LIGHT)
     return g
 
-def scribbles(im, g, t, t0, n=6, grow=0.0, gone=None):
-    """Her scribbles crowd in round the edges (drawn on one by one); `grow` takes them over the screen; `gone` wipes them."""
-    for i in range(n):
-        ti = t0 + i * 0.12
-        if t < ti: continue
-        x, y = g['spots'][i]; xy = lerp2((x, y), (540 + (x - 540) * 0.35, 960 + (y - 960) * 0.35), grow); s = 1 + 1.6 * grow
+def tv(g, im, t, screen, y=None, k=1.0):
+    put(im, P.tv_with(screen, TV_W), (TV_C[0], TV_C[1] if y is None else y), k, -2)
+
+def balls(im, g, t, t0=None, gone=None):
+    for i, (b, xy) in enumerate(zip(g['balls'], g['spots'])):
+        d = 1 if t0 is None else back_out(seg(t, t0 + i * 0.25, t0 + i * 0.25 + 0.3), 1.6)
+        if d <= 0: continue
+        x, y = xy[0], lerp(-300, xy[1], d)
         if gone is not None:
-            k = 1 - ease(seg(t, gone + i * 0.06, gone + i * 0.06 + 0.2))
-            if k <= 0: continue
-            s *= k
-        if s < 0.04: continue
-        it = g['scrib'][i] if s == 1 else g['scrib'][i].resize((int(g['scrib'][i].width * s), int(g['scrib'][i].height * s)))
-        if gone is None and grow == 0: doodle_on(im, t, ti, it, xy, (i * 37) % 30 - 15)
-        else: put(im, it, xy, 1, (i * 37) % 30 - 15)
-
-def drawer_scene(g, t, y, clip_im=None):
-    """The drawer at height y (centre); optionally a clip inside it (replacing the clutter)."""
-    im = g['paper'].copy(); put(im, g['drawer'], (540, y))
-    if clip_im is not None:
-        x0, y0, x1, y1 = DRAWER_IN; w, h = int(g['dw'] * (x1 - x0)), int(g['dh'] * (y1 - y0))
-        v = ImageOps.fit(clip_im, (w, h)).convert('RGBA'); im.alpha_composite(C.shadow(v, (0, 10), 14, 120), (int(540 - g['dw'] / 2 + g['dw'] * x0) - 14, int(y - g['dh'] / 2 + g['dh'] * y0) - 14))
-    return im
-
-def stage2(g, t):
-    k = back_out(seg(t, 1.8, 2.15), 1.3); im = drawer_scene(g, t, lerp(2600, 1000, k))
-    for i, (it, xy, r) in enumerate(zip(g['clutter'], ((360, 880), (730, 980), (560, 1120)), (-10, 14, 0))):
-        d = back_out(seg(t, 2.3 + i * 0.2, 2.6 + i * 0.2), 1.6)
-        if d > 0: put(im, it, (xy[0], lerp(-300, xy[1], d)), 1, r)
-    P.say(im, g['been'], t, 2.2, (540, 330), -2)
-    return im
+            u = ease(seg(t, gone + i * 0.2, gone + i * 0.2 + 0.35)); x += (1 if i % 2 else -1) * 900 * u; y -= 200 * u
+        put(im, b, (x, y), 1, (i * 47) % 40 - 20)
 
 def frame(g, t):
     c = g['c']
-    if t < 1.8:                                                    # 1: the moment in B&W; scribbles crowd in
-        im = gray(c['prob'].at(t)); scribbles(im, g, t, 0.0, 6)
-        P.say(im, g['annoy'], t, 0.05, (540, 400), -2); P.say(im, g['again'], t, 0.45, (540, 1250), -4)
-        if t > 1.55: im = swipe(im, stage2(g, t), seg(t, 1.55, 1.8))
+    if t < 1.8:                                                    # 1: the annoying moment in B&W
+        im = gray(c['prob'].at(t)); P.say(im, g['annoy'], t, 0.05, (540, 380), -2); P.say(im, g['again'], t, 0.4, (540, 1250), -4)
+        if t > 1.6: im = swipe(im, stage2(g, t), seg(t, 1.6, 1.8))
         return im
-    if t < 3.4: return stage2(g, t) if t < 3.0 else camera(stage2(g, t), (540, 1000), lerp(1, 2.6, ease(seg(t, 3.0, 3.4)) ** 2))
-    if t < 5.0:                                                    # 3: the moment again, inside the drawer
-        z = lerp(2.6, 1.0, ease(seg(t, 3.4, 3.8))); im = camera(drawer_scene(g, t, 1000, gray(c['prob2'].at(t - 3.4))), (540, 1000), z)
-        scribbles(im, g, t, 3.6, 4); P.say(im, g['every'], t, 3.8, (540, 330), -2)
+    if t < 3.4: return stage2(g, t) if t < 3.2 else diagonal(stage2(g, t), stage3(g, t), seg(t, 3.2, 3.4))
+    if t < 5.0: return stage3(g, t)
+    if t < 6.6:                                                    # 4: the channel flips; the fix grows out of the TV
+        if t < 5.5:
+            im = g['bg'].copy(); balls(im, g, t); n = g['static'][int(t * 20) % 3]
+            scr = n if t < 5.25 else c['fix'].at(t - 5.25); tv(g, im, t, scr); return im
+        u = ease(seg(t, 5.5, 5.9)); im = c['fix'].at(t - 5.25)
+        if u < 1:
+            base = g['bg'].copy(); balls(base, g, t); tv(g, base, t, c['fix'].at(t - 5.25)); im = Image.blend(base, im, u) if u > 0 else base
+        P.say(im, g['fixed'], t, 5.9, (540, 960), -4); doodle_on(im, t, 6.05, g['under'], (540, 1090), -2)
+        if t > 6.4: im = diagonal(im, stage5(g, t), seg(t, 6.4, 6.6))
         return im
-    if t < 6.6:                                                    # 4: scribbles take over, then wipe away to the fix
-        if t < 5.35: im = drawer_scene(g, t, 1000, gray(c['prob2'].at(t - 3.4))); scribbles(im, g, t, 3.0, 10, grow=ease(seg(t, 5.0, 5.35)))
-        else: im = c['fix'].at(t - 5.35); scribbles(im, g, t, 3.0, 10, grow=1.0, gone=5.35)
-        if t > 5.9: doodle_on(im, t, 6.05, g['under'], (540, 1090), -2); P.say(im, g['fixed'], t, 5.9, (540, 960), -4)
-        if t > 6.35: im = diagonal(im, stage5(g, t), seg(t, 6.35, 6.6))
-        return im
-    if t < 8.2: return stage5(g, t) if t < 7.95 else swipe(stage5(g, t), c['fix2'].at(t - 7.95), seg(t, 7.95, 8.2))
+    if t < 8.2: return stage5(g, t) if t < 8.0 else swipe(stage5(g, t), c['use'].at(0), seg(t, 8.0, 8.2))
     if t < 9.8:                                                    # 6: the fix in use; one arrow up to the centre
-        im = c['fix2'].at(t - 7.95); P.say(im, g['how'], t, 8.35, (540, 1380), -2); doodle_on(im, t, 8.7, g['arrow'], (540, 1215), 90)
-        if t > 9.55: im = X.slice_h(im, c['cta'].at(t - 9.55), seg(t, 9.55, 9.8), (DARK, LIGHT)) if False else swipe(im, c['cta'].at(t - 12.05), seg(t, 9.55, 9.8), -1)
+        im = c['use'].at(t - 8.2); P.say(im, g['how'], t, 8.35, (540, 1380), -2); doodle_on(im, t, 8.7, g['arrow'], (540, 1215), 90)
+        if t > 9.6: im = swipe(im, c['cta'].at(0), seg(t, 9.6, 9.8), -1)
         return im
-    im = c['cta'].at(t - 12.05)                                     # 7: CTA (clip offset so the lamp is lit)
-    doodle_on(im, t, 10.35, g['burst'], (540, 1400), 0)                 # one burst, behind the name box
-    P.say(im, g['comment'], t, 9.9, (540, 980), -3); P.say(im, g['kw'], t, 10.15, (540, 1220), 2); P.say(im, g['name'], t, 10.4, (540, 1400), -2)
+    im = c['cta'].at(t - 9.8)                                        # 7: CTA
+    P.say(im, g['comment'], t, 9.9, (540, 980), -3); P.say(im, g['kw'], t, 10.15, (540, 1200), 2); P.say(im, g['name'], t, 10.4, (540, 1340), -2)
+    return im
+
+def stage2(g, t):
+    im = g['bg'].copy(); balls(im, g, t, 1.8); P.say(im, g['been'], t, 2.3, (540, 900), -2); return im
+
+def stage3(g, t):
+    im = g['bg'].copy(); balls(im, g, t); k = back_out(seg(t, 3.4, 3.75), 1.3)
+    tv(g, im, t, gray(g['c']['prob2'].at(t - 3.4)), lerp(2600, TV_C[1], k))
+    P.say(im, g['every'], t, 3.7, (540, 330), -2)
     return im
 
 def stage5(g, t):
-    """5: the drawer drops away and the clutter tumbles after it; the fix stays as a photo card."""
-    c = g['c']; drop = ease(seg(t, 6.7, 7.1)) ** 2; im = drawer_scene(g, t, lerp(1000, 2900, drop))
-    for i, (it, xy, r) in enumerate(zip(g['clutter'], ((360, 880), (730, 980), (560, 1120)), (-10, 14, 0))):
-        f = ease(seg(t, 6.75 + i * 0.08, 7.25 + i * 0.08)) ** 2; put(im, it, (xy[0] + (i - 1) * 300 * f, xy[1] + 1900 * f), 1, r + 200 * f)
-    k = back_out(seg(t, 7.0, 7.35), 1.5)
-    if k > 0: put(im, X.clip_card(c['fix'].at(t - 6.6, (560, 760)), 560, 760, 16, -3), (540, 900), k)
-    P.say(im, g['nomore'], t, 7.3, (540, 1420), 2)
+    im = g['bg'].copy(); doodle_on(im, t, 6.75, g['burst'], TV_C, 0); balls(im, g, t, gone=6.9)
+    tv(g, im, t, g['c']['fix'].at(t - 5.25)); P.say(im, g['nomore'], t, 7.2, (540, 1380), 2)
     return im
 
 def main():

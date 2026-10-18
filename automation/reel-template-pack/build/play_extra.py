@@ -175,7 +175,7 @@ def use_type(light, dark):
     the dark colour, a light/cream pill -> white, an accent pill -> the light colour."""
     THEME['light'], THEME['dark'] = light, dark
     def caption(text, px, color=None, fill='soft', gap=0.28):
-        if color == (28, 27, 26): return key_line(text, px * 0.92, dark, WHITE)      # INK = a light stage: dark word, white edge
+        if color is not None and sum(color) < 120: return key_line(text, px * 0.92, dark, WHITE)   # ink = a light stage: dark word, white edge
         return key_line(text, px * 0.92, WHITE, dark)
     def pill_m(text, px, bg, fg):
         b = sum(bg) / 3; box = dark if b < 70 else (WHITE if b > 225 else light)

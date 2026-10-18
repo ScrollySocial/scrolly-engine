@@ -224,7 +224,7 @@ Log each use here when a template is approved.
 | Polaroids pinned, growing to fill the frame | 01 | 01 |
 | Instant camera snaps, the after photo prints and develops | 03 | 03 |
 | Torn-paper diagonal split | 04 (draft) | |
-| Two-tone strip slice (clip cut into tinted strips sliding apart) | 22 (draft) | 22, 04, 05, 07 (drafts; at 4 of 5, swapped out of 06 and 13) |
+| Two-tone strip slice (clip cut into tinted strips sliding apart) | 22 (draft) | 22, 04, 05, 07, 25 (drafts; 5 of 5: FULL, no more uses) |
 | Shop feed scrolling on a phone, stopping on the product | 10 (draft) | 10, 06 (drafts) |
 | Brass balance scale tips to A, then to B | 04 (draft) | 04 |
 | A and B in alternating strips sorting into a half-and-half split | 04 (draft) | 04 |
@@ -234,6 +234,16 @@ Log each use here when a template is approved.
 | Clip window jumping size ("this big?") | 07 (draft) | 07 |
 | Marker double-headed arrows measuring the product | 07 (draft) | 07 |
 | Wooden number cubes tumbling in, one per step (a cube rolls across as the wipe) | 13 (draft) | 13 |
+| Vintage TV: the problem in B&W, the channel flips (static) to the fix in colour | 14 (draft) | 14 |
+| Bubble wrap sheet peeling off the clip (carried between scenes) | 16 (draft) | 16 |
+| Material photo cards landing on a real tray from above, one per label | 17 (draft) | 17 |
+| The clip IS the clipboard's sheet; checklist ticked per check, gold seal | 18 (draft) | 18 |
+| Open locket: product in one half, the pairing half flips like a coin | 19 (draft) | 19 |
+| The batch clip splits into tiles that flip in a wave (the count) | 21 (draft) | 21 |
+| Rubber stamp prints a word in rough ink | 22 (draft) | 22, 21 (drafts) |
+| Open card: words on the left panel, the clip in the right panel | 24 (draft) | 24 |
+| Boxing-ring bell rings each round; split-screen rounds; trophy | 25 (draft) | 25 |
+| Device standing on the stage, its whole screen one video slot | 04 (draft) | 04, 05, 06, 07, 16, 18, 21, 24 (drafts: a basic, not a signature move) |
 
 ## The image library is shared (Mercedes, 2026-10-17)
 
@@ -494,3 +504,15 @@ Showing her work
 - [ ] Her doodles (source/doodles) are visibly used: at least 3 doodle moments per template, big enough to see on a
       phone, each with a job (arrow at the product, frame around it, underline, burst on the reveal, scribble beside a word).
 - [ ] Would someone say "wow, I've never seen that on my feed"? If not, it isn't ready.
+
+## Her notes on batch 3 (#14, #16, #19, #21; 2026-10-18)
+- **The story must be about selling a physical product, in words any seller can use** (#14's "2am, can't see a
+  thing" came from the stand-in clip: "I do not understand how this relates to selling a physical product"). Write the
+  copy from the template's job, never from the stand-in footage.
+- **No swarms of scribble doodles** ("100% HATE how it's a bunch of scribble doodles").
+- **No pattern on pattern** (#21: gingham cloth + the wire-rack grid read as "double plaid"). One calm stage texture,
+  like the approved #08 (soft concrete) and #09 (lined paper).
+- **Variety in the scenes** (#19: concept liked, but the same locket frame repeated: "not enough variety"). Each
+  visit to the home base needs a different setup, and the other scenes need different frame types.
+- **Use more than one kind of object** (#21: "you just only used name tags??").
+- #16 (quilt + touch objects) disliked entirely.

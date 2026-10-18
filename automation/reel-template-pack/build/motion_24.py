@@ -40,7 +40,7 @@ def setup():
     cc = ImageOps.grayscale(S.raw('images', 'Light gray concrete mineral texture-4.png'))
     g['bg'] = ImageOps.fit(ImageOps.colorize(ImageOps.autocontrast(cc), (196, 128, 160), PINK), (W, H)).convert('RGBA')
     dots = ImageOps.colorize(ImageOps.grayscale(S.raw('doodles', 'Hand-painted polka dots on black-15.png')), BUTTER, (226, 200, 118)).convert('RGBA')
-    from motion_b2 import torn_band; g['bg'].alpha_composite(torn_band(dots, (W + 40, 330), 5, 'tb', 18), (-20, 1560))   # collage: a torn band of her dots
+    pass                                   # calm stage: no pattern band (her batch-3 note)
     env = S.fitw(S.cut('images', 'Cream envelopes tied with a string bow-21.png', tol=10), 760)
     g['env'] = P.style_object(env, None, None, label=P.sticker('OPEN ME', 40, INK), label_at=(0.3, 0.7), edge=8)
     card = S.card('images', 'Open blank cream thank-you card-37.png', CARD_W); g['card'] = card

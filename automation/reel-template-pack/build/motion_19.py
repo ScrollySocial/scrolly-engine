@@ -38,12 +38,13 @@ HOLDS = [(1.5, 1.1), (3.3, 1.35), (4.9, 1.15), (6.5, 0.6), (8.1, 1.2), (9.7, 1.4
 
 def setup():
     g = {'c': {'main': Clip('IMG_1464', 2.0), 'p1': Clip('IMG_1422', 7.0), 'p2': Clip('IMG_1439', 0.5), 'p3': Clip('IMG_1436', 2.0), 'cta': Clip('IMG_1423', 2.0)}}
-    g['stripes'] = ImageOps.fit(S.raw('images', 'Vintage Burgundy and Blush Stripes.png'), (W, H)).convert('RGBA')
+    tis = ImageOps.grayscale(S.raw('images', 'Blush Pink Tissue Paper Texture-9.png'))      # a calm pink paper stage (her note: no busy patterns)
+    g['stripes'] = ImageOps.fit(ImageOps.colorize(ImageOps.autocontrast(tis), (214, 150, 178), PINK), (W, H)).convert('RGBA')
     lk = Image.open(S.E.PACK / 'build' / '.cache' / 'hq' / 'Open vintage gold locket, blank inside.png').convert('RGBA'); lk = P.style_object(S.fitw(lk, LW), 'smalldots', PINK, scale=0.3, strength=0.35, edge=8); g['locket'] = S.fitw(lk, LW); g['lh'] = g['locket'].height   # play on the object
     g['tea'] = P.thing('Vintage Rose Porcelain Tea Set.png', 820, 'smalldots', WINE, scale=0.3, strength=0.35)
     g['what'] = P.caption('what to pair', 150, WINE); g['with'] = X.hl('with [my steam mop]', 60, WHITE)
     g['plus'] = [X.hl(t, 62, (PINK, WHITE, PINK)[i]) for i, t in enumerate(('+ [the stick vacuum]', '+ [the odor spray]', '+ [the litter]'))]
-    g['under'] = doodle('under', 0, 560, WHITE); g['arrow'] = doodle('arrow', 0, 170, WHITE)
+    g['under'] = doodle('under', 0, 560, WHITE); g['plusbig'] = P.sticker('+', 150, WINE, WHITE, 'circle'); g['arrow'] = doodle('arrow', 0, 160, WHITE); g['pair1'] = P.caption('pair it with', 130, INK)
     g['perfect'] = P.caption('a perfect pair', 140, WINE); g['bundle'] = X.hl('[ask about the bundle]', 60, WINE); g['burst'] = doodle('burst', 2, 640, CRM)
     g['comment'] = P.caption('Comment', 190, WINE); g['kw'] = X.hl('"[KEYWORD]"', 64, WHITE); g['bname'] = X.hl('[the clean-home bundle]', 56, PINK)
     return g
@@ -76,26 +77,21 @@ def frame(g, t):
         im = locket(g, t, c['main'].at(t), PINK, y)
         P.say(im, g['what'], t, 0.1, (540, 330), -3); P.say(im, g['with'], t, 0.4, (540, 480), 2)
         return im
-    if t < 3.6:                                                    # 2: pairing 1 fills the right half; dive into it
-        if t < 2.6:
-            im = locket(g, t, c['main'].at(t), c['p1'].at(t - 1.8), flip=1.8, right_next=c['p1'].at(t - 1.8))
-            if t > 2.2: im = camera(im, oval_centre(1), lerp(1, 3.0, ease(seg(t, 2.2, 2.6)) ** 2))
-            return im
-        im = camera(c['p1'].at(t - 1.8), (540, 960), lerp(1.4, 1, ease(seg(t, 2.6, 2.9)))); P.say(im, g['plus'][0], t, 2.8, (540, 1380), -2)
-        if t > 3.35: im = swipe(im, locket(g, 3.6, c['main'].at(3.6), c['p1'].at(1.8)), seg(t, 3.35, 3.6), -1)
+    if t < 3.6:                                                    # 2: side by side: the product | pairing 1, a big "+"
+        im = split2(g, t, c['main'].at(t), c['p1'].at(t - 1.8)); P.say(im, g['plus'][0], t, 2.15, (760, 1420), -2)
+        if t < 1.95: im = diagonal(locket(g, t, c['main'].at(t), PINK), im, seg(t, 1.8, 1.95))
+        if t > 3.35: im = swipe(im, close3(g, 3.6), seg(t, 3.35, 3.6), -1)
         return im
-    if t < 5.2:                                                    # 3: the right half flips to pairing 2
-        im = locket(g, t, c['main'].at(t), c['p1'].at(t - 1.8), flip=3.8, right_next=c['p2'].at(t - 3.8))
-        P.say(im, g['plus'][1], t, 4.25, (540, 1460), 2); doodle_on(im, t, 4.5, g['arrow'], (800, 1340), 75)   # up to the right half
+    if t < 5.2:                                                    # 3: the locket up close; its right half flips to pairing 2
+        im = close3(g, t)
         if t > 4.95: im = diagonal(im, c['p2'].at(t - 3.8), seg(t, 4.95, 5.2))
         return im
     if t < 6.8:                                                    # 4: pairing 2, full frame
         im = c['p2'].at(t - 3.8); P.say(im, g['plus'][1], t, 5.25, (540, 1380), 2); doodle_on(im, t, 5.6, g['under'], (540, 1460), -2)
-        if t > 6.55: im = swipe(im, locket(g, 6.8, c['main'].at(6.8), c['p2'].at(3.0)), seg(t, 6.55, 6.8))
+        if t > 6.55: im = swipe(im, diag5(g, 6.8), seg(t, 6.55, 6.8))
         return im
-    if t < 8.4:                                                    # 5: the right half flips to pairing 3
-        im = locket(g, t, c['main'].at(t), c['p2'].at(t - 3.8), flip=7.0, right_next=c['p3'].at(t - 7.0))
-        P.say(im, g['plus'][2], t, 7.45, (540, 1460), -2)
+    if t < 8.4:                                                    # 5: a diagonal split: the product | pairing 3
+        im = diag5(g, t)
         if t > 8.15: im = diagonal(im, stage6(g, t), seg(t, 8.15, 8.4))
         return im
     if t < 10.0:
@@ -104,6 +100,24 @@ def frame(g, t):
         return im
     return cta(g, t)
 
+def split2(g, t, a, b):
+    im = g['stripes'].copy(); w, h = 500, 1180
+    put(im, X.clip_card(a, w, h, 14, -2), (290, 980)); put(im, X.clip_card(b, w, h, 14, 2), (790, 1000))
+    P.say(im, g['plusbig'], t, 1.95, (540, 980), 0); P.say(im, g['pair1'], t, 2.0, (540, 300), -2)
+    return im
+
+def close3(g, t):
+    c = g['c']; im = locket(g, t, c['main'].at(t), c['p1'].at(t - 1.8), flip=3.9, right_next=c['p2'].at(t - 3.8))
+    im = camera(im, (oval_centre(1)[0] - 120, oval_centre(1)[1]), 1.7)
+    P.say(im, g['plus'][1], t, 4.3, (540, 1450), 2); doodle_on(im, t, 4.6, g['arrow'], (540, 1330), 90)
+    return im
+
+def diag5(g, t):
+    c = g['c']; im = c['p3'].at(t - 6.8).copy(); m = Image.new('L', (W, H), 0); ImageDraw.Draw(m).polygon([(0, 0), (W, 0), (W, 700), (0, 1220)], fill=255)
+    im.paste(c['main'].at(t), (0, 0), m); ImageDraw.Draw(im).line([(0, 1220), (W, 700)], fill=PINK + (255,), width=16)
+    P.say(im, g['plusbig'], t, 6.85, (540, 960), 0); P.say(im, g['plus'][2], t, 7.1, (600, 1420), -2)
+    return im
+
 def stage6(g, t):
     im = g['stripes'].copy(); put(im, g['tea'], (540, lerp(2400, 1000, back_out(seg(t, 8.4, 8.75), 1.3))), 1, -3)
     P.say(im, g['perfect'], t, 8.6, (540, 380), -3)
@@ -111,9 +125,9 @@ def stage6(g, t):
     return im
 
 def cta(g, t):
-    c = g['c']; im = Image.new('RGBA', (W, H), CRM + (255,)); half = (W // 2, H // 2)
+    c = g['c']; im = g['stripes'].copy(); half = (W // 2, H // 2)
     for i, (cl, t0) in enumerate(((c['main'], 0), (c['p1'], 1.8), (c['p2'], 3.8), (c['p3'], 7.0))):
-        im.alpha_composite(ImageOps.fit(cl.at(t - t0), (half[0] - 6, half[1] - 6)).convert('RGBA'), ((i % 2) * half[0] + 3, (i // 2) * half[1] + 3))
+        im.alpha_composite(ImageOps.fit(cl.at(t - t0), (half[0] - 20, half[1] - 20)).convert('RGBA'), ((i % 2) * half[0] + 10, (i // 2) * half[1] + 10))
     P.say(im, g['comment'], t, 10.2, (540, 900), -3); P.say(im, g['kw'], t, 10.45, (540, 1080), 2); P.say(im, g['bname'], t, 10.65, (540, 1210), -2)
     return im
 

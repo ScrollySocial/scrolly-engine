@@ -38,8 +38,8 @@ HOLDS = [(1.5, 0.7), (3.35, 1.3), (4.95, 0.6), (6.3, 0.5), (8.15, 0.6), (9.75, 1
 def setup():
     brush = X.Window(Clip('IMG_1381', 0.0), 0.5, 3.2)                  # the stand-in brush is in frame only 0.5-3.2 s
     g = {'c': {'hook': brush, 'c1': brush, 'c2': Clip('IMG_1378', 0.5), 'c3': Clip('IMG_1377', 0.5), 'cta': brush}}
-    tz = ImageOps.grayscale(S.raw('images', 'Warm terracotta terrazzo texture-3.png'))
-    g['desk'] = ImageOps.fit(ImageOps.colorize(ImageOps.autocontrast(tz), (120, 160, 200), BLUE), (W, H)).convert('RGBA')
+    cc = ImageOps.grayscale(S.raw('images', 'Light gray concrete mineral texture-4.png'))       # a calm desk (no busy terrazzo)
+    g['desk'] = ImageOps.fit(ImageOps.colorize(ImageOps.autocontrast(cc), (140, 172, 204), BLUE), (W, H)).convert('RGBA')
     cb = S.fitw(Image.open(S.E.PACK / 'build' / '.cache' / 'hq' / 'Brown clipboard with blank white paper-65.png').convert('RGBA'), CB_W)
     g['cb'] = cb; g['cbh'] = cb.height
     x0, y0, x1, y1 = SHEET; g['sw'], g['sh'] = int(CB_W * (x1 - x0)), int(cb.height * (y1 - y0))

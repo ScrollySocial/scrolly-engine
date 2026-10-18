@@ -40,7 +40,7 @@ def setup():
     kp = ImageOps.grayscale(S.raw('images', 'Partly unrolled brown kraft paper-149.png')); w_, h_ = kp.size
     g['poster'] = ImageOps.fit(ImageOps.colorize(ImageOps.autocontrast(kp.crop((int(w_ * 0.25), int(h_ * 0.3), int(w_ * 0.75), int(h_ * 0.7)))), (176, 146, 70), BUTTER), (W, H)).convert('RGBA')
     ck = ImageOps.colorize(ImageOps.grayscale(S.raw('doodles', 'Wobbly hand-drawn black and white checkerboard-24.png')), WINE, BUTTER).convert('RGBA')
-    from motion_b2 import torn_band; g['poster'].alpha_composite(torn_band(ck, (W + 40, 300), 4, 'tb', 18), (-20, 1600))   # collage: a torn band of her checks
+    pass                                   # calm stage: no pattern band (her batch-3 note)
     g['bell'] = P.thing('Classic brass boxing ring bell-89.png', 420, 'stripes', WINE, scale=0.3, strength=0.45)
     g['bell_s'] = S.fitw(g['bell'], 260)
     g['trophy'] = P.thing('Plain gold trophy on black base-223.png', 520, None, None, label=P.sticker('[MINE]', 54, WINE), label_at=(0.5, 0.4))
