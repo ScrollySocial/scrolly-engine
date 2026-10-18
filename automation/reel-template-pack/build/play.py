@@ -16,7 +16,7 @@ from PIL import Image, ImageChops, ImageDraw, ImageFilter, ImageOps
 import collage as C
 import storyboard_b2 as S
 import lettering_b2 as LB
-from motion_b2 import put, ease, seg, lerp, clamp, W, H, INK, WHITE, CREAM
+from motion_b2 import put, ease, seg, lerp, clamp, back_out, W, H, INK, WHITE, CREAM
 
 HQ = Path(__file__).resolve().parent / '.cache' / 'hq'
 ANTON = LB.FONT['anton']
@@ -154,3 +154,114 @@ def tv_with(clip_im, w):
     sw, shh = x1 - x0 - 2 * ins, y1 - y0 - 2 * ins; v = ImageOps.fit(clip_im, (sw, shh)).convert('RGBA')
     m = Image.new('L', (sw, shh), 0); ImageDraw.Draw(m).rounded_rectangle((0, 0, sw - 1, shh - 1), int(70 * k), fill=255); v.putalpha(m)
     tv.alpha_composite(v, (x0 + ins, y0 + ins)); return die_cut(tv, 8)
+
+# ---- tech moments (must-do 13): green-screen devices, a scrolling product feed, a notification ---------------------------
+_dev = {}
+def device(name, w):
+    """A real green-screen device (cut-out from the model), sized: returns (image, screen mask, screen box). Cached."""
+    k = (name, int(w))
+    if k not in _dev:
+        hq = HQ / (Path(name).stem + '.png')                 # the model drops the hand on the hand-held phone: use the white cut there
+        src = S.cut('tech', name, tol=14) if 'Hand Holding' in name or not hq.exists() else Image.open(hq).convert('RGBA')
+        im = S.fitw(src, int(w)); px = im.load(); m = Image.new('L', im.size, 0); mp = m.load()
+        for y in range(im.height):
+            for x in range(im.width):
+                r, g, b, a = px[x, y]
+                if a and g > 120 and g > r + 40 and g > b + 40: mp[x, y] = 255
+        core = m.filter(ImageFilter.MinFilter(15))                 # the screen box from the solid green only (stray green on edges is ignored)
+        m = ImageChops.multiply(m.filter(ImageFilter.MaxFilter(3)), core.filter(ImageFilter.MaxFilter(19)))   # only the screen, not green spill
+        m = m.filter(ImageFilter.GaussianBlur(0.8)); _dev[k] = (im, m, core.getbbox())
+    return _dev[k]
+
+def on_screen(name, w, content, edge=8):
+    """The device with `content` (any image) fitted into its green screen, die-cut."""
+    im, m, bb = device(name, w); im = im.copy(); cw, ch = bb[2] - bb[0], bb[3] - bb[1]
+    lay = Image.new('RGBA', im.size, (0, 0, 0, 0)); lay.paste(ImageOps.fit(content.convert('RGBA'), (cw, ch)), bb[:2]); im.paste(lay, (0, 0), m)
+    px = im.load()                                               # despill: any green left (round the camera notch) goes dark
+    for y in range(im.height):
+        for x in range(im.width):
+            r, g_, b_, a = px[x, y]
+            if a and g_ > 120 and g_ > r + 40 and g_ > b_ + 40: px[x, y] = (20, 20, 22, a)
+    return die_cut(im, edge)
+
+def feed(items, w=600, accent=(200, 50, 44), name_px=None):
+    """A tall shop feed for phone_scroll: product cards (photo slot + name + price pill), white app chrome on top.
+    items = [(photo image, '[name]', '[price]')]; the buyer swaps the photos (slots) and the words."""
+    name_px = name_px or int(w * 0.085); card_h = int(w * 1.12); top = int(w * 0.28)
+    im = Image.new('RGBA', (w, top + card_h * len(items) + int(w * 1.4)), (250, 249, 246, 255)); d = ImageDraw.Draw(im)   # room below so the last card can sit centred
+    d.rectangle((0, 0, w, top), fill=(255, 255, 255)); d.text((w / 2, top / 2 + 10), '[YOUR SHOP]', font=S.F(ANTON, int(w * 0.1)), fill=NEUTRAL['ink'], anchor='mm')
+    for i, (ph, name, price) in enumerate(items):
+        y = top + 20 + i * card_h; pw = w - 40; phh = int(pw * 0.85)
+        p = ImageOps.fit(ph.convert('RGBA'), (pw, phh)); m = Image.new('L', (pw, phh), 0); ImageDraw.Draw(m).rounded_rectangle((0, 0, pw - 1, phh - 1), 26, fill=255)
+        im.paste(p, (20, y), m); d.text((24, y + phh + name_px), name, font=S.F(ANTON, name_px), fill=NEUTRAL['ink'], anchor='lm')
+        pr = pill(price, int(name_px * 0.8), accent, WHITE, outline=None); im.alpha_composite(pr, (int(w - 14 - pr.width), int(y + phh + name_px * 0.15)))
+    return im, card_h, top
+
+def phone_scroll(feed_img, card_h, top, u, stop_index, screen_ratio=2.0):
+    # screen_ratio = screen height / width (from screen_size)
+    """A thumb scroll: the feed flicks up fast, eases, overshoots a touch and settles on card `stop_index`.
+    u = 0..1 progress; returns the screen-sized crop (width x width*screen_ratio)."""
+    w = feed_img.width; h = int(w * screen_ratio); target = top + 20 + stop_index * card_h + card_h / 2 - h / 2
+    e = 1 - (1 - clamp(u)) ** 3; over = 0.03 * math.sin(math.pi * clamp((u - 0.75) / 0.25)) if u > 0.75 else 0
+    y = int(min(1.05, max(0.0, e + over)) * target); y = max(0, min(feed_img.height - h, y))
+    return feed_img.crop((0, y, w, y + h))
+
+def notification(title, body, w=560, icon=None):
+    """A phone notification banner (rounded frosted card, app icon, two lines): the order arriving."""
+    h = int(w * 0.32); im = Image.new('RGBA', (w, h), (0, 0, 0, 0)); d = ImageDraw.Draw(im)
+    d.rounded_rectangle((0, 0, w - 1, h - 1), 36, fill=(248, 247, 244, 240)); s = int(h * 0.56)
+    if icon is not None: im.alpha_composite(ImageOps.fit(icon, (s, s)), (24, (h - s) // 2))
+    else: d.rounded_rectangle((24, (h - s) // 2, 24 + s, (h + s) // 2), 22, fill=(200, 150, 90))
+    d.text((48 + s, h * 0.36), title, font=S.F(ANTON, int(h * 0.2)), fill=NEUTRAL['ink'], anchor='lm')
+    d.text((48 + s, h * 0.68), body, font=S.F('C:/Windows/Fonts/arial.ttf', int(h * 0.16)), fill=(70, 68, 66), anchor='lm')
+    return C.shadow(im, (4, 10), 14, 110)
+
+def screen_size(name, w):
+    """The green screen's size on a device at width w (build feeds and cards to this, so nothing gets cropped)."""
+    _, _, bb = device(name, w); return bb[2] - bb[0], bb[3] - bb[1]
+
+# ---- modern type (her note 2026-10-18: "doesn't look trendy", primary colours feel elementary) ---------------------------
+# Story words the buyer won't change: a big Bodoni Black Italic with a soft two-tone fill (or her stripes for a touch of
+# fun), a thin cream edge and an offset ink shadow, coming in word by word like captions. Words the buyer edits: clean
+# Montserrat Bold (CapCut library) on a pill. Accents are muted (clay, wine, olive, brick), never primaries.
+SERIF_I = 'C:/Windows/Fonts/BOD_BLAI.TTF'
+MONT = str(LB.FONT['montserrat'])
+MUTED = {'clay': (178, 104, 80), 'wine': (122, 40, 52), 'olive': (104, 110, 74), 'brick': (156, 62, 50), 'mocha': (92, 66, 52)}
+
+def story_word(text, px, color, fill='soft', edge=(246, 241, 232), shadow=(28, 27, 26)):
+    """One built-in word: Bodoni Black Italic, a soft vertical two-tone fill (or 'stripes'), cream edge, offset shadow."""
+    f = S.F(SERIF_I, px); l, t, r, b = f.getbbox(text); w, h = r - l + 50, b - t + 50
+    m = Image.new('L', (w, h), 0); ImageDraw.Draw(m).text((25 - l, 25 - t), text, font=f, fill=255)
+    top_c = tuple(min(255, int(v + (255 - v) * 0.35)) for v in color); fl = Image.new('RGBA', (w, h))
+    for y in range(h):
+        u = y / max(1, h - 1); ImageDraw.Draw(fl).line((0, y, w, y), fill=tuple(int(lerp(a, b_, u)) for a, b_ in zip(top_c, color)) + (255,))
+    if fill == 'stripes':
+        pm = _pattern_mask('stripes', (w, h), 0.18); lay = Image.new('RGBA', (w, h), edge + (0,)); lay.putalpha(pm.point(lambda v: int(v * 0.55))); fl.alpha_composite(lay)
+    out = Image.new('RGBA', (w + 16, h + 16), (0, 0, 0, 0))
+    ew = 2 * max(5, px // 22) + 1                                  # a thick cream edge so it reads over busy footage
+    sh = Image.new('RGBA', (w, h), shadow + (255,)); sh.putalpha(m.filter(ImageFilter.MaxFilter(ew))); out.alpha_composite(sh, (8, 8))
+    ed = Image.new('RGBA', (w, h), edge + (255,)); ed.putalpha(m.filter(ImageFilter.MaxFilter(ew))); out.alpha_composite(ed, (0, 0))
+    fl.putalpha(m); out.alpha_composite(fl, (0, 0)); return out
+
+def caption(text, px, color, fill='soft', gap=0.28):
+    """A built-in line as separate words (for word-by-word entry): [(image, x offset of its centre)]."""
+    ws = [story_word(w_, px, color, fill) for w_ in text.split()]; sp = px * gap; total = sum(w.width for w in ws) + sp * (len(ws) - 1)
+    out, x = [], -total / 2
+    for w in ws: out.append((w, x + w.width / 2)); x += w.width + sp
+    return out
+
+def say(img, item, t, t0, c, rot=0, out=None, step=0.13, **kw):
+    """Captions-style entry for a caption() list (each word pops up in turn, a small rise); plain pop for an image."""
+    from motion_b2 import pop as _pop
+    if not isinstance(item, list): return _pop(img, item, t, t0, c, rot, out=out, **kw)
+    for i, (im, dx) in enumerate(item):
+        ti = t0 + i * step
+        if t < ti: continue
+        k = back_out(seg(t, ti, ti + 0.22), 1.8)
+        if out is not None: k *= 1 - ease(seg(t, out, out + 0.15))
+        if k <= 0.02: continue
+        put(img, im, (c[0] + dx, c[1] + 18 * (1 - min(1, seg(t, ti, ti + 0.22)))), k, rot)
+
+def pill_m(text, px, bg, fg):
+    """Editable words: Montserrat Bold on a pill (a font buyers have in CapCut)."""
+    return pill(text, px, bg, fg, font=MONT, pad=0.6)
