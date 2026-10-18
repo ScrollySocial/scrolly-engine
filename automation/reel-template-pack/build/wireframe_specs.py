@@ -395,3 +395,163 @@ SPECS.append(dict(num='17', title='Everything that goes into one', job='show the
       bg=[('pat', CHECKS, MUSTARD, CREAM, FULL)], open=[('round', (160, 560, 920, 1360), 'close')],
       items=[(IMG, 'Empty clear glass jar-64.png', (170, 1520), 220, 0), (IMG, 'Four nested stainless steel measuring spoons-165.png', (880, 1520), 280, 20)],
       text=[('[PRODUCT NAME]', (540, 330), 90, 'E', INK), ('COMMENT "[KEYWORD]"', (540, 460), 90, 'B', RED)])]))
+
+# ---- 18 Check this before you buy : the inspection clipboard ----------------------------------------------------------------
+CLIP = 'Brown clipboard with blank white paper-65.png'
+SPECS.append(dict(num='18', title='Check this before you buy', job='show expertise, then show yours passes',
+    world='the inspection desk: a brown clipboard (the footage is the sheet), a six-box checklist pad, her tick boxes, a gold foil seal; navy + her cross pattern',
+    moves='the clip IS the sheet on the clipboard, a tick box ticked per check, the seal stamped at the end', beats=[
+    B('Hook: the clipboard', '0-2s', ['navy + her cream cross pattern', 'the product clip on the sheet of a real clipboard', 'the clipboard slides in and tilts toward camera',
+        'her underline under "3 things"', 'the clipboard', 'push into the sheet'],
+      bg=[('pat', CROSS, NAVY, CREAM, FULL)], items=[(IMG, CLIP, (540, 1080), 760, -3)], lens=[((230, 760, 850, 1500), 'box', 'rect')],
+      doodles=[('under', 4, (540, 470), 600, CREAM)], text=[('3 THINGS TO CHECK', (540, 300), 100, 'B', CREAM), ('BEFORE YOU BUY A [TYPE]', (540, 410), 70, 'E', CREAM)]),
+    B('Check 1', '2-6s', ['', 'check one shown on your product, full frame', 'a tick box in the corner gets ticked by her marker', 'her tick in the box; her arrow at the spot',
+        'the checklist (1 ticked)', 'the page flips up like a clipboard sheet'],
+      open=[('rect', FULL, 'close')], doodles=[('tick', 6, (180, 420), 200, WHITE), ('arrow', 9, (700, 800), 220, WHITE)], text=[('1. [CHECK]', (540, 1380), 100, 'E', INK)]),
+    B('Check 2', '6-10s', ['', 'check two, full frame', 'the second box ticks', 'her circle round the detail', 'checklist (2 ticked)', 'page flip'],
+      open=[('rect', FULL, 'counter')], doodles=[('tick', 7, (180, 420), 200, WHITE), ('frame', 1, (560, 900), 400, WHITE)], text=[('2. [CHECK]', (540, 1380), 100, 'E', INK)]),
+    B('Check 3', '10-13s', ['', 'check three, full frame', 'the third box ticks', 'her dashed arrow', 'checklist (3 ticked)', 'the clipboard returns'],
+      open=[('rect', FULL, 'brush')], doodles=[('tick', 6, (180, 420), 200, WHITE), ('path', 6, (620, 840), 300, WHITE)], text=[('3. [CHECK]', (540, 1380), 100, 'E', INK)]),
+    B('CTA: passes all three', '13-15s', ['navy cross pattern', 'your product on the clipboard sheet', 'a real gold foil seal stamps onto the corner', 'three ticks down the side',
+        '', 'end'],
+      bg=[('pat', CROSS, NAVY, CREAM, FULL)], items=[(IMG, CLIP, (540, 1080), 760, 2), (IMG, 'Blank gold foil seal sticker-175.png', (820, 1480), 280, 0)],
+      lens=[((230, 760, 850, 1500), 'shelf', 'rect')], doodles=[('tick', i, (130, 820 + i * 200), 120, CREAM) for i in range(3)],
+      text=[('MINE CHECKS ALL THREE', (540, 300), 90, 'E', CREAM), ('COMMENT "[KEYWORD]"', (540, 420), 90, 'B', MUSTARD)])]))
+
+# ---- 19 Pair it with : the locket -----------------------------------------------------------------------------------------------
+LOCKET = 'Open vintage gold locket, blank inside.png'
+SPECS.append(dict(num='19', title='Pair it with', job='sell the second item (or a bundle)',
+    world='the locket: a real open gold locket with the product in one half and the pairing in the other; a rose porcelain tea set as the "perfect pair"; burgundy and blush stripes',
+    moves='a locket opening onto two clips (her idea bank), the halves swapping pairings', beats=[
+    B('Hook: the locket opens', '0-2s', ['her stripes in burgundy and blush (her Vintage Burgundy and Blush Stripes)', 'the main product in the left half of the locket',
+        'the real gold locket swings in on its chain and opens', 'her sparkles on the hinge', 'the locket', 'the right half fills with pairing one'],
+      bg=[('img', IMG, 'Vintage Burgundy and Blush Stripes.png', FULL)], items=[(FALL, LOCKET, (540, 1000), 980, 0)], lens=[((140, 760, 520, 1220), 'box')],
+      doodles=[('icon', 9, (540, 700), 130, CREAM)], text=[('WHAT TO PAIR WITH', (540, 300), 90, 'B', CREAM), ('[PRODUCT]', (540, 420), 100, 'E', CREAM)]),
+    B('Pairing 1', '2-5s', ['burgundy stripes', 'product left, pairing one right, inside the locket', 'the right half lights up', 'her + between the halves',
+        'the locket', 'the right half spins to pairing two'],
+      bg=[('img', IMG, 'Vintage Burgundy and Blush Stripes.png', FULL)], items=[(FALL, LOCKET, (540, 1000), 980, 0)],
+      lens=[((140, 760, 520, 1220), 'box'), ((560, 760, 940, 1220), 'smoothie')], text=[('+ [PRODUCT ONE]', (540, 1430), 90, 'E', CREAM)]),
+    B('Pairing 2 (full frame)', '5-8s', ['', 'pairing two full frame (the locket half zoomed in)', 'a real rose tea set slides in: the classic pair', 'her heart doodle',
+        'the tea set', 'zoom back out to the locket'],
+      open=[('rect', FULL, 'blender')], items=[(IMG, 'Vintage Rose Porcelain Tea Set.png', (820, 1480), 420, 0)], doodles=[('icon', 3, (260, 420), 180, WHITE)],
+      text=[('+ [PRODUCT TWO]', (480, 1380), 90, 'E', INK)]),
+    B('Pairing 3', '8-10s', ['stripes', 'product + pairing three in the locket halves', 'the locket closes and reopens with the new pair', 'her dashed arrow',
+        'the locket', 'all of them gather'],
+      bg=[('img', IMG, 'Vintage Burgundy and Blush Stripes.png', FULL)], items=[(FALL, LOCKET, (540, 1000), 980, 0)],
+      lens=[((140, 760, 520, 1220), 'box'), ((560, 760, 940, 1220), 'hand')], doodles=[('path', 6, (540, 600), 300, CREAM)], text=[('+ [PRODUCT THREE]', (540, 1430), 90, 'E', CREAM)]),
+    B('CTA: all together', '10-12s', ['stripes', 'all of them together in a photo card', 'the locket hangs over the card', '', '', 'end'],
+      bg=[('img', IMG, 'Vintage Burgundy and Blush Stripes.png', FULL)], open=[('round', (160, 640, 920, 1420), 'shelf')], items=[(FALL, LOCKET, (860, 600), 380, 12)],
+      text=[('[BUNDLE NAME]', (500, 330), 90, 'E', CREAM), ('COMMENT "[KEYWORD]"', (500, 460), 90, 'B', CREAM)])]))
+
+# ---- 20 What buyers said : the review phones -------------------------------------------------------------------------------------
+PH = 'Graphite Smartphone With Green Screen-38.png'
+SPECS.append(dict(num='20', title='What buyers said', job='let real buyers sell it',
+    world="the prize table: white marble, gold foil stars (five, then carried), the buyer's review screenshots in real phones, her speech bubbles, one gold trophy",
+    moves='phone screens as the windows, her speech bubble round each review, a gold star carried across, two-tone strip slice (gold / black)', beats=[
+    B('Hook: five stars', '0-2s', ['white marble + a band of her black dots', 'the product clip full frame behind', 'five real gold stars stick on one by one',
+        'her underline under the title', 'one gold star', 'a phone slides in'],
+      open=[('rect', FULL, 'blender')], items=[(IMG, 'Gold foil star sticker-95.png', (180 + i * 180, 300), 150, (-12, 8, -4, 10, -18)[i]) for i in range(5)],
+      doodles=[('under', 4, (540, 620), 560, WHITE)], text=[('WHAT BUYERS SAID', (540, 470), 110, 'B', INK)]),
+    B('Review 1 in a phone', '2-5s', ['', 'product full frame; the review screenshot in a real phone screen', 'the phone slides up, her speech bubble pops round it',
+        'her speech bubble; her arrow', 'the gold star rides on the phone', 'strip slice (gold / black)'],
+      open=[('rect', FULL, 'blender'), ('screen', TECH, PH, (760, 1120), 400, 'box')], items=[(IMG, 'Gold foil star sticker-95.png', (900, 760), 140, 10)],
+      doodles=[('bubble', 3, (740, 1100), 560, WHITE), ('arrow', 9, (360, 900), 200, WHITE)]),
+    B('Review 2', '5-8s', ['marble', 'the review in a hand-held phone (her photo), product clip behind the hand', 'the hand brings the phone in', 'her bubble',
+        'the gold star', 'the phone screen grows into the next clip'],
+      bg=[('img', IMG, 'Soft veined white marble texture-1.png', FULL)], open=[('rect', (0, 0, 1080, 1100), 'smoothie'), ('screen', TECH, 'Hand Holding Graphite Smartphone with Green Screen-40.png', (620, 1350), 520, 'box')],
+      items=[(IMG, 'Gold foil star sticker-95.png', (220, 1250), 150, -10)], doodles=[('bubble', 1, (300, 600), 400, WHITE)]),
+    B('Review 3', '8-10s', ['', 'product full frame', 'the review phone tilts in from the left', 'her sparkles', 'the gold star', 'gold strips sweep to the CTA'],
+      open=[('rect', FULL, 'blender'), ('screen', TECH, PH, (330, 1120), 400, 'box')], doodles=[('icon', 9, (840, 600), 140, WHITE), ('bubble', 0, (330, 1100), 560, WHITE)]),
+    B('CTA: one trophy', '10-12s', ['white marble', 'the product on its own in a photo card', 'one real gold trophy rises; the gold star lands on it', '', '', 'end'],
+      bg=[('img', IMG, 'Soft veined white marble texture-1.png', FULL)], open=[('round', (160, 560, 920, 1320), 'blender')],
+      items=[(IMG, 'Plain gold trophy on black base-223.png', (860, 1500), 300, 0), (IMG, 'Gold foil star sticker-95.png', (860, 1270), 120, 0)],
+      text=[('COMMENT "[KEYWORD]"', (540, 360), 100, 'B', INK)])]))
+
+# ---- 21 Small batch : the cooling rack -------------------------------------------------------------------------------------------
+TAGK = 'Blank kraft hang tag with twine-116.png'
+SPECS.append(dict(num='21', title='Small batch', job='make "made in small batches" feel special and scarce',
+    world='the bakery rack: a silver wire cooling rack as the grid over the footage, kraft hang tags counting up, parchment squares; her red stripes',
+    moves='the clip seen through the cooling-rack grid, tags counting up one by one, the rack lifting away', beats=[
+    B('Hook: through the rack', '0-3s', ['parchment + her red stripes band', 'the whole-batch clip seen through a real wire cooling rack', 'the rack slides on over the clip',
+        'her circle round the count', 'the rack', 'the rack slides along the batch'],
+      bg=[('pat', STRIPES, RED, CREAM, (0, 1600, 1080, 1920))], open=[('rect', (0, 0, 1080, 1600), 'shelf')], items=[(IMG, 'Silver wire baking cooling rack-113.png', (540, 820), 1100, 0)],
+      doodles=[('frame', 1, (540, 470), 520, WHITE)], text=[("THIS WEEK'S BATCH:", (540, 330), 90, 'B', WHITE), ('[24] [CANDLES]', (540, 470), 100, 'E', RED)]),
+    B('The slow pass', '3-7s', ['', 'the slow pass along the batch, full frame', 'kraft tags count up along the bottom: 1, 2, 3 ...', 'her dashed path along the row',
+        'the row of tags', 'the rack lifts away'],
+      open=[('rect', FULL, 'shelf')], items=[(IMG, TAGK, (160 + i * 190, 1650), 150, (-8, 4, -4, 8, -6)[i]) for i in range(5)], doodles=[('path', 7, (540, 900), 400, WHITE)],
+      text=[('[24] MADE', (540, 1380), 100, 'E', INK)]),
+    B('One picked up', '7-10s', ['', 'one picked up, close', 'one tag flips to show a number (this one is No. [7])', 'her burst', 'that one tag', 'push into the tag'],
+      open=[('rect', FULL, 'hand')], items=[(IMG, TAGK, (850, 600), 260, 8)], doodles=[('burst', 3, (850, 380), 200, WHITE)],
+      text=[('[ONE DETAIL ABOUT THIS BATCH]', (520, 1380), 64, 'E', INK)]),
+    B('CTA: packed', '10-12s', ['parchment squares + red stripes', 'one being packed, in a photo card on parchment', 'the tag ties on', '', '', 'end'],
+      bg=[('img', IMG, 'Neat stack of parchment squares-123.png', FULL), ('pat', STRIPES, RED, CREAM, (0, 1600, 1080, 1920))], open=[('round', (160, 560, 920, 1360), 'unbox')],
+      items=[(IMG, TAGK, (870, 1380), 240, 10)], text=[('[PRODUCT NAME]', (540, 330), 90, 'E', INK), ('COMMENT "[KEYWORD]"', (540, 460), 90, 'B', RED)])]))
+
+# ---- 23 Every option in 10 seconds : the paint counter ---------------------------------------------------------------------------
+FAN = 'Muted Paint Chip Fan Deck-235.png'
+SPECS.append(dict(num='23', title='Every option in 10 seconds', job='show the whole range fast',
+    world='the paint counter: white pegboard, a real paint-chip fan deck whose blades each carry an option, single chips as windows, the oak display shelf',
+    moves='radial wedges (the fan blades fan out, one expands into the next option), chip-shaped windows, the shelf as the CTA grid', beats=[
+    B('Hook: the fan opens', '0-1.4s', ['white pegboard', 'a still of each option on the fan blades', 'the real fan deck fans open from its pivot',
+        'her underline under "10 seconds"', 'the fan pivot', 'blade 1 expands to full frame'],
+      bg=[('img', IMG, 'White pegboard grid texture-5.png', FULL)], items=[(IMG, FAN, (540, 1300), 1000, 0)],
+      doodles=[('under', 0, (540, 650), 620, INK)], text=[('EVERY [COLOUR] IN', (540, 380), 90, 'E', INK), ('10 SECONDS', (540, 520), 120, 'B', TERRA)]),
+    B('Options 1 to 8 (1s each)', '1.4-9.4s', ['', 'each option full frame; its name on a real paint chip across the bottom seam', 'the next blade sweeps across like a fan wipe',
+        'her arrow at the product (alternating sides)', 'the chip in the corner (changes colour each option)', 'the fan wipe'],
+      open=[('rect', FULL, 'sofa')], items=[(IMG, 'Blank terracotta paint sample card-94.png', (220, 1450), 260, -6)],
+      doodles=[('arrow', 9, (680, 820), 220, WHITE)], text=[('[OPTION 1]', (250, 1450), 70, 'E', WHITE), ('1/8', (900, 330), 80, 'B', WHITE)]),
+    B('Pause beat', '~5s', ['pegboard', 'no video: full-screen words', 'the words pop with the fan half-open behind', 'her heart', 'the fan', 'the fan wipes back'],
+      bg=[('img', IMG, 'White pegboard grid texture-5.png', FULL)], items=[(IMG, FAN, (540, 1500), 800, 0)], doodles=[('icon', 2, (840, 520), 160, RED)],
+      text=[('PAUSE ON', (540, 620), 120, 'B', INK), ('YOUR FAVOURITE', (540, 780), 110, 'B', TERRA)]),
+    B('CTA: the shelf', '9.4-12s', ['pegboard', 'all options together on the real oak shelf, one clip per cubby', 'the clips drop onto the shelves one by one', 'her sparkles',
+        '', 'end'],
+      bg=[('img', IMG, 'White pegboard grid texture-5.png', FULL)], items=[(IMG, 'Pale oak three-tier display shelf-74.png', (540, 1080), 900, 0)],
+      lens=[((230, 640, 520, 880), 'sofa', 'rect'), ((560, 640, 850, 880), 'vacuum', 'rect'), ((230, 980, 520, 1220), 'shelf', 'rect'), ((560, 980, 850, 1220), 'mop', 'rect')],
+      text=[('ALL [8] AT [SHOP]', (540, 330), 90, 'E', INK), ('COMMENT "[KEYWORD]"', (540, 460), 90, 'B', TERRA)])]))
+
+# ---- 24 Make it last : the hourglass ---------------------------------------------------------------------------------------------
+HG = 'Classic wooden hourglass with flowing sand-238.png'
+SPECS.append(dict(num='24', title='Make it last', job='care tips that make the product worth more',
+    world='the care kit: a wooden hourglass (its two bulbs are windows), a woven care label with the tip, a sage watering can; sage + her wavy lines',
+    moves='the hourglass bulbs as two windows, the hourglass flips as the transition, the tip written on a real care label', beats=[
+    B('Hook: the hourglass', '0-2s', ['sage + her cream wavy lines', 'the product clip in the top bulb of a real hourglass', 'sand runs; the hourglass turns slightly',
+        'her underline under "longer"', 'the hourglass', 'the hourglass flips'],
+      bg=[('pat', WAVY, SAGE, CREAM, FULL)], items=[(IMG, HG, (540, 1120), 640, 0)], lens=[((380, 700, 700, 1000), 'shelf')],
+      doodles=[('under', 2, (540, 520), 520, INK)], text=[('MAKE YOUR [PRODUCT]', (540, 320), 80, 'E', INK), ('LAST LONGER', (540, 440), 110, 'B', INK)]),
+    B('Tip, part 1', '2-7s', ['', 'care tip one full frame', 'a real woven care label slides up with the tip on it', 'her arrow at the action', 'the care label', 'the hourglass flips (wipe)'],
+      open=[('rect', FULL, 'counter')], items=[(IMG, 'Blank woven cotton care label-86.png', (540, 1380), 240, 88)], doodles=[('arrow', 9, (700, 760), 220, WHITE)],
+      text=[('[THE TIP, LINE ONE]', (540, 1380), 70, 'E', INK)]),
+    B('Tip, part 2', '7-11s', ['', 'care tip two full frame', 'the watering can tips in from the corner (for plants; swap for your care tool)', 'her dashed arrow',
+        'the care label', 'flip to the result'],
+      open=[('rect', FULL, 'mop')], items=[(IMG, 'Classic sage green watering can-232.png', (860, 420), 380, 20), (IMG, 'Blank woven cotton care label-86.png', (540, 1380), 240, 92)],
+      doodles=[('path', 6, (400, 900), 300, WHITE)], text=[('[THE TIP, LINE TWO]', (540, 1380), 70, 'E', INK)]),
+    B('Result: both bulbs', '11-13s', ['sage wavy lines', 'before in the top bulb, after in the bottom bulb', 'the sand finishes', 'her tick by the bottom bulb', 'the hourglass', 'the bottom bulb grows'],
+      bg=[('pat', WAVY, SAGE, CREAM, FULL)], items=[(IMG, HG, (540, 1000), 760, 0)], lens=[((340, 520, 740, 880), 'counter'), ((340, 1120, 740, 1480), 'shelf')],
+      doodles=[('tick', 0, (850, 1300), 160, INK)]),
+    B('CTA: at its best', '13-15s', ['sage', 'the product looking its best in a photo card', 'the care label tucks under the card', '', '', 'end'],
+      bg=[('pat', WAVY, SAGE, CREAM, FULL)], open=[('round', (160, 560, 920, 1360), 'shelf')], items=[(IMG, 'Blank woven cotton care label-86.png', (740, 1420), 200, 86)],
+      text=[('[PRODUCT NAME]', (540, 330), 90, 'E', INK), ('COMMENT "[KEYWORD]"', (540, 460), 90, 'B', INK)])]))
+
+# ---- 25 Mine vs. the usual kind : the weigh-in --------------------------------------------------------------------------------
+SCALE_L, SCALE_T = 'Level vintage brass balance scale-105.png', 'Tilted brass balance scale-124.png'
+SPECS.append(dict(num='25', title='Mine vs. the usual kind', job='show why yours beats the common version',
+    world='the weigh-in: a brass balance scale (level, then tipped your way), a plain cardboard box as "the usual kind", a brass boxing bell for each round; black + her checks',
+    moves='the two pans as windows, the scale tipping a little more each round, the boxing bell as the round change', beats=[
+    B('Hook: on the scale', '0-2s', ['black + her cream checks band', 'yours on one pan, the usual kind on the other (round windows)', 'the real brass scale settles level',
+        'her "vs" scribble between the pans', 'the scale', 'DING: the boxing bell'],
+      bg=[('fill', (20, 20, 22), FULL), ('pat', CHECKS, INK, CREAM, (0, 1600, 1080, 1920))], items=[(IMG, SCALE_L, (540, 1050), 1000, 0)],
+      lens=[((90, 860, 390, 1160), 'box'), ((690, 860, 990, 1160), 'vacuum')],
+      text=[('[MINE]', (240, 1260), 80, 'E', WHITE), ('THE USUAL KIND', (840, 1260), 60, 'B', WHITE), ('VS', (540, 420), 160, 'B', RED)]),
+    B('Round 1', '2-5s', ['', 'difference one full frame', 'the boxing bell rings in the corner: ROUND 1', 'her arrow at the difference', 'the bell', 'DING'],
+      open=[('rect', FULL, 'close')], items=[(IMG, 'Classic brass boxing ring bell-89.png', (860, 400), 300, 0)], doodles=[('arrow', 9, (560, 820), 220, WHITE)],
+      text=[('ROUND 1', (300, 380), 110, 'B', RED), ('[DIFFERENCE ONE]', (540, 1380), 80, 'E', INK)]),
+    B('Round 2: the usual kind', '5-8s', ['', 'difference two, the usual kind side', 'a plain cardboard box (the usual kind) gets her X', 'her X over the usual kind',
+        'the bell', 'DING'],
+      open=[('rect', FULL, 'counter')], items=[(IMG, 'Unmarked cardboard shipping box-110.png', (850, 1450), 340, 6)], doodles=[('tick', 3, (850, 1420), 280, RED)],
+      text=[('ROUND 2', (300, 380), 110, 'B', RED), ('[DIFFERENCE TWO]', (480, 1380), 80, 'E', INK)]),
+    B('Round 3', '8-10s', ['', 'difference three full frame', 'the bell; her tick on yours', 'her tick', 'the scale returns', 'the scale tips your way'],
+      open=[('rect', FULL, 'brush')], doodles=[('tick', 0, (800, 600), 220, WHITE)], text=[('ROUND 3', (300, 380), 110, 'B', RED), ('[DIFFERENCE THREE]', (540, 1380), 80, 'E', INK)]),
+    B('CTA: the scale tips', '10-12s', ['black + checks', 'yours in use on the low pan (the winner), the usual kind up high', 'the real scale tips toward yours', '', '', 'end'],
+      bg=[('fill', (20, 20, 22), FULL), ('pat', CHECKS, INK, CREAM, (0, 1600, 1080, 1920))], items=[(IMG, SCALE_T, (540, 1050), 1000, 0)],
+      lens=[((100, 960, 400, 1260), 'hand'), ((680, 720, 980, 1020), 'vacuum')],
+      text=[('WINNER: [PRODUCT]', (540, 330), 90, 'E', WHITE), ('COMMENT "[KEYWORD]"', (540, 460), 90, 'B', RED)])]))
