@@ -119,3 +119,9 @@ CapCut's library has them for editable text.
   cache only holds fonts she has used, so CapCut's online library may still have them: search the font panel to
   confirm). Until confirmed they are built-in words only. Sans fonts confirmed in CapCut for editable text: Montserrat,
   Inter, Poppins.
+
+## Rules from the #04-#13 batch chat (FRAMEWORK.md "Her notes on the #04-#13 motion tests")
+- NEVER a hand holding the phone: story5 #10, story6 #08 and #23 use the Hand Holding phone. Swap to the plain phone.
+- No empty marker circles; one starburst only, BEHIND something; a single underline, never double.
+- Objects must make sense for any business.
+- Two-tone strip slice is at 4 of 5 (22, 04, 05, 07): one use left in the pack.
