@@ -203,7 +203,10 @@ Showing her work
   cards scattered everywhere). What works: a set of the same object, each one played with differently (her apples
   in `fall/inspo/02`: one with tiny painted dots, one with tiny stars, one wearing a lined sticker label with words),
   or one object repeated as a frame or a floor (leaves all round the clip, a screen full of stars, acorns or
-  mushrooms all along the ground: `07`, `08`). The video stays the hero. Check cut-outs: white objects on white backgrounds (cards,
+  mushrooms all along the ground: `07`, `08`). The video stays the hero.
+- **Real photo + hand-drawn, by default (rules 8 and 10, restated):** most props are real photos that also carry a
+  hand-drawn touch: a marker outline that looks drawn by hand (wobbly, uneven width, slightly off the edge, not a
+  smooth even ring like the round 1 Fall stills) or doodles drawn on or around them. Not 100% of props, but most. Check cut-outs: white objects on white backgrounds (cards,
   cups) need a careful cut, and holes (tag loops) must be see-through.
 
 ## Checklist: run before showing any storyboard or preview
