@@ -213,6 +213,8 @@ More from her (2026-10-17; images in the shared library, any pack can use them; 
   partly on screen to full screen.
 - **Cathedral (a video):** cut out along the steeple line for a split frame: it starts taking most of the screen and
   sinks to the bottom, the steeple the last thing to leave off the bottom edge.
+- **Locket (2026-10-18):** a real open locket with the buyer's clip playing inside it (one or both halves); it can
+  snap open to start the clip, or the camera zooms into the locket until the clip fills the screen.
 - **Skyscrapers / skyline:** cut the buildings out of the sky; bring them in together, or put the buyer's clip in the
   sky behind the skyline.
 
