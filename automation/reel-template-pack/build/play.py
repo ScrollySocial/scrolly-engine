@@ -265,3 +265,36 @@ def say(img, item, t, t0, c, rot=0, out=None, step=0.13, **kw):
 def pill_m(text, px, bg, fg):
     """Editable words: Montserrat Bold on a pill (a font buyers have in CapCut)."""
     return pill(text, px, bg, fg, font=MONT, pad=0.6)
+
+# ---- next batch helpers (2026-10-18): pinned proof cards, the word sandwich, more muted accents ------------------------
+MUTED.update({'dusty': (92, 116, 146), 'plum': (98, 62, 90), 'ochre': (170, 134, 64), 'sage': (112, 130, 102)})
+
+def proof_card(lines, w=520, accent=(92, 116, 146), name='[customer name hidden]', kind='dm'):
+    """A buyer-swappable proof slot shaped like a DM or review screenshot (the buyer drops their own screenshot here):
+    rounded white card, avatar dot, name line, the words in a chat bubble. Placeholder words only, never invented."""
+    px = int(w * 0.065)
+    while px > 12 and max(S.F(MONT, px).getlength(l) for l in lines) > w * 0.76: px -= 2   # shrink to fit the bubble
+    f = S.F(MONT, px); lh = int(px * 1.3); bh = lh * len(lines) + int(w * 0.12)
+    h = int(w * 0.24) + bh + int(w * 0.08); im = Image.new('RGBA', (w, h), (0, 0, 0, 0)); d = ImageDraw.Draw(im)
+    d.rounded_rectangle((0, 0, w - 1, h - 1), int(w * 0.07), fill=(252, 251, 249, 255)); a = int(w * 0.12)
+    d.ellipse((int(w * 0.06), int(w * 0.06), int(w * 0.06) + a, int(w * 0.06) + a), fill=(205, 198, 188))
+    d.text((int(w * 0.22), int(w * 0.09)), name, font=S.F(MONT, int(w * 0.045)), fill=(110, 104, 98), anchor='lm')
+    if kind == 'review':
+        st = S.fitw(Image.open(HQ / 'Gold foil star sticker-95.png').convert('RGBA'), int(w * 0.08))
+        for i in range(5): im.alpha_composite(st, (int(w * 0.22) + i * int(w * 0.085), int(w * 0.13)))   # under the name
+    by = int(w * 0.24); d.rounded_rectangle((int(w * 0.06), by, w - int(w * 0.06), by + bh), int(w * 0.06), fill=accent + (255,) if kind == 'dm' else (238, 234, 228, 255))
+    for k, l in enumerate(lines): d.text((int(w * 0.11), by + int(w * 0.06) + k * lh + lh // 2), l, font=f, fill=WHITE if kind == 'dm' else NEUTRAL['ink'], anchor='lm')
+    return im
+
+def pinned(card_im, rot=0, pin='pin-head-cream', d=None):
+    """A card pinned at the top with a real push pin, slightly tilted, with a soft shadow."""
+    c = card_im.copy(); d = d or int(c.width * 0.13); p = S.fitw(Image.open(PIN / f'{pin}.png').convert('RGBA'), d)
+    out = Image.new('RGBA', (c.width, c.height + d // 2), (0, 0, 0, 0)); out.alpha_composite(c, (0, d // 2)); out.alpha_composite(p, (c.width // 2 - d // 2, 0))
+    out = C.shadow(out, (8, 14), 14, 100); return out.rotate(rot, expand=True, resample=Image.BICUBIC) if rot else out
+
+def sandwich(img, t, t0, c, top, big, bottom, gap=None):
+    """The word sandwich (Lisa's ManyChat Reel): a small line, one big italic word, a small line in a second colour."""
+    gap = gap or 0; bh = max(i.height for i, _ in big) if isinstance(big, list) else big.height
+    say(img, top, t, t0, (c[0], c[1] - bh / 2 - top.height / 2 + 30 - gap), -2)
+    say(img, big, t, t0 + 0.15, c, 0)
+    say(img, bottom, t, t0 + 0.35 + 0.13 * (len(big) if isinstance(big, list) else 1), (c[0], c[1] + bh / 2 + bottom.height / 2 - 30 + gap), 2)
