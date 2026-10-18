@@ -43,6 +43,21 @@ Count the scenes and the transitions. Her breakdown, in order:
 9. Back to the person video, with the text behind the person.
 (Then more: money stacks rising off a corkboard, the set revealed with its lights, the laptop deadline.)
 
+**Lisa's ManyChat Reel (Mercedes's notes, 2026-10-18, instagram.com/p/DZnBMatyFAx), a talking-head version of the
+same idea:**
+1. **Embellished shapes behind words:** a black star with marquee bulbs, a striped pill shape behind "one"; look at
+   how the font size and colour change word to word.
+2. **Pinned sticky notes for lists** ("grew my audience", "found my buyers", "wrote marketing messaging") over the
+   video, arriving one at a time.
+3. **Background videos fed in one at a time:** her other Reels appear behind/around her one by one, then become a
+   scrolling wall of Reels.
+4. **A Reel thumbnail over her head** (the thing she's talking about, shown above her).
+5. **Text keeps changing type and colour:** a small plain line + one big word in a serif (italic, glow, outline);
+   words stacked and offset; a red starburst, a disco ball or chrome stars beside the key word.
+Also seen: a circle mask on her over a flat pastel with real UI cards around it; a split screen with the real
+Instagram UI on top and her below; chrome stars drifting and blurring in the foreground; a phone with the real DM
+thread on a striped curtain; motion-blur swipes between scenes.
+
 **What to copy in every template:**
 - **Many scenes:** a new scene about every 2 seconds (7 to 10 scenes, not 4 or 5 beats).
 - **Two home bases that keep coming back:** the person or product video, and ONE graphic stage (like the notebook)
