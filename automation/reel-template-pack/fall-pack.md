@@ -78,3 +78,14 @@ the collage look (`build/motion_f2.py`).
 
 Halloween (5) and the physical starter pack (8) ship first. Fall: finish f2 only (background pick, motion test with
 her notes, then CapCut), then pause. No new Fall templates until she says.
+
+## Candidate concepts for when Fall restarts (her ideas, 2026-10-17; details in FRAMEWORK idea bank, commit c007602)
+
+Her summary of the look: "mixed-media video collages, hyper interesting and visually hooky."
+- Butterflies and moths: wing transitions (wings open or sweep to change the clip).
+- A clock tower (clip in the clock face; replaces the rejected round clock-wedge idea only if it isn't another circle-fest).
+- Glasses frames: a clip in each lens.
+- A patchwork quilt that dissolves one fabric square at a time into the clip.
+- A gas street lamp as a sliding divider between two clips.
+- A cathedral video cut along the steeple line (clips revealed above or below the cut).
+- A skyline cut out of the sky (the sky becomes the clip).
