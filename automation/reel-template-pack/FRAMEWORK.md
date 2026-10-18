@@ -134,6 +134,10 @@ boards (they're the style, not the density):
   doodle in rust/cream), corduroy, wool; cut-outs as a SET (three different acorns) placed on a contrasting tile
   (acorns vanish on leaves); a real kraft tag used ONCE as the emphasis; she liked the zoom into the card that becomes
   the clip and the tile animations.
+- **Never the tall serif on a card, tag or paper** (she HATES it, said twice: torn paper in round 1, note card in
+  f2 v2). On paper use clean condensed caps (Anton). The serif only works as the small line over the plaid-filled word.
+- **Any words that are business-specific must be editable** ("small batch" isn't true for every business): built-in
+  artwork words only for generic words (THE FALL DROP, COMMENT); everything else in a CapCut font with a stroke.
 - **Balance the beats (Mercedes, 2026-10-17, on the #11/#20 motion tests):** a Reel mixes three kinds of beat:
   **one large full-frame video with accents** (several small accents in different parts of the screen), **full-screen
   words with no user video**, and collage moments. Not a collage in every frame.
@@ -303,4 +307,6 @@ Showing her work
 - [ ] The buyer only drops in their clips: no special filming, no on-camera prop reveal (unless it's the 1 of 25).
 - [ ] Any photo inside letters can be swapped by the buyer, or fits the theme as is.
 - [ ] Props are a set (same object, each played with differently) or a frame/floor, not a random pile; cut-outs checked at full size (no white edges or blobs).
+- [ ] Her doodles (source/doodles) are visibly used: at least 3 doodle moments per template, big enough to see on a
+      phone, each with a job (arrow at the product, frame around it, underline, burst on the reveal, scribble beside a word).
 - [ ] Would someone say "wow, I've never seen that on my feed"? If not, it isn't ready.
