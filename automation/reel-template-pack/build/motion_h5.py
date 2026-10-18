@@ -267,6 +267,49 @@ def sticky(img, t, t0, text, c, rot=-4):
     if k > 0.9: img.alpha_composite(PIN, (int(c[0] - 40), int(c[1] - n.height / 2 - 30)))
 
 BURST_BIG = D.get('bursts', 5, _LAV, 760)
+BURST_SMALL = D.get('bursts', 5, _LAV, 300)
+def pill(img, t, t0, c, w, h, rot=-3):
+    """v10 (her note: the spiky burst is the wrong doodle behind letters): a plum pill with lavender taffy stripes and an
+    ink edge, popping in behind the key word (Lisa's striped pill)."""
+    if t < t0: return
+    k = back_out((t - t0) / 0.3, 2.0); pw, ph = max(4, int(w * k)), max(4, int(h * k))
+    im = Image.new('RGBA', (pw + 24, ph + 24), (0, 0, 0, 0)); d = ImageDraw.Draw(im)
+    d.rounded_rectangle((12, 12, pw + 12, ph + 12), radius=ph // 2, fill=INK + (255,))
+    inner = Image.new('RGBA', (pw - 12, ph - 12), (70, 44, 96, 255)); di = ImageDraw.Draw(inner)
+    for x in range(-ph, pw + ph, 46): di.polygon([(x, 0), (x + 16, 0), (x + 16 + ph, ph), (x + ph, ph)], fill=(196, 170, 232, 120))
+    m = Image.new('L', inner.size, 0); ImageDraw.Draw(m).rounded_rectangle((0, 0, inner.width - 1, inner.height - 1), radius=(ph - 12) // 2, fill=255)
+    inner.putalpha(m); im.alpha_composite(inner, (18, 18))
+    im = im.rotate(rot, expand=True, resample=Image.BICUBIC)
+    img.alpha_composite(E.C.shadow(im, (6, 12), 12, 80), (int(c[0] - im.width / 2), int(c[1] - im.height / 2)))
+
+def _barrel_mesh(k=0.22, n=16):
+    """A wide-angle (fisheye) look like a video doorbell: each output cell samples a quad pulled toward the centre."""
+    def src(x, y):
+        nx, ny = (x - W / 2) / (W / 2), (y - H / 2) / (W / 2); r2 = nx * nx + ny * ny; f = 1 / (1 + k * r2)
+        return (W / 2 + nx * f * (W / 2) * 1.12, H / 2 + ny * f * (W / 2) * 1.12)
+    mesh = []
+    for j in range(n):
+        for i in range(n):
+            x0, x1 = W * i / n, W * (i + 1) / n; y0, y1 = H * j / n, H * (j + 1) / n
+            q = src(x0, y0) + src(x0, y1) + src(x1, y1) + src(x1, y0)
+            mesh.append(((int(x0), int(y0), int(x1), int(y1)), q))
+    return mesh
+MESH = _barrel_mesh()
+_vig = Image.new('L', (W, H), 0); _vd = ImageDraw.Draw(_vig)
+for r in range(40):
+    a = int(255 * (r / 40) ** 2); _vd.ellipse((-r * 14 - 300, -r * 14 - 200, W + r * 14 + 300, H + r * 14 + 200), outline=a, width=16)
+VIGNETTE = _vig.filter(ImageFilter.GaussianBlur(40))
+def doorbell(video, t):
+    """The proof clip as video-doorbell footage: wide-angle, darker edges, Front door / LIVE / timestamp overlay."""
+    im = video.convert('RGB').transform((W, H), Image.MESH, MESH, Image.BICUBIC)
+    im = ImageEnhance.Color(im).enhance(0.85).convert('RGBA'); dark = Image.new('RGBA', (W, H), (0, 0, 0, 255))
+    dark.putalpha(ImageChops.invert(VIGNETTE).point(lambda v: int((255 - v) * 0.9))); im.alpha_composite(dark)
+    d = ImageDraw.Draw(im); f = E.ImageFont.truetype(BOLD, 40); f2 = E.ImageFont.truetype('C:/Windows/Fonts/consola.ttf', 40)
+    d.text((80, 260), 'Front door', font=f, fill=(255, 255, 255, 235), stroke_width=2, stroke_fill=(0, 0, 0, 160))
+    if int(t * 2) % 2 == 0: d.ellipse((850, 268, 878, 296), fill=(230, 50, 50, 255))
+    d.text((890, 260), 'LIVE', font=f, fill=(255, 255, 255, 235), stroke_width=2, stroke_fill=(0, 0, 0, 160))
+    d.text((80, 1420), f'10/31  7:4{int(t) % 10} PM', font=f2, fill=(255, 255, 255, 220), stroke_width=2, stroke_fill=(0, 0, 0, 160))
+    return im
 def zoom_into(im, c, z):
     big = im.resize((int(W * z), int(H * z)), Image.BICUBIC); ox, oy = c[0] * z - W / 2, c[1] * z - H / 2
     return big.crop((int(ox), int(oy), int(ox) + W, int(oy) + H))
@@ -298,7 +341,7 @@ def frame(t):
         im = vid('trick', t - 1.3)
         word_art(im, t, 3.25, 'TRICK', 540, 420, 220, 'taffy', 'jitter')
         sticky(im, t, 3.55, '[cheap\nsponges]', (700, 900), -5)
-        D.draw_on(im, DOO['x'], (300, 1000), t, 4.3, 0.3, -6)
+        D.draw_on(im, DOO['x'], (700, 900), t, 4.9, 0.3, -6)         # the trick, crossed out right over the note
     # 5.6-6.1 two-tone strip slice to door 2 (she loved it)
     elif t < 6.1:
         u = ease((t - 5.6) / 0.5); a = vid('trick', t - 1.3); im = HOUSE.copy(); n = 12; sh = H // n
@@ -318,36 +361,33 @@ def frame(t):
     # S4 9.0-11.4 HOME BASE 1: the TREAT; a starburst BEHIND the word; one candy corn carried in lands on the T
     elif t < 11.4:
         im = vid('treat', t - 6.1)
-        k = back_out((t - 9.05) / 0.3)
-        if t > 9.05:
-            b = BURST_BIG.resize((max(1, int(BURST_BIG.width * k)), max(1, int(BURST_BIG.height * k)))).rotate(t * 8, expand=True, resample=Image.BICUBIC)
-            im.alpha_composite(b, (int(540 - b.width / 2), int(470 - b.height / 2)))
-        word_art(im, t, 9.15, 'TREAT', 540, 470, 210, 'taffy', 'drop', 0.06)
-        c = CANDY[1]; u = ease((t - 9.0) / 0.6); cy = 160 + (330 - 160) * u; cx = 900 + (330 - 900) * u
-        cc = B.fit_w(c, 150).rotate(-20 + 20 * u, expand=True, resample=Image.BICUBIC); im.alpha_composite(E.C.shadow(cc, (5, 9), 9, 70), (int(cx - cc.width / 2), int(cy - cc.height / 2)))
+        pill(im, t, 9.05, (540, 480), 940, 280)
+        word_art(im, t, 9.15, 'TREAT', 540, 470, 200, 'taffy', 'drop', 0.06)
+        u = ease((t - 9.0) / 0.6); cx, cy = 980 + (900 - 980) * u, -100 + (290 - (-100)) * u
+        if t > 9.5: D.draw_on(im, BURST_SMALL, (905, 290), t, 9.5, 0.2)
+        cc = B.fit_w(CANDY[1], 150).rotate(-20 + 30 * u, expand=True, resample=Image.BICUBIC)
+        im.alpha_composite(E.C.shadow(cc, (5, 9), 9, 70), (int(cx - cc.width / 2), int(cy - cc.height / 2)))   # carried in, beside the word
         line(im, t, 9.6, '[our 5-minute scrub]', (540, 720), 80)
         D.draw_on(im, DOO['heart'], (860, 1200), t, 10.2, 0.35, 8)
-    # 11.4-12.0 the clip shrinks onto the retro TV standing on door 2's porch (carried into the stage)
-    elif t < 12.0:
-        u = ease((t - 11.4) / 0.6); tvim, sc, frac = crt_scene(vid('treat', t - 6.1))
-        z = 1 / frac; zz = z + (1 - z) * u; im = zoom_into(tvim, sc, zz)
-    # S5 12.0-14.2 THE STAGE (door 2's porch): the TV plays clip 3, the proof; her words on a pinned note
-    elif t < 14.2:
-        im, sc, frac = crt_scene(vid('proof', t - 12.0))
-        word_art(im, t, 12.05, 'PROOF', 540, 300, 170, 'taffy', 'pop', 0.05)
-        sticky(im, t, 12.4, '[5-star\nreviews]', (720, 1330), 6)
-        D.draw_on(im, DOO['arrow'], (250, 1330), t, 12.9, 0.3, -20)
-    # 14.2-14.8 we zoom into the TV screen: clip 3 fills the frame
+    # 11.4-11.8 ding-dong: the doorbell rings (a white flash) and we cut to the doorbell camera
+    elif t < 11.8:
+        u = (t - 11.4) / 0.4; im = vid('treat', t - 6.1) if u < 0.5 else doorbell(vid('proof', t - 11.6), t)
+        im.alpha_composite(Image.new('RGBA', (W, H), (255, 255, 255, int(255 * (1 - abs(u - 0.5) * 2)))))
+        line(im, t, 11.4, 'ding dong!', (540, 960), 120)
+    # S5 11.8-14.5 THE DOORBELL CAM: the proof clip as doorbell footage; PROOF; her words on a pinned note
+    elif t < 14.5:
+        im = doorbell(vid('proof', t - 11.6), t)
+        word_art(im, t, 11.85, 'PROOF', 540, 420, 170, 'taffy', 'pop', 0.05)
+        sticky(im, t, 12.2, '[5-star\nreviews]', (680, 1180), 6)
+        D.draw_on(im, DOO['arrow'], (260, 1180), t, 12.8, 0.3, -20)
+    # 14.5-14.8 the doorbell view opens out to the full clip
     elif t < 14.8:
-        u = ease((t - 14.2) / 0.6); tvim, sc, frac = crt_scene(vid('proof', t - 12.0)); im = zoom_into(tvim, sc, 1 + (1 / frac - 1) * u)
+        u = ease((t - 14.5) / 0.3); im = Image.blend(doorbell(vid('proof', t - 11.6), t), vid('proof', t - 11.6), u)
     # S6 14.8-17.5 HOME BASE 1 + CTA: Comment TREAT with a burst behind the keyword
     else:
-        im = vid('proof', t - 12.0)
+        im = vid('proof', t - 11.6)
         word_art(im, t, 14.8, 'COMMENT', 540, 470, 150, 'taffy', 'pop', 0.05)
-        k = back_out((t - 15.0) / 0.3)
-        if t > 15.0:
-            b = BURST_BIG.resize((max(1, int(BURST_BIG.width * 0.8 * k)), max(1, int(BURST_BIG.height * 0.8 * k))))
-            im.alpha_composite(b, (int(560 - b.width / 2), int(700 - b.height / 2)))
+        pill(im, t, 15.0, (560, 710), 620, 210, 2)
         line(im, t, 15.05, '[TREAT]', (560, 700), 150)
         line(im, t, 15.2, 'for something sweet: 15% off', (520, 900), 64)
         D.draw_on(im, DOO['wavy'], (520, 1000), t, 15.5, 0.35)
