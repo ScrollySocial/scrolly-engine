@@ -336,6 +336,8 @@ def build_capcut(folder, name, slot_files, slot_secs, art_files, L):
     (folder / 'Resources' / 'slots').mkdir(parents=True); (folder / 'Resources' / 'art').mkdir(parents=True)
     for key in {l['font'] for l in L if l['kind'] == 'text'} & set(BUNDLED_FONTS):
         (folder / 'Resources' / 'fonts').mkdir(exist_ok=True); shutil.copy2(BUNDLED_FONTS[key], folder / 'Resources' / 'fonts')
+        lic = HERE / 'font-licenses' / f'{BUNDLED_FONTS[key].stem}-OFL.txt'   # the OFL asks for its notice with every copy
+        if lic.exists(): shutil.copy2(lic, folder / 'Resources' / 'fonts')
     for f in slot_files: shutil.copy2(f, folder / 'Resources' / 'slots' / f.name)
     for f in art_files.values(): shutil.copy2(f, folder / 'Resources' / 'art' / f.name)
     content = json.dumps(d, ensure_ascii=False, separators=(',', ':'))
