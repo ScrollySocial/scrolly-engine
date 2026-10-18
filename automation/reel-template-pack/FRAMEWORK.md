@@ -109,8 +109,13 @@ Log each use here when a template is approved.
   section of a Reel or be the whole Reel's theme. Works for a **clock** too (each hour wedge a clip; the hands sweep
   from slice to slice): fits #11 A day with it, and the fall pie.
 - **Balloons of videos:** balloons floating up above a person, each balloon its own clip.
-- **Intermissions:** a full-screen background with HUGE text and no footage is 100% OK between clips (a pause beat,
-  a list title, a big statement). It doesn't break the "video-focused" rule as long as footage carries most of the Reel.
+- **Intermissions = points of emphasis:** a full-screen background with HUGE text and no footage between clips, used
+  to land the key point (a pause beat, a list title, a big statement). 100% OK; footage still carries most of the Reel.
+- **Layers of photography as a transition:** a very simple video layer we ship (clouds, water, sky) plus many real
+  cut-outs (raindrops, leaves, stars, petals) drifting over it; the cut-outs thicken, then thin out and fade to reveal
+  the buyer's next clip. Works with drag-and-drop because the layers sit on their own tracks above the buyer's slots.
+  Needs: the simple video must be one we own (AI-made or filmed), and the engine needs opacity keyframes (CapCut has
+  them; not added to `engine.py` yet).
 
 ## Pattern and doodle style (Mercedes, 2026-10-17, from Creative Market references)
 
