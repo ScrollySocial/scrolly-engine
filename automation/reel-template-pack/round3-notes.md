@@ -104,3 +104,11 @@ emphasis only; video/transparent fill = very sparingly; tiny captions too small.
 (Bodoni MT Condensed) white with a thick brand-colour outline, glow only on the CTA keyword.
 
 - Round 4b: outline too thick and the static glow unreadable. Now a thin outline (px/55) and no static glow; glow is only an animation effect for emphasis (a brief flash on a key word).
+
+## Her type and colour picks (2026-10-18)
+Font pairings she likes (all fine together): Instrument Serif + DM Sans (headline Regular + Italic, body Medium);
+Bodoni Moda + Manrope (headline Medium, body Medium); DM Serif Display + Manrope (headline Regular + Italic, body Medium).
+Colours she likes (not limited to these): #F7E6A9 butter, #7A1732 wine, #F9C9DF pink.
+On this computer: Bodoni Moda only (CapCut library font, id 7580184437816675601, so buyers have it). Instrument Serif,
+DM Sans, Manrope, DM Serif Display are free Google Fonts (SIL OFL) that would need downloading, and checking that
+CapCut's library has them for editable text.
