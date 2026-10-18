@@ -102,9 +102,9 @@ def layers():
     # 1 opening clip, swirl, BATTY (0 to 1.8)
     g.clip(0, (0, 1.8), 2, (540, 960), (W, H), src=0.0, speed=1.0)
     g.flip('swirl-out', [swirl_frame(i / 15) for i in range(27) for _ in range(2)], 0.0, 40)
-    g.text('arialbd', sz(80), ("things I'm", "things I'm"), (0.35, 1.8), 90, (540, 640), 0, {'scale': pop(0, 1.15)}, color=WHITE, stroke=STROKE)
-    word_art(g, 'batty-hook', 'BATTY', 122, (540, 820), 0.6, 1.8, -3)
-    g.text('arialbd', sz(80), ('about', 'about'), (0.95, 1.8), 91, (540, 1010), 0, {'scale': pop(0, 1.15)}, color=WHITE, stroke=STROKE)
+    g.text('arialbd', sz(80), ("things I'm", "things I'm"), (0.15, 1.8), 90, (540, 640), 0, {'scale': pop(0, 1.15)}, color=WHITE, stroke=STROKE)
+    word_art(g, 'batty-hook', 'BATTY', 122, (540, 820), 0.35, 1.8, -3)
+    g.text('arialbd', sz(80), ('about', 'about'), (0.5, 1.8), 91, (540, 1010), 0, {'scale': pop(0, 1.15)}, color=WHITE, stroke=STROKE)
     doodle(g, 'sparkle1', 'sparkle', (170, 520), 1.0, 1.8); doodle(g, 'sparkle2', 'sparkle2', (900, 1200), 1.2, 1.8)
 
     # 2 the dotted-night stage: branch, bat, MY TOP 3 (1.8 to 3.0)
@@ -112,7 +112,7 @@ def layers():
     br = M.sized(M.BRANCH, 1150, 'br')
     g.art('branch-2', br, (1.8, 3.0), 10, (640, 300), {'x': [(0, 480), (0.35, 640)]})
     g.art('hang-2', M.sized(M.HANG, 230, 'h230'), (2.05, 3.0), 11, (760, 470), {'scale': pop(0, 1.2), 'rot': wiggle(0.3, 0.9, 4, 0.5)})
-    word_art(g, 'mytop', 'MY TOP', 112, (500, 960), 2.2, 3.0, -2); word_art(g, 'three', '3', 260, (500, 1200), 2.45, 3.0, 4)
+    word_art(g, 'mytop', 'MY TOP', 112, (500, 960), 1.85, 3.1, -2); word_art(g, 'three', '3', 260, (500, 1200), 1.85, 3.1, 4)   # 1.2 s to read
 
     # 3 favourite 1 through the bat-shaped hole: slides in, then zooms until the clip fills the screen (3.0 to 4.0)
     g.clip(1, (3.0, 6.15), 2, (540, 960), (W, H), src=0.0, speed=1.0)
@@ -122,7 +122,7 @@ def layers():
           {'x': xs, 'y': [(0.0, 900)], 'rot': [(0.0, -8), (0.55, 0)], 'scale': [(0.0, 1.0), (0.6, 1.0), (0.8, 2.6), (1.0, 6.0)]})
 
     # 4 favourite 1: number, ticket, crown, arrow (4.0 to 5.8)
-    word_art(g, 'n1', '1', 240, (540, 1060), 4.2, 5.8, 6); ticket(g, 1, 1290, 4.55, 5.8, 2)
+    word_art(g, 'n1', '1', 240, (540, 1060), 4.2, 5.8, 6); ticket(g, 1, 1290, 4.3, 5.8, 2)
     doodle(g, 'crown', 'crown', (560, 870), 4.8, 5.8, 8); doodle(g, 'arrow', 'arrow', (800, 420), 5.0, 5.8, -25, 0.35)
 
     # 5 the flock wipes to favourite 2 (5.8 to 6.5), then favourite 2 (6.5 to 9.0)
@@ -147,9 +147,9 @@ def layers():
         g.art(f'hang-end{j}', M.sized(M.HANG, 170, 'h170'), (t0, END), 11 + j, (x, 410), {'scale': pop(0, 1.2), 'rot': wiggle(0.3, 2.9, 3, 0.7)})
         g.clip(slot, (t0, END), 20 + j, (x, 720), (270, 400), (-3, 2, 4)[j], {'scale': pop(0, 1.15)}, src=0.5, speed=1.0)
         word_art(g, f'n-end{j}', str(j + 1), 110, (x, 960), 12.3 + j * 0.15, END, (-6, 4, 6)[j])
-    g.text('arialbd', sz(80), ('comment', 'comment'), (12.8, END), 90, (540, 1100), 0, {'scale': pop(0, 1.15)}, color=WHITE, stroke=STROKE)
-    g.art('batty-cta', M.glossy('BATTY', 122).rotate(-3, expand=True, resample=Image.BICUBIC), (13.0, END), 72, (540, 1240), {'scale': pop(0, 1.2)})
-    g.text('arialbd', sz(60), ("and I'll send all 3 links", "and I'll send all 3 links"), (13.4, END), 91, (540, 1455), 0,
+    g.text('arialbd', sz(80), ('comment', 'comment'), (12.3, END), 90, (540, 1100), 0, {'scale': pop(0, 1.15)}, color=WHITE, stroke=STROKE)
+    g.art('batty-cta', M.glossy('BATTY', 122).rotate(-3, expand=True, resample=Image.BICUBIC), (12.45, END), 72, (540, 1240), {'scale': pop(0, 1.2)})
+    g.text('arialbd', sz(60), ("and I'll send all 3 links", "and I'll send all 3 links"), (12.2, END), 91, (540, 1455), 0,
            {'scale': pop(0, 1.15)}, color=WHITE, stroke=STROKE)
-    doodle(g, 'arrow2', 'arrow2', (150, 1100), 13.1, END); doodle(g, 'under', 'under', (540, 1372), 13.3, END)
+    doodle(g, 'arrow2', 'arrow2', (150, 1100), 12.7, END); doodle(g, 'under', 'under', (540, 1372), 12.9, END)
     return g

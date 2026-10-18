@@ -55,7 +55,7 @@ def layers():
     for t in samples(0, 1.8, 0.05):
         (x, y), a = swing(t); tk['x'].append((t, (A[0] + x) / 2)); tk['y'].append((t, (A[1] + y) / 2)); tk['rot'].append((t, -a))
     g.art('thread-swing', thread, (0, 1.8), 29, ((A[0] + swing(0)[0][0]) / 2, (A[1] + swing(0)[0][1]) / 2), tk)
-    g.text('arialbd', sz(92), ("you're about to get", "you're about to get"), (0.35, 2.0), 60, (540, 1060), 0, {'scale': pop(0, 1.15)},
+    g.text('arialbd', sz(92), ("you're about to get", "you're about to get"), (0.1, 2.3), 60, (540, 1060), 0, {'scale': pop(0, 1.15)},
            color=INK, stroke=STROKE)
 
     # cut-out letters on silk: each letter and its thread are one picture, so they drop and lift together
@@ -70,7 +70,7 @@ def layers():
             k = {'y': [(0, c[1] - 1100), (0.2, c[1] + 40), (0.3, c[1] - 12), (0.38, c[1])], 'rot': wiggle(0.4, 4, 2.5, 1.1)}
             if gone: k['y'] += [(gone - ti, c[1]), (gone - ti + 0.35, c[1] - 1500)]
             g.art(f'{name}-{i}', im, (ti, (gone + 0.4) if gone else END), z0 + i, c, k)
-    hanging('CAUGHT', 0.5, 1240, 150, 495, 1.75, 40, 'caught')
+    hanging('CAUGHT', 0.2, 1240, 150, 495, 2.05, 40, 'caught')   # fully readable 1.2 s+
 
     # ===== 2 four straight lines, one at a time; a bubble slides out at each end (2.4 to 11.2) =====
     for k, (a, word, key, r) in enumerate(M.LINES):
@@ -100,7 +100,7 @@ def layers():
         g.art(f'bubble-silk{k}', ring, (t0 + 0.75, END), 15 + k, b0, bk)
         lab = M.pt(a + 180, 380); w = M.B.F(M.BOLD, 78).getlength(word)
         lab = (min(max(lab[0], w / 2 + 70), 940 - w / 2), min(max(lab[1], 300), 1460))
-        g.text('arialbd', sz(78), (f'[Point {k + 1}]', word), (t0 + 1.0, nxt), 61 + k, lab, 0, {'scale': pop(0, 1.15)}, color=INK, stroke=STROKE)
+        g.text('arialbd', sz(78), (f'[Point {k + 1}]', word), (t0 + 0.8, nxt), 61 + k, lab, 0, {'scale': pop(0, 1.15)}, color=INK, stroke=STROKE)
 
     # ===== 3 the rings are spun between the same lines, and we zoom out to the whole web (11.2 to 13.0) =====
     frames = []
@@ -126,6 +126,6 @@ def layers():
     g.art('spider-web', M.sized(M.spider, 320, 'sp320'), (11.2, END), 70, (540, 860), spk)
 
     # ===== 4 CTA: Comment WEB (13.0 to 15.0) =====
-    hanging('COMMENT', 13.05, 1230, 112, 520, None, 80, 'comment')
+    hanging('COMMENT', 12.8, 1230, 112, 520, None, 80, 'comment')
     g.text('arialbd', sz(130), ('[WEB]', 'WEB'), (13.6, END), 90, (540, 1405), 0, {'scale': pop(0, 1.2)}, color=INK, stroke=STROKE)
     return g
