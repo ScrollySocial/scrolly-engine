@@ -96,3 +96,9 @@ a same-coloured area. New sheet: type-options-lisa.jpg (build/type_lisa.py), opt
 - Current proposal: words on torn paper (type-paper-test.jpg, build/type_paper.py): the key word big on a torn strip in
   the brand colour (text auto white/ink), small words on torn white scraps, only the keyword on a pill. Placement in the
   real templates keeps words off the face (the test sheet uses one fixed layout).
+
+## Type, round 4 (her notes on Lisa's frames, 2026-10-18)
+Outlined = easy to read (use); highlight boxes = underused (use most); pill = overused (once at most); glow = end
+emphasis only; video/transparent fill = very sparingly; tiny captions too small. Proposal: type-system-test.jpg
+(build/type_system.py): small lines in sans on highlight boxes (white or brand), key words in a condensed serif
+(Bodoni MT Condensed) white with a thick brand-colour outline, glow only on the CTA keyword.
