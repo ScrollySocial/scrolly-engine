@@ -67,6 +67,10 @@ The long rules below are reference. These ten are where drafts keep failing. A d
 - **Starbursts go BEHIND something** (the product, the key word) for emphasis. One burst; never two side by side
   emphasising nothing.
 - **One underline, a single line.** Never the double underline.
+- **One arrow, and place it for a TEMPLATE, not the final video** (her note on #13): the buyer's clip will differ from
+  the stand-in, so an arrow never aims at a spot in the stand-in footage. It points from the words toward the frame
+  centre, where the shot guide asks buyers to keep the product. Use clean single arrows only (arrow sheet piece 3 is
+  two arrows cut as one; piece 2 carries a stray mark).
 - **Objects must make sense together and work for every business in the pack** (measuring spoons + twine on a
   smoothie didn't); if a buyer couldn't tell what the object means for their product, use the buyer's own clip or photo.
 - **Words stay up long enough to read**, especially handwriting writing itself in.

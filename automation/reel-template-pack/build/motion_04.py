@@ -54,9 +54,9 @@ def setup():
     g['even'] = P.pill_m('even my followers', 54, INK, CRM); g['cant'] = P.caption("can't pick", 140, INK)
     g['both'] = P.caption('or both?', 170, SLATE)
     g['comment'] = P.caption('Comment', 180, SLATE, 'stripes'); g['kw'] = P.pill_m('"A" or "B"', 64, CRM, INK); g['shop'] = P.pill_m('[both in my shop]', 50, INK, CRM)
-    g['d_arrow'] = doodle('arrow', 9, 250, WHITE); g['d_burst'] = doodle('burst', 2, 700, CRM)
+    g['d_arrow'] = doodle('arrow', 0, 190, WHITE); g['d_burst'] = doodle('burst', 2, 700, CRM)
     g['noteA'] = P.sticky('[so light]', 330, pin='pin-head-black')
-    g['d_arrowS'] = doodle('arrow', 2, 200, INK)
+    g['d_arrowS'] = doodle('arrow', 0, 180, INK)
     return g
 
 def scale_at(g, im, t, which, c=(540, 1150), k=1.0):
@@ -112,7 +112,7 @@ def frame(g, t):
         return im
     if t < 5.2:                                                    # 3: A full frame; the A sticker carried to the corner
         im = c['A'].at(max(0, t - 3.4))
-        P.say(im, g['nameA'], t, 3.6, (580, 1380), -2); doodle_on(im, t, 3.9, g['d_arrow'], (360, 980), -30); P.say(im, g['noteA'], t, 4.2, (820, 640), 6)
+        P.say(im, g['nameA'], t, 3.6, (580, 1380), -2); doodle_on(im, t, 3.9, g['d_arrow'], (580, 1215), 90); P.say(im, g['noteA'], t, 4.2, (820, 640), 6)
         if t > 4.9: im = diagonal(im, stage4(g, t), seg(t, 4.9, 5.2))
         return im
     if t < 7.0: return stage4(g, t)                                # 4: the scale tips to A, then B; dive into B

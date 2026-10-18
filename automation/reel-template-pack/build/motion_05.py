@@ -66,7 +66,7 @@ def setup():
     g['seen'] = P.caption('now you know', 110, INK)
     g['comment'] = P.caption('Comment', 180, TEAL, 'stripes'); g['kw'] = P.pill_m('"[KEYWORD]"', 64, CRM, INK); g['name'] = P.pill_m('[Product name]', 54, TEAL, CRM)
     g['ring'] = doodle('frame', 0, 760, TEAL); g['ringS'] = doodle('frame', 0, 520, TEAL); g['ringW'] = doodle('frame', 0, 700, WHITE)
-    g['d_arrow'] = doodle('arrow', 9, 260, WHITE); g['d_under'] = doodle('under', 0, 600, CRM)
+    g['d_arrow'] = doodle('arrow', 0, 190, WHITE); g['d_under'] = doodle('under', 0, 600, CRM)
     g['arrows'] = [doodle('arrow', 0, 150, TEAL) for i in range(4)]
     return g
 
@@ -111,7 +111,7 @@ def frame(g, t):
     if t < 4.8:                                                    # 3: detail 1
         im = camera(c['d0'].at(t - 3.2 + 1.6), (540, 900), lerp(1.4, 1, ease(seg(t, 3.2, 3.5))))
         put(im, g['nums'][0], (200, 360), back_out(seg(t, 3.3, 3.6)) * 1.4, -8); P.say(im, g['p'][0], t, 3.5, (540, 1380), -2)
-        doodle_on(im, t, 3.8, g['d_arrow'], (300, 1050), -20)
+        doodle_on(im, t, 3.8, g['d_arrow'], (540, 1215), 90)
         if t > 4.5: im = X.slice_h(im, stage4(g, t), seg(t, 4.5, 4.8), (TEAL, INK))
         return im
     if t < 6.2: return stage4(g, t)                                 # 4: the contact sheet; zoom into frame 02

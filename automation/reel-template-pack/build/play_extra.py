@@ -191,3 +191,18 @@ def use_type(light, dark):
             while px > 20 and max(S.F(S.HAND, px).getlength(l) for l in text.split('\n')) > w * 0.72: px -= 2
         return sticky0(text, w, tint, px, seed, pin)
     P.sticky = sticky
+
+class Window:
+    """A clip held inside one stretch [a, b] of its take (seconds), playing back and forth there, on real time like the
+    others (holds included). For stand-ins whose good moment is short (a lamp that is lit for 3 s)."""
+    def __init__(self, clip, a, b): self.c, self.a, self.b = clip, a, b
+    def at(self, t, size=(W, H)):
+        n = self.b - self.a; x = (t + _BIAS[0]) % (2 * n); x = x if x < n else 2 * n - x
+        return _AT0[0](self.c, self.a + x, size)
+
+_AT0 = [None]
+_enable0 = enable_holds
+def enable_holds():
+    _AT0[0] = _MB.Clip.at if not getattr(_MB.Clip, '_holds', False) else _AT0[0] or _MB.Clip.at
+    if _AT0[0] is None or getattr(_MB.Clip, '_holds', False) is False: _AT0[0] = _MB.Clip.at
+    _enable0()

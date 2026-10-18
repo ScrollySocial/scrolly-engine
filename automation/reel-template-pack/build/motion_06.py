@@ -64,7 +64,7 @@ def setup():
     g['later'] = P.sticky('[20 minutes\nlater]', 440, pin='pin-head-black'); g['speed'] = P.sticker('>> 2x', 70, INK, WHITE)
     g['almost'] = P.caption('almost...', 160, INK); g['fin'] = P.caption('finished.', 190, OCHRE)
     g['comment'] = P.caption('Comment', 180, OCHRE, 'stripes'); g['kw'] = P.pill_m('"[KEYWORD]"', 64, CRM, INK); g['town'] = P.pill_m('[handmade in Austin]', 50, INK, CRM)
-    g['d_under'] = doodle('under', 0, 600, OCHRE); g['d_arrow'] = doodle('arrow', 9, 250, WHITE); g['d_burst'] = doodle('burst', 2, 1250, OCHRE)
+    g['d_under'] = doodle('under', 0, 600, OCHRE); g['d_arrow'] = doodle('arrow', 0, 190, WHITE); g['d_burst'] = doodle('burst', 2, 1250, OCHRE)
     g['d_tick'] = doodle('tick', 0, 240, INK)
     sw, sh = P.screen_size(PHONE, 640); g['sw'], g['sh'] = sw, sh
     g['feed'] = P.feed([(S.footage(cl), nm, pr) for cl, nm, pr in ((('IMG_1388', 2.0), '[Product 1]', '[$8]'), (('IMG_1395', 0.5), '[Product 2]', '[$9]'),
@@ -110,7 +110,7 @@ def frame(g, t):
         if t > 3.35: im = diagonal(im, with_bar(c['s1'].at(t - 3.35), t), seg(t, 3.35, 3.6))
         return im
     if t < 5.2:                                                    # 3: stage 1; bar 25%
-        im = with_bar(c['s1'].at(t - 3.35), t); P.say(im, g['sp'][0], t, 3.7, (540, 1380), -2); doodle_on(im, t, 4.0, g['d_arrow'], (300, 1080), -40)
+        im = with_bar(c['s1'].at(t - 3.35), t); P.say(im, g['sp'][0], t, 3.7, (540, 1380), -2); doodle_on(im, t, 4.0, g['d_arrow'], (540, 1215), 90)
         if t > 4.95: im = swipe(im, bench4(g, t), seg(t, 4.95, 5.2), -1)
         return im
     if t < 6.6:                                                    # 4: the hourglass flips; 20 minutes later
