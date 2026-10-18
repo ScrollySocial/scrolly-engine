@@ -37,7 +37,7 @@ HOLDS = [(1.55, 1.1), (3.15, 0.6), (4.75, 1.1), (6.35, 0.8), (7.95, 1.3), (9.55,
 
 def setup():
     g = {'c': {'squeeze': Clip('IMG_1403', 0.5), 'close': Clip('IMG_1406', 0.0), 'drape': X.Window(Clip('IMG_1409', 0.0), 0.0, 3.0),
-               'close2': X.Window(Clip('IMG_1407', 0.0), 0.5, 3.5), 'whole': Clip('IMG_1398', 0.0), 'cta': Clip('IMG_1410', 2.0)}}
+               'close2': X.Window(Clip('IMG_1407', 0.0), 0.5, 3.5), 'whole': X.Window(Clip('IMG_1398', 0.0), 0.0, 3.0), 'cta': X.Window(Clip('IMG_1398', 0.0), 3.0, 6.0)}}
     tis = ImageOps.grayscale(S.raw('images', 'Crumpled pale blue tissue texture-8.png'))
     g['paper'] = ImageOps.fit(ImageOps.colorize(ImageOps.autocontrast(tis), (150, 184, 214), BLUE), (W, H)).convert('RGBA')
     bw = ImageOps.fit(S.raw('images', 'Clear bubble wrap texture-11.png'), (W + 200, H + 200)).convert('RGBA')

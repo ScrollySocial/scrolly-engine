@@ -41,6 +41,13 @@ def setup():
     tis = ImageOps.grayscale(S.raw('images', 'Blush Pink Tissue Paper Texture-9.png'))      # a calm pink paper stage (her note: no busy patterns)
     g['stripes'] = ImageOps.fit(ImageOps.colorize(ImageOps.autocontrast(tis), (214, 150, 178), PINK), (W, H)).convert('RGBA')
     lk = Image.open(S.E.PACK / 'build' / '.cache' / 'hq' / 'Open vintage gold locket, blank inside.png').convert('RGBA'); lk = P.style_object(S.fitw(lk, LW), 'smalldots', PINK, scale=0.3, strength=0.35, edge=8); g['locket'] = S.fitw(lk, LW); g['lh'] = g['locket'].height   # play on the object
+    HQ = S.E.PACK / 'build' / '.cache' / 'hq'
+    def fr_(name, w): return C.shadow(S.fitw(Image.open(HQ / (name + '.png')).convert('RGBA'), w), (10, 18), 14, 110)
+    # her real frames (2026-10-18): each with its opening as (x0, y0, x1, y1) shares of the frame; 'top' = the clip goes ON the backing
+    g['frames'] = {'gold': (fr_('Empty ornate antique gold frame-3', 680), (0.18, 0.145, 0.83, 0.84), False),
+                   'pink': (fr_('Blush pink scalloped portrait frame-5', 520), (0.22, 0.175, 0.80, 0.82), True),
+                   'oval': (fr_('Vintage oval brass frame with floral crest-4', 540), (0.10, 0.20, 0.90, 0.89), False),
+                   'walnut': (fr_('Empty walnut picture frame-2', 720), (0.086, 0.12, 0.914, 0.88), False)}
     g['tea'] = P.thing('Vintage Rose Porcelain Tea Set.png', 820, 'smalldots', WINE, scale=0.3, strength=0.35)
     g['what'] = P.caption('what to pair', 150, WINE); g['with'] = X.hl('with [my steam mop]', 60, WHITE)
     g['plus'] = [X.hl(t, 62, (PINK, WHITE, PINK)[i]) for i, t in enumerate(('+ [the stick vacuum]', '+ [the odor spray]', '+ [the litter]'))]
@@ -77,8 +84,9 @@ def frame(g, t):
         im = locket(g, t, c['main'].at(t), PINK, y)
         P.say(im, g['what'], t, 0.1, (540, 330), -3); P.say(im, g['with'], t, 0.4, (540, 480), 2)
         return im
-    if t < 3.6:                                                    # 2: side by side: the product | pairing 1, a big "+"
-        im = split2(g, t, c['main'].at(t), c['p1'].at(t - 1.8)); P.say(im, g['plus'][0], t, 2.15, (760, 1420), -2)
+    if t < 3.6:                                                    # 2: the gallery wall: the product in the gold frame, pairing 1 in the pink one
+        im = gallery(g, t, 0, 1.0, {'gold': c['main'].at(t), 'pink': c['p1'].at(t - 1.8)}, pink_in=1.9)
+        P.say(im, g['pair1'], t, 1.95, (540, 300), -2); P.say(im, g['plus'][0], t, 2.3, (640, 1400), -2)
         if t < 1.95: im = diagonal(locket(g, t, c['main'].at(t), PINK), im, seg(t, 1.8, 1.95))
         if t > 3.35: im = swipe(im, close3(g, 3.6), seg(t, 3.35, 3.6), -1)
         return im
@@ -90,8 +98,10 @@ def frame(g, t):
         im = c['p2'].at(t - 3.8); P.say(im, g['plus'][1], t, 5.25, (540, 1380), 2); doodle_on(im, t, 5.6, g['under'], (540, 1460), -2)
         if t > 6.55: im = swipe(im, diag5(g, 6.8), seg(t, 6.55, 6.8))
         return im
-    if t < 8.4:                                                    # 5: a diagonal split: the product | pairing 3
-        im = diag5(g, t)
+    if t < 8.4:                                                    # 5: the camera pans down the wall: pairing 3 in the oval frame
+        y = lerp(400, 980, ease(seg(t, 6.8, 7.4)))
+        im = gallery(g, t, y, 1.0, {'gold': c['main'].at(t), 'pink': c['p1'].at(t - 1.8), 'walnut': c['p2'].at(t - 3.8), 'oval': c['p3'].at(t - 6.8)})
+        P.say(im, g['plus'][2], t, 7.45, (760, 1060), 2)
         if t > 8.15: im = diagonal(im, stage6(g, t), seg(t, 8.15, 8.4))
         return im
     if t < 10.0:
@@ -99,6 +109,27 @@ def frame(g, t):
         if t > 9.75: im = swipe(im, cta(g, 10.0), seg(t, 9.75, 10.0), -1)
         return im
     return cta(g, t)
+
+GALLERY = {'gold': (540, 760), 'pink': (300, 1520), 'walnut': (540, 2380), 'oval': (790, 1640)}
+GH = 2900
+
+def gallery(g, t, view_y, zoom, clips, pink_in=None):
+    """Her real frames hung on the calm pink paper wall (a tall stage); each frame shows its clip. The view is the part
+    of the wall from view_y down, at `zoom` (zoom < 1 pulls back to show more of the wall)."""
+    wall = Image.new('RGBA', (W, GH)); wall.alpha_composite(g['stripes'], (0, 0)); wall.alpha_composite(g['stripes'], (0, H))
+    for name, (fim, (x0, y0, x1, y1), top) in g['frames'].items():
+        if name not in clips: continue
+        cx, cy = GALLERY[name]
+        if name == 'pink' and pink_in is not None: cy = lerp(-600, cy, back_out(seg(t, pink_in, pink_in + 0.35), 1.3))
+        fx, fy = int(cx - fim.width / 2), int(cy - fim.height / 2); ow, oh = int(fim.width * (x1 - x0)), int(fim.height * (y1 - y0))
+        v = ImageOps.fit(clips[name], (ow + 8, oh + 8)).convert('RGBA')
+        if name == 'oval': v.putalpha(oval_mask(v.size))
+        if top: wall.alpha_composite(fim, (fx, fy)); wall.alpha_composite(v, (fx + int(fim.width * x0) - 4, fy + int(fim.height * y0) - 4))
+        else: wall.alpha_composite(v, (fx + int(fim.width * x0) - 4, fy + int(fim.height * y0) - 4)); wall.alpha_composite(fim, (fx, fy))
+    vh = int(H / zoom); y = int(max(0, min(GH - vh, view_y))); vw = int(W / zoom); x = int((W - vw) / 2)
+    if zoom >= 1: return wall.crop((0, y, W, y + H))
+    view = Image.new('RGBA', (vw, vh)); view.alpha_composite(g['stripes'].resize((vw, vh)), (0, 0)); view.alpha_composite(wall.crop((0, y, W, min(GH, y + vh))), (-x, 0))
+    return view.resize((W, H), Image.BILINEAR)
 
 def split2(g, t, a, b):
     im = g['stripes'].copy(); w, h = 500, 1180
@@ -125,9 +156,9 @@ def stage6(g, t):
     return im
 
 def cta(g, t):
-    c = g['c']; im = g['stripes'].copy(); half = (W // 2, H // 2)
-    for i, (cl, t0) in enumerate(((c['main'], 0), (c['p1'], 1.8), (c['p2'], 3.8), (c['p3'], 7.0))):
-        im.alpha_composite(ImageOps.fit(cl.at(t - t0), (half[0] - 20, half[1] - 20)).convert('RGBA'), ((i % 2) * half[0] + 10, (i // 2) * half[1] + 10))
+    """All of them together: the camera pulls back to the whole gallery wall."""
+    c = g['c']; z = lerp(1.0, 0.66, ease(seg(t, 10.0, 10.6)))
+    im = gallery(g, t, lerp(400, 0, ease(seg(t, 10.0, 10.6))), z, {'gold': c['main'].at(t), 'pink': c['p1'].at(t - 1.8), 'walnut': c['p2'].at(t - 3.8), 'oval': c['p3'].at(t - 6.8)})
     P.say(im, g['comment'], t, 10.2, (540, 900), -3); P.say(im, g['kw'], t, 10.45, (540, 1080), 2); P.say(im, g['bname'], t, 10.65, (540, 1210), -2)
     return im
 
