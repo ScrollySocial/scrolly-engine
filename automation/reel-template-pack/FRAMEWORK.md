@@ -199,9 +199,11 @@ Showing her work
   camera zooms into the full image.
 - **A real prop that rises and falls between clips** (a fringed blanket) and can grow into the full-page background.
 - **Overlays on an object stay inside its shape** (dots, stars, stripes on an apple never spill off it).
-- **Not a mixed collage, but lots of ONE thing is good:** her round 1 Fall stills were rejected as busy (leaves, tags,
-  stickers, cards all piled together). Many props are fine when they are one kind: a frame of leaves all round the
-  clip, a screen full of stars, acorns or mushrooms all along the ground (`fall/inspo/07`, `08`). The video stays the hero. Check cut-outs: white objects on white backgrounds (cards,
+- **Many props is fine; a random pile is not.** Her round 1 Fall stills were rejected as busy (leaves, tags, stickers,
+  cards scattered everywhere). What works: a set of the same object, each one played with differently (her apples
+  in `fall/inspo/02`: one with tiny painted dots, one with tiny stars, one wearing a lined sticker label with words),
+  or one object repeated as a frame or a floor (leaves all round the clip, a screen full of stars, acorns or
+  mushrooms all along the ground: `07`, `08`). The video stays the hero. Check cut-outs: white objects on white backgrounds (cards,
   cups) need a careful cut, and holes (tag loops) must be see-through.
 
 ## Checklist: run before showing any storyboard or preview
@@ -228,5 +230,5 @@ Showing her work
 - [ ] Any reused move is under its 5-of-25 cap (see the moves table).
 - [ ] The buyer only drops in their clips: no special filming, no on-camera prop reveal (unless it's the 1 of 25).
 - [ ] Any photo inside letters can be swapped by the buyer, or fits the theme as is.
-- [ ] Not a mixed collage (lots of ONE kind of prop is fine); cut-outs checked at full size (no white edges or blobs).
+- [ ] Props are a set (same object, each played with differently) or a frame/floor, not a random pile; cut-outs checked at full size (no white edges or blobs).
 - [ ] Would someone say "wow, I've never seen that on my feed"? If not, it isn't ready.

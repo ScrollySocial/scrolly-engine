@@ -51,3 +51,5 @@ Halloween). Next round = motion tests, fewer and bigger props.
 - **Lots of one thing (correction, 2026-10-17):** not "fewer props". One kind, many of them: real leaves framing the
   clip on all sides (`07`), a screen full of paper stars (`08`), acorns all along the ground, mushrooms all along the
   ground.
+- **Correction 2 (2026-10-17):** not strictly one kind either. Her apples (`02`) are the model: the same object,
+  each decorated differently (tiny dots, tiny stars, a lined sticker label with words). What fails is a random pile.
