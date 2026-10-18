@@ -145,6 +145,24 @@ boards (they're the style, not the density):
 
 ## Her idea bank (Mercedes, 2026-10-17): use these when they fit
 
+**In one line: mixed-media video collages, hyper interesting and visually hooky.**
+
+More from her (2026-10-17; images in the shared library, any pack can use them; she sees them as fall ideas first):
+- **Butterflies and moths:** transitions and effects with their wings (wings open to reveal a clip, wings as two
+  halves of a split, a flutter that wipes the screen).
+- **Clock tower:** a separator (outline its point in a colour); rises in from the bottom to split the screen in two;
+  or its clock face becomes a circle video that the camera zooms into.
+- **Glasses frames:** a different clip inside each lens. Effects: colour inside the lenses, greyscale outside; blurry
+  outside, sharp inside; or another effect.
+- **Patchwork quilt:** the transition is one fabric at a time disappearing into the video behind it, until the quilt
+  is gone.
+- **Gas street lamp:** a divider between two clips; the lamp slides across with the incoming clip, carrying it from
+  partly on screen to full screen.
+- **Cathedral (a video):** cut out along the steeple line for a split frame: it starts taking most of the screen and
+  sinks to the bottom, the steeple the last thing to leave off the bottom edge.
+- **Skyscrapers / skyline:** cut the buildings out of the sky; bring them in together, or put the buyer's clip in the
+  sky behind the skyline.
+
 - **Wheel or pie of videos:** a round wheel (or pie) cut into a few slices (fewer than a Wheel of Fortune, about 3
   to 6), each slice playing its own clip. The whole wheel rotates to bring the next slice up. It can carry one
   section of a Reel or be the whole Reel's theme. Works for a **clock** too (each hour wedge a clip; the hands sweep
