@@ -102,3 +102,5 @@ Outlined = easy to read (use); highlight boxes = underused (use most); pill = ov
 emphasis only; video/transparent fill = very sparingly; tiny captions too small. Proposal: type-system-test.jpg
 (build/type_system.py): small lines in sans on highlight boxes (white or brand), key words in a condensed serif
 (Bodoni MT Condensed) white with a thick brand-colour outline, glow only on the CTA keyword.
+
+- Round 4b: outline too thick and the static glow unreadable. Now a thin outline (px/55) and no static glow; glow is only an animation effect for emphasis (a brief flash on a key word).

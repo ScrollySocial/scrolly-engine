@@ -26,7 +26,7 @@ def highlight(lines, px, bg, rot=0):
 
 def outlined(text, px, edge, fill=WHITE, ew=None, glow=False):
     """The key word: condensed serif, white, thick outline in the brand colour, soft shadow; glow only for the CTA."""
-    f = S.F(SERIF_C, px); l, t, r, b = f.getbbox(text); ew = ew or max(6, px // 22); pad = ew * 3 + 40; w, h = r - l + 2 * pad, b - t + 2 * pad
+    f = S.F(SERIF_C, px); l, t, r, b = f.getbbox(text); ew = ew or max(3, px // 55); pad = ew * 3 + 40; w, h = r - l + 2 * pad, b - t + 2 * pad
     m = Image.new('L', (w, h), 0); ImageDraw.Draw(m).text((pad - l, pad - t), text, font=f, fill=255); out = Image.new('RGBA', (w, h), (0, 0, 0, 0))
     sh = Image.new('RGBA', (w, h), (0, 0, 0, 0)); sh.putalpha(m.filter(ImageFilter.MaxFilter(2 * ew + 1)).filter(ImageFilter.GaussianBlur(12)).point(lambda v: int(v * 0.5))); out.alpha_composite(sh, (0, 8))
     if glow:
@@ -41,7 +41,7 @@ def frame(clip, brand):
     put(im, highlight(['what my', 'buyers'], 88, WHITE, -2), (330, 400))
     put(im, outlined('actually said', 210, brand), (560, 640))
     put(im, highlight(['comment'], 88, brand), (360, 1200))
-    put(im, outlined('[keyword]', 190, brand, glow=True), (580, 1370))
+    put(im, outlined('[keyword]', 190, brand), (580, 1370))   # glow is an animation effect for emphasis, not static
     return im
 
 def main():
