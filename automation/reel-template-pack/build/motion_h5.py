@@ -218,11 +218,18 @@ def persp(dst, src):
 _ib = B.house2(1.9)[1]; _is = W / (_ib[2] - _ib[0])
 ARCH_C = ((741 - _ib[0]) * _is, (622 - _ib[1]) * _is)       # door 2's doorway on screen (arch measured on her photo)
 
+import doodles as D
+_LAV = (196, 170, 232)
+DOO = {'burst1': D.get('bursts', 5, _LAV, 300), 'burst2': D.get('bursts', 6, _LAV, 280), 'x': D.get('checks', 4, _LAV, 330),
+       'rays': D.get('bursts', 4, _LAV, 380), 'heart': D.get('icons', 3, _LAV, 300), 'sparkle': D.get('icons', 9, (255, 255, 255), 200),
+       'arrow': D.get('arrows', 0, _LAV, 270), 'wavy': D.get('underlines', 2, _LAV, 620)}
+
 def frame(t):
     # 0.0-1.3 door 1, KNOCK KNOCK in brass jumps on each knock (and the picture jolts)
     if t < 1.3:
         im = DOOR_SHUT.copy()
         word_art(im, t, 0.05, 'KNOCK', 540, 520, 180, 'taffy', 'knock'); word_art(im, t, 0.4, 'KNOCK', 540, 760, 180, 'taffy', 'knock')
+        D.draw_on(im, DOO['burst1'], (215, 1180), t, 0.25, 0.15); D.draw_on(im, DOO['burst2'], (870, 1290), t, 0.6, 0.15)   # knock impacts
         im = shake(im, t)
     # 1.3-2.0 the door swings inward on its right-hand hinge, in perspective, onto the lit hallway (clip 1 plays there)
     elif t < 2.0:
@@ -247,6 +254,7 @@ def frame(t):
         word_art(im, t, 2.7, 'TRICK', 520, 450, 220, 'taffy', 'jitter')
         line(im, t, 3.3, '[cheap sponges]', (520, 680), 80)
         word_art(im, t, 4.0, 'or...', 520, 880, 150, 'taffy', 'pop', 0.08)
+        D.draw_on(im, DOO['x'], (820, 1240), t, 3.55, 0.3, -6)      # the trick, crossed out
     # 4.8-5.3 whip pan along the street to door 2
     elif t < 5.3:
         u = ease((t - 4.8) / 0.5); a = vid('trick', t - 1.3); im = Image.new('RGBA', (W, H), (0, 0, 0, 255))
@@ -258,6 +266,7 @@ def frame(t):
         im = HOUSE.copy()
         word_art(im, t - 5.3 + 0.0, -0.0, 'KNOCK', 540, 560, 170, 'taffy', 'knock')
         line(im, t, 5.55, '[something sweet is coming]', (520, 820), 62)
+        D.draw_on(im, DOO['rays'], (540, 1180), t, 5.45, 0.25)        # the knock on door 2
         im = shake(im, t - 5.3)
     # 6.1-6.5 door 2 opens: warm light, then clip 2 appears in the real doorway
     elif t < 6.5:
@@ -276,12 +285,14 @@ def frame(t):
         im = vid('treat', t - 6.1)
         word_art(im, t, 8.7, 'TREAT', 520, 520, 230, 'taffy', 'drop', 0.09)
         line(im, t, 9.3, '[our 5-minute scrub]', (520, 740), 80)
+        D.draw_on(im, DOO['heart'], (860, 1120), t, 9.6, 0.35, 8); D.draw_on(im, DOO['sparkle'], (190, 1000), t, 9.9, 0.3)   # the treat, loved
     # 12.0-15.0 CTA over clip 3: COMMENT + the editable keyword
     else:
         im = vid('cta', t - 12.0)
         word_art(im, t, 12.05, 'COMMENT', 520, 500, 150, 'taffy', 'pop', 0.06)
-        line(im, t, 12.6, '[TREAT]', (520, 720), 150)
+        line(im, t, 12.6, '[TREAT]', (560, 720), 150)
         line(im, t, 13.0, "for something sweet: 15% off", (520, 880), 66)
+        D.draw_on(im, DOO['arrow'], (170, 720), t, 12.9, 0.3, 0); D.draw_on(im, DOO['wavy'], (520, 1000), t, 13.3, 0.35)   # point at the keyword, underline the offer
     return im.convert('RGB')
 
 def main():

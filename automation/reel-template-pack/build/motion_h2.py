@@ -142,6 +142,11 @@ def bat_window(video, w):
     b = sized(FLY, w, f'win{w}'); v = ImageOps.fit(video, b.size)
     v.putalpha(b.split()[3].point(lambda a: 255 if a > 100 else 0)); return v
 
+import doodles as D
+DOO = {'sparkle': D.get('icons', 9, (255, 255, 255), 190), 'sparkle2': D.get('icons', 11, LILAC, 220),
+       'crown': D.get('icons', 5, LILAC, 230), 'arrow': D.get('arrows', 3, (255, 255, 255), 300), 'heart': D.get('icons', 2, LILAC, 230),
+       'burst': D.get('bursts', 0, LILAC, 260), 'arrow2': D.get('arrows', 0, LILAC, 250), 'under': D.get('underlines', 3, LILAC, 520)}
+
 def frame(t):
     # 0.0-1.8 clip 1 full screen; a peppermint swirl of bats spirals out and away; BATTY
     if t < 1.8:
@@ -157,6 +162,7 @@ def frame(t):
         line(im, t, 0.35, "things I'm", (540, 640), 80)
         pop_word(im, t, 0.6, 'BATTY', (540, 820), 122, -3)
         line(im, t, 0.95, 'about', (540, 1010), 80)
+        D.draw_on(im, DOO['sparkle'], (170, 520), t, 1.0, 0.3); D.draw_on(im, DOO['sparkle2'], (900, 1200), t, 1.2, 0.3)   # sparkles round the hook
     # 1.8-3.0 intermission: dark backdrop, a bat drops onto the branch, MY TOP 3
     elif t < 3.0:
         im = BACKDROP.copy(); bx = 640 - 160 * (1 - ease((t - 1.8) / 0.35))
@@ -177,6 +183,7 @@ def frame(t):
             im = vid('b', t - 3.0)
             bat_carry(im, t, 4.2, tag_with('[favourite 1]'), (300, 560))
             pop_word(im, t, 4.5, '1', (820, 420), 220, 6)
+            D.draw_on(im, DOO['crown'], (820, 230), t, 4.8, 0.3, 8); D.draw_on(im, DOO['arrow'], (560, 900), t, 5.0, 0.35, 15)   # number 1 is crowned; point at it
     # 5.8-6.5 a flock of bats passes across the screen: the transition to favourite 2
     elif t < 6.5:
         u = (t - 5.8) / 0.7; im = vid('b', t - 3.0) if u < 0.5 else vid('c', t - 5.8)
@@ -191,6 +198,7 @@ def frame(t):
         pop_word(im, t, 6.6, '2', (540, 420), 240, -6)
         if t > 6.95: put(im, ticket('[favourite 2]'), (540, 650 + 30 * (1 - back_out((t - 6.95) / 0.35))), -3)
         put(im, sized(FLY, 230, 'f230'), (220 + 40 * math.sin(t * 2), 330 + 20 * math.sin(t * 5)), -8 * math.sin(t * 4), shadow=False)
+        D.draw_on(im, DOO['heart'], (850, 1150), t, 7.4, 0.35, -8)        # loved
     # 9.0-9.9 the bats swirl in from the edges, close over favourite 2, and swirl open onto favourite 3
     elif t < 9.9:
         u = (t - 9.0) / 0.9; close = ease(u / 0.5) if u < 0.5 else 1 - ease((u - 0.5) / 0.5)
@@ -207,6 +215,7 @@ def frame(t):
         pop_word(im, t, 10.0, '3', (540, 420), 240, 6)
         if t > 10.35: put(im, ticket('[favourite 3]'), (540, 650 + 30 * (1 - back_out((t - 10.35) / 0.35))), 3)
         put(im, sized(FLY, 230, 'f230'), (860 - 40 * math.sin(t * 2), 330 + 20 * math.sin(t * 5)), 8 * math.sin(t * 4), shadow=False)
+        D.draw_on(im, DOO['burst'], (200, 1180), t, 10.8, 0.3)         # wow
     # 12.0-15.0 CTA: three bats hang from the branch above three video tiles (1, 2, 3); Comment BATTY
     else:
         im = BACKDROP.copy(); put(im, sized(BRANCH, 1150, 'br'), (600, 260))
@@ -218,9 +227,10 @@ def frame(t):
             tw, th_ = int(270 * max(0.1, k)), int(400 * max(0.1, k))
             put(im, ImageOps.fit(vid(key, t - st), (tw, th_)), (x, 720), (-3, 2, 4)[j])
             pop_word(im, t, 12.3 + j * 0.15, str(j + 1), (x, 960), 110, (-6, 4, 6)[j])
-        line(im, t, 12.8, 'comment', (540, 1130), 80)
-        pop_word(im, t, 13.0, 'BATTY', (540, 1290), 122, -3)
-        line(im, t, 13.4, "and I'll send all 3 links", (540, 1450), 62)
+        line(im, t, 12.8, 'comment', (540, 1100), 80)
+        pop_word(im, t, 13.0, 'BATTY', (540, 1240), 122, -3)
+        line(im, t, 13.4, "and I'll send all 3 links", (540, 1440), 62)
+        D.draw_on(im, DOO['arrow2'], (150, 1100), t, 13.1, 0.3); D.draw_on(im, DOO['under'], (540, 1350), t, 13.3, 0.3)   # point at it, underline BATTY
     return im.convert('RGB')
 
 def main():
