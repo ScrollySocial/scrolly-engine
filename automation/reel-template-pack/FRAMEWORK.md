@@ -28,6 +28,32 @@ The long rules below are reference. These ten are where drafts keep failing. A d
 **Head interplay needs a filming guide:** templates where something lands on or around the head ship with a guide
 overlay (a dashed head outline) so buyers know how big and where to film their head; the buyer hides it before export.
 
+## Scene structure: how Lisa's Reel moves (Mercedes's breakdown, 2026-10-18, instagram.com/p/DehPKeah0AP)
+
+Count the scenes and the transitions. Her breakdown, in order:
+1. Diagonal transition coming in from the right.
+2. See-through images scrolling behind the person.
+3. A Prezi-like stage: notebook paper with normal objects on it, handwritten words come in, then the camera pans
+   down and zooms in.
+4. A clock over her head, counting down.
+5. Smiley faces come in on a circular path; the last one lands in the very centre...
+6. ...and that smiley is kept and becomes the O in the word POOL in the next scene.
+7. Back to the notebook, with a new setup (a pool of talent, with a pool video in it).
+8. The middle items on the notebook swap out (about 4 circles replaced).
+9. Back to the person video, with the text behind the person.
+(Then more: money stacks rising off a corkboard, the set revealed with its lights, the laptop deadline.)
+
+**What to copy in every template:**
+- **Many scenes:** a new scene about every 2 seconds (7 to 10 scenes, not 4 or 5 beats).
+- **Two home bases that keep coming back:** the person or product video, and ONE graphic stage (like the notebook)
+  that returns with a new setup each time. Variety comes from the setups, not from a new theme object.
+- **Every scene change is a designed transition** (diagonal wipe, pan and zoom on the stage, things gathering in a
+  circle, a swap in place).
+- **Carry one element into the next scene** (the centre smiley becomes the O in POOL).
+- **Camera moves on the graphic stage:** pan down, zoom in, like Prezi.
+- **Swap items in place** on the stage instead of replacing the whole frame.
+- **Interplay with the person:** text behind her, a clock over her head.
+
 ## The rules (Mercedes, 2026-10-17, her words tidied)
 
 1. **Visual hook instantly.** Frame 1 is already interesting and moving: no empty opener, no title card that sits there.
