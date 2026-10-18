@@ -12,8 +12,10 @@
   Still missing before selling: sound picks per template, Mac support, the product listing (Mercedes does that).
 - h2 bats, h5 trick or treat: concepts and round 4 notes in `halloween/notes-round4.md`; next as motion tests.
 - **h5 Trick or treat:** motion test v8 (`build/motion_h5.py`, Snap ITC taffy lettering, candy corn + taffy pop up out of
-  door 2, no outlines). Waiting for her OK, then the CapCut build.
-- **h2 Things I'm batty about:** motion test v1 (`build/motion_h2.py`). She wants changes (notes not given yet).
+  door 2, no outlines; her doodles; two-tone strip slice to door 2). 2026-10-18: she's not happy with the knock-knock
+  part and will come back to it; don't change h5 until she does.
+- **h2 Things I'm batty about:** motion test v3 (`build/motion_h2.py`): her drawn branch (no real tree), solid opaque
+  lilac lettering, only favourite 1 has a kraft tag, no bats on favourite 2, her doodles. Waiting for her OK.
 - **h1 Now you see it:** motion test v2 (`build/motion_h1.py`): same shot twice, snap, empty shot + smoke where the
   person stood; Bodoni Moda. ON HOLD until her `smoke.mp4` (white smoke on black, 3 to 5 s) is in
   `assets/props/source/halloween/`; the script uses it automatically.
