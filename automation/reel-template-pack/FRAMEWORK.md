@@ -122,6 +122,9 @@ boards (they're the style, not the density):
 - Palette from the scene (fall boards: rust, burgundy, cream, warm brown).
 - Rough density per frame: 3 to 5 tiles, 2 to 3 cut-outs, 1 paper piece. Readable over everything; the video stays
   the story.
+- **Animate the collage, hyper creatively:** text pops onto an element (a note, a tile, a tag), then the camera
+  zooms into that element and it becomes the next clip; collage pieces switch from a still photo to video (or back);
+  tiles flip, slide, peel or swap. Invent freely: every move should feel like the collage is alive.
 
 ## Her idea bank (Mercedes, 2026-10-17): use these when they fit
 
