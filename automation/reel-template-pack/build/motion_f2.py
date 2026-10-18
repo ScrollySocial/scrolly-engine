@@ -126,10 +126,15 @@ def serif_words(lines):
 HERO = collage_word('the fall', 'DROP')
 MEET = serif_words([('meet the', 90, BROWN), ('maple candle', 150, BURGUNDY)])
 BATCH = B.shadowed(text_img([('SMALL', ANTON, 220, CREAM, 10, BURGUNDY), ('BATCH', ANTON, 360, CREAM, 12, BURGUNDY)], 20), (6, 10), 10, 120)   # editable in CapCut
-NOTE = paper('Blank ivory note card-121.png', 760, [('3 SCENTS', ANTON, 120, BURGUNDY), ('MAPLE · CIDER · PINE', ANTON, 64, RUST)], tol=6)
+NOTE = paper('Blank ivory note card-121.png', 860, [('3 SCENTS', ANTON, 180, BURGUNDY), ('MAPLE · CIDER · PINE', ANTON, 92, RUST)], tol=6)
 TAG = paper('Blank kraft gift tag with twine-34.png', 520, [('', B.MONT, 50, INK), ('', B.MONT, 50, INK), ('HAND-POURED', ANTON, 64, BURGUNDY), ('SOY WAX', ANTON, 104, BURGUNDY)])
 CTA_S = serif_words([('comment', 110, BURGUNDY)])
 CTA_B = B.shadowed(text_img([('DROP', ANTON, 230, CREAM, 10, BURGUNDY)], 16), (6, 10), 10, 120)
+D = 'assets'
+ARROW = B.fit_w(B.ink_piece('Hand-drawn arrow doodle sheet-1.png', 2, 6, 2, CREAM, inset=0.08), 400)        # points at the product tile
+RAYS = B.fit_w(B.ink_piece('Playful hand-drawn burst asset sheet-2.png', 2, 3, 2, RUST, inset=0.06), 1000)  # emphasis behind the tag
+WAVY = B.fit_w(B.ink_piece('Hand-Drawn Underline Asset Sheet-5.png', 2, 5, 2, RUST, inset=0.06), 460)     # underlines the card
+SPARKS = [B.fit_w(B.ink_piece('Playful black doodle icon sheet-6.png', 4, 3, i, CREAM, inset=0.1), w) for i, w in ((8, 150), (9, 120))]  # around the keyword
 ACORNS = (('Plump Chestnut Acorn Study-66.png', (720, 1650), 18), ('Golden acorn on white-65.png', (880, 1780), -10), ('Elongated dark brown acorn-69.png', (1000, 1610), 30))
 
 def stripes_reveal(t, under, t0):
@@ -175,6 +180,7 @@ def frame(t):
         put(im, cut('Large open pinecone on white-68.png', 210, seed=2), (1000, 440), pop(t, 0.8), -12)
         put(im, cut('Red maple leaf on white-38.png', 200, seed=4), (620, 820), pop(t, 0.95), 25)
         for i, (n, c, r) in enumerate(ACORNS): put(im, cut(n, 170, seed=10 + i), c, pop(t, 1.0 + 0.12 * i), r)
+        put(im, ARROW, (600, 690), pop(t, 0.7, 2.3, 0.3), 95)
         put(im, HERO, (540, 1110), pop(t, 0.15, 2.3, 0.35), -2)
         put(im, MEET, (540, 1110), pop(t, 2.4, 2.8, 0.3), 2)
         u = ease((t - 2.95) / 0.45)
@@ -186,6 +192,7 @@ def frame(t):
     # ---- clip b full (3.4-5.4); the real kraft tag swings in once, big, with a feature
     if t < 5.4:
         im = vid('b', t)
+        put(im, RAYS, (300, 1260), pop(t, 3.85, 5.2, 0.35), 8 * math.sin(t * 2))
         put(im, TAG, (300, 1100), pop(t, 3.7, 5.2, 0.35), -8 + 3 * math.sin(t * 3))
         return im
     # ---- collage B (5.4-8.2): clip b shrinks into a tile, new tiles slide in; the cord tile peels down to clip d
@@ -198,7 +205,8 @@ def frame(t):
         if peel < 1: tile(im, 'cord', t, (540, int(520 + peel * 600), 1080, 1100), ease((t - 5.6) / 0.3), 'r')
         tile(im, 'wool', t, (0, 1100, 1080, 1920), ease((t - 5.7) / 0.3), 'b')
         put(im, cut('Single sunflower on white-79.png', 240, seed=8), (900, 900), pop(t, 6.3), 8)
-        put(im, NOTE, (480, 1360), pop(t, 6.2, None, 0.35), -3)
+        put(im, NOTE, (500, 1360), pop(t, 6.2, None, 0.35), -3)
+        put(im, WAVY, (500, 1540), pop(t, 6.6, None, 0.3), -3)
         put(im, cut('Twine-Tied Cinnamon Stick Bundle-55.png', 300, seed=7), (210, 1110), pop(t, 6.4), -20)
         return im
     # ---- text only (8.2-9.4): the cream knit fills the screen, big lettering
@@ -220,6 +228,7 @@ def frame(t):
     tile(im, 'wheat', t, (540, 1160, 1080, 1920), ease((t - 10.85) / 0.3), 'r')
     put(im, cut('Large open pinecone on white-68.png', 200, seed=9), (990, 1170), pop(t, 11.1), 20)
     put(im, CTA_S, (540, 1150), pop(t, 11.0, None, 0.3), -2); put(im, CTA_B, (540, 1330), pop(t, 11.15, None, 0.35), 0)
+    put(im, SPARKS[0], (240, 1290), pop(t, 11.35, None, 0.3), 10 * math.sin(t * 5)); put(im, SPARKS[1], (840, 1400), pop(t, 11.45, None, 0.3), -10 * math.sin(t * 5))
     return im
 
 def main():
