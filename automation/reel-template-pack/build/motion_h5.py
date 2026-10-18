@@ -1,7 +1,7 @@
 """Rough motion test for h5 "Trick or treat" (Halloween pack), following Mercedes's notes (rounds 1 to 4) and
 FRAMEWORK.md. The business job: a common mistake (the TRICK) next to your product (the TREAT), then a keyword CTA.
 Built-in words are extra-fun artwork lettering: Snap ITC in lavender taffy stripes (her pick, v2); KNOCK jumps on
-each knock, TRICK jitters, "or" teases, TREAT drops and bounces. v5: after door 2, her candy floods the screen like #2's packing peanuts, then falls away to the TREAT. Editable words are Arial Bold (every buyer has it).
+each knock, TRICK jitters, "or" teases, TREAT drops and bounces. v7: door 2 opens, candy corn and taffy (hand-inked outlines) pop up out of the doorway, drop away, then the TREAT. Editable words are Arial Bold (every buyer has it).
 Moves (its own, not h6's or h3's): the door swings open on its hinge, we push into the doorway into clip 1; a whip pan
 along the street to door 2 (her generated Victorian house, same setting to the end); we fly through door 2's arch into
 clip 2. No door slam, no candy until her new single-piece candy images exist.
@@ -114,8 +114,17 @@ def _candy_cut(f):
     out = TMP / 'candy' / (Path(f).stem + '.png'); out.parent.mkdir(exist_ok=True)
     if not out.exists(): B.cut_white(Image.open(f), tol=8).save(out)
     return Image.open(out).convert('RGBA')
-CANDY = [_candy_cut(f) for f in sorted(_g.glob(str(B.SRC / '*'))) if any(k in Path(f).name.lower() for k in
-         ('candy corn', 'gummy worm', 'taffy', 'peanut butter cup'))]
+def inked(im, w=7, seed=0):
+    """A hand-drawn ink outline around a real photo: a dark line a few px outside the edge, slightly off-register."""
+    a = im.split()[3].point(lambda v: 255 if v > 100 else 0); pad = w + 6
+    big = Image.new('L', (im.width + 2 * pad, im.height + 2 * pad), 0); big.paste(a, (pad, pad))
+    ring = ImageChops.subtract(big.filter(ImageFilter.MaxFilter(2 * w + 1)), big.filter(ImageFilter.MaxFilter(2 * (w - 4) + 1)))
+    r = random.Random(seed); out = Image.new('RGBA', big.size, (0, 0, 0, 0))
+    ink = Image.new('RGBA', big.size, (34, 26, 38, 255)); ink.putalpha(ring.filter(ImageFilter.GaussianBlur(0.8)))
+    out.alpha_composite(ink, (r.randint(-3, 3), r.randint(-3, 3))); out.alpha_composite(im, (pad, pad))
+    return out
+CANDY = [inked(_candy_cut(f), seed=i) for i, f in enumerate(sorted(_g.glob(str(B.SRC / '*'))))
+         if any(k in Path(f).name.lower() for k in ('candy corn', 'taffy'))]
 
 def candy_bands(n_bands=10, seed=4):
     """The flood: real candy laid over the whole screen, grouped in horizontal bands (top band first)."""
@@ -137,6 +146,30 @@ def candy_bands(n_bands=10, seed=4):
         out.append((im, (x0, y0)))
     return out
 BANDS = candy_bands()
+_pr = random.Random(9)
+POPS = []
+TAFFY_IDS = [i for i, f in enumerate(f for f in sorted(_g.glob(str(B.SRC / '*'))) if any(k in Path(f).name.lower() for k in ('candy corn', 'taffy')))
+             if 'taffy' in Path(sorted(f for f in _g.glob(str(B.SRC / '*')) if any(k in Path(f).name.lower() for k in ('candy corn', 'taffy')))[i]).name.lower()]
+order = list(range(16)); _pr.shuffle(order)
+for n in range(16):   # spread evenly all the way round the doorway, alternating candy corn and taffy
+    a = 2 * math.pi * n / 16 + _pr.uniform(-0.15, 0.15); r = _pr.uniform(300, 470); k = n % len(CANDY)
+    w = _pr.uniform(270, 330) if k in TAFFY_IDS else _pr.uniform(190, 240)
+    POPS.append((k, a, r, order[n] * 0.06 + _pr.uniform(0, 0.03), w, _pr.uniform(-35, 35)))
+def candy_pop(img, t, t0, c, drop_at=None):
+    """Candy pops up out of the doorway one piece at a time: it springs from the door to its spot with a bounce and
+    stays, wobbling a little; at drop_at every piece falls away down the screen (never toward the lens)."""
+    for k, a, r, delay, w, rot in POPS:
+        tt = t - t0 - delay
+        if tt < 0: continue
+        u = back_out(tt / 0.35, 2.2); x = c[0] + r * math.cos(a) * u; y = c[1] + r * math.sin(a) * 1.35 * u
+        x = min(max(x, 90), W - 90)
+        if drop_at and t > drop_at:
+            v = t - drop_at - delay * 0.4
+            if v > 0: y += 2600 * v * v
+        sc = max(0.05, min(1.0, back_out(tt / 0.25, 2.4)))
+        im = B.fit_w(CANDY[k], max(8, int(w * sc))).rotate(rot + 5 * math.sin(t * 5 + delay * 9), expand=True, resample=Image.BICUBIC)
+        if -400 < y < H + 400: img.alpha_composite(E.C.shadow(im, (6, 10), 10, 70), (int(x - im.width / 2), int(y - im.height / 2)))
+
 def candy_flood(img, t, t0):
     """Bottom band lands first, the top band last; each drops from above with a small bounce; then they all fall away."""
     for j, (im, (x0, y0)) in enumerate(reversed(BANDS)):
@@ -182,6 +215,9 @@ def persp(dst, src):
             if r != c and A[r][c]: f = A[r][c]; A[r] = [a - f * b for a, b in zip(A[r], A[c])]
     return tuple(A[r][8] for r in range(n))
 
+_ib = B.house2(1.9)[1]; _is = W / (_ib[2] - _ib[0])
+ARCH_C = ((741 - _ib[0]) * _is, (622 - _ib[1]) * _is)       # door 2's doorway on screen (arch measured on her photo)
+
 def frame(t):
     # 0.0-1.3 door 1, KNOCK KNOCK in brass jumps on each knock (and the picture jolts)
     if t < 1.3:
@@ -223,15 +259,22 @@ def frame(t):
         word_art(im, t - 5.3 + 0.0, -0.0, 'KNOCK', 540, 560, 170, 'taffy', 'knock')
         line(im, t, 5.55, '[something sweet is coming]', (520, 820), 62)
         im = shake(im, t - 5.3)
-    # 6.1-7.0 door 2 opens: clip 2 fills the real arch, we fly through it to full screen
-    elif t < 7.0:
-        u = ease((t - 6.1) / 0.9); im = arch_house(1 + 5.5 * u * u, vid('treat', t - 6.1))
+    # 6.1-6.5 door 2 opens: warm light, then clip 2 appears in the real doorway
+    elif t < 6.5:
+        u = ease((t - 6.1) / 0.4); shut = arch_house(1, Image.new('RGBA', (W, H), (255, 214, 150, 255)))
+        im = Image.blend(shut, arch_house(1, vid('treat', t - 6.1)), u)
+    # 6.5-7.9 candy pops up out of the doorway (candy corn and taffy, inked), clip 2 playing in the arch
+    elif t < 7.9:
+        im = arch_house(1, vid('treat', t - 6.1)); candy_pop(im, t, 6.5, ARCH_C)
+    # 7.9-8.6 we go through the doorway into clip 2 while the candy drops away
+    elif t < 8.6:
+        u = ease((t - 7.9) / 0.7); im = arch_house(1 + 5.5 * u * u, vid('treat', t - 6.1))
         if u > 0.75: im = Image.blend(im, vid('treat', t - 6.1), (u - 0.75) / 0.25)
-    # 7.0-12.0 clip 2 full screen; the candy floods in over it (7.0 to 8.4), falls away, then the TREAT
+        candy_pop(im, t, 6.5, ARCH_C, drop_at=7.9)
+    # 8.6-12.0 clip 2 full screen: the TREAT
     elif t < 12.0:
         im = vid('treat', t - 6.1)
-        candy_flood(im, t, 7.0)
-        word_art(im, t, 8.65, 'TREAT', 520, 520, 230, 'taffy', 'drop', 0.09)
+        word_art(im, t, 8.7, 'TREAT', 520, 520, 230, 'taffy', 'drop', 0.09)
         line(im, t, 9.3, '[our 5-minute scrub]', (520, 740), 80)
     # 12.0-15.0 CTA over clip 3: COMMENT + the editable keyword
     else:
