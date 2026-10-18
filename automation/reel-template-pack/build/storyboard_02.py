@@ -67,7 +67,7 @@ def open_box(colour='white'):
     box = prop(f'box-open-{colour}').rotate(-90, expand=True)           # landscape photo -> upright
     s = 1.6 * W / box.width; box = box.resize((int(box.width * s), int(box.height * s)))
     y0 = (H - box.height) // 2; xo = (W - box.width) // 2   # bigger than the frame: flaps run off the edges
-    full = Image.open(PROPS / 'source' / 'box-open-top.webp')           # floor rect, measured on the source photo
+    full = Image.open(PROPS / 'source' / 'physical' / 'box-open-top.webp')           # floor rect, measured on the source photo
     fx0, fy0, fx1, fy1 = 322, 262, 1132, 752; ph = full.height
     # rotate -90 (clockwise): (x, y) -> (ph - y, x); the cut-out was cropped, so offset by its bbox in the source
     bx = 1448 - box.width / s; floor = (ph - fy1, fx0, ph - fy0, fx1)
@@ -77,7 +77,7 @@ def open_box(colour='white'):
 
 def C_bbox_offset():
     """Where the cut-out box sits inside the source photo (x0, y0), so the floor rect can be mapped onto it."""
-    src = Image.open(PROPS / 'source' / 'box-open-top.webp').convert('L')
+    src = Image.open(PROPS / 'source' / 'physical' / 'box-open-top.webp').convert('L')
     near = src.point(lambda v: 0 if v >= 237 else 255); bb = near.getbbox()
     return bb[0], bb[1]
 

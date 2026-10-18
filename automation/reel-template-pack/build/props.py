@@ -8,7 +8,7 @@ from pathlib import Path
 from PIL import Image, ImageChops, ImageDraw, ImageFilter, ImageOps
 
 PROPS = Path(__file__).resolve().parent.parent / 'assets' / 'props'
-SRC = PROPS / 'source'
+SRC = PROPS / 'source' / 'physical'   # moved into its own folder 2026-10-17
 
 def cut_white(im, tol=26, feather=1.5):
     """Remove a near-white background that touches the edges (flood fill from the border), with a soft edge."""

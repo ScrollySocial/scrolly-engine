@@ -17,7 +17,7 @@ from props import cut_white
 
 OUT = E.PACK / '04-a-or-b' / 'storyboard'; OUT.mkdir(parents=True, exist_ok=True)
 SCR = OUT / '_frames'; SCR.mkdir(exist_ok=True)
-SRC = E.PACK / 'assets' / 'props' / 'source'
+SRC = E.PACK / 'assets' / 'props' / 'source' / 'physical'   # moved 2026-10-17
 SOAP = Path('C:/Users/merce/OneDrive/Documents/Sudsy Day/Soap Photos')
 W, H = 1080, 1920
 INK, WHITE = (28, 26, 24), (255, 255, 255)
