@@ -88,3 +88,11 @@ colour); 3 sans was "closer to trendy but unreadable". She asked to look at Lisa
 technique stills): ONE plain sans, lowercase, white + ONE colour from the shot, big size jumps word to word, placed
 around the subject; the key word gets one treatment (glow, colour outline, photo fill, or a pill). Colour never sits on
 a same-coloured area. New sheet: type-options-lisa.jpg (build/type_lisa.py), options A to D, all Segoe UI.
+
+## Type, round 3 (her notes 2026-10-18)
+- "we don't know the buyer's brand colours or what their clips look like": type must read on ANY clip in ANY brand
+  colour. Colour picked from the shot is out.
+- All-pills version: "looks like TikTok took over and sponsored a reel. NO". Pills only sparingly, as one point of emphasis.
+- Current proposal: words on torn paper (type-paper-test.jpg, build/type_paper.py): the key word big on a torn strip in
+  the brand colour (text auto white/ink), small words on torn white scraps, only the keyword on a pill. Placement in the
+  real templates keeps words off the face (the test sheet uses one fixed layout).
