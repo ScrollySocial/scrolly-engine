@@ -209,6 +209,12 @@ Showing her work
   smooth even ring like the round 1 Fall stills) or doodles drawn on or around them. Not 100% of props, but most. Check cut-outs: white objects on white backgrounds (cards,
   cups) need a careful cut, and holes (tag loops) must be see-through.
 
+- **Vary the window shapes across a pack:** not every template circles (pie, clock, apples, cups all round was
+  "too similar"). Mix rectangles, tall strips, grids, diagonals, torn edges, arches.
+- **More ideas from her (Fall wireframes):** a collage that comes together piece by piece and then animates; a
+  background video where things in the scene get outlined by hand (her example: skyscrapers traced) as the clips
+  come in.
+
 ## Checklist: run before showing any storyboard or preview
 
 - [ ] Frame 1 hooks instantly and is already moving (rule 1).

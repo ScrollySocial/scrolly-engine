@@ -59,3 +59,11 @@ Halloween). Next round = motion tests, fewer and bigger props.
 `build/motion_f7.py` ("which is your style?" with fall drinks) was a poll about drinks: "This isn't selling a
 product, I don't like it." The drinks were the subject instead of the buyer's product. Rule 13: the buyer's product
 (their clips) must be what the Reel sells; fall props only dress it.
+
+## Wireframes round 1 notes (2026-10-17)
+
+- f1 and f2 too similar (pie wedges vs clock wedges); f4 also circles. Too many round windows across the pack.
+- Her ideas: **a collage that comes together and gets animated**; **a background video (her example: skyscrapers)
+  where the clips come in while things in the background get outlined** (hand-drawn lines tracing the scene).
+- Changes: f2 becomes the collage, f4 drops apple-shaped windows (tall strips, grid), new f9 "Traced" (outlines
+  draw on over a fall background, clips come in between them). f1 keeps the pie.

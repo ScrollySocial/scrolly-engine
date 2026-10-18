@@ -120,25 +120,23 @@ T['f1'] = ('A slice of what\'s new', 'New drop: what\'s in it', '15 s', [
         text(d, (540, 1150), 'COMMENT', 120), text(d, (500, 1330), '[SLICE] for the link', 66, 'edit'))),
 ])
 
-T['f2'] = ('Made by hand', 'Shows the work behind the product', '30 s', [
-    ('0-2 s', 'Hook: fast cuts, 4 clips in 2 seconds, under big bold words', 'none', lambda d: (
-        clip(d, (0, 0, 1080, 1920), 'CLIPS 1-4, 0.5 s each'), text(d, (540, 520), 'MADE', 190), text(d, (540, 720), 'BY HAND', 170), text(d, (540, 880), '[7 am to ship day]', 56, 'edit'))),
-    ('2-6 s', 'The brass clock (photo) swings in; its face is clip 5; the hands sweep', 'barn wood (photo)', lambda d: (
-        prop(d, (40, 560, 1040, 1560), 'clock (photo)', 'circle'), clip(d, (140, 660, 940, 1460), 'CLIP 5', 'circle'), prop(d, (60, 280, 420, 600), 'kraft tag'), text(d, (240, 470), '[7 AM]', 64, 'edit'))),
-    ('6-10 s', '2 clips per screen, split on the diagonal by the giant minute hand (photo)', 'none', lambda d: (
-        d.polygon(sc(0, 0, 1080, 0, 1080, 300, 0, 1300), fill=CLIPC), d.polygon(sc(0, 1300, 1080, 300, 1080, 1920, 0, 1920), fill=(120, 120, 126)),
-        prop(d, (-40, 760, 1120, 840), 'minute hand (photo)', drawn=False), text(d, (300, 420), 'CLIP 6', 50), text(d, (700, 1400), 'CLIP 7', 50),
-        text(d, (300, 560), '[cutting]', 64, 'edit'), text(d, (600, 1300), '[packing]', 64, 'edit'))),
-    ('10-12 s', 'TEXT ONLY: the point, huge, no video', 'barn wood (photo)', lambda d: (
+T['f2'] = ('Made by hand', 'Shows the work behind the product', '20 s', [
+    ('0-1.5 s', 'Hook: real paper pieces fly in and land (kraft, plaid swatch, recipe card, pressed leaf); clip 1 already plays in the first window', 'kraft paper (photo)', lambda d: (
+        prop(d, (40, 300, 700, 1100), 'kraft paper'), clip(d, (90, 360, 650, 1040), 'CLIP 1'), prop(d, (620, 900, 1060, 1500), 'plaid swatch'), arrow(d, (1040, 1700), (900, 1450), 'flies in'),
+        prop(d, (60, 1150, 600, 1480), 'recipe card'), text(d, (330, 1310), 'MADE BY HAND', 66))),
+    ('1.5-4 s', 'The collage is complete: 3 windows (tall, wide, torn strip), each playing a clip', 'kraft paper (photo)', lambda d: (
+        clip(d, (60, 280, 520, 1100), 'CLIP 1'), clip(d, (560, 280, 1020, 700), 'CLIP 2'), clip(d, (560, 740, 1020, 1100), 'CLIP 3'),
+        prop(d, (60, 1150, 600, 1470), 'recipe card'), text(d, (330, 1310), '[7 am to ship day]', 50, 'edit'), prop(d, (700, 1180, 900, 1440), 'pressed leaf', 'leaf'))),
+    ('4-8 s', 'The camera pans across a bigger collage to two new windows; the pieces keep shifting', 'kraft paper (photo)', lambda d: (
+        clip(d, (-200, 300, 300, 1000), 'CLIP 3'), clip(d, (340, 260, 1040, 820), 'CLIP 4'), clip(d, (340, 860, 1040, 1420), 'CLIP 5'), arrow(d, (900, 1560), (400, 1560), 'pan'),
+        text(d, (660, 540), '[cutting]', 60, 'edit'), text(d, (660, 1140), '[packing]', 60, 'edit'))),
+    ('8-10 s', 'TEXT ONLY: the point, huge', 'kraft paper (photo)', lambda d: (
         text(d, (540, 650), 'EVERY.', 190), text(d, (540, 880), 'SINGLE.', 190), text(d, (540, 1110), 'ONE.', 220))),
-    ('12-20 s', 'The clock face splits into 3 wedges, each a step; hands move wedge to wedge', 'barn wood (photo)', lambda d: (
-        prop(d, (60, 540, 1020, 1500), 'clock', 'circle', drawn=False), wedges(d, (140, 620, 940, 1420), ['CLIP 8', 'CLIP 9', 'CLIP 10']),
-        prop(d, (720, 260, 1000, 520), 'tag'), text(d, (860, 420), '[1 PM]', 54, 'edit'))),
-    ('20-25 s', 'The active wedge swings open: the finished product fills the screen', 'none', lambda d: (
-        clip(d, (0, 0, 1080, 1920), 'CLIP 11: the finished product'), prop(d, (80, 1100, 520, 1480), 'kraft tag'), text(d, (300, 1300), '[name] [$48]', 60, 'edit'))),
-    ('25-30 s', 'CTA: zoom out to the clock on the wall; farm-stand sign (photo)', 'barn wood (photo)', lambda d: (
-        prop(d, (240, 300, 840, 900), 'clock', 'circle'), wedges(d, (300, 360, 780, 840), ['C 8', 'C 9', 'C 11']), text(d, (540, 1080), 'COMMENT', 120),
-        prop(d, (90, 1180, 990, 1520), 'farm-stand sign (photo)'), text(d, (540, 1300), '[SHOP]', 110, 'edit'))),
+    ('10-14 s', 'One window grows to fill the screen: the finished product', 'none', lambda d: (
+        clip(d, (0, 0, 1080, 1920), 'CLIP 6: the finished product'), arrow(d, (540, 1300), (540, 800), 'grows'), prop(d, (100, 1100, 520, 1460), 'kraft tag'), text(d, (310, 1300), '[name] [$48]', 60, 'edit'))),
+    ('14-20 s', 'CTA: the collage comes back together round the product clip', 'kraft paper (photo)', lambda d: (
+        clip(d, (190, 280, 890, 1060), 'CLIP 6'), clip(d, (40, 1080, 360, 1460), 'C 2'), clip(d, (720, 1080, 1040, 1460), 'C 4'),
+        prop(d, (380, 1100, 700, 1440), 'recipe card'), text(d, (540, 1220), 'COMMENT', 60), text(d, (540, 1330), '[SHOP]', 70, 'edit'))),
 ])
 
 T['f3'] = ('Falling for it', 'Reviews of the product', '22 s', [
@@ -167,15 +165,20 @@ T['f4'] = ('Pick of the bunch', 'Product options: colours, scents, flavours', '1
         text(d, (540, 520), "WHICH ONE'S", 120), text(d, (540, 680), 'YOURS?', 150))),
     ('2-3.5 s', 'TEXT ONLY: the point, huge; the apples line up underneath', 'red plaid (photo)', lambda d: (
         text(d, (540, 800), 'PICK', 260), text(d, (540, 1080), 'ONE', 260), [prop(d, (x, 1560, x + 230, 1800), str(i + 1), 'apple', drawn=False) for i, x in enumerate((40, 300, 560, 820))])),
-    ('3.5-6 s', 'Apple 1 grows huge: clip 2 (option 1) plays inside the apple', 'red plaid (photo)', lambda d: (
-        clip(d, (90, 400, 990, 1400), 'CLIP 2', 'apple'), prop(d, (60, 360, 1020, 1440), '', 'apple'), text(d, (520, 1450), '[option 1: cinnamon]', 54, 'edit'))),
-    ('6-8.5 s', 'Apple 1 rolls out left, apple 2 rolls in with clip 3', 'red plaid (photo)', lambda d: (
-        clip(d, (-400, 500, 300, 1300), 'CLIP 2', 'apple'), clip(d, (300, 450, 1060, 1300), 'CLIP 3', 'apple'), arrow(d, (300, 1400), (60, 1400), 'rolls'), text(d, (560, 1420), '[option 2]', 64, 'edit'))),
-    ('8.5-11 s', '2 per screen: apples 3 and 4 side by side, each a clip', 'red plaid (photo)', lambda d: (
-        clip(d, (20, 600, 530, 1150), 'CLIP 4', 'apple'), clip(d, (550, 600, 1060, 1150), 'CLIP 5', 'apple'), text(d, (270, 1240), '[option 3]', 56, 'edit'), text(d, (760, 1240), '[option 4]', 56, 'edit'))),
-    ('11-15 s', 'CTA: all four apple windows on the real crate, numbered by hand', 'red plaid (photo)', lambda d: (
-        [clip(d, (x, 1000, x + 240, 1250), f'C{i + 2}', 'apple') for i, x in enumerate((20, 285, 550, 815))], prop(d, (0, 1260, 1080, 1920), 'apple crate (photo)', drawn=False),
-        text(d, (540, 480), 'COMMENT', 130), text(d, (540, 640), 'YOUR NUMBER', 90))),
+    ('3.5-6 s', '3 per screen: three tall strips slide up, one option each; an apple sits on each strip with its number', 'red plaid (photo)', lambda d: (
+        [clip(d, (x, 380, x + 320, 1400), f'CLIP {i + 2}') for i, x in enumerate((20, 380, 740))], [prop(d, (x + 90, 300, x + 230, 440), str(i + 1), 'apple') for i, x in enumerate((20, 380, 740))],
+        text(d, (180, 1460), '[cinnamon]', 44, 'edit'), text(d, (540, 1460), '[maple]', 44, 'edit'))),
+    ('6-8.5 s', 'Strip 1 widens to full screen, the others slide away: option 1 up close', 'none', lambda d: (
+        clip(d, (0, 0, 1080, 1920), 'CLIP 2 (option 1)'), arrow(d, (300, 1000), (60, 1000), ''), arrow(d, (780, 1000), (1020, 1000), ''), prop(d, (60, 1150, 340, 1430), '1 dots', 'apple'),
+        text(d, (600, 1300), '[cinnamon]', 80, 'edit'))),
+    ('8.5-11 s', '2 per screen on the diagonal: options 2 and 3, a striped apple on the seam', 'none', lambda d: (
+        d.polygon(sc(0, 0, 1080, 0, 1080, 700, 0, 1250), fill=CLIPC), d.polygon(sc(0, 1250, 1080, 700, 1080, 1920, 0, 1920), fill=(120, 120, 126)),
+        text(d, (300, 400), 'CLIP 3', 50), text(d, (700, 1400), 'CLIP 4', 50), prop(d, (420, 820, 680, 1100), '3 stripes', 'apple'),
+        text(d, (330, 560), '[maple]', 64, 'edit'), text(d, (620, 1280), '[spice]', 64, 'edit'))),
+    ('11-15 s', 'CTA: a 2 x 2 grid of the options, each with its decorated apple and number', 'red plaid (photo)', lambda d: (
+        [clip(d, (x, y, x + 460, y + 420), f'CLIP {i + 2}') for i, (x, y) in enumerate(((60, 640), (560, 640), (60, 1090), (560, 1090)))],
+        [prop(d, (x + 330, y - 50, x + 470, y + 90), str(i + 1), 'apple') for i, (x, y) in enumerate(((60, 640), (560, 640), (60, 1090), (560, 1090)))],
+        text(d, (540, 340), 'COMMENT', 130), text(d, (540, 500), 'YOUR NUMBER', 90))),
 ])
 
 T['f5'] = ('All dressed up', 'Gift set or upgrade: everything you get', '15 s', [
@@ -211,7 +214,7 @@ T['f6'] = ('Burning questions', 'Answers what people ask before buying', '30 s',
     ('18-25 s', 'The answer: 2 clips stacked (the product, close up and in use)', 'none', lambda d: (
         clip(d, (0, 0, 1080, 950), 'CLIP 4'), clip(d, (0, 970, 1080, 1920), 'CLIP 5'), text(d, (480, 480), 'A: [100%, here\'s why]', 60, 'edit'))),
     ('25-30 s', 'CTA: the product clip in a glowing round window above the fire', 'night', lambda d: (
-        clip(d, (190, 300, 890, 1000), 'CLIP 6', 'circle'), prop(d, (0, 1450, 1080, 1920), 'bonfire', drawn=False), text(d, (540, 1150), 'COMMENT', 120), text(d, (540, 1320), '[SHOP]', 100, 'edit'))),
+        clip(d, (240, 280, 840, 1080), 'CLIP 6'), prop(d, (0, 1450, 1080, 1920), 'bonfire', drawn=False), text(d, (540, 1150), 'COMMENT', 120), text(d, (540, 1320), '[SHOP]', 100, 'edit'))),
 ])
 
 T['f7'] = ('Cozy season pick', 'The product in everyday use', '15 s', [
@@ -246,6 +249,26 @@ T['f8'] = ('Sneak peek', 'Launch teaser', '15 s', [
         clip(d, (0, 0, 1080, 1920), 'CLIP 3: the product, revealed'), prop(d, (300, 200, 780, 320), 'kraft tag'), text(d, (540, 1300), '[drops Oct 30]', 80, 'edit'))),
     ('11-15 s', 'CTA: the product clip back in the knot hole, comment for first access', 'tree bark (photo)', lambda d: (
         clip(d, (240, 340, 840, 940), 'CLIP 3', 'circle'), prop(d, (200, 300, 880, 980), 'knot hole', 'circle'), text(d, (540, 1150), 'COMMENT', 120), text(d, (540, 1320), '[PEEK] for first access', 60, 'edit'))),
+])
+
+def traced(d, xs, color=(255, 255, 255)):
+    """Hand-drawn marker lines tracing the tree trunks in the background photo."""
+    for k, x in enumerate(xs):
+        for dx, f in ((0, 140), (90, 120)):
+            d.line([tuple(sc(x + dx + 16 * math.sin(y / f + k * 2), y)) for y in range(140, 1900, 40)], fill=color, width=4)
+
+T['f9'] = ('Traced', 'New product launch', '15 s', [
+    ('0-2 s', 'Hook: a misty fall forest (photo, slow push in); white marker lines draw on, tracing the tree trunks', 'misty forest (photo, or a video you make)', lambda d: (
+        traced(d, (60, 450, 860), (40, 40, 40)), text(d, (540, 700), 'NEW', 240), text(d, (520, 920), 'FOR FALL', 150))),
+    ('2-5 s', 'Between the traced trunks, 3 tall clips slide up (3 per screen), outlined in the same marker', 'misty forest (photo)', lambda d: (
+        traced(d, (20, 360, 700), (40, 40, 40)), [clip(d, (x, 420, x + 220, 1380), f'CLIP {i + 1}') for i, x in enumerate((130, 470, 810))],
+        arrow(d, (580, 1560), (580, 1420), 'slide up'), text(d, (500, 330), '[the maple candle]', 60, 'edit'))),
+    ('5-7 s', 'TEXT ONLY: the point, huge, with the traced lines', 'misty forest (photo)', lambda d: (
+        traced(d, (40, 860), (40, 40, 40)), text(d, (500, 780), 'LIMITED', 170), text(d, (500, 1020), 'RUN', 250))),
+    ('7-11 s', 'The traced trunks part like curtains: clip 4 fills the screen; the lines stay on its edges', 'none', lambda d: (
+        clip(d, (0, 0, 1080, 1920), 'CLIP 4'), traced(d, (-40, 900)), arrow(d, (300, 1000), (60, 1000), ''), arrow(d, (780, 1000), (1000, 1000), ''), text(d, (500, 1350), '[only 50 made]', 72, 'edit'))),
+    ('11-15 s', 'CTA: back to the forest; the product clip in a tall window between two traced trunks', 'misty forest (photo)', lambda d: (
+        traced(d, (40, 860), (40, 40, 40)), clip(d, (260, 300, 820, 1100), 'CLIP 4'), text(d, (540, 1230), 'COMMENT', 120), text(d, (520, 1390), '[NEW] for the link', 64, 'edit'))),
 ])
 
 def legend():
