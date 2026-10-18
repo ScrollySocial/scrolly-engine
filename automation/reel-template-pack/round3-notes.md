@@ -81,3 +81,10 @@ clips, 3-4 options, ONE type system per option (not two fonts fighting). Referen
 (bold white sans word-by-word, one big serif key word, red pill labels, outlined numbers), #3's Corben letters filled
 with polka dots in the hero prop's colour with a black edge, f2's Anton caps filled with a real textile photo with a
 thick cream edge. She picks one; then rebuild all templates with it.
+
+## Type options round 2 (her notes on type-options.jpg)
+Rejected: 1 polka-dot fill (hates it), 2 plaid fill (fall-themed), 4 editorial serif (legible but boring, hates the
+colour); 3 sans was "closer to trendy but unreadable". She asked to look at Lisa's videos. Lisa's system (from her
+technique stills): ONE plain sans, lowercase, white + ONE colour from the shot, big size jumps word to word, placed
+around the subject; the key word gets one treatment (glow, colour outline, photo fill, or a pill). Colour never sits on
+a same-coloured area. New sheet: type-options-lisa.jpg (build/type_lisa.py), options A to D, all Segoe UI.
