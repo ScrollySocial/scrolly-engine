@@ -272,7 +272,7 @@ def pill(img, t, t0, c, w, h, rot=-3):
     """v10 (her note: the spiky burst is the wrong doodle behind letters): a plum pill with lavender taffy stripes and an
     ink edge, popping in behind the key word (Lisa's striped pill)."""
     if t < t0: return
-    k = back_out((t - t0) / 0.3, 2.0); pw, ph = max(4, int(w * k)), max(4, int(h * k))
+    k = back_out((t - t0) / 0.3, 2.0); pw, ph = max(40, int(w * k)), max(40, int(h * k))
     im = Image.new('RGBA', (pw + 24, ph + 24), (0, 0, 0, 0)); d = ImageDraw.Draw(im)
     d.rounded_rectangle((12, 12, pw + 12, ph + 12), radius=ph // 2, fill=INK + (255,))
     inner = Image.new('RGBA', (pw - 12, ph - 12), (70, 44, 96, 255)); di = ImageDraw.Draw(inner)
