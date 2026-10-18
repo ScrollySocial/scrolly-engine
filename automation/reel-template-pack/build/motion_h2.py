@@ -9,7 +9,7 @@ Beats (balanced: full-frame video with accents, a words-only intermission, colla
  4 a flock of bats passes across the screen: the transition to favourite 2
  5 the bats swirl in, close over the clip and swirl open onto favourite 3
  6 CTA: three bats hang from the branch above three video tiles; Comment BATTY
-v2 (her note): only favourite 1 gets a kraft tag ("1 was cute, then it took over the theme").
+v2 (her note): only favourite 1 got a kraft tag; v5: no tags at all, all three favourites use the same ticket stub.
 Usage: python build/motion_h2.py  ->  halloween/h2-batty-about/preview/motion-test.mp4
 """
 import math, random, subprocess, sys
@@ -191,9 +191,9 @@ def frame(t):
                 im = im2
         else:
             im = vid('b', t - 3.0)
-            bat_carry(im, t, 4.2, tag_with('[favourite 1]'), (300, 560))
-            pop_word(im, t, 4.5, '1', (820, 420), 220, 6)
-            D.draw_on(im, DOO['crown'], (820, 230), t, 4.8, 0.3, 8); D.draw_on(im, DOO['arrow'], (560, 900), t, 5.0, 0.35, 15)   # number 1 is crowned; point at it
+            pop_word(im, t, 4.2, '1', (540, 1060), 240, 6)        # v5: same as 2 and 3: number + ticket stub (no gift tag)
+            if t > 4.55: put(im, ticket('[favourite 1]'), (540, 1290 + 30 * (1 - back_out((t - 4.55) / 0.35))), 2)   # kept off the face
+            D.draw_on(im, DOO['crown'], (560, 870), t, 4.8, 0.3, 8); D.draw_on(im, DOO['arrow'], (800, 420), t, 5.0, 0.35, -25)   # number 1 is crowned; point at it
     # 5.8-6.5 a flock of bats passes across the screen: the transition to favourite 2
     elif t < 6.5:
         u = (t - 5.8) / 0.7; im = vid('b', t - 3.0) if u < 0.5 else vid('c', t - 5.8)
