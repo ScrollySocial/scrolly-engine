@@ -147,6 +147,27 @@ boards (they're the style, not the density):
   washes, dotted bubbly letters). She didn't like the shape/block outlines there either (dark lines round the tiles,
   ink lines round the cut-outs).
 
+## Collage techniques from her Pinterest board (2026-10-18, pinterest.com/mercedesgoss/how-to-become-a-nerd)
+
+Photo collages, turned into video moves. This is the layering she means:
+- **Strip slice:** a picture cut into horizontal (or vertical) strips, alternating with strips of another picture.
+  Video: clip A slices into strips and clip B slides in between them.
+- **Torn reveal:** a torn paper edge opens to show a different photo or clip underneath (ocean under a torn page,
+  book text on the tear).
+- **Shape window:** a triangle, wedge or arch cut out of one picture shows another scene inside it.
+- **Breaking the frame:** someone climbs out of a TV or photo; the clip spills over the edge of its own frame.
+- **Surreal scale:** tiny people diving into a teacup, a giant rock over a dancer. Put the product huge, or tiny
+  people around it.
+- **Swarm:** many small cut-outs pinned around a person or product (birds, butterflies), each a bit different.
+- **Object swap (visual pun):** butterfly wings as boat sails, flowers bursting out of a head in place of the face.
+- **Cut-outs on pattern:** a cut-out building on a polka-dot or newspaper-text panel; stars filling the sky gaps
+  between skyscrapers seen from below.
+- **Text on a path:** words running along a winding ribbon, road or curve ("if it comes, let it").
+- **Big sticker type:** stacked bold words with a cut-out white edge on top of a photo.
+- **Product ad collage** (the hydration ad): cut-out product bottles + a cut-out person + a city background +
+  handwritten labels and sparkles. The closest match for physical-product templates.
+- **Mixed media:** black-and-white photo with one colour element, grid paper, maps, old book text, stamps.
+
 ## Her idea bank (Mercedes, 2026-10-17): use these when they fit
 
 **In one line: mixed-media video collages, hyper interesting and visually hooky.**
