@@ -5,6 +5,29 @@ Christmas). She has had to repeat these many times. **Every session working on a
 designs to it, and runs the checklist at the bottom before showing her anything.** If a storyboard fails one check,
 fix it first; don't show it. When she adds a rule, add it here the same day.
 
+## READ FIRST: the 10 must-dos (2026-10-18, after the wireframe round failed)
+
+The long rules below are reference. These ten are where drafts keep failing. A draft that misses one is not shown.
+
+1. **Story first.** Write 5 one-line beats (hook, problem, product, proof, CTA) before choosing any image.
+2. **No theme object.** Never one object for the whole Reel (all clocks, all records, all tags). Each beat picks its
+   own scene idea, and objects change with the scene.
+3. **Every object gets play:** stripes, dots or stars clipped onto it, a sticker or label on it, or an outline. Never a
+   plain cut-out.
+4. **Collage in every frame:** tiles, pieces crossing the seams, the clip as one tile or inside an opening.
+5. **Layers relate:** a window, a shelter, a substitution, a swarm around the subject; one main action per beat.
+6. **Interplay with the person or product:** e.g. a butterfly lands on the head, then a crown of butterflies; a
+   flower crown; the head as a flower vase; objects and clips floating like balloons on strings.
+7. **Doodles with a job:** at least 3 per template, visible on a phone.
+8. **Text:** big, fun built-in lettering, plus editable words in fonts buyers have; banner text alone is not a design.
+9. **Compare with the winners before showing:** f2 The fall drop, h3 Caught in our web, h6 Once in a blood moon,
+   #3 Before and after (camera). Side by side, at least as rich as these, but not the same look (don't make every
+   template theme-y).
+10. **Motion test first,** checked on a 1-frame-per-second strip against this list and the checklist at the bottom.
+
+**Head interplay needs a filming guide:** templates where something lands on or around the head ship with a guide
+overlay (a dashed head outline) so buyers know how big and where to film their head; the buyer hides it before export.
+
 ## The rules (Mercedes, 2026-10-17, her words tidied)
 
 1. **Visual hook instantly.** Frame 1 is already interesting and moving: no empty opener, no title card that sits there.
