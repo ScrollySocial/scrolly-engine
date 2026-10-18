@@ -168,6 +168,25 @@ Photo collages, turned into video moves. This is the layering she means:
   handwritten labels and sparkles. The closest match for physical-product templates.
 - **Mixed media:** black-and-white photo with one colour element, grid paper, maps, old book text, stamps.
 
+**Principles behind the board (her analysis, 2026-10-18).** The style is surreal mixed-media collage, and what
+makes it work is that **the layers have a relationship**: one becomes a window, shelters something, replaces part of
+an object, or leads the eye into the next scene.
+- **One main action per composition** (the tear opens, the birds scatter, the strips slide, the wedge expands); only
+  small background motion underneath. Layered but readable.
+- **Carry one or two layers into the next scene** (a star, a ribbon, a TV, a torn edge) so the Reel flows as one piece.
+- **Openings into another scene:** screens, silhouettes, tears, wedges and gaps are where the footage goes.
+- **Layers interact:** rain masked so the area under an umbrella stays dry, and the dry area moves with the umbrella.
+- **Visual rhyme:** align shapes across materials (a road, a coastline and a torn edge share one curve).
+- **Shape substitution:** butterfly wings as sails, a flower as an umbrella, a record as a sun; keep enough of the
+  original object that it reads.
+- **Radial wedges:** photo wedges fan out from one point (a camera lens); one wedge expands into the next scene.
+- **Nested frames:** footage inside TVs or frames; zoom into one until it fills the next scene; a cut-out crosses
+  the bezel.
+- **Three jobs, one language:** the impossible scene is the opening hook; a layer interaction keeps interest inside a
+  scene; strips or an expanding wedge make the transition.
+- **Contrast of materials and hierarchy:** photo against paper, flat graphics or monochrome; one dominant subject or
+  message, supporting detail around it, space kept around the face or headline.
+
 **Her picks from the board (2026-10-18), do these first:**
 - **Skyscrapers top AND bottom:** skylines hanging down from the top and rising from the bottom, meeting in the
   middle with a starry or pattern sky between them (the buyer's clip can sit in that middle).
