@@ -125,7 +125,7 @@ def frame(g, t):
         k = back_out(seg(t, 9.2, 9.5)); put(im, g['st'][2], (230, 340), k * 1.2, -4)
         if u < 0.3: put(im, g['glass'], (900, 1300), 1 - u * 3, 180)
         P.say(im, g['sp'][2], t, 9.45, (540, 1380), -2); doodle_on(im, t, 10.2, g['d_burst'], (780, 640), 0, 10.8)
-        if t > 10.65: im = X.slice_h(im, bench(g, t, None, 5, 4, 10.95, 11.2), seg(t, 10.65, 10.9), (OCHRE, INK))
+        if t > 10.65: im = diagonal(im, bench(g, t, None, 5, 4, 10.95, 11.2), seg(t, 10.65, 10.9))
         return im
     if t < 13.0:                                                   # 8: all ticked; DONE ringed; dive into it: the reveal
         if t < 11.6:

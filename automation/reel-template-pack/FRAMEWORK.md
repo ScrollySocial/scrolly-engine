@@ -183,6 +183,16 @@ Log each use here when a template is approved.
 | Polaroids pinned, growing to fill the frame | 01 | 01 |
 | Instant camera snaps, the after photo prints and develops | 03 | 03 |
 | Torn-paper diagonal split | 04 (draft) | |
+| Two-tone strip slice (clip cut into tinted strips sliding apart) | 22 (draft) | 22, 04, 05, 07 (drafts; at 4 of 5, swapped out of 06 and 13) |
+| Shop feed scrolling on a phone, stopping on the product | 10 (draft) | 10, 06 (drafts) |
+| Brass balance scale tips to A, then to B | 04 (draft) | 04 |
+| A and B in alternating strips sorting into a half-and-half split | 04 (draft) | 04 |
+| Instagram story poll on a phone, bars filling | 04 (draft) | 04 |
+| Contact sheet of stills, a frame ringed in marker, zoom into it | 05 (draft) | 05 |
+| Checklist pad that writes itself and ticks a box each visit | 06 (draft) | 06 |
+| Clip window jumping size ("this big?") | 07 (draft) | 07 |
+| Marker double-headed arrows measuring the product | 07 (draft) | 07 |
+| Wooden number cubes tumbling in, one per step (a cube rolls across as the wipe) | 13 (draft) | 13 |
 
 ## The image library is shared (Mercedes, 2026-10-17)
 
