@@ -5,6 +5,17 @@ Christmas). She has had to repeat these many times. **Every session working on a
 designs to it, and runs the checklist at the bottom before showing her anything.** If a storyboard fails one check,
 fix it first; don't show it. When she adds a rule, add it here the same day.
 
+## LOCKED: type and colour (Mercedes, 2026-10-18)
+
+- **Fonts: DM Serif Display + Manrope** (her pick: "easiest to read"). Built-in words: DM Serif Display (Regular, Italic
+  for the key word), white or palette fill, thin outline (about px/55), no static glow (a glow only as a quick animated
+  flash for emphasis). Small lines: Manrope Medium on tight **highlight boxes** (use most); a pill only once, as emphasis.
+  Files: `assets/fonts/` (SIL OFL). Neither font was found in her CapCut cache, so **editable words use Montserrat**
+  (confirmed in CapCut, closest to Manrope) unless she confirms Manrope in CapCut's font panel.
+- **Palette** (one or two per template, never all together; buyers can swap): butter #F7E6A9, wine #7A1732,
+  pink #F9C9DF, light blue #BFD9F2.
+- Type must read on ANY clip in ANY brand colour (test sheet: `type-system-test.jpg`, `build/type_system.py`).
+
 ## READ FIRST: the 10 must-dos (2026-10-18, after the wireframe round failed)
 
 The long rules below are reference. These ten are where drafts keep failing. A draft that misses one is not shown.
@@ -46,6 +57,10 @@ The long rules below are reference. These ten are where drafts keep failing. A d
 **Her notes on the #04-#13 motion tests (2026-10-18), every template:**
 - **NEVER a hand holding the phone.** Phones, tablets and laptops stand or lie on the stage on their own.
 - **No empty marker circles.** A ring goes round one specific thing (a detail, a word); a circle round nothing is cut.
+  No marker rings in the middle of footage at all ("circles in the middle of a video doing nothing look very odd");
+  a ring may mark a photo on a graphic stage (e.g. the frame the camera then zooms into).
+- **A burst can't go behind the footage** (the clip is one flat layer), so it goes behind a graphic: a note, a tag, a
+  photo card, a word on a box. Its rays never cross letters.
 - **Starbursts go BEHIND something** (the product, the key word) for emphasis. One burst; never two side by side
   emphasising nothing.
 - **One underline, a single line.** Never the double underline.
