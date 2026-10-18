@@ -35,6 +35,19 @@ The approved parts, so a new template is a short recipe instead of a new design:
 Recipes: `build/starter.py` (#10, #22, #23; `python build/starter.py 10` renders `10-.../preview/motion-test.mp4`, add
 seconds for a test sheet). #11 and #20 are in `build/collage_b2.py` (written before the kit; same parts).
 
+## New idea-bank moves to fold into the fix pass (FRAMEWORK.md, commit c007602)
+
+Her one-line summary of the look: "mixed-media video collages, hyper interesting and visually hooky". Where the new
+moves fit a template's job (apply with her notes on that template, not as an extra round):
+- **#23 Every option:** glasses frames with a different option in each lens, colour inside, greyscale outside, as a
+  side-by-side "compare two" beat.
+- **#22 Put it to the test:** the stopwatch's face becomes a circle video and the camera zooms into it (her clock-face
+  move) for the jump into the uncut test.
+- **#11 A day with it:** the same clock-face move for the dives into the slices.
+- **#10 Gift:** butterfly wings opening onto a person's clip, or the patchwork quilt dissolving one fabric at a time
+  into the gift-wrap clip. Careful: she sees butterflies, quilt, street lamp, cathedral and skyline as fall ideas
+  first, and the physical pack must not look seasonal, so use them in neutral colours or ask.
+
 ## Open
 
 - Editable words in the motion tests are in Anton and the tall serif: the serif is a CapCut library font (id
