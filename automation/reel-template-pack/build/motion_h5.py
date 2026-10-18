@@ -14,14 +14,14 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import engine as E
 import storyboard_halloween as B
 
-W, H, FPS, END = 1080, 1920, 30, 15.0
+W, H, FPS, END = 1080, 1920, 30, 17.5
 OUT = E.PACK / 'halloween' / 'h5-trick-or-treat' / 'preview'; OUT.mkdir(parents=True, exist_ok=True)
 TMP = OUT / '_frames'; TMP.mkdir(exist_ok=True)
 INK, ORANGE, BRASS, CORN_Y, CORN_W = (22, 20, 24), (236, 120, 36), (214, 160, 70), (250, 196, 40), (252, 246, 232)
 BOLD = 'C:/Windows/Fonts/arialbd.ttf'
 SNAP = 'C:/Windows/Fonts/SNAP____.TTF'     # built-in words, rendered as artwork (her pick: option C)
 TAFFY = (196, 170, 232)
-CLIPS = {'trick': ('IMG_1447', 0.3), 'treat': ('IMG_1439', 1.0), 'cta': ('IMG_1439', 5.0)}
+CLIPS = {'trick': ('IMG_1447', 0.3), 'treat': ('IMG_1439', 1.0), 'proof': ('IMG_1460', 1.0)}   # v9: clip 3 is the proof
 
 def extract(key, secs=6.0):
     name, t0 = CLIPS[key]; d = TMP / key; d.mkdir(exist_ok=True)
@@ -224,79 +224,133 @@ DOO = {'burst1': D.get('bursts', 5, _LAV, 300), 'burst2': D.get('bursts', 6, _LA
        'rays': D.get('bursts', 4, _LAV, 380), 'heart': D.get('icons', 3, _LAV, 300), 'sparkle': D.get('icons', 9, (255, 255, 255), 200),
        'arrow': D.get('arrows', 0, _LAV, 270), 'wavy': D.get('underlines', 2, _LAV, 620)}
 
+# ---- v9 (2026-10-18, her new principles: 7+ scenes, two home bases = the buyer's clips + the doorstep stage,
+# footage in openings, a carried element, a tech prop, embellished shapes behind words, reading time) ----------------
+PANES = [(168, 0, 408, 960), (688, 0, 928, 960)]           # door 1's two glass panes (measured on her photo)
+def door_with_panes(video):
+    """Door 1 closed, with the clip playing behind its glass (the lattice stays on top)."""
+    im = DOOR_SHUT.copy(); g = ImageOps.grayscale(DOOR_SHUT.convert('RGB'))
+    for b in PANES:
+        v = ImageOps.fit(video, (b[2] - b[0], b[3] - b[1])); im.paste(v, b[:2])
+        lat = DOOR_SHUT.crop(b); lat.putalpha(g.crop(b).point(lambda x: 230 if x < 70 else 0))   # the dark lattice bars
+        im.alpha_composite(lat, b[:2])
+    return im
+
+def _crt():
+    t = Image.open(E.PACK / 'assets' / 'props' / 'source' / 'tech' / 'Beige CRT monitor with green screen-56.png').convert('RGBA')
+    t = B.cut_white(t, tol=8); r, g, b, a = t.split()
+    key = ImageChops.subtract(g, ImageChops.lighter(r, b)).point(lambda v: 0 if v > 40 else 255)   # green screen -> clear
+    t.putalpha(ImageChops.multiply(a, key)); return t
+CRT = _crt(); _sb = ImageChops.invert(CRT.split()[3]).getbbox()
+CRT_SCREEN = (156 + 6, 180 + 6, 832 - 6, 816 - 6)          # its screen, measured on her photo (minus the bezel lip)
+def crt_scene(video, scale=0.86, c=(560, 900)):
+    """The retro TV standing on door 2's porch steps, the clip playing on its screen."""
+    im = HOUSE.copy(); im = ImageEnhance.Brightness(im).enhance(0.75)
+    w = int(CRT.width * scale); h = int(CRT.height * scale); tv = CRT.resize((w, h), Image.LANCZOS)
+    x0, y0 = int(c[0] - w / 2), int(c[1] - h / 2); sx = [int(v * scale) for v in CRT_SCREEN]
+    im.alpha_composite(ImageOps.fit(video, (sx[2] - sx[0], sx[3] - sx[1])), (x0 + sx[0], y0 + sx[1]))
+    im.alpha_composite(E.C.shadow(tv, (10, 18), 18, 90), (x0 - 18, y0 - 18))
+    return im, (x0 + (sx[0] + sx[2]) / 2, y0 + (sx[1] + sx[3]) / 2), (sx[2] - sx[0]) / W
+
+def _paper(name, w):
+    im = B.cut_white(Image.open(E.PACK / 'assets' / 'props' / 'source' / 'physical' / name), tol=8)
+    return B.fit_w(im.crop(im.getbbox()), w)
+NOTE = _paper('Blank Yellow Sticky Note on White.png', 520)
+PIN = _paper('Glossy Push Pin Quartet.png', 260).crop((0, 0, 130, 130))
+def sticky(img, t, t0, text, c, rot=-4):
+    """Her words on a real yellow sticky note, pinned, popping on."""
+    if t < t0: return
+    k = back_out((t - t0) / 0.3, 2.2); n = NOTE.copy(); d = ImageDraw.Draw(n)
+    f = E.ImageFont.truetype(BOLD, 64); d.multiline_text((n.width / 2, n.height / 2), text, font=f, fill=(30, 26, 22), anchor='mm', align='center')
+    n = n.resize((max(1, int(n.width * k)), max(1, int(n.height * k)))).rotate(rot, expand=True, resample=Image.BICUBIC)
+    img.alpha_composite(E.C.shadow(n, (8, 14), 12, 90), (int(c[0] - n.width / 2), int(c[1] - n.height / 2)))
+    if k > 0.9: img.alpha_composite(PIN, (int(c[0] - 40), int(c[1] - n.height / 2 - 30)))
+
+BURST_BIG = D.get('bursts', 5, _LAV, 760)
+def zoom_into(im, c, z):
+    big = im.resize((int(W * z), int(H * z)), Image.BICUBIC); ox, oy = c[0] * z - W / 2, c[1] * z - H / 2
+    return big.crop((int(ox), int(oy), int(ox) + W, int(oy) + H))
+
 def frame(t):
-    # 0.0-1.3 door 1, KNOCK KNOCK in brass jumps on each knock (and the picture jolts)
-    if t < 1.3:
-        im = DOOR_SHUT.copy()
-        word_art(im, t, 0.05, 'KNOCK', 540, 520, 180, 'taffy', 'knock'); word_art(im, t, 0.4, 'KNOCK', 540, 760, 180, 'taffy', 'knock')
-        D.draw_on(im, DOO['burst1'], (215, 1180), t, 0.25, 0.15); D.draw_on(im, DOO['burst2'], (870, 1290), t, 0.6, 0.15)   # knock impacts
-        im = shake(im, t)
-    # 1.3-2.0 the door swings inward on its right-hand hinge, in perspective, onto the lit hallway (clip 1 plays there)
-    elif t < 2.0:
-        u = ease((t - 1.3) / 0.6); im = door_open(t - 1.3)
-        th = math.radians(78 * u); lw = 880 * math.cos(th); d = H * 0.10 * math.sin(th)
-        dst = [(1000 - lw, d), (1000, 0), (1000, H), (1000 - lw, H - d)]
-        src = [(120, 0), (1000, 0), (1000, H), (120, H)]
-        if lw > 6:
-            leaf = DOOR_SHUT.transform((W, H), Image.PERSPECTIVE, persp(dst, src), Image.BICUBIC)
-            m = Image.new('L', (W, H), 0); ImageDraw.Draw(m).polygon(dst, fill=255); leaf.putalpha(m)
-            im.alpha_composite(ImageEnhance.Brightness(leaf).enhance(1 - 0.5 * u))
-        if u > 0.9: im = Image.blend(im, door_open(t - 1.3), (u - 0.9) / 0.1)
-    # 2.0-2.6 we push into the doorway: clip 1 grows to full screen
-    elif t < 2.6:
-        u = ease((t - 2.0) / 0.6); z = 1 + 2.4 * u; im0 = door_open(t - 1.3)
-        big = im0.resize((int(W * z), int(H * z)), Image.BICUBIC); ox, oy = DOOR_C[0] * z - W / 2, DOOR_C[1] * z - H / 2
-        im = big.crop((int(ox), int(oy), int(ox) + W, int(oy) + H))
-        if u > 0.7: im = Image.blend(im, vid('trick', t - 1.3), (u - 0.7) / 0.3)
-    # 2.6-4.8 clip 1 full screen: the TRICK (stripes, jittering)
-    elif t < 4.8:
+    # S1 0.0-2.2 THE STAGE (door 1): clip 1 plays behind the door's glass; TRICK / or TREAT? lands; three knocks
+    if t < 2.2:
+        im = door_with_panes(vid('trick', t))
+        word_art(im, t, -0.3, 'TRICK', 510, 1130, 210, 'taffy', 'jitter')
+        word_art(im, t, 0.1, 'or TREAT?', 500, 1370, 120, 'taffy', 'pop', 0.04)
+        for k, (x, y) in enumerate(((430, 860), (660, 820), (540, 760))):
+            if t > 0.5 + k * 0.4: D.draw_on(im, DOO['burst1' if k % 2 == 0 else 'burst2'], (x, y), t, 0.5 + k * 0.4, 0.12)
+        im = shake(im, t, hits=(0.5, 0.9, 1.3))
+    # 2.2-3.2 the door swings open on its hinge, then we push into the hallway: clip 1 (carried from the panes)
+    elif t < 3.2:
+        if t < 2.8:
+            u = ease((t - 2.2) / 0.6); im = door_open(t - 1.3)
+            th = math.radians(78 * u); lw = 880 * math.cos(th); d = H * 0.10 * math.sin(th)
+            dst = [(1000 - lw, d), (1000, 0), (1000, H), (1000 - lw, H - d)]; src = [(120, 0), (1000, 0), (1000, H), (120, H)]
+            if lw > 6:
+                leaf = door_with_panes(vid('trick', t)).transform((W, H), Image.PERSPECTIVE, persp(dst, src), Image.BICUBIC)
+                m = Image.new('L', (W, H), 0); ImageDraw.Draw(m).polygon(dst, fill=255); leaf.putalpha(m)
+                im.alpha_composite(ImageEnhance.Brightness(leaf).enhance(1 - 0.5 * u))
+        else:
+            u = ease((t - 2.8) / 0.4); im = zoom_into(door_open(t - 1.3), DOOR_C, 1 + 2.4 * u)
+            if u > 0.7: im = Image.blend(im, vid('trick', t - 1.3), (u - 0.7) / 0.3)
+    # S2 3.2-5.6 HOME BASE 1, the buyer's clip: the TRICK, her words on a pinned sticky note, crossed out
+    elif t < 5.6:
         im = vid('trick', t - 1.3)
-        word_art(im, t, 2.7, 'TRICK', 520, 450, 220, 'taffy', 'jitter')
-        line(im, t, 3.3, '[cheap sponges]', (520, 680), 80)
-        word_art(im, t, 4.0, 'or...', 520, 880, 150, 'taffy', 'pop', 0.08)
-        D.draw_on(im, DOO['x'], (820, 1240), t, 3.55, 0.3, -6)      # the trick, crossed out
-    # 4.8-5.3 two-tone strip slice (her Pinterest pick): the TRICK clip cuts into strips, alternately tinted
-    # lavender and plum, that slide apart left and right to reveal door 2
-    elif t < 5.3:
-        u = ease((t - 4.8) / 0.5); a = vid('trick', t - 1.3); im = HOUSE.copy(); n = 12; sh = H // n
+        word_art(im, t, 3.25, 'TRICK', 540, 420, 220, 'taffy', 'jitter')
+        sticky(im, t, 3.55, '[cheap\nsponges]', (700, 900), -5)
+        D.draw_on(im, DOO['x'], (300, 1000), t, 4.3, 0.3, -6)
+    # 5.6-6.1 two-tone strip slice to door 2 (she loved it)
+    elif t < 6.1:
+        u = ease((t - 5.6) / 0.5); a = vid('trick', t - 1.3); im = HOUSE.copy(); n = 12; sh = H // n
         tints = [Image.new('RGBA', (W, sh), (196, 170, 232, 255)), Image.new('RGBA', (W, sh), (70, 44, 96, 255))]
         for k in range(n):
-            strip = a.crop((0, k * sh, W, (k + 1) * sh))
-            strip = Image.blend(strip, tints[k % 2], 0.35 + 0.25 * u)
-            dx = int((W + 40) * u * (1 if k % 2 else -1) * (0.85 + 0.03 * k))
-            im.alpha_composite(strip, (dx, k * sh))
-    # 5.3-6.1 door 2: a quick knock
-    elif t < 6.1:
-        im = HOUSE.copy()
-        word_art(im, t - 5.3 + 0.0, -0.0, 'KNOCK', 540, 560, 170, 'taffy', 'knock')
-        line(im, t, 5.55, '[something sweet is coming]', (520, 820), 62)
-        D.draw_on(im, DOO['rays'], (540, 1180), t, 5.45, 0.25)        # the knock on door 2
-        im = shake(im, t - 5.3)
-    # 6.1-6.5 door 2 opens: warm light, then clip 2 appears in the real doorway
-    elif t < 6.5:
-        u = ease((t - 6.1) / 0.4); shut = arch_house(1, Image.new('RGBA', (W, H), (255, 214, 150, 255)))
-        im = Image.blend(shut, arch_house(1, vid('treat', t - 6.1)), u)
-    # 6.5-7.9 candy pops up out of the doorway (candy corn and taffy, inked), clip 2 playing in the arch
-    elif t < 7.9:
+            strip = Image.blend(a.crop((0, k * sh, W, (k + 1) * sh)), tints[k % 2], 0.35 + 0.25 * u)
+            im.alpha_composite(strip, (int((W + 40) * u * (1 if k % 2 else -1) * (0.85 + 0.03 * k)), k * sh))
+    # S3 6.1-8.3 THE STAGE again (door 2): it opens, clip 2 in the real doorway, candy corn and taffy pop up out of it
+    elif t < 8.3:
         im = arch_house(1, vid('treat', t - 6.1)); candy_pop(im, t, 6.5, ARCH_C)
-    # 7.9-8.6 we go through the doorway into clip 2 while the candy drops away
-    elif t < 8.6:
-        u = ease((t - 7.9) / 0.7); im = arch_house(1 + 5.5 * u * u, vid('treat', t - 6.1))
+        line(im, t, 6.2, '[something sweet is coming]', (520, 330), 62)
+    # 8.3-9.0 we go through the doorway into clip 2 while the candy drops away
+    elif t < 9.0:
+        u = ease((t - 8.3) / 0.7); im = arch_house(1 + 5.5 * u * u, vid('treat', t - 6.1))
         if u > 0.75: im = Image.blend(im, vid('treat', t - 6.1), (u - 0.75) / 0.25)
-        candy_pop(im, t, 6.5, ARCH_C, drop_at=7.9)
-    # 8.6-12.0 clip 2 full screen: the TREAT
-    elif t < 12.0:
+        candy_pop(im, t, 6.5, ARCH_C, drop_at=8.3)
+    # S4 9.0-11.4 HOME BASE 1: the TREAT; a starburst BEHIND the word; one candy corn carried in lands on the T
+    elif t < 11.4:
         im = vid('treat', t - 6.1)
-        word_art(im, t, 8.7, 'TREAT', 520, 520, 230, 'taffy', 'drop', 0.09)
-        line(im, t, 9.3, '[our 5-minute scrub]', (520, 740), 80)
-        D.draw_on(im, DOO['heart'], (860, 1120), t, 9.6, 0.35, 8); D.draw_on(im, DOO['sparkle'], (190, 1000), t, 9.9, 0.3)   # the treat, loved
-    # 12.0-15.0 CTA over clip 3: COMMENT + the editable keyword
+        k = back_out((t - 9.05) / 0.3)
+        if t > 9.05:
+            b = BURST_BIG.resize((max(1, int(BURST_BIG.width * k)), max(1, int(BURST_BIG.height * k)))).rotate(t * 8, expand=True, resample=Image.BICUBIC)
+            im.alpha_composite(b, (int(540 - b.width / 2), int(470 - b.height / 2)))
+        word_art(im, t, 9.15, 'TREAT', 540, 470, 210, 'taffy', 'drop', 0.06)
+        c = CANDY[1]; u = ease((t - 9.0) / 0.6); cy = 160 + (330 - 160) * u; cx = 900 + (330 - 900) * u
+        cc = B.fit_w(c, 150).rotate(-20 + 20 * u, expand=True, resample=Image.BICUBIC); im.alpha_composite(E.C.shadow(cc, (5, 9), 9, 70), (int(cx - cc.width / 2), int(cy - cc.height / 2)))
+        line(im, t, 9.6, '[our 5-minute scrub]', (540, 720), 80)
+        D.draw_on(im, DOO['heart'], (860, 1200), t, 10.2, 0.35, 8)
+    # 11.4-12.0 the clip shrinks onto the retro TV standing on door 2's porch (carried into the stage)
+    elif t < 12.0:
+        u = ease((t - 11.4) / 0.6); tvim, sc, frac = crt_scene(vid('treat', t - 6.1))
+        z = 1 / frac; zz = z + (1 - z) * u; im = zoom_into(tvim, sc, zz)
+    # S5 12.0-14.2 THE STAGE (door 2's porch): the TV plays clip 3, the proof; her words on a pinned note
+    elif t < 14.2:
+        im, sc, frac = crt_scene(vid('proof', t - 12.0))
+        word_art(im, t, 12.05, 'PROOF', 540, 300, 170, 'taffy', 'pop', 0.05)
+        sticky(im, t, 12.4, '[5-star\nreviews]', (720, 1330), 6)
+        D.draw_on(im, DOO['arrow'], (250, 1330), t, 12.9, 0.3, -20)
+    # 14.2-14.8 we zoom into the TV screen: clip 3 fills the frame
+    elif t < 14.8:
+        u = ease((t - 14.2) / 0.6); tvim, sc, frac = crt_scene(vid('proof', t - 12.0)); im = zoom_into(tvim, sc, 1 + (1 / frac - 1) * u)
+    # S6 14.8-17.5 HOME BASE 1 + CTA: Comment TREAT with a burst behind the keyword
     else:
-        im = vid('cta', t - 12.0)
-        word_art(im, t, 12.05, 'COMMENT', 520, 500, 150, 'taffy', 'pop', 0.06)
-        line(im, t, 12.6, '[TREAT]', (560, 720), 150)
-        line(im, t, 13.0, "for something sweet: 15% off", (520, 880), 66)
-        D.draw_on(im, DOO['arrow'], (170, 720), t, 12.9, 0.3, 0); D.draw_on(im, DOO['wavy'], (520, 1000), t, 13.3, 0.35)   # point at the keyword, underline the offer
+        im = vid('proof', t - 12.0)
+        word_art(im, t, 14.8, 'COMMENT', 540, 470, 150, 'taffy', 'pop', 0.05)
+        k = back_out((t - 15.0) / 0.3)
+        if t > 15.0:
+            b = BURST_BIG.resize((max(1, int(BURST_BIG.width * 0.8 * k)), max(1, int(BURST_BIG.height * 0.8 * k))))
+            im.alpha_composite(b, (int(560 - b.width / 2), int(700 - b.height / 2)))
+        line(im, t, 15.05, '[TREAT]', (560, 700), 150)
+        line(im, t, 15.2, 'for something sweet: 15% off', (520, 900), 64)
+        D.draw_on(im, DOO['wavy'], (520, 1000), t, 15.5, 0.35)
     return im.convert('RGB')
 
 def main():
