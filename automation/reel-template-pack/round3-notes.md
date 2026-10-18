@@ -112,3 +112,5 @@ Colours she likes (not limited to these): #F7E6A9 butter, #7A1732 wine, #F9C9DF 
 On this computer: Bodoni Moda only (CapCut library font, id 7580184437816675601, so buyers have it). Instrument Serif,
 DM Sans, Manrope, DM Serif Display are free Google Fonts (SIL OFL) that would need downloading, and checking that
 CapCut's library has them for editable text.
+- On type-pairings.jpg: "would maybe not do those [colours] all together, but don't HATE it". Palette now butter
+  #F7E6A9, wine #7A1732, pink #F9C9DF + baby blue (~#BFD9F2). Each template uses ONE or TWO of them, never all at once.
