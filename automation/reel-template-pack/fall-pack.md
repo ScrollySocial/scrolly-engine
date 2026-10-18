@@ -67,3 +67,9 @@ product, I don't like it." The drinks were the subject instead of the buyer's pr
   where the clips come in while things in the background get outlined** (hand-drawn lines tracing the scene).
 - Changes: f2 becomes the collage, f4 drops apple-shaped windows (tall strips, grid), new f9 "Traced" (outlines
   draw on over a fall background, clips come in between them). f1 keeps the pie.
+
+## f9 Traced motion test: rejected (2026-10-17)
+
+Not collage (one forest photo behind the whole Reel, one flat background), too empty (small clip windows, tiny leaves,
+small captions), and the torn strips over the clip read as random. Not to be patched. Next test: f2 "The fall drop" in
+the collage look (`build/motion_f2.py`).
