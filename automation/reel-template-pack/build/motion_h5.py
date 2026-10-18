@@ -1,7 +1,7 @@
 """Rough motion test for h5 "Trick or treat" (Halloween pack), following Mercedes's notes (rounds 1 to 4) and
 FRAMEWORK.md. The business job: a common mistake (the TRICK) next to your product (the TREAT), then a keyword CTA.
 Built-in words are extra-fun artwork lettering: Snap ITC in lavender taffy stripes (her pick, v2); KNOCK jumps on
-each knock, TRICK jitters, "or" teases, TREAT drops and bounces. v7: door 2 opens, candy corn and taffy (hand-inked outlines) pop up out of the doorway, drop away, then the TREAT. Editable words are Arial Bold (every buyer has it).
+each knock, TRICK jitters, "or" teases, TREAT drops and bounces. v7: door 2 opens, candy corn and taffy (plain, no outlines) pop up out of the doorway, drop away, then the TREAT. Editable words are Arial Bold (every buyer has it).
 Moves (its own, not h6's or h3's): the door swings open on its hinge, we push into the doorway into clip 1; a whip pan
 along the street to door 2 (her generated Victorian house, same setting to the end); we fly through door 2's arch into
 clip 2. No door slam, no candy until her new single-piece candy images exist.
@@ -123,7 +123,7 @@ def inked(im, w=7, seed=0):
     ink = Image.new('RGBA', big.size, (34, 26, 38, 255)); ink.putalpha(ring.filter(ImageFilter.GaussianBlur(0.8)))
     out.alpha_composite(ink, (r.randint(-3, 3), r.randint(-3, 3))); out.alpha_composite(im, (pad, pad))
     return out
-CANDY = [inked(_candy_cut(f), seed=i) for i, f in enumerate(sorted(_g.glob(str(B.SRC / '*'))))
+CANDY = [_candy_cut(f) for i, f in enumerate(sorted(_g.glob(str(B.SRC / '*'))))   # no outline: she found the inked version 'dumb'; real candy reads best plain
          if any(k in Path(f).name.lower() for k in ('candy corn', 'taffy'))]
 
 def candy_bands(n_bands=10, seed=4):
