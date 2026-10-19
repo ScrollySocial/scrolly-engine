@@ -67,13 +67,13 @@ mark.ph{background:#ffd9c9;color:var(--s3-ink);padding:0 4px;border-radius:3px}
 .stick h2{text-align:center}
 .stick .sq{display:block;width:min(300px,60vw);margin:10px auto 0}
 .notes-row{display:flex;flex-wrap:wrap;justify-content:center;gap:clamp(18px,3vw,40px);margin-top:48px}
-.sticky{position:relative;width:230px;aspect-ratio:1;background:url("${img('sticky.webp')}") center/contain no-repeat;padding:56px 30px 26px;transform:rotate(var(--r));transition:transform .25s;text-align:center;color:var(--s3-ink)}
+.sticky{position:relative;width:200px;aspect-ratio:400/389;background:url("${img('sticky.webp')}") center/100% 100% no-repeat;transform:rotate(var(--r));transition:transform .25s;color:var(--s3-ink)}
 .sticky:hover{transform:rotate(0) scale(1.05)}
-.sticky .pin{position:absolute;top:12px;left:50%;width:30px;transform:translateX(-50%);filter:drop-shadow(1px 3px 2px rgba(0,0,0,.35))}
-@media(min-width:1100px){.notes-row{flex-wrap:nowrap;gap:18px}.sticky{width:min(210px,18vw);padding:52px 22px 22px}.sticky b{font-size:1.45rem}}
-.sticky b{display:block;font:400 1.6rem/1.1 var(--s3-serif);margin-bottom:8px}
-.sticky span{display:block;font:var(--s3-fs-fine)/1.35 var(--s3-sans)}
-@media(max-width:560px){.notes-row{gap:22px 10px}.sticky{width:158px;padding:40px 16px 16px}.sticky b{font-size:1.2rem}.sticky .pin{width:24px;top:9px}}
+.sticky .nt{position:absolute;left:3%;top:3%;width:90%;height:90%;display:flex;align-items:center;justify-content:center;text-align:center;padding:22% 10% 10%}
+.sticky .pin{position:absolute;top:7%;left:48%;width:30px;transform:translateX(-50%);filter:drop-shadow(1px 3px 2px rgba(0,0,0,.35))}
+.sticky b{font:700 2.1rem/1 "Caveat",cursive}
+@media(min-width:1100px){.notes-row{flex-wrap:nowrap;gap:18px}.sticky{width:min(210px,18vw)}}
+@media(max-width:560px){.notes-row{gap:22px 10px}.sticky{width:158px}.sticky b{font-size:1.7rem}.sticky .pin{width:24px}}
 details.notes{padding:40px 0}
 details.notes>summary{cursor:pointer;font:700 var(--s3-fs-label)/1.4 var(--s3-sans);letter-spacing:.12em;text-transform:uppercase;color:var(--s3-muted)}
 .s3-faq{margin-top:32px}
@@ -94,21 +94,20 @@ details.notes>summary{cursor:pointer;font:700 var(--s3-fs-label)/1.4 var(--s3-sa
 `;
 
 const shell = (d, css, body) => `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>${esc(d.title)}</title><style>${v3}</style><style>${BASE}${css}</style></head><body style="margin:0;background:#f7f3ec">
+<title>${esc(d.title)}</title><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&display=swap" rel="stylesheet"><style>${v3}</style><style>${BASE}${css}</style></head><body style="margin:0;background:#f7f3ec">
 <div class="draft"><b>DRAFT PREVIEW.</b> Local file only, not published. Highlighted [brackets] are open decisions. The site's global header and footer are left out.
 <details><summary>Open decisions (${d.decisions.length})</summary><ul>${d.decisions.map((x) => `<li>${esc(x)}</li>`).join('')}</ul></details></div>
 <div class="s3"><div id="main">${body}</div></div></body></html>`;
 
 const price = (d) => `<span class="amt">${d.was ? `<del>${esc(d.was)}</del>` : ''}${ph(d.price)}</span>`;
 const howItWorks = (d) => `<section class="film" id="how"><div class="s3-wrap"><h2 class="s3-h2">How it works</h2>
-  <div class="monitor"><div class="screen"><div class="play" aria-hidden="true"></div><strong>Your how-to video goes here</strong>
-  <p>Mercedes records it: film the clips, drop them in, double-click the installer, open CapCut.</p></div><div class="stand"></div><div class="base"></div></div>
-  <ol class="steps">${STEPS.map(([icon, b, t]) => `<li><svg viewBox="0 0 48 48" aria-hidden="true">${icon}</svg><b>${esc(b)}</b><span>${esc(t)}</span></li>`).join('')}</ol></div></section>`;
+  <div class="monitor"><div class="screen"><div class="play" aria-hidden="true"></div><strong>Your how-to video</strong></div><div class="stand"></div><div class="base"></div></div>
+  <ol class="steps">${STEPS.map(([icon, b, t]) => `<li><svg viewBox="0 0 48 48" aria-hidden="true">${icon}</svg><b>${esc(b)}</b></li>`).join('')}</ol></div></section>`;
 // "Every template comes with": real sticky notes pinned on, from Trick or treat (Mercedes 2026-10-19: cards were "boring")
 const ROT = [-4, 3, -2, 4, -3];
 const includes = (d) => `<section class="s3-sec stick"><div class="s3-wrap"><h2 class="s3-h2">Every template comes with</h2>
   <img class="sq" src="${img('squiggle.webp')}" alt="">
-  <div class="notes-row">${d.includes.map(([b, x], i) => `<div class="sticky" style="--r:${ROT[i]}deg"><img class="pin" src="${img('pin-blue.webp')}" alt=""><b>${esc(b)}</b><span>${esc(x)}</span></div>`).join('')}</div>
+  <div class="notes-row">${d.includes.map(([b, x], i) => `<div class="sticky" style="--r:${ROT[i]}deg"><img class="pin" src="${img('pin-blue.webp')}" alt=""><span class="nt"><b>${esc(b)}</b></span></div>`).join('')}</div>
   ${d.formatNote ? `<p style="margin-top:32px">${ph(d.formatNote)}</p>` : ''}</div></section>`;
 const faq = (d) => `<section class="s3-sec"><div class="s3-read"><h2 class="s3-h2">Questions</h2><div class="s3-faq">${d.faq.map(([q, a]) => `<details><summary>${esc(q)}</summary><div>${ph(a)}</div></details>`).join('')}</div></div></section>`;
 const notes = (d) => `<details class="s3-sec notes"><summary class="s3-wrap">Review notes for Mercedes (not on the page): headlines, listing, demo footage</summary><div class="s3-wrap">
@@ -134,13 +133,13 @@ const INCLUDES = (projectNote) => [
   ['A phone kit', 'For CapCut on your phone.'],
 ];
 const FAQ = (fonts) => [
-  ['Do I need CapCut on a computer?', 'For the full template, yes: it opens in CapCut for computer (the free download). Install it and open it once before you run the installer.'],
-  ['Can I use it on my phone?', 'Yes. Every template comes with a phone kit: the shot guide video, the shot list and the graphics as PNG images. In the CapCut phone app you add your clips and words, then place the graphics as overlays. The full animation is built for you in the computer version.'],
-  ['Is music included?', "No sound files are included, so your Reel never gets muted for a song you don't have the rights to. Each template suggests a sound [SOUND PICKS]. Add it in Instagram after you upload: on a business account, Instagram only shows sounds cleared for business use."],
-  ['Do I need to install any fonts?', fonts],
-  ['How do I change the words?', 'Double-click a text box in CapCut and type over the [brackets]. Keep it to a few words so people can read it in time.'],
-  ['My computer warns me about the installer. Is that normal?', "Yes, Windows shows this for installers it hasn't seen before. Choose More info, then Run anyway."],
-  ['What if I want a different clip in one shot?', "Right-click the clip on CapCut's timeline, choose Replace, and pick another."],
+  ['Do I need CapCut on a computer?', 'For the full template, yes: CapCut for computer, free.'],
+  ['Can I use it on my phone?', 'Yes. The phone kit has the shot guide, shot list and every graphic.'],
+  ['Is music included?', 'No. Add a sound in Instagram, so your Reel never gets muted. [SOUND PICKS]'],
+  ['Do I need to install fonts?', fonts],
+  ['How do I change the words?', 'Double-click a text box and type.'],
+  ['My computer warns me about the installer.', 'That is normal. Click More info, then Run anyway.'],
+  ['Can I swap a clip?', 'Yes. Right-click it on the timeline and choose Replace.'],
 ];
 
 /* ------------------------------------------------------------------ Halloween: night look, real template props */
@@ -255,7 +254,10 @@ ${notes(d)}`;
    peanuts or kitchen timer (she offered to supply better images). Plain backgrounds behind text, props never cover words. */
 const PCSS = `
 .hero-p{padding-top:clamp(56px,7vw,110px);position:relative;overflow:hidden}
-.hero-p h1{max-width:8.5em}
+/* headline: "Your month's content:" on one line, DONE in handwriting (Mercedes 2026-10-19) */
+.head-p .l1{display:block;white-space:nowrap;font-size:clamp(2rem,6.2vw,6.4rem)}
+.head-p .done{display:inline-block;font:700 clamp(5rem,13vw,12rem)/.8 "Caveat",cursive!important;color:var(--s3-ink);transform:rotate(-5deg);margin:12px 0 0 6px;letter-spacing:.02em}
+.head-p .sq{display:block;width:clamp(180px,22vw,340px);margin:-4px 0 0 10px}
 .hero-p .s3-wrap{position:relative;z-index:2}
 .prop{position:absolute;pointer-events:none;z-index:1}
 .hero-p .tri{right:5%;bottom:-6px;width:clamp(200px,20vw,300px);transform:rotate(-4deg)}
@@ -263,11 +265,11 @@ const PCSS = `
 .hero-p .seal{width:64px;transform:rotate(-10deg)}
 .reels-p{background:#090909;color:#fff}
 .reels-p h2{color:#fff!important}.reels-p .s3-lede{color:#e6e0d8}
-.reels-top{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap}
-.arrows{display:flex;gap:12px}
-.arrows button{width:56px;height:56px;border-radius:50%;border:0;background:var(--s3-orange);color:#000;font:700 1.6rem/1 var(--s3-sans);cursor:pointer}
-.arrows button:hover{background:#fff}
-.arrows button:focus-visible{outline:3px solid #fff;outline-offset:3px}
+.row-wrap{position:relative}
+.arrow{position:absolute;z-index:3;top:calc(44px + clamp(210px,19vw,260px) * .89 - 30px);width:60px;height:60px;border-radius:50%;border:0;background:var(--s3-orange);color:#000;font:700 1.6rem/1 var(--s3-sans);cursor:pointer;box-shadow:0 6px 18px rgba(0,0,0,.45)}
+.arrow.prev{left:calc(-1 * var(--s3-gut) + 12px)}.arrow.next{right:calc(-1 * var(--s3-gut) + 12px)}
+.arrow:hover{background:#fff}
+.arrow:focus-visible{outline:3px solid #fff;outline-offset:3px}
 /* the 25 Reels scroll sideways (Mercedes: "a scrolling section, not rows and rows") */
 .scroller{display:flex;gap:clamp(16px,2vw,28px);overflow-x:auto;scroll-snap-type:x mandatory;margin:44px calc(-1 * var(--s3-gut)) 0;padding:0 var(--s3-gut) 24px;scroll-padding:0 var(--s3-gut);scrollbar-color:var(--s3-orange) #2a2a2a}
 .scroller::-webkit-scrollbar{height:8px}.scroller::-webkit-scrollbar-thumb{background:var(--s3-orange);border-radius:4px}.scroller::-webkit-scrollbar-track{background:#2a2a2a;border-radius:4px}
@@ -279,47 +281,49 @@ const PCSS = `
 .rg p+p{margin-top:6px}
 .rg .ex{font-size:var(--s3-fs-fine);color:#cfc8bf}
 .rg .ex b{font-weight:700;color:#fff}
-@media(max-width:700px){.rg{flex-basis:62vw}.arrows{display:none}}
+@media(max-width:700px){.rg{flex-basis:62vw}.arrow{display:none}}
 .pink{background:#f9c9df}
 .labels{display:flex;flex-wrap:wrap;gap:16px 18px;margin-top:28px}
 .dymo{display:inline-flex;align-items:center;height:46px;padding:0 22px;background:#111 url("${img('labeltape.webp')}") center/100% 100%;color:#fff;font:700 var(--s3-fs-ui)/1 "Courier New",monospace;letter-spacing:.14em;text-transform:uppercase;transform:rotate(var(--r));border-radius:3px}
 .faq-p h2{color:var(--s3-ink)!important}
-.faq-p .ring{display:block;width:min(240px,60%);margin-top:40px}
-@media(max-width:900px){.faq-p .ring{display:none}}
+.who-p .ring{display:block;width:min(230px,55%);margin-top:32px}
+@media(max-width:900px){.who-p .ring{width:150px;margin:20px 0 8px}}
 .cta-p{text-align:center;position:relative;overflow:hidden}
 .cta-p h2{margin-bottom:8px}
 .cta-p .buy{justify-content:center}
-.cta-p .s3-fine{color:#2b2a28}
+.cta-p .s3-fine{color:#cfc8bf}
+.cta-p .amt{color:#fff}
 .cta-p .s3-read{position:relative;z-index:1}
 .cta-p .seal2{right:8%;top:50%;width:130px;transform:translateY(-50%) rotate(12deg)}
 @media(max-width:1199px){.cta-p .seal2{display:none}}
 `;
 
 // arrow buttons scroll the row by about three phones (no "&" anywhere: WordPress mangles it in page scripts)
-const SCROLL_JS = `document.querySelectorAll('[data-scroll]').forEach(function(b){b.addEventListener('click',function(){var s=document.getElementById('reel-row');s.scrollBy({left:Number(b.dataset.scroll)*s.clientWidth*0.8,behavior:'smooth'})})})`;
+const SCROLL_JS = `function placeArrows(){var ph=document.querySelector('#reel-row .phone');if(!ph)return;var y=ph.offsetTop+ph.offsetHeight/2-30;document.querySelectorAll('.arrow').forEach(function(a){a.style.top=y+'px'})}placeArrows();window.addEventListener('resize',placeArrows);window.addEventListener('load',placeArrows);document.querySelectorAll('[data-scroll]').forEach(function(b){b.addEventListener('click',function(){var s=document.getElementById('reel-row');s.scrollBy({left:Number(b.dataset.scroll)*s.clientWidth*0.8,behavior:'smooth'})})})`;
 
 function physicalPage(d) {
   // all 25 as phone previews in one sideways-scrolling row
   const list = d.templates.map((t, i) => `<div class="rg"><div class="phone"><img src="${img(`p${String(i + 1).padStart(2, '0')}.jpg`)}" alt="${esc(t.name)}: a frame from the template" loading="lazy"></div>
-    <p class="num">${i + 1} of 25</p><h3>${esc(t.name)}</h3><p>${esc(t.job)}</p><p class="ex"><b>Soap shop:</b> ${esc(t.soap)}</p><p class="ex"><b>T-shirt store:</b> ${esc(t.tee)}</p></div>`).join('');
+    <p class="num">${i + 1} of 25</p><h3>${esc(t.name)}</h3><p>${esc(t.job)}</p></div>`).join('');
   const body = `
 <section class="s3-sec hero-p"><img class="prop tri" src="${img('tripod.webp')}" alt=""><div class="s3-wrap">
-  <h1 class="s3-display or">${esc(d.headline)}</h1>
+  <h1 class="s3-display or head-p"><span class="l1">${esc(d.headline.split(': ')[0])}:</span> <span class="done">${esc(d.headline.split(': ')[1])}</span><img class="sq" src="${img('squiggle.webp')}" alt=""></h1>
   <p class="s3-lede" style="margin-top:28px">${esc(d.sub)}</p>
   <div class="buy">${price(d)}<a class="s3-btn" href="#buy">${esc(d.button)}</a><img class="seal" src="${img('seal.webp')}" alt=""></div>
   <p class="s3-fine">${ph(d.priceLine)}</p>
 </div></section>
 <section class="s3-sec reels-p"><div class="s3-wrap">
-  <div class="reels-top"><div><h2 class="s3-h2">${esc(d.getTitle)}</h2><p class="s3-lede" style="margin-top:20px">${esc(d.getLede)}</p></div>
-  <div class="arrows"><button type="button" data-scroll="-1" aria-label="Scroll back">&#8592;</button><button type="button" data-scroll="1" aria-label="Scroll forward">&#8594;</button></div></div>
-  <div class="scroller" id="reel-row" tabindex="0" aria-label="All 25 Reel templates">${list}</div></div></section>
+  <h2 class="s3-h2">${esc(d.getTitle)}</h2><p class="s3-lede" style="margin-top:20px">${esc(d.getLede)}</p>
+  <div class="row-wrap"><button type="button" class="arrow prev" data-scroll="-1" aria-label="Scroll back">&#8592;</button>
+  <div class="scroller" id="reel-row" tabindex="0" aria-label="All 25 Reel templates">${list}</div>
+  <button type="button" class="arrow next" data-scroll="1" aria-label="Scroll forward">&#8594;</button></div></div></section>
 ${includes(d)}
 ${howItWorks(d)}
-<section class="s3-sec pink"><div class="s3-wrap s3-split"><h2 class="s3-h2">Who it's for</h2><div><p class="s3-lede">${esc(d.who)}</p>
+<section class="s3-sec peach who-p"><div class="s3-wrap s3-split"><div><h2 class="s3-h2">Who it's for</h2><img class="ring" src="${img('ringlight.webp')}" alt=""></div><div><p class="s3-lede">${esc(d.who)}</p>
   <div class="labels">${d.whoTags.map((t, i) => `<span class="dymo" style="--r:${[-2, 1.5, -1, 2][i % 4]}deg">${esc(t)}</span>`).join('')}</div></div></div></section>
-<section class="s3-sec faq-p"><div class="s3-wrap s3-split" style="align-items:start"><div><h2 class="s3-h2">Questions</h2><img class="ring" src="${img('ringlight.webp')}" alt=""></div>
+<section class="s3-sec faq-p"><div class="s3-wrap s3-split" style="align-items:start"><h2 class="s3-h2">Questions</h2>
   <div class="s3-faq">${d.faq.map(([q, a]) => `<details><summary>${esc(q)}</summary><div>${ph(a)}</div></details>`).join('')}</div></div></section>
-<section class="s3-sec peach cta-p" id="buy"><img class="prop seal2" src="${img('seal.webp')}" alt=""><div class="s3-read">
+<section class="s3-sec s3-dark cta-p" id="buy"><img class="prop seal2" src="${img('seal.webp')}" alt=""><div class="s3-read">
   <h2 class="s3-h2">${esc(d.ctaHead)}</h2>
   <div class="buy">${price(d)}<a class="s3-btn" href="#buy">${esc(d.button)}</a></div>
   <p class="s3-fine">${ph(d.ctaLine)}</p>
@@ -334,24 +338,24 @@ const halloween = {
   title: 'Halloween Reels draft',
   headline: 'Cute Halloween Reels that sell',
   headlines: ['Halloween Reels with a selling job', 'Five Halloween Reels. Your clips, your words, posted before the 31st.', 'Bats, webs and a blood moon, all working for your sales', 'Spooky-cute Reels for your October sale'],
-  sub: 'Five ready-made Reels for October. Film a few clips on your phone, drop them in, and each one opens in CapCut with your clips already in place.',
+  sub: 'Five ready-made Reels for October. Add your clips and post.',
   was: '$9.99', price: '$4.99',
   button: 'Get all 5 Reels',
-  priceLine: '5 CapCut templates, with a shot list and a phone kit for each. Instant download.',
-  ctaLine: '5 templates, shot lists and phone kits. Instant download.',
+  priceLine: 'Instant download.',
+  ctaLine: 'Instant download.',
   getTitle: 'Five Reels, five jobs',
-  getLede: 'Each template is a whole Reel with a business job and an ending that tells people where to buy. Cute and playful, with real photographed props.',
+  getLede: 'Each one sells something.',
   includes: INCLUDES('Real props and motion, built in.'),
   templates: [
-    { name: 'Once in a blood moon', poster: 'h6.jpg', job: 'Open a rare, once-a-year sale. A full moon turns blood red, becomes your video, and the deal arrives with bats and a haunted house.', film: '3 clips: your product, you or your shop, your product again', len: 14 },
-    { name: 'Caught in our web', poster: 'h3.jpg', job: "Show what's included or why people love it. A friendly spider drops in, the web forms, and each point gets caught in it.", film: '5 clips: your product held up, then four points', len: 15 },
-    { name: "Things I'm batty about", poster: 'h2.jpg', job: 'Share your favourites: best-sellers, a gift guide, the tools you use. Real cute bats carry each one in.', film: '4 clips: an opening, then three favourites', len: 15 },
-    { name: 'Trick or treat', poster: 'h5.jpg', job: 'Fix a common mistake, then make your offer. Door 1 opens on the trick, door 2 on the treat.', film: '3 clips: the mistake, your product, the proof', len: 17.5 },
-    { name: 'Now you see it', poster: 'h1.jpg', job: 'Last chance: a limited drop or a sale ending. A snap, real smoke rolls in, and the product is gone.', film: 'you with your product, the same shot without it, then your product', len: 14 },
+    { name: 'Once in a blood moon', poster: 'h6.jpg', job: 'Open a once-a-year sale.', film: '3 clips: your product, you or your shop, your product again', len: 14 },
+    { name: 'Caught in our web', poster: 'h3.jpg', job: "Show what's included.", film: '5 clips: your product held up, then four points', len: 15 },
+    { name: "Things I'm batty about", poster: 'h2.jpg', job: 'Share your favourites.', film: '4 clips: an opening, then three favourites', len: 15 },
+    { name: 'Trick or treat', poster: 'h5.jpg', job: 'A mistake, then your offer.', film: '3 clips: the mistake, your product, the proof', len: 17.5 },
+    { name: 'Now you see it', poster: 'h1.jpg', job: "Last chance before it's gone.", film: 'you with your product, the same shot without it, then your product', len: 14 },
   ],
   whoTags: ['Product shops', 'Digital products', 'Services', 'Creators'],
-  who: 'Online business owners and creators who want a Halloween Reel that sells something: a product, a sale, a freebie or an offer. It works for physical products, digital products and services, since every clip is your own footage.',
-  faq: FAQ('No. The big Halloween lettering is part of the artwork. The words you edit use Arial or Bodoni Moda, and Bodoni Moda comes inside the template.'),
+  who: 'Anyone with something to sell this October.',
+  faq: FAQ('No, they come with the template.'),
   ctaHead: 'Post your Halloween Reel before the 31st',
   listing: "Five cute Halloween Reel templates for CapCut, each with a selling job: open a once-a-year sale, show what's included, share your favourites, turn a common mistake into your offer, or announce a last chance. Film a few clips on your phone, drop them in a folder and double-click the installer: the template opens in CapCut with your clips in place. Type your words over the brackets and export. Each template comes with a shot list, a recipe card, a one-page guide and a phone kit. Each one suggests a sound to add in Instagram (no sound files included).",
   decisions: [
@@ -380,14 +384,14 @@ const physical = {
   title: 'Product Reels draft',
   headline: "Your month's content: DONE",
   headlines: ['Reels for the things you make, pack and ship', '25 Reels your product can star in', 'Film a few clips. Drop them in. Post a Reel that sells.', 'Collage Reels for physical products, ready for your clips'],
-  sub: '25 Reel templates for shops that sell physical products. Film your product on your phone, drop the clips in, and each template opens in CapCut with your clips already in place.',
+  sub: '25 Reels for your product. Add your clips and post.',
   price: '$17.99',
   button: 'Get all 25 Reels',
-  priceLine: '25 CapCut templates, with a shot list and a phone kit for each. [INSTANT DOWNLOAD or EARLY ACCESS: your call].',
-  ctaLine: '25 templates, shot lists and phone kits. [INSTANT DOWNLOAD or EARLY ACCESS: your call].',
+  priceLine: '[INSTANT DOWNLOAD or EARLY ACCESS: your call]',
+  ctaLine: '[INSTANT DOWNLOAD or EARLY ACCESS: your call]',
   whoTags: ['Makers', 'Small-batch brands', 'Shops that ship', 'Handmade'],
-  getTitle: '25 Reels, 25 selling jobs',
-  getLede: "Real photographed props, playful collage and fast cuts. Each one ends with your product's name and where to buy it. Here's how two shops would use them.",
+  getTitle: 'All 25 Reels',
+  getLede: 'Swipe to see them all.',
   includes: INCLUDES('Real props, collage and motion, built in.'),
   formatNote: '',
   templates: [
@@ -417,8 +421,8 @@ const physical = {
     T('Make it last', 'One care habit that keeps it looking good.', 'keep your bar dry between uses', 'wash it inside out'),
     T('Mine vs the usual kind', 'Show how yours is made differently.', 'a handmade bar next to a store bar', 'a heavyweight tee next to a thin one'),
   ],
-  who: 'Small business owners who sell physical products: makers, small-batch brands and anyone who packs and ships orders. If you can film your product on your phone, you can make these.',
-  faq: FAQ('No. The words you edit use Montserrat, which comes inside each template, and the big lettering is part of the artwork.'),
+  who: 'If you sell a product you can film, these are for you.',
+  faq: FAQ('No, they come with the template.'),
   ctaHead: 'A month of Reels, ready for your clips',
   listing: "25 Reel templates for CapCut, made for shops that sell physical products: packing videos, before and afters, gift guides, unboxings, reviews, tests, new drops and more. Film a few clips on your phone, drop them in a folder and double-click the installer: the template opens in CapCut with your clips in place. Type your words over the brackets and export. Each template comes with a shot list, a recipe card, a one-page guide and a phone kit. Each one suggests a sound to add in Instagram (no sound files included).",
   decisions: [

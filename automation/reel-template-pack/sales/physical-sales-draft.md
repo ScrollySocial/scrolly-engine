@@ -118,6 +118,13 @@ show a stand-in vacuum). Sticky notes for what's included, the film strip for Ho
 section on peach. Removed after her notes: packing box, peanuts, kitchen timer, envelope. She offered to supply better
 images.
 
+**Round 4 (2026-10-19, "way too much text"):** copy cut to the bone on both pages. Hero: "Your month's content:"
+on one line, DONE in Caveat handwriting with the lilac squiggle; sub "25 Reels for your product. Add your clips and
+post." Reels row: name and job only (the soap shop and T-shirt store examples now live in the demo plan below);
+orange arrows sit on the sides of the phones. Sticky notes: titles only, in Caveat, centred on a straightened note
+photo. Steps: one word each. Who it's for: Scrolly peach with the ring light (pink removed); one line. Questions:
+one-line answers. Buy section on black.
+
 ## 4. Who it's for
 
 On a peach band (#FFC9A8, the brand peach from the Reel covers) to break up the page.
