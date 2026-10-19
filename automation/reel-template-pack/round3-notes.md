@@ -165,3 +165,4 @@ of #09, #10, #12, #22, #08, #20, #23 (her notes say they are all too fast).
   "get it at [shop]". CapCut build still to do: the lifted product needs a second copy of clip 1 with CapCut's
   background removal, which the engine can't write yet.
 - #11 A day with it: approved ("fine", 2026-10-19). CapCut build still to do.
+- CapCut builds done for #11 and #15 (2026-10-19): test copies "Scrolly 11 A day with it", "Scrolly 15 New drop reveal"; zips in for-upload/. #15 cut-out copy of clip 1 uses CapCut Remove background (matting flag 1, unverified in CapCut).
