@@ -67,12 +67,13 @@ mark.ph{background:#ffd9c9;color:var(--s3-ink);padding:0 4px;border-radius:3px}
 .stick h2{text-align:center}
 .stick .sq{display:block;width:min(300px,60vw);margin:10px auto 0}
 .notes-row{display:flex;flex-wrap:wrap;justify-content:center;gap:clamp(18px,3vw,40px);margin-top:48px}
-.sticky{position:relative;width:230px;aspect-ratio:1;background:url("${img('sticky.webp')}") center/contain no-repeat;padding:58px 34px 30px;transform:rotate(var(--r));transition:transform .25s;text-align:center;color:var(--s3-ink)}
+.sticky{position:relative;width:230px;aspect-ratio:1;background:url("${img('sticky.webp')}") center/contain no-repeat;padding:56px 30px 26px;transform:rotate(var(--r));transition:transform .25s;text-align:center;color:var(--s3-ink)}
 .sticky:hover{transform:rotate(0) scale(1.05)}
-.sticky .pin{position:absolute;top:-14px;left:50%;width:42px;transform:translateX(-50%)}
+.sticky .pin{position:absolute;top:12px;left:50%;width:30px;transform:translateX(-50%);filter:drop-shadow(1px 3px 2px rgba(0,0,0,.35))}
+@media(min-width:1100px){.notes-row{flex-wrap:nowrap;gap:18px}.sticky{width:min(210px,18vw);padding:52px 22px 22px}.sticky b{font-size:1.45rem}}
 .sticky b{display:block;font:400 1.6rem/1.1 var(--s3-serif);margin-bottom:8px}
 .sticky span{display:block;font:var(--s3-fs-fine)/1.35 var(--s3-sans)}
-@media(max-width:560px){.notes-row{gap:22px 10px}.sticky{width:158px;padding:38px 16px 16px}.sticky b{font-size:1.2rem}.sticky .pin{width:34px}}
+@media(max-width:560px){.notes-row{gap:22px 10px}.sticky{width:158px;padding:40px 16px 16px}.sticky b{font-size:1.2rem}.sticky .pin{width:24px;top:9px}}
 details.notes{padding:40px 0}
 details.notes>summary{cursor:pointer;font:700 var(--s3-fs-label)/1.4 var(--s3-sans);letter-spacing:.12em;text-transform:uppercase;color:var(--s3-muted)}
 .s3-faq{margin-top:32px}
@@ -107,7 +108,7 @@ const howItWorks = (d) => `<section class="film" id="how"><div class="s3-wrap"><
 const ROT = [-4, 3, -2, 4, -3];
 const includes = (d) => `<section class="s3-sec stick"><div class="s3-wrap"><h2 class="s3-h2">Every template comes with</h2>
   <img class="sq" src="${img('squiggle.webp')}" alt="">
-  <div class="notes-row">${d.includes.map(([b, x], i) => `<div class="sticky" style="--r:${ROT[i]}deg"><img class="pin" src="${img('pin.webp')}" alt=""><b>${esc(b)}</b><span>${esc(x)}</span></div>`).join('')}</div>
+  <div class="notes-row">${d.includes.map(([b, x], i) => `<div class="sticky" style="--r:${ROT[i]}deg"><img class="pin" src="${img('pin-blue.webp')}" alt=""><b>${esc(b)}</b><span>${esc(x)}</span></div>`).join('')}</div>
   ${d.formatNote ? `<p style="margin-top:32px">${ph(d.formatNote)}</p>` : ''}</div></section>`;
 const faq = (d) => `<section class="s3-sec"><div class="s3-read"><h2 class="s3-h2">Questions</h2><div class="s3-faq">${d.faq.map(([q, a]) => `<details><summary>${esc(q)}</summary><div>${ph(a)}</div></details>`).join('')}</div></div></section>`;
 const notes = (d) => `<details class="s3-sec notes"><summary class="s3-wrap">Review notes for Mercedes (not on the page): headlines, listing, demo footage</summary><div class="s3-wrap">
@@ -175,6 +176,7 @@ const HCSS = `
 @media(max-width:1100px){.tpls{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media(max-width:700px){.tpls{grid-template-columns:1fr 1fr}}
 @media(max-width:460px){.tpls{grid-template-columns:1fr}}
+.reels{position:relative;overflow:hidden}.reels .s3-wrap{position:relative;z-index:1}
 .dots{background:#1b1325 url("${img('dots.jpg')}") center/cover;color:#fff;position:relative;overflow:hidden}
 .dots h2{color:#fff!important}.dots .s3-lede{color:#f1ecf6}.dots .tpl h3{color:#fff!important}.dots .tpl p{color:#ece6f2}
 .dots .s3-wrap{position:relative;z-index:1}
@@ -184,13 +186,14 @@ const HCSS = `
 .dots h2,.dots .s3-lede,.dots .tpl{text-shadow:0 2px 10px rgba(10,5,20,.9)}
 .dd.burst{width:120px;top:46%;left:2%;transform:rotate(-10deg)}
 .dd.heart{width:90px;bottom:40px;right:4%;transform:rotate(-8deg)}
-.who-h{position:relative;overflow:hidden;padding-top:calc(var(--s3-sec) + 70px)}
+.who-h{position:relative;overflow:hidden;background:#2b1f3f;color:#fff;padding-top:calc(var(--s3-sec) + min(230px,36vw))}
+.who-h h2{color:#fff!important}.who-h .s3-lede{color:#f1ecf6}
 .who-h .branch{position:absolute;top:8px;right:-40px;width:min(560px,70vw)}
 .who-h .hang{position:absolute;width:clamp(48px,5vw,70px);transform-origin:50% 0;animation:swing 3.8s ease-in-out infinite}
-.who-h .hang.h1{top:96px;right:min(330px,40vw)}.who-h .hang.h2{top:104px;right:min(170px,22vw);animation-delay:-1.6s}
+.who-h .hang.h1{top:min(118px,19vw);right:min(330px,40vw)}.who-h .hang.h2{top:min(128px,21vw);right:min(170px,22vw);animation-delay:-1.6s}
 .who-h .s3-wrap{position:relative;z-index:1}
 .who-h .branch,.who-h .hang{z-index:0}
-@media(max-width:1000px){.who-h .branch{width:min(400px,60vw)}.who-h{padding-top:calc(var(--s3-sec) + 110px)}}
+
 .tickets{display:flex;flex-wrap:wrap;gap:14px 18px;margin-top:28px}
 .ticket{display:inline-flex;align-items:center;justify-content:center;width:200px;height:86px;padding:0 30px 0 18px;background:url("${img('ticket.webp')}") center/contain no-repeat;transform:rotate(var(--r));font:400 1.3rem/1.1 var(--s3-serif);color:var(--s3-ink);text-align:center}
 @media(max-width:560px){.tickets{gap:10px 6px}.ticket{width:150px;height:66px;padding:0 22px 0 12px;font-size:1.05rem}}
@@ -201,13 +204,14 @@ const HCSS = `
 .faq-h .s3-faq details{border-color:rgba(255,255,255,.18)!important}
 .faq-h .s3-faq summary:focus-visible{outline-color:#fff}
 .faq-h .s3-wrap{position:relative;z-index:1}
-.wolfmoon{position:absolute;left:var(--s3-gut);bottom:0;width:300px;height:300px;z-index:0;pointer-events:none}
-.wolfmoon .m{position:absolute;width:240px;left:30px;top:0;opacity:.95;filter:drop-shadow(0 0 40px rgba(255,90,40,.35))}
-.wolfmoon .w{position:absolute;width:170px;left:60px;bottom:-4px}
-@media(max-width:900px){.faq-h{padding-bottom:300px}.wolfmoon{left:50%;transform:translateX(-50%);width:260px;height:260px}.wolfmoon .m{width:200px}.wolfmoon .w{width:140px}}
+.wolfmoon{position:absolute;left:calc(var(--s3-gut) - 40px);bottom:0;width:480px;height:470px;z-index:0;pointer-events:none}
+.wolfmoon .m{position:absolute;width:440px;left:20px;top:0;opacity:.95;filter:drop-shadow(0 0 40px rgba(255,90,40,.35))}
+.wolfmoon .w{position:absolute;width:240px;left:110px;bottom:-4px}
+@media(max-width:900px){.faq-h{padding-bottom:340px}.wolfmoon{left:50%;transform:translateX(-50%);width:320px;height:320px}.wolfmoon .m{width:300px;left:10px}.wolfmoon .w{width:170px;left:80px}}
 .cta.night .moon{right:auto;left:50%;top:auto;bottom:-260px;transform:translateX(-50%);width:520px;opacity:.5}
 .cta.night h2{color:#fff!important;position:relative;z-index:2}
 .cta.night .s3-read{position:relative;z-index:2}
+.cta.peach .s3-read{position:relative;z-index:1}.cta.peach .s3-fine{color:#2b2a28}.cta.peach .amt del{color:#5c4a3e}
 `;
 
 function halloweenPage(d) {
@@ -226,18 +230,17 @@ function halloweenPage(d) {
     <p class="s3-fine">${ph(d.priceLine)}</p>
     <div class="phones">${ph5}</div>
   </div></section>
-<section class="s3-sec dots"><img class="dd crown" src="${img('crown.webp')}" alt=""><img class="dd burst" src="${img('burst.webp')}" alt=""><img class="dd heart" src="${img('heart.webp')}" alt=""><div class="s3-wrap">
+<section class="s3-sec reels"><img class="dd crown" src="${img('crown.webp')}" alt=""><img class="dd burst" src="${img('burst.webp')}" alt=""><img class="dd heart" src="${img('heart.webp')}" alt=""><div class="s3-wrap">
   <h2 class="s3-h2">${esc(d.getTitle)}</h2><p class="s3-lede" style="margin-top:20px">${esc(d.getLede)}</p>
   <div class="tpls">${tpls}</div></div></section>
 ${includes(d)}
 ${howItWorks(d)}
-<section class="s3-sec peach who-h"><img class="branch" src="${img('branch.webp')}" alt=""><img class="hang h1" src="${img('bat.png')}" alt=""><img class="hang h2 b2" src="${img('bat.png')}" alt="">
+<section class="s3-sec who-h"><img class="branch" src="${img('branch.webp')}" alt=""><img class="hang h1" src="${img('bat.png')}" alt=""><img class="hang h2 b2" src="${img('bat.png')}" alt="">
   <div class="s3-wrap s3-split"><h2 class="s3-h2">Who it's for</h2><div><p class="s3-lede">${esc(d.who)}</p>
   <div class="tickets">${d.whoTags.map((t, i) => `<span class="ticket" style="--r:${ROT[i]}deg">${esc(t)}</span>`).join('')}</div></div></div></section>
 <section class="s3-sec night faq-h"><div class="wolfmoon"><img class="m" src="${img('moon.webp')}" alt=""><img class="w" src="${img('wolf.webp')}" alt=""></div><div class="s3-wrap s3-split"><div class="howl"><h2 class="s3-h2">Questions</h2></div>
   <div class="s3-faq">${d.faq.map(([q, a]) => `<details><summary>${esc(q)}</summary><div>${ph(a)}</div></details>`).join('')}</div></div></section>
-<section class="s3-sec night dots cta" id="buy"><img class="dd burst" src="${img('burst.webp')}" alt=""><img class="dd heart" src="${img('heart.webp')}" alt="">
-  <img class="hang" src="${img('bat.png')}" alt="" style="left:12%"><img class="hang b2" src="${img('bat.png')}" alt="" style="right:12%;width:clamp(44px,5vw,72px)">
+<section class="s3-sec peach cta" id="buy"><img class="dd burst" src="${img('burst.webp')}" alt=""><img class="dd heart" src="${img('heart.webp')}" alt="">
   <div class="s3-read"><h2 class="s3-h2">${esc(d.ctaHead)}</h2>
   <div class="buy">${price(d)}<a class="s3-btn" href="#buy">${esc(d.button)}</a></div>
   <p class="s3-fine">${ph(d.ctaLine)}</p>
