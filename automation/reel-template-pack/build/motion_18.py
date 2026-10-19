@@ -31,7 +31,7 @@ INK, CRM = (24, 23, 22), (246, 241, 232); BLUE, WINE = X.BABY, X.WINE           
 X.use_type(BLUE, WINE); X.enable_holds()
 DIR = '18-check-this-before-you-buy'
 LAPTOP = 'Open Silver Laptop with Green Screen-34.png'
-CB_W = 860; CB_C = (540, 1040); SHEET = (0.045, 0.135, 0.955, 0.94)      # the clipboard's sheet (see-through in the cut-out)
+CB_W = 820; CB_C = (540, 1140); SHEET = (0.045, 0.135, 0.955, 0.94)      # the clipboard's sheet (see-through in the cut-out)
 LINES = ('1. [check the bristles]', '2. [check the cord]', '3. [check the heat]')
 HOLDS = [(1.5, 0.7), (3.35, 1.3), (4.95, 0.6), (6.3, 0.5), (8.15, 0.6), (9.75, 1.0), (12.45, 0.6)]
 
@@ -39,14 +39,14 @@ def setup():
     brush = X.Window(Clip('IMG_1381', 0.0), 0.5, 3.2)                  # the stand-in brush is in frame only 0.5-3.2 s
     g = {'c': {'hook': brush, 'c1': brush, 'c2': Clip('IMG_1378', 0.5), 'c3': Clip('IMG_1377', 0.5), 'cta': brush}}
     cc = ImageOps.grayscale(S.raw('images', 'Light gray concrete mineral texture-4.png'))       # a calm desk (no busy terrazzo)
-    g['desk'] = ImageOps.fit(ImageOps.colorize(ImageOps.autocontrast(cc), (140, 172, 204), BLUE), (W, H)).convert('RGBA')
+    g['desk'] = ImageOps.fit(ImageOps.colorize(ImageOps.autocontrast(cc), (205, 196, 182), (246, 241, 232)), (W, H)).convert('RGBA')
     cb = S.fitw(Image.open(S.E.PACK / 'build' / '.cache' / 'hq' / 'Brown clipboard with blank white paper-65.png').convert('RGBA'), CB_W)
     g['cb'] = cb; g['cbh'] = cb.height
     x0, y0, x1, y1 = SHEET; g['sw'], g['sh'] = int(CB_W * (x1 - x0)), int(cb.height * (y1 - y0))
     g['paper'] = ImageOps.fit(S.raw('physical', 'Blank Ruled Notebook Paper.png'), (g['sw'], g['sh'])).convert('RGBA')
     g['lines'] = [X.hl(l, 50, (BLUE, WHITE, BLUE)[i], rot=0) for i, l in enumerate(LINES)]
-    g['ticks'] = [doodle('tick', i, 120, WINE) for i in range(3)]; g['tickW'] = doodle('tick', 1, 150, WHITE)
-    g['three'] = P.caption('3 things to check', 112, INK); g['before'] = X.hl('before you buy a [hair tool]', 56, WINE)
+    g['ticks'] = [doodle('tick', i, 120, WINE) for i in range(3)]; g['nums'] = [P.sticker(n, 130, WINE, WHITE, 'circle') for n in ('1', '2', '3')]   # bold number sticker on the video (her note: no arrow + tick)
+    g['three'] = P.caption('3 things', 200, INK); g['tocheck'] = P.caption('to check', 150, INK); g['before'] = X.hl('before you buy a [hair tool]', 56, WINE)
     g['checklist'] = P.caption('the checklist', 130, INK)
     g['big'] = [X.hl(l, 60, WHITE) for l in LINES]; g['arrow'] = doodle('arrow', 0, 190, WHITE)
     seal = P.raw_cut('Blank gold foil seal sticker-175.png', 330).copy(); ImageDraw.Draw(seal).text((seal.width / 2, seal.height / 2), '3/3', font=S.F(X.SERIF, 120), fill=WINE, anchor='mm')
@@ -85,7 +85,7 @@ def frame(g, t):
     c = g['c']
     if t < 1.8:                                                    # 1: the clipboard with the product as its sheet
         k = ease(seg(t, 0.0, 0.35)); im = board(g, t, lerp(2600, CB_C[1], k), c['hook'].at(t))
-        P.say(im, g['three'], t, 0.1, (540, 300), -2); P.say(im, g['before'], t, 0.4, (540, 1440), 2)
+        P.say(im, g['three'], t, 0.05, (540, 290), -3); P.say(im, g['tocheck'], t, 0.3, (560, 450), 2); X.sparkles(im, t, 0.4, [(120, 300), (960, 260), (980, 560)], WINE, 140); P.say(im, g['before'], t, 0.4, (540, 1440), 2)
         if t > 1.55: im = swipe(im, board(g, t, written=3), seg(t, 1.55, 1.8))
         return im
     if t < 3.6:                                                    # 2: the checklist on the sheet
@@ -93,8 +93,7 @@ def frame(g, t):
         if t > 3.4: im = diagonal(im, c['c1'].at(t - 3.4), seg(t, 3.4, 3.65)) if t < 3.65 else im
         return im
     if t < 5.2:                                                    # 3: check 1
-        im = c['c1'].at(t - 3.4); P.say(im, g['big'][0], t, 3.75, (540, 1380), -2); doodle_on(im, t, 4.0, g['arrow'], (540, 1215), 90)
-        doodle_on(im, t, 4.3, g['tickW'], (880, 1250), 0)
+        im = c['c1'].at(t - 3.4); P.say(im, g['big'][0], t, 3.75, (540, 1380), -2); put(im, g['nums'][0], (200, 1240), back_out(seg(t, 3.6, 3.9), 2.0), -8)
         if t > 5.0: im = swipe(im, board(g, t, written=3, ticked=1, tick_t=5.3, write_t=None), seg(t, 5.0, 5.2), -1)
         return im
     if t < 6.8:                                                    # 4: line 1 ticked; the sheet becomes check 2; dive in
@@ -103,7 +102,7 @@ def frame(g, t):
         if t > 6.35: im = camera(im, (540, CB_C[1] + 40), lerp(1, 2.2, ease(seg(t, 6.35, 6.8)) ** 2))
         return im
     if t < 8.4:                                                    # 5: check 3
-        im = c['c3'].at(t - 6.8); P.say(im, g['big'][2], t, 6.95, (540, 1380), 2); doodle_on(im, t, 7.4, g['tickW'], (880, 1250), 0)
+        im = c['c3'].at(t - 6.8); P.say(im, g['big'][2], t, 6.95, (540, 1380), 2); put(im, g['nums'][2], (200, 1240), back_out(seg(t, 6.8, 7.1), 2.0), 8)
         if t > 8.2: im = diagonal(im, stage6(g, t), seg(t, 8.2, 8.4))
         return im
     if t < 10.0:

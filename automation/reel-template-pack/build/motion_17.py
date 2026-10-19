@@ -31,20 +31,20 @@ INK, CRM = (24, 23, 22), (246, 241, 232); BLUE, BUTTER = X.BABY, X.BUTTER       
 X.use_type(BUTTER, INK); X.enable_holds()
 DIR = '17-everything-that-goes-into-one'
 TRAY_C = (540, 1010); TRAY_IN = (0.09, 0.06, 0.91, 0.94)
-SLOTS = [(330, 720), (760, 820), (360, 1240)]; NAMES = ('[watermelon]', '[oat milk]', '[a little honey]')
+SLOTS = [(320, 640), (770, 760), (400, 1300)]; NAMES = ('[watermelon]', '[oat milk]', '[a little honey]')
 HOLDS = [(1.75, 0.6), (3.35, 1.5), (5.1, 0.4), (8.3, 1.1), (9.9, 1.1), (12.45, 0.3)]   # just before each transition
 
 def setup():
     g = {'c': {'empty': Clip('IMG_1386', 0.5), 'place1': Clip('IMG_1387', 1.5), 'place2': Clip('IMG_1389', 2.5), 'done': Clip('IMG_1391', 0.0, 1.5),
                'close': Clip('IMG_1393', 3.0), 'cta': Clip('IMG_1395', 0.5)}}
     m = ImageOps.grayscale(S.raw('images', 'Soft veined white marble texture-1.png'))
-    g['bg'] = ImageOps.fit(ImageOps.colorize(ImageOps.autocontrast(m), (150, 184, 214), BLUE), (W, H)).convert('RGBA')
+    g['bg'] = ImageOps.fit(ImageOps.colorize(ImageOps.autocontrast(m), (214, 160, 182), X.PINK), (W, H)).convert('RGBA')   # off blue (her note): pink marble
     tray = Image.open(S.E.PACK / 'build' / '.cache' / 'hq' / 'Empty walnut serving tray-59.png').convert('RGBA').rotate(90, expand=True)
     tray = S.fith(tray, 1520); g['tray'] = C.shadow(tray, (12, 22), 18, 120); g['tw'], g['th'] = tray.size
     g['stills'] = [S.footage(c, (420, 520)) for c in (('IMG_1388', 1.0), ('IMG_1389', 3.0), ('IMG_1387', 5.0))]
     g['cards'] = [X.clip_card(s, 360, 445, 14, r) for s, r in zip(g['stills'], (-6, 5, -3))]
     g['labels'] = [X.hl(n, 54, (BUTTER, WHITE, BUTTER)[i]) for i, n in enumerate(NAMES)]
-    g['every'] = P.caption('everything that goes', 112, INK); g['into'] = P.caption('into one', 190, INK)
+    g['every'] = P.caption('everything that', 140, INK); g['into'] = P.caption('goes into one', 175, INK)
     g['prod'] = X.hl('[smoothie]', 70, BUTTER)
     g['what'] = X.hl('[fresh watermelon]', 60, WHITE); g['arrow'] = doodle('arrow', 0, 190, WHITE)
     g['equals'] = P.caption('= one', 190, INK); g['under'] = doodle('under', 0, 520, BUTTER)
@@ -84,7 +84,7 @@ def frame(g, t):
     c = g['c']
     if t < 1.8:                                                    # 1: the empty-table clip inside the tray
         k = ease(seg(t, 0.0, 0.35)); im = tray(g, t, c['empty'].at(t), lerp(-900, TRAY_C[1], k))
-        P.say(im, g['every'], t, 0.2, (540, 330), -2); P.say(im, g['into'], t, 0.5, (540, 480), -3); doodle_on(im, t, 0.9, g['under'], (540, 590), -2)
+        P.say(im, g['every'], t, 0.05, (540, 300), -2); P.say(im, g['into'], t, 0.3, (540, 470), -3); X.sparkles(im, t, 0.4, [(110, 250), (980, 330), (90, 1250), (990, 1350)], X.WINE, 150); doodle_on(im, t, 0.9, g['under'], (540, 590), -2)
         return im
     if t < 3.8:
         im = stage2(g, t)

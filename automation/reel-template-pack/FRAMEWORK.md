@@ -516,3 +516,14 @@ Showing her work
   visit to the home base needs a different setup, and the other scenes need different frame types.
 - **Use more than one kind of object** (#21: "you just only used name tags??").
 - #16 (quilt + touch objects) disliked entirely.
+
+## Her notes on batch 3 round 2 (#16, #18, #19; 2026-10-18 evening)
+- **Frame 1 must be dynamic and the hook BIG, BOLD, fun** (#16 and #19 openings weren't): bigger headline type, plus
+  a little play around it (sparkle / diamond doodles), never a calm flat opener.
+- **Props belong to the template's job:** bubble wrap reads as packing/shipping, so use it in a packing or order
+  template, not "what it feels like". When a prop fits, play it UP (more of it, more action).
+- **Watch the background colours across the pack:** too many blue stages. Spread butter / pink / wine / cream.
+- **Graphics on video need contrast** (white arrows on light footage were lost) and never an arrow AND a tick
+  together. Keep ticks on the graphic stage (the clipboard ticks were cute); on video use one bolder, fun element.
+- **Real objects must read whole** (the locket zoomed so far it didn't read as a locket).
+- **No overlapping doodles or frames** (two gallery frames overlapped).

@@ -206,3 +206,15 @@ def enable_holds():
     _AT0[0] = _MB.Clip.at if not getattr(_MB.Clip, '_holds', False) else _AT0[0] or _MB.Clip.at
     if _AT0[0] is None or getattr(_MB.Clip, '_holds', False) is False: _AT0[0] = _MB.Clip.at
     _enable0()
+
+# ---- sparkles (her note 2026-10-18: "add some diamonds or sparkles doodles ... a little more play/fun") ------------------
+def sparkles(img, t, t0, pts, color, size=110, step=0.1):
+    """Her 4-point sparkle doodle (icon 8) popping in at each point one after another, then twinkling (scale pulse)."""
+    from collage_kit import doodle as _d
+    from motion_b2 import put as _put, back_out as _bo
+    sp = P.die_cut(_d('icon', 8, size, color), 4, False)
+    for i, (x, y) in enumerate(pts):
+        ti = t0 + i * step
+        if t < ti: continue
+        k = _bo(seg(t, ti, ti + 0.25), 2.2) * (0.8 + 0.25 * math.sin((t - ti) * 7 + i * 1.7))
+        _put(img, sp, (x, y), k * (0.7 + 0.3 * (i % 3) / 2), 15 * math.sin(t * 2 + i))

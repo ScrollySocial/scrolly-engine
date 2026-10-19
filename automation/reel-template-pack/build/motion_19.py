@@ -32,7 +32,7 @@ from motion_b2 import Clip, put, render, camera, ease, back_out, seg, lerp, lerp
 INK, CRM = (24, 23, 22), (246, 241, 232); WINE, PINK = X.WINE, X.PINK             # her palette: wine + pink
 X.use_type(PINK, WINE); X.enable_holds()
 DIR = '19-pair-it-with'
-LW = 1040; LC = (540, 1000)
+LW = 900; LC = (540, 1080)
 OVALS = [((0.247, 0.615), (0.18, 0.315)), ((0.75, 0.615), (0.183, 0.315))]     # the locket's two halves (centre, radii)
 HOLDS = [(1.5, 1.1), (3.3, 1.35), (4.9, 1.15), (6.5, 0.6), (8.1, 1.2), (9.7, 1.4), (12.45, 0.3)]   # just before each transition
 
@@ -45,11 +45,11 @@ def setup():
     def fr_(name, w): return C.shadow(S.fitw(Image.open(HQ / (name + '.png')).convert('RGBA'), w), (10, 18), 14, 110)
     # her real frames (2026-10-18): each with its opening as (x0, y0, x1, y1) shares of the frame; 'top' = the clip goes ON the backing
     g['frames'] = {'gold': (fr_('Empty ornate antique gold frame-3', 680), (0.18, 0.145, 0.83, 0.84), False),
-                   'pink': (fr_('Blush pink scalloped portrait frame-5', 520), (0.22, 0.175, 0.80, 0.82), True),
-                   'oval': (fr_('Vintage oval brass frame with floral crest-4', 540), (0.10, 0.20, 0.90, 0.89), False),
+                   'pink': (fr_('Blush pink scalloped portrait frame-5', 470), (0.22, 0.175, 0.80, 0.82), True),
+                   'oval': (fr_('Vintage oval brass frame with floral crest-4', 480), (0.10, 0.20, 0.90, 0.89), False),
                    'walnut': (fr_('Empty walnut picture frame-2', 720), (0.086, 0.12, 0.914, 0.88), False)}
     g['tea'] = P.thing('Vintage Rose Porcelain Tea Set.png', 820, 'smalldots', WINE, scale=0.3, strength=0.35)
-    g['what'] = P.caption('what to pair', 150, WINE); g['with'] = X.hl('with [my steam mop]', 60, WHITE)
+    g['what'] = P.caption('what to', 190, INK); g['pairw'] = P.caption('pair', 300, INK); g['with'] = X.hl('with [my steam mop]', 60, WHITE)
     g['plus'] = [X.hl(t, 62, (PINK, WHITE, PINK)[i]) for i, t in enumerate(('+ [the stick vacuum]', '+ [the odor spray]', '+ [the litter]'))]
     g['under'] = doodle('under', 0, 560, WHITE); g['plusbig'] = P.sticker('+', 150, WINE, WHITE, 'circle'); g['arrow'] = doodle('arrow', 0, 160, WHITE); g['pair1'] = P.caption('pair it with', 130, INK)
     g['perfect'] = P.caption('a perfect pair', 140, WINE); g['bundle'] = X.hl('[ask about the bundle]', 60, WINE); g['burst'] = doodle('burst', 2, 640, CRM)
@@ -75,14 +75,15 @@ def locket(g, t, left, right, y=None, flip=None, right_next=None, scale=1.0):
     return im
 
 def oval_centre(i, y=None):
-    (fx, fy), _ = OVALS[i]; return (LC[0] - LW / 2 + fx * LW, (LC[1] if y is None else y) - 0 - 0 + (fy - 0.5) * 827)
+    (fx, fy), _ = OVALS[i]; return (LC[0] - LW / 2 + fx * LW, (LC[1] if y is None else y) - 0 - 0 + (fy - 0.5) * 715)
 
 def frame(g, t):
     c = g['c']
     if t < 1.8:                                                    # 1: the locket slides in; product left, pink right
         k = back_out(seg(t, 0.0, 0.4), 1.3); y = lerp(-700, LC[1], k)
         im = locket(g, t, c['main'].at(t), PINK, y)
-        P.say(im, g['what'], t, 0.1, (540, 330), -3); P.say(im, g['with'], t, 0.4, (540, 480), 2)
+        P.say(im, g['what'], t, 0.05, (500, 300), -3); P.say(im, g['pairw'], t, 0.25, (560, 500), -2); P.say(im, g['with'], t, 0.55, (540, 680), 2)
+        X.sparkles(im, t, 0.3, [(130, 250), (930, 330), (150, 600), (960, 640), (880, 1600), (180, 1620)], WINE, 170)
         return im
     if t < 3.6:                                                    # 2: the gallery wall: the product in the gold frame, pairing 1 in the pink one
         im = gallery(g, t, 0, 1.0, {'gold': c['main'].at(t), 'pink': c['p1'].at(t - 1.8)}, pink_in=1.9)
@@ -110,7 +111,7 @@ def frame(g, t):
         return im
     return cta(g, t)
 
-GALLERY = {'gold': (540, 760), 'pink': (300, 1520), 'walnut': (540, 2380), 'oval': (790, 1640)}
+GALLERY = {'gold': (540, 760), 'pink': (270, 1500), 'walnut': (540, 2380), 'oval': (820, 1680)}
 GH = 2900
 
 def gallery(g, t, view_y, zoom, clips, pink_in=None):
@@ -139,7 +140,7 @@ def split2(g, t, a, b):
 
 def close3(g, t):
     c = g['c']; im = locket(g, t, c['main'].at(t), c['p1'].at(t - 1.8), flip=3.9, right_next=c['p2'].at(t - 3.8))
-    im = camera(im, (oval_centre(1)[0] - 120, oval_centre(1)[1]), 1.7)
+    X.sparkles(im, t, 4.25, [(860, 560), (990, 800), (900, 1500)], WINE, 150)   # the whole locket stays in view (her note)
     P.say(im, g['plus'][1], t, 4.3, (540, 1450), 2); doodle_on(im, t, 4.6, g['arrow'], (540, 1330), 90)
     return im
 
