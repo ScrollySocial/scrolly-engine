@@ -13,6 +13,7 @@ const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replac
 const ph = (s) => esc(s).replace(/\[(?!brackets\])([^\]]+)\]/g, '<mark class="ph">[$1]</mark>');
 const img = (f) => {
   const ext = path.extname(f).slice(1);
+  if (ext === 'mp4') return `data:video/mp4;base64,${fs.readFileSync(path.join(here, 'img', f)).toString('base64')}`;
   const type = { jpg: 'jpeg', png: 'png', webp: 'webp' }[ext];
   return `data:image/${type};base64,${fs.readFileSync(path.join(here, 'img', f)).toString('base64')}`;
 };
@@ -34,7 +35,7 @@ mark.ph{background:#ffd9c9;color:var(--s3-ink);padding:0 4px;border-radius:3px}
 /* phones: one aligned row (Mercedes 2026-10-19); on a phone the row scrolls inside itself, never the page */
 .phones{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:clamp(10px,1.6vw,24px);align-items:start}
 .phone{aspect-ratio:9/16;border-radius:22px;background:#e6dfd3;border:6px solid #111;overflow:hidden;position:relative;display:flex;align-items:flex-end}
-.phone img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.phone img,.phone video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .phone span{position:relative;padding:12px;font:var(--s3-fs-label)/1.35 var(--s3-sans);color:#3d3a36}
 .phone span b{display:block;font:400 var(--s3-fs-body)/1.2 var(--s3-serif);color:var(--s3-ink);margin-top:2px}
 .cap{margin-top:12px;font:400 var(--s3-fs-body)/1.25 var(--s3-serif);text-align:center}
@@ -114,8 +115,7 @@ const INC_ICONS = [
   '<rect x="14" y="4" width="20" height="40" rx="4"/><path d="M21 9h6"/><circle cx="24" cy="38" r="1.5"/>',
 ];
 const includes = (d) => d.brandIncludes ? `<section class="s3-sec tight incl-b"><div class="s3-wrap"><h2 class="s3-h2">Every template comes with</h2>
-  <ul class="swipes">${d.includes.map(([b], i) => `<li><svg viewBox="0 0 48 48" aria-hidden="true">${INC_ICONS[i]}</svg><span>${esc(b)}</span></li>`).join('')}</ul>
-  <p class="aside">all five, for every one of the 25</p></div></section>` : `<section class="s3-sec stick"><div class="s3-wrap"><h2 class="s3-h2">Every template comes with</h2>
+  <ul class="swipes">${d.includes.map(([b], i) => `<li><svg viewBox="0 0 48 48" aria-hidden="true">${INC_ICONS[i]}</svg><span>${esc(b)}</span></li>`).join('')}</ul></div></section>` : `<section class="s3-sec stick"><div class="s3-wrap"><h2 class="s3-h2">Every template comes with</h2>
   <img class="sq" src="${img('squiggle.webp')}" alt="">
   <div class="notes-row">${d.includes.map(([b, x], i) => `<div class="sticky" style="--r:${ROT[i]}deg"><img class="pin" src="${img('pin-blue.webp')}" alt=""><span class="nt"><b>${esc(b)}</b></span></div>`).join('')}</div>
   ${d.formatNote ? `<p style="margin-top:32px">${ph(d.formatNote)}</p>` : ''}</div></section>`;
@@ -268,7 +268,8 @@ const PCSS = `
 .swipes{list-style:none;padding:0;margin:0 auto;max-width:1200px;display:flex;flex-wrap:wrap;justify-content:center;gap:28px 40px}
 .swipes li{display:flex;flex-direction:column;align-items:center;gap:14px}
 .swipes svg{width:64px;height:64px;stroke:var(--s3-orange);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
-.swipes li{font:400 var(--s3-fs-h3)/1.15 var(--s3-serif)}
+.swipes li{font:400 var(--s3-fs-title)/1.15 var(--s3-serif)}
+@media(min-width:1100px){.swipes{flex-wrap:nowrap;justify-content:space-between;max-width:none}.swipes li{white-space:nowrap}}
 .swipes span{position:relative;z-index:0;padding:0 .14em}
 .swipes span::before{content:"";position:absolute;z-index:-1;left:0;right:0;top:.42em;bottom:.02em;background:#ffc9a8;border-radius:.1em .35em .15em .4em;transform:rotate(-1.5deg)}
 .incl-b .aside{margin-top:30px;font:400 1.9rem/1.1 "Covered By Your Grace",cursive;color:var(--s3-ink);transform:rotate(-2deg)}
@@ -354,7 +355,7 @@ function physicalPage(d) {
 ${includes(d)}
 ${howItWorks(d)}
 <section class="s3-sec tight peach who-p"><div class="s3-wrap who-row"><div class="who-text"><h2 class="s3-h2">Who it's for</h2><p class="s3-lede" style="margin-top:14px">${esc(d.who)}</p>
-  <div class="labels">${d.whoTags.map((t, i) => `<span class="dymo" style="--r:${[-2, 1.5, -1, 2][i % 4]}deg">${esc(t)}</span>`).join('')}</div></div><div class="fan">${d.whoPhotos.map(([f, label]) => `<div class="phone">${fs.existsSync(path.join(here, 'img', f)) ? `<img src="${img(f)}" alt="${esc(label)}">` : `<span class="todo">Photo to make:<b>${esc(label)}</b></span>`}</div>`).join('')}</div></div></section>
+  <div class="labels">${d.whoTags.map((t, i) => `<span class="dymo" style="--r:${[-2, 1.5, -1, 2][i % 4]}deg">${esc(t)}</span>`).join('')}</div></div><div class="fan">${d.whoPhotos.map(([f, label]) => `<div class="phone">${fs.existsSync(path.join(here, 'img', f)) ? (f.endsWith('.mp4') ? `<video src="${img(f)}" autoplay muted loop playsinline aria-label="${esc(label)}"></video>` : `<img src="${img(f)}" alt="${esc(label)}">`) : `<span class="todo">Photo to make:<b>${esc(label)}</b></span>`}</div>`).join('')}</div></div></section>
 <section class="s3-sec tight faq-p"><div class="s3-wrap"><h2 class="s3-h2">Questions</h2>
   <div class="s3-faq two">${d.faq.map(([q, a]) => `<details><summary>${esc(q)}</summary><div>${ph(a)}</div></details>`).join('')}</div></div></section>
 <section class="s3-sec peach cta-p" id="buy"><div class="s3-wrap">
@@ -424,7 +425,7 @@ const physical = {
   priceLine: '[INSTANT DOWNLOAD or EARLY ACCESS: your call]',
   ctaLine: '[INSTANT DOWNLOAD or EARLY ACCESS: your call]',
   whoTags: ['Print on demand', 'Makers', 'Etsy sellers', 'Shopify stores', 'Small-batch brands', 'Boutiques'],
-  whoPhotos: [['who-maker.jpg', 'A maker pouring candles'], ['who-pod.jpg', 'A print-on-demand tee, fresh off the press'], ['who-shop.jpg', 'A shop owner packing an order']],
+  whoPhotos: [['who-maker.mp4', 'A maker pouring candles'], ['who-pod.mp4', 'Screen printing a design'], ['who-shop.mp4', 'A shop owner packing an order']],
   brandIncludes: true,
   getTitle: 'All 25 Reels',
   getLede: 'Swipe to see them all.',

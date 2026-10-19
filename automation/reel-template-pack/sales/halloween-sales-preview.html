@@ -251,7 +251,7 @@ mark.ph{background:#ffd9c9;color:var(--s3-ink);padding:0 4px;border-radius:3px}
 /* phones: one aligned row (Mercedes 2026-10-19); on a phone the row scrolls inside itself, never the page */
 .phones{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:clamp(10px,1.6vw,24px);align-items:start}
 .phone{aspect-ratio:9/16;border-radius:22px;background:#e6dfd3;border:6px solid #111;overflow:hidden;position:relative;display:flex;align-items:flex-end}
-.phone img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.phone img,.phone video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .phone span{position:relative;padding:12px;font:var(--s3-fs-label)/1.35 var(--s3-sans);color:#3d3a36}
 .phone span b{display:block;font:400 var(--s3-fs-body)/1.2 var(--s3-serif);color:var(--s3-ink);margin-top:2px}
 .cap{margin-top:12px;font:400 var(--s3-fs-body)/1.25 var(--s3-serif);text-align:center}

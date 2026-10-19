@@ -149,6 +149,12 @@ phones there show the sellers, not Reel frames: photos for Mercedes to make (ver
 3. Overhead: hands packing a product into a kraft mailer with tissue paper and a thank-you card on a cream table.
 All: phone-camera look, no logos or readable brand text.
 
+**Round 9 (2026-10-19):** "Every template comes with" on one line on a computer, handwritten aside removed. Who it's
+for phones play Mercedes's three videos as silent 7-second loops: candle pouring (`Downloads/8271971-uhd_2160_4096_25fps.mp4`),
+screen printing (`14704802_1080_1920_30fps.mp4`), packing a box (`7287302-uhd_2160_3840_25fps.mp4`). Compressed copies
+in `sales/img/who-*.mp4` (git-ignored like all video; embedded in the preview HTML). Before going live, confirm their
+licence allows use on a sales page (the file names look like Pexels downloads).
+
 ## 4. Who it's for
 
 On a peach band (#FFC9A8, the brand peach from the Reel covers) to break up the page.
