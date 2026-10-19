@@ -84,7 +84,7 @@ The two example columns show how a soap shop and a T-shirt store would use each 
 | Make it last | One care habit that keeps it looking good | keep your bar dry between uses | wash it inside out |
 | Mine vs the usual kind | Show how yours is made differently | a handmade bar next to a store bar | a heavyweight tee next to a thin one |
 
-Every template comes with (shown as white cards with orange checkmarks):
+Every template comes with (shown as five pinned yellow sticky notes from Trick or treat, one short line each: The CapCut project / A shot list / An installer / A recipe card / A phone kit):
 - The CapCut project, with real photographed props, collage and motion already built
 - A shot list: every clip to film, in order, and how long it is
 - An installer that puts the template on CapCut's home screen with your clips already in it

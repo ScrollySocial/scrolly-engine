@@ -63,19 +63,25 @@ mark.ph{background:#ffd9c9;color:var(--s3-ink);padding:0 4px;border-radius:3px}
 @media(max-width:560px){.steps{grid-template-columns:1fr 1fr}.screen{border-width:8px 8px 18px}}
 /* Who it's for: the peach band breaks up the page (Mercedes 2026-10-19; brand peach from the Reel covers) */
 .peach{background:#ffc9a8}
-.incl{margin-top:72px}
-.incl h3{margin-bottom:24px}
-/* checkmark cards (Mercedes 2026-10-19: "more eye catching") */
-.incl ul{list-style:none;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,320px),1fr));gap:16px}
-.incl li{display:flex;gap:16px;align-items:flex-start;background:#fff;border-radius:16px;padding:20px 22px}
-.incl li::before{content:"";flex:none;width:32px;height:32px;border-radius:50%;background:var(--s3-orange) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M6 12.5l4 4 8-9' fill='none' stroke='%23000' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/20px no-repeat}
-.incl li b{display:block;font:400 var(--s3-fs-title)/1.15 var(--s3-serif);margin-bottom:4px}
+.stick{position:relative;overflow:hidden}
+.stick h2{text-align:center}
+.stick .sq{display:block;width:min(300px,60vw);margin:10px auto 0}
+.notes-row{display:flex;flex-wrap:wrap;justify-content:center;gap:clamp(18px,3vw,40px);margin-top:48px}
+.sticky{position:relative;width:230px;aspect-ratio:1;background:url("${img('sticky.webp')}") center/contain no-repeat;padding:58px 34px 30px;transform:rotate(var(--r));transition:transform .25s;text-align:center;color:var(--s3-ink)}
+.sticky:hover{transform:rotate(0) scale(1.05)}
+.sticky .pin{position:absolute;top:-14px;left:50%;width:42px;transform:translateX(-50%)}
+.sticky b{display:block;font:400 1.6rem/1.1 var(--s3-serif);margin-bottom:8px}
+.sticky span{display:block;font:var(--s3-fs-fine)/1.35 var(--s3-sans)}
+@media(max-width:560px){.notes-row{gap:22px 10px}.sticky{width:158px;padding:38px 16px 16px}.sticky b{font-size:1.2rem}.sticky .pin{width:34px}}
+details.notes{padding:40px 0}
+details.notes>summary{cursor:pointer;font:700 var(--s3-fs-label)/1.4 var(--s3-sans);letter-spacing:.12em;text-transform:uppercase;color:var(--s3-muted)}
 .s3-faq{margin-top:32px}
 .cta{text-align:center;position:relative;overflow:hidden}
 .cta h2{margin-bottom:8px}
 .cta .buy{justify-content:center}
 .cta p+p{margin-top:12px}
 .notes{border-top:1px solid var(--s3-line)}
+.notes[open]>div{margin-top:24px}
 .notes h2{margin-bottom:20px}
 .notes h3{margin:40px 0 14px}
 .notes ul{padding-left:1.3em;max-width:46em}
@@ -97,16 +103,19 @@ const howItWorks = (d) => `<section class="film" id="how"><div class="s3-wrap"><
   <div class="monitor"><div class="screen"><div class="play" aria-hidden="true"></div><strong>Your how-to video goes here</strong>
   <p>Mercedes records it: film the clips, drop them in, double-click the installer, open CapCut.</p></div><div class="stand"></div><div class="base"></div></div>
   <ol class="steps">${STEPS.map(([icon, b, t]) => `<li><svg viewBox="0 0 48 48" aria-hidden="true">${icon}</svg><b>${esc(b)}</b><span>${esc(t)}</span></li>`).join('')}</ol></div></section>`;
-const includes = (d) => `<div class="incl"><h3 class="s3-h3">Every template comes with</h3><ul>${d.includes.map(([b, x]) => `<li><span><b>${esc(b)}</b>${esc(x)}</span></li>`).join('')}</ul>
-  ${d.formatNote ? `<p style="margin-top:20px">${ph(d.formatNote)}</p>` : ''}</div>`;
+// "Every template comes with": real sticky notes pinned on, from Trick or treat (Mercedes 2026-10-19: cards were "boring")
+const ROT = [-4, 3, -2, 4, -3];
+const includes = (d) => `<section class="s3-sec stick"><div class="s3-wrap"><h2 class="s3-h2">Every template comes with</h2>
+  <img class="sq" src="${img('squiggle.webp')}" alt="">
+  <div class="notes-row">${d.includes.map(([b, x], i) => `<div class="sticky" style="--r:${ROT[i]}deg"><img class="pin" src="${img('pin.webp')}" alt=""><b>${esc(b)}</b><span>${esc(x)}</span></div>`).join('')}</div>
+  ${d.formatNote ? `<p style="margin-top:32px">${ph(d.formatNote)}</p>` : ''}</div></section>`;
 const faq = (d) => `<section class="s3-sec"><div class="s3-read"><h2 class="s3-h2">Questions</h2><div class="s3-faq">${d.faq.map(([q, a]) => `<details><summary>${esc(q)}</summary><div>${ph(a)}</div></details>`).join('')}</div></div></section>`;
-const notes = (d) => `<section class="s3-sec notes"><div class="s3-wrap">
-  <h2 class="s3-h2">Review notes (not part of the page)</h2>
+const notes = (d) => `<details class="s3-sec notes"><summary class="s3-wrap">Review notes for Mercedes (not on the page): headlines, listing, demo footage</summary><div class="s3-wrap">
   <h3 class="s3-h3">Other headline options</h3><ul>${d.headlines.map((h) => `<li>${esc(h)}</li>`).join('')}</ul>
   <h3 class="s3-h3">Listing description</h3><p class="listing">${esc(d.listing)}</p>
   <h3 class="s3-h3">Demo footage to film</h3><p style="max-width:46em;margin-bottom:16px">${esc(d.demoNote)}</p>
   <table><thead><tr>${d.demoHead.map((h) => `<th>${esc(h)}</th>`).join('')}</tr></thead><tbody>${d.demo.map((r) => `<tr>${r.map((c, i) => `<td>${i ? esc(c) : `<b>${esc(c)}</b>`}</td>`).join('')}</tr>`).join('')}</tbody></table>
-</div></section>`;
+</div></details>`;
 
 // icon, step, one short line (Mercedes: "a lot of text there", icons instead of numbers)
 const STEPS = [
@@ -117,11 +126,11 @@ const STEPS = [
   ['<path d="M42 6L20 28M42 6l-14 36-8-14-14-8z"/>', 'Post', 'Add a sound in Instagram.'],
 ];
 const INCLUDES = (projectNote) => [
-  ['The CapCut project', `With ${projectNote}.`],
-  ['A shot list', 'Every clip to film, in order, and how long it is.'],
-  ['An installer', "Puts the template on CapCut's home screen with your clips already in it."],
-  ['A recipe card and guide', 'The words to type, plus a one-page How to use guide.'],
-  ['A phone kit', 'The shot guide video, the shot list and every graphic, for CapCut on your phone.'],
+  ['The CapCut project', projectNote],
+  ['A shot list', 'Every clip to film, in order.'],
+  ['An installer', 'It adds your clips for you.'],
+  ['A recipe card', 'The words to type, plus a guide.'],
+  ['A phone kit', 'For CapCut on your phone.'],
 ];
 const FAQ = (fonts) => [
   ['Do I need CapCut on a computer?', 'For the full template, yes: it opens in CapCut for computer (the free download). Install it and open it once before you run the installer.'],
@@ -166,8 +175,38 @@ const HCSS = `
 @media(max-width:1100px){.tpls{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media(max-width:700px){.tpls{grid-template-columns:1fr 1fr}}
 @media(max-width:460px){.tpls{grid-template-columns:1fr}}
+.dots{background:#1b1325 url("${img('dots.jpg')}") center/cover;color:#fff;position:relative;overflow:hidden}
+.dots h2{color:#fff!important}.dots .s3-lede{color:#f1ecf6}.dots .tpl h3{color:#fff!important}.dots .tpl p{color:#ece6f2}
+.dots .s3-wrap{position:relative;z-index:1}
+.dots .phone{border-color:#120d1a}
+.dd{position:absolute;z-index:0;pointer-events:none}
+.dd.crown{width:90px;top:18px;right:3%;transform:rotate(12deg)}
+.dots h2,.dots .s3-lede,.dots .tpl{text-shadow:0 2px 10px rgba(10,5,20,.9)}
+.dd.burst{width:120px;top:46%;left:2%;transform:rotate(-10deg)}
+.dd.heart{width:90px;bottom:40px;right:4%;transform:rotate(-8deg)}
+.who-h{position:relative;overflow:hidden;padding-top:calc(var(--s3-sec) + 70px)}
+.who-h .branch{position:absolute;top:8px;right:-40px;width:min(560px,70vw)}
+.who-h .hang{position:absolute;width:clamp(48px,5vw,70px);transform-origin:50% 0;animation:swing 3.8s ease-in-out infinite}
+.who-h .hang.h1{top:96px;right:min(330px,40vw)}.who-h .hang.h2{top:104px;right:min(170px,22vw);animation-delay:-1.6s}
+.who-h .s3-wrap{position:relative;z-index:1}
+.who-h .branch,.who-h .hang{z-index:0}
+@media(max-width:1000px){.who-h .branch{width:min(400px,60vw)}.who-h{padding-top:calc(var(--s3-sec) + 110px)}}
+.tickets{display:flex;flex-wrap:wrap;gap:14px 18px;margin-top:28px}
+.ticket{display:inline-flex;align-items:center;justify-content:center;width:200px;height:86px;padding:0 30px 0 18px;background:url("${img('ticket.webp')}") center/contain no-repeat;transform:rotate(var(--r));font:400 1.3rem/1.1 var(--s3-serif);color:var(--s3-ink);text-align:center}
+@media(max-width:560px){.tickets{gap:10px 6px}.ticket{width:150px;height:66px;padding:0 22px 0 12px;font-size:1.05rem}}
+.faq-h .s3-split{align-items:start}
+.faq-h h2{color:var(--s3-orange)!important}
+.faq-h .s3-faq summary{color:#fff}
+.faq-h .s3-faq details>div{color:#e6e0d8}
+.faq-h .s3-faq details{border-color:rgba(255,255,255,.18)!important}
+.faq-h .s3-faq summary:focus-visible{outline-color:#fff}
+.faq-h .s3-wrap{position:relative;z-index:1}
+.wolfmoon{position:absolute;left:var(--s3-gut);bottom:0;width:300px;height:300px;z-index:0;pointer-events:none}
+.wolfmoon .m{position:absolute;width:240px;left:30px;top:0;opacity:.95;filter:drop-shadow(0 0 40px rgba(255,90,40,.35))}
+.wolfmoon .w{position:absolute;width:170px;left:60px;bottom:-4px}
+@media(max-width:900px){.faq-h{padding-bottom:300px}.wolfmoon{left:50%;transform:translateX(-50%);width:260px;height:260px}.wolfmoon .m{width:200px}.wolfmoon .w{width:140px}}
 .cta.night .moon{right:auto;left:50%;top:auto;bottom:-260px;transform:translateX(-50%);width:520px;opacity:.5}
-.cta.night h2{color:var(--s3-orange)!important;position:relative;z-index:2}
+.cta.night h2{color:#fff!important;position:relative;z-index:2}
 .cta.night .s3-read{position:relative;z-index:2}
 `;
 
@@ -187,13 +226,17 @@ function halloweenPage(d) {
     <p class="s3-fine">${ph(d.priceLine)}</p>
     <div class="phones">${ph5}</div>
   </div></section>
-<section class="s3-sec"><div class="s3-wrap">
+<section class="s3-sec dots"><img class="dd crown" src="${img('crown.webp')}" alt=""><img class="dd burst" src="${img('burst.webp')}" alt=""><img class="dd heart" src="${img('heart.webp')}" alt=""><div class="s3-wrap">
   <h2 class="s3-h2">${esc(d.getTitle)}</h2><p class="s3-lede" style="margin-top:20px">${esc(d.getLede)}</p>
-  <div class="tpls">${tpls}</div>${includes(d)}</div></section>
+  <div class="tpls">${tpls}</div></div></section>
+${includes(d)}
 ${howItWorks(d)}
-<section class="s3-sec peach"><div class="s3-wrap s3-split"><h2 class="s3-h2">Who it's for</h2><p class="s3-lede">${esc(d.who)}</p></div></section>
-${faq(d)}
-<section class="s3-sec night cta" id="buy"><img class="moon" src="${img('moon.webp')}" alt="">
+<section class="s3-sec peach who-h"><img class="branch" src="${img('branch.webp')}" alt=""><img class="hang h1" src="${img('bat.png')}" alt=""><img class="hang h2 b2" src="${img('bat.png')}" alt="">
+  <div class="s3-wrap s3-split"><h2 class="s3-h2">Who it's for</h2><div><p class="s3-lede">${esc(d.who)}</p>
+  <div class="tickets">${d.whoTags.map((t, i) => `<span class="ticket" style="--r:${ROT[i]}deg">${esc(t)}</span>`).join('')}</div></div></div></section>
+<section class="s3-sec night faq-h"><div class="wolfmoon"><img class="m" src="${img('moon.webp')}" alt=""><img class="w" src="${img('wolf.webp')}" alt=""></div><div class="s3-wrap s3-split"><div class="howl"><h2 class="s3-h2">Questions</h2></div>
+  <div class="s3-faq">${d.faq.map(([q, a]) => `<details><summary>${esc(q)}</summary><div>${ph(a)}</div></details>`).join('')}</div></div></section>
+<section class="s3-sec night dots cta" id="buy"><img class="dd burst" src="${img('burst.webp')}" alt=""><img class="dd heart" src="${img('heart.webp')}" alt="">
   <img class="hang" src="${img('bat.png')}" alt="" style="left:12%"><img class="hang b2" src="${img('bat.png')}" alt="" style="right:12%;width:clamp(44px,5vw,72px)">
   <div class="s3-read"><h2 class="s3-h2">${esc(d.ctaHead)}</h2>
   <div class="buy">${price(d)}<a class="s3-btn" href="#buy">${esc(d.button)}</a></div>
@@ -230,7 +273,8 @@ function physicalPage(d) {
 </div></section>
 <section class="s3-sec"><div class="s3-wrap">
   <h2 class="s3-h2">${esc(d.getTitle)}</h2><p class="s3-lede" style="margin-top:20px">${esc(d.getLede)}</p>
-  <div class="list">${list}</div>${includes(d)}</div></section>
+  <div class="list">${list}</div></div></section>
+${includes(d)}
 ${howItWorks(d)}
 <section class="s3-sec peach"><div class="s3-wrap s3-split"><h2 class="s3-h2">Who it's for</h2><p class="s3-lede">${esc(d.who)}</p></div></section>
 ${faq(d)}
@@ -255,7 +299,7 @@ const halloween = {
   ctaLine: '5 templates, shot lists and phone kits. Instant download.',
   getTitle: 'Five Reels, five jobs',
   getLede: 'Each template is a whole Reel with a business job and an ending that tells people where to buy. Cute and playful, with real photographed props.',
-  includes: INCLUDES('real photographed props and the playful layer (washi tape, sticker edges, handwritten words)'),
+  includes: INCLUDES('Real props and motion, built in.'),
   templates: [
     { name: 'Once in a blood moon', poster: 'h6.jpg', job: 'Open a rare, once-a-year sale. A full moon turns blood red, becomes your video, and the deal arrives with bats and a haunted house.', film: '3 clips: your product, you or your shop, your product again', len: 14 },
     { name: 'Caught in our web', poster: 'h3.jpg', job: "Show what's included or why people love it. A friendly spider drops in, the web forms, and each point gets caught in it.", film: '5 clips: your product held up, then four points', len: 15 },
@@ -263,6 +307,7 @@ const halloween = {
     { name: 'Trick or treat', poster: 'h5.jpg', job: 'Fix a common mistake, then make your offer. Door 1 opens on the trick, door 2 on the treat.', film: '3 clips: the mistake, your product, the proof', len: 17.5 },
     { name: 'Now you see it', poster: 'h1.jpg', job: 'Last chance: a limited drop or a sale ending. A snap, real smoke rolls in, and the product is gone.', film: 'you with your product, the same shot without it, then your product', len: 14 },
   ],
+  whoTags: ['Product shops', 'Digital products', 'Services', 'Creators'],
   who: 'Online business owners and creators who want a Halloween Reel that sells something: a product, a sale, a freebie or an offer. It works for physical products, digital products and services, since every clip is your own footage.',
   faq: FAQ('No. The big Halloween lettering is part of the artwork. The words you edit use Arial or Bodoni Moda, and Bodoni Moda comes inside the template.'),
   ctaHead: 'Post your Halloween Reel before the 31st',
@@ -301,7 +346,7 @@ const physical = {
   heroPhones: ['One product, three ways', 'Pack an order with me', 'Before and after', 'Put it to the test', 'Every option in 10 seconds'],
   getTitle: '25 Reels, 25 selling jobs',
   getLede: "Real photographed props, playful collage and fast cuts. Each one ends with your product's name and where to buy it. Here's how two shops would use them.",
-  includes: INCLUDES('real photographed props, collage and motion already built'),
+  includes: INCLUDES('Real props, collage and motion, built in.'),
   formatNote: '',
   templates: [
     T('One product, three ways', 'Show three uses for one product.', 'one bar for hands, face and shaving', 'one tee tucked, knotted and layered'),

@@ -59,7 +59,7 @@ with real photographed props.
 | **Trick or treat** | Fix a common mistake, then make your offer. Door 1 opens on the trick, door 2 on the treat. | 3 clips: the mistake, your product, the proof | 17.5 s |
 | **Now you see it** | Last chance: a limited drop or a sale ending. A snap, real smoke rolls in, and the product is gone. | You with your product, the same shot without it, then your product (final list when built) | 14 s (motion test) |
 
-Every template comes with (shown as white cards with orange checkmarks):
+Every template comes with (shown as five pinned yellow sticky notes from Trick or treat, one short line each: The CapCut project / A shot list / An installer / A recipe card / A phone kit):
 - The CapCut project, with real photographed props and the playful layer (washi tape, sticker edges, handwritten words)
 - A shot list: every clip to film, in order, and how long it is
 - An installer that puts the template on CapCut's home screen with your clips already in it
@@ -79,6 +79,13 @@ Shown as five icons with one short line each, under the desktop screen, on a fil
 | cursor | **Double-click** | The installer adds your clips. |
 | text | **Type** | Your words over the [brackets]. |
 | send | **Post** | Add a sound in Instagram. |
+
+## Page look (2026-10-19, after "boring")
+
+Hero on night with the moon, bats and spider. Five Reels on the purple polka-dot night from Things I'm batty about,
+with lilac crown, burst and heart doodles. Sticky notes for what's included. How it works on a film strip. Who it's
+for on peach under the bat branch, with ticket stubs: Product shops, Digital products, Services, Creators. Questions
+on night with the wolf howling at the blood moon. Buy section on the polka dots. Review notes fold away at the bottom.
 
 ## 4. Who it's for
 
