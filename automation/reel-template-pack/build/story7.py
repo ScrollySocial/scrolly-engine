@@ -905,8 +905,8 @@ SETUP['11'] = setup_11; FRAME['11'] = frame_11; SECS['11'] = 17.0; DIRS['11'] = 
 # hidden under a sheet of wine tissue and seen only through a torn peephole; a kitchen timer counts the drop in; the
 # sheet rips in two to reveal it. Calm butter-tissue stage, one burst behind a word, one ring round the date, real dates
 # only (the buyer types theirs).
-#  1 0.0  frame 1: the words already up (new drop, big) and the wine sheet nearly shut, ripping wide open in the first
-#         second with scraps flying, the product behind it; [something new is coming]; new drop
+#  1 0.0  "new drop", so something drops: the words fall in and bounce from frame 1; the product, wrapped in wine
+#         tissue, drops onto the screen with a thud; the tissue tears open with scraps flying; [something new is coming]; new drop
 #  2 2.4  stage (no video): the kitchen timer winds down; dropping in / 3 2 1
 #  3 4.6  the sheet again: it rips in two and slides apart, the product full frame; finally. (one burst behind it);
 #         [PRODUCT NAME]
@@ -942,7 +942,7 @@ def setup_15():
     g['stub'] = P.die_cut(stub, 8)
     g['new'] = dsticker('new', 70, WINE, WHITE)
     g['lap_w'] = 1040
-    g['hook'] = P.pill_m('[something new\nis coming]', 72); g['drop'] = P.caption('new drop', 210, BU, edge=WHITE); g['drop_big'] = sum_word(P.caption('new drop', 215, BU, edge=WINE))
+    g['hook'] = P.pill_m('[something new\nis coming]', 72); g['drop'] = P.caption('new drop', 210, BU, edge=WHITE); g['drop_big'] = sum_word(P.caption('new drop', 215, BU, edge=WINE)); g['drop_w'] = {'new': P.story_word('new', 215, BU, edge=WINE), 'drop': P.story_word('drop', 215, BU, edge=WINE, italic=True)}
     g['dropping'] = P.caption('dropping in', 170, WINE, edge=WHITE); g['digits'] = [P.story_word(d_, 300, WINE, edge=WHITE) for d_ in '321']
     import random as _r; rnd = _r.Random(11); g['scraps'] = []
     for k in range(12):   # torn scraps of the wine sheet that fly off the rip
@@ -1015,12 +1015,19 @@ def stage_date_15(g, t):
 def frame_15(g, t):
     c = g['c']
     if t < 2.4:                                                   # 1: under the sheet, already torn open down the middle
-        im = covered(g, t, c['prod'].at(t), w=lerp(170, 710, ease(seg(t, 0.0, 0.8))))   # frame 1: nearly shut, then it rips wide open
+        # "new drop", so something drops (her note): the words fall in from frame 1, then the wrapped product drops onto
+        # the screen with a bounce and a thud, and its tissue tears open
+        im = g['stage'].copy(); land = 0.55
+        if t >= 0.08:
+            wrapped = covered(g, t, c['prod'].at(t), w=lerp(150, 710, ease(seg(t, 0.75, 1.35))))
+            dy = lerp(-H * 0.85, 0, back_out(seg(t, 0.08, land), 1.3)); th = 18 * math.exp(-(t - land) * 9) * math.sin((t - land) * 50) if t > land else 0
+            im.alpha_composite(wrapped, (int(th), int(dy + th * 0.6)))
         for k, sc_ in enumerate(g['scraps'][:7]):   # scraps fly off as it tears open
-            q = seg(t, 0.03 * k, 0.7 + 0.03 * k)
+            q = seg(t, 0.75 + 0.03 * k, 1.45 + 0.03 * k)
             if 0 < q < 1: a_ = (math.pi if k % 2 else 0) + (k - 3) * 0.18; put(im, sc_, (540 + 700 * q * math.cos(a_), 900 + 500 * q * math.sin(a_) + 900 * q * q), 1, k * 50 + 360 * q)
-        put(im, g['hook'], (540, 280), 1, -2); put(im, g['drop_big'], (540, 500), 1 + 0.05 * math.sin(t * 6), 0)   # the words are there from frame 1
-        doodle_on(im, t, 0.2, g['d_under'], (540, 650), -2)
+        for word, x0, y0, t0 in (('new', 255, 230, 0.0), ('drop', 735, 110, 0.06)):   # the words fall in and bounce (already in view on frame 1)
+            k = back_out(seg(t, t0, t0 + 0.4), 1.8); put(im, g['drop_w'][word], (x0, lerp(y0, 500, k)), 1, (-4, 3)[word == 'drop'])
+        pop(im, g['hook'], t, 0.5, (540, 280), -2); doodle_on(im, t, 0.6, g['d_under'], (540, 650), -2)
         if t > 2.1: im = swipe(im, stage_count_15(g, t), seg(t, 2.1, 2.4))
         return im
     if t < 4.6:
