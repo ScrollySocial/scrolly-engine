@@ -255,12 +255,13 @@ ${notes(d)}`;
    black, orange, peach) with the pink Who it's for and label-maker tags she likes; the 25 Reels scroll sideways; no box,
    peanuts or kitchen timer (she offered to supply better images). Plain backgrounds behind text, props never cover words. */
 const PCSS = `
-.incl-b h2{margin-bottom:28px}
-.swipes{list-style:none;padding:0;margin:0;display:flex;flex-wrap:wrap;gap:18px 30px}
+.incl-b{text-align:center}
+.incl-b h2{margin-bottom:32px}
+.swipes{list-style:none;padding:0;margin:0 auto;max-width:1100px;display:flex;flex-wrap:wrap;justify-content:center;gap:18px 34px}
 .swipes li{font:400 var(--s3-fs-h3)/1.15 var(--s3-serif)}
 .swipes span{position:relative;z-index:0;padding:0 .14em}
 .swipes span::before{content:"";position:absolute;z-index:-1;left:0;right:0;top:.42em;bottom:.02em;background:#ffc9a8;border-radius:.1em .35em .15em .4em;transform:rotate(-1.5deg)}
-.incl-b .aside{margin-top:26px;font:400 1.9rem/1.1 "Covered By Your Grace",cursive;color:var(--s3-ink);transform:rotate(-2deg);transform-origin:left}
+.incl-b .aside{margin-top:30px;font:400 1.9rem/1.1 "Covered By Your Grace",cursive;color:var(--s3-ink);transform:rotate(-2deg)}
 .hero-p{padding-top:clamp(56px,7vw,110px);position:relative;overflow:hidden}
 /* headline: "Your month's content:" on one line, DONE in handwriting (Mercedes 2026-10-19) */
 .head-p .l1{display:block;white-space:nowrap;font-size:clamp(2rem,6.2vw,6.4rem)}
@@ -302,8 +303,12 @@ const PCSS = `
 @media(max-width:800px){.faq-p .two{grid-template-columns:1fr}.faq-p .two details:nth-child(2){border-top:0}}
 /* compact: two lines of content get one short band (Mercedes: "look how tall this section is") */
 .who-row{display:flex;align-items:center;justify-content:space-between;gap:32px}
-.who-p .ring{height:260px;width:auto;flex:none}
-@media(max-width:700px){.who-p .ring{display:none}}
+.fan{position:relative;flex:none;width:400px;height:330px}
+.fan .phone{position:absolute;bottom:0;width:150px;border-color:#111;box-shadow:0 14px 30px rgba(80,30,10,.25)}
+.fan .phone:nth-child(1){left:0;transform:rotate(-9deg)}
+.fan .phone:nth-child(2){left:125px;bottom:22px;z-index:2}
+.fan .phone:nth-child(3){left:250px;transform:rotate(9deg)}
+@media(max-width:900px){.who-row{flex-direction:column;align-items:flex-start}.fan{width:330px;height:270px;margin-top:8px}.fan .phone{width:124px}.fan .phone:nth-child(2){left:103px}.fan .phone:nth-child(3){left:206px}}
 .cta-p{text-align:center;position:relative;overflow:hidden}
 .cta-p h2{margin-bottom:8px}
 .cta-p .buy{justify-content:center}
@@ -336,8 +341,8 @@ function physicalPage(d) {
   <button type="button" class="arrow next" data-scroll="1" aria-label="Scroll forward">&#8594;</button></div></div></section>
 ${includes(d)}
 ${howItWorks(d)}
-<section class="s3-sec tight peach who-p"><div class="s3-wrap who-row"><div><h2 class="s3-h2">Who it's for</h2><p class="s3-lede" style="margin-top:14px">${esc(d.who)}</p>
-  <div class="labels">${d.whoTags.map((t, i) => `<span class="dymo" style="--r:${[-2, 1.5, -1, 2][i % 4]}deg">${esc(t)}</span>`).join('')}</div></div></div></section>
+<section class="s3-sec tight peach who-p"><div class="s3-wrap who-row"><div class="who-text"><h2 class="s3-h2">Who it's for</h2><p class="s3-lede" style="margin-top:14px">${esc(d.who)}</p>
+  <div class="labels">${d.whoTags.map((t, i) => `<span class="dymo" style="--r:${[-2, 1.5, -1, 2][i % 4]}deg">${esc(t)}</span>`).join('')}</div></div><div class="fan" aria-hidden="true">${['p10.jpg', 'p12.jpg', 'p21.jpg'].map((f) => `<div class="phone"><img src="${img(f)}" alt=""></div>`).join('')}</div></div></section>
 <section class="s3-sec tight faq-p"><div class="s3-wrap"><h2 class="s3-h2">Questions</h2>
   <div class="s3-faq two">${d.faq.map(([q, a]) => `<details><summary>${esc(q)}</summary><div>${ph(a)}</div></details>`).join('')}</div></div></section>
 <section class="s3-sec peach cta-p" id="buy"><div class="s3-wrap">

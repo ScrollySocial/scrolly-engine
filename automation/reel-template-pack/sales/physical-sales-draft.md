@@ -135,6 +135,11 @@ marker swipe, handwritten aside "all five, for every one of the 25"); sticky not
 wax seal removed, orange starburst doodle behind the tripod. Who it's for: ring light removed. Buy heading on one line
 on a computer.
 
+**Round 7 (2026-10-19, "these 2 sections seem incomplete"):** "Every template comes with" centred; Who it's for
+has three template phones fanned on the right (Three people to gift it to, Your order just arrived, Small batch).
+Not used: the buyer recipe card (12's card text runs off the right edge and the e.g. column overlaps the bracket words;
+fix the card before showing it anywhere).
+
 ## 4. Who it's for
 
 On a peach band (#FFC9A8, the brand peach from the Reel covers) to break up the page.
