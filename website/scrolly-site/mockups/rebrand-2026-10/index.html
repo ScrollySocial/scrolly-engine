@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" data-p="lilac" data-f="jost" data-c="p5n1">
+<html lang="en" data-p="cream" data-f="jost" data-c="p4n2">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -50,6 +50,17 @@
   --sky-a:#c9b8ff; --sky-b:#fff4fa; --focus:var(--navy);
   --hdr:#fff4fa; --hdr-ink:var(--navy); --hdr-line:#f2c6dd;
 }
+[data-p=cream]{  /* D. Off-white-led (Mercedes 2026-10-19: keep the site mostly off-white). Today's cream canvas; colour in doses. */
+  --bg:#f7f3ec; --ink:var(--navy); --muted:#4a4e66; --line:#e0d9cc;
+  --hero-bg:#f7f3ec; --hero-ink:var(--navy); --em:var(--navy); --hero-em:var(--navy); --mark:var(--pink);
+  --card:var(--lav); --card-ink:var(--navy);
+  --btn:var(--pink); --btn-ink:var(--navy); --btn-hov:var(--navy); --btn-hov-ink:#ffffff;
+  --btn2:var(--navy); --btn2-ink:#ffffff;
+  --band:var(--baby); --band-ink:var(--navy); --band-em:var(--navy);
+  --sky-a:var(--pink); --sky-b:var(--lav-2); --focus:var(--navy);
+  --hdr:#f7f3ec; --hdr-ink:var(--navy); --hdr-line:#e0d9cc;
+}
+[data-p=cream] .band .btn.two{background:var(--navy);color:#fff}
 [data-p=lilac]{  /* C. Lavender-led: soft, dreamy, closest to today's calm editorial site */
   --bg:var(--lav); --ink:var(--navy); --muted:#3f4573; --line:#b9a8ee;
   --hero-bg:var(--lav); --hero-ink:var(--navy); --em:var(--navy); --hero-em:var(--navy); --mark:var(--pink);
@@ -223,6 +234,7 @@ em{font-style:italic}
 <div class="mk" role="region" aria-label="Mockup controls">
   <span><b>MOCKUP</b> not live</span>
   <div class="grp" id="pal" aria-label="Palette"><span>Palette:</span>
+    <button type="button" data-v="cream">D Off-white</button>
     <button type="button" data-v="navy">A Navy-led</button>
     <button type="button" data-v="pink">B Pink-led</button>
     <button type="button" data-v="lilac">C Lavender-led</button>
