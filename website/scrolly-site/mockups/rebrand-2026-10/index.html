@@ -11,7 +11,7 @@
 <style>
 /* Rebrand mockup, 2026-10-19. NOT LIVE. Static preview only; nothing here is published to WordPress.
    Palette: hot pink, navy, lavender. Mercedes 2026-10-19: no deep pink, no arches, no metallic gold/silver.
-   Kept: Georgia italic (the display italic Mercedes likes). Swapped: the sans (today Arial) for one of 3 candidates. */
+   Type: Georgia for headlines only (she likes the italic). Paragraphs and ledes are Jost: she does NOT like upright Georgia in paragraphs. */
 :root{
   --lav:#d6c6ff; --lav-2:#c9b8ff; --lav-soft:#f4f0ff; --baby:#ffc4dd;
   --serif:Georgia,"Times New Roman",serif;
@@ -30,7 +30,7 @@
 [data-b=cornflower]{--cob:#4f7cff;--cob-ink:var(--navy)}
 [data-b=periwinkle]{--cob:#6c9bff;--cob-ink:var(--navy)}
 [data-b=sky]{--cob:#4da3ff;--cob-ink:var(--navy)}
-:is([data-b=bright],[data-b=cornflower],[data-b=periwinkle],[data-b=sky]) :is(.hero,.clubs,.sheet,.hdr){--btn:var(--cob);--btn-ink:var(--cob-ink);--btn-hov:var(--navy);--btn-hov-ink:#fff;--btn2:var(--lav);--btn2-ink:var(--navy)}
+:is([data-b=bright],[data-b=cornflower],[data-b=periwinkle],[data-b=sky]) :is(.hero,.clubs,.sheet,.hdr,.band){--btn:var(--cob);--btn-ink:var(--cob-ink);--btn-hov:var(--navy);--btn-hov-ink:#fff;--btn2:var(--lav);--btn2-ink:var(--navy)}
 /* secondary font candidates (the swap for Arial) */
 [data-f=jost]{--sans:"Jost",Arial,sans-serif;--sans-stretch:100%;--label-track:.16em}
 [data-f=syne]{--sans:"Syne",Arial,sans-serif;--sans-stretch:100%;--label-track:.12em}
@@ -123,7 +123,7 @@ em{font-style:italic}
 .hero .wrap{display:grid;grid-template-columns:1.15fr .85fr;align-items:center;gap:clamp(28px,5vw,96px);padding:clamp(48px,6vw,104px) 0 clamp(56px,7vw,120px)}
 .hero h1{font-size:clamp(3.2rem,7vw,7.6rem);line-height:.9;letter-spacing:-.055em}
 .hero h1 em{color:var(--hero-em);display:block}
-.hero .lede{margin-top:28px;font:var(--fs-lede)/1.45 var(--serif);max-width:26em}
+.hero .lede{margin-top:28px;font:400 var(--fs-lede)/1.45 var(--sans);max-width:26em}
 .hero .acts{display:flex;flex-wrap:wrap;gap:14px;margin-top:34px}
 /* surreal touch without arches or metal: B&W tiger on a pink-to-lavender sky, straight-edged crop, a few jewel stars */
 .pic{position:relative;justify-self:center;width:min(100%,480px);aspect-ratio:4/5}
@@ -137,7 +137,7 @@ em{font-style:italic}
 .sec{padding:var(--sec) 0}
 .sec h2{font-size:var(--fs-h2);line-height:1.02;letter-spacing:-.04em}
 .sec h2 em{color:var(--em)}
-.sec .intro{margin-top:16px;max-width:34em;color:var(--muted);font:var(--fs-lede)/1.45 var(--serif)}
+.sec .intro{margin-top:16px;max-width:34em;color:var(--muted);font:400 var(--fs-lede)/1.45 var(--sans)}
 
 /* clubs */
 .clubs .grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(18px,2.4vw,36px);margin-top:44px}
@@ -155,7 +155,7 @@ em{font-style:italic}
 .band .wrap{display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:clamp(28px,5vw,96px)}
 .band h2{font-size:var(--fs-h2);line-height:1.02;letter-spacing:-.04em}
 .band h2 em{color:var(--band-em);display:block}
-.band p{margin-top:20px;color:var(--band-p,inherit);font:var(--fs-lede)/1.45 var(--serif);max-width:24em}
+.band p{margin-top:20px;color:var(--band-p,inherit);font:400 var(--fs-lede)/1.45 var(--sans);max-width:24em}
 .band .acts{display:flex;flex-wrap:wrap;gap:14px;margin-top:30px}
 .band figure{margin:0;position:relative;justify-self:center;width:min(100%,440px)}
 .band figure img{border-radius:6px;aspect-ratio:4/5;object-fit:cover;width:100%}
@@ -204,7 +204,7 @@ em{font-style:italic}
 .ftr li+li{margin-top:10px}
 .ftr .cols a{font:400 var(--fs-ui)/1.4 var(--sans);color:var(--baby);text-decoration:none}
 .ftr .cols a:hover{color:#fff;text-decoration:underline;text-underline-offset:5px}
-.sign p{font:var(--fs-lede)/1.4 var(--serif);color:var(--baby);margin-bottom:16px}
+.sign p{font:400 var(--fs-lede)/1.4 var(--sans);color:var(--baby);margin-bottom:16px}
 .sign form{display:flex;gap:10px;flex-wrap:wrap}
 .sign label{flex:1 1 220px}
 .sign input{width:100%;min-height:52px;padding:13px 16px;border:1px solid #c9b8ff;border-radius:999px;background:#fff;color:var(--navy);font:var(--fs-ui) var(--sans)}
