@@ -37,7 +37,7 @@ OVALS = [((0.247, 0.615), (0.18, 0.315)), ((0.75, 0.615), (0.183, 0.315))]     #
 HOLDS = [(1.5, 1.1), (3.3, 1.35), (4.9, 1.15), (6.5, 0.6), (8.1, 1.2), (9.7, 1.4), (12.45, 0.3)]   # just before each transition
 
 def setup():
-    g = {'c': {'main': Clip('IMG_1464', 2.0), 'p1': Clip('IMG_1422', 7.0), 'p2': Clip('IMG_1439', 0.5), 'p3': Clip('IMG_1436', 2.0), 'cta': Clip('IMG_1423', 2.0)}}
+    g = {'c': {'main': Clip('IMG_1464', 2.0), 'p1': X.Window(Clip('IMG_1422', 0.0), 7.5, 10.5), 'p2': Clip('IMG_1439', 0.5), 'p3': Clip('IMG_1436', 2.0), 'cta': Clip('IMG_1423', 2.0)}}
     tis = ImageOps.grayscale(S.raw('images', 'Blush Pink Tissue Paper Texture-9.png'))      # a calm pink paper stage (her note: no busy patterns)
     g['stripes'] = ImageOps.fit(ImageOps.colorize(ImageOps.autocontrast(tis), (214, 150, 178), PINK), (W, H)).convert('RGBA')
     lk = Image.open(S.E.PACK / 'build' / '.cache' / 'hq' / 'Open vintage gold locket, blank inside.png').convert('RGBA'); lk = P.style_object(S.fitw(lk, LW), 'smalldots', PINK, scale=0.3, strength=0.35, edge=8); g['locket'] = S.fitw(lk, LW); g['lh'] = g['locket'].height   # play on the object
@@ -52,8 +52,8 @@ def setup():
     g['what'] = P.caption('what to', 190, INK); g['pairw'] = P.caption('pair', 300, INK); g['with'] = X.hl('with [my steam mop]', 60, WHITE)
     g['plus'] = [X.hl(t, 62, (PINK, WHITE, PINK)[i]) for i, t in enumerate(('+ [the stick vacuum]', '+ [the odor spray]', '+ [the litter]'))]
     g['under'] = doodle('under', 0, 560, WHITE); g['plusbig'] = P.sticker('+', 150, WINE, WHITE, 'circle'); g['arrow'] = doodle('arrow', 0, 160, WHITE); g['pair1'] = P.caption('pair it with', 130, INK)
-    g['perfect'] = P.caption('a perfect pair', 140, WINE); g['bundle'] = X.hl('[ask about the bundle]', 60, WINE); g['burst'] = doodle('burst', 2, 640, CRM)
-    g['comment'] = P.caption('Comment', 190, WINE); g['kw'] = X.hl('"[KEYWORD]"', 64, WHITE); g['bname'] = X.hl('[the clean-home bundle]', 56, PINK)
+    g['perfect'] = P.caption('a perfect pair', 140, WINE); g['bundle'] = X.hl('[ask about the bundle]', 60, WINE); g['hearts'] = [P.die_cut(doodle('icon', 2 + i % 2, 150, WINE), 5, False) for i in range(3)]; g['burst'] = doodle('burst', 2, 640, CRM)
+    g['comment'] = P.caption('Comment', 190, WINE); g['kw'] = X.hl('"[KEYWORD]"', 64, WHITE); g['bname'] = X.hl('[the clean-home bundle]', 60, PINK)
     return g
 
 def oval_mask(size):
@@ -123,7 +123,7 @@ def gallery(g, t, view_y, zoom, clips, pink_in=None):
         cx, cy = GALLERY[name]
         if name == 'pink' and pink_in is not None: cy = lerp(-600, cy, back_out(seg(t, pink_in, pink_in + 0.35), 1.3))
         fx, fy = int(cx - fim.width / 2), int(cy - fim.height / 2); ow, oh = int(fim.width * (x1 - x0)), int(fim.height * (y1 - y0))
-        v = ImageOps.fit(clips[name], (ow + 8, oh + 8)).convert('RGBA')
+        v = ImageOps.fit(clips[name], (ow + 8, oh + 8), centering=(0.5, 0.35)).convert('RGBA')   # keep the product, not the hand
         if name == 'oval': v.putalpha(oval_mask(v.size))
         if top: wall.alpha_composite(fim, (fx, fy)); wall.alpha_composite(v, (fx + int(fim.width * x0) - 4, fy + int(fim.height * y0) - 4))
         else: wall.alpha_composite(v, (fx + int(fim.width * x0) - 4, fy + int(fim.height * y0) - 4)); wall.alpha_composite(fim, (fx, fy))
@@ -151,16 +151,30 @@ def diag5(g, t):
     return im
 
 def stage6(g, t):
-    im = g['stripes'].copy(); put(im, g['tea'], (540, lerp(2400, 1000, back_out(seg(t, 8.4, 8.75), 1.3))), 1, -3)
+    """'a perfect pair': the locket itself, the product in one half and pairing 1 in the other; hearts + sparkles."""
+    c = g['c']; k = back_out(seg(t, 8.4, 8.75), 1.3)
+    im = locket(g, t, c['main'].at(t), c['p1'].at(t - 1.8), lerp(2400, LC[1], k))
     P.say(im, g['perfect'], t, 8.6, (540, 380), -3)
-    doodle_on(im, t, 8.85, g['burst'], (540, 1460), 0); P.say(im, g['bundle'], t, 8.9, (540, 1460), 2)
+    for i, (xy, r) in enumerate((((150, 640), -15), ((930, 600), 12), ((880, 1560), -8))):
+        put(im, g['hearts'][i], xy, back_out(seg(t, 8.8 + i * 0.12, 9.05 + i * 0.12), 2.0), r + 6 * math.sin(t * 3 + i))
+    X.sparkles(im, t, 8.9, [(250, 1500), (980, 900), (100, 1000)], WINE, 140)
     return im
 
 def cta(g, t):
-    """All of them together: the camera pulls back to the whole gallery wall."""
-    c = g['c']; z = lerp(1.0, 0.66, ease(seg(t, 10.0, 10.6)))
-    im = gallery(g, t, lerp(400, 0, ease(seg(t, 10.0, 10.6))), z, {'gold': c['main'].at(t), 'pink': c['p1'].at(t - 1.8), 'walnut': c['p2'].at(t - 3.8), 'oval': c['p3'].at(t - 6.8)})
-    P.say(im, g['comment'], t, 10.2, (540, 900), -3); P.say(im, g['kw'], t, 10.45, (540, 1080), 2); P.say(im, g['bname'], t, 10.65, (540, 1210), -2)
+    """CTA (a new scene, her note): the product full frame, the three pairings in their real frames pinned along the top;
+    the bundle name on its own at the top, the keyword on its own in the middle (they no longer compete)."""
+    c = g['c']; im = c['main'].at(t).copy()
+    for i, (name, cl, t0, x) in enumerate((('pink', c['p1'], 1.8, 190), ('oval', c['p3'], 6.8, 540), ('walnut', c['p2'], 3.8, 890))):
+        fim, (x0, y0, x1, y1), top = g['frames'][name]; sc = 0.66 if name != 'walnut' else 0.5
+        f2 = fim.resize((int(fim.width * sc), int(fim.height * sc))); ow, oh = int(f2.width * (x1 - x0)), int(f2.height * (y1 - y0))
+        v = ImageOps.fit(cl.at(t - t0), (ow + 6, oh + 6), centering=(0.5, 0.35)).convert('RGBA')
+        if name == 'oval': v.putalpha(oval_mask(v.size))
+        tile = Image.new('RGBA', f2.size, (0, 0, 0, 0)); xy = (int(f2.width * x0) - 3, int(f2.height * y0) - 3)
+        if top: tile.alpha_composite(f2); tile.alpha_composite(v, xy)
+        else: tile.alpha_composite(v, xy); tile.alpha_composite(f2)
+        put(im, tile, (x, lerp(-300, 520, back_out(seg(t, 10.0 + i * 0.12, 10.35 + i * 0.12), 1.4))), 1, (-6, 3, 7)[i])
+    P.say(im, g['bname'], t, 10.3, (540, 860), -2)
+    P.say(im, g['comment'], t, 10.6, (540, 1150), -3); P.say(im, g['kw'], t, 10.85, (540, 1330), 2)
     return im
 
 def main():

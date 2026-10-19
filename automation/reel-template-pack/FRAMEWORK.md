@@ -567,3 +567,7 @@ Showing her work
   together. Keep ticks on the graphic stage (the clipboard ticks were cute); on video use one bolder, fun element.
 - **Real objects must read whole** (the locket zoomed so far it didn't read as a locket).
 - **No overlapping doodles or frames** (two gallery frames overlapped).
+- (2026-10-19, #19/#25) **Never end on a scene already used** (the CTA repeated the gallery wall). **The CTA keyword and
+  the product/bundle name get separate spots** so they don't compete. **Props must match the product world** (a tea
+  set in a cleaning Reel didn't). **Repeated structures stay consistent** (if rounds 1 and 2 ring the bell, round 3
+  does too). Crop clips in small frames so the product shows, not a hand.

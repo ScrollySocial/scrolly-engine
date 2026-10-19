@@ -32,7 +32,7 @@ from motion_b2 import Clip, put, render, camera, ease, back_out, seg, lerp, lerp
 INK, CRM = (24, 23, 22), (246, 241, 232); WINE, BUTTER = X.WINE, X.BUTTER          # her palette: wine + butter
 X.use_type(BUTTER, WINE); X.enable_holds()
 DIR = '25-mine-vs-the-usual-kind'
-HOLDS = [(1.55, 0.8), (3.0, 1.8), (4.55, 0.9), (5.95, 0.7), (7.55, 0.8), (9.15, 0.8), (10.75, 1.3), (13.45, 0.4)]   # just before each transition
+HOLDS = [(1.55, 0.8), (3.0, 1.8), (4.55, 0.9), (5.95, 0.7), (7.55, 0.8), (8.5, 0.8), (9.15, 1.3), (10.75, 1.3), (13.45, 0.4)]   # just before each transition
 
 def setup():
     g = {'c': {'usual': Clip('IMG_1460', 0.5), 'mine': Clip('IMG_1418', 2.0), 'u1': Clip('IMG_1462', 0.5), 'm1': Clip('IMG_1423', 2.0),
@@ -126,10 +126,13 @@ def round2(g, t):
     return im
 
 def round3(g, t):
-    """Round 3: yours full frame; the usual kind small in a round window."""
-    c = g['c']; im = c['m3'].at(t - 7.8)
-    put(im, roundwin(c['usual'].at(t - 7.8, (300, 300)), 300), (250, 520), back_out(seg(t, 7.9, 8.2), 1.5))
-    P.say(im, g['round'][2], t, 7.85, (680, 330), 3); P.say(im, g['diff'][2], t, 8.1, (540, 1400), -2)
+    """Round 3: the bell rings it in on the poster like rounds 1 and 2 (her note: be consistent), then yours full
+    frame with the usual kind small in a round window."""
+    c = g['c']
+    if t < 8.6: return poster(g, t, 7.8, 2)
+    im = c['m3'].at(t - 8.6)
+    put(im, roundwin(c['usual'].at(t - 8.6, (300, 300)), 300), (250, 520), back_out(seg(t, 8.6, 8.9), 1.5))
+    P.say(im, g['diff'][2], t, 8.7, (540, 1400), -2)
     return im
 
 def stage7(g, t):
