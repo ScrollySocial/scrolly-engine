@@ -3,7 +3,7 @@
 const lum = (hex) => hex.slice(1).match(/../g).map((h) => parseInt(h, 16) / 255).map((v) => (v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4)).reduce((s, v, i) => s + v * [0.2126, 0.7152, 0.0722][i], 0);
 const ratio = (a, b) => { const [x, y] = [lum(a), lum(b)].sort((m, n) => n - m); return (x + 0.05) / (y + 0.05); };
 const COMBOS = { 'P5 + N1': ['#ff5fae', '#0b1f3f', '#15305a', '#071530'], 'P4 + N1': ['#ff3b7f', '#0b1f3f', '#15305a', '#071530'], 'P4 + N2': ['#ff3b7f', '#0a1930', '#142744', '#050f20'] };
-const LAV = '#e3d9ff', LAV2 = '#c9b8ff', LSOFT = '#f4f0ff', OFF = '#f5f1ff', BABY = '#fbd3e4', BLUSH = '#fff4fa', WHITE = '#ffffff';
+const LAV = '#d6c6ff', LAV2 = '#c9b8ff', LSOFT = '#f4f0ff', OFF = '#f5f1ff', BABY = '#ffc4dd', BLUSH = '#fff4fa', WHITE = '#ffffff';
 let fails = 0;
 for (const [name, [P, N, N2, N3]] of Object.entries(COMBOS)) {
   console.log(`\n${name}`);
