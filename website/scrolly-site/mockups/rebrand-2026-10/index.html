@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" data-p="lilac" data-f="jost">
+<html lang="en" data-p="lilac" data-f="jost" data-c="p5n1">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -13,12 +13,17 @@
    Palette: hot pink, navy, lavender. Mercedes 2026-10-19: no deep pink, no arches, no metallic gold/silver.
    Kept: Georgia italic (the display italic Mercedes likes). Swapped: the sans (today Arial) for one of 3 candidates. */
 :root{
-  --pink:#ff2d95; --navy:#0e1543; --navy-2:#182160; --navy-3:#070b26; --lav:#e3d9ff; --lav-2:#c9b8ff; --lav-soft:#f4f0ff;
+  --lav:#e3d9ff; --lav-2:#c9b8ff; --lav-soft:#f4f0ff; --baby:#fbd3e4;
   --serif:Georgia,"Times New Roman",serif;
   --gut:clamp(16px,4.5vw,96px); --sec:clamp(56px,6vw,112px);
   --fs-h2:clamp(2.4rem,4vw,4rem); --fs-h3:clamp(1.9rem,2.6vw,2.5rem); --fs-title:1.75rem; --fs-lede:1.375rem;
   --fs-body:1.125rem; --fs-ui:1.125rem; --fs-label:.9375rem; --fs-fine:1.0625rem;
 }
+/* colour shortlist (Mercedes 2026-10-19 from swatches.html): hot pink + navy pairs. Baby pink is an accent on navy or next to
+   hot pink, never on lavender. */
+[data-c=p5n1]{--pink:#ff5fae;--navy:#0b1f3f;--navy-2:#15305a;--navy-3:#071530}
+[data-c=p4n1]{--pink:#ff3b7f;--navy:#0b1f3f;--navy-2:#15305a;--navy-3:#071530}
+[data-c=p4n2]{--pink:#ff3b7f;--navy:#0a1930;--navy-2:#142744;--navy-3:#050f20}
 /* secondary font candidates (the swap for Arial) */
 [data-f=jost]{--sans:"Jost",Arial,sans-serif;--sans-stretch:100%;--label-track:.16em}
 [data-f=syne]{--sans:"Syne",Arial,sans-serif;--sans-stretch:100%;--label-track:.12em}
@@ -32,16 +37,16 @@
   --btn:var(--pink); --btn-ink:var(--navy); --btn-hov:#f5f1ff; --btn-hov-ink:var(--navy);
   --btn2:var(--lav-2); --btn2-ink:var(--navy);
   --band:var(--pink); --band-ink:var(--navy); --band-em:var(--navy);
-  --sky-a:#ff2d95; --sky-b:#c9b8ff; --focus:#fff;
+  --sky-a:var(--pink); --sky-b:#c9b8ff; --focus:#fff;
   --hdr:var(--navy); --hdr-ink:#f5f1ff; --hdr-line:rgba(201,184,255,.3);
 }
 [data-p=pink]{   /* B. Pink-led: loud, pop, magazine cover */
-  --bg:#fff4fa; --ink:var(--navy); --muted:#454a77; --line:#f2c6dd;
-  --hero-bg:var(--pink); --hero-ink:var(--navy); --em:var(--navy); --hero-em:#fff; --mark:var(--pink);
+  --bg:#fff4fa; --ink:var(--navy); --muted:#454a77; --line:var(--baby);
+  --hero-bg:var(--pink); --hero-ink:var(--navy); --em:var(--navy); --hero-em:var(--navy); --mark:var(--pink);
   --card:#ffffff; --card-ink:var(--navy);
   --btn:var(--navy); --btn-ink:#ffffff; --btn-hov:var(--pink); --btn-hov-ink:var(--navy);
   --btn2:var(--pink); --btn2-ink:var(--navy);
-  --band:var(--lav); --band-ink:var(--navy); --band-em:var(--navy);
+  --band:var(--baby); --band-ink:var(--navy); --band-em:var(--navy);
   --sky-a:#c9b8ff; --sky-b:#fff4fa; --focus:var(--navy);
   --hdr:#fff4fa; --hdr-ink:var(--navy); --hdr-line:#f2c6dd;
 }
@@ -51,8 +56,8 @@
   --card:var(--lav-soft); --card-ink:var(--navy);
   --btn:var(--pink); --btn-ink:var(--navy); --btn-hov:var(--navy); --btn-hov-ink:#ffffff;
   --btn2:var(--navy); --btn2-ink:#ffffff;
-  --band:var(--navy); --band-ink:#f5f1ff; --band-em:var(--pink);
-  --sky-a:#ff2d95; --sky-b:#0e1543; --focus:var(--navy);
+  --band:var(--navy); --band-ink:#f5f1ff; --band-em:var(--pink); --band-p:var(--baby);
+  --sky-a:var(--pink); --sky-b:var(--navy); --focus:var(--navy);
   --hdr:var(--lav); --hdr-ink:var(--navy); --hdr-line:#b9a8ee;
 }
 
@@ -132,7 +137,7 @@ em{font-style:italic}
 .band .wrap{display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:clamp(28px,5vw,96px)}
 .band h2{font-size:var(--fs-h2);line-height:1.02;letter-spacing:-.04em}
 .band h2 em{color:var(--band-em);display:block}
-.band p{margin-top:20px;font:var(--fs-lede)/1.45 var(--serif);max-width:24em}
+.band p{margin-top:20px;color:var(--band-p,inherit);font:var(--fs-lede)/1.45 var(--serif);max-width:24em}
 .band .acts{display:flex;flex-wrap:wrap;gap:14px;margin-top:30px}
 .band figure{margin:0;position:relative;justify-self:center;width:min(100%,440px)}
 .band figure img{border-radius:6px;aspect-ratio:4/5;object-fit:cover;width:100%}
@@ -160,16 +165,16 @@ em{font-style:italic}
    radial-gradient(circle at 93% 70%,#ffffff 0 1.2px,transparent 1.8px),radial-gradient(circle at 34% 90%,#fff 0 .9px,transparent 1.4px),
    radial-gradient(circle at 75% 92%,#c9b8ff 0 1px,transparent 1.6px),radial-gradient(circle at 14% 84%,#ffb3d9 0 1px,transparent 1.6px);
   background-size:340px 300px}
-.ftr::after{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(60% 50% at 80% 0%,rgba(255,45,149,.22),transparent 70%),radial-gradient(50% 60% at 0% 100%,rgba(201,184,255,.18),transparent 70%)}
+.ftr::after{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(60% 50% at 80% 0%,rgba(255,95,174,.2),transparent 70%),radial-gradient(50% 60% at 0% 100%,rgba(201,184,255,.18),transparent 70%)}
 .ftr .wrap{position:relative;z-index:1}
 .ftr .top{display:grid;grid-template-columns:1fr 1fr;gap:clamp(28px,5vw,80px);align-items:center;padding:clamp(56px,6vw,104px) 0 clamp(40px,4vw,64px)}
 .ftr .quote{font:italic 400 clamp(2.8rem,5vw,5.4rem)/1 var(--serif);letter-spacing:-.03em}
 .ftr .quote em{color:var(--pink);font-style:italic}
 .ph{position:relative;aspect-ratio:4/5;width:min(100%,420px);justify-self:end;border:2px dashed #c9b8ff;border-radius:6px}
-.ph .in{height:100%;border-radius:4px;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:12px;padding:40px 28px;text-align:center;background:repeating-linear-gradient(135deg,#131a4d 0 14px,#0f1544 14px 28px);color:#f5f1ff}
+.ph .in{height:100%;border-radius:4px;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:12px;padding:40px 28px;text-align:center;background:repeating-linear-gradient(135deg,var(--navy-2) 0 14px,var(--navy) 14px 28px);color:#f5f1ff}
 .ph .in b{font:400 var(--fs-title)/1.15 var(--serif)}
 .ph .in span{font:500 var(--fs-label)/1.45 var(--sans);color:#d9cfff;max-width:22em}
-.ph .tag{font:700 var(--fs-label)/1 var(--sans);letter-spacing:var(--label-track);text-transform:uppercase;padding:9px 14px;border-radius:999px;background:var(--pink);color:var(--navy)}
+.ph .in .tag{font:700 var(--fs-label)/1 var(--sans);letter-spacing:var(--label-track);text-transform:uppercase;padding:9px 14px;border-radius:999px;background:var(--baby);color:var(--navy)}
 .jewels{position:absolute;inset:0;pointer-events:none;z-index:0}
 .jewels .star{animation:tw 3.6s ease-in-out infinite}
 .jewels .star:nth-child(2n){animation-delay:-1.2s}.jewels .star:nth-child(3n){animation-delay:-2.3s}
@@ -179,9 +184,9 @@ em{font-style:italic}
 .ftr h2{font:700 var(--fs-label)/1.3 var(--sans);letter-spacing:var(--label-track);text-transform:uppercase;margin-bottom:16px;color:#f5f1ff}
 .ftr ul{list-style:none;margin:0;padding:0}
 .ftr li+li{margin-top:10px}
-.ftr .cols a{font:400 var(--fs-ui)/1.4 var(--sans);color:#e3d9ff;text-decoration:none}
+.ftr .cols a{font:400 var(--fs-ui)/1.4 var(--sans);color:var(--baby);text-decoration:none}
 .ftr .cols a:hover{color:#fff;text-decoration:underline;text-underline-offset:5px}
-.sign p{font:var(--fs-lede)/1.4 var(--serif);margin-bottom:16px}
+.sign p{font:var(--fs-lede)/1.4 var(--serif);color:var(--baby);margin-bottom:16px}
 .sign form{display:flex;gap:10px;flex-wrap:wrap}
 .sign label{flex:1 1 220px}
 .sign input{width:100%;min-height:52px;padding:13px 16px;border:1px solid #c9b8ff;border-radius:999px;background:#fff;color:var(--navy);font:var(--fs-ui) var(--sans)}
@@ -222,6 +227,11 @@ em{font-style:italic}
     <button type="button" data-v="pink">B Pink-led</button>
     <button type="button" data-v="lilac">C Lavender-led</button>
   </div>
+  <div class="grp" id="col" aria-label="Colours"><span>Colours:</span>
+    <button type="button" data-v="p5n1">P5 + N1</button>
+    <button type="button" data-v="p4n1">P4 + N1</button>
+    <button type="button" data-v="p4n2">P4 + N2</button>
+  </div>
   <div class="grp" id="fnt" aria-label="Second font"><span>Second font:</span>
     <button type="button" data-v="jost">Jost</button>
     <button type="button" data-v="syne">Syne</button>
@@ -232,7 +242,7 @@ em{font-style:italic}
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <defs>
     <linearGradient id="g-white" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset=".5" stop-color="#f4f0ff"/><stop offset="1" stop-color="#c9b8ff"/></linearGradient>
-    <linearGradient id="g-pink" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffd1e8"/><stop offset=".45" stop-color="#ff2d95"/><stop offset="1" stop-color="#8a0048"/></linearGradient>
+    <linearGradient id="g-pink" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffd1e8"/><stop offset=".5" stop-color="#ff5fae"/><stop offset="1" stop-color="#ff3b7f"/></linearGradient>
     <linearGradient id="g-lav" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset=".45" stop-color="#c9b8ff"/><stop offset="1" stop-color="#6a55c9"/></linearGradient>
     <!-- four-point jewel star with a faceted highlight -->
     <symbol id="star" viewBox="0 0 100 100"><path d="M50 0 C55 35 65 45 100 50 C65 55 55 65 50 100 C45 65 35 55 0 50 C35 45 45 35 50 0Z"/><path d="M50 8 C53 36 58 44 50 50 C42 44 47 36 50 8Z" fill="#fff" opacity=".55"/></symbol>
@@ -286,8 +296,8 @@ em{font-style:italic}
         <a class="link" href="#">Free calculators <span aria-hidden="true">→</span></a>
   </div>
   <div class="swatches">
-    <div class="sw"><i style="background:#ff2d95"></i><span>Hot pink #ff2d95</span></div>
-    <div class="sw"><i style="background:#0e1543"></i><span>Navy #0e1543</span></div>
+    <div class="sw"><i style="background:var(--pink)"></i><span>Hot pink</span></div>
+    <div class="sw"><i style="background:var(--navy)"></i><span>Navy</span></div><div class="sw"><i style="background:var(--baby)"></i><span>Baby pink #fbd3e4</span></div>
     <div class="sw"><i style="background:#e3d9ff"></i><span>Lavender #e3d9ff</span></div>
     <div class="sw"><i style="background:#c9b8ff"></i><span>Lilac #c9b8ff</span></div>
   </div>
@@ -312,7 +322,7 @@ em{font-style:italic}
         <div class="in">
           <span class="tag">Image coming</span>
           <b>Mercedes riding a tiger</b>
-          <span>Portrait 4:5, about 1600 × 2000 px, transparent or navy background. Prompt ideas in README.md.</span>
+          <span>Portrait 4:5, about 1600 × 2000 px, transparent or navy background.</span>
         </div>
       </div>
     </div>
@@ -334,6 +344,8 @@ em{font-style:italic}
   function set(attr,grp,v){html.setAttribute(attr,v);document.querySelectorAll('#'+grp+' button').forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.v===v))});}
   set('data-p','pal',q.get('p')||html.dataset.p);
   set('data-f','fnt',q.get('f')||html.dataset.f);
+  set('data-c','col',q.get('c')||html.dataset.c);
+  document.querySelectorAll('#col button').forEach(function(b){b.onclick=function(){set('data-c','col',b.dataset.v)}});
   if(q.get('bar')==='0')document.querySelector('.mk').style.display='none';
   document.querySelectorAll('#pal button').forEach(function(b){b.onclick=function(){set('data-p','pal',b.dataset.v)}});
   document.querySelectorAll('#fnt button').forEach(function(b){b.onclick=function(){set('data-f','fnt',b.dataset.v)}});
