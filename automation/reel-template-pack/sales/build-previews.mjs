@@ -105,7 +105,9 @@ const howItWorks = (d) => `<section class="film" id="how"><div class="s3-wrap"><
   <ol class="steps">${STEPS.map(([icon, b, t]) => `<li><svg viewBox="0 0 48 48" aria-hidden="true">${icon}</svg><b>${esc(b)}</b></li>`).join('')}</ol></div></section>`;
 // "Every template comes with": real sticky notes pinned on, from Trick or treat (Mercedes 2026-10-19: cards were "boring")
 const ROT = [-4, 3, -2, 4, -3];
-const includes = (d) => `<section class="s3-sec stick"><div class="s3-wrap"><h2 class="s3-h2">Every template comes with</h2>
+const includes = (d) => d.brandIncludes ? `<section class="s3-sec tight incl-b"><div class="s3-wrap"><h2 class="s3-h2">Every template comes with</h2>
+  <ul class="swipes">${d.includes.map(([b]) => `<li><span>${esc(b)}</span></li>`).join('')}</ul>
+  <p class="aside">all five, for every one of the 25</p></div></section>` : `<section class="s3-sec stick"><div class="s3-wrap"><h2 class="s3-h2">Every template comes with</h2>
   <img class="sq" src="${img('squiggle.webp')}" alt="">
   <div class="notes-row">${d.includes.map(([b, x], i) => `<div class="sticky" style="--r:${ROT[i]}deg"><img class="pin" src="${img('pin-blue.webp')}" alt=""><span class="nt"><b>${esc(b)}</b></span></div>`).join('')}</div>
   ${d.formatNote ? `<p style="margin-top:32px">${ph(d.formatNote)}</p>` : ''}</div></section>`;
@@ -253,6 +255,12 @@ ${notes(d)}`;
    black, orange, peach) with the pink Who it's for and label-maker tags she likes; the 25 Reels scroll sideways; no box,
    peanuts or kitchen timer (she offered to supply better images). Plain backgrounds behind text, props never cover words. */
 const PCSS = `
+.incl-b h2{margin-bottom:28px}
+.swipes{list-style:none;padding:0;margin:0;display:flex;flex-wrap:wrap;gap:18px 30px}
+.swipes li{font:400 var(--s3-fs-h3)/1.15 var(--s3-serif)}
+.swipes span{position:relative;z-index:0;padding:0 .14em}
+.swipes span::before{content:"";position:absolute;z-index:-1;left:0;right:0;top:.42em;bottom:.02em;background:#ffc9a8;border-radius:.1em .35em .15em .4em;transform:rotate(-1.5deg)}
+.incl-b .aside{margin-top:26px;font:400 1.9rem/1.1 "Covered By Your Grace",cursive;color:var(--s3-ink);transform:rotate(-2deg);transform-origin:left}
 .hero-p{padding-top:clamp(56px,7vw,110px);position:relative;overflow:hidden}
 /* headline: "Your month's content:" on one line, DONE in handwriting (Mercedes 2026-10-19) */
 .head-p .l1{display:block;white-space:nowrap;font-size:clamp(2rem,6.2vw,6.4rem)}
@@ -261,7 +269,8 @@ const PCSS = `
 .hero-p .s3-wrap{position:relative;z-index:2}
 .prop{position:absolute;pointer-events:none;z-index:1}
 .hero-p .tri{right:5%;bottom:-6px;width:clamp(200px,20vw,300px);transform:rotate(-4deg)}
-@media(max-width:1299px){.hero-p .tri{display:none}}
+.hero-p .burst-h{right:calc(5% - 90px);top:50%;width:clamp(380px,36vw,560px);transform:translateY(-58%) rotate(8deg);opacity:.9}
+@media(max-width:1299px){.hero-p .tri,.hero-p .burst-h{display:none}}
 .hero-p .seal{width:64px;transform:rotate(-10deg)}
 .reels-p{background:#090909;color:#fff}
 .reels-p h2{color:#fff!important}.reels-p .s3-lede{color:#e6e0d8}
@@ -300,6 +309,7 @@ const PCSS = `
 .cta-p .buy{justify-content:center}
 .cta-p .s3-fine{color:#2b2a28}
 .cta-p h2{color:var(--s3-or-text)!important}
+@media(min-width:1100px){.cta-p h2{white-space:nowrap}}
 .cta-p .s3-read{position:relative;z-index:1}
 .cta-p .seal2{right:8%;top:50%;width:130px;transform:translateY(-50%) rotate(12deg)}
 @media(max-width:1199px){.cta-p .seal2{display:none}}
@@ -313,10 +323,10 @@ function physicalPage(d) {
   const list = d.templates.map((t, i) => `<div class="rg"><p class="num">${i + 1} of 25</p><div class="phone"><img src="${img(`p${String(i + 1).padStart(2, '0')}.jpg`)}" alt="${esc(t.name)}: a frame from the template" loading="lazy"></div>
     <h3>${esc(t.name)}</h3><p>${esc(t.job)}</p></div>`).join('');
   const body = `
-<section class="s3-sec hero-p"><img class="prop tri" src="${img('tripod.webp')}" alt=""><div class="s3-wrap">
+<section class="s3-sec hero-p"><img class="prop burst-h" src="${img('burst-orange.webp')}" alt=""><img class="prop tri" src="${img('tripod.webp')}" alt=""><div class="s3-wrap">
   <h1 class="s3-display or head-p"><span class="l1">${esc(d.headline.split(': ')[0])}:</span> <span class="done">${esc(d.headline.split(': ')[1])}</span></h1>
   <p class="s3-lede" style="margin-top:28px">${esc(d.sub)}</p>
-  <div class="buy">${price(d)}<a class="s3-btn" href="#buy">${esc(d.button)}</a><img class="seal" src="${img('seal.webp')}" alt=""></div>
+  <div class="buy">${price(d)}<a class="s3-btn" href="#buy">${esc(d.button)}</a></div>
   <p class="s3-fine">${ph(d.priceLine)}</p>
 </div></section>
 <section class="s3-sec reels-p"><div class="s3-wrap">
@@ -327,11 +337,10 @@ function physicalPage(d) {
 ${includes(d)}
 ${howItWorks(d)}
 <section class="s3-sec tight peach who-p"><div class="s3-wrap who-row"><div><h2 class="s3-h2">Who it's for</h2><p class="s3-lede" style="margin-top:14px">${esc(d.who)}</p>
-  <div class="labels">${d.whoTags.map((t, i) => `<span class="dymo" style="--r:${[-2, 1.5, -1, 2][i % 4]}deg">${esc(t)}</span>`).join('')}</div></div>
-  <img class="ring" src="${img('ringlight.webp')}" alt=""></div></section>
+  <div class="labels">${d.whoTags.map((t, i) => `<span class="dymo" style="--r:${[-2, 1.5, -1, 2][i % 4]}deg">${esc(t)}</span>`).join('')}</div></div></div></section>
 <section class="s3-sec tight faq-p"><div class="s3-wrap"><h2 class="s3-h2">Questions</h2>
   <div class="s3-faq two">${d.faq.map(([q, a]) => `<details><summary>${esc(q)}</summary><div>${ph(a)}</div></details>`).join('')}</div></div></section>
-<section class="s3-sec peach cta-p" id="buy"><div class="s3-read">
+<section class="s3-sec peach cta-p" id="buy"><div class="s3-wrap">
   <h2 class="s3-h2">${esc(d.ctaHead)}</h2>
   <div class="buy">${price(d)}<a class="s3-btn" href="#buy">${esc(d.button)}</a></div>
   <p class="s3-fine">${ph(d.ctaLine)}</p>
@@ -398,6 +407,7 @@ const physical = {
   priceLine: '[INSTANT DOWNLOAD or EARLY ACCESS: your call]',
   ctaLine: '[INSTANT DOWNLOAD or EARLY ACCESS: your call]',
   whoTags: ['Makers', 'Small-batch brands', 'Shops that ship', 'Handmade'],
+  brandIncludes: true,
   getTitle: 'All 25 Reels',
   getLede: 'Swipe to see them all.',
   includes: INCLUDES('Real props, collage and motion, built in.'),

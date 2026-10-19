@@ -130,6 +130,11 @@ Your Grace (the brand handwriting); "N of 25" above each phone; Who it's for as 
 ring light right); questions in two columns; no wax seal in the buy section; buy section on peach with the orange
 heading (the site footer is black, so the last section never is).
 
+**Round 6 (2026-10-19):** "Every template comes with" in the brand's Reel-cover style (big serif items on the peach
+marker swipe, handwritten aside "all five, for every one of the 25"); sticky notes stay on Halloween only. Hero:
+wax seal removed, orange starburst doodle behind the tripod. Who it's for: ring light removed. Buy heading on one line
+on a computer.
+
 ## 4. Who it's for
 
 On a peach band (#FFC9A8, the brand peach from the Reel covers) to break up the page.
