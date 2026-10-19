@@ -159,3 +159,8 @@ of #09, #10, #12, #22, #08, #20, #23 (her notes say they are all too fast).
   review four; #09 the CTA words and the head-guide label. #12's notification body is now "[Delivered]" (readable).
 - #11 A day with it and #15 New drop reveal: new-style motion tests in story7.py (sent 2026-10-18). #15 is a fresh idea
   (the stage-curtain version was scratched): wine tissue peephole, kitchen timer, the sheet rips in two, ticket stub date.
+- #15 New drop reveal: approved ("ok", 2026-10-19) after her notes: the opening is the full-screen product video with the
+  product lifted onto its own layer and ONE dust cloud behind it (no speed lines; words in front; build/clip_masks.py
+  cuts the stand-in), three details, the date ticket once (on a planner grid, drop day ticked), no NEW stickers, ending
+  "get it at [shop]". CapCut build still to do: the lifted product needs a second copy of clip 1 with CapCut's
+  background removal, which the engine can't write yet.
