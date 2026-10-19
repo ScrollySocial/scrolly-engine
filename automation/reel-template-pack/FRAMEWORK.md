@@ -615,3 +615,10 @@ Scrolly brand colours and Scrolly-only parts (destinations, the ManyChat switch,
 - Ship a caption to start from: the CTA in the first two sentences, exactly 3 hashtags. No em dashes or `|`.
 - **#19 Pair it with: APPROVED ("love it", 2026-10-19).** Hero video zooms out into the locket, ?s, bold "pair it
   with" headline, scrapbook page turns, two lockets on her gold chain at the end. Next: CapCut build.
+- **#18 Check this before you buy: APPROVED (2026-10-19)** after the check lines moved to the top. CapCut build:
+  build/templates/t18.py (via build/capcut_b2b.py).
+- **#04, #05, #06: approved on her fixes** (2026-10-19: both arrows on the scale, dot band to the top edge, no wood on
+  wood). CapCut builds: t04/t05/t06 via build/capcut_b2b.py.
+- **#21 Small batch round 2 rejected** ("I don't like anything about it"); round 3 = the numbered edition (fountain
+  pen writes No. 07 of 24). **#24 Make it last:** envelopes rejected (no link to lasting), watch kept; round 2 =
+  calendar sheets tearing off (month 1 -> year 3).
