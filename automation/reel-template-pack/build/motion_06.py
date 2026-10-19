@@ -56,7 +56,8 @@ def progress(t):
 def setup():
     g = {'c': {'raw': Clip('IMG_1393', 0.5), 's1': Clip('IMG_1387', 1.5), 's2': Clip('IMG_1389', 2.5), 's3': Clip('IMG_1390', 2.0),
                'done': Clip('IMG_1391', 0.0, 1.5), 'done2': Clip('IMG_1394', 1.0)}}
-    g['bench'] = ImageOps.fit(S.raw('images', 'Warm worn workshop wood texture-15.png'), (W, H)).convert('RGBA')
+    cc = ImageOps.grayscale(S.raw('images', 'Light gray concrete mineral texture-4.png'))     # no wood on wood (her note: the hourglass is wood)
+    g['bench'] = ImageOps.fit(ImageOps.colorize(ImageOps.autocontrast(cc), (214, 192, 150), (246, 236, 214)), (W, H)).convert('RGBA')
     g['glass'] = P.thing('Classic wooden hourglass with flowing sand-238.png', 420, 'smalldots', OCHRE, scale=0.3, strength=0.6)
     g['making'] = P.pill_m('making one [smoothie]', 58, INK, CRM); g['start'] = P.caption('start to', 170, OCHRE); g['finish'] = P.caption('finish', 230, INK)
     g['starts'] = P.caption('it starts as', 140, INK); g['pile'] = P.pill_m('[a pile of fruit]', 58, INK, CRM)

@@ -1,66 +1,62 @@
-"""04 A or B? (even: MADE Awelier). World: sky-blue paper, two Polaroids facing each other, round A and B stickers.
-The hook types on while A and B bounce in; the two Polaroids fly in from opposite sides; quick A/B cuts with the
-matching sticker in the corner; one big Polaroid of both, with the stickers wiggling either side."""
-from engine import Layers, pop, fly, wiggle, rot_pt, polaroid_frame, W, H, INK, BUTTER
-import collage as C
+"""04 A or B?, approved 2026-10-19 (motion test build/motion_04.py, after her note on the arrows).
+Three clips are real CapCut clip layers: version A, version B (each as a card, on the scale, full frame, on the phone,
+in the split) and the pick at the end. Everything else (marble stage, scale, notes, poll, doodles, DM Serif words) is a
+flipbook rendered from the motion test (build/capcut_b2b.py on build/motion_capcut.py). Editable Montserrat: the two
+names, the notes, the A and B lines, the keyword and the shop line.
+CapCut limits: the windows on the scale have no name tags (they moved with the scale); the strips into the split are
+a plain split; the strip slices show the clip under tinted strips."""
+from PIL import Image
+import capcut_b2b as B
+import motion_04 as M
+import motion_capcut as MC
+import play as P
+import play_extra as X
 
-SKY = (206, 226, 241); SAGE = (205, 222, 200)
-SPEC = dict(num='04', title='A or B?', subtitle='12.5 seconds. Three clips.', font='awelier',
-            dir='04-a-or-b', folder='Template 04 - A or B', project='Scrolly 04 A or B', cover_at=1.6,
-            slots=[('Version A, close up', 'One colour, scent or style'),
-                   ('Version B, close up', 'Same framing as A'),
-                   ('Both together', 'Side by side on a table')],
-            test_clips=[('IMG_1432', 0.3), ('IMG_1417', 0.3), ('IMG_1463', 0.3)])
-
-def pol_parts(g, name, t, z, c, tilt, size, border, bottom, slot, caption, motion_from, seed, kf_extra=None):
-    """A Polaroid that flies in from motion_from: clip, frame and caption move together."""
-    pw, ph = size; win = (pw - 2 * border, ph - border - bottom)
-    win_c = rot_pt((c[0], c[1] - ph / 2 + border + win[1] / 2), c, tilt)
-    cap_c = rot_pt((c[0], c[1] + ph / 2 - bottom / 2), c, tilt)
-    def mo(target):
-        m = fly((target[0] + motion_from[0] - c[0], target[1] + motion_from[1] - c[1]), target)
-        m['rot'] = [(0, tilt * 4), (0.3, -tilt * 0.6), (0.5, tilt)]
-        if kf_extra: kf_extra(m, target)
-        return m
-    g.clip(slot, t, z, win_c, (win[0] + 6, win[1] + 6), tilt, mo(win_c))
-    g.art(name, polaroid_frame(size, border, bottom, seed), t, z + 1, c, tilt, mo(c))
-    g.text('ink', 11 if pw < 600 else 13, caption, t, 30 + z, cap_c, tilt, mo(cap_c))
+SPEC = dict(num='04', title='A or B?', subtitle='20 seconds. Three clips: version A, version B, you picking one.',
+            font='montserrat', dir='04-a-or-b', folder='Template 04 - A or B', project='Scrolly 04 A or B', cover_at=1.2,
+            slots=[('Version A', 'Version A of your product, upright, close'),
+                   ('Version B', 'Version B, filmed the same way'),
+                   ('You picking one', 'Your hand picking one up')],
+            test_clips=[('IMG_1422', 7.0), ('IMG_1418', 2.0), ('IMG_1401', 0.5)])
+WINE, BABY, WHITE = X.WINE, X.BABY, (255, 255, 255)
 
 def layers():
-    g = Layers()
-    T = (0, 2.0)
-    g.art('bg-hook', C.paper((W, H), SKY, seed=41), T, 0, (540, 960))
-    g.text('awelier', 26, ('Which one', 'Which one'), T, 20, (540, 560), typewriter=0.4)
-    g.text('awelier', 26, ('are you?', 'are you?'), T, 21, (540, 720), kf={'scale': pop(0.45, 1.2)})
-    g.art('A-hook', C.letter_sticker('A', 260, BUTTER), T, 2, (330, 1180), -8, {'scale': pop(0.7, 1.3), 'rot': wiggle(1.1, 2.0, 7, base=-8)})
-    g.art('B-hook', C.letter_sticker('B', 260, SAGE), T, 3, (750, 1180), 8, {'scale': pop(0.9, 1.3), 'rot': wiggle(1.3, 2.0, 7, base=8)})
-
-    T = (2.0, 5.5)
-    g.art('bg-pair', C.paper((W, H), SKY, seed=42), T, 0, (540, 960))
-    pol_parts(g, 'pol-A', T, 2, (285, 980), -5, (520, 690), 26, 120, 0, ('[name A]', 'Shark'), (-700, 980), 43)
-    pol_parts(g, 'pol-B', T, 4, (795, 1000), 5, (520, 690), 26, 120, 1, ('[name B]', 'Samsung'), (1800, 1000), 46)
-    g.art('A-pair', C.letter_sticker('A', 140, BUTTER), T, 8, (100, 650), -10, {'scale': pop(0.7, 1.3), 'rot': wiggle(1.1, 3.5, 6, base=-10)})
-    g.art('B-pair', C.letter_sticker('B', 140, SAGE), T, 9, (980, 660), 10, {'scale': pop(0.85, 1.3), 'rot': wiggle(1.25, 3.5, 6, base=10)})
-    g.text('ink', 15, ('[two moods]', 'two moods'), T, 22, (540, 1560), kf={'scale': pop(1.2)})
-
-    t, d = 5.5, 0.633
-    for k in range(6):
-        slot = k % 2; src = [0.6, 1.4, 2.2][k // 2]
-        g.clip(slot, (t, t + d), 1, (540, 960), (W, H), src=src, speed=1.15)
-        g.art(f'corner{k}', C.letter_sticker('AB'[slot], 180, [BUTTER, SAGE][slot], seed=50 + k), (t, t + d), 10,
-              (880, 320), [-8, 8][slot], {'scale': pop(0.0, 1.25)})
-        t += d
-
-    T = (t, t + 3.2)
-    g.art('bg-both', C.paper((W, H), SKY, seed=44), T, 0, (540, 960))
-    def grow(m, target):
-        c = (540, 1000)
-        for t_, s_ in [(0.8, 1.06), (1.4, 1.1), (3.2, 1.14)]:
-            m['x'].append((t_, c[0] + (target[0] - c[0]) * s_)); m['y'].append((t_, c[1] + (target[1] - c[1]) * s_))
-        m['scale'] = [(0.5, 1.0), (0.8, 1.06), (1.4, 1.1), (3.2, 1.14)]
-    pol_parts(g, 'pol-both', T, 2, (540, 1000), 2, (740, 900), 34, 150, 2,
-              ('both at [where to buy]', 'both at my shop'), (540, 2800), 47, grow)
-    g.text('awelier', 20, ('[Product name]', 'Floor care'), T, 20, (540, 270), typewriter=0.5)
-    g.art('A-end', C.letter_sticker('A', 170, BUTTER, seed=60), T, 8, (130, 560), -12, {'scale': pop(0.6, 1.3), 'rot': wiggle(1.0, 3.2, 8, base=-12)})
-    g.art('B-end', C.letter_sticker('B', 170, SAGE, seed=61), T, 9, (940, 1740), 12, {'scale': pop(0.75, 1.3), 'rot': wiggle(1.15, 3.2, 8, base=12)})
-    return g
+    b = B.Build(M.HOLDS, 14.0); g = M.setup(); stage = g['stage']
+    b.g.art('stage', stage, (0, b.end), 0, (540, 960))
+    keys = {'A': 'm', 'A2': 'm', 'B': 'c', 'B2': 'c', 'pick': 'y'}
+    extra = {'stage': B.CLEAR, 'noteA2': P.sticky('', 280, pin='pin-head-black'), 'noteB2': P.sticky('', 280, pin='pin-head-cream'),
+             'noteA': P.sticky('', 330, pin='pin-head-black')}
+    il = X.interleave
+    X.interleave = lambda a, bb, u, n=8, gap=10, line=WHITE: il(a, bb, 1.0, n, gap, line)     # CapCut: the plain split
+    try:
+        with B.flip_mode(M, g, keys, ('tagA', 'tagB', 'nameA', 'nameB', 'kw', 'shop'), extra):
+            track = b.flip(lambda t: M.frame(g, t))
+    finally:
+        X.interleave = il
+    pans = M.scale_at(g, Image.new('RGBA', (1080, 1920)), 0, 'tiltB', (540, 1150)); p = (pans[1][0], pans[1][1] - 200)
+    def dive(t):          # the camera dives into B's window (motion_b2.camera on the scale stage)
+        ts = b.R_inv(t); z = M.lerp(1, 5.5, M.ease(M.seg(ts, 6.5, 7.0)) ** 2); w, h = 1080 / z, 1920 / z
+        x0 = min(max(p[0] - w / 2, 0), 1080 - w); y0 = min(max(p[1] - h / 2, 0), 1920 - h)
+        return (p[0] - x0) * z, (p[1] - y0) * z, z, 0
+    sw, sh = P.screen_size(M.PHONE, 600); half = (W2 := 1080 // 2 - 14, 1920)
+    b.clips(track, [('m', 0, 0, 1.8, (430, 700), 5, None), ('c', 1, 0.15, 1.8, (430, 700), -5, None),
+                    ('m', 0, 3.1, 5.2, (1080, 1920), 0, None),
+                    ('m', 0, 5.25, 6.5, (330, 330), 0, 'circle'), ('c', 1, 5.85, 6.5, (330, 330), 0, 'circle'), ('c', 1, 6.5, 7.0, (330, 330), 0, 'circle', dive),
+                    ('c', 1, 7.0, 8.6, (1080, 1920), 0, None),
+                    ('c', 1, 8.3, 9.95, (sw, sh), 4, None),
+                    ('m', 0, 9.9, 11.8, half, 0, None), ('c', 1, 9.9, 11.8, half, 0, None),
+                    ('y', 2, 11.8, 14.0, (1080, 1920), 0, None)])
+    b.say('[Copper]', 'Copper', 60, 0.45, 1.65, (300, 1400), 5, BABY)
+    b.say('[Mint]', 'Mint', 60, 0.6, 1.65, (780, 1460), -1, WHITE)
+    for i, (words, test, xy, r, t0) in enumerate((('[copper +\ncordless]', 'copper +\ncordless', (234, 1182), -8, 2.2), ('[mint +\nsteam]', 'mint +\nsteam', (882, 1182), 8, 2.45))):
+        n = 'pin-head-black' if i == 0 else 'pin-head-cream'; o = MC.text_anchor(P.sticky(words, 280, pin=n), P.sticky('', 280, pin=n), r)
+        b.say(words, test, 44, t0 + 0.1, 3.1, (xy[0] + o[0], xy[1] + o[1]), -r, None)
+    b.say('A: [Copper. Cordless.]', 'A: Copper. Cordless.', 58, 3.6, 4.9, (580, 1380), 4, WINE)
+    o = MC.text_anchor(P.sticky('[so light]', 330), P.sticky('', 330), 6)
+    b.say('[so light]', 'so light', 50, 4.2, 4.9, (820 + o[0], 640 + o[1]), -6, None)
+    b.say('B: [Mint. Steam-clean.]', 'B: Mint. Steam-clean.', 58, 7.3, 8.3, (560, 1330), 0, WINE)
+    b.say('[Copper]', 'Copper', 60, 11.0, 11.8, (270, 360), 6, BABY)
+    b.say('[Mint]', 'Mint', 60, 11.0, 11.8, (810, 360), -2, WHITE)
+    b.say('"A" or "B"', '"A" or "B"', 64, 12.4, None, (520, 1290), 0, WHITE)
+    b.say('[both in my shop]', 'both in my shop', 50, 12.6, None, (520, 1400), 4, WINE)
+    return b.g

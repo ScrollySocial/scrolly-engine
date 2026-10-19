@@ -93,7 +93,7 @@ def frame(g, t):
         if t > 3.4: im = diagonal(im, c['c1'].at(t - 3.4), seg(t, 3.4, 3.65)) if t < 3.65 else im
         return im
     if t < 5.2:                                                    # 3: check 1
-        im = c['c1'].at(t - 3.4); P.say(im, g['big'][0], t, 3.75, (540, 1380), -2); put(im, g['nums'][0], (200, 1240), back_out(seg(t, 3.6, 3.9), 2.0), -8)
+        im = c['c1'].at(t - 3.4); P.say(im, g['big'][0], t, 3.75, (600, 330), -2); put(im, g['nums'][0], (130, 330), back_out(seg(t, 3.6, 3.9), 2.0), -8)   # at the top (her note)
         if t > 5.0: im = swipe(im, board(g, t, written=3, ticked=1, tick_t=5.3, write_t=None), seg(t, 5.0, 5.2), -1)
         return im
     if t < 6.8:                                                    # 4: line 1 ticked; the sheet becomes check 2; dive in
@@ -102,7 +102,7 @@ def frame(g, t):
         if t > 6.35: im = camera(im, (540, CB_C[1] + 40), lerp(1, 2.2, ease(seg(t, 6.35, 6.8)) ** 2))
         return im
     if t < 8.4:                                                    # 5: check 3
-        im = c['c3'].at(t - 6.8); P.say(im, g['big'][2], t, 6.95, (540, 1380), 2); put(im, g['nums'][2], (200, 1240), back_out(seg(t, 6.8, 7.1), 2.0), 8)
+        im = c['c3'].at(t - 6.8); P.say(im, g['big'][2], t, 6.95, (600, 330), 2); put(im, g['nums'][2], (130, 330), back_out(seg(t, 6.8, 7.1), 2.0), 8)
         if t > 8.2: im = diagonal(im, stage6(g, t), seg(t, 8.2, 8.4))
         return im
     if t < 10.0:

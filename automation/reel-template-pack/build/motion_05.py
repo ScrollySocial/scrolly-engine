@@ -51,7 +51,7 @@ def setup():
     pc = S.raw('images', 'Blank vintage cream postcard-111.png'); w_, h_ = pc.size
     paper = ImageOps.fit(pc.crop((int(w_ * 0.1), int(h_ * 0.12), int(w_ * 0.9), int(h_ * 0.88))), (W, H)).convert('RGBA')
     dots = ImageOps.colorize(ImageOps.grayscale(S.raw('doodles', 'Hand-drawn black dot pattern-21.png')), (226, 200, 118), LIGHT)   # soft dots so the words read ON the band.convert('RGBA')
-    paper.alpha_composite(torn_band(dots, (W + 40, 250), 3, 'tb', 18), (-20, 225))   # the words sit ON this band (her note)
+    paper.alpha_composite(torn_band(dots, (W + 40, 520), 3, 'b', 18), (-20, -20))   # reaches the top edge (her note)   # the words sit ON this band (her note)
     g['sheet'] = paper
     g['stills'] = [S.footage(d, (FW, FH)) for d in DET]; g['cards'] = [frame_card(s, i + 1) for i, s in enumerate(g['stills'])]
     g['nums'] = [P.sticker(f'0{i + 1}', 64, TEAL, WHITE, 'circle') for i in range(4)]

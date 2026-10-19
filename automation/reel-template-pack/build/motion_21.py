@@ -1,25 +1,25 @@
-"""#21 Small batch, motion test round 2 (2026-10-18). Her notes on round 1: gingham under the wire-rack grid read as
-"double plaid", and the only objects were tags. Round 2: a calm kraft-paper stage (the bakery counter), the count told
-by the batch clip itself splitting into 24 tiles that flip in a wave, and a different real object in each scene: a
-rubber stamp printing SMALL BATCH, the cooling rack as the stand under the clip, one kraft tag for the batch number, a
-shipping box for "ships Friday". The REAL count only (pack rule: never fake "almost gone"). Palette: butter + ink.
-Tech: one picked up, on a phone standing on the paper (whole screen = one video slot).
-Story (5 beats): hook "this week's batch: [24] [sets]" / problem: made in small batches, not a factory / product: the
-batch, one up close / proof: [one detail about this batch] / CTA: comment [KEYWORD].
-Scenes (graphics-only: 2, 5; tech: 4):
- 1 0.0  the batch from above; it splits into 24 tiles that flip over one by one (the count) and come back together;
-        "this week's batch" + [24 dumbbell sets]
- 2 1.8  KRAFT, no video: the rubber stamp comes down and prints SMALL BATCH; [24 made, by hand]
- 3 3.6  the slow pass, as a photo card resting on the real cooling rack, panning
- 4 5.2  one picked up, on a phone standing on the paper; [each one checked by hand] + one arrow up
- 5 6.8  KRAFT, no video: one kraft tag: "batch no. [07]" + [next batch: Oct 30], one burst behind the tag
- 6 8.4  one being packed, full frame; the real shipping box slides up into the corner; [yours ships Friday] + underline
- 7 10.0 CTA: Comment / [KEYWORD] / [Product name]
+"""#21 Small batch, motion test round 3 (2026-10-19). Round 2 was rejected outright ("I don't like anything about it").
+Fresh concept: the numbered edition. Small batch = each one is numbered and signed like an art print. A real fountain
+pen writes "No. [07] of [24]" on a real vintage card as you watch; a gold foil seal; the batch, close; the card turns
+over to the next batch date on a real calendar page with the date ringed. Calm blush paper stage; palette pink + wine.
+IG-friendly intro: frame 1 is the batch video, big words. Built the round-3 way (play_extra holds, locked type).
+The REAL count only (pack rule): no fake "almost gone".
+Story (5 beats): hook "only [24] made" / problem: not a factory, a small batch / product: each one numbered, by hand /
+proof: [each one signed] / CTA: comment [KEYWORD].
+Scenes (graphics-only: 2, 6):
+ 1 0.0  the batch video, full frame; big "only [24]" / "made" with sparkles
+ 2 1.8  PAPER, no video: the vintage card lands; the fountain pen writes "No. 07 of 24" across it as you watch
+ 3 3.8  one picked up, full frame; the card (carried) slides into the corner, a gold foil seal sticks onto it
+ 4 5.4  the slow pass along the batch, inside the card's window (the card is a frame now); "[each one signed by hand]"
+ 5 7.0  the card window grows to full frame: the batch, close
+ 6 8.4  PAPER: the card flips over; behind it a real calendar page; the pen rings a date: "next batch: [Oct 30]"
+ 7 10.0 one being packed, full frame; "[yours ships Friday]" + one underline
+ 8 11.6 CTA: Comment / [KEYWORD] / [Product name]
 Usage: python build/motion_21.py [seconds ...]  ->  21-small-batch/preview/motion-test.mp4 (or a test sheet)
 """
 import math, sys
 from pathlib import Path
-from PIL import Image, ImageChops, ImageDraw, ImageOps
+from PIL import Image, ImageDraw, ImageOps
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import collage as C
 import storyboard_b2 as S
@@ -27,112 +27,110 @@ import play as P
 import play_extra as X
 from story4 import swipe, diagonal
 from collage_kit import doodle, doodle_on
-from motion_b2 import Clip, put, render, camera, ease, back_out, seg, lerp, lerp2, W, H, WHITE
+from motion_b2 import Clip, put, draw_on, render, camera, ease, back_out, seg, lerp, lerp2, W, H, WHITE
 
-INK, CRM = (24, 23, 22), (246, 241, 232); BUTTER = X.BUTTER                       # her palette: butter (+ ink)
-X.use_type(BUTTER, INK); X.enable_holds()
+INK, CRM = (24, 23, 22), (246, 241, 232); WINE, PINK = X.WINE, X.PINK                 # her palette: pink + wine
+X.use_type(PINK, WINE); X.enable_holds()
 DIR = '21-small-batch'
-PHONE = 'Graphite Smartphone With Green Screen-38.png'
-HOLDS = [(1.55, 1.0), (3.35, 1.1), (4.95, 2.2), (6.55, 1.0), (8.15, 1.5), (9.75, 1.0), (12.45, 0.4)]
-
-def tag_with(text, w, px):
-    t = P.raw_cut('Blank kraft hang tag with twine-116.png', w).copy()
-    ImageDraw.Draw(t).multiline_text((t.width / 2, t.height * 0.66), text, font=S.F(X.SERIF, px), fill=INK, anchor='mm', align='center'); return P.die_cut(t, 6)
-
-def ink_word(text, px=150, color=INK):
-    """SMALL BATCH in rubber-stamp ink: rough where the ink missed (her painted dots as the gaps), a box round it."""
-    f = S.F(P.ANTON, px); l, t, r, b = f.getbbox(text); w, h = r - l + 70, b - t + 70
-    m = Image.new('L', (w, h), 0); d = ImageDraw.Draw(m); d.text((35 - l, 35 - t), text, font=f, fill=255); d.rectangle((6, 6, w - 6, h - 6), outline=255, width=10)
-    gaps = ImageOps.grayscale(S.raw('doodles', 'Hand-painted polka dots on black-15.png')).resize((w, h)).point(lambda v: 0 if v > 140 else 255)
-    im = Image.new('RGBA', (w, h), color + (0,)); im.putalpha(ImageChops.multiply(m, gaps).point(lambda v: int(v * 0.9))); return im
+CARD_W = 860; CARD_C = (540, 1040)
+HOLDS = [(1.6, 0.9), (3.6, 1.3), (5.2, 0.6), (6.8, 1.4), (8.2, 0.5), (9.8, 1.5), (11.4, 1.1), (13.95, 0.5)]
 
 def setup():
-    g = {'c': {'batch': Clip('IMG_1522', 0.0, 4.0), 'pass': Clip('IMG_1522', 0.0, 4.0), 'pick': Clip('IMG_1471', 5.5), 'pack': Clip('IMG_1474', 10.0), 'cta': Clip('IMG_1472', 1.0)}}
-    kp = ImageOps.grayscale(S.raw('images', 'Partly unrolled brown kraft paper-149.png')); w_, h_ = kp.size
-    g['kraft'] = ImageOps.fit(ImageOps.colorize(ImageOps.autocontrast(kp.crop((int(w_ * 0.25), int(h_ * 0.3), int(w_ * 0.75), int(h_ * 0.7)))), (150, 112, 70), (214, 178, 128)), (W, H)).convert('RGBA')
-    g['rack'] = C.shadow(S.fitw(Image.open(S.E.PACK / 'build' / '.cache' / 'hq' / 'Silver wire baking cooling rack-113.png').convert('RGBA'), 1060), (8, 14), 10, 110)
-    st = Image.open(S.E.PACK / 'build' / '.cache' / 'hq' / 'Vintage Rubber Stamp and Ink Pad-17.png').convert('RGBA')
-    g['stamp'] = P.style_object(S.fitw(st.crop((0, 0, int(st.width * 0.42), st.height)), 400), 'stripes', BUTTER, scale=0.3, strength=0.5, edge=8)
-    g['ink'] = ink_word('SMALL BATCH', 190)
-    g['batchtag'] = tag_with('batch no.\n[07]', 520, 96)
-    g['box'] = P.thing('Plain kraft cardboard shipping box-230.png', 460, None, None, label=P.sticker('FRIDAY', 44, INK), label_at=(0.5, 0.45)) \
-        if (S.E.PACK / 'build' / '.cache' / 'hq' / 'Plain kraft cardboard shipping box-230.png').exists() else P.thing('Unmarked cardboard shipping box-110.png', 460, None, None, label=P.sticker('FRIDAY', 44, INK), label_at=(0.5, 0.45))
-    g['week'] = P.caption("this week's batch", 120, BUTTER); g['count'] = X.hl('[24 dumbbell sets]', 64, BUTTER)
-    g['made'] = X.hl('[24 made, by hand]', 64, BUTTER); g['byhand'] = X.hl('[made by hand, one at a time]', 60, BUTTER)
-    g['checked'] = X.hl('[each one checked by hand]', 56, WHITE); g['arrow'] = doodle('arrow', 0, 130, INK)
-    g['next'] = X.hl('[next batch: Oct 30]', 60, WHITE); g['burst'] = doodle('burst', 2, 760, BUTTER)
-    g['ships'] = X.hl('[yours ships Friday]', 62, BUTTER); g['under'] = doodle('under', 0, 520, WHITE)
-    g['comment'] = P.caption('Comment', 190, BUTTER); g['kw'] = X.hl('"[KEYWORD]"', 64, WHITE); g['name'] = X.hl('[Product name]', 56, BUTTER)
+    g = {'c': {'batch': Clip('IMG_1522', 0.0, 4.0), 'pick': X.Window(Clip('IMG_1471', 0.0), 5.5, 8.0), 'pass': Clip('IMG_1522', 0.0, 4.0),
+               'pack': X.Window(Clip('IMG_1474', 0.0), 15.0, 17.0), 'cta': Clip('IMG_1472', 1.0)}}
+    tis = ImageOps.grayscale(S.raw('images', 'Blush Pink Tissue Paper Texture-9.png'))
+    g['paper'] = ImageOps.fit(ImageOps.colorize(ImageOps.autocontrast(tis), (226, 168, 192), PINK), (W, H)).convert('RGBA')
+    pc = S.raw('images', 'Blank vintage cream postcard-111.png'); w_, h_ = pc.size
+    card = pc.crop((int(w_ * 0.1), int(h_ * 0.12), int(w_ * 0.9), int(h_ * 0.88))).resize((CARD_W, int(CARD_W * 0.66))).convert('RGBA')
+    g['card'] = card; g['cw'], g['ch'] = card.size
+    pen = Image.open(S.E.PACK / 'build' / '.cache' / 'hq' / 'Vintage fountain pen with gold nib-51.png').convert('RGBA')
+    g['pen'] = C.shadow(S.fitw(pen, 760), (10, 22), 14, 110); g['penL'] = 760
+    f = S.F(S.HAND, 120); txt = 'No. 07 of 24'; l, t, r, b = f.getbbox(txt)
+    hw = Image.new('RGBA', (r - l + 20, b - t + 30), (0, 0, 0, 0)); ImageDraw.Draw(hw).text((10 - l, 10 - t), txt, font=f, fill=WINE, stroke_width=2, stroke_fill=WINE); g['hand'] = hw
+    seal = P.raw_cut('Blank gold foil seal sticker-175.png', 230).copy(); ImageDraw.Draw(seal).text((seal.width / 2, seal.height / 2), 'small\nbatch', font=S.F(X.SERIF, 52), fill=WINE, anchor='mm', align='center')
+    g['seal'] = P.die_cut(seal, 6)
+    cal = S.card('fall', 'Minimal October calendar page-40.png', 820); g['cal'] = C.shadow(cal, (8, 14), 14, 100); g['calsize'] = cal.size
+    g['only'] = P.caption('only [24]', 260, WHITE); g['made'] = P.caption('made this week', 140, WHITE)
+    g['numbered'] = P.caption('each one', 170, INK); g['numbered2'] = P.caption('numbered', 220, INK); g['each'] = X.hl('[each one signed by hand]', 60, WINE); g['next'] = X.hl('next batch: [Oct 30]', 64, WHITE)
+    g['ships'] = X.hl('[yours ships Friday]', 62, PINK); g['under'] = doodle('under', 0, 520, WHITE); g['ring'] = doodle('frame', 0, 190, WINE)
+    g['comment'] = P.caption('Comment', 190, WHITE); g['kw'] = X.hl('"[KEYWORD]"', 64, WHITE); g['name'] = X.hl('[Product name]', 56, WINE)
     return g
 
-def tiles(im, t, t0):
-    """The frame splits into 4 x 6 tiles that flip over one by one (the count), then settle back."""
-    cols, rows = 4, 6; tw, th = W // cols, H // rows; out = Image.new('RGBA', (W, H), (214, 178, 128, 255))
-    for k in range(cols * rows):
-        cx, cy = k % cols, k // cols; u = seg(t, t0 + k * 0.04, t0 + k * 0.04 + 0.35); sx = abs(math.cos(math.pi * u))
-        tile = im.crop((cx * tw, cy * th, (cx + 1) * tw, (cy + 1) * th)); gap = 6 if 0 < u < 1 else 0
-        if u <= 0 or u >= 1: out.alpha_composite(tile, (cx * tw, cy * th)); continue
-        tw2 = max(2, int((tw - gap) * sx)); tile = tile.resize((tw2, th - gap)); out.alpha_composite(tile, (int(cx * tw + (tw - tw2) / 2), cy * th + gap // 2))
-    return out
+def pen_at(im, g, nib, k=1.0):
+    """The real fountain pen with its nib at `nib`, held at a writing angle."""
+    L = g['penL'] * k; a = math.radians(35); put(im, g['pen'], (nib[0] + 0.5 * L * math.cos(a), nib[1] - 0.5 * L * math.sin(a)), k, 35)
 
-def stage2(g, t):
-    im = g['kraft'].copy(); down = ease(seg(t, 2.1, 2.3)); up = ease(seg(t, 2.45, 2.7))
-    if t >= 2.3: put(im, g['ink'], (540, 900), 1, -6)
-    if t >= 1.9 and up < 1: put(im, g['stamp'], (540, lerp(-400, 760, down) - 1200 * up), 1, -6)
-    P.say(im, g['made'], t, 2.6, (540, 1200), 2)
-    return im
-
-def stage3(g, t):
-    """The slow pass along the batch; white marker strokes paint across the top and turn the footage into a pencil
-    drawing (her style board #14: real footage into a drawing = "made by hand / back to basics")."""
-    im = g['c']['pass'].at(t - 3.6)
-    strokes = [((80, 260 + i * 120), (1000, 200 + i * 120)) for i in range(7)]
-    im = X.sketch_over(im, ease(seg(t, 3.8, 4.6)), strokes, 160)
-    P.say(im, g['byhand'], t, 4.5, (540, 1250), -2)
-    return im
-
-def stage4(g, t):
-    im = g['kraft'].copy(); k = ease(seg(t, 5.2, 5.5))
-    put(im, P.on_screen(PHONE, 480, g['c']['pick'].at(t - 5.2)), (540, lerp(2400, 800, k)), 1, -3)
-    P.say(im, g['checked'], t, 5.5, (540, 1460), -2); doodle_on(im, t, 5.8, g['arrow'], (540, 1350), 90)
-    return im
-
-def stage5(g, t):
-    im = g['kraft'].copy(); doodle_on(im, t, 7.05, g['burst'], (540, 1000), 0)
-    put(im, g['batchtag'], (540, lerp(-700, 1000, back_out(seg(t, 6.8, 7.15), 1.4))), 1, 4 * math.sin(t * 2))
-    P.say(im, g['next'], t, 7.3, (540, 1460), -2)
+def card_scene(g, t, t_in, write_t=None, clip=None, y=None, scale=1.0):
+    """The vintage card on the paper; the pen writes the number from write_t; or a clip plays in its window."""
+    im = g['paper'].copy(); k = back_out(seg(t, t_in, t_in + 0.35), 1.3) if t_in is not None else 1
+    c = g['card'].copy()
+    hx, hy = int(g['cw'] / 2 - g['hand'].width / 2), int(g['ch'] * 0.5 - g['hand'].height / 2)
+    if clip is not None:
+        ins = 40; c.alpha_composite(ImageOps.fit(clip, (g['cw'] - 2 * ins, g['ch'] - 2 * ins)).convert('RGBA'), (ins, ins))
+    elif write_t is not None:
+        u = seg(t, write_t, write_t + 1.1)
+        if u > 0:
+            hw = g['hand'].copy(); a = hw.split()[3]; ImageDraw.Draw(a).rectangle((int(hw.width * u), 0, hw.width, hw.height), fill=0); hw.putalpha(a); c.alpha_composite(hw, (hx, hy))
+    cy = (CARD_C[1] if y is None else y); put(im, C.shadow(c, (10, 18), 16, 110), (CARD_C[0], lerp(2400, cy, k)), scale, -3)
+    if write_t is not None and clip is None and 0 < seg(t, write_t - 0.2, write_t + 1.4) < 1:
+        u = seg(t, write_t, write_t + 1.1); nx = CARD_C[0] - g['hand'].width / 2 + g['hand'].width * u
+        pen_at(im, g, (nx, cy + 10 - 25 * math.sin(u * 30) * (0 < u < 1)))
     return im
 
 def frame(g, t):
     c = g['c']
-    if t < 1.8:                                                    # 1: the batch; 24 tiles flip in a wave (the count)
-        im = tiles(c['batch'].at(t), t, 0.3)
-        P.say(im, g['week'], t, 0.05, (540, 330), -2); P.say(im, g['count'], t, 0.35, (540, 480), 2)
-        if t > 1.6: im = swipe(im, stage2(g, t), seg(t, 1.6, 1.8))
+    if t < 1.8:                                                    # 1: the batch, big words, sparkles
+        im = c['batch'].at(t); P.say(im, g['only'], t, 0.05, (540, 360), -3); P.say(im, g['made'], t, 0.35, (540, 560), 2)
+        X.sparkles(im, t, 0.4, [(130, 300), (960, 260), (990, 650), (100, 700)], PINK, 160)
+        if t > 1.6: im = swipe(im, card_scene(g, t, 1.8), seg(t, 1.6, 1.8))
         return im
-    if t < 3.6:
-        im = stage2(g, t)
-        if t > 3.4: im = diagonal(im, stage3(g, t), seg(t, 3.4, 3.6))
+    if t < 3.8:                                                    # 2: the pen writes the number on the card
+        im = card_scene(g, t, 1.8, write_t=2.3); P.say(im, g['numbered'], t, 1.9, (520, 360), -3); P.say(im, g['numbered2'], t, 2.1, (560, 560), 2)
+        if t > 3.6: im = diagonal(im, c['pick'].at(t - 3.6), seg(t, 3.6, 3.8))
         return im
-    if t < 5.2:
-        im = stage3(g, t)
-        if t > 5.0: im = swipe(im, stage4(g, t), seg(t, 5.0, 5.2), -1)
+    if t < 5.4:                                                    # 3: one picked up; the card (carried) in the corner, the seal sticks on
+        im = c['pick'].at(t - 3.6); u = ease(seg(t, 3.8, 4.2)); small = card_scene_small(g, 1.0)
+        put(im, small, lerp2((540, 1040), (300, 400), u), lerp(1.0, 0.42, u) * 1.0, -6 * u)
+        k = back_out(seg(t, 4.4, 4.7), 2.2)
+        if k > 0: put(im, g['seal'], (430, 470), lerp(2.0, 0.8, min(1, k)), -12)
+        if t > 5.2: im = swipe(im, card_scene(g, t, None, clip=c['pass'].at(t - 5.2)), seg(t, 5.2, 5.4), -1)
         return im
-    if t < 6.8:
-        im = stage4(g, t)
-        if t > 6.6: im = diagonal(im, stage5(g, t), seg(t, 6.6, 6.8))
+    if t < 7.0:                                                    # 4: the slow pass inside the card's window
+        im = card_scene(g, t, None, clip=c['pass'].at(t - 5.2)); put(im, g['seal'], (CARD_C[0] + 300, CARD_C[1] - 230), 0.9, -12)
+        P.say(im, g['each'], t, 5.5, (540, 1500), -2)
         return im
-    if t < 8.4:
-        im = stage5(g, t)
-        if t > 8.2: im = swipe(im, c['pack'].at(0), seg(t, 8.2, 8.4))
+    if t < 8.4:                                                    # 5: the card window grows to full frame
+        u = ease(seg(t, 7.0, 7.5)); z = lerp(1, 1.5, u)
+        im = camera(card_scene(g, t, None, clip=c['pass'].at(t - 5.2)), CARD_C, z) if u < 1 else c['pass'].at(t - 5.2)
+        if t > 8.2: im = swipe(im, stage6(g, t), seg(t, 8.2, 8.4))
         return im
-    if t < 10.0:                                                   # 6: one being packed; the shipping box slides up
-        im = c['pack'].at(t - 8.4); put(im, g['box'], (lerp(1500, 820, ease(seg(t, 8.5, 8.9))), 1560), 1, -6)
-        P.say(im, g['ships'], t, 8.7, (480, 1300), -2); doodle_on(im, t, 9.0, g['under'], (480, 1390), -2)
-        if t > 9.8: im = swipe(im, c['cta'].at(0), seg(t, 9.8, 10.0), -1)
+    if t < 10.0:
+        im = stage6(g, t)
+        if t > 9.8: im = diagonal(im, c['pack'].at(t - 9.8), seg(t, 9.8, 10.0))
         return im
-    im = c['cta'].at(t - 10.0)                                       # 7: CTA
-    P.say(im, g['comment'], t, 10.1, (540, 1000), -3); P.say(im, g['kw'], t, 10.35, (540, 1220), 2); P.say(im, g['name'], t, 10.55, (540, 1360), -2)
+    if t < 11.6:                                                   # 7: packed
+        im = c['pack'].at(t - 9.8); P.say(im, g['ships'], t, 10.1, (540, 1380), -2); doodle_on(im, t, 10.4, g['under'], (540, 1470), -2)
+        if t > 11.4: im = swipe(im, c['cta'].at(0), seg(t, 11.4, 11.6), -1)
+        return im
+    im = c['cta'].at(t - 11.6)                                      # 8: CTA
+    P.say(im, g['comment'], t, 11.7, (540, 1000), -3); P.say(im, g['kw'], t, 11.95, (540, 1200), 2); P.say(im, g['name'], t, 12.15, (540, 1340), -2)
+    return im
+
+def card_scene_small(g, u):
+    c = g['card'].copy(); hw = g['hand']; c.alpha_composite(hw, (int(g['cw'] / 2 - hw.width / 2), int(g['ch'] * 0.5 - hw.height / 2)))
+    return C.shadow(c, (10, 18), 16, 110)
+
+def stage6(g, t):
+    """The card flips over (squash) and a real calendar page lands; the pen rings the next batch date."""
+    im = g['paper'].copy(); u = seg(t, 8.4, 8.8); sx = abs(math.cos(math.pi * u))
+    if u < 0.5:
+        cd = card_scene_small(g, 1); cd = cd.resize((max(2, int(cd.width * sx)), cd.height)); put(im, cd, CARD_C, 1, -3)
+    else:
+        k = back_out(seg(t, 8.6, 8.95), 1.3); put(im, g['cal'], (540, lerp(2400, 1060, k)), 1, 2)
+        cw, ch = g['calsize']; day = (540 - cw / 2 + cw * 0.73, 1060 - ch / 2 + ch * 0.78)   # a date square on the grid
+        if t > 9.1: doodle_on(im, t, 9.1, g['ring'], day, 0)
+        if 9.0 < t < 9.6: pen_at(im, g, (day[0] + 60 * math.cos(t * 12), day[1] + 40 * math.sin(t * 12)))
+        P.say(im, g['next'], t, 9.2, (540, 360), -2)
     return im
 
 def main():
@@ -142,7 +140,7 @@ def main():
         for i, im in enumerate(ims): sheet.paste(im.resize((360, 640)), (i * 360, 0))
         out.mkdir(parents=True, exist_ok=True); sheet.save(out / '_test.jpg', quality=85); print('test', out / '_test.jpg')
     else:
-        T = 12.5 + sum(h for _, h in HOLDS); render('21', X.with_holds(fr, HOLDS), T, out); X.strip_sheet(DIR, int(T) + 1)
+        T = 14.0 + sum(h for _, h in HOLDS); render('21', X.with_holds(fr, HOLDS), T, out); X.strip_sheet(DIR, int(T) + 1)
 
 if __name__ == '__main__':
     main()

@@ -32,7 +32,7 @@ from motion_b2 import Clip, put, render, torn_band, camera, ease, back_out, seg,
 
 INK, CRM = (28, 27, 26), (246, 241, 232); SLATE = X.WINE; LIGHT = X.BABY   # her palette: wine + baby blue (buyers change them)
 X.use_type(LIGHT, SLATE); X.enable_holds()
-HOLDS = [(1.45, 0.6), (3.05, 1.0), (4.85, 0.9), (8.25, 0.9), (9.85, 0.8), (11.75, 0.85), (13.95, 0.8)]   # reading time (must-do 14)
+HOLDS = [(1.45, 0.6), (3.05, 1.0), (4.85, 0.9), (6.45, 1.0), (8.25, 0.9), (9.85, 0.8), (11.75, 0.85), (13.95, 0.8)]   # reading time (must-do 14)
 PHONE = 'Graphite Smartphone With Green Screen-38.png'
 DIR = '04-a-or-b'
 PAN = {'level': ((0.183, 0.70), (0.85, 0.70)), 'tilt': ((0.167, 0.745), (0.84, 0.64))}   # pan centres (share of w, h)
@@ -56,7 +56,7 @@ def setup():
     g['comment'] = P.caption('Comment', 180, SLATE, 'stripes'); g['kw'] = P.pill_m('"A" or "B"', 64, CRM, INK); g['shop'] = P.pill_m('[both in my shop]', 50, INK, CRM)
     g['d_arrow'] = doodle('arrow', 0, 190, WHITE); g['d_burst'] = doodle('burst', 2, 700, CRM)
     g['noteA'] = P.sticky('[so light]', 330, pin='pin-head-black')
-    g['d_arrowS'] = doodle('arrow', 0, 180, INK)
+    g['d_arrowS'] = doodle('arrow', 0, 170, INK)
     return g
 
 def scale_at(g, im, t, which, c=(540, 1150), k=1.0):
@@ -84,7 +84,8 @@ def stage4(g, t):
         if d <= 0: continue
         p = (pans[i][0], lerp(-300, pans[i][1] - 200, d)); win = roundwin(cl.at(t - t0, (330, 330)), 330); put(im, win, p)
         put(im, (g['tagA'], g['tagB'])[i], (p[0], p[1] + 200), 0.8, (-4, 4)[i])
-    doodle_on(im, t, 5.6, g['d_arrowS'], (300, 520), -120, 6.1)
+    for i, (t0, xy) in enumerate(((5.55, (210, 640)), (6.15, (870, 560)))):    # one arrow down to EACH version as it lands (her note)
+        doodle_on(im, t, t0, g['d_arrowS'], xy, -90)
     if t >= 6.5: im = camera(im, (pans[1][0], pans[1][1] - 200), lerp(1, 5.5, ease(seg(t, 6.5, 7.0)) ** 2))
     return im
 
@@ -141,7 +142,7 @@ def main():
         for i, im in enumerate(ims): sheet.paste(im.resize((360, 640)), (i * 360, 0))
         out.mkdir(parents=True, exist_ok=True); sheet.save(out / '_test.jpg', quality=85); print('test', out / '_test.jpg')
     else:
-        render('04', X.with_holds(fr, HOLDS), 14.0 + sum(h for _, h in HOLDS), out); X.strip_sheet(DIR, 20)
+        render('04', X.with_holds(fr, HOLDS), 14.0 + sum(h for _, h in HOLDS), out); X.strip_sheet(DIR, 21)
 
 if __name__ == '__main__':
     main()

@@ -1,63 +1,44 @@
-"""06 Start to finish (even: MADE Awelier). World: graph paper and masking tape.
-The hook builds word by word; four steps of three quick cuts each, a tape label naming the step and a tape progress bar
-filling along the bottom; the finished piece lands in a Polaroid that grows, with a DONE stamp; a graph-paper CTA."""
-from engine import Layers, pop, thump, fly, wiggle, rot_pt, polaroid_frame, W, H, INK, BUTTER
-import collage as C
+"""06 Start to finish, approved 2026-10-19 (motion test build/motion_06.py, after her note: no wood on wood, a cream
+stage). Six clips are real CapCut clip layers: the raw materials, stages one to three, the finished one and the
+finished one in use (also on the phone at the end). The loading bar, hourglass, notes, doodles and DM Serif words are a
+flipbook from the motion test (build/capcut_b2b.py). Editable Montserrat: the product, the materials, the three
+stages, the "later" note, the keyword and the town line.
+CapCut limits: stage three grows out of a rectangle (no arch); stage two plays at normal speed (speed it up in CapCut)."""
+import capcut_b2b as B
+import motion_06 as M
+import motion_capcut as MC
+import play as P
+import play_extra as X
 
-SPEC = dict(num='06', title='Start to finish', subtitle='13.6 seconds. Five clips, filmed while you make it.',
-            font='awelier', dir='06-start-to-finish', folder='Template 06 - Start to finish',
-            project='Scrolly 06 Start to finish', cover_at=1.6,
-            slots=[('The raw materials', 'Lay them out on the table'),
-                   ('Step one', 'Hands at work'), ('Step two', 'Hands at work'), ('Step three', 'Hands at work'),
-                   ('The finished piece', 'On its own, good light')],
-            test_clips=[('IMG_1462', 0.3), ('IMG_1460', 0.3), ('IMG_1430', 2.0), ('IMG_1433', 2.0), ('IMG_1463', 0.3)])
+SPEC = dict(num='06', title='Start to finish', subtitle='21 seconds. Six clips: materials, three stages, the finished one, in use.',
+            font='montserrat', dir='06-start-to-finish', folder='Template 06 - Start to finish', project='Scrolly 06 Start to finish',
+            cover_at=0.8,
+            slots=[('The raw materials', 'Everything before you start'), ('Stage one', 'The first step, close'),
+                   ('Stage two', 'The middle step (long is fine, speed it up)'), ('Stage three', 'The last step'),
+                   ('The finished one', 'The finished product, close'), ('In use', 'The finished one being used or held')],
+            test_clips=[('IMG_1393', 0.5), ('IMG_1387', 1.5), ('IMG_1389', 2.5), ('IMG_1390', 2.0), ('IMG_1391', 0.0), ('IMG_1394', 1.0)])
+INK, WHITE, WINE = (28, 27, 26), (255, 255, 255), X.WINE
 
 def layers():
-    g = Layers()
-    T = (0, 1.8)
-    g.art('bg-hook', C.grid_paper((W, H)), T, 0, (540, 960))
-    g.text('awelier', 24, ('Making one', 'Making one'), T, 20, (540, 520), typewriter=0.35)
-    g.text('awelier', 40, ('[product]', 'mop kit'), T, 21, (540, 720), kf={'scale': pop(0.4, 1.25)})
-    g.text('ink', 17, ('start to finish', 'start to finish'), T, 22, (540, 930), kf={'scale': pop(0.75, 1.15)})
-    g.art('arrow-hook', C.arrow(240, INK, 7, 50), T, 2, (540, 1200), kf={'scale': pop(1.0), 'x': wiggle(1.3, 1.8, 18, base=540)})
-
-    steps = [('[materials]', 'materials'), ('[step one]', 'soak'), ('[step two]', 'rinse'), ('[step three]', 'mop')]
-    t, d = 1.8, 0.65
-    for s in range(4):
-        st = t
-        for src in (0.0, 1.0, 2.0):
-            g.clip(s, (t, t + d), 1, (540, 960), (W, H), src=src, speed=1.15)
-            t += d
-        g.art(f'tape-label{s}', C.tape(560, 130, seed=60 + s, alpha=235), (st, t), 10, (540, 300), [-3, 2, -2, 3][s],
-              {'scale': pop(0.0, 1.12)})
-        g.text('ink', 16, steps[s], (st, t), 20, (540, 300), [-3, 2, -2, 3][s], {'scale': pop(0.05, 1.12)})
-        g.art(f'tape-bar{s}', C.tape(230, 80, seed=70 + s, color=BUTTER, alpha=240), (st, 9.6), 11 + s,
-              (170 + 247 * s, 1690), [-2, 1, -1, 2][s], {'scale': pop(0.1, 1.15)})
-    # finished: a Polaroid lands and grows, DONE thumps
-    T = (t, t + 1.8)
-    g.art('bg-done', C.grid_paper((W, H), seed=72), T, 0, (540, 960))
-    c, tilt, pw, ph, b, bot = (540, 1050), -3, 760, 930, 36, 150
-    win = (pw - 2 * b, ph - b - bot)
-    win_c = rot_pt((c[0], c[1] - ph / 2 + b + win[1] / 2), c, tilt)
-    grow = [(0.5, 1.0), (0.9, 1.12), (1.3, 1.18), (1.8, 1.2)]
-    def mo(target):
-        m = fly((target[0], target[1] + 1900), target); m['rot'] = [(0, 12), (0.3, -5), (0.5, tilt)]; m['scale'] = list(grow)
-        for t_, s_ in grow[1:]:
-            m['x'].append((t_, c[0] + (target[0] - c[0]) * s_)); m['y'].append((t_, c[1] + 30 + (target[1] - c[1]) * s_))
-        return m
-    g.clip(4, T, 2, win_c, (win[0] + 6, win[1] + 6), tilt, mo(win_c))
-    g.art('pol-done', polaroid_frame((pw, ph), b, bot, 73), T, 3, c, tilt, mo(c))
-    g.art('stamp-done', C.stamp('DONE', (300, 300), (178, 62, 44), seed=74, round_=True), T, 4, (830, 330), 12,
-          {'scale': thump(0.55, 2.0)})
-    g.art('burst-done', C.burst(600, INK, 6), T, 5, (830, 330), kf={'scale': pop(0.7, 1.1)})
-    t += 1.8
-    # CTA
-    T = (t, t + 2.2)
-    g.art('bg-cta', C.grid_paper((W, H), seed=75), T, 0, (540, 960))
-    g.text('awelier', 30, ('[Product name]', 'Mop kit'), T, 20, (540, 720), typewriter=0.45)
-    g.text('ink', 14, ('made by hand in [town]', 'made by hand in Ohio'), T, 21, (540, 900), kf={'scale': pop(0.5)})
-    g.text('ink', 14, ('shop at [where to buy]', 'shop at the link in my bio'), T, 22, (540, 1010), kf={'scale': pop(0.7)})
-    g.art('tape-cta', C.tape(620, 90, seed=76, color=BUTTER, alpha=240), T, 2, (540, 1180), -2, {'scale': pop(0.9, 1.1)})
-    g.art('check-cta', C.check(130, INK, 10), T, 3, (230, 1420), kf={'scale': pop(1.1, 1.3)})
-    g.art('heart-cta', C.heart(110, INK, 6, seed=77), T, 4, (850, 1420), kf={'scale': pop(1.25, 1.3), 'rot': wiggle(1.6, 2.2, 8)})
-    return g
+    b = B.Build(M.HOLDS, 15.0); g = M.setup(); bench = g['bench']
+    b.g.art('bench', bench, (0, b.end), 0, (540, 960))
+    keys = {'raw': 'm', 's1': 'c', 's2': 'y', 's3': 'b', 'done': 'o', 'done2': 'g'}
+    with B.flip_mode(M, g, keys, ('making', 'pile', 'kw', 'town'), {'bench': B.CLEAR, 'sp': [B.BLANK] * 3, 'later': P.sticky('', 440, pin='pin-head-black')}):
+        track = b.flip(lambda t: M.frame(g, t))
+    full = (1080, 1920); sw, sh = P.screen_size(M.PHONE, 640)
+    segs = [('m', 0, 0, 0.5, full, 0, None), ('c', 1, 0.5, 1.0, full, 0, None), ('b', 3, 1.0, 1.5, full, 0, None), ('g', 5, 1.5, 2.0, full, 0, None),
+            ('m', 0, 2.0, 3.6, (560, 700), 4, None), ('c', 1, 3.35, 5.2, full, 0, None), ('y', 2, 6.35, 8.2, full, 0, None),
+            ('b', 3, 7.95, 9.4, (600, 940), 0, None), ('b', 3, 9.4, 9.8, full, 0, None)]
+    segs += [(k, i + 1, 9.9, 11.2, (250, 320), r, None) for i, (k, r) in enumerate((('c', 7), ('y', -4), ('b', 3)))]
+    segs += [('o', 4, 11.2, 11.9, full, 0, None), ('g', 5, 11.9, 13.0, full, 0, None), ('g', 5, 13.0, 15.0, (sw, sh), 3, None)]
+    b.clips(track, segs)
+    b.say('making one [smoothie]', 'making one candle', 58, 0.05, 1.75, (540, 480), 4, WINE)
+    b.say('[a pile of fruit]', 'a pile of wax', 58, 2.5, 3.35, (440, 1430), 0, WINE)
+    for (words, test), (t0, t1, r) in zip((('[stage one: prep]', 'stage one: melt'), ('[stage two: mix]', 'stage two: pour'), ('[stage three: blend]', 'stage three: set')),
+                                          ((3.7, 4.95, 4), (6.75, 7.95, 0), (8.3, 9.55, 4))):
+        b.say(words, test, 56, t0, t1, (540, 1380), r, WINE)
+    o = MC.text_anchor(P.sticky('[20 minutes\nlater]', 440), P.sticky('', 440), 6)
+    b.say('[20 minutes\nlater]', '2 days\nlater', 64, 5.7, 6.35, (770 + o[0], 660 + o[1]), -6, None)
+    b.say('"[KEYWORD]"', '"MADE"', 64, 13.55, None, (520, 480), 0, WHITE)
+    b.say('[handmade in Austin]', 'handmade in Leeds', 50, 13.75, None, (520, 600), 4, WINE)
+    return b.g
