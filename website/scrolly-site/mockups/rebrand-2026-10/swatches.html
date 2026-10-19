@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Scrolly colour picks</title>
+<meta name="robots" content="noindex">
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;800&display=swap" rel="stylesheet">
+<style>
+/* Swatch board for the 2026-10 rebrand: hot pink shades x truer navies, plus baby pink accents. Mockup only. */
+:root{--lav:#e3d9ff}
+*{box-sizing:border-box}
+body{margin:0;background:#fff;color:#111;font:17px/1.45 "Jost",Arial,sans-serif;padding:28px 16px 60px}
+h1,h2,h3{font-family:Georgia,serif;font-weight:400;margin:0}
+h1{font-size:2.2rem;margin-bottom:6px}
+.note{max-width:60em;margin:0 0 28px;color:#444}
+h2{font-size:1.7rem;margin:40px 0 14px}
+.strip{display:flex;flex-wrap:wrap;gap:12px}
+.chip{width:170px;border-radius:12px;overflow:hidden;border:1px solid #ddd}
+.chip i{display:block;height:90px}
+.chip span{display:block;padding:8px 10px;font-size:15px}
+.chip b{display:block;font-weight:800}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px}
+.cell{background:var(--lav);border-radius:14px;padding:22px 20px 20px}
+.cell h3{font-size:2rem;line-height:1;letter-spacing:-.03em}
+.cell h3 em{display:block}
+.cell .btn{display:inline-flex;margin-top:16px;min-height:48px;align-items:center;padding:12px 22px;border-radius:999px;font:800 15px/1 "Jost",Arial,sans-serif;letter-spacing:.14em;text-transform:uppercase}
+.cell .tag{display:inline-block;margin:14px 0 0 8px;padding:7px 12px;border-radius:999px;font:500 15px/1 "Jost",Arial,sans-serif}
+.cell .meta{margin-top:12px;font-size:15px;color:#2a2a2a}
+.band{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px}
+.band div{border-radius:14px;padding:22px 20px}
+.band p{margin:6px 0 0;font-size:15px}
+</style>
+</head>
+<body>
+<h1>Colour picks</h1>
+<p class="note">Each card is the lavender page with a navy headline, a hot pink button (navy text) and a baby pink tag. The numbers are contrast for the button text: 4.5 or more passes for small text.</p>
+
+<h2>Hot pinks</h2>
+<div class="strip" id="pinks"></div>
+
+<h2>Navies</h2>
+<div class="strip" id="navies"></div>
+
+<h2>Baby pinks (accent)</h2>
+<div class="strip" id="babies"></div>
+
+<h2>Together on lavender</h2>
+<div class="grid" id="grid"></div>
+
+<h2>Baby pink as a section background</h2>
+<div class="band" id="band"></div>
+
+<script>
+var PINKS=[['P1','#ff2d95','Current (cool neon)'],['P2','#ff1493','Classic hot pink'],['P3','#f72585','Magenta lean'],['P4','#ff3b7f','Warmer, a bit coral'],['P5','#ff5fae','Lighter bubblegum']];
+var NAVIES=[['N0','#0e1543','Current (reads plum)'],['N1','#0b1f3f','True navy'],['N2','#0a1930','Ink navy, near black'],['N3','#14305e','Brighter classic navy']];
+var BABIES=[['B1','#fbd3e4','Soft baby pink'],['B2','#ffdce9','Paler, almost blush'],['B3','#f6c3d8','A touch deeper']];
+function lum(h){return h.slice(1).match(/../g).map(function(x){var v=parseInt(x,16)/255;return v<=.03928?v/12.92:Math.pow((v+.055)/1.055,2.4)}).reduce(function(s,v,i){return s+v*[.2126,.7152,.0722][i]},0)}
+function cr(a,b){var x=lum(a),y=lum(b);return ((Math.max(x,y)+.05)/(Math.min(x,y)+.05)).toFixed(1)}
+function chip(list,id){document.getElementById(id).innerHTML=list.map(function(c){return '<div class="chip"><i style="background:'+c[1]+'"></i><span><b>'+c[0]+' '+c[1]+'</b>'+c[2]+'</span></div>'}).join('')}
+chip(PINKS,'pinks');chip(NAVIES,'navies');chip(BABIES,'babies');
+var g='';
+NAVIES.slice(1).forEach(function(n){PINKS.forEach(function(p){
+  g+='<div class="cell"><h3 style="color:'+n[1]+'">Build an audience <em>that buys.</em></h3>'+
+     '<a class="btn" style="background:'+p[1]+';color:'+n[1]+'">Get started</a>'+
+     '<span class="tag" style="background:#fbd3e4;color:'+n[1]+'">New</span>'+
+     '<p class="meta">'+p[0]+' + '+n[0]+': button text '+cr(p[1],n[1])+':1</p></div>';
+})});
+document.getElementById('grid').innerHTML=g;
+document.getElementById('band').innerHTML=BABIES.map(function(b){return '<div style="background:'+b[1]+';color:#0b1f3f"><h3 style="font-size:1.8rem">Some things can’t be bought. <em>They’re earned.</em></h3><p>'+b[0]+' '+b[1]+' with true navy text, '+cr(b[1],'#0b1f3f')+':1</p></div>'}).join('');
+</script>
+</body>
+</html>
