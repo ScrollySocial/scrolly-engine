@@ -51,6 +51,9 @@ _anton = sorted((LOCAL / 'CapCut' / 'User Data' / 'Cache' / 'AITextTemplate' / '
 if _anton: BUNDLED_FONTS['anton'] = _anton[0]       # Fall f2's editable caps (OFL); not in CapCut's font library
 _mont = sorted((LOCAL / 'CapCut' / 'User Data' / 'Cache' / 'AITextTemplate' / 'Resource').glob('*/Montserrat-Bold.otf'))
 if _mont: BUNDLED_FONTS['montserrat'] = _mont[0]   # the locked editable font (FRAMEWORK, 2026-10-18), OFL, shipped with the project
+# Bodoni Moda (OFL) is also in CapCut's library (FONT_IDS), but a library font only resolves if the buyer's CapCut has
+# it cached, so ship our copy too. The resource id stays on the text, so CapCut can still fetch it by id.
+BUNDLED_FONTS['bodoni'] = HERE.parent / 'assets' / 'fonts' / 'BodoniModa.ttf'
 INKFREE = 'C:/Windows/Fonts/Inkfree.ttf'                                        # ships with Windows 10 and 11
 SEG, SEGB = 'C:/Windows/Fonts/segoeui.ttf', 'C:/Windows/Fonts/segoeuib.ttf'
 SLOT_COLORS = [(243, 233, 220), (228, 236, 242), (237, 228, 240), (227, 239, 230), (246, 232, 214), (232, 230, 244)]

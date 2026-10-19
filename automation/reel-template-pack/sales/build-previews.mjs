@@ -84,17 +84,18 @@ function page(d) {
     <li>The CapCut project, with ${esc(d.projectNote)}</li>
     <li>A Windows installer that puts the template on CapCut's home screen with your clips already in it</li>
     <li>A recipe card: every clip, how long it is and what to film</li>
-    <li>A one-page How to use guide</li></ul>
+    <li>A one-page How to use guide</li>
+    <li>A phone kit for CapCut on your phone: the shot guide video, the recipe card and every graphic as a PNG</li></ul>
     ${d.formatNote ? `<p style="margin-top:20px">${ph(d.formatNote)}</p>` : ''}</div>
 </div></section>
 <section class="s3-sec"><div class="s3-wrap"><h2 class="s3-h2">How it works</h2><ol class="steps">${steps}</ol></div></section>
 <section class="s3-sec"><div class="s3-wrap s3-split who"><h2 class="s3-h2">Who it's for</h2>
-  <div><p class="s3-lede">${esc(d.who)}</p><p>You'll need CapCut for computer on a Windows PC. Mac isn't supported yet.</p></div></div></section>
+  <div><p class="s3-lede">${esc(d.who)}</p><p>The full template installs in CapCut for computer on a Windows PC, and a phone kit is included for CapCut on your phone. Mac isn't supported yet.</p></div></div></section>
 <section class="s3-sec"><div class="s3-read"><h2 class="s3-h2">Questions</h2><div class="s3-faq">${faq}</div></div></section>
 <section class="s3-sec s3-dark cta" id="buy"><div class="s3-read">
   <h2 class="s3-h2 or">${esc(d.ctaHead)}</h2>
   <a class="s3-btn" href="#buy">${esc(d.button)}, ${ph('[PRICE]')}</a>
-  <p class="s3-fine">${ph('[LAUNCH FORMAT line].')} Windows only for now.</p>
+  <p class="s3-fine">${ph('[LAUNCH FORMAT line].')} Installer for Windows, phone kit included.</p>
   <p class="s3-fine">${ph('[REEL EDITOR UPSELL: one line once it has a name, link and launch date]')}</p>
 </div></section>
 <section class="s3-sec notes"><div class="s3-wrap">
@@ -103,7 +104,7 @@ function page(d) {
   <h3 class="s3-h3">Listing description</h3><p class="listing">${esc(d.listing)}</p>
   <h3 class="s3-h3">Demo footage to film (your own product only)</h3>
   <p style="max-width:46em;margin-bottom:16px">${esc(d.demoNote)}</p>
-  <table><thead><tr><th>Template</th><th>Clips to film</th><th>Real material it needs</th></tr></thead><tbody>${demo}</tbody></table>
+  <table><thead><tr><th>Template</th><th>Clips to film</th><th>You'll also need</th></tr></thead><tbody>${demo}</tbody></table>
 </div></section>
 </div></div></body></html>`;
 }
@@ -118,7 +119,7 @@ const STEPS = (extra) => [
 const FAQ = (fonts, extra = []) => [
   ['Do I need CapCut on a computer?', 'Yes. The templates open in CapCut for computer (the free download). Install it and open it once before you run the installer.'],
   ['Does it work on a Mac?', 'Not yet. The installer is Windows only for now. [MAC: waitlist link or date, if you decide on one]'],
-  ['Can I use it on my phone?', '[PHONE DECISION: with the phone kit in the zip, "rebuild each template in the CapCut phone app with the shot guide video and the artwork files"; without it, "the full template needs CapCut on a Windows computer; you can film everything on your phone"]'],
+  ['Can I use it on my phone?', 'Yes. Every template comes with a phone kit: the shot guide video, the recipe card and the graphics as PNG images. In the CapCut phone app you add your clips and words, then place the graphics as overlays. The full animation is built for you only in the computer version.'],
   ['Is music included?', "No sound files are included, so your Reel never gets muted for a song you don't have the rights to. Each template suggests a sound [SOUND PICKS]. Add it in Instagram after you upload: on a business account, Instagram only shows sounds cleared for business use."],
   ['Do I need to install any fonts?', fonts],
   ['How do I change the words?', 'Double-click a text box in CapCut and type over the [brackets]. Keep it to a few words so people can read it in time.'],
@@ -126,7 +127,7 @@ const FAQ = (fonts, extra = []) => [
   ['Windows says it protected my PC. Is that normal?', "Yes, Windows shows this for installers it hasn't seen before. Choose More info, then Run anyway."],
   ['What if I want a different clip in one shot?', 'Right-click the clip on CapCut\'s timeline, choose Replace, and pick another.'],
 ];
-const DEMO_NOTE = "One finished demo Reel per template, made from your own clips run through the real installer. Never the after.mp4 previews (they show other brands' products). Real words only: where you have no real material yet, leave the template's [brackets] showing. Also film a short screen recording of the install for the page.";
+const DEMO_NOTE = "One finished demo Reel per template, made from your own clips run through the real installer. Never the after.mp4 previews (they show other brands' products). Also film a short screen recording of the install for the page.";
 
 const halloween = {
   file: 'halloween-sales-preview.html',
@@ -135,7 +136,7 @@ const halloween = {
   headlines: ['Cute Halloween Reels for your shop, ready for your clips', 'Four Halloween Reels. Your clips, your words, posted before the 31st.', 'Bats, webs and a blood moon, all working for your sales', 'Spooky-cute Reels for your October sale'],
   sub: 'Film a few clips on your phone, drop them in a folder, and each template opens in CapCut with your clips already in place.',
   button: 'Get the Halloween pack',
-  priceLine: '4 CapCut templates. [LAUNCH FORMAT line]. Windows only for now.',
+  priceLine: '4 CapCut templates. Phone kit included. [LAUNCH FORMAT line].',
   getTitle: 'Four Reels, four jobs',
   getLede: 'Each template is a whole Reel with a business job and an ending that tells people where to buy. Cute and playful.',
   projectNote: 'real photographed props and the playful layer (washi tape, sticker edges, handwritten words)',
@@ -148,22 +149,22 @@ const halloween = {
   ],
   steps: STEPS(''),
   who: 'Online business owners and creators who want a Halloween Reel that sells something: a product, a sale, a freebie or an offer. It works for physical products, digital products and services, since every clip is your own footage.',
-  faq: FAQ('No. The big Halloween lettering is part of the artwork, and the words you edit use Arial, which comes with Windows. [h6: confirm after the font test]'),
+  faq: FAQ('No. The big Halloween lettering is part of the artwork, and the words you edit use Arial, which comes with Windows, or Bodoni Moda, which comes inside the template.'),
   ctaHead: 'Post your Halloween Reel before the 31st',
-  listing: "Four cute Halloween Reel templates for CapCut on Windows, each with a selling job: open a once-a-year sale, show what's included, share your favourites, or turn a common mistake into your offer. Film 3 to 5 clips on your phone, drop them in a folder and double-click the installer: the template opens in CapCut with your clips in place. Type your words over the brackets and export. Includes a recipe card and a one-page guide for each template. Each template suggests a sound to add in Instagram (no sound files included). Windows only for now; Mac isn't supported yet.",
+  listing: "Four cute Halloween Reel templates for CapCut on Windows, each with a selling job: open a once-a-year sale, show what's included, share your favourites, or turn a common mistake into your offer. Film 3 to 5 clips on your phone, drop them in a folder and double-click the installer: the template opens in CapCut with your clips in place. Type your words over the brackets and export. Includes a recipe card, a one-page guide and a phone kit for each template. Each template suggests a sound to add in Instagram (no sound files included). The installer is Windows only for now; Mac isn't supported yet.",
   decisions: [
     'Price.', 'Launch format: sell the 4 finished templates now, or pre-order with h1 to follow.',
     'h1 Now you see it: on hold for smoke.mp4; the page lists 4.', 'Bonus: none planned; add only if you choose one.',
-    'Phone buyers: the zips hold no phone kit. Add it, or sell as computer-only.', 'Mac: waitlist, date, or nothing.',
+    'Mac: waitlist, date, or nothing.',
     'Sound picks: none chosen for Halloween yet.', 'Reel Editor upsell: no name, link or launch yet.',
-    'Before live: check h2 and h5 in CapCut, the highlight boxes, and the h6 font on a second computer (it points at your own CapCut cache).',
+    'Before live: check h2 and h5 in CapCut and the highlight boxes, then install one zip on a second Windows computer or account. The h6 font is fixed (now inside the template).',
   ],
   demoNote: DEMO_NOTE,
   demo: [
-    ['Once in a blood moon', 'Your product close up (4 s+), you or your workspace (5 s+), your product again (3 s+)', 'A real sale you will run, or the [brackets]'],
-    ['Caught in our web', 'Your product held up (15 s+), then four things it includes or does (12, 10, 8, 6 s+)', 'Four real features'],
-    ["Things I'm batty about", 'An opening shot (3 s+), then three favourite products or tools (4 s+ each)', 'Three real favourites'],
-    ['Trick or treat', 'The trick: a common mistake acted out (5 s+), the treat: your product (6 s+), the proof: it working (6 s+)', 'A real mistake and a real offer'],
+    ['Once in a blood moon', 'Your product close up (4 s+), you or your workspace (5 s+), your product again (3 s+)', 'Your sale'],
+    ['Caught in our web', 'Your product held up (15 s+), then four things it includes or does (12, 10, 8, 6 s+)', 'Four features'],
+    ["Things I'm batty about", 'An opening shot (3 s+), then three favourite products or tools (4 s+ each)', 'Three favourites'],
+    ['Trick or treat', 'The trick: a common mistake acted out (5 s+), the treat: your product (6 s+), the proof: it working (6 s+)', 'A mistake and your offer'],
   ],
 };
 
@@ -174,7 +175,7 @@ const physical = {
   headlines: ['Your product, in a Reel people stop for', 'Film a few clips. Drop them in. Post a Reel that sells.', 'Collage Reels for physical products, ready for your clips', 'Seven Reels your product can star in this week'],
   sub: 'Real photographed props, playful collage and fast cuts. You film your product on your phone, and each template opens in CapCut with your clips already in place.',
   button: 'Get the pack',
-  priceLine: '7 CapCut templates. [LAUNCH FORMAT line]. Windows only for now.',
+  priceLine: '7 CapCut templates. Phone kit included. [LAUNCH FORMAT line].',
   getTitle: 'Seven Reels, seven selling jobs',
   getLede: "Made for small businesses that sell physical products. Each one ends with your product's name and where to buy it.",
   projectNote: 'real photographed props, collage and motion already built',
@@ -191,26 +192,25 @@ const physical = {
   steps: STEPS(', keep your product in the middle of the frame,'),
   who: 'Small business owners who sell physical products: makers, small-batch brands and anyone who packs and ships orders. If you can film your product on your phone, you can make these.',
   faq: FAQ('No. The words you edit use Montserrat, which comes inside each template, and the big lettering is part of the artwork.', [
-    ['Can I use made-up reviews or results?', "Use real ones only. What buyers said is for real reviews, word for word, with the reviewer's name hidden unless they said yes. Put it to the test is for a claim you already make, shown uncut."],
   ]),
   ctaHead: 'Your next product Reel starts here',
-  listing: "Seven Reel templates for CapCut on Windows, made for shops that sell physical products. Answer a customer question, show who it's for, make a gift guide, film the unboxing, share real reviews, prove a claim, or show every option. Film 3 to 7 clips on your phone, drop them in a folder and double-click the installer: the template opens in CapCut with your clips in place. Type your words over the brackets and export. Includes a recipe card and a one-page guide for each template. Each template suggests a sound to add in Instagram (no sound files included). Windows only for now; Mac isn't supported yet.",
+  listing: "Seven Reel templates for CapCut on Windows, made for shops that sell physical products. Answer a customer question, show who it's for, make a gift guide, film the unboxing, share real reviews, prove a claim, or show every option. Film 3 to 7 clips on your phone, drop them in a folder and double-click the installer: the template opens in CapCut with your clips in place. Type your words over the brackets and export. Includes a recipe card, a one-page guide and a phone kit for each template. Each template suggests a sound to add in Instagram (no sound files included). The installer is Windows only for now; Mac isn't supported yet.",
   decisions: [
     'Price.', 'Launch format: Volume 1, or pre-order / early access with the rest of the 25 as free updates. The page promises nothing beyond 7 until you choose.',
     '01, 02, 03 are built but not zipped (older look): include them? The page then says 10.', 'Bonus: none planned; add only if you choose one.',
-    'Phone buyers: the zips hold no phone kit. Add it, or sell as computer-only.', 'Mac: waitlist, date, or nothing.',
+    'Mac: waitlist, date, or nothing.',
     'Sound picks: none for the 7 zipped templates yet.', 'Reel Editor upsell: no name, link or launch yet.',
-    'Before live: the CapCut check of the highlight boxes, and Montserrat on a computer that never had it.',
+    'Before live: the CapCut check of the highlight boxes, then install one zip on a second Windows computer or account.',
   ],
   demoNote: DEMO_NOTE + ' Use one physical product of your own throughout, for example a Scrolly tee.',
   demo: [
-    ['A real customer question', 'The answer, shown (7 s), more of the answer (4 s), in use (3 s)', 'A question a customer really asked'],
+    ['A real customer question', 'The answer, shown (7 s), more of the answer (4 s), in use (3 s)', 'A customer question'],
     ["Who it's for", 'You talking to camera (7 s), the everyday problem (3 s), your product (3 s), you again (4 s)', ''],
     ['Three people to gift it to', 'Wrapping it as a gift (4 s), your shop scrolling on screen (4 s), your product (4 s), three people it suits (10 s each)', 'Your shop page to record'],
     ['Your order just arrived', 'The package on a doorstep (6 s), on its way (3 s), the unboxing (7 s), in use (4 s)', 'A real shipped package'],
-    ['What buyers said', 'Your product (10 s), in use (6 s), the ending (4 s)', 'Real reviews, word for word, with permission'],
-    ['Put it to the test', 'The setup (4 s), the test in one uncut take (7 s), the result (5 s), you at the end (4 s)', 'A claim you already make'],
-    ['Every option in 10 seconds', 'Six options, same framing (4 s each, option 4 for 10 s), your shop scrolling (3 s)', 'Six colours or designs of one product; skip this demo if you have fewer'],
+    ['What buyers said', 'Your product (10 s), in use (6 s), the ending (4 s)', 'Reviews to show'],
+    ['Put it to the test', 'The setup (4 s), the test in one uncut take (7 s), the result (5 s), you at the end (4 s)', 'A claim to test'],
+    ['Every option in 10 seconds', 'Six options, same framing (4 s each, option 4 for 10 s), your shop scrolling (3 s)', 'Six colours or designs'],
   ],
 };
 

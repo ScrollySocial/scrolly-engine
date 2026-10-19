@@ -23,22 +23,26 @@ below the table in section 2) and change "7" to "10" everywhere.
 | **[LAUNCH FORMAT]** | Volume 1 (sell what's finished, later templates as a separate volume) or pre-order / early access (the rest of the 25 arrive as free updates, as `starter-pack.md` planned). The page must not promise the 25 until you choose | Hero line, What you get, FAQ, listing |
 | **01, 02, 03** | Ship them in this launch? They use the older look | What you get |
 | **Bonus** | None planned in the files. Add only if you decide on one | CTA band |
-| **Phone buyers** | The zips hold no phone kit (shot guide video, artwork). Today a phone-only buyer gets the recipe card and the guide, but the graphics live in the computer project. Options: add the phone kit to each zip, or sell as computer-only | FAQ "Can I use it on my phone?" |
 | **Mac** | Not supported yet. Waitlist, date, or nothing? | FAQ, near the button |
 | **Sound picks** | Only 02 and 03 have `sounds.md`. None for the 7 zipped templates yet | FAQ, recipe cards |
 | **Reel Editor upsell** | No name, link or launch yet | One placeholder line |
 
 ## Check before this page goes live
 
+- **Phone kit: in every zip since 2026-10-18.** `python build/zip_upload.py <ids>` packs the buyer folder plus a
+  *Phone kit* folder (READ ME (phone), the shot guide video, the recipe card, every graphic as a PNG). Zips are now
+  67 to 275 MB. Most graphics are animation frames, so on a phone buyers place stills; the full motion comes from the
+  computer installer, and the FAQ says so.
 - **Text highlight boxes:** CapCut check still open.
+- **One test on a second Windows computer or account** before selling: install one zip there and open it. Templates
+  09, 20, 22 and 23 use CapCut's built-in Rectangle mask, which CapCut finds by its own id, the same way its own
+  projects do; this test is the only real proof.
 - **Fonts:** the 7 zipped templates carry Montserrat Bold inside the project (`Resources/fonts`, with its OFL
-  licence). Confirm it shows on a computer that has never had Montserrat (a second Windows account is enough).
+  licence). The second-computer test covers it.
 - **Previews:** the `after.mp4` files use your July test clips (other brands' vacuum, mop and cleaning products).
   Never use them on this page or in ads. Film the demos listed at the bottom.
 - **Windows warning:** the installer is a `.cmd` file, so Windows shows "Windows protected your PC". The guide tells
   buyers to choose More info, then Run anyway. The FAQ says the same.
-- **Honesty rules carry onto the page:** templates 08, 20 and 22 ask for real questions, real reviews and a test of a
-  claim the buyer already makes. The page repeats that, so nobody reads it as a way to fake proof.
 
 ---
 
@@ -54,7 +58,7 @@ Sub-line (under any headline):
 > Real photographed props, playful collage and fast cuts. You film your product on your phone, and each template
 > opens in CapCut with your clips already in place.
 
-Price line: **[PRICE]** for 7 CapCut templates. [LAUNCH FORMAT line, e.g. "Volume 1. Download today." or "Early
+Price line: **[PRICE]** for 7 CapCut templates. Phone kit included. [LAUNCH FORMAT line, e.g. "Volume 1. Download today." or "Early
 access: 7 today, more added as they're finished."]
 
 ## 2. What you get
@@ -85,6 +89,7 @@ Every template comes with:
 - A Windows installer that puts the template on CapCut's home screen with your clips already in it
 - A recipe card: every clip, how long it is and what to film
 - A one-page How to use guide
+- A phone kit for CapCut on your phone: the shot guide video, the recipe card and every graphic as a PNG
 
 [LAUNCH FORMAT: if pre-order or early access, add one line: "More templates are added to your download as they're
 finished, up to 25." Leave it out for Volume 1.]
@@ -102,7 +107,7 @@ finished, up to 25." Leave it out for Volume 1.]
 Small business owners who sell physical products: makers, small-batch brands and anyone who packs and ships orders.
 If you can film your product on your phone, you can make these.
 
-You'll need CapCut for computer on a Windows PC.
+The full template installs in CapCut for computer on a Windows PC, and a phone kit is included for CapCut on your phone.
 
 ## 5. FAQ
 
@@ -113,9 +118,9 @@ Yes. The templates open in CapCut for computer (the free download). Install it a
 Not yet. The installer is Windows only for now. [MAC: add a waitlist link or date if you decide on one.]
 
 **Can I use it on my phone?**
-[PHONE DECISION. If the phone kit goes in the zip: "You can rebuild each template in the CapCut phone app with the
-shot guide video and the artwork files; the guide walks you through it." If not: "The full template, with its
-graphics and motion, needs CapCut on a Windows computer. You can film everything on your phone."]
+Yes. Every template comes with a phone kit: the shot guide video, the recipe card and the
+graphics as PNG images. In the CapCut phone app you add your clips and words, then place the graphics as overlays.
+The full animation is built for you only in the computer version.
 
 **Is music included?**
 No sound files are included, so your Reel never gets muted for a song you don't have the rights to. Each template
@@ -128,10 +133,6 @@ No. The words you edit use Montserrat, which comes inside each template, and the
 **How do I change the words?**
 Double-click a text box in CapCut and type over the [brackets]. Keep it to a few words so people can read it in time.
 
-**Can I use made-up reviews or results?**
-Use real ones only. What buyers said is for real reviews, word for word, with the reviewer's name hidden unless
-they said yes. Put it to the test is for a claim you already make, shown uncut.
-
 **Windows says it protected my PC. Is that normal?**
 Yes, Windows shows this for installers it hasn't seen before. Choose More info, then Run anyway.
 
@@ -141,7 +142,7 @@ Right-click the clip on CapCut's timeline, choose Replace, and pick another.
 ## 6. CTA
 
 > **[BUTTON: Get the pack, [PRICE]]**
-> [LAUNCH FORMAT line]. Windows only for now.
+> [LAUNCH FORMAT line]. Installer for Windows, phone kit included.
 
 Upsell placeholder (one line, under the CTA or on the thank-you page):
 > [REEL EDITOR UPSELL: one line once the AI-assisted Reel Editor has a name, link and launch date.]
@@ -151,9 +152,9 @@ Upsell placeholder (one line, under the CTA or on the thank-you page):
 > Seven Reel templates for CapCut on Windows, made for shops that sell physical products. Answer a customer
 > question, show who it's for, make a gift guide, film the unboxing, share real reviews, prove a claim, or show
 > every option. Film 3 to 7 clips on your phone, drop them in a folder and double-click the installer: the template
-> opens in CapCut with your clips in place. Type your words over the brackets and export. Includes a recipe card and
-> a one-page guide for each template. Each template suggests a sound to add in Instagram (no sound files included).
-> Windows only for now; Mac isn't supported yet.
+> opens in CapCut with your clips in place. Type your words over the brackets and export. Includes a recipe card,
+> a one-page guide and a phone kit for each template. Each template suggests a sound to add in Instagram (no sound files included).
+> The installer is Windows only for now; Mac isn't supported yet.
 
 ---
 
@@ -161,18 +162,17 @@ Upsell placeholder (one line, under the CTA or on the thank-you page):
 
 The page needs one finished demo Reel per template, made from your own clips run through the real installer. Never
 use the `after.mp4` previews (other brands' products). Film one physical product of your own throughout (for
-example a Scrolly tee), and use only real words: a question someone really asked, reviews someone really wrote, a
-claim you really make. If you don't have one yet for a template, leave its [brackets] showing in the demo.
+example a Scrolly tee).
 
-| Template | Clips to film (minimum length) | Real material it needs |
+| Template | Clips to film (minimum length) | You'll also need |
 |---|---|---|
-| A real customer question | 1 the answer, shown (7 s) · 2 more of the answer (4 s) · 3 in use (3 s) | A question a customer really asked |
+| A real customer question | 1 the answer, shown (7 s) · 2 more of the answer (4 s) · 3 in use (3 s) | A customer question |
 | Who it's for | 1 you, talking to camera (7 s) · 2 the everyday problem (3 s) · 3 your product (3 s) · 4 you again (4 s) | |
 | Three people to gift it to | 1 wrapping it as a gift (4 s) · 2 a screen recording of your shop scrolling (4 s) · 3 your product (4 s) · 4 to 6 three people it suits, styled (10 s each) | Shop page to record |
 | Your order just arrived | 1 the package on a doorstep (6 s) · 2 on its way (3 s) · 3 the unboxing (7 s) · 4 in use (4 s) | A real shipped package |
-| What buyers said | 1 your product (10 s) · 2 in use (6 s) · 3 the ending (4 s) | Real reviews, used word for word with permission |
-| Put it to the test | 1 the setup (4 s) · 2 the test, one uncut take (7 s) · 3 the result (5 s) · 4 you, at the end (4 s) | A claim you already make |
-| Every option in 10 seconds | 1 to 6 one option each, same framing (4 s each, option 4 for 10 s) · 7 your shop scrolling (3 s) | Six colours or designs of one product (if you don't have six, skip this demo for now) |
+| What buyers said | 1 your product (10 s) · 2 in use (6 s) · 3 the ending (4 s) | Reviews to show |
+| Put it to the test | 1 the setup (4 s) · 2 the test, one uncut take (7 s) · 3 the result (5 s) · 4 you, at the end (4 s) | A claim to test |
+| Every option in 10 seconds | 1 to 6 one option each, same framing (4 s each, option 4 for 10 s) · 7 your shop scrolling (3 s) | Six colours or designs |
 
 Also film, for the page: a short screen recording of the install (unzip, double-click, CapCut home screen with the
 template on it). It's the strongest proof of how easy the setup is.

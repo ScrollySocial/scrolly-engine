@@ -17,6 +17,7 @@ the paid-ad front door to the AI-assisted Reel Editor. Brain row: My offers, "Re
 | `build/templates/tNN.py` | One file per template: its clips, layers, keyframes and test footage |
 | `build/collage.py` | Draws every artwork element (paper, tape, Polaroids, stamps, labels, stickers, doodles) |
 | `build/installer/` | The Windows installer a buyer double-clicks |
+| `build/zip_upload.py` | Packs the upload zip: buyer folder + a `Phone kit` folder (phone READ ME, shot guide, recipe card, artwork). `python build/zip_upload.py 08 h2 ...` |
 | `build/style_options.py`, `build/whimsy_concepts.py` | Renderers from the style rounds (history) |
 | `NN-.../buyer-folder/` | What a buyer downloads: CapCut project, `1 Put your clips here`, `2 Double-click to install`, recipe card, guide |
 | `NN-.../phone-kit/` | Shot guide video, artwork, recipe card for CapCut on a phone (artwork has to be added by hand there) |
@@ -36,7 +37,7 @@ live inside the project folder, referenced with CapCut's own folder token (`##_d
 folder can be copied to another computer. Each clip is cropped (CapCut's material crop) to its window's shape and
 sits under its own frame layer, so frames and clips move together. Fast cuts reuse one buyer clip from different start
 points at 1.15x speed. Motion is CapCut keyframes (position, rotation, uniform scale), confirmed working in her CapCut
-on template 01. Fonts: Imbue and MADE Awelier (CapCut library, download by id), Ink Free (ships with Windows).
+on template 01. Fonts: Imbue and MADE Awelier (CapCut library, download by id), Ink Free (ships with Windows). Montserrat and Bodoni Moda (OFL) ship inside the project (`BUNDLED_FONTS`), so they work on a buyer's computer whatever CapCut has cached.
 
 ## How a buyer installs it (Windows)
 
