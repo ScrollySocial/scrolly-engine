@@ -905,8 +905,8 @@ SETUP['11'] = setup_11; FRAME['11'] = frame_11; SECS['11'] = 17.0; DIRS['11'] = 
 # hidden under a sheet of wine tissue and seen only through a torn peephole; a kitchen timer counts the drop in; the
 # sheet rips in two to reveal it. Calm butter-tissue stage, one burst behind a word, one ring round the date, real dates
 # only (the buyer types theirs).
-#  1 0.0  "new drop", so something drops: the words fall in and bounce from frame 1; the product, wrapped in wine
-#         tissue, drops onto the screen with a thud; the tissue tears open with scraps flying; [something new is coming]; new drop
+#  1 0.0  the hook is in the buyer's own video (her idea): their boxed product drops onto a table; speed lines, a camera
+#         shake on the landing and dust puffs sell the fall; new / drop fall in and land on the same thud; [something new is coming]; new drop
 #  2 2.4  stage (no video): the kitchen timer winds down; dropping in / 3 2 1
 #  3 4.6  the sheet again: it rips in two and slides apart, the product full frame; finally. (one burst behind it);
 #         [PRODUCT NAME]
@@ -930,7 +930,7 @@ def tear_line(seed=5, n=30):
 
 def setup_15():
     BU = PAL['butter']
-    g = {'c': {'prod': Clip('IMG_1381', 1.0, 6.0), 'close1': Clip('IMG_1388', 0.5, 6.0), 'close2': Clip('IMG_1417', 0.5, 6.0), 'close3': Clip('IMG_1463', 1.0, 6.0), 'use': Clip('IMG_1391', 1.0, 6.0)}}
+    g = {'c': {'drop': Clip('IMG_1454', 1.0, 6.0), 'prod': Clip('IMG_1381', 1.0, 6.0), 'close1': Clip('IMG_1388', 0.5, 6.0), 'close2': Clip('IMG_1417', 0.5, 6.0), 'close3': Clip('IMG_1463', 1.0, 6.0), 'use': Clip('IMG_1391', 1.0, 6.0)}}
     tissue = ImageOps.grayscale(S.raw('images', 'Blush Pink Tissue Paper Texture-9.png'))
     g['stage'] = ImageOps.fit(ImageOps.colorize(ImageOps.autocontrast(tissue), tuple(int(v * 0.88) for v in BU), BU), (W, H)).convert('RGBA')
     g['sheet'] = ImageOps.fit(ImageOps.colorize(ImageOps.autocontrast(tissue), (78, 10, 30), (150, 42, 72)), (W, H)).convert('RGBA')
@@ -952,6 +952,11 @@ def setup_15():
     g['name'] = P.pill_m('[PRODUCT NAME]', 84, WINE)
     g['d1'] = P.pill_m('[detail one]', 78); g['d2'] = P.pill_m('[detail two]', 78, BU); g['d3'] = P.pill_m('[detail three]', 78)
     g['shop'] = P.pill_m('get it at [shop]', 76); g['comment'] = P.caption('Comment', 210, WHITE, edge=WINE, italic_last=False); g['kw'] = P.pill_once('"[KEYWORD]"', 78, WINE)
+    sheet_ = S.raw('doodles', 'Six soft watercolor blobs in a grid-22.png').convert('RGB'); g['dust'] = []
+    for cx_, cy_ in ((380, 215), (870, 215), (380, 610), (870, 610), (380, 1000), (870, 1000)):   # her watercolour blobs as soft dust
+        bl = ImageOps.grayscale(sheet_.crop((cx_ - 215, cy_ - 215, cx_ + 215, cy_ + 215))); dust = ImageOps.colorize(ImageOps.autocontrast(bl), (196, 184, 166), (250, 244, 232)).convert('RGBA')
+        dust.putalpha(bl.point(lambda v: max(0, min(235, int((252 - v) * 5)))).filter(ImageFilter.GaussianBlur(6))); g['dust'].append(dust)
+    g['speed'] = doodle('under', 0, 260, WHITE)
     g['d_under'] = doodle('under', 0, 560, PAL['butter']); g['d_ring'] = doodle('under', 0, 340, WINE); g['d_arrow'] = doodle('arrow', 9, 220, PAL['butter'])
     return g
 
@@ -1012,22 +1017,35 @@ def stage_date_15(g, t):
     doodle_on(im, t, 13.5, g['d_ring'], (540 + 0.14 * 900, 960 + 62), -4)
     return im
 
+LAND15 = 0.45                                                     # when the drop lands (the shot guide asks buyers to match it)
+
+def drop_shot_15(g, t):
+    """1: the drop: speed lines above the landing point while it falls, a camera shake on the landing, dust puffs that
+    burst out sideways along the table and fade."""
+    v = g['c']['drop'].at(t); fall = back_out(seg(t, 0.0, LAND15), 1.25)
+    shake = 22 * math.exp(-(t - LAND15) * 8) * math.sin((t - LAND15) * 48) if t > LAND15 else 0
+    z = lerp(1.38, 1.05, fall); vw, vh = int(W * z), int(H * z); v = ImageOps.fit(v, (vw, vh))
+    x0 = max(W - vw, min(0, int((W - vw) / 2 + shake))); y0 = max(H - vh, min(0, int((H - vh) / 2 - 300 * (1 - fall) + shake * 0.5)))   # always covers the frame
+    im = Image.new('RGBA', (W, H), (0, 0, 0, 255)); im.alpha_composite(v, (x0, y0))
+    if t < LAND15 + 0.05:                                         # speed lines: three single strokes riding the fall
+        for i, dx in enumerate((-150, 0, 150)):
+            y = lerp(300, 820, seg(t, 0.0, LAND15)) - (i % 2) * 80; put(im, g['speed'], (540 + dx, y), 1, 90, 1 - seg(t, LAND15 - 0.08, LAND15 + 0.05))
+    if t >= LAND15:                                               # dust puffs along the table on the landing
+        for i, (dx, dy, sc0) in enumerate(((-330, 10, 1.0), (330, 0, 1.05), (-180, -30, 0.8), (190, -40, 0.85), (-470, 30, 0.75), (470, 30, 0.75))):
+            q = seg(t, LAND15 + 0.02 * i, LAND15 + 0.85 + 0.02 * i)
+            if 0 < q < 1: put(im, g['dust'][i % len(g['dust'])], (540 + dx * (0.45 + 0.9 * q), 1480 + dy * (0.5 + q) - 90 * q), sc0 * (0.6 + 1.0 * q), i * 40 + 30 * q, min(1, 1.6 * (1 - q)) ** 1.2)
+    return im
+
 def frame_15(g, t):
     c = g['c']
     if t < 2.4:                                                   # 1: under the sheet, already torn open down the middle
-        # "new drop", so something drops (her note): the words fall in from frame 1, then the wrapped product drops onto
-        # the screen with a bounce and a thud, and its tissue tears open
-        im = g['stage'].copy(); land = 0.55
-        if t >= 0.08:
-            wrapped = covered(g, t, c['prod'].at(t), w=lerp(150, 710, ease(seg(t, 0.75, 1.35))))
-            dy = lerp(-H * 0.85, 0, back_out(seg(t, 0.08, land), 1.3)); th = 18 * math.exp(-(t - land) * 9) * math.sin((t - land) * 50) if t > land else 0
-            im.alpha_composite(wrapped, (int(th), int(dy + th * 0.6)))
-        for k, sc_ in enumerate(g['scraps'][:7]):   # scraps fly off as it tears open
-            q = seg(t, 0.75 + 0.03 * k, 1.45 + 0.03 * k)
-            if 0 < q < 1: a_ = (math.pi if k % 2 else 0) + (k - 3) * 0.18; put(im, sc_, (540 + 700 * q * math.cos(a_), 900 + 500 * q * math.sin(a_) + 900 * q * q), 1, k * 50 + 360 * q)
-        for word, x0, y0, t0 in (('new', 255, 230, 0.0), ('drop', 735, 110, 0.06)):   # the words fall in and bounce (already in view on frame 1)
-            k = back_out(seg(t, t0, t0 + 0.4), 1.8); put(im, g['drop_w'][word], (x0, lerp(y0, 500, k)), 1, (-4, 3)[word == 'drop'])
-        pop(im, g['hook'], t, 0.5, (540, 280), -2); doodle_on(im, t, 0.6, g['d_under'], (540, 650), -2)
+        # her idea: the hook is in the buyer's own video, something falling into the shot (their boxed or wrapped product
+        # dropping onto a table, landing about 0.45 s in, lower middle); the template adds speed lines, a camera shake on
+        # the landing and puffs of dust. The stand-in fakes the fall by dropping the frame in.
+        im = drop_shot_15(g, t)
+        for word, x0, t0 in (('new', 255, 0.0), ('drop', 735, 0.05)):   # the words fall with it and land on the same thud
+            k = back_out(seg(t, t0, LAND15), 1.4); put(im, g['drop_w'][word], (x0, lerp(-120, 480, k)), 1, (-4, 3)[word == 'drop'])
+        pop(im, g['hook'], t, 0.7, (540, 270), -2); doodle_on(im, t, 0.8, g['d_under'], (540, 630), -2)
         if t > 2.1: im = swipe(im, stage_count_15(g, t), seg(t, 2.1, 2.4))
         return im
     if t < 4.6:
