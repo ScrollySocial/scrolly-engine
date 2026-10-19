@@ -19,9 +19,11 @@ from collage_kit import doodle
 from motion_b2 import Clip
 
 DIRS = {'09': '09-who-its-for', '08': '08-a-real-customer-question', '10': '10-three-people-to-gift-it-to', '12': '12-your-order-just-arrived',
-        '20': '20-what-buyers-said', '22': '22-put-it-to-the-test', '23': '23-every-option-in-10-seconds'}
+        '20': '20-what-buyers-said', '22': '22-put-it-to-the-test', '23': '23-every-option-in-10-seconds',
+        'h2': 'halloween/h2-batty-about', 'h3': 'halloween/h3-caught-in-our-web', 'h5': 'halloween/h5-trick-or-treat', 'h6': 'halloween/h6-once-in-a-blood-moon'}
 TITLES = {'09': 'Who its for', '08': 'A real customer question', '10': 'Three people to gift it to', '12': 'Your order just arrived',
-          '20': 'What buyers said', '22': 'Put it to the test', '23': 'Every option in 10 seconds'}
+          '20': 'What buyers said', '22': 'Put it to the test', '23': 'Every option in 10 seconds',
+          'h2': "Things I'm batty about", 'h3': 'Caught in our web', 'h5': 'Trick or treat', 'h6': 'Once in a blood moon'}
 HOOK2 = 'Second hook: Instagram often shows a carousel starting on slide 2, so this one works as a cover on its own. '
 REPLACE = 'Photo: click it, then Replace.'
 
@@ -414,7 +416,226 @@ def c23():
         text('all [6] at [shop]', 64, (540, 480), -2, box=BLUE)])
     return s
 
-RECIPES = {'09': c09, '08': c08, '10': c10, '12': c12, '20': c20, '22': c22, '23': c23}
+# ======================================================================================================================
+# Halloween pack: each carousel reuses its Reel's own art (motion_hN.py): h2's dotted night, bats and glossy lilac
+# Goudy Stout; h3's silk web, pom-pom spider and cut-out letters; h5's doors, candy and Snap ITC taffy letters; h6's
+# night sky, blood moon, wolf and tree, with Bodoni Moda for its editable serif words (as in its CapCut build).
+# ======================================================================================================================
+def crop_h(im, cy):
+    """A 1080 x 1920 Reel frame cut to the 1440-tall slide around height cy."""
+    y0 = int(max(0, min(im.height - CH, cy - CH / 2))); return im.crop((0, y0, CW, y0 + CH)).convert('RGBA'), y0
+
+def scaled(im, w): return im.resize((int(w), int(im.height * w / im.width)), Image.LANCZOS)
+
+def ch2():
+    import motion_h2 as M
+    LIL, INK2 = M.LILAC, M.INK; night = K.fit_bg(M.BACKDROP); night_end = crop_h(M.BACKDROP_END, 720)[0]
+    fly = [K.C.shadow(scaled(M.FLY, w).rotate(r, expand=True, resample=Image.BICUBIC), (6, 12), 12, 80) for w, r in ((260, -12), (190, 18), (150, -25), (220, 8), (130, 30), (170, -6))]
+    hang = scaled(M.HANG, 190); branch = scaled(M.BRANCH, 1080); tk = scaled(M.TICKET, 600)
+    def ticket(c, rot, words): return [art(tk, c, rot, 'ticket stub'), text(words, 52, at(c, rot, (-tk.width * 0.1, 0)), rot, box=None, fg=INK2)]
+    s = []
+    S2(s, night, 'Hook. Swap in your opening photo (you or your product).', [
+        photo('Opening photo (fills the page)', (540, 720), (CW, CH), 0, M.vid('a', 1.0))] + [
+        art(b, xy, 0, 'bat') for b, xy in zip(fly, ((170, 200), (900, 150), (980, 640), (110, 760), (880, 1290), (190, 1330)))] + [
+        text("things I'm", 70, (540, 860), -2, box=LIL, fg=INK2),
+        art(M.glossy('BATTY', 165), (540, 1040), -3, 'BATTY'),
+        art(M.glossy('about', 90), (560, 1220), 2, 'about'),
+        guide(FIRST_GUIDE)])
+    S2(s, night, HOOK2 + 'No photo needed. Edit both [bracket] lines.', [
+        art(branch, (540, 170), 0, 'branch'), art(hang, (760, 400), 0, 'hanging bat'),
+        art(M.glossy('TOP 3', 170), (520, 830), -3, 'TOP 3'),
+        text('[my Halloween\nfavourites]', 84, (620, 580), -2, align='right'),
+        text('[number 1 first]', 62, (330, 1300), -2, align='left'),
+        art(doodle('arrow', 0, 170, LIL), (720, 1295), -2, 'arrow')])
+    S2(s, night, 'Favourite 1: swap in its photo and type its name on the ticket.', [
+        art(K.white_card((760, 860)), (560, 700), -2, 'photo border'),
+        photo('Favourite 1', (560, 700), (760, 860), -2, M.vid('b', 1.0)),
+        art(M.glossy('1', 280), (150, 330), -6, '1'),
+        art(doodle('icon', 4, 200, LIL), (880, 250), 10, 'crown')] + ticket((600, 1250), -3, '[favourite 1]'))
+    S2(s, night, 'Favourite 2: swap in its photo and type its name on the ticket.', [
+        photo('Favourite 2 (top of the page)', (540, 450), (CW, 900), 0, M.vid('c', 1.0)),
+        art(K.torn_strip(night, 640, 3, 't'), (540, CH - 320 + 6), 0, 'torn night'),
+        art(M.glossy('2', 240), (170, 1050), 5, '2'),
+        art(doodle('icon', 3, 160, LIL), (900, 1020), -8, 'heart')] + ticket((620, 1240), 2, '[favourite 2]'))
+    S2(s, night, 'Favourite 3: swap in its photo and type its name on the ticket.', [
+        art(doodle('burst', 3, 860, LIL), (540, 680), 0, 'burst'),
+        art(K.round_card(600), (540, 680), 0, 'round paper'),
+        photo('Favourite 3', (540, 680), (600, 600), 0, M.vid('d', 1.0), shape='circle'),
+        art(fly[1], (930, 330), 0, 'bat'), art(fly[4], (140, 1000), 0, 'bat'),
+        art(M.glossy('3', 240), (170, 260), -5, '3')] + ticket((620, 1250), -2, '[favourite 3]'))
+    cards = []
+    for i, (key, x) in enumerate((('b', 220), ('c', 540), ('d', 860))):
+        r = (-3, 2, -2)[i]; cards += [art(hang, (x, 300), 0, 'hanging bat'), art(K.white_card((260, 330), 12), (x, 640), r, 'photo border'),
+                                      photo(f'Favourite {i + 1}', (x, 640), (260, 330), r, M.vid(key, 1.0))]
+    S2(s, night_end, 'The same three photos. Type your keyword. ' + CAPTION, [art(branch, (540, 150), 0, 'branch')] + cards + [
+        text('comment', 66, (540, 920), -2, box=LIL, fg=INK2),
+        art(M.glossy('BATTY', 150), (540, 1080), -2, 'BATTY'),
+        text("[and I'll send all 3 links]", 56, (540, 1250), 2)])
+    return s
+
+def ch3():
+    import motion_h3 as M
+    cream = K.fit_bg(S7.toned('images', 'Cream parchment paper stack-205.png', (196, 186, 168), (250, 246, 236), (0.3, 0.3, 0.7, 0.62)))
+    def web(full=True, angles=None):
+        lay = Image.new('RGBA', (1080, 1920), (0, 0, 0, 0))
+        for a in (angles if angles is not None else [l[0] for l in M.LINES]): M.silk(lay, list(M.line_ends(a)), 5)
+        if full: M.rings(lay, 999)
+        return lay.crop((0, 140, 1080, 1580))
+    def thread(x0, y0, x1, y1):
+        lay = Image.new('RGBA', (CW, CH), (0, 0, 0, 0)); M.silk(lay, [(x0, y0), (x1, y1)], 4); return lay.crop(lay.getbbox()), ((x0 + x1) / 2, (y0 + y1) / 2)
+    def hanging(word_, px, y):
+        """Cut-out letters hanging on silk from the top edge (built-in word): one art layer."""
+        lay = Image.new('RGBA', (CW, y + px), (0, 0, 0, 0)); step = px * 0.97
+        for i, ch in enumerate(word_):
+            sc = M.scrap(ch, i, px); cx = 540 + (i - (len(word_) - 1) / 2) * step; rot = 4 if i % 2 else -4
+            M.silk(lay, [(cx, 0), (cx, y - sc.height / 2 + 30)], 3, 220); it = sc.rotate(rot, expand=True, resample=Image.BICUBIC)
+            lay.alpha_composite(it, (int(cx - it.width / 2), int(y - it.height / 2)))
+        return lay, (540, lay.height / 2)
+    spider = M.spider; sp = lambda w: scaled(spider, w)
+    def bubble(c, d, key, slot):
+        return [art(K.round_card(d, 14), c, 0, 'round paper'), photo(slot, c, (d, d), 0, M.vid(key, 1.0), shape='circle')]
+    s = []; cw_ = hanging('CAUGHT', 150, 330); th1 = thread(900, 0, 900, 700)
+    S2(s, cream, 'Hook. Swap in a photo of your product held up against a plain wall.', [
+        photo('Your product, held up (fills the page)', (540, 720), (CW, CH), 0, M.vid('bg', 1.0)),
+        art(cw_[0], cw_[1], 0, 'CAUGHT'),
+        art(th1[0], th1[1], 0, 'silk'), art(sp(280), (900, 790), 0, 'spider'),
+        text("you're about to get", 66, (420, 560), -2),
+        guide(FIRST_GUIDE)])
+    S2(s, cream, HOOK2 + 'No photo needed. Edit both [bracket] lines.', [
+        art(web(), (540, 720), 0, 'web'), art(sp(320), (540, 720), 0, 'spider'),
+        text("[4 reasons\nyou'll love it]", 88, (620, 230), -2, align='right'),
+        text('[get caught]', 62, (290, 1320), -2, align='left'),
+        art(doodle('arrow', 0, 170, M.INK), (600, 1315), -2, 'arrow')])
+    S2(s, cream, 'Reason 1: swap in a close-up and type its label.', [
+        art(web(False, [-50]), (540, 720), 0, 'silk')] + bubble((640, 640), 620, 'p1', 'Reason 1') + [
+        art(sp(220), (230, 1080), 30, 'spider'),
+        text('[THE GLOW]', 84, (380, 1240), -2, align='left')])
+    S2(s, cream, 'Reasons 2 and 3: a close-up and a label for each.', [
+        art(web(False, [-130, 90]), (540, 720), 0, 'silk')] + bubble((330, 470), 440, 'p2', 'Reason 2') + bubble((750, 980), 440, 'p3', 'Reason 3') + [
+        text('[THE SCENT]', 70, (330, 780), -2), text('[THE PRICE]', 70, (720, 1300), 2)])
+    th5 = thread(840, 0, 840, 300)
+    S2(s, cream, 'Reason 4: swap in its photo and type its label.', [
+        art(K.white_card((760, 900)), (540, 800), 2, 'photo border'),
+        photo('Reason 4', (540, 800), (760, 900), 2, M.vid('p4', 1.0)),
+        art(th5[0], th5[1], 0, 'silk'), art(sp(260), (840, 370), 0, 'spider'),
+        text('[THE GIFT BOX]', 80, (380, 190), -3, align='left')])
+    cm = hanging('COMMENT', 120, 300)
+    S2(s, cream, 'Swap in your product photo for the middle of the web. Type your keyword. ' + CAPTION, [
+        art(web(), (540, 800), 0, 'web')] + bubble((540, 800), 420, 'bg', 'Your product') + [
+        art(sp(220), (760, 620), -20, 'spider'),
+        art(cm[0], cm[1], 0, 'COMMENT'),
+        text('[WEB]', 110, (540, 1250), -2, box=M.INK, fg=WHITE)])
+    return s
+
+def ch5():
+    import motion_h5 as M
+    LAV, INK5 = M._LAV, M.INK
+    def taffy(text_, px, kind='taffy'):
+        f = K.ImageFont.truetype(M.SNAP, px); gap = px * 0.02; ws = [f.getlength(ch) for ch in text_]
+        ls = [M.letter(ch, px, kind) for ch in text_]; tot = sum(ws) + gap * (len(text_) - 1)
+        out = Image.new('RGBA', (int(tot + px), max(l.height for l in ls)), (0, 0, 0, 0)); x = px / 2
+        for i, (ch, w_, L) in enumerate(zip(text_, ws, ls)):
+            if ch != ' ':
+                it = L.rotate(3 if i % 2 else -3, expand=True, resample=Image.BICUBIC); out.alpha_composite(it, (int(x + w_ / 2 - it.width / 2), int(out.height / 2 - it.height / 2)))
+            x += w_ + gap
+        return out
+    door, _ = crop_h(M.DOOR_SHUT, 720)
+    house, hbox = M.HOUSE, M.HBOX; hs = CW / (hbox[2] - hbox[0])
+    ax0, ax1, ay0, ay1 = (650 - hbox[0]) * hs, (832 - hbox[0]) * hs, (470 - hbox[1]) * hs, (775 - hbox[1]) * hs
+    hcrop, hy0 = crop_h(house, (ay0 + ay1) / 2 + 150)
+    candy = [K.C.shadow(scaled(c, w).rotate(r, expand=True, resample=Image.BICUBIC), (6, 10), 10, 80) for c, w, r in zip(M.CANDY * 3, (230, 200, 260, 180, 240, 210), (20, -30, 60, -10, 110, 35))]
+    note = P.sticky('', 440, pin='pin-head-black'); s = []
+    S2(s, door, 'Hook. Swap in a photo of the common mistake in both glass panes (use the same photo twice).', [
+        photo(f'The trick ({side} pane)', ((b[0] + b[2]) / 2, (b[1] + b[3]) / 2), (b[2] - b[0], b[3] - b[1]), 0, M.vid('trick', 1.0)) for side, b in zip(('left', 'right'), M.PANES)] + [
+        art(M.DOO['burst1'], (330, 820), 0, 'burst'),
+        art(taffy('TRICK', 230), (540, 1080), -2, 'TRICK'),
+        art(taffy('or TREAT?', 120), (540, 1270), 2, 'or TREAT?'),
+        guide(FIRST_GUIDE, (540, 1405))])
+    S2(s, hcrop, HOOK2 + 'Swap in a photo of your product for the open doorway. Edit both [bracket] lines.', [
+        photo('Your product (in the doorway)', ((ax0 + ax1) / 2, (ay0 + ay1) / 2 - hy0), (ax1 - ax0, ay1 - ay0), 0, M.vid('treat', 1.0), shape='arch')] + [
+        art(c, xy, 0, 'candy') for c, xy in zip(candy, ((180, 760), (900, 700), (230, 1150), (880, 1180), (640, 1300)))] + [
+        text('[something sweet\nis coming]', 80, (620, 200), -2, align='right'),
+        text('[trick first]', 62, (290, 1360), -2, align='left'),
+        art(M.DOO['arrow'], (660, 1350), -2, 'arrow')])
+    nc = (700, 1000)
+    S2(s, door, 'The trick: a photo of the common mistake. Name it on the note.', [
+        photo('The trick (fills the page)', (540, 720), (CW, CH), 0, M.vid('trick', 2.0)),
+        text('the trick:', 72, (300, 220), -3),
+        art(note, nc, 5, 'sticky note'), K.note_text(nc, 5, '[cheap\nsponges]', 62, k=(0, 30)),
+        art(scaled(M.DOO['x'], 190), at(nc, 5, (230, -170)), 5, 'cross')])
+    S2(s, hcrop, 'The treat: swap in your product photo and say what it is.', [
+        art(K.white_card((700, 860)), (540, 760), -2, 'photo border'),
+        photo('The treat: your product', (540, 760), (700, 860), -2, M.vid('treat', 1.5)),
+        art(taffy('TREAT', 200), (540, 230), -2, 'TREAT'),
+        art(candy[2], (920, 560), 0, 'candy'), art(M.DOO['heart'], (180, 1050), -8, 'heart'),
+        text('[our 5-minute scrub]', 72, (540, 1290), 2)])
+    cam = Image.new('RGBA', (CW, 120), (0, 0, 0, 0)); d = K.ImageDraw.Draw(cam); f = K.ImageFont.truetype('C:/Windows/Fonts/consola.ttf', 40)
+    d.text((70, 60), 'Front door', font=f, fill=(255, 255, 255, 230), anchor='lm'); d.ellipse((870, 46, 898, 74), fill=(230, 50, 40, 255)); d.text((910, 60), 'LIVE', font=f, fill=(255, 255, 255, 230), anchor='lm')
+    nc5 = (720, 1030)
+    S2(s, door, 'The proof: a photo of the result or a happy customer. Edit the note.', [
+        photo('The proof (fills the page)', (540, 720), (CW, CH), 0, M.vid('proof', 1.0)),
+        art(cam, (540, 90), 0, 'doorbell camera'),
+        text('the proof:', 72, (300, 260), -3),
+        art(note, nc5, -4, 'sticky note'), K.note_text(nc5, -4, '[5-star\nreviews]', 64, k=(0, 30)),
+        art(M.DOO['arrow'], (420, 1040), 10, 'arrow')])
+    S2(s, door, 'Type your keyword and your offer. ' + CAPTION, [
+        art(c, xy, 0, 'candy') for c, xy in zip(candy, ((160, 1180), (420, 1300), (680, 1220), (930, 1320), (300, 1050), (860, 1080)))] + [
+        art(taffy('COMMENT', 150), (540, 330), -2, 'COMMENT'),
+        text('[TREAT]', 100, (540, 540), 2, box=LAV, fg=INK5, pill=True),
+        text('[for something sweet: 15% off]', 54, (540, 700), -2)])
+    return s
+
+def ch6():
+    import motion_h6 as M
+    import storyboard_halloween as B
+    RED, CREAM = M.RED, M.CREAM; sky = K.fit_bg(M.sky)
+    def glow(d):
+        pad = 270; im = Image.new('RGBA', (d + 2 * pad, d + 2 * pad), (0, 0, 0, 0)); B.moon_glow(im, d, (pad, pad)); return im
+    def serif(t, px, color):
+        f = K.ImageFont.truetype(B.SERIF, px); l, t_, r, b = f.getbbox(t); im = Image.new('RGBA', (r - l + 60, b - t_ + 60), (0, 0, 0, 0))
+        K.ImageDraw.Draw(im).text((30 - l, 30 - t_), t, font=f, fill=color + (255,)); return K.C.shadow(im, (0, 6), 9, 140)
+    blood = lambda w: scaled(M.BLOOD, w); wolf = scaled(M.wolf, 380); s = []
+    S2(s, sky, 'Hook. Swap in a photo of your product or shop.', [
+        photo('Your product (fills the page)', (540, 720), (CW, CH), 0, M.vid('a', 0.5)),
+        art(serif('once in a', 130, CREAM), (540, 230), 0, 'once in a'),
+        art(serif('blood', 250, RED), (540, 450), -2, 'blood'), art(serif('moon', 250, RED), (560, 680), -2, 'moon'),
+        guide(FIRST_GUIDE)])
+    S2(s, sky, HOOK2 + 'No photo needed. Edit both lines.', [
+        art(glow(860), (540, 900), 0, 'moon glow'), art(blood(860), (540, 900), 0, 'blood moon'),
+        art(M.cl.resize((1300, int(M.cl.height * 1300 / M.cl.width))), (420, 1300), 0, 'clouds'),
+        text('our once-a-year', 60, (700, 180), 0, box=None, fg=CREAM, align='right'),
+        text('SALE', 200, (760, 330), 0, box=None, fg=RED, font='bodoni', align='right'),
+        text('[see the deal]', 62, (300, 1330), -2, align='left'),
+        art(doodle('arrow', 0, 170, CREAM), (620, 1325), -2, 'arrow')])
+    S2(s, sky, 'Swap in a photo for the moon window. Edit the deal.', [
+        art(glow(800), (540, 640), 0, 'moon glow'),
+        photo('Your product (in the moon)', (540, 640), (800, 800), 0, M.vid('b', 1.0), shape='circle'),
+        text('everything', 60, (540, 1150), 0, box=None, fg=CREAM),
+        text('30% off', 190, (540, 1290), 0, box=None, fg=RED, font='bodoni')])
+    mc = (250, 1150)
+    S2(s, sky, 'Swap in a photo of your product. Edit the dates.', [
+        art(K.white_card((560, 720)), (680, 560), 3, 'photo border'),
+        photo('Your product', (680, 560), (560, 720), 3, M.vid('b', 2.0)),
+        art(glow(480), mc, 0, 'moon glow'), art(blood(480), mc, 0, 'blood moon'), art(scaled(M.wolf, 320), (mc[0], mc[1] + 240 - scaled(M.wolf, 320).height / 2), 0, 'wolf'),
+        text('this weekend only', 54, (800, 1140), 0, box=None, fg=CREAM),
+        text('Oct 29-31', 120, (800, 1270), 0, box=None, fg=RED, font='bodoni')])
+    tree = scaled(M.tree, 1500); branch = scaled(M.branch, 760); hang = scaled(M.hang, 210)
+    S2(s, sky, 'Swap in a photo of your shop or the whole collection. Edit the line.', [
+        photo('Your shop (fills the page)', (540, 720), (CW, CH), 0, M.vid('c', 1.0)),
+        art(tree, (-260, 760), 0, 'tree'),
+        art(branch, (CW - 380, branch.height / 2), 0, 'branch'), art(hang, (CW - 300, branch.height - 10 + hang.height / 2), 0, 'hanging bat'),
+        text('[everything in the shop]', 62, (600, 1300), -2)])
+    bat = lambda w: scaled(M.bat, w)
+    S2(s, sky, 'Type your keyword. ' + CAPTION, [
+        art(glow(900), (540, 760), 0, 'moon glow'), art(blood(900), (540, 760), 0, 'blood moon'),
+        art(M.cl.resize((1500, int(M.cl.height * 1500 / M.cl.width))), (540, 1330), 0, 'clouds'),
+        art(bat(260), (200, 230), 8, 'bat'), art(bat(210), (880, 180), -8, 'bat'),
+        text('comment', 66, (540, 600), 0, box=None, fg=CREAM),
+        text('MOON', 230, (540, 770), 0, box=None, fg=CREAM, font='bodoni'),
+        text('for your code', 60, (540, 940), 0, box=None, fg=CREAM)])
+    return s
+
+RECIPES = {'09': c09, '08': c08, '10': c10, '12': c12, '20': c20, '22': c22, '23': c23, 'h2': ch2, 'h3': ch3, 'h5': ch5, 'h6': ch6}
 
 def main():
     for tid in sys.argv[1:]:

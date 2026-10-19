@@ -84,12 +84,14 @@ The two example columns show how a soap shop and a T-shirt store would use each 
 | Make it last | One care habit that keeps it looking good | keep your bar dry between uses | wash it inside out |
 | Mine vs the usual kind | Show how yours is made differently | a handmade bar next to a store bar | a heavyweight tee next to a thin one |
 
-Every template comes with (shown as five pinned yellow sticky notes from Trick or treat, one short line each: The CapCut project / A shot list / An installer / A recipe card / A phone kit):
+Every template comes with (shown as six pinned yellow sticky notes from Trick or treat, one short line each: The CapCut project / A shot list / An installer / A recipe card / A phone kit / A matching carousel):
 - The CapCut project, with real photographed props, collage and motion already built
 - A shot list: every clip to film, in order, and how long it is
 - An installer that puts the template on CapCut's home screen with your clips already in it
 - A recipe card with the words to type, and a one-page How to use guide
 - A phone kit for CapCut on your phone: the shot guide video, the shot list and every graphic as a PNG
+- A matching carousel: the same story as Instagram slides (1080 x 1440), with photo spots and words you edit free in
+  Canva. Slides 1 and 2 both work as covers, and the last slide is your Comment [KEYWORD] call to action
 
 ## 3. How it works
 
@@ -201,7 +203,7 @@ Right-click the clip on CapCut's timeline, choose Replace, and pick another.
 > 25 Reel templates for CapCut, made for shops that sell physical products: packing videos, before and afters, gift
 > guides, unboxings, reviews, tests, new drops and more. Film a few clips on your phone, drop them in a folder and
 > double-click the installer: the template opens in CapCut with your clips in place. Type your words over the
-> brackets and export. Each template comes with a shot list, a recipe card, a one-page guide and a phone kit. Each
+> brackets and export. Each template comes with a shot list, a recipe card, a one-page guide, a phone kit and a matching Instagram carousel you can edit free in Canva. Each
 > one suggests a sound to add in Instagram (no sound files included).
 
 ---

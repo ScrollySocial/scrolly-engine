@@ -59,12 +59,14 @@ with real photographed props.
 | **Trick or treat** | Fix a common mistake, then make your offer. Door 1 opens on the trick, door 2 on the treat. | 3 clips: the mistake, your product, the proof | 17.5 s |
 | **Now you see it** | Last chance: a limited drop or a sale ending. A snap, real smoke rolls in, and the product is gone. | You with your product, the same shot without it, then your product (final list when built) | 14 s (motion test) |
 
-Every template comes with (shown as five pinned yellow sticky notes from Trick or treat, one short line each: The CapCut project / A shot list / An installer / A recipe card / A phone kit):
+Every template comes with (shown as six pinned yellow sticky notes from Trick or treat, one short line each: The CapCut project / A shot list / An installer / A recipe card / A phone kit / A matching carousel):
 - The CapCut project, with real photographed props and the playful layer (washi tape, sticker edges, handwritten words)
 - A shot list: every clip to film, in order, and how long it is
 - An installer that puts the template on CapCut's home screen with your clips already in it
 - A recipe card with the words to type, and a one-page How to use guide
 - A phone kit for CapCut on your phone: the shot guide video, the shot list and every graphic as a PNG
+- A matching carousel: the same story as Instagram slides (1080 x 1440), with photo spots and words you edit free in
+  Canva. Slides 1 and 2 both work as covers, and the last slide is your Comment [KEYWORD] call to action
 
 ## 3. How it works
 

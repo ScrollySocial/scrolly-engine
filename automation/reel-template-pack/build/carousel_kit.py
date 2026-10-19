@@ -31,21 +31,23 @@ FIRST_GUIDE = 'Everything blue is a guide. Delete it before you download.'
 def art(img, c, rot=0, name='art'): return dict(kind='art', img=img, c=c, rot=rot, name=name)
 def photo(slot, c, size, rot=0, still=None, shape='rect', gray=False):
     return dict(kind='photo', slot=slot, c=c, size=(int(size[0]), int(size[1])), rot=rot, still=still, shape=shape, gray=gray)
-def text(words, px, c, rot=0, box=WHITE, fg=INK, pill=False, align='center'):
-    return dict(kind='text', words=words, px=px, c=c, rot=rot, box=box, fg=fg, pill=pill, align=align)
-def guide(words, c=(540, 1390), px=26): return dict(kind='guide', words=words, px=px, c=c, rot=0, box=GUIDE, fg=WHITE, pill=False, align='center')
+def text(words, px, c, rot=0, box=WHITE, fg=INK, pill=False, align='center', font='mont'):
+    return dict(kind='text', words=words, px=px, c=c, rot=rot, box=box, fg=fg, pill=pill, align=align, font=font)
+def guide(words, c=(540, 1390), px=26): return dict(kind='guide', words=words, px=px, c=c, rot=0, box=GUIDE, fg=WHITE, pill=False, align='center', font='mont')
 
-def mfont(px): return ImageFont.truetype(MONT, px)
+# editable fonts: (file for previews, Canva/PowerPoint name, bold). Bodoni Moda is h6's editable serif (OFL, as in its CapCut build)
+FONTS = {'mont': (MONT, 'Montserrat', True), 'bodoni': (str(S.E.PACK / 'assets' / 'fonts' / 'BodoniModa.ttf'), 'Bodoni Moda', False)}
+def mfont(px, font='mont'): return ImageFont.truetype(FONTS[font][0], px)
 
 def text_box(L):
     """The words' box in px, the same numbers the .pptx uses: (w, h, pad_x, pad_y, line_h)."""
-    f = mfont(L['px']); lines = L['words'].split('\n'); lh = L['px'] * 1.22
+    f = mfont(L['px'], L['font']); lines = L['words'].split('\n'); lh = L['px'] * 1.22
     pad_x = L['px'] * (0.55 if L['pill'] else 0.28); pad_y = L['px'] * (0.22 if L['pill'] else 0.12)
     w = max(f.getlength(l) for l in lines) + 2 * pad_x; h = lh * len(lines) + 2 * pad_y
     return int(w), int(h), pad_x, pad_y, lh
 
 def text_img(L):
-    w, h, px_, py_, lh = text_box(L); f = mfont(L['px']); im = Image.new('RGBA', (w, h), (0, 0, 0, 0)); d = ImageDraw.Draw(im)
+    w, h, px_, py_, lh = text_box(L); f = mfont(L['px'], L['font']); im = Image.new('RGBA', (w, h), (0, 0, 0, 0)); d = ImageDraw.Draw(im)
     if L['box']:
         if L['pill']: d.rounded_rectangle((0, 0, w - 1, h - 1), h // 2, fill=L['box'] + (255,))
         else: d.rectangle((0, 0, w - 1, h - 1), fill=L['box'] + (255,))
@@ -193,7 +195,7 @@ def pptx(ss, path, tmp):
                 for k, line in enumerate(L['words'].split('\n')):
                     para = tf.paragraphs[0] if k == 0 else tf.add_paragraph(); para.line_spacing = Pt(lh * 0.75)
                     para.alignment = {'center': PP_ALIGN.CENTER, 'left': PP_ALIGN.LEFT, 'right': PP_ALIGN.RIGHT}[L['align']]
-                    r = para.add_run(); r.text = line; r.font.name = 'Montserrat'; r.font.bold = True; r.font.size = Pt(L['px'] * 0.75); r.font.color.rgb = RGBColor(*L['fg'])
+                    r = para.add_run(); r.text = line; r.font.name = FONTS[L['font']][1]; r.font.bold = FONTS[L['font']][2]; r.font.size = Pt(L['px'] * 0.75); r.font.color.rgb = RGBColor(*L['fg'])
                 shp.name = 'GUIDE (delete)' if L['kind'] == 'guide' else 'TEXT: ' + L['words'].replace('\n', ' ')
         slide.notes_slide.notes_text_frame.text = f'Slide {i}. ' + sl['note']
     prs.save(str(path))

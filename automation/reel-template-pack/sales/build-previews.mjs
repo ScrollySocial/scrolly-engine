@@ -73,7 +73,7 @@ mark.ph{background:#ffd9c9;color:var(--s3-ink);padding:0 4px;border-radius:3px}
 .sticky .nt{position:absolute;left:3%;top:3%;width:90%;height:90%;display:flex;align-items:center;justify-content:center;text-align:center;padding:22% 10% 10%}
 .sticky .pin{position:absolute;top:7%;left:48%;width:30px;transform:translateX(-50%);filter:drop-shadow(1px 3px 2px rgba(0,0,0,.35))}
 .sticky b{font:400 2.1rem/1.05 "Covered By Your Grace",cursive}
-@media(min-width:1100px){.notes-row{flex-wrap:nowrap;gap:18px}.sticky{width:min(210px,18vw)}}
+@media(min-width:1100px){.notes-row{flex-wrap:nowrap;gap:18px}.sticky{width:min(190px,15vw)}}
 @media(max-width:560px){.notes-row{gap:22px 10px}.sticky{width:158px}.sticky b{font-size:1.7rem}.sticky .pin{width:24px}}
 details.notes{padding:40px 0}
 details.notes>summary{cursor:pointer;font:700 var(--s3-fs-label)/1.4 var(--s3-sans);letter-spacing:.12em;text-transform:uppercase;color:var(--s3-muted)}
@@ -105,7 +105,7 @@ const howItWorks = (d) => `<section class="film" id="how"><div class="s3-wrap"><
   <div class="monitor"><div class="screen"><div class="play" aria-hidden="true"></div><strong>Your how-to video</strong></div><div class="stand"></div><div class="base"></div></div>
   <ol class="steps">${STEPS.map(([icon, b, t]) => `<li><svg viewBox="0 0 48 48" aria-hidden="true">${icon}</svg><b>${esc(b)}</b></li>`).join('')}</ol></div></section>`;
 // "Every template comes with": real sticky notes pinned on, from Trick or treat (Mercedes 2026-10-19: cards were "boring")
-const ROT = [-4, 3, -2, 4, -3];
+const ROT = [-4, 3, -2, 4, -3, 2];
 // one line icon per item in "Every template comes with" (Mercedes: "can we communicate this visually?")
 const INC_ICONS = [
   '<rect x="5" y="10" width="38" height="28" rx="3"/><path d="M5 17h38M5 31h38M12 10v7M20 10v7M28 10v7M36 10v7M12 31v7M20 31v7M28 31v7M36 31v7"/><path d="M21 20l7 4-7 4z"/>',
@@ -113,6 +113,7 @@ const INC_ICONS = [
   '<path d="M24 6v24M15 21l9 9 9-9"/><path d="M8 32v6a3 3 0 0 0 3 3h26a3 3 0 0 0 3-3v-6"/>',
   '<rect x="6" y="11" width="36" height="26" rx="2"/><path d="M12 19h24M12 25h24M12 31h14"/>',
   '<rect x="14" y="4" width="20" height="40" rx="4"/><path d="M21 9h6"/><circle cx="24" cy="38" r="1.5"/>',
+  '<rect x="12" y="8" width="24" height="30" rx="3"/><path d="M7 12v22M41 12v22"/><circle cx="19" cy="43" r="1.4"/><circle cx="24" cy="43" r="1.4"/><circle cx="29" cy="43" r="1.4"/>',
 ];
 const includes = (d) => d.brandIncludes ? `<section class="s3-sec tight incl-b"><div class="s3-wrap"><h2 class="s3-h2">Every template comes with</h2>
   <ul class="swipes">${d.includes.map(([b], i) => `<li><svg viewBox="0 0 48 48" aria-hidden="true">${INC_ICONS[i]}</svg><span>${esc(b)}</span></li>`).join('')}</ul></div></section>` : `<section class="s3-sec stick"><div class="s3-wrap"><h2 class="s3-h2">Every template comes with</h2>
@@ -141,10 +142,12 @@ const INCLUDES = (projectNote) => [
   ['An installer', 'It adds your clips for you.'],
   ['A recipe card', 'The words to type, plus a guide.'],
   ['A phone kit', 'For CapCut on your phone.'],
+  ['A matching carousel', 'Same story as slides. Edit free in Canva.'],
 ];
 const FAQ = (fonts) => [
   ['Do I need CapCut on a computer?', 'For the full template, yes: CapCut for computer, free.'],
   ['Can I use it on my phone?', 'Yes. The phone kit has the shot guide, shot list and every graphic.'],
+  ['How do I edit the carousel?', 'Drag the file into Canva (a free account works), swap the photos and type over the [brackets].'],
   ['Is music included?', 'No. Add a sound in Instagram, so your Reel never gets muted. [SOUND PICKS]'],
   ['Do I need to install fonts?', fonts],
   ['How do I change the words?', 'Double-click a text box and type.'],
@@ -269,7 +272,7 @@ const PCSS = `
 .swipes li{display:flex;flex-direction:column;align-items:center;gap:14px}
 .swipes svg{width:64px;height:64px;stroke:var(--s3-orange);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 .swipes li{font:400 var(--s3-fs-title)/1.15 var(--s3-serif)}
-@media(min-width:1100px){.swipes{flex-wrap:nowrap;justify-content:space-between;max-width:none}.swipes li{white-space:nowrap}}
+@media(min-width:1400px){.swipes{flex-wrap:nowrap;justify-content:space-between;max-width:none}.swipes li{white-space:nowrap}}
 .swipes span{position:relative;z-index:0;padding:0 .14em}
 .swipes span::before{content:"";position:absolute;z-index:-1;left:0;right:0;top:.42em;bottom:.02em;background:#ffc9a8;border-radius:.1em .35em .15em .4em;transform:rotate(-1.5deg)}
 .incl-b .aside{margin-top:30px;font:400 1.9rem/1.1 "Covered By Your Grace",cursive;color:var(--s3-ink);transform:rotate(-2deg)}
@@ -392,7 +395,7 @@ const halloween = {
   who: 'Anyone with something to sell this October.',
   faq: FAQ('No, they come with the template.'),
   ctaHead: 'Post your Halloween Reel before the 31st',
-  listing: "Five cute Halloween Reel templates for CapCut, each with a selling job: open a once-a-year sale, show what's included, share your favourites, turn a common mistake into your offer, or announce a last chance. Film a few clips on your phone, drop them in a folder and double-click the installer: the template opens in CapCut with your clips in place. Type your words over the brackets and export. Each template comes with a shot list, a recipe card, a one-page guide and a phone kit. Each one suggests a sound to add in Instagram (no sound files included).",
+  listing: "Five cute Halloween Reel templates for CapCut, each with a selling job: open a once-a-year sale, show what's included, share your favourites, turn a common mistake into your offer, or announce a last chance. Film a few clips on your phone, drop them in a folder and double-click the installer: the template opens in CapCut with your clips in place. Type your words over the brackets and export. Each template comes with a shot list, a recipe card, a one-page guide, a phone kit and a matching Instagram carousel you can edit free in Canva. Each one suggests a sound to add in Instagram (no sound files included).",
   decisions: [
     'Price: $4.99, shown with $9.99 crossed out (decided 2026-10-19).',
     'Instant download, so Now you see it (h1) must be built and zipped before the page goes live.',
@@ -461,7 +464,7 @@ const physical = {
   who: 'If you sell a product you can film, these are for you.',
   faq: FAQ('No, they come with the template.'),
   ctaHead: 'A month of Reels, ready for your clips',
-  listing: "25 Reel templates for CapCut, made for shops that sell physical products: packing videos, before and afters, gift guides, unboxings, reviews, tests, new drops and more. Film a few clips on your phone, drop them in a folder and double-click the installer: the template opens in CapCut with your clips in place. Type your words over the brackets and export. Each template comes with a shot list, a recipe card, a one-page guide and a phone kit. Each one suggests a sound to add in Instagram (no sound files included).",
+  listing: "25 Reel templates for CapCut, made for shops that sell physical products: packing videos, before and afters, gift guides, unboxings, reviews, tests, new drops and more. Film a few clips on your phone, drop them in a folder and double-click the installer: the template opens in CapCut with your clips in place. Type your words over the brackets and export. Each template comes with a shot list, a recipe card, a one-page guide, a phone kit and a matching Instagram carousel you can edit free in Canva. Each one suggests a sound to add in Instagram (no sound files included).",
   decisions: [
     'Price: $17.99 (decided 2026-10-19).',
     'Launch format: 10 of the 25 are built today (01, 02, 03, 08, 09, 10, 12, 20, 22, 23); the other 15 are in review or being built. Sell when all 25 are done, or open early with the rest as free updates?',
