@@ -937,11 +937,15 @@ def setup_15():
     sw_ = P.story_word('out', 150, WINE, edge=WHITE); stub.alpha_composite(sw_, (int(stub.width * 0.22 - sw_.width / 2), int(stub.height / 2 - sw_.height / 2)))
     g['stub_blank'] = P.die_cut(stub.copy(), 8)
     dt = P.manrope(66, 600); d.text((int(stub.width * 0.64), stub.height // 2), '[Fri 24 Oct]', font=dt, fill=INK, anchor='mm')
-    g['stub'] = P.die_cut(stub, 8); g['stub_s'] = S.fitw(g['stub'], 300)
+    g['stub'] = P.die_cut(stub, 8); g['stub_s'] = S.fitw(g['stub'], 600)
     g['new'] = dsticker('new', 70, WINE, WHITE)
     g['lap_w'] = 1040
     g['hook'] = P.pill_m('[something new\nis coming]', 72); g['drop'] = P.caption('new drop', 210, BU, edge=WHITE)
-    g['dropping'] = P.caption('dropping in', 170, WINE, edge=WHITE); g['count'] = '3  2  1'
+    g['dropping'] = P.caption('dropping in', 170, WINE, edge=WHITE); g['digits'] = [P.story_word(d_, 300, WINE, edge=WHITE) for d_ in '321']
+    import random as _r; rnd = _r.Random(11); g['scraps'] = []
+    for k in range(12):   # torn scraps of the wine sheet that fly off the rip
+        sz_ = rnd.randint(70, 130); m_ = Image.new('L', (sz_, sz_), 0); ImageDraw.Draw(m_).polygon(jag_poly((sz_ / 2, sz_ / 2), sz_ * 0.42, n=9, amp=0.6, seed=k), fill=255)
+        sc_ = g['sheet'].crop((k * 60, k * 90, k * 60 + sz_, k * 90 + sz_)).copy(); sc_.putalpha(m_); g['scraps'].append(C.shadow(sc_, (3, 6), 5, 90))
     g['finally'] = P.caption('finally.', 220, WHITE, edge=WINE, italic_last=False); g['burst'] = doodle('burst', 2, 700, BU)
     g['name'] = P.pill_m('[PRODUCT NAME]', 84, WINE)
     g['d1'] = P.pill_m('[detail one]', 78); g['d2'] = P.pill_m('[detail two]', 78, BU)
@@ -952,8 +956,9 @@ def setup_15():
 def covered(g, t, base, open_=1.0):
     """The product under the wine sheet, seen through a torn peephole (the hole breathes open)."""
     im = base.copy(); sh = g['sheet'].copy(); m = Image.new('L', (W, H), 255)
-    r = (240 + 60 * open_) * (1 + 0.05 * math.sin(t * 5)); ImageDraw.Draw(m).polygon(jag_poly((540, 1050), r, seed=7), fill=0)
-    sh.putalpha(m.filter(ImageFilter.GaussianBlur(1.2))); im.alpha_composite(sh)
+    r = (380 + 50 * open_) * (1 + 0.04 * math.sin(t * 5)); ImageDraw.Draw(m).polygon(jag_poly((540, 1140), r, seed=7), fill=0)
+    sh.putalpha(m.filter(ImageFilter.GaussianBlur(1.2))); tug = 10 * math.sin(t * 60) * seg(t, 4.6, 4.75) * (1 - seg(t, 4.8, 4.9))   # it trembles before it rips
+    im.alpha_composite(sh, (int(tug), 0)) if tug else im.alpha_composite(sh)
     return im
 
 def rip(g, t, base, u):
@@ -961,15 +966,18 @@ def rip(g, t, base, u):
     im = base.copy(); line = tear_line()
     for side in (-1, 1):
         m = Image.new('L', (W, H), 0); poly = [(0 if side < 0 else W, 0)] + line + [(0 if side < 0 else W, H)]
-        ImageDraw.Draw(m).polygon(poly, fill=255); mh = Image.new('L', (W, H), 255); ImageDraw.Draw(mh).polygon(jag_poly((540, 1050), 300, seed=7), fill=0)
+        ImageDraw.Draw(m).polygon(poly, fill=255); mh = Image.new('L', (W, H), 255); ImageDraw.Draw(mh).polygon(jag_poly((540, 1140), 430, seed=7), fill=0)
         half = g['sheet'].copy(); half.putalpha(ImageChops.multiply(m, mh))
         put(im, C.shadow(half, (side * 10, 16), 14, 110), (540 + side * 1100 * ease(u), 960 + 200 * u * u), 1, -side * 14 * u)
     return im
 
 def stage_count_15(g, t):
     """2: the kitchen timer winds down; dropping in / 3 2 1 (the numbers arrive one at a time)."""
-    im = g['stage'].copy(); put(im, g['timer'], (540, 1180), back_out(seg(t, 2.4, 2.7), 1.5), lerp(-120, 0, ease(seg(t, 2.6, 4.2))))
-    pop(im, g['dropping'], t, 2.5, (540, 380)); letters_on(im, t, 2.6, None, g['count'], 230, (540, 620), WINE, step=0.1)
+    jolt = sum(9 * math.exp(-(t - t0) * 9) * math.sin((t - t0) * 45) for t0 in (2.7, 3.05, 3.4) if t > t0)
+    im = g['stage'].copy(); put(im, g['timer'], (540 + jolt, 1200), back_out(seg(t, 2.4, 2.7), 1.5), lerp(-120, 0, ease(seg(t, 2.6, 4.2))) + jolt)
+    pop(im, g['dropping'], t, 2.5, (540, 360))
+    for i, t0 in enumerate((2.7, 3.05, 3.4)):
+        if t >= t0: put(im, g['digits'][i], (300 + 240 * i, 640), back_out(seg(t, t0, t0 + 0.25), 2.6), (-6, 4, -3)[i])
     return im
 
 def stage_close_15(g, t):
@@ -997,7 +1005,7 @@ def frame_15(g, t):
     c = g['c']
     if t < 2.4:                                                   # 1: hidden under the sheet, a torn peephole breathing open
         im = covered(g, t, c['prod'].at(t), seg(t, 0.2, 1.0))
-        pop(im, g['hook'], t, 0.0, (540, 330), -2); pop(im, g['drop'], t, 0.4, (540, 560)); doodle_on(im, t, 0.9, g['d_under'], (540, 690), -2)
+        pop(im, g['hook'], t, 0.0, (540, 290), -2); pop(im, g['drop'], t, 0.4, (540, 500)); doodle_on(im, t, 0.9, g['d_under'], (540, 620), -2)
         if t > 2.1: im = swipe(im, stage_count_15(g, t), seg(t, 2.1, 2.4))
         return im
     if t < 4.6:
@@ -1005,8 +1013,14 @@ def frame_15(g, t):
         if t > 4.3: im = swipe(im, covered(g, t, c['prod'].at(t - 4.6 + 2.4)), seg(t, 4.3, 4.6))
         return im
     if t < 6.8:                                                   # 3: the sheet rips in two: the reveal; finally. with one burst behind it
-        base = c['prod'].at(t - 4.6 + 2.4); u = seg(t, 4.9, 5.4)
-        im = covered(g, t, base) if t < 4.9 else (rip(g, t, base, u) if u < 1 else base)
+        base = c['prod'].at(t - 4.6 + 2.4); u = seg(t, 4.9, 5.35); z = lerp(1.15, 1.0, ease(seg(t, 4.95, 5.6)))
+        if t >= 4.9 and z > 1.001: base = ImageOps.fit(base, (int(W * z), int(H * z))).crop((int((W * z - W) / 2), int((H * z - H) / 2), int((W * z - W) / 2) + W, int((H * z - H) / 2) + H))
+        im = covered(g, t, base) if t < 4.9 else (rip(g, t, base, u) if u < 1 else base.copy())
+        for k, sc_ in enumerate(g['scraps']):   # the scraps fly off the tear line
+            q = seg(t, 4.92 + (k % 4) * 0.02, 5.7)
+            if 0 < q < 1: a_ = -math.pi / 2 + (k - 5.5) * 0.27; put(im, sc_, (540 + 900 * q * math.cos(a_), 1140 + 900 * q * math.sin(a_) + 1300 * q * q), 1, k * 50 + 400 * q)
+        fl = 1 - seg(t, 4.95, 5.15)
+        if t >= 4.95 and fl > 0: im = Image.blend(im, Image.new('RGBA', (W, H), (255, 255, 255, 255)), 0.55 * fl)   # a quick flash on the rip
         if t >= 5.7: put(im, g['burst'], (540, 600), 0.9 + 0.1 * back_out(seg(t, 5.7, 6.0), 1.5))   # behind the name box: no ray crosses a letter
         pop(im, g['finally'], t, 5.3, (540, 420)); pop(im, g['name'], t, 5.7, (540, 600), -2)
         if t > 6.5: im = swipe(im, stage_close_15(g, t), seg(t, 6.5, 6.8))
@@ -1023,7 +1037,7 @@ def frame_15(g, t):
         im = stage_date_15(g, t)
         if t > 12.5: im = swipe(im, c['use'].at(0), seg(t, 12.5, 12.8))
         return im
-    im = c['use'].at(t - 12.8); put(im, g['stub_s'], (820, 330), back_out(seg(t, 12.9, 13.2), 1.5), 8)   # 7: in use, the stub carried
+    im = c['use'].at(t - 12.8); put(im, g['stub_s'], (540, 340), back_out(seg(t, 12.9, 13.2), 1.5), 5)   # 7: in use, the stub carried
     if t >= 14.6: P.sandwich(im, t, 14.7, (540, 1050), g['out'], g['comment'], g['kw'])                # 8: the CTA
     return im
 
