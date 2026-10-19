@@ -586,3 +586,6 @@ Showing her work
 - The graphic world arrives in the first 1 to 2 seconds, after the scroll is already stopped by the product.
 - **Theme objects must mean the idea** (her note: a broken heart is not "a perfect pair"; pairs = locket halves,
   a scrapbook page turning to the next pair).
+- (2026-10-19) **Fill the space above the hero object with the bold headline in every scene** (#19: "you are negating
+  the headline text"). **#21's rubber-stamp SMALL BATCH and kraft background: "just ok"** (accepted; avoid as a
+  first choice elsewhere).

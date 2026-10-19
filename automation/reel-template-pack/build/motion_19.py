@@ -61,7 +61,7 @@ def setup():
         lens.append(a.point(lambda v: 255 if v == 128 else 0))
     g['glasses'] = (gl, lens)
     g['tea'] = P.thing('Vintage Rose Porcelain Tea Set.png', 820, 'smalldots', WINE, scale=0.3, strength=0.35)
-    g['what'] = P.caption('what to', 190, WHITE); g['pairw'] = P.caption('pair?', 300, WHITE); g['q'] = X.key('?', 330, WINE, (246, 241, 232)); g['why'] = X.hl('[why they go together]', 60, PINK); g['with'] = X.hl('with [my steam mop]', 60, WHITE)
+    g['what'] = P.caption('what to', 190, WHITE); g['pairw'] = P.caption('pair?', 300, WHITE); g['q'] = X.key('?', 330, WINE, (246, 241, 232)); g['why'] = X.hl('[why they go together]', 60, PINK); g['ph1'] = P.caption('pair it', 230, INK); g['ph2'] = P.caption('with', 200, INK); g['with'] = X.hl('with [my steam mop]', 60, WHITE)
     g['plus'] = [X.hl(t, 62, (PINK, WHITE, PINK)[i]) for i, t in enumerate(('+ [the stick vacuum]', '+ [the odor spray]', '+ [the litter]'))]
     g['under'] = doodle('under', 0, 560, WHITE); g['plusbig'] = P.sticker('+', 150, WINE, WHITE, 'circle'); g['arrow'] = doodle('arrow', 0, 160, WHITE); g['pair1'] = P.caption('pair it with', 130, INK)
     g['perfect'] = P.caption('a perfect pair', 140, WINE); g['bundle'] = X.hl('[ask about the bundle]', 60, WINE); g['hearts'] = [P.die_cut(doodle('icon', 2 + i % 2, 150, WINE), 5, False) for i in range(3)]; g['burst'] = doodle('burst', 2, 640, CRM)
@@ -93,6 +93,10 @@ def locket(g, t, left, right, y=None, flip=None, right_next=None, scale=1.0, bg=
 def oval_centre(i, y=None):
     (fx, fy), _ = OVALS[i]; return (LC[0] - LW / 2 + fx * LW, (LC[1] if y is None else y) + (fy - 0.5) * LW * 812 / 1021)
 
+def headline(im, g, t, t0):
+    """The bold headline above the locket in every pairing scene (her note: the space above the locket stays filled)."""
+    P.say(im, g['ph1'], t, t0, (540, 330), -3); P.say(im, g['ph2'], t, t0 + 0.2, (600, 540), 2)
+
 def ask_marks(im, g, t, t0, gone=None):
     """Big '?'s floating up out of the empty half (wine, cream edge), wobbling; they fly off at `gone`."""
     (fx, fy), _ = OVALS[1]; cx, cy = oval_centre(1)
@@ -120,7 +124,7 @@ def frame(g, t):
             if w > 4: v = ImageOps.fit(c['p1'].at(t - 1.8), (w, h), centering=(0.5, 0.45)).convert('RGBA'); v.putalpha(oval_mask((w, h))); put(im, v, rc)
         if k < 0.5:
             pk = locket(g, t, None, PINK, bg=False); im.alpha_composite(pk) if False else None
-        ask_marks(im, g, t, 1.15, gone=1.9)
+        ask_marks(im, g, t, 1.15, gone=1.9); headline(im, g, t, 1.95)
         P.say(im, g['plus'][0], t, 2.3, (540, 1600 - 130), -2); X.sparkles(im, t, 2.3, [(880, 640), (990, 900)], WINE, 140)
         return im
     if t < 4.6:                                                    # 3: the camera dives into the right half: pairing 1 full frame
@@ -131,11 +135,11 @@ def frame(g, t):
     if t < 6.2:                                                    # 4: back out to the locket; the scrapbook page turns to pairing 2
         z = lerp(4.8, 1.0, ease(seg(t, 4.6, 5.0)))
         im = camera(locket(g, t, c['main'].at(t), c['p1'].at(t - 1.8), flip=5.1, right_next=c['p2'].at(t - 5.1)), rc, z)
-        P.say(im, g['plus'][1], t, 5.5, (540, 1470), 2)
+        P.say(im, g['plus'][1], t, 5.5, (540, 1470), 2); headline(im, g, t, 4.8)
         return im
     if t < 8.4:                                                    # 5: the page turns again: pairing 3
         im = locket(g, t, c['main'].at(t), c['p2'].at(t - 5.1), flip=6.5, right_next=c['p3'].at(t - 6.5))
-        P.say(im, g['plus'][2], t, 6.9, (540, 1470), -2); X.sparkles(im, t, 7.0, [(140, 700), (960, 640), (930, 1350)], WINE, 140)
+        headline(im, g, t, 0); P.say(im, g['plus'][2], t, 6.9, (540, 1470), -2); X.sparkles(im, t, 7.0, [(140, 700), (960, 640), (930, 1350)], WINE, 140)
         if t > 8.15: im = diagonal(im, stage6(g, t), seg(t, 8.15, 8.4))
         return im
     if t < 10.0:
@@ -217,8 +221,10 @@ def cta(g, t):
     """CTA (a new scene, her note): the product full frame, the three pairings in their real frames pinned along the top;
     the bundle name on its own at the top, the keyword on its own in the middle (they no longer compete)."""
     c = g['c']; im = c['main'].at(t).copy()
-    for i, (cl, t0, x) in enumerate(((c['p1'], 1.8, 200), (c['p3'], 6.8, 540), (c['p2'], 3.8, 880))):   # the pairings in round windows
-        put(im, roundwin(cl.at(t - t0, (280, 280)), 280), (x, lerp(-300, 470, back_out(seg(t, 10.0 + i * 0.12, 10.35 + i * 0.12), 1.4))), 1)
+    for i, (a, b, x, r) in enumerate(((c['main'].at(t), c['p1'].at(t - 1.8), 285, -5), (c['p2'].at(t - 5.1), c['p3'].at(t - 6.5), 795, 5))):
+        lay = locket(g, t, a, b, bg=False)                              # two lockets = four halves: the product + its three pairs
+        lay = lay.crop((0, LC[1] - 560, W, LC[1] + 560)).resize((540, 560))
+        put(im, lay, (x, lerp(-400, 520, back_out(seg(t, 10.0 + i * 0.15, 10.4 + i * 0.15), 1.4))), 1, r)
     P.say(im, g['bname'], t, 10.3, (540, 860), -2)
     P.say(im, g['comment'], t, 10.6, (540, 1150), -3); P.say(im, g['kw'], t, 10.85, (540, 1330), 2)
     return im
