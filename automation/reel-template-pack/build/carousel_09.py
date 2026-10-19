@@ -32,8 +32,8 @@ NAME = 'Template 09 - Who its for - Carousel'
 # ---- layers ------------------------------------------------------------------------------------------------------------
 def art(img, c, rot=0, name='art'): return dict(kind='art', img=img, c=c, rot=rot, name=name)
 def photo(slot, c, size, rot=0, still=None, shape='rect', gray=False): return dict(kind='photo', slot=slot, c=c, size=size, rot=rot, still=still, shape=shape, gray=gray)
-def text(words, px, c, rot=0, box=WHITE, fg=INK, pill=False): return dict(kind='text', words=words, px=px, c=c, rot=rot, box=box, fg=fg, pill=pill)
-def guide(words, c, px=30): return dict(kind='guide', words=words, px=px, c=c, rot=0, box=GUIDE, fg=WHITE, pill=False)
+def text(words, px, c, rot=0, box=WHITE, fg=INK, pill=False, align='center'): return dict(kind='text', words=words, px=px, c=c, rot=rot, box=box, fg=fg, pill=pill, align=align)
+def guide(words, c, px=30): return dict(kind='guide', words=words, px=px, c=c, rot=0, box=GUIDE, fg=WHITE, pill=False, align='center')
 
 def mfont(px): return ImageFont.truetype(MONT, px)
 
@@ -49,7 +49,8 @@ def text_img(L):
     if L['box']:
         if L['pill']: d.rounded_rectangle((0, 0, w - 1, h - 1), h // 2, fill=L['box'] + (255,))
         else: d.rectangle((0, 0, w - 1, h - 1), fill=L['box'] + (255,))
-    for k, l in enumerate(L['words'].split('\n')): d.text((w / 2, py_ + lh * (k + 0.5)), l, font=f, fill=L['fg'], anchor='mm')
+    x, an = {'center': (w / 2, 'mm'), 'left': (px_, 'lm'), 'right': (w - px_, 'rm')}[L['align']]
+    for k, l in enumerate(L['words'].split('\n')): d.text((x, py_ + lh * (k + 0.5)), l, font=f, fill=L['fg'], anchor=an)
     return im
 
 def word(t, px, color=WHITE, italic_last=True):
@@ -63,6 +64,10 @@ def torn_card(size, seed, margin=26):
     """Torn white paper behind a photo slot: its ragged edge shows round the photo."""
     w, h = size[0] + 2 * margin, size[1] + 2 * margin; card = Image.new('RGBA', (w, h), (252, 250, 245, 255))
     card.putalpha(C.torn_mask((w, h), seed, 14, 'tblr')); return C.shadow(card, (8, 14), 14, 100)
+
+def torn_strip(h, seed):
+    """A strip of the notebook page torn along its bottom edge (the top of slide 4)."""
+    strip = paper().crop((0, 0, CW, h)); strip.putalpha(C.torn_mask((CW, h), seed, 16, 'b')); return C.shadow(strip, (0, 12), 14, 110)
 
 def round_card(d, margin=18):
     im = Image.new('RGBA', (d + 2 * margin, d + 2 * margin), (0, 0, 0, 0)); ImageDraw.Draw(im).ellipse((0, 0, d + 2 * margin - 1, d + 2 * margin - 1), fill=(252, 250, 245, 255))
@@ -108,30 +113,31 @@ def slides():
         text('if you\n[always run late]', 62, (330, 165), 3),
         art(word('this is', 140, italic_last=False), (400, 1100), -3, 'this is'),
         art(word('for you', 196), (600, 1245), -3, 'for you'),
-        art(doodle('under', 0, 330, WINE), (760, 1350), -3, 'underline'),
-        art(doodle('icon', 9, 130, WINE), (1005, 1120), 0, 'sparkle'), art(doodle('icon', 10, 90, WINE), (85, 960), 0, 'sparkle'),
+        art(doodle('icon', 8, 120, WINE), (1005, 1120), 0, 'sparkle'), art(doodle('icon', 10, 90, WINE), (85, 960), 0, 'sparkle'),
         guide('Everything blue is a guide. Delete it before you download.', (540, 1385), 26)]))
     # 2 PROBLEM (graphics only): the alarm clock rings, one burst behind it, paper balls round it
-    ring = [(540 + 390 * math.cos(a), 800 + 450 * math.sin(a)) for a in [math.radians(200 + i * 72) for i in range(5)]]
-    s.append(dict(note='The everyday problem, no photo needed. Edit the [bracket] line.', layers=[
-        art(doodle('burst', 3, 860, WINE), (540, 820), 0, 'burst'),
-        art(clock, (540, 820), 6, 'alarm clock')] + [art(b, c, i * 25, 'paper ball') for i, (b, c) in enumerate(zip(balls, ring))] + [
-        text('[late. again.]', 80, (540, 220), -3)]))
+    ring = [(540 + 390 * math.cos(a), 850 + 400 * math.sin(a)) for a in [math.radians(200 + i * 72) for i in range(5)]]
+    s.append(dict(note='Second hook: Instagram often shows a carousel starting on slide 2, so this one works as a cover on its own. No photo needed. Edit both [bracket] lines.', layers=[
+        art(doodle('burst', 3, 860, WINE), (540, 850), 0, 'burst'),
+        art(clock, (540, 850), 6, 'alarm clock')] + [art(b, c, i * 25, 'paper ball') for i, (b, c) in enumerate(zip(balls, ring))] + [
+        text('[always running\nlate?]', 92, (600, 190), -2, align='right'),
+        text("[here's what helps]", 62, (380, 1320), -2, align='left'),
+        art(doodle('arrow', 0, 170, WINE), (800, 1315), -2, 'arrow')]))
     # 3 PROBLEM (photo): the moment, in a torn window (black and white)
     s.append(dict(note='Swap in a photo of the everyday problem. Tip: set it to black and white (Edit photo > Filters).', layers=[
         art(torn_card((760, 900), 5), (540, 860), -2, 'torn paper'),
         photo('The everyday problem', (540, 860), (760, 900), -2, prob.at(0.5, (760, 900)), gray=True),
         art(balls[1], (190, 1260), 20, 'paper ball'), art(balls[3], (900, 470), -15, 'paper ball'),
-        text('[you lose your\nkeys. again.]', 72, (540, 250), 3),
+        text('[you lose your\nkeys. again.]', 72, (420, 250), 3, align='left'),
         guide('Photo: click it, then Replace. Filters > B&W', (540, 1385), 26)]))
     # 4 PRODUCT: meet [PRODUCT NAME]
     s.append(dict(note='Swap in your product photo and type its name.', layers=[
-        art(torn_card((720, 840), 7), (560, 930), 2, 'torn paper'),
-        photo('Your product', (560, 930), (720, 840), 2, prod.at(0.5, (720, 840))),
-        art(word('meet', 200, PINK), (540, 200), 0, 'meet'),
-        text('[PRODUCT NAME]', 76, (540, 380), -2, box=WINE, fg=WHITE),
-        art(doodle('arrow', 9, 220, WINE), (150, 600), 0, 'arrow'),
-        art(bf[1], (900, 520), 20, 'butterfly')]))
+        photo('Your product (fills the page)', (540, 720), (CW, CH), 0, prod.at(0.5, (CW, CH))),
+        art(torn_strip(500, 7), (540, 250), 0, 'torn notebook strip'),
+        art(word('meet', 200, PINK), (540, 175), 0, 'meet'),
+        text('[PRODUCT NAME]', 76, (540, 350), -2, box=WINE, fg=WHITE),
+        art(doodle('arrow', 9, 200, WINE), (170, 600), 0, 'arrow'),
+        art(bf[1], (900, 500), 20, 'butterfly')]))
     # 5 THE FIX: the product floats up as a balloon, a gift beside it
     sa, sc = string((520, 905), (560, 1440)); ga, gc = string((850, 1110), (600, 1440), -30)
     s.append(dict(note='A second product photo (or the same one). Edit the line to what it fixes, in your words.', layers=[
@@ -140,15 +146,14 @@ def slides():
         photo('Your product, close up', (520, 620), (560, 560), 0, prod.at(2.0, (560, 560)), shape='circle'),
         art(gift, (850, 980), 8, 'gift'),
         art(doodle('icon', 11, 150, WINE), (900, 330), 0, 'sparkle'), art(doodle('icon', 10, 90, WINE), (150, 300), 0, 'sparkle'),
-        text('[what it fixes,\nin one line]', 58, (285, 1180), -3)]))
+        text('[what it fixes,\nin one line]', 58, (285, 1180), -3, align='left')]))
     # 6 WHO IT'S FOR: three pinned sticky notes, a mug
-    nxy = (((300, 600), -6), ((770, 830), 5), ((320, 1100), -3))
+    nxy = (((300, 380), -6), ((760, 700), 5), ((330, 1030), -3))
     def on_note(c, r, k=(0, 22)):
         a = math.radians(r); return (c[0] + k[0] * math.cos(a) + k[1] * math.sin(a), c[1] - k[0] * math.sin(a) + k[1] * math.cos(a))
     s.append(dict(note='Who it\'s for: three kinds of buyer, one per note.', layers=[
-        art(word('made for', 150), (540, 210), -2, 'made for'),
-        art(mug, (840, 1230), 6, 'mug')] + [art(n, c, r, 'sticky note') for n, (c, r) in zip(notes, nxy)] + [
-        text(t, 50, on_note(c, r), r, box=None) for t, (c, r) in zip(('for the\n[6am crowd]', 'for the\n[dog mums]', 'for the\n[busy mums]'), nxy)]))
+        art(mug, (820, 1180), 6, 'mug')] + [art(n, c, r, 'sticky note') for n, (c, r) in zip(notes, nxy)] + [
+        text(t, 50, on_note(c, r), r, box=None, align='left') for t, (c, r) in zip(('for the\n[6am crowd]', 'for the\n[dog mums]', 'for the\n[busy mums]'), nxy)]))
     # 7 TECH: the phone standing on the page, your product on its screen, a butterfly perched on it
     pc = (560, 790); px0 = pc[0] - ph.width / 2 + (scr[0] + scr[2]) / 2; py0 = pc[1] - ph.height / 2 + (scr[1] + scr[3]) / 2
     s.append(dict(note='Swap in a screenshot of your shop or listing for the phone screen. Edit the line.', layers=[
@@ -159,7 +164,7 @@ def slides():
         text('[in my shop now]', 72, (540, 1300), -2)]))
     # 8 CTA: the buyer again, a crown of butterflies; sound like you? Comment [KEYWORD]
     crown = [(330 + i * 84, 360 - 38 * math.sin(math.pi * i / 5)) for i in range(6)]
-    s.append(dict(note='Swap in a second photo of you (head near the top, under the crown). Type your keyword.', layers=[
+    s.append(dict(note='Swap in a second photo of you (head near the top, under the crown). Type your keyword. Caption to start from (CTA in the first two sentences, 3 hashtags): Comment [KEYWORD] and I will send you [the link]. [One line of real context: who it helps or how you use it.] #[tag] #[tag] #[tag]', layers=[
         art(torn_card((860, 1000), 9), (540, 860), 2, 'torn paper'),
         photo('You again (head near the top)', (540, 860), (860, 1000), 2, me2.at(0.3, (860, 1000))),
         ] + [art(small_bf[i], c, (i - 2.5) * 10, 'butterfly') for i, c in enumerate(crown)] + [
@@ -228,7 +233,7 @@ def pptx(ss, path, tmp):
                 tf = shp.text_frame; tf.word_wrap = False; tf.vertical_anchor = MSO_ANCHOR.MIDDLE
                 tf.margin_left = tf.margin_right = E(pad_x); tf.margin_top = tf.margin_bottom = E(pad_y)
                 for k, line in enumerate(L['words'].split('\n')):
-                    para = tf.paragraphs[0] if k == 0 else tf.add_paragraph(); para.alignment = PP_ALIGN.CENTER; para.line_spacing = Pt(lh * 0.75)
+                    para = tf.paragraphs[0] if k == 0 else tf.add_paragraph(); para.alignment = {'center': PP_ALIGN.CENTER, 'left': PP_ALIGN.LEFT, 'right': PP_ALIGN.RIGHT}[L['align']]; para.line_spacing = Pt(lh * 0.75)
                     r = para.add_run(); r.text = line; r.font.name = 'Montserrat'; r.font.bold = True; r.font.size = Pt(L['px'] * 0.75); r.font.color.rgb = RGBColor(*L['fg'])
                 shp.name = 'GUIDE (delete)' if L['kind'] == 'guide' else 'TEXT: ' + L['words'].replace('\n', ' ')
         slide.notes_slide.notes_text_frame.text = f'Slide {i}. ' + sl['note']

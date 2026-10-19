@@ -600,3 +600,16 @@ Showing her work
 - (2026-10-19) **Fill the space above the hero object with the bold headline in every scene** (#19: "you are negating
   the headline text"). **#21's rubber-stamp SMALL BATCH and kraft background: "just ok"** (accepted; avoid as a
   first choice elsewhere).
+
+## Matching carousels (Mercedes, 2026-10-19)
+Every Reel template gets a matching carousel (prototype: `09-who-its-for/carousel/`, `build/carousel_09.py`). Same
+world as its Reel, and **the existing carousel rules apply** (`automation/carousels/content-rules.md`), except the
+Scrolly brand colours and Scrolly-only parts (destinations, the ManyChat switch, the Playbook):
+- **Slides 1 AND 2 are both covers:** Instagram often shows a carousel starting on slide 2, so slide 2 is a second
+  hook in a new format (hook top right-aligned, a swipe-pull line bottom left-aligned) that works without slide 1.
+  Content starts on slide 3; the last slide is the CTA.
+- Content slides never look like the cover; no two content slides in a row share a layout; at least 3 layouts.
+- Serif accent words on the cover plus at most two other slides. One short line per slide. Paragraphs left-aligned
+  (centre only on the cover hooks).
+- No decorative underlines, whisker/scribble marks, slide counts, handles or extra sticker labels.
+- Ship a caption to start from: the CTA in the first two sentences, exactly 3 hashtags. No em dashes or `|`.
