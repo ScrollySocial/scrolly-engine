@@ -577,3 +577,12 @@ Showing her work
   pulling back (built in build/motion_19.py `gallery()`). Use it for a product showcase template, not "pair it with".
 - **#19 Pair it with = things that come in pairs** (her note): the locket's two halves, a heart torn in two halves,
   glasses with a clip in each lens: product in one half, the pairing in the other.
+
+## IG-friendly intro (Mercedes, 2026-10-19: "we might need to develop a rule around this")
+- **Frame 1 is the hero product, as video, big, already moving,** with the big hook words on it. Never an empty
+  stage, never an object still sliding in (#19's frame 1 was blank pink).
+- **Then reveal the template's world by zooming out of the hero** (her #19 example: the product video zooms out into
+  an oval, the oval is one half of a locket, the empty half fills with "?"s, then with the pairing's video).
+- The graphic world arrives in the first 1 to 2 seconds, after the scroll is already stopped by the product.
+- **Theme objects must mean the idea** (her note: a broken heart is not "a perfect pair"; pairs = locket halves,
+  a scrapbook page turning to the next pair).

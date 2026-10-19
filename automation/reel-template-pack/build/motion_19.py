@@ -33,15 +33,16 @@ from motion_b2 import Clip, put, render, camera, ease, back_out, seg, lerp, lerp
 INK, CRM = (24, 23, 22), (246, 241, 232); WINE, PINK = X.WINE, X.PINK             # her palette: wine + pink
 X.use_type(PINK, WINE); X.enable_holds()
 DIR = '19-pair-it-with'
-LW = 900; LC = (540, 1080)
-OVALS = [((0.247, 0.615), (0.18, 0.315)), ((0.75, 0.615), (0.183, 0.315))]     # the locket's two halves (centre, radii)
-HOLDS = [(1.5, 1.1), (3.3, 1.35), (4.9, 1.15), (6.5, 0.6), (8.1, 1.2), (9.7, 1.4), (12.45, 0.3)]   # just before each transition
+LW = 980; LC = (540, 1100)
+OVALS = [((0.245, 0.594), (0.163, 0.297)), ((0.743, 0.591), (0.163, 0.31))]   # the two openings (centre, radii) as shares of the RAW photo
+PAD = 54                                                                       # die-cut (12) + shadow (42) pad around the raw photo
+HOLDS = [(1.75, 0.7), (2.9, 1.3), (4.5, 1.5), (6.1, 1.3), (8.1, 0.8), (9.7, 1.4), (12.45, 0.3)]   # just before each transition
 
 def setup():
     g = {'c': {'main': Clip('IMG_1464', 2.0), 'p1': X.Window(Clip('IMG_1422', 0.0), 7.5, 10.5), 'p2': Clip('IMG_1439', 0.5), 'p3': Clip('IMG_1436', 2.0), 'cta': Clip('IMG_1423', 2.0)}}
     tis = ImageOps.grayscale(S.raw('images', 'Blush Pink Tissue Paper Texture-9.png'))      # a calm pink paper stage (her note: no busy patterns)
     g['stripes'] = ImageOps.fit(ImageOps.colorize(ImageOps.autocontrast(tis), (214, 150, 178), PINK), (W, H)).convert('RGBA')
-    lk = Image.open(S.E.PACK / 'build' / '.cache' / 'hq' / 'Open vintage gold locket, blank inside.png').convert('RGBA'); lk = P.style_object(S.fitw(lk, LW), 'smalldots', PINK, scale=0.3, strength=0.35, edge=8); g['locket'] = S.fitw(lk, LW); g['lh'] = g['locket'].height   # play on the object
+    lk = Image.open(S.E.PACK / 'build' / '.cache' / 'hq' / 'Open vintage gold locket, blank inside.png').convert('RGBA'); g['locket'] = P.style_object(S.fitw(lk, LW), None, None, edge=8); g['lh'] = g['locket'].height   # play on the object
     HQ = S.E.PACK / 'build' / '.cache' / 'hq'
     def fr_(name, w): return C.shadow(S.fitw(Image.open(HQ / (name + '.png')).convert('RGBA'), w), (10, 18), 14, 110)
     # her real frames (2026-10-18): each with its opening as (x0, y0, x1, y1) shares of the frame; 'top' = the clip goes ON the backing
@@ -60,7 +61,7 @@ def setup():
         lens.append(a.point(lambda v: 255 if v == 128 else 0))
     g['glasses'] = (gl, lens)
     g['tea'] = P.thing('Vintage Rose Porcelain Tea Set.png', 820, 'smalldots', WINE, scale=0.3, strength=0.35)
-    g['what'] = P.caption('what to', 190, INK); g['pairw'] = P.caption('pair', 300, INK); g['with'] = X.hl('with [my steam mop]', 60, WHITE)
+    g['what'] = P.caption('what to', 190, WHITE); g['pairw'] = P.caption('pair?', 300, WHITE); g['q'] = X.key('?', 330, WINE, (246, 241, 232)); g['why'] = X.hl('[why they go together]', 60, PINK); g['with'] = X.hl('with [my steam mop]', 60, WHITE)
     g['plus'] = [X.hl(t, 62, (PINK, WHITE, PINK)[i]) for i, t in enumerate(('+ [the stick vacuum]', '+ [the odor spray]', '+ [the litter]'))]
     g['under'] = doodle('under', 0, 560, WHITE); g['plusbig'] = P.sticker('+', 150, WINE, WHITE, 'circle'); g['arrow'] = doodle('arrow', 0, 160, WHITE); g['pair1'] = P.caption('pair it with', 130, INK)
     g['perfect'] = P.caption('a perfect pair', 140, WINE); g['bundle'] = X.hl('[ask about the bundle]', 60, WINE); g['hearts'] = [P.die_cut(doodle('icon', 2 + i % 2, 150, WINE), 5, False) for i in range(3)]; g['burst'] = doodle('burst', 2, 640, CRM)
@@ -70,49 +71,71 @@ def setup():
 def oval_mask(size):
     m = Image.new('L', size, 0); ImageDraw.Draw(m).ellipse((0, 0, size[0] - 1, size[1] - 1), fill=255); return m
 
-def locket(g, t, left, right, y=None, flip=None, right_next=None, scale=1.0):
-    """The locket on the stripes; `left`/`right` are clip frames (or a colour) shown inside the two halves; `flip`=(t0)
-    flips the right half like a coin from `right` to `right_next`."""
-    im = g['stripes'].copy(); cy = LC[1] if y is None else y; lk = g['locket'] if scale == 1 else g['locket'].resize((int(LW * scale), int(g['lh'] * scale)))
-    x0, y0 = LC[0] - lk.width / 2, cy - lk.height / 2; im.alpha_composite(C.shadow(lk, (10, 18), 16, 110), (int(x0) - 16, int(y0) - 16))
-    for i, ((fx, fy), (rx, ry)) in enumerate(OVALS):
-        w, h = int(2 * rx * lk.width), int(2 * ry * lk.height); content = left if i == 0 else right; sx = 1.0
+def locket(g, t, left, right, y=None, flip=None, right_next=None, scale=1.0, bg=True):
+    """The locket; `left`/`right` are clip frames (or a colour) inside its two openings. `flip`=t0 turns the right half
+    like a scrapbook page on the hinge (old page folds onto the hinge, the new one opens out) to `right_next`."""
+    im = g['stripes'].copy() if bg else Image.new('RGBA', (W, H), (0, 0, 0, 0)); cy = LC[1] if y is None else y; lk = g['locket']
+    x0, y0 = LC[0] - lk.width / 2, cy - lk.height / 2; im.alpha_composite(lk, (int(x0), int(y0)))
+    rx0, ry0, rw, rh = x0 + PAD, y0 + PAD, lk.width - 2 * PAD, lk.height - 2 * PAD
+    for i, ((fx, fy), (ax, ay)) in enumerate(OVALS):
+        w, h = int(2 * ax * rw), int(2 * ay * rh); content = left if i == 0 else right; sx = 1.0; anchor = None
         if i == 1 and flip is not None:
-            u = seg(t, flip, flip + 0.4); sx = abs(math.cos(math.pi * u)); content = right if u < 0.5 else right_next
+            u = seg(t, flip, flip + 0.5); sx = abs(math.cos(math.pi * u)); content = right if u < 0.5 else right_next; anchor = rx0 + (fx - ax) * rw
+        if content is None: continue
         ww = max(2, int(w * sx))
-        v = Image.new('RGBA', (w, h), content + (255,)) if isinstance(content, tuple) else ImageOps.fit(content, (w, h)).convert('RGBA')
-        v = v.resize((ww, h)); v.putalpha(oval_mask((ww, h)))
-        im.alpha_composite(v, (int(x0 + fx * lk.width - ww / 2), int(y0 + fy * lk.height - h / 2)))
+        v = Image.new('RGBA', (w, h), content + (255,)) if isinstance(content, tuple) else ImageOps.fit(content, (w, h), centering=(0.5, 0.45)).convert('RGBA')
+        v.putalpha(oval_mask((w, h))); v = v.resize((ww, h))
+        cxp = rx0 + fx * rw; x = cxp - ww / 2 if anchor is None else anchor
+        if anchor is not None and sx < 0.97: ImageDraw.Draw(v).line((ww - 3, 0, ww - 3, h), fill=(255, 255, 255, 200), width=4)   # page edge
+        im.alpha_composite(v, (int(x), int(ry0 + fy * rh - h / 2)))
     return im
 
 def oval_centre(i, y=None):
-    (fx, fy), _ = OVALS[i]; return (LC[0] - LW / 2 + fx * LW, (LC[1] if y is None else y) - 0 - 0 + (fy - 0.5) * 715)
+    (fx, fy), _ = OVALS[i]; return (LC[0] - LW / 2 + fx * LW, (LC[1] if y is None else y) + (fy - 0.5) * LW * 812 / 1021)
+
+def ask_marks(im, g, t, t0, gone=None):
+    """Big '?'s floating up out of the empty half (wine, cream edge), wobbling; they fly off at `gone`."""
+    (fx, fy), _ = OVALS[1]; cx, cy = oval_centre(1)
+    for i, (dx, dy, sz) in enumerate(((-60, -520, 1.0), (170, -380, 0.8), (-200, -300, 0.65), (230, -620, 0.7), (40, -760, 0.55))):
+        u = ease(seg(t, t0 + i * 0.15, t0 + i * 0.15 + 0.6))
+        if u <= 0: continue
+        x, y = cx + dx * u + 14 * math.sin(t * 3 + i), cy + dy * u + 10 * math.sin(t * 4 + i)
+        if gone is not None:
+            v = ease(seg(t, gone, gone + 0.3)); x += (1 if i % 2 else -1) * 900 * v; y -= 300 * v
+        put(im, g['q'], (x, y), sz * min(1, u * 1.5), (i * 23) % 30 - 15)
 
 def frame(g, t):
-    c = g['c']
-    if t < 1.8:                                                    # 1: the locket slides in; product left, pink right
-        k = back_out(seg(t, 0.0, 0.4), 1.3); y = lerp(-700, LC[1], k)
-        im = locket(g, t, c['main'].at(t), PINK, y)
-        P.say(im, g['what'], t, 0.05, (500, 300), -3); P.say(im, g['pairw'], t, 0.25, (560, 500), -2); P.say(im, g['with'], t, 0.55, (540, 680), 2)
-        X.sparkles(im, t, 0.3, [(130, 250), (930, 330), (150, 600), (960, 640), (880, 1600), (180, 1620)], WINE, 170)
+    c = g['c']; rc = oval_centre(1); lc = oval_centre(0)
+    if t < 1.8:                                                    # 1: the hero video full frame zooms out into the locket's oval
+        z = lerp(4.8, 1.0, ease(seg(t, 0.35, 1.25)))                 # (her IG-friendly intro: frame 1 is the product, moving)
+        im = camera(locket(g, t, c['main'].at(t), PINK), lc, z)
+        ask_marks(im, g, t, 1.15)
+        P.say(im, g['what'], t, 0.05, (500, 300), -3); P.say(im, g['pairw'], t, 0.25, (560, 500), -2)
         return im
-    if t < 3.6:                                                    # 2: a torn paper heart: the product in one half, pairing 1 in the other
-        im = heart(g, t, c['main'].at(t), c['p1'].at(t - 1.8))
-        P.say(im, g['pair1'], t, 1.95, (540, 300), -2); P.say(im, g['plus'][0], t, 2.6, (540, 1500), -2)
-        if t < 1.95: im = diagonal(locket(g, t, c['main'].at(t), PINK), im, seg(t, 1.8, 1.95))
-        if t > 3.35: im = swipe(im, close3(g, 3.6), seg(t, 3.35, 3.6), -1)
+    if t < 3.0:                                                    # 2: the empty half fills with a great pair
+        k = back_out(seg(t, 1.9, 2.3), 1.4); im = locket(g, t, c['main'].at(t), None)
+        if k > 0:
+            (fx, fy), (ax, ay) = OVALS[1]; lk = g['locket']; rw, rh = lk.width - 2 * PAD, lk.height - 2 * PAD
+            w, h = int(2 * ax * rw * k), int(2 * ay * rh * k)
+            if w > 4: v = ImageOps.fit(c['p1'].at(t - 1.8), (w, h), centering=(0.5, 0.45)).convert('RGBA'); v.putalpha(oval_mask((w, h))); put(im, v, rc)
+        if k < 0.5:
+            pk = locket(g, t, None, PINK, bg=False); im.alpha_composite(pk) if False else None
+        ask_marks(im, g, t, 1.15, gone=1.9)
+        P.say(im, g['plus'][0], t, 2.3, (540, 1600 - 130), -2); X.sparkles(im, t, 2.3, [(880, 640), (990, 900)], WINE, 140)
         return im
-    if t < 5.2:                                                    # 3: the locket up close; its right half flips to pairing 2
-        im = close3(g, t)
-        if t > 4.95: im = diagonal(im, c['p2'].at(t - 3.8), seg(t, 4.95, 5.2))
+    if t < 4.6:                                                    # 3: the camera dives into the right half: pairing 1 full frame
+        z = lerp(1.0, 4.8, ease(seg(t, 3.0, 3.5)) ** 2)
+        im = camera(locket(g, t, c['main'].at(t), c['p1'].at(t - 1.8)), rc, z) if t < 3.5 else c['p1'].at(t - 1.8)
+        P.say(im, g['why'], t, 3.6, (540, 1380), -2)
         return im
-    if t < 6.8:                                                    # 4: pairing 2, full frame
-        im = c['p2'].at(t - 3.8); P.say(im, g['plus'][1], t, 5.25, (540, 1380), 2); doodle_on(im, t, 5.6, g['under'], (540, 1460), -2)
-        if t > 6.55: im = swipe(im, diag5(g, 6.8), seg(t, 6.55, 6.8))
+    if t < 6.2:                                                    # 4: back out to the locket; the scrapbook page turns to pairing 2
+        z = lerp(4.8, 1.0, ease(seg(t, 4.6, 5.0)))
+        im = camera(locket(g, t, c['main'].at(t), c['p1'].at(t - 1.8), flip=5.1, right_next=c['p2'].at(t - 5.1)), rc, z)
+        P.say(im, g['plus'][1], t, 5.5, (540, 1470), 2)
         return im
-    if t < 8.4:                                                    # 5: glasses: the product in one lens, pairing 3 in the other
-        im = glasses(g, t, c['main'].at(t), c['p3'].at(t - 6.8))
-        P.say(im, g['plus'][2], t, 7.3, (540, 1300), 2)
+    if t < 8.4:                                                    # 5: the page turns again: pairing 3
+        im = locket(g, t, c['main'].at(t), c['p2'].at(t - 5.1), flip=6.5, right_next=c['p3'].at(t - 6.5))
+        P.say(im, g['plus'][2], t, 6.9, (540, 1470), -2); X.sparkles(im, t, 7.0, [(140, 700), (960, 640), (930, 1350)], WINE, 140)
         if t > 8.15: im = diagonal(im, stage6(g, t), seg(t, 8.15, 8.4))
         return im
     if t < 10.0:
