@@ -93,15 +93,21 @@ Every template comes with:
 
 ## 3. How it works
 
-**[Mercedes's how-to video goes here]**: film the clips, drop them in, double-click the installer, open CapCut.
+**[Mercedes's how-to video goes here]**, shown on a desktop screen: film the clips, drop them in, double-click the installer, open CapCut.
 
-1. **Film your clips.** The shot list says what to film and for how long. Hold your phone upright, keep your product in the middle of the frame, and start each clip right on the action.
-2. **Drop them in.** Unzip the template and put your clips in the folder *1 Put your clips here*, named 1, 2, 3 in shot-list order.
-3. **Double-click the installer.** *2 Double-click to install* copies the template into CapCut under a new name and adds your clips. Your other projects stay as they are.
-4. **Type your words.** Open CapCut: the template is on the home screen. Double-click each text box, type over the [brackets], and export.
-5. **Add a sound and post.** Pick a sound in Instagram after you upload, then share it.
+Shown as five icons with one short line each, under the desktop screen, on a film-strip band:
+
+| Icon | Step | Line |
+|---|---|---|
+| phone | **Film** | Follow the shot list on your phone. |
+| folder | **Drop in** | Put your clips in the folder. |
+| cursor | **Double-click** | The installer adds your clips. |
+| text | **Type** | Your words over the [brackets]. |
+| send | **Post** | Add a sound in Instagram. |
 
 ## 4. Who it's for
+
+On a peach band (#FFC9A8, the brand peach from the Reel covers) to break up the page.
 
 Small business owners who sell physical products: makers, small-batch brands and anyone who packs and ships orders.
 If you can film your product on your phone, you can make these.

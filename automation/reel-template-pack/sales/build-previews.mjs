@@ -40,16 +40,29 @@ mark.ph{background:#ffd9c9;color:var(--s3-ink);padding:0 4px;border-radius:3px}
 .cap{margin-top:12px;font:400 var(--s3-fs-body)/1.25 var(--s3-serif);text-align:center}
 @media(max-width:800px){.phones{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:10px;margin-right:calc(-1 * var(--s3-gut))}
  .phones>*{flex:0 0 58%;scroll-snap-align:start}}
-.video{max-width:960px;aspect-ratio:16/9;border-radius:16px;background:#1b1b1b;color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;text-align:center;padding:24px;margin:32px 0 40px}
-.video .play{width:76px;height:76px;border-radius:50%;background:var(--s3-orange);display:flex;align-items:center;justify-content:center}
-.video .play::after{content:"";border-left:24px solid #000;border-top:15px solid transparent;border-bottom:15px solid transparent;margin-left:6px}
-.video p{font:var(--s3-fs-fine)/1.4 var(--s3-sans);color:#d8d3cc;max-width:30em}
-.steps{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:24px;padding:0;list-style:none;counter-reset:st}
-.steps li{counter-increment:st}
-.steps li::before{content:counter(st);display:block;font:400 var(--s3-fs-h3)/1 var(--s3-serif);color:var(--s3-or-text);margin-bottom:10px}
-.steps b{display:block;font:400 var(--s3-fs-title)/1.15 var(--s3-serif);margin-bottom:8px}
-@media(max-width:900px){.steps{grid-template-columns:1fr 1fr}}
-@media(max-width:560px){.steps{grid-template-columns:1fr}}
+/* How it works: a strip of film with the how-to video on a desktop screen (Mercedes 2026-10-19) */
+.film{background:#141414;color:#fff;position:relative;padding:calc(var(--s3-sec) + 22px) 0}
+.film::before,.film::after{content:"";position:absolute;left:0;right:0;height:34px;
+ background:#141414 radial-gradient(circle,transparent 0,transparent 0) ;
+ background-image:repeating-linear-gradient(90deg,transparent 0 14px,#f7f3ec 14px 34px,transparent 34px 48px);
+ -webkit-mask:linear-gradient(#000 0 0) center/100% 16px no-repeat;mask:linear-gradient(#000 0 0) center/100% 16px no-repeat}
+.film::before{top:10px}.film::after{bottom:10px}
+.film h2{color:#fff!important;text-align:center}
+.monitor{max-width:900px;margin:40px auto 0}
+.screen{aspect-ratio:16/9;border:14px solid #2b2b2b;border-bottom-width:30px;border-radius:16px;background:#000;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;text-align:center;padding:24px;box-shadow:0 0 0 1px #3a3a3a}
+.screen .play{width:76px;height:76px;border-radius:50%;background:var(--s3-orange);display:flex;align-items:center;justify-content:center}
+.screen .play::after{content:"";border-left:24px solid #000;border-top:15px solid transparent;border-bottom:15px solid transparent;margin-left:6px}
+.screen p{font:var(--s3-fs-fine)/1.4 var(--s3-sans);color:#d8d3cc;max-width:30em}
+.stand{width:18%;height:56px;margin:0 auto;background:linear-gradient(#3a3a3a,#262626);clip-path:polygon(22% 0,78% 0,100% 100%,0 100%)}
+.base{width:34%;height:12px;margin:0 auto;border-radius:6px;background:#333}
+.steps{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:28px;padding:0;margin:56px 0 0;list-style:none;text-align:center}
+.steps svg{width:56px;height:56px;margin:0 auto 14px;display:block;stroke:var(--s3-orange);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.steps b{display:block;font:400 var(--s3-fs-title)/1.15 var(--s3-serif);margin-bottom:6px}
+.steps span{color:#d8d3cc}
+@media(max-width:900px){.steps{grid-template-columns:1fr 1fr 1fr}}
+@media(max-width:560px){.steps{grid-template-columns:1fr 1fr}.screen{border-width:8px 8px 18px}}
+/* Who it's for: the peach band breaks up the page (Mercedes 2026-10-19; brand peach from the Reel covers) */
+.peach{background:#ffc9a8}
 .incl{margin-top:56px;max-width:46em}
 .incl h3{margin-bottom:16px}
 .incl ul{padding-left:1.3em}
@@ -77,10 +90,10 @@ const shell = (d, css, body) => `<!doctype html><html lang="en"><head><meta char
 <div class="s3"><div id="main">${body}</div></div></body></html>`;
 
 const price = (d) => `<span class="amt">${d.was ? `<del>${esc(d.was)}</del>` : ''}${ph(d.price)}</span>`;
-const howItWorks = (d) => `<section class="s3-sec" id="how"><div class="s3-wrap"><h2 class="s3-h2">How it works</h2>
-  <div class="video"><div class="play" aria-hidden="true"></div><strong>Your how-to video goes here</strong>
-  <p>Mercedes records it: film the clips, drop them in, double-click the installer, open CapCut.</p></div>
-  <ol class="steps">${d.steps.map(([b, t]) => `<li><b>${esc(b)}</b>${esc(t)}</li>`).join('')}</ol></div></section>`;
+const howItWorks = (d) => `<section class="film" id="how"><div class="s3-wrap"><h2 class="s3-h2">How it works</h2>
+  <div class="monitor"><div class="screen"><div class="play" aria-hidden="true"></div><strong>Your how-to video goes here</strong>
+  <p>Mercedes records it: film the clips, drop them in, double-click the installer, open CapCut.</p></div><div class="stand"></div><div class="base"></div></div>
+  <ol class="steps">${STEPS.map(([icon, b, t]) => `<li><svg viewBox="0 0 48 48" aria-hidden="true">${icon}</svg><b>${esc(b)}</b><span>${esc(t)}</span></li>`).join('')}</ol></div></section>`;
 const includes = (d) => `<div class="incl"><h3 class="s3-h3">Every template comes with</h3><ul>${d.includes.map((x) => `<li>${esc(x)}</li>`).join('')}</ul>
   ${d.formatNote ? `<p style="margin-top:20px">${ph(d.formatNote)}</p>` : ''}</div>`;
 const faq = (d) => `<section class="s3-sec"><div class="s3-read"><h2 class="s3-h2">Questions</h2><div class="s3-faq">${d.faq.map(([q, a]) => `<details><summary>${esc(q)}</summary><div>${ph(a)}</div></details>`).join('')}</div></div></section>`;
@@ -92,12 +105,13 @@ const notes = (d) => `<section class="s3-sec notes"><div class="s3-wrap">
   <table><thead><tr>${d.demoHead.map((h) => `<th>${esc(h)}</th>`).join('')}</tr></thead><tbody>${d.demo.map((r) => `<tr>${r.map((c, i) => `<td>${i ? esc(c) : `<b>${esc(c)}</b>`}</td>`).join('')}</tr>`).join('')}</tbody></table>
 </div></section>`;
 
-const STEPS = (extra) => [
-  ['Film your clips', `The shot list says what to film and for how long. Hold your phone upright${extra} and start each clip right on the action.`],
-  ['Drop them in', 'Unzip the template and put your clips in the folder "1 Put your clips here", named 1, 2, 3 in shot-list order.'],
-  ['Double-click the installer', '"2 Double-click to install" copies the template into CapCut under a new name and adds your clips. Your other projects stay as they are.'],
-  ['Type your words', 'Open CapCut: the template is on the home screen. Double-click each text box, type over the [brackets], and export.'],
-  ['Add a sound and post', 'Pick a sound in Instagram after you upload, then share it.'],
+// icon, step, one short line (Mercedes: "a lot of text there", icons instead of numbers)
+const STEPS = [
+  ['<rect x="15" y="5" width="18" height="38" rx="4"/><circle cx="24" cy="37" r="1.6"/><circle cx="24" cy="19" r="5"/>', 'Film', 'Follow the shot list on your phone.'],
+  ['<path d="M5 14v24a3 3 0 0 0 3 3h32a3 3 0 0 0 3-3V18a3 3 0 0 0-3-3H22l-4-5H8a3 3 0 0 0-3 3z"/><path d="M24 22v12M18 28l6 6 6-6"/>', 'Drop in', 'Put your clips in the folder.'],
+  ['<path d="M14 6l20 14-9 2 6 12-4 2-6-12-7 6z"/>', 'Double-click', 'The installer adds your clips.'],
+  ['<path d="M10 12V8h28v4M24 8v32M18 40h12"/>', 'Type', 'Your words over the [brackets].'],
+  ['<path d="M42 6L20 28M42 6l-14 36-8-14-14-8z"/>', 'Post', 'Add a sound in Instagram.'],
 ];
 const INCLUDES = (projectNote) => [
   `The CapCut project, with ${projectNote}`,
@@ -122,7 +136,7 @@ const HCSS = `
 .night h1{color:var(--s3-orange)!important;max-width:9em;position:relative;z-index:2}
 .night .s3-lede{color:#efe9e1;position:relative;z-index:2}
 .night .s3-fine{color:#cfc8bf}
-.night .moon{position:absolute;right:-90px;top:-70px;width:min(520px,62vw);opacity:.95;z-index:0;filter:drop-shadow(0 0 60px rgba(255,90,40,.35))}
+.night .moon{position:absolute;right:-90px;top:-70px;width:min(520px,36vw);opacity:.95;z-index:0;filter:drop-shadow(0 0 60px rgba(255,90,40,.35))}
 .night .hang{position:absolute;top:0;width:clamp(56px,7vw,96px);transform-origin:50% 0;animation:swing 3.6s ease-in-out infinite;z-index:1}
 .night .hang.b2{animation-delay:-1.4s;animation-duration:4.2s}
 .night .fly{position:absolute;width:clamp(60px,7vw,110px);z-index:1;animation:fly 9s linear infinite}
@@ -133,6 +147,8 @@ const HCSS = `
 @keyframes swing{0%,100%{transform:rotate(-7deg)}50%{transform:rotate(7deg)}}
 @keyframes fly{0%{transform:translate(-20vw,0) scaleX(1)}50%{transform:translate(55vw,-30px)}100%{transform:translate(120vw,10px)}}
 @keyframes drop{0%,100%{transform:translateY(0)}50%{transform:translateY(26px)}}
+@media(max-width:700px){.night.hero-h .moon{width:62vw;opacity:.55}}
+.night h1,.night .s3-lede{text-shadow:0 2px 16px rgba(0,0,0,.7)}
 @media(prefers-reduced-motion:reduce){.hang,.fly,.spider{animation:none!important}}
 .hero-h{padding-top:clamp(72px,9vw,140px)}
 .night>.s3-wrap{position:relative;z-index:2}
@@ -160,7 +176,7 @@ function halloweenPage(d) {
 <section class="night s3-sec hero-h"><img class="moon" src="${img('moon.webp')}" alt="">
   <img class="hang" src="${img('bat.png')}" alt="" style="left:44%"><img class="hang b2" src="${img('bat.png')}" alt="" style="left:58%;width:clamp(44px,5vw,72px)">
   <img class="fly" src="${img('batfly.png')}" alt="" style="top:18%;left:0"><img class="fly f2" src="${img('batfly.png')}" alt="" style="left:0">
-  <div class="spider" style="left:6%;top:-10px"><img src="${img('spider.png')}" alt=""></div>
+  <div class="spider" style="right:clamp(60px,15vw,210px);top:-10px"><img src="${img('spider.png')}" alt=""></div>
   <div class="s3-wrap">
     <h1 class="s3-display">${esc(d.headline)}</h1>
     <p class="s3-lede" style="margin-top:28px">${esc(d.sub)}</p>
@@ -172,7 +188,7 @@ function halloweenPage(d) {
   <h2 class="s3-h2">${esc(d.getTitle)}</h2><p class="s3-lede" style="margin-top:20px">${esc(d.getLede)}</p>
   <div class="tpls">${tpls}</div>${includes(d)}</div></section>
 ${howItWorks(d)}
-<section class="s3-sec"><div class="s3-wrap s3-split"><h2 class="s3-h2">Who it's for</h2><p class="s3-lede">${esc(d.who)}</p></div></section>
+<section class="s3-sec peach"><div class="s3-wrap s3-split"><h2 class="s3-h2">Who it's for</h2><p class="s3-lede">${esc(d.who)}</p></div></section>
 ${faq(d)}
 <section class="s3-sec night cta" id="buy"><img class="moon" src="${img('moon.webp')}" alt="">
   <img class="hang" src="${img('bat.png')}" alt="" style="left:12%"><img class="hang b2" src="${img('bat.png')}" alt="" style="right:12%;width:clamp(44px,5vw,72px)">
@@ -213,7 +229,7 @@ function physicalPage(d) {
   <h2 class="s3-h2">${esc(d.getTitle)}</h2><p class="s3-lede" style="margin-top:20px">${esc(d.getLede)}</p>
   <div class="list">${list}</div>${includes(d)}</div></section>
 ${howItWorks(d)}
-<section class="s3-sec"><div class="s3-wrap s3-split"><h2 class="s3-h2">Who it's for</h2><p class="s3-lede">${esc(d.who)}</p></div></section>
+<section class="s3-sec peach"><div class="s3-wrap s3-split"><h2 class="s3-h2">Who it's for</h2><p class="s3-lede">${esc(d.who)}</p></div></section>
 ${faq(d)}
 <section class="s3-sec s3-dark cta" id="buy"><div class="s3-read">
   <h2 class="s3-h2 or">${esc(d.ctaHead)}</h2>
@@ -244,7 +260,6 @@ const halloween = {
     { name: 'Trick or treat', poster: 'h5.jpg', job: 'Fix a common mistake, then make your offer. Door 1 opens on the trick, door 2 on the treat.', film: '3 clips: the mistake, your product, the proof', len: 17.5 },
     { name: 'Now you see it', poster: 'h1.jpg', job: 'Last chance: a limited drop or a sale ending. A snap, real smoke rolls in, and the product is gone.', film: 'you with your product, the same shot without it, then your product', len: 14 },
   ],
-  steps: STEPS(''),
   who: 'Online business owners and creators who want a Halloween Reel that sells something: a product, a sale, a freebie or an offer. It works for physical products, digital products and services, since every clip is your own footage.',
   faq: FAQ('No. The big Halloween lettering is part of the artwork. The words you edit use Arial or Bodoni Moda, and Bodoni Moda comes inside the template.'),
   ctaHead: 'Post your Halloween Reel before the 31st',
@@ -312,7 +327,6 @@ const physical = {
     T('Make it last', 'One care habit that keeps it looking good.', 'keep your bar dry between uses', 'wash it inside out'),
     T('Mine vs the usual kind', 'Show how yours is made differently.', 'a handmade bar next to a store bar', 'a heavyweight tee next to a thin one'),
   ],
-  steps: STEPS(', keep your product in the middle of the frame,'),
   who: 'Small business owners who sell physical products: makers, small-batch brands and anyone who packs and ships orders. If you can film your product on your phone, you can make these.',
   faq: FAQ('No. The words you edit use Montserrat, which comes inside each template, and the big lettering is part of the artwork.'),
   ctaHead: 'A month of Reels, ready for your clips',

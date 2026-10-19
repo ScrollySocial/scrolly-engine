@@ -257,16 +257,29 @@ mark.ph{background:#ffd9c9;color:var(--s3-ink);padding:0 4px;border-radius:3px}
 .cap{margin-top:12px;font:400 var(--s3-fs-body)/1.25 var(--s3-serif);text-align:center}
 @media(max-width:800px){.phones{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:10px;margin-right:calc(-1 * var(--s3-gut))}
  .phones>*{flex:0 0 58%;scroll-snap-align:start}}
-.video{max-width:960px;aspect-ratio:16/9;border-radius:16px;background:#1b1b1b;color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;text-align:center;padding:24px;margin:32px 0 40px}
-.video .play{width:76px;height:76px;border-radius:50%;background:var(--s3-orange);display:flex;align-items:center;justify-content:center}
-.video .play::after{content:"";border-left:24px solid #000;border-top:15px solid transparent;border-bottom:15px solid transparent;margin-left:6px}
-.video p{font:var(--s3-fs-fine)/1.4 var(--s3-sans);color:#d8d3cc;max-width:30em}
-.steps{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:24px;padding:0;list-style:none;counter-reset:st}
-.steps li{counter-increment:st}
-.steps li::before{content:counter(st);display:block;font:400 var(--s3-fs-h3)/1 var(--s3-serif);color:var(--s3-or-text);margin-bottom:10px}
-.steps b{display:block;font:400 var(--s3-fs-title)/1.15 var(--s3-serif);margin-bottom:8px}
-@media(max-width:900px){.steps{grid-template-columns:1fr 1fr}}
-@media(max-width:560px){.steps{grid-template-columns:1fr}}
+/* How it works: a strip of film with the how-to video on a desktop screen (Mercedes 2026-10-19) */
+.film{background:#141414;color:#fff;position:relative;padding:calc(var(--s3-sec) + 22px) 0}
+.film::before,.film::after{content:"";position:absolute;left:0;right:0;height:34px;
+ background:#141414 radial-gradient(circle,transparent 0,transparent 0) ;
+ background-image:repeating-linear-gradient(90deg,transparent 0 14px,#f7f3ec 14px 34px,transparent 34px 48px);
+ -webkit-mask:linear-gradient(#000 0 0) center/100% 16px no-repeat;mask:linear-gradient(#000 0 0) center/100% 16px no-repeat}
+.film::before{top:10px}.film::after{bottom:10px}
+.film h2{color:#fff!important;text-align:center}
+.monitor{max-width:900px;margin:40px auto 0}
+.screen{aspect-ratio:16/9;border:14px solid #2b2b2b;border-bottom-width:30px;border-radius:16px;background:#000;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;text-align:center;padding:24px;box-shadow:0 0 0 1px #3a3a3a}
+.screen .play{width:76px;height:76px;border-radius:50%;background:var(--s3-orange);display:flex;align-items:center;justify-content:center}
+.screen .play::after{content:"";border-left:24px solid #000;border-top:15px solid transparent;border-bottom:15px solid transparent;margin-left:6px}
+.screen p{font:var(--s3-fs-fine)/1.4 var(--s3-sans);color:#d8d3cc;max-width:30em}
+.stand{width:18%;height:56px;margin:0 auto;background:linear-gradient(#3a3a3a,#262626);clip-path:polygon(22% 0,78% 0,100% 100%,0 100%)}
+.base{width:34%;height:12px;margin:0 auto;border-radius:6px;background:#333}
+.steps{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:28px;padding:0;margin:56px 0 0;list-style:none;text-align:center}
+.steps svg{width:56px;height:56px;margin:0 auto 14px;display:block;stroke:var(--s3-orange);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.steps b{display:block;font:400 var(--s3-fs-title)/1.15 var(--s3-serif);margin-bottom:6px}
+.steps span{color:#d8d3cc}
+@media(max-width:900px){.steps{grid-template-columns:1fr 1fr 1fr}}
+@media(max-width:560px){.steps{grid-template-columns:1fr 1fr}.screen{border-width:8px 8px 18px}}
+/* Who it's for: the peach band breaks up the page (Mercedes 2026-10-19; brand peach from the Reel covers) */
+.peach{background:#ffc9a8}
 .incl{margin-top:56px;max-width:46em}
 .incl h3{margin-bottom:16px}
 .incl ul{padding-left:1.3em}
@@ -335,11 +348,11 @@ mark.ph{background:#ffd9c9;color:var(--s3-ink);padding:0 4px;border-radius:3px}
     <p class="ex"><b>Soap shop:</b> keep your bar dry between uses</p><p class="ex"><b>T-shirt store:</b> wash it inside out</p></div><div class="item"><h3>Mine vs the usual kind</h3><p>Show how yours is made differently.</p>
     <p class="ex"><b>Soap shop:</b> a handmade bar next to a store bar</p><p class="ex"><b>T-shirt store:</b> a heavyweight tee next to a thin one</p></div></div><div class="incl"><h3 class="s3-h3">Every template comes with</h3><ul><li>The CapCut project, with real photographed props, collage and motion already built</li><li>A shot list: every clip to film, in order, and how long it is</li><li>An installer that puts the template on CapCut's home screen with your clips already in it</li><li>A recipe card with the words to type, and a one-page How to use guide</li><li>A phone kit for CapCut on your phone: the shot guide video, the shot list and every graphic as a PNG</li></ul>
   </div></div></section>
-<section class="s3-sec" id="how"><div class="s3-wrap"><h2 class="s3-h2">How it works</h2>
-  <div class="video"><div class="play" aria-hidden="true"></div><strong>Your how-to video goes here</strong>
-  <p>Mercedes records it: film the clips, drop them in, double-click the installer, open CapCut.</p></div>
-  <ol class="steps"><li><b>Film your clips</b>The shot list says what to film and for how long. Hold your phone upright, keep your product in the middle of the frame, and start each clip right on the action.</li><li><b>Drop them in</b>Unzip the template and put your clips in the folder "1 Put your clips here", named 1, 2, 3 in shot-list order.</li><li><b>Double-click the installer</b>"2 Double-click to install" copies the template into CapCut under a new name and adds your clips. Your other projects stay as they are.</li><li><b>Type your words</b>Open CapCut: the template is on the home screen. Double-click each text box, type over the [brackets], and export.</li><li><b>Add a sound and post</b>Pick a sound in Instagram after you upload, then share it.</li></ol></div></section>
-<section class="s3-sec"><div class="s3-wrap s3-split"><h2 class="s3-h2">Who it's for</h2><p class="s3-lede">Small business owners who sell physical products: makers, small-batch brands and anyone who packs and ships orders. If you can film your product on your phone, you can make these.</p></div></section>
+<section class="film" id="how"><div class="s3-wrap"><h2 class="s3-h2">How it works</h2>
+  <div class="monitor"><div class="screen"><div class="play" aria-hidden="true"></div><strong>Your how-to video goes here</strong>
+  <p>Mercedes records it: film the clips, drop them in, double-click the installer, open CapCut.</p></div><div class="stand"></div><div class="base"></div></div>
+  <ol class="steps"><li><svg viewBox="0 0 48 48" aria-hidden="true"><rect x="15" y="5" width="18" height="38" rx="4"/><circle cx="24" cy="37" r="1.6"/><circle cx="24" cy="19" r="5"/></svg><b>Film</b><span>Follow the shot list on your phone.</span></li><li><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M5 14v24a3 3 0 0 0 3 3h32a3 3 0 0 0 3-3V18a3 3 0 0 0-3-3H22l-4-5H8a3 3 0 0 0-3 3z"/><path d="M24 22v12M18 28l6 6 6-6"/></svg><b>Drop in</b><span>Put your clips in the folder.</span></li><li><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M14 6l20 14-9 2 6 12-4 2-6-12-7 6z"/></svg><b>Double-click</b><span>The installer adds your clips.</span></li><li><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M10 12V8h28v4M24 8v32M18 40h12"/></svg><b>Type</b><span>Your words over the [brackets].</span></li><li><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M42 6L20 28M42 6l-14 36-8-14-14-8z"/></svg><b>Post</b><span>Add a sound in Instagram.</span></li></ol></div></section>
+<section class="s3-sec peach"><div class="s3-wrap s3-split"><h2 class="s3-h2">Who it's for</h2><p class="s3-lede">Small business owners who sell physical products: makers, small-batch brands and anyone who packs and ships orders. If you can film your product on your phone, you can make these.</p></div></section>
 <section class="s3-sec"><div class="s3-read"><h2 class="s3-h2">Questions</h2><div class="s3-faq"><details><summary>Do I need CapCut on a computer?</summary><div>For the full template, yes: it opens in CapCut for computer (the free download). Install it and open it once before you run the installer.</div></details><details><summary>Can I use it on my phone?</summary><div>Yes. Every template comes with a phone kit: the shot guide video, the shot list and the graphics as PNG images. In the CapCut phone app you add your clips and words, then place the graphics as overlays. The full animation is built for you in the computer version.</div></details><details><summary>Is music included?</summary><div>No sound files are included, so your Reel never gets muted for a song you don't have the rights to. Each template suggests a sound <mark class="ph">[SOUND PICKS]</mark>. Add it in Instagram after you upload: on a business account, Instagram only shows sounds cleared for business use.</div></details><details><summary>Do I need to install any fonts?</summary><div>No. The words you edit use Montserrat, which comes inside each template, and the big lettering is part of the artwork.</div></details><details><summary>How do I change the words?</summary><div>Double-click a text box in CapCut and type over the [brackets]. Keep it to a few words so people can read it in time.</div></details><details><summary>My computer warns me about the installer. Is that normal?</summary><div>Yes, Windows shows this for installers it hasn't seen before. Choose More info, then Run anyway.</div></details><details><summary>What if I want a different clip in one shot?</summary><div>Right-click the clip on CapCut's timeline, choose Replace, and pick another.</div></details></div></div></section>
 <section class="s3-sec s3-dark cta" id="buy"><div class="s3-read">
   <h2 class="s3-h2 or">A month of Reels, ready for your clips</h2>
