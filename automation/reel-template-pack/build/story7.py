@@ -905,8 +905,8 @@ SETUP['11'] = setup_11; FRAME['11'] = frame_11; SECS['11'] = 17.0; DIRS['11'] = 
 # hidden under a sheet of wine tissue and seen only through a torn peephole; a kitchen timer counts the drop in; the
 # sheet rips in two to reveal it. Calm butter-tissue stage, one burst behind a word, one ring round the date, real dates
 # only (the buyer types theirs).
-#  1 0.0  something drops (her idea): the product video drops onto the stage as a card, speed lines while it falls, a
-#         shake and ONE soft dust cloud behind it on the landing; new / drop fall in and land on the same thud; [something new is coming]; new drop
+#  1 0.0  (her note) the video is full screen and the product in it is lifted onto its own layer: ONE dust cloud and
+#         new / drop land BEHIND the product on the thud; speed lines while it falls, a shake on the landing; [something new is coming]; new drop
 #  2 2.4  stage (no video): the kitchen timer winds down; dropping in / 3 2 1
 #  3 4.6  the sheet again: it rips in two and slides apart, the product full frame; finally. (one burst behind it);
 #         [PRODUCT NAME]
@@ -941,6 +941,8 @@ def setup_15():
     dt = P.manrope(66, 600); d.text((int(stub.width * 0.64), stub.height // 2), '[Fri 24 Oct]', font=dt, fill=INK, anchor='mm')
     g['stub'] = P.die_cut(stub, 8)
     g['new'] = dsticker('new', 70, WINE, WHITE)
+    cal = S.raw('fall', 'Minimal October calendar page-40.png').convert('RGBA').crop((100, 300, 1160, 1100))   # the grid only: no month, any date
+    g['planner'] = C.shadow(S.fitw(cal, 980), (8, 14), 14, 90); g['d_tick'] = doodle('tick', 0, 120, WINE)
     g['lap_w'] = 1040
     g['hook'] = P.pill_m('[something new\nis coming]', 72); g['drop'] = P.caption('new drop', 210, BU, edge=WHITE); g['drop_big'] = sum_word(P.caption('new drop', 215, BU, edge=WINE)); g['drop_w'] = {'new': P.story_word('new', 215, BU, edge=WINE), 'drop': P.story_word('drop', 215, BU, edge=WINE, italic=True)}
     g['dropping'] = P.caption('dropping in', 170, WINE, edge=WHITE); g['digits'] = [P.story_word(d_, 300, WINE, edge=WHITE) for d_ in '321']
@@ -999,10 +1001,10 @@ def stage_count_15(g, t):
     return im
 
 def stage_close_15(g, t):
-    """4: close-up one in a torn-paper window, the NEW sticker on its corner."""
-    im = g['stage'].copy(); v = g['c']['close1'].at(t - 6.8, (760, 900)); v.putalpha(C.torn_mask((760, 900), 9, 18, 'tblr'))
-    put(im, C.shadow(v, (10, 16), 14, 110), (540, 1040), back_out(seg(t, 6.8, 7.1), 1.6), 2)
-    pop(im, g['new'], t, 7.2, (860, 640), 12, wiggle=3); pop(im, g['d1'], t, 7.0, (540, 380), -2)
+    """4: close-up one on a clean photo card that settles onto the stage."""
+    im = g['stage'].copy(); v = g['c']['close1'].at(t - 6.8)                         # the same clean photo card as the opening drop (her note)
+    put(im, card(v, 760, 980, 18), (540, lerp(1150, 1060, ease(seg(t, 6.8, 7.2)))), back_out(seg(t, 6.8, 7.1), 1.4), lerp(-8, 3, ease(seg(t, 6.8, 7.2))))
+    pop(im, g['d1'], t, 7.0, (540, 380), -2)
     return im
 
 def stage_lap_15(g, t):
@@ -1014,26 +1016,44 @@ def stage_lap_15(g, t):
 
 def stage_date_15(g, t):
     """7: the ticket stub drops in: out / [date], one underline under the date (the only time the date shows)."""
-    im = g['stage'].copy(); k = back_out(seg(t, 12.8, 13.15), 1.4)
-    put(im, g['stub'], (540, lerp(-400, 960, k)), 1, lerp(-30, -4, k))
-    doodle_on(im, t, 13.5, g['d_ring'], (540 + 0.14 * 900, 960 + 62), -4)
+    im = g['stage'].copy(); put(im, g['planner'], (540, lerp(2400, 900, back_out(seg(t, 12.8, 13.1), 1.2))), 1, -3)   # her note: a planner behind it
+    doodle_on(im, t, 13.2, g['d_tick'], (680, 690), -3)                                 # the drop day ticked on the planner
+    k = back_out(seg(t, 13.0, 13.35), 1.4); put(im, g['stub'], (540, lerp(-400, 1300, k)), 1, lerp(-30, -4, k))
+    doodle_on(im, t, 13.6, g['d_ring'], (540 + 0.14 * 900, 1300 + 62), -4)
     return im
 
 LAND15 = 0.45                                                     # when the drop lands (the shot guide asks buyers to match it)
 
+def subject_mask(clip, t):
+    """The cut-out mask of a stand-in clip's frame at story time t (build/clip_masks.py), or None if not made yet."""
+    import motion_b2 as _M
+    real = t * (P.SLOW if getattr(_M.Clip, '_slowed', False) else 1); i = min(len(clip.fs) - 1, max(0, int(real * 30)))
+    f = clip.fs[i].parent / 'mask' / clip.fs[i].with_suffix('.png').name
+    if not f.exists(): return None
+    m = Image.open(f).convert('L').point(lambda v: 255 if v > 50 else 0)              # solid subject: see-through bristles filled in
+    return m.filter(ImageFilter.MaxFilter(11)).filter(ImageFilter.MinFilter(9)).filter(ImageFilter.GaussianBlur(1.5))
+
 def drop_shot_15(g, t):
-    """1: the product video (just the product) drops onto the stage as a card and lands with a thud: speed lines while
-    it falls, a shake on the landing, and ONE soft dust cloud puffing out from behind it (her notes)."""
-    im = g['stage'].copy(); fall = back_out(seg(t, 0.0, LAND15), 1.25)
-    shake = 16 * math.exp(-(t - LAND15) * 8) * math.sin((t - LAND15) * 48) if t > LAND15 else 0
-    cy = lerp(380, 1150, fall)   # already falling, in view, on frame 1
-    if t >= LAND15:                                               # one dust cloud, behind the card, from its base
+    """1 (her note): the video is FULL screen and the product in it is lifted onto its own layer, so the drop sits
+    between them: the full-frame clip, then ONE dust cloud and new / drop, then the cut-out product on top. Speed lines
+    while it falls, a shake on the landing. The stand-in fakes the fall by dropping the whole frame in."""
+    c = g['c']; v = c['prod'].at(t); m = subject_mask(c['prod'], t); fall = back_out(seg(t, 0.0, LAND15), 1.25)
+    shake = 18 * math.exp(-(t - LAND15) * 8) * math.sin((t - LAND15) * 48) if t > LAND15 else 0
+    z = lerp(1.38, 1.05, fall); vw, vh = int(W * z), int(H * z)
+    x0 = max(W - vw, min(0, int((W - vw) / 2 + shake))); y0 = max(H - vh, min(0, int((H - vh) / 2 - 300 * (1 - fall) + shake * 0.5)))
+    def placed(layer):
+        out = Image.new('RGBA', (W, H), (0, 0, 0, 0)); out.alpha_composite(layer.resize((vw, vh), Image.BILINEAR), (x0, y0)); return out
+    im = Image.new('RGBA', (W, H), (0, 0, 0, 255)); im.alpha_composite(placed(v))
+    if t >= LAND15:                                               # ONE dust cloud, behind the product
         q = seg(t, LAND15, LAND15 + 1.0)
-        if q < 1: put(im, g['dust_big'], (540, 1520 - 260 * ease(q)), 0.8 + 1.4 * ease(q), 0, min(1, 2.0 * (1 - q)) ** 1.1)
-    v = g['c']['prod'].at(t); put(im, card(v, 720, 900, 18), (540 + shake, cy + shake * 0.5), 1, -2)
-    if t < LAND15 + 0.05:                                         # speed lines riding the fall, above the card
+        if q < 1: put(im, g['dust_big'], (540, 1050 - 200 * ease(q)), 0.9 + 1.4 * ease(q), 0, min(1, 2.0 * (1 - q)) ** 1.1)
+    for word, xw, t0 in (('new', 255, 0.0), ('drop', 785, 0.05)):   # new / drop fall and land behind the product
+        k = back_out(seg(t, t0, LAND15), 1.4); put(im, g['drop_w'][word], (xw, lerp(300, 900, k)), 1.0, (-4, 3)[word == 'drop'])
+    if m is not None:                                             # the product, cut out of the same frame, on top
+        sub = v.copy(); sub.putalpha(m); im.alpha_composite(placed(sub))
+    if t < LAND15 + 0.05:
         for i, dx in enumerate((-160, 0, 160)):
-            put(im, g['speed'], (540 + dx, cy - 560 - (i % 2) * 70), 1, 90, 1 - seg(t, LAND15 - 0.08, LAND15 + 0.05))
+            put(im, g['speed'], (540 + dx, 260 + 300 * seg(t, 0, LAND15) - (i % 2) * 70), 1, 90, 1 - seg(t, LAND15 - 0.08, LAND15 + 0.05))
     return im
 
 def frame_15(g, t):
@@ -1043,9 +1063,7 @@ def frame_15(g, t):
         # dropping onto a table, landing about 0.45 s in, lower middle); the template adds speed lines, a camera shake on
         # the landing and puffs of dust. The stand-in fakes the fall by dropping the frame in.
         im = drop_shot_15(g, t)
-        for word, x0, t0 in (('new', 255, 0.0), ('drop', 735, 0.05)):   # the words fall with it and land on the same thud
-            k = back_out(seg(t, t0, LAND15), 1.4); put(im, g['drop_w'][word], (x0, lerp(150, 480, k)), 1, (-4, 3)[word == 'drop'])
-        pop(im, g['hook'], t, 0.7, (540, 270), -2); doodle_on(im, t, 0.8, g['d_under'], (540, 630), -2)
+        pop(im, g['hook'], t, 0.7, (540, 300), -2)
         if t > 2.1: im = swipe(im, stage_count_15(g, t), seg(t, 2.1, 2.4))
         return im
     if t < 4.6:
@@ -1071,7 +1089,7 @@ def frame_15(g, t):
         if t > 10.5: im = swipe(im, c['close3'].at(0), seg(t, 10.5, 10.8))
         return im
     if t < 12.8:                                                  # 6: detail three, full frame; the NEW sticker; one arrow toward the centre
-        im = c['close3'].at(t - 10.8); pop(im, g['d3'], t, 10.9, (540, 330), -2); pop(im, g['new'], t, 11.0, (860, 560), 12, wiggle=3)
+        im = c['close3'].at(t - 10.8); pop(im, g['d3'], t, 10.9, (540, 330), -2)
         doodle_on(im, t, 11.2, g['d_arrow'], (330, 470), 0)
         if t > 12.5: im = swipe(im, stage_date_15(g, t), seg(t, 12.5, 12.8))
         return im
