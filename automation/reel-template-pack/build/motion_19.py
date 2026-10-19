@@ -60,6 +60,8 @@ def setup():
         m = Image.new('L', gl.size, 0); a = gl.split()[3].point(lambda v: 0 if v > 60 else 255); ImageDraw.floodfill(a, (int(gl.width * fx), int(gl.height * 0.5)), 128)
         lens.append(a.point(lambda v: 255 if v == 128 else 0))
     g['glasses'] = (gl, lens)
+    ch = Image.open(S.E.PACK / 'build' / '.cache' / 'hq' / 'Fine gold necklace chain.png').convert('RGBA')
+    g['chain'] = ch.crop((0, 0, ch.width, int(ch.height * 0.945)))           # her real chain (no reflection), V bottom = the bail
     g['tea'] = P.thing('Vintage Rose Porcelain Tea Set.png', 820, 'smalldots', WINE, scale=0.3, strength=0.35)
     g['what'] = P.caption('what to', 190, WHITE); g['pairw'] = P.caption('pair?', 300, WHITE); g['q'] = X.key('?', 330, WINE, (246, 241, 232)); g['why'] = X.hl('[why they go together]', 60, PINK); g['ph1'] = P.caption('pair it', 230, INK); g['ph2'] = P.caption('with', 200, INK); g['with'] = X.hl('with [my steam mop]', 60, WHITE)
     g['plus'] = [X.hl(t, 62, (PINK, WHITE, PINK)[i]) for i, t in enumerate(('+ [the stick vacuum]', '+ [the odor spray]', '+ [the litter]'))]
@@ -221,10 +223,14 @@ def cta(g, t):
     """CTA (a new scene, her note): the product full frame, the three pairings in their real frames pinned along the top;
     the bundle name on its own at the top, the keyword on its own in the middle (they no longer compete)."""
     c = g['c']; im = c['main'].at(t).copy()
-    for i, (a, b, x, r) in enumerate(((c['main'].at(t), c['p1'].at(t - 1.8), 285, -5), (c['p2'].at(t - 5.1), c['p3'].at(t - 6.5), 795, 5))):
+    for i, (a, b, x, r) in enumerate(((c['main'].at(t), c['p1'].at(t - 1.8), 285, 0), (c['p2'].at(t - 5.1), c['p3'].at(t - 6.5), 795, 0))):
         lay = locket(g, t, a, b, bg=False)                              # two lockets = four halves: the product + its three pairs
         lay = lay.crop((0, LC[1] - 560, W, LC[1] + 560)).resize((540, 560))
-        put(im, lay, (x, lerp(-400, 520, back_out(seg(t, 10.0 + i * 0.15, 10.4 + i * 0.15), 1.4))), 1, r)
+        y = lerp(-400, 560, back_out(seg(t, 10.0 + i * 0.15, 10.4 + i * 0.15), 1.4)); sw = 3 * math.sin(t * 2 + i * 1.3)
+        bail = (x + 122, y - 195)
+        if bail[1] + 40 > 20:
+            ch = g['chain'].resize((230, int(bail[1] + 40))); im.alpha_composite(ch, (int(bail[0] - ch.width / 2), int(bail[1] + 30 - ch.height)))   # the chain behind
+        put(im, lay, (x, y), 1, sw)
     P.say(im, g['bname'], t, 10.3, (540, 860), -2)
     P.say(im, g['comment'], t, 10.6, (540, 1150), -3); P.say(im, g['kw'], t, 10.85, (540, 1330), 2)
     return im
