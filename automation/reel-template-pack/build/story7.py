@@ -905,7 +905,8 @@ SETUP['11'] = setup_11; FRAME['11'] = frame_11; SECS['11'] = 17.0; DIRS['11'] = 
 # hidden under a sheet of wine tissue and seen only through a torn peephole; a kitchen timer counts the drop in; the
 # sheet rips in two to reveal it. Calm butter-tissue stage, one burst behind a word, one ring round the date, real dates
 # only (the buyer types theirs).
-#  1 0.0  the product clip under a wine tissue sheet already torn open down the middle (a wide band of video); [something new is coming]; new drop
+#  1 0.0  frame 1: the words already up (new drop, big) and the wine sheet nearly shut, ripping wide open in the first
+#         second with scraps flying, the product behind it; [something new is coming]; new drop
 #  2 2.4  stage (no video): the kitchen timer winds down; dropping in / 3 2 1
 #  3 4.6  the sheet again: it rips in two and slides apart, the product full frame; finally. (one burst behind it);
 #         [PRODUCT NAME]
@@ -941,7 +942,7 @@ def setup_15():
     g['stub'] = P.die_cut(stub, 8)
     g['new'] = dsticker('new', 70, WINE, WHITE)
     g['lap_w'] = 1040
-    g['hook'] = P.pill_m('[something new\nis coming]', 72); g['drop'] = P.caption('new drop', 210, BU, edge=WHITE)
+    g['hook'] = P.pill_m('[something new\nis coming]', 72); g['drop'] = P.caption('new drop', 210, BU, edge=WHITE); g['drop_big'] = sum_word(P.caption('new drop', 215, BU, edge=WINE))
     g['dropping'] = P.caption('dropping in', 170, WINE, edge=WHITE); g['digits'] = [P.story_word(d_, 300, WINE, edge=WHITE) for d_ in '321']
     import random as _r; rnd = _r.Random(11); g['scraps'] = []
     for k in range(12):   # torn scraps of the wine sheet that fly off the rip
@@ -962,11 +963,11 @@ def slit_edges(w):
     right = [(540 + w / 2 + 34 * (rr.random() - 0.5), H * k / n) for k in range(n + 1)]
     return left, right
 
-def covered(g, t, base, open_=1.0):
+def covered(g, t, base, open_=1.0, w=None):
     """The product under the wine sheet, already torn open down the middle: a tall, wide band of video from frame 1
     (her note: no small round peephole). The tear breathes wider; the sheet trembles before it rips."""
     im = base.copy(); sh = g['sheet'].copy(); m = Image.new('L', (W, H), 255)
-    left, right = slit_edges((620 + 90 * open_) * (1 + 0.02 * math.sin(t * 5))); ImageDraw.Draw(m).polygon(left + right[::-1], fill=0)
+    left, right = slit_edges((w or 710) * (1 + 0.02 * math.sin(t * 5))); ImageDraw.Draw(m).polygon(left + right[::-1], fill=0)
     sh.putalpha(m.filter(ImageFilter.GaussianBlur(1.2))); tug = 10 * math.sin(t * 60) * seg(t, 4.6, 4.75) * (1 - seg(t, 4.8, 4.9))
     if tug: im.alpha_composite(sh, (int(tug), 0))
     else: im.alpha_composite(sh)
@@ -1014,8 +1015,12 @@ def stage_date_15(g, t):
 def frame_15(g, t):
     c = g['c']
     if t < 2.4:                                                   # 1: under the sheet, already torn open down the middle
-        im = covered(g, t, c['prod'].at(t), seg(t, 0.2, 1.0))
-        pop(im, g['hook'], t, 0.0, (540, 290), -2); pop(im, g['drop'], t, 0.4, (540, 500)); doodle_on(im, t, 0.9, g['d_under'], (540, 620), -2)
+        im = covered(g, t, c['prod'].at(t), w=lerp(170, 710, ease(seg(t, 0.0, 0.8))))   # frame 1: nearly shut, then it rips wide open
+        for k, sc_ in enumerate(g['scraps'][:7]):   # scraps fly off as it tears open
+            q = seg(t, 0.03 * k, 0.7 + 0.03 * k)
+            if 0 < q < 1: a_ = (math.pi if k % 2 else 0) + (k - 3) * 0.18; put(im, sc_, (540 + 700 * q * math.cos(a_), 900 + 500 * q * math.sin(a_) + 900 * q * q), 1, k * 50 + 360 * q)
+        put(im, g['hook'], (540, 280), 1, -2); put(im, g['drop_big'], (540, 500), 1 + 0.05 * math.sin(t * 6), 0)   # the words are there from frame 1
+        doodle_on(im, t, 0.2, g['d_under'], (540, 650), -2)
         if t > 2.1: im = swipe(im, stage_count_15(g, t), seg(t, 2.1, 2.4))
         return im
     if t < 4.6:
