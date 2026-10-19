@@ -218,3 +218,28 @@ def sparkles(img, t, t0, pts, color, size=110, step=0.1):
         if t < ti: continue
         k = _bo(seg(t, ti, ti + 0.25), 2.2) * (0.8 + 0.25 * math.sin((t - ti) * 7 + i * 1.7))
         _put(img, sp, (x, y), k * (0.7 + 0.3 * (i % 3) / 2), 15 * math.sin(t * 2 + i))
+
+# ---- real footage into a drawing (style board #14, 2026-10-19) ----------------------------------------------------------
+def pencil(im):
+    """A pencil sketch of a frame: colour-dodge of the greyscale over its blurred negative, on white paper."""
+    from PIL import ImageChops as _IC
+    sm = im.convert('RGB').filter(_IF.GaussianBlur(1.6)); e = None
+    for ch in sm.split():                                                     # edges on each colour channel, strongest wins
+        ec = ch.filter(_IF.FIND_EDGES); e = ec if e is None else _IC.lighter(e, ec)
+    e = e.point(lambda v: 0 if v < 14 else min(255, v * 3)).filter(_IF.MaxFilter(3))           # bold pencil lines
+    sk = ImageOps.invert(e).point(lambda v: 255 if v > 200 else int(v * 0.35))  # paper white, graphite lines
+    return Image.merge('RGB', (sk, sk, sk)).convert('RGBA')
+
+def brush_mask(u, strokes, width=150):
+    """White marker strokes painted one after another (u 0..1); strokes = [((x0, y0), (x1, y1))]."""
+    m = Image.new('L', (W, H), 0); d = ImageDraw.Draw(m); n = len(strokes)
+    for i, ((x0, y0), (x1, y1)) in enumerate(strokes):
+        k = clamp(u * n - i)
+        if k <= 0: break
+        xe, ye = lerp(x0, x1, k), lerp(y0, y1, k); d.line((x0, y0, xe, ye), fill=255, width=width)
+        for (cx, cy) in ((x0, y0), (xe, ye)): d.ellipse((cx - width / 2, cy - width / 2, cx + width / 2, cy + width / 2), fill=255)
+    return m.filter(_IF.GaussianBlur(2))
+
+def sketch_over(im, u, strokes, width=150):
+    """Footage turning into a drawing where the white strokes paint (her Big Ben reference)."""
+    m = brush_mask(u, strokes, width); out = im.copy(); out.paste(pencil(im), (0, 0), m); return out

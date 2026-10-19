@@ -243,6 +243,7 @@ Log each use here when a template is approved.
 | Rubber stamp prints a word in rough ink | 22 (draft) | 22, 21 (drafts) |
 | Open card: words on the left panel, the clip in the right panel | 24 (draft) | 24 |
 | Boxing-ring bell rings each round; split-screen rounds; trophy | 25 (draft) | 25 |
+| Real footage turning into a pencil drawing where white marker strokes paint (style board #14) | 21 (draft) | 21 (draft; theme for how-it's-made / back to basics; up to 5) |
 | Device standing on the stage, its whole screen one video slot | 04 (draft) | 04, 05, 06, 07, 16, 18, 21, 24 (drafts: a basic, not a signature move) |
 
 ## The image library is shared (Mercedes, 2026-10-17)

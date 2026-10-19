@@ -33,7 +33,7 @@ INK, CRM = (24, 23, 22), (246, 241, 232); BUTTER = X.BUTTER                     
 X.use_type(BUTTER, INK); X.enable_holds()
 DIR = '21-small-batch'
 PHONE = 'Graphite Smartphone With Green Screen-38.png'
-HOLDS = [(1.55, 1.0), (3.35, 1.1), (4.95, 0.3), (6.55, 1.0), (8.15, 1.5), (9.75, 1.0), (12.45, 0.4)]
+HOLDS = [(1.55, 1.0), (3.35, 1.1), (4.95, 2.2), (6.55, 1.0), (8.15, 1.5), (9.75, 1.0), (12.45, 0.4)]
 
 def tag_with(text, w, px):
     t = P.raw_cut('Blank kraft hang tag with twine-116.png', w).copy()
@@ -58,7 +58,7 @@ def setup():
     g['box'] = P.thing('Plain kraft cardboard shipping box-230.png', 460, None, None, label=P.sticker('FRIDAY', 44, INK), label_at=(0.5, 0.45)) \
         if (S.E.PACK / 'build' / '.cache' / 'hq' / 'Plain kraft cardboard shipping box-230.png').exists() else P.thing('Unmarked cardboard shipping box-110.png', 460, None, None, label=P.sticker('FRIDAY', 44, INK), label_at=(0.5, 0.45))
     g['week'] = P.caption("this week's batch", 120, BUTTER); g['count'] = X.hl('[24 dumbbell sets]', 64, BUTTER)
-    g['made'] = X.hl('[24 made, by hand]', 64, BUTTER)
+    g['made'] = X.hl('[24 made, by hand]', 64, BUTTER); g['byhand'] = X.hl('[made by hand, one at a time]', 60, BUTTER)
     g['checked'] = X.hl('[each one checked by hand]', 56, WHITE); g['arrow'] = doodle('arrow', 0, 130, INK)
     g['next'] = X.hl('[next batch: Oct 30]', 60, WHITE); g['burst'] = doodle('burst', 2, 760, BUTTER)
     g['ships'] = X.hl('[yours ships Friday]', 62, BUTTER); g['under'] = doodle('under', 0, 520, WHITE)
@@ -83,9 +83,12 @@ def stage2(g, t):
     return im
 
 def stage3(g, t):
-    im = g['kraft'].copy(); put(im, g['rack'], (620, 1130), 1, 6); ww, wh = 900, 640
-    v = g['c']['pass'].at(t - 3.6, (ww, int(ww * 16 / 9))); pan = ease(seg(t, 3.6, 5.0)); y = int(pan * (v.height - wh))
-    put(im, X.clip_card(v.crop((0, y, ww, y + wh)), ww, wh, 16, -2), (540, lerp(2400, 960, ease(seg(t, 3.6, 3.9)))))
+    """The slow pass along the batch; white marker strokes paint across the top and turn the footage into a pencil
+    drawing (her style board #14: real footage into a drawing = "made by hand / back to basics")."""
+    im = g['c']['pass'].at(t - 3.6)
+    strokes = [((80, 260 + i * 120), (1000, 200 + i * 120)) for i in range(7)]
+    im = X.sketch_over(im, ease(seg(t, 3.8, 4.6)), strokes, 160)
+    P.say(im, g['byhand'], t, 4.5, (540, 1250), -2)
     return im
 
 def stage4(g, t):
