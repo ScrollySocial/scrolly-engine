@@ -339,6 +339,22 @@ an object, or leads the eye into the next scene.
 - **Two-tone strip slice as a transition:** clip A cut into strips, alternating strips tinted two tones, sliding
   apart to reveal clip B.
 
+## Her Reel Style Board (Notion, live): read it before designing
+
+Notion: Scrolly Content Tracker > Reel Style Board (view://ec6d9db0-f538-4a56-8c52-6fb3c694c108). Read it through
+that saved view only; she adds pins with "What I like" notes. The vibe as of 2026-10-19:
+- **Real meets painted or drawn (surreal):** real footage over a painted or hand-drawn world (real skiers on a mountain
+  made of paint strokes, a real boat on painted water that spreads to take over the screen, a real city with a
+  painted sky, real video over a hand-drawn city).
+- **Humour:** a drawn character holding a real-photo baguette; a person who is the Eiffel Tower. Witty, never cheesy.
+- **Big things built from small everyday objects** (an Eiffel Tower of tiny objects; a skyline of hot dogs, pizza and
+  donuts, very colourful).
+- **Maps and travel-journal pages** as backgrounds and as the bridge between scenes (a sticker map, a journal spread).
+- **Zoom journeys:** a magazine page, then zoom into a painting that animates, then a curtain opens on the video.
+- **Wedges:** a camera or sun made of video wedges that fan out to fill the screen, or zoom into one wedge.
+- **A home-base pattern:** polka dots appear in scene 1 and come back between scenes; draw scenes in and out of a
+  solid background.
+
 ## Her idea bank (Mercedes, 2026-10-17): use these when they fit
 
 **In one line: mixed-media video collages, hyper interesting and visually hooky.**
