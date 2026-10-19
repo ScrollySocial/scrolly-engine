@@ -1057,7 +1057,7 @@ def frame_15(g, t):
         im = stage_date_15(g, t)
         if t > 14.5: im = swipe(im, c['use'].at(0), seg(t, 14.5, 14.8))
         return im
-    im = c['use'].at(t - 14.8); put(im, S.fitw(g['new'], 150), (900, 330), back_out(seg(t, 14.9, 15.2), 1.5), 10)   # 8: in use, the NEW sticker carried
+    im = c['use'].at(t - 14.8)                                                       # 8: in use (no sticker: it looked like the keyword pill, her note)
     if t >= 16.6: P.sandwich(im, t, 16.7, (540, 1050), g['shop'], g['comment'], g['kw'])                             # 9: the CTA
     return im
 
