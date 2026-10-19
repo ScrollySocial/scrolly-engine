@@ -105,8 +105,16 @@ const howItWorks = (d) => `<section class="film" id="how"><div class="s3-wrap"><
   <ol class="steps">${STEPS.map(([icon, b, t]) => `<li><svg viewBox="0 0 48 48" aria-hidden="true">${icon}</svg><b>${esc(b)}</b></li>`).join('')}</ol></div></section>`;
 // "Every template comes with": real sticky notes pinned on, from Trick or treat (Mercedes 2026-10-19: cards were "boring")
 const ROT = [-4, 3, -2, 4, -3];
+// one line icon per item in "Every template comes with" (Mercedes: "can we communicate this visually?")
+const INC_ICONS = [
+  '<rect x="5" y="10" width="38" height="28" rx="3"/><path d="M5 17h38M5 31h38M12 10v7M20 10v7M28 10v7M36 10v7M12 31v7M20 31v7M28 31v7M36 31v7"/><path d="M21 20l7 4-7 4z"/>',
+  '<rect x="10" y="7" width="28" height="36" rx="3"/><path d="M18 7v-1h12v1"/><path d="M16 18h3M23 18h11M16 26h3M23 26h11M16 34h3M23 34h11"/>',
+  '<path d="M24 6v24M15 21l9 9 9-9"/><path d="M8 32v6a3 3 0 0 0 3 3h26a3 3 0 0 0 3-3v-6"/>',
+  '<rect x="6" y="11" width="36" height="26" rx="2"/><path d="M12 19h24M12 25h24M12 31h14"/>',
+  '<rect x="14" y="4" width="20" height="40" rx="4"/><path d="M21 9h6"/><circle cx="24" cy="38" r="1.5"/>',
+];
 const includes = (d) => d.brandIncludes ? `<section class="s3-sec tight incl-b"><div class="s3-wrap"><h2 class="s3-h2">Every template comes with</h2>
-  <ul class="swipes">${d.includes.map(([b]) => `<li><span>${esc(b)}</span></li>`).join('')}</ul>
+  <ul class="swipes">${d.includes.map(([b], i) => `<li><svg viewBox="0 0 48 48" aria-hidden="true">${INC_ICONS[i]}</svg><span>${esc(b)}</span></li>`).join('')}</ul>
   <p class="aside">all five, for every one of the 25</p></div></section>` : `<section class="s3-sec stick"><div class="s3-wrap"><h2 class="s3-h2">Every template comes with</h2>
   <img class="sq" src="${img('squiggle.webp')}" alt="">
   <div class="notes-row">${d.includes.map(([b, x], i) => `<div class="sticky" style="--r:${ROT[i]}deg"><img class="pin" src="${img('pin-blue.webp')}" alt=""><span class="nt"><b>${esc(b)}</b></span></div>`).join('')}</div>
@@ -257,7 +265,9 @@ ${notes(d)}`;
 const PCSS = `
 .incl-b{text-align:center}
 .incl-b h2{margin-bottom:32px}
-.swipes{list-style:none;padding:0;margin:0 auto;max-width:1100px;display:flex;flex-wrap:wrap;justify-content:center;gap:18px 34px}
+.swipes{list-style:none;padding:0;margin:0 auto;max-width:1200px;display:flex;flex-wrap:wrap;justify-content:center;gap:28px 40px}
+.swipes li{display:flex;flex-direction:column;align-items:center;gap:14px}
+.swipes svg{width:64px;height:64px;stroke:var(--s3-orange);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 .swipes li{font:400 var(--s3-fs-h3)/1.15 var(--s3-serif)}
 .swipes span{position:relative;z-index:0;padding:0 .14em}
 .swipes span::before{content:"";position:absolute;z-index:-1;left:0;right:0;top:.42em;bottom:.02em;background:#ffc9a8;border-radius:.1em .35em .15em .4em;transform:rotate(-1.5deg)}
@@ -304,7 +314,9 @@ const PCSS = `
 /* compact: two lines of content get one short band (Mercedes: "look how tall this section is") */
 .who-row{display:flex;align-items:center;justify-content:space-between;gap:32px}
 .fan{position:relative;flex:none;width:400px;height:330px}
-.fan .phone{position:absolute;bottom:0;width:150px;border-color:#111;box-shadow:0 14px 30px rgba(80,30,10,.25)}
+.fan .phone{position:absolute;bottom:0;width:150px;border-color:#111;box-shadow:0 14px 30px rgba(80,30,10,.25);background:#f7f3ec}
+.fan .todo{position:relative;padding:12px;font:var(--s3-fs-label)/1.3 var(--s3-sans);color:#5c4a3e}
+.fan .todo b{display:block;margin-top:4px;font:400 1.05rem/1.2 var(--s3-serif);color:var(--s3-ink)}
 .fan .phone:nth-child(1){left:0;transform:rotate(-9deg)}
 .fan .phone:nth-child(2){left:125px;bottom:22px;z-index:2}
 .fan .phone:nth-child(3){left:250px;transform:rotate(9deg)}
@@ -328,7 +340,7 @@ function physicalPage(d) {
   const list = d.templates.map((t, i) => `<div class="rg"><p class="num">${i + 1} of 25</p><div class="phone"><img src="${img(`p${String(i + 1).padStart(2, '0')}.jpg`)}" alt="${esc(t.name)}: a frame from the template" loading="lazy"></div>
     <h3>${esc(t.name)}</h3><p>${esc(t.job)}</p></div>`).join('');
   const body = `
-<section class="s3-sec hero-p"><img class="prop burst-h" src="${img('burst-orange.webp')}" alt=""><img class="prop tri" src="${img('tripod.webp')}" alt=""><div class="s3-wrap">
+<section class="s3-sec hero-p"><img class="prop burst-h" src="${img('burst-peach.webp')}" alt=""><img class="prop tri" src="${img('tripod.webp')}" alt=""><div class="s3-wrap">
   <h1 class="s3-display or head-p"><span class="l1">${esc(d.headline.split(': ')[0])}:</span> <span class="done">${esc(d.headline.split(': ')[1])}</span></h1>
   <p class="s3-lede" style="margin-top:28px">${esc(d.sub)}</p>
   <div class="buy">${price(d)}<a class="s3-btn" href="#buy">${esc(d.button)}</a></div>
@@ -342,7 +354,7 @@ function physicalPage(d) {
 ${includes(d)}
 ${howItWorks(d)}
 <section class="s3-sec tight peach who-p"><div class="s3-wrap who-row"><div class="who-text"><h2 class="s3-h2">Who it's for</h2><p class="s3-lede" style="margin-top:14px">${esc(d.who)}</p>
-  <div class="labels">${d.whoTags.map((t, i) => `<span class="dymo" style="--r:${[-2, 1.5, -1, 2][i % 4]}deg">${esc(t)}</span>`).join('')}</div></div><div class="fan" aria-hidden="true">${['p10.jpg', 'p12.jpg', 'p21.jpg'].map((f) => `<div class="phone"><img src="${img(f)}" alt=""></div>`).join('')}</div></div></section>
+  <div class="labels">${d.whoTags.map((t, i) => `<span class="dymo" style="--r:${[-2, 1.5, -1, 2][i % 4]}deg">${esc(t)}</span>`).join('')}</div></div><div class="fan">${d.whoPhotos.map(([f, label]) => `<div class="phone">${fs.existsSync(path.join(here, 'img', f)) ? `<img src="${img(f)}" alt="${esc(label)}">` : `<span class="todo">Photo to make:<b>${esc(label)}</b></span>`}</div>`).join('')}</div></div></section>
 <section class="s3-sec tight faq-p"><div class="s3-wrap"><h2 class="s3-h2">Questions</h2>
   <div class="s3-faq two">${d.faq.map(([q, a]) => `<details><summary>${esc(q)}</summary><div>${ph(a)}</div></details>`).join('')}</div></div></section>
 <section class="s3-sec peach cta-p" id="buy"><div class="s3-wrap">
@@ -411,7 +423,8 @@ const physical = {
   button: 'Get all 25 Reels',
   priceLine: '[INSTANT DOWNLOAD or EARLY ACCESS: your call]',
   ctaLine: '[INSTANT DOWNLOAD or EARLY ACCESS: your call]',
-  whoTags: ['Makers', 'Small-batch brands', 'Shops that ship', 'Handmade'],
+  whoTags: ['Print on demand', 'Makers', 'Etsy sellers', 'Shopify stores', 'Small-batch brands', 'Boutiques'],
+  whoPhotos: [['who-maker.jpg', 'A maker pouring candles'], ['who-pod.jpg', 'A print-on-demand tee, fresh off the press'], ['who-shop.jpg', 'A shop owner packing an order']],
   brandIncludes: true,
   getTitle: 'All 25 Reels',
   getLede: 'Swipe to see them all.',

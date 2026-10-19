@@ -140,6 +140,15 @@ has three template phones fanned on the right (Three people to gift it to, Your 
 Not used: the buyer recipe card (12's card text runs off the right edge and the e.g. column overlaps the bracket words;
 fix the card before showing it anywhere).
 
+**Round 8 (2026-10-19):** hero doodle in peach, softer. "Every template comes with" has an orange line icon over each
+item. Who it's for tags: Print on demand, Makers, Etsy sellers, Shopify stores, Small-batch brands, Boutiques. The three
+phones there show the sellers, not Reel frames: photos for Mercedes to make (vertical 9:16, saved to
+`sales/img/who-maker.jpg`, `who-pod.jpg`, `who-shop.jpg`; the build picks them up automatically):
+1. Hands pouring a handmade soy candle at a wooden workbench, warm window light, jars and wicks around.
+2. Someone holding up a freshly printed graphic tee beside a heat press in a small home studio.
+3. Overhead: hands packing a product into a kraft mailer with tissue paper and a thank-you card on a cream table.
+All: phone-camera look, no logos or readable brand text.
+
 ## 4. Who it's for
 
 On a peach band (#FFC9A8, the brand peach from the Reel covers) to break up the page.
