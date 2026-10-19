@@ -355,6 +355,28 @@ that saved view only; she adds pins with "What I like" notes. The vibe as of 202
 - **A home-base pattern:** polka dots appear in scene 1 and come back between scenes; draw scenes in and out of a
   solid background.
 
+### Style board images, batch 2 (2026-10-19): saved in OneDrive `Scrolly Media/style-board/` (her notes, tidied)
+
+Not in git (others' artwork, reference only). Files are named by number:
+1. **Butterfly wings on people:** real vintage photo, real butterfly wings added. Wings can open, flap or carry a clip.
+2. **City skyline, otherworldly sky:** looking up between skyscrapers; the sky gap is marbled with stars (a clip can
+   go in the sky).
+3. **Teacup divers:** surreal scale; tiny divers into a teacup of real ocean.
+4. **Real road video, scene built from cut-out photos and videos** above it (torn paper, maps, clouds, a drawn sun).
+5. **An object made of word strips** (a Christmas tree of torn word labels, star on top). The strips can recur
+   through the Reel in other scenes, then assemble into the object.
+6. **Seagulls and an unexpected perspective** (upside-down person in a post frame, birds crossing the frame edge).
+7. **Circle window on a road:** "where are you headed?"; a person walks into the circle; newspaper and mountains around.
+8. and 10. **More wedges:** video wedges fanning from a camera lens.
+9. **Butterfly-wing sails on real boats** (shape substitution).
+11. **Birds flying around a person,** each cut-out a little different; interaction, surreal, creative.
+12. **Rain made of yarn:** mixed media (real thread stitched over a photo); the umbrella area stays dry.
+13. **She likes this lettering:** big chunky condensed sans in red with a cream sticker edge ("You've consumed
+    enough. It's time to create.").
+14. **Real footage turning into a drawing** (Big Ben's top is a sketch) as a way to simplify; can be a Reel's theme.
+15. **City with pattern overlays:** buildings filled with polka dots, zebra, stripes, plus fun star stickers.
+16. **Words on an organic ribbon path** with coloured stars, over a cute surreal, natural scene.
+
 ## Her idea bank (Mercedes, 2026-10-17): use these when they fit
 
 **In one line: mixed-media video collages, hyper interesting and visually hooky.**
