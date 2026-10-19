@@ -374,6 +374,8 @@ Not in git (others' artwork, reference only). Files are named by number:
 13. **She likes this lettering:** big chunky condensed sans in red with a cream sticker edge ("You've consumed
     enough. It's time to create.").
 14. **Real footage turning into a drawing** (Big Ben's top is a sketch) as a way to simplify; can be a Reel's theme.
+    Template themes it fits: "how it's made" / behind the scenes, and **"keep it simple" / "back to basics"**
+    (a good idea worth reusing more than once).
 15. **City with pattern overlays:** buildings filled with polka dots, zebra, stripes, plus fun star stickers.
 16. **Words on an organic ribbon path** with coloured stars, over a cute surreal, natural scene.
 
