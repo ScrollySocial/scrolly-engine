@@ -105,6 +105,16 @@ Shown as five icons with one short line each, under the desktop screen, on a fil
 | text | **Type** | Your words over the [brackets]. |
 | send | **Post** | Add a sound in Instagram. |
 
+## Page look (2026-10-19, same fun as Halloween, with the pack's own props)
+
+Palette from FRAMEWORK.md. Hero on butter with the open kraft box, mint instant camera and floating packing peanuts
+(all clear of the text), wax seal by the button, and five phones showing real frames from Pack an order, Before and
+after, Three people to gift it to, Put it to the test and Every option. The 25 templates are cream index cards pinned
+on light blue. What's included is the pinned sticky notes. How it works is the film strip. Who it's for is pink with
+the kraft box and black label-maker tags: Makers, Small-batch brands, Shops that ship, Handmade. Questions on wine
+with the kitchen timer and envelope. Buy section on butter with the closed box and wax seal. Props hide on narrow
+screens wherever they would touch words.
+
 ## 4. Who it's for
 
 On a peach band (#FFC9A8, the brand peach from the Reel covers) to break up the page.
