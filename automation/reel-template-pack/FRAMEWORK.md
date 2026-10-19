@@ -602,7 +602,7 @@ Showing her work
   first choice elsewhere).
 
 ## Matching carousels (Mercedes, 2026-10-19)
-Every Reel template gets a matching carousel (prototype: `09-who-its-for/carousel/`, `build/carousel_09.py`). Same
+Every Reel template gets a matching carousel (recipes: `build/carousels.py NN`, parts: `build/carousel_kit.py`; zipped as "3 Matching carousel" by `build/zip_upload.py`). Same
 world as its Reel, and **the existing carousel rules apply** (`automation/carousels/content-rules.md`), except the
 Scrolly brand colours and Scrolly-only parts (destinations, the ManyChat switch, the Playbook):
 - **Slides 1 AND 2 are both covers:** Instagram often shows a carousel starting on slide 2, so slide 2 is a second

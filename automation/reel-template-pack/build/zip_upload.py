@@ -1,4 +1,4 @@
-"""Make the upload zips: the buyer folder, a shot list, and the phone kit (every pack, every future zip).  Usage: python build/zip_upload.py 08 09 h2 ...
+"""Make the upload zips: the buyer folder, a shot list, the phone kit and the matching carousel (every pack, every future zip).  Usage: python build/zip_upload.py 08 09 h2 ...
 (from automation/reel-template-pack). Writes for-upload/<buyer folder name>.zip (Halloween: halloween/for-upload/).
 Run make.py for a template first; this only packs what its buyer-folder and phone-kit already hold."""
 import sys, zipfile
@@ -35,6 +35,21 @@ Tips
 - The recipe card (Recipe card.png) shows the same list with the words to type over the [brackets].
 """
 
+CAROUSEL_README = """Your matching carousel (edit it free in Canva)
+
+The carousel tells the same story as the Reel, as {n} Instagram slides (1080 x 1440, the 3:4 carousel size).
+
+1. On a computer, open canva.com in your browser and sign in (a free account works).
+2. Drag "{file}" onto Canva's home page (or choose Create a design, then Import file). It opens as a design.
+3. Swap the photos: click a photo, then Replace, and pick your own. Each slide's notes say what goes there.
+4. Edit the words: double-click any text and type over the [brackets].
+5. Everything blue is a guide. Delete it before you download.
+6. Share, then Download, PNG, all pages. Post the PNGs as one carousel on Instagram.
+
+Slides 1 and 2 are both covers: Instagram often shows a carousel starting on slide 2, so slide 2 works on its own.
+The last slide's notes have a caption to start from.
+"""
+
 
 def template_dir(tid):
     hits = sorted((ROOT / 'halloween').glob(f'{tid}-*')) if tid.startswith('h') else sorted(ROOT.glob(f'{tid}-*'))
@@ -64,6 +79,11 @@ def pack(tid):
         z.write(buyer / 'Recipe card.png', f'{top}/Recipe card.png')
         for f in sorted((kit / 'artwork').glob('*.png')):
             z.write(f, f'{top}/artwork/{f.name}')
+        for f in sorted((d / 'carousel').glob('*.pptx')):          # the matching carousel (build/carousels.py)
+            car = f'{buyer.name}/3 Matching carousel'
+            z.write(f, f'{car}/{f.name}')
+            from pptx import Presentation
+            z.writestr(f'{car}/How to edit it in Canva.txt', CAROUSEL_README.format(n=len(Presentation(str(f)).slides), file=f.name).replace('\n', '\r\n'))
     tmp.replace(out)
     print(f'{out.relative_to(ROOT)}  {out.stat().st_size / 1e6:.0f} MB')
 

@@ -25,7 +25,7 @@ Canva Pro on our side; CapCut photo templates can't swap photos and words easily
   on a sales page). `as-the-buyer-opens-it.jpg` shows the file as a buyer opens it.
 - Follows the carousel rules in `automation/carousels/content-rules.md` (not the brand colours): slides 1 and 2 are both
   covers, varied layouts, left-aligned lines, a caption to start from in slide 8's notes.
-- Build: `python build/carousel_09.py`.
+- Build: `python build/carousels.py 09` (shared parts in `build/carousel_kit.py`). The upload zip gets it as "3 Matching carousel" with a Canva how-to (`build/zip_upload.py`).
 
 **To test in Canva Free:** canva.com > Create a design > Import file (or drag the .pptx onto the home page). Check:
 8 pages at 1080 x 1440; the words edit; the fonts look right; click a photo > Replace with your own; slide 5's photo
