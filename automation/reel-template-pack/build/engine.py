@@ -433,14 +433,28 @@ def clip_frames(sources, L, work):
             out[('blur', n)] = sorted(b.glob('*.jpg'))
     return out
 
-def render(L, A, sources, out, work, test):
+KEY_GREEN = (0, 255, 0)
+
+def hard_edges(im):
+    """Art for the green-screen overlay: squeeze the soft alpha edge to about a pixel, so no half-see-through pixel
+    mixes with the green (a keyer leaves those as a green fringe)."""
+    a = im.split()[3].point(lambda v: 0 if v < 70 else 255 if v > 185 else int((v - 70) * 255 / 115))
+    out = im.copy(); out.putalpha(a); return out
+
+def render(L, A, sources, out, work, test, key=False):
+    """key=True: the green-screen overlay for phones. Every clip window is solid KEY_GREEN; art and fixed words (no
+    [brackets]) keep all their motion; [bracket] words are left out for buyers to type. On a phone the buyer's clips
+    go on the main track, this video goes on top as an Overlay, and CapCut's Chroma key removes the green."""
     work.mkdir(parents=True, exist_ok=True)
-    frames = clip_frames(sources, L, work)
+    frames = {} if key else clip_frames(sources, L, work)
+    if key: A = {name: hard_edges(im) for name, im in A.items()}
     total = max(l['t'][1] for l in L); n = int(round(total * FPS))
     order = sorted(range(len(L)), key=lambda i: (L[i]['kind'] == 'text', L[i]['z']))
+    if key: order = [i for i in order if L[i]['kind'] != 'text' or '[' not in L[i]['words'][0]]
     texts = {i: text_img(L[i], test) for i in order if L[i]['kind'] == 'text'}
+    enc = ['-crf', '12', '-preset', 'slow'] if key else []   # a clean green edge for the keyer
     proc = subprocess.Popen([FFMPEG, '-v', 'error', '-y', '-f', 'rawvideo', '-pix_fmt', 'rgb24', '-s', f'{W}x{H}',
-                             '-r', str(FPS), '-i', '-', '-c:v', 'libx264', '-pix_fmt', 'yuv420p', '-movflags', '+faststart',
+                             '-r', str(FPS), '-i', '-', '-c:v', 'libx264', *enc, '-pix_fmt', 'yuv420p', '-movflags', '+faststart',
                              str(out)], stdin=subprocess.PIPE)
     for k in range(n):
         t = k / FPS; canvas = Image.new('RGBA', (W, H), (0, 0, 0, 255))
@@ -452,6 +466,11 @@ def render(L, A, sources, out, work, test):
             if sc <= 0.01: continue
             if l['kind'] == 'art':
                 im = A[l['name']]
+            elif l['kind'] == 'clip' and key:
+                if l.get('blur_bg'): canvas.paste(KEY_GREEN + (255,), (0, 0, W, H))
+                im = Image.new('RGBA', tuple(l['size']), KEY_GREEN + (255,))
+                if l.get('mask') == 'circle':
+                    m = Image.new('L', im.size, 0); ImageDraw.Draw(m).ellipse((0, 0, im.width - 1, im.height - 1), fill=255); im.putalpha(m)
             elif l['kind'] == 'clip':
                 fl = frames[i]
                 if not fl: continue
@@ -566,6 +585,15 @@ def hold(L, at, secs):
         l['t'] = (t0, t1 + secs)
         l['kf'] = {p: [(k + secs if t0 + k >= at else k, v) for k, v in pts] for p, pts in (l.get('kf') or {}).items()}
     return L
+
+def green_overlay(spec, layers_fn):
+    """Render only the phone green-screen overlay (preview/green-overlay.mp4), without rebuilding the template."""
+    out = PACK / spec['dir']; work = out / '_work_key'
+    lay = layers_fn(); L = lay.L; apply_centering(L)
+    (out / 'preview').mkdir(exist_ok=True)
+    render(L, lay.A, None, out / 'preview' / 'green-overlay.mp4', work, test=False, key=True)
+    shutil.rmtree(work, ignore_errors=True)
+    return out / 'preview' / 'green-overlay.mp4'
 
 def build(spec, layers_fn):
     out = PACK / spec['dir']
