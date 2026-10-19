@@ -1,0 +1,325 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Halloween Reels draft</title><style>/* Scrolly v3 FOUNDATION (2026-10-03). One source for the v3 look on every page. Printed site-wide ahead of chrome.css by the same
+   WPCode snippet (install-chrome.mjs concatenates the two), so it also reaches theme-rendered pages (/product/*, /shop/, 404, opt-out)
+   that no page build can touch. Values match the approved homepage (home.css, .hp) exactly.
+   Three layers:
+   1. tokens on :root (--s3-*)
+   2. .s3 components, used by pages rebuilt on v3 (pages/*.mjs render <div class="s3">)
+   3. theme layer: styles the plain theme/WooCommerce output on pages that carry none of our roots (.hp homepage, .scx old system, .s3).
+      Pages still on the old system keep their own look until they are rebuilt. */
+
+/* 1. tokens */
+:root{--s3-cream:#f7f3ec;--s3-ink:#0a0a0a;--s3-muted:#6b6762;--s3-line:#d9d3ca;--s3-orange:#ff4b16;--s3-or-text:#e8522b;--s3-black:#090909;
+  --s3-serif:Georgia,"Times New Roman",serif;--s3-sans:Arial,Helvetica,sans-serif;--s3-gut:clamp(20px,4.5vw,96px);--s3-read:720px;--s3-sec:clamp(56px,6vw,112px);
+  /* type scale (2026-10-03, Mercedes: no random sizes). Every text size on v3 pages is one of these steps; nothing under 15px. */
+  --s3-fs-h2:clamp(2.4rem,4vw,4rem);--s3-fs-h3:clamp(1.9rem,2.6vw,2.5rem);--s3-fs-title:1.75rem;--s3-fs-lede:1.375rem;
+  --s3-fs-body:1.125rem;--s3-fs-body-serif:1.25rem;--s3-fs-ui:1.125rem;--s3-fs-num:1.5rem;--s3-fs-label:.9375rem;--s3-fs-fine:1.0625rem}
+
+/* 2. components (.s3 page root) */
+body:has(.s3) #content,body:has(.s3) main,body:has(.s3) .site-main,body:has(.s3) .page-content{max-width:none!important;width:100%!important;padding:0!important;margin:0!important}
+body:has(.s3) .page-header{display:none}
+body:has(.s3){background:var(--s3-cream)!important}
+.s3{background:var(--s3-cream);color:var(--s3-ink);font:var(--s3-fs-body)/1.55 var(--s3-sans);overflow-x:clip}
+.s3 *,.s3 *::before,.s3 *::after{box-sizing:border-box}
+.s3 img{display:block;max-width:100%;height:auto}
+.s3 a{color:inherit}
+.s3 h1,.s3 h2,.s3 h3,.s3 h4,.s3 p,.s3 figure,.s3 blockquote{margin:0}
+.s3 h1,.s3 h2,.s3 h3,.s3 h4{font-family:var(--s3-serif)!important;font-weight:400!important;color:var(--s3-ink);text-transform:none;letter-spacing:-.02em}
+/* zero-specificity reset, so .s3-btn and other component classes always win on <button>/<input> */
+:where(.s3) :where(button,input,select,textarea){font:inherit}
+.s3 a:focus-visible,.s3 button:focus-visible,.s3 input:focus-visible,.s3 select:focus-visible,.s3 textarea:focus-visible,.s3 summary:focus-visible{outline:3px solid #111;outline-offset:4px}
+.s3 .s3-dark :focus-visible{outline-color:#fff}
+.s3 .s3-sr{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+/* layout */
+.s3-wrap{width:calc(100% - 2 * var(--s3-gut));margin:0 auto}
+.s3-read{width:min(calc(100% - 2 * var(--s3-gut)),var(--s3-read));margin:0 auto}
+.s3-sec{padding:var(--s3-sec) 0}
+.s3-sec.tight{padding:calc(var(--s3-sec) * .55) 0}
+.s3-split{display:grid;grid-template-columns:.9fr 1.1fr;align-items:center;gap:clamp(32px,5vw,96px)}
+.s3-split.flip{grid-template-columns:1.1fr .9fr}
+.s3-split.flip>:first-child{order:2}
+.s3-dark{background:var(--s3-black);color:#fff}
+.s3-dark h1,.s3-dark h2,.s3-dark h3{color:#fff}
+/* type */
+.s3-display{font:400 clamp(3.2rem,7vw,7.8rem)/.88 var(--s3-serif)!important;letter-spacing:-.06em!important}
+.s3-h2{font:400 var(--s3-fs-h2)/1.02 var(--s3-serif)!important;letter-spacing:-.04em!important}
+.s3-h3{font:400 var(--s3-fs-h3)/1.08 var(--s3-serif)!important}
+.s3-num{font:400 clamp(3.6rem,6vw,5.5rem)/.85 var(--s3-serif)!important;color:var(--s3-or-text)}
+.s3-dark .s3-num{color:var(--s3-orange)}
+.s3 .or{color:var(--s3-or-text)}
+.s3-dark .or{color:var(--s3-orange)}
+.s3-lede{font:var(--s3-fs-lede)/1.45 var(--s3-serif);max-width:34em}
+.s3-label{font:700 var(--s3-fs-label)/1.3 var(--s3-sans);letter-spacing:.18em;text-transform:uppercase}
+.s3-fine{font-size:var(--s3-fs-fine);color:var(--s3-muted)}
+.s3-dark .s3-fine{color:#cfcfcf}
+.s3 .stack>*+*{margin-top:24px}
+/* controls */
+.s3-btn,.s3 .contact-form button[type=submit]{display:inline-flex;align-items:center;justify-content:center;gap:16px;min-height:56px;padding:17px 32px;border:0;border-radius:999px;background:var(--s3-orange);color:#000!important;font:800 var(--s3-fs-label)/1 var(--s3-sans);letter-spacing:.13em;text-transform:uppercase;text-decoration:none!important;cursor:pointer}
+.s3-btn:hover,.s3 .contact-form button[type=submit]:hover{background:#000;color:#fff!important}
+.s3-btn.black{background:#000;color:#fff!important}
+.s3-btn.black:hover{background:var(--s3-orange);color:#000!important}
+.s3-dark .s3-btn:hover{background:#fff;color:#000!important}
+.s3-btn.plain{letter-spacing:0;text-transform:none;font-size:var(--s3-fs-ui)}
+.s3-btn[disabled],.s3-btn[aria-disabled=true]{background:var(--s3-line);color:#3d3a36!important;cursor:not-allowed}
+.s3-link{display:inline-flex;align-items:center;gap:12px;min-height:44px;font:800 var(--s3-fs-label)/1 var(--s3-sans);letter-spacing:.16em;text-transform:uppercase;text-decoration:none}
+/* Hello Biz underlines .page-content a (0,1,1); beat it, and keep any hover underline off the arrow (inline-block stops decoration propagation) */
+.s3 a.s3-link{text-decoration:none}
+.s3 a.s3-link:hover{text-decoration:underline;text-underline-offset:6px}
+.s3-link span[aria-hidden]{display:inline-block}
+.s3-link span[aria-hidden]{font-size:1.3em;letter-spacing:0}
+.s3-field{display:block}
+.s3-field label{display:block;margin-bottom:8px;font:700 var(--s3-fs-ui)/1.3 var(--s3-sans);letter-spacing:.06em;color:var(--s3-ink)}
+.s3 input[type=text],.s3 input[type=email],.s3 input[type=number],.s3 input[type=tel],.s3 input[type=url],.s3 select,.s3 textarea{width:100%;min-height:52px;padding:13px 16px;background:rgba(255,255,255,.55);border:1px solid #8f8a83;border-radius:4px;color:var(--s3-ink);font-size:var(--s3-fs-ui)}
+.s3 textarea{min-height:140px}
+.s3 [aria-invalid=true]{border-color:#000;border-width:2px}
+.s3-error{margin-top:8px;font-weight:700;font-size:var(--s3-fs-fine)}
+/* WordPress (Jetpack) contact forms on .s3 pages: same fields, labels and button as .s3-field/.s3-btn */
+.s3 .jetpack-contact-form-container{margin-top:28px}
+.s3 .contact-form .grunion-field-wrap{margin:0 0 22px;padding:0}
+.s3 .contact-form .grunion-field-label{display:block;margin:0 0 8px;font:700 var(--s3-fs-ui)/1.3 var(--s3-sans);color:var(--s3-ink)}
+.s3 .contact-form .grunion-field-label span{font-weight:400;font-size:var(--s3-fs-label);color:var(--s3-muted)}
+.s3 .contact-form :is(input[type=text],input[type=email],textarea){width:100%;max-width:none;min-height:52px;padding:13px 16px;background:rgba(255,255,255,.55);border:1px solid #8f8a83;border-radius:4px;color:var(--s3-ink);font:var(--s3-fs-ui)/1.4 var(--s3-sans);box-shadow:none}
+.s3 .contact-form textarea{min-height:180px}
+.s3 .contact-form button[type=submit]{width:auto;margin-top:6px;box-shadow:none}
+/* product presentation (no boxes: image, name, price, action) */
+.s3-products{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,260px),1fr));gap:56px clamp(20px,3vw,48px)}
+.s3-product{display:flex;flex-direction:column;min-width:0}
+.s3-product .ph{display:block;aspect-ratio:1;width:100%;object-fit:cover;background:#ece6dc}
+.s3-product h3{font:400 var(--s3-fs-title)/1.1 var(--s3-serif)!important;margin-top:18px}
+.s3-product .amt{margin-top:8px;font:700 var(--s3-fs-ui)/1.3 var(--s3-sans)}
+.s3-product .act{margin-top:18px}
+.s3-product a.cover{text-decoration:none}
+.s3-product a.cover:hover h3{text-decoration:underline;text-underline-offset:6px;text-decoration-thickness:1px}
+/* FAQ: native disclosure, no boxes */
+.s3-faq details{border-top:1px solid var(--s3-line)}
+.s3-faq details:last-child{border-bottom:1px solid var(--s3-line)}
+.s3-faq summary{display:flex;justify-content:space-between;align-items:center;gap:24px;min-height:64px;padding:18px 0;cursor:pointer;list-style:none;font:400 var(--s3-fs-lede)/1.25 var(--s3-serif)}
+.s3-faq summary::-webkit-details-marker{display:none}
+.s3-faq summary::after{content:"+";flex:none;font:400 2rem/1 var(--s3-serif)}
+.s3-faq details[open] summary::after{content:"\2212"}
+.s3-faq details>div{padding:0 0 28px;max-width:46em;font-size:var(--s3-fs-body);line-height:1.6}
+/* long-form reading: legal, blog, policies */
+.s3-prose{font:var(--s3-fs-body)/1.7 var(--s3-sans);color:var(--s3-ink)}
+.s3-prose>*+*{margin-top:1.1em}
+.s3-prose h2{font:400 var(--s3-fs-h3)/1.1 var(--s3-serif)!important;margin-top:2em}
+.s3-prose h3{font:400 var(--s3-fs-title)/1.2 var(--s3-serif)!important;margin-top:1.6em}
+.s3-prose h2+*,.s3-prose h3+*{margin-top:.6em}
+.s3-prose ul,.s3-prose ol{padding-left:1.3em}
+.s3-prose li+li{margin-top:.4em}
+.s3-prose a{text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:1px}
+.s3-prose a:hover{text-decoration-thickness:2px}
+.s3-prose strong{font-weight:700}
+.s3-prose table{width:100%;border-collapse:collapse;font-size:var(--s3-fs-fine)}
+.s3-prose th,.s3-prose td{text-align:left;vertical-align:top;padding:10px 12px 10px 0;border-bottom:1px solid var(--s3-line)}
+/* rate presets under a number field (calculators, Club pages): Weak / Typical / Strong pills that fill the box; the chosen one is black.
+   Markup + script: presetHtml() / PRESET_JS in calculators-data.mjs. */
+.s3-pres{display:flex;gap:6px;margin-top:10px}
+.s3 .s3-pre{flex:1 1 0;display:inline-flex;align-items:center;justify-content:center;gap:4px;min-height:44px;padding:8px 6px;border:1px solid #cdb6a3;border-radius:999px;background:#fff;color:var(--s3-ink);font:400 var(--s3-fs-label)/1 var(--s3-sans);white-space:nowrap;cursor:pointer}
+.s3 .s3-pre b{font-weight:700}
+.s3 .s3-pre:hover{border-color:var(--s3-ink)}
+.s3 .s3-pre[aria-pressed=true]{background:var(--s3-ink);border-color:var(--s3-ink);color:#fff}
+.s3 .s3-pre:focus-visible{outline:2px solid var(--s3-ink);outline-offset:2px}
+.s3 .s3-hint{margin-top:10px;font-size:var(--s3-fs-fine);line-height:1.45;color:#55514c}
+@media(max-width:900px){
+ .s3-split,.s3-split.flip{grid-template-columns:1fr}
+ .s3-split.flip>:first-child{order:0}
+}
+@media(max-width:700px){
+ .s3-btn{width:100%;padding:16px 18px;letter-spacing:.07em}
+ .s3-btn.inline{width:auto}
+ .s3-products{gap:44px}
+}
+
+/* 3. theme layer: plain theme + WooCommerce output (product pages, /shop/, 404, opt-out, posts). Scoped away from our own page roots. */
+body:not(:has(.hp,.scx,.s3)){background:var(--s3-cream);color:var(--s3-ink);font:var(--s3-fs-body)/1.6 var(--s3-sans)}
+body:not(:has(.hp,.scx,.s3)) .content-area{max-width:none!important;padding-left:0!important;padding-right:0!important}
+body:not(:has(.hp,.scx,.s3)) .site-main{width:calc(100% - 2 * var(--s3-gut));max-width:none;margin:0 auto;padding:clamp(28px,4vw,64px) 0 var(--s3-sec)!important}
+body.page:not(:has(.hp,.scx,.s3)) .site-main,body.single-post:not(:has(.hp,.scx,.s3)) .site-main,body.error404 .site-main{max-width:var(--s3-read)}
+body:not(:has(.hp,.scx,.s3)) :is(h1,h2,h3,h4,h5,h6,.product_title,.page-title){font-family:var(--s3-serif)!important;font-weight:400!important;color:var(--s3-ink);text-transform:none;letter-spacing:-.02em;line-height:1.05}
+body:not(:has(.hp,.scx,.s3)) :is(h1,.product_title,.page-title){font-size:clamp(2.8rem,5.5vw,5.2rem);letter-spacing:-.045em;line-height:.95;margin:0 0 .4em}
+body:not(:has(.hp,.scx,.s3)) h2{font-size:var(--s3-fs-h2);margin:1.6em 0 .5em}
+body:not(:has(.hp,.scx,.s3)) h3{font-size:var(--s3-fs-title);margin:1.4em 0 .4em}
+body:not(:has(.hp,.scx,.s3)) a{color:var(--s3-ink)}
+body:not(:has(.hp,.scx,.s3)) .site-main a:not(.button):not([class*=wc-block]){text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:1px}
+body:not(:has(.hp,.s3)) :is(a,button,input,select,textarea,summary):focus-visible{outline:3px solid #111!important;outline-offset:3px}
+/* buttons: Hello Biz paints every <button> pink #c36, the old Additional CSS makes Woo buttons square. One pill for all of them. */
+html body:not(:has(.hp,.scx,.s3)) :is(button,.button,input[type=submit],.wp-element-button,.single_add_to_cart_button,.search-submit):where(:not(.scxg *):not(.scxg-cart):not(.scxg-burger):not([class*=raccess]):not(.reset_variations):not(.cmplz-cookiebanner *):not([class*=cmplz]):not(.k1v3 *)){display:inline-flex!important;align-items:center;justify-content:center;text-align:center;min-height:52px;padding:15px 30px!important;border:0!important;border-radius:999px!important;background:var(--s3-orange)!important;color:#000!important;font:800 var(--s3-fs-label)/1 var(--s3-sans)!important;letter-spacing:.12em!important;text-transform:uppercase;text-decoration:none!important;box-shadow:none!important;cursor:pointer;width:auto}
+html body:not(:has(.hp,.scx,.s3)) :is(button,.button,input[type=submit],.wp-element-button,.single_add_to_cart_button,.search-submit):where(:not(.scxg *):not(.scxg-cart):not(.scxg-burger):not([class*=raccess]):not(.reset_variations):not(.cmplz-cookiebanner *):not([class*=cmplz]):not(.k1v3 *)):hover{background:#000!important;color:#fff!important}
+body:not(:has(.hp,.scx,.s3)) :is(input[type=text],input[type=email],input[type=search],input[type=number],input[type=tel],input[type=password],select,textarea):not(.scxg *):not(.k1v3 *){min-height:52px;padding:12px 16px;background:rgba(255,255,255,.55);border:1px solid #8f8a83;border-radius:4px;color:var(--s3-ink);font:var(--s3-fs-ui) var(--s3-sans)}
+/* WooCommerce single product + archive */
+body.woocommerce .woocommerce-breadcrumb{font:700 var(--s3-fs-label)/1.4 var(--s3-sans);letter-spacing:.14em;text-transform:uppercase;color:var(--s3-muted);margin:0 0 28px}
+body.woocommerce .woocommerce-breadcrumb a{color:var(--s3-muted)!important;text-decoration:none!important}
+body.single-product div.product{display:grid;grid-template-columns:1.1fr .9fr;gap:clamp(32px,5vw,96px);align-items:start}
+body.single-product div.product>.woocommerce-product-gallery,body.single-product div.product>.summary{width:auto!important;float:none!important;margin:0!important}
+body.single-product div.product>:not(.woocommerce-product-gallery):not(.summary){grid-column:1/-1}
+body.single-product .woocommerce-product-gallery img{width:100%;height:auto;background:#ece6dc}
+body.single-product .woocommerce-product-gallery__image--placeholder{display:none}
+body.woocommerce :is(.price,.woocommerce-Price-amount){color:var(--s3-ink)!important}
+body.woocommerce .price :is(.woocommerce-Price-amount,bdi,ins){font:inherit!important;color:inherit!important;text-decoration:none}
+body.single-product .summary .price{font:400 var(--s3-fs-title)/1.1 var(--s3-serif)!important;margin:0 0 28px}
+body.single-product .summary .price del{color:var(--s3-muted)}
+body.single-product .woocommerce-product-details__short-description{font:var(--s3-fs-lede)/1.5 var(--s3-serif);margin-bottom:28px}
+body.single-product form.cart{display:flex;flex-wrap:wrap;align-items:flex-end;gap:16px;margin:0 0 32px}
+body.single-product form.cart.variations_form{display:block}
+body.single-product table.variations{width:100%;border:0;margin:0 0 20px;border-collapse:collapse}
+body.single-product table.variations :is(th,td){display:block;padding:0;border:0;background:none;text-align:left}
+body.single-product table.variations td.value{padding-bottom:22px}
+body.single-product table.variations th label{display:block;margin:0 0 8px;font:700 var(--s3-fs-label)/1.3 var(--s3-sans);letter-spacing:.14em;text-transform:uppercase}
+body.single-product table.variations select{width:100%;max-width:380px}
+body.single-product .reset_variations{display:inline-flex;align-items:center;min-height:44px;font-size:var(--s3-fs-fine);color:var(--s3-ink)!important}
+body.single-product .woocommerce-variation-add-to-cart{display:flex;flex-wrap:wrap;align-items:flex-end;gap:16px;margin-top:16px}
+body.single-product .quantity input.qty{width:88px;text-align:center}
+body.single-product .single_variation .price{font-size:var(--s3-fs-lede)!important;margin:0 0 6px}
+body.single-product .product_meta{font-size:var(--s3-fs-fine);color:var(--s3-muted)}
+body.single-product .product_meta a{color:var(--s3-muted)!important}
+body.single-product .woocommerce-tabs{margin-top:clamp(48px,6vw,96px);border-top:1px solid var(--s3-line);padding-top:8px}
+body.single-product .woocommerce-tabs ul.tabs{display:flex;flex-wrap:wrap;gap:0 36px;margin:0 0 28px!important;padding:0!important;list-style:none;border:0;background:none!important;border-radius:0!important;box-shadow:none!important}
+body.single-product .woocommerce-tabs ul.tabs::before,body.single-product .woocommerce-tabs ul.tabs li::before,body.single-product .woocommerce-tabs ul.tabs li::after{display:none!important}
+body.single-product .woocommerce-tabs ul.tabs li{margin:0;padding:0;border:0!important;background:none!important;border-radius:0}
+body.single-product .woocommerce-tabs ul.tabs li a{display:inline-flex;align-items:center;min-height:52px;padding:0!important;border:0!important;border-bottom:2px solid transparent!important;border-radius:0!important;background:none!important;box-shadow:none!important;font:800 var(--s3-fs-label)/1 var(--s3-sans);letter-spacing:.14em;text-transform:uppercase;text-decoration:none!important;color:var(--s3-muted)!important}
+body.single-product .woocommerce-tabs ul.tabs li.active a{color:var(--s3-ink)!important;border-bottom-color:var(--s3-orange)!important}
+body.single-product .woocommerce-tabs .panel{max-width:var(--s3-read);font-size:var(--s3-fs-body);color:var(--s3-ink)}
+body.single-product .woocommerce-tabs .panel :is(p,li){color:var(--s3-ink)!important}
+body.single-product .woocommerce-tabs .panel>h2:first-child{display:none}
+body.woocommerce table.shop_attributes{width:100%;border:0;border-collapse:collapse}
+body.woocommerce table.shop_attributes :is(th,td){padding:12px 12px 12px 0;border:0;border-bottom:1px solid var(--s3-line);background:none!important;text-align:left;font-style:normal}
+body.woocommerce :is(.related,.upsells)>h2{font-size:var(--s3-fs-h2)!important;margin:clamp(64px,8vw,120px) 0 36px}
+body.woocommerce ul.products{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr));gap:56px clamp(20px,3vw,48px);margin:0!important;padding:0;list-style:none}
+body.woocommerce ul.products::before,body.woocommerce ul.products::after{display:none!important}
+body.woocommerce ul.products li.product{width:auto!important;float:none!important;margin:0!important;padding:0;display:flex;flex-direction:column;text-align:left}
+body.woocommerce ul.products li.product a.woocommerce-loop-product__link{text-decoration:none!important}
+body.woocommerce ul.products li.product img{width:100%;aspect-ratio:1;object-fit:cover;margin:0 0 18px!important;background:#ece6dc}
+body.woocommerce ul.products li.product .woocommerce-loop-product__title{font:400 var(--s3-fs-title)/1.1 var(--s3-serif)!important;padding:0!important;margin:0 0 8px}
+body.woocommerce ul.products li.product .price{display:block;font:700 var(--s3-fs-ui)/1.3 var(--s3-sans)!important;margin:0 0 16px}
+body.woocommerce ul.products li.product .button{margin-top:auto;align-self:flex-start;min-height:48px!important;padding:13px 16px!important;font-size:var(--s3-fs-label)!important;letter-spacing:.05em!important;white-space:nowrap}
+body.woocommerce .woocommerce-products-header{margin-bottom:24px}
+body.woocommerce :is(.woocommerce-result-count,.woocommerce-ordering){margin:0 0 36px;font-size:var(--s3-fs-fine);color:var(--s3-muted)}
+body.woocommerce .onsale{background:#000!important;color:#fff!important;border-radius:999px;min-height:0;line-height:1;padding:8px 14px;font:700 var(--s3-fs-label)/1 var(--s3-sans);letter-spacing:.14em;text-transform:uppercase}
+/* WooCommerce notices (classic templates) */
+body:not(:has(.hp,.s3)) :is(.woocommerce-message,.woocommerce-info,.woocommerce-error){margin:0 0 28px;padding:18px 22px!important;border:0!important;border-radius:4px;background:#fff!important;color:var(--s3-ink)!important;font-size:var(--s3-fs-body);list-style:none}
+body:not(:has(.hp,.s3)) :is(.woocommerce-message,.woocommerce-info,.woocommerce-error)::before{display:none!important}
+body:not(:has(.hp,.s3)) .woocommerce-error{background:#000!important;color:#fff!important;font-weight:700}
+body:not(:has(.hp,.s3)) .woocommerce-error a{color:#fff!important}
+body:not(:has(.hp,.s3)) :is(.woocommerce-message,.woocommerce-info) .button{float:none;margin:0 0 0 16px}
+/* 404 + search */
+body.error404 .page-header{margin-bottom:24px}
+body.error404 .search-form{display:flex;flex-wrap:wrap;gap:12px;width:100%;max-width:560px;margin:24px auto 0;position:static}
+body.error404 .search-form label{flex:1 1 220px;min-width:0}
+body.error404 .search-field{width:100%}
+body.error404 .search-submit{position:static!important;inset:auto!important;transform:none!important;flex:none}
+/* Complianz documents (opt-out preferences, cookie statement) */
+body:not(:has(.hp,.scx,.s3)) .cmplz-document{max-width:none;font-size:var(--s3-fs-body);overflow-x:clip}
+body:not(:has(.hp,.scx,.s3)) .cmplz-document :is(p,li,td,th,summary,span,div){font-size:var(--s3-fs-body)!important;line-height:1.65!important}
+body:not(:has(.hp,.scx,.s3)) .cmplz-document :is(h2,h3){font-size:var(--s3-fs-h3)!important;line-height:1.1!important;margin:1.6em 0 .5em!important}
+body:not(:has(.hp,.scx,.s3)) .cmplz-document :is(h2,h3){font-family:var(--s3-serif)!important;font-weight:400!important}
+body:not(:has(.hp,.scx,.s3)) .cmplz-document .cmplz-dropdown summary{min-height:48px}
+body:not(:has(.hp,.scx,.s3)) .cmplz-document :is(h4,h5,h6){font:700 var(--s3-fs-label)/1.3 var(--s3-sans)!important;letter-spacing:.06em}
+body:not(:has(.hp,.scx,.s3)) .cmplz-document a{color:var(--s3-ink)!important}
+@media(max-width:1000px){body.woocommerce ul.products{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:800px){body.single-product div.product{grid-template-columns:1fr}}
+@media(max-width:520px){body.woocommerce ul.products{gap:40px 16px}body.woocommerce ul.products li.product .woocommerce-loop-product__title{font-size:var(--s3-fs-lede)!important}body.woocommerce ul.products li.product .button{width:100%;padding:12px 10px!important;font-size:var(--s3-fs-label)!important;letter-spacing:.03em!important;line-height:1.2!important;white-space:normal}body.single-product .woocommerce-variation-add-to-cart .single_add_to_cart_button,body.single-product form.cart:not(.variations_form) .single_add_to_cart_button{flex:1 1 auto}}
+
+/* Complianz cookie banner (every page, incl. the homepage): only the two colors that fail AA are changed.
+   Accept = v3 orange with black text (white on orange is ~2.9:1); banner links black instead of orange-on-white. */
+body .cmplz-cookiebanner .cmplz-btn.cmplz-accept{background:#ff4b16!important;border-color:#ff4b16!important;color:#000!important;font-weight:700}
+body .cmplz-cookiebanner .cmplz-btn.cmplz-accept:hover{background:#000!important;border-color:#000!important;color:#fff!important}
+body .cmplz-cookiebanner .cmplz-links a,body .cmplz-cookiebanner .cmplz-link{color:#0a0a0a!important}
+body .cmplz-manage-consent{background:#ff4b16!important;color:#000!important}
+
+/* accessibility plugin skip link (shows on keyboard focus): on the type scale like everything else */
+body .raccess-skip-link,body .skip-link{font-size:var(--s3-fs-ui)!important}
+
+/* Cart + Checkout still carry the old .scx-woo prelude (commerce session migrates them next). Once the old Customizer CSS is removed,
+   these keep their headings and any classic Woo buttons on v3 instead of falling back to Hello Biz defaults. */
+body:has(.scx-woo) .page-content>h1,body:has(.scx-woo) .page-content .wp-block-heading{font-family:var(--s3-serif)!important;font-weight:400!important;text-transform:none!important;letter-spacing:-.03em!important;color:var(--s3-ink)}
+body:has(.scx-woo) .woocommerce :is(a.button,button.button,input.button,.wc-backward){display:inline-flex!important;align-items:center;justify-content:center;min-height:52px;padding:15px 30px!important;border:0!important;border-radius:999px!important;background:var(--s3-orange)!important;color:#000!important;font:800 var(--s3-fs-label)/1 var(--s3-sans)!important;letter-spacing:.12em!important;text-transform:uppercase!important;text-decoration:none!important}
+body:has(.scx-woo) .woocommerce :is(a.button,button.button,input.button,.wc-backward):hover{background:#000!important;color:#fff!important}
+</style><style>
+.draft{background:#090909;color:#fff;padding:20px var(--s3-gut);font:var(--s3-fs-fine)/1.5 var(--s3-sans)}
+.draft b{color:var(--s3-orange)}
+.draft details{margin-top:8px}
+.draft summary{cursor:pointer;font-weight:700}
+.draft ul{margin:10px 0 0;padding-left:1.2em}
+.draft li+li{margin-top:4px}
+mark.ph{background:#ffd9c9;color:var(--s3-ink);padding:0 4px;border-radius:3px}
+.s3-dark mark.ph{background:#5a2412;color:#fff}
+.s3-btn mark.ph{background:#fff;color:#000}
+.hero{padding-top:clamp(40px,5vw,88px)}
+.hero h1{margin-bottom:28px}
+.hero .s3-lede{margin-bottom:28px}
+.hero .buy{display:flex;flex-wrap:wrap;align-items:center;gap:16px 24px;margin-bottom:16px}
+.hero .amt{font:400 var(--s3-fs-title)/1.1 var(--s3-serif)}
+.reels{display:grid;grid-template-columns:repeat(var(--n),1fr);gap:clamp(10px,1.4vw,20px);align-items:start}
+.reels .vid:nth-child(even){margin-top:clamp(24px,4vw,64px)}
+.vid{aspect-ratio:9/16;background:#e6dfd3;border-radius:14px;display:flex;align-items:flex-end;padding:14px;font:var(--s3-fs-label)/1.35 var(--s3-sans);color:#3d3a36}
+.vid b{display:block;font:400 var(--s3-fs-body)/1.2 var(--s3-serif);color:var(--s3-ink);margin-top:4px}
+.tpls{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,250px),1fr));gap:56px clamp(20px,3vw,48px);margin-top:48px}
+.tpl .vid{margin-bottom:20px}
+.tpl h3{font:400 var(--s3-fs-title)/1.1 var(--s3-serif)!important;margin-bottom:10px}
+.tpl p+p{margin-top:10px}
+.tpl .meta{color:var(--s3-muted);font-size:var(--s3-fs-fine)}
+.incl{margin-top:56px;max-width:46em}
+.incl h3{margin-bottom:16px}
+.incl ul,.steps{padding-left:1.3em}
+.incl li+li,.steps li+li{margin-top:10px}
+.steps{max-width:46em;margin-top:32px;font-size:var(--s3-fs-body)}
+.steps b{font-weight:700}
+.who p+p{margin-top:16px}
+.s3-faq{margin-top:32px}
+.cta{text-align:center}
+.cta h2{margin-bottom:24px}
+.cta .s3-btn{margin:8px 0 18px}
+.cta p+p{margin-top:12px}
+.notes{border-top:1px solid var(--s3-line)}
+.notes h2{margin-bottom:20px}
+.notes h3{margin:40px 0 14px}
+.notes table{width:100%;border-collapse:collapse;font-size:var(--s3-fs-fine)}
+.notes th,.notes td{text-align:left;vertical-align:top;padding:10px 12px 10px 0;border-bottom:1px solid var(--s3-line)}
+.notes .listing{font:var(--s3-fs-body-serif)/1.55 var(--s3-serif);max-width:40em}
+@media(max-width:900px){.reels{--n:2!important}.reels .vid:nth-child(n+5){display:none}}
+@media(max-width:700px){.notes table,.notes tbody,.notes tr,.notes td,.notes th{display:block}.notes thead{display:none}.notes td{border:0;padding:4px 0}.notes tr{border-bottom:1px solid var(--s3-line);padding:10px 0}}
+</style></head><body style="margin:0;background:#f7f3ec">
+<div class="draft"><b>DRAFT PREVIEW.</b> Local file only, not published. Highlighted [brackets] are open decisions. The site's global header and footer are left out.
+<details><summary>Open decisions (9)</summary><ul><li>Price.</li><li>Launch format: sell the 4 finished templates now, or pre-order with h1 to follow.</li><li>h1 Now you see it: on hold for smoke.mp4; the page lists 4.</li><li>Bonus: none planned; add only if you choose one.</li><li>Phone buyers: the zips hold no phone kit. Add it, or sell as computer-only.</li><li>Mac: waitlist, date, or nothing.</li><li>Sound picks: none chosen for Halloween yet.</li><li>Reel Editor upsell: no name, link or launch yet.</li><li>Before live: check h2 and h5 in CapCut, the highlight boxes, and the h6 font on a second computer (it points at your own CapCut cache).</li></ul></details></div>
+<div class="s3"><div id="main">
+<section class="s3-sec hero"><div class="s3-wrap s3-split">
+  <div><h1 class="s3-display or">Halloween Reels with a selling job</h1>
+  <p class="s3-lede">Film a few clips on your phone, drop them in a folder, and each template opens in CapCut with your clips already in place.</p>
+  <div class="buy"><span class="amt"><mark class="ph">[PRICE]</mark></span><a class="s3-btn" href="#buy">Get the Halloween pack</a></div>
+  <p class="s3-fine">4 CapCut templates. <mark class="ph">[LAUNCH FORMAT line]</mark>. Windows only for now.</p></div>
+  <div class="reels" style="--n:4"><div class="vid"><span>Demo to film<b>Once in a blood moon</b></span></div><div class="vid"><span>Demo to film<b>Caught in our web</b></span></div><div class="vid"><span>Demo to film<b>Things I'm batty about</b></span></div><div class="vid"><span>Demo to film<b>Trick or treat</b></span></div></div>
+</div></section>
+<section class="s3-sec"><div class="s3-wrap">
+  <h2 class="s3-h2">Four Reels, four jobs</h2>
+  <p class="s3-lede" style="margin-top:20px">Each template is a whole Reel with a business job and an ending that tells people where to buy. Cute and playful.</p>
+  <div class="tpls"><div class="tpl"><div class="vid"><span>Demo to film<b>Once in a blood moon</b></span></div>
+    <h3>Once in a blood moon</h3><p>Open a rare, once-a-year sale. A full moon turns blood red, becomes your video, and the deal arrives with bats and a haunted house.</p><p class="meta">You film 3 clips: your product, you or your shop, your product again. About 14 seconds.</p></div><div class="tpl"><div class="vid"><span>Demo to film<b>Caught in our web</b></span></div>
+    <h3>Caught in our web</h3><p>Show what's included or why people love it. A friendly spider drops in, the web forms, and each point gets caught in it.</p><p class="meta">You film 5 clips: your product held up, then four points. About 15 seconds.</p></div><div class="tpl"><div class="vid"><span>Demo to film<b>Things I'm batty about</b></span></div>
+    <h3>Things I'm batty about</h3><p>Share your favourites: best-sellers, a gift guide, the tools you use. Real cute bats carry each one in.</p><p class="meta">You film 4 clips: an opening, then three favourites. About 15 seconds.</p></div><div class="tpl"><div class="vid"><span>Demo to film<b>Trick or treat</b></span></div>
+    <h3>Trick or treat</h3><p>Fix a common mistake, then make your offer. Door 1 opens on the trick, door 2 on the treat.</p><p class="meta">You film 3 clips: the mistake, your product, the proof. About 17.5 seconds.</p></div></div>
+  <div class="incl"><h3 class="s3-h3">Every template comes with</h3><ul>
+    <li>The CapCut project, with real photographed props and the playful layer (washi tape, sticker edges, handwritten words)</li>
+    <li>A Windows installer that puts the template on CapCut's home screen with your clips already in it</li>
+    <li>A recipe card: every clip, how long it is and what to film</li>
+    <li>A one-page How to use guide</li></ul>
+    </div>
+</div></section>
+<section class="s3-sec"><div class="s3-wrap"><h2 class="s3-h2">How it works</h2><ol class="steps"><li><b>Film your clips.</b> Hold your phone upright and start each clip right on the action. The recipe card says what to film and for how long.</li><li><b>Drop them in.</b> Unzip the template and put your clips in the folder "1 Put your clips here", named 1, 2, 3 in the order on the card.</li><li><b>Double-click the installer.</b> "2 Double-click to install" copies the template into CapCut under a new name and adds your clips. It never touches your other projects.</li><li><b>Open CapCut.</b> The template is on the home screen. Double-click each text box, type over the [brackets], and export at 1080p.</li><li><b>Add a sound in Instagram</b> and post.</li></ol></div></section>
+<section class="s3-sec"><div class="s3-wrap s3-split who"><h2 class="s3-h2">Who it's for</h2>
+  <div><p class="s3-lede">Online business owners and creators who want a Halloween Reel that sells something: a product, a sale, a freebie or an offer. It works for physical products, digital products and services, since every clip is your own footage.</p><p>You'll need CapCut for computer on a Windows PC. Mac isn't supported yet.</p></div></div></section>
+<section class="s3-sec"><div class="s3-read"><h2 class="s3-h2">Questions</h2><div class="s3-faq"><details><summary>Do I need CapCut on a computer?</summary><div>Yes. The templates open in CapCut for computer (the free download). Install it and open it once before you run the installer.</div></details><details><summary>Does it work on a Mac?</summary><div>Not yet. The installer is Windows only for now. <mark class="ph">[MAC: waitlist link or date, if you decide on one]</mark></div></details><details><summary>Can I use it on my phone?</summary><div><mark class="ph">[PHONE DECISION: with the phone kit in the zip, "rebuild each template in the CapCut phone app with the shot guide video and the artwork files"; without it, "the full template needs CapCut on a Windows computer; you can film everything on your phone"]</mark></div></details><details><summary>Is music included?</summary><div>No sound files are included, so your Reel never gets muted for a song you don't have the rights to. Each template suggests a sound <mark class="ph">[SOUND PICKS]</mark>. Add it in Instagram after you upload: on a business account, Instagram only shows sounds cleared for business use.</div></details><details><summary>Do I need to install any fonts?</summary><div>No. The big Halloween lettering is part of the artwork, and the words you edit use Arial, which comes with Windows. <mark class="ph">[h6: confirm after the font test]</mark></div></details><details><summary>How do I change the words?</summary><div>Double-click a text box in CapCut and type over the [brackets]. Keep it to a few words so people can read it in time.</div></details><details><summary>Windows says it protected my PC. Is that normal?</summary><div>Yes, Windows shows this for installers it hasn't seen before. Choose More info, then Run anyway.</div></details><details><summary>What if I want a different clip in one shot?</summary><div>Right-click the clip on CapCut's timeline, choose Replace, and pick another.</div></details></div></div></section>
+<section class="s3-sec s3-dark cta" id="buy"><div class="s3-read">
+  <h2 class="s3-h2 or">Post your Halloween Reel before the 31st</h2>
+  <a class="s3-btn" href="#buy">Get the Halloween pack, <mark class="ph">[PRICE]</mark></a>
+  <p class="s3-fine"><mark class="ph">[LAUNCH FORMAT line]</mark>. Windows only for now.</p>
+  <p class="s3-fine"><mark class="ph">[REEL EDITOR UPSELL: one line once it has a name, link and launch date]</mark></p>
+</div></section>
+<section class="s3-sec notes"><div class="s3-wrap">
+  <h2 class="s3-h2">Review notes (not part of the page)</h2>
+  <h3 class="s3-h3">Other headline options</h3><ul class="steps" style="margin-top:0"><li>Cute Halloween Reels for your shop, ready for your clips</li><li>Four Halloween Reels. Your clips, your words, posted before the 31st.</li><li>Bats, webs and a blood moon, all working for your sales</li><li>Spooky-cute Reels for your October sale</li></ul>
+  <h3 class="s3-h3">Listing description</h3><p class="listing">Four cute Halloween Reel templates for CapCut on Windows, each with a selling job: open a once-a-year sale, show what's included, share your favourites, or turn a common mistake into your offer. Film 3 to 5 clips on your phone, drop them in a folder and double-click the installer: the template opens in CapCut with your clips in place. Type your words over the brackets and export. Includes a recipe card and a one-page guide for each template. Each template suggests a sound to add in Instagram (no sound files included). Windows only for now; Mac isn't supported yet.</p>
+  <h3 class="s3-h3">Demo footage to film (your own product only)</h3>
+  <p style="max-width:46em;margin-bottom:16px">One finished demo Reel per template, made from your own clips run through the real installer. Never the after.mp4 previews (they show other brands' products). Real words only: where you have no real material yet, leave the template's [brackets] showing. Also film a short screen recording of the install for the page.</p>
+  <table><thead><tr><th>Template</th><th>Clips to film</th><th>Real material it needs</th></tr></thead><tbody><tr><td><b>Once in a blood moon</b></td><td>Your product close up (4 s+), you or your workspace (5 s+), your product again (3 s+)</td><td>A real sale you will run, or the [brackets]</td></tr><tr><td><b>Caught in our web</b></td><td>Your product held up (15 s+), then four things it includes or does (12, 10, 8, 6 s+)</td><td>Four real features</td></tr><tr><td><b>Things I'm batty about</b></td><td>An opening shot (3 s+), then three favourite products or tools (4 s+ each)</td><td>Three real favourites</td></tr><tr><td><b>Trick or treat</b></td><td>The trick: a common mistake acted out (5 s+), the treat: your product (6 s+), the proof: it working (6 s+)</td><td>A real mistake and a real offer</td></tr></tbody></table>
+</div></section>
+</div></div></body></html>
