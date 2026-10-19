@@ -86,7 +86,7 @@ def layers():
     # ===== S2 3.2 to 5.6 the TRICK: clip 1 full; TRICK, her words on a pinned note, crossed out =====
     overlay(g, 'trick-word', 3.2, 5.6, lambda im, t: M.word_art(im, t, 3.25, 'TRICK', 540, 420, 220, 'taffy', 'jitter'))
     na = note_art(-5); g.art('note-trick', na, (3.55, 5.6), nz(), (700, 900), {'scale': pop(0, 1.15)})
-    g.art('pin-trick', M.PIN, (3.8, 5.6), nz(), (700, 900 - na.height / 2 + 35))
+    g.art('pin-trick', M.PIN, (3.8, 5.6), nz(), (700 + M.PIN.width * 0.2, 900 - M.NOTE.height / 2 + M.PIN.height * 0.45))
     g.text('arialbd', sz(64), ('[cheap\nsponges]', 'cheap\nsponges'), (3.6, 5.6), 90, (700, 900), -5, {'scale': pop(0, 1.1)}, color=INK)
     overlay(g, 'x', 4.9, 5.6, lambda im, t: D.draw_on(im, M.DOO['x'], (700, 900), t, 4.9, 0.3, -6))
 
@@ -146,15 +146,15 @@ def layers():
     overlay(g, 'proof-word', 11.8, 14.6, lambda im, t: (M.word_art(im, t, 11.85, 'PROOF', 540, 420, 170, 'taffy', 'pop', 0.05),
                                                        D.draw_on(im, M.DOO['arrow'], (260, 1180), t, 12.8, 0.3, -20)))
     nb = note_art(6); g.art('note-proof', nb, (12.2, 14.6), nz(), (680, 1180), {'scale': pop(0, 1.15)})
-    g.art('pin-proof', M.PIN, (12.45, 14.6), nz(), (680, 1180 - nb.height / 2 + 35))
+    g.art('pin-proof', M.PIN, (12.45, 14.6), nz(), (680 + M.PIN.width * 0.2, 1180 - M.NOTE.height / 2 + M.PIN.height * 0.45))
     g.text('arialbd', sz(64), ('[5-star\nreviews]', '5-star\nreviews'), (12.25, 14.6), 94, (680, 1180), 6, {'scale': pop(0, 1.1)}, color=INK)
 
     # ===== S6 14.8 to 17.5 CTA: COMMENT, the pill behind the keyword, the offer underlined =====
     def cta(im, t):
-        M.word_art(im, t, 14.8, 'COMMENT', 540, 470, 150, 'taffy', 'pop', 0.05); M.pill(im, t, 15.0, (560, 710), 620, 210, 2)
+        M.word_art(im, t, 14.8, 'COMMENT', 540, 470, 150, 'taffy', 'pop', 0.05); M.pill(im, t, 15.0, (560, 712), 640, 220, 0, 50)
         D.draw_on(im, M.DOO['wavy'], (520, 1000), t, 15.5, 0.35)
     overlay(g, 'cta', 14.8, END, cta)
-    g.text('arialbd', sz(150), ('[TREAT]', 'TREAT'), (15.05, END), 95, (560, 700), 0, {'scale': pop(0, 1.1)}, color=WHITE, stroke=STROKE)
+    g.text('arialbd', sz(140), ('[TREAT]', 'TREAT'), (15.05, END), 95, (560, 712), 0, {'scale': pop(0, 1.1)}, color=WHITE, stroke=(INK, 0.16))   # centred in the pill
     g.text('arialbd', sz(64), ('for something sweet: 15% off', 'for something sweet: 15% off'), (15.2, END), 96, (520, 900), 0,
            {'scale': pop(0, 1.1)}, color=WHITE, stroke=STROKE)
     return g

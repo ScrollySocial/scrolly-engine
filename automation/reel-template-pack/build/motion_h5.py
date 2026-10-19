@@ -256,7 +256,8 @@ def _paper(name, w):
     im = B.cut_white(Image.open(E.PACK / 'assets' / 'props' / 'source' / 'physical' / name), tol=8)
     return B.fit_w(im.crop(im.getbbox()), w)
 NOTE = _paper('Blank Yellow Sticky Note on White.png', 520)
-PIN = _paper('Glossy Push Pin Quartet.png', 260).crop((0, 0, 130, 130))
+_pq = Image.open(E.PACK / 'assets' / 'props' / 'source' / 'physical' / 'Glossy Push Pin Quartet.png').crop((770, 535, 1240, 930))
+PIN = B.fit_w(B.cut_white(_pq, tol=18), 120)   # one black push pin (v11: the old crop showed two pins)
 def sticky(img, t, t0, text, c, rot=-4):
     """Her words on a real yellow sticky note, pinned, popping on."""
     if t < t0: return
@@ -264,11 +265,11 @@ def sticky(img, t, t0, text, c, rot=-4):
     f = E.ImageFont.truetype(BOLD, 64); d.multiline_text((n.width / 2, n.height / 2), text, font=f, fill=(30, 26, 22), anchor='mm', align='center')
     n = n.resize((max(1, int(n.width * k)), max(1, int(n.height * k)))).rotate(rot, expand=True, resample=Image.BICUBIC)
     img.alpha_composite(E.C.shadow(n, (8, 14), 12, 90), (int(c[0] - n.width / 2), int(c[1] - n.height / 2)))
-    if k > 0.9: img.alpha_composite(PIN, (int(c[0] - 40), int(c[1] - n.height / 2 - 30)))
+    if k > 0.9: img.alpha_composite(PIN, (int(c[0] - PIN.width * 0.3), int(c[1] - NOTE.height * k / 2 - PIN.height * 0.05)))   # pressed into the note's top
 
 BURST_BIG = D.get('bursts', 5, _LAV, 760)
 BURST_SMALL = D.get('bursts', 5, _LAV, 300)
-def pill(img, t, t0, c, w, h, rot=-3):
+def pill(img, t, t0, c, w, h, rot=-3, stripe=120):
     """v10 (her note: the spiky burst is the wrong doodle behind letters): a plum pill with lavender taffy stripes and an
     ink edge, popping in behind the key word (Lisa's striped pill)."""
     if t < t0: return
@@ -276,7 +277,7 @@ def pill(img, t, t0, c, w, h, rot=-3):
     im = Image.new('RGBA', (pw + 24, ph + 24), (0, 0, 0, 0)); d = ImageDraw.Draw(im)
     d.rounded_rectangle((12, 12, pw + 12, ph + 12), radius=ph // 2, fill=INK + (255,))
     inner = Image.new('RGBA', (pw - 12, ph - 12), (70, 44, 96, 255)); di = ImageDraw.Draw(inner)
-    for x in range(-ph, pw + ph, 46): di.polygon([(x, 0), (x + 16, 0), (x + 16 + ph, ph), (x + ph, ph)], fill=(196, 170, 232, 120))
+    for x in range(-ph, pw + ph, 46): di.polygon([(x, 0), (x + 16, 0), (x + 16 + ph, ph), (x + ph, ph)], fill=(196, 170, 232, stripe))
     m = Image.new('L', inner.size, 0); ImageDraw.Draw(m).rounded_rectangle((0, 0, inner.width - 1, inner.height - 1), radius=(ph - 12) // 2, fill=255)
     inner.putalpha(m); im.alpha_composite(inner, (18, 18))
     im = im.rotate(rot, expand=True, resample=Image.BICUBIC)
@@ -387,8 +388,8 @@ def frame(t):
     else:
         im = vid('proof', t - 11.6)
         word_art(im, t, 14.8, 'COMMENT', 540, 470, 150, 'taffy', 'pop', 0.05)
-        pill(im, t, 15.0, (560, 710), 620, 210, 2)
-        line(im, t, 15.05, '[TREAT]', (560, 700), 150)
+        pill(im, t, 15.0, (560, 712), 640, 220, 0, 50)
+        line(im, t, 15.05, '[TREAT]', (560, 712), 140)
         line(im, t, 15.2, 'for something sweet: 15% off', (520, 900), 64)
         D.draw_on(im, DOO['wavy'], (520, 1000), t, 15.5, 0.35)
     return im.convert('RGB')
