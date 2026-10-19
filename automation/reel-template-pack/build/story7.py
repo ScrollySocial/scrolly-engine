@@ -905,15 +905,16 @@ SETUP['11'] = setup_11; FRAME['11'] = frame_11; SECS['11'] = 17.0; DIRS['11'] = 
 # hidden under a sheet of wine tissue and seen only through a torn peephole; a kitchen timer counts the drop in; the
 # sheet rips in two to reveal it. Calm butter-tissue stage, one burst behind a word, one ring round the date, real dates
 # only (the buyer types theirs).
-#  1 0.0  the product clip under a wine tissue sheet, a torn peephole wiggling open; [something new is coming]; new drop
+#  1 0.0  the product clip under a wine tissue sheet already torn open down the middle (a wide band of video); [something new is coming]; new drop
 #  2 2.4  stage (no video): the kitchen timer winds down; dropping in / 3 2 1
 #  3 4.6  the sheet again: it rips in two and slides apart, the product full frame; finally. (one burst behind it);
 #         [PRODUCT NAME]
 #  4 6.8  stage: close-up one in a torn-paper window, a NEW sticker on its corner; [detail one]
 #  5 8.8  stage: the laptop standing on it, its screen close-up two (tech); [detail two]
-#  6 10.8 stage (no video): the ticket stub drops in: out / [Fri 24 Oct], a ring round the date
-#  7 12.8 in use, full frame: the stub carried into the corner
-#  8 14.6 CTA over the clip: out [day] / Comment / "[KEYWORD]"
+#  6 10.8 detail three, full frame: the NEW sticker, one arrow toward the centre; [detail three]
+#  7 12.8 stage (no video): the ticket stub drops in: out / [Fri 24 Oct], one underline (the date shows once)
+#  8 14.8 in use, full frame: the NEW sticker carried into the corner
+#  9 16.6 CTA over the clip: get it at [shop] / Comment / "[KEYWORD]"
 # ======================================================================================================================
 LAPTOP = 'Open Silver Laptop with Green Screen-34.png'
 
@@ -928,7 +929,7 @@ def tear_line(seed=5, n=30):
 
 def setup_15():
     BU = PAL['butter']
-    g = {'c': {'prod': Clip('IMG_1381', 1.0, 6.0), 'close1': Clip('IMG_1388', 0.5, 6.0), 'close2': Clip('IMG_1417', 0.5, 6.0), 'use': Clip('IMG_1391', 1.0, 6.0)}}
+    g = {'c': {'prod': Clip('IMG_1381', 1.0, 6.0), 'close1': Clip('IMG_1388', 0.5, 6.0), 'close2': Clip('IMG_1417', 0.5, 6.0), 'close3': Clip('IMG_1463', 1.0, 6.0), 'use': Clip('IMG_1391', 1.0, 6.0)}}
     tissue = ImageOps.grayscale(S.raw('images', 'Blush Pink Tissue Paper Texture-9.png'))
     g['stage'] = ImageOps.fit(ImageOps.colorize(ImageOps.autocontrast(tissue), tuple(int(v * 0.88) for v in BU), BU), (W, H)).convert('RGBA')
     g['sheet'] = ImageOps.fit(ImageOps.colorize(ImageOps.autocontrast(tissue), (78, 10, 30), (150, 42, 72)), (W, H)).convert('RGBA')
@@ -937,7 +938,7 @@ def setup_15():
     sw_ = P.story_word('out', 150, WINE, edge=WHITE); stub.alpha_composite(sw_, (int(stub.width * 0.22 - sw_.width / 2), int(stub.height / 2 - sw_.height / 2)))
     g['stub_blank'] = P.die_cut(stub.copy(), 8)
     dt = P.manrope(66, 600); d.text((int(stub.width * 0.64), stub.height // 2), '[Fri 24 Oct]', font=dt, fill=INK, anchor='mm')
-    g['stub'] = P.die_cut(stub, 8); g['stub_s'] = S.fitw(g['stub'], 600)
+    g['stub'] = P.die_cut(stub, 8)
     g['new'] = dsticker('new', 70, WINE, WHITE)
     g['lap_w'] = 1040
     g['hook'] = P.pill_m('[something new\nis coming]', 72); g['drop'] = P.caption('new drop', 210, BU, edge=WHITE)
@@ -948,26 +949,35 @@ def setup_15():
         sc_ = g['sheet'].crop((k * 60, k * 90, k * 60 + sz_, k * 90 + sz_)).copy(); sc_.putalpha(m_); g['scraps'].append(C.shadow(sc_, (3, 6), 5, 90))
     g['finally'] = P.caption('finally.', 220, WHITE, edge=WINE, italic_last=False); g['burst'] = doodle('burst', 2, 700, BU)
     g['name'] = P.pill_m('[PRODUCT NAME]', 84, WINE)
-    g['d1'] = P.pill_m('[detail one]', 78); g['d2'] = P.pill_m('[detail two]', 78, BU)
-    g['out'] = P.pill_m('out [day]', 76); g['comment'] = P.caption('Comment', 210, WHITE, edge=WINE, italic_last=False); g['kw'] = P.pill_once('"[KEYWORD]"', 78, WINE)
-    g['d_under'] = doodle('under', 0, 560, PAL['butter']); g['d_ring'] = doodle('under', 0, 340, WINE)
+    g['d1'] = P.pill_m('[detail one]', 78); g['d2'] = P.pill_m('[detail two]', 78, BU); g['d3'] = P.pill_m('[detail three]', 78)
+    g['shop'] = P.pill_m('get it at [shop]', 76); g['comment'] = P.caption('Comment', 210, WHITE, edge=WINE, italic_last=False); g['kw'] = P.pill_once('"[KEYWORD]"', 78, WINE)
+    g['d_under'] = doodle('under', 0, 560, PAL['butter']); g['d_ring'] = doodle('under', 0, 340, WINE); g['d_arrow'] = doodle('arrow', 9, 220, PAL['butter'])
     return g
 
+def slit_edges(w):
+    """The two torn edges of a tall tear down the middle of the sheet, w apart (jagged, top to bottom)."""
+    import random
+    rl, rr = random.Random(21), random.Random(34); n = 28
+    left = [(540 - w / 2 + 34 * (rl.random() - 0.5), H * k / n) for k in range(n + 1)]
+    right = [(540 + w / 2 + 34 * (rr.random() - 0.5), H * k / n) for k in range(n + 1)]
+    return left, right
+
 def covered(g, t, base, open_=1.0):
-    """The product under the wine sheet, seen through a torn peephole (the hole breathes open)."""
+    """The product under the wine sheet, already torn open down the middle: a tall, wide band of video from frame 1
+    (her note: no small round peephole). The tear breathes wider; the sheet trembles before it rips."""
     im = base.copy(); sh = g['sheet'].copy(); m = Image.new('L', (W, H), 255)
-    r = (380 + 50 * open_) * (1 + 0.04 * math.sin(t * 5)); ImageDraw.Draw(m).polygon(jag_poly((540, 1140), r, seed=7), fill=0)
-    sh.putalpha(m.filter(ImageFilter.GaussianBlur(1.2))); tug = 10 * math.sin(t * 60) * seg(t, 4.6, 4.75) * (1 - seg(t, 4.8, 4.9))   # it trembles before it rips
-    im.alpha_composite(sh, (int(tug), 0)) if tug else im.alpha_composite(sh)
+    left, right = slit_edges((620 + 90 * open_) * (1 + 0.02 * math.sin(t * 5))); ImageDraw.Draw(m).polygon(left + right[::-1], fill=0)
+    sh.putalpha(m.filter(ImageFilter.GaussianBlur(1.2))); tug = 10 * math.sin(t * 60) * seg(t, 4.6, 4.75) * (1 - seg(t, 4.8, 4.9))
+    if tug: im.alpha_composite(sh, (int(tug), 0))
+    else: im.alpha_composite(sh)
     return im
 
 def rip(g, t, base, u):
-    """The sheet rips down a jagged line and the halves slide apart, turning a little."""
-    im = base.copy(); line = tear_line()
-    for side in (-1, 1):
-        m = Image.new('L', (W, H), 0); poly = [(0 if side < 0 else W, 0)] + line + [(0 if side < 0 else W, H)]
-        ImageDraw.Draw(m).polygon(poly, fill=255); mh = Image.new('L', (W, H), 255); ImageDraw.Draw(mh).polygon(jag_poly((540, 1140), 430, seed=7), fill=0)
-        half = g['sheet'].copy(); half.putalpha(ImageChops.multiply(m, mh))
+    """The two flaps tear away and slide off left and right, turning a little."""
+    im = base.copy(); left, right = slit_edges(710)
+    for side, edge in ((-1, left), (1, right)):
+        m = Image.new('L', (W, H), 0); ImageDraw.Draw(m).polygon([(0 if side < 0 else W, 0)] + edge + [(0 if side < 0 else W, H)], fill=255)
+        half = g['sheet'].copy(); half.putalpha(m)
         put(im, C.shadow(half, (side * 10, 16), 14, 110), (540 + side * 1100 * ease(u), 960 + 200 * u * u), 1, -side * 14 * u)
     return im
 
@@ -995,15 +1005,15 @@ def stage_lap_15(g, t):
     return im
 
 def stage_date_15(g, t):
-    """6: the ticket stub drops in: out / [date], a ring round the date (the one ring, round one specific thing)."""
-    im = g['stage'].copy(); k = back_out(seg(t, 10.8, 11.15), 1.4)
+    """7: the ticket stub drops in: out / [date], one underline under the date (the only time the date shows)."""
+    im = g['stage'].copy(); k = back_out(seg(t, 12.8, 13.15), 1.4)
     put(im, g['stub'], (540, lerp(-400, 960, k)), 1, lerp(-30, -4, k))
-    doodle_on(im, t, 11.5, g['d_ring'], (540 + 0.14 * 900, 960 + 62), -4)   # one underline under the date
+    doodle_on(im, t, 13.5, g['d_ring'], (540 + 0.14 * 900, 960 + 62), -4)
     return im
 
 def frame_15(g, t):
     c = g['c']
-    if t < 2.4:                                                   # 1: hidden under the sheet, a torn peephole breathing open
+    if t < 2.4:                                                   # 1: under the sheet, already torn open down the middle
         im = covered(g, t, c['prod'].at(t), seg(t, 0.2, 1.0))
         pop(im, g['hook'], t, 0.0, (540, 290), -2); pop(im, g['drop'], t, 0.4, (540, 500)); doodle_on(im, t, 0.9, g['d_under'], (540, 620), -2)
         if t > 2.1: im = swipe(im, stage_count_15(g, t), seg(t, 2.1, 2.4))
@@ -1012,13 +1022,13 @@ def frame_15(g, t):
         im = stage_count_15(g, t)
         if t > 4.3: im = swipe(im, covered(g, t, c['prod'].at(t - 4.6 + 2.4)), seg(t, 4.3, 4.6))
         return im
-    if t < 6.8:                                                   # 3: the sheet rips in two: the reveal; finally. with one burst behind it
+    if t < 6.8:                                                   # 3: the flaps rip away: the reveal; finally. with one burst behind the name
         base = c['prod'].at(t - 4.6 + 2.4); u = seg(t, 4.9, 5.35); z = lerp(1.15, 1.0, ease(seg(t, 4.95, 5.6)))
         if t >= 4.9 and z > 1.001: base = ImageOps.fit(base, (int(W * z), int(H * z))).crop((int((W * z - W) / 2), int((H * z - H) / 2), int((W * z - W) / 2) + W, int((H * z - H) / 2) + H))
         im = covered(g, t, base) if t < 4.9 else (rip(g, t, base, u) if u < 1 else base.copy())
-        for k, sc_ in enumerate(g['scraps']):   # the scraps fly off the tear line
+        for k, sc_ in enumerate(g['scraps']):   # the scraps fly off the tear
             q = seg(t, 4.92 + (k % 4) * 0.02, 5.7)
-            if 0 < q < 1: a_ = -math.pi / 2 + (k - 5.5) * 0.27; put(im, sc_, (540 + 900 * q * math.cos(a_), 1140 + 900 * q * math.sin(a_) + 1300 * q * q), 1, k * 50 + 400 * q)
+            if 0 < q < 1: a_ = -math.pi / 2 + (k - 5.5) * 0.27; put(im, sc_, (540 + 900 * q * math.cos(a_), 1100 + 900 * q * math.sin(a_) + 1300 * q * q), 1, k * 50 + 400 * q)
         fl = 1 - seg(t, 4.95, 5.15)
         if t >= 4.95 and fl > 0: im = Image.blend(im, Image.new('RGBA', (W, H), (255, 255, 255, 255)), 0.55 * fl)   # a quick flash on the rip
         if t >= 5.7: put(im, g['burst'], (540, 600), 0.9 + 0.1 * back_out(seg(t, 5.7, 6.0), 1.5))   # behind the name box: no ray crosses a letter
@@ -1031,17 +1041,22 @@ def frame_15(g, t):
         return im
     if t < 10.8:
         im = stage_lap_15(g, t)
-        if t > 10.5: im = swipe(im, stage_date_15(g, t), seg(t, 10.5, 10.8))
+        if t > 10.5: im = swipe(im, c['close3'].at(0), seg(t, 10.5, 10.8))
         return im
-    if t < 12.8:
+    if t < 12.8:                                                  # 6: detail three, full frame; the NEW sticker; one arrow toward the centre
+        im = c['close3'].at(t - 10.8); pop(im, g['d3'], t, 10.9, (540, 330), -2); pop(im, g['new'], t, 11.0, (860, 560), 12, wiggle=3)
+        doodle_on(im, t, 11.2, g['d_arrow'], (330, 470), 0)
+        if t > 12.5: im = swipe(im, stage_date_15(g, t), seg(t, 12.5, 12.8))
+        return im
+    if t < 14.8:
         im = stage_date_15(g, t)
-        if t > 12.5: im = swipe(im, c['use'].at(0), seg(t, 12.5, 12.8))
+        if t > 14.5: im = swipe(im, c['use'].at(0), seg(t, 14.5, 14.8))
         return im
-    im = c['use'].at(t - 12.8); put(im, g['stub_s'], (540, 340), back_out(seg(t, 12.9, 13.2), 1.5), 5)   # 7: in use, the stub carried
-    if t >= 14.6: P.sandwich(im, t, 14.7, (540, 1050), g['out'], g['comment'], g['kw'])                # 8: the CTA
+    im = c['use'].at(t - 14.8); put(im, S.fitw(g['new'], 150), (900, 330), back_out(seg(t, 14.9, 15.2), 1.5), 10)   # 8: in use, the NEW sticker carried
+    if t >= 16.6: P.sandwich(im, t, 16.7, (540, 1050), g['shop'], g['comment'], g['kw'])                             # 9: the CTA
     return im
 
-SETUP['15'] = setup_15; FRAME['15'] = frame_15; SECS['15'] = 17.2; DIRS['15'] = '15-new-drop-reveal'
+SETUP['15'] = setup_15; FRAME['15'] = frame_15; SECS['15'] = 19.2; DIRS['15'] = '15-new-drop-reveal'
 
 
 def main():
