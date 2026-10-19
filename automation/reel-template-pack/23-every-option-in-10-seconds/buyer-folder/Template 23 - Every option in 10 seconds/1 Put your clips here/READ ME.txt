@@ -1,0 +1,12 @@
+Put your clips in this folder, then double-click "2 Double-click to install".
+
+They go into the template in name order, so name them 1 to 7 (for example 1.mov, 2.mov).
+Film upright (vertical) and start each clip right on the action.
+
+1: Option 1 (at least 4 seconds)
+2: Option 2 (at least 4 seconds)
+3: Option 3 (at least 4 seconds)
+4: Option 4 (at least 10 seconds)
+5: Option 5 (at least 4 seconds)
+6: Option 6 (at least 4 seconds)
+7: Your shop, scrolling (at least 3 seconds)

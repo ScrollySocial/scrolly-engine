@@ -1,0 +1,9 @@
+Put your clips in this folder, then double-click "2 Double-click to install".
+
+They go into the template in name order, so name them 1 to 4 (for example 1.mov, 2.mov).
+Film upright (vertical) and start each clip right on the action.
+
+1: The doorstep (at least 6 seconds)
+2: On its way (at least 3 seconds)
+3: The unboxing (at least 7 seconds)
+4: In use (at least 4 seconds)

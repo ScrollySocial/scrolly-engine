@@ -10,45 +10,79 @@ the artwork and added on top as CapCut text with CapCut's own text background (e
 Times: story7 plays its timeline P.SLOW times longer (reading time), so CapCut time = story time x SLOW.
 """
 import hashlib, math
-from PIL import Image, ImageChops, ImageFilter, ImageOps
+from PIL import Image, ImageChops, ImageFilter, ImageMath, ImageOps
 from engine import W, H
 
-KEYS = {'m': (255, 0, 255), 'c': (0, 255, 255), 'b': (0, 0, 255), 'y': (255, 255, 0)}   # far from the four palette colours
+KEYS = {'m': (255, 0, 255), 'c': (0, 255, 255), 'b': (0, 0, 255), 'y': (255, 0, 128), 'o': (128, 0, 255), 'g': (0, 255, 0)}   # far from the four palette colours
 
 class KeyClip:
-    """Stands in for a story7 Clip while the flipbook renders: a solid key colour at any size."""
+    """Stands in for a story7 Clip while the flipbook renders: a solid key colour at any size. With KeyClip.invert on,
+    every clip draws the opposite colour instead (the second render of the matte, see matte())."""
+    invert = False
     def __init__(self, col): self.col = col
-    def at(self, t, size=(W, H)): return Image.new('RGBA', (int(size[0]), int(size[1])), self.col + (255,))
+    def at(self, t, size=(W, H)):
+        col = tuple(255 - v for v in self.col) if KeyClip.invert else self.col
+        return Image.new('RGBA', (int(size[0]), int(size[1])), col + (255,))
 
-def key_out(im, cols, thr=70, grow=5):
-    """Cut every key colour out of a frame. Returns the frame (holes transparent) and {key: bbox of its hole}."""
-    rgb = im.convert('RGB'); alpha = im.split()[3]; boxes = {}; holes = None
+class KeySheet:
+    """A tall key-coloured sheet that something crops from (a phone's scrolling feed): the crop follows KeyClip.invert."""
+    def __init__(self, col, size): self.clip, self.size = KeyClip(col), size
+    def crop(self, box): return self.clip.at(0, (box[2] - box[0], box[3] - box[1]))
+
+def holes(im, cols, thr=40):
+    """{key: bbox} of each key colour's solid area in a frame (where that clip shows)."""
+    rgb = im.convert('RGB'); alpha = im.split()[3].point(lambda v: 255 if v > 200 else 0); boxes = {}
     for k, col in cols.items():
         d = ImageChops.difference(rgb, Image.new('RGB', rgb.size, col)).split()
         far = ImageChops.lighter(ImageChops.lighter(d[0], d[1]), d[2])          # the largest channel difference
-        m = ImageChops.multiply(far.point(lambda v: 255 if v < thr else 0), alpha.point(lambda v: 255 if v > 200 else 0))
-        bb = m.getbbox()
+        bb = ImageChops.multiply(far.point(lambda v: 255 if v < thr else 0), alpha).getbbox()
         if bb and (bb[2] - bb[0]) * (bb[3] - bb[1]) > 400: boxes[k] = bb
-        if bb: holes = m if holes is None else ImageChops.lighter(holes, m)
-    if holes is not None:
-        holes = holes.filter(ImageFilter.MaxFilter(grow))   # eat the anti-aliased fringe
-        out = im.copy(); out.putalpha(ImageChops.multiply(alpha, ImageOps.invert(holes))); return out, boxes
-    return im, boxes
+    return boxes
+
+def matte(a, b):
+    """The artwork with clean holes, from two renders: a with every clip in its key colour, b with every clip in the
+    opposite colour. Where the two differ, a clip shows through; by how much they differ is how see-through the
+    artwork is there (shadows and soft edges keep their true transparency, no coloured fringe), and their average,
+    less the grey the two keys average to, is the artwork's own colour."""
+    A, B = a.split(), b.split(); dif = [ImageChops.difference(x, y) for x, y in zip(A[:3], B[:3])]
+    d = ImageChops.lighter(ImageChops.lighter(dif[0], dif[1]), dif[2]); op = ImageOps.invert(d)   # 255 = opaque artwork
+    rgb = [ImageMath.lambda_eval(lambda e: e['convert'](e['max'](e['min'](((e['float'](e['p']) + e['float'](e['q'])) / 2.0 - e['float'](e['d']) / 2.0) * 255.0 / e['max'](e['float'](e['o']), 1.0), 255.0), 0.0), 'L'),
+                                 p=x, q=y, d=d, o=op) for x, y in zip(A[:3], B[:3])]
+    alpha = ImageChops.multiply(A[3], op.point(lambda v: 0 if v < 6 else v))
+    return Image.merge('RGBA', rgb + [alpha])
+
+def _on_screen_keysafe(name, w, content, edge=8):
+    """play.on_screen without its green despill on key colours (the matte's second render uses green)."""
+    import play as P
+    im, m, bb = P.device(name, w); im = im.copy(); cw, ch = bb[2] - bb[0], bb[3] - bb[1]
+    lay = Image.new('RGBA', im.size, (0, 0, 0, 0)); lay.paste(ImageOps.fit(content.convert('RGBA'), (cw, ch)), bb[:2]); im.paste(lay, (0, 0), m)
+    keys = list(KEYS.values()) + [tuple(255 - v for v in c) for c in KEYS.values()]; px = im.load()
+    for y in range(im.height):
+        for x in range(im.width):
+            r, g_, b_, al = px[x, y]
+            if al and g_ > 120 and g_ > r + 40 and g_ > b_ + 40 and not any(max(abs(r - k[0]), abs(g_ - k[1]), abs(b_ - k[2])) < 40 for k in keys):
+                px[x, y] = (20, 20, 22, al)
+    return P.die_cut(im, edge)
 
 def flipbook(frame_fn, t0, t1, fps=15):
-    """Render frame_fn(t) (t in CapCut seconds) from t0 to t1. Returns (frames for Layers.flip at 30 fps, track) where
-    track = [(t, {key: bbox})]. Identical frames share one image, so holds cost nothing."""
-    frames, track, seen = [], [], {}
-    n = max(1, int(round((t1 - t0) * fps)))
-    for i in range(n):
-        t = t0 + i / fps; im, boxes = key_out(frame_fn(t), KEYS); track.append((t, boxes))
-        bb = im.getbbox()
-        if bb is None: im, c = Image.new('RGBA', (2, 2), (0, 0, 0, 0)), (W / 2, H / 2)
-        else: c = ((bb[0] + bb[2]) / 2, (bb[1] + bb[3]) / 2); im = im.crop(bb)
-        h = hashlib.md5(im.tobytes()).hexdigest() + f'{c}'
-        if h in seen: im = seen[h]
-        else: seen[h] = im
-        frames += [(im, c)] * (30 // fps)
+    """Render frame_fn(t) (t in CapCut seconds) from t0 to t1, twice per frame for the matte. Returns (frames for
+    Layers.flip at 30 fps, track) where track = [(t, {key: bbox})]. Identical frames share one image."""
+    import play as P
+    frames, track, seen = [], [], {}; keep = P.on_screen; P.on_screen = _on_screen_keysafe
+    try:
+        n = max(1, int(round((t1 - t0) * fps)))
+        for i in range(n):
+            t = t0 + i / fps; KeyClip.invert = False; a = frame_fn(t); KeyClip.invert = True; b = frame_fn(t); KeyClip.invert = False
+            track.append((t, holes(a, KEYS))); im = matte(a, b)
+            bb = im.getbbox()
+            if bb is None: im, c = Image.new('RGBA', (2, 2), (0, 0, 0, 0)), (W / 2, H / 2)
+            else: c = ((bb[0] + bb[2]) / 2, (bb[1] + bb[3]) / 2); im = im.crop(bb)
+            h = hashlib.md5(im.tobytes()).hexdigest() + f'{c}'
+            if h in seen: im = seen[h]
+            else: seen[h] = im
+            frames += [(im, c)] * (30 // fps)
+    finally:
+        KeyClip.invert = False; P.on_screen = keep
     return frames, track
 
 def place(bb, size, rot):
@@ -71,11 +105,13 @@ def clip_layers(g, track, segs, z0=1):
     for seg_ in segs:
         key, slot, a, b, size, rot, mask, src_fn = seg_[:8]; geom = seg_[8] if len(seg_) > 8 else None
         if geom: pts = [(t, geom(t)) for t, bx in track if a <= t < b and key in bx]
-        else: pts = [(t, place(bx[key], size, rot) + (rot,)) for t, bx in track if a <= t < b and key in bx]
+        else:   # rot may be a function of time (a balloon swinging): tracked position, known turn
+            rf = rot if callable(rot) else (lambda t, r=rot: r)
+            pts = [(t, place(bx[key], size, rf(t)) + (rf(t),)) for t, bx in track if a <= t < b and key in bx]
         if not pts: continue
         ts, te = pts[0][0], min(b, pts[-1][0] + 1 / 15)
         kf = {'x': [(t - ts, p[0]) for t, p in pts], 'y': [(t - ts, p[1]) for t, p in pts], 'scale': [(t - ts, p[2]) for t, p in pts]}
-        if geom: kf['rot'] = [(t - ts, p[3]) for t, p in pts]
+        if geom or callable(rot): kf['rot'] = [(t - ts, p[3]) for t, p in pts]
         g.clip(slot, (ts, te), z, (pts[0][1][0], pts[0][1][1]), (size[0] + 8, size[1] + 8), pts[0][1][3], kf, src=max(0.0, src_fn(ts)), mask=mask)
         z += 1
     return z

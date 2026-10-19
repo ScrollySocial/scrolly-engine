@@ -150,3 +150,12 @@ of #09, #10, #12, #22, #08, #20, #23 (her notes say they are all too fast).
   Test copies installed: "Scrolly 09 Who its for", "Scrolly 08 A real customer question". Zips: for-upload/ (not in git).
   CapCut limits: #09's problem window is colour, straight-edged; swipes are plain slides. #09's end words moved up 120 px
   (keyword was under IG's caption). The text-background fields (background_style=1) are unverified in CapCut's UI: check the boxes show.
+- CapCut builds, all approved round-4 templates (2026-10-18): #09, #08, #10, #12, #22, #20, #23 (build/templates/tNN.py).
+  build/motion_capcut.py now renders each flipbook frame twice (clips in key colours, then in the opposite colours) and
+  takes the true transparency from the difference, so shadows and soft edges over clips have no coloured fringe; keys
+  are cut out only by bounding box. Test copies: the newest copy of each in her CapCut (some are "(2)"/"(3)"; the older
+  copies are out of date). Zips: for-upload/ (not in git). CapCut limits per template are in each tNN.py docstring.
+  Moved for IG's safe zones (also in story7): #12 ding dong and the tag; #10 the third name; #20 both sandwiches and
+  review four; #09 the CTA words and the head-guide label. #12's notification body is now "[Delivered]" (readable).
+- #11 A day with it and #15 New drop reveal: new-style motion tests in story7.py (sent 2026-10-18). #15 is a fresh idea
+  (the stage-curtain version was scratched): wine tissue peephole, kitchen timer, the sheet rips in two, ticket stub date.

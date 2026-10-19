@@ -58,7 +58,8 @@ def layers():
         ('b', 2, 7.2 * SL, 8.8 * SL, (780, 900), 2, None, lambda t: t - 7.2 * SL),
         ('b', 2, 8.8 * SL, 10.4 * SL, (520, 520), 0, 'circle', lambda t: t - 8.8 * SL),
         ('b', 2, 13.0 * SL, 14.6 * SL, (sw_, sh_), 6, None, lambda t: t - 13.0 * SL)], z0=1)
-    guide = P.head_guide(0.8)
+    guide = P.head_guide(0.8); cx_, cy_, rx_, ry_ = P.HEAD; ly = int(cy_ + ry_ + 40)
+    lab = guide.crop((0, ly - 40, W, ly + 40)); guide.paste((0, 0, 0, 0), (0, ly - 40, W, ly + 40)); guide.alpha_composite(lab, (0, 1560))   # its label below the CTA words
     g.art('HIDE ME head guide 1', guide, (0, 3.6 * SL), 45, (540, 960)); g.art('HIDE ME head guide 2', guide, (14.6 * SL, END), 45, (540, 960))
 
     def say(words, test, px, t0, t1, pos, rot, box=(255, 255, 255), color=INK, out=None, kf_x=None, z=[60]):

@@ -59,7 +59,7 @@ def setup_12():
     g['bell'] = P.die_cut(S.fitw(S.cut('images', 'Vintage brass doorbell with ivory button-43.png', tol=6), 300), 8)
     g['burst'] = doodle('burst', 1, 640, BLUE)
     g['mbf'] = front_mailbox(840)
-    g['notif'] = P.notification('[YOUR SHOP]', '[Your order has been delivered]', 560)
+    g['notif'] = P.notification('[YOUR SHOP]', '[Delivered]', 560)   # short enough to read in its moment
     pn = P.raw_cut('packing-peanut.png', 130); g['peanut'] = ImageOps.colorize(ImageOps.grayscale(pn.convert('RGB')), (150, 140, 125), (250, 246, 236)).convert('RGBA'); g['peanut'].putalpha(pn.split()[3])
     g['mailer_s'] = P.thing('Sealed kraft padded mailer-39.png', 640, None, None)
     g['mailer'] = P.raw_cut('Sealed kraft padded mailer-39.png', 900)
@@ -82,7 +82,7 @@ def frame_12(g, t):
         ImageDraw.Draw(im).line([(0, 1450), (W, 1000)], fill=WHITE + (255,), width=12)
         if t >= 1.1: put(im, g['burst'], (790, 1560), 0.85 + 0.15 * back_out(seg(t, 1.1, 1.5), 1.6) + 0.04 * math.sin((t - 1.1) * 6))
         press = 1 - 0.1 * math.sin(math.pi * seg(t, 1.1, 1.3)); put(im, g['bell'], (790, 1560), back_out(seg(t, 0.8, 1.1)) * press)
-        pop(im, g['pov'], t, 0.0, (430, 300), -2); pop(im, g['here'], t, 0.45, (540, 500)); pop(im, g['ding'], t, 1.5, (360, 1700), -6)
+        pop(im, g['pov'], t, 0.0, (430, 300), -2); pop(im, g['here'], t, 0.45, (540, 500)); pop(im, g['ding'], t, 1.5, (300, 1440), -6)   # clear of IG's caption
         if t > 2.3: im = diagonal(im, stage_mail(g, t), seg(t, 2.3, 2.6))
         return im
     if t < 5.6: return stage_mail(g, t)
@@ -111,7 +111,7 @@ def frame_12(g, t):
         return im
     if t < 13.2: return c['unbox'].at(t - 8.4)                    # 7: the unboxing, full frame, after the last sheet peels
     if t < 15.6:                                                  # 8: in use; the giant tag, a third on screen
-        im = c['use'].at(t - 13.2); put(im, g['bigtag'], (lerp(W + 700, W - 10, back_out(seg(t, 13.3, 13.7), 1.3)), 980), 1, 8); return im
+        im = c['use'].at(t - 13.2); put(im, g['bigtag'], (lerp(W + 700, W - 110, back_out(seg(t, 13.3, 13.7), 1.3)), 980), 1, 8); return im   # words clear of IG's buttons
     im = g['concrete'].copy()                                     # 9: CTA on the mailer; the wax seal pressed on
     m = g['mailer'].copy(); v = c['cta'].at(t - 15.6, (int(m.width * 0.7), int(m.height * 0.6))); m.alpha_composite(v, (int(m.width * 0.15), int(m.height * 0.22)))
     pop(im, P.die_cut(m, 10), t, 15.6, (540, 1080), -3)
@@ -122,7 +122,7 @@ def frame_12(g, t):
 MBF = 'Pristine cherry-red mailbox, front-facing (1).png'      # her front-facing mailbox (2026-10-18)
 MB_DOOR = (178, 300, 847, 1222); MB_ARCH = (182, 330, 843, 1212)  # door (with its latch) and the opening, at full size
 
-def front_mailbox(w):
+def front_mailbox(w, label=True):
     """Her front-on mailbox, cut from white, the red recoloured to wine (the latch stays metal); door and body apart."""
     im = Image.open(S.E.PACK / 'assets' / 'props' / 'source' / 'images' / MBF).convert('RGBA'); px = im.load()
     for y in range(im.height):
@@ -133,7 +133,8 @@ def front_mailbox(w):
                 l = (r + g_ + b_) / 3 / 110; px[x, y] = (min(255, int(WINE[0] * l * 1.25)), min(255, int(WINE[1] * l * 1.25)), min(255, int(WINE[2] * l * 1.25)), a)
     k = w / im.width; im = im.resize((w, int(im.height * k)), Image.LANCZOS)
     door = im.crop(tuple(int(v * k) for v in MB_DOOR)); arch = tuple(int(v * k) for v in MB_ARCH)
-    lab = P.pill_m('[your name]', 54, BLUE, rot=0); door.alpha_composite(lab, (int(door.width / 2 - lab.width / 2), int(door.height * 0.55)))   # play: her name label on the door
+    lab = P.pill_m('[your name]', 54, BLUE, rot=0)
+    if label: door.alpha_composite(lab, (int(door.width / 2 - lab.width / 2), int(door.height * 0.55)))   # play: her name label on the door
     return im, door, arch, k
 
 def arch_mask(size, r):
@@ -162,7 +163,7 @@ def stage_mail(g, t):
         put(im, mb, mc, back_out(seg(t, 2.6, 2.9), 1.4))
     if z > 0:                                                     # the clip zooms out of the opening to full screen
         x0, y0 = ox + arch[0], oy + arch[1]; aw, ah = arch[2] - arch[0], arch[3] - arch[1]
-        bx0, by0 = lerp(x0, 0, z), lerp(y0, 0, z); bw, bh = int(lerp(aw, W, z)), int(lerp(ah, H, z))
+        bx0, by0 = lerp(x0, (W - H * aw / ah) / 2, z), lerp(y0, 0, z); bw, bh = int(lerp(aw, H * aw / ah, z)), int(lerp(ah, H, z))   # same shape all the way (CapCut)
         v = c['track'].at(t - 3.5, (bw, bh)); v.putalpha(arch_mask((bw, bh), lerp(aw / 2, 0, z))); im.alpha_composite(v, (int(bx0), int(by0)))
     if t < 4.2: pop(im, g['ofd'], t, 2.7, (540, 330), -2)
     pop(im, g['delivered'], t, 4.6, (540, 330), -3)
@@ -333,6 +334,7 @@ def setup_10():
     return g
 
 POL = (((270, 700), -6), ((790, 860), 5), ((360, 1400), -3))       # the gallery wall: Polaroid centres and tilts
+NAME_AT = ((270, 1000), (790, 1160), (700, 1440))                  # the third name sits beside its Polaroid (clear of IG's caption)
 TWINE = (176, 146, 104)
 
 def swing_box(g, im, t):
@@ -395,7 +397,7 @@ def wall_10(g, t):
         if t < t0: continue
         pol = P.pinned(polaroid(cl.at(t - 10.4, (360, 360)), 400, g['frame']), r, ('pin-head-cream', 'pin-head-black', 'pin-head-white')[i])
         put(im, pol, (xy[0], lerp(xy[1] - 120, xy[1], back_out(seg(t, t0, t0 + 0.3), 1.5))), 1)
-        pop(im, g['names'][i], t, t0 + 0.2, (xy[0], xy[1] + 300), (-3, 2, -2)[i])
+        pop(im, g['names'][i], t, t0 + 0.2, NAME_AT[i], (-3, 2, -2)[i])
     return im
 
 def cta_10(g, t):
@@ -493,7 +495,7 @@ def frame_22(g, t):
         if t >= 13.95 and up < 1: put(im, g['stamp'], (330, lerp(-300, 1340, down) - 1700 * up), 1, -12)
         return im
     im = paper.copy(); u = ease(seg(t, 15.6, 15.9))                # 8: CTA on the paper, the kit round it
-    cw, ch = int(lerp(W, 560, u)), int(lerp(H, 760, u)); put(im, M.card(c[3].at(t - 15.6), cw, ch, int(18 * u)), lerp2((W / 2, H / 2), (540, 1020), u), 1, 2 * u)
+    cw, ch = int(lerp(1415, 560, u)), int(lerp(H, 760, u)); put(im, M.card(c[3].at(t - 15.6), cw, ch, int(18 * u)), lerp2((W / 2, H / 2), (540, 1020), u), 1, 2 * u)   # keeps its shape (CapCut)
     if t >= 15.9: put(im, g['ink_s'], (700, 720), 1, -14)
     pop(im, M.tubes(g, 1.0), t, 15.9, (190, 1520), -6); pop(im, g['mag_s'], t, 16.0, (880, 1500), -20)
     pop(im, g['comment'], t, 15.9, (540, 330)); pop(im, g['kw'], t, 16.2, (540, 500), 2)
@@ -635,7 +637,7 @@ def frame_20(g, t):
         for i in range(5):
             t0 = 0.05 + 0.15 * i
             if t >= t0: put(im, g['stars'][i], (190 + i * 175, 300 - (30 if i in (1, 3) else 0)), 1 + 0.8 * (1 - back_out(seg(t, t0, t0 + 0.2), 1.2)))
-        P.sandwich(im, t, 0.5, (540, 1280), g['what'], g['buyers'], g['said'])
+        P.sandwich(im, t, 0.5, (540, 1100), g['what'], g['buyers'], g['said'])
         if t > 2.1: im = swipe(im, stage2_20(g, t), seg(t, 2.1, 2.4))
         return im
     if t < 4.4: return stage2_20(g, t)
@@ -650,7 +652,7 @@ def frame_20(g, t):
         if t >= 6.5: put(im, g['d_burst'], (540, 1020), 0.9 + 0.1 * back_out(seg(t, 6.5, 6.8), 1.5))     # ONE burst, centred behind the circle and the cards
         for i, (xy) in enumerate(((260, 520), (830, 640))): pop(im, g['rev'][i + 1], t, 6.6 + i * 0.3, xy, 0)
         put(im, roundwin(c['prod'].at(t - 2.4, (600, 600)), 600), (540, 1020), back_out(seg(t, 6.4, 6.7), 1.5))
-        pop(im, g['rev'][3], t, 7.1, (330, 1520), 0)                                                                  # in front
+        pop(im, g['rev'][3], t, 7.1, (330, 1400), 0)                                                                  # in front
         return im
     if t < 9.8:                                                   # 5: the stars rush in and cover it all, then fly off (kept)
         im = frame_20(g, 8.39) if t < 9.0 else c['use'].at(t - 9.0)
@@ -666,7 +668,7 @@ def frame_20(g, t):
         if t > 11.5: im = swipe(im, c['use'].at(2.2), seg(t, 11.5, 11.8))
         return im
     if t < 13.2: return c['use'].at(t - 11.8 + 2.2)               # 7: in use
-    im = c['cta'].at(t - 13.2); P.sandwich(im, t, 13.3, (540, 1280), g['see'], g['comment'], g['kw'])
+    im = c['cta'].at(t - 13.2); P.sandwich(im, t, 13.3, (540, 1100), g['see'], g['comment'], g['kw'])
     return im
 
 def stage2_20(g, t):
@@ -770,6 +772,262 @@ def frame_23(g, t):
     return im
 
 SETUP['23'] = setup_23; FRAME['23'] = frame_23; SECS['23'] = 17.6
+
+
+# ======================================================================================================================
+# 11 A day with it (palette: light blue + pink, deep blue for words on the light stage). New style (round 4): her notes
+# on v1-v3 (too fall, block outlines, girly, three clocks) and the batch-3 rules: one calm stage (pale blue tissue) that
+# returns with a different setup each visit, one object per beat (no theme object, no clock wheel), one burst behind
+# something, one arrow toward the frame centre, the watch screen is one video slot. Words: generic built-in time-of-day
+# words; the buyer's times and product are editable.
+#  1 0.0  morning, full frame: an alarm clock rings in the corner, ONE burst behind it; a day with my [product];
+#         morning; [7am]
+#  2 2.4  stage (no video): a mug; the rainbow rises behind midday
+#  3 4.4  midday, full frame: the rainbow carried in as a sticker; [12pm]
+#  4 6.4  stage: a smartwatch lying on it, its screen the afternoon clip (tech); the hourglass flips; afternoon [4pm]
+#  5 8.6  afternoon, full frame: the hourglass carried into the corner
+#  6 10.6 stage, the lights go down to night: the candle lights, three gold stars; night [9pm]
+#  7 12.6 night, full frame: the candle carried into the corner
+#  8 14.4 CTA on the stage: the product in a round window, the day's four objects round it; every day, [Product name]
+#         at [shop], comment "[KEYWORD]"; one arrow from the words toward the product
+# ======================================================================================================================
+WATCH = 'Graphite smartwatch with green display-47.png'
+
+def vslide(old, new, u):
+    """The next scene slides up from below (old leaves upward)."""
+    if u <= 0: return old
+    if u >= 1: return new
+    dy = int(ease(u) * H); out = Image.new('RGBA', (W, H)); out.alpha_composite(old, (0, -dy)); out.alpha_composite(new, (0, H - dy)); return out
+
+def setup_11():
+    PK, BL = PAL['pink'], PAL['blue']
+    g = {'c': {'morning': Clip('IMG_1469', 1.0, 6.0), 'midday': Clip('IMG_1381', 1.0, 6.0), 'after': Clip('IMG_1391', 1.0, 6.0),
+               'night': Clip('IMG_1456', 1.0, 6.0), 'end': Clip('IMG_1388', 0.5, 6.0)}}
+    g['stage'] = ImageOps.fit(S.raw('images', 'Crumpled pale blue tissue texture-8.png'), (W, H)).convert('RGBA')
+    g['night_stage'] = toned('images', 'Crumpled pale blue tissue texture-8.png', (12, 20, 44), (48, 64, 104))
+    g['clock'] = P.thing('Slender Cream Twin-Bell Alarm Clock-158.png', 330, 'dots', BL, scale=0.4, strength=0.8)
+    g['clock_s'] = S.fitw(g['clock'], 200)
+    g['mug'] = P.thing('Warm white ceramic coffee mug-140.png', 330, 'smalldots', PK, scale=0.4, strength=0.85)
+    g['rainbow'] = P.die_cut(P.raw_cut('Muted retro rainbow arch-2.png', 760), 10); g['rainbow_s'] = S.fitw(g['rainbow'], 280)
+    g['hourglass'] = P.thing('Classic wooden hourglass with flowing sand-238.png', 300, 'stripes', PK, scale=0.35, strength=0.5)
+    g['hourglass_s'] = S.fitw(g['hourglass'], 170)
+    g['candle'] = P.thing('Glowing Ivory Candle in Glass Jar-96.png', 300, 'smalldots', PK, scale=0.35, strength=0.35); g['candle_s'] = S.fitw(g['candle'], 190)
+    st = P.raw_cut('Gold foil star sticker-95.png', 130); g['stars'] = [C.shadow(st.rotate(r, expand=True), (4, 8), 6, 90) for r in (-14, 9, -4)]
+    g['burst'] = doodle('burst', 3, 720, PK); g['d_under'] = doodle('under', 0, 520, PK); g['d_arrow'] = doodle('arrow', 9, 220, DEEP)
+    g['hook'] = P.pill_m('a day with my\n[product]', 74)
+    g['morning'] = P.caption('morning', 190, WHITE, edge=DEEP); g['t7'] = P.pill_m('[7am]', 72, BL)
+    g['midday'] = P.caption('midday', 220, DEEP, edge=WHITE); g['t12'] = P.pill_m('[12pm]', 72, BL)
+    g['afternoon'] = P.caption('afternoon', 170, DEEP, edge=WHITE); g['t4'] = P.pill_m('[4pm]', 72, BL)
+    g['night'] = P.caption('night', 230, PK, edge=WHITE); g['t9'] = P.pill_m('[9pm]', 72, BL)
+    g['every'] = P.caption('every day', 190, DEEP, edge=WHITE); g['name'] = P.pill_m('[Product name] at [shop]', 66)
+    g['kw'] = P.pill_once('comment "[KEYWORD]"', 66, PK)
+    return g
+
+def stage1_11(g, t):
+    """2: the stage, a mug; the rainbow rises behind midday; the alarm clock carried in, resting in the corner."""
+    im = g['stage'].copy()
+    put(im, g['rainbow'], (540, lerp(1300, 820, back_out(seg(t, 2.5, 2.9), 1.2))), 1)
+    pop(im, g['midday'], t, 2.8, (540, 900)); pop(im, g['mug'], t, 2.6, (300, 1340), -6, wiggle=2)
+    put(im, g['clock_s'], (lerp(800, 840, ease(seg(t, 2.4, 2.7))), lerp(1700, 1420, ease(seg(t, 2.4, 2.7)))), 1, 12)
+    return im
+
+def watch_11(g, t):
+    sw, sh = P.screen_size(WATCH, 520); return P.on_screen(WATCH, 520, g['c']['after'].at(t - 6.4, (sw, sh)))
+
+def stage2_11(g, t):
+    """4: the stage again, a new setup: the watch lying on it (its screen the afternoon clip), the hourglass flips."""
+    im = g['stage'].copy(); put(im, watch_11(g, t), (600, lerp(2300, 1080, back_out(seg(t, 6.4, 6.75), 1.2))), 1, 12)
+    flip = ease(seg(t, 7.2, 7.6)); put(im, g['hourglass'], (230, 1440), back_out(seg(t, 6.6, 6.9), 1.5), 180 * flip)
+    pop(im, g['afternoon'], t, 6.6, (540, 380)); pop(im, g['t4'], t, 7.0, (540, 560), -2)
+    return im
+
+def stage3_11(g, t):
+    """6: the lights go down: the stage dims to night; the candle lights; three gold stars twinkle in."""
+    dim = ease(seg(t, 10.7, 11.1)); im = Image.blend(g['stage'], g['night_stage'], dim)
+    pop(im, g['candle'], t, 11.0, (540, 1240), 0)
+    for i, (xy, t0) in enumerate((((230, 760), 11.2), ((860, 900), 11.35), ((300, 1600), 11.5))):
+        if t >= t0: put(im, g['stars'][i], xy, back_out(seg(t, t0, t0 + 0.25), 1.8) * (1 + 0.06 * math.sin((t - t0) * 6 + i)))
+    pop(im, g['night'], t, 11.1, (540, 520)); pop(im, g['t9'], t, 11.4, (540, 720), -2)
+    return im
+
+def cta_11(g, t):
+    """8: the product in a round window, the day's four objects round it; the CTA; one arrow toward the product."""
+    im = g['stage'].copy(); c = g['c']
+    put(im, roundwin(c['end'].at(t - 14.4, (560, 560)), 560), (540, 1090), back_out(seg(t, 14.4, 14.75), 1.4))
+    for i, (key, xy, r) in enumerate((('clock_s', (170, 960), -10), ('mug', (910, 900), 8), ('hourglass_s', (180, 1460), 6), ('candle_s', (890, 1450), -6))):
+        pop(im, g[key] if key != 'mug' else S.fitw(g['mug'], 220), t, 14.6 + i * 0.1, xy, r, wiggle=1.5)
+    pop(im, g['every'], t, 14.6, (540, 300)); pop(im, g['name'], t, 14.9, (540, 470), -2); pop(im, g['kw'], t, 15.2, (540, 600), 2)
+    doodle_on(im, t, 15.4, g['d_arrow'], (330, 760), 0)   # one arrow, from the words toward the frame centre
+    return im
+
+def frame_11(g, t):
+    c = g['c']
+    if t < 2.4:                                                   # 1: morning; the alarm clock rings, one burst behind it
+        im = c['morning'].at(t); s = 7 * math.sin(t * 55) * (1 - seg(t, 1.2, 1.5)) if t > 0.2 else 0
+        if t >= 0.25: put(im, g['burst'], (820, 1330), 0.9 + 0.1 * back_out(seg(t, 0.25, 0.55), 1.5))
+        put(im, g['clock'], (820 + s, 1330), back_out(seg(t, 0.0, 0.25), 1.6), s)
+        pop(im, g['hook'], t, 0.0, (330, 330), -3); pop(im, g['morning'], t, 0.4, (430, 560)); doodle_on(im, t, 0.8, g['d_under'], (430, 680), -2)
+        pop(im, g['t7'], t, 0.9, (260, 760), -3)
+        if t > 2.1: im = vslide(im, stage1_11(g, t), seg(t, 2.1, 2.4))
+        return im
+    if t < 4.4:
+        im = stage1_11(g, t)
+        if t > 4.1: im = swipe(im, c['midday'].at(0), seg(t, 4.1, 4.4))
+        return im
+    if t < 6.4:                                                   # 3: midday; the rainbow carried in as a sticker
+        im = c['midday'].at(t - 4.4); put(im, g['rainbow_s'], (850, 330), back_out(seg(t, 4.5, 4.8), 1.5), 6 + 3 * math.sin(t * 2))
+        pop(im, g['t12'], t, 4.6, (300, 330), -3)
+        if t > 6.1: im = vslide(im, stage2_11(g, t), seg(t, 6.1, 6.4))
+        return im
+    if t < 8.6:
+        im = stage2_11(g, t)
+        if t > 8.3: im = swipe(im, c['after'].at(t - 6.4), seg(t, 8.3, 8.6))
+        return im
+    if t < 10.6:                                                  # 5: afternoon; the hourglass carried into the corner
+        im = c['after'].at(t - 6.4); put(im, g['hourglass_s'], (170, 1380), back_out(seg(t, 8.7, 9.0), 1.5), 180 + 8 * math.sin(t * 2))
+        if t > 10.3: im = vslide(im, stage3_11(g, t), seg(t, 10.3, 10.6))
+        return im
+    if t < 12.6:
+        im = stage3_11(g, t)
+        if t > 12.3: im = swipe(im, c['night'].at(0), seg(t, 12.3, 12.6))
+        return im
+    if t < 14.4:                                                  # 7: night; the candle carried into the corner
+        im = c['night'].at(t - 12.6); put(im, g['candle_s'], (880, 1380), back_out(seg(t, 12.7, 13.0), 1.5), -6)
+        if t > 14.1: im = vslide(im, cta_11(g, t), seg(t, 14.1, 14.4))
+        return im
+    return cta_11(g, t)
+
+SETUP['11'] = setup_11; FRAME['11'] = frame_11; SECS['11'] = 17.0; DIRS['11'] = '11-a-day-with-it'
+
+
+# ======================================================================================================================
+# 15 New drop reveal (palette: butter + wine). Fresh idea (the stage-curtain version was scratched): the product is
+# hidden under a sheet of wine tissue and seen only through a torn peephole; a kitchen timer counts the drop in; the
+# sheet rips in two to reveal it. Calm butter-tissue stage, one burst behind a word, one ring round the date, real dates
+# only (the buyer types theirs).
+#  1 0.0  the product clip under a wine tissue sheet, a torn peephole wiggling open; [something new is coming]; new drop
+#  2 2.4  stage (no video): the kitchen timer winds down; dropping in / 3 2 1
+#  3 4.6  the sheet again: it rips in two and slides apart, the product full frame; finally. (one burst behind it);
+#         [PRODUCT NAME]
+#  4 6.8  stage: close-up one in a torn-paper window, a NEW sticker on its corner; [detail one]
+#  5 8.8  stage: the laptop standing on it, its screen close-up two (tech); [detail two]
+#  6 10.8 stage (no video): the ticket stub drops in: out / [Fri 24 Oct], a ring round the date
+#  7 12.8 in use, full frame: the stub carried into the corner
+#  8 14.6 CTA over the clip: out [day] / Comment / "[KEYWORD]"
+# ======================================================================================================================
+LAPTOP = 'Open Silver Laptop with Green Screen-34.png'
+
+def jag_poly(c, r, n=26, amp=0.12, seed=3):
+    import random
+    rnd = random.Random(seed); return [(c[0] + r * (1 + amp * (rnd.random() - 0.5)) * math.cos(2 * math.pi * k / n),
+                                        c[1] + r * (1 + amp * (rnd.random() - 0.5)) * math.sin(2 * math.pi * k / n)) for k in range(n)]
+
+def tear_line(seed=5, n=30):
+    import random
+    rnd = random.Random(seed); return [(W / 2 + 40 * (rnd.random() - 0.5), H * k / n) for k in range(n + 1)]
+
+def setup_15():
+    BU = PAL['butter']
+    g = {'c': {'prod': Clip('IMG_1381', 1.0, 6.0), 'close1': Clip('IMG_1388', 0.5, 6.0), 'close2': Clip('IMG_1417', 0.5, 6.0), 'use': Clip('IMG_1391', 1.0, 6.0)}}
+    tissue = ImageOps.grayscale(S.raw('images', 'Blush Pink Tissue Paper Texture-9.png'))
+    g['stage'] = ImageOps.fit(ImageOps.colorize(ImageOps.autocontrast(tissue), tuple(int(v * 0.88) for v in BU), BU), (W, H)).convert('RGBA')
+    g['sheet'] = ImageOps.fit(ImageOps.colorize(ImageOps.autocontrast(tissue), (78, 10, 30), (150, 42, 72)), (W, H)).convert('RGBA')
+    g['timer'] = P.thing('Cream Retro Kitchen Timer Dial.png', 620, 'smalldots', WINE, scale=0.4, strength=0.22)
+    stub = P.raw_cut('Blank peach perforated ticket stub-22.png', 900); d = ImageDraw.Draw(stub)
+    sw_ = P.story_word('out', 150, WINE, edge=WHITE); stub.alpha_composite(sw_, (int(stub.width * 0.22 - sw_.width / 2), int(stub.height / 2 - sw_.height / 2)))
+    g['stub_blank'] = P.die_cut(stub.copy(), 8)
+    dt = P.manrope(66, 600); d.text((int(stub.width * 0.64), stub.height // 2), '[Fri 24 Oct]', font=dt, fill=INK, anchor='mm')
+    g['stub'] = P.die_cut(stub, 8); g['stub_s'] = S.fitw(g['stub'], 300)
+    g['new'] = dsticker('new', 70, WINE, WHITE)
+    g['lap_w'] = 1040
+    g['hook'] = P.pill_m('[something new\nis coming]', 72); g['drop'] = P.caption('new drop', 210, BU, edge=WHITE)
+    g['dropping'] = P.caption('dropping in', 170, WINE, edge=WHITE); g['count'] = '3  2  1'
+    g['finally'] = P.caption('finally.', 220, WHITE, edge=WINE, italic_last=False); g['burst'] = doodle('burst', 2, 700, BU)
+    g['name'] = P.pill_m('[PRODUCT NAME]', 84, WINE)
+    g['d1'] = P.pill_m('[detail one]', 78); g['d2'] = P.pill_m('[detail two]', 78, BU)
+    g['out'] = P.pill_m('out [day]', 76); g['comment'] = P.caption('Comment', 210, WHITE, edge=WINE, italic_last=False); g['kw'] = P.pill_once('"[KEYWORD]"', 78, WINE)
+    g['d_under'] = doodle('under', 0, 560, PAL['butter']); g['d_ring'] = doodle('under', 0, 340, WINE)
+    return g
+
+def covered(g, t, base, open_=1.0):
+    """The product under the wine sheet, seen through a torn peephole (the hole breathes open)."""
+    im = base.copy(); sh = g['sheet'].copy(); m = Image.new('L', (W, H), 255)
+    r = (240 + 60 * open_) * (1 + 0.05 * math.sin(t * 5)); ImageDraw.Draw(m).polygon(jag_poly((540, 1050), r, seed=7), fill=0)
+    sh.putalpha(m.filter(ImageFilter.GaussianBlur(1.2))); im.alpha_composite(sh)
+    return im
+
+def rip(g, t, base, u):
+    """The sheet rips down a jagged line and the halves slide apart, turning a little."""
+    im = base.copy(); line = tear_line()
+    for side in (-1, 1):
+        m = Image.new('L', (W, H), 0); poly = [(0 if side < 0 else W, 0)] + line + [(0 if side < 0 else W, H)]
+        ImageDraw.Draw(m).polygon(poly, fill=255); mh = Image.new('L', (W, H), 255); ImageDraw.Draw(mh).polygon(jag_poly((540, 1050), 300, seed=7), fill=0)
+        half = g['sheet'].copy(); half.putalpha(ImageChops.multiply(m, mh))
+        put(im, C.shadow(half, (side * 10, 16), 14, 110), (540 + side * 1100 * ease(u), 960 + 200 * u * u), 1, -side * 14 * u)
+    return im
+
+def stage_count_15(g, t):
+    """2: the kitchen timer winds down; dropping in / 3 2 1 (the numbers arrive one at a time)."""
+    im = g['stage'].copy(); put(im, g['timer'], (540, 1180), back_out(seg(t, 2.4, 2.7), 1.5), lerp(-120, 0, ease(seg(t, 2.6, 4.2))))
+    pop(im, g['dropping'], t, 2.5, (540, 380)); letters_on(im, t, 2.6, None, g['count'], 230, (540, 620), WINE, step=0.1)
+    return im
+
+def stage_close_15(g, t):
+    """4: close-up one in a torn-paper window, the NEW sticker on its corner."""
+    im = g['stage'].copy(); v = g['c']['close1'].at(t - 6.8, (760, 900)); v.putalpha(C.torn_mask((760, 900), 9, 18, 'tblr'))
+    put(im, C.shadow(v, (10, 16), 14, 110), (540, 1040), back_out(seg(t, 6.8, 7.1), 1.6), 2)
+    pop(im, g['new'], t, 7.2, (860, 640), 12, wiggle=3); pop(im, g['d1'], t, 7.0, (540, 380), -2)
+    return im
+
+def stage_lap_15(g, t):
+    """5: the laptop standing on the stage, its screen close-up two (one video slot)."""
+    im = g['stage'].copy(); sw, sh = P.screen_size(LAPTOP, g['lap_w'])
+    put(im, P.on_screen(LAPTOP, g['lap_w'], g['c']['close2'].at(t - 8.8, (sw, sh))), (540, lerp(2400, 1120, back_out(seg(t, 8.8, 9.15), 1.2))), 1)
+    pop(im, g['d2'], t, 9.1, (540, 420), -2)
+    return im
+
+def stage_date_15(g, t):
+    """6: the ticket stub drops in: out / [date], a ring round the date (the one ring, round one specific thing)."""
+    im = g['stage'].copy(); k = back_out(seg(t, 10.8, 11.15), 1.4)
+    put(im, g['stub'], (540, lerp(-400, 960, k)), 1, lerp(-30, -4, k))
+    doodle_on(im, t, 11.5, g['d_ring'], (540 + 0.14 * 900, 960 + 62), -4)   # one underline under the date
+    return im
+
+def frame_15(g, t):
+    c = g['c']
+    if t < 2.4:                                                   # 1: hidden under the sheet, a torn peephole breathing open
+        im = covered(g, t, c['prod'].at(t), seg(t, 0.2, 1.0))
+        pop(im, g['hook'], t, 0.0, (540, 330), -2); pop(im, g['drop'], t, 0.4, (540, 560)); doodle_on(im, t, 0.9, g['d_under'], (540, 690), -2)
+        if t > 2.1: im = swipe(im, stage_count_15(g, t), seg(t, 2.1, 2.4))
+        return im
+    if t < 4.6:
+        im = stage_count_15(g, t)
+        if t > 4.3: im = swipe(im, covered(g, t, c['prod'].at(t - 4.6 + 2.4)), seg(t, 4.3, 4.6))
+        return im
+    if t < 6.8:                                                   # 3: the sheet rips in two: the reveal; finally. with one burst behind it
+        base = c['prod'].at(t - 4.6 + 2.4); u = seg(t, 4.9, 5.4)
+        im = covered(g, t, base) if t < 4.9 else (rip(g, t, base, u) if u < 1 else base)
+        if t >= 5.7: put(im, g['burst'], (540, 600), 0.9 + 0.1 * back_out(seg(t, 5.7, 6.0), 1.5))   # behind the name box: no ray crosses a letter
+        pop(im, g['finally'], t, 5.3, (540, 420)); pop(im, g['name'], t, 5.7, (540, 600), -2)
+        if t > 6.5: im = swipe(im, stage_close_15(g, t), seg(t, 6.5, 6.8))
+        return im
+    if t < 8.8:
+        im = stage_close_15(g, t)
+        if t > 8.5: im = swipe(im, stage_lap_15(g, t), seg(t, 8.5, 8.8))
+        return im
+    if t < 10.8:
+        im = stage_lap_15(g, t)
+        if t > 10.5: im = swipe(im, stage_date_15(g, t), seg(t, 10.5, 10.8))
+        return im
+    if t < 12.8:
+        im = stage_date_15(g, t)
+        if t > 12.5: im = swipe(im, c['use'].at(0), seg(t, 12.5, 12.8))
+        return im
+    im = c['use'].at(t - 12.8); put(im, g['stub_s'], (820, 330), back_out(seg(t, 12.9, 13.2), 1.5), 8)   # 7: in use, the stub carried
+    if t >= 14.6: P.sandwich(im, t, 14.7, (540, 1050), g['out'], g['comment'], g['kw'])                # 8: the CTA
+    return im
+
+SETUP['15'] = setup_15; FRAME['15'] = frame_15; SECS['15'] = 17.2; DIRS['15'] = '15-new-drop-reveal'
 
 
 def main():
