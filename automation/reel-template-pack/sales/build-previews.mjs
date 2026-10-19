@@ -258,8 +258,8 @@ const PCSS = `
 .hero-p h1{max-width:8.5em}
 .hero-p .s3-wrap{position:relative;z-index:2}
 .prop{position:absolute;pointer-events:none;z-index:1}
-.hero-p .cam{right:6%;top:50%;width:clamp(150px,17vw,260px);transform:translateY(-50%) rotate(-10deg)}
-@media(max-width:1199px){.hero-p .cam{display:none}}
+.hero-p .tri{right:5%;bottom:-6px;width:clamp(200px,20vw,300px);transform:rotate(-4deg)}
+@media(max-width:1299px){.hero-p .tri{display:none}}
 .hero-p .seal{width:64px;transform:rotate(-10deg)}
 .reels-p{background:#090909;color:#fff}
 .reels-p h2{color:#fff!important}.reels-p .s3-lede{color:#e6e0d8}
@@ -284,6 +284,8 @@ const PCSS = `
 .labels{display:flex;flex-wrap:wrap;gap:16px 18px;margin-top:28px}
 .dymo{display:inline-flex;align-items:center;height:46px;padding:0 22px;background:#111 url("${img('labeltape.webp')}") center/100% 100%;color:#fff;font:700 var(--s3-fs-ui)/1 "Courier New",monospace;letter-spacing:.14em;text-transform:uppercase;transform:rotate(var(--r));border-radius:3px}
 .faq-p h2{color:var(--s3-ink)!important}
+.faq-p .ring{display:block;width:min(240px,60%);margin-top:40px}
+@media(max-width:900px){.faq-p .ring{display:none}}
 .cta-p{text-align:center;position:relative;overflow:hidden}
 .cta-p h2{margin-bottom:8px}
 .cta-p .buy{justify-content:center}
@@ -301,7 +303,7 @@ function physicalPage(d) {
   const list = d.templates.map((t, i) => `<div class="rg"><div class="phone"><img src="${img(`p${String(i + 1).padStart(2, '0')}.jpg`)}" alt="${esc(t.name)}: a frame from the template" loading="lazy"></div>
     <p class="num">${i + 1} of 25</p><h3>${esc(t.name)}</h3><p>${esc(t.job)}</p><p class="ex"><b>Soap shop:</b> ${esc(t.soap)}</p><p class="ex"><b>T-shirt store:</b> ${esc(t.tee)}</p></div>`).join('');
   const body = `
-<section class="s3-sec hero-p"><img class="prop cam" src="${img('camera.webp')}" alt=""><div class="s3-wrap">
+<section class="s3-sec hero-p"><img class="prop tri" src="${img('tripod.webp')}" alt=""><div class="s3-wrap">
   <h1 class="s3-display or">${esc(d.headline)}</h1>
   <p class="s3-lede" style="margin-top:28px">${esc(d.sub)}</p>
   <div class="buy">${price(d)}<a class="s3-btn" href="#buy">${esc(d.button)}</a><img class="seal" src="${img('seal.webp')}" alt=""></div>
@@ -315,7 +317,7 @@ ${includes(d)}
 ${howItWorks(d)}
 <section class="s3-sec pink"><div class="s3-wrap s3-split"><h2 class="s3-h2">Who it's for</h2><div><p class="s3-lede">${esc(d.who)}</p>
   <div class="labels">${d.whoTags.map((t, i) => `<span class="dymo" style="--r:${[-2, 1.5, -1, 2][i % 4]}deg">${esc(t)}</span>`).join('')}</div></div></div></section>
-<section class="s3-sec faq-p"><div class="s3-wrap s3-split" style="align-items:start"><h2 class="s3-h2">Questions</h2>
+<section class="s3-sec faq-p"><div class="s3-wrap s3-split" style="align-items:start"><div><h2 class="s3-h2">Questions</h2><img class="ring" src="${img('ringlight.webp')}" alt=""></div>
   <div class="s3-faq">${d.faq.map(([q, a]) => `<details><summary>${esc(q)}</summary><div>${ph(a)}</div></details>`).join('')}</div></div></section>
 <section class="s3-sec peach cta-p" id="buy"><img class="prop seal2" src="${img('seal.webp')}" alt=""><div class="s3-read">
   <h2 class="s3-h2">${esc(d.ctaHead)}</h2>

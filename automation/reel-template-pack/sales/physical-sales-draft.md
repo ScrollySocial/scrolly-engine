@@ -109,7 +109,8 @@ Shown as five icons with one short line each, under the desktop screen, on a fil
 
 Scrolly colours (v3 cream, ink, black, orange, peach), with two exceptions she likes: the pink Who it's for and the
 black label-maker tags (Makers, Small-batch brands, Shops that ship, Handmade). Hero on cream with the orange
-headline, the mint instant camera and a wax seal by the button. The 25 Reels are one sideways-scrolling row of phones
+headline, a phone on a tripod (tech props library, green screen swapped for the Before and after frame) and a wax
+seal by the button. The questions have the ring light (green screen swapped for Every option). The 25 Reels are one sideways-scrolling row of phones
 on black (orange arrow buttons on desktop, swipe on a phone), each with a real graphics-only frame, "N of 25", its job,
 and the soap shop and T-shirt store lines. Frames: built templates from before.mp4; 04, 06, 07, 11, 13 to 19, 21, 24,
 25 from their motion tests (still in review, so swap them when built); 05 from its older build (its motion-test frames
