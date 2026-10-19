@@ -110,9 +110,10 @@ class Layers:
     def art(self, name, img, t, z, pos, rot=0, kf=None):
         if isinstance(rot, dict): rot, kf = 0, rot   # motion passed in the rotation's place
         self.A[name] = img; self.L.append(dict(kind='art', name=name, t=t, z=z, pos=pos, rot=rot, kf=kf or {}))
-    def clip(self, slot, t, z, pos, size, rot=0, kf=None, src=0.0, speed=1.0, blur_bg=False, crop=None, mask=None):
+    def clip(self, slot, t, z, pos, size, rot=0, kf=None, src=0.0, speed=1.0, blur_bg=False, crop=None, mask=None, cutout=False):
+        """cutout=True: CapCut's Remove background (auto) on this copy, so graphics can sit between it and the full clip."""
         self.L.append(dict(kind='clip', slot=slot, t=t, z=z, pos=pos, size=size, rot=rot, kf=kf or {}, src=src, speed=speed,
-                           blur_bg=blur_bg, crop=crop, mask=mask))
+                           blur_bg=blur_bg, crop=crop, mask=mask, cutout=cutout))
     def text(self, font, size, words, t, z, pos, rot=0, kf=None, typewriter=None, color=INK, shadow=False, stroke=None, box=None):
         """box=(colour, roundness 0..1): CapCut's own text background behind the words (a highlight box that grows
         with whatever the buyer types; roundness 1 = a pill)."""
@@ -275,6 +276,8 @@ def build_capcut(folder, name, slot_files, slot_secs, art_files, L):
                      crop={'upper_left_x': x0, 'upper_left_y': y0, 'upper_right_x': x0 + fw, 'upper_right_y': y0,
                            'lower_left_x': x0, 'lower_left_y': y0 + fh, 'lower_right_x': x0 + fw, 'lower_right_y': y0 + fh},
                      crop_ratio='free', crop_scale=1.0)
+            if l.get('cutout'):   # Remove background (auto), as on her Sewing Tutorials clip; CapCut makes the mask itself
+                m['matting'] = dict(m.get('matting') or {}, flag=1, path='')
             mats['videos'].append(m)
             sw, sh = W * fw, H * fh
             s = seg_common(copy.deepcopy(pv), l, cw / (sw * fit(sw, sh)))
@@ -464,6 +467,7 @@ def render(L, A, sources, out, work, test, key=False):
             lt = t - l['t'][0]
             sc = interp(l['kf'].get('scale'), lt, 1.0)
             if sc <= 0.01: continue
+            if l['kind'] == 'clip' and l.get('cutout'): continue   # the preview can't run CapCut's background removal
             if l['kind'] == 'art':
                 im = A[l['name']]
             elif l['kind'] == 'clip' and key:

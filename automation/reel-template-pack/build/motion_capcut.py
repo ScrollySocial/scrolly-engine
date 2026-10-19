@@ -112,7 +112,7 @@ def clip_layers(g, track, segs, z0=1):
         ts, te = pts[0][0], min(b, pts[-1][0] + 1 / 15)
         kf = {'x': [(t - ts, p[0]) for t, p in pts], 'y': [(t - ts, p[1]) for t, p in pts], 'scale': [(t - ts, p[2]) for t, p in pts]}
         if geom or callable(rot): kf['rot'] = [(t - ts, p[3]) for t, p in pts]
-        g.clip(slot, (ts, te), z, (pts[0][1][0], pts[0][1][1]), (size[0] + 8, size[1] + 8), pts[0][1][3], kf, src=max(0.0, src_fn(ts)), mask=mask)
+        g.clip(slot, (ts, te), z, (pts[0][1][0], pts[0][1][1]), (2 * ((int(size[0]) + 9) // 2), 2 * ((int(size[1]) + 9) // 2)), pts[0][1][3], kf, src=max(0.0, src_fn(ts)), mask=mask)   # even sizes (the preview's JPEG frames need them)
         z += 1
     return z
 
