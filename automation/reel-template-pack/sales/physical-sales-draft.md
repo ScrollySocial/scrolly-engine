@@ -49,7 +49,7 @@ Sub-line:
 > 25 Reel templates for shops that sell physical products. Film your product on your phone, drop the clips in, and
 > each template opens in CapCut with your clips already in place.
 
-Price line: **[PRICE]**. 25 CapCut templates, with a shot list and a phone kit for each. [LAUNCH FORMAT line].
+Price line: **[PRICE]**. 25 CapCut templates, with a shot list and a phone kit for each. [INSTANT DOWNLOAD or EARLY ACCESS: your call].
 
 ## 2. What you get: 25 Reels, 25 selling jobs
 
@@ -84,7 +84,7 @@ The two example columns show how a soap shop and a T-shirt store would use each 
 | Make it last | One care habit that keeps it looking good | keep your bar dry between uses | wash it inside out |
 | Mine vs the usual kind | Show how yours is made differently | a handmade bar next to a store bar | a heavyweight tee next to a thin one |
 
-Every template comes with:
+Every template comes with (shown as white cards with orange checkmarks):
 - The CapCut project, with real photographed props, collage and motion already built
 - A shot list: every clip to film, in order, and how long it is
 - An installer that puts the template on CapCut's home screen with your clips already in it
@@ -143,7 +143,7 @@ Right-click the clip on CapCut's timeline, choose Replace, and pick another.
 
 > **A month of Reels, ready for your clips**
 > [PRICE] **[BUTTON: Get all 25 Reels]**
-> 25 templates, shot lists and phone kits. [LAUNCH FORMAT line].
+> 25 templates, shot lists and phone kits. [INSTANT DOWNLOAD or EARLY ACCESS: your call].
 > [REEL EDITOR UPSELL: one line once it has a name, link and launch date.]
 
 ## 7. Listing description (short)

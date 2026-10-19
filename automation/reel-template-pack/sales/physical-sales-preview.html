@@ -280,10 +280,13 @@ mark.ph{background:#ffd9c9;color:var(--s3-ink);padding:0 4px;border-radius:3px}
 @media(max-width:560px){.steps{grid-template-columns:1fr 1fr}.screen{border-width:8px 8px 18px}}
 /* Who it's for: the peach band breaks up the page (Mercedes 2026-10-19; brand peach from the Reel covers) */
 .peach{background:#ffc9a8}
-.incl{margin-top:56px;max-width:46em}
-.incl h3{margin-bottom:16px}
-.incl ul{padding-left:1.3em}
-.incl li+li{margin-top:10px}
+.incl{margin-top:72px}
+.incl h3{margin-bottom:24px}
+/* checkmark cards (Mercedes 2026-10-19: "more eye catching") */
+.incl ul{list-style:none;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,320px),1fr));gap:16px}
+.incl li{display:flex;gap:16px;align-items:flex-start;background:#fff;border-radius:16px;padding:20px 22px}
+.incl li::before{content:"";flex:none;width:32px;height:32px;border-radius:50%;background:var(--s3-orange) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M6 12.5l4 4 8-9' fill='none' stroke='%23000' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/20px no-repeat}
+.incl li b{display:block;font:400 var(--s3-fs-title)/1.15 var(--s3-serif);margin-bottom:4px}
 .s3-faq{margin-top:32px}
 .cta{text-align:center;position:relative;overflow:hidden}
 .cta h2{margin-bottom:8px}
@@ -316,7 +319,7 @@ mark.ph{background:#ffd9c9;color:var(--s3-ink);padding:0 4px;border-radius:3px}
   <h1 class="s3-display or">Your month's content: DONE</h1>
   <p class="s3-lede" style="margin-top:28px">25 Reel templates for shops that sell physical products. Film your product on your phone, drop the clips in, and each template opens in CapCut with your clips already in place.</p>
   <div class="buy"><span class="amt"><mark class="ph">[PRICE]</mark></span><a class="s3-btn" href="#buy">Get all 25 Reels</a></div>
-  <p class="s3-fine">25 CapCut templates, with a shot list and a phone kit for each. <mark class="ph">[LAUNCH FORMAT line]</mark>.</p>
+  <p class="s3-fine">25 CapCut templates, with a shot list and a phone kit for each. <mark class="ph">[INSTANT DOWNLOAD or EARLY ACCESS: your call]</mark>.</p>
   <div class="phones"><div><div class="phone"><span>Demo to film<b>One product, three ways</b></span></div></div><div><div class="phone"><span>Demo to film<b>Pack an order with me</b></span></div></div><div><div class="phone"><span>Demo to film<b>Before and after</b></span></div></div><div><div class="phone"><span>Demo to film<b>Put it to the test</b></span></div></div><div><div class="phone"><span>Demo to film<b>Every option in 10 seconds</b></span></div></div></div>
 </div></section>
 <section class="s3-sec"><div class="s3-wrap">
@@ -346,7 +349,7 @@ mark.ph{background:#ffd9c9;color:var(--s3-ink);padding:0 4px;border-radius:3px}
     <p class="ex"><b>Soap shop:</b> does it really lather in cold water?</p><p class="ex"><b>T-shirt store:</b> does it really survive 50 washes?</p></div><div class="item"><h3>Every option in 10 seconds</h3><p>Every colour, scent, size or design, fast.</p>
     <p class="ex"><b>Soap shop:</b> every scent</p><p class="ex"><b>T-shirt store:</b> every colour</p></div><div class="item"><h3>Make it last</h3><p>One care habit that keeps it looking good.</p>
     <p class="ex"><b>Soap shop:</b> keep your bar dry between uses</p><p class="ex"><b>T-shirt store:</b> wash it inside out</p></div><div class="item"><h3>Mine vs the usual kind</h3><p>Show how yours is made differently.</p>
-    <p class="ex"><b>Soap shop:</b> a handmade bar next to a store bar</p><p class="ex"><b>T-shirt store:</b> a heavyweight tee next to a thin one</p></div></div><div class="incl"><h3 class="s3-h3">Every template comes with</h3><ul><li>The CapCut project, with real photographed props, collage and motion already built</li><li>A shot list: every clip to film, in order, and how long it is</li><li>An installer that puts the template on CapCut's home screen with your clips already in it</li><li>A recipe card with the words to type, and a one-page How to use guide</li><li>A phone kit for CapCut on your phone: the shot guide video, the shot list and every graphic as a PNG</li></ul>
+    <p class="ex"><b>Soap shop:</b> a handmade bar next to a store bar</p><p class="ex"><b>T-shirt store:</b> a heavyweight tee next to a thin one</p></div></div><div class="incl"><h3 class="s3-h3">Every template comes with</h3><ul><li><span><b>The CapCut project</b>With real photographed props, collage and motion already built.</span></li><li><span><b>A shot list</b>Every clip to film, in order, and how long it is.</span></li><li><span><b>An installer</b>Puts the template on CapCut's home screen with your clips already in it.</span></li><li><span><b>A recipe card and guide</b>The words to type, plus a one-page How to use guide.</span></li><li><span><b>A phone kit</b>The shot guide video, the shot list and every graphic, for CapCut on your phone.</span></li></ul>
   </div></div></section>
 <section class="film" id="how"><div class="s3-wrap"><h2 class="s3-h2">How it works</h2>
   <div class="monitor"><div class="screen"><div class="play" aria-hidden="true"></div><strong>Your how-to video goes here</strong>
@@ -357,7 +360,7 @@ mark.ph{background:#ffd9c9;color:var(--s3-ink);padding:0 4px;border-radius:3px}
 <section class="s3-sec s3-dark cta" id="buy"><div class="s3-read">
   <h2 class="s3-h2 or">A month of Reels, ready for your clips</h2>
   <div class="buy"><span class="amt"><mark class="ph">[PRICE]</mark></span><a class="s3-btn" href="#buy">Get all 25 Reels</a></div>
-  <p class="s3-fine">25 templates, shot lists and phone kits. <mark class="ph">[LAUNCH FORMAT line]</mark>.</p>
+  <p class="s3-fine">25 templates, shot lists and phone kits. <mark class="ph">[INSTANT DOWNLOAD or EARLY ACCESS: your call]</mark>.</p>
   <p class="s3-fine"><mark class="ph">[REEL EDITOR UPSELL: one line once it has a name, link and launch date]</mark></p></div></section>
 <section class="s3-sec notes"><div class="s3-wrap">
   <h2 class="s3-h2">Review notes (not part of the page)</h2>

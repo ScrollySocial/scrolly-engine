@@ -9,7 +9,7 @@ how-to video). Nothing published, no product, price or checkout created. HTML la
 | Decision | State |
 |---|---|
 | **Price** | Decided 2026-10-19: **$4.99**, shown with **$9.99** crossed out |
-| **[LAUNCH FORMAT]** | Sell all 5 now, or open before Now you see it is finished? |
+| **How it's sold** | Instant download (2026-10-19), so Now you see it must be built and zipped before launch |
 | **Now you see it (h1)** | Motion test only (with smoke). Needs the CapCut build and zip before the page goes live |
 | **Sound picks** | None chosen for Halloween yet |
 | **Mac** | Mercedes is testing. The page names no platform until then |
@@ -42,9 +42,11 @@ Sub-line:
 > Five ready-made Reels for October. Film a few clips on your phone, drop them in, and each one opens in CapCut
 > with your clips already in place.
 
-Price line: ~~$9.99~~ **$4.99**. 5 CapCut templates, with a shot list and a phone kit for each. [LAUNCH FORMAT line].
+Price line: ~~$9.99~~ **$4.99**. 5 CapCut templates, with a shot list and a phone kit for each. Instant download.
 
 ## 2. What you get
+
+Template cards show the name and its job only (Mercedes 2026-10-19: the clip and length line was too much; it stays in the table below for reference).
 
 Each template is a whole Reel with a business job and an ending that tells people where to buy. Cute and playful,
 with real photographed props.
@@ -57,7 +59,7 @@ with real photographed props.
 | **Trick or treat** | Fix a common mistake, then make your offer. Door 1 opens on the trick, door 2 on the treat. | 3 clips: the mistake, your product, the proof | 17.5 s |
 | **Now you see it** | Last chance: a limited drop or a sale ending. A snap, real smoke rolls in, and the product is gone. | You with your product, the same shot without it, then your product (final list when built) | 14 s (motion test) |
 
-Every template comes with:
+Every template comes with (shown as white cards with orange checkmarks):
 - The CapCut project, with real photographed props and the playful layer (washi tape, sticker edges, handwritten words)
 - A shot list: every clip to film, in order, and how long it is
 - An installer that puts the template on CapCut's home screen with your clips already in it
@@ -117,7 +119,7 @@ Right-click the clip on CapCut's timeline, choose Replace, and pick another.
 
 > **Post your Halloween Reel before the 31st**
 > ~~$9.99~~ $4.99 **[BUTTON: Get all 5 Reels]**
-> 5 templates, shot lists and phone kits. [LAUNCH FORMAT line].
+> 5 templates, shot lists and phone kits. Instant download.
 > [REEL EDITOR UPSELL: one line once it has a name, link and launch date.]
 
 ## 7. Listing description (short)

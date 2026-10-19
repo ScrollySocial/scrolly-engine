@@ -63,10 +63,13 @@ mark.ph{background:#ffd9c9;color:var(--s3-ink);padding:0 4px;border-radius:3px}
 @media(max-width:560px){.steps{grid-template-columns:1fr 1fr}.screen{border-width:8px 8px 18px}}
 /* Who it's for: the peach band breaks up the page (Mercedes 2026-10-19; brand peach from the Reel covers) */
 .peach{background:#ffc9a8}
-.incl{margin-top:56px;max-width:46em}
-.incl h3{margin-bottom:16px}
-.incl ul{padding-left:1.3em}
-.incl li+li{margin-top:10px}
+.incl{margin-top:72px}
+.incl h3{margin-bottom:24px}
+/* checkmark cards (Mercedes 2026-10-19: "more eye catching") */
+.incl ul{list-style:none;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,320px),1fr));gap:16px}
+.incl li{display:flex;gap:16px;align-items:flex-start;background:#fff;border-radius:16px;padding:20px 22px}
+.incl li::before{content:"";flex:none;width:32px;height:32px;border-radius:50%;background:var(--s3-orange) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M6 12.5l4 4 8-9' fill='none' stroke='%23000' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/20px no-repeat}
+.incl li b{display:block;font:400 var(--s3-fs-title)/1.15 var(--s3-serif);margin-bottom:4px}
 .s3-faq{margin-top:32px}
 .cta{text-align:center;position:relative;overflow:hidden}
 .cta h2{margin-bottom:8px}
@@ -94,7 +97,7 @@ const howItWorks = (d) => `<section class="film" id="how"><div class="s3-wrap"><
   <div class="monitor"><div class="screen"><div class="play" aria-hidden="true"></div><strong>Your how-to video goes here</strong>
   <p>Mercedes records it: film the clips, drop them in, double-click the installer, open CapCut.</p></div><div class="stand"></div><div class="base"></div></div>
   <ol class="steps">${STEPS.map(([icon, b, t]) => `<li><svg viewBox="0 0 48 48" aria-hidden="true">${icon}</svg><b>${esc(b)}</b><span>${esc(t)}</span></li>`).join('')}</ol></div></section>`;
-const includes = (d) => `<div class="incl"><h3 class="s3-h3">Every template comes with</h3><ul>${d.includes.map((x) => `<li>${esc(x)}</li>`).join('')}</ul>
+const includes = (d) => `<div class="incl"><h3 class="s3-h3">Every template comes with</h3><ul>${d.includes.map(([b, x]) => `<li><span><b>${esc(b)}</b>${esc(x)}</span></li>`).join('')}</ul>
   ${d.formatNote ? `<p style="margin-top:20px">${ph(d.formatNote)}</p>` : ''}</div>`;
 const faq = (d) => `<section class="s3-sec"><div class="s3-read"><h2 class="s3-h2">Questions</h2><div class="s3-faq">${d.faq.map(([q, a]) => `<details><summary>${esc(q)}</summary><div>${ph(a)}</div></details>`).join('')}</div></div></section>`;
 const notes = (d) => `<section class="s3-sec notes"><div class="s3-wrap">
@@ -114,11 +117,11 @@ const STEPS = [
   ['<path d="M42 6L20 28M42 6l-14 36-8-14-14-8z"/>', 'Post', 'Add a sound in Instagram.'],
 ];
 const INCLUDES = (projectNote) => [
-  `The CapCut project, with ${projectNote}`,
-  'A shot list: every clip to film, in order, and how long it is',
-  'An installer that puts the template on CapCut\'s home screen with your clips already in it',
-  'A recipe card with the words to type, and a one-page How to use guide',
-  'A phone kit for CapCut on your phone: the shot guide video, the shot list and every graphic as a PNG',
+  ['The CapCut project', `With ${projectNote}.`],
+  ['A shot list', 'Every clip to film, in order, and how long it is.'],
+  ['An installer', "Puts the template on CapCut's home screen with your clips already in it."],
+  ['A recipe card and guide', 'The words to type, plus a one-page How to use guide.'],
+  ['A phone kit', 'The shot guide video, the shot list and every graphic, for CapCut on your phone.'],
 ];
 const FAQ = (fonts) => [
   ['Do I need CapCut on a computer?', 'For the full template, yes: it opens in CapCut for computer (the free download). Install it and open it once before you run the installer.'],
@@ -171,7 +174,7 @@ const HCSS = `
 function halloweenPage(d) {
   const ph5 = d.templates.map((t) => `<div><div class="phone"><img src="${img(t.poster)}" alt="${esc(t.name)}: a frame from the template"></div><p class="cap">${esc(t.name)}</p></div>`).join('');
   const tpls = d.templates.map((t) => `<div class="tpl"><div class="phone"><img src="${img(t.poster)}" alt=""></div>
-    <h3>${esc(t.name)}</h3><p>${ph(t.job)}</p><p class="meta">You film ${esc(t.film)}.${t.len ? ` About ${t.len} seconds.` : ''}</p></div>`).join('');
+    <h3>${esc(t.name)}</h3><p>${ph(t.job)}</p></div>`).join('');
   const body = `
 <section class="night s3-sec hero-h"><img class="moon" src="${img('moon.webp')}" alt="">
   <img class="hang" src="${img('bat.png')}" alt="" style="left:44%"><img class="hang b2" src="${img('bat.png')}" alt="" style="left:58%;width:clamp(44px,5vw,72px)">
@@ -248,8 +251,8 @@ const halloween = {
   sub: 'Five ready-made Reels for October. Film a few clips on your phone, drop them in, and each one opens in CapCut with your clips already in place.',
   was: '$9.99', price: '$4.99',
   button: 'Get all 5 Reels',
-  priceLine: '5 CapCut templates, with a shot list and a phone kit for each. [LAUNCH FORMAT line].',
-  ctaLine: '5 templates, shot lists and phone kits. [LAUNCH FORMAT line].',
+  priceLine: '5 CapCut templates, with a shot list and a phone kit for each. Instant download.',
+  ctaLine: '5 templates, shot lists and phone kits. Instant download.',
   getTitle: 'Five Reels, five jobs',
   getLede: 'Each template is a whole Reel with a business job and an ending that tells people where to buy. Cute and playful, with real photographed props.',
   includes: INCLUDES('real photographed props and the playful layer (washi tape, sticker edges, handwritten words)'),
@@ -266,7 +269,7 @@ const halloween = {
   listing: "Five cute Halloween Reel templates for CapCut, each with a selling job: open a once-a-year sale, show what's included, share your favourites, turn a common mistake into your offer, or announce a last chance. Film a few clips on your phone, drop them in a folder and double-click the installer: the template opens in CapCut with your clips in place. Type your words over the brackets and export. Each template comes with a shot list, a recipe card, a one-page guide and a phone kit. Each one suggests a sound to add in Instagram (no sound files included).",
   decisions: [
     'Price: $4.99, shown with $9.99 crossed out (decided 2026-10-19).',
-    'Launch format: sell all 5 now, or open before Now you see it is finished?',
+    'Instant download, so Now you see it (h1) must be built and zipped before the page goes live.',
     'Now you see it (h1): motion test only. It needs the CapCut build and zip before the page goes live.',
     'Sound picks: none chosen for Halloween yet.', 'Reel Editor upsell: no name, link or launch yet.',
     'Mac: Mercedes is testing. The installer is a Windows script; the page names no platform until the test is done.',
@@ -293,8 +296,8 @@ const physical = {
   sub: '25 Reel templates for shops that sell physical products. Film your product on your phone, drop the clips in, and each template opens in CapCut with your clips already in place.',
   price: '[PRICE]',
   button: 'Get all 25 Reels',
-  priceLine: '25 CapCut templates, with a shot list and a phone kit for each. [LAUNCH FORMAT line].',
-  ctaLine: '25 templates, shot lists and phone kits. [LAUNCH FORMAT line].',
+  priceLine: '25 CapCut templates, with a shot list and a phone kit for each. [INSTANT DOWNLOAD or EARLY ACCESS: your call].',
+  ctaLine: '25 templates, shot lists and phone kits. [INSTANT DOWNLOAD or EARLY ACCESS: your call].',
   heroPhones: ['One product, three ways', 'Pack an order with me', 'Before and after', 'Put it to the test', 'Every option in 10 seconds'],
   getTitle: '25 Reels, 25 selling jobs',
   getLede: "Real photographed props, playful collage and fast cuts. Each one ends with your product's name and where to buy it. Here's how two shops would use them.",
