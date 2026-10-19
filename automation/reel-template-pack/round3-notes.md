@@ -164,3 +164,4 @@ of #09, #10, #12, #22, #08, #20, #23 (her notes say they are all too fast).
   cuts the stand-in), three details, the date ticket once (on a planner grid, drop day ticked), no NEW stickers, ending
   "get it at [shop]". CapCut build still to do: the lifted product needs a second copy of clip 1 with CapCut's
   background removal, which the engine can't write yet.
+- #11 A day with it: approved ("fine", 2026-10-19). CapCut build still to do.
