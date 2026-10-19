@@ -71,7 +71,7 @@ mark.ph{background:#ffd9c9;color:var(--s3-ink);padding:0 4px;border-radius:3px}
 .sticky:hover{transform:rotate(0) scale(1.05)}
 .sticky .nt{position:absolute;left:3%;top:3%;width:90%;height:90%;display:flex;align-items:center;justify-content:center;text-align:center;padding:22% 10% 10%}
 .sticky .pin{position:absolute;top:7%;left:48%;width:30px;transform:translateX(-50%);filter:drop-shadow(1px 3px 2px rgba(0,0,0,.35))}
-.sticky b{font:700 2.1rem/1 "Caveat",cursive}
+.sticky b{font:400 2.1rem/1.05 "Covered By Your Grace",cursive}
 @media(min-width:1100px){.notes-row{flex-wrap:nowrap;gap:18px}.sticky{width:min(210px,18vw)}}
 @media(max-width:560px){.notes-row{gap:22px 10px}.sticky{width:158px}.sticky b{font-size:1.7rem}.sticky .pin{width:24px}}
 details.notes{padding:40px 0}
@@ -94,7 +94,7 @@ details.notes>summary{cursor:pointer;font:700 var(--s3-fs-label)/1.4 var(--s3-sa
 `;
 
 const shell = (d, css, body) => `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>${esc(d.title)}</title><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&display=swap" rel="stylesheet"><style>${v3}</style><style>${BASE}${css}</style></head><body style="margin:0;background:#f7f3ec">
+<title>${esc(d.title)}</title><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Covered+By+Your+Grace&display=swap" rel="stylesheet"><style>${v3}</style><style>${BASE}${css}</style></head><body style="margin:0;background:#f7f3ec">
 <div class="draft"><b>DRAFT PREVIEW.</b> Local file only, not published. Highlighted [brackets] are open decisions. The site's global header and footer are left out.
 <details><summary>Open decisions (${d.decisions.length})</summary><ul>${d.decisions.map((x) => `<li>${esc(x)}</li>`).join('')}</ul></details></div>
 <div class="s3"><div id="main">${body}</div></div></body></html>`;
@@ -256,8 +256,8 @@ const PCSS = `
 .hero-p{padding-top:clamp(56px,7vw,110px);position:relative;overflow:hidden}
 /* headline: "Your month's content:" on one line, DONE in handwriting (Mercedes 2026-10-19) */
 .head-p .l1{display:block;white-space:nowrap;font-size:clamp(2rem,6.2vw,6.4rem)}
-.head-p .done{display:inline-block;font:700 clamp(5rem,13vw,12rem)/.8 "Caveat",cursive!important;color:var(--s3-ink);transform:rotate(-5deg);margin:12px 0 0 6px;letter-spacing:.02em}
-.head-p .sq{display:block;width:clamp(180px,22vw,340px);margin:-4px 0 0 10px}
+.head-p .done{display:inline-block;position:relative;z-index:0;color:var(--s3-ink);font-size:clamp(4rem,9vw,9rem);letter-spacing:-.04em;margin-top:6px;padding:0 .12em}
+.head-p .done::before{content:"";position:absolute;z-index:-1;left:-.06em;right:-.1em;top:.28em;bottom:.02em;background:#ffc9a8;border-radius:.12em .4em .2em .5em;transform:rotate(-2deg)}
 .hero-p .s3-wrap{position:relative;z-index:2}
 .prop{position:absolute;pointer-events:none;z-index:1}
 .hero-p .tri{right:5%;bottom:-6px;width:clamp(200px,20vw,300px);transform:rotate(-4deg)}
@@ -275,7 +275,7 @@ const PCSS = `
 .scroller::-webkit-scrollbar{height:8px}.scroller::-webkit-scrollbar-thumb{background:var(--s3-orange);border-radius:4px}.scroller::-webkit-scrollbar-track{background:#2a2a2a;border-radius:4px}
 .rg{flex:0 0 clamp(210px,19vw,260px);scroll-snap-align:start}
 .rg .phone{margin-bottom:16px;border-color:#2a2a2a}
-.rg .num{font:700 var(--s3-fs-label)/1 var(--s3-sans);letter-spacing:.14em;color:var(--s3-orange);margin-bottom:6px}
+.rg .num{font:700 var(--s3-fs-label)/1 var(--s3-sans);letter-spacing:.14em;color:var(--s3-orange);margin-bottom:12px}
 .rg h3{font:400 var(--s3-fs-title)/1.1 var(--s3-serif)!important;color:#fff!important;margin-bottom:6px}
 .rg p{color:#e6e0d8}
 .rg p+p{margin-top:6px}
@@ -286,13 +286,20 @@ const PCSS = `
 .labels{display:flex;flex-wrap:wrap;gap:16px 18px;margin-top:28px}
 .dymo{display:inline-flex;align-items:center;height:46px;padding:0 22px;background:#111 url("${img('labeltape.webp')}") center/100% 100%;color:#fff;font:700 var(--s3-fs-ui)/1 "Courier New",monospace;letter-spacing:.14em;text-transform:uppercase;transform:rotate(var(--r));border-radius:3px}
 .faq-p h2{color:var(--s3-ink)!important}
-.who-p .ring{display:block;width:min(230px,55%);margin-top:32px}
-@media(max-width:900px){.who-p .ring{width:150px;margin:20px 0 8px}}
+/* questions in two columns (Mercedes: "make this 2 columns to compact it") */
+.faq-p .two{display:grid;grid-template-columns:1fr 1fr;column-gap:56px;align-items:start}
+.faq-p .two details{border-top:0;border-bottom:1px solid var(--s3-line)}
+.faq-p .two details:nth-child(-n+2){border-top:1px solid var(--s3-line)}
+@media(max-width:800px){.faq-p .two{grid-template-columns:1fr}.faq-p .two details:nth-child(2){border-top:0}}
+/* compact: two lines of content get one short band (Mercedes: "look how tall this section is") */
+.who-row{display:flex;align-items:center;justify-content:space-between;gap:32px}
+.who-p .ring{height:260px;width:auto;flex:none}
+@media(max-width:700px){.who-p .ring{display:none}}
 .cta-p{text-align:center;position:relative;overflow:hidden}
 .cta-p h2{margin-bottom:8px}
 .cta-p .buy{justify-content:center}
-.cta-p .s3-fine{color:#cfc8bf}
-.cta-p .amt{color:#fff}
+.cta-p .s3-fine{color:#2b2a28}
+.cta-p h2{color:var(--s3-or-text)!important}
 .cta-p .s3-read{position:relative;z-index:1}
 .cta-p .seal2{right:8%;top:50%;width:130px;transform:translateY(-50%) rotate(12deg)}
 @media(max-width:1199px){.cta-p .seal2{display:none}}
@@ -303,11 +310,11 @@ const SCROLL_JS = `function placeArrows(){var ph=document.querySelector('#reel-r
 
 function physicalPage(d) {
   // all 25 as phone previews in one sideways-scrolling row
-  const list = d.templates.map((t, i) => `<div class="rg"><div class="phone"><img src="${img(`p${String(i + 1).padStart(2, '0')}.jpg`)}" alt="${esc(t.name)}: a frame from the template" loading="lazy"></div>
-    <p class="num">${i + 1} of 25</p><h3>${esc(t.name)}</h3><p>${esc(t.job)}</p></div>`).join('');
+  const list = d.templates.map((t, i) => `<div class="rg"><p class="num">${i + 1} of 25</p><div class="phone"><img src="${img(`p${String(i + 1).padStart(2, '0')}.jpg`)}" alt="${esc(t.name)}: a frame from the template" loading="lazy"></div>
+    <h3>${esc(t.name)}</h3><p>${esc(t.job)}</p></div>`).join('');
   const body = `
 <section class="s3-sec hero-p"><img class="prop tri" src="${img('tripod.webp')}" alt=""><div class="s3-wrap">
-  <h1 class="s3-display or head-p"><span class="l1">${esc(d.headline.split(': ')[0])}:</span> <span class="done">${esc(d.headline.split(': ')[1])}</span><img class="sq" src="${img('squiggle.webp')}" alt=""></h1>
+  <h1 class="s3-display or head-p"><span class="l1">${esc(d.headline.split(': ')[0])}:</span> <span class="done">${esc(d.headline.split(': ')[1])}</span></h1>
   <p class="s3-lede" style="margin-top:28px">${esc(d.sub)}</p>
   <div class="buy">${price(d)}<a class="s3-btn" href="#buy">${esc(d.button)}</a><img class="seal" src="${img('seal.webp')}" alt=""></div>
   <p class="s3-fine">${ph(d.priceLine)}</p>
@@ -319,11 +326,12 @@ function physicalPage(d) {
   <button type="button" class="arrow next" data-scroll="1" aria-label="Scroll forward">&#8594;</button></div></div></section>
 ${includes(d)}
 ${howItWorks(d)}
-<section class="s3-sec peach who-p"><div class="s3-wrap s3-split"><div><h2 class="s3-h2">Who it's for</h2><img class="ring" src="${img('ringlight.webp')}" alt=""></div><div><p class="s3-lede">${esc(d.who)}</p>
-  <div class="labels">${d.whoTags.map((t, i) => `<span class="dymo" style="--r:${[-2, 1.5, -1, 2][i % 4]}deg">${esc(t)}</span>`).join('')}</div></div></div></section>
-<section class="s3-sec faq-p"><div class="s3-wrap s3-split" style="align-items:start"><h2 class="s3-h2">Questions</h2>
-  <div class="s3-faq">${d.faq.map(([q, a]) => `<details><summary>${esc(q)}</summary><div>${ph(a)}</div></details>`).join('')}</div></div></section>
-<section class="s3-sec s3-dark cta-p" id="buy"><img class="prop seal2" src="${img('seal.webp')}" alt=""><div class="s3-read">
+<section class="s3-sec tight peach who-p"><div class="s3-wrap who-row"><div><h2 class="s3-h2">Who it's for</h2><p class="s3-lede" style="margin-top:14px">${esc(d.who)}</p>
+  <div class="labels">${d.whoTags.map((t, i) => `<span class="dymo" style="--r:${[-2, 1.5, -1, 2][i % 4]}deg">${esc(t)}</span>`).join('')}</div></div>
+  <img class="ring" src="${img('ringlight.webp')}" alt=""></div></section>
+<section class="s3-sec tight faq-p"><div class="s3-wrap"><h2 class="s3-h2">Questions</h2>
+  <div class="s3-faq two">${d.faq.map(([q, a]) => `<details><summary>${esc(q)}</summary><div>${ph(a)}</div></details>`).join('')}</div></div></section>
+<section class="s3-sec peach cta-p" id="buy"><div class="s3-read">
   <h2 class="s3-h2">${esc(d.ctaHead)}</h2>
   <div class="buy">${price(d)}<a class="s3-btn" href="#buy">${esc(d.button)}</a></div>
   <p class="s3-fine">${ph(d.ctaLine)}</p>

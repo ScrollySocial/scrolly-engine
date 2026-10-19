@@ -125,6 +125,11 @@ orange arrows sit on the sides of the phones. Sticky notes: titles only, in Cave
 photo. Steps: one word each. Who it's for: Scrolly peach with the ring light (pink removed); one line. Questions:
 one-line answers. Buy section on black.
 
+**Round 5 (2026-10-19):** DONE in the headline serif on Scrolly's peach marker swipe; sticky notes in Covered By
+Your Grace (the brand handwriting); "N of 25" above each phone; Who it's for as one compact band (text left, small
+ring light right); questions in two columns; no wax seal in the buy section; buy section on peach with the orange
+heading (the site footer is black, so the last section never is).
+
 ## 4. Who it's for
 
 On a peach band (#FFC9A8, the brand peach from the Reel covers) to break up the page.
