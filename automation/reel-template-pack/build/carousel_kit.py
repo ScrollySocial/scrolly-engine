@@ -16,6 +16,7 @@ import collage as C
 import play as P
 import storyboard_b2 as S
 import story7 as S7
+import canva_shapes as V
 from lettering_b2 import FONT
 
 CW, CH = 1080, 1440
@@ -61,7 +62,17 @@ def word(t, px, color=WHITE, edge=None, italic_last=True):
     ws = t.split(); ims = [P.story_word(w_, px, color, edge=edge or WINE, italic=(italic_last and i == len(ws) - 1 and len(ws) > 1)) for i, w_ in enumerate(ws)]
     step = [im.width - 80 + int(px * 0.3) for im in ims]; out = Image.new('RGBA', (sum(step[:-1]) + ims[-1].width, max(im.height for im in ims)), (0, 0, 0, 0)); x = 0
     for im, st in zip(ims, step): out.alpha_composite(im, (x, (out.height - im.height) // 2)); x += st
+    out.info['lettering'] = dict(words=t, px=px, fill=color, edge=edge or WINE, italic_last=italic_last, font='dms')   # live text in the .pptx
     return out
+
+def vec(im, color):
+    """Mark one-colour artwork (a doodle, a string) to go into the .pptx as a recolourable vector shape."""
+    im = im.copy(); im.info['vector'] = tuple(color[:3]); return im
+
+def doodle(kind, i, w, color=INK):
+    """Her marker doodle (collage_kit), marked to become a recolourable vector shape in Canva."""
+    from collage_kit import doodle as _d
+    return vec(_d(kind, i, w, color), color)
 
 def fit_bg(im): return ImageOps.fit(im, (CW, CH), Image.LANCZOS).convert('RGBA')
 
@@ -94,7 +105,7 @@ def string(a, b, sag=40, color=(120, 108, 100), width=4):
     im = Image.new('RGBA', (int(x1 - x0), int(y1 - y0)), (0, 0, 0, 0)); mid = ((a[0] + b[0]) / 2 + sag, (a[1] + b[1]) / 2)
     pts = [((1 - u) ** 2 * a[0] + 2 * (1 - u) * u * mid[0] + u * u * b[0] - x0, (1 - u) ** 2 * a[1] + 2 * (1 - u) * u * mid[1] + u * u * b[1] - y0) for u in [i / 24 for i in range(25)]]
     ImageDraw.Draw(im).line(pts, fill=color + (255,), width=width)
-    return im, ((x0 + x1) / 2, (y0 + y1) / 2)
+    return vec(im, color), ((x0 + x1) / 2, (y0 + y1) / 2)
 
 def device_art(w, name=None):
     """A real green-screen device with a dark screen: (art, screen box inside the art) for a photo slot on its screen."""
@@ -163,13 +174,21 @@ def pptx(ss, path, tmp):
     from pptx.enum.text import PP_ALIGN, MSO_ANCHOR
     E = lambda v: Emu(int(round(v * 9525)))
     prs = Presentation(); prs.slide_width, prs.slide_height = E(CW), E(CH); blank = prs.slide_layouts[6]
-    tmp.mkdir(parents=True, exist_ok=True); n = 0; bgs = {}
+    tmp.mkdir(parents=True, exist_ok=True); n = 0; bgs = {}; outlines = []
     for i, sl in enumerate(ss, 1):
         slide = prs.slides.add_slide(blank)
         if id(sl['bg']) not in bgs:
             bgs[id(sl['bg'])] = tmp / f'bg{len(bgs)}.jpg'; sl['bg'].convert('RGB').save(bgs[id(sl['bg'])], quality=90)
         slide.shapes.add_picture(str(bgs[id(sl['bg'])]), 0, 0, E(CW), E(CH)).name = 'background'
         for L in sl['layers']:
+            if L['kind'] == 'photo':
+                V.photo_shape(slide, placeholder(L), 'PHOTO: ' + L['slot'], L['c'], L['size'], L['rot'], L['shape']); continue
+            if L['kind'] == 'art' and 'lettering' in L['img'].info:
+                lt = L['img'].info['lettering']; V.lettering(slide, lt['words'], lt['px'], L['c'], L['rot'], lt['fill'], lt['italic_last'], lt['font'])
+                if lt.get('edge'): outlines.append((i, lt))
+                continue
+            if L['kind'] == 'art' and 'vector' in L['img'].info:
+                V.vector_shape(slide, L['img'].split()[3], L['name'], L['c'], L['rot'], L['img'].info['vector']); continue
             if L['kind'] in ('art', 'photo'):
                 n += 1; p = tmp / f'{n:03d}.png'
                 im = L['img'] if L['kind'] == 'art' else placeholder(L)
@@ -198,7 +217,7 @@ def pptx(ss, path, tmp):
                     r = para.add_run(); r.text = line; r.font.name = FONTS[L['font']][1]; r.font.bold = FONTS[L['font']][2]; r.font.size = Pt(L['px'] * 0.75); r.font.color.rgb = RGBColor(*L['fg'])
                 shp.name = 'GUIDE (delete)' if L['kind'] == 'guide' else 'TEXT: ' + L['words'].replace('\n', ' ')
         slide.notes_slide.notes_text_frame.text = f'Slide {i}. ' + sl['note']
-    prs.save(str(path))
+    prs.save(str(path)); return outlines
 
 def sheet(ims, path):
     th = [im.resize((360, 480), Image.LANCZOS) for im in ims]; out = Image.new('RGB', (len(th) * 372 + 12, 492), (255, 255, 255))
@@ -212,4 +231,4 @@ def build(ss, out, name, cache):
     ims = [render(sl) for sl in ss]
     for i, im in enumerate(ims, 1): im.save(out / 'slides' / f'{i:02d}.png')
     sheet(ims, out / 'contact-sheet.jpg'); sheet([render(sl, True, False) for sl in ss], out / 'as-the-buyer-opens-it.jpg')
-    pptx(ss, out / f'{name}.pptx', cache)
+    return pptx(ss, out / f'{name}.pptx', cache)

@@ -147,7 +147,7 @@ const INCLUDES = (projectNote) => [
 const FAQ = (fonts) => [
   ['Do I need CapCut on a computer?', 'For the full template, yes: CapCut for computer, free.'],
   ['Can I use it on my phone?', 'Yes. The phone kit has the shot guide, shot list and every graphic.'],
-  ['How do I edit the carousel?', 'Drag the file into Canva (a free account works), swap the photos and type over the [brackets].'],
+  ['How do I edit the carousel?', 'Open its Canva link (a free account works), swap the photos and type over the [brackets].'],
   ['Is music included?', 'No. Add a sound in Instagram, so your Reel never gets muted. [SOUND PICKS]'],
   ['Do I need to install fonts?', fonts],
   ['How do I change the words?', 'Double-click a text box and type.'],

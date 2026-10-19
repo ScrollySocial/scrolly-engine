@@ -39,16 +39,21 @@ CAROUSEL_README = """Your matching carousel (edit it free in Canva)
 
 The carousel tells the same story as the Reel, as {n} Instagram slides (1080 x 1440, the 3:4 carousel size).
 
-1. On a computer, open canva.com in your browser and sign in (a free account works).
-2. Drag "{file}" onto Canva's home page (or choose Create a design, then Import file). It opens as a design.
-3. Swap the photos: click a photo, then Replace, and pick your own. Each slide's notes say what goes there.
-4. Edit the words: double-click any text and type over the [brackets].
-5. Everything blue is a guide. Delete it before you download.
-6. Share, then Download, PNG, all pages. Post the PNGs as one carousel on Instagram.
+1. On a computer, open this link (a free Canva account works). It makes your own copy of the template:
+   {link}
+2. Swap the photos: click a photo, then Replace, and pick your own. Each slide's notes say what goes there.
+3. Edit the words: double-click any text and type over the [brackets]. Colours: click a word or shape, then the
+   colour button.
+4. Everything blue is a guide. Delete it before you download.
+5. Share, then Download, PNG, all pages. Post the PNGs as one carousel on Instagram.
 
 Slides 1 and 2 are both covers: Instagram often shows a carousel starting on slide 2, so slide 2 works on its own.
 The last slide's notes have a caption to start from.
+
+No link working? "{file}" in this folder is the same carousel: drag it onto Canva's home page. Canva drops the
+outlines on the big words when it imports a file, so add them back with Effects > Outline.
 """
+LINKS = ROOT / 'canva-template-links.json'      # {"09": "https://www.canva.com/design/.../view?mode=preview", ...}
 
 
 def template_dir(tid):
@@ -83,7 +88,11 @@ def pack(tid):
             car = f'{buyer.name}/3 Matching carousel'
             z.write(f, f'{car}/{f.name}')
             from pptx import Presentation
-            z.writestr(f'{car}/How to edit it in Canva.txt', CAROUSEL_README.format(n=len(Presentation(str(f)).slides), file=f.name).replace('\n', '\r\n'))
+            import json
+            link = json.loads(LINKS.read_text(encoding='utf-8')).get(tid) if LINKS.exists() else None
+            if not link: print(f'  {tid}: no Canva template link yet (canva-template-links.json): the how-to points to the .pptx')
+            z.writestr(f'{car}/How to edit it in Canva.txt', CAROUSEL_README.format(n=len(Presentation(str(f)).slides), file=f.name,
+                       link=link or '[CANVA TEMPLATE LINK]').replace('\n', '\r\n'))
     tmp.replace(out)
     print(f'{out.relative_to(ROOT)}  {out.stat().st_size / 1e6:.0f} MB')
 

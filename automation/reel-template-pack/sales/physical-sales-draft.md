@@ -90,8 +90,8 @@ Every template comes with (shown as six pinned yellow sticky notes from Trick or
 - An installer that puts the template on CapCut's home screen with your clips already in it
 - A recipe card with the words to type, and a one-page How to use guide
 - A phone kit for CapCut on your phone: the shot guide video, the shot list and every graphic as a PNG
-- A matching carousel: the same story as Instagram slides (1080 x 1440), with photo spots and words you edit free in
-  Canva. Slides 1 and 2 both work as covers, and the last slide is your Comment [KEYWORD] call to action
+- A matching carousel: the same story as Instagram slides (1080 x 1440), opened from a Canva template link (free
+  account): swap the photos, change the words and colours. Slides 1 and 2 both work as covers, and the last slide is your Comment [KEYWORD] call to action
 
 ## 3. How it works
 

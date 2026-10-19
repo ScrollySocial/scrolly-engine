@@ -613,6 +613,10 @@ Scrolly brand colours and Scrolly-only parts (destinations, the ManyChat switch,
   (centre only on the cover hooks).
 - No decorative underlines, whisker/scribble marks, slide counts, handles or extra sticker labels.
 - Ship a caption to start from: the CTA in the first two sentences, exactly 3 hashtags. No em dashes or `|`.
+- **Canva (her test, 2026-10-19):** buyers expect everything editable: photo frames in the slot's real shape (round
+  stays round), doodles/bursts/arrows/strings recolourable (vector shapes), built-in words as live text (fonts, words,
+  colours). Canva drops text outlines from a .pptx, so the delivery is a Canva template link (free accounts can make
+  them; the Outline effect stays) with the .pptx as backup. Pattern-filled Halloween lettering stays artwork.
 - **#19 Pair it with: APPROVED ("love it", 2026-10-19).** Hero video zooms out into the locket, ?s, bold "pair it
   with" headline, scrapbook page turns, two lockets on her gold chain at the end. Next: CapCut build.
 - **#18 Check this before you buy: APPROVED (2026-10-19)** after the check lines moved to the top. CapCut build:
@@ -622,3 +626,10 @@ Scrolly brand colours and Scrolly-only parts (destinations, the ManyChat switch,
 - **#21 Small batch round 2 rejected** ("I don't like anything about it"); round 3 = the numbered edition (fountain
   pen writes No. 07 of 24). **#24 Make it last:** envelopes rejected (no link to lasting), watch kept; round 2 =
   calendar sheets tearing off (month 1 -> year 3).
+- **Review page 2026-10-19 (batch2b-review.html): APPROVED #04, #05, #06, #07, #13, #14, #16, #17, #25** (and #19).
+  CapCut builds: build/templates/t07, t13, t14, t16, t17, t19, t25 (capcut_b2b.py). New CapCut limits logged in each
+  template's docstring (#25 round 1's diagonal is a tilted clip; #19's page turn is a wipe; #14 plays in colour).
+- **#18 needs changes** ("you didn't go back to the clipboard for #2"): check 2 now plays full frame, then cuts back to
+  the clipboard ticking box 2 before check 3, like checks 1 and 3.
+- **#24:** her approve tick was on the old envelope video; the calendar version (round 2) goes to her to confirm.
+  **#21:** she reviewed the old round 2 ("I don't like anything about it"); round 3 (numbered edition) goes to her.

@@ -15,7 +15,7 @@ from carousel_kit import art, photo, text, guide, word, at, CW, CH, WINE, PINK, 
 import play as P
 import storyboard_b2 as S
 import story7 as S7
-from collage_kit import doodle
+from carousel_kit import doodle, vec
 from motion_b2 import Clip
 
 DIRS = {'09': '09-who-its-for', '08': '08-a-real-customer-question', '10': '10-three-people-to-gift-it-to', '12': '12-your-order-just-arrived',
@@ -106,7 +106,7 @@ def c09():
 # 08 A real customer question (light-blue parchment; light blue + wine; the striped rotary phone, DM cards, a sticky note)
 # ======================================================================================================================
 def c08():
-    g = S7.setup_08(); c = g['c']; stage = K.fit_bg(g['stage']); BL = BLUE
+    g = S7.setup_08(); c = g['c']; stage = K.fit_bg(g['stage']); BL = BLUE; g['d_burst'] = vec(g['d_burst'], WINE)
     dm, dm_off, dm_px = K.blank_card(2, 640, WINE)
     dms = [K.blank_card(1, 560, WINE, pin=pn) for pn in ('pin-head-black', 'pin-head-white', 'pin-head-cream')]
     note = P.sticky('', 480, pin='pin-head-black'); phone_s = g['phone'].resize((int(g['phone'].width * 0.55), int(g['phone'].height * 0.55)), Image.LANCZOS)
@@ -164,7 +164,7 @@ def polaroid_art(frame, w, pin):
     return pn, (pad + (x0 + x1) / 2 - pn.width / 2, pad + pd // 2 + (y0 + y1) / 2 - pn.height / 2), (x1 - x0, y1 - y0)
 
 def c10():
-    g = S7.setup_10(); c = g['c']; kraft, oak, wall, tissue = (K.fit_bg(g[k]) for k in ('kraft', 'oak', 'wall', 'butter'))
+    g = S7.setup_10(); g['x'] = [vec(x, WINE) for x in g['x']]; c = g['c']; kraft, oak, wall, tissue = (K.fit_bg(g[k]) for k in ('kraft', 'oak', 'wall', 'butter'))
     ph, scr = K.device_art(520); s = []
     tw = K.string((850, -10), (850, 420), 0, S7.TWINE, 6)
     S2(s, kraft, 'Hook. Swap in a photo of your gift being wrapped.', [
@@ -215,7 +215,7 @@ def c10():
 # tissue sheets, the big kraft tag, the wax seal)
 # ======================================================================================================================
 def c12():
-    g = S7.setup_12(); c = g['c']; concrete = K.fit_bg(g['concrete']); tissues = [K.fit_bg(t) for t in g['tissues']]
+    g = S7.setup_12(); g['burst'] = vec(g['burst'], BLUE); c = g['c']; concrete = K.fit_bg(g['concrete']); tissues = [K.fit_bg(t) for t in g['tissues']]
     body, door, arch, k = g['mbf']; mb = body.copy(); dx0, dy0, dx1, dy1 = [int(v * k) for v in S7.MB_DOOR]
     mb.alpha_composite(door.resize((door.width, max(4, int(door.height * 0.05)))), (dx0, dy1))
     ph, scr = K.device_art(560); s = []
@@ -272,7 +272,7 @@ def c12():
 # 20 What buyers said (pink marble; pink + wine, gold stars; review cards, the phone, the trophy)
 # ======================================================================================================================
 def c20():
-    g = S7.setup_20(); c = g['c']; marble = K.fit_bg(g['marble']); ph, scr = K.device_art(480); s = []
+    g = S7.setup_20(); g['d_burst'] = vec(g['d_burst'], WINE); c = g['c']; marble = K.fit_bg(g['marble']); ph, scr = K.device_art(480); s = []
     big, big_off, big_px = K.blank_card(2, 820, WINE, 'review', name='[buyer]')
     revs = [K.blank_card(1, 520, WINE, 'review', name='[buyer]') for _ in range(3)]
     S2(s, marble, 'Hook. Swap in a photo of your product.', [
@@ -320,7 +320,7 @@ def c20():
 # 22 Put it to the test (graph paper + torn butter band; light blue + butter, deep blue ink; magnifier, tubes, stamp)
 # ======================================================================================================================
 def c22():
-    g = S7.setup_22(); M = g['M']; c = g['c']; paper = K.fit_bg(g['paper']); DEEP = S7.DEEP; s = []
+    g = S7.setup_22(); g['d_burst'] = vec(g['d_burst'], BUTTER); M = g['M']; c = g['c']; paper = K.fit_bg(g['paper']); DEEP = S7.DEEP; s = []
     mag, (ox, oy, r) = M.magnifier(1150); mag_s, (sox, soy, sr) = M.magnifier(800)
     claim = P.sticky('', 440); did = P.sticky('', 400, pin='pin-head-cream'); tubes = M.tubes(g, 1.0)
     S2(s, paper, 'Hook. Swap in a photo of your product mid-test. Edit [ruin].', [
@@ -530,6 +530,7 @@ def ch3():
 def ch5():
     import motion_h5 as M
     LAV, INK5 = M._LAV, M.INK
+    DOO = {k: vec(v, (255, 255, 255) if k == 'sparkle' else LAV) for k, v in M.DOO.items()}
     def taffy(text_, px, kind='taffy'):
         f = K.ImageFont.truetype(M.SNAP, px); gap = px * 0.02; ws = [f.getlength(ch) for ch in text_]
         ls = [M.letter(ch, px, kind) for ch in text_]; tot = sum(ws) + gap * (len(text_) - 1)
@@ -547,7 +548,7 @@ def ch5():
     note = P.sticky('', 440, pin='pin-head-black'); s = []
     S2(s, door, 'Hook. Swap in a photo of the common mistake in both glass panes (use the same photo twice).', [
         photo(f'The trick ({side} pane)', ((b[0] + b[2]) / 2, (b[1] + b[3]) / 2), (b[2] - b[0], b[3] - b[1]), 0, M.vid('trick', 1.0)) for side, b in zip(('left', 'right'), M.PANES)] + [
-        art(M.DOO['burst1'], (330, 820), 0, 'burst'),
+        art(DOO['burst1'], (330, 820), 0, 'burst'),
         art(taffy('TRICK', 230), (540, 1080), -2, 'TRICK'),
         art(taffy('or TREAT?', 120), (540, 1270), 2, 'or TREAT?'),
         guide(FIRST_GUIDE, (540, 1405))])
@@ -556,18 +557,18 @@ def ch5():
         art(c, xy, 0, 'candy') for c, xy in zip(candy, ((180, 760), (900, 700), (230, 1150), (880, 1180), (640, 1300)))] + [
         text('[something sweet\nis coming]', 80, (620, 200), -2, align='right'),
         text('[trick first]', 62, (290, 1360), -2, align='left'),
-        art(M.DOO['arrow'], (660, 1350), -2, 'arrow')])
+        art(DOO['arrow'], (660, 1350), -2, 'arrow')])
     nc = (700, 1000)
     S2(s, door, 'The trick: a photo of the common mistake. Name it on the note.', [
         photo('The trick (fills the page)', (540, 720), (CW, CH), 0, M.vid('trick', 2.0)),
         text('the trick:', 72, (300, 220), -3),
         art(note, nc, 5, 'sticky note'), K.note_text(nc, 5, '[cheap\nsponges]', 62, k=(0, 30)),
-        art(scaled(M.DOO['x'], 190), at(nc, 5, (230, -170)), 5, 'cross')])
+        art(vec(scaled(DOO['x'], 190), LAV), at(nc, 5, (230, -170)), 5, 'cross')])
     S2(s, hcrop, 'The treat: swap in your product photo and say what it is.', [
         art(K.white_card((700, 860)), (540, 760), -2, 'photo border'),
         photo('The treat: your product', (540, 760), (700, 860), -2, M.vid('treat', 1.5)),
         art(taffy('TREAT', 200), (540, 230), -2, 'TREAT'),
-        art(candy[2], (920, 560), 0, 'candy'), art(M.DOO['heart'], (180, 1050), -8, 'heart'),
+        art(candy[2], (920, 560), 0, 'candy'), art(DOO['heart'], (180, 1050), -8, 'heart'),
         text('[our 5-minute scrub]', 72, (540, 1290), 2)])
     cam = Image.new('RGBA', (CW, 120), (0, 0, 0, 0)); d = K.ImageDraw.Draw(cam); f = K.ImageFont.truetype('C:/Windows/Fonts/consola.ttf', 40)
     d.text((70, 60), 'Front door', font=f, fill=(255, 255, 255, 230), anchor='lm'); d.ellipse((870, 46, 898, 74), fill=(230, 50, 40, 255)); d.text((910, 60), 'LIVE', font=f, fill=(255, 255, 255, 230), anchor='lm')
@@ -577,7 +578,7 @@ def ch5():
         art(cam, (540, 90), 0, 'doorbell camera'),
         text('the proof:', 72, (300, 260), -3),
         art(note, nc5, -4, 'sticky note'), K.note_text(nc5, -4, '[5-star\nreviews]', 64, k=(0, 30)),
-        art(M.DOO['arrow'], (420, 1040), 10, 'arrow')])
+        art(DOO['arrow'], (420, 1040), 10, 'arrow')])
     S2(s, door, 'Type your keyword and your offer. ' + CAPTION, [
         art(c, xy, 0, 'candy') for c, xy in zip(candy, ((160, 1180), (420, 1300), (680, 1220), (930, 1320), (300, 1050), (860, 1080)))] + [
         art(taffy('COMMENT', 150), (540, 330), -2, 'COMMENT'),
@@ -592,8 +593,10 @@ def ch6():
     def glow(d):
         pad = 270; im = Image.new('RGBA', (d + 2 * pad, d + 2 * pad), (0, 0, 0, 0)); B.moon_glow(im, d, (pad, pad)); return im
     def serif(t, px, color):
-        f = K.ImageFont.truetype(B.SERIF, px); l, t_, r, b = f.getbbox(t); im = Image.new('RGBA', (r - l + 60, b - t_ + 60), (0, 0, 0, 0))
-        K.ImageDraw.Draw(im).text((30 - l, 30 - t_), t, font=f, fill=color + (255,)); return K.C.shadow(im, (0, 6), 9, 140)
+        """A built-in word in Bodoni Moda (live text in Canva; the preview uses the same font)."""
+        f = K.ImageFont.truetype(K.FONTS['bodoni'][0], px); l, t_, r, b = f.getbbox(t); im = Image.new('RGBA', (r - l + 60, b - t_ + 60), (0, 0, 0, 0))
+        K.ImageDraw.Draw(im).text((30 - l, 30 - t_), t, font=f, fill=color + (255,)); im = K.C.shadow(im, (0, 6), 9, 140)
+        im.info['lettering'] = dict(words=t, px=px, fill=color, edge=None, italic_last=False, font='bodoni'); return im
     blood = lambda w: scaled(M.BLOOD, w); wolf = scaled(M.wolf, 380); s = []
     S2(s, sky, 'Hook. Swap in a photo of your product or shop.', [
         photo('Your product (fills the page)', (540, 720), (CW, CH), 0, M.vid('a', 0.5)),
@@ -637,10 +640,30 @@ def ch6():
 
 RECIPES = {'09': c09, '08': c08, '10': c10, '12': c12, '20': c20, '22': c22, '23': c23, 'h2': ch2, 'h3': ch3, 'h5': ch5, 'h6': ch6}
 
+HEX = lambda c: '#%02X%02X%02X' % tuple(c[:3])
+CNAME = {WINE: 'wine', PINK: 'pink', BUTTER: 'butter', BLUE: 'light blue', WHITE: 'white', INK: 'ink', S7.DEEP: 'deep blue'}
+ARTWORK_WORDS = {'h2': 'BATTY, TOP 3, about and the numbers', 'h3': 'CAUGHT and COMMENT (cut-out letters)', 'h5': 'TRICK, or TREAT?, TREAT and COMMENT (taffy letters)'}
+
+def outline_md(tid, outlines):
+    """The Canva step before the template link: which live words get Effects > Outline, in which colour."""
+    out = [f'## {tid} {TITLES[tid]}', '']
+    if tid in ARTWORK_WORDS: out += [f'Nothing to do: {ARTWORK_WORDS[tid]} stay artwork (pattern-filled lettering in fonts Canva does not have).', '']
+    elif not outlines: out += ['Nothing to do: the built-in words are live Bodoni Moda with no outline, as in the Reel.', '']
+    for slide, lt in outlines:
+        e = lt['edge']; out.append(f'- Slide {slide}: **{lt["words"]}** ({CNAME.get(tuple(lt["fill"]), HEX(lt["fill"]))} {HEX(lt["fill"])}): '
+                                   f'Outline in {CNAME.get(tuple(e), HEX(e))} {HEX(e)}, thin')
+    return out + ['']
+
 def main():
+    md = ['# Canva: outlines to add before making each template link', '',
+          'Canva drops text outlines when it imports a .pptx, but keeps an Outline effect in a template link. For each',
+          'carousel: import the .pptx, select each word below, Effects > Outline, set the colour (type the hex), keep it',
+          'thin (similar to the previews), then Share > Template link. The words are live text, so buyers can still change them.', '']
     for tid in sys.argv[1:]:
         ss = RECIPES[tid](); name = f'Template {tid} - {TITLES[tid]} - Carousel'
-        K.build(ss, S.E.PACK / DIRS[tid] / 'carousel', name, S.E.PACK / 'build' / '.cache' / f'carousel{tid}'); print('done', tid, len(ss), 'slides')
+        outl = K.build(ss, S.E.PACK / DIRS[tid] / 'carousel', name, S.E.PACK / 'build' / '.cache' / f'carousel{tid}'); print('done', tid, len(ss), 'slides')
+        md += outline_md(tid, outl); (S.E.PACK / DIRS[tid] / 'carousel' / 'canva-outline-list.md').write_text('\n'.join(md[:6] + outline_md(tid, outl)), encoding='utf-8')
+    if len(sys.argv) > 2: (S.E.PACK / 'canva-outline-list.md').write_text('\n'.join(md), encoding='utf-8')
 
 if __name__ == '__main__':
     main()

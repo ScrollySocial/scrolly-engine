@@ -15,11 +15,16 @@ Serif built-in words, her marker doodles (arrows, bursts, sparkles).
 | 7 | The phone standing on the page, their shop on the screen | screenshot, the line |
 | 8 | CTA: their photo with a butterfly crown, sound like you? **Comment** "[KEYWORD]" | photo, keyword |
 
-**Delivery: a .pptx the buyer drags into Canva Free** (desktop browser). Same path as the $1K Challenge template library:
-Canva imports it at the exact page size with editable text, and Replace works on photos. Canva templates via link need
-Canva Pro on our side; CapCut photo templates can't swap photos and words easily.
+**Delivery: a Canva template link** (works on a free account; keeps the Outline effect), with the .pptx in the zip as
+the backup. Made by importing the .pptx into Mercedes's Canva, adding the outlines in `canva-outline-list.md`, then
+Share > Template link; the links go in `canva-template-links.json` and `build/zip_upload.py` writes them into the zip.
 
-- Editable words: Montserrat Bold (in Canva and CapCut) on highlight boxes. Built-in words and objects are PNG artwork.
+Canva import test (2026-10-19): photo slots come in as real frames when they are shapes filled with the picture
+(circle, arch, rectangle); her doodles, bursts, arrows and strings come in as recolourable shapes when traced to
+vectors (`build/canva_shapes.py`, potrace); text outlines are dropped on import, so outlines are added in Canva.
+
+- Editable words: Montserrat Bold on highlight boxes. Built-in words: live DM Serif Display text. Real objects
+  (butterflies, clock, notes, phone) stay pictures.
 - Blue boxes are guides ("delete before you download"); page notes say what to swap on each slide.
 - `slides/` and `contact-sheet.jpg` use stand-in stills from her July clips (other brands' products: never in ads or
   on a sales page). `as-the-buyer-opens-it.jpg` shows the file as a buyer opens it.
