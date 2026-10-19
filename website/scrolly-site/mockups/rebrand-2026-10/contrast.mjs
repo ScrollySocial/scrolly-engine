@@ -14,6 +14,7 @@ for (const [name, [P, N, N2, N3]] of Object.entries(COMBOS)) {
     ['Text: off-white on navy', OFF, N, 'normal'], ['Text: off-white on navy card', OFF, N2, 'normal'], ['Italic: pink on navy', P, N, 'large'],
     ['Big $: pink on navy card', P, N2, 'large'], ['Baby pink text on navy', BABY, N, 'normal'], ['Footer: baby pink links on deep navy', BABY, N3, 'normal'],
     ['Footer: pink "Tiger." on deep navy', P, N3, 'large'], ['Footer tag: navy on baby pink', N, BABY, 'normal'],
+    ['Cobalt button: white on #0047ab', WHITE, '#0047ab', 'normal'], ['Bright cobalt button: white on #1f4fd8', WHITE, '#1f4fd8', 'normal'], ['Cobalt link on cream', '#1f4fd8', '#f7f3ec', 'normal'], ['Button 2: navy on lavender', N, LAV, 'normal'],
   ];
   for (const [label, fg, bg, size] of rows) {
     const r = ratio(fg, bg), need = size === 'large' ? 3 : 4.5, ok = r >= need; if (!ok) fails++;

@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" data-p="cream" data-f="jost" data-c="p4n2">
+<html lang="en" data-p="cream" data-f="jost" data-c="p4n2" data-b="pink">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -24,6 +24,11 @@
 [data-c=p5n1]{--pink:#ff5fae;--navy:#0b1f3f;--navy-2:#15305a;--navy-3:#071530}
 [data-c=p4n1]{--pink:#ff3b7f;--navy:#0b1f3f;--navy-2:#15305a;--navy-3:#071530}
 [data-c=p4n2]{--pink:#ff3b7f;--navy:#0a1930;--navy-2:#142744;--navy-3:#050f20}
+/* button colour (Mercedes 2026-10-19: cobalt buttons so it feels girly but men feel fine buying too). Pink stays the personality. */
+[data-b=cobalt]{--cob:#0047ab}
+[data-b=bright]{--cob:#1f4fd8}
+:is([data-b=cobalt],[data-b=bright]) :is(.hero,.clubs,.sheet,.hdr){--btn:var(--cob);--btn-ink:#fff;--btn-hov:var(--navy);--btn-hov-ink:#fff;--btn2:var(--lav);--btn2-ink:var(--navy)}
+:is([data-b=cobalt],[data-b=bright]) .sheet .link{color:var(--cob)}
 /* secondary font candidates (the swap for Arial) */
 [data-f=jost]{--sans:"Jost",Arial,sans-serif;--sans-stretch:100%;--label-track:.16em}
 [data-f=syne]{--sans:"Syne",Arial,sans-serif;--sans-stretch:100%;--label-track:.12em}
@@ -244,6 +249,11 @@ em{font-style:italic}
     <button type="button" data-v="p4n1">P4 + N1</button>
     <button type="button" data-v="p4n2">P4 + N2</button>
   </div>
+  <div class="grp" id="btns" aria-label="Buttons"><span>Buttons:</span>
+    <button type="button" data-v="pink">Pink</button>
+    <button type="button" data-v="cobalt">Cobalt</button>
+    <button type="button" data-v="bright">Bright cobalt</button>
+  </div>
   <div class="grp" id="fnt" aria-label="Second font"><span>Second font:</span>
     <button type="button" data-v="jost">Jost</button>
     <button type="button" data-v="syne">Syne</button>
@@ -309,7 +319,7 @@ em{font-style:italic}
   </div>
   <div class="swatches">
     <div class="sw"><i style="background:var(--pink)"></i><span>Hot pink</span></div>
-    <div class="sw"><i style="background:var(--navy)"></i><span>Navy</span></div><div class="sw"><i style="background:var(--baby)"></i><span>Baby pink #fbd3e4</span></div>
+    <div class="sw"><i style="background:var(--navy)"></i><span>Navy</span></div><div class="sw"><i style="background:var(--cob,#1f4fd8)"></i><span>Cobalt</span></div><div class="sw"><i style="background:var(--baby)"></i><span>Baby pink #fbd3e4</span></div>
     <div class="sw"><i style="background:#e3d9ff"></i><span>Lavender #e3d9ff</span></div>
     <div class="sw"><i style="background:#c9b8ff"></i><span>Lilac #c9b8ff</span></div>
   </div>
@@ -357,6 +367,8 @@ em{font-style:italic}
   set('data-p','pal',q.get('p')||html.dataset.p);
   set('data-f','fnt',q.get('f')||html.dataset.f);
   set('data-c','col',q.get('c')||html.dataset.c);
+  set('data-b','btns',q.get('b')||html.dataset.b);
+  document.querySelectorAll('#btns button').forEach(function(b){b.onclick=function(){set('data-b','btns',b.dataset.v)}});
   document.querySelectorAll('#col button').forEach(function(b){b.onclick=function(){set('data-c','col',b.dataset.v)}});
   if(q.get('bar')==='0')document.querySelector('.mk').style.display='none';
   document.querySelectorAll('#pal button').forEach(function(b){b.onclick=function(){set('data-p','pal',b.dataset.v)}});
