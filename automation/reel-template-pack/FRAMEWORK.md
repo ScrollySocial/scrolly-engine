@@ -613,3 +613,5 @@ Scrolly brand colours and Scrolly-only parts (destinations, the ManyChat switch,
   (centre only on the cover hooks).
 - No decorative underlines, whisker/scribble marks, slide counts, handles or extra sticker labels.
 - Ship a caption to start from: the CTA in the first two sentences, exactly 3 hashtags. No em dashes or `|`.
+- **#19 Pair it with: APPROVED ("love it", 2026-10-19).** Hero video zooms out into the locket, ?s, bold "pair it
+  with" headline, scrapbook page turns, two lockets on her gold chain at the end. Next: CapCut build.
