@@ -19,13 +19,14 @@ Usage: python build/motion_19.py [seconds ...]  ->  19-pair-it-with/preview/moti
 """
 import math, sys
 from pathlib import Path
-from PIL import Image, ImageDraw, ImageOps
+from PIL import Image, ImageChops, ImageDraw, ImageOps
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import collage as C
+from PIL import ImageFilter
 import storyboard_b2 as S
 import play as P
 import play_extra as X
-from story4 import swipe, diagonal
+from story4 import swipe, diagonal, roundwin
 from collage_kit import doodle, doodle_on
 from motion_b2 import Clip, put, render, camera, ease, back_out, seg, lerp, lerp2, W, H, WHITE
 
@@ -48,6 +49,16 @@ def setup():
                    'pink': (fr_('Blush pink scalloped portrait frame-5', 470), (0.22, 0.175, 0.80, 0.82), True),
                    'oval': (fr_('Vintage oval brass frame with floral crest-4', 480), (0.10, 0.20, 0.90, 0.89), False),
                    'walnut': (fr_('Empty walnut picture frame-2', 720), (0.086, 0.12, 0.914, 0.88), False)}
+    # things that come in pairs (her note): a torn paper heart's two halves, glasses' two lenses
+    h = S.fitw(S.cut('images', 'Torn red paper heart halves-91.png', tol=18), 820); hm = h.split()[3].point(lambda v: 255 if v > 100 else 0)
+    left = hm.copy(); ImageDraw.floodfill(left, (int(h.width * 0.22), int(h.height * 0.4)), 128); left = left.point(lambda v: 255 if v == 128 else 0)
+    right = ImageChops.subtract(hm, left); g['heart'] = (h, left, right)
+    gl = S.fitw(S.cut('fall', 'Bold black acetate eyeglass front frame-4.png', tol=18, holes=((0.27, 0.5), (0.73, 0.5))), 1000)
+    lens = []
+    for fx in (0.27, 0.73):
+        m = Image.new('L', gl.size, 0); a = gl.split()[3].point(lambda v: 0 if v > 60 else 255); ImageDraw.floodfill(a, (int(gl.width * fx), int(gl.height * 0.5)), 128)
+        lens.append(a.point(lambda v: 255 if v == 128 else 0))
+    g['glasses'] = (gl, lens)
     g['tea'] = P.thing('Vintage Rose Porcelain Tea Set.png', 820, 'smalldots', WINE, scale=0.3, strength=0.35)
     g['what'] = P.caption('what to', 190, INK); g['pairw'] = P.caption('pair', 300, INK); g['with'] = X.hl('with [my steam mop]', 60, WHITE)
     g['plus'] = [X.hl(t, 62, (PINK, WHITE, PINK)[i]) for i, t in enumerate(('+ [the stick vacuum]', '+ [the odor spray]', '+ [the litter]'))]
@@ -85,9 +96,9 @@ def frame(g, t):
         P.say(im, g['what'], t, 0.05, (500, 300), -3); P.say(im, g['pairw'], t, 0.25, (560, 500), -2); P.say(im, g['with'], t, 0.55, (540, 680), 2)
         X.sparkles(im, t, 0.3, [(130, 250), (930, 330), (150, 600), (960, 640), (880, 1600), (180, 1620)], WINE, 170)
         return im
-    if t < 3.6:                                                    # 2: the gallery wall: the product in the gold frame, pairing 1 in the pink one
-        im = gallery(g, t, 0, 1.0, {'gold': c['main'].at(t), 'pink': c['p1'].at(t - 1.8)}, pink_in=1.9)
-        P.say(im, g['pair1'], t, 1.95, (540, 300), -2); P.say(im, g['plus'][0], t, 2.3, (640, 1400), -2)
+    if t < 3.6:                                                    # 2: a torn paper heart: the product in one half, pairing 1 in the other
+        im = heart(g, t, c['main'].at(t), c['p1'].at(t - 1.8))
+        P.say(im, g['pair1'], t, 1.95, (540, 300), -2); P.say(im, g['plus'][0], t, 2.6, (540, 1500), -2)
         if t < 1.95: im = diagonal(locket(g, t, c['main'].at(t), PINK), im, seg(t, 1.8, 1.95))
         if t > 3.35: im = swipe(im, close3(g, 3.6), seg(t, 3.35, 3.6), -1)
         return im
@@ -99,10 +110,9 @@ def frame(g, t):
         im = c['p2'].at(t - 3.8); P.say(im, g['plus'][1], t, 5.25, (540, 1380), 2); doodle_on(im, t, 5.6, g['under'], (540, 1460), -2)
         if t > 6.55: im = swipe(im, diag5(g, 6.8), seg(t, 6.55, 6.8))
         return im
-    if t < 8.4:                                                    # 5: the camera pans down the wall: pairing 3 in the oval frame
-        y = lerp(400, 980, ease(seg(t, 6.8, 7.4)))
-        im = gallery(g, t, y, 1.0, {'gold': c['main'].at(t), 'pink': c['p1'].at(t - 1.8), 'walnut': c['p2'].at(t - 3.8), 'oval': c['p3'].at(t - 6.8)})
-        P.say(im, g['plus'][2], t, 7.45, (760, 1060), 2)
+    if t < 8.4:                                                    # 5: glasses: the product in one lens, pairing 3 in the other
+        im = glasses(g, t, c['main'].at(t), c['p3'].at(t - 6.8))
+        P.say(im, g['plus'][2], t, 7.3, (540, 1300), 2)
         if t > 8.15: im = diagonal(im, stage6(g, t), seg(t, 8.15, 8.4))
         return im
     if t < 10.0:
@@ -131,6 +141,26 @@ def gallery(g, t, view_y, zoom, clips, pink_in=None):
     if zoom >= 1: return wall.crop((0, y, W, y + H))
     view = Image.new('RGBA', (vw, vh)); view.alpha_composite(g['stripes'].resize((vw, vh)), (0, 0)); view.alpha_composite(wall.crop((0, y, W, min(GH, y + vh))), (-x, 0))
     return view.resize((W, H), Image.BILINEAR)
+
+def heart(g, t, a, b):
+    """The two torn halves of a real paper heart slide together; the product plays in the left half, the pairing in the
+    right (the torn white edge stays)."""
+    h, left, right = g['heart']; im = g['stripes'].copy(); u = back_out(seg(t, 1.9, 2.5), 1.2); gap = lerp(300, 0, u)
+    for side, (m, cl) in enumerate(((left, a), (right, b))):
+        half = Image.new('RGBA', h.size, (0, 0, 0, 0)); half.alpha_composite(h); half.putalpha(m)
+        bb = m.getbbox(); v = Image.new('RGBA', h.size, (0, 0, 0, 0)); v.paste(ImageOps.fit(cl, (bb[2] - bb[0], bb[3] - bb[1]), centering=(0.5, 0.45)).convert('RGBA'), bb[:2])
+        v.putalpha(m.filter(ImageFilter.MinFilter(17))); half.alpha_composite(v); x = 540 + (-gap if side == 0 else gap); put(im, C.shadow(half, (8, 14), 14, 110), (x, 980), 1, (-6, 6)[side] * (1 - u))
+    if u >= 0.98: X.sparkles(im, t, 2.55, [(160, 600), (930, 640), (900, 1350)], WINE, 140)
+    return im
+
+def glasses(g, t, a, b):
+    """Glasses: colour inside the lenses, greyscale outside (her idea bank): the product in the left lens, the pairing in
+    the right, the pairing's clip in grey behind."""
+    gl, lens = g['glasses']; im = ImageOps.grayscale(b.convert('RGB')).convert('RGBA'); k = back_out(seg(t, 6.8, 7.2), 1.3)
+    for m, cl in zip(lens, (a, b)):
+        bb = m.getbbox(); v = Image.new('RGBA', gl.size, (0, 0, 0, 0)); v.paste(ImageOps.fit(cl, (bb[2] - bb[0], bb[3] - bb[1]), centering=(0.5, 0.45)).convert('RGBA'), bb[:2]); v.putalpha(m); im.alpha_composite(v, (int(540 - gl.width / 2), int(lerp(-400, 900, k) - gl.height / 2)))
+    put(im, gl, (540, lerp(-400, 900, k)))
+    return im
 
 def split2(g, t, a, b):
     im = g['stripes'].copy(); w, h = 500, 1180
@@ -164,15 +194,8 @@ def cta(g, t):
     """CTA (a new scene, her note): the product full frame, the three pairings in their real frames pinned along the top;
     the bundle name on its own at the top, the keyword on its own in the middle (they no longer compete)."""
     c = g['c']; im = c['main'].at(t).copy()
-    for i, (name, cl, t0, x) in enumerate((('pink', c['p1'], 1.8, 190), ('oval', c['p3'], 6.8, 540), ('walnut', c['p2'], 3.8, 890))):
-        fim, (x0, y0, x1, y1), top = g['frames'][name]; sc = 0.66 if name != 'walnut' else 0.5
-        f2 = fim.resize((int(fim.width * sc), int(fim.height * sc))); ow, oh = int(f2.width * (x1 - x0)), int(f2.height * (y1 - y0))
-        v = ImageOps.fit(cl.at(t - t0), (ow + 6, oh + 6), centering=(0.5, 0.35)).convert('RGBA')
-        if name == 'oval': v.putalpha(oval_mask(v.size))
-        tile = Image.new('RGBA', f2.size, (0, 0, 0, 0)); xy = (int(f2.width * x0) - 3, int(f2.height * y0) - 3)
-        if top: tile.alpha_composite(f2); tile.alpha_composite(v, xy)
-        else: tile.alpha_composite(v, xy); tile.alpha_composite(f2)
-        put(im, tile, (x, lerp(-300, 520, back_out(seg(t, 10.0 + i * 0.12, 10.35 + i * 0.12), 1.4))), 1, (-6, 3, 7)[i])
+    for i, (cl, t0, x) in enumerate(((c['p1'], 1.8, 200), (c['p3'], 6.8, 540), (c['p2'], 3.8, 880))):   # the pairings in round windows
+        put(im, roundwin(cl.at(t - t0, (280, 280)), 280), (x, lerp(-300, 470, back_out(seg(t, 10.0 + i * 0.12, 10.35 + i * 0.12), 1.4))), 1)
     P.say(im, g['bname'], t, 10.3, (540, 860), -2)
     P.say(im, g['comment'], t, 10.6, (540, 1150), -3); P.say(im, g['kw'], t, 10.85, (540, 1330), 2)
     return im

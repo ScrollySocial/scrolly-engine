@@ -572,3 +572,8 @@ Showing her work
   the product/bundle name get separate spots** so they don't compete. **Props must match the product world** (a tea
   set in a cleaning Reel didn't). **Repeated structures stay consistent** (if rounds 1 and 2 ring the bell, round 3
   does too). Crop clips in small frames so the product shows, not a hand.
+- **Gallery wall (her pick, 2026-10-19): "a great product Reel."** Her real frames (ornate gold, scalloped pink, oval
+  brass, walnut, silver Art Deco, black gallery) hung on a calm wall, a different clip in each, the camera panning and
+  pulling back (built in build/motion_19.py `gallery()`). Use it for a product showcase template, not "pair it with".
+- **#19 Pair it with = things that come in pairs** (her note): the locket's two halves, a heart torn in two halves,
+  glasses with a clip in each lens: product in one half, the pairing in the other.
