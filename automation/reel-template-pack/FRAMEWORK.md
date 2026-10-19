@@ -401,6 +401,12 @@ More from her (2026-10-17; images in the shared library, any pack can use them; 
   snap open to start the clip, or the camera zooms into the locket until the clip fills the screen.
 - **Skyscrapers / skyline:** cut the buildings out of the sky; bring them in together, or put the buyer's clip in the
   sky behind the skyline.
+- **Film reel, animated (2026-10-19):** a real metal film reel seen face-on, its round holes each playing one of the
+  buyer's clips, with real cut-out figures and objects standing upright around the rim like a clock face (reference:
+  `assets/references/film-reel-collage.webp`, someone else's collage, style only, never ship it). In motion: the reel
+  spins and the rim cut-outs ride round with it; it stops with the next hole at the top and the camera zooms into
+  that hole until its clip fills the screen. The rim cut-outs can be the buyer's products (themes: "behind the
+  scenes", "every option", "the making of"). Sibling of the wheel of videos below.
 
 - **Wheel or pie of videos:** a round wheel (or pie) cut into a few slices (fewer than a Wheel of Fortune, about 3
   to 6), each slice playing its own clip. The whole wheel rotates to bring the next slice up. It can carry one
