@@ -25,10 +25,12 @@
 [data-c=p4n1]{--pink:#ff3b7f;--navy:#0b1f3f;--navy-2:#15305a;--navy-3:#071530}
 [data-c=p4n2]{--pink:#ff3b7f;--navy:#0a1930;--navy-2:#142744;--navy-3:#050f20}
 /* button colour (Mercedes 2026-10-19: cobalt buttons so it feels girly but men feel fine buying too). Pink stays the personality. */
-[data-b=cobalt]{--cob:#0047ab}
-[data-b=bright]{--cob:#1f4fd8}
-:is([data-b=cobalt],[data-b=bright]) :is(.hero,.clubs,.sheet,.hdr){--btn:var(--cob);--btn-ink:#fff;--btn-hov:var(--navy);--btn-hov-ink:#fff;--btn2:var(--lav);--btn2-ink:var(--navy)}
-:is([data-b=cobalt],[data-b=bright]) .sheet .link{color:var(--cob)}
+/* lighter blues (Mercedes: lighter than cobalt) take navy text; white text fails on them */
+[data-b=bright]{--cob:#1f4fd8;--cob-ink:#fff}
+[data-b=cornflower]{--cob:#4f7cff;--cob-ink:var(--navy)}
+[data-b=periwinkle]{--cob:#6c9bff;--cob-ink:var(--navy)}
+[data-b=sky]{--cob:#4da3ff;--cob-ink:var(--navy)}
+:is([data-b=bright],[data-b=cornflower],[data-b=periwinkle],[data-b=sky]) :is(.hero,.clubs,.sheet,.hdr){--btn:var(--cob);--btn-ink:var(--cob-ink);--btn-hov:var(--navy);--btn-hov-ink:#fff;--btn2:var(--lav);--btn2-ink:var(--navy)}
 /* secondary font candidates (the swap for Arial) */
 [data-f=jost]{--sans:"Jost",Arial,sans-serif;--sans-stretch:100%;--label-track:.16em}
 [data-f=syne]{--sans:"Syne",Arial,sans-serif;--sans-stretch:100%;--label-track:.12em}
@@ -251,8 +253,10 @@ em{font-style:italic}
   </div>
   <div class="grp" id="btns" aria-label="Buttons"><span>Buttons:</span>
     <button type="button" data-v="pink">Pink</button>
-    <button type="button" data-v="cobalt">Cobalt</button>
     <button type="button" data-v="bright">Bright cobalt</button>
+    <button type="button" data-v="cornflower">Cornflower</button>
+    <button type="button" data-v="periwinkle">Periwinkle</button>
+    <button type="button" data-v="sky">Sky</button>
   </div>
   <div class="grp" id="fnt" aria-label="Second font"><span>Second font:</span>
     <button type="button" data-v="jost">Jost</button>
