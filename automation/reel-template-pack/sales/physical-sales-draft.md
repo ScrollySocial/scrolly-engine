@@ -18,7 +18,7 @@ The page sells **25 templates** (Mercedes: "It's supposed to be 25").
 
 | Decision | State |
 |---|---|
-| **[PRICE]** | Open |
+| **Price** | **$17.99** (decided 2026-10-19) |
 | **[LAUNCH FORMAT]** | Sell when all 25 are done, or open early with the rest as free updates? |
 | **Sound picks** | None for the zipped templates yet |
 | **Mac** | Mercedes is testing. The page names no platform until then |
@@ -49,7 +49,7 @@ Sub-line:
 > 25 Reel templates for shops that sell physical products. Film your product on your phone, drop the clips in, and
 > each template opens in CapCut with your clips already in place.
 
-Price line: **[PRICE]**. 25 CapCut templates, with a shot list and a phone kit for each. [INSTANT DOWNLOAD or EARLY ACCESS: your call].
+Price line: **$17.99**. 25 CapCut templates, with a shot list and a phone kit for each. [INSTANT DOWNLOAD or EARLY ACCESS: your call].
 
 ## 2. What you get: 25 Reels, 25 selling jobs
 
@@ -105,17 +105,17 @@ Shown as five icons with one short line each, under the desktop screen, on a fil
 | text | **Type** | Your words over the [brackets]. |
 | send | **Post** | Add a sound in Instagram. |
 
-## Page look (2026-10-19, same fun as Halloween, with the pack's own props)
+## Page look (2026-10-19, round 3 after Mercedes's notes)
 
-Palette from FRAMEWORK.md. Hero on butter with the open kraft box, mint instant camera and floating packing peanuts
-(all clear of the text) and a wax seal by the button. One section on light blue shows all 25 templates as phones
-(2026-10-19: hero phones and the index cards merged), each with a real graphics-only frame, its job, and the soap shop
-and T-shirt store lines. Frames: built templates from before.mp4; 04, 06, 07, 11, 13 to 19, 21, 24, 25 from their
-motion tests (still in review, so swap them when built); 05 from its older build, because its motion-test frames show a
-stand-in vacuum. No frame shows other brands' products. What's included is the pinned sticky notes. How it works is the film strip. Who it's for is pink with
-the kraft box and black label-maker tags: Makers, Small-batch brands, Shops that ship, Handmade. Questions on wine
-with the kitchen timer and envelope. Buy section on butter with the closed box and wax seal. Props hide on narrow
-screens wherever they would touch words.
+Scrolly colours (v3 cream, ink, black, orange, peach), with two exceptions she likes: the pink Who it's for and the
+black label-maker tags (Makers, Small-batch brands, Shops that ship, Handmade). Hero on cream with the orange
+headline, the mint instant camera and a wax seal by the button. The 25 Reels are one sideways-scrolling row of phones
+on black (orange arrow buttons on desktop, swipe on a phone), each with a real graphics-only frame, "N of 25", its job,
+and the soap shop and T-shirt store lines. Frames: built templates from before.mp4; 04, 06, 07, 11, 13 to 19, 21, 24,
+25 from their motion tests (still in review, so swap them when built); 05 from its older build (its motion-test frames
+show a stand-in vacuum). Sticky notes for what's included, the film strip for How it works, questions on cream, buy
+section on peach. Removed after her notes: packing box, peanuts, kitchen timer, envelope. She offered to supply better
+images.
 
 ## 4. Who it's for
 
@@ -154,7 +154,7 @@ Right-click the clip on CapCut's timeline, choose Replace, and pick another.
 ## 6. CTA
 
 > **A month of Reels, ready for your clips**
-> [PRICE] **[BUTTON: Get all 25 Reels]**
+> $17.99 **[BUTTON: Get all 25 Reels]**
 > 25 templates, shot lists and phone kits. [INSTANT DOWNLOAD or EARLY ACCESS: your call].
 > [REEL EDITOR UPSELL: one line once it has a name, link and launch date.]
 

@@ -250,95 +250,80 @@ ${notes(d)}`;
   return shell(d, HCSS, body);
 }
 
-/* ------------------------------------------------------------------ Physical: the pack's own props (Mercedes 2026-10-19: same fun as Halloween)
-   Pack palette from FRAMEWORK.md: butter #F7E6A9, wine #7A1732, pink #F9C9DF, light blue #BFD9F2. Her Halloween notes
-   apply here too: plain backgrounds behind text, props never cover words. */
+/* ------------------------------------------------------------------ Physical (Mercedes 2026-10-19, round 3): Scrolly colours (v3 cream, ink,
+   black, orange, peach) with the pink Who it's for and label-maker tags she likes; the 25 Reels scroll sideways; no box,
+   peanuts or kitchen timer (she offered to supply better images). Plain backgrounds behind text, props never cover words. */
 const PCSS = `
-.hero-p{background:#f7e6a9;padding-top:clamp(56px,7vw,110px);position:relative;overflow:hidden}
-.hero-p h1{max-width:8.5em;color:#7a1732!important}
+.hero-p{padding-top:clamp(56px,7vw,110px);position:relative;overflow:hidden}
+.hero-p h1{max-width:8.5em}
 .hero-p .s3-wrap{position:relative;z-index:2}
-.hero-p .phones{margin-top:clamp(40px,5vw,72px)}
 .prop{position:absolute;pointer-events:none;z-index:1}
-.hero-p .box{right:-40px;top:30px;width:min(420px,34vw);transform:rotate(6deg)}
-.hero-p .cam{right:30%;top:40px;width:clamp(90px,10vw,160px);transform:rotate(-12deg)}
-.peanut{position:absolute;width:clamp(30px,3vw,48px);z-index:1;animation:bob 4s ease-in-out infinite}
-@keyframes bob{0%,100%{transform:translateY(0) rotate(var(--r))}50%{transform:translateY(-14px) rotate(calc(var(--r) + 14deg))}}
-@media(prefers-reduced-motion:reduce){.peanut{animation:none}}
-@media(max-width:1199px){.hero-p .box,.hero-p .cam,.hero-p .peanut{display:none}}
+.hero-p .cam{right:6%;top:50%;width:clamp(150px,17vw,260px);transform:translateY(-50%) rotate(-10deg)}
+@media(max-width:1199px){.hero-p .cam{display:none}}
 .hero-p .seal{width:64px;transform:rotate(-10deg)}
-.blue{background:#bfd9f2}
-.reel-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:48px clamp(16px,2vw,28px);margin-top:52px}
-.rg .phone{margin-bottom:16px;border-color:#14202e}
-.rg h3{font:400 var(--s3-fs-title)/1.1 var(--s3-serif)!important;color:#7a1732!important;margin-bottom:6px}
+.reels-p{background:#090909;color:#fff}
+.reels-p h2{color:#fff!important}.reels-p .s3-lede{color:#e6e0d8}
+.reels-top{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap}
+.arrows{display:flex;gap:12px}
+.arrows button{width:56px;height:56px;border-radius:50%;border:0;background:var(--s3-orange);color:#000;font:700 1.6rem/1 var(--s3-sans);cursor:pointer}
+.arrows button:hover{background:#fff}
+.arrows button:focus-visible{outline:3px solid #fff;outline-offset:3px}
+/* the 25 Reels scroll sideways (Mercedes: "a scrolling section, not rows and rows") */
+.scroller{display:flex;gap:clamp(16px,2vw,28px);overflow-x:auto;scroll-snap-type:x mandatory;margin:44px calc(-1 * var(--s3-gut)) 0;padding:0 var(--s3-gut) 24px;scroll-padding:0 var(--s3-gut);scrollbar-color:var(--s3-orange) #2a2a2a}
+.scroller::-webkit-scrollbar{height:8px}.scroller::-webkit-scrollbar-thumb{background:var(--s3-orange);border-radius:4px}.scroller::-webkit-scrollbar-track{background:#2a2a2a;border-radius:4px}
+.rg{flex:0 0 clamp(210px,19vw,260px);scroll-snap-align:start}
+.rg .phone{margin-bottom:16px;border-color:#2a2a2a}
+.rg .num{font:700 var(--s3-fs-label)/1 var(--s3-sans);letter-spacing:.14em;color:var(--s3-orange);margin-bottom:6px}
+.rg h3{font:400 var(--s3-fs-title)/1.1 var(--s3-serif)!important;color:#fff!important;margin-bottom:6px}
+.rg p{color:#e6e0d8}
 .rg p+p{margin-top:6px}
-.rg .ex{font-size:var(--s3-fs-fine);color:#2f3a46}
-.rg .ex b{font-weight:700}
-@media(max-width:1100px){.reel-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
-@media(max-width:700px){.reel-grid{grid-template-columns:1fr 1fr;gap:36px 14px}.rg h3{font-size:1.3rem!important}}
-.list{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,290px),1fr));gap:40px 28px;margin-top:52px}
-.item{position:relative;background:url("${img('card.webp')}") center/100% 100% no-repeat;padding:34px 26px 24px;box-shadow:0 8px 18px rgba(40,50,70,.22);transform:rotate(var(--r));transition:transform .2s}
-.item:hover{transform:rotate(0) scale(1.03);z-index:2}
-.item .pinhead{position:absolute;top:10px;left:50%;width:26px;transform:translateX(-50%);filter:drop-shadow(1px 3px 2px rgba(0,0,0,.35))}
-.item h3{font:400 var(--s3-fs-title)/1.1 var(--s3-serif)!important;color:#7a1732!important;margin:10px 0 6px}
-.item p+p{margin-top:6px}
-.item .ex{font-size:var(--s3-fs-fine);color:#3d3a36}
-.item .ex b{font-weight:700}
-.pink{background:#f9c9df;position:relative;overflow:hidden}
-.pink.who-p{padding-top:calc(var(--s3-sec) + min(210px,34vw))}
-.pink .box2{top:20px;right:4%;width:min(300px,40vw);transform:rotate(-6deg)}
-.pink .shreds{top:30px;right:min(300px,42vw);width:min(150px,20vw);transform:rotate(8deg)}
-.pink .s3-wrap{position:relative;z-index:1}
+.rg .ex{font-size:var(--s3-fs-fine);color:#cfc8bf}
+.rg .ex b{font-weight:700;color:#fff}
+@media(max-width:700px){.rg{flex-basis:62vw}.arrows{display:none}}
+.pink{background:#f9c9df}
 .labels{display:flex;flex-wrap:wrap;gap:16px 18px;margin-top:28px}
 .dymo{display:inline-flex;align-items:center;height:46px;padding:0 22px;background:#111 url("${img('labeltape.webp')}") center/100% 100%;color:#fff;font:700 var(--s3-fs-ui)/1 "Courier New",monospace;letter-spacing:.14em;text-transform:uppercase;transform:rotate(var(--r));border-radius:3px}
-.wine{background:#7a1732;color:#fff;position:relative;overflow:hidden}
-.wine h2{color:#f7e6a9!important}
-.wine .s3-faq summary{color:#fff}
-.wine .s3-faq details>div{color:#f6e6ea}
-.wine .s3-faq details{border-color:rgba(255,255,255,.25)!important}
-.wine .s3-faq summary:focus-visible{outline-color:#fff}
-.wine .s3-wrap{position:relative;z-index:1}
-.wine .timer{left:var(--s3-gut);bottom:50px;width:240px;transform:rotate(-8deg)}
-.wine .env{left:calc(var(--s3-gut) + 190px);bottom:190px;width:220px;transform:rotate(10deg)}
-@media(max-width:900px){.wine{padding-bottom:280px}.wine .timer{left:10%;width:170px;bottom:40px}.wine .env{left:auto;right:8%;bottom:90px;width:170px}}
-.cta-p{background:#f7e6a9;text-align:center;position:relative;overflow:hidden}
-.cta-p h2{color:#7a1732!important;margin-bottom:8px}
+.faq-p h2{color:var(--s3-ink)!important}
+.cta-p{text-align:center;position:relative;overflow:hidden}
+.cta-p h2{margin-bottom:8px}
 .cta-p .buy{justify-content:center}
 .cta-p .s3-fine{color:#2b2a28}
 .cta-p .s3-read{position:relative;z-index:1}
-.cta-p .boxc{left:-30px;bottom:-30px;width:min(300px,22vw);transform:rotate(-6deg)}
-.cta-p .seal2{right:6%;top:40px;width:120px;transform:rotate(12deg)}
-@media(max-width:1199px){.cta-p .boxc,.cta-p .seal2{display:none}}
+.cta-p .seal2{right:8%;top:50%;width:130px;transform:translateY(-50%) rotate(12deg)}
+@media(max-width:1199px){.cta-p .seal2{display:none}}
 `;
 
-const PINS = ['blue', 'cream', 'black', 'white'];
-const RZ = [-2.5, 1.8, -1.2, 2.6, -1.8, 1.2];
+// arrow buttons scroll the row by about three phones (no "&" anywhere: WordPress mangles it in page scripts)
+const SCROLL_JS = `document.querySelectorAll('[data-scroll]').forEach(function(b){b.addEventListener('click',function(){var s=document.getElementById('reel-row');s.scrollBy({left:Number(b.dataset.scroll)*s.clientWidth*0.8,behavior:'smooth'})})})`;
+
 function physicalPage(d) {
-  // all 25 as phone previews (Mercedes 2026-10-19: one section, like the hero phones, for people to review)
+  // all 25 as phone previews in one sideways-scrolling row
   const list = d.templates.map((t, i) => `<div class="rg"><div class="phone"><img src="${img(`p${String(i + 1).padStart(2, '0')}.jpg`)}" alt="${esc(t.name)}: a frame from the template" loading="lazy"></div>
-    <h3>${esc(t.name)}</h3><p>${esc(t.job)}</p><p class="ex"><b>Soap shop:</b> ${esc(t.soap)}</p><p class="ex"><b>T-shirt store:</b> ${esc(t.tee)}</p></div>`).join('');
-  const peanuts = [[70, 4, -20], [93, 46, 30], [80, 50, 10], [97, 6, -35], [72, 40, 50]].map(([x, y, r], i) => `<img class="peanut" src="${img('peanut.webp')}" alt="" style="left:${x}%;top:${y}%;--r:${r}deg;animation-delay:-${i * 0.7}s">`).join('');
+    <p class="num">${i + 1} of 25</p><h3>${esc(t.name)}</h3><p>${esc(t.job)}</p><p class="ex"><b>Soap shop:</b> ${esc(t.soap)}</p><p class="ex"><b>T-shirt store:</b> ${esc(t.tee)}</p></div>`).join('');
   const body = `
-<section class="s3-sec hero-p"><img class="prop box" src="${img('box-open.webp')}" alt=""><img class="prop cam" src="${img('camera.webp')}" alt="">${peanuts}<div class="s3-wrap">
-  <h1 class="s3-display">${esc(d.headline)}</h1>
+<section class="s3-sec hero-p"><img class="prop cam" src="${img('camera.webp')}" alt=""><div class="s3-wrap">
+  <h1 class="s3-display or">${esc(d.headline)}</h1>
   <p class="s3-lede" style="margin-top:28px">${esc(d.sub)}</p>
   <div class="buy">${price(d)}<a class="s3-btn" href="#buy">${esc(d.button)}</a><img class="seal" src="${img('seal.webp')}" alt=""></div>
   <p class="s3-fine">${ph(d.priceLine)}</p>
 </div></section>
-<section class="s3-sec blue"><div class="s3-wrap">
-  <h2 class="s3-h2">${esc(d.getTitle)}</h2><p class="s3-lede" style="margin-top:20px">${esc(d.getLede)}</p>
-  <div class="reel-grid">${list}</div></div></section>
+<section class="s3-sec reels-p"><div class="s3-wrap">
+  <div class="reels-top"><div><h2 class="s3-h2">${esc(d.getTitle)}</h2><p class="s3-lede" style="margin-top:20px">${esc(d.getLede)}</p></div>
+  <div class="arrows"><button type="button" data-scroll="-1" aria-label="Scroll back">&#8592;</button><button type="button" data-scroll="1" aria-label="Scroll forward">&#8594;</button></div></div>
+  <div class="scroller" id="reel-row" tabindex="0" aria-label="All 25 Reel templates">${list}</div></div></section>
 ${includes(d)}
 ${howItWorks(d)}
-<section class="s3-sec pink who-p"><img class="prop box2" src="${img('box-open.webp')}" alt=""><img class="prop shreds" src="${img('peanut.webp')}" alt=""><div class="s3-wrap s3-split"><h2 class="s3-h2">Who it's for</h2><div><p class="s3-lede">${esc(d.who)}</p>
+<section class="s3-sec pink"><div class="s3-wrap s3-split"><h2 class="s3-h2">Who it's for</h2><div><p class="s3-lede">${esc(d.who)}</p>
   <div class="labels">${d.whoTags.map((t, i) => `<span class="dymo" style="--r:${[-2, 1.5, -1, 2][i % 4]}deg">${esc(t)}</span>`).join('')}</div></div></div></section>
-<section class="s3-sec wine"><img class="prop timer" src="${img('timer.webp')}" alt=""><img class="prop env" src="${img('envelope.webp')}" alt=""><div class="s3-wrap s3-split" style="align-items:start"><h2 class="s3-h2">Questions</h2>
+<section class="s3-sec faq-p"><div class="s3-wrap s3-split" style="align-items:start"><h2 class="s3-h2">Questions</h2>
   <div class="s3-faq">${d.faq.map(([q, a]) => `<details><summary>${esc(q)}</summary><div>${ph(a)}</div></details>`).join('')}</div></div></section>
-<section class="s3-sec cta-p" id="buy"><img class="prop boxc" src="${img('box-closed.webp')}" alt=""><img class="prop seal2" src="${img('seal.webp')}" alt=""><div class="s3-read">
+<section class="s3-sec peach cta-p" id="buy"><img class="prop seal2" src="${img('seal.webp')}" alt=""><div class="s3-read">
   <h2 class="s3-h2">${esc(d.ctaHead)}</h2>
   <div class="buy">${price(d)}<a class="s3-btn" href="#buy">${esc(d.button)}</a></div>
   <p class="s3-fine">${ph(d.ctaLine)}</p>
   <p class="s3-fine">${ph('[REEL EDITOR UPSELL: one line once it has a name, link and launch date]')}</p></div></section>
-${notes(d)}`;
+${notes(d)}
+<script>${SCROLL_JS}</script>`;
   return shell(d, PCSS, body);
 }
 
@@ -394,7 +379,7 @@ const physical = {
   headline: "Your month's content: DONE",
   headlines: ['Reels for the things you make, pack and ship', '25 Reels your product can star in', 'Film a few clips. Drop them in. Post a Reel that sells.', 'Collage Reels for physical products, ready for your clips'],
   sub: '25 Reel templates for shops that sell physical products. Film your product on your phone, drop the clips in, and each template opens in CapCut with your clips already in place.',
-  price: '[PRICE]',
+  price: '$17.99',
   button: 'Get all 25 Reels',
   priceLine: '25 CapCut templates, with a shot list and a phone kit for each. [INSTANT DOWNLOAD or EARLY ACCESS: your call].',
   ctaLine: '25 templates, shot lists and phone kits. [INSTANT DOWNLOAD or EARLY ACCESS: your call].',
@@ -435,7 +420,7 @@ const physical = {
   ctaHead: 'A month of Reels, ready for your clips',
   listing: "25 Reel templates for CapCut, made for shops that sell physical products: packing videos, before and afters, gift guides, unboxings, reviews, tests, new drops and more. Film a few clips on your phone, drop them in a folder and double-click the installer: the template opens in CapCut with your clips in place. Type your words over the brackets and export. Each template comes with a shot list, a recipe card, a one-page guide and a phone kit. Each one suggests a sound to add in Instagram (no sound files included).",
   decisions: [
-    'Price.',
+    'Price: $17.99 (decided 2026-10-19).',
     'Launch format: 10 of the 25 are built today (01, 02, 03, 08, 09, 10, 12, 20, 22, 23); the other 15 are in review or being built. Sell when all 25 are done, or open early with the rest as free updates?',
     '01, 02 and 03 are built in the older look and not zipped yet.',
     'Sound picks: none for the zipped templates yet.', 'Reel Editor upsell: no name, link or launch yet.',
