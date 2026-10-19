@@ -260,13 +260,21 @@ const PCSS = `
 .hero-p .phones{margin-top:clamp(40px,5vw,72px)}
 .prop{position:absolute;pointer-events:none;z-index:1}
 .hero-p .box{right:-40px;top:30px;width:min(420px,34vw);transform:rotate(6deg)}
-.hero-p .cam{right:3%;top:330px;width:clamp(90px,10vw,160px);transform:rotate(-12deg)}
+.hero-p .cam{right:30%;top:40px;width:clamp(90px,10vw,160px);transform:rotate(-12deg)}
 .peanut{position:absolute;width:clamp(30px,3vw,48px);z-index:1;animation:bob 4s ease-in-out infinite}
 @keyframes bob{0%,100%{transform:translateY(0) rotate(var(--r))}50%{transform:translateY(-14px) rotate(calc(var(--r) + 14deg))}}
 @media(prefers-reduced-motion:reduce){.peanut{animation:none}}
-@media(max-width:900px){.hero-p .box,.hero-p .cam,.hero-p .peanut{display:none}}
+@media(max-width:1199px){.hero-p .box,.hero-p .cam,.hero-p .peanut{display:none}}
 .hero-p .seal{width:64px;transform:rotate(-10deg)}
 .blue{background:#bfd9f2}
+.reel-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:48px clamp(16px,2vw,28px);margin-top:52px}
+.rg .phone{margin-bottom:16px;border-color:#14202e}
+.rg h3{font:400 var(--s3-fs-title)/1.1 var(--s3-serif)!important;color:#7a1732!important;margin-bottom:6px}
+.rg p+p{margin-top:6px}
+.rg .ex{font-size:var(--s3-fs-fine);color:#2f3a46}
+.rg .ex b{font-weight:700}
+@media(max-width:1100px){.reel-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:700px){.reel-grid{grid-template-columns:1fr 1fr;gap:36px 14px}.rg h3{font-size:1.3rem!important}}
 .list{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,290px),1fr));gap:40px 28px;margin-top:52px}
 .item{position:relative;background:url("${img('card.webp')}") center/100% 100% no-repeat;padding:34px 26px 24px;box-shadow:0 8px 18px rgba(40,50,70,.22);transform:rotate(var(--r));transition:transform .2s}
 .item:hover{transform:rotate(0) scale(1.03);z-index:2}
@@ -299,15 +307,15 @@ const PCSS = `
 .cta-p .s3-read{position:relative;z-index:1}
 .cta-p .boxc{left:-30px;bottom:-30px;width:min(300px,22vw);transform:rotate(-6deg)}
 .cta-p .seal2{right:6%;top:40px;width:120px;transform:rotate(12deg)}
-@media(max-width:900px){.cta-p .boxc,.cta-p .seal2{display:none}}
+@media(max-width:1199px){.cta-p .boxc,.cta-p .seal2{display:none}}
 `;
 
 const PINS = ['blue', 'cream', 'black', 'white'];
 const RZ = [-2.5, 1.8, -1.2, 2.6, -1.8, 1.2];
 function physicalPage(d) {
-  const phones = d.heroPhones.map(([n, poster]) => `<div><div class="phone"><img src="${img(poster)}" alt="${esc(n)}: a frame from the template"></div><p class="cap">${esc(n)}</p></div>`).join('');
-  const list = d.templates.map((t, i) => `<div class="item" style="--r:${RZ[i % RZ.length]}deg"><img class="pinhead" src="${img(`pin-${PINS[i % 4]}.webp`)}" alt=""><h3>${esc(t.name)}</h3><p>${esc(t.job)}</p>
-    <p class="ex"><b>Soap shop:</b> ${esc(t.soap)}</p><p class="ex"><b>T-shirt store:</b> ${esc(t.tee)}</p></div>`).join('');
+  // all 25 as phone previews (Mercedes 2026-10-19: one section, like the hero phones, for people to review)
+  const list = d.templates.map((t, i) => `<div class="rg"><div class="phone"><img src="${img(`p${String(i + 1).padStart(2, '0')}.jpg`)}" alt="${esc(t.name)}: a frame from the template" loading="lazy"></div>
+    <h3>${esc(t.name)}</h3><p>${esc(t.job)}</p><p class="ex"><b>Soap shop:</b> ${esc(t.soap)}</p><p class="ex"><b>T-shirt store:</b> ${esc(t.tee)}</p></div>`).join('');
   const peanuts = [[70, 4, -20], [93, 46, 30], [80, 50, 10], [97, 6, -35], [72, 40, 50]].map(([x, y, r], i) => `<img class="peanut" src="${img('peanut.webp')}" alt="" style="left:${x}%;top:${y}%;--r:${r}deg;animation-delay:-${i * 0.7}s">`).join('');
   const body = `
 <section class="s3-sec hero-p"><img class="prop box" src="${img('box-open.webp')}" alt=""><img class="prop cam" src="${img('camera.webp')}" alt="">${peanuts}<div class="s3-wrap">
@@ -315,11 +323,10 @@ function physicalPage(d) {
   <p class="s3-lede" style="margin-top:28px">${esc(d.sub)}</p>
   <div class="buy">${price(d)}<a class="s3-btn" href="#buy">${esc(d.button)}</a><img class="seal" src="${img('seal.webp')}" alt=""></div>
   <p class="s3-fine">${ph(d.priceLine)}</p>
-  <div class="phones">${phones}</div>
 </div></section>
 <section class="s3-sec blue"><div class="s3-wrap">
   <h2 class="s3-h2">${esc(d.getTitle)}</h2><p class="s3-lede" style="margin-top:20px">${esc(d.getLede)}</p>
-  <div class="list">${list}</div></div></section>
+  <div class="reel-grid">${list}</div></div></section>
 ${includes(d)}
 ${howItWorks(d)}
 <section class="s3-sec pink who-p"><img class="prop box2" src="${img('box-open.webp')}" alt=""><img class="prop shreds" src="${img('peanut.webp')}" alt=""><div class="s3-wrap s3-split"><h2 class="s3-h2">Who it's for</h2><div><p class="s3-lede">${esc(d.who)}</p>
@@ -391,7 +398,6 @@ const physical = {
   button: 'Get all 25 Reels',
   priceLine: '25 CapCut templates, with a shot list and a phone kit for each. [INSTANT DOWNLOAD or EARLY ACCESS: your call].',
   ctaLine: '25 templates, shot lists and phone kits. [INSTANT DOWNLOAD or EARLY ACCESS: your call].',
-  heroPhones: [['Pack an order with me', 'p02.jpg'], ['Before and after', 'p03.jpg'], ['Three people to gift it to', 'p10.jpg'], ['Put it to the test', 'p22.jpg'], ['Every option in 10 seconds', 'p23.jpg']],
   whoTags: ['Makers', 'Small-batch brands', 'Shops that ship', 'Handmade'],
   getTitle: '25 Reels, 25 selling jobs',
   getLede: "Real photographed props, playful collage and fast cuts. Each one ends with your product's name and where to buy it. Here's how two shops would use them.",

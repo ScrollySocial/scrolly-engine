@@ -108,9 +108,11 @@ Shown as five icons with one short line each, under the desktop screen, on a fil
 ## Page look (2026-10-19, same fun as Halloween, with the pack's own props)
 
 Palette from FRAMEWORK.md. Hero on butter with the open kraft box, mint instant camera and floating packing peanuts
-(all clear of the text), wax seal by the button, and five phones showing real frames from Pack an order, Before and
-after, Three people to gift it to, Put it to the test and Every option. The 25 templates are cream index cards pinned
-on light blue. What's included is the pinned sticky notes. How it works is the film strip. Who it's for is pink with
+(all clear of the text) and a wax seal by the button. One section on light blue shows all 25 templates as phones
+(2026-10-19: hero phones and the index cards merged), each with a real graphics-only frame, its job, and the soap shop
+and T-shirt store lines. Frames: built templates from before.mp4; 04, 06, 07, 11, 13 to 19, 21, 24, 25 from their
+motion tests (still in review, so swap them when built); 05 from its older build, because its motion-test frames show a
+stand-in vacuum. No frame shows other brands' products. What's included is the pinned sticky notes. How it works is the film strip. Who it's for is pink with
 the kraft box and black label-maker tags: Makers, Small-batch brands, Shops that ship, Handmade. Questions on wine
 with the kitchen timer and envelope. Buy section on butter with the closed box and wax seal. Props hide on narrow
 screens wherever they would touch words.
