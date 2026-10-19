@@ -18,3 +18,5 @@ one; don't fall back to a query. Fetching or updating a single page by its URL i
 Saved views in use (Content Pipeline, Scrolly Content Tracker):
 - Reels to edit (Format Reel + Status Edit, by Publish Order): view://3f9ab38f-4c58-81e3-a763-000cb6af8568
   (query: `{"mode":"view","view_url":"view://3f9ab38f-4c58-81e3-a763-000cb6af8568"}`)
+- Reel Style Board (style and editing inspiration, newest first; check before editing a Reel):
+  view://3feab38f-4c58-81f9-8429-000c8ddaa849
