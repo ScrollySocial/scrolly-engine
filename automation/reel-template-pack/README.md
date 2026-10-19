@@ -17,7 +17,7 @@ the paid-ad front door to the AI-assisted Reel Editor. Brain row: My offers, "Re
 | `build/templates/tNN.py` | One file per template: its clips, layers, keyframes and test footage |
 | `build/collage.py` | Draws every artwork element (paper, tape, Polaroids, stamps, labels, stickers, doodles) |
 | `build/installer/` | The Windows installer a buyer double-clicks |
-| `build/zip_upload.py` | Packs the upload zip: buyer folder + a `Phone kit` folder (phone READ ME, shot guide, recipe card, artwork). `python build/zip_upload.py 08 h2 ...` |
+| `build/zip_upload.py` | Packs the upload zip: buyer folder + `Shot list - what to film.txt` + a `Phone kit` folder (phone READ ME, shot list, shot guide, recipe card, artwork). Every zip, every pack, from now on. `python build/zip_upload.py 08 h2 ...` |
 | `build/style_options.py`, `build/whimsy_concepts.py` | Renderers from the style rounds (history) |
 | `NN-.../buyer-folder/` | What a buyer downloads: CapCut project, `1 Put your clips here`, `2 Double-click to install`, recipe card, guide |
 | `NN-.../phone-kit/` | Shot guide video, artwork, recipe card for CapCut on a phone (artwork has to be added by hand there) |
