@@ -905,8 +905,8 @@ SETUP['11'] = setup_11; FRAME['11'] = frame_11; SECS['11'] = 17.0; DIRS['11'] = 
 # hidden under a sheet of wine tissue and seen only through a torn peephole; a kitchen timer counts the drop in; the
 # sheet rips in two to reveal it. Calm butter-tissue stage, one burst behind a word, one ring round the date, real dates
 # only (the buyer types theirs).
-#  1 0.0  (her note) the video is full screen and the product in it is lifted onto its own layer: ONE dust cloud and
-#         new / drop land BEHIND the product on the thud; speed lines while it falls, a shake on the landing; [something new is coming]; new drop
+#  1 0.0  (her notes) the video is full screen and the product in it is lifted onto its own layer: ONE dust cloud
+#         puffs out BEHIND the product on the thud, a shake on the landing; new / drop land in front; [something new is coming]; new drop
 #  2 2.4  stage (no video): the kitchen timer winds down; dropping in / 3 2 1
 #  3 4.6  the sheet again: it rips in two and slides apart, the product full frame; finally. (one burst behind it);
 #         [PRODUCT NAME]
@@ -959,8 +959,8 @@ def setup_15():
         bl = ImageOps.grayscale(sheet_.crop((cx_ - 215, cy_ - 215, cx_ + 215, cy_ + 215))); dust = ImageOps.colorize(ImageOps.autocontrast(bl), (196, 184, 166), (250, 244, 232)).convert('RGBA')
         dust.putalpha(bl.point(lambda v: max(0, min(235, int((252 - v) * 5)))).filter(ImageFilter.GaussianBlur(6))); g['dust'].append(dust)
     g['speed'] = doodle('under', 0, 260, WINE)
-    bl = ImageOps.grayscale(sheet_.crop((380 - 215, 215 - 215, 380 + 215, 215 + 215)).convert('RGB')); dust = ImageOps.colorize(ImageOps.autocontrast(bl), (176, 168, 160), (255, 255, 253)).convert('RGBA')
-    dust.putalpha(bl.point(lambda v: max(0, min(245, int((252 - v) * 6)))).filter(ImageFilter.GaussianBlur(8))); g['dust_big'] = C.shadow(dust.resize((820, 560), Image.LANCZOS), (0, 6), 14, 40)   # one wide cloud, greyer so it shows on butter
+    bl = ImageOps.grayscale(sheet_.crop((380 - 215, 215 - 215, 380 + 215, 215 + 215)).convert('RGB')); dust = ImageOps.colorize(ImageOps.autocontrast(bl), (214, 208, 200), (255, 255, 255)).convert('RGBA')
+    dust.putalpha(bl.point(lambda v: max(0, min(250, int((253 - v) * 10)))).filter(ImageFilter.GaussianBlur(10))); g['dust_big'] = C.shadow(dust.resize((820, 560), Image.LANCZOS), (0, 6), 14, 40)   # one wide cloud, greyer so it shows on butter
     g['d_under'] = doodle('under', 0, 560, PAL['butter']); g['d_ring'] = doodle('under', 0, 340, WINE); g['d_arrow'] = doodle('arrow', 9, 220, PAL['butter'])
     return g
 
@@ -1046,14 +1046,11 @@ def drop_shot_15(g, t):
     im = Image.new('RGBA', (W, H), (0, 0, 0, 255)); im.alpha_composite(placed(v))
     if t >= LAND15:                                               # ONE dust cloud, behind the product
         q = seg(t, LAND15, LAND15 + 1.0)
-        if q < 1: put(im, g['dust_big'], (540, 1050 - 200 * ease(q)), 0.9 + 1.4 * ease(q), 0, min(1, 2.0 * (1 - q)) ** 1.1)
-    for word, xw, t0 in (('new', 255, 0.0), ('drop', 785, 0.05)):   # new / drop fall and land behind the product
-        k = back_out(seg(t, t0, LAND15), 1.4); put(im, g['drop_w'][word], (xw, lerp(300, 900, k)), 1.0, (-4, 3)[word == 'drop'])
-    if m is not None:                                             # the product, cut out of the same frame, on top
+        if q < 1: put(im, g['dust_big'], (540, 780 - 160 * ease(q)), 0.9 + 1.3 * ease(q), 0, min(1, 2.0 * (1 - q)) ** 1.1)
+    if m is not None:                                             # the product, cut out of the same frame, on top of the dust
         sub = v.copy(); sub.putalpha(m); im.alpha_composite(placed(sub))
-    if t < LAND15 + 0.05:
-        for i, dx in enumerate((-160, 0, 160)):
-            put(im, g['speed'], (540 + dx, 260 + 300 * seg(t, 0, LAND15) - (i % 2) * 70), 1, 90, 1 - seg(t, LAND15 - 0.08, LAND15 + 0.05))
+    for word, xw, t0 in (('new', 255, 0.0), ('drop', 785, 0.05)):   # new / drop fall and land in FRONT (her note), no speed lines
+        k = back_out(seg(t, t0, LAND15), 1.4); put(im, g['drop_w'][word], (xw, lerp(250, 520, k)), 1.0, (-4, 3)[word == 'drop'])
     return im
 
 def frame_15(g, t):
