@@ -905,8 +905,8 @@ SETUP['11'] = setup_11; FRAME['11'] = frame_11; SECS['11'] = 17.0; DIRS['11'] = 
 # hidden under a sheet of wine tissue and seen only through a torn peephole; a kitchen timer counts the drop in; the
 # sheet rips in two to reveal it. Calm butter-tissue stage, one burst behind a word, one ring round the date, real dates
 # only (the buyer types theirs).
-#  1 0.0  the hook is in the buyer's own video (her idea): their boxed product drops onto a table; speed lines, a camera
-#         shake on the landing and dust puffs sell the fall; new / drop fall in and land on the same thud; [something new is coming]; new drop
+#  1 0.0  something drops (her idea): the product video drops onto the stage as a card, speed lines while it falls, a
+#         shake and ONE soft dust cloud behind it on the landing; new / drop fall in and land on the same thud; [something new is coming]; new drop
 #  2 2.4  stage (no video): the kitchen timer winds down; dropping in / 3 2 1
 #  3 4.6  the sheet again: it rips in two and slides apart, the product full frame; finally. (one burst behind it);
 #         [PRODUCT NAME]
@@ -956,7 +956,9 @@ def setup_15():
     for cx_, cy_ in ((380, 215), (870, 215), (380, 610), (870, 610), (380, 1000), (870, 1000)):   # her watercolour blobs as soft dust
         bl = ImageOps.grayscale(sheet_.crop((cx_ - 215, cy_ - 215, cx_ + 215, cy_ + 215))); dust = ImageOps.colorize(ImageOps.autocontrast(bl), (196, 184, 166), (250, 244, 232)).convert('RGBA')
         dust.putalpha(bl.point(lambda v: max(0, min(235, int((252 - v) * 5)))).filter(ImageFilter.GaussianBlur(6))); g['dust'].append(dust)
-    g['speed'] = doodle('under', 0, 260, WHITE)
+    g['speed'] = doodle('under', 0, 260, WINE)
+    bl = ImageOps.grayscale(sheet_.crop((380 - 215, 215 - 215, 380 + 215, 215 + 215)).convert('RGB')); dust = ImageOps.colorize(ImageOps.autocontrast(bl), (176, 168, 160), (255, 255, 253)).convert('RGBA')
+    dust.putalpha(bl.point(lambda v: max(0, min(245, int((252 - v) * 6)))).filter(ImageFilter.GaussianBlur(8))); g['dust_big'] = C.shadow(dust.resize((820, 560), Image.LANCZOS), (0, 6), 14, 40)   # one wide cloud, greyer so it shows on butter
     g['d_under'] = doodle('under', 0, 560, PAL['butter']); g['d_ring'] = doodle('under', 0, 340, WINE); g['d_arrow'] = doodle('arrow', 9, 220, PAL['butter'])
     return g
 
@@ -1020,20 +1022,18 @@ def stage_date_15(g, t):
 LAND15 = 0.45                                                     # when the drop lands (the shot guide asks buyers to match it)
 
 def drop_shot_15(g, t):
-    """1: the drop: speed lines above the landing point while it falls, a camera shake on the landing, dust puffs that
-    burst out sideways along the table and fade."""
-    v = g['c']['drop'].at(t); fall = back_out(seg(t, 0.0, LAND15), 1.25)
-    shake = 22 * math.exp(-(t - LAND15) * 8) * math.sin((t - LAND15) * 48) if t > LAND15 else 0
-    z = lerp(1.38, 1.05, fall); vw, vh = int(W * z), int(H * z); v = ImageOps.fit(v, (vw, vh))
-    x0 = max(W - vw, min(0, int((W - vw) / 2 + shake))); y0 = max(H - vh, min(0, int((H - vh) / 2 - 300 * (1 - fall) + shake * 0.5)))   # always covers the frame
-    im = Image.new('RGBA', (W, H), (0, 0, 0, 255)); im.alpha_composite(v, (x0, y0))
-    if t < LAND15 + 0.05:                                         # speed lines: three single strokes riding the fall
-        for i, dx in enumerate((-150, 0, 150)):
-            y = lerp(300, 820, seg(t, 0.0, LAND15)) - (i % 2) * 80; put(im, g['speed'], (540 + dx, y), 1, 90, 1 - seg(t, LAND15 - 0.08, LAND15 + 0.05))
-    if t >= LAND15:                                               # dust puffs along the table on the landing
-        for i, (dx, dy, sc0) in enumerate(((-330, 10, 1.0), (330, 0, 1.05), (-180, -30, 0.8), (190, -40, 0.85), (-470, 30, 0.75), (470, 30, 0.75))):
-            q = seg(t, LAND15 + 0.02 * i, LAND15 + 0.85 + 0.02 * i)
-            if 0 < q < 1: put(im, g['dust'][i % len(g['dust'])], (540 + dx * (0.45 + 0.9 * q), 1480 + dy * (0.5 + q) - 90 * q), sc0 * (0.6 + 1.0 * q), i * 40 + 30 * q, min(1, 1.6 * (1 - q)) ** 1.2)
+    """1: the product video (just the product) drops onto the stage as a card and lands with a thud: speed lines while
+    it falls, a shake on the landing, and ONE soft dust cloud puffing out from behind it (her notes)."""
+    im = g['stage'].copy(); fall = back_out(seg(t, 0.0, LAND15), 1.25)
+    shake = 16 * math.exp(-(t - LAND15) * 8) * math.sin((t - LAND15) * 48) if t > LAND15 else 0
+    cy = lerp(380, 1150, fall)   # already falling, in view, on frame 1
+    if t >= LAND15:                                               # one dust cloud, behind the card, from its base
+        q = seg(t, LAND15, LAND15 + 1.0)
+        if q < 1: put(im, g['dust_big'], (540, 1520 - 260 * ease(q)), 0.8 + 1.4 * ease(q), 0, min(1, 2.0 * (1 - q)) ** 1.1)
+    v = g['c']['prod'].at(t); put(im, card(v, 720, 900, 18), (540 + shake, cy + shake * 0.5), 1, -2)
+    if t < LAND15 + 0.05:                                         # speed lines riding the fall, above the card
+        for i, dx in enumerate((-160, 0, 160)):
+            put(im, g['speed'], (540 + dx, cy - 560 - (i % 2) * 70), 1, 90, 1 - seg(t, LAND15 - 0.08, LAND15 + 0.05))
     return im
 
 def frame_15(g, t):
@@ -1044,7 +1044,7 @@ def frame_15(g, t):
         # the landing and puffs of dust. The stand-in fakes the fall by dropping the frame in.
         im = drop_shot_15(g, t)
         for word, x0, t0 in (('new', 255, 0.0), ('drop', 735, 0.05)):   # the words fall with it and land on the same thud
-            k = back_out(seg(t, t0, LAND15), 1.4); put(im, g['drop_w'][word], (x0, lerp(-120, 480, k)), 1, (-4, 3)[word == 'drop'])
+            k = back_out(seg(t, t0, LAND15), 1.4); put(im, g['drop_w'][word], (x0, lerp(150, 480, k)), 1, (-4, 3)[word == 'drop'])
         pop(im, g['hook'], t, 0.7, (540, 270), -2); doodle_on(im, t, 0.8, g['d_under'], (540, 630), -2)
         if t > 2.1: im = swipe(im, stage_count_15(g, t), seg(t, 2.1, 2.4))
         return im
@@ -1056,9 +1056,6 @@ def frame_15(g, t):
         base = c['prod'].at(t - 4.6 + 2.4); u = seg(t, 4.9, 5.35); z = lerp(1.15, 1.0, ease(seg(t, 4.95, 5.6)))
         if t >= 4.9 and z > 1.001: base = ImageOps.fit(base, (int(W * z), int(H * z))).crop((int((W * z - W) / 2), int((H * z - H) / 2), int((W * z - W) / 2) + W, int((H * z - H) / 2) + H))
         im = covered(g, t, base) if t < 4.9 else (rip(g, t, base, u) if u < 1 else base.copy())
-        for k, sc_ in enumerate(g['scraps']):   # the scraps fly off the tear
-            q = seg(t, 4.92 + (k % 4) * 0.02, 5.7)
-            if 0 < q < 1: a_ = -math.pi / 2 + (k - 5.5) * 0.27; put(im, sc_, (540 + 900 * q * math.cos(a_), 1100 + 900 * q * math.sin(a_) + 1300 * q * q), 1, k * 50 + 400 * q)
         fl = 1 - seg(t, 4.95, 5.15)
         if t >= 4.95 and fl > 0: im = Image.blend(im, Image.new('RGBA', (W, H), (255, 255, 255, 255)), 0.55 * fl)   # a quick flash on the rip
         if t >= 5.7: put(im, g['burst'], (540, 600), 0.9 + 0.1 * back_out(seg(t, 5.7, 6.0), 1.5))   # behind the name box: no ray crosses a letter
