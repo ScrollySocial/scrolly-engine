@@ -407,6 +407,11 @@ More from her (2026-10-17; images in the shared library, any pack can use them; 
   spins and the rim cut-outs ride round with it; it stops with the next hole at the top and the camera zooms into
   that hole until its clip fills the screen. The rim cut-outs can be the buyer's products (themes: "behind the
   scenes", "every option", "the making of"). Sibling of the wheel of videos below.
+- **Gloved arm opens the curtain (2026-10-19):** a full-screen pale satin curtain (her reference: powder blue) and
+  one arm in a long glove of a strong contrasting colour (red leather) reaching through the gap from the side. In
+  motion: the arm comes through, grabs the fold and pulls the curtain aside, revealing the buyer's clip behind it.
+  A reveal opener or a "new drop" moment (fits #15 New drop reveal). Pick the glove colour to contrast with the
+  curtain. Reference image not saved yet: it should go in `assets/references/curtain-glove.jpg`.
 
 - **Wheel or pie of videos:** a round wheel (or pie) cut into a few slices (fewer than a Wheel of Fortune, about 3
   to 6), each slice playing its own clip. The whole wheel rotates to bring the next slice up. It can carry one
