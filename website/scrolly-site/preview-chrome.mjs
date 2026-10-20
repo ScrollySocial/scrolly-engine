@@ -26,7 +26,7 @@ async function live(urlPath) {
   return html;
 }
 // art: WP upload URL -> local file (relative to dist/)
-const localArt = (s) => s.replace(/https:\/\/scrollyseo\.com\/wp-content\/uploads\/\d{4}\/\d{2}\/(?:scrolly-)?((?:ftr-(?:sky|strips|stars)|earned-(?:phone|desktop)-(?:sky|clouds|strips))\.webp)/g, (m, f) => (fs.existsSync(path.join(here, 'assets', f)) ? '../assets/' + f : m));
+const localArt = (s) => s.replace(/https:\/\/scrollyseo\.com\/wp-content\/uploads\/\d{4}\/\d{2}\/(?:scrolly-)?((?:ftr-(?:sky|strips|stars)|earned-(?:phone|desktop)-(?:sky|clouds|strips)|shirt-1k-graphite-front-cut-clean)\.webp)/g, (m, f) => (fs.existsSync(path.join(here, 'assets', f)) ? '../assets/' + f : m));
 const css = localArt(['v3.css', 'chrome.css', 'k1-account.css'].map((f) => R('chrome', f)).join('\n'));
 const js = localArt(R('chrome', 'chrome.js'));
 const STYLE = `<style id="scxg-css">${css}</style>`;

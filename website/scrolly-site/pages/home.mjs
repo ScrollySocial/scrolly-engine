@@ -35,7 +35,8 @@ const doodle = (amt) => { const d = DOODLES[amt]; return d ? `<svg class="dd" vi
 
 // Earned band art (Mercedes 2026-10-20): a daytime torn-paper collage sky in three transparent layers, bottom to top (sky, clouds,
 // strips), with the cut-out shirt on top (made from mockups/rebrand-2026-10/shirt-background-prompt.md). Desktop = landscape 1448x1086
-// layers, phone = portrait 1024x1536 layers; files assets/earned-{desktop,phone}-*.webp. Upload them with `node upload-media.mjs <file>`
+// layers, phone = portrait 1024x1536 layers; files assets/earned-{desktop,phone}-*.webp. The shirt is shirt-1k-graphite-front-cut-clean.webp
+// (the cut-out with its pale haze removed, so no light box shows on the blue art). Upload them with `node upload-media.mjs <file>`
 // before publishing; until then the URL is the expected upload path (preview-chrome.mjs swaps in the local file).
 const EARNED_ART = ['sky', 'clouds', 'strips'];
 const MEDIA = JSON.parse(fs.readFileSync(path.join(here, '..', 'media-map.json'), 'utf8'));
@@ -119,7 +120,7 @@ export function build() {
   <nav class="tabs" aria-label="Challenges"><a href="/1k-club/#join">$1K Club</a><a href="/10k-club/">$10K Club</a><a href="/24k-club/">$24K Club</a></nav>
  </div>
  <!-- 2026-10-10: the graphite winner shirt (Printify) replaced the teal one; same shirt as /1k-club/. -->
- <div class="shot-col">${pic('shirt-1k-graphite-front-cut.webp', 'The graphite $1K Club winner shirt: a white line tiger above The $1k Club and Earn your stripes.', 'cut', ' loading="lazy"')}</div>
+ <div class="shot-col"><img class="cut" src="${artUrl('shirt-1k-graphite-front-cut-clean.webp')}" alt="The graphite $1K Club winner shirt: a white line tiger above The $1k Club and Earn your stripes." width="1553" height="1594" loading="lazy"></div>
 </div></section>
 
 ${quotes()}
