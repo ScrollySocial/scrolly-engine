@@ -281,3 +281,9 @@ Each template's full shot list is in its zip. Also film the how-to video for sec
 |---|---|---|
 | Soap shop | Before and after, Pack an order with me, Every option in 10 seconds, What it feels like, Put it to the test | Bars in several scents, a gift box, paper wrap, a dish |
 | T-shirt store | One product, three ways, Your order just arrived, A or B?, Three people to gift it to, Start to finish | Tees in a few colours, mailers, a hanger, a thank-you note |
+
+## Store products (2026-10-20)
+- Halloween Reel Template Pack: WooCommerce product 1498, LIVE at scrollyseo.com/product/halloween-reel-template-pack/,
+  $4.99, 4 downloads (h6, h3, h2, h5 zips uploaded as media 1493-1495, 1497), image media 1496.
+- Product Reel Template Pack: product 1500, DRAFT, $17.99, image media 1499, no downloads yet. To go live: attach the
+  finished zips (after the covers step re-zips them), replace [N] in the description with the real count, publish.
