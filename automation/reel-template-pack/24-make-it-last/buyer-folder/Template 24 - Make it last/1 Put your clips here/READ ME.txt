@@ -1,0 +1,10 @@
+Put your clips in this folder, then double-click "2 Double-click to install".
+
+They go into the template in name order, so name them 1 to 5 (for example 1.mov, 2.mov).
+Film upright (vertical) and start each clip right on the action.
+
+1: Your product (at least 3 seconds)
+2: Care tip 1 (at least 3 seconds)
+3: Care tip 2 (at least 3 seconds)
+4: After long use (at least 3 seconds)
+5: The end (at least 3 seconds)

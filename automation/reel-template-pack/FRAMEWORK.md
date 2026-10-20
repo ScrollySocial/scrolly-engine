@@ -639,3 +639,22 @@ Scrolly brand colours and Scrolly-only parts (destinations, the ManyChat switch,
   2; the 3/3 seal sits in the clipboard corner clear of the words.
 - **#24 Make it last round 2 (calendar): APPROVED** ("ok, fine", 2026-10-19). CapCut build: build/templates/t24.py.
   Every approved template (01-25 except none pending) now has a CapCut build and a for-upload zip.
+
+## Fully editable CapCut builds (Mercedes, 2026-10-20, testing #24 in CapCut)
+Her notes: the flipbook builds (capcut_b2b.py) are "a video recording of the animations", so buyers can't change the
+background or element colours ("not good for their personal branding"), the built-in words are baked in, and only the
+[bracket] words can be edited. **Rule: like the Canva templates, buyers can change every word (font, colour, outline),
+the colours of the overlays and the background** (pattern-filled Halloween lettering may stay artwork). Clip slots ship
+as numbered placeholder cards ("CLIP 2 ... Replace me with your clip"), not green screen. CapCut project names start
+with the number ("24 Make it last"), because CapCut's home screen cuts names off after a few letters.
+How (build/editable.py, prototype build/templates/t24.py; `make.py` uses it for any template with a STAGE colour):
+- Built-in words: DM Serif Display text layers (bundled, last word Italic as a second style range), thin outline, shadow.
+- Doodles: **Scrolly Doodles** font (build/doodle_font.py traces all 104 doodles on her marker sheets; letter map in
+  assets/fonts/scrolly-doodles-sheet.png). A doodle is a one-letter text layer: recolour, outline, opacity in CapCut.
+- Stage colour: CapCut's Background > Colour on the main track, under a colourless paper-grain layer (editable.grain).
+- Real objects (calendar page, smartwatch) are photos moving on CapCut keyframes; a device screen is a hole with the clip
+  layer under it. Nothing is a recording of the whole screen.
+- CapCut limit: text layers always sit above pictures, so a burst BEHIND an object stays a picture (recolour with
+  Adjust > HSL), and a full-screen tear can't take the background colour with it.
+- #24 rebuilt this way and installed as "24 Make it last" for her test; the other 21 flipbook templates (04-25) wait for
+  her OK on #24.
