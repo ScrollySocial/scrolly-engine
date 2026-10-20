@@ -88,7 +88,6 @@ body:has(.hp){margin:0;background:#f7f3ec}
 
 /* earned (challenge shirt) */
 /* Earned band: off-white like the page (Mercedes 2026-10-20: "not on a navy background"); "They’re earned." is navy on the sky marker */
-.hp-earned{padding:clamp(56px,6vw,112px) 0}
 .hp-earned .wrap{display:grid;grid-template-columns:1fr 1fr;align-items:center}
 .hp-earned .copy{padding:50px 3vw 70px 0}
 .hp-earned h2{font:400 clamp(2.2rem,2.8vw,3.8rem)/1.05 var(--serif);margin:0 0 26px;letter-spacing:-.01em}
@@ -98,11 +97,21 @@ body:has(.hp){margin:0;background:#f7f3ec}
 .hp-earned .tabs a{display:inline-flex;align-items:flex-end;min-height:44px;font-size:.9375rem;font-weight:800;letter-spacing:.18em;text-transform:uppercase;border-bottom:3px solid var(--sky);padding-bottom:8px}
 .hp-earned .tabs a:hover{border-bottom-color:var(--ink)}
 .hp-earned .shot{width:100%;height:clamp(420px,34vw,640px);object-fit:cover;border-radius:6px}
-/* collage art behind the cut-out shirt: three stacked transparent layers (portrait 2:3, contained, never cropped; the art has its own
-   torn cream edges, so no radius or box), shirt centred at 72% width, a little above the middle like the art direction */
-.hp-earned .shot-slot{position:relative;justify-self:center;width:auto;height:clamp(460px,40vw,700px);aspect-ratio:2/3;max-width:100%}
-.hp-earned .shot-slot .layer{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}
-.hp-earned .shot-slot .cut{position:absolute;left:50%;top:45%;width:72%;height:auto;transform:translate(-50%,-50%)}
+/* full-bleed collage behind the band (Mercedes 2026-10-20): the layers run wider than the section so their torn SIDE edges are always
+   off-screen; the torn top edge meets the page, the mountain strip and its torn bottom edge run along the bottom. Desktop: copy on the left
+   over the pale sky (navy on #b9d5f2-ish sky passes easily), cut-out shirt on the right. */
+.hp-earned{position:relative;overflow:hidden;padding:0}
+.hp-earned .earned-art{position:absolute;inset:0;z-index:0}
+/* desktop: the portrait layers are cropped to their calm lower-middle sky (behind the copy), so the cut top gets a torn edge from the
+   footer art's tear (its alpha) as a mask; landscape layers will replace this */
+.hp-earned .earned-art .top{position:absolute;top:0;left:0;right:0;bottom:56px;overflow:hidden;-webkit-mask:var(--tear) top center/max(100%,1150px) auto no-repeat,linear-gradient(#000,#000) bottom/100% calc(100% - max(100vw,1150px) * .5) no-repeat;mask:var(--tear) top center/max(100%,1150px) auto no-repeat,linear-gradient(#000,#000) bottom/100% calc(100% - max(100vw,1150px) * .5) no-repeat}
+.hp-earned .earned-art .l{position:absolute;top:-88vw;left:50%;width:112%;max-width:none;height:auto;transform:translateX(-50%)}
+.hp-earned .earned-art .strips{display:none}
+/* the mountain strip runs full width along the bottom, flattened to a gentler height than the full-size layer would give */
+.hp-earned .earned-art::after{content:"";position:absolute;left:0;right:0;bottom:0;height:330px;background:var(--strips) center bottom/112% 1100px no-repeat}
+.hp-earned .wrap{position:relative;z-index:1;min-height:clamp(720px,58vw,940px);padding:clamp(72px,7vw,120px) 0 280px}
+.hp-earned .shot-col{display:flex;justify-content:center}
+.hp-earned .shot-col .cut{width:min(72%,520px);height:auto}
 
 /* testimonials (renders only when real quotes exist in pages/home.mjs) */
 .hp-quotes{padding:70px 0 78px;text-align:center}
@@ -175,7 +184,17 @@ body:has(.hp){margin:0;background:#f7f3ec}
  .hp-club{padding:32px 0}
  .hp-res .grid{gap:40px}
  .hp-earned .shot{height:320px}
- .hp-earned .shot-slot{height:auto;width:100%}
+ /* phone + tablet: copy on off-white, then the art full-bleed at 114% width (side tears off-screen) with the shirt centred on it */
+ .hp-earned{display:grid;grid-template-columns:100%;padding-top:clamp(48px,8vw,80px)}
+ .hp-earned .wrap{display:contents}
+ .hp-earned .copy{grid-row:1;padding:0 var(--gut) 28px}
+ .hp-earned .earned-art{position:relative;inset:auto;grid-row:2;grid-column:1;aspect-ratio:1/1.71}
+ .hp-earned .earned-art .top{inset:0;-webkit-mask:none;mask:none}
+ .hp-earned .earned-art .l{width:114%;top:0}
+ .hp-earned .earned-art .strips{display:block}
+ .hp-earned .earned-art::after{display:none}
+ .hp-earned .shot-col{grid-row:2;grid-column:1;position:relative;z-index:1;align-self:start;margin-top:37%}
+ .hp-earned .shot-col .cut{width:78%}
  .hp-earned .tabs{gap:0 26px}
  .hp-quotes .row{grid-template-columns:44px 1fr 44px;gap:10px}
  .hp-merch .shot{height:240px}

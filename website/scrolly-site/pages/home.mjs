@@ -35,7 +35,8 @@ const doodle = (amt) => { const d = DOODLES[amt]; return d ? `<svg class="dd" vi
 
 // Earned band art (Mercedes 2026-10-20): a daytime torn-paper collage sky in three transparent layers, bottom to top, with the cut-out
 // shirt on top at ~72% width (made from mockups/rebrand-2026-10/shirt-background-prompt.md). Only the phone (portrait 1024x1536) layers
-// exist so far; desktop shows them too, contained, until landscape layers arrive. Files: assets/earned-phone-*.webp. Upload them with
+// exist so far. The art is full-bleed so its torn SIDE edges never show (Mercedes 2026-10-20); desktop uses these layers, cropped at
+// the sides, until a landscape version without side tears arrives. Files: assets/earned-phone-*.webp. Upload them with
 // `node upload-media.mjs <file>` before publishing; until then the URL is the expected upload path (preview-chrome.mjs swaps in the
 // local file).
 const EARNED_ART = ['earned-phone-sky.webp', 'earned-phone-clouds.webp', 'earned-phone-strips.webp'];
@@ -113,14 +114,14 @@ export function build() {
  </div>
 </div></section>
 
-<section class="hp-earned" id="earned"><div class="wrap">
+<section class="hp-earned" id="earned"><div class="earned-art" aria-hidden="true" style="--strips:url('${artUrl(EARNED_ART[2])}');--tear:url('https://scrollyseo.com/wp-content/uploads/2026/10/ftr-sky.webp')"><div class="top">${EARNED_ART.slice(0, 2).map((n) => `<img class="l" src="${artUrl(n)}" alt="" width="1024" height="1536" loading="lazy">`).join('')}</div><img class="l strips" src="${artUrl(EARNED_ART[2])}" alt="" width="1024" height="1536" loading="lazy"></div><div class="wrap">
  <div class="copy">
   <h2><span>Some things can’t be bought.</span> <span><em class="or">They’re earned.</em></span></h2>
   <p>Reach your verified Challenge goal and earn the exclusive Club T-shirt.</p>
   <nav class="tabs" aria-label="Challenges"><a href="/1k-club/#join">$1K Club</a><a href="/10k-club/">$10K Club</a><a href="/24k-club/">$24K Club</a></nav>
  </div>
  <!-- 2026-10-10: the graphite winner shirt (Printify) replaced the teal one; same shirt as /1k-club/. -->
- <div class="shot-slot">${EARNED_ART.map((n) => `<img class="layer" src="${artUrl(n)}" alt="" width="1024" height="1536" loading="lazy">`).join('')}${pic('shirt-1k-graphite-front-cut.webp', 'The graphite $1K Club winner shirt: a white line tiger above The $1k Club and Earn your stripes.', 'cut', ' loading="lazy"')}</div>
+ <div class="shot-col">${pic('shirt-1k-graphite-front-cut.webp', 'The graphite $1K Club winner shirt: a white line tiger above The $1k Club and Earn your stripes.', 'cut', ' loading="lazy"')}</div>
 </div></section>
 
 ${quotes()}
