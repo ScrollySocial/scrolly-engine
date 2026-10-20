@@ -181,17 +181,25 @@ body:has(.hp){margin:0;background:#f7f3ec}
    (<picture> swaps them at 901px). */
 .hp-earned .earned-art img{display:block;position:absolute;top:0;left:50%;max-width:none;height:auto;transform:translateX(-50%)}
 @media(min-width:901px){
- /* the deep-blue desktop card's torn sides run ~60-80px deep, so it needs 114% width to keep them off-screen; height follows */
- .hp-earned{position:relative;overflow:hidden;padding:0;aspect-ratio:1448/1238}
+ /* Desktop = three slices so the copy and shirt set the height (Mercedes 2026-10-20: "can this be narrower"), not the 4:3 art.
+    The card is drawn 114% wide (its torn sides run 60-80px deep, so they stay off-screen); --ah is its drawn height.
+    Top: the card + stars drawn from the top (torn top edge, stars, swirl band = top 27%), clipped above the bottom slice.
+    Bottom: the same layers drawn from the bottom (the card's torn bottom + strips = bottom 16%), fading in over 30px of plain paper.
+    Behind both: the card's middle blue (#155db1), so the white copy is readable before the art loads. */
+ .hp-earned{--ah:calc(114vw * .75);position:relative;overflow:hidden;padding:0}
  .hp-earned .earned-art{position:absolute;inset:0;z-index:0}
+ .hp-earned .earned-art::before{content:"";position:absolute;left:0;right:0;top:calc(var(--ah) * .27);bottom:calc(var(--ah) * .08);background:#155db1}
  .hp-earned .earned-art img{width:114%}
- /* the card's own blue painted under the art where the card is solid (27% to 92% of its height), so the white copy is readable before
-    the images load; torn top and bottom stay transparent. Same colour as the card, so nothing changes when the art arrives. */
- .hp-earned .earned-art::before{content:"";position:absolute;left:0;right:0;top:27%;bottom:8%;background:#165eb3}
- .hp-earned .wrap{position:absolute;inset:0;z-index:1;width:auto;margin:0;display:block}
- /* copy on the deep blue card (#165eb3): WHITE text (white 6.7:1, navy would be 2.6:1), no sky marker (it would vanish on this blue),
+ .hp-earned .e-top{position:absolute;top:0;left:0;right:0;bottom:calc(var(--ah) * .16 - 30px);overflow:hidden}
+ .hp-earned .e-bot{position:absolute;left:0;right:0;bottom:0;height:calc(var(--ah) * .16 + 30px);overflow:hidden;-webkit-mask:linear-gradient(transparent,#000 30px);mask:linear-gradient(transparent,#000 30px)}
+ .hp-earned .e-bot img{top:auto;bottom:0}
+ /* copy close beside the shirt, on plain blue between the swirl band (top 26%) and the bottom slice; the bottom padding reserves the
+    bottom slice so the copy never reaches the strips, while the shirt may overlap both bands */
+ .hp-earned .wrap{position:relative;z-index:1;display:grid;grid-template-columns:minmax(0,460px) auto;justify-content:center;align-items:start;column-gap:clamp(40px,5vw,96px);padding:calc(var(--ah) * .12) 0 calc(var(--ah) * .16 + 8px)}
+ .hp-earned .copy{margin-top:calc(var(--ah) * .14);padding:0;color:#fff}
+ .hp-earned .shot-col{margin-bottom:calc(var(--ah) * -.1)}
+ /* copy on the deep blue card: WHITE text (white 6.7:1, navy would be 2.6:1), no sky marker (it would vanish on this blue),
     "They're earned." white italic with a thin cream underline, tab underlines cream */
- .hp-earned .copy{position:absolute;left:9%;top:52%;width:40%;padding:0;transform:translateY(-50%);color:#fff}
  .hp-earned .copy h2{color:#fff!important}
  .hp-earned .copy .or{color:#fff;background:none;padding:0;text-decoration:underline;text-decoration-color:#f7f3ec;text-decoration-thickness:2px;text-underline-offset:8px}
  .hp-earned .copy .tabs a{border-bottom-color:#f7f3ec}
@@ -200,9 +208,7 @@ body:has(.hp){margin:0;background:#f7f3ec}
  .hp-earned h2{font-size:clamp(2rem,2.6vw,3.4rem)}
  .hp-earned h2 span{display:block;white-space:nowrap}
  .hp-earned p{max-width:none}
- /* cut-out shirt on the right, 55% of the art's height, centred in the calm sky */
- .hp-earned .shot-col{position:absolute;right:8%;top:53%;height:56%;transform:translateY(-50%)}
- .hp-earned .shot-col .cut{display:block;width:auto;height:100%}
+ .hp-earned .shot-col .cut{display:block;width:auto;height:clamp(400px,34vw,540px)}
 }
 @media(max-width:900px){
  /* phone + tablet: copy on plain off-white, then the art full-bleed with the shirt centred on it */
@@ -211,6 +217,8 @@ body:has(.hp){margin:0;background:#f7f3ec}
  .hp-earned .copy{grid-row:1;padding:0 var(--gut) 28px}
  .hp-earned .earned-art{position:relative;grid-row:2;grid-column:1;aspect-ratio:1/1.68;overflow:hidden}
  .hp-earned .earned-art img{width:112%}
+ .hp-earned .e-top{position:absolute;inset:0}
+ .hp-earned .e-bot{display:none}
  .hp-earned .shot-col{grid-row:2;grid-column:1;position:relative;z-index:1;align-self:start;justify-self:center;width:78%;margin-top:36%}
  .hp-earned .shot-col .cut{display:block;width:100%;height:auto}
 }
