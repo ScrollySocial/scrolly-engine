@@ -43,7 +43,7 @@ mark.ph{background:#ffd9c9;color:var(--s3-ink);padding:0 4px;border-radius:3px}
 @media(max-width:800px){.phones{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:10px;margin-right:calc(-1 * var(--s3-gut))}
  .phones>*{flex:0 0 58%;scroll-snap-align:start}}
 /* How it works: a strip of film with the how-to video on a desktop screen (Mercedes 2026-10-19) */
-.film{background:var(--s3-navy);color:#fff;position:relative;padding:calc(var(--s3-sec) * .6 + 34px) 0}
+.film{background:var(--s3-navy);color:#fff;position:relative;padding:calc(var(--s3-sec) * .5 + 32px) 0}
 .film::before,.film::after{content:"";position:absolute;left:0;right:0;height:34px;
  background:var(--s3-navy);
  background-image:repeating-linear-gradient(90deg,transparent 0 14px,#f7f3ec 14px 34px,transparent 34px 48px);
@@ -51,22 +51,25 @@ mark.ph{background:#ffd9c9;color:var(--s3-ink);padding:0 4px;border-radius:3px}
 .film::before{top:10px}.film::after{bottom:10px}
 .film h2{color:#fff!important;text-align:center}
 .monitor{max-width:900px;margin:40px auto 0}
-.screen{aspect-ratio:16/9;border:14px solid #2b2b2b;border-bottom-width:30px;border-radius:16px;background:#000;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;text-align:center;padding:24px;box-shadow:0 0 0 1px #3a3a3a}
+/* a realistic desktop: thin black glass bezel, silver aluminium chin and stand, a soft glare on the glass */
+.screen{position:relative;aspect-ratio:16/9;border:9px solid #0c0c0c;border-bottom:0;border-radius:14px 14px 0 0;background:radial-gradient(120% 90% at 50% 40%,#1b1d22,#050506);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;text-align:center;padding:24px;box-shadow:0 0 0 1px #3d4148}
+.screen::before{content:"";position:absolute;inset:0;background:linear-gradient(118deg,rgba(255,255,255,.09) 0 34%,transparent 34.2%);pointer-events:none}
+.screen::after{content:"";position:absolute;left:-10px;right:-10px;bottom:-40px;height:40px;border-radius:0 0 14px 14px;background:linear-gradient(#e9ebee,#c4c8cd);box-shadow:0 0 0 1px #9aa0a7 inset}
 .screen .play{width:76px;height:76px;border-radius:50%;background:var(--s3-orange);display:flex;align-items:center;justify-content:center}
 .screen .play::after{content:"";border-left:24px solid #000;border-top:15px solid transparent;border-bottom:15px solid transparent;margin-left:6px}
 .screen p{font:var(--s3-fs-fine)/1.4 var(--s3-sans);color:#d8d3cc;max-width:30em}
-.stand{width:18%;height:56px;margin:0 auto;background:linear-gradient(#3a3a3a,#262626);clip-path:polygon(22% 0,78% 0,100% 100%,0 100%)}
-.base{width:34%;height:12px;margin:0 auto;border-radius:6px;background:#333}
+.stand{width:20%;height:62px;margin:40px auto 0;background:linear-gradient(90deg,#8e949b,#dfe2e6 45%,#f4f5f7 55%,#9aa0a7);clip-path:polygon(14% 0,86% 0,100% 100%,0 100%)}
+.base{width:26%;height:8px;margin:0 auto;border-radius:2px 2px 8px 8px;background:linear-gradient(#f2f3f5,#b5bac0);box-shadow:0 10px 18px rgba(0,0,0,.45)}
 /* steps as one line above the monitor; "see it in action" in handwriting on the screen (Mercedes 2026-10-20) */
 .steps-line{list-style:none;padding:0;margin:28px 0 0;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:10px 18px;font:500 var(--s3-fs-title)/1.1 var(--s3-sans);color:#fff}
 .steps-line li+li::before{content:"→";color:var(--s3-sky);margin-right:18px}
 .monitor{position:relative}
 .see-note{position:absolute;z-index:2;left:calc(100% + 14px);top:38%;display:flex;flex-direction:row;align-items:center;gap:12px;font:400 2.8rem/1 "Covered By Your Grace",cursive;color:#fff;transform:rotate(-4deg);white-space:nowrap}
 .see-note img{width:96px;flex:none}
-.monitor{max-width:620px}
+.monitor{max-width:540px}
 @media(max-width:1250px){.monitor{margin-top:84px}.see-note{left:auto;right:0;top:-62px;font-size:2.2rem}.see-note img{width:70px;transform:rotate(-30deg)}}
 @media(max-width:700px){.see-note{font-size:1.7rem;top:-50px}}
-@media(max-width:560px){.screen{border-width:8px 8px 18px}.steps-line{font-size:1.5rem}}
+@media(max-width:560px){.screen{border-width:6px 6px 0}.screen::after{left:-7px;right:-7px;bottom:-24px;height:24px}.stand{margin-top:24px;height:40px}.steps-line{font-size:1.5rem}}
 /* Who it's for: the peach band breaks up the page (Mercedes 2026-10-19; brand peach from the Reel covers) */
 .peach{background:var(--s3-baby)}
 .stick{position:relative;overflow:hidden}
@@ -405,7 +408,9 @@ const PCSS = `
 /* compact: two lines of content get one short band (Mercedes: "look how tall this section is") */
 .who-row{display:flex;align-items:center;justify-content:space-between;gap:32px}
 .fan{position:relative;flex:none;width:400px;height:330px}
-.fan-burst{position:absolute;z-index:0;width:470px;left:-20px;top:-12px;opacity:.85;transform:rotate(-8deg)}
+.who-p{overflow-x:clip;position:relative;z-index:1}
+@media(min-width:901px){.s3-sec.who-p{padding-top:calc(var(--s3-sec) * .5 + 80px)}}
+.s3 .fan-burst{position:absolute;z-index:0;max-width:none;width:600px;left:-50px;top:-90px;opacity:.85;transform:rotate(-8deg)}
 .fan-spark{position:absolute;z-index:3;width:44px}.fan-spark.s1{left:-18px;top:30px}.fan-spark.s2{right:-12px;bottom:40px;width:34px}
 .fan .phone{z-index:1}
 .fan .phone{position:absolute;bottom:0;width:150px;border-color:#111;box-shadow:0 14px 30px rgba(80,30,10,.25);background:#f7f3ec}
