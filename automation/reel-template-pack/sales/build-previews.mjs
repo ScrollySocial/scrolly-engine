@@ -83,6 +83,16 @@ details.notes>summary{cursor:pointer;font:700 var(--s3-fs-label)/1.4 var(--s3-sa
 .cta h2{margin-bottom:8px}
 .cta .buy{justify-content:center}
 .cta p+p{margin-top:12px}
+.rc-row{display:flex;align-items:center;justify-content:space-between;gap:40px}
+.rc-text{max-width:24em}
+.rc-vis{display:flex;align-items:center;gap:22px;flex:none}
+.rc-vis .phone{width:170px;flex:none}
+.rc-vis .slides{display:flex}
+.rc-vis .slides img{width:170px;aspect-ratio:3/4;object-fit:cover;border-radius:6px;box-shadow:0 10px 24px rgba(0,0,0,.18);border:3px solid #fff}
+.rc-vis .slides img+img{margin-left:-46px}
+.rc-vis .slides img:nth-child(1){transform:rotate(-4deg);z-index:3}.rc-vis .slides img:nth-child(2){transform:rotate(1deg) translateY(10px);z-index:2}.rc-vis .slides img:nth-child(3){transform:rotate(5deg);z-index:1}
+@media(max-width:1000px){.rc-row{flex-direction:column;align-items:flex-start;gap:24px}}
+@media(max-width:560px){.rc-vis{gap:12px}.rc-vis .phone{width:120px}.rc-vis .slides img{width:110px}.rc-vis .slides img+img{margin-left:-58px}}
 .notes{border-top:1px solid var(--s3-line)}
 .notes[open]>div{margin-top:24px}
 .notes h2{margin-bottom:20px}
@@ -114,6 +124,7 @@ const INC_ICONS = [
   '<path d="M24 6v24M15 21l9 9 9-9"/><path d="M8 32v6a3 3 0 0 0 3 3h26a3 3 0 0 0 3-3v-6"/>',
   '<rect x="6" y="11" width="36" height="26" rx="2"/><path d="M12 19h24M12 25h24M12 31h14"/>',
   '<rect x="14" y="4" width="20" height="40" rx="4"/><path d="M21 9h6"/><circle cx="24" cy="38" r="1.5"/>',
+  '<rect x="16" y="10" width="24" height="30" rx="2"/><path d="M11 14v24a2 2 0 0 0 2 2M6 18v18"/><path d="M22 30l5-6 4 4 3-3 4 5"/>',
   '<rect x="12" y="8" width="24" height="30" rx="3"/><path d="M7 12v22M41 12v22"/><circle cx="19" cy="43" r="1.4"/><circle cx="24" cy="43" r="1.4"/><circle cx="29" cy="43" r="1.4"/>',
 ];
 const includes = (d) => d.brandIncludes ? `<section class="s3-sec tight incl-b"><div class="s3-wrap"><h2 class="s3-h2">Every template comes with</h2>
@@ -121,6 +132,10 @@ const includes = (d) => d.brandIncludes ? `<section class="s3-sec tight incl-b">
   <img class="sq" src="${img('squiggle.webp')}" alt="">
   <div class="notes-row">${d.includes.map(([b, x], i) => `<div class="sticky" style="--r:${ROT[i]}deg"><img class="pin" src="${img('pin-blue.webp')}" alt=""><span class="nt"><b>${esc(b)}</b></span></div>`).join('')}</div>
   ${d.formatNote ? `<p style="margin-top:32px">${ph(d.formatNote)}</p>` : ''}</div></section>`;
+const reelCarousel = (d) => `<section class="s3-sec tight rc"><div class="s3-wrap rc-row"><div class="rc-text"><h2 class="s3-h2">Reel + carousel</h2>
+  <p class="s3-lede" style="margin-top:14px">Post the Reel, then its matching carousel.</p></div>
+  <div class="rc-vis" aria-hidden="true"><div class="phone"><img src="${img(d.rc.phone)}" alt=""></div>
+  <div class="slides">${d.rc.slides.map((f) => `<img src="${img(f)}" alt="">`).join('')}</div></div></div></section>`;
 const faq = (d) => `<section class="s3-sec"><div class="s3-read"><h2 class="s3-h2">Questions</h2><div class="s3-faq">${d.faq.map(([q, a]) => `<details><summary>${esc(q)}</summary><div>${ph(a)}</div></details>`).join('')}</div></div></section>`;
 const notes = (d) => `<details class="s3-sec notes"><summary class="s3-wrap">Review notes for Mercedes (not on the page): headlines, listing, demo footage</summary><div class="s3-wrap">
   <h3 class="s3-h3">Other headline options</h3><ul>${d.headlines.map((h) => `<li>${esc(h)}</li>`).join('')}</ul>
@@ -154,6 +169,7 @@ const FAQ = (fonts) => [
   ['How do I change the words?', 'Double-click a text box and type.'],
   ['My computer warns me about the installer.', 'That is normal. Click More info, then Run anyway.'],
   ['Can I swap a clip?', 'Yes. Right-click it on the timeline and choose Replace.'],
+  ['Do I need Canva Pro?', 'No, the carousels open in free Canva.'],
 ];
 
 /* ------------------------------------------------------------------ Halloween: night look, real template props */
@@ -248,6 +264,7 @@ function halloweenPage(d) {
   <h2 class="s3-h2">${esc(d.getTitle)}</h2><p class="s3-lede" style="margin-top:20px">${esc(d.getLede)}</p>
   <div class="tpls">${tpls}</div></div></section>
 ${includes(d)}
+${reelCarousel(d)}
 ${howItWorks(d)}
 <section class="s3-sec who-h"><img class="branch" src="${img('branch.webp')}" alt=""><img class="hang h1" src="${img('bat.png')}" alt=""><img class="hang h2 b2" src="${img('bat.png')}" alt="">
   <div class="s3-wrap s3-split"><h2 class="s3-h2">Who it's for</h2><div><p class="s3-lede">${esc(d.who)}</p>
@@ -273,7 +290,8 @@ const PCSS = `
 .swipes li{display:flex;flex-direction:column;align-items:center;gap:14px}
 .swipes svg{width:64px;height:64px;stroke:var(--s3-orange);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 .swipes li{font:400 var(--s3-fs-title)/1.15 var(--s3-serif)}
-@media(min-width:1400px){.swipes{flex-wrap:nowrap;justify-content:space-between;max-width:none}.swipes li{white-space:nowrap}}
+/* six items on one line on a computer: size and gaps scale with the screen */
+@media(min-width:1100px){.swipes{flex-wrap:nowrap;justify-content:space-between;max-width:none;gap:clamp(14px,1.8vw,36px)}.swipes li{white-space:nowrap;font-size:clamp(1.15rem,1.7vw,1.75rem)}}
 .swipes span{position:relative;z-index:0;padding:0 .14em}
 .swipes span::before{content:"";position:absolute;z-index:-1;left:0;right:0;top:.42em;bottom:.02em;background:#ffc9a8;border-radius:.1em .35em .15em .4em;transform:rotate(-1.5deg)}
 .incl-b .aside{margin-top:30px;font:400 1.9rem/1.1 "Covered By Your Grace",cursive;color:var(--s3-ink);transform:rotate(-2deg)}
@@ -359,6 +377,7 @@ function physicalPage(d) {
   <div class="scroller" id="reel-row" tabindex="0" aria-label="All 25 Reel templates">${list}</div>
   <button type="button" class="arrow next" data-scroll="1" aria-label="Scroll forward">&#8594;</button></div></div></section>
 ${includes(d)}
+${reelCarousel(d)}
 ${howItWorks(d)}
 <section class="s3-sec tight peach who-p"><div class="s3-wrap who-row"><div class="who-text"><h2 class="s3-h2">Who it's for</h2><p class="s3-lede" style="margin-top:14px">${esc(d.who)}</p>
   <div class="labels">${d.whoTags.map((t, i) => `<span class="dymo" style="--r:${[-2, 1.5, -1, 2][i % 4]}deg">${esc(t)}</span>`).join('')}</div></div><div class="fan">${d.whoPhotos.map(([f, label]) => `<div class="phone">${fs.existsSync(path.join(here, 'img', f)) ? (f.endsWith('.mp4') ? `<video src="${img(f)}" autoplay muted loop playsinline aria-label="${esc(label)}"></video>` : `<img src="${img(f)}" alt="${esc(label)}">`) : `<span class="todo">Photo to make:<b>${esc(label)}</b></span>`}</div>`).join('')}</div></div></section>
@@ -395,6 +414,7 @@ const halloween = {
     { name: 'Now you see it', poster: 'h1.jpg', job: "Last chance before it's gone.", film: 'you with your product, the same shot without it, then your product', len: 14 },
   ],
   whoTags: ['Product shops', 'Digital products', 'Services', 'Creators'],
+  rc: { phone: 'h6.jpg', slides: ['ch6-2.jpg', 'ch6-4.jpg', 'ch6-6.jpg'] },
   who: 'Anyone with something to sell this October.',
   faq: FAQ('No, they come with the template.'),
   ctaHead: 'Post your Halloween Reel before the 31st',
@@ -402,6 +422,7 @@ const halloween = {
   decisions: [
     'Price: $4.99, shown with $9.99 crossed out (decided 2026-10-19).',
     'Instant download, so Now you see it (h1) must be built and zipped before the page goes live.',
+    'Carousels (2026-10-20): Canva links for h2, h3, h5, h6. h1 needs its carousel too, since "Every template comes with" lists it.',
     'Now you see it (h1): motion test only. It needs the CapCut build and zip before the page goes live.',
     'Sound picks: none chosen for Halloween yet.', 'Reel Editor upsell: no name, link or launch yet.',
     'Mac: Mercedes is testing. The installer is a Windows script; the page names no platform until the test is done.',
@@ -433,6 +454,7 @@ const physical = {
   whoTags: ['Print on demand', 'Makers', 'Etsy sellers', 'Shopify stores', 'Small-batch brands', 'Boutiques'],
   whoPhotos: [['who-maker.mp4', 'A maker pouring candles'], ['who-pod.mp4', 'Screen printing a design'], ['who-shop.mp4', 'A shop owner packing an order']],
   brandIncludes: true,
+  rc: { phone: 'p09.jpg', slides: ['c09-2.jpg', 'c09-3.jpg', 'c09-6.jpg'] },
   // the templates in the download on launch day, e.g. [8, 9, 10, 12, 20]; null = not picked yet (shows [N])
   launchNow: null,
   getTitle: 'All 25 Reels',
@@ -472,6 +494,7 @@ const physical = {
   listing: "25 Reel templates for CapCut, made for shops that sell physical products: packing videos, before and afters, gift guides, unboxings, reviews, tests, new drops and more. Film a few clips on your phone, drop them in a folder and double-click the installer: the template opens in CapCut with your clips in place. Type your words over the brackets and export. Each template comes with a shot list, a recipe card, a one-page guide, a phone kit and a matching Instagram carousel you can edit free in Canva. Each one suggests a sound to add in Instagram (no sound files included).",
   decisions: [
     'Price: $17.99 (decided 2026-10-19).',
+    'Carousels (2026-10-20): Canva links exist for 01 to 16, 20, 22, 23; 17, 18, 19, 21, 25 are being finished; 24 has none yet. "Every template comes with" lists the carousel, so a template only goes in the download once its carousel link is ready.',
     'Growing pack (2026-10-20): at least 5 templates at launch, about 5 more a day until all 25. Which ones are in on day one, and the date wording, are yours to pick. All 25 have upload zips now.',
     'Sound picks: none for the zipped templates yet.', 'Reel Editor upsell: no name, link or launch yet.',
     'Mac: Mercedes is testing. The installer is a Windows script; the page names no platform until the test is done.',

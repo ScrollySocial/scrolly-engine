@@ -25,6 +25,13 @@ each update. All 25 have upload zips as of 2026-10-20.
 **No audio:** a bold line under the price (hero and buy section): "No audio included: add a sound in Instagram." The
 FAQ says "no music and no sound effects".
 
+## Reel + carousel (2026-10-20)
+
+A compact section after "Every template comes with": "Reel + carousel / Post the Reel, then its matching carousel."
+with Who it's for (09) beside its carousel slides 2, 3 and 6. Only slides with graphics or Mercedes's own footage are shown; the other slides carry stand-in footage of
+other brands' products. FAQ: "Do I need Canva Pro? No, the carousels open in free Canva." A template only ships once
+its Canva link is ready, since "Every template comes with" lists the carousel.
+
 ## Open decisions (Mercedes)
 
 | Decision | State |

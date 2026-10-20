@@ -9,6 +9,13 @@ how-to video). Nothing published, no product, price or checkout created. HTML la
 A bold line under the price (hero and buy section): "No audio included: add a sound in Instagram." The FAQ says "no
 music and no sound effects" (we can't license them to bundle).
 
+## Reel + carousel (2026-10-20)
+
+A compact section after "Every template comes with": "Reel + carousel / Post the Reel, then its matching carousel."
+with Once in a blood moon beside its carousel slides 2, 4 and 6. Only slides with graphics or Mercedes's own footage are shown; the other slides carry stand-in footage of
+other brands' products. FAQ: "Do I need Canva Pro? No, the carousels open in free Canva." A template only ships once
+its Canva link is ready, since "Every template comes with" lists the carousel.
+
 ## Open decisions (Mercedes)
 
 | Decision | State |
