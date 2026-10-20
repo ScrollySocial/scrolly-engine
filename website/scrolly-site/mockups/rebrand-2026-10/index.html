@@ -220,8 +220,8 @@ em{font-style:italic}
 .ftr-stars{position:absolute;top:0;left:50%;z-index:0;width:max(100%,1150px);aspect-ratio:1672/941;transform:translateX(-50%);background:url(ftr-stars.webp) center/100% 100% no-repeat;pointer-events:none;animation:twinkle 5s ease-in-out infinite}
 .ftr-stars::after{content:"";position:absolute;inset:0;background:inherit;filter:brightness(1.8) saturate(1.15);-webkit-mask:linear-gradient(105deg,transparent 42%,#000 50%,transparent 58%) 150% 0/300% 100% no-repeat;mask:linear-gradient(105deg,transparent 42%,#000 50%,transparent 58%) 150% 0/300% 100% no-repeat;animation:glint 8s ease-in-out infinite}
 /* Tone: "neutral" = less girly (Mercedes 2026-10-20). No baby pink, cards in a cool blue mist instead of lavender, marker in sky blue,
-   one more navy band, hero sky in blues. Hot pink is kept for a few signature moments only (footer "Tiger.", the stars). */
-[data-p][data-t=neutral]{--baby:#dfe4f0;--lav:#dfe4f0;--mark:#4da3ff;--band:var(--navy);--band-ink:#f5f1ff;--band-em:var(--pink);--band-p:#dfe4f0;--sky-a:#4da3ff;--sky-b:var(--navy)}
+   one more navy band, hero sky in blues. Hot pink = Mercedes: only where the page talks about her (footer "Tiger.", her stars, her image). */
+[data-p][data-t=neutral]{--baby:#dfe4f0;--lav:#dfe4f0;--mark:#4da3ff;--band:var(--navy);--band-ink:#f5f1ff;--band-em:#4da3ff;--band-p:#dfe4f0;--sky-a:#4da3ff;--sky-b:var(--navy)}
 [data-p][data-t=neutral] .band .btn.two{background:#dfe4f0;color:var(--navy)}
 [data-p][data-t=neutral] .sheet .sw:has(i[style*="--baby"]){display:none}
 [data-s=five] .ftr-stars{background-image:url(ftr-stars-5pt.webp)}
