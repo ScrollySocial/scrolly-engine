@@ -51,7 +51,7 @@ def setup():
         g['sheets'].append(C.shadow(sh, (8, 14), 14, 100))
     g['calw'], g['calh'] = cal.size
     g['make'] = P.caption('make it', 200, WHITE); g['last'] = P.caption('LAST', 330, WHITE)
-    g['most'] = X.hl('most wear out in [a year]', 60, WINE)
+    g['most'] = P.caption('most wear out', 150, INK); g['ayear'] = X.hl('in [a year]', 72, WINE)
     g['tip1'] = X.hl('[rinse after each use]', 62, WHITE); g['tip2'] = X.hl('[store it upright]', 62, BUTTER)
     g['sunday'] = X.hl('[every Sunday]', 64, WINE); g['habit'] = P.caption('a 2-minute habit', 120, INK)
     g['still'] = P.caption('still like new', 140, INK); g['going'] = X.hl('[still going strong]', 62, BUTTER); g['under'] = doodle('under', 0, 560, WHITE)
@@ -65,8 +65,8 @@ def calendar(im, g, t, t0, first, last, y=None, k=1.0):
     cy = CAL_C[1] if y is None else y; n = last - first; top = first
     for i in range(first, last + 1):
         ti = t0 + (i - first) * 0.45
-        if i < last and t >= ti + 0.45: continue                  # already torn off and gone
         top = i
+        if i == last or t < ti + 0.45: break                      # the first sheet not yet torn off and gone
     for i in range(last, top - 1, -1):                             # draw the stack: deeper sheets first
         sh = g['sheets'][i]; ti = t0 + (i - first) * 0.45
         if i < last and t >= ti:
@@ -123,7 +123,7 @@ def frame(g, t):
 def stage2(g, t):
     im = g['paper'].copy(); k = back_out(seg(t, 1.8, 2.1), 1.3)
     calendar(im, g, t, 2.4, 0, 2, lerp(-900, CAL_C[1], k))
-    P.say(im, g['most'], t, 2.5, (540, 340), -2)
+    P.say(im, g['most'], t, 2.0, (540, 330), -3); P.say(im, g['ayear'], t, 2.25, (560, 500), 2)
     return im
 
 def stage5(g, t):

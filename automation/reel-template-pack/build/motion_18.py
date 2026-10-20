@@ -33,7 +33,7 @@ DIR = '18-check-this-before-you-buy'
 LAPTOP = 'Open Silver Laptop with Green Screen-34.png'
 CB_W = 820; CB_C = (540, 1140); SHEET = (0.045, 0.135, 0.955, 0.94)      # the clipboard's sheet (see-through in the cut-out)
 LINES = ('1. [check the bristles]', '2. [check the cord]', '3. [check the heat]')
-HOLDS = [(1.5, 0.7), (3.35, 1.3), (4.95, 0.6), (6.3, 0.5), (8.15, 0.6), (9.75, 1.0), (12.45, 0.6)]
+HOLDS = [(1.5, 0.7), (3.35, 1.3), (4.95, 0.6), (6.3, 0.5), (7.35, 1.2), (7.95, 0.6), (9.55, 0.6), (11.15, 1.0), (13.85, 0.6)]
 
 def setup():
     brush = X.Window(Clip('IMG_1381', 0.0), 0.5, 3.2)                  # the stand-in brush is in frame only 0.5-3.2 s
@@ -50,7 +50,7 @@ def setup():
     g['checklist'] = P.caption('the checklist', 130, INK)
     g['big'] = [X.hl(l, 60, WHITE) for l in LINES]; g['arrow'] = doodle('arrow', 0, 190, WHITE)
     seal = P.raw_cut('Blank gold foil seal sticker-175.png', 330).copy(); ImageDraw.Draw(seal).text((seal.width / 2, seal.height / 2), '3/3', font=S.F(X.SERIF, 120), fill=WINE, anchor='mm')
-    g['seal'] = P.die_cut(seal, 8); g['burst'] = doodle('burst', 2, 620, WINE)
+    g['seal'] = P.die_cut(seal, 8); g['burst'] = doodle('burst', 2, 500, WINE)
     g['passes'] = P.caption('mine passes', 150, INK)
     g['comment'] = P.caption('Comment', 190, INK); g['kw'] = X.hl('"[KEYWORD]"', 64, WHITE); g['all3'] = X.hl('[mine checks all 3]', 56, WINE)
     return g
@@ -75,13 +75,13 @@ def board(g, t, y=None, clip_im=None, written=0, ticked=0, tick_t=None, write_t=
 
 def stage6(g, t):
     im = board(g, t, written=3, ticked=3, tick_t=8.5, write_t=None)
-    doodle_on(im, t, 8.9, g['burst'], (790, 1580), 0)
+    doodle_on(im, t, 8.9, g['burst'], (830, 1700), 0)
     k = back_out(seg(t, 8.85, 9.1), 2.0)
-    if k > 0: put(im, g['seal'], (790, 1580), lerp(2.2, 1, k), -12)
+    if k > 0: put(im, g['seal'], (830, 1700), lerp(2.2, 0.9, k), -12)
     P.say(im, g['passes'], t, 9.1, (540, 300), -3)
     return im
 
-def frame(g, t):
+def frame_old(g, t):
     c = g['c']
     if t < 1.8:                                                    # 1: the clipboard with the product as its sheet
         k = ease(seg(t, 0.0, 0.35)); im = board(g, t, lerp(2600, CB_C[1], k), c['hook'].at(t))
@@ -111,6 +111,23 @@ def frame(g, t):
         return im
     return cta(g, t)
 
+SHIFT = 1.4          # her note (2026-10-19): back to the clipboard after check 2, like checks 1 and 3
+
+def frame(g, t):
+    """Check 2 gets the same beat as the others: full frame with its line at the top, then back to the clipboard where
+    line 2 is ticked, then check 3 (everything after 6.8 s of the old timeline is pushed back by SHIFT)."""
+    c = g['c']
+    if t < 6.8: return frame_old(g, t)
+    if t < 7.6:
+        im = c['c2'].at(t - 5.9); P.say(im, g['big'][1], t, 6.85, (600, 330), -2); put(im, g['nums'][1], (130, 330), back_out(seg(t, 6.8, 7.1), 2.0), 6)
+        if t > 7.4: im = swipe(im, board(g, t, written=3, ticked=2, tick_t=7.7, write_t=None), seg(t, 7.4, 7.6), -1)
+        return im
+    if t < 8.2:
+        im = board(g, t, written=3, ticked=2, tick_t=7.7, write_t=None)
+        if t > 8.0: im = swipe(im, c['c3'].at(0), seg(t, 8.0, 8.2))
+        return im
+    return frame_old(g, t - SHIFT)
+
 def cta(g, t):
     im = g['desk'].copy(); k = ease(seg(t, 10.0, 10.3))
     put(im, P.on_screen(LAPTOP, 1000, g['c']['cta'].at(t - 10.0)), (540, lerp(2400, 1020, k)), 1, 0)   # the laptop's whole screen is the video slot
@@ -124,7 +141,7 @@ def main():
         for i, im in enumerate(ims): sheet.paste(im.resize((360, 640)), (i * 360, 0))
         out.mkdir(parents=True, exist_ok=True); sheet.save(out / '_test.jpg', quality=85); print('test', out / '_test.jpg')
     else:
-        T = 12.5 + sum(h for _, h in HOLDS); render('18', X.with_holds(fr, HOLDS), T, out); X.strip_sheet(DIR, int(T) + 1)
+        T = 13.9 + sum(h for _, h in HOLDS); render('18', X.with_holds(fr, HOLDS), T, out); X.strip_sheet(DIR, int(T) + 1)
 
 if __name__ == '__main__':
     main()
