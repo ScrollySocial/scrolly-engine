@@ -71,10 +71,13 @@ mark.ph{background:#ffd9c9;color:var(--s3-ink);padding:0 4px;border-radius:3px}
 .notes-row{display:flex;flex-wrap:wrap;justify-content:center;gap:clamp(18px,3vw,40px);margin-top:48px}
 .sticky{position:relative;width:200px;aspect-ratio:400/389;background:url("${img('sticky.webp')}") center/100% 100% no-repeat;transform:rotate(var(--r));transition:transform .25s;color:var(--s3-ink)}
 .sticky:hover{transform:rotate(0) scale(1.05)}
+.sticky.extra{filter:hue-rotate(-28deg) saturate(1.25)}
+.sticky.extra b{filter:hue-rotate(28deg)}
+.plus-note{align-self:center;font:400 3.4rem/1 var(--s3-serif);color:var(--s3-orange)}
 .sticky .nt{position:absolute;left:3%;top:3%;width:90%;height:90%;display:flex;align-items:center;justify-content:center;text-align:center;padding:22% 10% 10%}
 .sticky .pin{position:absolute;top:7%;left:48%;width:30px;transform:translateX(-50%);filter:drop-shadow(1px 3px 2px rgba(0,0,0,.35))}
 .sticky b{font:400 2.1rem/1.05 "Covered By Your Grace",cursive}
-@media(min-width:1100px){.notes-row{flex-wrap:nowrap;gap:18px}.sticky{width:min(190px,15vw)}}
+@media(min-width:1100px){.notes-row{flex-wrap:nowrap;gap:12px}.sticky{width:min(180px,12.6vw)}.sticky b{font-size:clamp(1.45rem,1.8vw,2.1rem)}.plus-note{font-size:2.6rem}}
 @media(max-width:560px){.notes-row{gap:22px 10px}.sticky{width:158px}.sticky b{font-size:1.7rem}.sticky .pin{width:24px}}
 details.notes{padding:40px 0}
 details.notes>summary{cursor:pointer;font:700 var(--s3-fs-label)/1.4 var(--s3-sans);letter-spacing:.12em;text-transform:uppercase;color:var(--s3-muted)}
@@ -128,9 +131,9 @@ const INC_ICONS = [
   '<rect x="12" y="8" width="24" height="30" rx="3"/><path d="M7 12v22M41 12v22"/><circle cx="19" cy="43" r="1.4"/><circle cx="24" cy="43" r="1.4"/><circle cx="29" cy="43" r="1.4"/>',
 ];
 const includes = (d) => d.brandIncludes ? `<section class="s3-sec tight incl-b"><div class="s3-wrap"><h2 class="s3-h2">Every template comes with</h2>
-  <ul class="swipes">${d.includes.map(([b], i) => `<li><svg viewBox="0 0 48 48" aria-hidden="true">${INC_ICONS[i]}</svg><span>${esc(b)}</span></li>`).join('')}</ul></div></section>` : `<section class="s3-sec stick"><div class="s3-wrap"><h2 class="s3-h2">Every template comes with</h2>
+  <ul class="swipes">${d.includes.map(([b], i) => i === d.includes.length - 1 ? `<li class="plus" aria-hidden="true">+</li><li class="extra"><svg viewBox="0 0 48 48" aria-hidden="true">${INC_ICONS[i]}</svg><span>${esc(b)}</span></li>` : `<li><svg viewBox="0 0 48 48" aria-hidden="true">${INC_ICONS[i]}</svg><span>${esc(b)}</span></li>`).join('')}</ul></div></section>` : `<section class="s3-sec stick"><div class="s3-wrap"><h2 class="s3-h2">Every template comes with</h2>
   <img class="sq" src="${img('squiggle.webp')}" alt="">
-  <div class="notes-row">${d.includes.map(([b, x], i) => `<div class="sticky" style="--r:${ROT[i]}deg"><img class="pin" src="${img('pin-blue.webp')}" alt=""><span class="nt"><b>${esc(b)}</b></span></div>`).join('')}</div>
+  <div class="notes-row">${d.includes.map(([b, x], i) => `${i === d.includes.length - 1 ? '<span class="plus-note" aria-hidden="true">+</span>' : ''}<div class="sticky${i === d.includes.length - 1 ? ' extra' : ''}" style="--r:${ROT[i]}deg"><img class="pin" src="${img('pin-blue.webp')}" alt=""><span class="nt"><b>${esc(b)}</b></span></div>`).join('')}</div>
   ${d.formatNote ? `<p style="margin-top:32px">${ph(d.formatNote)}</p>` : ''}</div></section>`;
 const reelCarousel = (d) => `<section class="s3-sec tight rc"><div class="s3-wrap rc-row"><div class="rc-text"><h2 class="s3-h2">Reel + carousel</h2>
   <p class="s3-lede" style="margin-top:14px">Post the Reel, then its matching carousel.</p></div>
@@ -156,20 +159,20 @@ const INCLUDES = (projectNote) => [
   ['The CapCut project', projectNote],
   ['A shot list', 'Every clip to film, in order.'],
   ['An installer', 'It adds your clips for you.'],
-  ['A recipe card', 'The words to type, plus a guide.'],
-  ['A phone kit', 'For CapCut on your phone.'],
+  ['Words to type', 'Every line to type over the [brackets].'],
+  ['A phone version', 'For CapCut on your phone.'],
   ['A matching carousel', 'Same story as slides. Edit free in Canva.'],
 ];
 const FAQ = (fonts) => [
   ['Do I need CapCut on a computer?', 'For the full template, yes: CapCut for computer, free.'],
   ['Can I use it on my phone?', 'Yes. The phone kit has the shot guide, shot list and every graphic.'],
   ['How do I edit the carousel?', 'Open its Canva link (a free account works), swap the photos and type over the [brackets].'],
-  ['Is music included?', 'No. The Reels have no audio: no music and no sound effects. Add a sound in Instagram after you upload, so your Reel never gets muted. [SOUND PICKS]'],
+  ['Is music included?', 'No. The Reels have no audio: no music and no sound effects. Add a sound in Instagram after you upload, so your Reel never gets muted.'],
   ['Do I need to install fonts?', fonts],
   ['How do I change the words?', 'Double-click a text box and type.'],
   ['My computer warns me about the installer.', 'That is normal. Click More info, then Run anyway.'],
   ['Can I swap a clip?', 'Yes. Right-click it on the timeline and choose Replace.'],
-  ['Do I need Canva Pro?', 'No, the carousels open in free Canva.'],
+  ['Do I need CapCut Pro or Canva Pro?', 'No. The templates open in free CapCut and the carousels in free Canva. [CONFIRM: no Pro features, from the CapCut test of all 25]'],
 ];
 
 /* ------------------------------------------------------------------ Halloween: night look, real template props */
@@ -293,6 +296,9 @@ const PCSS = `
 /* six items on one line on a computer: size and gaps scale with the screen */
 @media(min-width:1100px){.swipes{flex-wrap:nowrap;justify-content:space-between;max-width:none;gap:clamp(14px,1.8vw,36px)}.swipes li{white-space:nowrap;font-size:clamp(1.15rem,1.7vw,1.75rem)}}
 .swipes span{position:relative;z-index:0;padding:0 .14em}
+.swipes .plus{align-self:center;font:400 clamp(2.4rem,3.4vw,3.6rem)/1 var(--s3-serif);color:var(--s3-orange);margin-top:44px}
+.swipes .extra span{background:var(--s3-orange);color:#000;border-radius:999px;padding:.12em .7em .18em}
+.swipes .extra span::before{display:none}
 .swipes span::before{content:"";position:absolute;z-index:-1;left:0;right:0;top:.42em;bottom:.02em;background:#ffc9a8;border-radius:.1em .35em .15em .4em;transform:rotate(-1.5deg)}
 .incl-b .aside{margin-top:30px;font:400 1.9rem/1.1 "Covered By Your Grace",cursive;color:var(--s3-ink);transform:rotate(-2deg)}
 .hero-p{padding-top:clamp(56px,7vw,110px);position:relative;overflow:hidden}

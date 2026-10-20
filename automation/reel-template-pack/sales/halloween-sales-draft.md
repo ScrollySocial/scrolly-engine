@@ -16,6 +16,14 @@ with Once in a blood moon beside its carousel slides 2, 4 and 6. Only slides wit
 other brands' products. FAQ: "Do I need Canva Pro? No, the carousels open in free Canva." A template only ships once
 its Canva link is ready, since "Every template comes with" lists the carousel.
 
+## Names on the page (2026-10-20)
+
+Plain words instead of internal names: "A recipe card" is "Words to type" (the one-page card: every line to type over
+the [brackets]); "A phone kit" is "A phone version" (shot guide video, shot list and every graphic, for CapCut on a
+phone). The carousel stands apart after a big orange "+" (orange pill on the physical page, an orange note on
+Halloween). FAQ: [SOUND PICKS] removed; "Do I need CapCut Pro or Canva Pro? No" waits on the CapCut test of all 25
+to confirm no Pro features.
+
 ## Open decisions (Mercedes)
 
 | Decision | State |
