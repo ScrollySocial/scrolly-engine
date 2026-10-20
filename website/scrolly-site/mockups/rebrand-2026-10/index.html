@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" data-p="cream" data-f="jost" data-c="p4n2" data-b="sky">
+<html lang="en" data-p="cream" data-f="jost" data-c="p4n2" data-b="sky" data-s="sparkle">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -219,6 +219,7 @@ em{font-style:italic}
 /* stars are their own layer so they can catch the light: a slow twinkle plus a foil glint that sweeps across. Off for reduced motion. */
 .ftr-stars{position:absolute;top:0;left:50%;z-index:0;width:max(100%,1150px);aspect-ratio:1672/941;transform:translateX(-50%);background:url(ftr-stars.webp) center/100% 100% no-repeat;pointer-events:none;animation:twinkle 5s ease-in-out infinite}
 .ftr-stars::after{content:"";position:absolute;inset:0;background:inherit;filter:brightness(1.8) saturate(1.15);-webkit-mask:linear-gradient(105deg,transparent 42%,#000 50%,transparent 58%) 150% 0/300% 100% no-repeat;mask:linear-gradient(105deg,transparent 42%,#000 50%,transparent 58%) 150% 0/300% 100% no-repeat;animation:glint 8s ease-in-out infinite}
+[data-s=five] .ftr-stars{background-image:url(ftr-stars-5pt.webp)}
 @keyframes twinkle{0%,100%{opacity:1}50%{opacity:.82}}
 @keyframes glint{0%{-webkit-mask-position:150% 0;mask-position:150% 0}60%,100%{-webkit-mask-position:-50% 0;mask-position:-50% 0}}
 @media (prefers-reduced-motion:reduce){.ftr-stars,.ftr-stars::after{animation:none}.ftr-stars::after{display:none}}
@@ -272,6 +273,10 @@ em{font-style:italic}
     <button type="button" data-v="cornflower">Cornflower</button>
     <button type="button" data-v="periwinkle">Periwinkle</button>
     <button type="button" data-v="sky">Sky</button>
+  </div>
+  <div class="grp" id="stars" aria-label="Footer stars"><span>Stars:</span>
+    <button type="button" data-v="sparkle">Sparkle</button>
+    <button type="button" data-v="five">5-point</button>
   </div>
   <div class="grp" id="fnt" aria-label="Second font"><span>Second font:</span>
     <button type="button" data-v="jost">Jost</button>
@@ -388,6 +393,8 @@ em{font-style:italic}
   set('data-f','fnt',q.get('f')||html.dataset.f);
   set('data-c','col',q.get('c')||html.dataset.c);
   set('data-b','btns',q.get('b')||html.dataset.b);
+  set('data-s','stars',q.get('s')||html.dataset.s);
+  document.querySelectorAll('#stars button').forEach(function(b){b.onclick=function(){set('data-s','stars',b.dataset.v)}});
   document.querySelectorAll('#btns button').forEach(function(b){b.onclick=function(){set('data-b','btns',b.dataset.v)}});
   document.querySelectorAll('#col button').forEach(function(b){b.onclick=function(){set('data-c','col',b.dataset.v)}});
   if(q.get('bar')==='0')document.querySelector('.mk').style.display='none';
