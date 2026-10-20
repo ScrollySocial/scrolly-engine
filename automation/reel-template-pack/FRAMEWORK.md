@@ -635,3 +635,5 @@ Scrolly brand colours and Scrolly-only parts (destinations, the ManyChat switch,
   **#21:** she reviewed the old round 2 ("I don't like anything about it"); round 3 (numbered edition) goes to her.
 - **#21 Small batch round 3 (numbered edition): APPROVED** ("It's OK, I can live with it", 2026-10-19). CapCut build:
   build/templates/t21.py; the batch size after "only" is editable, the pen's handwritten number stays artwork.
+- **#18 Check this before you buy: APPROVED on the fix** (2026-10-19): check 2 returns to the clipboard and ticks box
+  2; the 3/3 seal sits in the clipboard corner clear of the words.
