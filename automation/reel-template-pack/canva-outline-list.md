@@ -75,6 +75,38 @@ Nothing to do: before, after and Comment (polka-dot letters) stay artwork (patte
 - Slide 6: **in three words** (white #FFFFFF): Outline in wine #7A1732, thin
 - Slide 8: **Comment** (white #FFFFFF): Outline in wine #7A1732, thin
 
+## 17 Everything that goes into one
+
+- Slide 1: **everything that** (ink #181716): Outline in white #FFFFFF, thin
+- Slide 1: **goes into one** (ink #181716): Outline in white #FFFFFF, thin
+- Slide 6: **= one** (ink #181716): Outline in white #FFFFFF, thin
+- Slide 8: **Comment** (ink #181716): Outline in white #FFFFFF, thin
+
+## 18 Check this before you buy
+
+- Slide 1: **3 things** (ink #181716): Outline in white #FFFFFF, thin
+- Slide 1: **to check** (ink #181716): Outline in white #FFFFFF, thin
+- Slide 6: **mine passes** (ink #181716): Outline in white #FFFFFF, thin
+- Slide 7: **Comment** (ink #181716): Outline in white #FFFFFF, thin
+
+## 19 Pair it with
+
+- Slide 1: **pair it with** (white #FFFFFF): Outline in wine #7A1732, thin
+- Slide 6: **a perfect pair** (white #FFFFFF): Outline in wine #7A1732, thin
+- Slide 7: **Comment** (white #FFFFFF): Outline in wine #7A1732, thin
+
+## 21 Small batch
+
+- Slide 1: **only [24]** (white #FFFFFF): Outline in wine #7A1732, thin
+- Slide 4: **numbered** (ink #181716): Outline in white #FFFFFF, thin
+- Slide 8: **Comment** (white #FFFFFF): Outline in wine #7A1732, thin
+
+## 25 Mine vs the usual kind
+
+- Slide 1: **mine vs.** (wine #7A1732): Outline in white #FFFFFF, thin
+- Slide 6: **and the winner is** (wine #7A1732): Outline in white #FFFFFF, thin
+- Slide 7: **Comment** (wine #7A1732): Outline in white #FFFFFF, thin
+
 ## 09 Who its for
 
 - Slide 1: **this is** (white #FFFFFF): Outline in wine #7A1732, thin
