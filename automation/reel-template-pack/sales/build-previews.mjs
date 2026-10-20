@@ -88,6 +88,11 @@ details.notes>summary{cursor:pointer;font:700 var(--s3-fs-label)/1.4 var(--s3-sa
 .cta h2{margin-bottom:8px}
 .cta .buy{justify-content:center}
 .cta p+p{margin-top:12px}
+.rc-head{text-align:center}
+@media(min-width:1100px){.rc-head{white-space:nowrap;font-size:clamp(2.2rem,3.5vw,4rem)!important}}
+.rc .rc-vis{justify-content:center;margin-top:64px}
+.rc{padding-bottom:24px!important}
+.after-rc{padding-top:40px!important}
 .rc-row{display:flex;align-items:center;justify-content:space-between;gap:40px}
 .rc-text{max-width:24em}
 .rc-vis{display:flex;align-items:flex-start;gap:22px;flex:none}
@@ -146,13 +151,11 @@ const INC_ICONS = [
   '<path d="M8 10h32a3 3 0 0 1 3 3v17a3 3 0 0 1-3 3H22l-9 8v-8H8a3 3 0 0 1-3-3V13a3 3 0 0 1 3-3z"/><path d="M13 19h22M13 25h14"/>',
   '<rect x="6" y="14" width="26" height="30" rx="3"/><path d="M14 14v-5a3 3 0 0 1 3-3h22a3 3 0 0 1 3 3v24a3 3 0 0 1-3 3h-7"/><path d="M11 37l6-7 5 5 4-3 6 5"/>',
 ];
-const includes = (d) => d.brandIncludes ? `<section class="s3-sec tight incl-b"><div class="s3-wrap"><h2 class="s3-h2">Every template comes with</h2>
-  <ul class="swipes">${d.includes.map(([b], i) => i === d.includes.length - 1 ? `<li class="plus" aria-hidden="true">+</li><li class="extra"><svg viewBox="0 0 48 48" aria-hidden="true">${INC_ICONS[i]}</svg><span>${esc(b)}</span></li>` : `<li><svg viewBox="0 0 48 48" aria-hidden="true">${INC_ICONS[i]}</svg><span>${esc(b)}</span></li>`).join('')}</ul></div></section>` : `<section class="s3-sec stick"><div class="s3-wrap"><h2 class="s3-h2">Every template comes with</h2>
-  <img class="sq" src="${img('squiggle.webp')}" alt="">
+const includes = (d) => d.brandIncludes ? `<section class="s3-sec tight incl-b after-rc"><div class="s3-wrap">
+  <ul class="swipes">${d.includes.map(([b], i) => i === d.includes.length - 1 ? `<li class="plus" aria-hidden="true">+</li><li class="extra"><svg viewBox="0 0 48 48" aria-hidden="true">${INC_ICONS[i]}</svg><span>${esc(b)}</span></li>` : `<li><svg viewBox="0 0 48 48" aria-hidden="true">${INC_ICONS[i]}</svg><span>${esc(b)}</span></li>`).join('')}</ul></div></section>` : `<section class="s3-sec stick after-rc"><div class="s3-wrap">
   <div class="notes-row">${d.includes.map(([b, x], i) => `${i === d.includes.length - 1 ? '<span class="plus-note" aria-hidden="true">+</span>' : ''}<div class="sticky${i === d.includes.length - 1 ? ' extra' : ''}" style="--r:${ROT[i]}deg"><img class="pin" src="${img('pin-blue.webp')}" alt=""><span class="nt"><b>${esc(b)}</b></span></div>`).join('')}</div>
   ${d.formatNote ? `<p style="margin-top:32px">${ph(d.formatNote)}</p>` : ''}</div></section>`;
-const reelCarousel = (d) => `<section class="s3-sec tight rc"><div class="s3-wrap rc-row"><div class="rc-text"><h2 class="s3-h2">Reel + carousel</h2>
-  <p class="s3-lede" style="margin-top:14px">Post the Reel, then its matching carousel.</p></div>
+const reelCarousel = (d) => `<section class="s3-sec tight rc"><div class="s3-wrap"><h2 class="s3-h2 rc-head">Every template comes with a Reel + carousel</h2>
   <div class="rc-vis" aria-hidden="true"><div class="phone"><img src="${img(d.rc.phone)}" alt=""></div>
   <div class="slides-wrap"><p class="swipe-note">swipe<img src="${img('arrow-curve.webp')}" alt=""></p><div class="slides">${d.rc.slides.map((f) => `<img src="${img(f)}" alt="">`).join('')}</div>
   <div class="ig-dots"><span class="on"></span><span></span><span></span><span></span><span></span></div></div></div></div></section>`;
@@ -293,8 +296,8 @@ function halloweenPage(d) {
 <section class="s3-sec reels"><img class="dd crown" src="${img('crown.webp')}" alt=""><img class="dd burst" src="${img('burst.webp')}" alt=""><img class="dd heart" src="${img('heart.webp')}" alt=""><div class="s3-wrap">
   <h2 class="s3-h2">${esc(d.getTitle)}</h2><p class="s3-lede" style="margin-top:20px">${esc(d.getLede)}</p>
   <div class="tpls">${tpls}</div></div></section>
-${includes(d)}
 ${reelCarousel(d)}
+${includes(d)}
 ${editSection(d)}
 ${howItWorks(d)}
 <section class="s3-sec who-h"><img class="branch" src="${img('branch.webp')}" alt=""><img class="hang h1" src="${img('bat.png')}" alt=""><img class="hang h2 b2" src="${img('bat.png')}" alt="">
@@ -413,8 +416,8 @@ function physicalPage(d) {
   <div class="row-wrap"><button type="button" class="arrow prev" data-scroll="-1" aria-label="Scroll back">&#8592;</button>
   <div class="scroller" id="reel-row" tabindex="0" aria-label="All 25 Reel templates">${list}</div>
   <button type="button" class="arrow next" data-scroll="1" aria-label="Scroll forward">&#8594;</button></div></div></section>
-${includes(d)}
 ${reelCarousel(d)}
+${includes(d)}
 ${editSection(d)}
 ${howItWorks(d)}
 <section class="s3-sec tight peach who-p"><div class="s3-wrap who-row"><div class="who-text"><h2 class="s3-h2">Who it's for</h2><p class="s3-lede" style="margin-top:14px">${esc(d.who)}</p>
