@@ -4,7 +4,6 @@ import fs from 'node:fs';
 
 const opts = [
   { id: 'a-limelight', font: 'Limelight', css: 'font-family:Limelight;font-size:118px;letter-spacing:-1px', color: '#9E2A2B' },
-  { id: 'b-bodoni', font: 'Bodoni+Moda:wght@800', css: "font-family:'Bodoni Moda';font-weight:800;font-size:116px;letter-spacing:-3px", color: '#1F2A44' },
   { id: 'c-federo', font: 'Federo', css: 'font-family:Federo;font-size:124px;letter-spacing:-2px', color: '#7A1F3D' },
 ];
 
