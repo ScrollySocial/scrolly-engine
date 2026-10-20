@@ -213,6 +213,15 @@ em{font-style:italic}
 .ftr .legal{display:flex;flex-wrap:wrap;gap:12px 28px;padding:22px 0 30px;border-top:1px solid rgba(201,184,255,.3);font:400 var(--fs-fine)/1.4 var(--sans);color:#d9cfff}
 .ftr .legal a{color:#d9cfff}
 .ftr :focus-visible{outline-color:#fff}
+/* footer art (Mercedes 2026-10-19): navy torn-paper Starry Night collage, generated from footer-background-prompt.md.
+   The torn cream edge at the top meets the cream page above; stars are in the art, so the CSS glitter and SVG jewels are off. */
+.ftr.art{background:#0b142c url(footer-starry-night.webp) top center/max(100%,1150px) auto no-repeat}
+.ftr.art::before,.ftr.art::after,.ftr.art .jewels{display:none}
+.ftr.art .top{padding-top:calc(max(5.2vw,60px) + clamp(48px,5vw,88px))}
+.ftr.art .ph{border-color:rgba(255,196,221,.55)}
+.ftr.art .ph .in{background:rgba(5,15,32,.35)}
+.ftr.art .cols,.ftr.art .legal{border-top-color:rgba(255,196,221,.25)}
+@media (max-width:900px){.ftr.art .quote{text-shadow:0 0 18px #050f20,0 0 36px #050f20,0 2px 4px #050f20}} /* phone: quote sits over the swirl until a 9:16 version of the art exists */
 
 /* phones: stacked on purpose */
 @media (max-width:1100px){.nav,.hdr .login{display:none}.burger{display:inline-flex;align-items:center;justify-content:center}}
@@ -330,7 +339,7 @@ em{font-style:italic}
 </div></section>
 </main>
 
-<footer class="ftr">
+<footer class="ftr art">
   <div class="jewels" aria-hidden="true">
     <svg class="star" style="left:4%;top:9%;--s:38px" fill="url(#g-pink)"><use href="#star"/></svg>
     <svg class="star" style="left:46%;top:6%;--s:22px" fill="url(#g-white)"><use href="#star"/></svg>
