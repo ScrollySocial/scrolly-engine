@@ -27,10 +27,10 @@ def _e(tag, **attrs):
 def _sub(parent, tag, **attrs): el = _e(tag, **attrs); parent.append(el); return el
 
 def _sp(slide, name, x, y, w, h, rot):
-    """An empty p:sp at (x, y, w, h) px, rotated `rot` degrees clockwise; returns (sp, spPr)."""
+    """An empty p:sp at (x, y, w, h) px, rotated `rot` degrees counter-clockwise (PIL's way, like every layer); returns (sp, spPr)."""
     tree = slide.shapes._spTree; sid = max([int(e.get('id')) for e in tree.iter(qn('p:cNvPr'))] + [1]) + 1
     sp = _e('p:sp'); nv = _sub(sp, 'p:nvSpPr'); _sub(nv, 'p:cNvPr', id=sid, name=name); _sub(nv, 'p:cNvSpPr'); _sub(nv, 'p:nvPr')
-    spPr = _sub(sp, 'p:spPr'); xf = _sub(spPr, 'a:xfrm', rot=int(round(rot * 60000)))
+    spPr = _sub(sp, 'p:spPr'); xf = _sub(spPr, 'a:xfrm', rot=int(round(-rot * 60000)))   # rot is PIL's (counter-clockwise); PPTX turns clockwise
     _sub(xf, 'a:off', x=int(x * EMU), y=int(y * EMU)); _sub(xf, 'a:ext', cx=int(w * EMU), cy=int(h * EMU))
     tree.append(sp); return sp, spPr
 
@@ -63,9 +63,9 @@ def trace(alpha, turdsize=12, scale=1.0):
         paths.append(sp_)
     return paths
 
-def vector_shape(slide, alpha, name, c, rot, color, turdsize=12):
+def vector_shape(slide, ink, name, c, rot, color, turdsize=12, alpha=1.0):
     """A doodle as one freeform shape (all its subpaths, holes by even-odd) with a solid, recolourable fill."""
-    w, h = alpha.size; paths = trace(alpha, turdsize)
+    w, h = ink.size; paths = trace(ink, turdsize)
     sp, spPr = _sp(slide, name, c[0] - w / 2, c[1] - h / 2, w, h, rot)
     cg = _sub(spPr, 'a:custGeom'); [_sub(cg, t) for t in ('a:avLst', 'a:gdLst', 'a:ahLst', 'a:cxnLst')]
     _sub(cg, 'a:rect', l='0', t='0', r='r', b='b'); pl = _sub(cg, 'a:pathLst')
@@ -78,7 +78,8 @@ def vector_shape(slide, alpha, name, c, rot, color, turdsize=12):
                 m = _sub(p, 'a:cubicBezTo')
                 for q in op[1:]: _sub(m, 'a:pt', x=int(q[0] * k), y=int(q[1] * k))
         _sub(p, 'a:close')
-    sf = _sub(spPr, 'a:solidFill'); _sub(sf, 'a:srgbClr', val='%02X%02X%02X' % tuple(color[:3]))
+    sf = _sub(spPr, 'a:solidFill'); clr = _sub(sf, 'a:srgbClr', val='%02X%02X%02X' % tuple(color[:3]))
+    if alpha < 1: _sub(clr, 'a:alpha', val=int(alpha * 100000))
     ln = _sub(spPr, 'a:ln'); _sub(ln, 'a:noFill')
     return sp
 

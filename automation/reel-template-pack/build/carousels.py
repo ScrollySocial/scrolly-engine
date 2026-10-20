@@ -35,12 +35,12 @@ def S2(sl, bg, note, layers): sl.append(dict(bg=bg, note=note, layers=layers))
 def c09():
     me, me2, prob, prod = Clip('IMG_1469', 1.0, 6.0), Clip('IMG_1470', 1.0, 6.0), Clip('IMG_1430', 1.0, 6.0), Clip('IMG_1381', 1.0, 6.0)
     paper = K.fit_bg(S.raw('physical', 'Blank Ruled Notebook Paper.png'))
-    bf = [P.thing(P.BUTTERFLIES[i % 3], 230, ('stripes', 'dots', 'smalldots')[i % 3], (WINE, PINK, WINE)[i % 3], scale=0.3, strength=0.75, seed=i, edge=6) for i in range(6)]
-    small_bf = [b.resize((int(b.width * 0.72), int(b.height * 0.72)), Image.LANCZOS) for b in bf]
-    balls = [P.thing('Crumpled cream paper ball-58.png', 170 + 20 * (i % 3), ('stripes', 'dots', 'smalldots')[i % 3], (PINK, WINE, PINK)[i % 3], scale=0.3, strength=0.6, seed=i, edge=6) for i in range(5)]
-    clock = P.thing('Classic Cream Twin-Bell Alarm Clock-185.png', 560, 'stripes', PINK, scale=0.5, strength=0.85)
-    gift = P.thing('Kraft paper cube gift with twine-38.png', 270, 'dots', WINE, scale=0.4)
-    mug = P.thing('Warm white ceramic coffee mug-140.png', 250, 'dots', PINK, scale=0.4, strength=0.85)
+    bf = [K.thing(P.BUTTERFLIES[i % 3], 230, ('stripes', 'dots', 'smalldots')[i % 3], (WINE, PINK, WINE)[i % 3], scale=0.3, strength=0.75, seed=i, edge=6) for i in range(6)]
+    small_bf = [K.thing(P.BUTTERFLIES[i % 3], 166, ('stripes', 'dots', 'smalldots')[i % 3], (WINE, PINK, WINE)[i % 3], scale=0.3, strength=0.75, seed=i, edge=6) for i in range(6)]
+    balls = [K.thing('Crumpled cream paper ball-58.png', 170 + 20 * (i % 3), ('stripes', 'dots', 'smalldots')[i % 3], (PINK, WINE, PINK)[i % 3], scale=0.3, strength=0.6, seed=i, edge=6) for i in range(5)]
+    clock = K.thing('Classic Cream Twin-Bell Alarm Clock-185.png', 560, 'stripes', PINK, scale=0.5, strength=0.85)
+    gift = K.thing('Kraft paper cube gift with twine-38.png', 270, 'dots', WINE, scale=0.4)
+    mug = K.thing('Warm white ceramic coffee mug-140.png', 250, 'dots', PINK, scale=0.4, strength=0.85)
     notes = [P.sticky('', 400, pin=pn) for pn in ('pin-head-black', 'pin-head-cream', 'pin-head-white')]
     ph, scr = K.device_art(400)
     s = []
@@ -106,10 +106,10 @@ def c09():
 # 08 A real customer question (light-blue parchment; light blue + wine; the striped rotary phone, DM cards, a sticky note)
 # ======================================================================================================================
 def c08():
-    g = S7.setup_08(); c = g['c']; stage = K.fit_bg(g['stage']); BL = BLUE; g['d_burst'] = vec(g['d_burst'], WINE)
+    g = S7.setup_08(); g['phone'] = K.thing('Dusty blue vintage rotary telephone-26.png', 660, 'stripes', S7.CRM, scale=0.45, strength=0.65); c = g['c']; stage = K.fit_bg(g['stage']); BL = BLUE; g['d_burst'] = vec(g['d_burst'], WINE)
     dm, dm_off, dm_px = K.blank_card(2, 640, WINE)
     dms = [K.blank_card(1, 560, WINE, pin=pn) for pn in ('pin-head-black', 'pin-head-white', 'pin-head-cream')]
-    note = P.sticky('', 480, pin='pin-head-black'); phone_s = g['phone'].resize((int(g['phone'].width * 0.55), int(g['phone'].height * 0.55)), Image.LANCZOS)
+    note = P.sticky('', 480, pin='pin-head-black'); phone_s = K.thing('Dusty blue vintage rotary telephone-26.png', 363, 'stripes', S7.CRM, scale=0.45, strength=0.65)
     s = []
     S2(s, stage, 'Hook. Swap in a photo of your product. Type the question a customer asked you.', [
         photo('Your product (fills the page)', (540, 720), (CW, CH), 0, c['ans1'].at(2.0, (CW, CH))),
@@ -164,7 +164,12 @@ def polaroid_art(frame, w, pin):
     return pn, (pad + (x0 + x1) / 2 - pn.width / 2, pad + pd // 2 + (y0 + y1) / 2 - pn.height / 2), (x1 - x0, y1 - y0)
 
 def c10():
-    g = S7.setup_10(); g['x'] = [vec(x, WINE) for x in g['x']]; c = g['c']; kraft, oak, wall, tissue = (K.fit_bg(g[k]) for k in ('kraft', 'oak', 'wall', 'butter'))
+    g = S7.setup_10(); g['x'] = [vec(x, WINE) for x in g['x']]
+    g['box'] = K.thing('Kraft paper cube gift with twine-38.png', 380, 'dots', BUTTER, scale=0.4, strength=0.9, label=S7.dsticker('?', 90, WINE, WHITE))
+    g['box2'] = K.thing('Kraft paper cube gift with twine-38.png', 400, 'dots', WINE, scale=0.4, strength=0.8, label=P.pill_m('FOR YOU', 48, WHITE, rot=0))
+    g['usual'] = [K.thing('Glowing Ivory Candle in Glass Jar-96.png', 300, 'smalldots', WINE, scale=0.35, strength=0.35),
+                  K.thing('Warm white ceramic coffee mug-140.png', 340, 'dots', WINE, scale=0.4, strength=0.8),
+                  K.thing('Rolled chunky knit oatmeal scarf-94.png', 440, 'smalldots', WINE, scale=0.35, strength=0.7)]; c = g['c']; kraft, oak, wall, tissue = (K.fit_bg(g[k]) for k in ('kraft', 'oak', 'wall', 'butter'))
     ph, scr = K.device_art(520); s = []
     tw = K.string((850, -10), (850, 420), 0, S7.TWINE, 6)
     S2(s, kraft, 'Hook. Swap in a photo of your gift being wrapped.', [
@@ -195,7 +200,7 @@ def c10():
         for x in (art(pa, xy, r, 'Polaroid'), photo('Person ' + nm, at(xy, r, off), wh, r, cl.at(1.0, wh)), text(nm, 60, nxy, (-3, 2, -2)[names.index(nm)], box=BUTTER))] + [
         text('[3 people to\ngift it to]', 66, (720, 230), 2, align='left')])
     S2(s, oak, 'Edit the line (gift wrap, a note, whatever you offer).', [
-        art(g['box2'].resize((int(g['box2'].width * 1.6), int(g['box2'].height * 1.6)), Image.LANCZOS), (540, 720), -4, 'gift'),
+        art(K.thing('Kraft paper cube gift with twine-38.png', 640, 'dots', WINE, scale=0.64, strength=0.8, label=P.pill_m('FOR YOU', 77, WHITE, rot=0)), (540, 720), -4, 'gift'),
         art(doodle('icon', 10, 110, WINE), (250, 560), 0, 'sparkle'), art(doodle('icon', 8, 150, WINE), (850, 470), 0, 'sparkle'),
         text('[gift wrap available]', 72, (540, 1200), -2)])
     anchor = (540, 1180); s7 = []

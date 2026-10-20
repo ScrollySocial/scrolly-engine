@@ -10,7 +10,7 @@ Carousel rules: automation/carousels/content-rules.md, minus the Scrolly brand c
 """
 import math, sys
 from pathlib import Path
-from PIL import Image, ImageDraw, ImageFont, ImageOps
+from PIL import Image, ImageChops, ImageDraw, ImageFont, ImageOps
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import collage as C
 import play as P
@@ -68,6 +68,20 @@ def word(t, px, color=WHITE, edge=None, italic_last=True):
 def vec(im, color):
     """Mark one-colour artwork (a doodle, a string) to go into the .pptx as a recolourable vector shape."""
     im = im.copy(); im.info['vector'] = tuple(color[:3]); return im
+
+def thing(name, w, pattern, color, scale=0.6, strength=0.85, seed=1, edge=10, label=None, label_at=(0.5, 0.55)):
+    """A real object with her pattern on it (same look as P.thing). In the .pptx the object photo and the pattern are
+    separate: the pattern is a recolourable vector shape on top (Mercedes, 2026-10-19: "you cannot change the colour
+    of the overlays"). A label sticker on the object stays above the pattern."""
+    raw = P.raw_cut(name, w); look = P.style_object(raw, pattern, color, scale, strength, label=label, label_at=label_at, seed=seed, edge=edge)
+    if not pattern: return look
+    base = P.style_object(raw, None, None, label=label, label_at=label_at, seed=seed, edge=edge)
+    m = ImageChops.multiply(P._pattern_mask(pattern, raw.size, scale), raw.split()[3])
+    if label is not None:                                       # the sticker sits on top of the pattern
+        la = Image.new('L', raw.size, 0); la.paste(label.split()[3], (int(raw.width * label_at[0] - label.width / 2), int(raw.height * label_at[1] - label.height / 2)))
+        m = ImageChops.subtract(m, la)
+    mask = Image.new('L', base.size, 0); mask.paste(m, ((base.width - raw.width) // 2, (base.height - raw.height) // 2))
+    look.info['overlay'] = dict(base=base, mask=mask, color=tuple(color[:3]), alpha=strength); return look
 
 def doodle(kind, i, w, color=INK):
     """Her marker doodle (collage_kit), marked to become a recolourable vector shape in Canva."""
@@ -187,6 +201,11 @@ def pptx(ss, path, tmp):
                 lt = L['img'].info['lettering']; V.lettering(slide, lt['words'], lt['px'], L['c'], L['rot'], lt['fill'], lt['italic_last'], lt['font'])
                 if lt.get('edge'): outlines.append((i, lt))
                 continue
+            if L['kind'] == 'art' and 'overlay' in L['img'].info:           # the object photo, then its pattern as a vector
+                ov = L['img'].info['overlay']; n += 1; p = tmp / f'{n:03d}.png'; ov['base'].save(p)
+                pic = slide.shapes.add_picture(str(p), E(L['c'][0] - ov['base'].width / 2), E(L['c'][1] - ov['base'].height / 2), E(ov['base'].width), E(ov['base'].height))
+                pic.rotation = -L['rot']; pic.name = L['name']
+                V.vector_shape(slide, ov['mask'], L['name'] + ' pattern', L['c'], L['rot'], ov['color'], turdsize=4, alpha=ov['alpha']); continue
             if L['kind'] == 'art' and 'vector' in L['img'].info:
                 V.vector_shape(slide, L['img'].split()[3], L['name'], L['c'], L['rot'], L['img'].info['vector']); continue
             if L['kind'] in ('art', 'photo'):
