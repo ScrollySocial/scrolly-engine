@@ -328,10 +328,10 @@ const HCSS2 = `
 .head-h .done::before{display:none}
 @media(max-width:1299px){.hero-h .feed{display:none}}
 @media(max-width:900px){.hero-h .moon{opacity:.35;top:30%}.head-h .l1{white-space:normal}}
-/* the five Reels: one aligned row with "1 of 5" on top, names only */
+/* the Reels in one aligned row with "1 of N" on top, names only */
 .reels-h h2{color:#fff!important}
 .dots.reels-h{background:linear-gradient(rgba(43,31,63,.62),rgba(43,31,63,.62)),#1b1325 url("${img('dots.jpg')}") center/cover}
-.row5{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:clamp(14px,1.6vw,24px);margin:28px auto 0;max-width:1100px}
+.row5{display:grid;grid-template-columns:repeat(var(--n,5),minmax(0,1fr));gap:clamp(14px,1.6vw,24px);margin:28px auto 0;max-width:calc(var(--n,5) * 220px)}
 .row5 .rg{flex:none}
 @media(max-width:800px){.row5{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;margin-right:calc(-1 * var(--s3-gut));padding-bottom:8px}.row5 .rg{flex:0 0 58%;scroll-snap-align:start}}
 .reels-h .rg .num{color:var(--s3-sky)}
@@ -383,7 +383,7 @@ function halloweenPage(d) {
   </div></section>
 <section class="s3-sec tight dots reels-h"><div class="s3-wrap">
   <h2 class="s3-h2">${esc(d.getTitle)}</h2>
-  <div class="row5">${rows}</div></div></section>
+  <div class="row5" style="--n:${d.templates.length}">${rows}</div></div></section>
 ${reelCarousel(d)}
 ${includes(d)}
 ${editSection(d)}
@@ -537,13 +537,13 @@ const halloween = {
   file: 'halloween-sales-preview.html',
   title: 'Halloween Reels draft',
   headline: 'Cute Halloween Reels | that sell',
-  headlines: ['Halloween Reels with a selling job', 'Five Halloween Reels. Your clips, your words, posted before the 31st.', 'Bats, webs and a blood moon, all working for your sales', 'Spooky-cute Reels for your October sale'],
-  sub: 'Five ready-made Reels for October. Add your clips and post.',
+  headlines: ['Halloween Reels with a selling job', 'Four Halloween Reels. Your clips, your words, posted before the 31st.', 'Bats, webs and a blood moon, all working for your sales', 'Spooky-cute Reels for your October sale'],
+  sub: 'Four ready-made Reels for October. Add your clips and post.',
   was: '$9.99', price: '$4.99',
-  button: 'Get all 5 Reels',
+  button: 'Get all 4 Reels',
   priceLine: 'Instant download.',
   ctaLine: 'Instant download.',
-  getTitle: 'All 5 Reels',
+  getTitle: 'All 4 Reels',
   whoCovers: ['h3.jpg', 'h6.jpg', 'h5.jpg'],
   getLede: 'Each one sells something.',
   includes: INCLUDES('Real props and motion, built in.'),
@@ -553,7 +553,6 @@ const halloween = {
     { name: 'Caught in our web', poster: 'h3.jpg', job: "Show what's included.", film: '5 clips: your product held up, then four points', len: 15 },
     { name: "Things I'm batty about", poster: 'h2.jpg', job: 'Share your favourites.', film: '4 clips: an opening, then three favourites', len: 15 },
     { name: 'Trick or treat', poster: 'h5.jpg', job: 'A mistake, then your offer.', film: '3 clips: the mistake, your product, the proof', len: 17.5 },
-    { name: 'Now you see it', poster: 'h1.jpg', job: "Last chance before it's gone.", film: 'you with your product, the same shot without it, then your product', len: 14 },
   ],
   whoTags: ['Product shops', 'Digital products', 'Services', 'Creators'],
   editPhone: 'h2.jpg',
@@ -562,12 +561,12 @@ const halloween = {
   who: 'Anyone with something to sell this October.',
   faq: FAQ('No, they come with the template.'),
   ctaHead: 'Post your Halloween Reel before the 31st',
-  listing: "Five cute Halloween Reel templates for CapCut, each with a selling job: open a once-a-year sale, show what's included, share your favourites, turn a common mistake into your offer, or announce a last chance. Film a few clips on your phone, drop them in a folder and double-click the installer: the template opens in CapCut with your clips in place. Type your words over the brackets and export. Each template comes with a shot list, a recipe card, a one-page guide, a phone kit and a matching Instagram carousel you can edit free in Canva. Each one suggests a sound to add in Instagram (no sound files included).",
+  listing: "Four cute Halloween Reel templates for CapCut, each with a selling job: open a once-a-year sale, show what's included, share your favourites, or turn a common mistake into your offer. Film a few clips on your phone, drop them in a folder and double-click the installer: the template opens in CapCut with your clips in place. Type your words over the brackets and export. Each template comes with a shot list, a recipe card, a one-page guide, a phone kit and a matching Instagram carousel you can edit free in Canva. Each one suggests a sound to add in Instagram (no sound files included).",
   decisions: [
     'Price: $4.99, shown with $9.99 crossed out (decided 2026-10-19).',
-    'Instant download, so Now you see it (h1) must be built and zipped before the page goes live.',
-    'Carousels (2026-10-20): Canva links for h2, h3, h5, h6. h1 needs its carousel too, since "Every template comes with" lists it.',
-    'Now you see it (h1): motion test only. It needs the CapCut build and zip before the page goes live.',
+    'Live in WooCommerce 2026-10-20 (product 1498, $4.99 with $9.99 crossed out, 4 templates: h6, h3, h2, h5). Buy buttons still point at #buy: linking them to the product is waiting on your OK. This page itself is not published.',
+    'Carousels (2026-10-20): Canva links for all four (h2, h3, h5, h6).',
+    'Now you see it (h1) is not in the pack yet (motion test only). Adding it later means a CapCut build, zip, carousel, and changing 4 back to 5 here.',
     'Sound picks: none chosen for Halloween yet.', 'Reel Editor upsell: no name, link or launch yet.',
     'Mac: Mercedes is testing. The installer is a Windows script; the page names no platform until the test is done.',
     'Before live: check h2 and h5 in CapCut and the highlight boxes, then install one zip on a second computer.',
@@ -580,7 +579,6 @@ const halloween = {
     ['Caught in our web', 'Your product held up (15 s+), then four things it includes or does (12, 10, 8, 6 s+)', 'Four features'],
     ["Things I'm batty about", 'An opening shot (3 s+), then three favourite products or tools (4 s+ each)', 'Three favourites'],
     ['Trick or treat', 'The trick: a common mistake acted out (5 s+), the treat: your product (6 s+), the proof: it working (6 s+)', 'A mistake and your offer'],
-    ['Now you see it', 'You with your product, then the same shot without it (from the final shot list once built), then your product', 'Your last-chance offer'],
   ],
 };
 
