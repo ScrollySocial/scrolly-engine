@@ -181,17 +181,24 @@ body:has(.hp){margin:0;background:#f7f3ec}
    (<picture> swaps them at 901px). */
 .hp-earned .earned-art img{display:block;position:absolute;top:0;left:50%;max-width:none;height:auto;transform:translateX(-50%)}
 @media(min-width:901px){
- .hp-earned{position:relative;overflow:hidden;padding:0;aspect-ratio:1448/1151}
+ /* the deep-blue desktop card's torn sides run ~60-80px deep, so it needs 114% width to keep them off-screen; height follows */
+ .hp-earned{position:relative;overflow:hidden;padding:0;aspect-ratio:1448/1238}
  .hp-earned .earned-art{position:absolute;inset:0;z-index:0}
- .hp-earned .earned-art img{width:106%}
+ .hp-earned .earned-art img{width:114%}
  .hp-earned .wrap{position:absolute;inset:0;z-index:1;width:auto;margin:0;display:block}
- /* copy in the calm pale-blue sky below the top swirls and left of the shirt (measured: the calmest box starts ~49% down, ~20% in) */
- .hp-earned .copy{position:absolute;left:20%;top:47%;width:36%;padding:0}
+ /* copy on the deep blue card (#165eb3): WHITE text (white 6.7:1, navy would be 2.6:1), no sky marker (it would vanish on this blue),
+    "They're earned." white italic with a thin cream underline, tab underlines cream */
+ .hp-earned .copy{position:absolute;left:9%;top:52%;width:40%;padding:0;transform:translateY(-50%);color:#fff}
+ .hp-earned .copy h2{color:#fff!important}
+ .hp-earned .copy .or{color:#fff;background:none;padding:0;text-decoration:underline;text-decoration-color:#f7f3ec;text-decoration-thickness:2px;text-underline-offset:8px}
+ .hp-earned .copy .tabs a{border-bottom-color:#f7f3ec}
+ .hp-earned .copy .tabs a:hover{border-bottom-color:#fff}
+ .hp-earned .copy a:focus-visible{outline-color:#fff}
  .hp-earned h2{font-size:clamp(2rem,2.6vw,3.4rem)}
  .hp-earned h2 span{display:block;white-space:nowrap}
  .hp-earned p{max-width:none}
  /* cut-out shirt on the right, 55% of the art's height, centred in the calm sky */
- .hp-earned .shot-col{position:absolute;right:7%;top:50%;height:55%;transform:translateY(-50%)}
+ .hp-earned .shot-col{position:absolute;right:8%;top:53%;height:56%;transform:translateY(-50%)}
  .hp-earned .shot-col .cut{display:block;width:auto;height:100%}
 }
 @media(max-width:900px){

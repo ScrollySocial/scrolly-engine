@@ -38,7 +38,8 @@ const doodle = (amt) => { const d = DOODLES[amt]; return d ? `<svg class="dd" vi
 // layers, phone = portrait 1024x1536 layers; files assets/earned-{desktop,phone}-*.webp. The shirt is shirt-1k-graphite-front-cut-clean.webp
 // (the cut-out with its pale haze removed, so no light box shows on the blue art). Upload them with `node upload-media.mjs <file>`
 // before publishing; until then the URL is the expected upload path (preview-chrome.mjs swaps in the local file).
-const EARNED_ART = ['sky', 'clouds', 'strips'];
+// Desktop (chosen 2026-10-20) = deep blue torn card, stars, strips; phone = sky, clouds, strips. Paired by position in the stack.
+const EARNED_ART = [['earned-desktop3-cardB.webp', 'earned-phone-sky.webp'], ['earned-desktop3-stars.webp', 'earned-phone-clouds.webp'], ['earned-desktop3-strips.webp', 'earned-phone-strips.webp']];
 const MEDIA = JSON.parse(fs.readFileSync(path.join(here, '..', 'media-map.json'), 'utf8'));
 const artUrl = (n) => MEDIA[n]?.url || `https://scrollyseo.com/wp-content/uploads/2026/10/scrolly-${n}`;
 
@@ -113,7 +114,7 @@ export function build() {
  </div>
 </div></section>
 
-<section class="hp-earned" id="earned"><div class="earned-art" aria-hidden="true">${EARNED_ART.map((n) => `<picture><source media="(min-width:901px)" srcset="${artUrl(`earned-desktop-${n}.webp`)}" width="1448" height="1086"><img src="${artUrl(`earned-phone-${n}.webp`)}" alt="" width="1024" height="1536" loading="lazy"></picture>`).join('')}</div><div class="wrap">
+<section class="hp-earned" id="earned"><div class="earned-art" aria-hidden="true">${EARNED_ART.map(([d, n]) => `<picture><source media="(min-width:901px)" srcset="${artUrl(d)}" width="1448" height="1086"><img src="${artUrl(n)}" alt="" width="1024" height="1536" loading="lazy"></picture>`).join('')}</div><div class="wrap">
  <div class="copy">
   <h2><span>Some things can’t be bought.</span> <span><em class="or">They’re earned.</em></span></h2>
   <p>Reach your verified Challenge goal and earn the exclusive Club T-shirt.</p>
