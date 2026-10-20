@@ -1,4 +1,11 @@
 """02 Pack an order with me, v5 animated (2026-10-17), following the approved storyboard (build/storyboard_02.py).
+FULLY EDITABLE build (2026-10-20, build/editable.py via build/editable_a.py): same layout and motion as the approved
+build; every word is CapCut text (DM Serif Display big words on the tapes, last word Italic, in the accent colour;
+Montserrat for the small tape lines, the shipping label fields typing in, and the CTA lines); the motion marks are
+Scrolly Doodles letters; the sage stage is CapCut's background colour under a colourless concrete grain.
+CapCut limits: the box flaps folding and the lid halves meeting are short flipbooks of the box alone (CapCut can't fold
+a picture in 3D), and the washi tape zipping along the seam is a flipbook of the tape alone; the washi strips, label,
+box, peanuts, shreds, envelope and seal are real-photo pictures (recolour with Adjust > HSL).
 Real photographed props (box, flaps, peanuts, shreds, envelope, wax seal, closed box) with a playful layer (washi tape,
 words on tape strips, a shipping label whose fields type in). Sage backdrop. The big serif words use the accent colour:
 buyers change that text colour to their brand.
@@ -11,6 +18,9 @@ strip with the product name."""
 import random
 from PIL import Image, ImageDraw, ImageFont
 from engine import Layers, rot_pt, interp, font_path, PX_PER_SIZE, W, H, hold
+import editable as Ed
+import storyboard_b2 as SB
+from editable_a import Wrap, serif, plain, doodle
 import collage as C
 import storyboard_02 as S
 import test_close as TC
@@ -18,8 +28,8 @@ import test_close as TC
 ACCENT = (44, 78, 168)        # stand-in for the buyer's brand colour (the big serif words)
 INK, WHITE, BLUE, BUTTER = (24, 23, 22), (255, 255, 255), (166, 206, 242), (250, 232, 120)
 SPEC = dict(num='02', title='Pack an order with me', subtitle='14.4 seconds. Three clips, filmed from above or close.',
-            font='bodoni', dir='02-pack-an-order', folder='Template 02 - Pack an order with me',
-            project='Scrolly 02 Pack an order with me', cover_at=1.9,
+            font='montserrat', dir='02-pack-an-order', folder='Template 02 - Pack an order with me',
+            project='02 Pack an order with me', cover_at=1.9,
             slots=[('Picking the order', 'Hands taking your product off the shelf'),
                    ('Your product going into the box', 'Film from above, box fills the frame'),
                    ('The extras going in', 'Tissue, a note, a sticker: what you really add')],
@@ -60,15 +70,18 @@ def art(g, name, img, T, z, p, r, xfs, k=1.0):
     g.art(name, img, T, z, p, r, motion(xfs, p, r, T, k))
 
 def text(g, font, size, words, T, z, p, r, xfs, color=INK, typewriter=None):
-    g.text(font, size, words, T, z, p, r, motion(xfs, p, r, T), typewriter=typewriter, color=color)
+    """size in CapCut units (the old builds' numbers); 'serif' = DM Serif Display built-in words, else Montserrat."""
+    kf = motion(xfs, p, r, T)
+    if font == 'serif': serif(RR, words, size * PX_PER_SIZE, T, z, p, r, kf, fill=color, typewriter=typewriter)
+    else: plain(RR, words[0], size * PX_PER_SIZE / 0.85, T, z, p, r, kf, color=color, test=words[1], typewriter=typewriter)
 
 # ---- the playful layer ---------------------------------------------------------------------------------------------------
 def tape_words(g, key, c, small, big, rot, T, z, xfs, seed=17, length=760):
     """A butter gingham washi strip with a small sans line and a big serif line (accent colour) on it."""
     strip = C.washi(length, 250, 'gingham', (BUTTER, WHITE), seed=seed, alpha=250)
     art(g, f'tape-{key}', strip, T, z, c, rot, xfs)
-    text(g, 'arial', 8.5, (small, small), T, z + 1, rot_pt((c[0], c[1] - 50), c, rot), rot, xfs)
-    text(g, 'bodoni', 15.7, (big, big), T, z + 2, rot_pt((c[0], c[1] + 44), c, rot), rot, xfs, color=ACCENT)
+    text(g, 'montserrat', 7.4, (small, small), T, z + 1, rot_pt((c[0], c[1] - 52), c, rot), rot, xfs)
+    text(g, 'serif', 15.0, (big, big), T, z + 2, rot_pt((c[0], c[1] + 40), c, rot), rot, xfs, color=ACCENT)
 
 def letters_centre(font, size, x_left, y_top, words):
     """Where a left-aligned line drawn at (x_left, y_top) has its centre (the engine centres text on its spot)."""
@@ -87,9 +100,9 @@ def label(g, key, c, width, rot, T, z, xfs, typing=True):
     k = width / 520; hgt = int(780 * k)
     art(g, f'label-{key}', C.ship_label().resize((width, hgt)), T, z, c, rot, xfs)
     for i, (y, px, words, test, t0, secs) in enumerate(LABEL_FIELDS):
-        size = round(px * k / PX_PER_SIZE, 2)
-        p = rot_pt(letters_centre('mono', size, c[0] - width / 2 + 60 * k, c[1] - hgt / 2 + y * k, words), c, rot)
-        text(g, 'mono', size, (words, test), (T[0] + t0, T[1]) if typing else T, z + 1 + i, p, rot, xfs,
+        size = round(px * 0.8 * k / PX_PER_SIZE, 2)
+        p = rot_pt(letters_centre('montserrat', size, c[0] - width / 2 + 60 * k, c[1] - hgt / 2 + y * k, words), c, rot)
+        text(g, 'montserrat', size, (words, test), (T[0] + t0, T[1]) if typing else T, z + 1 + i, p, rot, xfs,
              typewriter=secs if typing else None)
 
 def ticks(n=3, length=90, gap=34, width=7):
@@ -171,11 +184,13 @@ def peanut_clumps(n_bands=10, seed=4):
     return out   # top band first
 
 # ---- the template ---------------------------------------------------------------------------------------------------------
-def layers():
-    g = Layers(); P = box_parts()
+RR = None
+def reel():
+    global RR
+    g = Layers(); RR = Wrap(g); P = box_parts()
     fx0, fy0, fx1, fy1 = P['floor']; bx0, by0, bx1, by1 = P['body_box']
     floor_c = ((fx0 + fx1) / 2, (fy0 + fy1) / 2); body_c = ((bx0 + bx1) / 2, (by0 + by1) / 2)
-    g.art('sage', Image.new('RGBA', (W, H), S.BG), (0, END), 0, (540, 960))
+    g.art('concrete-grain', Ed.grain(SB.raw('images', 'Light gray concrete mineral texture-4.png'), 0.12), (0, END), 1, (540, 960))
 
     # ===== 1 the label prints and types in, above the picking clip (0 to 2.75) =====
     # text always renders above images in CapCut, so the rising box pushes this whole scene up and out
@@ -200,7 +215,7 @@ def layers():
     pea = S.bordered(S.prop('packing-peanut').resize((360, 360)), WHITE, WHITE, 16, 2)
     art(g, 'peanut-one', pea, (4.45, 6.15), 25, (540, 980), 14,
         [xf((540, 980), [(4.45, 0, -1350, 1, -30), (4.66, 0, 0, 1, 0), (4.74, 0, -46, 1, 6), (4.82, 0, 0, 1, 0)])])
-    art(g, 'ticks-peanut', ticks(), (4.7, 6.15), 26, (500, 700), 0, [pop_in((500, 700), 4.7)])
+    doodle(RR, 'burst', 5, 150, (4.7, 5.6), 26, (470, 700), -20, motion([pop_in((470, 700), 4.7)], (470, 700), -20, (4.7, 5.6)), INK)   # text sits above the flood, so it leaves as the flood lands
     tape_words(g, 'padding', (540, 310), '+ a little', 'padding', -3, (4.85, 5.75), 50,
                [pop_in((540, 310), 4.85), pop_out((540, 310), 5.55)], seed=19)   # gone before the flood covers it
 
@@ -228,7 +243,7 @@ def layers():
     seal = C.shadow(S.prop('wax-seal-thank-you').resize((250, 250)), offset=(10, 22), blur=20, alpha=70)
     art(g, 'seal', seal, (7.6, 9.57), 26, seal_c, 8,
         [xf(seal_c, [(7.6, 0, 0, 1.8, -10), (7.74, 0, 0, 0.93, 0), (7.82, 0, 0, 1.03, 0), (7.9, 0, 0, 1, 0)])])
-    art(g, 'ticks-seal', ticks().rotate(35, expand=True), (7.75, 9.0), 27, (380, 1330), 0, [pop_in((380, 1330), 7.75)])
+    doodle(RR, 'burst', 5, 150, (7.75, 9.0), 27, (380, 1330), -70, motion([pop_in((380, 1330), 7.75)], (380, 1330), -70, (7.75, 9.0)), INK)
 
     # ===== 6 the box closes: real flaps fold away, the closed lid's halves fold down and meet (8.9 to 9.57) =====
     g.art('box-body', P['body'], (8.9, 9.57), 20, body_c)
@@ -262,11 +277,16 @@ def layers():
     T8 = (11.95, END)
     strip = C.washi(980, 300, 'gingham', (BUTTER, WHITE), seed=11, alpha=250)
     art(g, 'tape-cta', strip, T8, 40, (540, 450), 3, [xf((540, 450), [(11.95, 1300, 0, 1, 0), (12.25, -25, 0, 1, 0), (12.33, 0, 0, 1, 0)])])
-    name_c = letters_centre('bodoni', 19.7, 0, 350, '[Product name]'); name_c = (540, name_c[1])
-    g.text('bodoni', 19.7, ('[Product name]', 'Spray cleaner'), (12.3, END), 41, name_c, typewriter=0.5, color=ACCENT)
-    shop_c = (540, letters_centre('arial', 8.2, 0, 500, 'shop')[1])
-    text(g, 'arial', 8.2, ('shop at [where to buy]', 'shop at the link in my bio'), (12.75, END), 42, shop_c, 0,
+    name_c = (540, 440)
+    plain(RR, '[Product name]', 112, (12.3, END), 41, name_c, test='Spray cleaner', typewriter=0.5, color=ACCENT)
+    shop_c = (540, 540)
+    text(g, 'montserrat', 7.6, ('shop at [where to buy]', 'shop at the link in my bio'), (12.75, END), 42, shop_c, 0,
          [pop_in(shop_c, 12.75, 1.12)])
     # reading time (must-do 14, Mercedes 2026-10-18): holds, latest first, so every word is readable; same look and order
     for at, secs in ((14.3, 0.7), (5.5, 0.75), (2.39, 1.35)): hold(g.L, at, secs)
-    return g
+    return RR
+
+def layers():
+    return reel().L
+
+STAGE = S.BG[:3]
