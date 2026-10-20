@@ -215,13 +215,19 @@ em{font-style:italic}
 .ftr :focus-visible{outline-color:#fff}
 /* footer art (Mercedes 2026-10-19): navy torn-paper Starry Night collage, generated from footer-background-prompt.md.
    The torn cream edge at the top meets the cream page above; stars are in the art, so the CSS glitter and SVG jewels are off. */
-.ftr.art{background:#0b142c url(footer-starry-night.webp) top center/max(100%,1150px) auto no-repeat}
+.ftr.art{background:url(ftr-strips.webp) top center/max(100%,1150px) auto no-repeat,url(ftr-sky.webp) top center/max(100%,1150px) auto no-repeat,#0b142c}
+/* stars are their own layer so they can catch the light: a slow twinkle plus a foil glint that sweeps across. Off for reduced motion. */
+.ftr-stars{position:absolute;top:0;left:50%;z-index:0;width:max(100%,1150px);aspect-ratio:1672/941;transform:translateX(-50%);background:url(ftr-stars.webp) center/100% 100% no-repeat;pointer-events:none;animation:twinkle 5s ease-in-out infinite}
+.ftr-stars::after{content:"";position:absolute;inset:0;background:inherit;filter:brightness(1.8) saturate(1.15);-webkit-mask:linear-gradient(105deg,transparent 42%,#000 50%,transparent 58%) 150% 0/300% 100% no-repeat;mask:linear-gradient(105deg,transparent 42%,#000 50%,transparent 58%) 150% 0/300% 100% no-repeat;animation:glint 8s ease-in-out infinite}
+@keyframes twinkle{0%,100%{opacity:1}50%{opacity:.82}}
+@keyframes glint{0%{-webkit-mask-position:150% 0;mask-position:150% 0}60%,100%{-webkit-mask-position:-50% 0;mask-position:-50% 0}}
+@media (prefers-reduced-motion:reduce){.ftr-stars,.ftr-stars::after{animation:none}.ftr-stars::after{display:none}}
 .ftr.art::before,.ftr.art::after,.ftr.art .jewels{display:none}
 .ftr.art .top{padding-top:calc(max(5.2vw,60px) + clamp(48px,5vw,88px))}
 .ftr.art .ph{border-color:rgba(255,196,221,.55)}
 .ftr.art .ph .in{background:rgba(5,15,32,.35)}
 .ftr.art .cols,.ftr.art .legal{border-top-color:rgba(255,196,221,.25)}
-@media (max-width:900px){.ftr.art .quote{text-shadow:0 0 18px #050f20,0 0 36px #050f20,0 2px 4px #050f20}} /* phone: quote sits over the swirl until a 9:16 version of the art exists */
+@media (max-width:900px){.ftr.art .top{padding-top:min(240px,62vw)}.ftr.art .quote{text-shadow:0 0 18px #050f20,0 0 36px #050f20,0 2px 4px #050f20}} /* phone: quote sits over the swirl until a 9:16 version of the art exists */
 
 /* phones: stacked on purpose */
 @media (max-width:1100px){.nav,.hdr .login{display:none}.burger{display:inline-flex;align-items:center;justify-content:center}}
@@ -340,6 +346,7 @@ em{font-style:italic}
 </main>
 
 <footer class="ftr art">
+  <div class="ftr-stars" aria-hidden="true"></div>
   <div class="jewels" aria-hidden="true">
     <svg class="star" style="left:4%;top:9%;--s:38px" fill="url(#g-pink)"><use href="#star"/></svg>
     <svg class="star" style="left:46%;top:6%;--s:22px" fill="url(#g-white)"><use href="#star"/></svg>
