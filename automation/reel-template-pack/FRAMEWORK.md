@@ -633,3 +633,5 @@ Scrolly brand colours and Scrolly-only parts (destinations, the ManyChat switch,
   the clipboard ticking box 2 before check 3, like checks 1 and 3.
 - **#24:** her approve tick was on the old envelope video; the calendar version (round 2) goes to her to confirm.
   **#21:** she reviewed the old round 2 ("I don't like anything about it"); round 3 (numbered edition) goes to her.
+- **#21 Small batch round 3 (numbered edition): APPROVED** ("It's OK, I can live with it", 2026-10-19). CapCut build:
+  build/templates/t21.py; the batch size after "only" is editable, the pen's handwritten number stays artwork.
