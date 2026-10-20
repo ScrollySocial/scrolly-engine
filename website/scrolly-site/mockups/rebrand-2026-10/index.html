@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" data-p="cream" data-f="jost" data-c="p4n2" data-b="sky" data-s="sparkle" data-t="neutral">
+<html lang="en" data-p="cream" data-f="jost" data-c="p4n2" data-b="sky" data-s="sparkle" data-t="neutral" data-hf="georgia">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -7,7 +7,7 @@
 <meta name="robots" content="noindex">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;700;800&family=Syne:wght@400;500;700;800&family=Archivo:wdth,wght@62..125,400..800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;700;800&family=Syne:wght@400;500;700;800&family=Archivo:wdth,wght@62..125,400..800&family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;1,6..96,400&family=Instrument+Serif:ital@0;1&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
 <style>
 /* Rebrand mockup, 2026-10-19. NOT LIVE. Static preview only; nothing here is published to WordPress.
    Palette: hot pink, navy, lavender. Mercedes 2026-10-19: no deep pink, no arches, no metallic gold/silver.
@@ -31,6 +31,15 @@
 [data-b=periwinkle]{--cob:#6c9bff;--cob-ink:var(--navy)}
 [data-b=sky]{--cob:#4da3ff;--cob-ink:var(--navy)}
 :is([data-b=bright],[data-b=cornflower],[data-b=periwinkle],[data-b=sky]) :is(.hero,.clubs,.sheet,.hdr,.band){--btn:var(--cob);--btn-ink:var(--cob-ink);--btn-hov:var(--navy);--btn-hov-ink:#fff;--btn2:var(--lav);--btn2-ink:var(--navy)}
+/* heading font candidates (2026-10-20). Georgia = today. */
+[data-hf=bodoni]{--serif:"Bodoni Moda",Georgia,serif}
+[data-hf=instrument]{--serif:"Instrument Serif",Georgia,serif}
+[data-hf=instrument] .hero h1{letter-spacing:-.015em}[data-hf=instrument] .hero h1.one{font-size:clamp(2.6rem,11.5vw,8.6rem)}
+[data-hf=bodoni] .hero h1{letter-spacing:-.04em}
+[data-hf=dmserif]{--serif:"DM Serif Display",Georgia,serif}
+/* one-line hero headline (Mercedes: "Stand out online." on one line) */
+.hero h1.one{white-space:nowrap;font-size:clamp(2.3rem,9.4vw,7.6rem)}
+.hero h1.one em{display:inline}
 /* secondary font candidates (the swap for Arial) */
 [data-f=jost]{--sans:"Jost",Arial,sans-serif;--sans-stretch:100%;--label-track:.16em}
 [data-f=syne]{--sans:"Syne",Arial,sans-serif;--sans-stretch:100%;--label-track:.12em}
@@ -290,6 +299,9 @@ em{font-style:italic}
   <div class="grp" id="hl" aria-label="Headline"><span>Headline:</span>
     <button type="button" data-v="0">Now</button><button type="button" data-v="1">1</button><button type="button" data-v="2">2</button><button type="button" data-v="3">3</button><button type="button" data-v="4">4</button><button type="button" data-v="5">5</button>
   </div>
+  <div class="grp" id="hfnt" aria-label="Heading font"><span>Heading font:</span>
+    <button type="button" data-v="georgia">Georgia</button><button type="button" data-v="bodoni">Bodoni Moda</button><button type="button" data-v="instrument">Instrument Serif</button><button type="button" data-v="dmserif">DM Serif Display</button>
+  </div>
   <div class="grp" id="fnt" aria-label="Second font"><span>Second font:</span>
     <button type="button" data-v="jost">Jost</button>
     <button type="button" data-v="syne">Syne</button>
@@ -409,9 +421,11 @@ em{font-style:italic}
   set('data-t','tone',q.get('t')||html.dataset.t);
   /* hero headline options (2026-10-20): [upright part, italic marker part] */
   var HL=[['Build an audience','that buys.'],['Get found by people','ready to buy.'],['Stand out','online.'],['Get found.','Get chosen.'],['Be the one','they find.'],['Stand out where','buyers scroll.']];
-  function hl(i){var h=HL[+i]||HL[0];document.getElementById('hero-h').innerHTML=h[0]+' <em><span class="mk-em">'+h[1]+'</span></em>';
+  function hl(i){var h=HL[+i]||HL[0],el=document.getElementById('hero-h');el.innerHTML=h[0]+' <em><span class="mk-em">'+h[1]+'</span></em>';el.classList.toggle('one',(h[0]+h[1]).length<=18);
     document.querySelectorAll('#hl button').forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.v===String(i)))});}
-  hl(q.get('h')||'0');
+  hl(q.get('h')||'2');
+  set('data-hf','hfnt',q.get('hf')||html.dataset.hf);
+  document.querySelectorAll('#hfnt button').forEach(function(b){b.onclick=function(){set('data-hf','hfnt',b.dataset.v)}});
   document.querySelectorAll('#hl button').forEach(function(b){b.onclick=function(){hl(b.dataset.v)}});
   document.querySelectorAll('#tone button').forEach(function(b){b.onclick=function(){set('data-t','tone',b.dataset.v)}});
   document.querySelectorAll('#stars button').forEach(function(b){b.onclick=function(){set('data-s','stars',b.dataset.v)}});
