@@ -54,13 +54,13 @@ def layers():
     keep = M.cta; M.cta = cta; g['c']['main2'] = g['c']['main']
     try:
         with B.flip_mode(M, g, {'main': 'm', 'main2': 'o', 'p1': 'c', 'p2': 'y', 'p3': 'b', 'cta': 'o'}, ('why', 'kw', 'bname'), {'plus': [B.BLANK] * 3}):
-            track = b.flip(lambda t: M.frame(g, t))
+            track = b.flip(lambda t: M.frame(g, t), fps=30)   # the zooms are fast: 15 fps art lags the clips
     finally:
         M.cta = keep
     swing = lambda i: (lambda t: -3 * math.sin(b.R_inv(t) * 2 + i * 1.3))
     b.clips(track, [('o', 0, 9.75, 12.5, (1080, 1920), 0, None),                       # the end, under the lockets
                     ('m', 0, 0, 3.5, ov[0], 0, 'circle', geom(0)), ('c', 1, 1.9, 3.5, ov[1], 0, 'circle', geom(1)),
-                    ('c', 1, 3.5, 4.6, (1080, 1920), 0, None),
+                    ('c', 1, 3.45, 4.7, (1080, 1920), 0, None),   # overlaps the oval layers either side (no black frame at the cuts)
                     ('m', 0, 4.6, 8.15, ov[0], 0, 'circle', geom(0)), ('c', 1, 4.6, 5.35, ov[1], 0, 'circle', geom(1)),
                     ('y', 2, 5.35, 6.75, ov[1], 0, 'circle', geom(1)), ('b', 3, 6.75, 8.15, ov[1], 0, 'circle', geom(1)),
                     ('m', 0, 8.4, 10.0, ov[0], 0, 'circle'), ('c', 1, 8.4, 10.0, ov[1], 0, 'circle'),

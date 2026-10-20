@@ -42,7 +42,7 @@ def layers():
         t0, t1, r = ((3.4, 4.6, 4), (5.2, 6.55, 0), (8.9, 9.75, 4))[i]
         b.say(words, test, 58, t0, t1, (560, 1380), r, WINE)
     o = MC.text_anchor(P.sticky('done in\n[2 minutes]', 400), P.sticky('', 400), 7)
-    b.say('done in\n[2 minutes]', 'done in\n2 hours', 60, 10.5, 11.35, (760 + o[0], 1180 + o[1]), -7, None)
+    b.say('done in\n[2 minutes]', 'done in\n2 hours', 60, 10.5, 11.6, (760 + o[0], 1180 + o[1]), -7, None)
     b.say('"[KEYWORD]"', '"HOW"', 64, 13.35, None, (500, 1230), 0, WHITE)
     b.say('[Product name]', 'The Soy Candle Kit', 54, 13.55, None, (500, 1350), 4, WINE)
     return b.g

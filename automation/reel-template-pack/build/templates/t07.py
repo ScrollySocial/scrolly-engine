@@ -31,11 +31,11 @@ def layers():
         P.say(im, g_['onscreen'], t, 5.0, (270, 1420), -3); P.say(im, g_['irl'], t, 5.15, (720, 1420), 3)
         M.doodle_on(im, t, 5.35, g_['curve'], (500, 620), 0); return im
     g['c']['alone2'] = g['c']['alone']; M.stage4 = stage4
-    still = X.clip_card(MC.KeyClip(MC.KEYS['m']).at(0, (620, 574)), 620, 574, 14)
+    still = B.both(lambda: X.clip_card(MC.KeyClip(MC.KEYS['m']).at(0, (620, 574)), 620, 574, 14))
     try:
         with B.flip_mode(M, g, {'alone': 'm', 'alone2': 'o', 'hand': 'c', 'use': 'y', 'set': 'b'},
-                         ('phone_p', 'mug_p', 'fits', 'inuse', 'dims', 'dims_s', 'kw', 'buy'), {'grid': B.CLEAR, 'still': still}):
-            track = b.flip(lambda t: M.frame(g, t))
+                         ('phone_p', 'mug_p', 'fits', 'inuse', 'dims', 'dims_s', 'kw', 'buy'), {'grid': B.CLEAR, 'still': still[0]}):
+            track = b.flip(B.per_pass(g, {'still': still}, lambda t: M.frame(g, t)))
     finally:
         M.stage4 = keep4
     full = (1080, 1920); sw, sh = P.screen_size(M.PHONE, 340)

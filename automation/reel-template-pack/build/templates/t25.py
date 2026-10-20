@@ -15,13 +15,14 @@ SPEC = dict(num='25', title='Mine vs. the usual kind', subtitle='21 seconds. Six
                    ('Round 1: the usual kind', 'The ordinary version, the first difference'), ('Round 1: yours', 'Yours, the first difference'),
                    ('Round 3: yours', 'Yours, the third difference'), ('The end', 'You or your product')],
             test_clips=[('IMG_1460', 0.5), ('IMG_1418', 2.0), ('IMG_1462', 0.5), ('IMG_1423', 2.0), ('IMG_1463', 0.5), ('IMG_1423', 5.0)])
-WHITE, BUTTER = (255, 255, 255), M.BUTTER
+WHITE, BUTTER, WINE = (255, 255, 255), M.BUTTER, M.WINE
 TESTS = ('no bucket of dirty water', 'steam, no chemicals', 'dries in seconds')
 
 def layers():
     b = B.Build(M.HOLDS, 13.5); g = M.setup()
+    plain = M.P.thing('Plain gold trophy on black base-223.png', 520, None, None)       # the trophy's [MINE] sticker is editable
     with B.flip_mode(M, g, {'usual': 'm', 'mine': 'c', 'u1': 'y', 'm1': 'b', 'u2': 'm', 'm2': 'c', 'm3': 'o', 'cta': 'g'},
-                     ('lu', 'lm', 'kw', 'name'), {'diff': [B.BLANK] * 3}):
+                     ('lu', 'lm', 'kw', 'name'), {'diff': [B.BLANK] * 3, 'trophy': plain}):
         track = b.flip(lambda t: M.frame(g, t))
     full, half_w, half_h = (1080, 1920), (534, 1920), (1080, 954)
     ang = math.degrees(math.atan2(1160 - 760, 1080)); n = (-math.sin(math.radians(ang)), -math.cos(math.radians(ang)))
@@ -36,6 +37,7 @@ def layers():
         b.say('[mine]', 'mine', 56, t0 + 0.05, t1, lm, -1, BUTTER)
     for i, (t0, t1, pos, r) in enumerate(((2.3, 3.05, (540, 1440), 0), (3.5, 4.6, (540, 1400), 4), (6.45, 7.6, (540, 1420), 0), (8.7, 9.2, (540, 1400), 4))):
         k = (0, 0, 1, 2)[i]; b.say(('[no bucket of dirty water]', '[steam, no chemicals]', '[dries in seconds]')[k], TESTS[k], 58, t0, t1, pos, r, (BUTTER, WHITE, BUTTER)[k])
+    b.say('[MINE]', 'MINE', 54, 9.95, 10.8, (540, 1050 - 0.1 * plain.height), 3, WINE)
     b.say('"[KEYWORD]"', '"STEAM"', 64, 11.35, None, (540, 1220), 0, WHITE)
     b.say('[Product name]', 'The Steam Mop', 56, 11.55, None, (540, 1360), 4, BUTTER)
     return b.g

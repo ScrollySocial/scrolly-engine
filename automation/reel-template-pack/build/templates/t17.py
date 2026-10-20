@@ -10,8 +10,8 @@ import motion_capcut as MC
 import play_extra as X
 
 SPEC = dict(num='17', title='Everything that goes into one', subtitle='20 seconds. Seven clips: the empty table, three materials, the finished one.',
-            font='montserrat', dir='17-everything-that-goes-into-one', folder='Template 17 - Everything that goes into one',
-            project='Scrolly 17 Everything that goes into one', cover_at=1.0,
+            font='montserrat', dir='17-everything-that-goes-into-one', folder='Template 17 - What goes into one',
+            project='Scrolly 17 What goes into one', cover_at=1.0,
             slots=[('The empty table', 'An empty table, filmed from above'), ('Material 1', 'Placing your first material'),
                    ('Material 2', 'Placing your second material'), ('Material 3', 'Placing your third material'),
                    ('The finished one', 'The finished product in the middle'), ('Close up', 'The finished product, close'),
@@ -22,10 +22,10 @@ WHITE, BUTTER, BLUE = (255, 255, 255), M.BUTTER, M.BLUE
 def layers():
     b = B.Build(M.HOLDS, 12.5); g = M.setup(); bg = g['bg']
     b.g.art('bg', bg, (0, b.end), 0, (540, 960))
-    cards = [X.clip_card(MC.KeyClip(MC.KEYS[k]).at(0, (420, 520)), 360, 445, 14, r) for k, r in zip('cyb', (-6, 5, -3))]
+    cards = B.both(lambda: [X.clip_card(MC.KeyClip(MC.KEYS[k]).at(0, (420, 520)), 360, 445, 14, r) for k, r in zip('cyb', (-6, 5, -3))])
     with B.flip_mode(M, g, {'empty': 'm', 'place1': 'c', 'place2': 'y', 'done': 'o', 'close': 'g', 'cta': 'm'},
-                     ('prod', 'what', 'fresh', 'kw', 'name'), {'bg': B.CLEAR, 'cards': cards, 'labels': [B.BLANK] * 3}):
-        track = b.flip(lambda t: M.frame(g, t))
+                     ('prod', 'what', 'fresh', 'kw', 'name'), {'bg': B.CLEAR, 'cards': cards[0], 'labels': [B.BLANK] * 3}):
+        track = b.flip(B.per_pass(g, {'cards': cards}, lambda t: M.frame(g, t)))
     x0, y0, x1, y1 = M.TRAY_IN; inside = (int(g['tw'] * (x1 - x0)), int(g['th'] * (y1 - y0))); full = (1080, 1920); card = (360, 445)
     b.clips(track, [('m', 0, 0, 1.8, inside, 0, None),
                     ('c', 1, 1.9, 3.8, card, 6, None), ('y', 2, 2.35, 3.8, card, -5, None), ('b', 3, 2.8, 3.8, card, 3, None),

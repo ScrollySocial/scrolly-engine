@@ -41,7 +41,7 @@ class Build:
         out = []
         for s in segs:
             key, slot, a, b, size, rot, mask = s[:7]; ra, rb = self.R(a), self.R(b)
-            row = (key, slot, ra, rb, size, rot, mask, (lambda t, ra=ra: t - ra))
+            row = (key, slot, ra, rb, size, rot, mask, (lambda t, ra=ra: round(t - ra, 4)))   # rounded: ffmpeg rejects 1.8e-15
             out.append(row + ((s[7],) if len(s) > 7 else ()))
         MC.clip_layers(self.g, track, out, z0=1)
     def say(self, words, test, px, t0, t1, pos, rot=0, box=WHITE, color=None, round_=0.0, stroke=None):
@@ -50,6 +50,21 @@ class Build:
         if color is None: color = INK if (box is None or sum(box) / 3 > 140) else WHITE
         self.g.text('montserrat', sz(px), (words, test), (self.R(t0), self.R(t1) if t1 is not None else self.end), self.z, pos, rot,
                     {'scale': MC.popk(0, 0.3)}, color=color, box=box and (box, round_), stroke=stroke)
+
+def both(fn):
+    """fn() rendered twice, plain and with KeyClip.invert on: artwork with a key-colour window baked in (a photo card
+    holding a clip) has to swap colour for the matte's second render too, or the window reads as artwork."""
+    a = fn(); MC.KeyClip.invert = True
+    try: b = fn()
+    finally: MC.KeyClip.invert = False
+    return a, b
+
+def per_pass(g, pairs, frame):
+    """frame(t) with each g[key] set to the half of its both() pair that matches the render pass."""
+    def f(t):
+        for k, (a, b) in pairs.items(): g[k] = b if MC.KeyClip.invert else a
+        return frame(t)
+    return f
 
 @contextlib.contextmanager
 def flip_mode(M, g, keys, blanks, extra=None):

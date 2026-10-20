@@ -23,12 +23,16 @@ INK, WHITE, BUTTER = (24, 23, 22), (255, 255, 255), M.PINK
 def layers():
     b = B.Build(M.HOLDS, 12.5); g = M.setup(); paper = g['paper']
     b.g.art('paper', paper, (0, b.end), 0, (540, 960))
-    pin = S.fitw(Image.open(M.PINS / 'pin-head-black.png').convert('RGBA'), 54); cards = []
-    for i, k in enumerate('cyb'):
-        cd = X.clip_card(MC.KeyClip(MC.KEYS[k]).at(0, (300, 380)), 300, 380, 14, (-5, 3, -3)[i]); cd.alpha_composite(pin, (int(cd.width / 2 - 27), 10)); cards.append(cd)
+    pin = S.fitw(Image.open(M.PINS / 'pin-head-black.png').convert('RGBA'), 54)
+    def make_cards():
+        out = []
+        for i, k in enumerate('cyb'):
+            cd = X.clip_card(MC.KeyClip(MC.KEYS[k]).at(0, (300, 380)), 300, 380, 14, (-5, 3, -3)[i]); cd.alpha_composite(pin, (int(cd.width / 2 - 27), 10)); out.append(cd)
+        return out
+    cards = B.both(make_cards)
     with B.flip_mode(M, g, {'squeeze': 'm', 'close': 'c', 'close2': 'y', 'drape': 'b', 'whole': 'o', 'cta': 'o'},
-                     ('mine', 'soft', 'smooth', 'hear', 'name', 'kw'), {'paper': B.CLEAR, 'cards': cards, 'words3': [B.BLANK] * 3}):
-        track = b.flip(lambda t: M.frame(g, t))
+                     ('mine', 'soft', 'smooth', 'hear', 'name', 'kw'), {'paper': B.CLEAR, 'cards': cards[0], 'words3': [B.BLANK] * 3}):
+        track = b.flip(B.per_pass(g, {'cards': cards}, lambda t: M.frame(g, t)))
     full = (1080, 1920); sw, sh = P.screen_size(M.PHONE, 560)
     grow = lambda t: (540, 960, M.lerp(260, 1150, M.ease(M.seg(b.R_inv(t), 5.0, 5.6))) / 260, 0)
     segs = [('m', 0, 0, 0.45, full, 0, None), ('c', 1, 0.45, 0.9, full, 0, None), ('y', 2, 0.9, 1.35, full, 0, None), ('b', 3, 1.35, 1.8, full, 0, None),

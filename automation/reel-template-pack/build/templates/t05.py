@@ -28,9 +28,9 @@ def layers():
     b = B.Build(M.HOLDS, 14.0); g = M.setup(); sheet = g['sheet']
     b.g.art('sheet', sheet, (0, b.end), 0, (540, 960))
     keys = {'d0': 'm', 'd1': 'c', 'd2': 'y', 'd3': 'b', 'whole': 'o', 'cta': 'o'}
-    cards = [M.frame_card(MC.KeyClip(MC.KEYS[k]).at(0, (M.FW, M.FH)), i + 1) for i, k in enumerate('mcyb')]
-    with B.flip_mode(M, g, keys, ('kw', 'name'), {'sheet': B.CLEAR, 'cards': cards, 'label': tag_blank(), 'p': [B.BLANK] * 3}):
-        track = b.flip(lambda t: M.frame(g, t))
+    cards = B.both(lambda: [M.frame_card(MC.KeyClip(MC.KEYS[k]).at(0, (M.FW, M.FH)), i + 1) for i, k in enumerate('mcyb')])
+    with B.flip_mode(M, g, keys, ('kw', 'name'), {'sheet': B.CLEAR, 'cards': cards[0], 'label': tag_blank(), 'p': [B.BLANK] * 3}):
+        track = b.flip(B.per_pass(g, {'cards': cards}, lambda t: M.frame(g, t)))
     sw, sh = P.screen_size(M.PHONE, 620); k = 290 / g['cards'][0].width; small = (int(M.FW * k), int(M.FH * k))
     full = (1080, 1920)
     segs = [('m', 0, 0, 1.6, full, 0, None), ('o', 4, 1.6, 3.0, (sw, sh), 6, None), ('m', 0, 3.2, 4.8, full, 0, None)]
