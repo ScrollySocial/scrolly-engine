@@ -14,7 +14,7 @@ const ROWS = [
   ['Primary button, tags, sign-up button: navy on sky', C.navy, C.sky],
   ['Button hover, sale badge: white on navy', C.white, C.navy],
   ['Earned band text: white on navy', C.white, C.navy],
-  ['Earned word "They’re earned." hot pink on navy (large)', C.pink, C.navy, 'large'],
+  ['Accent word on navy ("They’re earned."): sky on navy', C.sky, C.navy],
   ['Footer "Tiger." hot pink on footer navy (large)', C.pink, C.fnavy, 'large'],
   ['Big numbers on navy (member area, dark bands): sky', C.sky, C.navy],
   ['Footer links + sign-up line: mist on footer navy', C.mist, C.fnavy],

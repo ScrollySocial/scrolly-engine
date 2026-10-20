@@ -1,7 +1,7 @@
 /* Homepage v3 (2026-10-03): implements the approved scrolly-homepage-reference.html. Self-contained: scoped under .hp, does NOT use shared.css,
    so the older design-system classes (.calc, .tile, .btn ...) on other pages are untouched. Header/footer are global (chrome/).
    Rebrand 2026-10-19 (vault brand/visual-system.md): navy ink, sky-blue buttons with navy text, sky-blue marker under the italic words
-   (no pink or orange text on cream; hot pink only as the one italic word on the navy Earned band), Jost for ledes and body (no upright Georgia in paragraphs). Jost is loaded by chrome/v3.css. */
+   (no pink or orange text on cream; hot pink is reserved for Mercedes herself, so not used on this page outside the footer), Jost for ledes and body (no upright Georgia in paragraphs). Jost is loaded by chrome/v3.css. */
 body:has(.hp) #content,body:has(.hp) main,body:has(.hp) .site-main,body:has(.hp) .page-content{max-width:none!important;width:100%!important;padding:0!important;margin:0!important}
 body:has(.hp){margin:0;background:#f7f3ec}
 .hp{--cream:#f7f3ec;--ink:#0a1930;--muted:#4a4e66;--line:#d9d3ca;--sky:#4da3ff;--pink:#ff3b7f;--gut:clamp(20px,4.5vw,96px);--serif:Georgia,"Times New Roman",serif;--sans:"Jost",Arial,Helvetica,sans-serif;
@@ -79,10 +79,10 @@ body:has(.hp){margin:0;background:#f7f3ec}
 .hp-clubs .fine{text-align:center}
 
 /* earned (challenge shirt) */
-/* Earned band: navy (less girly tone, 2026-10-20); "They’re earned." is the page's one hot-pink word (5.2:1 on navy) */
+/* Earned band: navy (less girly tone, 2026-10-20); "They’re earned." in sky blue (6.7:1 on navy) */
 .hp-earned{margin-top:clamp(56px,6vw,112px);padding:clamp(48px,5vw,88px) 0;background:var(--ink);color:#fff}
 .hp-earned h2{color:#fff!important}
-.hp-earned .or{color:var(--pink);background:none;padding:0}
+.hp-earned .or{color:var(--sky);background:none;padding:0}
 .hp-earned a:focus-visible{outline-color:#fff}
 .hp-earned .wrap{display:grid;grid-template-columns:1fr 1fr;align-items:center}
 .hp-earned .copy{padding:50px 3vw 70px 0}

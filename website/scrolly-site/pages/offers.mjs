@@ -201,7 +201,7 @@ const TIER_CSS = `
 .s3 .cl-pick .s3-fine{margin-top:16px;text-align:center}
 /* Earned shirt */
 .s3 .cl-earned .s3-split{grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr)}
-/* Earned band: navy, with the page's one hot-pink italic word (less girly tone, 2026-10-20) */
+/* Earned band: navy, its italic word in sky blue via .s3-dark .or (less girly tone, 2026-10-20) */
 .s3 .cl-earned p{margin-top:20px}
 .s3 .cl-earned .s3-btn{margin-top:28px}
 .s3 .cl-tees{display:flex;align-items:center;gap:clamp(4px,1vw,16px)}
