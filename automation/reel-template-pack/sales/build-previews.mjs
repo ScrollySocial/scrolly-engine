@@ -43,7 +43,7 @@ mark.ph{background:#ffd9c9;color:var(--s3-ink);padding:0 4px;border-radius:3px}
 @media(max-width:800px){.phones{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:10px;margin-right:calc(-1 * var(--s3-gut))}
  .phones>*{flex:0 0 58%;scroll-snap-align:start}}
 /* How it works: a strip of film with the how-to video on a desktop screen (Mercedes 2026-10-19) */
-.film{background:var(--s3-navy);color:#fff;position:relative;padding:calc(var(--s3-sec) + 22px) 0}
+.film{background:var(--s3-navy);color:#fff;position:relative;padding:calc(var(--s3-sec) * .6 + 34px) 0}
 .film::before,.film::after{content:"";position:absolute;left:0;right:0;height:34px;
  background:var(--s3-navy);
  background-image:repeating-linear-gradient(90deg,transparent 0 14px,#f7f3ec 14px 34px,transparent 34px 48px);
@@ -61,10 +61,10 @@ mark.ph{background:#ffd9c9;color:var(--s3-ink);padding:0 4px;border-radius:3px}
 .steps-line{list-style:none;padding:0;margin:28px 0 0;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:10px 18px;font:500 var(--s3-fs-title)/1.1 var(--s3-sans);color:#fff}
 .steps-line li+li::before{content:"→";color:var(--s3-sky);margin-right:18px}
 .monitor{position:relative}
-.see-note{position:absolute;z-index:2;left:calc(100% + 12px);top:18%;display:flex;flex-direction:column;align-items:flex-start;gap:6px;font:400 3rem/1 "Covered By Your Grace",cursive;color:#fff;transform:rotate(-6deg);white-space:nowrap}
-.see-note img{width:120px;transform:scaleX(-1) rotate(70deg);margin-left:-20px}
-.monitor{max-width:780px}
-@media(max-width:1400px){.monitor{margin-top:96px}.see-note{left:auto;right:-6px;top:-58px;flex-direction:row;align-items:flex-end;font-size:2.2rem}.see-note img{width:80px;transform:scaleX(-1) rotate(30deg) translateY(24px);margin:0}}
+.see-note{position:absolute;z-index:2;left:calc(100% + 14px);top:38%;display:flex;flex-direction:row;align-items:center;gap:12px;font:400 2.8rem/1 "Covered By Your Grace",cursive;color:#fff;transform:rotate(-4deg);white-space:nowrap}
+.see-note img{width:96px;flex:none}
+.monitor{max-width:620px}
+@media(max-width:1250px){.monitor{margin-top:84px}.see-note{left:auto;right:0;top:-62px;font-size:2.2rem}.see-note img{width:70px;transform:rotate(-30deg)}}
 @media(max-width:700px){.see-note{font-size:1.7rem;top:-50px}}
 @media(max-width:560px){.screen{border-width:8px 8px 18px}.steps-line{font-size:1.5rem}}
 /* Who it's for: the peach band breaks up the page (Mercedes 2026-10-19; brand peach from the Reel covers) */
@@ -113,10 +113,10 @@ details.notes>summary{cursor:pointer;font:700 var(--s3-fs-label)/1.4 var(--s3-sa
 .edits-row{display:flex;align-items:center;justify-content:center;gap:clamp(24px,4vw,64px)}
 .edit-text{max-width:20em}
 .burst-map{position:relative;width:680px;height:340px;flex:none}
-.burst-map .rays{position:absolute;inset:0;width:100%;height:100%}
+.burst-map .rays{position:absolute;inset:0;width:100%;height:100%;z-index:0}
 .burst-map .rays path{fill:none;stroke:var(--s3-pink);stroke-width:2.5;stroke-linecap:round;stroke-dasharray:2 7}
 .burst-map .rays circle{fill:var(--s3-pink)}
-.burst-map .phone{position:absolute;left:265px;top:20px;width:150px;border-color:var(--s3-ink);box-shadow:0 14px 30px rgba(10,25,48,.18)}
+.burst-map .phone{position:absolute;z-index:1;left:265px;top:31px;width:150px;border-color:var(--s3-ink);box-shadow:0 14px 30px rgba(10,25,48,.18)}
 .burst-map .lbl{position:absolute;display:flex;align-items:center;gap:8px;white-space:nowrap;font:400 1.6rem/1 "Covered By Your Grace",cursive;color:var(--s3-ink)}
 .burst-map .lbl.l{flex-direction:row-reverse}
 .burst-map .lbl svg{width:28px;height:28px;flex:none;stroke:var(--s3-ink);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
@@ -144,7 +144,7 @@ const shell = (d, css, body) => `<!doctype html><html lang="en"><head><meta char
 const price = (d) => `<span class="amt">${d.was ? `<del>${esc(d.was)}</del>` : ''}${ph(d.price)}</span>`;
 const howItWorks = (d) => `<section class="film" id="how"><div class="s3-wrap"><h2 class="s3-h2">How it works</h2>
   <ol class="steps-line">${STEPS.map(([icon, b]) => `<li>${esc(b)}</li>`).join('')}</ol>
-  <div class="monitor"><p class="see-note" aria-hidden="true">see it in action<img src="${img('arrow-curve-w.webp')}" alt=""></p><div class="screen"><div class="play" aria-hidden="true"></div><strong>Your how-to video</strong></div><div class="stand"></div><div class="base"></div></div></div></section>`;
+  <div class="monitor"><p class="see-note" aria-hidden="true"><img src="${img('arrow-l-w.webp')}" alt="">see it in action</p><div class="screen"><div class="play" aria-hidden="true"></div><strong>Your how-to video</strong></div><div class="stand"></div><div class="base"></div></div></div></section>`;
 // "Every template comes with": real sticky notes pinned on, from Trick or treat (Mercedes 2026-10-19: cards were "boring")
 const ROT = [-4, 3, -2, 4, -3, 2];
 // one line icon per item in "Every template comes with" (Mercedes: "can we communicate this visually?")
@@ -172,20 +172,27 @@ const EDITS_OLD = [
   ['<path d="M18 36V10l22-5v26"/><circle cx="13" cy="36" r="5"/><circle cx="35" cy="31" r="5"/>', 'Your audio'],
 ];
 // label: [icon path, text, label x,y in the 680x340 stage (anchor = where the ray ends), side, origin x,y on the phone]
+// labels sit evenly on each side; every ray starts at the phone's centre (hidden behind it) and ends at its label
+const T_ICON = '<path d="M9 9h30M24 9v31M17 40h14"/>';
+const AA_ICON = '<path d="M4 38L15 10l11 28M8 28h14"/><circle cx="35" cy="31" r="6"/><path d="M41 24v14"/>';
+const PALETTE_ICON = '<path d="M24 6C13 6 5 14 5 23c0 9 7 15 14 15 3 0 4-2 4-4s-2-3-2-5 2-4 5-4h6c6 0 11-4 11-10C43 12 35 6 24 6z"/><circle cx="15" cy="21" r="2.5"/><circle cx="22" cy="14" r="2.5"/><circle cx="31" cy="15" r="2.5"/><circle cx="36" cy="22" r="2.5"/>';
 const EDIT_MAP = [
-  ['<path d="M8 40L20 8h4l12 32M12 30h20"/>', 'Every word', 196, 40, 'l', 300, 92],
-  ['<path d="M6 40h14M13 40L22 10l9 30M35 40h7M30 26h10"/>', 'Fonts', 196, 150, 'l', 296, 112],
-  ['<circle cx="24" cy="24" r="17"/><circle cx="17" cy="18" r="3"/><circle cx="29" cy="15" r="3"/><circle cx="33" cy="27" r="3"/>', 'Text colours', 196, 260, 'l', 318, 104],
-  ['<path d="M24 6l4 12h12l-10 8 4 13-10-8-10 8 4-13-10-8h12z"/>', 'Doodle colours', 484, 30, 'r', 368, 236],
-  ['<rect x="6" y="8" width="36" height="32" rx="3"/><path d="M6 32l10-10 8 8 6-6 12 12"/>', 'Background', 484, 120, 'r', 384, 64],
-  ['<rect x="15" y="5" width="18" height="38" rx="4"/><path d="M21 19l8 5-8 5z"/>', 'Your clips', 484, 210, 'r', 334, 178],
-  ['<path d="M18 36V10l22-5v26"/><circle cx="13" cy="36" r="5"/><circle cx="35" cy="31" r="5"/>', 'Your audio', 484, 300, 'r', 352, 300],
+  [T_ICON, 'Every word', 'l', 0],
+  [AA_ICON, 'Fonts', 'l', 1],
+  [PALETTE_ICON, 'Text colours', 'l', 2],
+  ['<path d="M24 6l4 12h12l-10 8 4 13-10-8-10 8 4-13-10-8h12z"/>', 'Doodle colours', 'r', 0],
+  ['<rect x="6" y="8" width="36" height="32" rx="3"/><path d="M6 32l10-10 8 8 6-6 12 12"/>', 'Background', 'r', 1],
+  ['<rect x="15" y="5" width="18" height="38" rx="4"/><path d="M21 19l8 5-8 5z"/>', 'Your clips', 'r', 2],
+  ['<path d="M18 36V10l22-5v26"/><circle cx="13" cy="36" r="5"/><circle cx="35" cy="31" r="5"/>', 'Your audio', 'r', 3],
 ];
+const MAP_W = 680, MAP_H = 340, CX = 340, CY = 170, LX = 196, RX = 484;
+const labelY = (side, k) => side === 'l' ? 70 + k * 100 : 35 + k * 90;   // even spacing per side, centred on the phone
+
 const editSection = (d) => `<section class="s3-sec tight edits"><div class="s3-wrap edits-row"><div class="edit-text"><h2 class="s3-h2">Make it yours</h2>
   <p class="s3-lede" style="margin-top:12px">Change it all in CapCut, on your phone or computer. ${ph('[CONFIRM: phone editing, from the CapCut test]')}</p></div>
-  <div class="burst-map"><svg class="rays" viewBox="0 0 680 340" aria-hidden="true">${EDIT_MAP.map(([, , x, y, side, ox, oy]) => `<path d="M${ox} ${oy} L${side === 'l' ? x + 6 : x - 6} ${y}"/><circle cx="${ox}" cy="${oy}" r="4"/>`).join('')}</svg>
+  <div class="burst-map"><svg class="rays" viewBox="0 0 ${MAP_W} ${MAP_H}" aria-hidden="true">${EDIT_MAP.map(([, , side, k]) => { const x = side === 'l' ? LX + 8 : RX - 8; const y = labelY(side, k); return `<path d="M${CX} ${CY} L${x} ${y}"/><circle cx="${x}" cy="${y}" r="3.5"/>`; }).join('')}</svg>
   <div class="phone"><img src="${img(d.editPhone)}" alt=""></div>
-  ${EDIT_MAP.map(([icon, b, x, y, side]) => `<span class="lbl ${side}" style="${side === 'l' ? `right:${680 - x}px` : `left:${x}px`};top:${y - 16}px"><svg viewBox="0 0 48 48" aria-hidden="true">${icon}</svg>${esc(b)}</span>`).join('')}</div></div></section>`;
+  ${EDIT_MAP.map(([icon, b, side, k]) => `<span class="lbl ${side}" style="${side === 'l' ? `right:${MAP_W - LX}px` : `left:${RX}px`};top:${labelY(side, k) - 16}px"><svg viewBox="0 0 48 48" aria-hidden="true">${icon}</svg>${esc(b)}</span>`).join('')}</div></div></section>`;
 const faq = (d) => `<section class="s3-sec"><div class="s3-read"><h2 class="s3-h2">Questions</h2><div class="s3-faq">${d.faq.map(([q, a]) => `<details><summary>${esc(q)}</summary><div>${ph(a)}</div></details>`).join('')}</div></div></section>`;
 const notes = (d) => `<details class="s3-sec notes"><summary class="s3-wrap">Review notes for Mercedes (not on the page): headlines, listing, demo footage</summary><div class="s3-wrap">
   <h3 class="s3-h3">Other headline options</h3><ul>${d.headlines.map((h) => `<li>${esc(h)}</li>`).join('')}</ul>
@@ -353,9 +360,12 @@ const PCSS = `
 .hero-p .s3-wrap{position:relative;z-index:2}
 .hero-p .s3-fine{max-width:620px}
 .prop{position:absolute;pointer-events:none;z-index:1}
-.hero-p .tri{right:5%;bottom:-6px;width:clamp(200px,20vw,300px);transform:rotate(-4deg)}
+.hero-p .tri{right:5%;bottom:-6px;width:clamp(200px,20vw,300px);transform:rotate(-4deg);z-index:2}
+/* a static Reels feed behind the tripod (the covers, once made, replace these frames) */
+.hero-p .feed{right:-60px;top:-40px;width:min(560px,40vw);display:grid;grid-template-columns:repeat(4,1fr);gap:6px;transform:rotate(-6deg);opacity:.5;-webkit-mask-image:linear-gradient(to left,#000 55%,transparent);mask-image:linear-gradient(to left,#000 55%,transparent)}
+.hero-p .feed img{width:100%;aspect-ratio:9/16;object-fit:cover;border-radius:6px}
 .hero-p .burst-h{right:calc(5% - 90px);top:50%;width:clamp(380px,36vw,560px);transform:translateY(-58%) rotate(8deg);opacity:.9}
-@media(max-width:1299px){.hero-p .tri,.hero-p .burst-h{display:none}}
+@media(max-width:1299px){.hero-p .tri,.hero-p .burst-h,.hero-p .feed{display:none}}
 .hero-p .seal{width:64px;transform:rotate(-10deg)}
 .reels-p{background:var(--s3-navy);color:#fff}
 .reels-p h2{color:#fff!important}.reels-p .s3-lede{color:#e6e0d8}
@@ -422,7 +432,7 @@ function physicalPage(d) {
   const list = d.templates.map((t, i) => `<div class="rg"><p class="num">${i + 1} of 25${d.launchNow ? (d.launchNow.includes(i + 1) ? ' <span class="in">In today</span>' : ' <span class="soon">Arriving soon</span>') : ''}</p><div class="phone"><img src="${img(`p${String(i + 1).padStart(2, '0')}.jpg`)}" alt="${esc(t.name)}: a frame from the template" loading="lazy"></div>
     <h3>${esc(t.name)}</h3></div>`).join('');
   const body = `
-<section class="s3-sec hero-p"><img class="prop burst-h" src="${img('burst-baby.webp')}" alt=""><img class="prop tri" src="${img('tripod.webp')}" alt=""><div class="s3-wrap">
+<section class="s3-sec hero-p"><div class="prop feed" aria-hidden="true">${[1, 3, 10, 12, 22, 23, 2, 9, 20, 25, 13, 16].map((n) => `<img src="${img(`p${String(n).padStart(2, '0')}.jpg`)}" alt="">`).join('')}</div><img class="prop tri" src="${img('tripod.webp')}" alt=""><div class="s3-wrap">
   <h1 class="s3-display head-p"><span class="l1">${esc(d.headline.split(': ')[0])}:</span> <span class="done">${esc(d.headline.split(': ')[1])}</span></h1>
   <p class="s3-lede" style="margin-top:28px">${esc(d.sub)}</p>
   <div class="buy">${price(d)}<a class="s3-btn" href="#buy">${esc(d.button)}</a></div>

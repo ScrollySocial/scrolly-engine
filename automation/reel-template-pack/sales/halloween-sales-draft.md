@@ -44,6 +44,15 @@ to confirm no Pro features.
   colours, Background, Your clips, Your audio); on a phone the labels wrap under it.
 - How it works: "Download → Film → Edit → Post" as one line above the monitor; handwritten "see it in action" on it.
 
+## Round 2026-10-20 c
+
+- How it works: shorter band and a smaller monitor; the handwritten "see it in action" sits beside the screen with an
+  arrow pointing at it (above the screen on narrower windows).
+- Make it yours: real icons (T for Every word, Aa for Fonts, an artist's palette for Text colours). Every line starts at
+  the phone's centre (hidden behind it) and runs out to its label, evenly spaced on each side.
+- Hero (physical): a static Instagram-style feed of Reel frames behind the tripod, fading to the left so it never sits
+  behind the words. The designed covers replace these frames once approved.
+
 ## Open decisions (Mercedes)
 
 | Decision | State |
