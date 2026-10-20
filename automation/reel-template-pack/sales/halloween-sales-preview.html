@@ -270,7 +270,7 @@ mark.ph{background:#ffd9c9;color:var(--s3-ink);padding:0 4px;border-radius:3px}
 @media(max-width:800px){.phones{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:10px;margin-right:calc(-1 * var(--s3-gut))}
  .phones>*{flex:0 0 58%;scroll-snap-align:start}}
 /* How it works: a strip of film with the how-to video on a desktop screen (Mercedes 2026-10-19) */
-.film{background:var(--s3-navy);color:#fff;position:relative;padding:calc(var(--s3-sec) * .5 + 44px) 0}
+.film{background:var(--s3-navy);color:#fff;position:relative;padding:76px 0 70px}
 /* real film (Mercedes 2026-10-20): a dark film base with rounded sprocket holes, a soft sheen and grain */
 .film::before,.film::after{content:"";position:absolute;left:0;right:0;height:46px;z-index:0;pointer-events:none;
  background:linear-gradient(rgba(255,255,255,.07),rgba(255,255,255,0) 30%,rgba(255,255,255,0) 70%,rgba(255,255,255,.05)),url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .5 0'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='.35'/%3E%3C/svg%3E"),url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='30' height='46'%3E%3Crect width='30' height='46' fill='%23140f0b'/%3E%3Crect x='8' y='14' width='14' height='18' rx='3.2' fill='%23f7f3ec'/%3E%3Crect x='8.5' y='14.5' width='13' height='17' rx='2.8' fill='none' stroke='%23000' stroke-opacity='.35'/%3E%3C/svg%3E") 0 0/30px 46px repeat-x;
@@ -278,7 +278,7 @@ mark.ph{background:#ffd9c9;color:var(--s3-ink);padding:0 4px;border-radius:3px}
 .film::before{top:0}.film::after{bottom:0}
 .film>.s3-wrap{position:relative;z-index:1}
 .film h2{color:#fff!important;text-align:center}
-.monitor{max-width:900px;margin:40px auto 0}
+.monitor{max-width:900px;margin:26px auto 0}
 /* a realistic desktop: thin black glass bezel, silver aluminium chin and stand, a soft glare on the glass */
 .screen{position:relative;aspect-ratio:16/9;border:9px solid #0c0c0c;border-bottom:0;border-radius:14px 14px 0 0;background:radial-gradient(120% 90% at 50% 40%,#1b1d22,#050506);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;text-align:center;padding:24px;box-shadow:0 0 0 1px #3d4148}
 .screen::before{content:"";position:absolute;inset:0;background:linear-gradient(118deg,rgba(255,255,255,.09) 0 34%,transparent 34.2%);pointer-events:none}
@@ -286,15 +286,15 @@ mark.ph{background:#ffd9c9;color:var(--s3-ink);padding:0 4px;border-radius:3px}
 .screen .play{width:76px;height:76px;border-radius:50%;background:var(--s3-orange);display:flex;align-items:center;justify-content:center}
 .screen .play::after{content:"";border-left:24px solid #000;border-top:15px solid transparent;border-bottom:15px solid transparent;margin-left:6px}
 .screen p{font:var(--s3-fs-fine)/1.4 var(--s3-sans);color:#d8d3cc;max-width:30em}
-.stand{width:20%;height:62px;margin:40px auto 0;background:linear-gradient(90deg,#8e949b,#dfe2e6 45%,#f4f5f7 55%,#9aa0a7);clip-path:polygon(14% 0,86% 0,100% 100%,0 100%)}
+.stand{width:20%;height:44px;margin:40px auto 0;background:linear-gradient(90deg,#8e949b,#dfe2e6 45%,#f4f5f7 55%,#9aa0a7);clip-path:polygon(14% 0,86% 0,100% 100%,0 100%)}
 .base{width:26%;height:8px;margin:0 auto;border-radius:2px 2px 8px 8px;background:linear-gradient(#f2f3f5,#b5bac0);box-shadow:0 10px 18px rgba(0,0,0,.45)}
 /* steps as one line above the monitor; "see it in action" in handwriting on the screen (Mercedes 2026-10-20) */
-.steps-line{list-style:none;padding:0;margin:28px 0 0;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:10px 18px;font:500 var(--s3-fs-title)/1.1 var(--s3-sans);color:#fff}
+.steps-line{list-style:none;padding:0;margin:18px 0 0;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:10px 18px;font:500 var(--s3-fs-title)/1.1 var(--s3-sans);color:#fff}
 .steps-line li+li::before{content:"→";color:var(--s3-sky);margin-right:18px}
 .monitor{position:relative}
 .see-note{position:absolute;z-index:2;left:calc(100% + 14px);top:38%;display:flex;flex-direction:row;align-items:center;gap:12px;font:400 2.8rem/1 "Covered By Your Grace",cursive;color:#fff;transform:rotate(-4deg);white-space:nowrap}
 .see-note img{width:96px;flex:none}
-.monitor{max-width:540px}
+.monitor{max-width:440px}
 @media(max-width:1250px){.monitor{margin-top:84px}.see-note{left:auto;right:0;top:-62px;font-size:2.2rem}.see-note img{width:70px;transform:rotate(-30deg)}}
 @media(max-width:700px){.see-note{font-size:1.7rem;top:-50px}}
 @media(max-width:560px){.screen{border-width:6px 6px 0}.screen::after{left:-7px;right:-7px;bottom:-24px;height:24px}.stand{margin-top:24px;height:40px}.steps-line{font-size:1.5rem}}
