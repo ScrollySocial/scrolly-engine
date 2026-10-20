@@ -1,8 +1,8 @@
 """Designed, editable Reel covers for every CapCut template (Mercedes, 2026-10-20: every template gets a cover; the covers
 are also the phone previews on the sales pages).
 
-A cover is one still frame built from the same editable pieces as the template (build/editable.py): the stage is
-CapCut's Background > Colour under a colourless grain, every word is a text layer (DM Serif Display built-in words with
+A cover is one still frame built from the same editable pieces as the template (build/editable.py): the buyer's clip
+fills the frame (Mercedes, 2026-10-20: "instead of a background ... do video placeholder"), every word is a text layer (DM Serif Display built-in words with
 the last word Italic, Montserrat for small lines, Bodoni for Halloween), doodles are Scrolly Doodles letters, and real
 photographed props are pictures. So the buyer changes the cover's words, fonts, colours, doodles and background exactly
 like the rest of the template.
@@ -32,6 +32,9 @@ class Cover:
     """One still: stage colour + layers in paint order (pictures first, then text, as CapCut draws them)."""
     def __init__(self, stage):
         self.stage = stage; self.L = []
+    def video(self, slot=0, what='Your cover shot', at=(540, 960)):
+        """The buyer's clip (or photo) fills the frame under everything: a placeholder card until they swap it in."""
+        self.L.append(dict(kind='clip', slot=slot, what=what, at=at, pos=(W / 2, H / 2), rot=0.0))
     def art(self, name, img, pos, rot=0.0, scale=1.0, hero=False):
         self.L.append(dict(kind='art', name=name, img=img, pos=pos, rot=rot, scale=scale, hero=hero))
     def text(self, font, px, words, pos, rot=0.0, color=WHITE, stroke=None, box=None, shadow=False, italic_last=False):
@@ -66,12 +69,33 @@ def _serif_img(l):
         base = Image.new('RGBA', im.size, (0, 0, 0, 0)); base.alpha_composite(sh); base.alpha_composite(im); im = base
     return im
 
+def placeholder(slot, what, at=(540, 960)):
+    """The cover's clip slot before the buyer swaps their clip in: a mid-dark, video-like card (so white and cream words
+    read on it, as they will on footage) with a play badge, the clip number and what to put there at `at`, a spot the
+    cover's graphics leave free."""
+    im = Image.new('RGB', (W, H)); px = im.load()
+    for y in range(0, H, 4):
+        for x in range(0, W, 4):
+            d = min(1.0, ((x - W / 2) ** 2 / (W * 0.75) ** 2 + (y - H / 2) ** 2 / (H * 0.6) ** 2) ** 0.5)
+            c = tuple(int(a_ + (b_ - a_) * d) for a_, b_ in zip((132, 124, 116), (58, 54, 52)))
+            for yy in range(y, min(H, y + 4)):
+                for xx in range(x, min(W, x + 4)): px[xx, yy] = c
+    im = im.convert('RGBA'); lay = Image.new('RGBA', (W, H), (0, 0, 0, 0)); d = ImageDraw.Draw(lay)
+    cx, cy = at; r = 70
+    d.ellipse((cx - r, cy - r, cx + r, cy + r), fill=(255, 255, 255, 70), outline=(255, 255, 255, 170), width=4)
+    d.polygon([(cx - 22, cy - 34), (cx - 22, cy + 34), (cx + 36, cy)], fill=(255, 255, 255, 200))
+    f1, f2 = E.F(40, E.SEGB), E.F(34, E.SEG)
+    for t, f, y in ((f'CLIP {slot + 1}: {what}', f1, cy + r + 30), ('Replace me with your clip', f2, cy + r + 82)):
+        d.text((cx - d.textlength(t, font=f) / 2, y), t, font=f, fill=(255, 255, 255, 190))
+    im.alpha_composite(lay); return im
+
 def render(cv):
     """The cover as CapCut draws it, and each layer's ink box (for the grid check)."""
     out = Image.new('RGBA', (W, H), cv.stage + (255,)); boxes = []
-    order = [l for l in cv.L if l['kind'] == 'art'] + [l for l in cv.L if l['kind'] == 'text']
+    order = [l for l in cv.L if l['kind'] == 'clip'] + [l for l in cv.L if l['kind'] == 'art'] + [l for l in cv.L if l['kind'] == 'text']
     for l in order:
-        if l['kind'] == 'art': im = l['img']
+        if l['kind'] == 'clip': im = placeholder(l['slot'], l['what'], l['at'])
+        elif l['kind'] == 'art': im = l['img']
         elif l['font'] == 'dms': im = _serif_img(l)
         else:
             im = E.text_img(dict(l), False)
@@ -93,13 +117,22 @@ def check_grid(boxes, label):
     for b in bad: print('GRID:', b)
     return bad
 
+def _save(img, path, tries=20):
+    """Save, retrying while another program (a viewer, OneDrive) holds the file for a moment."""
+    import time
+    for i in range(tries):
+        try: img.save(path); return path
+        except OSError:
+            if i == tries - 1: raise
+            time.sleep(0.5)
+
 # ---- output --------------------------------------------------------------------------------------------------------------
 def make(key):
     import cover_designs as CD
-    spec = importlib.import_module(f'templates.t{key}').SPEC
+    spec = CD.SPECS.get(key) or importlib.import_module(f'templates.t{key}').SPEC
     cv = getattr(CD, f'c{key}')(); img, boxes = render(cv); check_grid(boxes, key)
     d = E.PACK / spec['dir'] / 'cover'; d.mkdir(exist_ok=True)
-    img.save(d / 'cover.png'); img.crop(GRID).save(d / 'cover-grid.png')
+    _save(img, d / 'cover.png'); _save(img.crop(GRID), d / 'cover-grid.png')
     return spec, img
 
 def review(items, path):
@@ -116,7 +149,7 @@ def review(items, path):
     y = pad * 2 + 1000; d.text((pad, y), 'On the profile grid', font=f, fill=INK); tw = 300
     for i, (_, img) in enumerate(items):
         sheet.paste(img.crop(GRID).resize((tw, 400)), (pad + i * (tw + 4), y + 40))
-    sheet = sheet.crop((0, 0, sheet.width, y + 40 + 400 + pad)); sheet.save(path); return path
+    sheet = sheet.crop((0, 0, sheet.width, y + 40 + 400 + pad)); return _save(sheet, path)
 
 if __name__ == '__main__':
     keys = sys.argv[1:]
