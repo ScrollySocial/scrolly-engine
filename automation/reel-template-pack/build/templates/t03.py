@@ -1,4 +1,13 @@
 """03 Before and after, v3.1 animated (2026-10-17), following the approved storyboard (build/storyboard_03.py).
+FULLY EDITABLE build (2026-10-20, build/editable.py via build/editable_a.py): same layout and motion as the approved
+build. Every word except the polka-dot hero words is CapCut text: Montserrat on the label-maker tape, for the
+handwritten then / now / before / [20 min], and for the "[WORD]" keyword (mint, black edge); the burst, sparkles, stars,
+motion lines and arrows are Scrolly Doodles letters (recolour like text).
+CapCut limits: the hero words (before, after, Comment) stay pattern-filled Corben artwork, the exception Mercedes allowed
+(she loved them on 2026-10-17); recolour them with Adjust > HSL. The flash's white fade, the after developing and the
+boiling outlines on the camera, timer, photos and pins are short flipbooks of one thing each (CapCut can't fade a
+picture's opacity in our builds). The footage fills the frame or the camera's lens with CapCut's blurred background
+all Reel, so the stage colour only shows under the flash; there is no grain layer (it would shade the footage).
 Its own world: a real mint instant camera, a real instant photo, a real kitchen timer, a cork board with push pins and
 label-maker tape. Big words: Corben Bold in mint (the camera's colour) with a black edge; buyers change that colour to
 their brand. Small words: editable text on label-maker tape.
@@ -26,14 +35,17 @@ motion ticks, arrows, stars) pops on and off with the beats; then / now / the ti
 import math, random
 from PIL import Image, ImageChops, ImageDraw, ImageFilter, ImageFont
 from engine import Layers, rot_pt, interp, W, H, PX_PER_SIZE, hold
+import editable as Ed
+import editable_a as EA
+EA.keep_blurred_backgrounds()
 import collage as C
 import storyboard_03 as S
 
 MINT, INK, TAPE_TEXT, WHITE = S.MINT, S.INK, (236, 236, 232), (255, 255, 255)
 HALFTONE = (128, 196, 160)          # a darker mint for the dot pattern
 SPEC = dict(num='03', title='Before and after', subtitle='14.6 seconds. Four clips, filmed from the same spot.',
-            font='corben', dir='03-before-and-after', folder='Template 03 - Before and after',
-            project='Scrolly 03 Before and after', cover_at=1.0,
+            font='montserrat', dir='03-before-and-after', folder='Template 03 - Before and after',
+            project='03 Before and after', cover_at=1.0,
             slots=[('The before', 'The mess or problem, close and steady'),
                    ('Doing the work', 'Cleaning, fixing, applying: it plays sped up'),
                    ('The after', 'Start with your hand over the lens, then pull it away'),
@@ -89,7 +101,9 @@ def clip(g, slot, T, z, p, size, r, xfs, src=0.0, speed=1.0, **kw):
     g.clip(slot, T, z, p, size, r, motion(xfs, p, r, T), src=src, speed=speed, **kw)
 
 def text(g, font, size, words, T, z, p, r, xfs, color=INK, stroke=None, typewriter=None):
-    g.text(font, size, words, T, z, p, r, motion(xfs, p, r, T), color=color, stroke=stroke, typewriter=typewriter)
+    """Editable Montserrat (size in CapCut units, as in the old builds)."""
+    EA.plain(WR, words[0], size * PX_PER_SIZE / 0.85, T, z, p, r, motion(xfs, p, r, T), color=color,
+             edge=stroke[0] if stroke else None, test=words[1], typewriter=typewriter)
 
 def ease(a, b, t0, t1, n=4):
     """Eased (smooth start and stop) values from a to b between t0 and t1, as (t, value) steps."""
@@ -173,7 +187,7 @@ def label(g, key, words, c, rot, px, T, z, xfs):
     """Words on label-maker tape: the tape is long enough for the longest words; the words are editable text."""
     tw = max(ImageFont.truetype(S.LABEL, px).getlength(w) for w in words)
     art(g, f'tape-{key}', tape_strip(int(tw + 1.6 * px), int(px * 1.75)), T, z, c, rot, xfs)
-    text(g, 'arialbd', round(px / PX_PER_SIZE, 2), words, T, z, c, rot, xfs, color=TAPE_TEXT)
+    text(g, 'montserrat', round(px * 0.92 / PX_PER_SIZE, 2), words, T, z, c, rot, xfs, color=TAPE_TEXT)
 
 def letters(word, px, stroke=9, step=None):
     """A fixed big word as lettering, one image per letter: Corben filled with mint halftone dots, a black ink edge.
@@ -201,10 +215,12 @@ def hero(g, name, word, c, px, t0, t_out, z, extra=()):
         art(g, f'word-{name}-{i}', im, (t0 + 0.06 * i, t1), z + i, p, TILTS[i % len(TILTS)],
             [pop_in(p, t0 + 0.06 * i, 1.25)] + ([pop_out(p, t_out)] if t_out else []) + list(extra))
 
-def doodle(g, name, img, c, rot, t0, t1, z, xfs=()):
-    """A drawn mark that pops on, wiggles a little, and pops off."""
+def doodle(g, name, glyph, c, rot, t0, t1, z, xfs=()):
+    """A drawn mark that pops on, wiggles a little, and pops off. glyph = (kind, index, px, colour): a Scrolly Doodles
+    letter, recolourable like text."""
     w = xf(c, [(t0 + 0.4 + i * 0.3, 0, 0, 1, (4 if i % 2 else -4)) for i in range(int((t1 - t0 - 0.6) / 0.3))] or [(t0, 0, 0, 1, 0)])
-    art(g, name, img, (t0, t1), z, c, rot, [pop_in(c, t0), w, pop_out(c, t1 - 0.18), *xfs])
+    kind, i, px, col = glyph
+    EA.doodle(WR, kind, i, px, (t0, t1), z, c, rot, motion([pop_in(c, t0), w, pop_out(c, t1 - 0.18), *xfs], c, rot, (t0, t1)), col)
 
 def ticks(n=3, length=80, gap=30, width=7, color=WHITE):
     im = Image.new('RGBA', (gap * (n - 1) + 2 * width + 40, length + 20), (0, 0, 0, 0)); d = ImageDraw.Draw(im)
@@ -214,7 +230,7 @@ def ticks(n=3, length=80, gap=30, width=7, color=WHITE):
 
 def big(g, words, c, px, T, z, xfs, rot=0):
     """Editable big words: MADE Awelier (CapCut's library, every buyer has it) in mint with a black edge."""
-    text(g, 'awelier', round(px / PX_PER_SIZE, 2), words, T, z, c, rot, xfs, color=MINT, stroke=EDGE)
+    text(g, 'montserrat', round(px * 0.8 / PX_PER_SIZE, 2), words, T, z, c, rot, xfs, color=MINT, stroke=EDGE)
 
 def timer_parts(scale=0.5):
     """The real kitchen timer split into its body (pointer, outlined three ways) and its turning dial, see-through."""
@@ -246,8 +262,10 @@ def shadow_only(size, off=(0, 16), blur=20, alpha=110):
     im = Image.new('RGBA', m.size, (0, 0, 0, 0)); im.putalpha(m.filter(ImageFilter.GaussianBlur(blur))); return im
 
 # ---- the template ---------------------------------------------------------------------------------------------------------
-def layers():
-    g = Layers()
+WR = None
+def reel():
+    global WR
+    g = Layers(); WR = EA.Wrap(g)
 
     # ===== 1 through the lens: the camera rises, the before plays in its big lens, CapCut blurs it behind (0 to 1.95) =====
     cam1, s1 = holed_camera(1400); C1, R1 = (560, 1330), 8
@@ -261,9 +279,9 @@ def layers():
     boil(g, 'camera-lens', cam1, T1, 20, C1, R1, [cam_in, zoom])
     hero(g, 'before', 'before', (540, 300), 190, 0.2, 1.62, 80)
     fl = rot_pt((C1[0] + (S.CAM_FLASH[0] - 491.5) * s1, C1[1] + (S.CAM_FLASH[1] - 503.5) * s1), C1, R1)
-    doodle(g, 'burst-flash', C.burst(360, INK, 9, 9, seed=31), fl, R1, 0.9, 1.85, 21, [cam_in])
-    doodle(g, 'sparkle-a', C.sparkle(110, WHITE, 7), (85, 170), 0, 0.6, 1.85, 22)
-    doodle(g, 'star-a', C.star(90, WHITE, 6, seed=32), (995, 160), 12, 0.8, 1.85, 23)
+    doodle(g, 'burst-flash', ('burst', 3, 360, INK), fl, R1, 0.9, 1.85, 21, [cam_in])
+    doodle(g, 'sparkle-a', ('icon', 10, 120, WHITE), (85, 170), 0, 0.6, 1.85, 22)
+    doodle(g, 'star-a', ('icon', 0, 100, WHITE), (995, 160), 12, 0.8, 1.85, 23)
     label(g, 'watch', ('WATCH THIS TRANSFORMATION', 'WATCH THIS TRANSFORMATION'), (540, 470), -2, 48, (0.45, 1.85), 60,
           [xf((540, 470), [(0.45, -1200, 0, 1, 0), (0.72, 20, 0, 1, 0), (0.8, 0, 0, 1, 0), (1.62, 0, 0, 1, 0), (1.8, 1300, 0, 1, 0)])])
 
@@ -298,9 +316,9 @@ def layers():
     art(g, 'timer-dial', dial, (2.7, 5.5), 9, dial_c, -90, [t_in, xf(dial_c, [(2.9, 0, 0, 1, 0), (5.25, 0, 0, 1, 90)])], k4)
     tc = (540, 1120)                                    # the real time it took, written on above the pointer
     text(g, 'ink', 14, ('[20 min]', '20 min'), (3.3, 5.3), 8, tc, -3, [pop_out(tc, 5.1)], color=WHITE, stroke=HAND_EDGE, typewriter=0.5)
-    for i, (c, im, t0) in enumerate((((900, 560), C.sparkle(150, WHITE, 9), 3.5),
-                                     ((160, 860), C.sparkle(100, WHITE, 7), 3.9),
-                                     ((880, 1040), C.star(110, WHITE, 7, seed=33), 4.3))):
+    for i, (c, im, t0) in enumerate((((900, 560), ('icon', 10, 160, WHITE), 3.5),
+                                     ((160, 860), ('icon', 10, 110, WHITE), 3.9),
+                                     ((880, 1040), ('icon', 0, 120, WHITE), 4.3))):
         doodle(g, f'shine-{i}', im, c, 0, t0, 5.25, 28 + i)
     label(g, 'work', ('[CLEANING IT]', 'CLEANING IT'), (680, 310), -2, 56, (3.15, 5.3), 61,
           [pop_in((680, 310), 3.15, 1.12), pop_out((680, 310), 5.1)])
@@ -322,7 +340,7 @@ def layers():
     printing = xf(P5, [(6.0, 0, out_by, 1, 0), (6.14, 0, out_by * 0.68, 1, 0), (6.24, 0, out_by * 0.68, 1, 0),
                        (6.38, 0, out_by * 0.34, 1, 0), (6.48, 0, out_by * 0.34, 1, 0), (6.68, 0, 0, 1, 0)])
     for side in (-1, 1):                                # motion lines beside the print as it slides out
-        doodle(g, f'print-lines-{side}', ticks(3, 110, 28, 7), (slot_cx + side * (pw5 / 2 + 80), slot_y - 170), side * 6, 6.0, 6.9, 22 + (side > 0))
+        doodle(g, f'print-lines-{side}', ('burst', 5, 150, WHITE), (slot_cx + side * (pw5 / 2 + 80), slot_y - 170), side * 6, 6.0, 6.9, 22 + (side > 0))
     # ===== 6 it develops: the camera drops away, the photo lifts to the middle and the after comes up (6.95 to 8.3) =====
     P6, k6, R6 = (540, 860), 800 / pw5, 3
     lift = xf(P5, [(6.95, 0, 0, 1, 0), (7.22, P6[0] - P5[0], P6[1] - P5[1] - 20, k6 * 1.03, R6), (7.3, P6[0] - P5[0], P6[1] - P5[1], k6, R6)])
@@ -346,8 +364,8 @@ def layers():
         develop += [(im, (wx, wy))] * 3
     g.flip('develop', develop, 7.3, 11, rot=wr)
     half = pic5[0] * ws / 2 + 150
-    doodle(g, 'shake-l', ticks(), (wx - half, wy - 40), -12, 7.35, 8.25, 12)
-    doodle(g, 'shake-r', ticks(), (wx + half, wy - 40), 12, 7.45, 8.25, 13)
+    doodle(g, 'shake-l', ('burst', 5, 130, WHITE), (wx - half, wy - 40), -12, 7.35, 8.25, 12)
+    doodle(g, 'shake-r', ('burst', 5, 130, WHITE), (wx + half, wy - 40), 12, 7.45, 8.25, 13)
 
     # the after bursts up past the window's top and sides (above the frame), the main track's copy blurs behind
     px0 = P7[0] - phs5[0] * k7 / 2; py0 = P7[1] - h7 / 2
@@ -361,10 +379,10 @@ def layers():
     clip(g, 2, T7, 15, tall_c, tall, 0, [burst, cover], src=8.55 - 5.6)
     ac = (540, (wy1 + P7[1] + h7 / 2) / 2)
     hero(g, 'after', 'after', ac, 170, 8.68, 9.24, 86)
-    for i, (c, im, rot, t0) in enumerate((((tall_c[0] - tall[0] / 2 + 60, 260), C.sparkle(130, WHITE, 8), 0, 8.62),
-                                          ((tall_c[0] + tall[0] / 2 - 60, 480), C.star(120, WHITE, 7, seed=34), 10, 8.7),
-                                          ((tall_c[0] + tall[0] / 2 - 90, 160), ticks(3, 70, 26, 6), 30, 8.66),
-                                          ((tall_c[0] - tall[0] / 2 + 90, 700), C.sparkle(90, WHITE, 6), 0, 8.78))):
+    for i, (c, im, rot, t0) in enumerate((((tall_c[0] - tall[0] / 2 + 60, 260), ('icon', 10, 140, WHITE), 0, 8.62),
+                                          ((tall_c[0] + tall[0] / 2 - 60, 480), ('icon', 0, 130, WHITE), 10, 8.7),
+                                          ((tall_c[0] + tall[0] / 2 - 90, 160), ('burst', 5, 110, WHITE), 30, 8.66),
+                                          ((tall_c[0] - tall[0] / 2 + 90, 700), ('icon', 10, 100, WHITE), 0, 8.78))):
         doodle(g, f'shine-out-{i}', im, c, rot, t0, 9.42, 17 + i)
 
     # ===== 8 then / NOW: the before photo slides in over the after, lined up with the same spot (9.65 to 11.35) =====
@@ -382,7 +400,7 @@ def layers():
     boil(g, 'photo-then', ph8, (9.65, END), 31, P8, 0, before_grp)
     so8 = strip_offset(pw8)
     text(g, 'ink', round(pw8 * 0.15 / PX_PER_SIZE, 2), ('then', 'then'), (10.0, END), 3, (P8[0], P8[1] + so8[1]), 0, before_grp, typewriter=0.4)
-    doodle(g, 'arrow-now', C.arrow(200, WHITE, 9, 50, seed=35), (430, 1440), 0, 10.15, 11.3, 39)
+    doodle(g, 'arrow-now', ('arrow', 0, 200, WHITE), (430, 1440), 0, 10.15, 11.3, 39)
     label(g, 'now', ('NOW', 'NOW'), (720, 1425), 4, 72, (10.05, 11.3), 62, [pop_in((720, 1425), 10.05), pop_out((720, 1425), 11.1)])
 
     # ===== 9 CTA on the cork: then and now pinned, the camera prints the product big (11.35 to the end) =====
@@ -419,13 +437,18 @@ def layers():
     clip(g, 3, (12.1, END), 36, (P9[0] + poff9[0], P9[1] + poff9[1]), pic9, 0, [rise, print9])
     boil(g, 'photo-product', ph9, (12.1, END), 37, P9, 0, [rise, print9])
     for side in (-1, 1):
-        doodle(g, f'print9-lines-{side}', ticks(3, 100, 26, 7, INK), (P9[0] + side * (pw9 / 2 + 70), slot9 - 150), side * 6, 12.15, 13.0, 42 + (side > 0))
+        doodle(g, f'print9-lines-{side}', ('burst', 5, 140, INK), (P9[0] + side * (pw9 / 2 + 70), slot9 - 150), side * 6, 12.15, 13.0, 42 + (side > 0))
     arrow_c = (205, 1345)                                # a drawn arrow pointing up at the product
-    art(g, 'arrow-cta', C.arrow(140, INK, 8, 35, seed=37), (13.1, END), 44, arrow_c, -25, [pop_in(arrow_c, 13.1)])
+    EA.doodle(WR, 'arrow', 0, 150, (13.1, END), 44, arrow_c, -65, motion([pop_in(arrow_c, 13.1)], arrow_c, -65, (13.1, END)), INK)
     label(g, 'want', ('WANT THE [PRODUCT]?', 'WANT THE VACUUM?'), (540, 285), -2, 56, (12.3, END), 63, [pop_in((540, 285), 12.3, 1.12)])
     hero(g, 'comment', 'Comment', (540, 420), 150, 12.45, None, 91)
     kw_c = (540, 625)                                   # the buyer's keyword stays editable, on a strip of label tape
     art(g, 'tape-keyword', tape_strip(840, 190), (12.62, END), 98, kw_c, -2, [pop_in(kw_c, 12.62, 1.1)])
     big(g, ('"[WORD]"', '"CLEAN"'), kw_c, 165, (12.66, END), 6, [pop_in(kw_c, 12.66)], rot=-2)
     hold(g.L, 1.5, 0.3)          # reading time (must-do 14): the hook label holds 0.3 s longer; same look
-    return g
+    return WR
+
+def layers():
+    return reel().L
+
+STAGE = (250, 244, 230)          # cream: only seen under the flash
