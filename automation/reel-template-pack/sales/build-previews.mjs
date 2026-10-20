@@ -343,8 +343,11 @@ const PCSS = `
 .arrow:hover{background:#fff}
 .arrow:focus-visible{outline:3px solid #fff;outline-offset:3px}
 /* the 25 Reels scroll sideways (Mercedes: "a scrolling section, not rows and rows") */
-.scroller{display:flex;gap:clamp(16px,2vw,28px);overflow-x:auto;scroll-snap-type:x mandatory;margin:44px calc(-1 * var(--s3-gut)) 0;padding:0 var(--s3-gut) 24px;scroll-padding:0 var(--s3-gut);scrollbar-color:var(--s3-orange) #2a2a2a}
-.scroller::-webkit-scrollbar{height:8px}.scroller::-webkit-scrollbar-thumb{background:var(--s3-orange);border-radius:4px}.scroller::-webkit-scrollbar-track{background:#2a2a2a;border-radius:4px}
+.scroller{display:flex;gap:clamp(16px,2vw,28px);overflow-x:auto;scroll-snap-type:x mandatory;margin:44px calc(-1 * var(--s3-gut)) 0;padding:0 var(--s3-gut) 8px;scroll-padding:0 var(--s3-gut);scrollbar-width:none}
+/* no scrollbar: the arrows (desktop) and swipe (phone) move the row (Mercedes 2026-10-20) */
+.scroller::-webkit-scrollbar{display:none}
+/* a phone only partly on screen is dimmed */
+.rg{transition:opacity .25s}.rg.partial{opacity:.35}
 .rg{flex:0 0 clamp(210px,19vw,260px);scroll-snap-align:start}
 .rg .phone{margin-bottom:16px;border-color:#2a2a2a}
 .rg .num .in{color:#fff;margin-left:8px}.rg .num .soon{color:#a9a39b;margin-left:8px}
@@ -386,7 +389,7 @@ const PCSS = `
 `;
 
 // arrow buttons scroll the row by about three phones (no "&" anywhere: WordPress mangles it in page scripts)
-const SCROLL_JS = `function placeArrows(){var ph=document.querySelector('#reel-row .phone');if(!ph)return;var y=ph.offsetTop+ph.offsetHeight/2-30;document.querySelectorAll('.arrow').forEach(function(a){a.style.top=y+'px'})}placeArrows();window.addEventListener('resize',placeArrows);window.addEventListener('load',placeArrows);document.querySelectorAll('[data-scroll]').forEach(function(b){b.addEventListener('click',function(){var s=document.getElementById('reel-row');s.scrollBy({left:Number(b.dataset.scroll)*s.clientWidth*0.8,behavior:'smooth'})})})`;
+const SCROLL_JS = `(function(){var row=document.getElementById('reel-row');if(!row||!window.IntersectionObserver)return;var io=new IntersectionObserver(function(es){es.forEach(function(e){e.target.classList.toggle('partial',e.intersectionRatio<0.97)})},{root:row,threshold:[0,0.5,0.97,1]});row.querySelectorAll('.rg').forEach(function(c){io.observe(c)})})();function placeArrows(){var ph=document.querySelector('#reel-row .phone');if(!ph)return;var y=ph.offsetTop+ph.offsetHeight/2-30;document.querySelectorAll('.arrow').forEach(function(a){a.style.top=y+'px'})}placeArrows();window.addEventListener('resize',placeArrows);window.addEventListener('load',placeArrows);document.querySelectorAll('[data-scroll]').forEach(function(b){b.addEventListener('click',function(){var s=document.getElementById('reel-row');s.scrollBy({left:Number(b.dataset.scroll)*s.clientWidth*0.8,behavior:'smooth'})})})`;
 
 function physicalPage(d) {
   // all 25 as phone previews in one sideways-scrolling row
