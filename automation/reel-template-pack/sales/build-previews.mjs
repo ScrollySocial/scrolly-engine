@@ -43,12 +43,13 @@ mark.ph{background:#ffd9c9;color:var(--s3-ink);padding:0 4px;border-radius:3px}
 @media(max-width:800px){.phones{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:10px;margin-right:calc(-1 * var(--s3-gut))}
  .phones>*{flex:0 0 58%;scroll-snap-align:start}}
 /* How it works: a strip of film with the how-to video on a desktop screen (Mercedes 2026-10-19) */
-.film{background:var(--s3-navy);color:#fff;position:relative;padding:calc(var(--s3-sec) * .5 + 32px) 0}
-.film::before,.film::after{content:"";position:absolute;left:0;right:0;height:34px;
- background:var(--s3-navy);
- background-image:repeating-linear-gradient(90deg,transparent 0 14px,#f7f3ec 14px 34px,transparent 34px 48px);
- -webkit-mask:linear-gradient(#000 0 0) center/100% 16px no-repeat;mask:linear-gradient(#000 0 0) center/100% 16px no-repeat}
-.film::before{top:10px}.film::after{bottom:10px}
+.film{background:var(--s3-navy);color:#fff;position:relative;padding:calc(var(--s3-sec) * .5 + 44px) 0}
+/* real film (Mercedes 2026-10-20): a dark film base with rounded sprocket holes, a soft sheen and grain */
+.film::before,.film::after{content:"";position:absolute;left:0;right:0;height:46px;z-index:0;pointer-events:none;
+ background:linear-gradient(rgba(255,255,255,.07),rgba(255,255,255,0) 30%,rgba(255,255,255,0) 70%,rgba(255,255,255,.05)),url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .5 0'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='.35'/%3E%3C/svg%3E"),url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='30' height='46'%3E%3Crect width='30' height='46' fill='%23140f0b'/%3E%3Crect x='8' y='14' width='14' height='18' rx='3.2' fill='%23f7f3ec'/%3E%3Crect x='8.5' y='14.5' width='13' height='17' rx='2.8' fill='none' stroke='%23000' stroke-opacity='.35'/%3E%3C/svg%3E") 0 0/30px 46px repeat-x;
+ box-shadow:0 0 0 1px rgba(0,0,0,.5),0 4px 14px rgba(0,0,0,.35)}
+.film::before{top:0}.film::after{bottom:0}
+.film>.s3-wrap{position:relative;z-index:1}
 .film h2{color:#fff!important;text-align:center}
 .monitor{max-width:900px;margin:40px auto 0}
 /* a realistic desktop: thin black glass bezel, silver aluminium chin and stand, a soft glare on the glass */
