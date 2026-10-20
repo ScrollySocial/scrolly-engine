@@ -33,13 +33,11 @@ const DOODLES = {
 };
 const doodle = (amt) => { const d = DOODLES[amt]; return d ? `<svg class="dd" viewBox="${d[0]}" preserveAspectRatio="xMidYMid meet" aria-hidden="true" focusable="false">${d[1]}</svg>` : ''; };
 
-// Earned band art (Mercedes 2026-10-20): a daytime torn-paper collage sky in three transparent layers, bottom to top, with the cut-out
-// shirt on top at ~72% width (made from mockups/rebrand-2026-10/shirt-background-prompt.md). Only the phone (portrait 1024x1536) layers
-// exist so far. The art is full-bleed so its torn SIDE edges never show (Mercedes 2026-10-20); desktop uses these layers, cropped at
-// the sides, until a landscape version without side tears arrives. Files: assets/earned-phone-*.webp. Upload them with
-// `node upload-media.mjs <file>` before publishing; until then the URL is the expected upload path (preview-chrome.mjs swaps in the
-// local file).
-const EARNED_ART = ['earned-phone-sky.webp', 'earned-phone-clouds.webp', 'earned-phone-strips.webp'];
+// Earned band art (Mercedes 2026-10-20): a daytime torn-paper collage sky in three transparent layers, bottom to top (sky, clouds,
+// strips), with the cut-out shirt on top (made from mockups/rebrand-2026-10/shirt-background-prompt.md). Desktop = landscape 1448x1086
+// layers, phone = portrait 1024x1536 layers; files assets/earned-{desktop,phone}-*.webp. Upload them with `node upload-media.mjs <file>`
+// before publishing; until then the URL is the expected upload path (preview-chrome.mjs swaps in the local file).
+const EARNED_ART = ['sky', 'clouds', 'strips'];
 const MEDIA = JSON.parse(fs.readFileSync(path.join(here, '..', 'media-map.json'), 'utf8'));
 const artUrl = (n) => MEDIA[n]?.url || `https://scrollyseo.com/wp-content/uploads/2026/10/scrolly-${n}`;
 
@@ -114,7 +112,7 @@ export function build() {
  </div>
 </div></section>
 
-<section class="hp-earned" id="earned"><div class="earned-art" aria-hidden="true" style="--strips:url('${artUrl(EARNED_ART[2])}');--tear:url('https://scrollyseo.com/wp-content/uploads/2026/10/ftr-sky.webp')"><div class="top">${EARNED_ART.slice(0, 2).map((n) => `<img class="l" src="${artUrl(n)}" alt="" width="1024" height="1536" loading="lazy">`).join('')}</div><img class="l strips" src="${artUrl(EARNED_ART[2])}" alt="" width="1024" height="1536" loading="lazy"></div><div class="wrap">
+<section class="hp-earned" id="earned"><div class="earned-art" aria-hidden="true">${EARNED_ART.map((n) => `<picture><source media="(min-width:901px)" srcset="${artUrl(`earned-desktop-${n}.webp`)}" width="1448" height="1086"><img src="${artUrl(`earned-phone-${n}.webp`)}" alt="" width="1024" height="1536" loading="lazy"></picture>`).join('')}</div><div class="wrap">
  <div class="copy">
   <h2><span>Some things can’t be bought.</span> <span><em class="or">They’re earned.</em></span></h2>
   <p>Reach your verified Challenge goal and earn the exclusive Club T-shirt.</p>

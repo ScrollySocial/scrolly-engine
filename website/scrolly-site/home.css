@@ -97,21 +97,6 @@ body:has(.hp){margin:0;background:#f7f3ec}
 .hp-earned .tabs a{display:inline-flex;align-items:flex-end;min-height:44px;font-size:.9375rem;font-weight:800;letter-spacing:.18em;text-transform:uppercase;border-bottom:3px solid var(--sky);padding-bottom:8px}
 .hp-earned .tabs a:hover{border-bottom-color:var(--ink)}
 .hp-earned .shot{width:100%;height:clamp(420px,34vw,640px);object-fit:cover;border-radius:6px}
-/* full-bleed collage behind the band (Mercedes 2026-10-20): the layers run wider than the section so their torn SIDE edges are always
-   off-screen; the torn top edge meets the page, the mountain strip and its torn bottom edge run along the bottom. Desktop: copy on the left
-   over the pale sky (navy on #b9d5f2-ish sky passes easily), cut-out shirt on the right. */
-.hp-earned{position:relative;overflow:hidden;padding:0}
-.hp-earned .earned-art{position:absolute;inset:0;z-index:0}
-/* desktop: the portrait layers are cropped to their calm lower-middle sky (behind the copy), so the cut top gets a torn edge from the
-   footer art's tear (its alpha) as a mask; landscape layers will replace this */
-.hp-earned .earned-art .top{position:absolute;top:0;left:0;right:0;bottom:56px;overflow:hidden;-webkit-mask:var(--tear) top center/max(100%,1150px) auto no-repeat,linear-gradient(#000,#000) bottom/100% calc(100% - max(100vw,1150px) * .5) no-repeat;mask:var(--tear) top center/max(100%,1150px) auto no-repeat,linear-gradient(#000,#000) bottom/100% calc(100% - max(100vw,1150px) * .5) no-repeat}
-.hp-earned .earned-art .l{position:absolute;top:-88vw;left:50%;width:112%;max-width:none;height:auto;transform:translateX(-50%)}
-.hp-earned .earned-art .strips{display:none}
-/* the mountain strip runs full width along the bottom, flattened to a gentler height than the full-size layer would give */
-.hp-earned .earned-art::after{content:"";position:absolute;left:0;right:0;bottom:0;height:330px;background:var(--strips) center bottom/112% 1100px no-repeat}
-.hp-earned .wrap{position:relative;z-index:1;min-height:clamp(720px,58vw,940px);padding:clamp(72px,7vw,120px) 0 280px}
-.hp-earned .shot-col{display:flex;justify-content:center}
-.hp-earned .shot-col .cut{width:min(72%,520px);height:auto}
 
 /* testimonials (renders only when real quotes exist in pages/home.mjs) */
 .hp-quotes{padding:70px 0 78px;text-align:center}
@@ -184,19 +169,38 @@ body:has(.hp){margin:0;background:#f7f3ec}
  .hp-club{padding:32px 0}
  .hp-res .grid{gap:40px}
  .hp-earned .shot{height:320px}
- /* phone + tablet: copy on off-white, then the art full-bleed at 114% width (side tears off-screen) with the shirt centred on it */
- .hp-earned{display:grid;grid-template-columns:100%;padding-top:clamp(48px,8vw,80px)}
- .hp-earned .wrap{display:contents}
- .hp-earned .copy{grid-row:1;padding:0 var(--gut) 28px}
- .hp-earned .earned-art{position:relative;inset:auto;grid-row:2;grid-column:1;aspect-ratio:1/1.71}
- .hp-earned .earned-art .top{inset:0;-webkit-mask:none;mask:none}
- .hp-earned .earned-art .l{width:114%;top:0}
- .hp-earned .earned-art .strips{display:block}
- .hp-earned .earned-art::after{display:none}
- .hp-earned .shot-col{grid-row:2;grid-column:1;position:relative;z-index:1;align-self:start;margin-top:37%}
- .hp-earned .shot-col .cut{width:78%}
  .hp-earned .tabs{gap:0 26px}
  .hp-quotes .row{grid-template-columns:44px 1fr 44px;gap:10px}
  .hp-merch .shot{height:240px}
  .hp-merch .links{flex-direction:column;gap:4px;font-size:1.125rem}
+}
+
+/* Earned collage (Mercedes 2026-10-20). Three transparent torn-paper layers stacked sky, clouds, strips, all the same size: width-based,
+   never cover, centred at the top, no repeat. They are wider than the section, so their torn SIDE edges stay off-screen; the section takes
+   the art's height, so the torn top and bottom edges meet the off-white page. Desktop layers 1448x1086 at 106%, phone 1024x1536 at 112%
+   (<picture> swaps them at 901px). */
+.hp-earned .earned-art img{display:block;position:absolute;top:0;left:50%;max-width:none;height:auto;transform:translateX(-50%)}
+@media(min-width:901px){
+ .hp-earned{position:relative;overflow:hidden;padding:0;aspect-ratio:1448/1151}
+ .hp-earned .earned-art{position:absolute;inset:0;z-index:0}
+ .hp-earned .earned-art img{width:106%}
+ .hp-earned .wrap{position:absolute;inset:0;z-index:1;width:auto;margin:0;display:block}
+ /* copy in the calm pale-blue sky below the top swirls and left of the shirt (measured: the calmest box starts ~49% down, ~20% in) */
+ .hp-earned .copy{position:absolute;left:20%;top:47%;width:36%;padding:0}
+ .hp-earned h2{font-size:clamp(2rem,2.6vw,3.4rem)}
+ .hp-earned h2 span{display:block;white-space:nowrap}
+ .hp-earned p{max-width:none}
+ /* cut-out shirt on the right, 55% of the art's height, centred in the calm sky */
+ .hp-earned .shot-col{position:absolute;right:7%;top:50%;height:55%;transform:translateY(-50%)}
+ .hp-earned .shot-col .cut{display:block;width:auto;height:100%}
+}
+@media(max-width:900px){
+ /* phone + tablet: copy on plain off-white, then the art full-bleed with the shirt centred on it */
+ .hp-earned{display:grid;grid-template-columns:100%;padding:clamp(48px,8vw,80px) 0 0}
+ .hp-earned .wrap{display:contents}
+ .hp-earned .copy{grid-row:1;padding:0 var(--gut) 28px}
+ .hp-earned .earned-art{position:relative;grid-row:2;grid-column:1;aspect-ratio:1/1.68;overflow:hidden}
+ .hp-earned .earned-art img{width:112%}
+ .hp-earned .shot-col{grid-row:2;grid-column:1;position:relative;z-index:1;align-self:start;justify-self:center;width:78%;margin-top:36%}
+ .hp-earned .shot-col .cut{display:block;width:100%;height:auto}
 }
