@@ -287,6 +287,9 @@ em{font-style:italic}
     <button type="button" data-v="current">Current</button>
     <button type="button" data-v="neutral">Less girly</button>
   </div>
+  <div class="grp" id="hl" aria-label="Headline"><span>Headline:</span>
+    <button type="button" data-v="0">Now</button><button type="button" data-v="1">1</button><button type="button" data-v="2">2</button><button type="button" data-v="3">3</button><button type="button" data-v="4">4</button><button type="button" data-v="5">5</button>
+  </div>
   <div class="grp" id="fnt" aria-label="Second font"><span>Second font:</span>
     <button type="button" data-v="jost">Jost</button>
     <button type="button" data-v="syne">Syne</button>
@@ -313,7 +316,7 @@ em{font-style:italic}
 <main id="main">
 <section class="hero"><div class="wrap">
   <div>
-    <h1>Build an audience <em><span class="mk-em">that buys.</span></em></h1>
+    <h1 id="hero-h">Build an audience <em><span class="mk-em">that buys.</span></em></h1>
     <p class="lede">Find your path to more customers without depending on paid ads.</p>
     <div class="acts"><a class="btn" href="#">Find my starting point <span aria-hidden="true">→</span></a><a class="btn two" href="#">See the Clubs</a></div>
   </div>
@@ -404,6 +407,12 @@ em{font-style:italic}
   set('data-b','btns',q.get('b')||html.dataset.b);
   set('data-s','stars',q.get('s')||html.dataset.s);
   set('data-t','tone',q.get('t')||html.dataset.t);
+  /* hero headline options (2026-10-20): [upright part, italic marker part] */
+  var HL=[['Build an audience','that buys.'],['Get found by people','ready to buy.'],['Stand out','online.'],['Get found.','Get chosen.'],['Be the one','they find.'],['Stand out where','buyers scroll.']];
+  function hl(i){var h=HL[+i]||HL[0];document.getElementById('hero-h').innerHTML=h[0]+' <em><span class="mk-em">'+h[1]+'</span></em>';
+    document.querySelectorAll('#hl button').forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.v===String(i)))});}
+  hl(q.get('h')||'0');
+  document.querySelectorAll('#hl button').forEach(function(b){b.onclick=function(){hl(b.dataset.v)}});
   document.querySelectorAll('#tone button').forEach(function(b){b.onclick=function(){set('data-t','tone',b.dataset.v)}});
   document.querySelectorAll('#stars button').forEach(function(b){b.onclick=function(){set('data-s','stars',b.dataset.v)}});
   document.querySelectorAll('#btns button').forEach(function(b){b.onclick=function(){set('data-b','btns',b.dataset.v)}});
