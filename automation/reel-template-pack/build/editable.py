@@ -184,6 +184,18 @@ def _canvas(color, draft_files):
             for c in cv: c.update(type='canvas_color', color=hexa, blur=0.0)
         f.write_text(json.dumps(d, ensure_ascii=False, separators=(',', ':')), encoding='utf-8')
 
+def _flags(draft_files):
+    """CapCut only draws a text effect whose bit is on in check_flag (7 = fill and font, +8 outline, +16 background,
+    +32 shadow). The engine copies 47 from the prototype draft (no background bit), so the highlight boxes never showed
+    in CapCut (Mercedes, 2026-10-20: "a color where the text is ... didn't carry in on any text")."""
+    for f in draft_files:
+        d = json.loads(f.read_text(encoding='utf-8'))
+        for m in d['materials']['texts']:
+            m['check_flag'] = (7 | (8 if m.get('border_width', 0) > 0 else 0)
+                               | (16 if m.get('background_style', 0) and m.get('background_alpha', 0) > 0 else 0)
+                               | (32 if m.get('has_shadow') else 0))
+        f.write_text(json.dumps(d, ensure_ascii=False, separators=(',', ':')), encoding='utf-8')
+
 def build(spec, reel_fn, stage):
     """engine.build with the stage colour painted under the preview, then the draft patched: canvas colour on the
     main track, Italic key words. reel_fn() -> Reel; stage = the background colour (RGB)."""
@@ -199,7 +211,7 @@ def build(spec, reel_fn, stage):
     finally: E.render = render0
     proj = E.PACK / spec['dir'] / 'buyer-folder' / spec['folder'] / spec['project']
     files = [proj / 'draft_content.json'] + list((proj / 'Timelines').glob('*/draft_content.json'))
-    _canvas(stage, files)
+    _canvas(stage, files); _flags(files)
     if box['r'].texts:
         (proj / 'Resources' / 'fonts').mkdir(exist_ok=True); shutil.copy2(E.BUNDLED_FONTS['dmsi'], proj / 'Resources' / 'fonts')
         _italicise(set(box['r'].texts), files)
