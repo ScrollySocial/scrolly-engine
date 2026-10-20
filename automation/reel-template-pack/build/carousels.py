@@ -18,10 +18,12 @@ import story7 as S7
 from carousel_kit import doodle, vec
 from motion_b2 import Clip
 
-DIRS = {'01': '01-one-product-three-ways', '02': '02-pack-an-order', '03': '03-before-and-after', '09': '09-who-its-for', '08': '08-a-real-customer-question', '10': '10-three-people-to-gift-it-to', '12': '12-your-order-just-arrived',
+DIRS = {'01': '01-one-product-three-ways', '02': '02-pack-an-order', '03': '03-before-and-after', '04': '04-a-or-b', '05': '05-details',
+        '06': '06-start-to-finish', '07': '07-how-big-is-it', '13': '13-how-to-use-it', '09': '09-who-its-for', '08': '08-a-real-customer-question', '10': '10-three-people-to-gift-it-to', '12': '12-your-order-just-arrived',
         '20': '20-what-buyers-said', '22': '22-put-it-to-the-test', '23': '23-every-option-in-10-seconds',
         'h2': 'halloween/h2-batty-about', 'h3': 'halloween/h3-caught-in-our-web', 'h5': 'halloween/h5-trick-or-treat', 'h6': 'halloween/h6-once-in-a-blood-moon'}
-TITLES = {'01': 'One product three ways', '02': 'Pack an order with me', '03': 'Before and after', '09': 'Who its for', '08': 'A real customer question', '10': 'Three people to gift it to', '12': 'Your order just arrived',
+TITLES = {'01': 'One product three ways', '02': 'Pack an order with me', '03': 'Before and after', '04': 'A or B', '05': 'Details',
+          '06': 'Start to finish', '07': 'How big is it really', '13': 'How to use it in 3 steps', '09': 'Who its for', '08': 'A real customer question', '10': 'Three people to gift it to', '12': 'Your order just arrived',
           '20': 'What buyers said', '22': 'Put it to the test', '23': 'Every option in 10 seconds',
           'h2': "Things I'm batty about", 'h3': 'Caught in our web', 'h5': 'Trick or treat', 'h6': 'Once in a blood moon'}
 HOOK2 = 'Second hook: Instagram often shows a carousel starting on slide 2, so this one works as a cover on its own. '
@@ -809,7 +811,308 @@ def c03():
         art(polka('Comment', 135), (540, 330), -2, 'Comment')] + tape('[WANT THE PRODUCT?]', 40, (540, 160), -2) + tape('"[KEYWORD]"', 76, (540, 500), 2))
     return s
 
-RECIPES = {'01': c01, '02': c02, '03': c03, '09': c09, '08': c08, '10': c10, '12': c12, '20': c20, '22': c22, '23': c23, 'h2': ch2, 'h3': ch3, 'h5': ch5, 'h6': ch6}
+# ======================================================================================================================
+# Batch A (2026-10-19): 04, 05, 06, 07, 13, each in its Reel's world (motion_NN.py setup): same stage, palette,
+# objects with play and her doodles; built-in words as live DM Serif (outlined in Canva).
+# ======================================================================================================================
+from motion_b2 import torn_band
+import collage as Cg
+
+def band_bg(base, pattern, c0, c1, h, seed, edge, y):
+    """A slide stage with a torn band of her doodle pattern (as on the Reel's stage), placed for the 1440 slide."""
+    bg = K.fit_bg(base); pat = ImageOps.colorize(ImageOps.grayscale(S.raw('doodles', pattern)), c0, c1).convert('RGBA')
+    if edge in ('t', 'b'): bg.alpha_composite(torn_band(pat, (CW + 40, h), seed, edge, 18), (-20, y))
+    else: bg.alpha_composite(torn_band(pat, (h, CH + 40), seed, edge, 18), (y, -20))
+    return bg
+
+def film_frame(n, w, h):
+    """A blank film frame (white border, frame number in marker): (art, photo-window offset, window size)."""
+    c = Image.new('RGBA', (w + 28, h + 84), (252, 250, 245, 255)); K.ImageDraw.Draw(c).text((24, 38), f'0{n}', font=S.F(S.HAND, 50), fill=INK, anchor='lm')
+    sh = Cg.shadow(c, (6, 10), 10, 90); pad = (sh.width - c.width) // 2
+    return sh, (pad + 14 + w / 2 - sh.width / 2, pad + 70 + h / 2 - sh.height / 2), (w, h)
+
+def c04():
+    PAN_TILT = ((0.167, 0.745), (0.84, 0.64))   # motion_04 PAN['tilt'] (importing motion_04 swaps the lettering font)
+    A, A2, B, B2, pick = Clip('IMG_1422', 7.0, 6.0), Clip('IMG_1420', 0.5, 6.0), Clip('IMG_1418', 2.0, 6.0), Clip('IMG_1464', 1.0, 6.0), Clip('IMG_1401', 0.5, 6.0)
+    stage = band_bg(S.raw('images', 'Soft veined white marble texture-1.png'), 'Hand-drawn wavy line pattern-20.png', WINE, BLUE, 300, 7, 't', CH - 280)
+    level = K.thing('Level vintage brass balance scale-105.png', 900, 'smalldots', WINE, scale=0.25, strength=0.5)
+    tilt = K.thing('Tilted brass balance scale-124.png', 920, 'smalldots', WINE, scale=0.25, strength=0.5)
+    notes = [P.sticky('', 330, pin=pn) for pn in ('pin-head-black', 'pin-head-cream')]
+    ph, scr = K.device_art(500); s = []
+    S2(s, stage, 'Hook. Swap in a photo of version A (left) and version B (right). Edit their names.', [
+        art(K.torn_card((440, 640), 3), (290, 820), -3, 'torn paper'), photo('Version A', (290, 820), (440, 640), -3, A.at(0.5, (440, 640))),
+        art(K.torn_card((440, 640), 6), (790, 860), 3, 'torn paper'), photo('Version B', (790, 860), (440, 640), 3, B.at(0.5, (440, 640))),
+        text('A', 96, (150, 520), -3, box=WINE, fg=WHITE, pill=True), text('B', 96, (930, 560), 3, box=BLUE, pill=True),
+        art(word('which one', 160, italic_last=False), (540, 220), -2, 'which one'),
+        art(word('are you?', 160), (560, 380), -2, 'are you?'),
+        guide(FIRST_GUIDE)])
+    S2(s, stage, HOOK2 + 'No photo needed. Edit both [bracket] lines.', [
+        art(doodle('burst', 2, 900, BLUE), (540, 860), 0, 'burst'),
+        art(level, (540, 900), 0, 'balance scale'),
+        text('[copper or\nmint?]', 96, (620, 230), -2, align='right'),
+        text('[help me pick]', 62, (300, 1320), -2, align='left'),
+        art(doodle('arrow', 0, 170, WINE), (620, 1315), -2, 'arrow')])
+    nA = (300, 1130)
+    S2(s, stage, 'Version A: swap in its photo. Edit its name and the note.', [
+        photo('Version A (fills the page)', (540, 720), (CW, CH), 0, A.at(1.0, (CW, CH))),
+        text('A: [Copper. Cordless.]', 62, (540, 230), -2, box=WINE, fg=WHITE),
+        art(notes[0], nA, -6, 'sticky note'), K.note_text(nA, -6, '[so light]', 54),
+        art(doodle('arrow', 0, 190, WHITE), (560, 1000), 20, 'arrow')])
+    S2(s, stage, 'Version B: swap in its photo. Edit its name.', [
+        art(doodle('burst', 3, 860, BLUE), (540, 700), 0, 'burst'),
+        art(K.round_card(640), (540, 700), 0, 'round paper'),
+        photo('Version B', (540, 700), (640, 640), 0, B2.at(1.0, (640, 640)), shape='circle'),
+        text('B: [Mint. Steam-clean.]', 62, (540, 1190), 2, box=INK, fg=WHITE)])
+    tc = (540, 1000); pans = [(tc[0] + (px - 0.5) * tilt.width, tc[1] + (py - 0.5) * tilt.height - 40) for px, py in PAN_TILT]
+    S2(s, stage, 'One photo of each version sits on the scale. Edit the line and both notes.', [
+        art(tilt, tc, 0, 'balance scale')] + [
+        x for i, (p, cl) in enumerate(zip(pans, (A2, B))) for x in (
+            art(K.round_card(250, 12), (p[0], p[1] - 150), 0, 'round paper'), photo(f'Version {"AB"[i]}', (p[0], p[1] - 150), (250, 250), 0, cl.at(1.0, (250, 250)), shape='circle'))] + [
+        text('[two very different\nmoods]', 72, (380, 250), -2, align='left'),
+        text('A', 70, (pans[0][0], pans[0][1] - 320), 0, box=WINE, fg=WHITE, pill=True), text('B', 70, (pans[1][0], pans[1][1] - 320), 0, box=BLUE, pill=True)])
+    pc = (700, 800)
+    S2(s, stage, 'Swap in a screenshot of your poll or comments for the phone screen. Edit the line.', [
+        art(ph, pc, 4, 'phone'), dict(K.on_screen(pc, ph, scr, pick.at(1.0, (500, 1000)), 'Your poll (screenshot)'), rot=4),
+        text("even my followers\ncan't pick", 66, (400, 260), -3, align='left'),
+        art(doodle('arrow', 9, 200, WINE), (250, 640), 0, 'arrow'),
+        art(notes[1], (240, 1120), 5, 'sticky note'), K.note_text((240, 1120), 5, '[A: 52%\nB: 48%]', 50, align='left')])
+    S2(s, stage, 'Swap in a photo of each version. Type your shop line. ' + CAPTION, [
+        art(K.white_card((400, 520)), (290, 1000), -4, 'photo border'), photo('Version A', (290, 1000), (400, 520), -4, A.at(2.0, (400, 520))),
+        art(K.white_card((400, 520)), (790, 1020), 4, 'photo border'), photo('Version B', (790, 1020), (400, 520), 4, B.at(2.0, (400, 520))),
+        art(word('Comment', 200), (540, 230), 0, 'Comment'),
+        text('"A" or "B"', 76, (540, 400), 2, box=WINE, fg=WHITE, pill=True),
+        text('[both in my shop]', 60, (540, 530), -2, box=BLUE)])
+    return s
+
+def c05():
+    det = [Clip(n, t, 6.0) for n, t in (('IMG_1414', 4.0), ('IMG_1421', 5.0), ('IMG_1457', 1.5), ('IMG_1459', 0.5))]; whole = Clip('IMG_1422', 3.0, 6.0)
+    pc_ = S.raw('images', 'Blank vintage cream postcard-111.png'); w_, h_ = pc_.size; pc_ = pc_.crop((int(w_ * 0.1), int(h_ * 0.12), int(w_ * 0.9), int(h_ * 0.88)))
+    sheet = band_bg(pc_, 'Hand-drawn black dot pattern-21.png', (226, 200, 118), BUTTER, 470, 3, 'b', -20)
+    plain = K.fit_bg(pc_); ph, scr = K.device_art(540); fine = P.sticky('', 360, pin='pin-head-black')
+    num = lambda n, px=64: P.sticker(f'0{n}', px, INK, WHITE, 'circle')
+    tag = P.die_cut(P.raw_cut('Blank kraft hang tag with twine-116.png', 520), 8); s = []
+    S2(s, sheet, 'Hook. Swap in a photo of your product. Move the circle onto a detail.', [
+        art(K.white_card((860, 860)), (540, 920), -2, 'photo border'),
+        photo('Your product', (540, 920), (860, 860), -2, whole.at(0.5, (860, 860))),
+        art(doodle('frame', 0, 420, INK), (700, 900), 0, 'circle'),
+        art(word('details', 210, WINE, edge=WHITE, italic_last=False), (360, 170), -2, 'details'),
+        text("you'd miss in a photo", 60, (560, 340), -2, box=INK, fg=WHITE),
+        guide(FIRST_GUIDE)])
+    fr = [film_frame(i + 1, 360, 450) for i in range(2)]
+    S2(s, sheet, HOOK2 + 'Two close-ups go in the film frames. Edit both [bracket] lines.', [
+        x for i, ((fa, off, wh), xy, r) in enumerate(zip(fr, ((340, 830), (740, 900)), (-5, 4))) for x in (
+            art(fa, xy, r, 'film frame'), photo(f'Detail {i + 1}', at(xy, r, off), wh, r, det[i].at(1.0, wh)))] + [
+        text('[look closer]', 96, (620, 230), -2, align='right'),
+        text('[4 things you\nwould miss]', 62, (330, 1330), -2, align='left'),
+        art(doodle('arrow', 0, 170, INK), (720, 1340), -2, 'arrow')])
+    pcn = (600, 820)
+    S2(s, plain, 'Swap in a screenshot of your listing photo for the phone screen. Edit the note.', [
+        art(ph, pcn, -5, 'phone'), dict(K.on_screen(pcn, ph, scr, whole.at(1.0, (540, 1080)), 'Your listing photo (screenshot)'), rot=-5),
+        text('the photo:', 80, (300, 220), -3, align='left'),
+        art(fine, (230, 1150), -8, 'sticky note'), K.note_text((230, 1150), -8, 'looks...\nfine?', 58)])
+    S2(s, plain, 'Detail 1: a close-up and its name.', [
+        art(K.round_card(700), (540, 700), 0, 'round paper'),
+        photo('Detail 1, close up', (540, 700), (700, 700), 0, det[0].at(1.0, (700, 700)), shape='circle'),
+        art(doodle('frame', 0, 820, INK), (540, 700), 0, 'circle'),
+        art(num(1, 80), (870, 380), 0, 'number sticker'),
+        art(word('up close', 170, WINE, edge=WHITE), (330, 190), -3, 'up close'),
+        text('[brushed copper finish]', 62, (540, 1230), 2, box=INK, fg=WHITE)])
+    fr2 = [film_frame(i + 2, 360, 440) for i in range(2)]
+    S2(s, plain, 'Details 2 and 3: a close-up and a name for each.', [
+        x for i, ((fa, off, wh), xy, r, nm, nxy) in enumerate(zip(fr2, ((300, 470), (770, 990)), (-3, 4), ('[see-through' + chr(10) + 'dust bin]', '[one-touch controls]'), ((270, 860), (700, 1340))))
+        for x in (art(fa, xy, r, 'film frame'), photo(f'Detail {i + 2}', at(xy, r, off), wh, r, det[i + 1].at(1.0, wh)), text(nm, 54, nxy, (-2, 2)[i], box=INK, fg=WHITE))] + [
+        art(doodle('arrow', 9, 180, INK), (760, 380), 0, 'arrow')])
+    tc = (800, 980)
+    S2(s, sheet, 'Detail 4: a full-page photo. Edit the tag.', [
+        photo('Detail 4 (fills the page)', (540, 720), (CW, CH), 0, det[3].at(1.0, (CW, CH))),
+        art(tag, tc, 8, 'kraft tag'), art(num(4), at(tc, 8, (0, -30)), 8, 'number sticker'),
+        text('[LED head\nshows\nthe dust]', 46, at(tc, 8, (0, 130)), 8, box=None),
+        art(doodle('arrow', 0, 190, WHITE), (420, 900), -20, 'arrow')])
+    S2(s, sheet, 'Swap in a photo of your product. Type its name and your keyword. ' + CAPTION, [
+        text('now you know', 64, (540, 120), -2, box=None),
+        art(word('Comment', 200, WINE, edge=WHITE), (540, 270), 0, 'Comment'),
+        text('"[KEYWORD]"', 76, (540, 430), 2, box=INK, fg=WHITE, pill=True),
+        art(K.white_card((620, 700)), (540, 1000), 3, 'photo border'),
+        photo('Your product', (540, 1000), (620, 700), 3, whole.at(1.0, (620, 700))),
+        text('[Product name]', 56, (800, 1340), -3, box=BUTTER)])
+    return s
+
+def loading_bar(w=760, h=84, p=0.0):
+    """#06's loading bar without its number (the percent is live text on top)."""
+    im = Image.new('RGBA', (w + 16, h + 16), (0, 0, 0, 0)); d = K.ImageDraw.Draw(im)
+    d.rounded_rectangle((8, 8, w + 8, h + 8), h // 2, fill=BUTTER + (255,), outline=INK + (255,), width=6)
+    if p > 0.01: d.rounded_rectangle((14, 14, 14 + max(h, (w - 12) * p), h + 2), (h - 12) // 2, fill=WINE + (255,))
+    return Cg.shadow(im, (4, 8), 8, 90)
+
+def c06():
+    raw, s1, s2, s3, done, done2 = (Clip(n, t, 6.0) for n, t in (('IMG_1393', 0.5), ('IMG_1387', 1.5), ('IMG_1389', 2.5), ('IMG_1390', 2.0), ('IMG_1391', 0.5), ('IMG_1394', 1.0)))
+    cc = ImageOps.grayscale(S.raw('images', 'Light gray concrete mineral texture-4.png'))
+    bench = K.fit_bg(ImageOps.colorize(ImageOps.autocontrast(cc), (214, 192, 150), (246, 236, 214)))
+    glass = lambda w: K.thing('Classic wooden hourglass with flowing sand-238.png', w, 'smalldots', WINE, scale=0.3, strength=0.6)
+    def bar(p, c=(480, 150), w=680):
+        im = loading_bar(w, 76, p); return [art(im, c, 0, 'loading bar'), text(f'{int(p * 100)}%', 54, (c[0] + w / 2 + 110, c[1]), 0, box=BUTTER)]
+    ph, scr = K.device_art(440); later = P.sticky('', 420, pin='pin-head-black'); s = []
+    S2(s, bench, 'Hook. Swap in a photo of you making it. Edit [smoothie].', [
+        photo('Making it (fills the page)', (540, 720), (CW, CH), 0, s1.at(0.5, (CW, CH)))] + bar(0.0) + [
+        text('making one [smoothie]', 60, (540, 1000), -2, box=INK, fg=WHITE),
+        art(word('start to', 160, BUTTER, edge=WINE, italic_last=False), (480, 1150), -2, 'start to'),
+        art(word('finish', 230, BUTTER, edge=WINE, italic_last=False), (560, 1320), -2, 'finish'),
+        guide(FIRST_GUIDE, (540, 260))])
+    S2(s, bench, HOOK2 + 'No photo needed. Edit both [bracket] lines.', [
+        art(doodle('burst', 2, 820, WINE), (540, 820), 0, 'burst'),
+        art(glass(460), (540, 840), -6, 'hourglass'),
+        text('[how long does\none really take?]', 84, (620, 230), -2, align='right'),
+        text('[watch it get made]', 62, (360, 1330), -2, align='left'),
+        art(doodle('arrow', 0, 170, WINE), (760, 1325), -2, 'arrow')])
+    S2(s, bench, 'Swap in a photo of your raw materials. Edit the line.', bar(0.0) + [
+        text('it starts as', 76, (330, 330), -3, align='left'),
+        art(K.torn_card((620, 760), 4), (440, 870), -4, 'torn paper'),
+        photo('Raw materials', (440, 870), (620, 760), -4, raw.at(1.0, (620, 760))),
+        art(glass(300), (880, 1050), 6, 'hourglass'),
+        text('[a pile of fruit]', 62, (440, 1340), 2, box=INK, fg=WHITE)])
+    S2(s, bench, 'Stage 1: swap in its photo and name it.', [
+        photo('Stage 1 (fills the page)', (540, 720), (CW, CH), 0, s1.at(1.5, (CW, CH)))] + bar(0.25) + [
+        text('[stage one: prep]', 64, (380, 1250), -2, box=INK, fg=WHITE, align='left'),
+        art(doodle('arrow', 0, 190, WHITE), (700, 1050), 30, 'arrow')])
+    nc = (290, 520)
+    S2(s, bench, 'Stage 2: swap in its photo. Edit the note and the stage name.', bar(0.5) + [
+        art(K.white_card((640, 820)), (640, 860), 3, 'photo border'),
+        photo('Stage 2', (640, 860), (640, 820), 3, s2.at(1.0, (640, 820))),
+        art(later, nc, -6, 'sticky note'), K.note_text(nc, -6, '[20 minutes\nlater]', 56),
+        art(P.sticker('>> 2x', 70, INK, WHITE), (880, 470), 8, '2x sticker'),
+        text('[stage two: mix]', 62, (540, 1340), 2, box=INK, fg=WHITE)])
+    S2(s, bench, 'Stage 3: swap in its photo (in the arch). Name it.', bar(0.75) + [
+        art(K.white_card((640, 860)), (540, 780), 0, 'photo border'),
+        photo('Stage 3', (540, 780), (620, 840), 0, s3.at(1.0, (620, 840)), shape='arch'),
+        text('almost...', 76, (300, 1250), -3, box=None, align='left'),
+        text('[stage three: blend]', 60, (640, 1350), 2, box=INK, fg=WHITE)])
+    S2(s, bench, 'The finished one: swap in its photo.', [
+        photo('Finished (fills the page)', (540, 720), (CW, CH), 0, done.at(1.0, (CW, CH)))] + bar(1.0) + [
+        art(doodle('tick', 0, 200, WINE), (960, 300), 0, 'tick'),
+        art(doodle('burst', 2, 760, BUTTER), (540, 1180), 0, 'burst'),
+        art(word('finished.', 200, WINE, edge=WHITE, italic_last=False), (540, 1180), -2, 'finished.')])
+    pc = (680, 920)
+    S2(s, bench, 'Swap in a screenshot of your shop for the phone screen. Type your keyword. ' + CAPTION, [
+        art(ph, pc, 4, 'phone'), dict(K.on_screen(pc, ph, scr, done2.at(1.0, (440, 880)), 'Your shop (screenshot)'), rot=4),
+        art(word('Comment', 190, WINE, edge=WHITE), (540, 190), 0, 'Comment'),
+        text('"[KEYWORD]"', 72, (540, 350), 2, box=INK, fg=WHITE, pill=True),
+        text('[handmade in\nAustin]', 56, (250, 1150), -2, box=BUTTER, align='left'),
+        art(doodle('arrow', 9, 180, WINE), (270, 820), 0, 'arrow')])
+    return s
+
+def c07():
+    alone, hand, use, set_ = Clip('IMG_1471', 0.5, 6.0), Clip('IMG_1471', 6.0, 6.0), Clip('IMG_1474', 10.0, 6.0), Clip('IMG_1522', 0.0, 4.0)
+    grid = band_bg(S.raw('images', 'White pegboard grid texture-5.png'), 'Wobbly hand-drawn black and white checkerboard-24.png', INK, BLUE, 230, 9, 'l', CW - 180)
+    plain = K.fit_bg(S.raw('images', 'White pegboard grid texture-5.png'))
+    phone_b = K.thing('Graphite smartphone back view-41.png', 300, 'smalldots', INK, scale=0.25, strength=0.5)
+    mug = K.thing('Warm white ceramic coffee mug-140.png', 360, 'stripes', INK, scale=0.35, strength=0.7)
+    ruler = K.thing('Pale wooden ruler on white-153.png', 900, None, None, label=P.sticker('INCHES', 34, INK), label_at=(0.82, 0.5))
+    ph, scr = K.device_art(400); s = []
+    S2(s, grid, 'Hook. The same product photo three times, at three sizes. Swap in yours.', [
+        art(K.white_card((220, 260), 12), (230, 900), -4, 'photo border'), photo('Your product (small)', (230, 900), (220, 260), -4, alone.at(1.0, (220, 260))),
+        art(K.white_card((380, 460), 14), (590, 1000), 3, 'photo border'), photo('Your product (medium)', (590, 1000), (380, 460), 3, alone.at(1.0, (380, 460))),
+        text('this big?', 50, (230, 1100), -4), text('this big?', 50, (590, 1300), 3),
+        art(word('how big', 180, BLUE, edge=INK, italic_last=False), (460, 260), -2, 'how big'),
+        text('is it really?', 84, (450, 450), -2, box=INK, fg=WHITE),
+        guide(FIRST_GUIDE)])
+    S2(s, grid, HOOK2 + 'No photo needed. Edit the size labels and both [bracket] lines.', [
+        art(phone_b, (330, 860), -8, 'phone'), art(mug, (660, 900), 4, 'mug'),
+        text('[6 in phone]', 48, (330, 1130), -4, box=INK, fg=WHITE), text('[mug]', 48, (660, 1130), 3, box=INK, fg=WHITE),
+        text('[photos lie\nabout size]', 92, (600, 230), -2, align='right'),
+        text("[here's the real size]", 60, (360, 1330), -2, align='left'),
+        art(doodle('arrow', 0, 160, INK), (760, 1325), -2, 'arrow')])
+    S2(s, grid, 'In your hand: a full-page photo. Move the arrows to the edges of your product. Edit the line.', [
+        photo('In your hand (fills the page)', (540, 720), (CW, CH), 0, hand.at(1.0, (CW, CH))),
+        art(doodle('arrow', 5, 560, WHITE), (540, 470), 0, 'measuring arrow'), art(doodle('arrow', 6, 150, WHITE), (870, 760), 0, 'measuring arrow'),
+        text('in my hand', 72, (320, 230), -3, box=BLUE, align='left'),
+        text('[fits in one hand]', 62, (540, 1250), 2, box=INK, fg=WHITE)])
+    pc = (290, 800)
+    S2(s, plain, 'Left: a screenshot of your shop photo. Right: the real thing, at the same height.', [
+        art(ph, pc, -3, 'phone'), dict(K.on_screen(pc, ph, scr, alone.at(1.0, (400, 800)), 'Your shop photo (screenshot)'), rot=-3),
+        art(K.white_card((400, 640)), (770, 800), 3, 'photo border'), photo('In real life', (770, 800), (400, 640), 3, use.at(1.0, (400, 640))),
+        text('on screen', 54, (290, 1270), -3, box=INK, fg=WHITE), text('in real life', 54, (770, 1240), 3, box=BLUE),
+        art(doodle('arrow', 2, 230, INK), (540, 330), 0, 'arrow')])
+    S2(s, grid, 'In use: swap in its photo. Edit the line.', [
+        art(K.torn_card((700, 900), 5), (460, 760), -2, 'torn paper'),
+        photo('In use', (460, 760), (700, 900), -2, use.at(2.0, (700, 900))),
+        art(mug, (880, 1170), 6, 'mug'),
+        text('[the size of a\nwater bottle]', 60, (360, 1330), 2, box=INK, fg=WHITE, align='left')])
+    S2(s, plain, 'Swap in a photo of your product on a plain surface. Type its exact size.', [
+        art(ruler, (540, 1000), 0, 'ruler'),
+        art(K.white_card((560, 520), 14), (540, 720), -2, 'photo border'), photo('Your product', (540, 720), (560, 520), -2, alone.at(2.0, (560, 520))),
+        art(word('exactly', 180, BLUE, edge=INK), (320, 220), -3, 'exactly'),
+        text('[9 x 4 in]', 130, (560, 1250), -2, box=INK, fg=WHITE)])
+    S2(s, grid, 'Swap in your product photo. Type your keyword. ' + CAPTION, [
+        art(K.white_card((640, 780)), (450, 960), 3, 'photo border'), photo('Your product', (450, 960), (640, 780), 3, set_.at(1.0, (640, 780))),
+        art(word('Comment', 200, BLUE, edge=INK), (450, 240), 0, 'Comment'),
+        text('"[SIZE]"', 76, (450, 410), 2, box=INK, fg=WHITE, pill=True),
+        text('[exact size + where to buy]', 52, (450, 1400 - 40), -2, box=BLUE)])
+    return s
+
+def c13():
+    CUBES = ('Engraved wooden number one cube-45.png', 'Natural Wooden Cube with Engraved 2-46.png', 'Wooden cube with engraved number 3-50.png')   # as motion_13
+    STEPS = ('1. [rinse the pad]', '2. [unwind + plug in]', '3. [glide]')
+    prod, s1, s2, s3, res, cta = (Clip(n, t, 6.0) for n, t in (('IMG_1464', 1.0), ('IMG_1430', 0.5), ('IMG_1429', 5.0), ('IMG_1423', 2.0), ('IMG_1432', 1.5), ('IMG_1375', 1.0)))
+    oak = band_bg(S.raw('images', 'Light oak wood grain texture-2.png'), 'Playful hand-painted black polka dots-12.png', WINE, PINK, 260, 11, 't', CH - 240)
+    plain = K.fit_bg(S.raw('images', 'Light oak wood grain texture-2.png'))
+    pats = (('stripes', WINE), ('dots', INK), ('smalldots', WINE))
+    cube = lambda i, w: K.thing(CUBES[i], w, pats[i][0], pats[i][1], scale=0.3, strength=0.45, seed=i)
+    card = P.die_cut(S.card('images', 'Blank Three-Line Recipe Card-56.png', 900), 8)
+    done = P.sticky('', 400, pin='pin-head-black'); s = []
+    S2(s, oak, 'Hook. Swap in a photo of your product. Edit [your steam mop].', [
+        photo('Your product (fills the page)', (540, 720), (CW, CH), 0, prod.at(0.5, (CW, CH))),
+        art(cube(0, 200), (900, 640), -8, 'number cube'), art(cube(1, 200), (900, 830), 6, 'number cube'), art(cube(2, 200), (900, 1020), -4, 'number cube'),
+        text('how to use', 72, (360, 220), -3, box=PINK, align='left'),
+        text('[your steam mop]', 60, (380, 340), 2, box=INK, fg=WHITE, align='left'),
+        art(word('in 3 steps', 160, PINK, edge=WINE), (440, 1080), -2, 'in 3 steps'),
+        guide(FIRST_GUIDE)])
+    cc = (540, 800)
+    S2(s, plain, HOOK2 + 'No photo needed. Edit both [bracket] lines.', [
+        art(card, cc, -2, 'recipe card'),
+        art(cube(0, 220), (230, 1150), -10, 'number cube'), art(cube(1, 220), (520, 1200), 5, 'number cube'), art(cube(2, 220), (810, 1140), -6, 'number cube'),
+        text('[just got one?]', 96, (620, 230), -2, align='right'),
+        text('[3 steps, that is all]', 62, (360, 1370), -2, align='left'),
+        art(doodle('arrow', 0, 160, WINE), (760, 1365), -2, 'arrow'),
+        text('[here is how to\nuse it]', 60, at(cc, -2, (0, -10)), -2, box=None)])
+    S2(s, oak, 'Step 1: swap in its photo and name it.', [
+        photo('Step 1 (fills the page)', (540, 720), (CW, CH), 0, s1.at(1.0, (CW, CH))),
+        art(cube(0, 220), (160, 200), -8, 'number cube'),
+        text('1. [rinse the pad]', 64, (420, 1240), -2, box=INK, fg=WHITE, align='left'),
+        art(doodle('arrow', 0, 190, WINE), (700, 1060), 30, 'arrow')])
+    S2(s, plain, 'Step 2: a close-up. Move the circle onto the click.', [
+        art(K.round_card(680), (540, 700), 0, 'round paper'),
+        photo('Step 2, close up', (540, 700), (680, 680), 0, s2.at(1.0, (680, 680)), shape='circle'),
+        art(doodle('frame', 0, 300, WINE), (650, 820), 0, 'circle'),
+        art(cube(1, 240), (190, 1170), 6, 'number cube'),
+        text('2. [unwind + plug in]', 62, (620, 1220), 2, box=WINE, fg=WHITE)])
+    S2(s, oak, 'Step 3: swap in its photo. Name it.', [
+        art(K.white_card((700, 860)), (560, 700), 3, 'photo border'),
+        photo('Step 3', (560, 700), (700, 860), 3, s3.at(1.0, (700, 860))),
+        art(doodle('arrow', 7, 520, WINE), (560, 860), 0, 'marker path'),
+        art(cube(2, 230), (170, 280), -6, 'number cube'),
+        text('3. [glide]', 66, (400, 1250), -2, box=INK, fg=WHITE, align='left')])
+    nc = (290, 1120)
+    S2(s, oak, 'The result: a full-page photo. Edit the note.', [
+        photo('The result (fills the page)', (540, 720), (CW, CH), 0, res.at(1.0, (CW, CH))),
+        art(doodle('burst', 2, 640, PINK), (640, 260), 0, 'burst'),
+        art(word('the result', 160, PINK, edge=WINE, italic_last=False), (640, 260), -2, 'the result'),
+        art(done, nc, -5, 'sticky note'), K.note_text(nc, -5, 'done in\n[2 minutes]', 54)])
+    rc = (540, 470); rtop = rc[1] - card.height / 2
+    S2(s, plain, 'Recap: the three step photos sit on the cubes. Edit the steps on the card.', [
+        art(card, rc, -1, 'recipe card')] + [
+        text(t, 52, (230 + K.mfont(52).getlength(t) / 2, rtop + 150 + i * 90), -1, box=None, align='left') for i, t in enumerate(STEPS)] + [
+        x for i, (cl, xc) in enumerate(zip((s1, s2, s3), (220, 540, 860))) for x in (
+            art(cube(i, 200), (xc, 1260), (-6, 4, -3)[i], 'number cube'),
+            art(K.round_card(240, 12), (xc, 1010), 0, 'round paper'), photo(f'Step {i + 1}', (xc, 1010), (240, 240), 0, cl.at(1.0, (240, 240)), shape='circle'))] + [
+        text("that's it.", 80, (540, 820), -2, box=PINK)])
+    S2(s, oak, 'Swap in a photo of your product. Type its name and your keyword. ' + CAPTION, [
+        art(K.white_card((600, 720)), (540, 900), -3, 'photo border'), photo('Your product', (540, 900), (600, 720), -3, cta.at(1.0, (600, 720))),
+        art(word('Comment', 200, PINK, edge=WINE), (540, 220), 0, 'Comment'),
+        text('"[KEYWORD]"', 76, (540, 390), 2, box=WINE, fg=WHITE, pill=True),
+        text('[Product name]', 56, (780, 1300), -3, box=INK, fg=WHITE)])
+    return s
+
+RECIPES = {'01': c01, '02': c02, '03': c03, '04': c04, '05': c05, '06': c06, '07': c07, '13': c13, '09': c09, '08': c08, '10': c10, '12': c12, '20': c20, '22': c22, '23': c23, 'h2': ch2, 'h3': ch3, 'h5': ch5, 'h6': ch6}
 
 HEX = lambda c: '#%02X%02X%02X' % tuple(c[:3])
 CNAME = {WINE: 'wine', PINK: 'pink', BUTTER: 'butter', BLUE: 'light blue', WHITE: 'white', INK: 'ink', S7.DEEP: 'deep blue'}

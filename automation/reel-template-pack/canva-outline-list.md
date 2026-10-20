@@ -19,6 +19,37 @@ Nothing to do: the built-in words are live Bodoni FLF with no outline, as in the
 Nothing to do: before, after and Comment (polka-dot letters) stay artwork (pattern-filled lettering in fonts Canva does not have).
 
 
+## 04 A or B
+
+- Slide 1: **which one** (white #FFFFFF): Outline in wine #7A1732, thin
+- Slide 1: **are you?** (white #FFFFFF): Outline in wine #7A1732, thin
+- Slide 7: **Comment** (white #FFFFFF): Outline in wine #7A1732, thin
+
+## 05 Details
+
+- Slide 1: **details** (wine #7A1732): Outline in white #FFFFFF, thin
+- Slide 4: **up close** (wine #7A1732): Outline in white #FFFFFF, thin
+- Slide 7: **Comment** (wine #7A1732): Outline in white #FFFFFF, thin
+
+## 06 Start to finish
+
+- Slide 1: **start to** (butter #F7E6A9): Outline in wine #7A1732, thin
+- Slide 1: **finish** (butter #F7E6A9): Outline in wine #7A1732, thin
+- Slide 7: **finished.** (wine #7A1732): Outline in white #FFFFFF, thin
+- Slide 8: **Comment** (wine #7A1732): Outline in white #FFFFFF, thin
+
+## 07 How big is it really
+
+- Slide 1: **how big** (light blue #BFD9F2): Outline in ink #181716, thin
+- Slide 6: **exactly** (light blue #BFD9F2): Outline in ink #181716, thin
+- Slide 7: **Comment** (light blue #BFD9F2): Outline in ink #181716, thin
+
+## 13 How to use it in 3 steps
+
+- Slide 1: **in 3 steps** (pink #F9C9DF): Outline in wine #7A1732, thin
+- Slide 6: **the result** (pink #F9C9DF): Outline in wine #7A1732, thin
+- Slide 8: **Comment** (pink #F9C9DF): Outline in wine #7A1732, thin
+
 ## 09 Who its for
 
 - Slide 1: **this is** (white #FFFFFF): Outline in wine #7A1732, thin
