@@ -33,10 +33,14 @@ const DOODLES = {
 };
 const doodle = (amt) => { const d = DOODLES[amt]; return d ? `<svg class="dd" viewBox="${d[0]}" preserveAspectRatio="xMidYMid meet" aria-hidden="true" focusable="false">${d[1]}</svg>` : ''; };
 
-// Earned band background slot (Mercedes 2026-10-20): a daytime torn-paper collage sky is being made from
-// mockups/rebrand-2026-10/shirt-background-prompt.md. When it exists, set EARNED_BG to its media-map name; the band then shows the
-// cut-out shirt (shirt-1k-graphite-front-cut.webp) on that art instead of the model photo.
-const EARNED_BG = null;
+// Earned band art (Mercedes 2026-10-20): a daytime torn-paper collage sky in three transparent layers, bottom to top, with the cut-out
+// shirt on top at ~72% width (made from mockups/rebrand-2026-10/shirt-background-prompt.md). Only the phone (portrait 1024x1536) layers
+// exist so far; desktop shows them too, contained, until landscape layers arrive. Files: assets/earned-phone-*.webp. Upload them with
+// `node upload-media.mjs <file>` before publishing; until then the URL is the expected upload path (preview-chrome.mjs swaps in the
+// local file).
+const EARNED_ART = ['earned-phone-sky.webp', 'earned-phone-clouds.webp', 'earned-phone-strips.webp'];
+const MEDIA = JSON.parse(fs.readFileSync(path.join(here, '..', 'media-map.json'), 'utf8'));
+const artUrl = (n) => MEDIA[n]?.url || `https://scrollyseo.com/wp-content/uploads/2026/10/scrolly-${n}`;
 
 const CLUBS = [
   ['$1K', 'Make your first $1,000.', 'hp3-club-1k-tiger.webp', 'Tiger walking', '/1k-club/', 'Start here.'],
@@ -116,7 +120,7 @@ export function build() {
   <nav class="tabs" aria-label="Challenges"><a href="/1k-club/#join">$1K Club</a><a href="/10k-club/">$10K Club</a><a href="/24k-club/">$24K Club</a></nav>
  </div>
  <!-- 2026-10-10: the graphite winner shirt (Printify) replaced the teal one; same shirt as /1k-club/. -->
- ${EARNED_BG ? `<div class="shot-slot" style="background-image:url('${img(EARNED_BG)}')">${pic('shirt-1k-graphite-front-cut.webp', 'The graphite $1K Club winner shirt: a white line tiger above The $1k Club and Earn your stripes.', 'cut', ' loading="lazy"')}</div>` : pic('shirt-1k-graphite-model.webp', 'A man wearing the graphite $1K Club winner shirt: a white line tiger above The $1k Club and Earn your stripes.', 'shot', ' loading="lazy"')}
+ <div class="shot-slot">${EARNED_ART.map((n) => `<img class="layer" src="${artUrl(n)}" alt="" width="1024" height="1536" loading="lazy">`).join('')}${pic('shirt-1k-graphite-front-cut.webp', 'The graphite $1K Club winner shirt: a white line tiger above The $1k Club and Earn your stripes.', 'cut', ' loading="lazy"')}</div>
 </div></section>
 
 ${quotes()}

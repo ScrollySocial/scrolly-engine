@@ -5,7 +5,8 @@
 //   node preview-chrome.mjs --live /product/go-get-em-tiger/ /my-account/
 //                                                theme-rendered live pages, with their chrome CSS/JS swapped for the local files
 // The header/footer markup (real menus) is copied from a live page, cached in dist/live/. Delete that folder to refresh it.
-// Footer art: chrome.js points at the WP upload URLs; until those files are uploaded the preview uses assets/ftr-*.webp.
+// Rebrand art (footer ftr-*.webp, homepage earned-phone-*.webp): pages point at the WP upload URLs; until those files are uploaded the
+// preview uses the copies in assets/.
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -25,7 +26,7 @@ async function live(urlPath) {
   return html;
 }
 // art: WP upload URL -> local file (relative to dist/)
-const localArt = (s) => s.replace(/https:\/\/scrollyseo\.com\/wp-content\/uploads\/\d{4}\/\d{2}\/(ftr-(?:sky|strips|stars)\.webp)/g, '../assets/$1');
+const localArt = (s) => s.replace(/https:\/\/scrollyseo\.com\/wp-content\/uploads\/\d{4}\/\d{2}\/(?:scrolly-)?((?:ftr-(?:sky|strips|stars)|earned-phone-(?:sky|clouds|strips))\.webp)/g, (m, f) => (fs.existsSync(path.join(here, 'assets', f)) ? '../assets/' + f : m));
 const css = localArt(['v3.css', 'chrome.css', 'k1-account.css'].map((f) => R('chrome', f)).join('\n'));
 const js = localArt(R('chrome', 'chrome.js'));
 const STYLE = `<style id="scxg-css">${css}</style>`;
@@ -49,7 +50,7 @@ for (const k of keys) {
     out = html;
     name = 'live-' + (k.replace(/^\/|\/$/g, '').replace(/\//g, '_') || 'home');
   } else {
-    const page = R('dist', k + '.html').replace('<!-- wp:html -->', '').replace('<!-- /wp:html -->', '');
+    const page = localArt(R('dist', k + '.html')).replace('<!-- wp:html -->', '').replace('<!-- /wp:html -->', '');
     out = `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${k} (rebrand preview, not live)</title>${STYLE}</head><body style="margin:0">${header}<main id="content">${page}</main>${footer}${SCRIPT}</body></html>`;
     name = k;
   }

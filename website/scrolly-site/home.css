@@ -87,11 +87,8 @@ body:has(.hp){margin:0;background:#f7f3ec}
 .hp-clubs .fine{text-align:center}
 
 /* earned (challenge shirt) */
-/* Earned band: navy (less girly tone, 2026-10-20); "They’re earned." in sky blue (6.7:1 on navy) */
-.hp-earned{margin-top:clamp(56px,6vw,112px);padding:clamp(48px,5vw,88px) 0;background:var(--ink);color:#fff}
-.hp-earned h2{color:#fff!important}
-.hp-earned .or{color:var(--sky);background:none;padding:0}
-.hp-earned a:focus-visible{outline-color:#fff}
+/* Earned band: off-white like the page (Mercedes 2026-10-20: "not on a navy background"); "They’re earned." is navy on the sky marker */
+.hp-earned{padding:clamp(56px,6vw,112px) 0}
 .hp-earned .wrap{display:grid;grid-template-columns:1fr 1fr;align-items:center}
 .hp-earned .copy{padding:50px 3vw 70px 0}
 .hp-earned h2{font:400 clamp(2.2rem,2.8vw,3.8rem)/1.05 var(--serif);margin:0 0 26px;letter-spacing:-.01em}
@@ -99,11 +96,13 @@ body:has(.hp){margin:0;background:#f7f3ec}
 .hp-earned p{font:1.25rem/1.5 var(--sans);max-width:430px}
 .hp-earned .tabs{display:flex;flex-wrap:wrap;gap:0 42px;margin-top:26px}
 .hp-earned .tabs a{display:inline-flex;align-items:flex-end;min-height:44px;font-size:.9375rem;font-weight:800;letter-spacing:.18em;text-transform:uppercase;border-bottom:3px solid var(--sky);padding-bottom:8px}
-.hp-earned .tabs a:hover{border-bottom-color:#fff}
+.hp-earned .tabs a:hover{border-bottom-color:var(--ink)}
 .hp-earned .shot{width:100%;height:clamp(420px,34vw,640px);object-fit:cover;border-radius:6px}
-/* background slot: collage art behind the cut-out shirt (EARNED_BG in pages/home.mjs) */
-.hp-earned .shot-slot{display:flex;align-items:center;justify-content:center;height:clamp(420px,34vw,640px);border-radius:6px;background:#dfe4f0 center/cover no-repeat}
-.hp-earned .shot-slot .cut{width:78%;height:auto;max-height:90%;object-fit:contain}
+/* collage art behind the cut-out shirt: three stacked transparent layers (portrait 2:3, contained, never cropped; the art has its own
+   torn cream edges, so no radius or box), shirt centred at 72% width, a little above the middle like the art direction */
+.hp-earned .shot-slot{position:relative;justify-self:center;width:auto;height:clamp(460px,40vw,700px);aspect-ratio:2/3;max-width:100%}
+.hp-earned .shot-slot .layer{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}
+.hp-earned .shot-slot .cut{position:absolute;left:50%;top:45%;width:72%;height:auto;transform:translate(-50%,-50%)}
 
 /* testimonials (renders only when real quotes exist in pages/home.mjs) */
 .hp-quotes{padding:70px 0 78px;text-align:center}
@@ -175,7 +174,8 @@ body:has(.hp){margin:0;background:#f7f3ec}
  .hp-clubs .grid,.hp-res .grid{grid-template-columns:1fr}
  .hp-club{padding:32px 0}
  .hp-res .grid{gap:40px}
- .hp-earned .shot,.hp-earned .shot-slot{height:320px}
+ .hp-earned .shot{height:320px}
+ .hp-earned .shot-slot{height:auto;width:100%}
  .hp-earned .tabs{gap:0 26px}
  .hp-quotes .row{grid-template-columns:44px 1fr 44px;gap:10px}
  .hp-merch .shot{height:240px}
