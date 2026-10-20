@@ -101,14 +101,20 @@ details.notes>summary{cursor:pointer;font:700 var(--s3-fs-label)/1.4 var(--s3-sa
 .swipe-note img{width:70px;transform:translateY(16px)}
 @media(max-width:1000px){.rc-row{flex-direction:column;align-items:flex-start;gap:60px}}
 @media(max-width:700px){.rc-vis{gap:10px}.rc-vis .phone{width:116px}.rc-vis .slides img{width:150px}.rc-vis .slides img:nth-child(n+2){display:none}}
-.callouts{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:28px;margin-top:28px}
-.callouts .phone{width:200px;border-color:#111}
-.co{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:26px}
-.co li{display:flex;align-items:center;gap:14px;font:400 2rem/1 "Covered By Your Grace",cursive;color:var(--s3-ink)}
+/* compact: text left, the phone with handwritten callouts right (Mercedes: section was too tall) */
+.edits-row{display:flex;align-items:center;justify-content:space-between;gap:40px}
+.edit-text{max-width:22em}
+.callouts{display:grid;grid-template-columns:auto auto auto;align-items:center;gap:14px;flex:none}
+.callouts .phone{width:150px;border-color:#111;transform:rotate(3deg);box-shadow:0 14px 30px rgba(80,30,10,.22)}
+.co{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:14px}
+.co li{display:flex;align-items:center;gap:8px;font:400 1.65rem/1 "Covered By Your Grace",cursive;color:var(--s3-ink);white-space:nowrap}
 .co.left li{justify-content:flex-end}
-.co img{width:90px;height:auto}
-.co.left li:nth-child(2){margin-right:28px}.co.right li:nth-child(2),.co.right li:nth-child(3){margin-left:28px}
-@media(max-width:900px){.callouts{grid-template-columns:1fr;justify-items:center}.callouts .phone{order:-1;width:170px}.co{flex-direction:row;flex-wrap:wrap;justify-content:center;gap:10px 22px}.co img{display:none}.co li{font-size:1.6rem;margin:0!important}}
+.co img{width:58px;height:auto}
+.co.left li:nth-child(2){margin-right:18px}.co.right li:nth-child(2),.co.right li:nth-child(3){margin-left:14px}
+.co.left li:nth-child(1) img{transform:rotate(12deg)}.co.left li:nth-child(3) img{transform:rotate(-12deg)}
+.co.right li:nth-child(1) img{transform:rotate(-10deg)}.co.right li:nth-child(4) img{transform:rotate(10deg)}
+@media(max-width:1150px){.edits-row{flex-direction:column;align-items:flex-start;gap:24px}.callouts{align-self:center}}
+@media(max-width:700px){.callouts{grid-template-columns:1fr;justify-items:center}.callouts .phone{order:-1;width:140px}.co{flex-direction:row;flex-wrap:wrap;justify-content:center;gap:8px 18px}.co img{display:none}.co li{font-size:1.5rem;margin:0!important}}
 .notes{border-top:1px solid var(--s3-line)}
 .notes[open]>div{margin-top:24px}
 .notes h2{margin-bottom:20px}
@@ -159,8 +165,8 @@ const EDITS = [
   ['<rect x="15" y="5" width="18" height="38" rx="4"/><path d="M21 19l8 5-8 5z"/>', 'Your clips'],
   ['<path d="M18 36V10l22-5v26"/><circle cx="13" cy="36" r="5"/><circle cx="35" cy="31" r="5"/>', 'Your audio'],
 ];
-const editSection = (d) => `<section class="s3-sec tight peach edits"><div class="s3-wrap"><h2 class="s3-h2">Make it yours</h2>
-  <p class="s3-lede" style="margin-top:12px">Change it all in CapCut, on your phone or computer. ${ph('[CONFIRM: phone editing, from the CapCut test]')}</p>
+const editSection = (d) => `<section class="s3-sec tight peach edits"><div class="s3-wrap edits-row"><div class="edit-text"><h2 class="s3-h2">Make it yours</h2>
+  <p class="s3-lede" style="margin-top:12px">Change it all in CapCut, on your phone or computer. ${ph('[CONFIRM: phone editing, from the CapCut test]')}</p></div>
   <div class="callouts"><ul class="co left">${EDITS.slice(0, 3).map(([, b]) => `<li>${esc(b)}<img src="${img('arrow-r.webp')}" alt=""></li>`).join('')}</ul>
   <div class="phone"><img src="${img(d.editPhone)}" alt=""></div>
   <ul class="co right">${EDITS.slice(3).map(([, b]) => `<li><img src="${img('arrow-l.webp')}" alt="">${esc(b)}</li>`).join('')}</ul></div></div></section>`;
