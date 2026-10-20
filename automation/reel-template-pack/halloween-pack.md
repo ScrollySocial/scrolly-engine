@@ -1,6 +1,7 @@
 # Halloween pack (started 2026-10-17)
 
 ## Status (2026-10-17)
+- h1 smoke (2026-10-20): Mercedes supplied Pexels video 6894947 (smoke on black). Processed into `assets/props/source/halloween/smoke.mov` (1080x1920, 5.5 s, rotated so it rises from the bottom, background removed: white smoke with real transparency, ProRes 4444, 188 MB) and `smoke.mp4` (same on black, 4 MB, use CapCut's Screen blend for a light template). Original kept as smoke-pexels-6894947-original.mp4. Not in git. Licence: Pexels allows modified use; we ship it modified (rotated, cropped, keyed, composited), not as a stand-alone clip. Next: build h1 when the video queue is free.
 - **h6 Once in a blood moon: APPROVED and checked in CapCut.** Motion test `build/motion_h6.py`, CapCut template
   `build/templates/th6.py` (`python build/make.py h6`, `python build/install_test.py h6`). Test copy in her CapCut:
   "Scrolly h6 Once in a blood moon".
