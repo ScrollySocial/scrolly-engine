@@ -28,6 +28,8 @@ GRID = (0, 240, 1080, 1680)              # what the profile grid shows
 SAFE = (70, 300, 1010, 1620)             # words and the hero stay in here
 WHITE, INK = (255, 255, 255), (24, 23, 22)
 
+def _dark(c): return 0.299 * c[0] + 0.587 * c[1] + 0.114 * c[2] < 110
+
 class Cover:
     """One still: stage colour + layers in paint order (pictures first, then text, as CapCut draws them)."""
     def __init__(self, stage):
@@ -43,12 +45,14 @@ class Cover:
                            color=color, stroke=stroke, box=box, shadow=shadow, italic_last=italic_last))
     # the house styles, as editable.Reel
     def serif(self, words, px, pos, fill=WHITE, edge=None, rot=0.0, italic_last=True):
+        if edge and _dark(fill) and not _dark(edge): fill, edge = edge, fill   # over footage the light colour fills
         self.text('dms', px, words, pos, rot, fill, stroke=(edge, 0.03) if edge else None, shadow=True, italic_last=italic_last)
     def boxed(self, words, px, pos, box=WHITE, rot=0.0, round_=0.0):
         self.text('montserrat', px * 0.85, words, pos, rot, INK if sum(box) / 3 > 140 else WHITE, box=(box, round_))
     def plain(self, words, px, pos, color=INK, edge=None, rot=0.0):
         self.text('montserrat', px * 0.85, words, pos, rot, color, stroke=(edge, 0.03) if edge else None)
     def doodle(self, kind, i, px, pos, color, edge=None, rot=0.0):
+        if edge is None and _dark(color): edge = WHITE                        # a dark doodle needs a light edge on footage
         self.text('doodles', px, DF.char(kind, i), pos, rot, color, stroke=(edge, 0.02) if edge else None)
 
 # ---- preview (what CapCut will show) -------------------------------------------------------------------------------------
@@ -151,7 +155,26 @@ def review(items, path):
         sheet.paste(img.crop(GRID).resize((tw, 400)), (pad + i * (tw + 4), y + 40))
     sheet = sheet.crop((0, 0, sheet.width, y + 40 + 400 + pad)); return _save(sheet, path)
 
+def profile(items, path, cols=3, tw=360):
+    """The covers as Instagram's profile grid shows them: 3:4 tiles, 3 across, 2 px gaps, with the template number."""
+    th = tw * 4 // 3; rows = (len(items) + cols - 1) // cols; f = ImageFont.truetype(E.font_path('montserrat'), 22)
+    sheet = Image.new('RGB', (cols * tw + (cols - 1) * 3, rows * (th + 34)), (255, 255, 255)); d = ImageDraw.Draw(sheet)
+    for i, (spec, img) in enumerate(items):
+        x, y = (i % cols) * (tw + 3), (i // cols) * (th + 34)
+        sheet.paste(img.crop(GRID).resize((tw, th), Image.LANCZOS), (x, y)); d.text((x + 6, y + th + 5), f"{spec['num']} {spec['title']}", font=f, fill=INK)
+    return _save(sheet, path)
+
+def fulls(items, path, cols=6, tw=300):
+    """Full 9:16 covers with the grid band marked, to check the parts outside the grid."""
+    th = tw * 16 // 9; rows = (len(items) + cols - 1) // cols
+    sheet = Image.new('RGB', (cols * (tw + 10), rows * (th + 10)), (236, 233, 228)); d = ImageDraw.Draw(sheet)
+    for i, (spec, img) in enumerate(items):
+        x, y = (i % cols) * (tw + 10), (i // cols) * (th + 10); sheet.paste(img.resize((tw, th), Image.LANCZOS), (x, y))
+        k = tw / W; d.rectangle((x, y + GRID[1] * k, x + tw - 1, y + GRID[3] * k), outline=(255, 80, 160), width=2)
+    return _save(sheet, path)
+
 if __name__ == '__main__':
     keys = sys.argv[1:]
     items = [make(k) for k in keys]
-    print('review:', review(items, E.PACK / 'covers-review.png'))
+    if len(items) <= 5: print('review:', review(items, E.PACK / 'covers-review.png'))
+    else: print('review:', profile(items, E.PACK / 'covers-grid.png'), fulls(items, E.PACK / 'covers-full.png'))
