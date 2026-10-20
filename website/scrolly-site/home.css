@@ -185,10 +185,10 @@ body:has(.hp){margin:0;background:#f7f3ec}
     The card is drawn 114% wide (its torn sides run 60-80px deep, so they stay off-screen); --ah is its drawn height.
     Top: the card + stars drawn from the top (torn top edge, stars, swirl band = top 27%), clipped above the bottom slice.
     Bottom: the same layers drawn from the bottom (the card's torn bottom + strips = bottom 16%), fading in over 30px of plain paper.
-    Behind both: the card's middle blue (#155db1), so the white copy is readable before the art loads. */
+    Behind both: the card body's pale blue (#e1ebf3), so there is no flash before the art loads. Desktop art = Mercedes's muted set (2026-10-20). */
  .hp-earned{--ah:calc(114vw * .75);position:relative;overflow:hidden;padding:0}
  .hp-earned .earned-art{position:absolute;inset:0;z-index:0}
- .hp-earned .earned-art::before{content:"";position:absolute;left:0;right:0;top:calc(var(--ah) * .27);bottom:calc(var(--ah) * .08);background:#155db1}
+ .hp-earned .earned-art::before{content:"";position:absolute;left:0;right:0;top:calc(var(--ah) * .27);bottom:calc(var(--ah) * .08);background:#e1ebf3}
  .hp-earned .earned-art img{width:114%}
  .hp-earned .e-top{position:absolute;top:0;left:0;right:0;bottom:calc(var(--ah) * .16 - 30px);overflow:hidden}
  .hp-earned .e-bot{position:absolute;left:0;right:0;bottom:0;height:calc(var(--ah) * .16 + 30px);overflow:hidden;-webkit-mask:linear-gradient(transparent,#000 30px);mask:linear-gradient(transparent,#000 30px)}
@@ -196,15 +196,9 @@ body:has(.hp){margin:0;background:#f7f3ec}
  /* copy close beside the shirt, on plain blue between the swirl band (top 26%) and the bottom slice; the bottom padding reserves the
     bottom slice so the copy never reaches the strips, while the shirt may overlap both bands */
  .hp-earned .wrap{position:relative;z-index:1;display:grid;grid-template-columns:minmax(0,460px) auto;justify-content:center;align-items:start;column-gap:clamp(40px,5vw,96px);padding:calc(var(--ah) * .12) 0 calc(var(--ah) * .16 + 8px)}
- .hp-earned .copy{margin-top:calc(var(--ah) * .14);padding:0;color:#fff}
+ .hp-earned .copy{margin-top:calc(var(--ah) * .14);padding:0}
  .hp-earned .shot-col{margin-bottom:calc(var(--ah) * -.1)}
- /* copy on the deep blue card: WHITE text (white 6.7:1, navy would be 2.6:1), no sky marker (it would vanish on this blue),
-    "They're earned." white italic with a thin cream underline, tab underlines cream */
- .hp-earned .copy h2{color:#fff!important}
- .hp-earned .copy .or{color:#fff;background:none;padding:0;text-decoration:underline;text-decoration-color:#f7f3ec;text-decoration-thickness:2px;text-underline-offset:8px}
- .hp-earned .copy .tabs a{border-bottom-color:#f7f3ec}
- .hp-earned .copy .tabs a:hover{border-bottom-color:#fff}
- .hp-earned .copy a:focus-visible{outline-color:#fff}
+ /* copy on the pale card body: the light-ground style (navy text, "They're earned." on the sky marker, sky tab underlines) */
  .hp-earned h2{font-size:clamp(2rem,2.6vw,3.4rem)}
  .hp-earned h2 span{display:block;white-space:nowrap}
  .hp-earned p{max-width:none}
