@@ -71,13 +71,11 @@ to confirm no Pro features.
 - Every template comes with: the physical page's icon list instead of sticky notes.
 - Who it's for: the bats hang in front of the orange burst. Buy card: no doodles.
 
-## Live pack: 4 Reels (2026-10-20)
+## Live pack: 5 Reels, buttons linked (2026-10-20)
 
-The Halloween pack is live in WooCommerce as product 1498 ($4.99, $9.99 crossed out) with 4 templates: Once in a blood
-moon (h6), Caught in our web (h3), Things I'm batty about (h2), Trick or treat (h5). Now you see it (h1) is not in it
-yet. The page now says 4 everywhere ("Get all 4 Reels", "All 4 Reels", "Four ready-made Reels"). The buy buttons still
-point at #buy: linking them to the live product (https://scrollyseo.com/?add-to-cart=1498) waits on Mercedes's OK.
-The page itself is not published.
+The Halloween pack is live in WooCommerce as product 1498 ($4.99, $9.99 crossed out). Mercedes: it is 5 Reels; Now you
+see it (h1) is being built with her smoke video and added to the product today. Both buy buttons go to
+https://scrollyseo.com/?add-to-cart=1498 (her OK, 2026-10-20). The page itself is not published.
 
 ## Open decisions (Mercedes)
 
