@@ -64,17 +64,17 @@ mark.ph{background:#ffd9c9;color:var(--s3-ink);padding:0 4px;border-radius:3px}
 /* steps as one line above the monitor; "see it in action" in handwriting on the screen (Mercedes 2026-10-20) */
 .monitor{position:relative}
 .how-row{display:flex;align-items:center;justify-content:center;gap:clamp(32px,5vw,80px)}
-.how-text{flex:none}
+.how-text{flex:none;min-width:0}
 .film .how-text h2{text-align:left}
-.steps-col{list-style:none;padding:0;margin:22px 0 0;display:grid;gap:12px;font:500 var(--s3-fs-title)/1.1 var(--s3-sans);color:#fff}
-.steps-col li{display:flex;align-items:center;gap:14px}
-.steps-col svg{width:30px;height:30px;flex:none;stroke:var(--s3-sky);fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+/* the steps stay on one line (Mercedes 2026-10-20) */
+.steps-col{list-style:none;padding:0;margin:20px 0 0;display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;font:500 var(--s3-fs-title)/1.1 var(--s3-sans);color:#fff;white-space:nowrap}
+.steps-col li+li::before{content:"→";color:var(--s3-sky);margin-right:14px}
 .see-note{margin:26px 0 0;display:flex;align-items:center;gap:12px;font:400 2.4rem/1 "Covered By Your Grace",cursive;color:#fff;transform:rotate(-4deg);white-space:nowrap}
 .see-note img{width:84px;flex:none;transform:scaleX(-1)}
 .how-row .monitor{flex:1 1 auto;max-width:640px;margin:0}
-@media(max-width:900px){.how-row{flex-direction:column;align-items:stretch;gap:26px}.how-row .monitor{max-width:none}.see-note img{transform:scaleX(-1) rotate(-60deg)}.steps-col{grid-template-columns:1fr 1fr}}
+@media(max-width:900px){.how-row{flex-direction:column;align-items:stretch;gap:26px}.how-row .monitor{max-width:none}.see-note img{transform:scaleX(-1) rotate(-60deg)}}
 @media(max-width:700px){.see-note{font-size:1.8rem}}
-@media(max-width:560px){.screen{border-width:6px 6px 0}.screen::after{left:-7px;right:-7px;bottom:-24px;height:24px}.stand{margin-top:24px;height:40px}.steps-col{font-size:1.4rem}}
+@media(max-width:560px){.screen{border-width:6px 6px 0}.screen::after{left:-7px;right:-7px;bottom:-24px;height:24px}.stand{margin-top:24px;height:40px}.steps-col{font-size:1.25rem;gap:6px 8px}.steps-col li+li::before{margin-right:8px}}
 /* Who it's for: the peach band breaks up the page (Mercedes 2026-10-19; brand peach from the Reel covers) */
 .peach{background:var(--s3-mist)}
 .stick{position:relative;overflow:hidden}
@@ -153,7 +153,7 @@ const shell = (d, css, body) => `<!doctype html><html lang="en"><head><meta char
 const price = (d) => `<span class="amt">${d.was ? `<del>${esc(d.was)}</del>` : ''}${ph(d.price)}</span>`;
 // side by side (Mercedes 2026-10-20): steps left, a bigger screen right, so the section stays short
 const howItWorks = (d) => `<section class="film" id="how"><div class="s3-wrap how-row"><div class="how-text"><h2 class="s3-h2">How it works</h2>
-  <ol class="steps-col">${STEPS.map(([icon, b]) => `<li><svg viewBox="0 0 48 48" aria-hidden="true">${icon}</svg>${esc(b)}</li>`).join('')}</ol>
+  <ol class="steps-col">${STEPS.map(([icon, b]) => `<li>${esc(b)}</li>`).join('')}</ol>
   <p class="see-note" aria-hidden="true">see it in action<img src="${img('arrow-l-w.webp')}" alt=""></p></div>
   <div class="monitor"><div class="screen"><div class="play" aria-hidden="true"></div><strong>Your how-to video</strong></div><div class="stand"></div><div class="base"></div></div></div></section>`;
 // "Every template comes with": real sticky notes pinned on, from Trick or treat (Mercedes 2026-10-19: cards were "boring")
