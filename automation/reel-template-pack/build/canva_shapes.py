@@ -85,7 +85,7 @@ def vector_shape(slide, ink, name, c, rot, color, turdsize=12, alpha=1.0):
 
 FD = __import__('pathlib').Path(__file__).resolve().parent.parent / 'assets' / 'fonts'
 LETTER_FONTS = {'dms': ('DM Serif Display', FD / 'dmserifdisplay-DMSerifDisplay-Regular.ttf', FD / 'dmserifdisplay-DMSerifDisplay-Italic.ttf'),
-                'bodoni': ('Bodoni Moda', FD / 'BodoniModa.ttf', FD / 'BodoniModa.ttf')}
+                'bodoni': ('Bodoni FLF', FD / 'BodoniModa.ttf', FD / 'BodoniModa.ttf')}   # Canva's free Bodoni (no Bodoni Moda there); previews use Bodoni Moda
 
 def lettering(slide, words, px, c, rot, fill, italic_last=True, font='dms'):
     """A built-in word as LIVE text in a Canva font (words, font and colour all editable). Canva drops text outlines on

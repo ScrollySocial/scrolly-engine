@@ -37,7 +37,7 @@ def text(words, px, c, rot=0, box=WHITE, fg=INK, pill=False, align='center', fon
 def guide(words, c=(540, 1390), px=26): return dict(kind='guide', words=words, px=px, c=c, rot=0, box=GUIDE, fg=WHITE, pill=False, align='center', font='mont')
 
 # editable fonts: (file for previews, Canva/PowerPoint name, bold). Bodoni Moda is h6's editable serif (OFL, as in its CapCut build)
-FONTS = {'mont': (MONT, 'Montserrat', True), 'bodoni': (str(S.E.PACK / 'assets' / 'fonts' / 'BodoniModa.ttf'), 'Bodoni Moda', False)}
+FONTS = {'mont': (MONT, 'Montserrat', True), 'bodoni': (str(S.E.PACK / 'assets' / 'fonts' / 'BodoniModa.ttf'), 'Bodoni FLF', False)}   # Canva has no Bodoni Moda (it fell back to Arimo); Bodoni FLF is its free Bodoni
 def mfont(px, font='mont'): return ImageFont.truetype(FONTS[font][0], px)
 
 def text_box(L):
