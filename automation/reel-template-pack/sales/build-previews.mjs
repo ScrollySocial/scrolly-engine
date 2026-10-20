@@ -104,8 +104,9 @@ details.notes>summary{cursor:pointer;font:700 var(--s3-fs-label)/1.4 var(--s3-sa
 .rc-vis .slides img{width:204px;aspect-ratio:3/4;object-fit:cover;border-radius:4px;box-shadow:0 8px 20px rgba(0,0,0,.14)}
 .ig-dots{display:flex;justify-content:center;gap:6px;margin-top:14px}
 .ig-dots span{width:8px;height:8px;border-radius:50%;background:#cfc8bf}.ig-dots span.on{background:var(--s3-orange)}
-.swipe-note{position:absolute;right:6px;top:-50px;display:flex;align-items:flex-end;gap:6px;font:400 1.8rem/1 "Covered By Your Grace",cursive;color:var(--s3-ink)}
-.swipe-note img{width:70px;transform:translateY(16px)}
+.swipe-note{position:absolute;left:calc(100% + 12px);top:42%;display:flex;align-items:center;gap:8px;font:400 2rem/1 "Covered By Your Grace",cursive;color:var(--s3-ink);transform:rotate(-4deg);white-space:nowrap}
+.swipe-note img{width:64px;flex:none}
+@media(max-width:1350px){.swipe-note{left:auto;right:6px;top:-46px}.swipe-note img{width:52px;transform:rotate(-35deg)}}
 @media(max-width:1000px){.rc-row{flex-direction:column;align-items:flex-start;gap:60px}}
 @media(max-width:700px){.rc-vis{gap:10px}.rc-vis .phone{width:116px}.rc-vis .slides img{width:150px}.rc-vis .slides img:nth-child(n+2){display:none}}
 /* compact: text left, the phone with handwritten callouts right (Mercedes: section was too tall) */
@@ -156,12 +157,12 @@ const INC_ICONS = [
   '<rect x="6" y="14" width="26" height="30" rx="3"/><path d="M14 14v-5a3 3 0 0 1 3-3h22a3 3 0 0 1 3 3v24a3 3 0 0 1-3 3h-7"/><path d="M11 37l6-7 5 5 4-3 6 5"/>',
 ];
 const includes = (d) => d.brandIncludes ? `<section class="s3-sec tight incl-b after-rc"><div class="s3-wrap">
-  <ul class="swipes">${d.includes.map(([b], i) => i === d.includes.length - 1 ? `<li class="plus" aria-hidden="true">+</li><li class="extra"><svg viewBox="0 0 48 48" aria-hidden="true">${INC_ICONS[i]}</svg><span>${esc(b)}</span></li>` : `<li><svg viewBox="0 0 48 48" aria-hidden="true">${INC_ICONS[i]}</svg><span>${esc(b)}</span></li>`).join('')}</ul></div></section>` : `<section class="s3-sec stick after-rc"><div class="s3-wrap">
-  <div class="notes-row">${d.includes.map(([b, x], i) => `${i === d.includes.length - 1 ? '<span class="plus-note" aria-hidden="true">+</span>' : ''}<div class="sticky${i === d.includes.length - 1 ? ' extra' : ''}" style="--r:${ROT[i]}deg"><img class="pin" src="${img('pin-blue.webp')}" alt=""><span class="nt"><b>${esc(b)}</b></span></div>`).join('')}</div>
+  <ul class="swipes">${d.includes.map(([b], i) => `<li><svg viewBox="0 0 48 48" aria-hidden="true">${INC_ICONS[i]}</svg><span>${esc(b)}</span></li>`).join('')}</ul></div></section>` : `<section class="s3-sec stick after-rc"><div class="s3-wrap">
+  <div class="notes-row">${d.includes.map(([b, x], i) => `<div class="sticky" style="--r:${ROT[i]}deg"><img class="pin" src="${img('pin-blue.webp')}" alt=""><span class="nt"><b>${esc(b)}</b></span></div>`).join('')}</div>
   ${d.formatNote ? `<p style="margin-top:32px">${ph(d.formatNote)}</p>` : ''}</div></section>`;
 const reelCarousel = (d) => `<section class="s3-sec tight rc"><div class="s3-wrap"><h2 class="s3-h2 rc-head">Every template comes with a Reel + carousel</h2>
   <div class="rc-vis" aria-hidden="true"><div class="phone"><img src="${img(d.rc.phone)}" alt=""></div>
-  <div class="slides-wrap"><p class="swipe-note">swipe<img src="${img('arrow-curve.webp')}" alt=""></p><div class="slides">${d.rc.slides.map((f) => `<img src="${img(f)}" alt="">`).join('')}</div>
+  <div class="slides-wrap"><p class="swipe-note" aria-hidden="true"><img src="${img('arrow-l-pink.webp')}" alt="">swipe</p><div class="slides">${d.rc.slides.map((f) => `<img src="${img(f)}" alt="">`).join('')}</div>
   <div class="ig-dots"><span class="on"></span><span></span><span></span><span></span><span></span></div></div></div></div></section>`;
 const EDITS_OLD = [
   ['<path d="M8 40L20 8h4l12 32M12 30h20"/>', 'Every word'],
@@ -362,11 +363,11 @@ const PCSS = `
 .hero-p .s3-wrap{position:relative;z-index:2}
 .hero-p .s3-fine{max-width:620px}
 .prop{position:absolute;pointer-events:none;z-index:1}
-.hero-p .tri{right:5%;bottom:-6px;width:clamp(200px,20vw,300px);transform:rotate(-4deg);z-index:2}
+.hero-p .tri{right:10%;bottom:-6px;width:clamp(200px,20vw,300px);transform:rotate(-4deg);z-index:2}
 /* a static Reels feed behind the tripod (the covers, once made, replace these frames) */
-.hero-p .feed{right:-60px;top:-40px;width:min(560px,40vw);display:grid;grid-template-columns:repeat(4,1fr);gap:6px;transform:rotate(-6deg);opacity:.5;-webkit-mask-image:linear-gradient(to left,#000 55%,transparent);mask-image:linear-gradient(to left,#000 55%,transparent)}
+.hero-p .feed{right:0;top:-40px;width:min(580px,40vw);display:grid;grid-template-columns:repeat(4,1fr);gap:6px;transform:rotate(-6deg);opacity:.5;-webkit-mask-image:linear-gradient(to left,#000 55%,transparent);mask-image:linear-gradient(to left,#000 55%,transparent)}
 .hero-p .feed img{width:100%;aspect-ratio:9/16;object-fit:cover;border-radius:6px}
-.hero-p .burst-h{right:calc(5% - 90px);top:50%;width:clamp(380px,36vw,560px);transform:translateY(-58%) rotate(8deg);opacity:.9}
+.hero-p .burst-h{right:calc(10% - 110px);top:50%;width:clamp(420px,38vw,600px);transform:translateY(-55%) rotate(8deg);opacity:.9;z-index:1}
 @media(max-width:1299px){.hero-p .tri,.hero-p .burst-h,.hero-p .feed{display:none}}
 .hero-p .seal{width:64px;transform:rotate(-10deg)}
 .reels-p{background:var(--s3-navy);color:#fff}
@@ -404,7 +405,7 @@ const PCSS = `
 /* compact: two lines of content get one short band (Mercedes: "look how tall this section is") */
 .who-row{display:flex;align-items:center;justify-content:space-between;gap:32px}
 .fan{position:relative;flex:none;width:400px;height:330px}
-.fan-burst{position:absolute;z-index:0;width:360px;left:20px;top:-10px;opacity:.85;transform:rotate(-8deg)}
+.fan-burst{position:absolute;z-index:0;width:470px;left:-20px;top:-12px;opacity:.85;transform:rotate(-8deg)}
 .fan-spark{position:absolute;z-index:3;width:44px}.fan-spark.s1{left:-18px;top:30px}.fan-spark.s2{right:-12px;bottom:40px;width:34px}
 .fan .phone{z-index:1}
 .fan .phone{position:absolute;bottom:0;width:150px;border-color:#111;box-shadow:0 14px 30px rgba(80,30,10,.25);background:#f7f3ec}
@@ -434,7 +435,7 @@ function physicalPage(d) {
   const list = d.templates.map((t, i) => `<div class="rg"><p class="num">${i + 1} of 25${d.launchNow ? (d.launchNow.includes(i + 1) ? ' <span class="in">In today</span>' : ' <span class="soon">Arriving soon</span>') : ''}</p><div class="phone"><img src="${img(`p${String(i + 1).padStart(2, '0')}.jpg`)}" alt="${esc(t.name)}: its Reel cover" loading="lazy"></div>
     <h3>${esc(t.name)}</h3></div>`).join('');
   const body = `
-<section class="s3-sec hero-p"><div class="prop feed" aria-hidden="true">${[1, 3, 10, 12, 22, 23, 2, 9, 20, 25, 13, 16].map((n) => `<img src="${img(`p${String(n).padStart(2, '0')}.jpg`)}" alt="">`).join('')}</div><img class="prop tri" src="${img('tripod.webp')}" alt=""><div class="s3-wrap">
+<section class="s3-sec hero-p"><div class="prop feed" aria-hidden="true">${[1, 3, 10, 12, 22, 23, 2, 9, 20, 25, 13, 16].map((n) => `<img src="${img(`p${String(n).padStart(2, '0')}.jpg`)}" alt="">`).join('')}</div><img class="prop burst-h" src="${img('burst-baby.webp')}" alt=""><img class="prop tri" src="${img('tripod.webp')}" alt=""><div class="s3-wrap">
   <h1 class="s3-display head-p"><span class="l1">${esc(d.headline.split(': ')[0])}:</span> <span class="done">${esc(d.headline.split(': ')[1])}</span></h1>
   <p class="s3-lede" style="margin-top:28px">${esc(d.sub)}</p>
   <div class="buy">${price(d)}<a class="s3-btn" href="#buy">${esc(d.button)}</a></div>
