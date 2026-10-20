@@ -114,7 +114,7 @@ export function build() {
  </div>
 </div></section>
 
-<section class="hp-earned" id="earned"><div class="earned-art" aria-hidden="true">${EARNED_ART.map(([d, n]) => `<picture><source media="(min-width:901px)" srcset="${artUrl(d)}" width="1448" height="1086"><img src="${artUrl(n)}" alt="" width="1024" height="1536" loading="lazy"></picture>`).join('')}</div><div class="wrap">
+<section class="hp-earned" id="earned"><div class="earned-art" aria-hidden="true">${EARNED_ART.map(([d, n], i) => `<picture><source media="(min-width:901px)" srcset="${artUrl(d)}" width="1448" height="1086"><img src="${artUrl(n)}" alt="" width="1024" height="1536"${i ? '' : ' fetchpriority="high"'}></picture>`).join('')}</div><div class="wrap">
  <div class="copy">
   <h2><span>Some things can’t be bought.</span> <span><em class="or">They’re earned.</em></span></h2>
   <p>Reach your verified Challenge goal and earn the exclusive Club T-shirt.</p>

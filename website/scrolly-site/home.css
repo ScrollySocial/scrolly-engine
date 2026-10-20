@@ -185,6 +185,9 @@ body:has(.hp){margin:0;background:#f7f3ec}
  .hp-earned{position:relative;overflow:hidden;padding:0;aspect-ratio:1448/1238}
  .hp-earned .earned-art{position:absolute;inset:0;z-index:0}
  .hp-earned .earned-art img{width:114%}
+ /* the card's own blue painted under the art where the card is solid (27% to 92% of its height), so the white copy is readable before
+    the images load; torn top and bottom stay transparent. Same colour as the card, so nothing changes when the art arrives. */
+ .hp-earned .earned-art::before{content:"";position:absolute;left:0;right:0;top:27%;bottom:8%;background:#165eb3}
  .hp-earned .wrap{position:absolute;inset:0;z-index:1;width:auto;margin:0;display:block}
  /* copy on the deep blue card (#165eb3): WHITE text (white 6.7:1, navy would be 2.6:1), no sky marker (it would vanish on this blue),
     "They're earned." white italic with a thin cream underline, tab underlines cream */
