@@ -130,7 +130,7 @@ f.addEventListener('submit',function(e){e.preventDefault();run()});f.addEventLis
 const TIER_CSS = `
 .s3 .cl-hero{padding:clamp(28px,4vw,64px) 0 clamp(40px,4.5vw,72px)}
 .s3 .cl-hero .s3-wrap{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);align-items:center;gap:clamp(24px,3vw,56px)}
-.s3 .cl-hero h1{font-size:clamp(3rem,5.2vw,5.8rem)!important;line-height:.95!important;letter-spacing:-.045em!important}
+.s3 .cl-hero h1{font-size:clamp(3rem,5.2vw,5.8rem)!important;line-height:.95!important;letter-spacing:-.01em!important}
 .s3 .cl-hero h1 span{display:block}
 /* Rebrand 2026-10-19: the hero question is Georgia italic in navy. It is too long for the hot-pink marker (.or in v3.css), which is for one or two words. */
 .s3 .cl-hero h1 em{font-style:italic;background:none;padding:0}
@@ -192,7 +192,7 @@ const TIER_CSS = `
 .s3 .cl-offer{background:#fff;border-radius:16px;padding:clamp(20px,2.4vw,32px)}
 .s3 .cl-offer.feat{outline:3px solid var(--s3-ink)}
 .s3 .cl-offer .top{display:flex;align-items:baseline;flex-wrap:wrap;gap:8px 14px;margin-bottom:10px}
-.s3 .cl-offer .cost{font:400 clamp(2.6rem,4vw,3.4rem)/1 var(--s3-serif);letter-spacing:-.03em}
+.s3 .cl-offer .cost{font:400 clamp(2.6rem,4vw,3.4rem)/1 var(--s3-serif);letter-spacing:-.01em}
 .s3 .cl-offer h3{font-size:1.5rem!important}
 .s3 .cl-best{padding:4px 12px;border-radius:999px;background:var(--s3-ink);color:#fff;font:700 var(--s3-fs-label)/1.2 var(--s3-sans);letter-spacing:.08em;text-transform:uppercase}
 .s3 .cl-offer ul{list-style:none;margin:0 0 20px;padding:0}

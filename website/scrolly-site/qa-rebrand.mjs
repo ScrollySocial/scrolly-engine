@@ -14,7 +14,7 @@ for (const key of process.argv.slice(2)) {
     await p.setViewport({ width: w, height: 900, deviceScaleFactor: 1, isMobile: w < 600, hasTouch: w < 600 });
     const errs = []; p.on('pageerror', (e) => errs.push(String(e).slice(0, 150)));
     await p.goto(pathToFileURL(path.join(here, 'dist', key + '.full.html')).href, { waitUntil: 'networkidle2', timeout: 90000 }).catch((e) => errs.push('goto: ' + e.message));
-    await p.evaluate(async () => { document.querySelector('.cmplz-cookiebanner')?.remove(); for (let y = 0; y < document.body.scrollHeight; y += 700) { scrollTo(0, y); await new Promise((r) => setTimeout(r, 80)); } scrollTo(0, 0); await document.fonts.ready; });
+    await p.evaluate(async () => { document.querySelector('.cmplz-cookiebanner')?.remove(); document.querySelectorAll('img[loading=lazy]').forEach((i) => { i.loading = 'eager'; }); for (let y = 0; y < document.body.scrollHeight; y += 700) { scrollTo(0, y); await new Promise((r) => setTimeout(r, 80)); } scrollTo(0, 0); await document.fonts.ready; await Promise.all([...document.images].map((i) => (i.complete ? 1 : new Promise((r) => { i.onload = i.onerror = r; setTimeout(r, 8000); })))); });
     await new Promise((r) => setTimeout(r, 800));
     const res = await p.evaluate(() => {
       const parse = (s) => { const m = s.match(/rgba?\(([^)]+)\)/); if (!m) return null; const v = m[1].split(/[ ,/]+/).filter(Boolean).map(Number); return { c: v.slice(0, 3), a: v[3] === undefined ? 1 : v[3] }; };

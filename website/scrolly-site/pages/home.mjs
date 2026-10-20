@@ -66,7 +66,7 @@ export function build() {
   const body = `
 <section class="hp-hero"><div class="wrap">
  <div class="copy">
-  <h1><span>Build an audience</span> <span><em class="or">that buys.</em></span></h1>
+  <h1 class="one">Stand out <em class="or">online.</em></h1>
   <div class="act"><p class="lede"><span>Find your path to more customers</span> <span>without depending on paid ads.</span></p>
   <a class="btn" href="/next-move/">Find my starting point <span aria-hidden="true">→</span></a></div>
  </div>

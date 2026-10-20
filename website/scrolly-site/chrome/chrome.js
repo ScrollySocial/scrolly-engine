@@ -48,12 +48,13 @@
     if(el.parentElement){if(!el.classList.contains('scxg-shirt-sec'))el.classList.add('scxg-shirt-sec')}}
   if(document.querySelector('.wp-block-woocommerce-checkout,.wc-block-checkout')){shirtSec();new MutationObserver(function(){shirtSec()}).observe(document.body,{childList:true,subtree:true})}
   document.addEventListener('keydown',function(e){var r=root();if(e.key==='Escape'&&r&&r.classList.contains('scxg-open'))set(false)});
-  /* v3 (2026-10-03), rebrand 2026-10-19. CFG: footer art layers (navy torn-paper Starry Night: sky, torn strips, foil stars; source files in
-     website/scrolly-site/assets/ftr-*.webp, upload them to WP media and set the URLs here), the footer figure (Mercedes riding a tiger: not made
-     yet, so null; set {src,w,h,alt} when it exists), header Join button, quote (last word in hot pink), and the footer signup + social links. */
+  /* v3 (2026-10-03), rebrand 2026-10-19. CFG: footer art layers (navy torn-paper Starry Night: sky with a see-through torn top edge, torn
+     strips, foil stars; source files in website/scrolly-site/assets/ftr-*.webp, upload them to WP media and set the URLs here), the footer
+     tiger (swap in the "Mercedes riding a tiger" image here when it exists), header Join button, quote (last word in hot pink = Mercedes's
+     voice), and the footer signup + social links. */
   var CFG={art:{sky:'https://scrollyseo.com/wp-content/uploads/2026/10/ftr-sky.webp',strips:'https://scrollyseo.com/wp-content/uploads/2026/10/ftr-strips.webp',stars:'https://scrollyseo.com/wp-content/uploads/2026/10/ftr-stars.webp'},
-    figure:null,
-    join:['/next-move/','Take the quiz'],quote:['Go get ’em,','Tiger.'],signupLine:'Less scrolling, more Scrolly.',
+    tiger:'https://scrollyseo.com/wp-content/uploads/2026/10/scrolly-hp3-footer-tiger.webp',tw:1800,th:600,
+    join:['/next-move/','Take the quiz'],quote:['Go get ’em,','Tiger.'],
     signup:{action:'https://assets.mailerlite.com/jsonp/2596740/forms/200782368424855203/subscribe',field:'fields[email]'},/* MailerLite form 2QLk6d "Less scrolling, more Scrolly" */
     social:[['Instagram','https://www.instagram.com/scrollysocial/'],['TikTok','https://www.tiktok.com/@scrollysocial'],['YouTube','https://www.youtube.com/@ScrollySocial'],['X','https://x.com/scrollysocial']]/* format: e.g. [['Instagram','https://instagram.com/...'],['TikTok','...'],['YouTube','...'],['Pinterest','...'],['Facebook','...']] */};
   var ICO={Instagram:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>',
@@ -67,19 +68,18 @@
     right.insertBefore(j,right.querySelector('.scxg-burger'))}
   /* Footer v3: columns = Main Menu tree (read from the drawer), bottom row = Footer Menu links. Edit both in Appearance > Menus. */
   function foot(){var f=document.querySelector('.scxg-ftr');if(!f||f.__v3)return;f.__v3=1;
-    var legal=[].slice.call(f.querySelectorAll('nav a')).map(lk),cols='';
+    var logo=f.querySelector('.logo'),legal=[].slice.call(f.querySelectorAll('nav a')).map(lk),cols='';
     [].slice.call(document.querySelectorAll('.scxg-drawer .top>li')).forEach(function(li){var a=li.querySelector(':scope>a');if(!a)return;
       var kids=[].slice.call(li.querySelectorAll(':scope>ul>li>a'));if(!kids.length)kids=[a];
       cols+='<div class="col"><h2>'+esc(a.textContent)+'</h2><ul>'+kids.map(function(k){return '<li>'+lk(k)+'</li>'}).join('')+'</ul></div>'});
-    var contact='<p>'+esc(CFG.signupLine)+'</p>';
-    if(CFG.signup)contact+='<form class="signup" method="post" action="'+esc(CFG.signup.action)+'" target="_blank"><label for="scxg-email"><span>Email</span><input id="scxg-email" type="email" name="'+esc(CFG.signup.field)+'" placeholder="you@example.com" autocomplete="email" required></label><input type="hidden" name="ml-submit" value="1"><input type="hidden" name="anticsrf" value="true"><button type="submit">Sign up</button></form><p class="signup-note" role="status">Organic marketing tips by email. Unsubscribe anytime.</p>';
+    var contact='';
+    if(CFG.signup)contact+='<form class="signup" method="post" action="'+esc(CFG.signup.action)+'" target="_blank"><label for="scxg-email" style="position:absolute;left:-9999px">Your email</label><input id="scxg-email" type="email" name="'+esc(CFG.signup.field)+'" placeholder="Your email" autocomplete="email" required><input type="hidden" name="ml-submit" value="1"><input type="hidden" name="anticsrf" value="true"><button type="submit" aria-label="Subscribe">→</button></form><p class="signup-note" role="status">Organic marketing tips by email. Unsubscribe anytime.</p>';
     if(CFG.social.length)contact+='<div class="social">'+CFG.social.map(function(s){return '<a href="'+esc(s[1])+'" aria-label="Scrolly on '+esc(s[0])+' (opens in a new tab)" rel="noopener" target="_blank">'+(ICO[s[0]]||esc(s[0]))+'</a>'}).join('')+'</div>';
-    var fig=CFG.figure?'<div class="ffig"><img src="'+esc(CFG.figure.src)+'" alt="'+esc(CFG.figure.alt||'')+'" width="'+CFG.figure.w+'" height="'+CFG.figure.h+'" loading="lazy" decoding="async"></div>':'';
     if(CFG.art){f.style.setProperty('--ftr-sky','url("'+CFG.art.sky+'")');f.style.setProperty('--ftr-strips','url("'+CFG.art.strips+'")');f.style.setProperty('--ftr-stars','url("'+CFG.art.stars+'")')}
     f.innerHTML=(CFG.art?'<div class="fstars" aria-hidden="true"></div>':'')
-      +'<div class="w ftop"><p class="fquote">'+esc(CFG.quote[0])+' <em>'+esc(CFG.quote[1])+'</em></p>'+fig+'</div>'
-      +'<div class="w fnav"><div class="fsign">'+contact+'</div>'+cols+'</div>'
-      +'<div class="w fbot"><span>© '+new Date().getFullYear()+' Scrolly</span>'+legal.join('')+'</div>';
+      +'<div class="fhero"><img class="ftiger" src="'+CFG.tiger+'" alt="" width="'+CFG.tw+'" height="'+CFG.th+'" loading="lazy" decoding="async"><div class="fbrand"><p class="fquote">'+esc(CFG.quote[0])+' <em>'+esc(CFG.quote[1])+'</em></p>'+(contact?'<div class="fcontact">'+contact+'</div>':'')+'</div></div>'
+      +'<div class="w fnav">'+(logo?logo.outerHTML:'')+cols+'</div>'
+      +'<div class="w fbot">'+legal.join('')+'<span>© '+new Date().getFullYear()+' Scrolly</span></div>';
     f.classList.add('v3');
     /* Signup posts to MailerLite in the background and shows the result in place (no new tab); a failed request falls back to a normal submit. */
     var sf=f.querySelector('form.signup');if(sf)sf.addEventListener('submit',function(e){e.preventDefault();var note=f.querySelector('.signup-note'),btn=sf.querySelector('button');btn.disabled=true;

@@ -4,14 +4,14 @@
    (no pink or orange text on cream; hot pink is reserved for Mercedes herself, so not used on this page outside the footer), Jost for ledes and body (no upright Georgia in paragraphs). Jost is loaded by chrome/v3.css. */
 body:has(.hp) #content,body:has(.hp) main,body:has(.hp) .site-main,body:has(.hp) .page-content{max-width:none!important;width:100%!important;padding:0!important;margin:0!important}
 body:has(.hp){margin:0;background:#f7f3ec}
-.hp{--cream:#f7f3ec;--ink:#0a1930;--muted:#4a4e66;--line:#d9d3ca;--sky:#4da3ff;--pink:#ff3b7f;--gut:clamp(20px,4.5vw,96px);--serif:Georgia,"Times New Roman",serif;--sans:"Jost",Arial,Helvetica,sans-serif;
+.hp{--cream:#f7f3ec;--ink:#0a1930;--muted:#4a4e66;--line:#d9d3ca;--sky:#4da3ff;--pink:#ff3b7f;--gut:clamp(20px,4.5vw,96px);--serif:"Instrument Serif",Georgia,"Times New Roman",serif;--sans:"Jost",Arial,Helvetica,sans-serif;
   background:var(--cream);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.4;overflow-x:hidden}
 .hp *,.hp *::before,.hp *::after{box-sizing:border-box}
 .hp img{display:block;max-width:100%;height:auto}
 .hp a{color:inherit;text-decoration:none}
 .hp h1,.hp h2,.hp h3,.hp p{margin:0}
 /* the site Customizer (Additional CSS) forces h1-h6 to Arial Black !important; headings here are the reference serif */
-.hp h1,.hp h2,.hp h3{font-family:Georgia,"Times New Roman",serif!important;font-weight:400!important;color:var(--ink);text-transform:none}
+.hp h1,.hp h2,.hp h3{font-family:var(--serif)!important;font-weight:400!important;color:var(--ink);text-transform:none}
 .hp button,.hp input{font:inherit}
 .hp a:focus-visible,.hp button:focus-visible,.hp input:focus-visible{outline:3px solid var(--ink);outline-offset:4px}
 .hp .wrap{width:calc(100% - 2 * var(--gut));margin:0 auto}
@@ -26,7 +26,11 @@ body:has(.hp){margin:0;background:#f7f3ec}
 .hp-hero .wrap{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);align-items:center;min-height:600px}
 .hp-hero .copy{position:relative;z-index:2;justify-self:end;padding:50px clamp(0px,2vw,40px) 90px 0}
 .hp-hero h1 span{display:block;white-space:nowrap}
-.hp-hero h1{font:400 clamp(3.4rem,5.6vw,6.6rem)/.98 var(--serif);letter-spacing:-.055em;margin:0 0 26px}
+.hp-hero h1{font:400 clamp(3.4rem,5.6vw,6.6rem)/.98 var(--serif);letter-spacing:-.015em;margin:0 0 26px}
+/* one-line headline (Mercedes 2026-10-20: "Stand out online." on one line on desktop and phone), sized to the copy column */
+.hp-hero h1.one{white-space:nowrap;font-size:clamp(3rem,6.6vw,7.4rem);line-height:1}
+/* no marker in the hero (Mercedes 2026-10-20: the eye should go to the button); the italic stays */
+.hp-hero h1 .or{background:none;padding:0}
 .hp-hero .lede{font:400 clamp(1.375rem,1.9vw,1.875rem)/1.35 var(--sans);margin:0 0 38px;max-width:30ch;text-wrap:balance}
 /* the tiger art has wide empty margins; pull it left so the animal sits beside the headline */
 .hp-hero .act{display:inline-grid;max-width:100%}
@@ -86,7 +90,7 @@ body:has(.hp){margin:0;background:#f7f3ec}
 .hp-earned a:focus-visible{outline-color:#fff}
 .hp-earned .wrap{display:grid;grid-template-columns:1fr 1fr;align-items:center}
 .hp-earned .copy{padding:50px 3vw 70px 0}
-.hp-earned h2{font:400 clamp(2.2rem,2.8vw,3.8rem)/1.05 var(--serif);margin:0 0 26px;letter-spacing:-.035em}
+.hp-earned h2{font:400 clamp(2.2rem,2.8vw,3.8rem)/1.05 var(--serif);margin:0 0 26px;letter-spacing:-.01em}
 .hp-earned h2 span{display:block;white-space:nowrap}
 .hp-earned p{font:1.25rem/1.5 var(--sans);max-width:430px}
 .hp-earned .tabs{display:flex;flex-wrap:wrap;gap:0 42px;margin-top:26px}
@@ -154,6 +158,7 @@ body:has(.hp){margin:0;background:#f7f3ec}
  .hp-hero .wrap{display:flex;flex-direction:column;align-items:stretch;min-height:0}
  .hp-hero .copy{justify-self:stretch;padding:40px 0 10px}
  .hp-hero h1{font-size:clamp(2.2rem,10.4vw,3.4rem)}
+ .hp-hero h1.one{font-size:clamp(2.4rem,12vw,4.4rem)}
  .hp-hero .lede{font-size:clamp(1.375rem,5.8vw,1.75rem)}
  .hp-hero .btn{letter-spacing:.08em;padding:15px 24px}
  .hp-hero .tiger{max-height:430px}
