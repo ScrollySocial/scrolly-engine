@@ -34,7 +34,7 @@ body.woocommerce-account .woocommerce>h2,body.woocommerce-account .u-columns h2{
 /* WooCommerce's show/hide password eye is a <button>: keep it a plain icon, not a theme-layer pill */
 html body.woocommerce-account .woocommerce .show-password-input,html body.woocommerce-checkout .woocommerce .show-password-input{display:flex!important;align-items:center;justify-content:center;min-height:44px!important;width:44px;padding:0!important;border:0!important;border-radius:4px!important;background:transparent!important;color:var(--s3-ink)!important;box-shadow:none!important}
 html body.woocommerce-account .woocommerce .show-password-input:hover{background:#ece6dc!important}
-body.woocommerce-account .woocommerce-form-login__rememberme input,body.woocommerce-account input[type=checkbox]{width:22px;height:22px;accent-color:#0a0a0a}
+body.woocommerce-account .woocommerce-form-login__rememberme input,body.woocommerce-account input[type=checkbox]{width:22px;height:22px;accent-color:var(--s3-navy)}
 /* addresses + account details */
 body.woocommerce-account .woocommerce-Addresses{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px}
 body.woocommerce-account .woocommerce-Addresses::before,body.woocommerce-account .woocommerce-Addresses::after{display:none}
@@ -61,10 +61,10 @@ body.woocommerce-account fieldset legend{font:400 var(--s3-fs-lede)/1.2 var(--s3
 .k1ty .t{margin:0 0 10px;font:400 var(--s3-fs-title)/1.15 var(--s3-serif);color:#fff}
 .k1ty p{margin:0 0 18px;color:#fff;font-size:var(--s3-fs-body);line-height:1.55}
 .k1ty .acts{display:flex;flex-wrap:wrap;align-items:center;gap:12px 20px;margin:0 0 4px}
-.k1ty a.go{display:inline-flex;align-items:center;min-height:52px;padding:0 30px;border-radius:999px;background:var(--s3-orange);color:#000!important;font:800 var(--s3-fs-label)/1 var(--s3-sans);letter-spacing:.14em;text-transform:uppercase;text-decoration:none!important}
-.k1ty a.go:hover{background:#fff}
+.k1ty a.go{display:inline-flex;align-items:center;min-height:52px;padding:0 30px;border-radius:999px;background:var(--s3-sky);color:var(--s3-navy)!important;font:800 var(--s3-fs-label)/1 var(--s3-sans);letter-spacing:.14em;text-transform:uppercase;text-decoration:none!important}
+.k1ty a.go:hover{background:#fff;color:var(--s3-navy)!important}
 .k1ty a.alt{display:inline-flex;align-items:center;min-height:44px;color:#fff!important;font:600 var(--s3-fs-ui)/1 var(--s3-sans);text-decoration:underline!important;text-underline-offset:4px}
-.k1ty .small{margin:16px 0 0;font-size:var(--s3-fs-fine);color:#cfcfcf}
+.k1ty .small{margin:16px 0 0;font-size:var(--s3-fs-fine);color:var(--s3-mist-ink)}
 .k1ty :focus-visible{outline:3px solid #fff!important;outline-offset:3px}
 
 /* ---- $1K member area ---- */
@@ -75,7 +75,7 @@ body.woocommerce-account fieldset legend{font:400 var(--s3-fs-lede)/1.2 var(--s3
 .k1v3 h3{margin:0 0 10px;font-family:var(--s3-serif)!important;font-weight:400!important;font-size:var(--s3-fs-lede)!important;line-height:1.2!important;letter-spacing:-.01em;text-transform:none!important;color:inherit}
 .k1v3 p{margin:0 0 12px;font-size:var(--s3-fs-body);line-height:1.55;color:inherit}
 .k1v3 a{color:inherit;text-decoration:underline;text-underline-offset:3px}
-.k1v3 :is(a,button,input,select,textarea,summary):focus-visible{outline:3px solid #111;outline-offset:3px}
+.k1v3 :is(a,button,input,select,textarea,summary):focus-visible{outline:3px solid var(--s3-navy);outline-offset:3px}
 .k1v3 .sec.black :is(a,button,input,select,textarea,summary):focus-visible{outline-color:#fff}
 .k1v3 .sec{margin:0 0 24px;padding:clamp(20px,2.6vw,36px);border-radius:16px;background:#fff}
 .k1v3 .sec.teal{background:var(--k1-panel)}
@@ -84,14 +84,14 @@ body.woocommerce-account fieldset legend{font:400 var(--s3-fs-lede)/1.2 var(--s3
 .k1v3 .sec.black :is(h2,h3,p,label,legend,summary,li){color:#fff}
 .k1v3 .sec.black a{color:#fff}
 .k1v3 .big{font:400 clamp(2.8rem,5vw,4.4rem)/.95 var(--s3-serif);letter-spacing:-.03em;color:inherit}
-.k1v3 .sec.black .big{color:var(--s3-orange)}
+.k1v3 .sec.black .big{color:var(--s3-sky)}
 .k1v3 .stripe{display:flex;align-items:center;gap:16px;margin:16px 0 8px}
 .k1v3 .stripe .track{flex:1;margin:0}
 .k1v3 .stripe b{min-width:3.2em;text-align:right;font:400 var(--s3-fs-h3)/1 var(--s3-serif);color:var(--s3-ink)}
-.k1v3 .sec.black .stripe b{color:var(--s3-orange)}
+.k1v3 .sec.black .stripe b{color:var(--s3-sky)}
 .k1v3 .track{height:clamp(28px,3vw,40px);margin:16px 0 8px;border-radius:999px;background:var(--k1-panel);overflow:hidden}
-.k1v3 .sec.black .track{background:#2a2a2a}
-.k1v3 .track i{display:block;height:100%;background:var(--s3-orange)}
+.k1v3 .sec.black .track{background:#24365a}
+.k1v3 .track i{display:block;height:100%;background:var(--s3-sky)}
 .k1v3 .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
 .k1v3 .grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
 .k1v3 label{display:block;margin:0 0 8px;font:600 var(--s3-fs-ui)/1.35 var(--s3-sans);color:inherit}
@@ -99,26 +99,26 @@ body.woocommerce-account fieldset legend{font:400 var(--s3-fs-lede)/1.2 var(--s3
 .k1v3 textarea{min-height:110px}
 .k1v3 input[type=file]{min-height:0;padding:12px}
 .k1v3 .btn{display:inline-flex;align-items:center;justify-content:center;gap:12px;min-height:52px;margin-top:16px;padding:0 30px;border:0;border-radius:999px;background:var(--s3-black);color:#fff!important;font:800 var(--s3-fs-label)/1 var(--s3-sans);letter-spacing:.14em;text-transform:uppercase;text-decoration:none!important;cursor:pointer}
-.k1v3 .btn:hover{background:var(--s3-orange);color:#000!important}
-.k1v3 :is(.btn.teal,.btn.or){background:var(--s3-orange);color:#000!important}
+.k1v3 .btn:hover{background:var(--s3-sky);color:var(--s3-navy)!important}
+.k1v3 :is(.btn.teal,.btn.or){background:var(--s3-sky);color:var(--s3-navy)!important}
 .k1v3 :is(.btn.teal,.btn.or):hover{background:var(--s3-black);color:#fff!important}
-.k1v3 .sec.black .btn{background:var(--s3-orange);color:#000!important}
-.k1v3 .sec.black .btn:hover{background:#fff;color:#000!important}
+.k1v3 .sec.black .btn{background:var(--s3-sky);color:var(--s3-navy)!important}
+.k1v3 .sec.black .btn:hover{background:#fff;color:var(--s3-navy)!important}
 .k1v3 .note{font-size:var(--s3-fs-fine);line-height:1.5;color:var(--s3-muted)}
-.k1v3 .sec.black .note{color:#cfcfcf!important}
+.k1v3 .sec.black .note{color:var(--s3-mist-ink)!important}
 .k1v3 .ok{margin:0 0 16px;padding:14px 18px;border-radius:4px;background:var(--k1-panel);color:var(--s3-ink);font-weight:700}
-.k1v3 .warn{margin:0 0 16px;padding:14px 18px;border-radius:4px;background:#fff3c4;color:#000!important;font-weight:700}
+.k1v3 .warn{margin:0 0 16px;padding:14px 18px;border-radius:4px;background:#fff3c4;color:var(--s3-navy)!important;font-weight:700}
 .k1v3 table{width:100%;border-collapse:collapse;font-size:var(--s3-fs-fine)}
 .k1v3 :is(th,td){padding:12px 10px;border-bottom:1px solid var(--s3-line);text-align:left;vertical-align:top;color:inherit}
 .k1v3 th{font:700 var(--s3-fs-label)/1.3 var(--s3-sans);letter-spacing:.12em;text-transform:uppercase}
 .k1v3 td .x{display:inline-flex;align-items:center;min-height:44px;padding:0;border:0;background:none;font:600 var(--s3-fs-label)/1 var(--s3-sans);text-decoration:underline;color:inherit;cursor:pointer}
 .k1v3 .calc-out{margin-top:12px;font:400 clamp(2.4rem,4vw,3.4rem)/1 var(--s3-serif)}
-.k1v3 .sec.black .calc-out{margin:18px 0 8px;font-size:clamp(2.8rem,6vw,4.6rem);color:var(--s3-orange);overflow-wrap:anywhere}
+.k1v3 .sec.black .calc-out{margin:18px 0 8px;font-size:clamp(2.8rem,6vw,4.6rem);color:var(--s3-sky);overflow-wrap:anywhere}
 .k1v3 .k1calc>.grid3 label{color:#fff}
 .k1v3 .k1calc .calc-panel{margin-top:20px;padding:clamp(18px,2.4vw,28px);border-radius:16px;background:#fff;color:var(--s3-ink)}
 .k1v3 .k1calc .calc-panel :is(h3,p,label,legend,summary,li){color:var(--s3-ink)}
 .k1v3 .k1calc .calc-panel .note{color:var(--s3-muted)!important}
-.k1v3 .k1calc .calc-panel :focus-visible{outline-color:#111}
+.k1v3 .k1calc .calc-panel :focus-visible{outline-color:var(--s3-navy)}
 .k1v3 .calc-pills,.k1v3 .calc-scen{display:flex;flex-wrap:wrap;gap:8px}
 .k1v3 .calc-scen{margin:0 0 12px}
 .k1v3 label.calc-pill{position:relative;display:inline-flex;margin:0;cursor:pointer}
@@ -126,7 +126,7 @@ body.woocommerce-account fieldset legend{font:400 var(--s3-fs-lede)/1.2 var(--s3
 .k1v3 :is(.calc-pill span,.calc-scen button){display:inline-flex;align-items:center;gap:8px;min-height:48px;padding:0 18px;border:0;border-radius:999px;background:#fff;color:var(--s3-ink);box-shadow:inset 0 0 0 1px #8f8a83;font:600 var(--s3-fs-ui)/1 var(--s3-sans);cursor:pointer}
 .k1v3 .calc-pill input:checked+span,.k1v3 .calc-scen button[aria-checked=true]{background:var(--s3-black);color:#fff!important;box-shadow:none}
 .k1v3 .calc-pill input:checked+span::before{content:"✓"}
-.k1v3 .calc-pill input:focus-visible+span,.k1v3 .calc-scen button:focus-visible{outline:3px solid #111;outline-offset:3px}
+.k1v3 .calc-pill input:focus-visible+span,.k1v3 .calc-scen button:focus-visible{outline:3px solid var(--s3-navy);outline-offset:3px}
 .k1v3 .c-custom .calc-scen button{opacity:.55}
 .k1v3 .calc-eq{margin:12px 0 0;font-size:var(--s3-fs-body)}
 .k1v3 .calc-eq:empty,.k1v3 .warnline:empty,.k1v3 .note:empty{display:none}
@@ -151,10 +151,10 @@ body.woocommerce-account fieldset legend{font:400 var(--s3-fs-lede)/1.2 var(--s3
 .k1v3 label.chk input{width:22px;height:22px;min-height:0;flex:none}
 .k1v3 details{margin:16px 0 0}
 .k1v3 summary{display:list-item;min-height:44px;padding:10px 0;font-weight:700;cursor:pointer}
-.k1v3 .chip{display:inline-flex;align-items:center;min-height:32px;margin:0 0 12px;padding:4px 14px;border-radius:999px;background:var(--s3-orange);color:#000;font:700 var(--s3-fs-label)/1 var(--s3-sans);letter-spacing:.1em;text-transform:uppercase}
+.k1v3 .chip{display:inline-flex;align-items:center;min-height:32px;margin:0 0 12px;padding:4px 14px;border-radius:999px;background:var(--s3-sky);color:var(--s3-navy);font:700 var(--s3-fs-label)/1 var(--s3-sans);letter-spacing:.1em;text-transform:uppercase}
 .k1v3 ul.milestones{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0;padding:0;list-style:none}
 .k1v3 ul.milestones li{margin:0;padding:6px 14px;border-radius:999px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.45);font:700 var(--s3-fs-label)/1.3 var(--s3-sans);color:#fff}
-.k1v3 ul.milestones li.hit{background:var(--s3-orange);box-shadow:none;color:#000}
+.k1v3 ul.milestones li.hit{background:var(--s3-sky);box-shadow:none;color:var(--s3-navy)}
 .k1v3 .k1tabs{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 20px}
 .k1v3 .k1tabs button{min-height:48px;padding:0 22px;border:0;border-radius:999px;background:#fff;color:var(--s3-ink);box-shadow:inset 0 0 0 1px #8f8a83;font:800 var(--s3-fs-label)/1 var(--s3-sans);letter-spacing:.12em;text-transform:uppercase;cursor:pointer}
 .k1v3 .k1tabs button[aria-selected=true]{background:var(--s3-black);color:#fff!important;box-shadow:none}
@@ -176,7 +176,7 @@ body.woocommerce-account fieldset legend{font:400 var(--s3-fs-lede)/1.2 var(--s3
 .k1c details.card>summary::-webkit-details-marker{display:none}
 .k1c details.card[open]>summary{padding-bottom:8px}
 .k1c .n{min-width:32px;font:400 var(--s3-fs-lede)/1 var(--s3-serif);color:var(--s3-ink)}
-.k1c .job{margin-left:auto;padding:4px 12px;border-radius:999px;background:var(--s3-orange);color:#000;font:700 var(--s3-fs-label)/1.3 var(--s3-sans);white-space:nowrap}
+.k1c .job{margin-left:auto;padding:4px 12px;border-radius:999px;background:var(--s3-sky);color:var(--s3-navy);font:700 var(--s3-fs-label)/1.3 var(--s3-sans);white-space:nowrap}
 .k1c .body{padding:0 20px 20px 66px;font-size:var(--s3-fs-body);line-height:1.55}
 .k1c .body p{margin:0 0 10px}
 .k1c .body b{font-weight:700}
@@ -193,12 +193,12 @@ body.woocommerce-account fieldset legend{font:400 var(--s3-fs-lede)/1.2 var(--s3
 .k1c .strip img{display:block;width:auto;max-width:none;height:180px;border-radius:8px}
 .k1c .acts{display:flex;flex-wrap:wrap;align-items:center;gap:10px 18px;margin:0 0 8px}
 .k1c a.btn{display:inline-flex;align-items:center;min-height:48px;padding:0 24px;border-radius:999px;background:var(--s3-black)!important;color:#fff!important;font:800 var(--s3-fs-label)/1 var(--s3-sans);letter-spacing:.12em;text-transform:uppercase;text-decoration:none!important}
-.k1c a.btn:hover{background:var(--s3-orange)!important;color:#000!important}
+.k1c a.btn:hover{background:var(--s3-sky)!important;color:var(--s3-navy)!important}
 .k1c :is(a.lnk,.src a){display:inline-flex;align-items:center;min-height:44px;font-weight:700;color:var(--s3-ink)!important;text-decoration:underline!important}
-.k1c :is(summary,a,button):focus-visible{outline:3px solid #111;outline-offset:3px}
+.k1c :is(summary,a,button):focus-visible{outline:3px solid var(--s3-navy);outline-offset:3px}
 /* the example-video button is a <button>, so it also needs to beat the v3.css theme layer */
 .k1a .k1c .ex button,body .k1c .ex button{display:inline-flex!important;align-items:center;min-height:48px!important;padding:0 22px!important;border:0!important;border-radius:999px!important;background:var(--s3-black)!important;color:#fff!important;font:800 var(--s3-fs-label)/1 var(--s3-sans)!important;letter-spacing:.1em!important;text-transform:uppercase!important}
-.k1a .k1c .ex button:hover,body .k1c .ex button:hover{background:var(--s3-orange)!important;color:#000!important}
+.k1a .k1c .ex button:hover,body .k1c .ex button:hover{background:var(--s3-sky)!important;color:var(--s3-navy)!important}
 @media(max-width:600px){.k1c .body{padding-left:20px}.k1c details.card>summary{flex-wrap:wrap}.k1c .job{margin-left:0}}
 
 /* ---- override layer: v3.css's theme layer styles every <button> (with !important) and every text input on pages that carry
@@ -208,10 +208,10 @@ body.woocommerce-account fieldset legend{font:400 var(--s3-fs-lede)/1.2 var(--s3
 .k1a.k1v3 :is(input:not([type]),input[type=text],input[type=number],input[type=email],input[type=tel],input[type=url],select,textarea){min-height:52px!important;padding:12px 16px!important;border:1px solid #8f8a83!important;border-radius:4px!important;background:#fff!important;color:var(--s3-ink)!important;font:var(--s3-fs-ui)/1.35 var(--s3-sans)!important}
 .k1a.k1v3 textarea{min-height:110px!important}
 .k1a.k1v3 .btn{display:inline-flex!important;min-height:52px!important;padding:0 30px!important;border:0!important;border-radius:999px!important;background:var(--s3-black)!important;color:#fff!important;font:800 var(--s3-fs-label)/1 var(--s3-sans)!important;letter-spacing:.14em!important;text-transform:uppercase!important;box-shadow:none!important}
-.k1a.k1v3 .btn:hover{background:var(--s3-orange)!important;color:#000!important}
-.k1a.k1v3 :is(.btn.teal,.btn.or),.k1a.k1v3 .sec.black .btn{background:var(--s3-orange)!important;color:#000!important}
+.k1a.k1v3 .btn:hover{background:var(--s3-sky)!important;color:var(--s3-navy)!important}
+.k1a.k1v3 :is(.btn.teal,.btn.or),.k1a.k1v3 .sec.black .btn{background:var(--s3-sky)!important;color:var(--s3-navy)!important}
 .k1a.k1v3 :is(.btn.teal,.btn.or):hover{background:var(--s3-black)!important;color:#fff!important}
-.k1a.k1v3 .sec.black .btn:hover{background:#fff!important;color:#000!important}
+.k1a.k1v3 .sec.black .btn:hover{background:#fff!important;color:var(--s3-navy)!important}
 .k1a.k1v3 :is(.calc-scen button,.k1tabs button){display:inline-flex!important;align-items:center;min-height:48px!important;padding:0 20px!important;border:0!important;border-radius:999px!important;background:#fff!important;color:var(--s3-ink)!important;box-shadow:inset 0 0 0 1px #8f8a83!important;text-decoration:none!important}
 .k1a.k1v3 .calc-scen button{font:600 var(--s3-fs-ui)/1 var(--s3-sans)!important;letter-spacing:0!important;text-transform:none!important}
 .k1a.k1v3 .k1tabs button{font:800 var(--s3-fs-label)/1 var(--s3-sans)!important;letter-spacing:.12em!important;text-transform:uppercase!important}

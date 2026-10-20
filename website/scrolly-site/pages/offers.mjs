@@ -132,8 +132,8 @@ const TIER_CSS = `
 .s3 .cl-hero .s3-wrap{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);align-items:center;gap:clamp(24px,3vw,56px)}
 .s3 .cl-hero h1{font-size:clamp(3rem,5.2vw,5.8rem)!important;line-height:.95!important;letter-spacing:-.045em!important}
 .s3 .cl-hero h1 span{display:block}
-/* Orange headings: large text only. #e8522b is 3.35:1 on cream and 3.11:1 on the peach band, passing AA for large text (3:1). */
-.s3 .cl-hero h1 em,.s3 .cl-end h2{font-style:normal;color:var(--s3-or-text)!important}
+/* Rebrand 2026-10-19: the hero question is Georgia italic in navy. It is too long for the hot-pink marker (.or in v3.css), which is for one or two words. */
+.s3 .cl-hero h1 em{font-style:italic;background:none;padding:0}
 .s3 .cl-acts{display:flex;flex-wrap:wrap;gap:14px;margin-top:38px}
 .s3 .cl-slot{display:flex;align-items:center;justify-content:center;border-radius:16px;background:repeating-linear-gradient(45deg,#ebe5da 0 12px,#e4ddd0 12px 24px);color:var(--s3-muted);font:700 var(--s3-fs-label)/1.3 var(--s3-sans);letter-spacing:.08em;text-transform:uppercase;text-align:center;padding:16px}
 .s3 .cl-slot.hero{aspect-ratio:5/4}
@@ -158,9 +158,9 @@ const TIER_CSS = `
 .s3 .cl-prod .pic.full img{object-fit:cover}
 .s3 .cl-prod p{flex:1;margin:0 0 12px;font-size:var(--s3-fs-label);line-height:1.4;color:var(--s3-muted)}
 .s3 .cl-tag{align-self:flex-start;max-width:100%;padding:3px 8px;border:1px solid var(--s3-ink);border-radius:999px;font:700 var(--s3-fs-label)/1.2 var(--s3-sans);letter-spacing:.06em;text-transform:uppercase;white-space:nowrap;letter-spacing:.02em}
-.s3 .cl-tag.ch{background:var(--s3-orange);border-color:var(--s3-orange);color:#000}
+.s3 .cl-tag.ch{background:var(--s3-sky);border-color:var(--s3-sky);color:var(--s3-navy)}
 /* Mini Income Goal calculator (same math as /calculators/income-goal/) */
-.s3 .cl-calc .panel{background:#f8ece2;padding:clamp(20px,2.6vw,40px)}
+.s3 .cl-calc .panel{background:var(--s3-mist);padding:clamp(20px,2.6vw,40px)}
 .s3 .cl-calc h2{font-size:var(--s3-fs-h3)!important;line-height:1.1!important}
 .s3 .cl-calc .s3-lede{margin-top:8px}
 .s3 .cl-form{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px 20px;align-items:start;margin-top:20px}
@@ -168,12 +168,12 @@ const TIER_CSS = `
 .s3 .cl-form .s3-pres{gap:4px}.s3 .cl-form .s3-pre{padding:8px 2px}
 .s3 .cl-form label{font-size:var(--s3-fs-ui)!important;letter-spacing:.01em!important}
 .s3 .cl-in{position:relative}
-.s3 .cl-in input{min-height:52px;background:#fff;border-color:#cdb6a3;font:400 var(--s3-fs-num)/1.2 var(--s3-serif)}
+.s3 .cl-in input{min-height:52px;background:#fff;border-color:#8f8a83;font:400 var(--s3-fs-num)/1.2 var(--s3-serif)}
 .s3 .cl-in>span{position:absolute;top:0;bottom:0;display:flex;align-items:center;font:400 var(--s3-fs-num) var(--s3-serif);color:var(--s3-muted);pointer-events:none}
 .s3 .cl-in.pre>span{left:16px}.s3 .cl-in.pre input{padding-left:38px}
 .s3 .cl-in.suf>span{right:18px}.s3 .cl-in.suf input{padding-right:50px}
 .s3 .cl-form .s3-btn{min-height:52px}
-.s3 .cl-res{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:20px;padding-top:18px;border-top:1px solid #e2c9b6}
+.s3 .cl-res{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:20px;padding-top:18px;border-top:1px solid #b8c1d6}
 .s3 .cl-res>div{display:flex;align-items:baseline;gap:12px}
 .s3 .cl-res .v{font:400 clamp(2.2rem,3.4vw,3rem)/1 var(--s3-serif)}
 .s3 .cl-calc .s3-fine{margin-top:12px}
@@ -201,29 +201,30 @@ const TIER_CSS = `
 .s3 .cl-pick .s3-fine{margin-top:16px;text-align:center}
 /* Earned shirt */
 .s3 .cl-earned .s3-split{grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr)}
+/* Earned band: navy, with the page's one hot-pink italic word (less girly tone, 2026-10-20) */
 .s3 .cl-earned p{margin-top:20px}
 .s3 .cl-earned .s3-btn{margin-top:28px}
 .s3 .cl-tees{display:flex;align-items:center;gap:clamp(4px,1vw,16px)}
-.s3 .cl-tees img{width:50%;mix-blend-mode:multiply}
+.s3 .cl-tees img{width:50%;border-radius:6px}
 /* FAQ in two columns */
 .s3 .cl-faq .s3-faq{display:grid;grid-template-columns:1fr 1fr;gap:0 48px;margin-top:20px}
 .s3 .cl-faq .s3-faq>div details:first-child{border-top:1px solid var(--s3-line)}
 .s3 .cl-faq a{text-decoration:underline;text-underline-offset:3px}
 .s3 .cl-faq .shot{width:100%;max-width:520px;margin:16px 0;border-radius:6px}
 /* End band: same format as the calculators' "Numbers aren't a plan" band */
-.s3 .cl-end{background:#f7e9de}
+.s3 .cl-end{background:var(--s3-mist)}
 .s3 .cl-end .s3-split{align-items:center}
 .s3 .cl-end h2{margin-bottom:18px}
 .s3 .cl-end .s3-lede{margin-bottom:28px}
 .s3 .cl-end .s3-btn{white-space:nowrap}
 .s3 .cl-opts{display:grid;grid-template-columns:1fr 1fr;list-style:none;margin:0;padding:0}
-.s3 .cl-opts li{padding:4px clamp(16px,2vw,32px);border-left:1px solid #e2c9b6}
+.s3 .cl-opts li{padding:4px clamp(16px,2vw,32px);border-left:1px solid #b8c1d6}
 .s3 .cl-opts .amt{font:400 2.75rem/1 var(--s3-serif)}
 .s3 .cl-opts li{display:flex;flex-direction:column}
 .s3 .cl-opts li p{flex:1}
 .s3 .cl-opts .s3-link{align-self:flex-start;white-space:nowrap;letter-spacing:.1em}
 .s3 .cl-opts .amt small{margin-left:8px;font:700 var(--s3-fs-label)/1 var(--s3-sans);letter-spacing:.2em;text-transform:uppercase}
-.s3 .cl-opts p{margin:12px 0 8px;font:var(--s3-fs-body-serif)/1.5 var(--s3-serif)}
+.s3 .cl-opts p{margin:12px 0 8px;font:var(--s3-fs-body-serif)/1.5 var(--s3-sans)}
 /* two columns until the rate pills fit four across (they need about 290px each) */
 @media(max-width:1439px){.s3 .cl-form{grid-template-columns:1fr 1fr}.s3 .cl-form .s3-btn{grid-column:1/-1;justify-self:start}}
 @media(max-width:900px){
@@ -231,7 +232,7 @@ const TIER_CSS = `
  .s3 .cl-hero .tiger{width:112%;margin:8px -12% 0 0}
  .s3 .cl-res{grid-template-columns:1fr;gap:10px}
  .s3 .cl-faq .s3-faq>div+div details:first-child{border-top:0}
- .s3 .cl-opts{grid-template-columns:1fr}.s3 .cl-opts li{padding:20px 0;border-left:0;border-top:1px solid #e2c9b6}
+ .s3 .cl-opts{grid-template-columns:1fr}.s3 .cl-opts li{padding:20px 0;border-left:0;border-top:1px solid #b8c1d6}
 }
 @media(max-width:560px){.s3 .cl-form{grid-template-columns:1fr}.s3 .cl-prod{flex-basis:72%}}
 `;
@@ -310,9 +311,9 @@ ${VIDEO[tk] ? `<section class="cl-video cl-sec"><div class="s3-wrap">
  </div>
  <p class="s3-fine">${open ? 'One-time purchase, no subscription. ' : ''}Results not guaranteed. Revenue before costs.</p>
 </div></section>
-<section class="cl-earned cl-sec"><div class="s3-wrap s3-split">
+<section class="cl-earned cl-sec s3-dark"><div class="s3-wrap s3-split">
  <div>
-  <h2 class="s3-h2">Some things can’t be bought. They’re earned.</h2>
+  <h2 class="s3-h2">Some things can’t be bought. <em class="or">They’re earned.</em></h2>
   <p class="s3-lede">${c.caption}</p>
   ${joinChal()}
  </div>
