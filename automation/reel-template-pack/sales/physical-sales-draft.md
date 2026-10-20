@@ -40,6 +40,18 @@ phone). The carousel stands apart after a big orange "+" (orange pill on the phy
 Halloween). FAQ: [SOUND PICKS] removed; "Do I need CapCut Pro or Canva Pro? No" waits on the CapCut test of all 25
 to confirm no Pro features.
 
+## Round 2026-10-20 (her notes)
+
+- "Every template comes with": The CapCut project, A shot list, A sample caption (the caption in the carousel's last
+  slide notes), + A matching carousel. Installer and phone version removed from the list.
+- New "Make it yours" band (peach): Every word, Fonts, Text colours, Doodle colours, Background, Your clips, Your
+  audio. Line: "Change it all in CapCut, on your phone or computer." [CONFIRM phone editing from the CapCut test.]
+  Only true once the editable rebuilds (build/editable.py) are in the shipped zips.
+- How it works: Download, Film, Edit, Post.
+- No-audio wording: never by the price or in the hero (Mercedes: it hurts conversions). It shows as "Your audio" in
+  Make it yours, and plainly in the FAQ.
+- FAQ: "Can I do it all on my phone?" waits on the CapCut test; the phone-kit answer is gone.
+
 ## Open decisions (Mercedes)
 
 | Decision | State |

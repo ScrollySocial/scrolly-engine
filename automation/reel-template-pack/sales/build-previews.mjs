@@ -29,7 +29,7 @@ mark.ph{background:#ffd9c9;color:var(--s3-ink);padding:0 4px;border-radius:3px}
 .s3-dark mark.ph{background:#5a2412;color:#fff}
 .s3-btn mark.ph{background:#fff;color:#000}
 .amt{font:400 var(--s3-fs-h3)/1 var(--s3-serif)}
-.noaudio{margin-top:6px;font-weight:700}
+.audio-note{margin-top:28px;text-align:center}
 .amt del{font-size:.62em;color:var(--s3-muted);margin-right:.35em}
 .s3-dark .amt del{color:#a9a39b}
 .buy{display:flex;flex-wrap:wrap;align-items:center;gap:16px 28px;margin:32px 0 14px}
@@ -57,7 +57,7 @@ mark.ph{background:#ffd9c9;color:var(--s3-ink);padding:0 4px;border-radius:3px}
 .screen p{font:var(--s3-fs-fine)/1.4 var(--s3-sans);color:#d8d3cc;max-width:30em}
 .stand{width:18%;height:56px;margin:0 auto;background:linear-gradient(#3a3a3a,#262626);clip-path:polygon(22% 0,78% 0,100% 100%,0 100%)}
 .base{width:34%;height:12px;margin:0 auto;border-radius:6px;background:#333}
-.steps{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:28px;padding:0;margin:56px 0 0;list-style:none;text-align:center}
+.steps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:28px;padding:0;margin:56px 0 0;list-style:none;text-align:center}
 .steps svg{width:56px;height:56px;margin:0 auto 14px;display:block;stroke:var(--s3-orange);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 .steps b{display:block;font:400 var(--s3-fs-title)/1.15 var(--s3-serif);margin-bottom:6px}
 .steps span{color:#d8d3cc}
@@ -96,6 +96,12 @@ details.notes>summary{cursor:pointer;font:700 var(--s3-fs-label)/1.4 var(--s3-sa
 .rc-vis .slides img:nth-child(1){transform:rotate(-4deg);z-index:3}.rc-vis .slides img:nth-child(2){transform:rotate(1deg) translateY(10px);z-index:2}.rc-vis .slides img:nth-child(3){transform:rotate(5deg);z-index:1}
 @media(max-width:1000px){.rc-row{flex-direction:column;align-items:flex-start;gap:24px}}
 @media(max-width:560px){.rc-vis{gap:12px}.rc-vis .phone{width:120px}.rc-vis .slides img{width:110px}.rc-vis .slides img+img{margin-left:-58px}}
+.edit-grid{list-style:none;padding:0;margin:32px 0 0;display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:20px;text-align:center}
+.edit-grid svg{width:52px;height:52px;display:block;margin:0 auto 10px;stroke:var(--s3-ink);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.edit-grid b{font:400 var(--s3-fs-title)/1.15 var(--s3-serif)}
+@media(max-width:900px){.edit-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media(max-width:560px){.edit-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:480px){.edit-grid b{font-size:1.2rem}}
 .notes{border-top:1px solid var(--s3-line)}
 .notes[open]>div{margin-top:24px}
 .notes h2{margin-bottom:20px}
@@ -124,10 +130,7 @@ const ROT = [-4, 3, -2, 4, -3, 2];
 const INC_ICONS = [
   '<rect x="5" y="10" width="38" height="28" rx="3"/><path d="M5 17h38M5 31h38M12 10v7M20 10v7M28 10v7M36 10v7M12 31v7M20 31v7M28 31v7M36 31v7"/><path d="M21 20l7 4-7 4z"/>',
   '<rect x="10" y="7" width="28" height="36" rx="3"/><path d="M18 7v-1h12v1"/><path d="M16 18h3M23 18h11M16 26h3M23 26h11M16 34h3M23 34h11"/>',
-  '<path d="M24 6v24M15 21l9 9 9-9"/><path d="M8 32v6a3 3 0 0 0 3 3h26a3 3 0 0 0 3-3v-6"/>',
-  '<rect x="6" y="11" width="36" height="26" rx="2"/><path d="M12 19h24M12 25h24M12 31h14"/>',
-  '<rect x="14" y="4" width="20" height="40" rx="4"/><path d="M21 9h6"/><circle cx="24" cy="38" r="1.5"/>',
-  '<rect x="16" y="10" width="24" height="30" rx="2"/><path d="M11 14v24a2 2 0 0 0 2 2M6 18v18"/><path d="M22 30l5-6 4 4 3-3 4 5"/>',
+  '<path d="M8 10h32a3 3 0 0 1 3 3v17a3 3 0 0 1-3 3H22l-9 8v-8H8a3 3 0 0 1-3-3V13a3 3 0 0 1 3-3z"/><path d="M13 19h22M13 25h14"/>',
   '<rect x="12" y="8" width="24" height="30" rx="3"/><path d="M7 12v22M41 12v22"/><circle cx="19" cy="43" r="1.4"/><circle cx="24" cy="43" r="1.4"/><circle cx="29" cy="43" r="1.4"/>',
 ];
 const includes = (d) => d.brandIncludes ? `<section class="s3-sec tight incl-b"><div class="s3-wrap"><h2 class="s3-h2">Every template comes with</h2>
@@ -139,6 +142,18 @@ const reelCarousel = (d) => `<section class="s3-sec tight rc"><div class="s3-wra
   <p class="s3-lede" style="margin-top:14px">Post the Reel, then its matching carousel.</p></div>
   <div class="rc-vis" aria-hidden="true"><div class="phone"><img src="${img(d.rc.phone)}" alt=""></div>
   <div class="slides">${d.rc.slides.map((f) => `<img src="${img(f)}" alt="">`).join('')}</div></div></div></section>`;
+const EDITS = [
+  ['<path d="M8 40L20 8h4l12 32M12 30h20"/>', 'Every word'],
+  ['<path d="M6 40h14M13 40L22 10l9 30M35 40h7M30 26h10"/>', 'Fonts'],
+  ['<circle cx="24" cy="24" r="17"/><circle cx="17" cy="18" r="3"/><circle cx="29" cy="15" r="3"/><circle cx="33" cy="27" r="3"/><path d="M22 41c-3-4 1-7 5-6"/>', 'Text colours'],
+  ['<path d="M24 6l4 12h12l-10 8 4 13-10-8-10 8 4-13-10-8h12z"/>', 'Doodle colours'],
+  ['<rect x="6" y="8" width="36" height="32" rx="3"/><path d="M6 32l10-10 8 8 6-6 12 12"/>', 'Background'],
+  ['<rect x="15" y="5" width="18" height="38" rx="4"/><path d="M21 19l8 5-8 5z"/>', 'Your clips'],
+  ['<path d="M18 36V10l22-5v26"/><circle cx="13" cy="36" r="5"/><circle cx="35" cy="31" r="5"/>', 'Your audio'],
+];
+const editSection = () => `<section class="s3-sec tight peach edits"><div class="s3-wrap"><h2 class="s3-h2">Make it yours</h2>
+  <p class="s3-lede" style="margin-top:12px">Change it all in CapCut, on your phone or computer. ${ph('[CONFIRM: phone editing, from the CapCut test]')}</p>
+  <ul class="edit-grid">${EDITS.map(([icon, b]) => `<li><svg viewBox="0 0 48 48" aria-hidden="true">${icon}</svg><b>${esc(b)}</b></li>`).join('')}</ul></div></section>`;
 const faq = (d) => `<section class="s3-sec"><div class="s3-read"><h2 class="s3-h2">Questions</h2><div class="s3-faq">${d.faq.map(([q, a]) => `<details><summary>${esc(q)}</summary><div>${ph(a)}</div></details>`).join('')}</div></div></section>`;
 const notes = (d) => `<details class="s3-sec notes"><summary class="s3-wrap">Review notes for Mercedes (not on the page): headlines, listing, demo footage</summary><div class="s3-wrap">
   <h3 class="s3-h3">Other headline options</h3><ul>${d.headlines.map((h) => `<li>${esc(h)}</li>`).join('')}</ul>
@@ -149,23 +164,19 @@ const notes = (d) => `<details class="s3-sec notes"><summary class="s3-wrap">Rev
 
 // icon, step, one short line (Mercedes: "a lot of text there", icons instead of numbers)
 const STEPS = [
-  ['<rect x="15" y="5" width="18" height="38" rx="4"/><circle cx="24" cy="37" r="1.6"/><circle cx="24" cy="19" r="5"/>', 'Film', 'Follow the shot list on your phone.'],
-  ['<path d="M5 14v24a3 3 0 0 0 3 3h32a3 3 0 0 0 3-3V18a3 3 0 0 0-3-3H22l-4-5H8a3 3 0 0 0-3 3z"/><path d="M24 22v12M18 28l6 6 6-6"/>', 'Drop in', 'Put your clips in the folder.'],
-  ['<path d="M14 6l20 14-9 2 6 12-4 2-6-12-7 6z"/>', 'Double-click', 'The installer adds your clips.'],
-  ['<path d="M10 12V8h28v4M24 8v32M18 40h12"/>', 'Type', 'Your words over the [brackets].'],
+  ['<path d="M24 6v24M15 21l9 9 9-9"/><path d="M8 32v6a3 3 0 0 0 3 3h26a3 3 0 0 0 3-3v-6"/>', 'Download', 'Get the template.'],
+  ['<rect x="15" y="5" width="18" height="38" rx="4"/><circle cx="24" cy="37" r="1.6"/><circle cx="24" cy="19" r="5"/>', 'Film', 'Follow the shot list.'],
+  ['<path d="M30 9l9 9-21 21H9v-9z"/><path d="M26 13l9 9"/>', 'Edit', 'Make it yours in CapCut.'],
   ['<path d="M42 6L20 28M42 6l-14 36-8-14-14-8z"/>', 'Post', 'Add a sound in Instagram.'],
 ];
 const INCLUDES = (projectNote) => [
   ['The CapCut project', projectNote],
   ['A shot list', 'Every clip to film, in order.'],
-  ['An installer', 'It adds your clips for you.'],
-  ['Words to type', 'Every line to type over the [brackets].'],
-  ['A phone version', 'For CapCut on your phone.'],
+  ['A sample caption', 'Ready to edit and post.'],
   ['A matching carousel', 'Same story as slides. Edit free in Canva.'],
 ];
 const FAQ = (fonts) => [
-  ['Do I need CapCut on a computer?', 'For the full template, yes: CapCut for computer, free.'],
-  ['Can I use it on my phone?', 'Yes. The phone kit has the shot guide, shot list and every graphic.'],
+  ['Can I do it all on my phone?', '[CONFIRM after the CapCut test: what needs a computer (install) and what works on a phone (edit, post)]'],
   ['How do I edit the carousel?', 'Open its Canva link (a free account works), swap the photos and type over the [brackets].'],
   ['Is music included?', 'No. The Reels have no audio: no music and no sound effects. Add a sound in Instagram after you upload, so your Reel never gets muted.'],
   ['Do I need to install fonts?', fonts],
@@ -260,7 +271,7 @@ function halloweenPage(d) {
     <h1 class="s3-display">${esc(d.headline)}</h1>
     <p class="s3-lede" style="margin-top:28px">${esc(d.sub)}</p>
     <div class="buy">${price(d)}<a class="s3-btn" href="#buy">${esc(d.button)}</a></div>
-    <p class="s3-fine">${ph(d.priceLine)}</p><p class="s3-fine noaudio">No audio included: add a sound in Instagram.</p>
+    <p class="s3-fine">${ph(d.priceLine)}</p>
     <div class="phones">${ph5}</div>
   </div></section>
 <section class="s3-sec reels"><img class="dd crown" src="${img('crown.webp')}" alt=""><img class="dd burst" src="${img('burst.webp')}" alt=""><img class="dd heart" src="${img('heart.webp')}" alt=""><div class="s3-wrap">
@@ -268,6 +279,7 @@ function halloweenPage(d) {
   <div class="tpls">${tpls}</div></div></section>
 ${includes(d)}
 ${reelCarousel(d)}
+${editSection()}
 ${howItWorks(d)}
 <section class="s3-sec who-h"><img class="branch" src="${img('branch.webp')}" alt=""><img class="hang h1" src="${img('bat.png')}" alt=""><img class="hang h2 b2" src="${img('bat.png')}" alt="">
   <div class="s3-wrap s3-split"><h2 class="s3-h2">Who it's for</h2><div><p class="s3-lede">${esc(d.who)}</p>
@@ -277,7 +289,7 @@ ${howItWorks(d)}
 <section class="s3-sec peach cta" id="buy"><img class="dd burst" src="${img('burst.webp')}" alt=""><img class="dd heart" src="${img('heart.webp')}" alt="">
   <div class="s3-read"><h2 class="s3-h2">${esc(d.ctaHead)}</h2>
   <div class="buy">${price(d)}<a class="s3-btn" href="#buy">${esc(d.button)}</a></div>
-  <p class="s3-fine">${ph(d.ctaLine)}</p><p class="s3-fine noaudio">No audio included: add a sound in Instagram.</p>
+  <p class="s3-fine">${ph(d.ctaLine)}</p>
   <p class="s3-fine">${ph('[REEL EDITOR UPSELL: one line once it has a name, link and launch date]')}</p></div></section>
 ${notes(d)}`;
   return shell(d, HCSS, body);
@@ -375,7 +387,7 @@ function physicalPage(d) {
   <h1 class="s3-display or head-p"><span class="l1">${esc(d.headline.split(': ')[0])}:</span> <span class="done">${esc(d.headline.split(': ')[1])}</span></h1>
   <p class="s3-lede" style="margin-top:28px">${esc(d.sub)}</p>
   <div class="buy">${price(d)}<a class="s3-btn" href="#buy">${esc(d.button)}</a></div>
-  <p class="s3-fine">${ph(d.priceLine)}</p><p class="s3-fine noaudio">No audio included: add a sound in Instagram.</p>
+  <p class="s3-fine">${ph(d.priceLine)}</p>
 </div></section>
 <section class="s3-sec reels-p"><div class="s3-wrap">
   <h2 class="s3-h2">${esc(d.getTitle)}</h2><p class="s3-lede" style="margin-top:20px">${esc(d.getLede)}</p>
@@ -384,6 +396,7 @@ function physicalPage(d) {
   <button type="button" class="arrow next" data-scroll="1" aria-label="Scroll forward">&#8594;</button></div></div></section>
 ${includes(d)}
 ${reelCarousel(d)}
+${editSection()}
 ${howItWorks(d)}
 <section class="s3-sec tight peach who-p"><div class="s3-wrap who-row"><div class="who-text"><h2 class="s3-h2">Who it's for</h2><p class="s3-lede" style="margin-top:14px">${esc(d.who)}</p>
   <div class="labels">${d.whoTags.map((t, i) => `<span class="dymo" style="--r:${[-2, 1.5, -1, 2][i % 4]}deg">${esc(t)}</span>`).join('')}</div></div><div class="fan">${d.whoPhotos.map(([f, label]) => `<div class="phone">${fs.existsSync(path.join(here, 'img', f)) ? (f.endsWith('.mp4') ? `<video src="${img(f)}" autoplay muted loop playsinline aria-label="${esc(label)}"></video>` : `<img src="${img(f)}" alt="${esc(label)}">`) : `<span class="todo">Photo to make:<b>${esc(label)}</b></span>`}</div>`).join('')}</div></div></section>
@@ -392,7 +405,7 @@ ${howItWorks(d)}
 <section class="s3-sec peach cta-p" id="buy"><div class="s3-wrap">
   <h2 class="s3-h2">${esc(d.ctaHead)}</h2>
   <div class="buy">${price(d)}<a class="s3-btn" href="#buy">${esc(d.button)}</a></div>
-  <p class="s3-fine">${ph(d.ctaLine)}</p><p class="s3-fine noaudio">No audio included: add a sound in Instagram.</p>
+  <p class="s3-fine">${ph(d.ctaLine)}</p>
   <p class="s3-fine">${ph('[REEL EDITOR UPSELL: one line once it has a name, link and launch date]')}</p></div></section>
 ${notes(d)}
 <script>${SCROLL_JS}</script>`;
