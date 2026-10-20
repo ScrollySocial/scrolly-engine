@@ -663,3 +663,4 @@ How (build/editable.py, prototype build/templates/t24.py; `make.py` uses it for 
   from its prototype draft, so every boxed word in the flipbook builds lost its box. editable.py sets the flag per text.
 - **Footage (her question, 2026-10-20):** her CapCut test copies are filled with her own July clips (install_test.py);
   the buyer's template holds numbered placeholder CLIP cards. No stock or green-screen footage is used anywhere.
+- **Placeholder CLIP cards approved** ("Oh that is awesome! perfect", 2026-10-20, after seeing "24 BUYER VIEW Make it last").
