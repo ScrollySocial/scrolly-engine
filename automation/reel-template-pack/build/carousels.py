@@ -19,11 +19,13 @@ from carousel_kit import doodle, vec
 from motion_b2 import Clip
 
 DIRS = {'01': '01-one-product-three-ways', '02': '02-pack-an-order', '03': '03-before-and-after', '04': '04-a-or-b', '05': '05-details',
-        '06': '06-start-to-finish', '07': '07-how-big-is-it', '13': '13-how-to-use-it', '09': '09-who-its-for', '08': '08-a-real-customer-question', '10': '10-three-people-to-gift-it-to', '12': '12-your-order-just-arrived',
+        '06': '06-start-to-finish', '07': '07-how-big-is-it', '13': '13-how-to-use-it', '11': '11-a-day-with-it', '14': '14-the-annoying-moment',
+        '15': '15-new-drop-reveal', '16': '16-what-it-feels-like', '09': '09-who-its-for', '08': '08-a-real-customer-question', '10': '10-three-people-to-gift-it-to', '12': '12-your-order-just-arrived',
         '20': '20-what-buyers-said', '22': '22-put-it-to-the-test', '23': '23-every-option-in-10-seconds',
         'h2': 'halloween/h2-batty-about', 'h3': 'halloween/h3-caught-in-our-web', 'h5': 'halloween/h5-trick-or-treat', 'h6': 'halloween/h6-once-in-a-blood-moon'}
 TITLES = {'01': 'One product three ways', '02': 'Pack an order with me', '03': 'Before and after', '04': 'A or B', '05': 'Details',
-          '06': 'Start to finish', '07': 'How big is it really', '13': 'How to use it in 3 steps', '09': 'Who its for', '08': 'A real customer question', '10': 'Three people to gift it to', '12': 'Your order just arrived',
+          '06': 'Start to finish', '07': 'How big is it really', '13': 'How to use it in 3 steps', '11': 'A day with it', '14': 'The annoying moment',
+          '15': 'New drop reveal', '16': 'What it feels like', '09': 'Who its for', '08': 'A real customer question', '10': 'Three people to gift it to', '12': 'Your order just arrived',
           '20': 'What buyers said', '22': 'Put it to the test', '23': 'Every option in 10 seconds',
           'h2': "Things I'm batty about", 'h3': 'Caught in our web', 'h5': 'Trick or treat', 'h6': 'Once in a blood moon'}
 HOOK2 = 'Second hook: Instagram often shows a carousel starting on slide 2, so this one works as a cover on its own. '
@@ -1112,7 +1114,235 @@ def c13():
         text('[Product name]', 56, (780, 1300), -3, box=INK, fg=WHITE)])
     return s
 
-RECIPES = {'01': c01, '02': c02, '03': c03, '04': c04, '05': c05, '06': c06, '07': c07, '13': c13, '09': c09, '08': c08, '10': c10, '12': c12, '20': c20, '22': c22, '23': c23, 'h2': ch2, 'h3': ch3, 'h5': ch5, 'h6': ch6}
+# ======================================================================================================================
+# Batch B (2026-10-19): 11, 14, 15, 16, each in its Reel's world (story7 setup_11 / setup_15, motion_14, motion_16).
+# ======================================================================================================================
+PINS_DIR = Path(__file__).resolve().parent.parent / 'assets' / 'props'
+
+def pin_art(d=60, col='black'): return K.C.shadow(S.fitw(Image.open(PINS_DIR / f'pin-head-{col}.png').convert('RGBA'), d), (5, 9), 6, 100)
+
+def tv_art(w):
+    """The real walnut TV with an empty screen: (art, screen centre offset, screen size) for a photo slot in it."""
+    tv = Image.open(P.HQ / 'Vintage Walnut Rabbit-Ear Television.png').convert('RGBA'); k = w / tv.width
+    x0, y0, x1, y1 = [int(v * k) for v in P.TV_SCREEN]; ins = int(14 * k * 2)
+    art_ = P.tv_with(Image.new('RGB', (100, 75), (20, 20, 22)), w); pad = (art_.width - w) / 2
+    sw, sh = x1 - x0 - 2 * ins, y1 - y0 - 2 * ins
+    return art_, (pad + x0 + ins + sw / 2 - art_.width / 2, pad + y0 + ins + sh / 2 - art_.height / 2), (sw, sh)
+
+def c11():
+    PK, DEEP = PINK, S7.DEEP
+    c = {k: Clip(n, t, 6.0) for k, (n, t) in dict(morning=('IMG_1469', 1.0), midday=('IMG_1381', 1.0), after=('IMG_1391', 1.0), night=('IMG_1456', 1.0), end=('IMG_1388', 0.5)).items()}
+    stage = K.fit_bg(S.raw('images', 'Crumpled pale blue tissue texture-8.png'))
+    night = K.fit_bg(S7.toned('images', 'Crumpled pale blue tissue texture-8.png', (12, 20, 44), (48, 64, 104)))
+    clock = lambda w: K.thing('Slender Cream Twin-Bell Alarm Clock-158.png', w, 'dots', BLUE, scale=0.4, strength=0.8)
+    mug = lambda w: K.thing('Warm white ceramic coffee mug-140.png', w, 'smalldots', PK, scale=0.4, strength=0.85)
+    glass = lambda w: K.thing('Classic wooden hourglass with flowing sand-238.png', w, 'stripes', PK, scale=0.35, strength=0.5)
+    candle = lambda w: K.thing('Glowing Ivory Candle in Glass Jar-96.png', w, 'smalldots', PK, scale=0.35, strength=0.35)
+    rainbow = lambda w: P.die_cut(P.raw_cut('Muted retro rainbow arch-2.png', w), 10)
+    st = P.raw_cut('Gold foil star sticker-95.png', 120); star = lambda r: K.C.shadow(st.rotate(r, expand=True), (4, 8), 6, 90)
+    watch, wscr = K.device_art(560, S7.WATCH); s = []
+    S2(s, stage, 'Hook. Swap in a photo of your morning with it. Edit [product] and the time.', [
+        photo('Morning (fills the page)', (540, 720), (CW, CH), 0, c['morning'].at(1.0, (CW, CH))),
+        art(doodle('burst', 3, 560, PK), (830, 1120), 0, 'burst'), art(clock(300), (830, 1130), -6, 'alarm clock'),
+        text('a day with my\n[product]', 66, (330, 230), -2, align='left'),
+        art(word('morning', 170, WHITE, edge=DEEP, italic_last=False), (470, 420), -2, 'morning'),
+        text('[7am]', 66, (330, 580), 2, box=BLUE),
+        guide(FIRST_GUIDE)])
+    S2(s, stage, HOOK2 + 'No photo needed. Edit both [bracket] lines.', [
+        art(rainbow(620), (540, 780), 0, 'rainbow'),
+        art(clock(250), (220, 1080), -8, 'alarm clock'), art(mug(270), (440, 1130), 4, 'mug'),
+        art(glass(200), (680, 1110), -4, 'hourglass'), art(candle(220), (880, 1100), 6, 'candle'),
+        text('[what my day\nreally looks like]', 84, (620, 230), -2, align='right'),
+        text('[7am to 9pm]', 62, (300, 1340), -2, align='left'),
+        art(doodle('arrow', 0, 170, DEEP), (700, 1335), -2, 'arrow')])
+    S2(s, stage, 'Midday: swap in its photo. Edit the time.', [
+        art(K.torn_card((780, 940), 4), (540, 800), -2, 'torn paper'),
+        photo('Midday', (540, 800), (780, 940), -2, c['midday'].at(1.0, (780, 940))),
+        art(rainbow(300), (860, 330), 8, 'rainbow'),
+        text('midday', 96, (300, 230), -3, box=BLUE, fg=DEEP, align='left'),
+        text('[12pm]', 66, (300, 1340), 2, box=WHITE)])
+    wc = (600, 820)
+    S2(s, stage, 'Afternoon: swap in a photo for the watch screen. Edit the time.', [
+        art(watch, wc, -6, 'smartwatch'), dict(K.on_screen(wc, watch, wscr, c['after'].at(1.0, (400, 400)), 'Afternoon (watch screen)'), rot=-6),
+        art(glass(260), (200, 1150), 10, 'hourglass'),
+        text('afternoon', 92, (360, 220), -3, box=WHITE, fg=DEEP, align='left'),
+        text('[4pm]', 66, (840, 1320), 2, box=BLUE)])
+    S2(s, night, 'Night: swap in its photo. Edit the time.', [
+        art(K.round_card(600), (540, 820), 0, 'round paper'),
+        photo('Night', (540, 820), (600, 600), 0, c['night'].at(1.0, (600, 600)), shape='circle'),
+        art(word('night', 230, PK, edge=WHITE, italic_last=False), (540, 270), -2, 'night'),
+        art(star(-14), (200, 420), 0, 'gold star'), art(star(9), (880, 520), 0, 'gold star'), art(star(-4), (850, 1180), 0, 'gold star'),
+        art(candle(230), (220, 1180), -4, 'candle'),
+        text('[9pm]', 66, (540, 1300), 2, box=BLUE)])
+    cards = []
+    for i, (k, xy, r, t) in enumerate((('morning', (290, 500), -4, '[7am]'), ('midday', (790, 520), 3, '[12pm]'), ('after', (290, 1010), 3, '[4pm]'), ('night', (790, 1030), -3, '[9pm]'))):
+        cards += [art(K.white_card((400, 420), 14), xy, r, 'photo border'), photo(f'{k.title()} ({t})', xy, (400, 420), r, c[k].at(1.0, (400, 420))),
+                  text(t, 50, at(xy, r, (0, 250)), r, box=BLUE)]
+    S2(s, stage, 'The whole day: the same four photos. Edit the times.', cards + [
+        text('[my whole day]', 70, (540, 170), -2)])
+    S2(s, stage, 'Swap in a photo of your product. Type its name, shop and keyword. ' + CAPTION, [
+        art(K.round_card(520), (540, 900), 0, 'round paper'),
+        photo('Your product', (540, 900), (520, 520), 0, c['end'].at(1.0, (520, 520)), shape='circle'),
+        art(clock(190), (170, 800), -8, 'alarm clock'), art(mug(190), (900, 760), 6, 'mug'),
+        art(glass(150), (190, 1200), 6, 'hourglass'), art(candle(170), (890, 1200), -4, 'candle'),
+        art(word('every day', 190, DEEP, edge=WHITE), (540, 210), -2, 'every day'),
+        text('[Product name] at [shop]', 58, (540, 370), 2, box=WHITE),
+        text('comment "[KEYWORD]"', 60, (540, 480), -2, box=PK, pill=True),
+        art(doodle('arrow', 9, 160, DEEP), (360, 600), 0, 'arrow')])
+    return s
+
+def c14():
+    prob, prob2, fix, use = Clip('IMG_1378', 0.5, 6.0), Clip('IMG_1377', 0.5, 6.0), Clip('IMG_1381', 1.0, 6.0), Clip('IMG_1377', 1.5, 6.0)
+    cc = ImageOps.grayscale(S.raw('images', 'Light gray concrete mineral texture-4.png'))
+    bg = K.fit_bg(ImageOps.colorize(ImageOps.autocontrast(cc), (214, 192, 120), BUTTER))
+    ball = lambda i, w: K.thing('Crumpled cream paper ball-58.png', w, ('stripes', 'dots', 'smalldots')[i % 3], WINE, scale=0.3, strength=0.55, seed=i)
+    tv, toff, tsz = tv_art(880); s = []
+    S2(s, bg, 'Hook. Swap in a photo of the annoying moment (it shows in black and white). Edit the line.', [
+        photo('The annoying moment (fills the page)', (540, 720), (CW, CH), 0, prob.at(1.0, (CW, CH)), gray=True),
+        text('[when your cord tangles]', 62, (540, 260), -2),
+        art(word('again.', 250, WINE, edge=WHITE, italic_last=False), (540, 1100), -3, 'again.'),
+        guide(REPLACE + ' Filters > B&W')])
+    S2(s, bg, HOOK2 + 'No photo needed. Edit both [bracket] lines.', [
+        art(ball(0, 330), (300, 820), -10, 'paper ball'), art(ball(1, 290), (740, 760), 14, 'paper ball'),
+        art(ball(2, 310), (560, 1080), 30, 'paper ball'), art(ball(3, 220), (860, 1110), -20, 'paper ball'), art(ball(4, 200), (190, 1150), 40, 'paper ball'),
+        text("[we've all\nbeen there]", 92, (620, 230), -2, align='right'),
+        text("[here's the fix]", 62, (300, 1340), -2, align='left'),
+        art(doodle('arrow', 0, 170, WINE), (670, 1335), -2, 'arrow')])
+    tc = (540, 820)
+    S2(s, bg, 'Swap in the annoying moment for the TV screen (black and white).', [
+        art(tv, tc, -2, 'TV'), photo('The annoying moment (TV)', at(tc, -2, toff), tsz, -2, prob2.at(1.0, tsz), gray=True),
+        text('every single time', 76, (540, 230), -2, box=WHITE),
+        art(ball(1, 230), (200, 1300), 20, 'paper ball'), art(ball(2, 210), (880, 1310), -30, 'paper ball')])
+    S2(s, bg, 'The fix: swap in a photo of your product doing its job.', [
+        photo('The fix (fills the page)', (540, 720), (CW, CH), 0, fix.at(1.0, (CW, CH))),
+        art(word('fixed.', 260, WINE, edge=WHITE, italic_last=False), (540, 300), -3, 'fixed.')])
+    S2(s, bg, 'Swap in the fix for the TV screen (in colour). Edit the line.', [
+        art(doodle('burst', 2, 1080, WINE), tc, 0, 'burst'),
+        art(tv, tc, -2, 'TV'), photo('The fix (TV)', at(tc, -2, toff), tsz, -2, fix.at(2.0, tsz)),
+        text('[no more tangles]', 72, (540, 1330), 2, box=WINE, fg=WHITE)])
+    S2(s, bg, 'The fix in use: swap in its photo. Edit the line.', [
+        art(K.torn_card((760, 960), 6), (540, 760), 2, 'torn paper'),
+        photo('The fix in use', (540, 760), (760, 960), 2, use.at(1.0, (760, 960))),
+        art(doodle('arrow', 0, 190, WINE), (540, 1330), 90, 'arrow'),
+        text('[one smooth pass]', 64, (380, 210), -3, box=WHITE, align='left')])
+    S2(s, bg, 'Swap in a photo of your product. Type its name and your keyword. ' + CAPTION, [
+        art(K.white_card((600, 740)), (540, 960), -3, 'photo border'), photo('Your product', (540, 960), (600, 740), -3, fix.at(3.0, (600, 740))),
+        art(word('Comment', 200, WINE, edge=WHITE), (540, 220), 0, 'Comment'),
+        text('"[KEYWORD]"', 76, (540, 390), 2, box=WHITE, pill=True),
+        text('[Product name]', 58, (780, 1360), -3, box=WINE, fg=WHITE),
+        art(ball(0, 220), (170, 1300), 20, 'paper ball')])
+    return s
+
+def c15():
+    BU = BUTTER
+    c = {k: Clip(n, t, 6.0) for k, (n, t) in dict(drop=('IMG_1454', 1.0), prod=('IMG_1381', 1.0), close1=('IMG_1388', 0.5), close2=('IMG_1417', 0.5), close3=('IMG_1463', 1.0), use=('IMG_1391', 1.0)).items()}
+    tissue = ImageOps.grayscale(S.raw('images', 'Blush Pink Tissue Paper Texture-9.png'))
+    stage = K.fit_bg(ImageOps.colorize(ImageOps.autocontrast(tissue), tuple(int(v * 0.88) for v in BU), BU))
+    sheet = K.fit_bg(ImageOps.colorize(ImageOps.autocontrast(tissue), (78, 10, 30), (150, 42, 72)))
+    timer = K.thing('Cream Retro Kitchen Timer Dial.png', 620, 'smalldots', WINE, scale=0.4, strength=0.22)
+    stub = P.die_cut(P.raw_cut('Blank peach perforated ticket stub-22.png', 860), 8)
+    new = S7.dsticker('new', 70, WINE, WHITE); lap, lscr = K.device_art(900, S7.LAPTOP); s = []
+    S2(s, stage, 'Hook. Swap in a photo of your new product. Edit the line.', [
+        photo('Your new product (fills the page)', (540, 720), (CW, CH), 0, c['drop'].at(1.0, (CW, CH))),
+        text('[something new\nis coming]', 62, (330, 220), -2, align='left'),
+        art(word('new drop', 210, BU, edge=WINE), (540, 1120), -2, 'new drop'),
+        guide(FIRST_GUIDE)])
+    S2(s, sheet, HOOK2 + 'A peek of your product shows through the hole. Edit both [bracket] lines.', [
+        art(K.torn_card((520, 520), 7, color=(150, 42, 72)), (540, 820), 0, 'torn tissue'),
+        photo('A peek (through the hole)', (540, 820), (500, 500), 0, c['prod'].at(1.0, (500, 500)), shape='circle'),
+        art(doodle('frame', 0, 640, BU), (540, 820), 0, 'circle'),
+        text('[can you guess\nwhat it is?]', 88, (620, 230), -2, align='right'),
+        text('[swipe to see]', 62, (300, 1340), -2, align='left'),
+        art(doodle('arrow', 0, 170, BU), (600, 1335), -2, 'arrow')])
+    S2(s, stage, 'No photo needed. Edit the line.', [
+        art(timer, (540, 820), -4, 'kitchen timer'),
+        text('dropping in', 84, (360, 220), -3, box=WHITE, align='left'),
+        text('3 2 1', 150, (540, 1290), 2, box=None, fg=WINE)])
+    S2(s, stage, 'The reveal: swap in your product photo and type its name.', [
+        photo('The reveal (fills the page)', (540, 720), (CW, CH), 0, c['prod'].at(2.0, (CW, CH))),
+        art(doodle('burst', 2, 760, BU), (540, 300), 0, 'burst'),
+        art(word('finally.', 220, WHITE, edge=WINE, italic_last=False), (540, 300), -2, 'finally.'),
+        text('[PRODUCT NAME]', 80, (540, 1250), 2, box=WINE, fg=WHITE)])
+    S2(s, stage, 'Detail one: swap in a close-up and name it.', [
+        art(K.torn_card((780, 900), 3), (540, 780), -3, 'torn paper'),
+        photo('Detail one', (540, 780), (780, 900), -3, c['close1'].at(1.0, (780, 900))),
+        art(new, (860, 370), 12, 'NEW sticker'),
+        text('[detail one]', 72, (360, 1320), -2, box=WHITE, align='left')])
+    lc = (540, 760)
+    S2(s, stage, 'Detail two: swap in a close-up for the laptop screen.', [
+        art(lap, lc, 0, 'laptop'), K.on_screen(lc, lap, lscr, c['close2'].at(1.0, (760, 480)), 'Detail two (laptop screen)'),
+        text('[detail two]', 72, (540, 1200), 2, box=BU)])
+    sc = (540, 1200)
+    S2(s, stage, 'Detail three: swap in its photo. Type your real launch date on the ticket.', [
+        art(K.white_card((640, 700)), (540, 560), 3, 'photo border'),
+        photo('Detail three', (540, 560), (640, 700), 3, c['close3'].at(1.0, (640, 700))),
+        art(new, (820, 260), -10, 'NEW sticker'),
+        text('[detail three]', 60, (360, 900), -2, box=WHITE, align='left'),
+        art(stub, sc, -3, 'ticket stub'),
+        text('out', 96, at(sc, -3, (-stub.width * 0.28, 0)), -3, box=None, fg=WINE),
+        text('[Fri 24 Oct]', 60, at(sc, -3, (stub.width * 0.14, 0)), -3, box=None)])
+    S2(s, stage, 'Swap in a photo of it in use. Type your shop and keyword. ' + CAPTION, [
+        photo('In use (fills the page)', (540, 720), (CW, CH), 0, c['use'].at(1.0, (CW, CH))),
+        art(new, (900, 760), 10, 'NEW sticker'),
+        text('get it at [shop]', 64, (540, 900), -2, box=WHITE),
+        art(word('Comment', 210, WHITE, edge=WINE, italic_last=False), (540, 1060), 0, 'Comment'),
+        text('"[KEYWORD]"', 76, (540, 1220), 2, box=WINE, fg=WHITE, pill=True)])
+    return s
+
+def c16():
+    c = {k: Clip(n, t, 6.0) for k, (n, t) in dict(squeeze=('IMG_1403', 0.5), close=('IMG_1406', 0.5), drape=('IMG_1409', 0.5), close2=('IMG_1407', 1.0), whole=('IMG_1398', 1.0), cta=('IMG_1398', 4.0)).items()}
+    tis = ImageOps.grayscale(S.raw('images', 'Blush Pink Tissue Paper Texture-9.png'))
+    paper = K.fit_bg(ImageOps.colorize(ImageOps.autocontrast(tis), (222, 200, 128), BUTTER))
+    bw = ImageOps.fit(S.raw('images', 'Clear bubble wrap texture-11.png'), (CW, CH)).convert('RGBA')
+    bw.putalpha(ImageOps.grayscale(bw.convert('RGB')).point(lambda v: int(40 + v * 0.42)))
+    def wrap(poly):
+        m = Image.new('L', (CW, CH), 0); K.ImageDraw.Draw(m).polygon(poly, fill=255); im = bw.copy(); im.putalpha(K.ImageChops.multiply(im.split()[3], m))
+        K.ImageDraw.Draw(im).line([poly[0], poly[-1]], fill=(255, 255, 255, 230), width=10); return im
+    sq = bw.crop((200, 300, 880, 980)); sq = K.C.shadow(sq, (6, 10), 12, 60)
+    ph, scr = K.device_art(520); s = []
+    S2(s, paper, 'Hook. Swap in a photo of your product being squeezed or touched. Edit [my velvet throw].', [
+        photo('The feel (fills the page)', (540, 720), (CW, CH), 0, c['squeeze'].at(1.0, (CW, CH))),
+        art(wrap([(560, 0), (CW, 0), (CW, CH), (1000, CH)]), (540, 720), 0, 'bubble wrap'),
+        art(word('what it', 160, italic_last=False), (430, 220), -2, 'what it'),
+        art(word('feels like', 210), (520, 400), -2, 'feels like'),
+        text('[my velvet throw]', 62, (360, 560), 2, box=BUTTER, align='left'),
+        guide(FIRST_GUIDE)])
+    S2(s, paper, HOOK2 + 'No photo needed. Edit both [bracket] lines.', [
+        art(sq, (540, 820), -6, 'bubble wrap'),
+        text("[you can't touch it\nthrough a screen]", 80, (620, 230), -2, align='right'),
+        text("[so here's how it feels]", 60, (380, 1340), -2, align='left'),
+        art(doodle('arrow', 0, 160, WINE), (880, 1335), -2, 'arrow')])
+    S2(s, paper, 'Close-up 1: swap in its photo and type the feeling.', [
+        photo('Close-up 1 (fills the page)', (540, 720), (CW, CH), 0, c['close'].at(1.0, (CW, CH))),
+        text('[soft]', 130, (330, 1150), -3, box=BUTTER, align='left')])
+    pc = (560, 800)
+    S2(s, paper, 'Swap in a screenshot or still of the satisfying clip for the phone screen. Edit the line.', [
+        art(doodle('burst', 2, 980, WINE), pc, 0, 'burst'),
+        art(ph, pc, 3, 'phone'), dict(K.on_screen(pc, ph, scr, c['drape'].at(1.0, (520, 1040)), 'The satisfying clip (screen)'), rot=3),
+        text('sound on', 90, (330, 200), -3, box=WHITE, align='left'),
+        text("[you'll hear it]", 60, (760, 1340), 2, box=BUTTER)])
+    S2(s, paper, 'Close-up 2: swap in its photo and type the feeling.', [
+        art(K.round_card(700), (540, 720), 0, 'round paper'),
+        photo('Close-up 2', (540, 720), (700, 700), 0, c['close2'].at(1.0, (700, 700)), shape='circle'),
+        art(wrap([(0, 0), (520, 0), (180, CH), (0, CH)]), (540, 720), 0, 'bubble wrap'),
+        text('[smooth]', 120, (620, 1250), 2, box=WHITE)])
+    cards = []
+    for i, (k, xy, r, wd) in enumerate((('close', (230, 760), -5, '[soft]'), ('close2', (540, 720), 3, '[smooth]'), ('drape', (850, 760), -3, '[cozy]'))):
+        cards += [art(K.white_card((260, 340), 12), xy, r, 'photo border'), photo(f'Photo {i + 1}', xy, (260, 340), r, c[k].at(1.0, (260, 340))),
+                  art(pin_art(54), at(xy, r, (0, -170)), 0, 'push pin'), text(wd, 54, at(xy, r, (0, 250)), r, box=(BUTTER, WHITE, BUTTER)[i])]
+    S2(s, paper, 'The three feelings: a photo and a word for each.', cards + [
+        art(word('in three words', 130, WHITE, edge=WINE), (540, 270), -2, 'in three words')])
+    S2(s, paper, 'Swap in a photo of the whole product. Type its name.', [
+        photo('The whole product (fills the page)', (540, 720), (CW, CH), 0, c['whole'].at(1.0, (CW, CH))),
+        text('[Product name]', 66, (540, 1250), -2, box=BUTTER),
+        art(doodle('arrow', 0, 170, WHITE), (540, 1080), 90, 'arrow')])
+    S2(s, paper, 'Swap in a photo of your product. Type your keyword. ' + CAPTION, [
+        art(K.white_card((640, 760)), (540, 940), 3, 'photo border'), photo('Your product', (540, 940), (640, 760), 3, c['cta'].at(1.0, (640, 760))),
+        art(word('Comment', 200), (540, 220), 0, 'Comment'),
+        text('"[KEYWORD]"', 76, (540, 390), 2, box=WHITE, pill=True)])
+    return s
+
+RECIPES = {'01': c01, '02': c02, '03': c03, '04': c04, '05': c05, '06': c06, '07': c07, '13': c13, '11': c11, '14': c14, '15': c15, '16': c16, '09': c09, '08': c08, '10': c10, '12': c12, '20': c20, '22': c22, '23': c23, 'h2': ch2, 'h3': ch3, 'h5': ch5, 'h6': ch6}
 
 HEX = lambda c: '#%02X%02X%02X' % tuple(c[:3])
 CNAME = {WINE: 'wine', PINK: 'pink', BUTTER: 'butter', BLUE: 'light blue', WHITE: 'white', INK: 'ink', S7.DEEP: 'deep blue'}

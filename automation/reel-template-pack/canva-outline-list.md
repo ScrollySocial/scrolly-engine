@@ -50,6 +50,31 @@ Nothing to do: before, after and Comment (polka-dot letters) stay artwork (patte
 - Slide 6: **the result** (pink #F9C9DF): Outline in wine #7A1732, thin
 - Slide 8: **Comment** (pink #F9C9DF): Outline in wine #7A1732, thin
 
+## 11 A day with it
+
+- Slide 1: **morning** (white #FFFFFF): Outline in deep blue #34568C, thin
+- Slide 5: **night** (pink #F9C9DF): Outline in white #FFFFFF, thin
+- Slide 7: **every day** (deep blue #34568C): Outline in white #FFFFFF, thin
+
+## 14 The annoying moment
+
+- Slide 1: **again.** (wine #7A1732): Outline in white #FFFFFF, thin
+- Slide 4: **fixed.** (wine #7A1732): Outline in white #FFFFFF, thin
+- Slide 7: **Comment** (wine #7A1732): Outline in white #FFFFFF, thin
+
+## 15 New drop reveal
+
+- Slide 1: **new drop** (butter #F7E6A9): Outline in wine #7A1732, thin
+- Slide 4: **finally.** (white #FFFFFF): Outline in wine #7A1732, thin
+- Slide 8: **Comment** (white #FFFFFF): Outline in wine #7A1732, thin
+
+## 16 What it feels like
+
+- Slide 1: **what it** (white #FFFFFF): Outline in wine #7A1732, thin
+- Slide 1: **feels like** (white #FFFFFF): Outline in wine #7A1732, thin
+- Slide 6: **in three words** (white #FFFFFF): Outline in wine #7A1732, thin
+- Slide 8: **Comment** (white #FFFFFF): Outline in wine #7A1732, thin
+
 ## 09 Who its for
 
 - Slide 1: **this is** (white #FFFFFF): Outline in wine #7A1732, thin
