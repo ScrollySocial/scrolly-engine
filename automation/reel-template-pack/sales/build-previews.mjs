@@ -57,12 +57,14 @@ mark.ph{background:#ffd9c9;color:var(--s3-ink);padding:0 4px;border-radius:3px}
 .screen p{font:var(--s3-fs-fine)/1.4 var(--s3-sans);color:#d8d3cc;max-width:30em}
 .stand{width:18%;height:56px;margin:0 auto;background:linear-gradient(#3a3a3a,#262626);clip-path:polygon(22% 0,78% 0,100% 100%,0 100%)}
 .base{width:34%;height:12px;margin:0 auto;border-radius:6px;background:#333}
-.steps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:28px;padding:0;margin:56px 0 0;list-style:none;text-align:center}
-.steps svg{width:56px;height:56px;margin:0 auto 14px;display:block;stroke:var(--s3-orange);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
-.steps b{display:block;font:400 var(--s3-fs-title)/1.15 var(--s3-serif);margin-bottom:6px}
-.steps span{color:#d8d3cc}
-@media(max-width:900px){.steps{grid-template-columns:1fr 1fr 1fr}}
-@media(max-width:560px){.steps{grid-template-columns:1fr 1fr}.screen{border-width:8px 8px 18px}}
+/* steps as one line above the monitor; "see it in action" in handwriting on the screen (Mercedes 2026-10-20) */
+.steps-line{list-style:none;padding:0;margin:28px 0 0;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:10px 18px;font:400 var(--s3-fs-h3)/1.1 var(--s3-serif);color:#fff}
+.steps-line li+li::before{content:"92";color:var(--s3-orange);margin-right:18px}
+.monitor{position:relative}
+.see-note{position:absolute;z-index:2;right:-10px;top:-6px;display:flex;align-items:flex-end;gap:4px;font:400 2rem/1 "Covered By Your Grace",cursive;color:#fff;transform:rotate(-6deg)}
+.see-note img{width:80px;transform:scaleX(-1) rotate(30deg) translateY(28px)}
+@media(max-width:1000px){.see-note{right:0;top:-46px;font-size:1.6rem}}
+@media(max-width:560px){.screen{border-width:8px 8px 18px}.steps-line{font-size:1.5rem}}
 /* Who it's for: the peach band breaks up the page (Mercedes 2026-10-19; brand peach from the Reel covers) */
 .peach{background:#ffc9a8}
 .stick{position:relative;overflow:hidden}
@@ -88,20 +90,25 @@ details.notes>summary{cursor:pointer;font:700 var(--s3-fs-label)/1.4 var(--s3-sa
 .cta p+p{margin-top:12px}
 .rc-row{display:flex;align-items:center;justify-content:space-between;gap:40px}
 .rc-text{max-width:24em}
-.rc-vis{display:flex;align-items:center;gap:22px;flex:none}
+.rc-vis{display:flex;align-items:flex-start;gap:22px;flex:none}
 .rc-vis .phone{width:170px;flex:none}
-.rc-vis .slides{display:flex}
-.rc-vis .slides img{width:170px;aspect-ratio:3/4;object-fit:cover;border-radius:6px;box-shadow:0 10px 24px rgba(0,0,0,.18);border:3px solid #fff}
-.rc-vis .slides img+img{margin-left:-46px}
-.rc-vis .slides img:nth-child(1){transform:rotate(-4deg);z-index:3}.rc-vis .slides img:nth-child(2){transform:rotate(1deg) translateY(10px);z-index:2}.rc-vis .slides img:nth-child(3){transform:rotate(5deg);z-index:1}
-@media(max-width:1000px){.rc-row{flex-direction:column;align-items:flex-start;gap:24px}}
-@media(max-width:560px){.rc-vis{gap:12px}.rc-vis .phone{width:120px}.rc-vis .slides img{width:110px}.rc-vis .slides img+img{margin-left:-58px}}
-.edit-grid{list-style:none;padding:0;margin:32px 0 0;display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:20px;text-align:center}
-.edit-grid svg{width:52px;height:52px;display:block;margin:0 auto 10px;stroke:var(--s3-ink);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
-.edit-grid b{font:400 var(--s3-fs-title)/1.15 var(--s3-serif)}
-@media(max-width:900px){.edit-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
-@media(max-width:560px){.edit-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
-@media(max-width:480px){.edit-grid b{font-size:1.2rem}}
+.slides-wrap{position:relative}
+.rc-vis .slides{display:flex;gap:10px}
+.rc-vis .slides img{width:204px;aspect-ratio:3/4;object-fit:cover;border-radius:4px;box-shadow:0 8px 20px rgba(0,0,0,.14)}
+.ig-dots{display:flex;justify-content:center;gap:6px;margin-top:14px}
+.ig-dots span{width:8px;height:8px;border-radius:50%;background:#cfc8bf}.ig-dots span.on{background:var(--s3-orange)}
+.swipe-note{position:absolute;right:6px;top:-50px;display:flex;align-items:flex-end;gap:6px;font:400 1.8rem/1 "Covered By Your Grace",cursive;color:var(--s3-ink)}
+.swipe-note img{width:70px;transform:translateY(16px)}
+@media(max-width:1000px){.rc-row{flex-direction:column;align-items:flex-start;gap:60px}}
+@media(max-width:700px){.rc-vis{gap:10px}.rc-vis .phone{width:116px}.rc-vis .slides img{width:150px}.rc-vis .slides img:nth-child(n+2){display:none}}
+.callouts{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:28px;margin-top:28px}
+.callouts .phone{width:200px;border-color:#111}
+.co{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:26px}
+.co li{display:flex;align-items:center;gap:14px;font:400 2rem/1 "Covered By Your Grace",cursive;color:var(--s3-ink)}
+.co.left li{justify-content:flex-end}
+.co img{width:90px;height:auto}
+.co.left li:nth-child(2){margin-right:28px}.co.right li:nth-child(2),.co.right li:nth-child(3){margin-left:28px}
+@media(max-width:900px){.callouts{grid-template-columns:1fr;justify-items:center}.callouts .phone{order:-1;width:170px}.co{flex-direction:row;flex-wrap:wrap;justify-content:center;gap:10px 22px}.co img{display:none}.co li{font-size:1.6rem;margin:0!important}}
 .notes{border-top:1px solid var(--s3-line)}
 .notes[open]>div{margin-top:24px}
 .notes h2{margin-bottom:20px}
@@ -122,8 +129,8 @@ const shell = (d, css, body) => `<!doctype html><html lang="en"><head><meta char
 
 const price = (d) => `<span class="amt">${d.was ? `<del>${esc(d.was)}</del>` : ''}${ph(d.price)}</span>`;
 const howItWorks = (d) => `<section class="film" id="how"><div class="s3-wrap"><h2 class="s3-h2">How it works</h2>
-  <div class="monitor"><div class="screen"><div class="play" aria-hidden="true"></div><strong>Your how-to video</strong></div><div class="stand"></div><div class="base"></div></div>
-  <ol class="steps">${STEPS.map(([icon, b, t]) => `<li><svg viewBox="0 0 48 48" aria-hidden="true">${icon}</svg><b>${esc(b)}</b></li>`).join('')}</ol></div></section>`;
+  <ol class="steps-line">${STEPS.map(([icon, b]) => `<li>${esc(b)}</li>`).join('')}</ol>
+  <div class="monitor"><p class="see-note" aria-hidden="true">see it in action<img src="${img('arrow-curve-w.webp')}" alt=""></p><div class="screen"><div class="play" aria-hidden="true"></div><strong>Your how-to video</strong></div><div class="stand"></div><div class="base"></div></div></div></section>`;
 // "Every template comes with": real sticky notes pinned on, from Trick or treat (Mercedes 2026-10-19: cards were "boring")
 const ROT = [-4, 3, -2, 4, -3, 2];
 // one line icon per item in "Every template comes with" (Mercedes: "can we communicate this visually?")
@@ -131,7 +138,7 @@ const INC_ICONS = [
   '<rect x="5" y="10" width="38" height="28" rx="3"/><path d="M5 17h38M5 31h38M12 10v7M20 10v7M28 10v7M36 10v7M12 31v7M20 31v7M28 31v7M36 31v7"/><path d="M21 20l7 4-7 4z"/>',
   '<rect x="10" y="7" width="28" height="36" rx="3"/><path d="M18 7v-1h12v1"/><path d="M16 18h3M23 18h11M16 26h3M23 26h11M16 34h3M23 34h11"/>',
   '<path d="M8 10h32a3 3 0 0 1 3 3v17a3 3 0 0 1-3 3H22l-9 8v-8H8a3 3 0 0 1-3-3V13a3 3 0 0 1 3-3z"/><path d="M13 19h22M13 25h14"/>',
-  '<rect x="12" y="8" width="24" height="30" rx="3"/><path d="M7 12v22M41 12v22"/><circle cx="19" cy="43" r="1.4"/><circle cx="24" cy="43" r="1.4"/><circle cx="29" cy="43" r="1.4"/>',
+  '<rect x="6" y="14" width="26" height="30" rx="3"/><path d="M14 14v-5a3 3 0 0 1 3-3h22a3 3 0 0 1 3 3v24a3 3 0 0 1-3 3h-7"/><path d="M11 37l6-7 5 5 4-3 6 5"/>',
 ];
 const includes = (d) => d.brandIncludes ? `<section class="s3-sec tight incl-b"><div class="s3-wrap"><h2 class="s3-h2">Every template comes with</h2>
   <ul class="swipes">${d.includes.map(([b], i) => i === d.includes.length - 1 ? `<li class="plus" aria-hidden="true">+</li><li class="extra"><svg viewBox="0 0 48 48" aria-hidden="true">${INC_ICONS[i]}</svg><span>${esc(b)}</span></li>` : `<li><svg viewBox="0 0 48 48" aria-hidden="true">${INC_ICONS[i]}</svg><span>${esc(b)}</span></li>`).join('')}</ul></div></section>` : `<section class="s3-sec stick"><div class="s3-wrap"><h2 class="s3-h2">Every template comes with</h2>
@@ -141,7 +148,8 @@ const includes = (d) => d.brandIncludes ? `<section class="s3-sec tight incl-b">
 const reelCarousel = (d) => `<section class="s3-sec tight rc"><div class="s3-wrap rc-row"><div class="rc-text"><h2 class="s3-h2">Reel + carousel</h2>
   <p class="s3-lede" style="margin-top:14px">Post the Reel, then its matching carousel.</p></div>
   <div class="rc-vis" aria-hidden="true"><div class="phone"><img src="${img(d.rc.phone)}" alt=""></div>
-  <div class="slides">${d.rc.slides.map((f) => `<img src="${img(f)}" alt="">`).join('')}</div></div></div></section>`;
+  <div class="slides-wrap"><p class="swipe-note">swipe<img src="${img('arrow-curve.webp')}" alt=""></p><div class="slides">${d.rc.slides.map((f) => `<img src="${img(f)}" alt="">`).join('')}</div>
+  <div class="ig-dots"><span class="on"></span><span></span><span></span><span></span><span></span></div></div></div></div></section>`;
 const EDITS = [
   ['<path d="M8 40L20 8h4l12 32M12 30h20"/>', 'Every word'],
   ['<path d="M6 40h14M13 40L22 10l9 30M35 40h7M30 26h10"/>', 'Fonts'],
@@ -151,9 +159,11 @@ const EDITS = [
   ['<rect x="15" y="5" width="18" height="38" rx="4"/><path d="M21 19l8 5-8 5z"/>', 'Your clips'],
   ['<path d="M18 36V10l22-5v26"/><circle cx="13" cy="36" r="5"/><circle cx="35" cy="31" r="5"/>', 'Your audio'],
 ];
-const editSection = () => `<section class="s3-sec tight peach edits"><div class="s3-wrap"><h2 class="s3-h2">Make it yours</h2>
+const editSection = (d) => `<section class="s3-sec tight peach edits"><div class="s3-wrap"><h2 class="s3-h2">Make it yours</h2>
   <p class="s3-lede" style="margin-top:12px">Change it all in CapCut, on your phone or computer. ${ph('[CONFIRM: phone editing, from the CapCut test]')}</p>
-  <ul class="edit-grid">${EDITS.map(([icon, b]) => `<li><svg viewBox="0 0 48 48" aria-hidden="true">${icon}</svg><b>${esc(b)}</b></li>`).join('')}</ul></div></section>`;
+  <div class="callouts"><ul class="co left">${EDITS.slice(0, 3).map(([, b]) => `<li>${esc(b)}<img src="${img('arrow-r.webp')}" alt=""></li>`).join('')}</ul>
+  <div class="phone"><img src="${img(d.editPhone)}" alt=""></div>
+  <ul class="co right">${EDITS.slice(3).map(([, b]) => `<li><img src="${img('arrow-l.webp')}" alt="">${esc(b)}</li>`).join('')}</ul></div></div></section>`;
 const faq = (d) => `<section class="s3-sec"><div class="s3-read"><h2 class="s3-h2">Questions</h2><div class="s3-faq">${d.faq.map(([q, a]) => `<details><summary>${esc(q)}</summary><div>${ph(a)}</div></details>`).join('')}</div></div></section>`;
 const notes = (d) => `<details class="s3-sec notes"><summary class="s3-wrap">Review notes for Mercedes (not on the page): headlines, listing, demo footage</summary><div class="s3-wrap">
   <h3 class="s3-h3">Other headline options</h3><ul>${d.headlines.map((h) => `<li>${esc(h)}</li>`).join('')}</ul>
@@ -170,9 +180,9 @@ const STEPS = [
   ['<path d="M42 6L20 28M42 6l-14 36-8-14-14-8z"/>', 'Post', 'Add a sound in Instagram.'],
 ];
 const INCLUDES = (projectNote) => [
-  ['The CapCut project', projectNote],
+  ['A CapCut Reel template', projectNote],
   ['A shot list', 'Every clip to film, in order.'],
-  ['A sample caption', 'Ready to edit and post.'],
+  ['A caption template', 'Ready to edit and post.'],
   ['A matching carousel', 'Same story as slides. Edit free in Canva.'],
 ];
 const FAQ = (fonts) => [
@@ -279,7 +289,7 @@ function halloweenPage(d) {
   <div class="tpls">${tpls}</div></div></section>
 ${includes(d)}
 ${reelCarousel(d)}
-${editSection()}
+${editSection(d)}
 ${howItWorks(d)}
 <section class="s3-sec who-h"><img class="branch" src="${img('branch.webp')}" alt=""><img class="hang h1" src="${img('bat.png')}" alt=""><img class="hang h2 b2" src="${img('bat.png')}" alt="">
   <div class="s3-wrap s3-split"><h2 class="s3-h2">Who it's for</h2><div><p class="s3-lede">${esc(d.who)}</p>
@@ -396,7 +406,7 @@ function physicalPage(d) {
   <button type="button" class="arrow next" data-scroll="1" aria-label="Scroll forward">&#8594;</button></div></div></section>
 ${includes(d)}
 ${reelCarousel(d)}
-${editSection()}
+${editSection(d)}
 ${howItWorks(d)}
 <section class="s3-sec tight peach who-p"><div class="s3-wrap who-row"><div class="who-text"><h2 class="s3-h2">Who it's for</h2><p class="s3-lede" style="margin-top:14px">${esc(d.who)}</p>
   <div class="labels">${d.whoTags.map((t, i) => `<span class="dymo" style="--r:${[-2, 1.5, -1, 2][i % 4]}deg">${esc(t)}</span>`).join('')}</div></div><div class="fan">${d.whoPhotos.map(([f, label]) => `<div class="phone">${fs.existsSync(path.join(here, 'img', f)) ? (f.endsWith('.mp4') ? `<video src="${img(f)}" autoplay muted loop playsinline aria-label="${esc(label)}"></video>` : `<img src="${img(f)}" alt="${esc(label)}">`) : `<span class="todo">Photo to make:<b>${esc(label)}</b></span>`}</div>`).join('')}</div></div></section>
@@ -433,6 +443,7 @@ const halloween = {
     { name: 'Now you see it', poster: 'h1.jpg', job: "Last chance before it's gone.", film: 'you with your product, the same shot without it, then your product', len: 14 },
   ],
   whoTags: ['Product shops', 'Digital products', 'Services', 'Creators'],
+  editPhone: 'h2.jpg',
   rc: { phone: 'h6.jpg', slides: ['ch6-2.jpg', 'ch6-4.jpg', 'ch6-6.jpg'] },
   who: 'Anyone with something to sell this October.',
   faq: FAQ('No, they come with the template.'),
@@ -473,6 +484,7 @@ const physical = {
   whoTags: ['Print on demand', 'Makers', 'Etsy sellers', 'Shopify stores', 'Small-batch brands', 'Boutiques'],
   whoPhotos: [['who-maker.mp4', 'A maker pouring candles'], ['who-pod.mp4', 'Screen printing a design'], ['who-shop.mp4', 'A shop owner packing an order']],
   brandIncludes: true,
+  editPhone: 'p23.jpg',
   rc: { phone: 'p09.jpg', slides: ['c09-2.jpg', 'c09-3.jpg', 'c09-6.jpg'] },
   // the templates in the download on launch day, e.g. [8, 9, 10, 12, 20]; null = not picked yet (shows [N])
   launchNow: null,

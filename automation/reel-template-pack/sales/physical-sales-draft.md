@@ -52,6 +52,14 @@ to confirm no Pro features.
   Make it yours, and plainly in the FAQ.
 - FAQ: "Can I do it all on my phone?" waits on the CapCut test; the phone-kit answer is gone.
 
+## Round 2026-10-20 b
+
+- Comes with: A CapCut Reel template, A shot list, A caption template, + A matching carousel (new two-slide icon).
+- Reel + carousel: phone + 3 slides side by side (no overlap, nothing cropped), Instagram dots, handwritten "swipe".
+- Make it yours: one phone with handwritten labels and arrows around it (Every word, Fonts, Text colours | Doodle
+  colours, Background, Your clips, Your audio); on a phone the labels wrap under it.
+- How it works: "Download → Film → Edit → Post" as one line above the monitor; handwritten "see it in action" on it.
+
 ## Open decisions (Mercedes)
 
 | Decision | State |
