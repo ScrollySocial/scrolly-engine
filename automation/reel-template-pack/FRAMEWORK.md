@@ -664,3 +664,4 @@ How (build/editable.py, prototype build/templates/t24.py; `make.py` uses it for 
 - **Footage (her question, 2026-10-20):** her CapCut test copies are filled with her own July clips (install_test.py);
   the buyer's template holds numbered placeholder CLIP cards. No stock or green-screen footage is used anywhere.
 - **Placeholder CLIP cards approved** ("Oh that is awesome! perfect", 2026-10-20, after seeing "24 BUYER VIEW Make it last").
+- **#24 editable build APPROVED** (2026-10-20: "works: I changed words, fonts, doodle colours and the background colour. Rebuild the other templates the same way"). Every CapCut template now uses build/editable.py.

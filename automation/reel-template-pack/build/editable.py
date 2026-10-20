@@ -75,24 +75,35 @@ class Reel:
     def art(self, name, img, a, b, z, f):
         r0, r1 = self.R(a), (self.end if b is None else self.R(b)); kf, pos, r = self._kf(f, r0, r1)
         self.L.art(name, img, (r0, r1), z, pos, r, kf)
-    def clip(self, slot, a, b, z, f, size=(W, H), src=0.0):
+    def clip(self, slot, a, b, z, f, size=(W, H), src=0.0, mask=None, speed=1.0):
+        """A buyer clip layer; size = its window (the clip is centre-cropped to it); mask='circle' for a round window
+        (size must be square). src = seconds into the buyer's clip at the layer's start."""
         r0, r1 = self.R(a), (self.end if b is None else self.R(b)); kf, pos, r = self._kf(f, r0, r1)
-        self.L.clip(slot, (r0, r1), z, pos, size, r, kf, src=src)
-    def text(self, font, px, words, a, b, f, color=WHITE, stroke=None, box=None, shadow=False, italic_last=False):
+        self.L.clip(slot, (r0, r1), z, pos, (2 * (int(size[0]) // 2), 2 * (int(size[1]) // 2)), r, kf, src=src, mask=mask, speed=speed)
+    def text(self, font, px, words, a, b, f, color=WHITE, stroke=None, box=None, shadow=False, italic_last=False, typewriter=None):
         """px: the letters' em in pixels (CapCut size = px / 6.1). words = (template words, test words)."""
         self.tz += 1; r0, r1 = self.R(a), (self.end if b is None else self.R(b)); kf, pos, r = self._kf(f, r0, r1)
         if isinstance(words, str): words = (words, words)
         self.L.text(font, round(px / E.PX_PER_SIZE, 2), words, (r0, r1), self.tz, pos, r, kf, color=color, stroke=stroke,
-                    box=box, shadow=shadow)
+                    box=box, shadow=shadow, typewriter=typewriter)   # typewriter = seconds to type in (CapCut's Typewriter)
+        if font == 'doodles': self.L.L[-1]['centred'] = True     # glyphs are centred on the line box already
         if italic_last and len(words[0].split()) > 1: self.texts.append(words[0])
     # ---- the house styles --------------------------------------------------------------------------------------------
-    def serif(self, words, px, a, b, f, fill=WHITE, edge=None):
-        """A built-in line: DM Serif Display, last word Italic, thin outline (px/55), soft shadow (play_extra.key)."""
-        self.text('dms', px, words, a, b, f, fill, stroke=(edge, 0.03) if edge else None, shadow=True, italic_last=True)
-    def boxed(self, words, px, a, b, f, box=WHITE, test=None):
-        """Small editable line: Montserrat Bold on CapCut's text background (the highlight box grows with the words)."""
+    def serif(self, words, px, a, b, f, fill=WHITE, edge=None, italic_last=True, typewriter=None):
+        """A built-in line: DM Serif Display, last word Italic, thin outline (px/55), soft shadow (play_extra.key).
+        px = the motion test's px (play_extra.key draws at px * 0.92 via play.caption; pass that number)."""
+        self.text('dms', px, words, a, b, f, fill, stroke=(edge, 0.03) if edge else None, shadow=True, italic_last=italic_last,
+                  typewriter=typewriter)
+    def boxed(self, words, px, a, b, f, box=WHITE, test=None, round_=0.0, typewriter=None):
+        """Small editable line: Montserrat Bold on CapCut's text background (the highlight box grows with the words);
+        round_=1 is a pill. Multi-line words: separate lines with \n."""
         fg = INK if sum(box) / 3 > 140 else WHITE
-        self.text('montserrat', px * 0.85, (words, test or words.replace('[', '').replace(']', '')), a, b, f, fg, box=(box, 0.0))
+        self.text('montserrat', px * 0.85, (words, test or words.replace('[', '').replace(']', '')), a, b, f, fg, box=(box, round_),
+                  typewriter=typewriter)
+    def plain(self, words, px, a, b, f, color=INK, edge=None, test=None, typewriter=None):
+        """Editable Montserrat with no box (words on paper: a sticky note, a tag, a label)."""
+        self.text('montserrat', px * 0.85, (words, test or words.replace('[', '').replace(']', '')), a, b, f, color,
+                  stroke=(edge, 0.03) if edge else None, typewriter=typewriter)
     def doodle(self, kind, i, px, a, b, f, color, edge=None):
         """One of her doodles as a recolourable one-letter text layer; px = its longest side."""
         c = DF.char(kind, i); self.text('doodles', px, (c, c), a, b, f, color, stroke=(edge, 0.02) if edge else None)
@@ -130,6 +141,31 @@ def tear(t0, t1, deg=28, fall=(160, 1300)):
     return m
 
 # ---- pieces -----------------------------------------------------------------------------------------------------------
+def child(parent, off, r0=0.0, s_mul=True):
+    """A layer riding on another (a label on a sheet, a clip in a frame): parent f, offset from the parent's centre at
+    scale 1 and no turn; it turns and scales with the parent."""
+    def f(ts):
+        v = parent(ts); s = v.get('s', 1.0) if s_mul else 1.0; dx, dy = rot((off[0] * s, off[1] * s), v.get('r', 0.0))
+        return at(v['x'] + dx, v['y'] + dy, v.get('s', 1.0), v.get('r', 0.0) + r0)
+    return f
+
+def ink(photo, size=None, strength=1.0):
+    """A black-ink pattern photo (her polka dots, stripes, checks on white) as a colourless layer: black where the ink
+    is, see-through elsewhere. Over the canvas colour it reads as a pattern in any brand colour."""
+    g = ImageOps.grayscale(photo.convert('RGB')); g = ImageOps.fit(g, size or (W, H))
+    a = g.point(lambda v: int((255 - v) * strength)); out = Image.new('RGBA', g.size, (0, 0, 0, 255)); out.putalpha(a); return out
+
+def window(img, box, radius=0, ellipse=False):
+    """Punch a see-through window in an object photo (a frame, a mailer, a TV) so a clip layer under it shows through:
+    box = (x0, y0, x1, y1) in the image. Returns (image, window size, window centre offset from the image centre)."""
+    from PIL import ImageDraw
+    m = Image.new('L', img.size, 0); d = ImageDraw.Draw(m)
+    if ellipse: d.ellipse(box, fill=255)
+    else: d.rounded_rectangle(box, radius, fill=255)
+    out = img.copy(); out.putalpha(ImageChops.subtract(out.split()[3], m))
+    size = (box[2] - box[0] + 8, box[3] - box[1] + 8)
+    return out, size, ((box[0] + box[2]) / 2 - img.width / 2, (box[1] + box[3]) / 2 - img.height / 2)
+
 def grain(photo, strength=0.16):
     """A colourless paper grain from a texture photo: black where the photo is dark, see-through elsewhere, so it
     shades whatever background colour the buyer picks."""
