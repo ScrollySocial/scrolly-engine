@@ -53,6 +53,18 @@ to confirm no Pro features.
 - Hero (physical): a static Instagram-style feed of Reel frames behind the tripod, fading to the left so it never sits
   behind the words. The designed covers replace these frames once approved.
 
+## Round 2026-10-20 d (physical page's layout, Halloween props kept)
+
+- Hero: headline left with "that sell" in sky-blue italic (no marker on a hero headline, brand rule), price and
+  button; a faded feed of the five covers behind the moon, bats and spider. The five-phone row moved out of the hero.
+- All 5 Reels: one aligned row on the polka dots, "1 of 5" above each phone, names only (job lines dropped).
+- Who it's for: compact two columns under the bat branch: words and tickets left, three covers fanned on an orange
+  burst right.
+- Questions: two columns on night, the wolf and blood moon beside the heading.
+- Buy: the physical page's blue-mist card with the burst and heart doodles.
+- Site palette of 2026-10-20 (vault brand/visual-system.md): sky-blue markers and lines, blue mist instead of lavender
+  and baby pink, hot pink kept for Mercedes only.
+
 ## Open decisions (Mercedes)
 
 | Decision | State |

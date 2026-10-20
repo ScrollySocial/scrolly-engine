@@ -71,7 +71,7 @@ mark.ph{background:#ffd9c9;color:var(--s3-ink);padding:0 4px;border-radius:3px}
 @media(max-width:700px){.see-note{font-size:1.7rem;top:-50px}}
 @media(max-width:560px){.screen{border-width:6px 6px 0}.screen::after{left:-7px;right:-7px;bottom:-24px;height:24px}.stand{margin-top:24px;height:40px}.steps-line{font-size:1.5rem}}
 /* Who it's for: the peach band breaks up the page (Mercedes 2026-10-19; brand peach from the Reel covers) */
-.peach{background:var(--s3-baby)}
+.peach{background:var(--s3-mist)}
 .stick{position:relative;overflow:hidden}
 .stick h2{text-align:center}
 .stick .sq{display:block;width:min(300px,60vw);margin:10px auto 0}
@@ -118,8 +118,8 @@ details.notes>summary{cursor:pointer;font:700 var(--s3-fs-label)/1.4 var(--s3-sa
 .edit-text{max-width:20em}
 .burst-map{position:relative;width:680px;height:340px;flex:none}
 .burst-map .rays{position:absolute;inset:0;width:100%;height:100%;z-index:0}
-.burst-map .rays path{fill:none;stroke:var(--s3-pink);stroke-width:2.5;stroke-linecap:round;stroke-dasharray:2 7}
-.burst-map .rays circle{fill:var(--s3-pink)}
+.burst-map .rays path{fill:none;stroke:var(--s3-sky);stroke-width:2.5;stroke-linecap:round;stroke-dasharray:2 7}
+.burst-map .rays circle{fill:var(--s3-sky)}
 .burst-map .phone{position:absolute;z-index:1;left:265px;top:31px;width:150px;border-color:var(--s3-ink);box-shadow:0 14px 30px rgba(10,25,48,.18)}
 .burst-map .lbl{position:absolute;display:flex;align-items:center;gap:8px;white-space:nowrap;font:400 1.6rem/1 "Covered By Your Grace",cursive;color:var(--s3-ink)}
 .burst-map .lbl.l{flex-direction:row-reverse}
@@ -165,7 +165,7 @@ const includes = (d) => d.brandIncludes ? `<section class="s3-sec tight incl-b a
   ${d.formatNote ? `<p style="margin-top:32px">${ph(d.formatNote)}</p>` : ''}</div></section>`;
 const reelCarousel = (d) => `<section class="s3-sec tight rc"><div class="s3-wrap"><h2 class="s3-h2 rc-head">Every template comes with a Reel + carousel</h2>
   <div class="rc-vis" aria-hidden="true"><div class="phone"><img src="${img(d.rc.phone)}" alt=""></div>
-  <div class="slides-wrap"><p class="swipe-note" aria-hidden="true"><img src="${img('arrow-l-pink.webp')}" alt="">swipe</p><div class="slides">${d.rc.slides.map((f) => `<img src="${img(f)}" alt="">`).join('')}</div>
+  <div class="slides-wrap"><p class="swipe-note" aria-hidden="true"><img src="${img('arrow-l-sky.webp')}" alt="">swipe</p><div class="slides">${d.rc.slides.map((f) => `<img src="${img(f)}" alt="">`).join('')}</div>
   <div class="ig-dots"><span class="on"></span><span></span><span></span><span></span><span></span></div></div></div></div></section>`;
 const EDITS_OLD = [
   ['<path d="M8 40L20 8h4l12 32M12 30h20"/>', 'Every word'],
@@ -303,41 +303,91 @@ const HCSS = `
 .cta.peach .s3-read{position:relative;z-index:1}.cta.peach .s3-fine{color:#2b2a28}.cta.peach .amt del{color:#5c4a3e}
 `;
 
+const HCSS2 = `
+/* hero: text left; a static feed of the covers fades in behind the moon (as on the physical page) */
+.hero-h{padding:clamp(72px,8vw,120px) 0 clamp(64px,7vw,110px)}
+.hero-h .feed{right:0;top:-40px;width:min(580px,40vw);display:grid;grid-template-columns:repeat(4,1fr);gap:6px;transform:rotate(-6deg);opacity:.35;z-index:0;-webkit-mask-image:linear-gradient(to left,#000 55%,transparent);mask-image:linear-gradient(to left,#000 55%,transparent)}
+.hero-h .feed img{width:100%;aspect-ratio:9/16;object-fit:cover;border-radius:6px}
+.hero-h .moon{right:6%;top:50%;transform:translateY(-50%);width:min(440px,30vw);z-index:1}
+.hero-h .spider{right:calc(6% + min(440px,30vw) * .42);top:-10px}
+.hero-h .spider::before{height:400px}
+.head-h{max-width:none!important}
+.head-h .l1{display:block;white-space:nowrap;font-size:clamp(2rem,5.6vw,5.8rem)}
+.head-h .done{font-style:italic!important;display:inline-block;position:relative;z-index:0;color:var(--s3-sky);font-size:clamp(3.4rem,7.4vw,7.6rem);letter-spacing:-.03em;margin-top:6px;padding:0 .12em}
+.head-h .done::before{display:none}
+@media(max-width:1299px){.hero-h .feed{display:none}}
+@media(max-width:900px){.hero-h .moon{opacity:.35;top:30%}.head-h .l1{white-space:normal}}
+/* the five Reels: one aligned row with "1 of 5" on top, names only */
+.reels-h h2{color:#fff!important}
+.row5{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:clamp(14px,1.6vw,24px);margin:28px auto 0;max-width:1100px}
+.row5 .rg{flex:none}
+@media(max-width:800px){.row5{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;margin-right:calc(-1 * var(--s3-gut));padding-bottom:8px}.row5 .rg{flex:0 0 58%;scroll-snap-align:start}}
+.reels-h .rg .num{color:var(--s3-sky)}
+/* Who it's for: compact two columns under the bat branch, three covers fanned on a burst */
+.s3-sec.who-h{padding-top:calc(var(--s3-sec) * .55 + min(150px,22vw))}
+.who-h .branch{width:min(460px,60vw)}
+.who-h .hang.h1{top:min(96px,15vw);right:min(270px,34vw)}.who-h .hang.h2{top:min(104px,17vw);right:min(140px,18vw)}
+.who-h .fan .phone{border-color:#120d1a;background:#1b1922;box-shadow:0 14px 30px rgba(0,0,0,.4)}
+.who-h .s3 .fan-burst,.s3 .who-h .fan-burst{width:520px;left:-60px;top:-60px;opacity:.9}
+.who-h .tickets{margin-top:24px}
+/* questions: two columns on night, the wolf howling beside the heading */
+.faq-top{display:flex;align-items:flex-end;justify-content:space-between;gap:24px}
+.faq-h .wolfmoon{position:relative;left:auto;bottom:auto;width:230px;height:200px;flex:none;transform:none}
+.faq-h .wolfmoon .m{width:200px;left:15px;top:0}
+.faq-h .wolfmoon .w{width:120px;left:55px;bottom:-4px}
+.s3-sec.faq-h{padding-bottom:calc(var(--s3-sec) * .55)}
+.faq-h .two{display:grid;grid-template-columns:1fr 1fr;column-gap:56px;align-items:start;margin-top:20px}
+.faq-h .two details{border-top:0;border-bottom:1px solid rgba(255,255,255,.18)!important}
+.faq-h .two details:nth-child(-n+2){border-top:1px solid rgba(255,255,255,.18)!important}
+@media(max-width:800px){.faq-h .two{grid-template-columns:1fr}.faq-h .two details:nth-child(2){border-top:0!important}}
+@media(max-width:700px){.faq-h .wolfmoon{width:150px;height:130px}.faq-h .wolfmoon .m{width:130px;left:10px}.faq-h .wolfmoon .w{width:80px;left:35px}}
+/* buy: the physical page's lavender card, with the Halloween doodles on it */
+.cta-h .cta-card{position:relative;overflow:hidden}
+.cta-h .dd.burst{width:110px;left:4%;top:50%;transform:translateY(-50%) rotate(-10deg)}
+.cta-h .dd.heart{width:84px;right:5%;top:50%;transform:translateY(-50%) rotate(-8deg)}
+.cta-h h2,.cta-h .buy,.cta-h p{position:relative;z-index:1}
+/* phone: doodles never sit on words (v3's ".s3 img" beats a plain ".dd" rule) */
+@media(max-width:1199px){.s3 .dd{display:none}}
+@media(max-width:900px){.s3 .who-h .fan-burst{width:360px;left:-15px;top:-6px}}
+@media(max-width:700px){.s3-sec.hero-h{padding-top:150px}.night.hero-h .moon{width:120px;right:12px;top:14px;transform:none;opacity:.95}.hero-h .hang,.hero-h .spider{display:none}}
+`;
+
 function halloweenPage(d) {
-  const ph5 = d.templates.map((t) => `<div><div class="phone"><img src="${img(t.poster)}" alt="${esc(t.name)}: its Reel cover"></div><p class="cap">${esc(t.name)}</p></div>`).join('');
-  const tpls = d.templates.map((t) => `<div class="tpl"><div class="phone"><img src="${img(t.poster)}" alt=""></div>
-    <h3>${esc(t.name)}</h3><p>${ph(t.job)}</p></div>`).join('');
+  // the physical page's layout (Mercedes 2026-10-20), keeping Halloween's night, moon, bats, spider, dots, branch and wolf
+  const covers = d.templates.map((t) => t.poster);
+  const rows = d.templates.map((t, i) => `<div class="rg"><p class="num">${i + 1} of ${d.templates.length}</p><div class="phone"><img src="${img(t.poster)}" alt="${esc(t.name)}: its Reel cover"></div><h3>${esc(t.name)}</h3></div>`).join('');
+  const [l1, l2] = d.headline.split(' | ');
   const body = `
-<section class="night s3-sec hero-h"><img class="moon" src="${img('moon.webp')}" alt="">
-  <img class="hang" src="${img('bat.png')}" alt="" style="left:44%"><img class="hang b2" src="${img('bat.png')}" alt="" style="left:58%;width:clamp(44px,5vw,72px)">
+<section class="night s3-sec hero-h"><div class="prop feed" aria-hidden="true">${[...covers, ...covers, ...covers].slice(0, 12).map((f) => `<img src="${img(f)}" alt="">`).join('')}</div><img class="moon" src="${img('moon.webp')}" alt="">
+  <img class="hang" src="${img('bat.png')}" alt="" style="left:52%"><img class="hang b2" src="${img('bat.png')}" alt="" style="left:62%;width:clamp(44px,5vw,72px)">
   <img class="fly" src="${img('batfly.png')}" alt="" style="top:18%;left:0"><img class="fly f2" src="${img('batfly.png')}" alt="" style="left:0">
-  <div class="spider" style="right:clamp(60px,15vw,210px);top:-10px"><img src="${img('spider.png')}" alt=""></div>
+  <div class="spider"><img src="${img('spider.png')}" alt=""></div>
   <div class="s3-wrap">
-    <h1 class="s3-display">${esc(d.headline)}</h1>
+    <h1 class="s3-display head-h"><span class="l1">${esc(l1)}</span> <span class="done">${esc(l2)}</span></h1>
     <p class="s3-lede" style="margin-top:28px">${esc(d.sub)}</p>
     <div class="buy">${price(d)}<a class="s3-btn" href="#buy">${esc(d.button)}</a></div>
     <p class="s3-fine">${ph(d.priceLine)}</p>
-    <div class="phones">${ph5}</div>
   </div></section>
-<section class="s3-sec reels"><img class="dd crown" src="${img('crown.webp')}" alt=""><img class="dd burst" src="${img('burst.webp')}" alt=""><img class="dd heart" src="${img('heart.webp')}" alt=""><div class="s3-wrap">
-  <h2 class="s3-h2">${esc(d.getTitle)}</h2><p class="s3-lede" style="margin-top:20px">${esc(d.getLede)}</p>
-  <div class="tpls">${tpls}</div></div></section>
+<section class="s3-sec tight dots reels-h"><img class="dd crown" src="${img('crown.webp')}" alt=""><img class="dd burst" src="${img('burst.webp')}" alt=""><img class="dd heart" src="${img('heart.webp')}" alt=""><div class="s3-wrap">
+  <h2 class="s3-h2">${esc(d.getTitle)}</h2>
+  <div class="row5">${rows}</div></div></section>
 ${reelCarousel(d)}
 ${includes(d)}
 ${editSection(d)}
 ${howItWorks(d)}
-<section class="s3-sec who-h"><img class="branch" src="${img('branch.webp')}" alt=""><img class="hang h1" src="${img('bat.png')}" alt=""><img class="hang h2 b2" src="${img('bat.png')}" alt="">
-  <div class="s3-wrap s3-split"><h2 class="s3-h2">Who it's for</h2><div><p class="s3-lede">${esc(d.who)}</p>
-  <div class="tickets">${d.whoTags.map((t, i) => `<span class="ticket" style="--r:${ROT[i]}deg">${esc(t)}</span>`).join('')}</div></div></div></section>
-<section class="s3-sec night faq-h"><div class="wolfmoon"><img class="m" src="${img('moon.webp')}" alt=""><img class="w" src="${img('wolf.webp')}" alt=""></div><div class="s3-wrap s3-split"><div class="howl"><h2 class="s3-h2">Questions</h2></div>
-  <div class="s3-faq">${d.faq.map(([q, a]) => `<details><summary>${esc(q)}</summary><div>${ph(a)}</div></details>`).join('')}</div></div></section>
-<section class="s3-sec peach cta" id="buy"><img class="dd burst" src="${img('burst.webp')}" alt=""><img class="dd heart" src="${img('heart.webp')}" alt="">
-  <div class="s3-read"><h2 class="s3-h2">${esc(d.ctaHead)}</h2>
+<section class="s3-sec tight who-h"><img class="branch" src="${img('branch.webp')}" alt=""><img class="hang h1" src="${img('bat.png')}" alt=""><img class="hang h2 b2" src="${img('bat.png')}" alt="">
+  <div class="s3-wrap who-row"><div class="who-text"><h2 class="s3-h2">Who it's for</h2><p class="s3-lede" style="margin-top:14px">${esc(d.who)}</p>
+  <div class="tickets">${d.whoTags.map((t, i) => `<span class="ticket" style="--r:${ROT[i]}deg">${esc(t)}</span>`).join('')}</div></div>
+  <div class="fan"><img class="fan-burst" src="${img('burst-orange.webp')}" alt="">${d.whoCovers.map((f) => `<div class="phone"><img src="${img(f)}" alt=""></div>`).join('')}</div></div></section>
+<section class="s3-sec tight night faq-h"><div class="s3-wrap"><div class="faq-top"><h2 class="s3-h2">Questions</h2><div class="wolfmoon" aria-hidden="true"><img class="m" src="${img('moon.webp')}" alt=""><img class="w" src="${img('wolf.webp')}" alt=""></div></div>
+  <div class="s3-faq two">${d.faq.map(([q, a]) => `<details><summary>${esc(q)}</summary><div>${ph(a)}</div></details>`).join('')}</div></div></section>
+<section class="s3-sec cta-p cta-h" id="buy"><div class="s3-wrap cta-card"><img class="dd burst" src="${img('burst.webp')}" alt=""><img class="dd heart" src="${img('heart.webp')}" alt="">
+  <h2 class="s3-h2">${esc(d.ctaHead)}</h2>
   <div class="buy">${price(d)}<a class="s3-btn" href="#buy">${esc(d.button)}</a></div>
   <p class="s3-fine">${ph(d.ctaLine)}</p>
   <p class="s3-fine">${ph('[REEL EDITOR UPSELL: one line once it has a name, link and launch date]')}</p></div></section>
 ${notes(d)}`;
-  return shell(d, HCSS, body);
+  return shell(d, PCSS + HCSS + HCSS2, body);
 }
 
 /* ------------------------------------------------------------------ Physical (Mercedes 2026-10-19, round 3): Scrolly colours (v3 cream, ink,
@@ -354,15 +404,15 @@ const PCSS = `
 @media(min-width:1100px){.swipes{flex-wrap:nowrap;justify-content:space-between;max-width:none;gap:clamp(14px,1.8vw,36px)}.swipes li{white-space:nowrap;font-size:clamp(1.15rem,1.7vw,1.75rem)}}
 .swipes span{position:relative;z-index:0;padding:0 .14em}
 .swipes .plus{align-self:center;font:400 clamp(2.4rem,3.4vw,3.6rem)/1 var(--s3-serif);color:var(--s3-orange);margin-top:44px}
-.swipes .extra span{background:var(--s3-lav);color:var(--s3-ink);border-radius:999px;padding:.12em .7em .18em}
+.swipes .extra span{background:var(--s3-mist);color:var(--s3-ink);border-radius:999px;padding:.12em .7em .18em}
 .swipes .extra span::before{display:none}
-.swipes span::before{content:"";position:absolute;z-index:-1;left:0;right:0;top:.55em;bottom:.04em;background:var(--s3-pink);opacity:.9;border-radius:.1em .35em .15em .4em;transform:rotate(-1.5deg)}
+.swipes span::before{content:"";position:absolute;z-index:-1;left:0;right:0;top:.55em;bottom:.04em;background:var(--s3-sky);opacity:.9;border-radius:.1em .35em .15em .4em;transform:rotate(-1.5deg)}
 .incl-b .aside{margin-top:30px;font:400 1.9rem/1.1 "Covered By Your Grace",cursive;color:var(--s3-ink);transform:rotate(-2deg)}
 .hero-p{padding-top:clamp(56px,7vw,110px);position:relative;overflow:hidden}
 /* headline: "Your month's content:" on one line, DONE in handwriting (Mercedes 2026-10-19) */
 .head-p .l1{display:block;white-space:nowrap;font-size:clamp(2rem,6.2vw,6.4rem)}
 .head-p .done{font-style:italic!important;display:inline-block;position:relative;z-index:0;color:var(--s3-ink);font-size:clamp(4rem,9vw,9rem);letter-spacing:-.04em;margin-top:6px;padding:0 .12em}
-.head-p .done::before{content:"";position:absolute;z-index:-1;left:-.06em;right:-.1em;top:.5em;bottom:.06em;background:var(--s3-pink);border-radius:.12em .4em .2em .5em;transform:rotate(-2deg)}
+.head-p .done::before{display:none}
 .hero-p .s3-wrap{position:relative;z-index:2}
 .hero-p .s3-fine{max-width:620px}
 .prop{position:absolute;pointer-events:none;z-index:1}
@@ -411,6 +461,7 @@ const PCSS = `
 .who-p{overflow-x:clip;position:relative;z-index:1}
 @media(min-width:901px){.s3-sec.who-p{padding-top:calc(var(--s3-sec) * .5 + 80px)}}
 .s3 .fan-burst{position:absolute;z-index:0;max-width:none;width:600px;left:-50px;top:-90px;opacity:.85;transform:rotate(-8deg)}
+@media(max-width:900px){.s3 .who-p .fan-burst{width:360px;left:-15px;top:-6px}}
 .fan-spark{position:absolute;z-index:3;width:44px}.fan-spark.s1{left:-18px;top:30px}.fan-spark.s2{right:-12px;bottom:40px;width:34px}
 .fan .phone{z-index:1}
 .fan .phone{position:absolute;bottom:0;width:150px;border-color:#111;box-shadow:0 14px 30px rgba(80,30,10,.25);background:#f7f3ec}
@@ -421,7 +472,7 @@ const PCSS = `
 .fan .phone:nth-of-type(3){left:250px;transform:rotate(9deg)}
 @media(max-width:900px){.who-row{flex-direction:column;align-items:flex-start}.fan{width:330px;height:270px;margin-top:8px}.fan .phone{width:124px}.fan .phone:nth-of-type(2){left:103px}.fan .phone:nth-of-type(3){left:206px}}
 .cta-p{text-align:center;position:relative;overflow:hidden}
-.cta-card{background:var(--s3-lav);border-radius:20px;padding:clamp(32px,4vw,56px) 24px}
+.cta-card{background:var(--s3-mist);border-radius:20px;padding:clamp(32px,4vw,56px) 24px}
 .cta-p h2{margin-bottom:8px}
 .cta-p .buy{justify-content:center}
 .cta-p .s3-fine{color:#2b2a28}
@@ -440,7 +491,7 @@ function physicalPage(d) {
   const list = d.templates.map((t, i) => `<div class="rg"><p class="num">${i + 1} of 25${d.launchNow ? (d.launchNow.includes(i + 1) ? ' <span class="in">In today</span>' : ' <span class="soon">Arriving soon</span>') : ''}</p><div class="phone"><img src="${img(`p${String(i + 1).padStart(2, '0')}.jpg`)}" alt="${esc(t.name)}: its Reel cover" loading="lazy"></div>
     <h3>${esc(t.name)}</h3></div>`).join('');
   const body = `
-<section class="s3-sec hero-p"><div class="prop feed" aria-hidden="true">${[1, 3, 10, 12, 22, 23, 2, 9, 20, 25, 13, 16].map((n) => `<img src="${img(`p${String(n).padStart(2, '0')}.jpg`)}" alt="">`).join('')}</div><img class="prop burst-h" src="${img('burst-baby.webp')}" alt=""><img class="prop tri" src="${img('tripod.webp')}" alt=""><div class="s3-wrap">
+<section class="s3-sec hero-p"><div class="prop feed" aria-hidden="true">${[1, 3, 10, 12, 22, 23, 2, 9, 20, 25, 13, 16].map((n) => `<img src="${img(`p${String(n).padStart(2, '0')}.jpg`)}" alt="">`).join('')}</div><img class="prop burst-h" src="${img('burst-mist.webp')}" alt=""><img class="prop tri" src="${img('tripod.webp')}" alt=""><div class="s3-wrap">
   <h1 class="s3-display head-p"><span class="l1">${esc(d.headline.split(': ')[0])}:</span> <span class="done">${esc(d.headline.split(': ')[1])}</span></h1>
   <p class="s3-lede" style="margin-top:28px">${esc(d.sub)}</p>
   <div class="buy">${price(d)}<a class="s3-btn" href="#buy">${esc(d.button)}</a></div>
@@ -456,7 +507,7 @@ ${includes(d)}
 ${editSection(d)}
 ${howItWorks(d)}
 <section class="s3-sec tight peach who-p"><div class="s3-wrap who-row"><div class="who-text"><h2 class="s3-h2">Who it's for</h2><p class="s3-lede" style="margin-top:14px">${esc(d.who)}</p>
-  <div class="labels">${d.whoTags.map((t, i) => `<span class="dymo" style="--r:${[-2, 1.5, -1, 2][i % 4]}deg">${esc(t)}</span>`).join('')}</div></div><div class="fan"><img class="fan-burst" src="${img('burst-hot.webp')}" alt=""><img class="fan-spark s1" src="${img('spark-w.webp')}" alt=""><img class="fan-spark s2" src="${img('spark-w.webp')}" alt="">${d.whoPhotos.map(([f, label]) => `<div class="phone">${fs.existsSync(path.join(here, 'img', f)) ? (f.endsWith('.mp4') ? `<video src="${img(f)}" autoplay muted loop playsinline aria-label="${esc(label)}"></video>` : `<img src="${img(f)}" alt="${esc(label)}">`) : `<span class="todo">Photo to make:<b>${esc(label)}</b></span>`}</div>`).join('')}</div></div></section>
+  <div class="labels">${d.whoTags.map((t, i) => `<span class="dymo" style="--r:${[-2, 1.5, -1, 2][i % 4]}deg">${esc(t)}</span>`).join('')}</div></div><div class="fan"><img class="fan-burst" src="${img('burst-sky.webp')}" alt=""><img class="fan-spark s1" src="${img('spark-w.webp')}" alt=""><img class="fan-spark s2" src="${img('spark-w.webp')}" alt="">${d.whoPhotos.map(([f, label]) => `<div class="phone">${fs.existsSync(path.join(here, 'img', f)) ? (f.endsWith('.mp4') ? `<video src="${img(f)}" autoplay muted loop playsinline aria-label="${esc(label)}"></video>` : `<img src="${img(f)}" alt="${esc(label)}">`) : `<span class="todo">Photo to make:<b>${esc(label)}</b></span>`}</div>`).join('')}</div></div></section>
 <section class="s3-sec tight faq-p"><div class="s3-wrap"><h2 class="s3-h2">Questions</h2>
   <div class="s3-faq two">${d.faq.map(([q, a]) => `<details><summary>${esc(q)}</summary><div>${ph(a)}</div></details>`).join('')}</div></div></section>
 <section class="s3-sec cta-p" id="buy"><div class="s3-wrap cta-card">
@@ -472,14 +523,15 @@ ${notes(d)}
 const halloween = {
   file: 'halloween-sales-preview.html',
   title: 'Halloween Reels draft',
-  headline: 'Cute Halloween Reels that sell',
+  headline: 'Cute Halloween Reels | that sell',
   headlines: ['Halloween Reels with a selling job', 'Five Halloween Reels. Your clips, your words, posted before the 31st.', 'Bats, webs and a blood moon, all working for your sales', 'Spooky-cute Reels for your October sale'],
   sub: 'Five ready-made Reels for October. Add your clips and post.',
   was: '$9.99', price: '$4.99',
   button: 'Get all 5 Reels',
   priceLine: 'Instant download.',
   ctaLine: 'Instant download.',
-  getTitle: 'Five Reels, five jobs',
+  getTitle: 'All 5 Reels',
+  whoCovers: ['h3.jpg', 'h6.jpg', 'h5.jpg'],
   getLede: 'Each one sells something.',
   includes: INCLUDES('Real props and motion, built in.'),
   templates: [

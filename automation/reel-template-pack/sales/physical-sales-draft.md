@@ -69,6 +69,15 @@ to confirm no Pro features.
 - Hero (physical): a static Instagram-style feed of Reel frames behind the tripod, fading to the left so it never sits
   behind the words. The designed covers replace these frames once approved.
 
+## Round 2026-10-20 d
+
+- Hero feed and tripod moved left with the burst back behind them; Who it's for burst much bigger, centred behind the
+  phones; How it works on a realistic desktop (black glass, silver chin and stand), short enough for one screen.
+- No + before the carousel; every item looks the same. "swipe" sits beside the slides with a sky-blue arrow.
+- Site palette of 2026-10-20 (vault brand/visual-system.md): sky-blue markers, rays and bursts, blue mist for Who it's
+  for and the buy card (lavender and baby pink are retired; hot pink means Mercedes only). DONE stays navy italic with
+  no marker, since hero headlines never get one.
+
 ## Open decisions (Mercedes)
 
 | Decision | State |
