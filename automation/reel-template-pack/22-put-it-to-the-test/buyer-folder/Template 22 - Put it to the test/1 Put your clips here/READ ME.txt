@@ -3,7 +3,7 @@ Put your clips in this folder, then double-click "2 Double-click to install".
 They go into the template in name order, so name them 1 to 4 (for example 1.mov, 2.mov).
 Film upright (vertical) and start each clip right on the action.
 
-1: The setup (at least 4 seconds)
+1: The setup (at least 5 seconds)
 2: The test, one take (at least 7 seconds)
 3: The result (at least 5 seconds)
 4: You, at the end (at least 4 seconds)
