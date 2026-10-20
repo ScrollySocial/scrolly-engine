@@ -1,13 +1,12 @@
 """The Scrolly Studio opening sting: original tune options rendered from free CC0 samples (VSCO 2 CE).
 
 Run:  ../../../carousels/.venv/Scripts/python.exe render_sting.py
-Out:  out/sting-<id>.wav (48 kHz stereo, 6.0 s). Samples live in samples/ (git-ignored, re-download: README.md).
+Out:  out/sting-<id>-land<N>s.wav (48 kHz stereo). Args = bars before the landing (default 2 3 4). Samples live in samples/ (git-ignored, re-download: README.md).
 
-Timing (3/4 waltz, 90 BPM, so one bar = 2 s):
-  bar 1 (0-2 s)   the tune, while she sits
-  bar 2 (2-4 s)   the answer, rising; harp sweep on beat 3 as the curtains part
-  4.0 s           landing chord as the world appears
-  4.0-6.0 s       ring-out, faded to silence so the world's music can start
+Timing (3/4 waltz, 90 BPM, so one bar = 2 s). She says her first sentence over the bars before the landing:
+  bars 1..N       the tune and its answer (LAYOUTS); harp sweep on beat 3 of bar N as the curtains part
+  N x 2 s         landing chord as the world appears (4, 6 or 8 s)
+  +2 s            ring-out, faded to silence so the world's music can start
 """
 import os, re, glob
 import numpy as np
@@ -16,8 +15,6 @@ from scipy.io import wavfile
 SR = 48000
 BEAT = 60 / 90
 BAR = 3 * BEAT
-LAND = 2 * BAR  # 4.0 s
-LENGTH = 6.0
 HERE = os.path.dirname(os.path.abspath(__file__))
 SAMPLES = os.path.join(HERE, 'samples')
 NOTE = {'C': 0, 'D': 2, 'E': 4, 'F': 5, 'G': 7, 'A': 9, 'B': 11}
@@ -117,12 +114,25 @@ TUNES = {
 }
 
 # Waltz accompaniment: bass on beat 1, chord on beats 2 and 3
-HARMONY = [(D('D3'), [D('A3'), D('D4'), D('F#4')]),   # bar 1: D
-           (D('A2'), [D('G3'), D('C#4'), D('E4')])]   # bar 2: A7
+CH_D = (D('D3'), [D('A3'), D('D4'), D('F#4')])
+CH_BM = (D('B2'), [D('B3'), D('D4'), D('F#4')])
+CH_A7 = (D('A2'), [D('G3'), D('C#4'), D('E4')])
+
+# How many 2-second bars play before the landing (the talk time before the curtain opens).
+# Each is (tune phrase per bar, chord per bar); 'A' = the tune, 'B' = its answer.
+LAYOUTS = {
+    2: (['A', 'B'], [CH_D, CH_A7]),                     # lands at 4 s (~3 s to talk)
+    3: (['A', 'A', 'B'], [CH_D, CH_BM, CH_A7]),         # lands at 6 s (~5 s to talk)
+    4: (['A', 'B', 'A', 'B'], [CH_D, CH_A7, CH_D, CH_A7]),  # lands at 8 s (~7 s to talk)
+}
 LAND_CHORD = [D('D4'), D('F#4'), D('A4')]
 
 
-def render(tid, melody):
+def render(tid, melody, bars=2):
+    phrases, harmony = LAYOUTS[bars]
+    LAND = bars * BAR
+    LENGTH = LAND + 2.0
+    bar_tunes = [melody[0] if p == 'A' else melody[1] for p in phrases]
     buf = np.zeros((int(LENGTH * SR), 2), np.float32)
     glock = Inst('glock', r'_([A-G]#?\d)\.wav')
     harp = Inst('harp', r'KSHarp_([A-G]#?\d)_')
@@ -133,7 +143,7 @@ def render(tid, melody):
     vc_s = Inst('vc_sus', r'susvib_([A-G]#?\d)_')
     perc = lambda f: load(os.path.join(SAMPLES, 'perc', f))
 
-    for bar, (tune, (bass, chord)) in enumerate(zip(melody, HARMONY)):
+    for bar, (tune, (bass, chord)) in enumerate(zip(bar_tunes, harmony)):
         t0 = bar * BAR
         # the tune: glockenspiel doubled softly by harp an octave down for warmth
         for beat, m in tune:
@@ -141,8 +151,8 @@ def render(tid, melody):
             place(buf, harp.note(m - 12), t0 + beat * BEAT, 0.35, dur=1.2, pan=0.15)
         place(buf, vc_p.note(bass), t0, 0.7, pan=-0.2)
         for beat in (1, 2):
-            if bar == 1 and beat == 2:
-                continue  # harp sweep takes beat 3 of bar 2
+            if bar == bars - 1 and beat == 2:
+                continue  # harp sweep takes beat 3 of the last bar
             for i, m in enumerate(chord):
                 inst = vla_p if m < D('C#4') else vln_p
                 place(buf, inst.note(m), t0 + beat * BEAT, 0.28, pan=0.25 - 0.1 * i)
@@ -154,9 +164,9 @@ def render(tid, melody):
     for i, m in enumerate(scale):
         place(buf, harp.note(m), start + i * (BEAT * 0.9 / len(scale)), 0.3 + 0.02 * i, dur=1.5,
               pan=-0.4 + 0.06 * i)
-    # soft string swell under bar 2 that blooms into the landing
+    # soft string swell under the last bar that blooms into the landing
     for m in [D('A3'), D('C#4'), D('E4')]:
-        place(buf, vln_s.note(m), BAR + BEAT, 0.12, dur=LAND - BAR - BEAT, attack=1.2, release=0.15)
+        place(buf, vln_s.note(m), LAND - 2 * BEAT, 0.12, dur=2 * BEAT, attack=1.2, release=0.15)
     place_peak_at(buf, perc('susCymb1-cresc-Short_v1.wav'), LAND, 0.35)
 
     # landing: the "world appears" chord
@@ -171,16 +181,19 @@ def render(tid, melody):
     place(buf, perc('Triangle6-Hit_v1_rr1_Sum.wav'), LAND, 0.35, pan=0.3)
     place(buf, perc('BellTree_Stroke1_v1_Sum.wav'), LAND + 0.05, 0.3, pan=-0.3)
 
-    # fade the tail to silence by 6.0 s
-    f0, f1 = int(5.0 * SR), len(buf)
+    # fade the tail to silence 2 s after the landing
+    f0, f1 = int((LAND + 1.0) * SR), len(buf)
     buf[f0:f1] *= np.linspace(1, 0, f1 - f0)[:, None] ** 1.5
     buf /= max(1e-6, np.abs(buf).max()) / 0.89  # peak at about -1 dBFS
     os.makedirs(os.path.join(HERE, 'out'), exist_ok=True)
-    out = os.path.join(HERE, 'out', f'sting-{tid}.wav')
+    out = os.path.join(HERE, 'out', f'sting-{tid}-land{int(LAND)}s.wav')
     wavfile.write(out, SR, (buf * 32767).astype(np.int16))
     print('wrote', out)
 
 
 if __name__ == '__main__':
-    for tid, melody in TUNES.items():
-        render(tid, melody)
+    import sys
+    lengths = [int(a) for a in sys.argv[1:]] or [2, 3, 4]
+    for bars in lengths:
+        for tid, melody in TUNES.items():
+            render(tid, melody, bars)
