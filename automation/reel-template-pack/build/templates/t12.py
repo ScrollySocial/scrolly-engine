@@ -1,123 +1,157 @@
 """12 Your order just arrived, approved 2026-10-18 as the round-4 motion test (build/story7.py, "no changes").
-The buyer's four clips are real CapCut clip layers: the door (above the diagonal, then on the phone, then on the mailer
-at the end), the tracking clip (inside her front-facing mailbox, zooming out to full screen), the unboxing (under the
-three tissue sheets, which are their own layers and peel off), and in use. Everything else plays as a flipbook from the
-motion test (build/motion_capcut.py). Editable Montserrat: POV line, ding dong, out for delivery, delivered, the name on
-the mailbox, the notification, what's inside, the tag line and the CTA.
-CapCut limits: the clip in the mailbox opening shows square corners for a moment while it zooms, and the zoom ends on a
-crop of the clip before the full frame; the clip appears in the opening without a fade."""
-import contextlib, math
-from PIL import Image, ImageDraw
-from engine import Layers, W, H
-import motion_capcut as MC
+FULLY EDITABLE build (2026-10-20, build/editable.py; the motion test plays P.SLOW times longer, so script times are
+scaled by SLOW): every word is CapCut text (DM Serif Display built-in words: it's here, the, wait, is over, get yours;
+the POV line, ding dong, out for delivery, delivered, the name on the mailbox, the notification, what's inside, the tag
+line and the CTA in Montserrat, the [brackets] on CapCut's text background); the concrete stage is CapCut's background
+colour under a colourless concrete grain; the doorbell, mailbox, phone, padded mailer, packing peanuts, tissue sheets,
+kraft tag and wax seal are real photos moving on keyframes; the four clips are real clip layers (placeholder cards
+until the buyer's clips go in): the door (above the diagonal, on the phone, on the mailer), the tracking clip (inside
+the mailbox opening, zooming out to full screen), the unboxing (under the three tissue sheets) and in use.
+CapCut limits: the diagonal split is a tilted clip window, and the diagonal wipe is a slide up and away; the bursts
+behind the doorbell is a picture (text always sits above pictures; recolour it with Adjust > HSL); the mailbox door
+folding down on its hinge is a short flipbook of the door alone (CapCut can't squash a picture); the clip in the
+mailbox opening shows square corners while it zooms out; the notification pops onto the screen instead of sliding
+down from its top edge; the tissue sheets are photos (recolour them with Adjust > HSL)."""
+import math
+from PIL import Image, ImageDraw, ImageEnhance
+import editable as Ed
+from editable import at, still, then
+import editable_b as B
+from editable_b import pop, word
 import play as P
 import story7 as S7
+import collage as C
+from collage_kit import doodle as art_doodle, raw
+from motion_b2 import ease, back_out, seg, lerp
+from engine import W, H
 
-SL = P.SLOW; END = S7.SECS['12'] * SL
+SL = B.SL; END = S7.SECS['12']
 SPEC = dict(num='12', title='Your order just arrived', subtitle='25 seconds. Four clips: the doorstep, on its way, the unboxing, in use.',
             font='montserrat', dir='12-your-order-just-arrived', folder='Template 12 - Your order just arrived',
-            project='Scrolly 12 Your order just arrived', cover_at=1.5,
+            project='12 Your order just arrived', cover_at=1.5,
             slots=[('The doorstep', 'The parcel arriving or on the doorstep, upright (at least 7 seconds)'),
                    ('On its way', 'Packing it, the courier, or the parcel on the move'),
                    ('The unboxing', 'Hands opening it, upright'),
                    ('In use', 'Your product being used')],
             test_clips=[('IMG_1454', 1.0), ('IMG_1385', 1.0), ('IMG_1456', 1.0), ('IMG_1381', 1.0)])
 INK, WHITE, WINE, BLUE = (24, 23, 22), (255, 255, 255), P.PAL['wine'], P.PAL['blue']
-BLANK = Image.new('RGBA', (2, 2), (0, 0, 0, 0))
+STAGE = (212, 211, 207)
 TAG = '[packed with\nlove + a little\nsurprise]'
 
-def sz(px): return round(px * 0.85 / 6.1, 2)
-
 def blank_tag():
-    tag = S7.S.cut('images', 'Blank kraft hang tag with twine-116.png', tol=10); tag = tag.resize((int(tag.width * 2300 / tag.height), 2300), Image.LANCZOS)
-    return tag
+    tag = S7.S.cut('images', 'Blank kraft hang tag with twine-116.png', tol=10); return tag.resize((int(tag.width * 2300 / tag.height), 2300), Image.LANCZOS)
 
 def tag_with(text):
     tag = blank_tag(); d = ImageDraw.Draw(tag); f = P.manrope(64, 600)
     for k, l in enumerate(text.split('\n')): d.text((int(tag.width * 0.07), int(tag.height * 0.5) + k * 82), l, font=f, fill=INK, anchor='lm')
     return P.die_cut(tag, 10)
 
-@contextlib.contextmanager
-def flip_mode(g):
-    c = g['c']; keep = dict(g); keep_c = dict(c); bl = Image.blend
-    c.update(door=MC.KeyClip(MC.KEYS['m']), cta=MC.KeyClip(MC.KEYS['m']), track=MC.KeyClip(MC.KEYS['c']),
-             unbox=MC.KeyClip(MC.KEYS['y']), use=MC.KeyClip(MC.KEYS['b']))
-    g['tissues'] = [Image.new('RGBA', (W, H), (0, 0, 0, 0)) for _ in range(3)]
-    for k in ('pov', 'ding', 'ofd', 'delivered', 'inside', 'kw'): g[k] = BLANK
-    sw_ = P.story_word; P.story_word = lambda text, *a, **k: BLANK if text in ('the', 'wait') else sw_(text, *a, **k)
-    g['notif'] = P.notification('', '', 560); g['bigtag'] = P.die_cut(blank_tag(), 10); g['mbf'] = S7.front_mailbox(840, label=False)
-    Image.blend = lambda a, b, al: b if al > 0.5 else a           # no fade: a half-key colour can't be cut out
-    try: yield
-    finally:
-        Image.blend = bl; P.story_word = sw_; g.clear(); g.update(keep); c.clear(); c.update(keep_c)
+def reel():
+    g = S7.setup_12(); r = B.SlowReel(END)
+    r.art('concrete-grain', Ed.grain(raw('images', 'Light gray concrete mineral texture-4.png'), 0.2), 0, None, 1, still(540, 960))
+
+    # 1 (0-2.6) the door clip above a diagonal (a tilted clip window); the doorbell on the stage, ONE burst behind it
+    a = math.degrees(math.atan2(1000 - 1450, W)); cw_, ch_ = 2200, 1700; mid = (540, 1225); off = Ed.rot((0, -ch_ / 2), a)
+    away = Ed.slide(2.3, 2.6, -W - 600, -900)
+    r.clip(0, 0, 2.6, 10, then(lambda ts: at(mid[0] + off[0], mid[1] + off[1], 1, a), away), size=(cw_, ch_), src=0)
+    line = Image.new('RGBA', (2400, 12), WHITE + (255,))
+    r.art('diagonal-line', line, 0, 2.6, 11, then(lambda ts: at(mid[0], mid[1], 1, a), away))
+    r.art('burst', art_doodle('burst', 1, 640, BLUE), 1.1, 2.6, 12,
+          then(lambda ts: at(790, 1560, 0.85 + 0.15 * back_out(seg(ts, 1.1, 1.5), 1.6) + 0.04 * math.sin((ts - 1.1) * 6)), away))
+    r.art('doorbell', g['bell'], 0.8, 2.6, 13,
+          then(lambda ts: at(790, 1560, back_out(seg(ts, 0.8, 1.1)) * (1 - 0.1 * math.sin(math.pi * seg(ts, 1.1, 1.3)))), away))
+    r.boxed('POV: your [product]\njust arrived', 60, 0.0, 2.6, then(pop(430, 300, 0.0, 4), away), WHITE, 'POV: your candle\njust arrived')
+    r.serif("it's here", 210, 0.45, 2.6, then(word(540, 500, 0.45, 0), away), WHITE, WINE)
+    r.boxed('ding dong!', 64, 1.5, 2.6, then(pop(300, 1440, 1.5, 6), away), WINE, round_=1)
+
+    # 2-3 (2.6-5.6) her front-on mailbox: [out for delivery...]; the door drops open, the tracking clip zooms out of it
+    body, door, arch, k = S7.front_mailbox(840, label=False); mc = (540, 1180)
+    ox, oy = mc[0] - body.width / 2, mc[1] - body.height / 2; ax0, ay0, ax1, ay1 = arch; aw, ah = ax1 - ax0, ay1 - ay0
+    keyed = body.copy(); km = S7.arch_mask((aw, ah), aw / 2); keyed.paste(B.KEY + (255,), (ax0, ay0), km)
+    bodyw, wsize, woff = B.hole(keyed)
+    fm = lambda ts: at(mc[0], mc[1], back_out(seg(ts, 2.6, 2.9), 1.4))
+    inside = Image.new('RGBA', (aw, ah), (30, 12, 16, 255)); inside.putalpha(km)
+    r.art('mailbox-inside', inside, 2.6, 3.9, 14, Ed.child(fm, woff))
+    r.clip(1, 3.75, 3.9, 15, Ed.child(fm, woff), size=(aw, ah), src=0.25 * SL)
+    r.art('mailbox', bodyw, 2.6, 4.5, 16, fm)
+    dx0, dy0, dx1, dy1 = [int(v * k) for v in S7.MB_DOOR]
+    dcen = (dx0 + door.width / 2 - body.width / 2, dy0 + door.height / 2 - body.height / 2)
+    r.art('mailbox-door', door, 2.6, 3.4, 17, Ed.child(fm, dcen))
+    frames = []                                                     # the door folds down on its hinge: a flipbook of the door only
+    for n in range(int(round(0.35 * SL * 30)) + 1):
+        ts = 3.4 + n / 30 / SL; f = math.cos(math.pi / 2 * ease(seg(ts, 3.4, 3.75)))
+        if f > 0.02:
+            dh = max(1, int(door.height * f)); d_ = door.resize((door.width, dh)); d_ = ImageEnhance.Brightness(d_).enhance(0.6 + 0.4 * f)
+            frames.append((d_, (ox + dx0 + door.width / 2, oy + dy1 - dh / 2)))
+    r.L.flip('mailbox-door-fold', frames, r.R(3.4), 17)
+    t_lip = 3.4 + len(frames) / 30 / SL + 0.01
+    lip = door.resize((door.width, max(4, int(door.height * 0.05))))
+    r.art('mailbox-door-open', lip, t_lip, 4.5, 17, still(ox + dx0 + door.width / 2, oy + dy1 + lip.height / 2))
+    lab = P.pill_m('[your name]', 54, BLUE, rot=0); ly = oy + dy0 + door.height * 0.55 + lab.height / 2; hinge = oy + dy1
+    def name(ts):
+        f = math.cos(math.pi / 2 * ease(seg(ts, 3.4, 3.75))); return at(ox + dx0 + door.width / 2, hinge - (hinge - ly) * f, back_out(seg(ts, 2.6, 2.9), 1.4) * f)
+    r.boxed('[your name]', 54, 2.6, 3.75, name, BLUE, 'the Lees')
+    def zoom(ts):
+        z = ease(seg(ts, 3.9, 4.5)); bh = lerp(ah, H, z); x0, y0 = ox + ax0, oy + ay0
+        bx0, by0 = lerp(x0, (W - H * aw / ah) / 2, z), lerp(y0, 0, z); return at(bx0 + bh * aw / ah / 2, by0 + bh / 2, bh / ah)
+    r.clip(1, 3.9, 5.6, 18, zoom, size=(aw, ah), src=0.4 * SL)
+    r.boxed('[out for delivery...]', 78, 2.7, 4.2, pop(540, 330, 2.7, 4), WHITE, 'out for delivery...')
+    r.boxed('[delivered!]', 88, 4.6, 5.6, pop(540, 330, 4.6, 5), BLUE, 'delivered!')
+
+    # 4 (5.6-7.0) the order notification pops onto the phone; the door clip on its screen (tech)
+    ph, ssize, soff = B.device(S7.PHONE, 760)
+    fp = lambda ts: at(540, lerp(2400, 1000, ease(seg(ts, 5.6, 5.9))), 1, 3)
+    r.clip(0, 5.6, 7.0, 19, Ed.child(fp, soff), size=ssize)
+    r.art('phone', ph, 5.6, 7.0, 20, fp)
+    sw = ssize[0] - 12; blank = P.notification('', '', 560); fs = sw * 0.94 / 560; nb = S7.S.fitw(blank, int(sw * 0.94))
+    noff = (soff[0], soff[1] - (ssize[1] - 12) / 2 + 40 + nb.height / 2)
+    fn = Ed.child(fp, noff); fnp = lambda ts: dict(fn(ts), s=back_out(seg(ts, 6.0, 6.3), 1.4))
+    r.art('notification', nb, 6.0, 7.0, 21, fnp)
+    hh = 560 * 0.32
+    for words, test, title, pxn, col in (('[YOUR SHOP]', 'LEE & CO', True, hh * 0.2, INK), ('[Delivered]', 'Delivered', False, hh * 0.16, (70, 68, 66))):
+        o = B.anchor(P.notification(words if title else '', '' if title else words, 560), blank)
+        r.plain(words, pxn * fs / 0.85, 6.0, 7.0, Ed.child(fnp, (o[0] * fs, o[1] * fs)), col, test=test)
+
+    # 5 (7.0-8.4) the padded mailer shakes, packing peanuts burst out: [what's inside?] (no video)
+    def mailer(ts):
+        sh = 8 * math.sin(ts * 50) * (1 - seg(ts, 7.4, 7.6)); return at(540 + sh, 1100, back_out(seg(ts, 7.0, 7.25), 1.5), -sh)
+    r.art('mailer-shake', g['mailer_s'], 7.0, 8.4, 22, mailer)
+    for i in range(12):
+        t0 = 7.45 + (i % 4) * 0.03
+        def pn(ts, i=i, t0=t0):
+            a = -math.pi / 2 + (i - 5.5) * 0.22; s = seg(ts, t0, 8.2); rr = 900 * ease(s)
+            return at(540 + rr * math.cos(a), 1000 + rr * math.sin(a) + 900 * s * s, 1, -(i * 40 + 300 * s))
+        r.art(f'peanut-{i}', g['peanut'], t0, 8.4, 23 + i, pn)
+    r.boxed("[what's inside?]", 80, 7.15, 8.4, pop(540, 420, 7.15, 5), WHITE, "what's inside?")
+
+    # 6-7 (8.4-13.2) the unboxing under three tissue sheets: THE / WAIT / IS OVER, each sheet peels off in turn
+    r.clip(2, 8.4, 13.2, 36, still(540, 960))
+    for i in (2, 1, 0):
+        t0 = (9.3, 10.2, 12.0)[i]; sg = 1 if i % 2 == 0 else -1
+        def peel(ts, t0=t0, sg=sg):
+            u = ease(seg(ts, t0, t0 + 0.3)); return at(540 + sg * 1100 * u, 960 + 1400 * u * u, 1, -sg * 25 * u)
+        r.art(f'tissue-{i}', C.shadow(g['tissues'][i], (16, 24), 18, 120), 8.4, t0 + 0.3, 37 + (2 - i), peel)
+        if i == 0: r.serif('the', 230, 8.4, 9.6, peel, WINE, WHITE)
+        if i == 1: r.serif('wait', 230, 9.5, 10.5, peel, WINE, WHITE)
+        if i == 2: r.serif('is over', 230, 10.4, 12.3, peel, WINE, WHITE, typewriter=round(7 * 0.09 * SL, 2))
+
+    # 8 (13.2-15.6) in use; a giant kraft tag, a third on screen: [packed with love + a little surprise]
+    r.clip(3, 13.2, 15.6, 40, still(540, 960))
+    bt = P.die_cut(blank_tag(), 10); otag = B.anchor(tag_with(TAG), bt)
+    ft = lambda ts: at(lerp(W + 700, W - 110, back_out(seg(ts, 13.3, 13.7), 1.3)), 980, 1, -8)
+    r.art('big-tag', bt, 13.2, 15.6, 41, ft)
+    r.plain(TAG, 64 / 0.85, 13.2, 15.6, Ed.child(ft, otag), INK, test='packed with\nlove + a little\nsurprise')
+
+    # 9 (15.6-end) CTA: the door clip on the mailer, the wax seal pressed on; get yours / comment "[KEYWORD]"
+    m = g['mailer'].copy(); m.paste(B.KEY + (255,), (int(m.width * 0.15), int(m.height * 0.22), int(m.width * 0.15) + int(m.width * 0.7), int(m.height * 0.22) + int(m.height * 0.6)))
+    mw, msize, moff = B.hole(P.die_cut(m, 10))
+    fmail = pop(540, 1080, 15.6, 3)
+    r.clip(0, 15.6, None, 42, Ed.child(fmail, moff), size=msize, src=2.0)
+    r.art('mailer', mw, 15.6, None, 43, fmail)
+    r.art('wax-seal', g['seal'], 16.0, None, 44, lambda ts: at(860, 1430, 1 + 0.5 * (1 - back_out(seg(ts, 16.0, 16.2), 1.2))))
+    r.serif('get yours', 190, 15.8, None, word(540, 330, 15.8, 0), WHITE, WINE)
+    r.boxed('comment "[KEYWORD]"', 72, 16.2, None, pop(540, 530, 16.2, 0), WINE, 'comment "CANDLE"')
+    return r
 
 def layers():
-    g = Layers(); s = S7.setup_12(); concrete = s['concrete']; clear = Image.new('RGBA', (W, H), (0, 0, 0, 0))
-    g.art('concrete', concrete, (0, END), 0, (540, 960))
-    # scene 1: the concrete below the diagonal covers the door clip (its own layer, over the clip)
-    tri = concrete.copy(); m = Image.new('L', (W, H), 255); ImageDraw.Draw(m).polygon([(0, 0), (W, 0), (W, 1000), (0, 1450)], fill=0); tri.putalpha(m)
-    ImageDraw.Draw(tri).line([(0, 1450), (W, 1000)], fill=WHITE + (255,), width=12)
-    g.art('diagonal', tri, (0, 2.6 * SL), 20, (540, 960))
-    # the three tissue sheets: their own layers, peeling off (the words on them come with the flipbook)
-    for i in (2, 1, 0):
-        t0 = (9.3, 10.2, 12.0)[i]; sg = 1 if i % 2 == 0 else -1; sheet = s['tissues'][i].copy()
-        if i < 2: S7.put(sheet, P.story_word(('the', 'wait')[i], 230, WINE, edge=WHITE), (540, 960))   # the word lives on its sheet
-        sh = S7.C.shadow(sheet, (16, 24), 18, 120)
-        us = [k / 8 for k in range(9)]; ts = [(t0 + 0.3 * S7.ease(u) - 8.4) * SL for u in us]
-        kf = {'x': [(0, 540)] + [(ts_, 540 + sg * 1100 * u) for ts_, u in zip(ts, us)], 'y': [(0, 960)] + [(ts_, 960 + 1400 * u * u) for ts_, u in zip(ts, us)],
-              'rot': [(0, 0)] + [(ts_, -sg * 25 * u) for ts_, u in zip(ts, us)]}
-        g.art(f'tissue{i}', sh, (8.4 * SL, (t0 + 0.3) * SL), 30 + (2 - i), (540, 960), kf)
-
-    def flip_frame(t):
-        ts = t / SL; s['concrete'] = concrete if 2.3 <= ts < 2.6 else clear   # the diagonal wipe needs the real stage
-        return S7.frame_12(s, ts)
-    with flip_mode(s):
-        frames, track = MC.flipbook(flip_frame, 0, END)
-    s['concrete'] = concrete
-    g.flip('fx', frames, 0, 40)
-
-    body, door, arch, k = s['mbf']; mc = (540, 1180); ox, oy = mc[0] - body.width / 2, mc[1] - body.height / 2
-    aw, ah = arch[2] - arch[0], arch[3] - arch[1]; x0, y0 = ox + arch[0], oy + arch[1]
-    def zoom_geom(t):   # the clip grows out of the mailbox opening (same shape all the way, see story7.stage_mail)
-        z = S7.ease(S7.seg(t / SL, 3.9, 4.5)); bw, bh = S7.lerp(aw, H * aw / ah, z), S7.lerp(ah, H, z)
-        bx, by = S7.lerp(x0, (W - H * aw / ah) / 2, z), S7.lerp(y0, 0, z); return bx + bw / 2, by + bh / 2, bw / aw, 0
-    sw_, sh_ = P.screen_size(S7.PHONE, 760); mailer = s['mailer']
-    MC.clip_layers(g, track, [
-        ('m', 0, 0, 2.6 * SL, (W, H), 0, None, lambda t: t, lambda t: (540, 960, 1.0, 0)),
-        ('c', 1, 3.6 * SL, 5.6 * SL, (aw, ah), 0, None, lambda t: t - 3.5 * SL, zoom_geom),
-        ('m', 0, 5.6 * SL, 7.0 * SL, (sw_, sh_), 3, None, lambda t: t - 5.6 * SL),
-        ('y', 2, 8.4 * SL, 13.2 * SL, (W, H), 0, None, lambda t: t - 8.4 * SL, lambda t: (540, 960, 1.0, 0)),
-        ('b', 3, 13.2 * SL, 15.6 * SL, (W, H), 0, None, lambda t: t - 13.2 * SL, lambda t: (540, 960, 1.0, 0)),
-        ('m', 0, 15.6 * SL, END, (int(mailer.width * 0.7), int(mailer.height * 0.6)), 3, None, lambda t: t - 15.6 * SL + 2.0)], z0=1)
-
-    z = [60]
-    def say(words, test, px, t0, t1, pos, rot, box=(255, 255, 255), color=INK, kf=None, round_=0.0, size=None):
-        z[0] += 1; k = kf or {'scale': MC.popk(0, 0.3 * SL)}
-        g.text('montserrat', size or sz(px), (words, test), (t0 * SL, t1 * SL), z[0], pos, rot, k, color=color, box=box and (box, round_))
-    say('POV: your [product]\njust arrived', 'POV: your candle\njust arrived', 60, 0.0, 2.45, (430, 300), 4)
-    say('ding dong!', 'ding dong!', 64, 1.5, 2.45, (300, 1440), 6, box=WINE, color=WHITE, round_=1.0)
-    say('[out for delivery...]', 'out for delivery...', 78, 2.7, 4.2, (540, 330), 4)
-    # the name on the mailbox door: sits on the door, then folds away as the door drops open
-    lab = P.pill_m('[your name]', 54, BLUE, rot=0); dx0, dy0, dx1, dy1 = [int(v * k) for v in S7.MB_DOOR]
-    lx, ly = ox + dx0 + door.width / 2, oy + dy0 + door.height * 0.55 + lab.height / 2
-    fold = [((3.4 + 0.35 * j / 6) * SL - 2.6 * SL, math.cos(math.pi / 2 * S7.ease(j / 6))) for j in range(7)]
-    say('[your name]', 'the Lees', 54, 2.6, 3.75, (lx, ly), 0, box=BLUE,
-        kf={'scale': MC.popk(0, 0.3 * SL)[:-1] + [(f[0], max(0.0, f[1])) for f in fold],
-            'y': [(0, ly)] + [(f[0], dy1 + oy - (dy1 + oy - ly) * max(0.0, f[1])) for f in fold]})
-    say('[delivered!]', 'delivered!', 88, 4.6, 5.6, (540, 330), 5, box=BLUE)
-    # the notification on the phone screen (title and body), riding up with the phone
-    sw, sh = sw_, sh_; nimg = S7.S.fitw(s['notif'], int(sw * 0.94)); fs = nimg.width / s['notif'].width
-    def phone_with(title, body):
-        scr = Image.new('RGBA', (sw, sh), (90, 90, 90, 255)); n = S7.S.fitw(P.notification(title, body, 560), int(sw * 0.94))
-        scr.alpha_composite(n, (int((sw - n.width) / 2), 40)); return P.on_screen(S7.PHONE, 760, scr)
-    pb = phone_with('', ''); hh = int(560 * 0.32)
-    for words, test, body, pxn in (('[YOUR SHOP]', 'LEE & CO', False, hh * 0.2), ('[Delivered]', 'Delivered', True, hh * 0.16)):
-        o = MC.text_anchor(phone_with('' if body else words, words if body else ''), pb, -3)
-        say(words, test, 0, 6.1, 7.0, (540 + o[0], 1000 + o[1]), 3, box=None, size=round(pxn * fs * 0.95 / 6.1, 2), color=INK if not body else (70, 68, 66))
-    say("[what's inside?]", "what's inside?", 80, 7.15, 8.4, (540, 420), 5)
-    # the tag line, on the giant tag sliding in from the right
-    o = MC.text_anchor(tag_with(TAG), P.die_cut(blank_tag(), 10), 8)
-    xs = [((13.3 + 0.4 * j / 8 - 13.2) * SL, S7.lerp(W + 700, W - 110, S7.back_out(j / 8, 1.3)) + o[0]) for j in range(9)]
-    say(TAG, 'packed with\nlove + a little\nsurprise', 64, 13.2, 15.6, (xs[-1][1], 980 + o[1]), -8, box=None, kf={'x': [(0, W + 700 + o[0])] + xs})
-    say('comment "[KEYWORD]"', 'comment "CANDLE"', 72, 16.2, END / SL, (540, 530), 0, box=WINE, color=WHITE)
-    return g
+    return reel().L
