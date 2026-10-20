@@ -312,6 +312,9 @@ const HCSS2 = `
 .hero-h .moon{right:6%;top:50%;transform:translateY(-50%);width:min(440px,30vw);z-index:1}
 .hero-h .spider{right:calc(6% + min(440px,30vw) * .42);top:-10px}
 .hero-h .spider::before{height:400px}
+/* a phone showing a Reel cover sits on the moon (Mercedes 2026-10-20) */
+.hero-h .moon-phone{position:absolute;z-index:2;right:calc(6% + min(440px,30vw) / 2 - min(200px,13.5vw) / 2);top:50%;width:min(200px,13.5vw);transform:translateY(-46%) rotate(5deg);border-color:#111;box-shadow:0 18px 40px rgba(0,0,0,.6),0 0 60px rgba(255,90,40,.25)}
+@media(max-width:900px){.hero-h .moon-phone{display:none}}
 .head-h{max-width:none!important}
 .head-h .l1{display:block;white-space:nowrap;font-size:clamp(2rem,5.6vw,5.8rem)}
 .head-h .done{font-style:italic!important;display:inline-block;position:relative;z-index:0;color:var(--s3-sky);font-size:clamp(3.4rem,7.4vw,7.6rem);letter-spacing:-.03em;margin-top:6px;padding:0 .12em}
@@ -361,7 +364,7 @@ function halloweenPage(d) {
   const rows = d.templates.map((t, i) => `<div class="rg"><p class="num">${i + 1} of ${d.templates.length}</p><div class="phone"><img src="${img(t.poster)}" alt="${esc(t.name)}: its Reel cover"></div><h3>${esc(t.name)}</h3></div>`).join('');
   const [l1, l2] = d.headline.split(' | ');
   const body = `
-<section class="night s3-sec hero-h"><div class="prop feed" aria-hidden="true">${[...covers, ...covers, ...covers].slice(0, 12).map((f) => `<img src="${img(f)}" alt="">`).join('')}</div><img class="moon" src="${img('moon.webp')}" alt="">
+<section class="night s3-sec hero-h"><div class="prop feed" aria-hidden="true">${[...covers, ...covers, ...covers].slice(0, 12).map((f) => `<img src="${img(f)}" alt="">`).join('')}</div><img class="moon" src="${img('moon.webp')}" alt=""><div class="phone moon-phone"><img src="${img(d.heroPhone)}" alt="The Once in a blood moon Reel cover"></div>
   <img class="hang" src="${img('bat.png')}" alt="" style="left:52%"><img class="hang b2" src="${img('bat.png')}" alt="" style="left:62%;width:clamp(44px,5vw,72px)">
   <img class="fly" src="${img('batfly.png')}" alt="" style="top:18%;left:0"><img class="fly f2" src="${img('batfly.png')}" alt="" style="left:0">
   <div class="spider"><img src="${img('spider.png')}" alt=""></div>
@@ -547,6 +550,7 @@ const halloween = {
   ],
   whoTags: ['Product shops', 'Digital products', 'Services', 'Creators'],
   editPhone: 'h2.jpg',
+  heroPhone: 'h6.jpg',
   rc: { phone: 'h6.jpg', slides: ['ch6-2.jpg', 'ch6-4.jpg', 'ch6-6.jpg'] },
   who: 'Anyone with something to sell this October.',
   faq: FAQ('No, they come with the template.'),
