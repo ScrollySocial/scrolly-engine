@@ -19,7 +19,7 @@ const img = (f) => {
 };
 
 const BASE = `
-.draft{background:#090909;color:#fff;padding:20px var(--s3-gut);font:var(--s3-fs-fine)/1.5 var(--s3-sans)}
+.draft{background:#0a1930;color:#fff;padding:20px var(--s3-gut);font:var(--s3-fs-fine)/1.5 var(--s3-sans)}
 .draft b{color:var(--s3-orange)}
 .draft details{margin-top:8px}
 .draft summary{cursor:pointer;font-weight:700}
@@ -43,9 +43,9 @@ mark.ph{background:#ffd9c9;color:var(--s3-ink);padding:0 4px;border-radius:3px}
 @media(max-width:800px){.phones{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:10px;margin-right:calc(-1 * var(--s3-gut))}
  .phones>*{flex:0 0 58%;scroll-snap-align:start}}
 /* How it works: a strip of film with the how-to video on a desktop screen (Mercedes 2026-10-19) */
-.film{background:#141414;color:#fff;position:relative;padding:calc(var(--s3-sec) + 22px) 0}
+.film{background:var(--s3-navy);color:#fff;position:relative;padding:calc(var(--s3-sec) + 22px) 0}
 .film::before,.film::after{content:"";position:absolute;left:0;right:0;height:34px;
- background:#141414 radial-gradient(circle,transparent 0,transparent 0) ;
+ background:var(--s3-navy);
  background-image:repeating-linear-gradient(90deg,transparent 0 14px,#f7f3ec 14px 34px,transparent 34px 48px);
  -webkit-mask:linear-gradient(#000 0 0) center/100% 16px no-repeat;mask:linear-gradient(#000 0 0) center/100% 16px no-repeat}
 .film::before{top:10px}.film::after{bottom:10px}
@@ -59,14 +59,14 @@ mark.ph{background:#ffd9c9;color:var(--s3-ink);padding:0 4px;border-radius:3px}
 .base{width:34%;height:12px;margin:0 auto;border-radius:6px;background:#333}
 /* steps as one line above the monitor; "see it in action" in handwriting on the screen (Mercedes 2026-10-20) */
 .steps-line{list-style:none;padding:0;margin:28px 0 0;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:10px 18px;font:400 var(--s3-fs-h3)/1.1 var(--s3-serif);color:#fff}
-.steps-line li+li::before{content:"92";color:var(--s3-orange);margin-right:18px}
+.steps-line li+li::before{content:"→";color:var(--s3-sky);margin-right:18px}
 .monitor{position:relative}
 .see-note{position:absolute;z-index:2;right:-10px;top:-6px;display:flex;align-items:flex-end;gap:4px;font:400 2rem/1 "Covered By Your Grace",cursive;color:#fff;transform:rotate(-6deg)}
 .see-note img{width:80px;transform:scaleX(-1) rotate(30deg) translateY(28px)}
 @media(max-width:1000px){.see-note{right:0;top:-46px;font-size:1.6rem}}
 @media(max-width:560px){.screen{border-width:8px 8px 18px}.steps-line{font-size:1.5rem}}
 /* Who it's for: the peach band breaks up the page (Mercedes 2026-10-19; brand peach from the Reel covers) */
-.peach{background:#ffc9a8}
+.peach{background:var(--s3-baby)}
 .stick{position:relative;overflow:hidden}
 .stick h2{text-align:center}
 .stick .sq{display:block;width:min(300px,60vw);margin:10px auto 0}
@@ -107,19 +107,19 @@ details.notes>summary{cursor:pointer;font:700 var(--s3-fs-label)/1.4 var(--s3-sa
 @media(max-width:1000px){.rc-row{flex-direction:column;align-items:flex-start;gap:60px}}
 @media(max-width:700px){.rc-vis{gap:10px}.rc-vis .phone{width:116px}.rc-vis .slides img{width:150px}.rc-vis .slides img:nth-child(n+2){display:none}}
 /* compact: text left, the phone with handwritten callouts right (Mercedes: section was too tall) */
-.edits-row{display:flex;align-items:center;justify-content:space-between;gap:40px}
-.edit-text{max-width:22em}
-.callouts{display:grid;grid-template-columns:auto auto auto;align-items:center;gap:14px;flex:none}
-.callouts .phone{width:150px;border-color:#111;transform:rotate(3deg);box-shadow:0 14px 30px rgba(80,30,10,.22)}
-.co{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:14px}
-.co li{display:flex;align-items:center;gap:8px;font:400 1.65rem/1 "Covered By Your Grace",cursive;color:var(--s3-ink);white-space:nowrap}
-.co.left li{justify-content:flex-end}
-.co img{width:58px;height:auto}
-.co.left li:nth-child(2){margin-right:18px}.co.right li:nth-child(2),.co.right li:nth-child(3){margin-left:14px}
-.co.left li:nth-child(1) img{transform:rotate(12deg)}.co.left li:nth-child(3) img{transform:rotate(-12deg)}
-.co.right li:nth-child(1) img{transform:rotate(-10deg)}.co.right li:nth-child(4) img{transform:rotate(10deg)}
-@media(max-width:1150px){.edits-row{flex-direction:column;align-items:flex-start;gap:24px}.callouts{align-self:center}}
-@media(max-width:700px){.callouts{grid-template-columns:1fr;justify-items:center}.callouts .phone{order:-1;width:140px}.co{flex-direction:row;flex-wrap:wrap;justify-content:center;gap:8px 18px}.co img{display:none}.co li{font-size:1.5rem;margin:0!important}}
+/* Make it yours: text and the burst map sit close together; lines burst out from what you can edit on the phone */
+.edits-row{display:flex;align-items:center;justify-content:center;gap:clamp(24px,4vw,64px)}
+.edit-text{max-width:20em}
+.burst-map{position:relative;width:680px;height:340px;flex:none}
+.burst-map .rays{position:absolute;inset:0;width:100%;height:100%}
+.burst-map .rays path{fill:none;stroke:var(--s3-pink);stroke-width:2.5;stroke-linecap:round;stroke-dasharray:2 7}
+.burst-map .rays circle{fill:var(--s3-pink)}
+.burst-map .phone{position:absolute;left:265px;top:20px;width:150px;border-color:var(--s3-ink);box-shadow:0 14px 30px rgba(10,25,48,.18)}
+.burst-map .lbl{position:absolute;display:flex;align-items:center;gap:8px;white-space:nowrap;font:400 1.6rem/1 "Covered By Your Grace",cursive;color:var(--s3-ink)}
+.burst-map .lbl.l{flex-direction:row-reverse}
+.burst-map .lbl svg{width:28px;height:28px;flex:none;stroke:var(--s3-ink);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+@media(max-width:1150px){.edits-row{flex-direction:column;align-items:flex-start;gap:20px}.burst-map{align-self:center}}
+@media(max-width:760px){.burst-map{width:auto;height:auto;display:flex;flex-wrap:wrap;justify-content:center;gap:10px 20px}.burst-map .rays{display:none}.burst-map .phone{position:relative;left:auto;top:auto;width:140px;flex-basis:100%;max-width:140px;margin:0 auto 10px}.burst-map .lbl{position:static;font-size:1.5rem}.burst-map .lbl.l{flex-direction:row}}
 .notes{border-top:1px solid var(--s3-line)}
 .notes[open]>div{margin-top:24px}
 .notes h2{margin-bottom:20px}
@@ -159,7 +159,7 @@ const reelCarousel = (d) => `<section class="s3-sec tight rc"><div class="s3-wra
   <div class="rc-vis" aria-hidden="true"><div class="phone"><img src="${img(d.rc.phone)}" alt=""></div>
   <div class="slides-wrap"><p class="swipe-note">swipe<img src="${img('arrow-curve.webp')}" alt=""></p><div class="slides">${d.rc.slides.map((f) => `<img src="${img(f)}" alt="">`).join('')}</div>
   <div class="ig-dots"><span class="on"></span><span></span><span></span><span></span><span></span></div></div></div></div></section>`;
-const EDITS = [
+const EDITS_OLD = [
   ['<path d="M8 40L20 8h4l12 32M12 30h20"/>', 'Every word'],
   ['<path d="M6 40h14M13 40L22 10l9 30M35 40h7M30 26h10"/>', 'Fonts'],
   ['<circle cx="24" cy="24" r="17"/><circle cx="17" cy="18" r="3"/><circle cx="29" cy="15" r="3"/><circle cx="33" cy="27" r="3"/><path d="M22 41c-3-4 1-7 5-6"/>', 'Text colours'],
@@ -168,11 +168,21 @@ const EDITS = [
   ['<rect x="15" y="5" width="18" height="38" rx="4"/><path d="M21 19l8 5-8 5z"/>', 'Your clips'],
   ['<path d="M18 36V10l22-5v26"/><circle cx="13" cy="36" r="5"/><circle cx="35" cy="31" r="5"/>', 'Your audio'],
 ];
-const editSection = (d) => `<section class="s3-sec tight peach edits"><div class="s3-wrap edits-row"><div class="edit-text"><h2 class="s3-h2">Make it yours</h2>
+// label: [icon path, text, label x,y in the 680x340 stage (anchor = where the ray ends), side, origin x,y on the phone]
+const EDIT_MAP = [
+  ['<path d="M8 40L20 8h4l12 32M12 30h20"/>', 'Every word', 196, 40, 'l', 300, 92],
+  ['<path d="M6 40h14M13 40L22 10l9 30M35 40h7M30 26h10"/>', 'Fonts', 196, 150, 'l', 296, 112],
+  ['<circle cx="24" cy="24" r="17"/><circle cx="17" cy="18" r="3"/><circle cx="29" cy="15" r="3"/><circle cx="33" cy="27" r="3"/>', 'Text colours', 196, 260, 'l', 318, 104],
+  ['<path d="M24 6l4 12h12l-10 8 4 13-10-8-10 8 4-13-10-8h12z"/>', 'Doodle colours', 484, 30, 'r', 368, 236],
+  ['<rect x="6" y="8" width="36" height="32" rx="3"/><path d="M6 32l10-10 8 8 6-6 12 12"/>', 'Background', 484, 120, 'r', 384, 64],
+  ['<rect x="15" y="5" width="18" height="38" rx="4"/><path d="M21 19l8 5-8 5z"/>', 'Your clips', 484, 210, 'r', 334, 178],
+  ['<path d="M18 36V10l22-5v26"/><circle cx="13" cy="36" r="5"/><circle cx="35" cy="31" r="5"/>', 'Your audio', 484, 300, 'r', 352, 300],
+];
+const editSection = (d) => `<section class="s3-sec tight edits"><div class="s3-wrap edits-row"><div class="edit-text"><h2 class="s3-h2">Make it yours</h2>
   <p class="s3-lede" style="margin-top:12px">Change it all in CapCut, on your phone or computer. ${ph('[CONFIRM: phone editing, from the CapCut test]')}</p></div>
-  <div class="callouts"><ul class="co left">${EDITS.slice(0, 3).map(([, b]) => `<li>${esc(b)}<img src="${img('arrow-r.webp')}" alt=""></li>`).join('')}</ul>
+  <div class="burst-map"><svg class="rays" viewBox="0 0 680 340" aria-hidden="true">${EDIT_MAP.map(([, , x, y, side, ox, oy]) => `<path d="M${ox} ${oy} L${side === 'l' ? x + 6 : x - 6} ${y}"/><circle cx="${ox}" cy="${oy}" r="4"/>`).join('')}</svg>
   <div class="phone"><img src="${img(d.editPhone)}" alt=""></div>
-  <ul class="co right">${EDITS.slice(3).map(([, b]) => `<li><img src="${img('arrow-l.webp')}" alt="">${esc(b)}</li>`).join('')}</ul></div></div></section>`;
+  ${EDIT_MAP.map(([icon, b, x, y, side]) => `<span class="lbl ${side}" style="${side === 'l' ? `right:${680 - x}px` : `left:${x}px`};top:${y - 16}px"><svg viewBox="0 0 48 48" aria-hidden="true">${icon}</svg>${esc(b)}</span>`).join('')}</div></div></section>`;
 const faq = (d) => `<section class="s3-sec"><div class="s3-read"><h2 class="s3-h2">Questions</h2><div class="s3-faq">${d.faq.map(([q, a]) => `<details><summary>${esc(q)}</summary><div>${ph(a)}</div></details>`).join('')}</div></div></section>`;
 const notes = (d) => `<details class="s3-sec notes"><summary class="s3-wrap">Review notes for Mercedes (not on the page): headlines, listing, demo footage</summary><div class="s3-wrap">
   <h3 class="s3-h3">Other headline options</h3><ul>${d.headlines.map((h) => `<li>${esc(h)}</li>`).join('')}</ul>
@@ -322,21 +332,21 @@ const PCSS = `
 .incl-b h2{margin-bottom:32px}
 .swipes{list-style:none;padding:0;margin:0 auto;max-width:1200px;display:flex;flex-wrap:wrap;justify-content:center;gap:28px 40px}
 .swipes li{display:flex;flex-direction:column;align-items:center;gap:14px}
-.swipes svg{width:64px;height:64px;stroke:var(--s3-orange);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.swipes svg{width:64px;height:64px;stroke:var(--s3-ink);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 .swipes li{font:400 var(--s3-fs-title)/1.15 var(--s3-serif)}
 /* six items on one line on a computer: size and gaps scale with the screen */
 @media(min-width:1100px){.swipes{flex-wrap:nowrap;justify-content:space-between;max-width:none;gap:clamp(14px,1.8vw,36px)}.swipes li{white-space:nowrap;font-size:clamp(1.15rem,1.7vw,1.75rem)}}
 .swipes span{position:relative;z-index:0;padding:0 .14em}
 .swipes .plus{align-self:center;font:400 clamp(2.4rem,3.4vw,3.6rem)/1 var(--s3-serif);color:var(--s3-orange);margin-top:44px}
-.swipes .extra span{background:var(--s3-orange);color:#000;border-radius:999px;padding:.12em .7em .18em}
+.swipes .extra span{background:var(--s3-lav);color:var(--s3-ink);border-radius:999px;padding:.12em .7em .18em}
 .swipes .extra span::before{display:none}
-.swipes span::before{content:"";position:absolute;z-index:-1;left:0;right:0;top:.42em;bottom:.02em;background:#ffc9a8;border-radius:.1em .35em .15em .4em;transform:rotate(-1.5deg)}
+.swipes span::before{content:"";position:absolute;z-index:-1;left:0;right:0;top:.55em;bottom:.04em;background:var(--s3-pink);opacity:.9;border-radius:.1em .35em .15em .4em;transform:rotate(-1.5deg)}
 .incl-b .aside{margin-top:30px;font:400 1.9rem/1.1 "Covered By Your Grace",cursive;color:var(--s3-ink);transform:rotate(-2deg)}
 .hero-p{padding-top:clamp(56px,7vw,110px);position:relative;overflow:hidden}
 /* headline: "Your month's content:" on one line, DONE in handwriting (Mercedes 2026-10-19) */
 .head-p .l1{display:block;white-space:nowrap;font-size:clamp(2rem,6.2vw,6.4rem)}
-.head-p .done{display:inline-block;position:relative;z-index:0;color:var(--s3-ink);font-size:clamp(4rem,9vw,9rem);letter-spacing:-.04em;margin-top:6px;padding:0 .12em}
-.head-p .done::before{content:"";position:absolute;z-index:-1;left:-.06em;right:-.1em;top:.28em;bottom:.02em;background:#ffc9a8;border-radius:.12em .4em .2em .5em;transform:rotate(-2deg)}
+.head-p .done{font-style:italic!important;display:inline-block;position:relative;z-index:0;color:var(--s3-ink);font-size:clamp(4rem,9vw,9rem);letter-spacing:-.04em;margin-top:6px;padding:0 .12em}
+.head-p .done::before{content:"";position:absolute;z-index:-1;left:-.06em;right:-.1em;top:.5em;bottom:.06em;background:var(--s3-pink);border-radius:.12em .4em .2em .5em;transform:rotate(-2deg)}
 .hero-p .s3-wrap{position:relative;z-index:2}
 .hero-p .s3-fine{max-width:620px}
 .prop{position:absolute;pointer-events:none;z-index:1}
@@ -344,24 +354,24 @@ const PCSS = `
 .hero-p .burst-h{right:calc(5% - 90px);top:50%;width:clamp(380px,36vw,560px);transform:translateY(-58%) rotate(8deg);opacity:.9}
 @media(max-width:1299px){.hero-p .tri,.hero-p .burst-h{display:none}}
 .hero-p .seal{width:64px;transform:rotate(-10deg)}
-.reels-p{background:#090909;color:#fff}
+.reels-p{background:var(--s3-navy);color:#fff}
 .reels-p h2{color:#fff!important}.reels-p .s3-lede{color:#e6e0d8}
 .row-wrap{position:relative}
-.arrow{position:absolute;z-index:3;top:calc(44px + clamp(210px,19vw,260px) * .89 - 30px);width:60px;height:60px;border-radius:50%;border:0;background:var(--s3-orange);color:#000;font:700 1.6rem/1 var(--s3-sans);cursor:pointer;box-shadow:0 6px 18px rgba(0,0,0,.45)}
+.arrow{position:absolute;z-index:3;top:calc(28px + clamp(160px,12.5vw,200px) * .89 - 30px);width:60px;height:60px;border-radius:50%;border:0;background:var(--s3-orange);color:#000;font:700 1.6rem/1 var(--s3-sans);cursor:pointer;box-shadow:0 6px 18px rgba(0,0,0,.45)}
 .arrow.prev{left:calc(-1 * var(--s3-gut) + 12px)}.arrow.next{right:calc(-1 * var(--s3-gut) + 12px)}
 .arrow:hover{background:#fff}
 .arrow:focus-visible{outline:3px solid #fff;outline-offset:3px}
 /* the 25 Reels scroll sideways (Mercedes: "a scrolling section, not rows and rows") */
-.scroller{display:flex;gap:clamp(16px,2vw,28px);overflow-x:auto;scroll-snap-type:x mandatory;margin:44px calc(-1 * var(--s3-gut)) 0;padding:0 var(--s3-gut) 8px;scroll-padding:0 var(--s3-gut);scrollbar-width:none}
+.scroller{display:flex;gap:clamp(14px,1.6vw,24px);overflow-x:auto;scroll-snap-type:x mandatory;margin:28px calc(-1 * var(--s3-gut)) 0;padding:0 var(--s3-gut) 8px;scroll-padding:0 var(--s3-gut);scrollbar-width:none}
 /* no scrollbar: the arrows (desktop) and swipe (phone) move the row (Mercedes 2026-10-20) */
 .scroller::-webkit-scrollbar{display:none}
 /* a phone only partly on screen is dimmed */
 .rg{transition:opacity .25s}.rg.partial{opacity:.35}
-.rg{flex:0 0 clamp(210px,19vw,260px);scroll-snap-align:start}
+.rg{flex:0 0 clamp(160px,12.5vw,200px);scroll-snap-align:start}
 .rg .phone{margin-bottom:16px;border-color:#2a2a2a}
 .rg .num .in{color:#fff;margin-left:8px}.rg .num .soon{color:#a9a39b;margin-left:8px}
 .rg .num{font:700 var(--s3-fs-label)/1 var(--s3-sans);letter-spacing:.14em;color:var(--s3-orange);margin-bottom:12px}
-.rg h3{font:400 var(--s3-fs-title)/1.1 var(--s3-serif)!important;color:#fff!important;margin-bottom:6px}
+.rg h3{font:400  1.25rem/1.1 var(--s3-serif)!important;color:#fff!important;margin-bottom:6px}
 .rg p{color:#e6e0d8}
 .rg p+p{margin-top:6px}
 .rg .ex{font-size:var(--s3-fs-fine);color:#cfc8bf}
@@ -379,6 +389,9 @@ const PCSS = `
 /* compact: two lines of content get one short band (Mercedes: "look how tall this section is") */
 .who-row{display:flex;align-items:center;justify-content:space-between;gap:32px}
 .fan{position:relative;flex:none;width:400px;height:330px}
+.fan-burst{position:absolute;z-index:0;width:360px;left:20px;top:-10px;opacity:.85;transform:rotate(-8deg)}
+.fan-spark{position:absolute;z-index:3;width:44px}.fan-spark.s1{left:-18px;top:30px}.fan-spark.s2{right:-12px;bottom:40px;width:34px}
+.fan .phone{z-index:1}
 .fan .phone{position:absolute;bottom:0;width:150px;border-color:#111;box-shadow:0 14px 30px rgba(80,30,10,.25);background:#f7f3ec}
 .fan .todo{position:relative;padding:12px;font:var(--s3-fs-label)/1.3 var(--s3-sans);color:#5c4a3e}
 .fan .todo b{display:block;margin-top:4px;font:400 1.05rem/1.2 var(--s3-serif);color:var(--s3-ink)}
@@ -387,6 +400,7 @@ const PCSS = `
 .fan .phone:nth-child(3){left:250px;transform:rotate(9deg)}
 @media(max-width:900px){.who-row{flex-direction:column;align-items:flex-start}.fan{width:330px;height:270px;margin-top:8px}.fan .phone{width:124px}.fan .phone:nth-child(2){left:103px}.fan .phone:nth-child(3){left:206px}}
 .cta-p{text-align:center;position:relative;overflow:hidden}
+.cta-card{background:var(--s3-lav);border-radius:20px;padding:clamp(32px,4vw,56px) 24px}
 .cta-p h2{margin-bottom:8px}
 .cta-p .buy{justify-content:center}
 .cta-p .s3-fine{color:#2b2a28}
@@ -405,14 +419,14 @@ function physicalPage(d) {
   const list = d.templates.map((t, i) => `<div class="rg"><p class="num">${i + 1} of 25${d.launchNow ? (d.launchNow.includes(i + 1) ? ' <span class="in">In today</span>' : ' <span class="soon">Arriving soon</span>') : ''}</p><div class="phone"><img src="${img(`p${String(i + 1).padStart(2, '0')}.jpg`)}" alt="${esc(t.name)}: a frame from the template" loading="lazy"></div>
     <h3>${esc(t.name)}</h3></div>`).join('');
   const body = `
-<section class="s3-sec hero-p"><img class="prop burst-h" src="${img('burst-peach.webp')}" alt=""><img class="prop tri" src="${img('tripod.webp')}" alt=""><div class="s3-wrap">
+<section class="s3-sec hero-p"><img class="prop burst-h" src="${img('burst-baby.webp')}" alt=""><img class="prop tri" src="${img('tripod.webp')}" alt=""><div class="s3-wrap">
   <h1 class="s3-display or head-p"><span class="l1">${esc(d.headline.split(': ')[0])}:</span> <span class="done">${esc(d.headline.split(': ')[1])}</span></h1>
   <p class="s3-lede" style="margin-top:28px">${esc(d.sub)}</p>
   <div class="buy">${price(d)}<a class="s3-btn" href="#buy">${esc(d.button)}</a></div>
   <p class="s3-fine">${ph(d.priceLine)}</p>
 </div></section>
-<section class="s3-sec reels-p"><div class="s3-wrap">
-  <h2 class="s3-h2">${esc(d.getTitle)}</h2><p class="s3-lede" style="margin-top:20px">${esc(d.getLede)}</p>
+<section class="s3-sec tight reels-p"><div class="s3-wrap">
+  <h2 class="s3-h2">${esc(d.getTitle)}</h2>
   <div class="row-wrap"><button type="button" class="arrow prev" data-scroll="-1" aria-label="Scroll back">&#8592;</button>
   <div class="scroller" id="reel-row" tabindex="0" aria-label="All 25 Reel templates">${list}</div>
   <button type="button" class="arrow next" data-scroll="1" aria-label="Scroll forward">&#8594;</button></div></div></section>
@@ -421,10 +435,10 @@ ${includes(d)}
 ${editSection(d)}
 ${howItWorks(d)}
 <section class="s3-sec tight peach who-p"><div class="s3-wrap who-row"><div class="who-text"><h2 class="s3-h2">Who it's for</h2><p class="s3-lede" style="margin-top:14px">${esc(d.who)}</p>
-  <div class="labels">${d.whoTags.map((t, i) => `<span class="dymo" style="--r:${[-2, 1.5, -1, 2][i % 4]}deg">${esc(t)}</span>`).join('')}</div></div><div class="fan">${d.whoPhotos.map(([f, label]) => `<div class="phone">${fs.existsSync(path.join(here, 'img', f)) ? (f.endsWith('.mp4') ? `<video src="${img(f)}" autoplay muted loop playsinline aria-label="${esc(label)}"></video>` : `<img src="${img(f)}" alt="${esc(label)}">`) : `<span class="todo">Photo to make:<b>${esc(label)}</b></span>`}</div>`).join('')}</div></div></section>
+  <div class="labels">${d.whoTags.map((t, i) => `<span class="dymo" style="--r:${[-2, 1.5, -1, 2][i % 4]}deg">${esc(t)}</span>`).join('')}</div></div><div class="fan"><img class="fan-burst" src="${img('burst-hot.webp')}" alt=""><img class="fan-spark s1" src="${img('spark-w.webp')}" alt=""><img class="fan-spark s2" src="${img('spark-w.webp')}" alt="">${d.whoPhotos.map(([f, label]) => `<div class="phone">${fs.existsSync(path.join(here, 'img', f)) ? (f.endsWith('.mp4') ? `<video src="${img(f)}" autoplay muted loop playsinline aria-label="${esc(label)}"></video>` : `<img src="${img(f)}" alt="${esc(label)}">`) : `<span class="todo">Photo to make:<b>${esc(label)}</b></span>`}</div>`).join('')}</div></div></section>
 <section class="s3-sec tight faq-p"><div class="s3-wrap"><h2 class="s3-h2">Questions</h2>
   <div class="s3-faq two">${d.faq.map(([q, a]) => `<details><summary>${esc(q)}</summary><div>${ph(a)}</div></details>`).join('')}</div></div></section>
-<section class="s3-sec peach cta-p" id="buy"><div class="s3-wrap">
+<section class="s3-sec cta-p" id="buy"><div class="s3-wrap cta-card">
   <h2 class="s3-h2">${esc(d.ctaHead)}</h2>
   <div class="buy">${price(d)}<a class="s3-btn" href="#buy">${esc(d.button)}</a></div>
   <p class="s3-fine">${ph(d.ctaLine)}</p>
