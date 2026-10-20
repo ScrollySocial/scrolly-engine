@@ -65,6 +65,12 @@ to confirm no Pro features.
 - Site palette of 2026-10-20 (vault brand/visual-system.md): sky-blue markers and lines, blue mist instead of lavender
   and baby pink, hot pink kept for Mercedes only.
 
+## Round 2026-10-20 e
+
+- All 5 Reels: calmer polka dots (a purple wash over them) and no doodles.
+- Every template comes with: the physical page's icon list instead of sticky notes.
+- Who it's for: the bats hang in front of the orange burst. Buy card: no doodles.
+
 ## Open decisions (Mercedes)
 
 | Decision | State |

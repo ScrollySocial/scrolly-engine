@@ -319,6 +319,7 @@ const HCSS2 = `
 @media(max-width:900px){.hero-h .moon{opacity:.35;top:30%}.head-h .l1{white-space:normal}}
 /* the five Reels: one aligned row with "1 of 5" on top, names only */
 .reels-h h2{color:#fff!important}
+.dots.reels-h{background:linear-gradient(rgba(43,31,63,.62),rgba(43,31,63,.62)),#1b1325 url("${img('dots.jpg')}") center/cover}
 .row5{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:clamp(14px,1.6vw,24px);margin:28px auto 0;max-width:1100px}
 .row5 .rg{flex:none}
 @media(max-width:800px){.row5{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;margin-right:calc(-1 * var(--s3-gut));padding-bottom:8px}.row5 .rg{flex:0 0 58%;scroll-snap-align:start}}
@@ -330,6 +331,7 @@ const HCSS2 = `
 .who-h .fan .phone{border-color:#120d1a;background:#1b1922;box-shadow:0 14px 30px rgba(0,0,0,.4)}
 .who-h .s3 .fan-burst,.s3 .who-h .fan-burst{width:520px;left:-60px;top:-60px;opacity:.9}
 .who-h .tickets{margin-top:24px}
+.who-h .branch,.who-h .hang{z-index:2;pointer-events:none}
 /* questions: two columns on night, the wolf howling beside the heading */
 .faq-top{display:flex;align-items:flex-end;justify-content:space-between;gap:24px}
 .faq-h .wolfmoon{position:relative;left:auto;bottom:auto;width:230px;height:200px;flex:none;transform:none}
@@ -368,7 +370,7 @@ function halloweenPage(d) {
     <div class="buy">${price(d)}<a class="s3-btn" href="#buy">${esc(d.button)}</a></div>
     <p class="s3-fine">${ph(d.priceLine)}</p>
   </div></section>
-<section class="s3-sec tight dots reels-h"><img class="dd crown" src="${img('crown.webp')}" alt=""><img class="dd burst" src="${img('burst.webp')}" alt=""><img class="dd heart" src="${img('heart.webp')}" alt=""><div class="s3-wrap">
+<section class="s3-sec tight dots reels-h"><div class="s3-wrap">
   <h2 class="s3-h2">${esc(d.getTitle)}</h2>
   <div class="row5">${rows}</div></div></section>
 ${reelCarousel(d)}
@@ -381,7 +383,7 @@ ${howItWorks(d)}
   <div class="fan"><img class="fan-burst" src="${img('burst-orange.webp')}" alt="">${d.whoCovers.map((f) => `<div class="phone"><img src="${img(f)}" alt=""></div>`).join('')}</div></div></section>
 <section class="s3-sec tight night faq-h"><div class="s3-wrap"><div class="faq-top"><h2 class="s3-h2">Questions</h2><div class="wolfmoon" aria-hidden="true"><img class="m" src="${img('moon.webp')}" alt=""><img class="w" src="${img('wolf.webp')}" alt=""></div></div>
   <div class="s3-faq two">${d.faq.map(([q, a]) => `<details><summary>${esc(q)}</summary><div>${ph(a)}</div></details>`).join('')}</div></div></section>
-<section class="s3-sec cta-p cta-h" id="buy"><div class="s3-wrap cta-card"><img class="dd burst" src="${img('burst.webp')}" alt=""><img class="dd heart" src="${img('heart.webp')}" alt="">
+<section class="s3-sec cta-p cta-h" id="buy"><div class="s3-wrap cta-card">
   <h2 class="s3-h2">${esc(d.ctaHead)}</h2>
   <div class="buy">${price(d)}<a class="s3-btn" href="#buy">${esc(d.button)}</a></div>
   <p class="s3-fine">${ph(d.ctaLine)}</p>
@@ -534,6 +536,7 @@ const halloween = {
   whoCovers: ['h3.jpg', 'h6.jpg', 'h5.jpg'],
   getLede: 'Each one sells something.',
   includes: INCLUDES('Real props and motion, built in.'),
+  brandIncludes: true,
   templates: [
     { name: 'Once in a blood moon', poster: 'h6.jpg', job: 'Open a once-a-year sale.', film: '3 clips: your product, you or your shop, your product again', len: 14 },
     { name: 'Caught in our web', poster: 'h3.jpg', job: "Show what's included.", film: '5 clips: your product held up, then four points', len: 15 },
