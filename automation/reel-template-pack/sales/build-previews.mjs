@@ -381,7 +381,7 @@ const SCROLL_JS = `function placeArrows(){var ph=document.querySelector('#reel-r
 function physicalPage(d) {
   // all 25 as phone previews in one sideways-scrolling row
   const list = d.templates.map((t, i) => `<div class="rg"><p class="num">${i + 1} of 25${d.launchNow ? (d.launchNow.includes(i + 1) ? ' <span class="in">In today</span>' : ' <span class="soon">Arriving soon</span>') : ''}</p><div class="phone"><img src="${img(`p${String(i + 1).padStart(2, '0')}.jpg`)}" alt="${esc(t.name)}: a frame from the template" loading="lazy"></div>
-    <h3>${esc(t.name)}</h3><p>${esc(t.job)}</p></div>`).join('');
+    <h3>${esc(t.name)}</h3></div>`).join('');
   const body = `
 <section class="s3-sec hero-p"><img class="prop burst-h" src="${img('burst-peach.webp')}" alt=""><img class="prop tri" src="${img('tripod.webp')}" alt=""><div class="s3-wrap">
   <h1 class="s3-display or head-p"><span class="l1">${esc(d.headline.split(': ')[0])}:</span> <span class="done">${esc(d.headline.split(': ')[1])}</span></h1>
