@@ -21,6 +21,23 @@ const RESOURCES = [
   ['Calculators', 'hp3-res-calculators-v2.webp', '/calculators/'],
 ];
 
+// Hand-drawn doodles over the Club tigers (Mercedes 2026-10-20): a crown on the $24K tiger, sparkles on $1K, speed swooshes on $10K, so the
+// three read as a set. Navy lines, crown filled sky blue, no pink (pink = Mercedes only). Drawn in each image's own pixel space
+// (viewBox = image size) and laid over the <img>, so they scale with it; overflow lets the crown rise above the head.
+const D = 'fill="none" stroke="#0a1930" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"';
+const spark = (x, y, r) => `<path d="M${x} ${y - r}Q${x + r * 0.12} ${y - r * 0.12} ${x + r} ${y}Q${x + r * 0.12} ${y + r * 0.12} ${x} ${y + r}Q${x - r * 0.12} ${y + r * 0.12} ${x - r} ${y}Q${x - r * 0.12} ${y - r * 0.12} ${x} ${y - r}Z"/>`;
+const DOODLES = {
+  '$1K': ['0 0 1000 363', `<g ${D}>${spark(908, 26, 44)}${spark(975, 112, 26)}${spark(730, 2, 24)}<path d="M960 30q9 -4 14 -14"/><path d="M700 40q-8 -6 -16 -4"/></g>`],
+  '$10K': ['0 0 1000 357', `<g ${D}><path d="M58 120q-26 4 -52 -4"/><path d="M50 182q-34 2 -68 -2"/><path d="M66 246q-24 4 -48 0"/></g>`],
+  '$24K': ['0 0 1000 347', `<g transform="translate(838 -14) rotate(-14)"><path d="M-58 28Q-62 -2 -66 -30L-30 -2Q-14 -26 2 -46Q14 -24 28 -2L66 -30Q60 0 58 28Q2 36 -58 28Z" fill="#4da3ff" stroke="#0a1930" stroke-width="6" stroke-linejoin="round"/><path d="M-52 14Q2 22 54 14" fill="none" stroke="#0a1930" stroke-width="5" stroke-linecap="round"/><circle cx="-66" cy="-34" r="7" fill="#0a1930"/><circle cx="2" cy="-52" r="7" fill="#0a1930"/><circle cx="66" cy="-34" r="7" fill="#0a1930"/></g><g ${D}><path d="M748 -20l-14 -12"/><path d="M930 -24l14 -14"/><path d="M952 6l20 -2"/></g>`],
+};
+const doodle = (amt) => { const d = DOODLES[amt]; return d ? `<svg class="dd" viewBox="${d[0]}" preserveAspectRatio="xMidYMid meet" aria-hidden="true" focusable="false">${d[1]}</svg>` : ''; };
+
+// Earned band background slot (Mercedes 2026-10-20): a daytime torn-paper collage sky is being made from
+// mockups/rebrand-2026-10/shirt-background-prompt.md. When it exists, set EARNED_BG to its media-map name; the band then shows the
+// cut-out shirt (shirt-1k-graphite-front-cut.webp) on that art instead of the model photo.
+const EARNED_BG = null;
+
 const CLUBS = [
   ['$1K', 'Make your first $1,000.', 'hp3-club-1k-tiger.webp', 'Tiger walking', '/1k-club/', 'Start here.'],
   ['$10K', 'Make $10,000 organically.', 'hp3-club-10k-tiger.webp', 'Tiger running', '/10k-club/', 'Grow here.'],
@@ -88,7 +105,7 @@ export function build() {
 <section class="hp-clubs" id="clubs" aria-labelledby="hp-clubs-h"><div class="wrap">
  <h2 id="hp-clubs-h">Make your next move.</h2>
  <div class="grid">
-  ${CLUBS.map(([amt, head, f, alt, href, cta]) => `<article class="hp-club"><h3>${head}</h3>${pic(f, alt, '', ' loading="lazy"')}<div class="cta"><a class="btn" href="${href}" aria-label="${cta.replace('.', '')}: ${amt} Club">${cta} <span aria-hidden="true">→</span></a></div></article>`).join('')}
+  ${CLUBS.map(([amt, head, f, alt, href, cta]) => `<article class="hp-club"><h3>${head}</h3><div class="tg">${pic(f, alt, '', ' loading="lazy"')}${doodle(amt)}</div><div class="cta"><a class="btn" href="${href}" aria-label="${cta.replace('.', '')}: ${amt} Club">${cta} <span aria-hidden="true">→</span></a></div></article>`).join('')}
  </div>
 </div></section>
 
@@ -99,7 +116,7 @@ export function build() {
   <nav class="tabs" aria-label="Challenges"><a href="/1k-club/#join">$1K Club</a><a href="/10k-club/">$10K Club</a><a href="/24k-club/">$24K Club</a></nav>
  </div>
  <!-- 2026-10-10: the graphite winner shirt (Printify) replaced the teal one; same shirt as /1k-club/. -->
- ${pic('shirt-1k-graphite-model.webp', 'A man wearing the graphite $1K Club winner shirt: a white line tiger above The $1k Club and Earn your stripes.', 'shot', ' loading="lazy"')}
+ ${EARNED_BG ? `<div class="shot-slot" style="background-image:url('${img(EARNED_BG)}')">${pic('shirt-1k-graphite-front-cut.webp', 'The graphite $1K Club winner shirt: a white line tiger above The $1k Club and Earn your stripes.', 'cut', ' loading="lazy"')}</div>` : pic('shirt-1k-graphite-model.webp', 'A man wearing the graphite $1K Club winner shirt: a white line tiger above The $1k Club and Earn your stripes.', 'shot', ' loading="lazy"')}
 </div></section>
 
 ${quotes()}
