@@ -152,6 +152,7 @@ const INC_ICONS = [
   '<rect x="5" y="10" width="38" height="28" rx="3"/><path d="M5 17h38M5 31h38M12 10v7M20 10v7M28 10v7M36 10v7M12 31v7M20 31v7M28 31v7M36 31v7"/><path d="M21 20l7 4-7 4z"/>',
   '<rect x="10" y="7" width="28" height="36" rx="3"/><path d="M18 7v-1h12v1"/><path d="M16 18h3M23 18h11M16 26h3M23 26h11M16 34h3M23 34h11"/>',
   '<path d="M8 10h32a3 3 0 0 1 3 3v17a3 3 0 0 1-3 3H22l-9 8v-8H8a3 3 0 0 1-3-3V13a3 3 0 0 1 3-3z"/><path d="M13 19h22M13 25h14"/>',
+  '<rect x="11" y="4" width="26" height="40" rx="3"/><path d="M11 11h26M11 37h26"/><path d="M16 18h16M19 23h10"/><path d="M15 33l6-6 4 4 3-3 5 5"/>',
   '<rect x="6" y="14" width="26" height="30" rx="3"/><path d="M14 14v-5a3 3 0 0 1 3-3h22a3 3 0 0 1 3 3v24a3 3 0 0 1-3 3h-7"/><path d="M11 37l6-7 5 5 4-3 6 5"/>',
 ];
 const includes = (d) => d.brandIncludes ? `<section class="s3-sec tight incl-b after-rc"><div class="s3-wrap">
@@ -212,6 +213,7 @@ const INCLUDES = (projectNote) => [
   ['A CapCut Reel template', projectNote],
   ['A shot list', 'Every clip to film, in order.'],
   ['A caption template', 'Ready to edit and post.'],
+  ['An editable Reel cover', 'Your title over your best shot, sized for the grid.'],
   ['A matching carousel', 'Same story as slides. Edit free in Canva.'],
 ];
 const FAQ = (fonts) => [
@@ -298,7 +300,7 @@ const HCSS = `
 `;
 
 function halloweenPage(d) {
-  const ph5 = d.templates.map((t) => `<div><div class="phone"><img src="${img(t.poster)}" alt="${esc(t.name)}: a frame from the template"></div><p class="cap">${esc(t.name)}</p></div>`).join('');
+  const ph5 = d.templates.map((t) => `<div><div class="phone"><img src="${img(t.poster)}" alt="${esc(t.name)}: its Reel cover"></div><p class="cap">${esc(t.name)}</p></div>`).join('');
   const tpls = d.templates.map((t) => `<div class="tpl"><div class="phone"><img src="${img(t.poster)}" alt=""></div>
     <h3>${esc(t.name)}</h3><p>${ph(t.job)}</p></div>`).join('');
   const body = `
@@ -429,7 +431,7 @@ const SCROLL_JS = `(function(){var row=document.getElementById('reel-row');if(!r
 
 function physicalPage(d) {
   // all 25 as phone previews in one sideways-scrolling row
-  const list = d.templates.map((t, i) => `<div class="rg"><p class="num">${i + 1} of 25${d.launchNow ? (d.launchNow.includes(i + 1) ? ' <span class="in">In today</span>' : ' <span class="soon">Arriving soon</span>') : ''}</p><div class="phone"><img src="${img(`p${String(i + 1).padStart(2, '0')}.jpg`)}" alt="${esc(t.name)}: a frame from the template" loading="lazy"></div>
+  const list = d.templates.map((t, i) => `<div class="rg"><p class="num">${i + 1} of 25${d.launchNow ? (d.launchNow.includes(i + 1) ? ' <span class="in">In today</span>' : ' <span class="soon">Arriving soon</span>') : ''}</p><div class="phone"><img src="${img(`p${String(i + 1).padStart(2, '0')}.jpg`)}" alt="${esc(t.name)}: its Reel cover" loading="lazy"></div>
     <h3>${esc(t.name)}</h3></div>`).join('');
   const body = `
 <section class="s3-sec hero-p"><div class="prop feed" aria-hidden="true">${[1, 3, 10, 12, 22, 23, 2, 9, 20, 25, 13, 16].map((n) => `<img src="${img(`p${String(n).padStart(2, '0')}.jpg`)}" alt="">`).join('')}</div><img class="prop tri" src="${img('tripod.webp')}" alt=""><div class="s3-wrap">
