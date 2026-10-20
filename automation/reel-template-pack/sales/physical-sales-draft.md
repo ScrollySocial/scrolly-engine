@@ -14,6 +14,17 @@ The page sells **25 templates** (Mercedes: "It's supposed to be 25").
 | Built, not zipped yet (older look) | 3: 01, 02, 03 |
 | In review or being built | 15: 04, 05, 06, 07, 11, 13 to 19, 21, 24, 25 |
 
+## Launch plan (Mercedes, 2026-10-20)
+
+A growing pack: at least 5 templates in the download at launch, about 5 more added each day until all 25 are in. The
+page says "[N] templates in your download today, about 5 more every day until all 25 are in" and never claims 25
+ready now. Still yours to OK: which templates are in on day one (set `launchNow` in build-previews.mjs, e.g.
+`[8, 9, 10, 12, 20]`; the phones then show "In today" or "Arriving soon"), the exact date wording, and how buyers get
+each update. All 25 have upload zips as of 2026-10-20.
+
+**No audio:** a bold line under the price (hero and buy section): "No audio included: add a sound in Instagram." The
+FAQ says "no music and no sound effects".
+
 ## Open decisions (Mercedes)
 
 | Decision | State |

@@ -4,6 +4,11 @@ Draft only, updated 2026-10-19 after Mercedes's notes (more fun, 5 Reels, $9.99 
 how-to video). Nothing published, no product, price or checkout created. HTML layout preview:
 `halloween-sales-preview.html`, built by `node build-previews.mjs` (images inlined from `img/`).
 
+## No audio (2026-10-20)
+
+A bold line under the price (hero and buy section): "No audio included: add a sound in Instagram." The FAQ says "no
+music and no sound effects" (we can't license them to bundle).
+
 ## Open decisions (Mercedes)
 
 | Decision | State |

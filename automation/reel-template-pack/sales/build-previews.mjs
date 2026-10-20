@@ -29,6 +29,7 @@ mark.ph{background:#ffd9c9;color:var(--s3-ink);padding:0 4px;border-radius:3px}
 .s3-dark mark.ph{background:#5a2412;color:#fff}
 .s3-btn mark.ph{background:#fff;color:#000}
 .amt{font:400 var(--s3-fs-h3)/1 var(--s3-serif)}
+.noaudio{margin-top:6px;font-weight:700}
 .amt del{font-size:.62em;color:var(--s3-muted);margin-right:.35em}
 .s3-dark .amt del{color:#a9a39b}
 .buy{display:flex;flex-wrap:wrap;align-items:center;gap:16px 28px;margin:32px 0 14px}
@@ -148,7 +149,7 @@ const FAQ = (fonts) => [
   ['Do I need CapCut on a computer?', 'For the full template, yes: CapCut for computer, free.'],
   ['Can I use it on my phone?', 'Yes. The phone kit has the shot guide, shot list and every graphic.'],
   ['How do I edit the carousel?', 'Open its Canva link (a free account works), swap the photos and type over the [brackets].'],
-  ['Is music included?', 'No. Add a sound in Instagram, so your Reel never gets muted. [SOUND PICKS]'],
+  ['Is music included?', 'No. The Reels have no audio: no music and no sound effects. Add a sound in Instagram after you upload, so your Reel never gets muted. [SOUND PICKS]'],
   ['Do I need to install fonts?', fonts],
   ['How do I change the words?', 'Double-click a text box and type.'],
   ['My computer warns me about the installer.', 'That is normal. Click More info, then Run anyway.'],
@@ -240,7 +241,7 @@ function halloweenPage(d) {
     <h1 class="s3-display">${esc(d.headline)}</h1>
     <p class="s3-lede" style="margin-top:28px">${esc(d.sub)}</p>
     <div class="buy">${price(d)}<a class="s3-btn" href="#buy">${esc(d.button)}</a></div>
-    <p class="s3-fine">${ph(d.priceLine)}</p>
+    <p class="s3-fine">${ph(d.priceLine)}</p><p class="s3-fine noaudio">No audio included: add a sound in Instagram.</p>
     <div class="phones">${ph5}</div>
   </div></section>
 <section class="s3-sec reels"><img class="dd crown" src="${img('crown.webp')}" alt=""><img class="dd burst" src="${img('burst.webp')}" alt=""><img class="dd heart" src="${img('heart.webp')}" alt=""><div class="s3-wrap">
@@ -256,7 +257,7 @@ ${howItWorks(d)}
 <section class="s3-sec peach cta" id="buy"><img class="dd burst" src="${img('burst.webp')}" alt=""><img class="dd heart" src="${img('heart.webp')}" alt="">
   <div class="s3-read"><h2 class="s3-h2">${esc(d.ctaHead)}</h2>
   <div class="buy">${price(d)}<a class="s3-btn" href="#buy">${esc(d.button)}</a></div>
-  <p class="s3-fine">${ph(d.ctaLine)}</p>
+  <p class="s3-fine">${ph(d.ctaLine)}</p><p class="s3-fine noaudio">No audio included: add a sound in Instagram.</p>
   <p class="s3-fine">${ph('[REEL EDITOR UPSELL: one line once it has a name, link and launch date]')}</p></div></section>
 ${notes(d)}`;
   return shell(d, HCSS, body);
@@ -282,6 +283,7 @@ const PCSS = `
 .head-p .done{display:inline-block;position:relative;z-index:0;color:var(--s3-ink);font-size:clamp(4rem,9vw,9rem);letter-spacing:-.04em;margin-top:6px;padding:0 .12em}
 .head-p .done::before{content:"";position:absolute;z-index:-1;left:-.06em;right:-.1em;top:.28em;bottom:.02em;background:#ffc9a8;border-radius:.12em .4em .2em .5em;transform:rotate(-2deg)}
 .hero-p .s3-wrap{position:relative;z-index:2}
+.hero-p .s3-fine{max-width:620px}
 .prop{position:absolute;pointer-events:none;z-index:1}
 .hero-p .tri{right:5%;bottom:-6px;width:clamp(200px,20vw,300px);transform:rotate(-4deg)}
 .hero-p .burst-h{right:calc(5% - 90px);top:50%;width:clamp(380px,36vw,560px);transform:translateY(-58%) rotate(8deg);opacity:.9}
@@ -299,6 +301,7 @@ const PCSS = `
 .scroller::-webkit-scrollbar{height:8px}.scroller::-webkit-scrollbar-thumb{background:var(--s3-orange);border-radius:4px}.scroller::-webkit-scrollbar-track{background:#2a2a2a;border-radius:4px}
 .rg{flex:0 0 clamp(210px,19vw,260px);scroll-snap-align:start}
 .rg .phone{margin-bottom:16px;border-color:#2a2a2a}
+.rg .num .in{color:#fff;margin-left:8px}.rg .num .soon{color:#a9a39b;margin-left:8px}
 .rg .num{font:700 var(--s3-fs-label)/1 var(--s3-sans);letter-spacing:.14em;color:var(--s3-orange);margin-bottom:12px}
 .rg h3{font:400 var(--s3-fs-title)/1.1 var(--s3-serif)!important;color:#fff!important;margin-bottom:6px}
 .rg p{color:#e6e0d8}
@@ -341,14 +344,14 @@ const SCROLL_JS = `function placeArrows(){var ph=document.querySelector('#reel-r
 
 function physicalPage(d) {
   // all 25 as phone previews in one sideways-scrolling row
-  const list = d.templates.map((t, i) => `<div class="rg"><p class="num">${i + 1} of 25</p><div class="phone"><img src="${img(`p${String(i + 1).padStart(2, '0')}.jpg`)}" alt="${esc(t.name)}: a frame from the template" loading="lazy"></div>
+  const list = d.templates.map((t, i) => `<div class="rg"><p class="num">${i + 1} of 25${d.launchNow ? (d.launchNow.includes(i + 1) ? ' <span class="in">In today</span>' : ' <span class="soon">Arriving soon</span>') : ''}</p><div class="phone"><img src="${img(`p${String(i + 1).padStart(2, '0')}.jpg`)}" alt="${esc(t.name)}: a frame from the template" loading="lazy"></div>
     <h3>${esc(t.name)}</h3><p>${esc(t.job)}</p></div>`).join('');
   const body = `
 <section class="s3-sec hero-p"><img class="prop burst-h" src="${img('burst-peach.webp')}" alt=""><img class="prop tri" src="${img('tripod.webp')}" alt=""><div class="s3-wrap">
   <h1 class="s3-display or head-p"><span class="l1">${esc(d.headline.split(': ')[0])}:</span> <span class="done">${esc(d.headline.split(': ')[1])}</span></h1>
   <p class="s3-lede" style="margin-top:28px">${esc(d.sub)}</p>
   <div class="buy">${price(d)}<a class="s3-btn" href="#buy">${esc(d.button)}</a></div>
-  <p class="s3-fine">${ph(d.priceLine)}</p>
+  <p class="s3-fine">${ph(d.priceLine)}</p><p class="s3-fine noaudio">No audio included: add a sound in Instagram.</p>
 </div></section>
 <section class="s3-sec reels-p"><div class="s3-wrap">
   <h2 class="s3-h2">${esc(d.getTitle)}</h2><p class="s3-lede" style="margin-top:20px">${esc(d.getLede)}</p>
@@ -364,7 +367,7 @@ ${howItWorks(d)}
 <section class="s3-sec peach cta-p" id="buy"><div class="s3-wrap">
   <h2 class="s3-h2">${esc(d.ctaHead)}</h2>
   <div class="buy">${price(d)}<a class="s3-btn" href="#buy">${esc(d.button)}</a></div>
-  <p class="s3-fine">${ph(d.ctaLine)}</p>
+  <p class="s3-fine">${ph(d.ctaLine)}</p><p class="s3-fine noaudio">No audio included: add a sound in Instagram.</p>
   <p class="s3-fine">${ph('[REEL EDITOR UPSELL: one line once it has a name, link and launch date]')}</p></div></section>
 ${notes(d)}
 <script>${SCROLL_JS}</script>`;
@@ -422,16 +425,18 @@ const physical = {
   title: 'Product Reels draft',
   headline: "Your month's content: DONE",
   headlines: ['Reels for the things you make, pack and ship', '25 Reels your product can star in', 'Film a few clips. Drop them in. Post a Reel that sells.', 'Collage Reels for physical products, ready for your clips'],
-  sub: '25 Reels for your product. Add your clips and post.',
+  sub: 'A growing pack of 25 Reels for your product. Add your clips and post.',
   price: '$17.99',
   button: 'Get all 25 Reels',
-  priceLine: '[INSTANT DOWNLOAD or EARLY ACCESS: your call]',
-  ctaLine: '[INSTANT DOWNLOAD or EARLY ACCESS: your call]',
+  priceLine: '[N] templates in your download today, about 5 more every day until all 25 are in. [DATE WORDING: your OK]',
+  ctaLine: '[N] in today, the rest arrive as updates. [DATE WORDING: your OK]',
   whoTags: ['Print on demand', 'Makers', 'Etsy sellers', 'Shopify stores', 'Small-batch brands', 'Boutiques'],
   whoPhotos: [['who-maker.mp4', 'A maker pouring candles'], ['who-pod.mp4', 'Screen printing a design'], ['who-shop.mp4', 'A shop owner packing an order']],
   brandIncludes: true,
+  // the templates in the download on launch day, e.g. [8, 9, 10, 12, 20]; null = not picked yet (shows [N])
+  launchNow: null,
   getTitle: 'All 25 Reels',
-  getLede: 'Swipe to see them all.',
+  getLede: 'Swipe to see all 25. [N] are in today; the rest arrive as updates.',
   includes: INCLUDES('Real props, collage and motion, built in.'),
   formatNote: '',
   templates: [
@@ -462,13 +467,12 @@ const physical = {
     T('Mine vs the usual kind', 'Show how yours is made differently.', 'a handmade bar next to a store bar', 'a heavyweight tee next to a thin one'),
   ],
   who: 'If you sell a product you can film, these are for you.',
-  faq: FAQ('No, they come with the template.'),
+  faq: [['When do I get all 25?', '[N] are in your download today. About 5 more are added every day until all 25 are in. [DATE WORDING + how buyers get each update: your OK]'], ...FAQ('No, they come with the template.')],
   ctaHead: 'A month of Reels, ready for your clips',
   listing: "25 Reel templates for CapCut, made for shops that sell physical products: packing videos, before and afters, gift guides, unboxings, reviews, tests, new drops and more. Film a few clips on your phone, drop them in a folder and double-click the installer: the template opens in CapCut with your clips in place. Type your words over the brackets and export. Each template comes with a shot list, a recipe card, a one-page guide, a phone kit and a matching Instagram carousel you can edit free in Canva. Each one suggests a sound to add in Instagram (no sound files included).",
   decisions: [
     'Price: $17.99 (decided 2026-10-19).',
-    'Launch format: 10 of the 25 are built today (01, 02, 03, 08, 09, 10, 12, 20, 22, 23); the other 15 are in review or being built. Sell when all 25 are done, or open early with the rest as free updates?',
-    '01, 02 and 03 are built in the older look and not zipped yet.',
+    'Growing pack (2026-10-20): at least 5 templates at launch, about 5 more a day until all 25. Which ones are in on day one, and the date wording, are yours to pick. All 25 have upload zips now.',
     'Sound picks: none for the zipped templates yet.', 'Reel Editor upsell: no name, link or launch yet.',
     'Mac: Mercedes is testing. The installer is a Windows script; the page names no platform until the test is done.',
     'Before live: the CapCut check of the highlight boxes, then install one zip on a second computer.',
