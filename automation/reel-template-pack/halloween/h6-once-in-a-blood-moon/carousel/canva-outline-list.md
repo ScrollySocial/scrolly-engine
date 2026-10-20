@@ -6,5 +6,5 @@ thin (similar to the previews), then Share > Template link. The words are live t
 
 ## h6 Once in a blood moon
 
-Nothing to do: the built-in words are live Bodoni Moda with no outline, as in the Reel.
+Nothing to do: the built-in words are live Bodoni FLF with no outline, as in the Reel.
 

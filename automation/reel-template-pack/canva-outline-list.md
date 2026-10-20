@@ -4,6 +4,21 @@ Canva drops text outlines when it imports a .pptx, but keeps an Outline effect i
 carousel: import the .pptx, select each word below, Effects > Outline, set the colour (type the hex), keep it
 thin (similar to the previews), then Share > Template link. The words are live text, so buyers can still change them.
 
+## 01 One product three ways
+
+Nothing to do: the built-in words are live Bodoni FLF with no outline, as in the Reel.
+
+
+## 02 Pack an order with me
+
+Nothing to do: the built-in words are live Bodoni FLF with no outline, as in the Reel.
+
+
+## 03 Before and after
+
+Nothing to do: before, after and Comment (polka-dot letters) stay artwork (pattern-filled lettering in fonts Canva does not have).
+
+
 ## 09 Who its for
 
 - Slide 1: **this is** (white #FFFFFF): Outline in wine #7A1732, thin
@@ -64,5 +79,5 @@ Nothing to do: TRICK, or TREAT?, TREAT and COMMENT (taffy letters) stay artwork 
 
 ## h6 Once in a blood moon
 
-Nothing to do: the built-in words are live Bodoni Moda with no outline, as in the Reel.
+Nothing to do: the built-in words are live Bodoni FLF with no outline, as in the Reel.
 

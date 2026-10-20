@@ -8,7 +8,7 @@ Usage: python build/carousels.py 09 08 ...  ->  NN-.../carousel/ (slides/, conta
 """
 import math, sys
 from pathlib import Path
-from PIL import Image, ImageOps
+from PIL import Image, ImageFont, ImageOps
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import carousel_kit as K
 from carousel_kit import art, photo, text, guide, word, at, CW, CH, WINE, PINK, BUTTER, BLUE, WHITE, INK, CAPTION, FIRST_GUIDE
@@ -18,10 +18,10 @@ import story7 as S7
 from carousel_kit import doodle, vec
 from motion_b2 import Clip
 
-DIRS = {'09': '09-who-its-for', '08': '08-a-real-customer-question', '10': '10-three-people-to-gift-it-to', '12': '12-your-order-just-arrived',
+DIRS = {'01': '01-one-product-three-ways', '02': '02-pack-an-order', '03': '03-before-and-after', '09': '09-who-its-for', '08': '08-a-real-customer-question', '10': '10-three-people-to-gift-it-to', '12': '12-your-order-just-arrived',
         '20': '20-what-buyers-said', '22': '22-put-it-to-the-test', '23': '23-every-option-in-10-seconds',
         'h2': 'halloween/h2-batty-about', 'h3': 'halloween/h3-caught-in-our-web', 'h5': 'halloween/h5-trick-or-treat', 'h6': 'halloween/h6-once-in-a-blood-moon'}
-TITLES = {'09': 'Who its for', '08': 'A real customer question', '10': 'Three people to gift it to', '12': 'Your order just arrived',
+TITLES = {'01': 'One product three ways', '02': 'Pack an order with me', '03': 'Before and after', '09': 'Who its for', '08': 'A real customer question', '10': 'Three people to gift it to', '12': 'Your order just arrived',
           '20': 'What buyers said', '22': 'Put it to the test', '23': 'Every option in 10 seconds',
           'h2': "Things I'm batty about", 'h3': 'Caught in our web', 'h5': 'Trick or treat', 'h6': 'Once in a blood moon'}
 HOOK2 = 'Second hook: Instagram often shows a carousel starting on slide 2, so this one works as a cover on its own. '
@@ -643,17 +643,183 @@ def ch6():
         text('for your code', 60, (540, 940), 0, box=None, fg=CREAM)])
     return s
 
-RECIPES = {'09': c09, '08': c08, '10': c10, '12': c12, '20': c20, '22': c22, '23': c23, 'h2': ch2, 'h3': ch3, 'h5': ch5, 'h6': ch6}
+# ======================================================================================================================
+# 01, 02, 03: the first three Reels (built before the locked type), each in its own world. Their big words go in as
+# live Bodoni FLF (01, 02: the Reels' tall/Bodoni serif) or stay polka-dot artwork (03's approved Corben dots).
+# ======================================================================================================================
+def c01():
+    import templates.t01 as T
+    clips = [Clip(n, t, 6.0) for n, t in T.SPEC['test_clips']]; cream = K.fit_bg(K.C.paper((CW, CH), (250, 244, 230), seed=41))
+    butter = K.fit_bg(K.C.paper((CW, CH), (247, 230, 169), seed=61))
+    pol = lambda w, pin: polaroid_art(P.raw_cut('Blank Polaroid on White Background.png', 420), w, pin)
+    def tape(length, rot_seed): return K.C.washi(length, 90, 'stripes', (BUTTER, WHITE), seed=rot_seed, alpha=235)
+    def serif(t, px, color=INK): return text(t, px, (0, 0), 0, box=None, fg=color, font='bodoni')
+    def place(L, c, rot=0): L = dict(L); L['c'] = c; L['rot'] = rot; return L
+    s = []
+    rings = [(220, 1080), (540, 1120), (860, 1080)]
+    S2(s, cream, 'Hook. Swap in three small photos, one per way, and name your product.', [
+        place(serif('One [product],', 84), (540, 250)),
+        place(serif('3 ways', 200), (540, 470)),
+        art(doodle('frame', 2, 900, INK), (540, 480), -3, 'circle'),
+        art(doodle('icon', 10, 100, INK), (930, 220), 0, 'sparkle')] + [
+        x for i, (c, w) in enumerate(zip(rings, ('[way one]', '[way two]', '[way three]')))
+        for x in (art(K.round_card(260, 12), c, 0, 'round paper'), photo(f'Way {i + 1}', c, (260, 260), 0, clips[i + 1].at(1.0, (260, 260)), shape='circle'),
+                  text(w, 48, (c[0], c[1] + 200), 0, box=None))] + [guide(FIRST_GUIDE)])
+    pa, off, wh = pol(640, 'pin-head-black')
+    S2(s, butter, HOOK2 + 'Swap in a photo of your product. Edit both [bracket] lines.', [
+        art(pa, (540, 800), -4, 'Polaroid'), photo('Your product', at((540, 800), -4, off), wh, -4, clips[0].at(1.0, wh)),
+        text("[you're only using\nit one way]", 84, (620, 210), -2, align='right'),
+        text('[here are 3]', 62, (300, 1340), -2, align='left'),
+        art(doodle('arrow', 0, 170, INK), (600, 1335), -2, 'arrow')])
+    p3, off3, wh3 = pol(820, 'pin-head-cream')
+    S2(s, cream, 'Way 1: its photo and a few words.', [
+        art(tape(360, 3), (380, 230), 20, 'washi tape'),
+        art(p3, (560, 760), 3, 'Polaroid'), photo('Way 1', at((560, 760), 3, off3), wh3, 3, clips[1].at(1.0, wh3)),
+        place(serif('1', 300), (150, 300), -4),
+        art(doodle('icon', 0, 130, INK), (930, 260), 10, 'star'),
+        text('[way one]', 64, at((560, 760), 3, (0, 380)), 3, box=None)])
+    S2(s, cream, 'Way 2: a full-page photo.', [
+        photo('Way 2 (fills the page)', (540, 720), (CW, CH), 0, clips[2].at(1.0, (CW, CH))),
+        art(K.torn_strip(cream, 420, 5, 't'), (540, CH - 210 + 6), 0, 'torn paper'),
+        place(serif('2', 260), (170, 1200), -4),
+        text('[way two]', 72, (560, 1260), -2, box=None, align='left'),
+        art(doodle('icon', 0, 120, INK), (930, 1150), -8, 'star')])
+    p5, off5, wh5 = pol(560, 'pin-head-white')
+    S2(s, butter, 'Way 3: save the most surprising one for last.', [
+        art(doodle('burst', 3, 900, WHITE), (540, 760), 0, 'burst'),
+        art(p5, (540, 760), -3, 'Polaroid'), photo('Way 3', at((540, 760), -3, off5), wh5, -3, clips[3].at(1.0, wh5)),
+        place(serif('3', 260), (880, 300), 6),
+        text('[way three]', 64, (540, 1300), 2)])
+    S2(s, butter, 'Swap in your product photo and type its name and your keyword. ' + CAPTION, [
+        art(K.round_card(440), (540, 560), 0, 'round paper'),
+        photo('Your product', (540, 560), (440, 440), 0, clips[0].at(2.0, (440, 440)), shape='circle'),
+        place(serif('[Product name]', 120), (540, 900)),
+        place(serif('Comment', 150), (540, 1080)),
+        text('"[KEYWORD]"', 74, (540, 1230), 2, box=INK, fg=WHITE, pill=True),
+        art(doodle('arrow', 9, 170, INK), (250, 470), 0, 'arrow')])
+    return s
+
+def c02():
+    import templates.t02 as T
+    import storyboard_02 as S02
+    clips = [Clip(n, t, 6.0) for n, t in T.SPEC['test_clips']]; ACC = T.ACCENT
+    sage = K.fit_bg(K.C.paper((CW, CH), S02.BG[:3], seed=9))
+    Pb = T.box_parts(); open_box, _ = crop_h(Pb['open'], 960); closed = Pb['closed_box']; bx0, by0, bx1, by1 = Pb['body_box']
+    floor = ((bx0 + bx1) / 2, (by0 + by1) / 2 - (960 - CH / 2)); fw, fh = (bx1 - bx0) * 0.82, (by1 - by0) * 0.82
+    env = K.C.shadow(S02.prop('envelope').resize((480, 276)), (8, 14), 14, 70); seal = K.C.shadow(S02.prop('wax-seal-thank-you').resize((200, 200)), (8, 16), 16, 70)
+    pn = S02.prop('packing-peanut'); peanuts = []
+    for i, col in enumerate(((176, 214, 172), (250, 232, 120), (250, 250, 246))):
+        g_ = ImageOps.colorize(ImageOps.grayscale(pn.convert('RGB')), tuple(int(v * 0.7) for v in col), col).convert('RGBA'); g_.putalpha(pn.split()[3])
+        peanuts.append(P.die_cut(scaled(g_, 150), 6))
+    label = scaled(K.C.ship_label(), 360)
+    def tape_words(c, rot, small, big, length=760):
+        strip = K.C.washi(length, 230, 'gingham', (BUTTER, WHITE), seed=17, alpha=250)
+        return [art(strip, c, rot, 'washi tape'), text(small, 46, at(c, rot, (0, -50)), rot, box=None),
+                text(big, 92, at(c, rot, (0, 28)), rot, box=None, fg=ACC, font='bodoni')]
+    s = []
+    S2(s, sage, 'Hook. Swap in a photo of you picking the order. Edit [your shop] on the label.', [
+        photo('Picking the order (bottom of the page)', (540, 1060), (CW, 760), 0, clips[0].at(1.0, (CW, 760))),
+        art(K.C.washi(CW + 60, 70, 'stripes', (INK, WHITE), seed=4, alpha=250), (540, 680), 0, 'stripe tape'),
+        art(label, (800, 380), 6, 'shipping label'), text('[Your shop]', 30, at((800, 380), 6, (-40, -105)), 6, box=None, align='left'),
+        guide(FIRST_GUIDE)] + tape_words((330, 300), -3, 'packing', 'an order', 560))
+    pts = [(170, 1150), (900, 1180), (300, 1300), (760, 1320), (540, 1240)]
+    S2(s, sage, HOOK2 + 'No photo needed. Edit both [bracket] lines.', [
+        art(scaled(closed, 760), (540, 800), -3, 'closed box')] + [art(peanuts[i % 3], p, i * 40, 'packing peanut') for i, p in enumerate(pts)] + [
+        text('[ever wondered how\nyour order is packed?]', 76, (620, 210), -2, align='right'),
+        text('[watch me pack it]', 62, (330, 1390), -2, align='left'),
+        art(doodle('arrow', 0, 160, INK), (680, 1385), -2, 'arrow')])
+    S2(s, sage, 'Swap in a photo of your product going into the box.', [
+        art(open_box, (540, 720), 0, 'open box'),
+        photo('Your product going in', floor, (fw, fh), 0, clips[1].at(1.0, (int(fw), int(fh))))] + tape_words((540, 200), 2, 'the goods', 'go in first'))
+    S2(s, sage, 'Swap in a photo of the padding going in.', [
+        photo('Padding (fills the page)', (540, 720), (CW, CH), 0, clips[1].at(2.5, (CW, CH)))] + [
+        art(peanuts[i % 3], (90 + (i % 6) * 180 + (40 if i // 6 % 2 else 0), 1180 + (i // 6) * 110), i * 37, 'packing peanut') for i in range(18)] + tape_words((540, 220), -2, '+ a little', 'padding', 560))
+    S2(s, sage, 'Swap in a photo of the extras you add (a note, tissue, a sticker).', [
+        art(K.white_card((700, 860)), (540, 760), 2, 'photo border'), photo('The extras', (540, 760), (700, 860), 2, clips[2].at(1.0, (700, 860))),
+        art(env, (720, 1230), -8, 'envelope'), art(seal, (760, 1250), 0, 'wax seal')] + tape_words((420, 230), -3, 'a little', 'extra', 520))
+    lab2 = scaled(K.C.ship_label(), 300)
+    S2(s, sage, 'No photo needed. Edit [your shop] on the label.', [
+        art(scaled(closed, 800), (540, 820), 0, 'closed box'),
+        art(K.C.washi(int(closed.height * 800 / closed.width) - 60, 120, 'dots', ((166, 206, 242), WHITE), seed=8, alpha=245).rotate(90, expand=True), (540, 820), 0, 'blue washi tape'),
+        art(lab2, (640, 1080), -6, 'shipping label'), text('[Your shop]', 26, at((640, 1080), -6, (-35, -88)), -6, box=None, align='left')] + tape_words((540, 210), 2, 'sealed +', 'on its way', 620))
+    S2(s, sage, 'Type your product name and keyword. ' + CAPTION, [
+        art(scaled(closed, 620), (540, 1050), -8, 'closed box'),
+        art(K.C.washi(980, 280, 'gingham', (BUTTER, WHITE), seed=11, alpha=250), (540, 330), -2, 'washi tape'),
+        text('[Product name]', 110, at((540, 330), -2, (0, -10)), -2, box=None, fg=ACC, font='bodoni'),
+        text('comment "[KEYWORD]"', 60, (540, 560), 2, box=ACC, fg=WHITE)])
+    return s
+
+def c03():
+    import templates.t03 as T
+    import storyboard_03 as S03
+    clips = [Clip(n, t, 6.0) for n, t in T.SPEC['test_clips']]; cork = K.fit_bg(S03.cork())
+    def polka(word, px):
+        ls = T.letters(word, px); w = int(max(dx + im.width / 2 for im, dx in ls) - min(dx - im.width / 2 for im, dx in ls)) + 10
+        h = max(im.height for im, _ in ls); out = Image.new('RGBA', (w, h), (0, 0, 0, 0)); x0 = min(dx - im.width / 2 for im, dx in ls)
+        for i, (im, dx) in enumerate(ls):
+            it = im.rotate(T.TILTS[i % len(T.TILTS)] * 0.5, resample=Image.BICUBIC); out.alpha_composite(it, (int(dx - im.width / 2 - x0), (h - it.height) // 2))
+        return out
+    def tape(words, px, c, rot):
+        tw = max(ImageFont.truetype(S03.LABEL, px).getlength(w_) for w_ in words.split('\n'))
+        return [art(T.tape_strip(int(tw + 1.6 * px), int(px * 1.75)), c, rot, 'label tape'), text(words, px, c, rot, box=None, fg=T.TAPE_TEXT)]
+    def iphoto(w):
+        ph, (x0, y0, x1, y1) = S03.instant_photo(None, w, window=True); sh = K.C.shadow(ph, (8, 14), 16, 95); pad = (sh.width - ph.width) // 2
+        return sh, (pad + (x0 + x1) / 2 - sh.width / 2, pad + (y0 + y1) / 2 - sh.height / 2), (x1 - x0, y1 - y0), (pad + ph.width / 2 - sh.width / 2, pad + (y1 + ph.height) / 2 - sh.height / 2)
+    cam, cs = S03.camera(1000); camsh = K.C.shadow(cam, (0, 24), 26, 90); cpad = (camsh.width - cam.width) // 2
+    lx, ly, lr = [v * cs for v in S03.CAM_LENS]; lens_off = (cpad + lx - camsh.width / 2, cpad + ly - camsh.height / 2)
+    pin = lambda col, d=70: K.C.shadow(S03.prop(f'pin-head-{col}').resize((d, d), Image.LANCZOS), (8, 12), 7, 110)
+    s = []; cc = (540, 1080)
+    S2(s, cork, 'Hook. Swap in a photo of the before for the camera lens. Edit the tape.', [
+        art(camsh, cc, 0, 'instant camera'),
+        photo('The before (in the lens)', (cc[0] + lens_off[0], cc[1] + lens_off[1]), (2 * lr, 2 * lr), 0, clips[0].at(1.0, (int(2 * lr), int(2 * lr))), shape='circle'),
+        art(polka('before', 190), (540, 260), -2, 'before'),
+        guide(FIRST_GUIDE)] + tape('[WATCH THIS TRANSFORMATION]', 40, (540, 450), -2))
+    stack = [S03.prop('instant-photo-blank') for _ in range(4)]
+    S2(s, cork, HOOK2 + 'No photo needed. Edit both [bracket] lines.', [
+        art(K.C.shadow(scaled(st, 360), (8, 12), 14, 90), (380 + i * 110, 760 + (i % 2) * 90), (-14, 6, -4, 12)[i], 'instant photo') for i, st in enumerate(stack)] + [
+        art(pin('blue'), (420, 600), 0, 'push pin'), art(pin('white'), (760, 680), 0, 'push pin'),
+        text("[you won't believe\nthe after]", 84, (620, 220), -2, align='right'),
+        text('[swipe for it]', 62, (300, 1330), -2, align='left'),
+        art(doodle('arrow', 0, 160, INK), (600, 1325), -2, 'arrow')])
+    ph3, off3, wh3, strip3 = iphoto(700)
+    S2(s, cork, 'Swap in a photo of the before. Edit the words.', [
+        art(ph3, (540, 760), -4, 'instant photo'), photo('The before', at((540, 760), -4, off3), wh3, -4, clips[0].at(2.0, wh3)),
+        art(pin('blue', 80), at((540, 760), -4, (0, -ph3.height / 2 + 70)), 0, 'push pin'),
+        text('before', 64, at((540, 760), -4, strip3), -4, box=None, fg=INK)] + tape('[THE BEFORE]', 46, (360, 1360), 3))
+    kt = K.C.shadow(scaled(S03.prop('kitchen-timer'), 420), (8, 14), 14, 90)
+    S2(s, cork, 'Swap in a photo of the work in progress. Edit the time.', [
+        photo('The work (fills the page)', (540, 720), (CW, CH), 0, clips[1].at(1.0, (CW, CH))),
+        art(kt, (860, 1220), -10, 'kitchen timer'),
+        art(doodle('icon', 10, 110, WHITE), (180, 300), 0, 'sparkle')] + tape('[CLEANING IT]', 48, (380, 260), -3) + tape('[20 MIN]', 48, (330, 1250), 2))
+    ph5, off5, wh5, strip5 = iphoto(820)
+    S2(s, cork, 'Swap in a photo of the after.', [
+        art(ph5, (540, 700), 3, 'instant photo'), photo('The after', at((540, 700), 3, off5), wh5, 3, clips[2].at(1.0, wh5)),
+        art(polka('after', 190), (540, 1250), -2, 'after'),
+        art(doodle('icon', 10, 120, WHITE), (130, 330), 0, 'sparkle'), art(doodle('icon', 8, 100, WHITE), (950, 1060), 0, 'sparkle')])
+    pha, offa, wha, stra = iphoto(440)
+    S2(s, cork, 'The before and the after, side by side. Edit the captions.', [
+        x for xy, r, cl, cap, pc in (((290, 760), -5, clips[0], 'then', 'blue'), ((790, 820), 4, clips[2], 'now', 'white'))
+        for x in (art(pha, xy, r, 'instant photo'), photo(f'The {cap}', at(xy, r, offa), wha, r, cl.at(1.0, wha)),
+                  art(pin(pc), at(xy, r, (0, -pha.height / 2 + 50)), 0, 'push pin'), text(cap, 56, at(xy, r, stra), r, box=None))] + [
+        art(doodle('arrow', 2, 200, WHITE), (540, 470), 0, 'arrow')] + tape('[SAME SPOT, 20 MIN LATER]', 40, (540, 1300), -2))
+    php, offp, whp, _ = iphoto(520)
+    S2(s, cork, 'Swap in a photo of your product. Type your keyword. ' + CAPTION, [
+        art(scaled(camsh, 860), (540, 1300), 0, 'instant camera'),
+        art(php, (540, 830), 0, 'instant photo'), photo('Your product', at((540, 830), 0, offp), whp, 0, clips[3].at(1.0, whp)),
+        art(polka('Comment', 135), (540, 330), -2, 'Comment')] + tape('[WANT THE PRODUCT?]', 40, (540, 160), -2) + tape('"[KEYWORD]"', 76, (540, 500), 2))
+    return s
+
+RECIPES = {'01': c01, '02': c02, '03': c03, '09': c09, '08': c08, '10': c10, '12': c12, '20': c20, '22': c22, '23': c23, 'h2': ch2, 'h3': ch3, 'h5': ch5, 'h6': ch6}
 
 HEX = lambda c: '#%02X%02X%02X' % tuple(c[:3])
 CNAME = {WINE: 'wine', PINK: 'pink', BUTTER: 'butter', BLUE: 'light blue', WHITE: 'white', INK: 'ink', S7.DEEP: 'deep blue'}
-ARTWORK_WORDS = {'h2': 'BATTY, TOP 3, about and the numbers', 'h3': 'CAUGHT and COMMENT (cut-out letters)', 'h5': 'TRICK, or TREAT?, TREAT and COMMENT (taffy letters)'}
+ARTWORK_WORDS = {'03': 'before, after and Comment (polka-dot letters)', 'h2': 'BATTY, TOP 3, about and the numbers', 'h3': 'CAUGHT and COMMENT (cut-out letters)', 'h5': 'TRICK, or TREAT?, TREAT and COMMENT (taffy letters)'}
 
 def outline_md(tid, outlines):
     """The Canva step before the template link: which live words get Effects > Outline, in which colour."""
     out = [f'## {tid} {TITLES[tid]}', '']
     if tid in ARTWORK_WORDS: out += [f'Nothing to do: {ARTWORK_WORDS[tid]} stay artwork (pattern-filled lettering in fonts Canva does not have).', '']
-    elif not outlines: out += ['Nothing to do: the built-in words are live Bodoni Moda with no outline, as in the Reel.', '']
+    elif not outlines: out += ['Nothing to do: the built-in words are live Bodoni FLF with no outline, as in the Reel.', '']
     for slide, lt in outlines:
         e = lt['edge']; out.append(f'- Slide {slide}: **{lt["words"]}** ({CNAME.get(tuple(lt["fill"]), HEX(lt["fill"]))} {HEX(lt["fill"])}): '
                                    f'Outline in {CNAME.get(tuple(e), HEX(e))} {HEX(e)}, thin')
@@ -668,7 +834,11 @@ def main():
         ss = RECIPES[tid](); name = f'Template {tid} - {TITLES[tid]} - Carousel'
         outl = K.build(ss, S.E.PACK / DIRS[tid] / 'carousel', name, S.E.PACK / 'build' / '.cache' / f'carousel{tid}'); print('done', tid, len(ss), 'slides')
         md += outline_md(tid, outl); (S.E.PACK / DIRS[tid] / 'carousel' / 'canva-outline-list.md').write_text('\n'.join(md[:6] + outline_md(tid, outl)), encoding='utf-8')
-    if len(sys.argv) > 2: (S.E.PACK / 'canva-outline-list.md').write_text('\n'.join(md), encoding='utf-8')
+    allmd = md[:6]                                                # the combined list: every carousel's own list, in pack order
+    for tid in RECIPES:
+        f = S.E.PACK / DIRS[tid] / 'carousel' / 'canva-outline-list.md'
+        if f.exists(): allmd += f.read_text(encoding='utf-8').split('\n')[6:]
+    (S.E.PACK / 'canva-outline-list.md').write_text('\n'.join(allmd), encoding='utf-8')
 
 if __name__ == '__main__':
     main()
