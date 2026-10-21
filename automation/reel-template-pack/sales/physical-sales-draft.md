@@ -231,7 +231,7 @@ All: phone-camera look, no logos or readable brand text.
 for phones play Mercedes's three videos as silent 7-second loops: candle pouring (`Downloads/8271971-uhd_2160_4096_25fps.mp4`),
 screen printing (`14704802_1080_1920_30fps.mp4`), packing a box (`7287302-uhd_2160_3840_25fps.mp4`). Compressed copies
 in `sales/img/who-*.mp4` (git-ignored like all video; embedded in the preview HTML). Before going live, confirm their
-licence allows use on a sales page (the file names look like Pexels downloads).
+licence allows use on a sales page (the file names look like Pexels downloads). **Confirmed 2026-10-21:** Mercedes says all three are from Pexels (free licence covers commercial use on a sales page).
 
 ## 4. Who it's for
 
@@ -293,6 +293,13 @@ Each template's full shot list is in its zip. Also film the how-to video for sec
 |---|---|---|
 | Soap shop | Before and after, Pack an order with me, Every option in 10 seconds, What it feels like, Put it to the test | Bars in several scents, a gift box, paper wrap, a dish |
 | T-shirt store | One product, three ways, Your order just arrived, A or B?, Three people to gift it to, Start to finish | Tees in a few colours, mailers, a hanger, a thank-you note |
+
+## LIVE (2026-10-21)
+
+Product 1500 published at https://scrollyseo.com/product/product-reel-template-pack/ ($17.99) with all 25 zips
+(media 1522, 1532, 1539, 1540, 1544-1547, 1550, 1566, 1571-1587 range; matched by exact file size). Sales page
+https://scrollyseo.com/product-reels/ (WP page 1623): `node build-previews.mjs --live`, then `node publish-live.mjs physical`.
+The live build leaves out the how-to video screen until it is filmed. Still open: the second-computer install test.
 
 ## Store products (2026-10-20)
 - Halloween Reel Template Pack: WooCommerce product 1498, LIVE at scrollyseo.com/product/halloween-reel-template-pack/,
