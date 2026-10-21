@@ -52,7 +52,7 @@
      strips, foil stars; source files in website/scrolly-site/assets/ftr-*.webp, upload them to WP media and set the URLs here), the footer
      tiger (swap in the "Mercedes riding a tiger" image here when it exists), header Join button, quote (last word in hot pink = Mercedes's
      voice), and the footer signup + social links. */
-  var CFG={art:{sky:'https://scrollyseo.com/wp-content/uploads/2026/10/ftr-sky.webp',strips:'https://scrollyseo.com/wp-content/uploads/2026/10/ftr-strips.webp',stars:'https://scrollyseo.com/wp-content/uploads/2026/10/ftr-stars.webp'},
+  var CFG={art:{sky:'https://scrollyseo.com/wp-content/uploads/2026/10/scrolly-ftr-sky.webp',strips:'https://scrollyseo.com/wp-content/uploads/2026/10/scrolly-ftr-strips.webp',stars:'https://scrollyseo.com/wp-content/uploads/2026/10/scrolly-ftr-stars.webp'},
     tiger:'https://scrollyseo.com/wp-content/uploads/2026/10/scrolly-hp3-footer-tiger.webp',tw:1800,th:600,
     join:['/next-move/','Take the quiz'],quote:['Go get ’em,','Tiger.'],
     signup:{action:'https://assets.mailerlite.com/jsonp/2596740/forms/200782368424855203/subscribe',field:'fields[email]'},/* MailerLite form 2QLk6d "Less scrolling, more Scrolly" */
