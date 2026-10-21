@@ -28,7 +28,7 @@ RECORD = 'cover-layers.json'
 HOW_TO = """How to set your Reel cover
 
 The first 0.2 seconds of the template are your Reel's cover: your clip 1 behind the template's words. Change it like
-the rest of the template: double-click a word to change it, its font, colour or outline (the doodles and tape are text
+the rest of the template: double-click a word to change it, its font, colour or outline (the doodles are letters
 too, so they recolour the same way), or right-click clip 1 and choose Replace.
 
 When you post the Reel on Instagram, tap Edit cover and slide to the very first frame. Instagram's profile grid shows
