@@ -1,7 +1,7 @@
 {
   "id": "2026-10-07-views-to-1k",
   "style": "D",
-  "palette": "warm",
+  "palette": "offwhite",
   "brief": {
     "source": "Playbook ch. 6 (Your $1K plan): worked example $50 order, 2.5% buy, 7.5% visit ; pinned post 3 of 3 (Mercedes 2026-10-07: option A, upgraded for pinning)",
     "reader": "People who want to make their first $1K online through organic content",
@@ -11,13 +11,13 @@
     "mainPoint": "Work backward: $1,000 to sales to visitors to views",
     "structure": "worked calculation",
     "ending": "swap in your own numbers + CTA",
-    "slide2Check": "Format change from the panorama photo cover (hook2 on warm); same promise, works as a first slide"
+    "slide2Check": "Format change from the panorama photo cover (hook2 on offwhite); same promise, works as a first slide"
   },
   "media": {},
   "slides": [
     {
       "layout": "image",
-      "media": "03c339d9ae",
+      "media": "4989499a6d",
       "grid": "pinned-2026-10",
       "text": "How many views make $1,000?. The math, step by step"
     },

@@ -1,7 +1,7 @@
 {
   "id": "2026-10-07-pinned-about",
   "style": "D",
-  "palette": "warm",
+  "palette": "offwhite",
   "brief": {
     "source": "Mercedes's own answers in chat 2026-10-07 (about-me questions); pinned post 1 of 3",
     "reader": "New visitors deciding whether to follow",
@@ -11,7 +11,7 @@
     "mainPoint": "An analytical person who struggled with selling built marketing systems and shares them",
     "structure": "walking-through-slides story",
     "ending": "follow CTA with tiger nod",
-    "slide2Check": "Format change from the panorama cover (hook2 on warm); promises the short version of why Scrolly exists, works as a first slide",
+    "slide2Check": "Format change from the panorama cover (hook2 on offwhite); promises the short version of why Scrolly exists, works as a first slide",
     "mediaPlan": "Mercedes will film a VIDEO of herself walking (not a photo). Split that one video horizontally across the pano slides so she walks through the carousel as people swipe (needs ffmpeg video support). Don't change until she has the clip."
   },
   "media": {
@@ -20,7 +20,7 @@
   "slides": [
     {
       "layout": "image",
-      "media": "454f294c5c",
+      "media": "f5575665ec",
       "grid": "pinned-2026-10",
       "text": "Allow me to introduce myself. The person behind @scrollysocial"
     },

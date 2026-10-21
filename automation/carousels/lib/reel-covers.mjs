@@ -5,6 +5,8 @@
 // 2026-10-14 (Mercedes): NO italic serif anymore. 'serif', 'title' and 'label' lines and *accents* now use Bricolage
 // 800 condensed; an *accent* sits on the peach marker (ink text) instead of turning peach. Line kinds are unchanged,
 // so existing reel.json files still work. The review page's cover picker has the same layouts (reel-hf/lib/cover.mjs).
+// 2026-10-21 rebrand (vault brand/visual-system.md + writing-and-content-rules.md Reel covers): off-white text, titles in
+// Instrument Serif upright, *accent* on the sky-blue (#4da3ff) marker with navy text, caps/small lines in Jost.
 //
 // cover.lines = [[kind, text], ...] kinds: script (handwritten note), caps, serif (big italic), title (upright serif),
 // word (huge lowercase sans), small, label (serif in a soft highlight box). *word* inside caps = serif accent.
@@ -15,7 +17,7 @@ import { esc } from './common.mjs';
 export const CW = 1080, CH = 1920;
 export const TEMPLATES = ['stack', 'title', 'word', 'behind', 'label', 'number'];
 
-const CREAM = '#FFF4DC', PEACH = '#FFC9A8', INK = '#161210';
+const CREAM = '#f7f3ec', MARK = '#4da3ff', INK = '#0a1930'; // 2026-10 rebrand: off-white text, sky marker, navy ink
 const inline = (s) => esc(s).replace(/\n/g, '<br>').replace(/\*([^*]+)\*/g, '<em>$1</em>');
 
 const ARROW = `<svg class="arrow" viewBox="0 0 120 170"><path d="M38 8c-30 30-18 70 18 70 26 0 26-34 2-30-30 6-30 60-6 92" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round"/><path d="M34 128l18 22 20-20" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
@@ -44,8 +46,7 @@ const lineHtml = ([kind, text], i, all, arrow) => {
 
 export function coverHtml({ template = 'stack', lines, pos = 'bottom', photoUrl, matteUrl, theme, accent = 'peach', arrow = true, serifStyle = 'shadow' }, brand) {
   const f = brand.fonts;
-  const fams = [...new Set([...Object.values(f).map((x) => x.google), 'Covered By Your Grace', 'Inter Tight:wght@700;800', 'Fraunces:ital,opsz,wght@1,9..144,500;1,9..144,600'])].map((g) => `family=${g.replace(/ /g, '+')}`).join('&');
-  const serifColor = accent === 'peach' ? PEACH : CREAM;
+  const fams = [...new Set([...Object.values(f).map((x) => x.google), 'Covered By Your Grace', 'Fraunces:ital,opsz,wght@1,9..144,500;1,9..144,600'])].map((g) => `family=${g.replace(/ /g, '+')}`).join('&');
   const place = template === 'title' ? 'top' : pos;
   const body = lines.map((l, i) => lineHtml(l, i, lines, arrow && template !== 'title')).join('');
   return `<!doctype html><html><head><meta charset="utf-8">
@@ -56,27 +57,27 @@ body{width:${CW}px;height:${CH}px;overflow:hidden;background:#222}
 .c{position:relative;width:${CW}px;height:${CH}px;overflow:hidden;--k:1}
 .ph,.matte{position:absolute;inset:0;background-size:cover;background-position:center}
 .ph{background-image:url('${photoUrl}');filter:saturate(.92) contrast(1.02)}
-.dim{position:absolute;inset:0;background:rgba(20,14,10,.2)}
-.shade{position:absolute;left:0;right:0;height:900px;background:radial-gradient(ellipse 75% 50% at 50% 50%,rgba(15,10,8,.58),rgba(15,10,8,0) 74%)}
+.dim{position:absolute;inset:0;background:rgba(10,25,48,.2)}
+.shade{position:absolute;left:0;right:0;height:900px;background:radial-gradient(ellipse 75% 50% at 50% 50%,rgba(7,15,35,.58),rgba(7,15,35,0) 74%)}
 .shade.top{top:180px}.shade.center{top:510px}.shade.bottom{top:840px}
 .matte{background-image:url('${matteUrl || ''}')}
 .doodles{position:absolute;inset:0;width:100%;height:100%;color:${CREAM};opacity:.9}
 .t{position:absolute;left:80px;right:80px;display:flex;flex-direction:column;align-items:center;text-align:center;color:${CREAM};text-shadow:0 3px 24px rgba(0,0,0,.28)}
 .t.top{top:310px}.t.center{top:50%;transform:translateY(-50%)}.t.bottom{bottom:310px}
 .l{position:relative}
-em{font-family:'${f.bold.family}',sans-serif;font-style:normal;font-weight:800;font-stretch:78%;text-transform:none;letter-spacing:-.01em;color:${INK};background:${PEACH};padding:0 .12em;border-radius:.08em;display:inline-block;rotate:-1.5deg;text-shadow:none!important;font-size:1em;line-height:1}
-.caps{font:800 calc(104px*var(--k))/1.0 '${f.bold.family}',sans-serif;font-stretch:88%;text-transform:uppercase;letter-spacing:-.01em}
-.serif{font:800 calc(200px*var(--k))/.86 '${f.bold.family}',sans-serif;font-stretch:78%;color:${CREAM};letter-spacing:-.015em;margin:.02em 0 .06em}
-.title{font:800 calc(150px*var(--k))/.92 '${f.bold.family}',sans-serif;font-stretch:78%;letter-spacing:-.015em}
+em{font-family:'${f.headline.family}',serif;font-style:normal;font-weight:400;text-transform:none;letter-spacing:-.005em;color:${INK};background:${MARK};padding:0 .12em .02em;border-radius:.08em;display:inline-block;rotate:-1.5deg;text-shadow:none!important;font-size:1em;line-height:1}
+.caps{font:700 calc(88px*var(--k))/1.08 '${f.display.family}',sans-serif;text-transform:uppercase;letter-spacing:.01em}
+.serif{font:400 calc(220px*var(--k))/.88 '${f.headline.family}',serif;color:${CREAM};letter-spacing:-.015em;margin:.02em 0 .06em}
+.title{font:400 calc(160px*var(--k))/.94 '${f.headline.family}',serif;letter-spacing:-.01em}
 .title em{font-size:1em}
-.word{font:800 calc(280px*var(--k))/.9 'Inter Tight',sans-serif;letter-spacing:-.01em;text-transform:lowercase}
+.word{font:400 calc(300px*var(--k))/.88 '${f.headline.family}',serif;letter-spacing:-.01em;text-transform:lowercase}
 .small{font:500 calc(44px*var(--k))/1.25 '${f.highlight.family}',sans-serif;margin-top:18px;letter-spacing:.005em}
 .script{font:400 calc(76px*var(--k))/1.02 'Covered By Your Grace',cursive;letter-spacing:.03em;text-transform:uppercase;transform:rotate(-5deg);align-self:flex-start;margin:0 0 6px 40px;text-align:left;max-width:560px}
 .t.title-t .script{align-self:center;transform:none;margin:14px 0 0;text-transform:none;letter-spacing:.06em;font-size:calc(58px*var(--k))}
 .script .arrow{position:absolute;left:38%;top:92%;width:96px;color:${CREAM};transform:rotate(8deg)}
 .script:has(.arrow){margin-bottom:120px}
-.label{font:800 calc(92px*var(--k))/1.2 '${f.bold.family}',sans-serif;font-stretch:78%;color:${INK};text-shadow:none;margin-top:10px}
-.label span{background:${PEACH};padding:.02em .22em .06em;border-radius:.18em;-webkit-box-decoration-break:clone;box-decoration-break:clone}
+.label{font:400 calc(100px*var(--k))/1.18 '${f.headline.family}',serif;color:${INK};text-shadow:none;margin-top:10px}
+.label span{background:${MARK};padding:.02em .22em .06em;border-radius:.18em;-webkit-box-decoration-break:clone;box-decoration-break:clone}
 .label em{background:none;padding:0;rotate:0deg}
 .behind-t .serif,.behind-t .caps{font-size:calc(330px*var(--k));line-height:.82}
 .number-t .serif{font-size:calc(300px*var(--k))}

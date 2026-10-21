@@ -41,7 +41,7 @@ await pg.goto(fileUrl(renderFile), { waitUntil: 'networkidle0' });
 await pg.evaluate(() => document.fonts.ready);
 await pg.evaluate(() => Promise.all([...document.images].map((im) => (im.complete ? 0 : new Promise((r) => { im.onload = im.onerror = r; })))));
 
-const family = post.style === 'D' ? brand.fonts.bold.family : brand.fonts.highlight.family;
+const family = post.style === 'D' ? brand.fonts.headline.family : brand.fonts.highlight.family;
 const fontOk = await pg.evaluate((f) => [...document.fonts].some((x) => x.family.replace(/"/g, '') === f && x.status === 'loaded'), family);
 const problems = [];
 if (!fontOk) problems.push(`font "${family}" did not load (offline? sandbox?)`);

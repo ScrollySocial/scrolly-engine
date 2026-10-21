@@ -17,7 +17,7 @@ const browser = await launch(); const pg = await browser.newPage();
 const tiles = [];
 for (const [i, id] of pano.posts.entries()) {
   const f = path.join(HERE, 'posts', id, 'post.json');
-  const post = existsSync(f) ? readJson(f) : { id, style: 'D', palette: 'warm', slides: [{ layout: 'pano', grid: group, text: placeholders[id] || id }], tigerNod: null };
+  const post = existsSync(f) ? readJson(f) : { id, style: 'D', palette: 'offwhite', slides: [{ layout: 'pano', grid: group, text: placeholders[id] || id }], tigerNod: null };
   post.slides = [post.slides[0]]; post.tigerNod = null;
   const html = path.join(out, `.pin-${i}.html`);
   writeFileSync(html, pageHtml(post, { brand, mediaFor }));

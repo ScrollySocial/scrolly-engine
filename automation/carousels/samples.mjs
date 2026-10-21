@@ -13,14 +13,14 @@ const stock = fileUrl(path.join(REPO, 'Scrolly Organic Engine/products/1k-club/p
 const mediaFor = (id) => (id ? { url: stock, focus: '50% 30%' } : null);
 
 const samples = [
-  ['warm', { text: 'Your next post is already *in your camera roll*' }, 'plain'],
-  ['tangerine', { text: 'Pick the photo you *almost* deleted', pattern: 'rays' }, 'rays'],
-  ['warm', { text: 'Your bio has *one* job', overlay: 'note', pattern: 'grid' }, 'note + grid'],
-  ['tangerine', { text: 'Write the caption *first*', overlay: 'card' }, 'card'],
-  ['warm', { text: 'Batch a week in *one hour*', overlay: 'circle', pattern: 'dots' }, 'circle + dots'],
-  ['tangerine', { text: 'Your first slide is *the ad*', overlay: ['highlight', 'sparkle'], pattern: 'stars' }, 'highlight + sparkle + stars'],
-  ['warm', { text: 'Film it *where you already are*', overlay: ['polaroid', 'arrow'], media: 'x' }, 'polaroid + arrow'],
-  ['tangerine', { text: 'Three posts, *one* photo', overlay: ['note', 'sparkle'], pattern: 'stripes' }, 'note + sparkle + stripes'],
+  ['offwhite', { text: 'Your next post is already *in your camera roll*' }, 'plain'],
+  ['navy', { text: 'Pick the photo you *almost* deleted', pattern: 'rays' }, 'rays'],
+  ['offwhite', { text: 'Your bio has *one* job', overlay: 'note', pattern: 'grid' }, 'note + grid'],
+  ['navy', { text: 'Write the caption *first*', overlay: 'card' }, 'card'],
+  ['offwhite', { text: 'Batch a week in *one hour*', overlay: 'circle', pattern: 'dots' }, 'circle + dots'],
+  ['navy', { text: 'Your first slide is *the ad*', overlay: ['highlight', 'sparkle'], pattern: 'stars' }, 'highlight + sparkle + stars'],
+  ['offwhite', { text: 'Film it *where you already are*', overlay: ['polaroid', 'arrow'], media: 'x' }, 'polaroid + arrow'],
+  ['navy', { text: 'Three posts, *one* photo', overlay: ['note', 'sparkle'], pattern: 'stripes' }, 'note + sparkle + stripes'],
 ];
 
 const browser = await launch();

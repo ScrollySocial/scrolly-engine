@@ -4,21 +4,22 @@
   "_handleNote": "Confirmed by Mercedes 2026-10-07.",
   "manychat": false,
   "hashtagsPerPost": 3,
+  "_fontsNote": "2026-10 rebrand (vault brand/visual-system.md): Jost for running text, labels and highlight text; Instrument Serif for headlines, big numbers and the italic key word. Bricolage Grotesque and Figtree are retired.",
   "fonts": {
     "highlight": {
-      "family": "Figtree",
-      "weight": 600,
-      "google": "Figtree:wght@500;600;700;800"
+      "family": "Jost",
+      "weight": 500,
+      "google": "Jost:wght@400;500;600;700;800"
     },
     "display": {
-      "family": "Figtree",
-      "weight": 800,
-      "google": "Figtree:wght@500;600;700;800"
+      "family": "Jost",
+      "weight": 500,
+      "google": "Jost:wght@400;500;600;700;800"
     },
-    "bold": {
-      "family": "Bricolage Grotesque",
-      "weight": 800,
-      "google": "Bricolage Grotesque:opsz,wdth,wght@12..96,75..100,200..800"
+    "headline": {
+      "family": "Instrument Serif",
+      "weight": 400,
+      "google": "Instrument Serif:ital@0;1"
     },
     "serif": {
       "family": "Instrument Serif",
@@ -41,48 +42,50 @@
     "image": "website/scrolly-site/assets/cta-tiger.webp"
   },
   "palettes": {
-    "_note": "Main palettes (Mercedes 2026-10-06, 'at least for now'): warm + tangerine. Wildcards (wildcard:true) = occasional surprise backgrounds, at most 1 in any 6 posts (check.mjs warns). Variety otherwise comes from patterns + overlays. paper/paperInk/paperAccent = note/card/polaroid colors.",
-    "warm": {
-      "bg": "#F6EEE5",
-      "ink": "#161210",
-      "accent": "#E05A33",
-      "tex": "#EDE2D5",
-      "paper": "#FFFFFF",
-      "paperInk": "#161210",
-      "paperAccent": "#E05A33",
-      "mark": "#F9C9B4"
+    "_note": "2026-10 rebrand (vault brand/visual-system.md; look frozen 2026-10-22). Roles: bg, ink (text), accent (the *italic* word and big numbers), mark (sky marker band under the italic word; transparent on navy, where the word turns sky instead), deco (arrows, sparkles, stars), tex (pattern lines), paper/paperInk/paperAccent/paperMark (notes, cards, checklist rows, polaroids). Mix across the feed like the site: mostly offwhite, navy often, mist now and then. Hot pink #ff3b7f means Mercedes: only on slides about her or in her voice, and only on navy (never pink text on light grounds). Retired: orange #E05A33, tangerine, peach, blush, cream #F6EEE5, ink #161210.",
+    "offwhite": {
+      "bg": "#f7f3ec",
+      "ink": "#0a1930",
+      "accent": "#0a1930",
+      "mark": "#4da3ff",
+      "deco": "#4da3ff",
+      "tex": "#ebe5da",
+      "paper": "#ffffff",
+      "paperInk": "#0a1930",
+      "paperAccent": "#0a1930",
+      "paperMark": "#4da3ff"
     },
-    "tangerine": {
-      "bg": "#E8602F",
-      "ink": "#FFFFFF",
-      "accent": "#FFE3D3",
-      "tex": "#EC6D3E",
-      "paper": "#F6EEE5",
-      "paperInk": "#161210",
-      "paperAccent": "#E05A33",
-      "mark": "#FFB08F"
-    },
-    "blush": {
-      "bg": "#F8DCE5",
-      "ink": "#161210",
-      "accent": "#E05A33",
-      "tex": "#F2CCD9",
-      "paper": "#FFFFFF",
-      "paperInk": "#161210",
-      "paperAccent": "#E05A33",
-      "mark": "#F6B9A3",
-      "wildcard": true
+    "navy": {
+      "bg": "#0a1930",
+      "ink": "#ffffff",
+      "accent": "#4da3ff",
+      "mark": "transparent",
+      "deco": "#4da3ff",
+      "tex": "#13264a",
+      "paper": "#f7f3ec",
+      "paperInk": "#0a1930",
+      "paperAccent": "#0a1930",
+      "paperMark": "#4da3ff"
     },
     "mist": {
-      "bg": "#E7EEF5",
-      "ink": "#161210",
-      "accent": "#E05A33",
-      "tex": "#DAE4EE",
-      "paper": "#FFFFFF",
-      "paperInk": "#161210",
-      "paperAccent": "#E05A33",
-      "mark": "#F6C1AD",
-      "wildcard": true
+      "bg": "#dfe4f0",
+      "ink": "#0a1930",
+      "accent": "#0a1930",
+      "mark": "#4da3ff",
+      "deco": "#0a1930",
+      "tex": "#d0d8ea",
+      "paper": "#ffffff",
+      "paperInk": "#0a1930",
+      "paperAccent": "#0a1930",
+      "paperMark": "#4da3ff"
     }
-  }
+  },
+  "paletteAliases": {
+    "_note": "Old palette names from before the 2026-10 rebrand, so older post.json and ledger entries still render.",
+    "warm": "offwhite",
+    "tangerine": "navy",
+    "blush": "mist"
+  },
+  "pink": "#ff3b7f",
+  "_pinkNote": "Hot pink = Mercedes only (her name, her story, her quotes, her sign-off), as text or accents on navy grounds. Never on products, prices, Clubs, tools or CTAs. Use with palette navy + slide/post \"voice\": \"mercedes\"."
 }

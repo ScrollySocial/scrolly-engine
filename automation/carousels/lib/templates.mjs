@@ -2,12 +2,12 @@
 // A  One photo: the same photo of Mercedes on every slide, Instagram-style highlight text.
 // B  Photo dump: a different photo per slide, same highlight text.
 // C  Trending format: a reusable format recipe (post.format), not a fixed design.
-// D  Text style 1: clean, paper-white, big black type. Placeholder until inspiration is picked.
-// E  Text style 2: bold solid color block. Placeholder until inspiration is picked.
+// D  Big type: one line in Instrument Serif with the *italic key word* on a sky marker (2026-10 rebrand).
+// E  Text style 2: placeholder, not built yet.
 // Copy markup: *word* = emphasis (D/E/C only; ignored in highlight styles). \n = forced line break.
 import path from 'node:path';
 import { readFileSync } from 'node:fs';
-import { W, H, REPO, esc, fileUrl } from './common.mjs';
+import { W, H, REPO, esc, fileUrl, paletteFor, isDark } from './common.mjs';
 import { LAYOUTS, LAYOUT_CSS } from './layouts.mjs';
 
 const rich = (s, emph = true) => esc(s).replace(/\n/g, '<br>').replace(/\*([^*]+)\*/g, emph ? '<em>$1</em>' : '$1');
@@ -28,13 +28,14 @@ function nod(post, brand, isLast) {
   return '';
 }
 
-// Small 4-point stars scattered on a 360px tile, in the palette's accent color.
+// Small 4-point stars scattered on a 360px tile, in the palette's decoration color.
 const starsSvg = (color) => 'data:image/svg+xml,' + encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="360" height="360"><g fill="${color}" opacity=".55">${[[60, 40, 16], [250, 130, 12], [140, 265, 10], [318, 300, 7]].map(([x, y, r]) => `<path d="M${x} ${y - r}l${r * .3} ${r * .7} ${r * .7} ${r * .3}-${r * .7} ${r * .3}-${r * .3} ${r * .7}-${r * .3}-${r * .7}-${r * .7}-${r * .3} ${r * .7}-${r * .3}z"/>`).join('')}</g></svg>`).replace(/'/g, '%27');
 
 // Overlays for style D/E. Holders (one per slide): note, card, polaroid. Decorations: circle, highlight, arrow, sparkle.
 export const OVERLAYS = ['note', 'card', 'polaroid', 'circle', 'highlight', 'arrow', 'sparkle'];
 export const PATTERNS = ['none', 'stripes', 'grid', 'stars', 'dots', 'rays'];
 const svgUrl = (svg) => 'data:image/svg+xml,' + encodeURIComponent(svg).replace(/'/g, '%27');
+const circleUrl = (c) => svgUrl(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 210 100" preserveAspectRatio="none"><path d="M40 16C80 3 168 4 194 34c18 22-6 52-70 58-48 5-104-2-116-30C-2 40 24 20 62 13c22-4 50-5 74-2" fill="none" stroke="${c}" stroke-width="3.5" stroke-linecap="round"/></svg>`);
 const CLIP = svgUrl('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 150"><path d="M42 30v80a17 17 0 0 1-34 0V22a12 12 0 0 1 24 0v80a5 5 0 0 1-10 0V36" fill="none" stroke="#8a8f98" stroke-width="5" stroke-linecap="round"/></svg>');
 const SPARK = '<svg viewBox="0 0 40 40"><path d="M20 0c1.5 12 6.5 17 20 20-13.5 3-18.5 8-20 20C18.5 28 13.5 23 0 20 13.5 17 18.5 12 20 0z" fill="currentColor"/></svg>';
 const ARROW = '<svg viewBox="0 0 220 160"><path d="M12 20c60-12 140 6 170 92" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round"/><path d="M150 96l34 22 12-40" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg>';
@@ -77,9 +78,13 @@ export function slideHtml(post, slide, i, ctx) {
   }
 
   if (style === 'D' || style === 'E') {
-    const pal = brand.palettes[slide.palette || post.palette || 'warm'];
+    const pal = paletteFor(brand, slide.palette || post.palette || 'offwhite');
     if (!pal) throw new Error(`Unknown palette "${slide.palette || post.palette}"`);
-    const vars = `--bg:${pal.bg};--ink:${pal.ink};--accent:${pal.accent};--tex:${pal.tex || pal.bg};--paper:${pal.paper};--paper-ink:${pal.paperInk};--paper-accent:${pal.paperAccent};--mark:${pal.mark};--deco:${pal.accent}`;
+    // Hot pink means Mercedes (visual-system.md): on slides in her voice it takes the decorations, and on navy the
+    // italic word too. Never pink text on a light ground.
+    const her = (slide.voice || post.voice) === 'mercedes';
+    const accent = her && isDark(pal) ? brand.pink : pal.accent, deco = her ? brand.pink : pal.deco;
+    const vars = `--bg:${pal.bg};--ink:${pal.ink};--accent:${accent};--tex:${pal.tex || pal.bg};--paper:${pal.paper};--paper-ink:${pal.paperInk};--paper-accent:${pal.paperAccent};--paper-mark:${pal.paperMark};--mark:${pal.mark};--deco:${deco};--circle:url('${circleUrl(deco)}')`;
     const tex = slide.pattern ?? slide.texture ?? post.pattern ?? post.texture ?? 'none';
     const ov = [].concat(slide.overlay || []);
     const unknown = ov.filter((o) => !OVERLAYS.includes(o));
@@ -88,7 +93,7 @@ export function slideHtml(post, slide, i, ctx) {
     const photo = holder === 'polaroid' ? mediaFor(slide.media, slide.focus) : null;
     if (holder === 'polaroid' && !photo) throw new Error(`slide ${i + 1}: polaroid overlay needs slide.media`);
     const cut = style === 'D' && slide.cutout ? mediaFor(slide.cutout) : null;
-    const bgImg = tex === 'stars' ? `;background-image:url('${starsSvg(pal.accent)}')` : '';
+    const bgImg = tex === 'stars' ? `;background-image:url('${starsSvg(deco)}')` : '';
     const tilt = (i % 2 ? 1 : -1) * (slide.tilt ?? 2);
     if (slide.layout && slide.layout !== 'cover') {
       const fn = LAYOUTS[slide.layout];
@@ -144,7 +149,7 @@ body{background:#888;width:${W}px}
 .hl-style .pos-top{top:150px}
 .hl-style .pos-center{top:50%;transform:translateY(-50%)}
 .hl-style .pos-bottom{bottom:170px}
-.hl{font-weight:${brand.fonts.highlight.weight};line-height:1.42;color:#000}
+.hl{font-weight:${brand.fonts.highlight.weight};line-height:1.42;color:#0a1930}
 .hl span{background:#fff;padding:.08em .32em;border-radius:.22em;-webkit-box-decoration-break:clone;box-decoration-break:clone}
 
 /* C: notes */
@@ -164,29 +169,29 @@ body{background:#888;width:${W}px}
 .fmt-card .fit{font-weight:500;line-height:1.38;color:#0f1419}
 .fmt-card .ct{position:absolute;right:56px;bottom:40px;font-size:32px;color:#9aa0a6}
 
-/* D / E: text-only blocks */
+/* D / E: text-only blocks (2026-10 rebrand: Jost text, Instrument Serif headlines, italic key word on a sky marker) */
 .blk{background:var(--bg);color:var(--ink);font-family:'${disp}',sans-serif}
 .blk .txt{position:absolute;left:96px;right:96px;display:flex;flex-direction:column}
 .blk .pos-left{top:50%;transform:translateY(-50%);text-align:left;align-items:flex-start}
 .blk .pos-center{top:50%;transform:translateY(-50%);text-align:center;align-items:center}
 .blk .pos-top{top:170px;text-align:center;align-items:center}
 .blk .pos-bottom{bottom:200px;text-align:center;align-items:center}
-.blk-E .fit{font-weight:800;line-height:1.08;letter-spacing:-.025em}
-.blk em{font-style:normal;color:var(--accent);background:linear-gradient(transparent 62%,color-mix(in srgb,var(--accent) 22%,transparent) 0)}
-.blk-E em{background:none;text-decoration:underline;text-decoration-thickness:.07em;text-underline-offset:.12em}
+.blk-E .fit{font-weight:700;line-height:1.1;letter-spacing:-.01em}
+.blk em{font-style:normal;color:var(--accent);background:linear-gradient(transparent 60%,var(--mark) 60% 92%,transparent 92%);padding:0 .06em;-webkit-box-decoration-break:clone;box-decoration-break:clone}
+.blk-E em{background:none;text-decoration:underline;text-decoration-color:var(--deco);text-decoration-thickness:.07em;text-underline-offset:.12em}
 .blk .ct{position:absolute;top:70px;right:96px;font-size:34px;color:var(--muted);font-weight:600}
 .blk .handle{position:absolute;bottom:70px;left:96px;font-size:32px;color:var(--muted);font-weight:600}
 .blk-E .handle{left:0;right:0;text-align:center}
 em{font-style:normal}
 
-/* D: bold type */
-.blk-D{font-family:'${brand.fonts.bold.family}',sans-serif}
-.blk-D .fit{font-weight:800;font-stretch:75%;font-variation-settings:'wdth' 75;text-transform:uppercase;line-height:.92;letter-spacing:-.005em;text-wrap:balance}
-.blk-D em{font-family:'${brand.fonts.serif.family}',serif;font-style:italic;font-weight:400;text-transform:none;color:var(--accent);font-size:1.12em;letter-spacing:0;line-height:.8;background:none}
+/* D: big serif headline */
+.blk-D{font-family:'${brand.fonts.headline.family}',serif}
+.blk-D .fit{font-weight:400;line-height:.98;letter-spacing:-.01em;text-wrap:balance}
+.blk-D em{font-family:'${brand.fonts.serif.family}',serif;font-style:italic;font-weight:400;font-size:1.04em;letter-spacing:0}
 .blk-D .txt{left:80px;right:80px}
 .blk-D .nod.line{font-family:'${brand.fonts.serif.family}',serif;font-style:italic;font-size:64px;font-weight:400;color:var(--accent);opacity:1;margin-top:40px}
 .blk-D .pos-top{top:150px}
-.blk-D .cut{position:absolute;bottom:0;left:50%;transform:translateX(-50%);height:62%;width:auto;filter:drop-shadow(0 12px 24px rgba(0,0,0,.18))}
+.blk-D .cut{position:absolute;bottom:0;left:50%;transform:translateX(-50%);height:62%;width:auto;filter:drop-shadow(0 12px 24px rgba(10,25,48,.18))}
 .tex-stripes{background-image:repeating-linear-gradient(0deg,var(--tex) 0 90px,transparent 90px 180px)}
 .tex-grid{background-image:linear-gradient(var(--tex) 3px,transparent 3px),linear-gradient(90deg,var(--tex) 3px,transparent 3px);background-size:90px 90px}
 .tex-stars{background-repeat:repeat}
@@ -195,20 +200,19 @@ em{font-style:normal}
 .tex-dots{background-image:radial-gradient(var(--tex) 9px,transparent 10px);background-size:64px 64px}
 .tex-rays{background-image:repeating-conic-gradient(from 0deg at 50% 50%,var(--tex) 0 6deg,transparent 6deg 18deg)}
 
-/* D/E overlays: holders */
-.holder{background:var(--paper);color:var(--paper-ink);--accent:var(--paper-accent);padding:90px 70px;rotate:var(--tilt);box-shadow:0 18px 40px rgba(60,20,0,.16)}
+/* D/E overlays: holders (light paper, so the italic word goes back to navy on the sky marker) */
+.holder{background:var(--paper);color:var(--paper-ink);--accent:var(--paper-accent);--mark:var(--paper-mark);padding:90px 70px;rotate:var(--tilt);box-shadow:0 18px 40px rgba(10,25,48,.16)}
 .blk .holder.pos-center{left:120px;right:120px}
 .holder-note{border-radius:6px}
 .holder-card{border-radius:28px;padding-top:110px}
-.tape{position:absolute;top:-34px;left:50%;width:240px;height:68px;translate:-50% 0;rotate:calc(var(--tilt) * -2);background:color-mix(in srgb,var(--mark) 75%,transparent)}
+.tape{position:absolute;top:-34px;left:50%;width:240px;height:68px;translate:-50% 0;rotate:calc(var(--tilt) * -2);background:color-mix(in srgb,var(--paper-mark) 60%,transparent)}
 .clip{position:absolute;top:-70px;right:90px;width:60px;rotate:8deg}
-.polaroid{position:absolute;top:100px;left:50%;width:640px;padding:28px 28px 110px;background:#fff;translate:-50% 0;rotate:var(--ptilt);box-shadow:0 18px 40px rgba(60,20,0,.18)}
+.polaroid{position:absolute;top:100px;left:50%;width:640px;padding:28px 28px 110px;background:#fff;translate:-50% 0;rotate:var(--ptilt);box-shadow:0 18px 40px rgba(10,25,48,.18)}
 .pimg{width:100%;height:600px;background-size:cover}
 .ov-polaroid .txt.pos-bottom{bottom:110px}
 /* decorations */
-.ov-circle em{display:inline-block;white-space:nowrap;padding:.3em .78em .26em;margin:-.14em -.2em;background:url("${svgUrl('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 210 100" preserveAspectRatio="none"><path d="M40 16C80 3 168 4 194 34c18 22-6 52-70 58-48 5-104-2-116-30C-2 40 24 20 62 13c22-4 50-5 74-2" fill="none" stroke="#000" stroke-width="3.5" stroke-linecap="round"/></svg>')}") center/100% 100% no-repeat}
-.ov-highlight em{background:linear-gradient(transparent 72%,var(--mark) 72% 90%,transparent 90%);padding:0 .1em}
-.ov-highlight .holder em{background:linear-gradient(transparent 55%,color-mix(in srgb,var(--paper-accent) 25%,transparent) 55% 92%,transparent 92%)}
+.ov-circle em{display:inline-block;white-space:nowrap;padding:.3em .78em .26em;margin:-.14em -.2em;background:var(--circle) center/100% 100% no-repeat}
+.ov-highlight em{background:linear-gradient(transparent 52%,var(--mark) 52% 94%,transparent 94%);padding:0 .1em}
 .arrow{position:absolute;right:120px;bottom:150px;width:260px;color:var(--deco);rotate:150deg}
 .ov-polaroid .arrow{right:40px;bottom:auto;top:620px;width:240px;rotate:190deg}
 .spk{position:absolute;width:88px;color:var(--deco)}
@@ -218,7 +222,7 @@ em{font-style:normal}
 ${LAYOUT_CSS(brand)}
 /* Tiger nod: small, last slide only */
 .nod.line{margin-top:44px;font-size:40px;font-weight:600;opacity:.85}
-.hl-style .nod.line{background:#fff;color:#000;padding:.1em .45em;border-radius:.3em}
+.hl-style .nod.line{background:#fff;color:#0a1930;padding:.1em .45em;border-radius:.3em}
 .nod.emoji{margin-top:36px;font-size:72px;line-height:1}
 .nod.img{margin-top:40px;width:280px;height:auto}
 </style></head><body>

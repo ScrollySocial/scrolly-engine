@@ -1,7 +1,7 @@
 {
   "id": "2026-10-07-pinned-challenge",
   "style": "D",
-  "palette": "tangerine",
+  "palette": "navy",
   "brief": {
     "source": "Live sales page scrollyseo.com/1k-club (inclusions in config/destinations.json); Mercedes's hook 2026-10-07; pinned post 2 of 3",
     "reader": "People who want to make their first $1,000 online and are deciding whether to buy",
@@ -18,9 +18,9 @@
   "slides": [
     {
       "layout": "image",
-      "media": "b313ab1e62",
+      "media": "ae22ed69dc",
       "grid": "pinned-2026-10",
-      "text": "Want to make $1,000 in 30 days? Meet the $1K Challenge"
+      "text": "Want to make $1,000 in 30 days?. Meet the $1K Challenge"
     },
     {
       "layout": "hook2",

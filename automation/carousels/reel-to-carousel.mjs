@@ -1,6 +1,6 @@
 // Turns a Reel into its twin carousel draft, so carousels never need their own ideas.
 // Uses the established style D templates (Mercedes 2026-10-10: "we already established carousel templates"):
-//   1  big-type cover = the Reel's hook (palette warm or tangerine, pattern)
+//   1  big-type cover = the Reel's hook (palette offwhite, navy or mist, pattern)
 //   2  hook2 = altHook (top, right-aligned) + swipeLine (bottom, left-aligned)  (content-rules 5)
 //   3.. one slide per beat, carouselExtras slotted in. A beat's `carousel` object sets its layout
 //       (text, number, formula, chart, phone, chat, checklist, photo) exactly like a post.json slide.
@@ -68,7 +68,7 @@ for (const s of content) { delete s._frame; delete s._file; delete s.useFrame; }
 
 // 3. post.json
 mkdirSync(dir, { recursive: true });
-const palette = reel.carouselPalette || 'warm';
+const palette = reel.carouselPalette || 'offwhite';
 writeJson(path.join(dir, 'post.json'), {
   id, style: 'D', palette, fromReel: id,
   brief: {

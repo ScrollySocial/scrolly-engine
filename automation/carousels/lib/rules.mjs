@@ -3,7 +3,7 @@
 import { existsSync } from 'node:fs';
 import path from 'node:path';
 import { readFileSync } from 'node:fs';
-import { cfg, postDir, HERE } from './common.mjs';
+import { cfg, postDir, HERE, paletteFor } from './common.mjs';
 
 const CTA_PATTERNS = {
   'link-in-bio': /link in (my )?bio/i,
@@ -27,9 +27,9 @@ export function lint(post) {
   // Structure and length
   if (slides.length < 5) E(`${slides.length} slides; minimum is 5 (develop the idea or recommend another format)`);
   if (!['A', 'B', 'C', 'D', 'E'].includes(post.style)) E(`style must be A-E`);
-  if (['D', 'E'].includes(post.style)) for (const pal of [post.palette, ...slides.map((s) => s.palette)].filter(Boolean)) if (!brand.palettes[pal] || pal.startsWith('_')) E(`palette "${pal}" is not one of the locked palettes (${Object.keys(brand.palettes).filter((k) => !k.startsWith('_')).join(', ')})`);
+  if (['D', 'E'].includes(post.style)) for (const pal of [post.palette, ...slides.map((s) => s.palette)].filter(Boolean)) if (!paletteFor(brand, pal)) E(`palette "${pal}" is not one of the locked palettes (${Object.keys(brand.palettes).filter((k) => !k.startsWith('_')).join(', ')})`);
   slides.forEach((s, i) => {
-    const pal = brand.palettes[s.palette || post.palette];
+    const pal = paletteFor(brand, s.palette || post.palette);
     if ([].concat(s.overlay || []).includes('circle')) { const m = (s.text || '').match(/\*([^*]+)\*/); if (!m) E(`slide ${i + 1}: circle overlay needs a *word* to circle`); else if (m[1].trim().split(/\s+/).length > 2) Wn(`slide ${i + 1}: circle more than 2 words looks crowded`); }
     if (pal?.wildcard && [].concat(s.overlay || []).some((o) => ['note', 'card'].includes(o))) E(`slide ${i + 1}: no white note/card overlays on wildcard palettes (Mercedes 2026-10-06)`);
   });

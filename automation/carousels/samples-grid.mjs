@@ -16,17 +16,17 @@ const mediaFor = (id, focus) => (id ? { url: fileUrl(path.join(STOCK, id + '.jpg
 // kind: text | photo | reel (carousel whose first slide is a Reel clip)
 const tiles = [
   ['photo', { style: 'B', slides: [{ text: 'A week of posts from one coffee run', media: 'coffeeRun', pos: 'top' }] }],
-  ['text', { style: 'D', palette: 'tangerine', slides: [{ text: 'Pick the photo you *almost* deleted', pattern: 'rays' }] }],
+  ['text', { style: 'D', palette: 'navy', slides: [{ text: 'Pick the photo you *almost* deleted', pattern: 'rays' }] }],
   ['reel', { style: 'A', media: { background: 'talkCam' }, slides: [{ text: 'What I wish I knew before my first Reel', pos: 'bottom' }] }],
   ['photo', { style: 'B', slides: [{ text: '', media: 'girlField' }] }],
   ['reel', { style: 'A', media: { background: 'couchTee' }, slides: [{ text: 'Three Reels you can film from the couch', pos: 'top' }] }],
-  ['wild', { style: 'D', palette: 'blush', slides: [{ text: 'Post the *messy* version', overlay: 'sparkle' }] }],
-  ['text', { style: 'D', palette: 'warm', slides: [{ text: 'Your bio has *one* job', overlay: 'note', pattern: 'grid' }] }],
+  ['wild', { style: 'D', palette: 'mist', slides: [{ text: 'Post the *messy* version', overlay: 'sparkle' }] }],
+  ['text', { style: 'D', palette: 'offwhite', slides: [{ text: 'Your bio has *one* job', overlay: 'note', pattern: 'grid' }] }],
   ['photo', { style: 'B', slides: [{ text: 'Behind the scenes of a Tuesday', media: 'teeHeld', pos: 'bottom' }] }],
   ['reel', { style: 'A', media: { background: 'cameraBack' }, slides: [{ text: 'My no-tripod filming setup', pos: 'top' }] }],
   ['wild', { style: 'D', palette: 'mist', slides: [{ text: 'Your camera roll is a *content plan*', overlay: 'circle' }] }],
   ['photo', { style: 'B', slides: [{ text: '', media: 'familyHat' }] }],
-  ['text', { style: 'D', palette: 'tangerine', slides: [{ text: 'Write the caption *first*', overlay: 'card' }] }],
+  ['text', { style: 'D', palette: 'navy', slides: [{ text: 'Write the caption *first*', overlay: 'card' }] }],
 ];
 
 const ICON_CAROUSEL = '<svg viewBox="0 0 24 24" fill="#fff"><path d="M7 3h11a3 3 0 0 1 3 3v11a1 1 0 0 1-2 0V6a1 1 0 0 0-1-1H7a1 1 0 0 1 0-2zm-2 4h10a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2z"/></svg>';

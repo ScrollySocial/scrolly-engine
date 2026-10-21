@@ -6,10 +6,10 @@ import { esc } from './common.mjs';
 const rich = (s) => esc(s).replace(/\*([^*]+)\*/g, '<em>$1</em>');
 
 export const DESIGNS = {
-  // About (warm, grid paper) · $1K Challenge (tangerine sweep) · Views math (warm, dots)
+  // v1, kept for history. Names: offwhite (was warm), navy (was tangerine).
   'pinned-2026-10': ({ brand, photo, shirt, screen, hooks }) => {
     const [h1, h2, h3] = hooks;
-    const P = brand.palettes, warm = P.warm, tan = P.tangerine;
+    const P = brand.palettes, warm = P.offwhite, tan = P.navy;
     return `
 <div class="zone z1"></div>
 <svg class="sweep" viewBox="0 0 1300 1440" preserveAspectRatio="none"><path d="M120 0 C 40 420, 220 760, 60 1440 L 1300 1440 L 1300 0 Z" fill="${tan.bg}"/></svg>
@@ -29,7 +29,7 @@ export const DESIGNS = {
 <svg class="spark s3" viewBox="0 0 40 40"><path d="M20 0c1.5 12 6.5 17 20 20-13.5 3-18.5 8-20 20C18.5 28 13.5 23 0 20 13.5 17 18.5 12 20 0z" fill="currentColor"/></svg>
 
 <style>
-.canvas{position:relative;width:3240px;height:1440px;overflow:hidden;background:${warm.bg};font-family:'${brand.fonts.bold.family}',sans-serif}
+.canvas{position:relative;width:3240px;height:1440px;overflow:hidden;background:${warm.bg};font-family:'${brand.fonts.headline.family}',sans-serif}
 .zone{position:absolute;top:0;bottom:0}
 .z1{left:0;width:1300px;background-image:linear-gradient(${warm.tex} 3px,transparent 3px),linear-gradient(90deg,${warm.tex} 3px,transparent 3px);background-size:90px 90px}
 .z3{left:2240px;right:0;background-image:radial-gradient(${warm.tex} 10px,transparent 11px);background-size:66px 66px}
@@ -63,7 +63,7 @@ export const DESIGNS = {
 const STAR = (fill) => `<svg viewBox="0 0 100 100"><path d="M50 4 61 36 95 37 68 58 78 92 50 72 22 92 32 58 5 37 39 36Z" fill="${fill}" stroke="#fff" stroke-width="7" stroke-linejoin="round" paint-order="stroke"/></svg>`;
 DESIGNS['pinned-2026-10-v2'] = ({ brand, photo, hooks, stats }) => {
   const [h1, h2, h3] = hooks;
-  const P = brand.palettes, warm = P.warm, tan = P.tangerine;
+  const P = brand.palettes, warm = P.offwhite, tan = P.navy;
   const max = Math.log10(Math.max(...stats.map((s) => +s[0].replace(/,/g, ''))));
   return `
 <div class="t t1" style="background-image:url('${photo.url}');background-position:${photo.focus || 'center'}">
@@ -74,11 +74,11 @@ DESIGNS['pinned-2026-10-v2'] = ({ brand, photo, hooks, stats }) => {
   <div class="card">${stats.map(([v, l]) => `<div class="row"><b>${esc(v)}</b><span>${esc(l)}</span><i style="width:${Math.max(8, (Math.log10(+v.replace(/,/g, '')) / max) * 100)}%"></i></div>`).join('')}</div>
 </div>
 <div class="sticker badge"><b>30</b><span>days</span></div>
-<div class="sticker star sa">${STAR('#FFD7C4')}</div>
+<div class="sticker star sa">${STAR('#4da3ff')}</div>
 <div class="sticker star sb">${STAR(tan.bg)}</div>
 <div class="sticker star sc">${STAR(warm.accent)}</div>
 <style>
-.canvas{position:relative;width:3240px;height:1440px;overflow:hidden;font-family:'${brand.fonts.bold.family}',sans-serif}
+.canvas{position:relative;width:3240px;height:1440px;overflow:hidden;font-family:'${brand.fonts.headline.family}',sans-serif}
 .t{position:absolute;top:0;bottom:0;width:1080px}
 .t1{left:0;background-size:cover}
 .t2{left:1080px;background:${tan.bg}}
@@ -114,7 +114,7 @@ DESIGNS['pinned-2026-10-v2'] = ({ brand, photo, hooks, stats }) => {
 // tile 2 across seam 2 into the stats card. Text stays inside its own tile.
 DESIGNS['pinned-2026-10-v3'] = ({ brand, photo, hooks, stats }) => {
   const [h1, h2, h3] = hooks;
-  const P = brand.palettes, warm = P.warm, tan = P.tangerine;
+  const P = brand.palettes, warm = P.offwhite, tan = P.navy;
   const max = Math.log10(Math.max(...stats.map((s) => +s[0].replace(/,/g, ''))));
   return `
 <svg class="layer" viewBox="0 0 3240 1440" preserveAspectRatio="none">
@@ -130,10 +130,10 @@ DESIGNS['pinned-2026-10-v3'] = ({ brand, photo, hooks, stats }) => {
 <div class="hook h3"><h1>${rich(h3.big)}</h1><p>${esc(h3.small)}</p></div>
 <div class="card">${stats.map(([v, l]) => `<div class="row"><b>${esc(v)}</b><span>${esc(l)}</span><i style="width:${Math.max(8, (Math.log10(+v.replace(/,/g, '')) / max) * 100)}%"></i></div>`).join('')}</div>
 <div class="sticker badge"><b>30</b><span>days</span></div>
-<div class="sticker star sa">${STAR('#FFD7C4')}</div>
+<div class="sticker star sa">${STAR('#4da3ff')}</div>
 <div class="sticker star sb">${STAR(warm.accent)}</div>
 <style>
-.canvas{position:relative;width:3240px;height:1440px;overflow:hidden;background:${warm.bg};font-family:'${brand.fonts.bold.family}',sans-serif}
+.canvas{position:relative;width:3240px;height:1440px;overflow:hidden;background:${warm.bg};font-family:'${brand.fonts.headline.family}',sans-serif}
 .layer{position:absolute;inset:0;width:3240px;height:1440px}
 .photo{position:absolute;left:0;top:0;width:1190px;height:1440px;background-size:cover;
   clip-path:path('M0 0 L1120 0 C 1190 240, 1080 470, 1150 720 C 1210 960, 1100 1200, 1170 1440 L0 1440 Z')}
@@ -161,47 +161,49 @@ DESIGNS['pinned-2026-10-v3'] = ({ brand, photo, hooks, stats }) => {
 </style>`;
 };
 
-// v4 (2026-10-07): only NEUTRAL elements cross seams (content-rules 7d): the tangerine blob, her photo's edge, a big
-// star sticker, a soft cream blob, a squiggle and sparkles. No words or charts on seams; the stats card sits inside tile 3.
+// v4 (2026-10-07): only NEUTRAL elements cross seams (content-rules 7d): the navy sweep, her photo's edge, a big
+// star sticker, a soft blue-mist blob, a squiggle and sparkles. No words or charts on seams; the stats card sits inside tile 3.
+// 2026-10-21: moved to the 2026-10 rebrand (off-white + navy sweep, sky accents, Instrument Serif hooks, Jost lines).
 const SQUIGGLE = (c) => `<svg viewBox="0 0 600 160"><path d="M10 110 C 70 10, 130 10, 170 80 S 270 150, 310 80 S 410 10, 450 80 S 550 150, 590 60" fill="none" stroke="${c}" stroke-width="22" stroke-linecap="round"/></svg>`;
 const SPARK = (c) => `<svg viewBox="0 0 40 40"><path d="M20 0c1.5 12 6.5 17 20 20-13.5 3-18.5 8-20 20C18.5 28 13.5 23 0 20 13.5 17 18.5 12 20 0z" fill="${c}"/></svg>`;
 DESIGNS['pinned-2026-10-v4'] = ({ brand, photo, hooks, stats }) => {
   const [h1, h2, h3] = hooks;
-  const P = brand.palettes, warm = P.warm, tan = P.tangerine;
+  const P = brand.palettes, light = P.offwhite, navy = P.navy, mist = P.mist;
   const max = Math.log10(Math.max(...stats.map((s) => +s[0].replace(/,/g, ''))));
   return `
 <svg class="layer" viewBox="0 0 3240 1440" preserveAspectRatio="none">
-  <path d="M900 0 C 820 380, 760 900, 820 1440 L 2470 1440 C 2620 1150, 2560 760, 2380 520 C 2300 380, 2260 180, 2300 0 Z" fill="${tan.bg}"/>
-  <circle cx="2190" cy="1360" r="230" fill="${warm.mark}" opacity=".9"/>
+  <path d="M900 0 C 820 380, 760 900, 820 1440 L 2470 1440 C 2620 1150, 2560 760, 2380 520 C 2300 380, 2260 180, 2300 0 Z" fill="${navy.bg}"/>
+  <circle cx="2190" cy="1360" r="230" fill="${mist.bg}"/>
 </svg>
 <div class="photo" style="background-image:url('${photo.url}');background-position:${photo.focus || 'center'}"></div>
 <div class="hl1"><p><span>${esc(h1.big)}</span></p><p class="sm"><span>${esc(h1.small)}</span></p></div>
 <div class="hook h2"><h1>${rich(h2.big)}</h1><p>${esc(h2.small)} →</p></div>
 <div class="hook h3"><h1>${rich(h3.big)}</h1><p>${esc(h3.small)}</p></div>
 <div class="card">${stats.map(([v, l]) => `<div class="row"><b>${esc(v)}</b><span>${esc(l)}</span><i style="width:${Math.max(8, (Math.log10(+v.replace(/,/g, '')) / max) * 100)}%"></i></div>`).join('')}</div>
-<div class="sticker bigstar">${STAR('#FFD7C4')}</div>
-<div class="sticker squig">${SQUIGGLE('#fff')}</div>
-<div class="spk k1">${SPARK('#fff')}</div><div class="spk k2">${SPARK(warm.accent)}</div><div class="spk k3">${SPARK('#fff')}</div>
+<div class="sticker bigstar">${STAR(light.mark)}</div>
+<div class="sticker squig">${SQUIGGLE(light.bg)}</div>
+<div class="spk k1">${SPARK('#fff')}</div><div class="spk k2">${SPARK(navy.accent)}</div><div class="spk k3">${SPARK('#fff')}</div>
 <style>
-.canvas{position:relative;width:3240px;height:1440px;overflow:hidden;background:${warm.bg};font-family:'${brand.fonts.bold.family}',sans-serif}
+.canvas{position:relative;width:3240px;height:1440px;overflow:hidden;background:${light.bg};font-family:'${brand.fonts.display.family}',sans-serif}
 .layer{position:absolute;inset:0;width:3240px;height:1440px}
 .photo{position:absolute;left:0;top:0;width:1190px;height:1440px;background-size:cover;
   clip-path:path('M0 0 L1120 0 C 1190 240, 1080 470, 1150 720 C 1210 960, 1100 1200, 1170 1440 L0 1440 Z')}
-.hl1{position:absolute;left:80px;width:880px;bottom:170px;font-family:'${brand.fonts.highlight.family}',sans-serif;font-weight:600;color:#000}
-.hl1 p{font-size:84px;line-height:1.4}.hl1 p.sm{font-size:52px;margin-top:22px}
+.hl1{position:absolute;left:80px;width:880px;bottom:170px;font-family:'${brand.fonts.highlight.family}',sans-serif;font-weight:500;color:${light.ink}}
+.hl1 p{font-size:82px;line-height:1.4}.hl1 p.sm{font-size:52px;margin-top:22px}
 .hl1 span{background:#fff;padding:.08em .32em;border-radius:.22em;-webkit-box-decoration-break:clone;box-decoration-break:clone}
-.hook h1{font-weight:800;font-stretch:75%;font-variation-settings:'wdth' 75;text-transform:uppercase;line-height:.92;letter-spacing:-.005em}
-.hook em{font-family:'${brand.fonts.serif.family}',serif;font-style:italic;font-weight:400;text-transform:none;font-size:1.12em;letter-spacing:0}
-.hook p{margin-top:40px;font-weight:700;font-stretch:88%;font-variation-settings:'wdth' 88;font-size:56px}
-.h2{position:absolute;left:1260px;width:820px;top:300px;color:#fff}.h2 h1{font-size:150px}.h2 em{color:${tan.accent}}
-.h3{position:absolute;left:2420px;width:730px;top:150px;color:${warm.ink};text-align:right}.h3 h1{font-size:128px}.h3 em{color:${warm.accent}}
-.card{position:absolute;left:2470px;width:680px;top:800px;background:#fff;border-radius:40px;padding:44px 50px;box-shadow:0 20px 50px rgba(60,20,0,.16);rotate:-2deg;display:flex;flex-direction:column;gap:28px}
+.hook h1{font-family:'${brand.fonts.headline.family}',serif;font-weight:400;line-height:.98;letter-spacing:-.01em;text-wrap:balance}
+.hook em{font-family:'${brand.fonts.serif.family}',serif;font-style:italic;font-weight:400;font-size:1.04em;letter-spacing:0;padding:0 .06em}
+.hook p{margin-top:40px;font-weight:500;font-size:54px}
+.h2{position:absolute;left:1260px;width:820px;top:300px;color:${navy.ink}}.h2 h1{font-size:168px}.h2 em{color:${navy.accent}}
+.h3{position:absolute;left:2420px;width:730px;top:150px;color:${light.ink};text-align:right}.h3 h1{font-size:150px}
+.h3 em{color:${light.accent};background:linear-gradient(transparent 60%,${light.mark} 60% 92%,transparent 92%)}
+.card{position:absolute;left:2470px;width:680px;top:800px;background:#fff;border-radius:40px;padding:44px 50px;box-shadow:0 20px 50px rgba(10,25,48,.14);rotate:-2deg;display:flex;flex-direction:column;gap:28px}
 .row{display:grid;grid-template-columns:auto 1fr;align-items:baseline;column-gap:20px;row-gap:10px}
-.row b{font-weight:800;font-stretch:80%;font-variation-settings:'wdth' 80;font-size:84px;line-height:1;color:${warm.ink}}
-.row span{font-weight:700;font-size:36px;color:${warm.ink};opacity:.7}
-.row i{grid-column:1/3;display:block;height:20px;border-radius:10px;background:${warm.accent}}
-.row:not(:last-child) i{background:color-mix(in srgb,${warm.accent} 35%,#fff)}
-.sticker{position:absolute;filter:drop-shadow(0 8px 14px rgba(40,10,0,.22))}
+.row b{font-family:'${brand.fonts.headline.family}',serif;font-weight:400;font-size:92px;line-height:1;color:${light.ink}}
+.row span{font-weight:500;font-size:36px;color:#4a4e66}
+.row i{grid-column:1/3;display:block;height:20px;border-radius:10px;background:${light.ink}}
+.row:not(:last-child) i{background:${mist.bg}}
+.sticker{position:absolute;filter:drop-shadow(0 8px 14px rgba(10,25,48,.22))}
 .sticker svg,.spk svg{display:block;width:100%;height:auto}
 .bigstar{left:930px;top:90px;width:300px;rotate:-12deg}
 .squig{left:1880px;top:1150px;width:520px;rotate:-8deg;filter:none}

@@ -43,3 +43,9 @@ export async function launch() {
 export const IMAGE_EXT = ['.jpg', '.jpeg', '.png', '.webp'];
 export const VIDEO_EXT = ['.mp4', '.mov', '.m4v'];
 export const UNSUPPORTED_EXT = ['.heic', '.heif'];
+
+// Palette by name; old names from before the 2026-10 rebrand (warm, tangerine, blush) resolve through brand.paletteAliases.
+export const paletteName = (brand, name) => (brand.paletteAliases?.[name] && !name.startsWith('_') ? brand.paletteAliases[name] : name);
+export const paletteFor = (brand, name) => (name && !name.startsWith('_') ? brand.palettes[paletteName(brand, name)] : undefined);
+// Light grounds keep the italic word navy on the sky marker; dark grounds (navy) turn the word itself sky.
+export const isDark = (pal) => /^#0a1930$/i.test(pal?.bg || '');

@@ -13,7 +13,7 @@ mkdirSync(dir, { recursive: true });
 writeJson(path.join(dir, 'post.json'), {
   id, style,
   ...(style === 'C' ? { format: 'notes' } : {}),
-  ...(['D', 'E'].includes(style) ? { palette: 'warm' } : {}),
+  ...(['D', 'E'].includes(style) ? { palette: 'offwhite' } : {}),
   brief: { source: '', reader: '', problem: '', outcome: '', topic: '', mainPoint: '', structure: '', ending: '', slide2Check: '' },
   media: style === 'A' ? { background: '' } : {},
   slides: [{ text: '', pos: 'center' }],
