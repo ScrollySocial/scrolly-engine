@@ -235,7 +235,7 @@ textarea{min-height:42px;margin-top:8px}
             <div class="cstyles" id="cstyles"></div>
             <div class="lbl">3 · Text</div>
             <div id="ctexts"></div>
-            <input type="text" id="coverOwn" placeholder="Or write your own line (put *stars* around words for the peach marker)">
+            <input type="text" id="coverOwn" placeholder="Or write your own line (put *stars* around words for the marker)">
             <label class="tog" style="margin-top:8px"><input type="checkbox" id="coverAside"> Handwritten note: <input type="text" id="asideText" style="width:180px;padding:3px 8px" value="here's the fix"></label>
           </div>
           <div class="coverprev"><div class="cpbox"><iframe id="cprev" title="Cover preview" tabindex="-1"></iframe><div class="cpmsg" id="cpmsg" hidden></div></div></div>
@@ -283,7 +283,7 @@ textarea{min-height:42px;margin-top:8px}
       </section>
       <section data-p="caps" class="panel">
         <h2>Captions</h2>
-        <p class="sub">Click a word to pick it, then make it <b>Big</b>, <b>Highlight</b> it (peach marker), or both. <b>Hide line</b> hides the whole line. "edit" changes the wording. The preview on the left updates a few seconds after a change.</p>
+        <p class="sub">Click a word to pick it, then make it <b>Big</b>, <b>Highlight</b> it (marker), or both. <b>Hide line</b> hides the whole line. "edit" changes the wording. The preview on the left updates a few seconds after a change.</p>
         <div class="lbl">Caption font (whole Reel)</div>
         <div class="fonts" id="fonts"></div>
         <div id="caps"></div>
@@ -580,7 +580,8 @@ function setMode(m) {
 }
 
 // ================= STEP 1 =================
-const BG = { cream: '#F6EEE5', blush: '#F8DCE5', mist: '#E7EEF5', peach: '#FFC9A8', ink: '#161210' };
+const BG = { cream: '#f7f3ec', mist: '#dfe4f0', ink: '#0a1930' }; // fallback only: the brand kit's own colors win
+const bgCol = (bg) => (R.brands || []).find((b) => b.id === (D.brand || R.brand))?.colors[bg] || BG[bg] || bg;
 let cutState = { cuts: [], cutJob: {} }, coverTimer = null;
 function coverConf() {
   const c = D.cover || {};
@@ -599,7 +600,7 @@ function renderBrand() {
   for (const b of R.brands || []) sel.add(new Option(b.label, b.id, false, b.id === (D.brand || R.brand)));
   const cur = (R.brands || []).find((b) => b.id === (D.brand || R.brand));
   const sw = $('#brandSw'); sw.textContent = '';
-  if (cur) for (const k of ['cream', 'peach', 'orange', 'ink', 'blush', 'mist']) { const i = el('i'); i.style.background = cur.colors[k]; i.title = k; sw.append(i); }
+  if (cur) for (const k of ['cream', 'peach', 'ink', 'mist']) { const i = el('i'); i.style.background = cur.colors[k]; i.title = k; sw.append(i); }
 }
 $('#brandSel').addEventListener('change', (e) => { D.brand = e.target.value === (R.defaultBrand || R.brands[0]?.id) ? undefined : e.target.value; renderBrand(); renderCover(); save(true); });
 const CUTS_NEED_CUT = ['cut', 'behind', 'side']; // the photo layouts use the frame as it is
@@ -653,7 +654,7 @@ function renderCover() {
   if (CUTS[c.style]) {
     const cutLbl = el('span', 'sub', 'Color behind you:'); cutLbl.style.margin = '0 4px 0 0'; sty.append(cutLbl);
     for (const bg of R.coverBgs || Object.keys(BG)) {
-      const b = el('button', 'sw'); b.type = 'button'; b.title = bg; b.setAttribute('aria-label', 'Background ' + bg); b.style.background = BG[bg] || bg;
+      const b = el('button', 'sw'); b.type = 'button'; b.title = bg; b.setAttribute('aria-label', 'Background ' + bg); b.style.background = bgCol(bg);
       b.setAttribute('aria-pressed', c.bg === bg); b.addEventListener('click', () => setCover({ bg })); sty.append(b);
     }
   }
@@ -700,7 +701,7 @@ function renderEnding() {
   if (d?.needs.includes('detail')) field('detail', d.detailLabel || 'Detail', d.detailHint ? 'e.g. ' + d.detailHint : '');
   const bgs = $('#ctaBg'); bgs.textContent = '';
   for (const bg of R.coverBgs || Object.keys(BG)) {
-    const b = el('button', 'sw'); b.type = 'button'; b.title = bg; b.setAttribute('aria-label', 'End card color ' + bg); b.style.background = BG[bg] || bg;
+    const b = el('button', 'sw'); b.type = 'button'; b.title = bg; b.setAttribute('aria-label', 'End card color ' + bg); b.style.background = bgCol(bg);
     b.setAttribute('aria-pressed', (c.bg || 'cream') === bg); b.addEventListener('click', () => setCta({ bg })); bgs.append(b);
   }
   const fresh = R.cta && R.cta.kind === c.kind && (R.cta.word || '') === String(c.word || '').toUpperCase() && (R.cta.detail || '') === (c.detail || '');

@@ -15,12 +15,13 @@ import { readFileSync, writeFileSync, existsSync, copyFileSync, mkdirSync } from
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { makeComponents, componentCss } from './components.mjs';
-import { BRANDS, defaultBrand } from './brand/index.mjs';
+import { BRANDS, defaultBrand, statementType } from './brand/index.mjs';
 import studio from './templates/studio.mjs';
 import { CTAS, resolveCta, ctaCaption } from './cta.mjs';
 import { musicMix, LEVELS, WARN_UNDER } from './loudness.mjs';
 
 const LIB_SFX = path.join(path.dirname(fileURLToPath(import.meta.url)), 'assets/sfx');
+const LIB_FONTS = path.join(path.dirname(fileURLToPath(import.meta.url)), 'assets/fonts');
 // Review stage runtime: only clips whose window holds t are visible; the GSAP timeline is posed at t.
 const STAGE_JS = `const clips = [...document.querySelectorAll('.clip')], vids = [...document.querySelectorAll('video.clip')];
 let playing = false;
@@ -78,10 +79,11 @@ export function reel({ brand, template = studio, words = 'assets/words.json', ou
   };
   const win = (n) => ({ s: F[n - 1], d: +(F[n] - F[n - 1]).toFixed(2) });
 
+  const ST = statementType(B);
   const capCss = () => {
     const big = Object.values(capEdits).some((e) => e.style === 'big'), bigWords = Object.values(capEdits).some((e) => e.big?.length), font = capFont && capFonts(B)[capFont], marked = Object.values(capEdits).some((e) => e.mark?.length);
     return (marked ? `.cap .mk{display:inline-block;padding:0 .12em}.cap .mkbg{display:block;position:absolute;left:-.04em;right:-.04em;top:.12em;bottom:.04em;background:${B.C.peach};text-shadow:none}.cap .mkt{position:relative;color:${B.C.ink};text-shadow:none}
-` : '') + (big ? `.cap.big span{font:800 10.5cqw/.95 '${B.font.statement}';font-stretch:78%}\n` : '') + (bigWords ? `.cap .bw{display:inline-block;font:800 1.6em/.9 '${B.font.statement}';font-stretch:78%;vertical-align:-.12em}\n` : '') + (font ? `.cap span{font-family:${font}}${capFont === 'statement' ? '.cap span{font-stretch:80%}' : ''}${capFont === 'hand' ? '.cap span{font-weight:400;font-size:7cqw}' : ''}\n` : '');
+` : '') + (big ? `.cap.big span{font:${ST.weight} 10.5cqw/.95 '${B.font.statement}';font-stretch:${ST.stretch}}\n` : '') + (bigWords ? `.cap .bw{display:inline-block;font:${ST.weight} 1.6em/.9 '${B.font.statement}';font-stretch:${ST.stretch};vertical-align:-.12em}\n` : '') + (font ? `.cap span{font-family:${font}}${capFont === 'statement' ? '.cap span{font-stretch:80%}' : ''}${capFont === 'hand' ? '.cap span{font-weight:400;font-size:7cqw}' : ''}\n` : '');
   };
   const R = {
     W, DUR, P, K, C: B.C, B, T, at, win,
@@ -139,9 +141,10 @@ export function reel({ brand, template = studio, words = 'assets/words.json', ou
       else console.log(`music: ${chosen ? LEVELS[chosen].label : 'fixed volume'} → volume ${volume}, ${mix.out} LUFS, ${mix.under} dB under her voice (${mix.voice} LUFS)`);
       music = `<audio id="music-a" src="${file}" data-start="0" data-duration="${DUR}" data-track-index="10" data-volume="${volume}" data-fade-in="${fadeIn}" data-fade-out="${fadeOut}"></audio>`;
     },
-    // relaxed lower-third captions; hide = frame numbers that carry their own type
+    // relaxed lower-third captions; hide = frame numbers that carry their own type, or [start, end] seconds to hide
+    // only part of a frame (e.g. the hook's words, then captions for the rest of the line)
     captions({ hide = [], top = () => T.captions.top, maxWords = T.captions.maxWords, gap = T.captions.gap } = {}) {
-      const noCap = hide.map(win).map((w) => [w.s, w.s + w.d]);
+      const noCap = hide.map((h) => (Array.isArray(h) ? h : [win(h).s, win(h).s + win(h).d]));
       const caps = [];
       let cur = [];
       const flush = () => { if (!cur.length) return; const s = cur[0].s, e = cur.at(-1).e; caps.push({ s, e, t: cur.map((w) => w.w).join(' ').replace(/\s+([.,?!])/g, '$1').replace(/[.,]$/, '') }); cur = []; };
@@ -180,7 +183,7 @@ export function reel({ brand, template = studio, words = 'assets/words.json', ou
         { html: cut ? `<img id="endcut" class="abs blk" src="${cut}" style="left:0;top:0;width:100%;height:100%;object-fit:cover${look ? `;filter:${lookFilter(look)}` : ''}">` : '', anim: cut ? [`up('#endcut', ${s}, 40);`] : [] },
         K.statement('endb', card.text, { top: 7, size: 13, color: ink, in: s + 0.1, swipe: s + 0.6 }),
         K.ctaUi('endui', card.ui, { top: 30, word: c.word, handle: B.handle || '', site: B.site || '', name: B.label || '', in: s + 0.9 })];
-      if (card.aside) parts.push(K.hand('endh', card.aside, { x: 8, y: 50, size: 7, r: -3, color: dark ? B.C.peach : B.C.orange, in: s + 1.5 }));
+      if (card.aside) parts.push(K.hand('endh', card.aside, { x: 8, y: 50, size: 7, r: -3, color: dark ? B.C.peach : B.C.ink, in: s + 1.5 }));
       R.scene(n, parts);
       if (!cut) console.warn(`⚠ end card: no cut-out of frame F${fr} yet (review/cover-cuts or sketch/f${nn(fr)}-cut.png); card shows the ask on color only`);
       // one entrance sound + one on the UI; never the same as the sound right before it
@@ -238,6 +241,9 @@ ${cells}
     // as PNGs, no audio (the review page plays voice + sounds itself), paths relative to the Reel root via <base>, and
     // window.stage.seek(t) to show the right clips and pose the timeline at any moment. Written to review/stage.html.
     write(file = out, { stage } = {}) {
+      // the brand kit's fonts, for Reels made before the kit changed (new-reel.mjs copies them for new ones)
+      mkdirSync('assets/fonts', { recursive: true });
+      for (const f of B.fontFiles || []) if (!existsSync(`assets/fonts/${f}`) && existsSync(path.join(LIB_FONTS, f))) copyFileSync(path.join(LIB_FONTS, f), `assets/fonts/${f}`);
       // sounds added on the review page ({ id, name, t, vol }), once per build
       if (!addedDone) { addedDone = true; for (const a of D.addedSfx || []) R.fx(a.id, a.name, a.t, a.vol ?? 0.6); }
       // a CTA she picked always gets its card, even in a build.mjs written before R.endCard existed

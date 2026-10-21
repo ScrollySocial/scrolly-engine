@@ -4,7 +4,7 @@
 //   'behind' = text behind her: huge capitals fill the top, she stands in front of the lower lines (ink looks best)
 //   'side'   = off-center: big left-aligned title, her to the right, the aside pointing at her
 //   'photo'  = the full video frame with the title on top
-// Title in the Reel's own type (Bricolage 800 condensed, <m>phrase</m> on a peach marker swipe, optional handwritten
+// Title in the Reel's own type (the kit's statement face: Instrument Serif upright for Scrolly since 2026-10-21, <m>phrase</m> on the brand marker swipe (sky blue), optional handwritten
 // aside with a drawn arrow that points at her head), in the middle 3:4 band the grid shows (y 300-1620). Never italic
 // serif, never color-changed words, never a solid band or box behind the text.
 //   await renderCovers({ options: [{ text: 'Stop rewriting <m>every caption</m> AI gives you', aside: "here's the fix" }],
@@ -15,15 +15,16 @@ import { mkdirSync, writeFileSync, rmSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { launch } from './settings.mjs';
-import { defaultBrand } from './brand/index.mjs';
+import { defaultBrand, statementType } from './brand/index.mjs';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const u = (p) => pathToFileURL(path.resolve(p)).href;
 const esc = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-export const COVER_BGS = ['cream', 'blush', 'mist', 'peach', 'ink'];
+// 2026-10-21 rebrand: off-white, blue mist, navy (sky would hide the sky marker; 'blush'/'peach' in older picks still work)
+export const COVER_BGS = ['cream', 'mist', 'ink'];
 // cut-out styles (need a cut-out of her) and photo layouts (her full video frame, text straight on the photo).
 // The photo layouts are the Oct 10 Reel cover templates (automation/carousels/lib/reel-covers.mjs) without the italic
-// serif (2026-10-14): big lines in Bricolage, the *accent* on the peach marker, notes handwritten.
+// serif (2026-10-14): big lines in the kit's statement face (upright), the *accent* on the marker, notes handwritten.
 export const CUT_STYLES = { cut: 'Centered', behind: 'Text behind you', side: 'Off-center' };
 // 'number' = one big number OR word (2026-10-14: merged "Big number" and "One big word"); 'word' still renders
 // as 'number' for any older pick.
@@ -31,12 +32,12 @@ export const PHOTO_STYLES = { photo: 'Title on top', stack: 'Stack', title: 'Big
 export const COVER_STYLES = { ...CUT_STYLES, ...PHOTO_STYLES };
 
 export function coverHtml({ text, aside, cut, photo, style = photo && !cut ? 'photo' : 'cut', bg = 'cream', pos = 'bottom', brand = defaultBrand(), asset = u }) {
-  const C = brand.C;
+  const C = brand.C, ST = statementType(brand);
   if (style === 'word') style = 'number';
   if (PHOTO_STYLES[style] && style !== 'photo') return photoLayoutHtml({ text, aside, photo, style, pos, brand, asset });
   if (style !== 'photo' && !cut) style = 'photo';
   const onPhoto = style === 'photo', dark = !onPhoto && bg === 'ink';
-  const ink = onPhoto || dark ? '#fff' : C.ink, titleInk = dark ? (C.cream2 || '#FFF4DC') : ink;
+  const ink = onPhoto || dark ? '#fff' : C.ink, titleInk = dark ? (C.cream2 || '#fff') : ink;
   // *word* in her own text works like <m>word</m>
   // the marker never wraps (a wrapped marker reads as a box), and punctuation right after it stays on its line
   const title = esc(text.replace(/\*(.+?)\*/g, '<m>$1</m>')).replace(/&lt;m&gt;(.*?)&lt;\/m&gt;([?!.,:;]*)/g, '<span class="nw"><span class="mk"><i></i><b>$1</b></span>$2</span>');
@@ -47,20 +48,21 @@ export function coverHtml({ text, aside, cut, photo, style = photo && !cut ? 'ph
     behind: `left:30px;right:30px;text-align:center;font-size:${len > 30 ? 190 : 232}px;line-height:.84;text-transform:uppercase;letter-spacing:-.015em`,
     side: `left:64px;width:${len > 30 ? 700 : 640}px;text-align:left;font-size:${len > 30 ? 140 : 168}px;line-height:.88`,
   }[style];
-  const shadow = onPhoto ? 'text-shadow:0 4px 24px rgba(0,0,0,.55),0 2px 6px rgba(0,0,0,.4);' : '';
+  // a thin display face needs a firmer shadow to stay readable on busy footage
+  const shadow = onPhoto ? (ST.thin ? 'text-shadow:0 0 18px rgba(0,0,0,.6),0 3px 10px rgba(0,0,0,.55),0 1px 3px rgba(0,0,0,.5);' : 'text-shadow:0 4px 24px rgba(0,0,0,.55),0 2px 6px rgba(0,0,0,.4);') : '';
   return `<!doctype html><html><head><meta charset="utf-8"><style>
-@font-face{font-family:B;src:url('${asset(path.join(HERE, 'assets/fonts/bricolage-800.woff2'))}') format('woff2');font-weight:800;font-stretch:75% 100%}
+@font-face{font-family:B;src:url('${asset(path.join(HERE, 'assets/fonts', ST.file))}') format('${ST.format}')}
 @font-face{font-family:H;src:url('${asset(path.join(HERE, 'assets/fonts/covered-by-your-grace.woff2'))}') format('woff2')}
 *{margin:0;padding:0;box-sizing:border-box}
 html,body{width:1080px;height:1920px;overflow:hidden;background:${onPhoto ? '#000' : C[bg] || bg}}
 .photo{position:absolute;inset:0;background:url('${onPhoto ? asset(photo) : ''}') center/cover no-repeat}
 .shade{position:absolute;left:0;right:0;top:0;height:60%;background:linear-gradient(180deg,rgba(0,0,0,.5),rgba(0,0,0,0))}
 .her{position:absolute;left:0;top:0;width:1080px;height:1920px;background:url('${!onPhoto && cut ? asset(cut) : ''}') center bottom/cover no-repeat;filter:drop-shadow(0 18px 40px rgba(22,18,16,${dark ? '.45' : '.18'}))}
-.t{position:absolute;top:300px;font-family:B;font-weight:800;font-stretch:78%;color:${titleInk};letter-spacing:-.01em;${T};${shadow}}
+.t{position:absolute;top:300px;font-family:B;font-weight:${ST.weight};font-stretch:${ST.stretch};color:${titleInk};letter-spacing:-.01em;${T};${shadow}}
 .nw,.mk{white-space:nowrap}
 .mk{position:relative;display:inline-block;padding:0 .12em;rotate:-1.5deg;text-shadow:none}
 .mk i{position:absolute;left:-.04em;right:-.04em;top:.1em;bottom:.02em;background:${C.peach};border-radius:.08em;skew:-6deg}
-.mk b{position:relative;font-weight:800;color:${C.ink}}
+.mk b{position:relative;font-weight:${ST.weight};color:${C.ink}}
 .hand{position:absolute;width:330px;font:76px/1 H;color:${ink};rotate:-4deg;${shadow}}
 svg.arrow{position:absolute;left:0;top:0;overflow:visible;pointer-events:none}
 </style></head><body>${onPhoto ? '<div class="photo"></div><div class="shade"></div>' : '<div class="her"></div>'}<div class="t">${title}</div>
@@ -123,9 +125,9 @@ window.coverReady = new Promise((ok) => {
 // aside: the handwritten note. pos: 'top' | 'bottom' (keep the text off her face). Lines per layout:
 //   stack  = note + arrow, caps, BIG accent, caps        title  = BIG title (accent marked), note under it
 //   number = note + arrow, the HUGE accent (a number or a word), the rest small
-//   label  = note + arrow, the line on the peach marker
+//   label  = note + arrow, the line on the marker
 function photoLayoutHtml({ text, aside, photo, style, pos, brand, asset }) {
-  const C = brand.C, cream = C.cream2 || '#FFF4DC';
+  const C = brand.C, cream = C.cream2 || '#fff', ST = statementType(brand);
   text = String(text).replace(/<m>(.*?)<\/m>/g, '*$1*'); // Claude's options mark the accent with <m>, hers with *stars*
   const m = String(text).match(/^(.*?)\*([^*]+)\*(.*)$/), clean = String(text).replace(/\*/g, '');
   const before = m ? m[1].trim() : '', accent = m ? m[2].trim() : '', after = m ? m[3].trim() : '';
@@ -144,7 +146,7 @@ function photoLayoutHtml({ text, aside, photo, style, pos, brand, asset }) {
   const ARROW = `<svg class="arrow" viewBox="0 0 120 170"><path d="M38 8c-30 30-18 70 18 70 26 0 26-34 2-30-30 6-30 60-6 92" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round"/><path d="M34 128l18 22 20-20" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
   const body = L.map(([k, h, arrow], i) => k === 'label' ? `<p class="l label"><span>${h}</span></p>` : `<p class="l ${k}">${h}${arrow && i < L.length - 1 ? ARROW : ''}</p>`).join('');
   return `<!doctype html><html><head><meta charset="utf-8"><style>
-@font-face{font-family:B;src:url('${asset(path.join(HERE, 'assets/fonts/bricolage-800.woff2'))}') format('woff2');font-weight:800;font-stretch:75% 100%}
+@font-face{font-family:B;src:url('${asset(path.join(HERE, 'assets/fonts', ST.file))}') format('${ST.format}')}
 @font-face{font-family:H;src:url('${asset(path.join(HERE, 'assets/fonts/covered-by-your-grace.woff2'))}') format('woff2')}
 @font-face{font-family:F;src:url('${asset(path.join(HERE, 'assets/fonts/figtree.woff2'))}') format('woff2');font-weight:300 900}
 *{box-sizing:border-box;margin:0;padding:0}
@@ -154,9 +156,9 @@ html,body{width:1080px;height:1920px;overflow:hidden;background:#000}
 .dim{position:absolute;inset:0;background:rgba(20,14,10,.2)}
 .shade{position:absolute;left:0;right:0;height:900px;background:radial-gradient(ellipse 75% 50% at 50% 50%,rgba(15,10,8,.58),rgba(15,10,8,0) 74%)}
 .shade.top{top:180px}.shade.bottom{top:840px}
-.t{position:absolute;left:80px;right:80px;display:flex;flex-direction:column;align-items:center;text-align:center;color:${cream};text-shadow:0 3px 24px rgba(0,0,0,.3)}
+.t{position:absolute;left:80px;right:80px;display:flex;flex-direction:column;align-items:center;text-align:center;color:${cream};text-shadow:${ST.thin ? '0 0 18px rgba(0,0,0,.55),0 3px 10px rgba(0,0,0,.5)' : '0 3px 24px rgba(0,0,0,.3)'}}
 .t.top{top:310px}.t.bottom{bottom:310px}
-.l{position:relative;font-family:B;font-weight:800;font-stretch:78%}
+.l{position:relative;font-family:B;font-weight:${ST.weight};font-stretch:${ST.stretch}}
 .caps{font-size:calc(104px*var(--k));line-height:1;text-transform:uppercase;letter-spacing:-.01em;font-stretch:86%}
 .big{font-size:calc(200px*var(--k));line-height:.86;letter-spacing:-.015em;margin:.03em 0 .06em;text-shadow:0 0 46px rgba(0,0,0,.5),0 4px 16px rgba(0,0,0,.4)}
 .huge{font-size:calc(300px*var(--k));line-height:.86;letter-spacing:0;font-stretch:84%;text-shadow:0 0 46px rgba(0,0,0,.5),0 4px 16px rgba(0,0,0,.4)}
@@ -182,7 +184,7 @@ window.coverReady = (async () => {
   const c = document.querySelector('.c'), t = document.querySelector('.t');
   let k = 1;
   const ok = () => { const r = t.getBoundingClientRect(); return r.top >= 300 && r.bottom <= 1620 && [...t.children].every((el) => el.scrollWidth <= t.clientWidth + 4); };
-  while (!ok() && k > .4) { k -= .03; c.style.setProperty('--k', k); }
+  while (!ok() && k > ${ST.thin ? .6 : .4}) { k -= .03; c.style.setProperty('--k', k); }
 })();
 </script></body></html>`;
 }

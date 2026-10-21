@@ -6,7 +6,7 @@
 // Catalog (slots → what it looks like):
 //   fade(h)                      soft top darkening behind anything above the head
 //   fill(color)                  full-frame panel (background swap, sits under a cut-out of the speaker)
-//   statement(id, text, …)       big condensed statement; <m>word</m> = peach marker swipe
+//   statement(id, text, …)       big condensed statement; <m>word</m> = marker swipe (brand C.peach role, sky blue)
 //   hand(id, text, …)            handwritten aside
 //   arrow / ring / spark         drawn arrow, drawn circle (goes AROUND text, never across it), sparkle sticker
 //   chat(msgs, …)                chat thread: me / ai bubbles + attachment chip
@@ -21,6 +21,8 @@
 //   cursor(id, …)                mouse cursor that glides in and clicks
 //   urlBar(id, text, …)          browser URL pill (end card)
 //   ctaUi(id, ui, …)             end-card Instagram piece: follow button, comment bar, share row, saved toast, bio link
+
+import { statementType } from './brand/index.mjs';
 
 // Wrap <m>…</m> in the marker spans, then split into word spans for the word-by-word entrance (marker stays whole).
 const marker = (html) => html.replace(/<m>(.*?)<\/m>/g, '<span class="mk"><span class="mkbg"></span><span class="mkt">$1</span></span>');
@@ -95,7 +97,7 @@ export function makeComponents(B) {
     return h(`<div id="${id}" class="prompt" style="left:${x}cqw;top:${y}cqw"><span class="ptxt">${text}</span><i>↑</i></div>`, anim);
   };
 
-  // lines: [[gutter, text, kind]] with kind 'h' (heading) | 'add' (+ green) | 'no' (✗ orange) | ''.
+  // lines: [[gutter, text, kind]] with kind 'h' (heading) | 'add' (+ green) | 'no' (✗ red, like a real diff) | ''.
   K.mdFile = (id, file, lines, { top, in: t, rise = 20, typeAt, gap = 0.7 } = {}) => {
     const body = lines.map(([g, txt, k = '']) => `<div class="ln ${k}"><b>${g}</b><span class="lt">${txt}</span></div>`).join('');
     const anim = [];
@@ -157,7 +159,7 @@ export function makeComponents(B) {
 }
 
 // All component CSS (always included; unused rules cost nothing).
-export const componentCss = ({ C, font: F }) => `.big{position:absolute;left:5cqw;right:5cqw;text-align:center;font-family:'${F.statement}';font-weight:800;font-stretch:78%;line-height:.9;letter-spacing:-.01em;text-shadow:0 .4cqw 2cqw rgba(0,0,0,.35)}
+export const componentCss = (B) => { const { C, font: F } = B, ST = statementType(B); return `.big{position:absolute;left:5cqw;right:5cqw;text-align:center;font-family:'${F.statement}';font-weight:${ST.weight};font-stretch:${ST.stretch};line-height:.9;letter-spacing:-.01em;text-shadow:${ST.thin ? '0 0 1.6cqw rgba(0,0,0,.55),0 .3cqw 1cqw rgba(0,0,0,.45)' : '0 .4cqw 2cqw rgba(0,0,0,.35)'}}
 .big .w{display:inline-block}
 .mk{position:relative;display:inline-block;padding:0 .12em}
 .mkbg{position:absolute;left:-.04em;right:-.04em;top:.1em;bottom:.02em;background:${C.peach};transform-origin:0 50%;border-radius:.08em;display:block}
@@ -172,9 +174,9 @@ export const componentCss = ({ C, font: F }) => `.big{position:absolute;left:5cq
 .msg.ai{align-self:flex-start;background:#fff;color:#1c1c1c;border-bottom-left-radius:1.2cqw}
 .chip{align-self:flex-end;font:600 3.2cqw 'Segoe UI','${F.body}';background:#fff;color:#333;padding:1.2cqw 2.4cqw;border-radius:2cqw;border:.3cqw solid #ddd}
 .paper{position:absolute;left:14cqw;right:14cqw;background:#fffdf7;background-image:repeating-linear-gradient(180deg,transparent 0 8.4cqw,#cfe0ee 8.4cqw 8.7cqw);padding:2.6cqw 5cqw 3cqw;font:400 7.6cqw/8.7cqw '${F.hand}';color:#2b2724;box-shadow:0 1.4cqw 3.6cqw rgba(0,0,0,.35)}
-.paper div{display:flex;justify-content:space-between}.tick{display:inline-block;color:#2e7d4f;font-family:'${F.body}';font-weight:800}.tick.x{color:${C.orange}}
+.paper div{display:flex;justify-content:space-between}.tick{display:inline-block;color:#2e7d4f;font-family:'${F.body}';font-weight:800}.tick.x{color:${C.ink}}
 .badge{position:absolute;width:46cqw;border-radius:2.4cqw;overflow:hidden;box-shadow:0 1.4cqw 3.6cqw rgba(0,0,0,.4);background:#fff}
-.b-top{background:${C.orange};color:#fff;text-align:center;font:800 9cqw/1 '${F.body}';padding:2cqw 0 1.4cqw}.b-top small{display:block;font:600 3.4cqw '${F.body}';margin-top:.6cqw}
+.b-top{background:${C.orange};color:${C.ink};text-align:center;font:800 9cqw/1 '${F.body}';padding:2cqw 0 1.4cqw}.b-top small{display:block;font:600 3.4cqw '${F.body}';margin-top:.6cqw}
 .b-name{font:400 7.4cqw/1 '${F.hand}';color:${C.ink};text-align:center;padding:4cqw 2cqw 4.6cqw}
 .folder{position:absolute;width:30cqw;filter:drop-shadow(0 1.4cqw 2.4cqw rgba(0,0,0,.4))}
 .f-tab{display:inline-block;background:#E9C98E;font:400 6.4cqw/1 '${F.hand}';color:#2b2724;padding:1.6cqw 3cqw 1cqw 2.4cqw;border-radius:1.6cqw 3cqw 0 0;white-space:nowrap}
@@ -182,17 +184,17 @@ export const componentCss = ({ C, font: F }) => `.big{position:absolute;left:5cq
 .f-body i{position:absolute;left:12%;right:12%;display:block}.f-body i:nth-child(1){top:-.6cqw;height:4cqw;background:#fffdf7;border-radius:.4cqw}.f-body i:nth-child(2){top:7cqw;height:.5cqw;background:rgba(138,106,58,.35)}.f-body i:nth-child(3){top:10cqw;height:.5cqw;right:30%;background:rgba(138,106,58,.35)}
 .post{position:absolute;width:27cqw;border-radius:1cqw;border:.8cqw solid #fff;box-shadow:0 1.4cqw 3cqw rgba(0,0,0,.4)}
 .receipt{position:absolute;width:30cqw;background:#fffdf7;padding:3cqw 3.2cqw 6cqw;font:400 5.4cqw/1.12 '${F.hand}';color:#2b2724;rotate:-3deg;box-shadow:0 1.4cqw 3cqw rgba(0,0,0,.35)}
-.receipt b{font-weight:400;color:${C.orange}}
+.receipt b{font-weight:400;color:${C.ink};box-shadow:inset 0 -.32em 0 ${C.peach}}
 .prompt{position:absolute;width:56cqw;display:flex;align-items:center;justify-content:space-between;background:#2f2f2f;color:#fff;border-radius:99px;padding:2.4cqw 2.4cqw 2.4cqw 4cqw;font:500 4.4cqw 'Segoe UI','${F.body}';box-shadow:0 1cqw 3cqw rgba(0,0,0,.4)}
 .prompt .ptxt{display:inline-block}
 .prompt i{font-style:normal;width:6.4cqw;height:6.4cqw;border-radius:50%;background:#fff;color:#2f2f2f;display:grid;place-items:center;font-weight:800}
 .md{position:absolute;left:5cqw;right:5cqw;background:#1f1d1b;border-radius:2cqw;overflow:hidden;box-shadow:0 1.6cqw 4cqw rgba(0,0,0,.45);font:500 3.7cqw/1.55 Consolas,'Cascadia Mono',monospace}
 .md-bar{display:flex;align-items:center;gap:1.2cqw;padding:1.6cqw 2.4cqw;background:#2b2826}.md-bar i{width:2cqw;height:2cqw;border-radius:50%;background:#5a5450;display:block}.md-bar span{margin-left:1.6cqw;font:600 3.2cqw '${F.body}';color:#cfc6bd}
 .md-body{padding:1.8cqw 0 2.4cqw}.ln{display:flex;gap:3cqw;padding:0 3cqw;color:#e9e1d8;min-height:5.7cqw}.ln b{width:4cqw;text-align:right;color:#6f6862;font-weight:400}.lt{display:inline-block}
-.ln.h .lt{color:${C.peach};font-weight:700}.ln.add{background:rgba(110,190,130,.16)}.ln.add b{color:#7fcf93}.ln.no{background:rgba(224,90,51,.16)}.ln.no b{color:${C.orange}}
-.brainwrap{position:absolute;inset:0;overflow:hidden;background:#efe6da}.brain{position:absolute;left:0;top:0;width:100%;display:block}
+.ln.h .lt{color:${C.peach};font-weight:700}.ln.add{background:rgba(110,190,130,.16)}.ln.add b{color:#7fcf93}.ln.no{background:rgba(248,81,73,.16)}.ln.no b{color:#f85149}
+.brainwrap{position:absolute;inset:0;overflow:hidden;background:${C.cream}}.brain{position:absolute;left:0;top:0;width:100%;display:block}
 .url{position:absolute;left:14cqw;right:14cqw;display:flex;align-items:center;gap:2cqw;background:#fff;border-radius:99px;padding:2.4cqw 4cqw;font:600 5cqw 'Segoe UI','${F.body}';color:#1c1c1c;box-shadow:0 1cqw 3cqw rgba(0,0,0,.35)}.lock{font-size:3.6cqw}
-.ph{position:relative;display:inline-block;font-weight:700;color:#8a3b22;background:#fbe9df;border-radius:1cqw;padding:0 .8cqw;margin:1.3cqw .6cqw}
+.ph{position:relative;display:inline-block;font-weight:700;color:${C.ink};background:${C.mist};border-radius:1cqw;padding:0 .8cqw;margin:1.3cqw .6cqw}
 .ph-ring{position:absolute;left:-12%;top:-38%;width:124%;height:176%;overflow:visible;pointer-events:none}
 .draw{stroke-dasharray:1;stroke-dashoffset:1}
 .ig-card{position:absolute;left:12cqw;right:12cqw;display:flex;align-items:center;gap:3cqw;background:#fff;border-radius:4cqw;padding:3.2cqw 4cqw;font:400 4.4cqw/1.2 'Segoe UI','${F.body}',sans-serif;color:#000;box-shadow:0 1.2cqw 4cqw rgba(0,0,0,.22)}
@@ -204,4 +206,4 @@ export const componentCss = ({ C, font: F }) => `.big{position:absolute;left:5cq
 .ig-in{flex:1;display:flex;align-items:center;border:.3cqw solid #dbdbdb;border-radius:99px;padding:2.2cqw 3.6cqw;font-weight:700;letter-spacing:.02em;min-height:10cqw}
 .ig-caret{width:.4cqw;height:5cqw;background:#0095F6;margin-left:.4cqw}
 .ig-post{flex:none;color:#0095F6;font-weight:700}
-.ig-ico{flex:none;width:10cqw;height:10cqw;color:#000}.ig-ico svg{width:100%;height:100%;display:block}`;
+.ig-ico{flex:none;width:10cqw;height:10cqw;color:#000}.ig-ico svg{width:100%;height:100%;display:block}`; };

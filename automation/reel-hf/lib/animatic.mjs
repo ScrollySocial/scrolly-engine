@@ -55,7 +55,7 @@ export async function animatic(R, { stills, out = 'animatic.mp4', preview } = {}
   // file:// pages can't play local video in every viewer)
   copyFileSync(out, path.join(dir, 'animatic.mp4'));
   writeFileSync(path.join(dir, 'player.html'), `<!doctype html><html><head><meta charset="utf-8"><title>Animatic</title>
-<style>body{margin:0;background:#161210;display:grid;place-items:center;min-height:100vh;font:15px sans-serif;color:#F6EEE5}video{height:92vh;max-width:100%;border-radius:10px}</style></head>
+<style>body{margin:0;background:#0a1930;display:grid;place-items:center;min-height:100vh;font:15px sans-serif;color:#f7f3ec}video{height:92vh;max-width:100%;border-radius:10px}</style></head>
 <body><div><video src="animatic.mp4" controls preload="auto"></video><p>Animatic · ${R.DUR.toFixed(0)}s</p></div></body></html>`);
   console.log(`play: http://localhost:8942/${path.basename(process.cwd())}/animatic/player.html`);
   // copy (never re-encode or move in place) into a synced folder: an in-place replace during sync can leave a broken file
