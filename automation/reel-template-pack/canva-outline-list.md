@@ -150,6 +150,14 @@ Nothing to do: before, after and Comment (polka-dot letters) stay artwork (patte
 - Slide 7: **your favourite** (wine #7A1732): Outline in white #FFFFFF, thin
 - Slide 8: **Comment** (wine #7A1732): Outline in white #FFFFFF, thin
 
+## h1 Now you see it
+
+- Slide 1: **now you** (white #FFFFFF): Outline in dark ink #18120E, thin
+- Slide 1: **see it** (orange #EC7824): Outline in dark ink #18120E, thin
+- Slide 3: **gone** (orange #EC7824): Outline in dark ink #18120E, thin
+- Slide 6: **comment** (white #FFFFFF): Outline in dark ink #18120E, thin
+- Slide 6: **before it's gone** (orange #EC7824): Outline in dark ink #18120E, thin
+
 ## h2 Things I'm batty about
 
 Nothing to do: BATTY, TOP 3, about and the numbers stay artwork (pattern-filled lettering in fonts Canva does not have).

@@ -23,13 +23,13 @@ DIRS = {'01': '01-one-product-three-ways', '02': '02-pack-an-order', '03': '03-b
         '15': '15-new-drop-reveal', '16': '16-what-it-feels-like', '17': '17-everything-that-goes-into-one',
         '18': '18-check-this-before-you-buy', '19': '19-pair-it-with', '21': '21-small-batch', '25': '25-mine-vs-the-usual-kind', '09': '09-who-its-for', '08': '08-a-real-customer-question', '10': '10-three-people-to-gift-it-to', '12': '12-your-order-just-arrived',
         '20': '20-what-buyers-said', '22': '22-put-it-to-the-test', '23': '23-every-option-in-10-seconds',
-        'h2': 'halloween/h2-batty-about', 'h3': 'halloween/h3-caught-in-our-web', 'h5': 'halloween/h5-trick-or-treat', 'h6': 'halloween/h6-once-in-a-blood-moon'}
+        'h1': 'halloween/h1-now-you-see-it', 'h2': 'halloween/h2-batty-about', 'h3': 'halloween/h3-caught-in-our-web', 'h5': 'halloween/h5-trick-or-treat', 'h6': 'halloween/h6-once-in-a-blood-moon'}
 TITLES = {'01': 'One product three ways', '02': 'Pack an order with me', '03': 'Before and after', '04': 'A or B', '05': 'Details',
           '06': 'Start to finish', '07': 'How big is it really', '13': 'How to use it in 3 steps', '11': 'A day with it', '14': 'The annoying moment',
           '15': 'New drop reveal', '16': 'What it feels like', '17': 'Everything that goes into one',
           '18': 'Check this before you buy', '19': 'Pair it with', '21': 'Small batch', '25': 'Mine vs the usual kind', '09': 'Who its for', '08': 'A real customer question', '10': 'Three people to gift it to', '12': 'Your order just arrived',
           '20': 'What buyers said', '22': 'Put it to the test', '23': 'Every option in 10 seconds',
-          'h2': "Things I'm batty about", 'h3': 'Caught in our web', 'h5': 'Trick or treat', 'h6': 'Once in a blood moon'}
+          'h1': 'Now you see it', 'h2': "Things I'm batty about", 'h3': 'Caught in our web', 'h5': 'Trick or treat', 'h6': 'Once in a blood moon'}
 HOOK2 = 'Second hook: Instagram often shows a carousel starting on slide 2, so this one works as a cover on its own. '
 REPLACE = 'Photo: click it, then Replace.'
 
@@ -1616,10 +1616,69 @@ def c25():
         text('[Product name]', 56, (540, 1290), -2, box=BUTTER)])
     return s
 
-RECIPES = {'01': c01, '02': c02, '03': c03, '04': c04, '05': c05, '06': c06, '07': c07, '13': c13, '11': c11, '14': c14, '15': c15, '16': c16, '17': c17, '18': c18, '19': c19, '21': c21, '25': c25, '09': c09, '08': c08, '10': c10, '12': c12, '20': c20, '22': c22, '23': c23, 'h2': ch2, 'h3': ch3, 'h5': ch5, 'h6': ch6}
+def ch1():
+    import motion_h1 as M
+    import tower_h1 as T
+    ACC, INK1 = M.ACC, M.INK
+    def serif(t, px, color):
+        """A built-in Bodoni word as in the Reel (thin ink edge): live Bodoni FLF in Canva, outlined there."""
+        f = K.ImageFont.truetype(K.FONTS['bodoni'][0], px); l, t_, r, b = f.getbbox(t); im = Image.new('RGBA', (r - l + 60, b - t_ + 60), (0, 0, 0, 0))
+        K.ImageDraw.Draw(im).text((30 - l, 30 - t_), t, font=f, fill=color + (255,), stroke_width=max(3, px // 40), stroke_fill=INK1 + (255,)); im = K.C.shadow(im, (0, 6), 9, 140)
+        im.info['lettering'] = dict(words=t, px=px, fill=color, edge=INK1, italic_last=False, font='bodoni'); return im
+    stage = Image.new('RGBA', (CW, CH), M.STAGE + (255,)); stage.alpha_composite(K.fit_bg(M.GRAIN))
+    def smoke(t, w=CW, h=CH, k=0.95):
+        g = ImageOps.grayscale(M.vid('smoke', t)); g = ImageOps.fit(g, (w, h)); out = Image.new('RGBA', (w, h), (255, 255, 255, 0)); out.putalpha(g.point(lambda v: int(v * k))); return out
+    S_ = 1.55
+    tower, dial, _ = T.tower(); tower = tower.resize((int(tower.width * S_), int(tower.height * S_)), Image.LANCZOS); dial = (dial[0] * S_, dial[1] * S_)
+    hour, minute = T.hands(95 * S_)
+    def clock(at):
+        c = (at[0] - dial[0] + tower.width / 2, at[1] - dial[1] + tower.height / 2)
+        return [art(tower, c, 0, 'clock tower'), art(hour, at, 0, 'hour hand'), art(minute, at, 0, 'minute hand')]
+    class V:                                    # the Reel's still frames as photo stand-ins (Clip-like .at())
+        def __init__(s, key, t): s.key, s.t = key, t
+        def at(s, _t, size): return ImageOps.fit(M.vid(s.key, s.t), (int(size[0]), int(size[1]))).convert('RGB')
+    w_, wo, ag = V('with', 1.2), V('without', 2.5), V('again', 1.0)
+    s = []
+    S2(s, stage, 'Hook. Swap in a photo of you with your product. Edit the [bracket] line.', [
+        photo('You + your product (fills the page)', (540, 720), (CW, CH), 0, w_.at(0, (CW, CH))),
+        art(serif('now you', 130, WHITE), (520, 260), 0, 'now you'),
+        art(serif('see it', 250, ACC), (520, 450), 0, 'see it'),
+        text('[me + our spice candle]', 62, (520, 640), 0, box=WHITE, fg=INK1),
+        art(doodle('icon', 9, 170, WHITE), (180, 380), 0, 'sparkle'), art(doodle('icon', 11, 190, WHITE), (890, 560), 0, 'sparkle'),
+        guide(FIRST_GUIDE)])
+    S2(s, stage, HOOK2 + "Swap in the same shot, empty (you've vanished). Edit both [bracket] lines.", [
+        photo('The same shot, empty (fills the page)', (540, 720), (CW, CH), 0, wo.at(0, (CW, CH))),
+        art(smoke(1.6), (540, 720), 0, 'smoke'),
+        text("[now you don't]", 96, (620, 220), -2, align='right', box=WHITE, fg=INK1),
+        text("[swipe before it's gone]", 60, (380, 1340), -2, align='left', box=WHITE, fg=INK1),
+        art(doodle('arrow', 0, 170, ACC), (840, 1335), -2, 'arrow')])
+    S2(s, stage, 'No photo needed. Type your real end time.', clock((540, 1020)) + [
+        art(doodle('burst', 1, 190, (246, 238, 222)), (150, 980), -20, 'burst'), art(doodle('burst', 1, 190, (246, 238, 222)), (930, 980), 20, 'burst'),
+        art(serif('gone', 300, ACC), (540, 250), 0, 'gone'),
+        text('[at midnight Oct 31]', 70, (540, 470), 0, box=WHITE, fg=INK1)])
+    S2(s, stage, 'Swap in a photo of your product. Type your real number left.', [
+        photo('Your product (fills the page)', (540, 720), (CW, CH), 0, ag.at(0, (CW, CH))),
+        text('only', 96, (520, 220), 0, box=None, fg=WHITE),
+        text('[20 left]', 110, (520, 470), -2, box=ACC, fg=WHITE),
+        art(doodle('frame', 2, 820, WHITE), (520, 470), -4, 'circle')])
+    S2(s, stage, 'Swap in a close-up of your product. Edit the line.', [
+        art(smoke(0.8, 900, 700, 0.8), (540, 1180), 0, 'smoke'),
+        art(K.torn_card((720, 860), 6), (540, 700), -3, 'torn paper'),
+        photo('Your product, close up', (540, 700), (720, 860), -3, V('again', 2.5).at(0, (720, 860))),
+        text('[the last batch' + chr(10) + 'of the season]', 58, (320, 1280), -2, box=WHITE, fg=INK1, align='left')])
+    S2(s, stage, 'Swap in your product photo. Type your keyword. ' + CAPTION, [
+        art(smoke(2.2, CW, 700, 0.85), (540, 1110), 0, 'smoke'),
+        art(K.round_card(420), (540, 1050), 0, 'round paper'), photo('Your product', (540, 1050), (420, 420), 0, ag.at(0, (420, 420)), shape='circle'),
+        art(serif('comment', 170, WHITE), (540, 220), 0, 'comment'),
+        text('[POOF]', 130, (540, 420), 0, box=ACC, fg=WHITE, pill=True),
+        art(serif("before it's gone", 110, ACC), (540, 620), 0, "before it's gone"),
+        art(doodle('arrow', 0, 200, ACC), (150, 420), 0, 'arrow')])
+    return s
+
+RECIPES = {'01': c01, '02': c02, '03': c03, '04': c04, '05': c05, '06': c06, '07': c07, '13': c13, '11': c11, '14': c14, '15': c15, '16': c16, '17': c17, '18': c18, '19': c19, '21': c21, '25': c25, '09': c09, '08': c08, '10': c10, '12': c12, '20': c20, '22': c22, '23': c23, 'h1': ch1, 'h2': ch2, 'h3': ch3, 'h5': ch5, 'h6': ch6}
 
 HEX = lambda c: '#%02X%02X%02X' % tuple(c[:3])
-CNAME = {WINE: 'wine', PINK: 'pink', BUTTER: 'butter', BLUE: 'light blue', WHITE: 'white', INK: 'ink', S7.DEEP: 'deep blue'}
+CNAME = {WINE: 'wine', PINK: 'pink', BUTTER: 'butter', BLUE: 'light blue', WHITE: 'white', INK: 'ink', S7.DEEP: 'deep blue', (236, 120, 36): 'orange', (24, 18, 14): 'dark ink'}
 ARTWORK_WORDS = {'03': 'before, after and Comment (polka-dot letters)', 'h2': 'BATTY, TOP 3, about and the numbers', 'h3': 'CAUGHT and COMMENT (cut-out letters)', 'h5': 'TRICK, or TREAT?, TREAT and COMMENT (taffy letters)'}
 
 def outline_md(tid, outlines):
