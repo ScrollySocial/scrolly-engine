@@ -40,6 +40,29 @@ const CLIP = svgUrl('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 150
 const SPARK = '<svg viewBox="0 0 40 40"><path d="M20 0c1.5 12 6.5 17 20 20-13.5 3-18.5 8-20 20C18.5 28 13.5 23 0 20 13.5 17 18.5 12 20 0z" fill="currentColor"/></svg>';
 const ARROW = '<svg viewBox="0 0 220 160"><path d="M12 20c60-12 140 6 170 92" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round"/><path d="M150 96l34 22 12-40" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 
+// Doodles (Mercedes 2026-10-21: "add doodles"): a hand-drawn layer placed per slide, in the same hand as the Reel
+// covers (Covered By Your Grace notes, drawn arrows) plus sparkle stars like the site footer.
+// slide.doodles = [{k: note|arrow|star|circle|underline|tape, x, y, w, rot, text, c: navy|sky|white|pink, flip}]
+// Notes are text, so on light grounds they stay navy; sky is for shapes only (sky text on off-white fails contrast).
+const DOODLE_SVG = {
+  arrow: '<svg viewBox="0 0 120 170"><path d="M38 8c-30 30-18 70 18 70 26 0 26-34 2-30-30 6-30 60-6 92" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round"/><path d="M34 128l18 22 20-20" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  star: '<svg viewBox="0 0 40 40"><path d="M20 0c1.5 12 6.5 17 20 20-13.5 3-18.5 8-20 20C18.5 28 13.5 23 0 20 13.5 17 18.5 12 20 0z" fill="currentColor"/></svg>',
+  circle: '<svg viewBox="0 0 210 100" preserveAspectRatio="none"><path d="M40 16C80 3 168 4 194 34c18 22-6 52-70 58-48 5-104-2-116-30C-2 40 24 20 62 13c22-4 50-5 74-2" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" vector-effect="non-scaling-stroke"/></svg>',
+  underline: '<svg viewBox="0 0 300 30" preserveAspectRatio="none"><path d="M4 18c40-10 70 8 110-2s70-12 110 0 50 6 72-4" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round" vector-effect="non-scaling-stroke"/></svg>',
+};
+const DOODLE_C = { navy: '#0a1930', sky: '#4da3ff', white: '#f7f3ec', pink: '#ff3b7f' };
+function doodles(slide, dark) {
+  return (slide.doodles || []).map((d) => {
+    const c = DOODLE_C[d.c] || (d.k === 'note' ? (dark ? DOODLE_C.white : DOODLE_C.navy) : DOODLE_C.sky);
+    if (d.k === 'note' && !dark && c !== DOODLE_C.navy && c !== DOODLE_C.white) throw new Error(`doodle note "${d.text}": only navy text on a light ground`);
+    const st = `left:${d.x}px;top:${d.y}px;${d.w ? `width:${d.w}px;` : ''}${d.h ? `height:${d.h}px;` : ''}color:${c};rotate:${d.rot || 0}deg;${d.flip ? 'scale:-1 1;' : ''}`;
+    if (d.k === 'note') return `<div class="dd dd-note" style="${st}">${esc(d.text)}</div>`;
+    if (d.k === 'tape') return `<div class="dd dd-tape" style="${st}"></div>`;
+    if (!DOODLE_SVG[d.k]) throw new Error(`unknown doodle "${d.k}" (note, arrow, star, circle, underline, tape)`);
+    return `<div class="dd dd-${d.k}" style="${st}">${DOODLE_SVG[d.k]}</div>`;
+  }).join('');
+}
+
 function bg(media) {
   if (!media) return '';
   return `<div class="bg" style="background-image:url('${media.url}');background-position:${media.focus || 'center'}"></div>`;
@@ -84,7 +107,7 @@ export function slideHtml(post, slide, i, ctx) {
     // italic word too. Never pink text on a light ground.
     const her = (slide.voice || post.voice) === 'mercedes';
     const accent = her && isDark(pal) ? brand.pink : pal.accent, deco = her ? brand.pink : pal.deco;
-    const vars = `--bg:${pal.bg};--ink:${pal.ink};--accent:${accent};--tex:${pal.tex || pal.bg};--paper:${pal.paper};--paper-ink:${pal.paperInk};--paper-accent:${pal.paperAccent};--paper-mark:${pal.paperMark};--mark:${pal.mark};--deco:${deco};--circle:url('${circleUrl(deco)}')`;
+    const vars = `--bg:${pal.bg};--ink:${pal.ink};--accent:${accent};--tex:${pal.tex || pal.bg};--paper:${pal.paper};--paper-ink:${pal.paperInk};--paper-accent:${pal.paperAccent};--paper-mark:${pal.paperMark};--pop:${pal.pop || pal.mark};--mark:${pal.mark};--deco:${deco};--circle:url('${circleUrl(deco)}')`;
     const tex = slide.pattern ?? slide.texture ?? post.pattern ?? post.texture ?? 'none';
     const ov = [].concat(slide.overlay || []);
     const unknown = ov.filter((o) => !OVERLAYS.includes(o));
@@ -111,7 +134,10 @@ export function slideHtml(post, slide, i, ctx) {
       }
       const m = slide.media ? mediaFor(slide.media, slide.focus) : null;
       if (['photo', 'pano', 'image'].includes(slide.layout) && !m) throw new Error(`slide ${i + 1}: photo layout needs slide.media`);
-      return `<section class="s blk lay lay-${slide.layout} tex-${tex} ${kind}" style="${vars}${bgImg}" data-i="${i}" data-min="48">${fn(slide, m)}${nod(post, brand, isLast)}</section>`;
+      // photoBg: any layout over a full-bleed photo of Mercedes, with a navy scrim behind the text (white text, sky accents).
+      const pb = slide.photoBg ? mediaFor(slide.photoBg, slide.photoFocus) : null;
+      const pbHtml = pb ? `<div class="bg pbg" style="background-image:url('${pb.url}');background-position:${pb.focus || 'center'}"></div><div class="scrim scrim-${slide.scrim || 'bottom'}"></div>` : '';
+      return `<section class="s blk lay lay-${slide.layout} tex-${tex} ${kind}${pb ? ' ph ph-' + (slide.scrim || 'bottom') : ''}" style="${vars}${bgImg}" data-i="${i}" data-min="48">${pbHtml}${fn(slide, m)}${nod(post, brand, isLast)}${doodles(slide, pb || isDark(pal))}</section>`;
     }
     const top = cut || photo;
     return `<section class="s blk blk-${style} tex-${tex} ${kind}${ov.map((o) => ' ov-' + o).join('')}" style="${vars}${bgImg};--tilt:${tilt}deg" data-i="${i}">
@@ -123,6 +149,7 @@ export function slideHtml(post, slide, i, ctx) {
       </div>
       ${ov.includes('arrow') ? `<span class="arrow">${ARROW}</span>` : ''}
       ${cut ? `<img class="cut" src="${cut.url}" alt="">` : ''}
+      ${doodles(slide, isDark(pal))}
       </section>`;
   }
   throw new Error(`Unknown style "${style}"`);
@@ -130,7 +157,7 @@ export function slideHtml(post, slide, i, ctx) {
 
 export function pageHtml(post, ctx) {
   const { brand } = ctx;
-  const fams = [...new Set(Object.values(brand.fonts).map((f) => f.google))].map((g) => `family=${g.replace(/ /g, '+')}`).join('&');
+  const fams = [...new Set([...Object.values(brand.fonts).map((f) => f.google), 'Covered By Your Grace'])].map((g) => `family=${g.replace(/ /g, '+')}`).join('&');
   const font = brand.fonts.highlight.family, disp = brand.fonts.display.family;
   const sz = SIZES[post.style];
   return `<!doctype html><html><head><meta charset="utf-8">
@@ -218,6 +245,23 @@ em{font-style:normal}
 .spk{position:absolute;width:88px;color:var(--deco)}
 .spk svg,.arrow svg{display:block;width:100%;height:auto}
 .spk1{top:-80px;left:-50px}.spk2{bottom:-70px;right:-40px;width:58px}
+
+/* photo backgrounds behind any layout (navy scrim keeps white text readable) */
+.s.lay.ph{isolation:isolate;--ink:#fff!important;color:#fff;--accent:#4da3ff!important;--mark:transparent!important}
+.ph .pbg{position:absolute;inset:0;background-size:cover;z-index:-2}
+.ph .scrim{position:absolute;left:0;right:0;z-index:-1}
+.ph .scrim-bottom{bottom:0;height:72%;background:linear-gradient(rgba(10,25,48,0),rgba(10,25,48,.86) 50%)}
+.ph .scrim-top{top:0;height:68%;background:linear-gradient(rgba(10,25,48,.86) 50%,rgba(10,25,48,0))}
+.ph .scrim-full{inset:0;background:rgba(10,25,48,.58)}
+.s.lay.ph-bottom{justify-content:flex-end;padding-bottom:140px}
+.s.lay.ph-top{justify-content:flex-start;padding-top:130px}
+.s.lay-hook2.ph .txt{top:auto;bottom:140px;justify-content:flex-end;gap:48px}
+/* doodles */
+.dd{position:absolute;z-index:5;pointer-events:none}
+.dd svg{display:block;width:100%;height:auto}
+.dd-circle svg,.dd-underline svg{height:100%}
+.dd-note{font:400 74px/1.05 'Covered By Your Grace',cursive;letter-spacing:.03em;white-space:pre-line}
+.dd-tape{height:58px;background:color-mix(in srgb,#4da3ff 55%,transparent);clip-path:polygon(0 8%,4% 0,8% 10%,12% 0,100% 4%,96% 50%,100% 96%,92% 100%,0 92%,4% 50%)}
 
 ${LAYOUT_CSS(brand)}
 /* Tiger nod: small, last slide only */

@@ -15,7 +15,7 @@ const conf = readJson(path.join(HERE, 'data/panoramas.json'))[group];
 const brand = cfg('brand'), media = cfg('media');
 const { mediaFor } = mediaResolver();
 const n = conf.posts.length, W = 1080 * n, H = 1440;
-const fams = [...new Set(Object.values(brand.fonts).map((f) => f.google))].map((g) => `family=${g.replace(/ /g, '+')}`).join('&');
+const fams = [...new Set([...Object.values(brand.fonts).map((f) => f.google), 'Covered By Your Grace'])].map((g) => `family=${g.replace(/ /g, '+')}`).join('&');
 const body = DESIGNS[conf.design || group]({
   brand,
   photo: mediaFor(conf.media, conf.focus),

@@ -17,7 +17,7 @@
   "slides": [
     {
       "layout": "image",
-      "media": "4989499a6d",
+      "media": "8b43a42fa6",
       "grid": "pinned-2026-10",
       "text": "How many views make $1,000?. The math, step by step"
     },
@@ -25,7 +25,22 @@
       "layout": "hook2",
       "top": "Your $1,000 goal is secretly a *views* goal",
       "bottom": "Here's the math, one step at a time →",
-      "pattern": "dots"
+      "photoBg": "1e629b09ae",
+      "scrim": "bottom",
+      "doodles": [
+        {
+          "k": "star",
+          "x": 880,
+          "y": 120,
+          "w": 80
+        },
+        {
+          "k": "star",
+          "x": 960,
+          "y": 230,
+          "w": 40
+        }
+      ]
     },
     {
       "layout": "formula",
@@ -36,12 +51,56 @@
         "=",
         "20|sales"
       ],
-      "text": "Start with your price. Your goal divided by it is the sales you need."
+      "text": "Start with your price. Your goal divided by it is the sales you need.",
+      "doodles": [
+        {
+          "k": "note",
+          "text": "start here",
+          "x": 430,
+          "y": 300,
+          "rot": -6
+        },
+        {
+          "k": "arrow",
+          "x": 520,
+          "y": 350,
+          "w": 64,
+          "rot": -10
+        },
+        {
+          "k": "star",
+          "x": 900,
+          "y": 400,
+          "w": 56
+        }
+      ]
     },
     {
       "layout": "number",
       "big": "800",
-      "text": "visitors bring in those 20 sales, if 2.5% of them buy."
+      "text": "visitors bring in those 20 sales, if 2.5% of them buy.",
+      "palette": "navy",
+      "doodles": [
+        {
+          "k": "star",
+          "x": 800,
+          "y": 330,
+          "w": 90
+        },
+        {
+          "k": "star",
+          "x": 910,
+          "y": 450,
+          "w": 44
+        },
+        {
+          "k": "underline",
+          "x": 96,
+          "y": 720,
+          "w": 560,
+          "h": 40
+        }
+      ]
     },
     {
       "layout": "phone",
@@ -55,7 +114,23 @@
         ],
         "hi": 3
       },
-      "text": "Visitors come from link taps. Your Insights show how many you get."
+      "text": "Visitors come from link taps. Your Insights show how many you get.",
+      "doodles": [
+        {
+          "k": "note",
+          "text": "this\none",
+          "x": 70,
+          "y": 1040,
+          "rot": -8
+        },
+        {
+          "k": "arrow",
+          "x": 150,
+          "y": 1190,
+          "w": 80,
+          "rot": -80
+        }
+      ]
     },
     {
       "layout": "formula",
@@ -66,7 +141,16 @@
         "=",
         "10,667|views"
       ],
-      "text": "Then divide visitors by the share of viewers who tap through."
+      "text": "Then divide visitors by the share of viewers who tap through.",
+      "doodles": [
+        {
+          "k": "circle",
+          "x": 330,
+          "y": 410,
+          "w": 300,
+          "h": 280
+        }
+      ]
     },
     {
       "layout": "chart",
@@ -91,7 +175,22 @@
         "hi": 0,
         "note": "Views needed for $1,000 at $50, if 2.5% of visitors buy"
       },
-      "text": "That one percentage changes everything."
+      "text": "That one percentage changes everything.",
+      "doodles": [
+        {
+          "k": "circle",
+          "x": 830,
+          "y": 635,
+          "w": 190,
+          "h": 110
+        },
+        {
+          "k": "star",
+          "x": 960,
+          "y": 590,
+          "w": 44
+        }
+      ]
     },
     {
       "layout": "checklist",
@@ -100,7 +199,17 @@
         "A clearer page",
         "A link sticker in more Stories"
       ],
-      "text": "Small fixes that raise it:"
+      "text": "Small fixes that raise it:",
+      "photoBg": "473beb9747",
+      "scrim": "top",
+      "doodles": [
+        {
+          "k": "star",
+          "x": 900,
+          "y": 110,
+          "w": 70
+        }
+      ]
     },
     {
       "layout": "phone",
@@ -109,15 +218,73 @@
       },
       "media": "4b3aaf72ba",
       "focus": "50% 88%",
-      "text": "Want to run your own numbers? The free calculator on scrollyseo.com does the math in seconds."
+      "text": "Want to run your own numbers? The free calculator on scrollyseo.com does the math in seconds.",
+      "doodles": [
+        {
+          "k": "tape",
+          "x": 390,
+          "y": 620,
+          "w": 300,
+          "rot": -5
+        },
+        {
+          "k": "star",
+          "x": 860,
+          "y": 760,
+          "w": 70
+        },
+        {
+          "k": "star",
+          "x": 140,
+          "y": 900,
+          "w": 44
+        }
+      ]
     },
     {
       "layout": "text",
       "text": "Both percentages are starting guesses. Swap in your own once you've posted.",
-      "pattern": "grid"
+      "photoBg": "60167eb7b6",
+      "scrim": "full",
+      "doodles": [
+        {
+          "k": "star",
+          "x": 860,
+          "y": 200,
+          "w": 70
+        }
+      ]
     },
     {
-      "text": "The $1K Challenge gives you your $1K number and what to do each week. Link in bio."
+      "text": "The $1K Challenge gives you your $1K number and what to do each week. Link in bio.",
+      "palette": "navy",
+      "doodles": [
+        {
+          "k": "arrow",
+          "x": 860,
+          "y": 130,
+          "w": 90,
+          "rot": 200
+        },
+        {
+          "k": "star",
+          "x": 120,
+          "y": 220,
+          "w": 70
+        },
+        {
+          "k": "star",
+          "x": 200,
+          "y": 1180,
+          "w": 44
+        },
+        {
+          "k": "star",
+          "x": 900,
+          "y": 1100,
+          "w": 60
+        }
+      ]
     }
   ],
   "cta": {

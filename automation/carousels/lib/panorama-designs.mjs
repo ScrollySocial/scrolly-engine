@@ -143,7 +143,7 @@ DESIGNS['pinned-2026-10-v3'] = ({ brand, photo, hooks, stats }) => {
 .hook h1{font-weight:800;font-stretch:75%;font-variation-settings:'wdth' 75;text-transform:uppercase;line-height:.92;letter-spacing:-.005em}
 .hook em{font-family:'${brand.fonts.serif.family}',serif;font-style:italic;font-weight:400;text-transform:none;font-size:1.12em;letter-spacing:0}
 .hook p{margin-top:40px;font-weight:700;font-stretch:88%;font-variation-settings:'wdth' 88;font-size:56px}
-.h2{position:absolute;left:1260px;width:820px;top:250px;color:#fff}.h2 h1{font-size:150px}.h2 em{color:${tan.accent}}
+.h2{position:absolute;left:1240px;width:800px;top:250px;color:#fff}.h2 h1{font-size:150px}.h2 em{color:${tan.accent}}
 .h3{position:absolute;left:2420px;width:730px;top:150px;color:${warm.ink};text-align:right}.h3 h1{font-size:128px}.h3 em{color:${warm.accent}}
 .card{position:absolute;left:2470px;width:680px;top:820px;background:#fff;border-radius:40px;padding:44px 50px;box-shadow:0 20px 50px rgba(60,20,0,.16);rotate:-2deg;display:flex;flex-direction:column;gap:28px}
 .row{display:grid;grid-template-columns:auto 1fr;align-items:baseline;column-gap:20px;row-gap:10px}
@@ -164,6 +164,7 @@ DESIGNS['pinned-2026-10-v3'] = ({ brand, photo, hooks, stats }) => {
 // v4 (2026-10-07): only NEUTRAL elements cross seams (content-rules 7d): the navy sweep, her photo's edge, a big
 // star sticker, a soft blue-mist blob, a squiggle and sparkles. No words or charts on seams; the stats card sits inside tile 3.
 // 2026-10-21: moved to the 2026-10 rebrand (off-white + navy sweep, sky accents, Instrument Serif hooks, Jost lines).
+const ARROW_D = '<svg viewBox="0 0 120 170"><path d="M38 8c-30 30-18 70 18 70 26 0 26-34 2-30-30 6-30 60-6 92" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round"/><path d="M34 128l18 22 20-20" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 const SQUIGGLE = (c) => `<svg viewBox="0 0 600 160"><path d="M10 110 C 70 10, 130 10, 170 80 S 270 150, 310 80 S 410 10, 450 80 S 550 150, 590 60" fill="none" stroke="${c}" stroke-width="22" stroke-linecap="round"/></svg>`;
 const SPARK = (c) => `<svg viewBox="0 0 40 40"><path d="M20 0c1.5 12 6.5 17 20 20-13.5 3-18.5 8-20 20C18.5 28 13.5 23 0 20 13.5 17 18.5 12 20 0z" fill="${c}"/></svg>`;
 DESIGNS['pinned-2026-10-v4'] = ({ brand, photo, hooks, stats }) => {
@@ -172,8 +173,7 @@ DESIGNS['pinned-2026-10-v4'] = ({ brand, photo, hooks, stats }) => {
   const max = Math.log10(Math.max(...stats.map((s) => +s[0].replace(/,/g, ''))));
   return `
 <svg class="layer" viewBox="0 0 3240 1440" preserveAspectRatio="none">
-  <path d="M900 0 C 820 380, 760 900, 820 1440 L 2470 1440 C 2620 1150, 2560 760, 2380 520 C 2300 380, 2260 180, 2300 0 Z" fill="${navy.bg}"/>
-  <circle cx="2190" cy="1360" r="230" fill="${mist.bg}"/>
+  <path d="M900 0 C 820 380, 760 900, 820 1440 L 2110 1440 C 2150 1150, 2120 760, 2100 520 C 2090 380, 2100 180, 2120 0 Z" fill="${navy.bg}"/>
 </svg>
 <div class="photo" style="background-image:url('${photo.url}');background-position:${photo.focus || 'center'}"></div>
 <div class="hl1"><p><span>${esc(h1.big)}</span></p><p class="sm"><span>${esc(h1.small)}</span></p></div>
@@ -181,8 +181,8 @@ DESIGNS['pinned-2026-10-v4'] = ({ brand, photo, hooks, stats }) => {
 <div class="hook h3"><h1>${rich(h3.big)}</h1><p>${esc(h3.small)}</p></div>
 <div class="card">${stats.map(([v, l]) => `<div class="row"><b>${esc(v)}</b><span>${esc(l)}</span><i style="width:${Math.max(8, (Math.log10(+v.replace(/,/g, '')) / max) * 100)}%"></i></div>`).join('')}</div>
 <div class="sticker bigstar">${STAR(light.mark)}</div>
-<div class="sticker squig">${SQUIGGLE(light.bg)}</div>
-<div class="spk k1">${SPARK('#fff')}</div><div class="spk k2">${SPARK(navy.accent)}</div><div class="spk k3">${SPARK('#fff')}</div>
+<div class="doodle arr">${ARROW_D}</div><div class="doodle note">do the<br>math<br>with me</div>
+<div class="spk k1">${SPARK(navy.accent)}</div><div class="spk k2">${SPARK(light.mark)}</div><div class="spk k3">${SPARK('#fff')}</div>
 <style>
 .canvas{position:relative;width:3240px;height:1440px;overflow:hidden;background:${light.bg};font-family:'${brand.fonts.display.family}',sans-serif}
 .layer{position:absolute;inset:0;width:3240px;height:1440px}
@@ -206,8 +206,9 @@ DESIGNS['pinned-2026-10-v4'] = ({ brand, photo, hooks, stats }) => {
 .sticker{position:absolute;filter:drop-shadow(0 8px 14px rgba(10,25,48,.22))}
 .sticker svg,.spk svg{display:block;width:100%;height:auto}
 .bigstar{left:930px;top:90px;width:300px;rotate:-12deg}
-.squig{left:1880px;top:1150px;width:520px;rotate:-8deg;filter:none}
+.arr{position:absolute;left:2280px;top:990px;width:110px;color:${light.mark};rotate:-50deg}.arr svg{display:block;width:100%;height:auto}
+.note{position:absolute;left:2205px;top:770px;font:400 62px/1.05 'Covered By Your Grace',cursive;color:${light.ink};rotate:-6deg;letter-spacing:.03em}
 .spk{position:absolute}
-.k1{left:2060px;top:200px;width:90px}.k2{left:2240px;top:120px;width:60px}.k3{left:1130px;top:1250px;width:70px}
+.k1{left:1930px;top:1180px;width:90px}.k2{left:2230px;top:1250px;width:60px}.k3{left:1130px;top:1250px;width:70px}
 </style>`;
 };

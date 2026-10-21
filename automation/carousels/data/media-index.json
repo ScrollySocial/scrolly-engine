@@ -1,6 +1,82 @@
 {
   "items": [
     {
+      "id": "1e629b09ae",
+      "type": "photo",
+      "root": "photosDir",
+      "file": "broll/couch-lookup-smile-01.jpg",
+      "folder": "broll",
+      "width": 1080,
+      "height": 1920,
+      "addedAt": "2026-10-21",
+      "tags": [
+        "me",
+        "couch",
+        "smiling",
+        "waist-up"
+      ],
+      "notes": "B-roll still 1.5s: smiling at camera on the teal couch. Face top third.",
+      "textSpace": "bottom",
+      "missing": false
+    },
+    {
+      "id": "f5e7ef379a",
+      "type": "photo",
+      "root": "photosDir",
+      "file": "broll/couch-writing-01.jpg",
+      "folder": "broll",
+      "width": 1080,
+      "height": 1920,
+      "addedAt": "2026-10-21",
+      "tags": [
+        "me",
+        "couch",
+        "notebook",
+        "waist-up"
+      ],
+      "notes": "B-roll still 1.5s: writing in a notebook on the teal couch, pink stripes. Face top third.",
+      "textSpace": "bottom",
+      "missing": false
+    },
+    {
+      "id": "473beb9747",
+      "type": "photo",
+      "root": "photosDir",
+      "file": "broll/desk-coffee-sip-01.jpg",
+      "folder": "broll",
+      "width": 1080,
+      "height": 1920,
+      "addedAt": "2026-10-21",
+      "tags": [
+        "me",
+        "desk",
+        "coffee",
+        "monitor"
+      ],
+      "notes": "B-roll still 1.5s: at the desk with coffee, eyes closed; monitor behind. Face mid-left.",
+      "textSpace": "top",
+      "missing": false
+    },
+    {
+      "id": "60167eb7b6",
+      "type": "photo",
+      "root": "photosDir",
+      "file": "broll/typing-overhead-01.jpg",
+      "folder": "broll",
+      "width": 1080,
+      "height": 1920,
+      "addedAt": "2026-10-21",
+      "tags": [
+        "hands",
+        "laptop",
+        "desk",
+        "faceless"
+      ],
+      "notes": "B-roll still 1.5s: overhead laptop + hands, dark desk. No face.",
+      "textSpace": "top",
+      "missing": false
+    },
+    {
       "id": "8cd7fa8494",
       "type": "photo",
       "root": "photosDir",
@@ -440,6 +516,34 @@
       "tags": [],
       "notes": "",
       "textSpace": [],
+      "missing": true
+    },
+    {
+      "id": "5b1fc55891",
+      "type": "photo",
+      "root": "photosDir",
+      "file": "panoramas/pinned-2026-10-2.png",
+      "folder": "panoramas",
+      "width": 1080,
+      "height": 1440,
+      "addedAt": "2026-10-21",
+      "tags": [],
+      "notes": "",
+      "textSpace": [],
+      "missing": true
+    },
+    {
+      "id": "4097fee43e",
+      "type": "photo",
+      "root": "photosDir",
+      "file": "panoramas/pinned-2026-10-2.png",
+      "folder": "panoramas",
+      "width": 1080,
+      "height": 1440,
+      "addedAt": "2026-10-21",
+      "tags": [],
+      "notes": "",
+      "textSpace": [],
       "missing": false
     },
     {
@@ -542,6 +646,34 @@
     },
     {
       "id": "4989499a6d",
+      "type": "photo",
+      "root": "photosDir",
+      "file": "panoramas/pinned-2026-10-3.png",
+      "folder": "panoramas",
+      "width": 1080,
+      "height": 1440,
+      "addedAt": "2026-10-21",
+      "tags": [],
+      "notes": "",
+      "textSpace": [],
+      "missing": true
+    },
+    {
+      "id": "370a209339",
+      "type": "photo",
+      "root": "photosDir",
+      "file": "panoramas/pinned-2026-10-3.png",
+      "folder": "panoramas",
+      "width": 1080,
+      "height": 1440,
+      "addedAt": "2026-10-21",
+      "tags": [],
+      "notes": "",
+      "textSpace": [],
+      "missing": true
+    },
+    {
+      "id": "8b43a42fa6",
       "type": "photo",
       "root": "photosDir",
       "file": "panoramas/pinned-2026-10-3.png",

@@ -42,18 +42,19 @@
     "image": "website/scrolly-site/assets/cta-tiger.webp"
   },
   "palettes": {
-    "_note": "2026-10 rebrand (vault brand/visual-system.md; look frozen 2026-10-22). Roles: bg, ink (text), accent (the *italic* word and big numbers), mark (sky marker band under the italic word; transparent on navy, where the word turns sky instead), deco (arrows, sparkles, stars), tex (pattern lines), paper/paperInk/paperAccent/paperMark (notes, cards, checklist rows, polaroids). Mix across the feed like the site: mostly offwhite, navy often, mist now and then. Hot pink #ff3b7f means Mercedes: only on slides about her or in her voice, and only on navy (never pink text on light grounds). Retired: orange #E05A33, tangerine, peach, blush, cream #F6EEE5, ink #161210.",
+    "_note": "2026-10 rebrand (vault brand/visual-system.md; look frozen 2026-10-22). Roles: bg, ink (text), accent (the *italic* word and big numbers), mark (sky marker band under the italic word; transparent on navy, where the word turns sky instead), deco (arrows, sparkles, stars), pop (sky fills that do the job orange used to: checkmarks, the highlighted chart bar, the Insights highlight; never sky text on a light ground), tex (pattern lines), paper/paperInk/paperAccent/paperMark (notes, cards, checklist rows, polaroids). Mix across the feed like the site: mostly offwhite, navy often, mist now and then. Hot pink #ff3b7f means Mercedes: only on slides about her or in her voice, and only on navy (never pink text on light grounds). Retired: orange #E05A33, tangerine, peach, blush, cream #F6EEE5, ink #161210.",
     "offwhite": {
       "bg": "#f7f3ec",
       "ink": "#0a1930",
       "accent": "#0a1930",
       "mark": "#4da3ff",
       "deco": "#4da3ff",
-      "tex": "#ebe5da",
+      "tex": "#d6e4f4",
       "paper": "#ffffff",
       "paperInk": "#0a1930",
       "paperAccent": "#0a1930",
-      "paperMark": "#4da3ff"
+      "paperMark": "#4da3ff",
+      "pop": "#4da3ff"
     },
     "navy": {
       "bg": "#0a1930",
@@ -65,7 +66,8 @@
       "paper": "#f7f3ec",
       "paperInk": "#0a1930",
       "paperAccent": "#0a1930",
-      "paperMark": "#4da3ff"
+      "paperMark": "#4da3ff",
+      "pop": "#4da3ff"
     },
     "mist": {
       "bg": "#dfe4f0",
@@ -73,11 +75,12 @@
       "accent": "#0a1930",
       "mark": "#4da3ff",
       "deco": "#0a1930",
-      "tex": "#d0d8ea",
+      "tex": "#c6d6ef",
       "paper": "#ffffff",
       "paperInk": "#0a1930",
       "paperAccent": "#0a1930",
-      "paperMark": "#4da3ff"
+      "paperMark": "#4da3ff",
+      "pop": "#4da3ff"
     }
   },
   "paletteAliases": {

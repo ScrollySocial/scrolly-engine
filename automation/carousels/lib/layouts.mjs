@@ -84,13 +84,15 @@ export const LAYOUT_CSS = (brand) => `
 .formula .term{display:flex;flex-direction:column;align-items:center;background:var(--paper);color:var(--paper-ink);border-radius:24px;padding:24px 24px 20px}
 .formula .term b{font-family:'${brand.fonts.headline.family}',serif;font-size:108px;font-weight:400;line-height:1}
 .formula .term small{font-size:34px;font-weight:500;margin-top:8px;color:#4a4e66}
+.formula .term:last-child{background:var(--pop);color:#0a1930}
+.formula .term:last-child small{color:#0a1930}
 .formula .op{font-family:'${brand.fonts.headline.family}',serif;font-size:84px;font-weight:400;color:var(--ink)}
 /* chart */
 .chart{display:flex;flex-direction:column;gap:26px;width:100%}
 .bar{display:grid;grid-template-columns:250px 1fr 190px;align-items:center;gap:20px;font-size:40px;font-weight:500}
 .bt{height:78px;background:color-mix(in srgb,var(--ink) 9%,transparent);border-radius:14px;overflow:hidden}
 .bt i{display:block;height:100%;background:color-mix(in srgb,var(--ink) 30%,transparent);border-radius:14px}
-.bar.hi .bt i{background:var(--accent)}
+.bar.hi .bt i{background:var(--pop)}
 .bar.hi{font-weight:700}
 .bv{text-align:right;font-family:'${brand.fonts.headline.family}',serif;font-weight:400;font-size:56px}
 .cnote{font-size:34px;font-weight:500;opacity:.8}
@@ -116,8 +118,8 @@ export const LAYOUT_CSS = (brand) => `
 .scr-ins{padding:120px 40px 0;background:#fff}.ins-h{font-weight:700;font-size:40px;margin-bottom:30px}
 .ins-row{display:flex;justify-content:space-between;align-items:center;padding:26px 6px;border-bottom:2px solid #eee;font-size:32px;font-weight:500}
 .ins-row b{width:120px;height:28px;border-radius:8px;background:#e6e6e6}
-.ins-row.hi{background:color-mix(in srgb,var(--paper-mark) 16%,#fff);border-radius:16px;padding:26px 20px;border:3px solid var(--paper-accent)}
-.ins-row.hi b{background:var(--paper-accent)}
+.ins-row.hi{background:color-mix(in srgb,var(--pop) 18%,#fff);border-radius:16px;padding:26px 20px;border:4px solid var(--pop);font-weight:700}
+.ins-row.hi b{background:var(--pop)}
 .scr-img{background-color:#ddd}
 .scr-reel{color:#fff}
 .rail{position:absolute;right:26px;bottom:230px;display:flex;flex-direction:column;gap:36px}.rail svg{width:58px}
@@ -131,7 +133,7 @@ export const LAYOUT_CSS = (brand) => `
 /* checklist */
 .checks{list-style:none;display:flex;flex-direction:column;gap:26px;width:100%}
 .checks li{display:flex;align-items:center;gap:26px;background:var(--paper);color:var(--paper-ink);border-radius:24px;padding:26px 30px;font-size:50px;font-weight:500}
-.ck{width:58px;height:58px;border-radius:50%;background:var(--paper-accent);color:#fff;display:grid;place-items:center;flex:none}.ck svg{width:34px}
+.ck{width:58px;height:58px;border-radius:50%;background:var(--pop);color:#0a1930;display:grid;place-items:center;flex:none}.ck svg{width:34px}
 /* image */
 .lay-image{padding:0}
 /* pano */
