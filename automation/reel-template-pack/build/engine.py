@@ -499,24 +499,62 @@ def render(L, A, sources, out, work, test, key=False):
     proc.stdin.close(); proc.wait()
 
 # ---- recipe card and the buyer folder ---------------------------------------------------------------------------------------
-def recipe_card(path, spec, L):
-    img = C.paper((W, H), CREAM, seed=91).convert('RGB'); d = ImageDraw.Draw(img)
+def wrap(text, font, width):
+    """Split text into lines no wider than width (font.getlength), breaking at spaces."""
+    lines, cur = [], ''
+    for w in text.split():
+        t = f'{cur} {w}'.strip()
+        if cur and font.getlength(t) > width: lines.append(cur); cur = w
+        else: cur = t
+    return lines + [cur] if cur else lines
+
+def recipe_card(path, spec, L, margin=90):
+    """Every line stays inside `margin` on both sides (long lines wrap); spacing tightens if the card would run off
+    the bottom."""
+    right = W - margin; grey = (85, 80, 72)
     hf = spec['font']
-    d.text((90, 130), spec['title'], font=F(110 if hf == 'imbue' else 80, hf), fill=INK)
-    d.text((90, 300), spec['subtitle'], font=F(40, SEG), fill=(85, 80, 72))
-    y = 400
-    for i, (what, tip) in enumerate(spec['slots']):
-        d.text((90, y - 20), str(i + 1), font=F(110), fill=INK)
-        d.text((200, y), what, font=F(44, SEGB), fill=INK)
-        d.text((200, y + 58), tip, font=F(36, SEG), fill=(85, 80, 72)); y += 150
-    y += 20
-    d.text((90, y), 'Words to type over the [brackets] (1 to 3 words each)', font=F(42, SEGB), fill=INK); y += 74
-    seen = set()
+    title_f = F(110 if hf == 'imbue' else 80, hf)
+    while title_f.getlength(spec['title']) > right - margin and title_f.size > 50: title_f = F(title_f.size - 4, hf)
+    head = 'Words to type over the [brackets] (1 to 3 words each)'
+    head_f = F(42, SEGB)
+    while head_f.getlength(head) > right - margin and head_f.size > 34: head_f = F(head_f.size - 1, SEGB)
+    words, seen = [], set()
     for l in L:
         if l['kind'] != 'text' or '[' not in l['words'][0] or l['words'][0] in seen: continue
-        seen.add(l['words'][0]); one = l['words'][0].replace('\n', ' / ')
-        d.text((90, y), one, font=F(36, SEG), fill=INK)
-        d.text((600, y), f"e.g. {l['words'][1]}".replace('\n', ' / '), font=F(36, INKFREE), fill=(85, 80, 72)); y += 52
+        seen.add(l['words'][0])
+        words.append((l['words'][0].replace('\n', ' / '), f"e.g. {l['words'][1]}".replace('\n', ' / ')))
+
+    def lay(s, d=None):
+        """Lay the card out with spacing factor s; draw when d is given. Returns the bottom y."""
+        def put(xy, t, f, fill):
+            if d: d.text(xy, t, font=f, fill=fill)
+        put((margin, 130), spec['title'], title_f, INK)
+        f = F(40, SEG); y = 300
+        for ln in wrap(spec['subtitle'], f, right - margin): put((margin, y), ln, f, grey); y += 52
+        y += 48 * s
+        fw, ft = F(44, SEGB), F(36, SEG)
+        for i, (what, tip) in enumerate(spec['slots']):
+            put((margin, y - 20), str(i + 1), F(110), INK); top = y
+            for ln in wrap(what, fw, right - 200): put((200, y), ln, fw, INK); y += 54
+            y += 4
+            for ln in wrap(tip, ft, right - 200): put((200, y), ln, ft, grey); y += 46
+            y = max(y, top + 112 * s) + 38 * s
+        y += 20 * s
+        for ln in wrap(head, head_f, right - margin): put((margin, y), ln, head_f, INK); y += 56
+        y += 18 * s
+        fb, fe = F(36, SEG), F(36, INKFREE)
+        for one, eg in words:
+            a = wrap(one, fb, 600 - 20 - margin); b = wrap(eg, fe, right - 600)
+            for k, ln in enumerate(a): put((margin, y + k * 46), ln, fb, INK)
+            for k, ln in enumerate(b): put((600, y + k * 46), ln, fe, grey)
+            y += 46 * max(len(a), len(b)) + 6 * s
+        return y
+
+    s = 1.0
+    while lay(s) > H - 60 and s > 0.2: s -= 0.05
+    img = C.paper((W, H), CREAM, seed=91).convert('RGB')
+    bottom = lay(s, ImageDraw.Draw(img))
+    if bottom > H - 40: print(f'RECIPE CARD: {spec["num"]} runs to y={bottom:.0f}, past the bottom')
     img.save(path)
 
 def center_offset(l):
