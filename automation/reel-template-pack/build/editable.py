@@ -68,7 +68,11 @@ class Reel:
             raw['scale'].append((tr - r0, max(0.0, v.get('s', 1.0)))); raw['rot'].append((tr - r0, v.get('r', 0.0)))
         kf = {}
         for p, pts in raw.items():
-            if len({round(v, 3) for _, v in pts}) == 1: continue
+            if len({round(v, 3) for _, v in pts}) == 1:
+                # position and turn ride on the layer's start values; a scale that never changes but isn't 1 has no
+                # such home, so it keeps two keyframes (it was dropped and the layer built at full size)
+                if p == 'scale' and abs(pts[0][1] - 1.0) > 1e-3: kf[p] = [(0.0, round(pts[0][1], 4)), (round(pts[-1][0], 4), round(pts[0][1], 4))]
+                continue
             kf[p] = [(round(t, 4), round(v, 4)) for t, v in _rdp(pts, TOL[p])]
         v0 = f(X.warp(r0, self.holds)[0])
         return kf, (v0['x'], v0['y']), v0.get('r', 0.0)
