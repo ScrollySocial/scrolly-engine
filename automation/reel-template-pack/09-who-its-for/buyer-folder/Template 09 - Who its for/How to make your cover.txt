@@ -1,0 +1,15 @@
+How to make your Reel cover (free CapCut)
+
+"09 COVER Who its for" is your Reel's cover as its own CapCut project. The installer puts it on CapCut's home screen next to the
+template, with your clip 1 in the background.
+
+1. Open "09 COVER Who its for" in CapCut.
+2. Swap the background: right-click the clip on the timeline, choose Replace, and pick the clip or photo you want
+   behind the words.
+3. Double-click any word to change it, its font, colour or outline. Doodles are letters too: change their colour the
+   same way.
+4. Export it as a picture: Export, then pick the image option (or export it as a short video and take a screenshot
+   of it on your phone).
+5. On Instagram, when you post the Reel, tap Edit cover, then Add from camera roll, and pick your cover.
+
+Instagram's profile grid shows only the middle of the cover (3:4), so the words already sit in the middle.
