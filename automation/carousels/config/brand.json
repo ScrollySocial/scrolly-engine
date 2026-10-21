@@ -81,6 +81,20 @@
       "paperAccent": "#0a1930",
       "paperMark": "#4da3ff",
       "pop": "#4da3ff"
+    },
+    "sky": {
+      "bg": "#4da3ff",
+      "ink": "#0a1930",
+      "accent": "#0a1930",
+      "mark": "transparent",
+      "deco": "#f7f3ec",
+      "tex": "#62afff",
+      "paper": "#f7f3ec",
+      "paperInk": "#0a1930",
+      "paperAccent": "#0a1930",
+      "paperMark": "#4da3ff",
+      "pop": "#0a1930",
+      "_note": "Proposed 2026-10-21 after Mercedes found the all-navy/white grid flat: sky as a full background, navy text (6.7:1). Never white text on sky."
     }
   },
   "paletteAliases": {

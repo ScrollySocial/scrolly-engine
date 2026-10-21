@@ -9,6 +9,9 @@ import { fitSlides } from './lib/fit.mjs';
 import { mediaResolver } from './lib/media.mjs';
 
 const brand = cfg('brand');
+// node samples-grid.mjs [sky|pink]: colour variants for review. 'pink' is a mockup only (pink = Mercedes in visual-system.md).
+const variant = process.argv[2] || '';
+if (variant.startsWith('pink')) brand.palettes.pink = { bg: '#ff3b7f', ink: '#0a1930', accent: '#0a1930', mark: 'transparent', deco: '#0a1930', tex: '#ff5a93', paper: '#f7f3ec', paperInk: '#0a1930', paperAccent: '#0a1930', paperMark: '#4da3ff', pop: '#0a1930' };
 const out = path.join(cfg('media').exportsDir, '_style-samples');
 mkdirSync(out, { recursive: true });
 const STOCK = path.join(REPO, 'Scrolly Organic Engine/products/1k-club/playbook/design/assets/stock');
@@ -17,6 +20,7 @@ const real = mediaResolver().mediaFor;
 const mediaFor = (id, focus) => (!id ? null : /^[0-9a-f]{10}$/.test(id) ? real(id, focus) : { url: fileUrl(path.join(STOCK, id + '.jpg')), focus });
 
 // kind: text | photo | reel (carousel whose first slide is a Reel clip)
+const swap = { sky: { 1: 'sky', 5: 'sky', 9: 'offwhite' }, pink: { 1: 'sky', 5: 'pink', 9: 'offwhite', 11: 'pink' } }[variant.replace('-bold', '')] || {};
 const tiles = [
   ['photo', { style: 'B', slides: [{ text: 'A week of posts from one coffee run', media: '265ec9a722', pos: 'top' }] }],
   ['text', { style: 'D', palette: 'navy', slides: [{ text: 'Pick the photo you almost deleted', pattern: 'rays' }] }],
@@ -35,6 +39,7 @@ const tiles = [
 const ICON_CAROUSEL = '<svg viewBox="0 0 24 24" fill="#fff"><path d="M7 3h11a3 3 0 0 1 3 3v11a1 1 0 0 1-2 0V6a1 1 0 0 0-1-1H7a1 1 0 0 1 0-2zm-2 4h10a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2z"/></svg>';
 const ICON_PLAY = '<svg viewBox="0 0 24 24" fill="#fff"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.5-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5z"/></svg>';
 
+tiles.forEach(([, p], i) => { if (swap[i]) p.palette = swap[i]; });
 const browser = await launch();
 const pg = await browser.newPage();
 const shots = [];
@@ -42,6 +47,8 @@ for (const [n, [kind, post]] of tiles.entries()) {
   if (!post.slides[0].text) post.slides[0].text = ' ';
   const f = path.join(out, `.mix-${n}.html`);
   let html = pageHtml({ tigerNod: null, ...post }, { brand, mediaFor });
+  // -bold: heavy Jost capitals on text tiles and heavier photo text, to test grid-size punch (mockup only)
+  if (variant.endsWith('-bold')) html = html.replace('</style>', ".blk-D .fit{font-family:'Jost',sans-serif!important;font-weight:800!important;text-transform:uppercase;letter-spacing:-.025em;line-height:.94}.blk-D em{font:inherit}.hl{font-weight:700!important}</style>");
   if (!post.slides[0].text.trim()) html = html.replace('<p class="fit hl">', '<p class="fit hl" style="display:none">');
   writeFileSync(f, html);
   await pg.setViewport({ width: W, height: H });
@@ -61,6 +68,6 @@ ${s.kind === 'reel' ? `<span style="position:absolute;left:10px;top:10px;width:3
 <p style="margin:10px 12px;color:#52525b">Mock grid, 2026-10 colours. Photos are stills from Mercedes's own b-roll. ▶ = carousel that opens on a Reel clip. Photo tiles = photo-only carousels.</p></body>`);
 await pg.setViewport({ width: 906, height: 1680 });
 await pg.goto(fileUrl(sheet), { waitUntil: 'load' });
-await pg.screenshot({ path: path.join(out, 'feed-mix.png'), fullPage: true });
+await pg.screenshot({ path: path.join(out, variant ? `feed-mix-${variant}.png` : 'feed-mix.png'), fullPage: true });
 await browser.close();
-console.log(path.join(out, 'feed-mix.png'));
+console.log(path.join(out, variant ? `feed-mix-${variant}.png` : 'feed-mix.png'));
