@@ -1,0 +1,12 @@
+Put your clips in this folder, then double-click "2 Double-click to install".
+
+They go into the template in name order, so name them 1 to 7 (for example 1.mov, 2.mov).
+Film upright (vertical) and start each clip right on the action.
+
+1: The empty table (at least 3 seconds)
+2: Material 1 (at least 11 seconds)
+3: Material 2 (at least 11 seconds)
+4: Material 3 (at least 11 seconds)
+5: The finished one (at least 3 seconds)
+6: Close up (at least 3 seconds)
+7: The end (at least 3 seconds)
