@@ -54,7 +54,8 @@ export async function reviewExport(R, { notes = {}, title = '', covers = [], cov
     if (twin) musicNames[f] = nice(twin);
   }
   const musicLibOut = musicLib.filter((f) => !(f.includes('candidates') && musicLib.some((g) => g.startsWith('assets/music/') && musicNames[g] === musicNames[f])));
-  const draft = [path.join(P.exports, 'final', `${slug}.mp4`)].find(existsSync);
+  // the latest render step 3 plays: the full one, else the quick draft (lib/render-ready.mjs keeps only one of them)
+  const draft = [path.join(P.exports, 'final', `${slug}.mp4`), path.join(P.exports, 'draft', `${slug}.mp4`)].find(existsSync);
   const reel = {
     slug, title, made: new Date().toISOString(), dur: R.END ?? R.DUR, talkDur: R.DUR,
     covers: covers.map((c) => ({ text: c.text, plain: c.text.replace(/<\/?m>/g, ''), aside: c.aside || '' })), coverDefault: coverCut ? +(coverCut.match(/f(\d+)/)?.[1] || 1) : 1,
@@ -65,7 +66,7 @@ export async function reviewExport(R, { notes = {}, title = '', covers = [], cov
     music: m && { file: m.baseFile, volume: m.volume, baseVolume: m.baseVolume, level: m.level, baseLevel: m.baseLevel, levels: m.levels, mix: m.mix, fadeIn: m.fadeIn, fadeOut: m.fadeOut },
     musicLevels: LEVELS,
     musicLib: musicLibOut, musicNames, transitions: R.transitions, look: R.look || null, lookFilter: lookFilter(R.look || {}),
-    hasVideo: existsSync(PROXY), draft: draft ? { at: statSync(draft).mtime.toISOString() } : null,
+    hasVideo: existsSync(PROXY), draft: draft ? { at: statSync(draft).mtime.toISOString(), quality: path.basename(path.dirname(draft)) === 'draft' ? 'draft' : 'full', url: `/exports/${path.basename(path.dirname(draft))}/${slug}.mp4` } : null,
   };
   writeFileSync('review/reel.json', JSON.stringify(reel, null, 1));
   console.log(`review/reel.json: ${words.length} words, ${n} beats, ${sfx.length} sounds, ${musicLib.length} music tracks, ${R.transitions.length} transitions, ${covers.length} cover lines${draft ? ', draft render' : ''}`);

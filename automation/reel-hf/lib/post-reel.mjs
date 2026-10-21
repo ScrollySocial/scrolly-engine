@@ -31,6 +31,7 @@ if (opt('--buffer')) {
 
 // already uploaded this render? reuse it (safe to re-run)
 const render = JSON.parse(readFileSync(path.join(dir, 'review/render.json'), 'utf8'));
+if (render.quality === 'draft') throw new Error(`${slug}: the latest render is the review draft. Run node lib/render-ready.mjs --only ${slug} for the full-quality render first`);
 if (existsSync(prepFile)) {
   const prev = JSON.parse(readFileSync(prepFile, 'utf8'));
   if (prev.renderAt === render.at) { console.log(JSON.stringify(prev, null, 1)); process.exit(0); }

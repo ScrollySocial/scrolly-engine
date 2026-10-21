@@ -25,4 +25,7 @@ Start with `README.md` (what the person sees) and `lib/README.md` (every engine 
 7. Review: give `build.mjs` a `review` branch (the pattern is at the top of `lib/review/export.mjs`), run
    `node build.mjs review` and `node ../lib/review/server.mjs .`, and give them http://localhost:4321. Their choices
    save to `review/decisions.json` and apply on the next `node build.mjs`; `node ../lib/review/import.mjs .` lists them.
-8. `npm run render`, then copy the MP4 to `folders.exports/final/`. Cover: `lib/cover.mjs`.
+8. `node lib/render-ready.mjs --only <slug>`: first a quick draft for their review (15 fps, draft quality, ~3× faster,
+   in `folders.exports/draft/`; the page says it's choppy on purpose), then, after they approve it, the same command
+   makes the full-quality render in `folders.exports/final/` and the cover. Never hand over or post a draft as the finished
+   Reel. `"render": { "draft": false }` in reel-settings.json ("turn off draft renders") renders full quality straight away.

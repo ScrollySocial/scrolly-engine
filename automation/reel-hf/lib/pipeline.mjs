@@ -7,7 +7,10 @@
 //        node lib/pipeline.mjs --mark <reel> --sounds → the sound pass is done for the plan she approved (Edit it opens)
 // Stages, in order: plan (her: Plan it) · revise (Claude: make the changes she sent) · sounds (Claude: add sounds,
 //         music and transitions to the approved plan) · edit (her: Edit it) · render (overnight run renders it) ·
-//         approve (her: Approve it) · post (Claude posts it, skill step 7) · done · no-page (no review data)
+//         approve (her: Approve it) · final (overnight run makes the full-quality render of the draft she approved) ·
+//         post (Claude posts it, skill step 7) · done · no-page (no review data)
+// With settings render.draft on (the default) the render stage makes a quick draft (15 fps, draft quality) in the
+// exports folder's draft/; the full render to final/ waits for Approve it. render.json says which one it is (quality).
 // Drafts stop at Plan it (no sounds yet): sounds only go on once she approves the plan, so they're placed once.
 import { createHash } from 'node:crypto';
 import { existsSync, readFileSync, readdirSync, statSync, writeFileSync } from 'node:fs';
@@ -17,6 +20,7 @@ import { P, ROOT, ownerName } from './settings.mjs';
 
 export { ROOT };
 export const finalFile = (slug) => path.join(P.exports, 'final', `${slug}.mp4`);
+export const draftFile = (slug) => path.join(P.exports, 'draft', `${slug}.mp4`);
 export const coverFile = (slug) => path.join(P.exports, slug, 'cover.png');
 const read = (f, d = null) => { try { return JSON.parse(readFileSync(f, 'utf8')); } catch { return d; } };
 
@@ -48,7 +52,9 @@ export function reelStatus(slug) {
   const pass = read(path.join(dir, 'review/pass.json'));
   const hasPage = existsSync(path.join(dir, 'review/reel.json'));
   const final = existsSync(finalFile(slug));
-  const renderCurrent = !!(rendered?.ok && final && rendered.hash === decisionsHash(D));
+  // renders from before drafts existed have no quality: they were full renders
+  const isDraft = rendered?.quality === 'draft';
+  const renderCurrent = !!(rendered?.ok && existsSync(isDraft ? draftFile(slug) : finalFile(slug)) && rendered.hash === decisionsHash(D));
   // she saved something Claude hasn't acted on yet (notes, cuts, cover, sounds...)
   const newDecisions = !!(D.savedAt && (!pass || D.savedAt > pass.at));
   // moments she changed or removed after sounds were placed: their sounds need a redo
@@ -66,8 +72,9 @@ export function reelStatus(slug) {
   else if (!ok('sound')) stage = 'edit';
   else if (!renderCurrent) stage = 'render';
   else if (!ok('video')) stage = 'approve';
+  else if (isDraft) stage = 'final';
   else stage = 'post';
-  return { slug, stage, approved: A, pass: pass || null, asks: openAsks(D), newDecisions, savedAt: D.savedAt || null, redoSounds, rendered: rendered?.at || null, final: final ? finalFile(slug) : null, posted: posted || null, postAfter: D.postAfter || null };
+  return { slug, stage, approved: A, pass: pass || null, asks: openAsks(D), newDecisions, savedAt: D.savedAt || null, redoSounds, rendered: rendered?.at || null, quality: rendered ? rendered.quality || 'full' : null, final: final ? finalFile(slug) : null, posted: posted || null, postAfter: D.postAfter || null };
 }
 
 export const allReels = () => readdirSync(ROOT).filter((d) => /^\d{4}-\d{2}-\d{2}-/.test(d) && existsSync(path.join(ROOT, d, 'build.mjs'))).sort();
@@ -80,6 +87,7 @@ const NEXT = {
   sounds: "Claude's turn: sound pass (sounds, music, transitions), then pipeline --mark <reel> --sounds",
   render: 'evening run renders it',
   approve: `waiting on ${ownerName}: Approve it`,
+  final: 'evening run makes the full-quality render (she approved the draft)',
   post: 'Claude posts it (skill step 7)',
   done: 'queued / posted',
 };

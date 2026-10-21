@@ -7,6 +7,8 @@
 //   launch(opts)     headless browser via the puppeteer in tools.hyperframesDir
 //   withBin(env)     env with tools.bin first on PATH (HyperFrames looks for ffmpeg + ffprobe there)
 //   hf               'hyperframes@<version>' for npx
+//   draftRenders     review renders are quick drafts (15 fps, draft quality) and the full render waits for Approve it;
+//                    settings render.draft = false renders full quality straight away
 import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { createRequire } from 'node:module';
 import { execFileSync } from 'node:child_process';
@@ -19,7 +21,7 @@ export const FILE = process.env.REEL_SETTINGS ? path.resolve(process.env.REEL_SE
 const WIN = process.platform === 'win32';
 
 export const S = existsSync(FILE) ? JSON.parse(readFileSync(FILE, 'utf8')) : {};
-for (const k of ['owner', 'folders', 'tools', 'review', 'posting', 'tracker', 'rules', 'templates']) S[k] ||= {};
+for (const k of ['owner', 'folders', 'tools', 'review', 'posting', 'tracker', 'rules', 'templates', 'render']) S[k] ||= {};
 
 const abs = (p) => (p ? path.resolve(ROOT, p) : '');
 export const P = {
@@ -37,6 +39,7 @@ export const P = {
 };
 
 export const hf = `hyperframes@${S.tools.hyperframes || '0.8.150'}`;
+export const draftRenders = S.render.draft !== false;
 export const ownerName = S.owner.name || 'you';
 export const ports = { hub: S.review.hubPort || 4320, page: S.review.pagePort || 4321, firstReel: S.review.firstReelPort || 4331 };
 

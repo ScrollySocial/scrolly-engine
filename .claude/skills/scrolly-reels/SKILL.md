@@ -77,7 +77,10 @@ review/decisions.json); word cuts need the take re-cut (plan.json + prep-footage
 **6. Make the video.** Background removal for every cut-out moment (`hyperframes remove-background <clip> -o assets/cut/fNN-cut.webm`,
 ~3 min each; run in the background). `node build.mjs && npm run check` (long footage: set
 `PRODUCER_PAGE_NAVIGATION_TIMEOUT_MS=180000 PRODUCER_PLAYER_READY_TIMEOUT_MS=180000`). Render with hyperframes-test/bin on PATH:
-`npx --yes hyperframes@0.8.150 render . -o "<folders.exports>/final/<slug>.mp4"` (~11× real time: run it in the background).
+`npx --yes hyperframes@0.8.150 render . -o "<folders.exports>/final/<slug>.mp4"` (~9× real time: run it in the background).
+For her review, prefer `node lib/render-ready.mjs --only <reel>`: it makes a quick draft first (15 fps, draft quality,
+~2.7× faster, in `<folders.exports>/draft/`, labelled choppy-on-purpose on the page) and the full-quality render only
+after she approves it. Never post a draft (post-reel.mjs refuses one).
 Look at frames yourself before sending (text over her face, cut-off text, emoji boxes). Render her cover choice with
 `renderCovers` from lib/cover.mjs (her frame, style, background, text, aside) into `<folders.exports>/<slug>/cover.png`.
 Then `node build.mjs review` so step 3 plays the render. Fine-tuning can also happen in HyperFrames Studio

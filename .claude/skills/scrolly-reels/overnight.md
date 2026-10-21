@@ -71,11 +71,14 @@ downloads**), transitions (whips, punch-ins). If the Reel already had sounds fro
 moments she kept and redo only the changed moments. Then `node build.mjs && npm run check`, `node build.mjs review`, and
 `node lib/pipeline.mjs --mark <reel> --sounds` (Edit it opens on her page).
 
-## C. Render (stage `render`: Plan it AND Edit it approved)
+## C. Render (stage `render`: Plan it AND Edit it approved → quick draft; stage `final`: she approved the draft → full quality)
 1. Cut-out clips: every moment that uses a cut-out needs `assets/cut/fNN-cut.webm`. Make missing ones one at a time
    (`hyperframes remove-background <clip> -o assets/cut/fNN-cut.webm`, hyperframes-test/bin on PATH, ~3 min each).
-2. `node lib/render-ready.mjs` in the background (~11-15 min per 60s Reel; it builds, checks, renders, copies to
-   OneDrive exports/reels/final, renders her cover, refreshes the page). Wait for it.
+2. `node lib/render-ready.mjs` in the background. It renders one Reel at a time. Stage `render` gets a draft
+   (15 fps, draft quality, ~3-5 min per 60s Reel) in OneDrive exports/reels/draft for her Approve it; stage `final`
+   gets the full-quality render (~9-15 min) in exports/reels/final, which is the only file that gets posted. It also
+   renders her cover and refreshes the page. Wait for it.
+   A Reel that just got its full-quality render and has "Add to the Buffer queue" goes through A (Post) in this same run.
 3. Look at each render yourself: pull frames every ~3s with ffmpeg (hyperframes-test/bin) and check text over her face,
    cut-off text, emoji boxes, black frames, sound level (`ebur128`, about -14 to -16 LUFS). Fix and re-run
    `node lib/render-ready.mjs --only <reel>` once if there's time; otherwise put the problem in the morning note.

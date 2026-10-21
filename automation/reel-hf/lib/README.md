@@ -26,7 +26,7 @@ asks a few questions, writes the file and runs `doctor.mjs`, which installs what
 | `doctor.mjs` | Setup check **and fixer**: installs puppeteer, ffmpeg/ffprobe, the Python venv + faster-whisper, GSAP; makes missing folders; finds the browser. `--check` = look only, `--install` = also Node/Python/browser via winget/brew |
 | `review/` | Review page (laptop): `node build.mjs review` → `node lib/review/server.mjs <reel>` → http://localhost:4321 (settings `review.pagePort`); read back with `node lib/review/import.mjs <reel>` |
 | `pipeline.mjs` | Where every Reel stands (plan / edit / render / approve / post / done) from its review files; `--mark <reel>` after acting on her choices |
-| `render-ready.mjs` | Renders every Reel with Plan it + Edit it approved: build, check, render, fresh copy to exports/final, the picked cover, page refresh |
+| `render-ready.mjs` | Renders every Reel with Plan it + Edit it approved: build, check, render, the picked cover, page refresh. First a quick draft (15 fps, draft quality, ~2.7× faster) to exports/draft for Approve it; once that's approved, the full-quality render to exports/final (the one that gets posted). Settings `render.draft: false` skips the draft; `--full` forces full quality |
 | `post-reel.mjs` | Posting copy (cover as frame 0, CRF 20, ≤9 Mbps) → WordPress media (never-expiring link for Buffer) when settings `posting.videoHost` = wordpress; `--buffer <id>` records it |
 | `review/hub.mjs` | One page for every Reel: http://localhost:4320 (`--start` runs it in the background); opens each Reel's page on 4331+ (settings `review`) |
 | `../rows.json` | Tracker row → Reel folder ledger (settings `tracker.rows`), so the overnight run never drafts a row twice |

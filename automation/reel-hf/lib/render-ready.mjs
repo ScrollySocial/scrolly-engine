@@ -1,36 +1,43 @@
 // Render run, the mechanical half: renders every Reel whose Plan it AND Edit it are approved and whose render is
-// missing or older than the latest page choices (stage "render" in lib/pipeline.mjs). Claude applies the notes first;
-// this script only builds, checks, renders, makes the cover and refreshes the review page.
-// Per Reel: node build.mjs → hyperframes check → render (into <reel>/renders, then a fresh copy to the exports
-// folder's final/, never replaced in place) → cover.png from the cover pick → node build.mjs review → review/render.json.
+// missing or older than the latest page choices (stage "render" in lib/pipeline.mjs), and every Reel whose draft she
+// approved (stage "final"). Claude applies the notes first; this script only builds, checks, renders, makes the cover
+// and refreshes the review page.
+// Draft, then full: with settings render.draft on (the default), stage "render" makes a quick draft for Approve it
+// (15 fps, draft quality: ~2.7x faster, motion looks choppy) in the exports folder's draft/; stage "final" makes the
+// full-quality render in final/ (what gets posted) and removes the draft. --full renders full quality at either stage.
+// Per Reel: node build.mjs → hyperframes check → render (into <reel>/renders, then a fresh copy to draft/ or final/,
+// never replaced in place) → cover.png from the cover pick → node build.mjs review → review/render.json.
 // Skips a Reel whose index.html was edited outside build.mjs (HyperFrames Studio): diff and fold those in first.
-// Usage: node lib/render-ready.mjs [--only <reel>] [--dry]     (needs the Bash sandbox off: headless browser + ffmpeg)
+// Usage: node lib/render-ready.mjs [--only <reel>] [--full] [--dry]     (needs the Bash sandbox off: headless browser + ffmpeg)
 import { spawnSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { copyFileSync, existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
-import { allReels, coverFile, decisionsHash, finalFile, reelStatus, ROOT } from './pipeline.mjs';
+import { allReels, coverFile, decisionsHash, draftFile, finalFile, reelStatus, ROOT } from './pipeline.mjs';
 import { renderCovers, PHOTO_STYLES } from './cover.mjs';
 import { BRANDS } from './brand/index.mjs';
-import { hf, withBin } from './settings.mjs';
+import { draftRenders, hf, withBin } from './settings.mjs';
 
 const args = process.argv.slice(2);
 const only = args.includes('--only') ? path.basename(args[args.indexOf('--only') + 1]) : null;
 const dry = args.includes('--dry');
+const full = args.includes('--full') || !draftRenders;
 const env = { ...withBin(), PRODUCER_PAGE_NAVIGATION_TIMEOUT_MS: '180000', PRODUCER_PLAYER_READY_TIMEOUT_MS: '180000' };
 const sha = (f) => createHash('sha1').update(readFileSync(f)).digest('hex');
 const nn = (n) => String(n).padStart(2, '0');
 
-const todo = allReels().map(reelStatus).filter((r) => r.stage === 'render' && (!only || r.slug === only));
+const todo = allReels().map(reelStatus).filter((r) => (r.stage === 'render' || r.stage === 'final') && (!only || r.slug === only));
 if (!todo.length) { console.log('Nothing to render.'); process.exit(0); }
-console.log(`To render: ${todo.map((r) => r.slug).join(', ')}`);
+const isDraft = (r) => r.stage === 'render' && !full;
+console.log(`To render: ${todo.map((r) => `${r.slug} (${isDraft(r) ? 'draft' : 'full quality'})`).join(', ')}`);
 if (dry) process.exit(0);
 
 const results = [];
-for (const { slug } of todo) {
+for (const r of todo) {
+  const { slug } = r, draft = isDraft(r), out = draft ? draftFile(slug) : finalFile(slug);
   const dir = path.join(ROOT, slug), log = path.join(dir, 'renders/render.log'), t0 = Date.now();
   mkdirSync(path.join(dir, 'renders'), { recursive: true });
-  writeFileSync(log, `render ${new Date().toISOString()}\n`);
+  writeFileSync(log, `render ${new Date().toISOString()} (${draft ? 'draft' : 'full quality'})\n`);
   const run = (cmd, a, timeoutMin) => {
     const p = spawnSync(cmd, a, { cwd: dir, env, shell: cmd === 'npx', encoding: 'utf8', timeout: timeoutMin * 60e3, maxBuffer: 64 << 20 });
     writeFileSync(log, `\n$ ${cmd} ${a.join(' ')}\n${p.stdout || ''}${p.stderr || ''}${p.error ? '\n' + p.error.message : ''}\n`, { flag: 'a' });
@@ -47,12 +54,15 @@ for (const { slug } of todo) {
   const quiet = readFileSync(log, 'utf8').match(/⚠ MUSIC TOO QUIET.*/)?.[0];
   if (quiet) console.log(`  ${slug}: ${quiet}`);
   if (!run('npx', ['--yes', hf, 'check'], 15)) { fail('hyperframes check failed'); continue; }
-  const local = path.join(dir, 'renders', `${slug}.mp4`);
-  if (!run('npx', ['--yes', hf, 'render', '.', '-o', `renders/${slug}.mp4`], 45) || !existsSync(local)) { fail('render failed'); continue; }
+  const name = draft ? `${slug}-draft.mp4` : `${slug}.mp4`, local = path.join(dir, 'renders', name);
+  const quality = draft ? ['--fps', '15', '--quality', 'draft'] : [];
+  if (!run('npx', ['--yes', hf, 'render', '.', '-o', `renders/${name}`, ...quality], 45) || !existsSync(local)) { fail('render failed'); continue; }
   // synced folders (OneDrive and the like) can break files replaced in place: remove, then copy fresh
-  mkdirSync(path.dirname(finalFile(slug)), { recursive: true });
-  rmSync(finalFile(slug), { force: true });
-  copyFileSync(local, finalFile(slug));
+  mkdirSync(path.dirname(out), { recursive: true });
+  rmSync(out, { force: true });
+  copyFileSync(local, out);
+  // a new draft makes the old full render out of date (never post it); a full render replaces the draft
+  rmSync(draft ? finalFile(slug) : draftFile(slug), { force: true });
 
   // the cover pick from the page (Plan it → Cover)
   const D = JSON.parse(readFileSync(path.join(dir, 'review/decisions.json'), 'utf8'));
@@ -72,9 +82,9 @@ for (const { slug } of todo) {
   }
   run(process.execPath, ['build.mjs', 'review'], 10); // step 3 now plays the render
   const secs = Math.round((Date.now() - t0) / 1000);
-  writeFileSync(path.join(dir, 'review/render.json'), JSON.stringify({ at: new Date().toISOString(), ok: true, hash: decisionsHash(D), file: finalFile(slug), cover, seconds: secs }, null, 1));
-  results.push({ slug, ok: true, file: finalFile(slug), cover, minutes: +(secs / 60).toFixed(1), ...(quiet ? { warn: quiet } : {}) });
-  console.log(`✓ ${slug}: ${(secs / 60).toFixed(1)} min → ${finalFile(slug)}${cover ? '' : ' (no cover picked yet)'}`);
+  writeFileSync(path.join(dir, 'review/render.json'), JSON.stringify({ at: new Date().toISOString(), ok: true, quality: draft ? 'draft' : 'full', hash: decisionsHash(D), file: out, cover, seconds: secs }, null, 1));
+  results.push({ slug, ok: true, quality: draft ? 'draft' : 'full', file: out, cover, minutes: +(secs / 60).toFixed(1), ...(quiet ? { warn: quiet } : {}) });
+  console.log(`✓ ${slug}: ${draft ? 'draft, ' : ''}${(secs / 60).toFixed(1)} min → ${out}${cover ? '' : ' (no cover picked yet)'}`);
 }
 const runs = path.join(ROOT, '_runs');
 mkdirSync(runs, { recursive: true });

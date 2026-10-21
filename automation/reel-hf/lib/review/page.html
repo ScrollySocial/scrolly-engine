@@ -477,7 +477,7 @@ function renderApprovals() {
     : valid('video') ? `Approved ${when(D.approved.video)}.` : 'Video and caption ready? Approving starts the posting step.';
 }
 // Edit it only opens once she approved the plan and Claude added the sounds, music and transitions to it
-const editOpen = () => ['edit', 'render', 'approve', 'post', 'done'].includes(ST.stage);
+const editOpen = () => ['edit', 'render', 'approve', 'final', 'post', 'done'].includes(ST.stage);
 function applyLock() {
   const locked = ST.stage != null && !editOpen();
   $('#s2lock').hidden = !locked;
@@ -576,7 +576,7 @@ stageEl.addEventListener('load', () => { lastPose = -1; applyLook(); });
 function setMode(m) {
   stop(); v.pause(); mode = m;
   stageEl.hidden = m !== 'plan'; v.hidden = m !== 'video' || !R.draft; $('#novideo').hidden = !(m === 'video' && !R.draft);
-  if (m === 'video' && R.draft) { const url = `/exports/final/${R.slug}.mp4?${R.draft.at}`; if (v.dataset.url !== url) { v.dataset.url = url; v.src = url; } }
+  if (m === 'video' && R.draft) { const url = `${R.draft.url || `/exports/final/${R.slug}.mp4`}?${R.draft.at}`; if (v.dataset.url !== url) { v.dataset.url = url; v.src = url; } }
 }
 
 // ================= STEP 1 =================
@@ -963,7 +963,8 @@ function renderLook() {
 
 // ================= STEP 3 =================
 function renderVideoNotes() {
-  $('#vsub').textContent = R.draft ? 'The finished Reel. Pause where something is off and add a note at that moment.' : 'The video gets made after you finish step 2 (Edit it): tell Claude "make the video". It plays on the left when it is ready.';
+  $('#vsub').textContent = R.draft?.quality === 'draft' ? 'Draft preview: motion is choppy on purpose, so it renders faster. Your final video is smooth: it is made after you approve. Pause where something is off and add a note at that moment.'
+    : R.draft ? 'The finished Reel. Pause where something is off and add a note at that moment.' : 'The video gets made after you finish step 2 (Edit it): tell Claude "make the video". It plays on the left when it is ready.';
   const box = $('#vnotes'); box.textContent = '';
   D.videoNotes.forEach((n, k) => {
     const row = el('div', 'vnote');

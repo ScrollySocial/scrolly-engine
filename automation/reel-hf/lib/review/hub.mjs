@@ -58,11 +58,12 @@ const LABEL = {
   revise: ['Claude is making your changes', "Claude's turn"],
   sounds: ['Claude is adding sounds', "Claude's turn"],
   render: ['Video gets made tonight', "Claude's turn"],
+  final: ['Final video gets made tonight', "Claude's turn"],
   post: [S.posting.scheduler ? `Claude adds it to ${S.posting.scheduler}` : 'Claude gets it ready to post', "Claude's turn"],
   'no-page': ['Being drafted', "Claude's turn"],
   done: ['Done', 'Queued or posted'],
 };
-const GROUPS = [['Your turn', ['approve', 'edit', 'plan']], ["Claude's turn", ['revise', 'sounds', 'render', 'post', 'no-page']], ['Done', ['done']]];
+const GROUPS = [['Your turn', ['approve', 'edit', 'plan']], ["Claude's turn", ['revise', 'sounds', 'render', 'final', 'post', 'no-page']], ['Done', ['done']]];
 const STEPS = [['look', 'Plan it'], ['sound', 'Edit it'], ['video', 'Approve it']];
 const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;');
 const when = (iso) => new Date(iso).toLocaleString('en-US', { weekday: 'short', hour: 'numeric', minute: '2-digit' });
@@ -91,10 +92,11 @@ function line(r) {
   switch (r.stage) {
     case 'plan': return r.pass?.revised ? `Claude made your changes (${when(r.pass.revised)}). Check them in Plan it.` : r.savedAt ? `You're partway through Plan it.${saved}` : 'Not started. Start with Plan it: moments, script and cover.';
     case 'edit': return r.pass?.revised ? `Claude made your changes (${when(r.pass.revised)}). Check them in Edit it.` : `Plan it is done. Next: sounds, captions, music and transitions.${saved}`;
-    case 'approve': return 'The video is ready. Watch it and approve the caption.';
     case 'revise': return `You sent changes${r.savedAt ? ' ' + when(r.savedAt) : ''}. Claude makes them, then it comes back to you.`;
     case 'sounds': return 'You approved the plan. Claude adds the sounds, music and transitions, then Edit it opens.';
     case 'render': return 'You approved the edit. The video gets made in the overnight run.';
+    case 'final': return 'You approved the draft. The smooth, full-quality video gets made in the overnight run.';
+    case 'approve': return r.quality === 'draft' ? 'The draft is ready (choppy on purpose, so it renders faster). Watch it and approve the caption.' : 'The video is ready. Watch it and approve the caption.';
     case 'post': return S.posting.scheduler ? `You approved it. Claude adds it to the ${S.posting.scheduler} queue.` : 'You approved it. Claude gets it ready to post.';
     case 'no-page': return 'Claude is still drafting this one.';
     default: return 'Queued or posted.';
@@ -105,7 +107,7 @@ function page() {
   const rows = allReels().map(reelStatus);
   const title = (slug) => { try { return JSON.parse(readFileSync(path.join(ROOT, slug, 'review/reel.json'), 'utf8')).title || slug; } catch { return slug; } };
   const yours = rows.filter((r) => ['plan', 'edit', 'approve'].includes(r.stage)).length;
-  const claude = rows.filter((r) => ['revise', 'sounds', 'render', 'post', 'no-page'].includes(r.stage)).length;
+  const claude = rows.filter((r) => ['revise', 'sounds', 'render', 'final', 'post', 'no-page'].includes(r.stage)).length;
   // posting order, copied from Notion (lib/schedule.mjs): rank among the Reels not posted yet, by Publish Order then date
   const S = readSchedule(), sched = (r) => S[r.slug] || {};
   const byPost = (a, b) => (sched(a).order ?? Infinity) - (sched(b).order ?? Infinity) || String(sched(a).date || '9').localeCompare(String(sched(b).date || '9')) || a.slug.localeCompare(b.slug);

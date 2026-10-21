@@ -24,7 +24,7 @@ few questions, writes the file and runs `doctor.mjs`, which installs what's miss
 | `review/` | Review page: `node build.mjs review` → `node lib/review/server.mjs <reel>` → http://localhost:4321; read back with `node lib/review/import.mjs <reel>` |
 | `review/hub.mjs` | One page for every Reel: http://localhost:4320 (`--start` runs it in the background) |
 | `pipeline.mjs` | Where every Reel stands (plan / edit / render / approve / post / done) |
-| `render-ready.mjs` | Renders every Reel with Plan it + Edit it approved, copies the MP4 and cover to the exports folder |
+| `render-ready.mjs` | Renders every Reel with Plan it + Edit it approved: first a quick draft (15 fps, ~3× faster) to exports/draft for Approve it, then after approval the full-quality MP4 to exports/final, plus the cover. Settings `render.draft: false` skips the draft; `--full` forces full quality |
 | `post-reel.mjs` | Posting copy (cover as frame 0, CRF 20, ≤9 Mbps); uploads to WordPress media only when settings `posting.videoHost` = wordpress |
 | `cover.mjs` | Covers: your cut-out on a brand color with the title, or a full frame |
 | `animatic.mjs` | Storyboard stills timed to voice + music + sound effects |

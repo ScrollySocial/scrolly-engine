@@ -60,8 +60,11 @@ What happens:
 3. **Plan:** a moment-by-moment plan of graphics, captions and sounds, built from your own words and your brand kit.
 4. **Review page** on your laptop (http://localhost:4321): see each moment drawn over your footage, change captions,
    sounds, music and transitions, then approve.
-5. **Render** the MP4 (about 10 to 15 minutes for a 60-second Reel) and make the cover. Finished files land in your
-   exports folder (`final/<reel>.mp4`, `<reel>/cover.png`).
+5. **Draft video** to check (a few minutes for a 60-second Reel). The motion looks choppy on purpose: a draft
+   renders about 3 times faster, so you see your edit sooner. Leave notes or approve it.
+6. **Final video** once you approve the draft: the smooth, full-quality MP4 (about 10 to 15 minutes for a 60-second
+   Reel) and the cover. Finished files land in your exports folder (`final/<reel>.mp4`, `<reel>/cover.png`). Drafts
+   wait in `draft/` and are removed once the final is made. Rather skip the draft? Tell Claude "turn off draft renders".
 
 ## Where things are
 | Folder / file | What it is |
