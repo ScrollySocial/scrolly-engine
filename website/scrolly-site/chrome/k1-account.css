@@ -11,7 +11,7 @@ body.woocommerce-account :is(.woocommerce-MyAccount-navigation,.woocommerce-MyAc
 body.woocommerce-account .woocommerce-MyAccount-navigation ul{list-style:none;margin:0;padding:0}
 body.woocommerce-account .woocommerce-MyAccount-navigation li{margin:0 0 4px;padding:0;border:0}
 body.woocommerce-account .woocommerce-MyAccount-navigation li a{display:flex;align-items:center;min-height:48px;padding:10px 18px;border-radius:999px;color:var(--s3-ink)!important;text-decoration:none!important;font:600 var(--s3-fs-ui)/1.25 var(--s3-sans)}
-body.woocommerce-account .woocommerce-MyAccount-navigation li a:hover{background:#ece6dc}
+body.woocommerce-account .woocommerce-MyAccount-navigation li a:hover{background:#dfe4f0}
 body.woocommerce-account .woocommerce-MyAccount-navigation li.is-active a{background:var(--s3-black);color:#fff!important}
 body.woocommerce-account .woocommerce-MyAccount-content{font-size:var(--s3-fs-body);line-height:1.55}
 body.woocommerce-account .woocommerce-MyAccount-content>p:first-child{margin-top:0}
@@ -33,7 +33,7 @@ body.woocommerce-account .u-columns>.u-column1,body.woocommerce-account .u-colum
 body.woocommerce-account .woocommerce>h2,body.woocommerce-account .u-columns h2{font-size:var(--s3-fs-h3)!important;margin:0 0 20px!important}
 /* WooCommerce's show/hide password eye is a <button>: keep it a plain icon, not a theme-layer pill */
 html body.woocommerce-account .woocommerce .show-password-input,html body.woocommerce-checkout .woocommerce .show-password-input{display:flex!important;align-items:center;justify-content:center;min-height:44px!important;width:44px;padding:0!important;border:0!important;border-radius:4px!important;background:transparent!important;color:var(--s3-ink)!important;box-shadow:none!important}
-html body.woocommerce-account .woocommerce .show-password-input:hover{background:#ece6dc!important}
+html body.woocommerce-account .woocommerce .show-password-input:hover{background:#dfe4f0!important}
 body.woocommerce-account .woocommerce-form-login__rememberme input,body.woocommerce-account input[type=checkbox]{width:22px;height:22px;accent-color:var(--s3-navy)}
 /* addresses + account details */
 body.woocommerce-account .woocommerce-Addresses{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px}
@@ -41,9 +41,10 @@ body.woocommerce-account .woocommerce-Addresses::before,body.woocommerce-account
 body.woocommerce-account .woocommerce-Address{width:auto!important;float:none!important;background:#fff;border-radius:16px;padding:clamp(20px,2.6vw,32px)}
 body.woocommerce-account .woocommerce-Address address{font-style:normal;line-height:1.6}
 body.woocommerce-account :is(.woocommerce-EditAccountForm,.woocommerce-address-fields) label{font:600 var(--s3-fs-ui)/1.35 var(--s3-sans)}
-body.woocommerce-account fieldset legend{font:400 var(--s3-fs-lede)/1.2 var(--s3-serif);padding:0;margin:24px 0 12px}
+/* question lines stay Jost (no upright serif outside headlines) */
+body.woocommerce-account fieldset legend{font:600 var(--s3-fs-ui)/1.35 var(--s3-sans);padding:0;margin:24px 0 12px}
 @media(max-width:860px){
- body.woocommerce-account .woocommerce:has(>.woocommerce-MyAccount-navigation){grid-template-columns:1fr;gap:24px}
+ body.woocommerce-account .woocommerce:has(>.woocommerce-MyAccount-navigation){grid-template-columns:minmax(0,1fr);gap:24px}
  body.woocommerce-account .woocommerce-MyAccount-navigation ul{display:flex;flex-wrap:wrap;gap:8px}
  body.woocommerce-account .woocommerce-MyAccount-navigation li{margin:0}
  body.woocommerce-account .woocommerce-MyAccount-navigation li a{background:#fff;min-height:44px;padding:8px 16px}
@@ -68,7 +69,7 @@ body.woocommerce-account fieldset legend{font:400 var(--s3-fs-lede)/1.2 var(--s3
 .k1ty :focus-visible{outline:3px solid #fff!important;outline-offset:3px}
 
 /* ---- $1K member area ---- */
-.k1a.k1v3{--k1-panel:#ece6dc;color:var(--s3-ink);font:var(--s3-fs-body)/1.55 var(--s3-sans)}
+.k1a.k1v3{--k1-panel:#dfe4f0;color:var(--s3-ink);font:var(--s3-fs-body)/1.55 var(--s3-sans)}
 .k1v3 *{box-sizing:border-box}
 .k1v3 [hidden]{display:none!important}
 .k1v3 h2{margin:0 0 16px;font-family:var(--s3-serif)!important;font-weight:400!important;font-size:var(--s3-fs-h3)!important;line-height:1.05!important;letter-spacing:-.01em;text-transform:none!important;color:inherit}
@@ -91,11 +92,13 @@ body.woocommerce-account fieldset legend{font:400 var(--s3-fs-lede)/1.2 var(--s3
 .k1v3 .sec.black .stripe b{color:var(--s3-sky)}
 .k1v3 .track{height:clamp(28px,3vw,40px);margin:16px 0 8px;border-radius:999px;background:var(--k1-panel);overflow:hidden}
 .k1v3 .sec.black .track{background:#24365a}
+/* on the blue-mist panels the track would vanish into the panel, so it is white there */
+.k1v3 .sec.teal .track{background:#fff}
 .k1v3 .track i{display:block;height:100%;background:var(--s3-sky)}
 .k1v3 .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
 .k1v3 .grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
 .k1v3 label{display:block;margin:0 0 8px;font:600 var(--s3-fs-ui)/1.35 var(--s3-sans);color:inherit}
-.k1v3 :is(input:not([type]),input[type=text],input[type=number],input[type=email],input[type=tel],input[type=url],select,textarea){width:100%;min-height:52px;padding:12px 16px;border:1px solid #8f8a83;border-radius:4px;background:#fff;font:var(--s3-fs-ui)/1.35 var(--s3-sans);color:var(--s3-ink)}
+.k1v3 :is(input:not([type]),input[type=text],input[type=number],input[type=email],input[type=tel],input[type=url],input[type=date],select,textarea){width:100%;min-height:52px;padding:12px 16px;border:1px solid #8f8a83;border-radius:4px;background:#fff;font:var(--s3-fs-ui)/1.35 var(--s3-sans);color:var(--s3-ink)}
 .k1v3 textarea{min-height:110px}
 .k1v3 input[type=file]{min-height:0;padding:12px}
 .k1v3 .btn{display:inline-flex;align-items:center;justify-content:center;gap:12px;min-height:52px;margin-top:16px;padding:0 30px;border:0;border-radius:999px;background:var(--s3-black);color:#fff!important;font:800 var(--s3-fs-label)/1 var(--s3-sans);letter-spacing:.14em;text-transform:uppercase;text-decoration:none!important;cursor:pointer}
@@ -124,7 +127,9 @@ body.woocommerce-account fieldset legend{font:400 var(--s3-fs-lede)/1.2 var(--s3
 .k1v3 label.calc-pill{position:relative;display:inline-flex;margin:0;cursor:pointer}
 .k1v3 .calc-pill input{position:absolute;width:1px;height:1px;min-height:0;opacity:0}
 .k1v3 :is(.calc-pill span,.calc-scen button){display:inline-flex;align-items:center;gap:8px;min-height:48px;padding:0 18px;border:0;border-radius:999px;background:#fff;color:var(--s3-ink);box-shadow:inset 0 0 0 1px #8f8a83;font:600 var(--s3-fs-ui)/1 var(--s3-sans);cursor:pointer}
-.k1v3 .calc-pill input:checked+span,.k1v3 .calc-scen button[aria-checked=true]{background:var(--s3-black);color:#fff!important;box-shadow:none}
+/* chosen scenario / pill: white with a bold navy ring, the others greyed (same as the site's rate presets, Mercedes 2026-10-20) */
+.k1v3 .calc-pill input:not(:checked)+span,.k1v3 .calc-scen button[aria-checked=false]{color:var(--s3-muted);box-shadow:inset 0 0 0 1px #cfd3dc}
+.k1v3 .calc-pill input:checked+span,.k1v3 .calc-scen button[aria-checked=true]{background:#fff;color:var(--s3-ink)!important;box-shadow:inset 0 0 0 2px var(--s3-ink)}
 .k1v3 .calc-pill input:checked+span::before{content:"✓"}
 .k1v3 .calc-pill input:focus-visible+span,.k1v3 .calc-scen button:focus-visible{outline:3px solid var(--s3-navy);outline-offset:3px}
 .k1v3 .c-custom .calc-scen button{opacity:.55}
@@ -152,6 +157,8 @@ body.woocommerce-account fieldset legend{font:400 var(--s3-fs-lede)/1.2 var(--s3
 .k1v3 details{margin:16px 0 0}
 .k1v3 summary{display:list-item;min-height:44px;padding:10px 0;font-weight:700;cursor:pointer}
 .k1v3 .chip{display:inline-flex;align-items:center;min-height:32px;margin:0 0 12px;padding:4px 14px;border-radius:999px;background:var(--s3-sky);color:var(--s3-navy);font:700 var(--s3-fs-label)/1 var(--s3-sans);letter-spacing:.1em;text-transform:uppercase}
+/* the chip keeps navy text on its sky fill inside dark sections too (the .sec.black rule turns every <p> white: 2.6:1) */
+.k1v3 .sec.black .chip{color:var(--s3-navy)}
 .k1v3 ul.milestones{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0;padding:0;list-style:none}
 .k1v3 ul.milestones li{margin:0;padding:6px 14px;border-radius:999px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.45);font:700 var(--s3-fs-label)/1.3 var(--s3-sans);color:#fff}
 .k1v3 ul.milestones li.hit{background:var(--s3-sky);box-shadow:none;color:var(--s3-navy)}
@@ -164,13 +171,14 @@ body.woocommerce-account fieldset legend{font:400 var(--s3-fs-lede)/1.2 var(--s3
  .k1v3 :is(.grid,.grid3){grid-template-columns:1fr}
  .k1v3 :is(th,td){padding:10px 6px}
  .k1v3 :is(th:nth-child(4),td:nth-child(4)){display:none}
+ .k1v3 table{display:block;max-width:100%;overflow-x:auto}
  .k1v3 .stripe b{min-width:2.6em}
 }
 
 /* ---- Challenge Content cards (.k1c): private pages 633 (weekly Reels), 845 (carousels), 846 (Stories), rendered inside the
    member area by automation/k1-launch/content/render.mjs. Their styles used to be embedded in each page; they live here now. ---- */
 .k1c{color:var(--s3-ink);font:var(--s3-fs-body)/1.55 var(--s3-sans)}
-.k1c .intro{margin:0 0 18px;padding:16px 20px;border-radius:16px;background:#ece6dc;font-size:var(--s3-fs-body);line-height:1.5}
+.k1c .intro{margin:0 0 18px;padding:16px 20px;border-radius:16px;background:#dfe4f0;font-size:var(--s3-fs-body);line-height:1.5}
 .k1c details.card{margin:0 0 12px;padding:0;border:0;border-radius:16px;background:#fff;box-shadow:inset 0 0 0 1px var(--s3-line)}
 .k1c details.card>summary{display:flex;align-items:baseline;gap:14px;min-height:56px;padding:16px 20px;list-style:none;font:700 var(--s3-fs-ui)/1.35 var(--s3-sans);cursor:pointer}
 .k1c details.card>summary::-webkit-details-marker{display:none}
@@ -186,7 +194,7 @@ body.woocommerce-account fieldset legend{font:400 var(--s3-fs-lede)/1.2 var(--s3
 .k1c .ex{margin:12px 0 14px}
 .k1c .ex .slot{max-width:340px;margin-top:12px}
 .k1c .ex a.au{display:inline-flex;align-items:center;min-height:44px;margin-left:14px;font-weight:700;color:var(--s3-ink)!important;text-decoration:underline!important}
-.k1c .audio{padding:10px 14px;border-radius:4px;background:#ece6dc;font-size:var(--s3-fs-fine)}
+.k1c .audio{padding:10px 14px;border-radius:4px;background:#dfe4f0;font-size:var(--s3-fs-fine)}
 .k1c .how{margin:12px 0 0;padding-left:22px}
 .k1c .tpl{margin:6px 0 16px}
 .k1c .strip{margin:0 0 12px;overflow-x:auto;-webkit-overflow-scrolling:touch}
@@ -205,7 +213,7 @@ body.woocommerce-account fieldset legend{font:400 var(--s3-fs-lede)/1.2 var(--s3
    no page root, which includes My Account. These rules load after it and are more specific, so the member area keeps its own
    controls. Keep this block last. ---- */
 .k1a.k1v3 .sec>:first-child{margin-top:0!important}
-.k1a.k1v3 :is(input:not([type]),input[type=text],input[type=number],input[type=email],input[type=tel],input[type=url],select,textarea){min-height:52px!important;padding:12px 16px!important;border:1px solid #8f8a83!important;border-radius:4px!important;background:#fff!important;color:var(--s3-ink)!important;font:var(--s3-fs-ui)/1.35 var(--s3-sans)!important}
+.k1a.k1v3 :is(input:not([type]),input[type=text],input[type=number],input[type=email],input[type=tel],input[type=url],input[type=date],select,textarea){min-height:52px!important;padding:12px 16px!important;border:1px solid #8f8a83!important;border-radius:4px!important;background:#fff!important;color:var(--s3-ink)!important;font:var(--s3-fs-ui)/1.35 var(--s3-sans)!important}
 .k1a.k1v3 textarea{min-height:110px!important}
 .k1a.k1v3 .btn{display:inline-flex!important;min-height:52px!important;padding:0 30px!important;border:0!important;border-radius:999px!important;background:var(--s3-black)!important;color:#fff!important;font:800 var(--s3-fs-label)/1 var(--s3-sans)!important;letter-spacing:.14em!important;text-transform:uppercase!important;box-shadow:none!important}
 .k1a.k1v3 .btn:hover{background:var(--s3-sky)!important;color:var(--s3-navy)!important}
@@ -216,7 +224,9 @@ body.woocommerce-account fieldset legend{font:400 var(--s3-fs-lede)/1.2 var(--s3
 .k1a.k1v3 .calc-scen button{font:600 var(--s3-fs-ui)/1 var(--s3-sans)!important;letter-spacing:0!important;text-transform:none!important}
 .k1a.k1v3 .k1tabs button{font:800 var(--s3-fs-label)/1 var(--s3-sans)!important;letter-spacing:.12em!important;text-transform:uppercase!important}
 .k1a.k1v3 :is(.calc-scen button,.k1tabs button):hover{background:var(--k1-panel)!important;color:var(--s3-ink)!important}
-.k1a.k1v3 :is(.calc-scen button[aria-checked=true],.k1tabs button[aria-selected=true]),.k1a.k1v3 :is(.calc-scen button[aria-checked=true],.k1tabs button[aria-selected=true]):hover{background:var(--s3-black)!important;color:#fff!important;box-shadow:none!important}
+.k1a.k1v3 .k1tabs button[aria-selected=true],.k1a.k1v3 .k1tabs button[aria-selected=true]:hover{background:var(--s3-black)!important;color:#fff!important;box-shadow:none!important}
+.k1a.k1v3 .calc-scen button[aria-checked=false]{color:var(--s3-muted)!important;box-shadow:inset 0 0 0 1px #cfd3dc!important}
+.k1a.k1v3 .calc-scen button[aria-checked=true],.k1a.k1v3 .calc-scen button[aria-checked=true]:hover{background:#fff!important;color:var(--s3-ink)!important;box-shadow:inset 0 0 0 2px var(--s3-ink)!important}
 .k1a.k1v3 button.x{display:inline-flex!important;align-items:center;min-height:44px!important;padding:0!important;border:0!important;border-radius:0!important;background:none!important;box-shadow:none!important;color:inherit!important;font:600 var(--s3-fs-label)/1.2 var(--s3-sans)!important;letter-spacing:0!important;text-transform:none!important;text-decoration:underline!important;text-underline-offset:3px}
 .k1a.k1v3 button.x:hover{background:none!important;color:inherit!important}
 .k1a.k1v3 .sec.black button.x{color:#fff!important}
