@@ -1,0 +1,11 @@
+Put your clips in this folder, then double-click "2 Double-click to install".
+
+They go into the template in name order, so name them 1 to 6 (for example 1.mov, 2.mov).
+Film upright (vertical) and start each clip right on the action.
+
+1: The usual kind (at least 8 seconds)
+2: Yours (at least 7 seconds)
+3: Round 1: the usual kind (at least 3 seconds)
+4: Round 1: yours (at least 3 seconds)
+5: Round 3: yours (at least 3 seconds)
+6: The end (at least 4 seconds)
