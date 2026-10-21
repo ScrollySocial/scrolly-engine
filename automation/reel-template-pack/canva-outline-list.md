@@ -107,6 +107,13 @@ Nothing to do: before, after and Comment (polka-dot letters) stay artwork (patte
 - Slide 6: **and the winner is** (wine #7A1732): Outline in white #FFFFFF, thin
 - Slide 7: **Comment** (wine #7A1732): Outline in white #FFFFFF, thin
 
+## 24 Make it last
+
+- Slide 1: **make it** (white #FFFFFF): Outline in wine #7A1732, thin
+- Slide 1: **LAST** (white #FFFFFF): Outline in wine #7A1732, thin
+- Slide 6: **still like new** (wine #7A1732): Outline in white #FFFFFF, thin
+- Slide 8: **Comment** (white #FFFFFF): Outline in wine #7A1732, thin
+
 ## 09 Who its for
 
 - Slide 1: **this is** (white #FFFFFF): Outline in wine #7A1732, thin

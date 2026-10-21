@@ -21,13 +21,13 @@ from motion_b2 import Clip
 DIRS = {'01': '01-one-product-three-ways', '02': '02-pack-an-order', '03': '03-before-and-after', '04': '04-a-or-b', '05': '05-details',
         '06': '06-start-to-finish', '07': '07-how-big-is-it', '13': '13-how-to-use-it', '11': '11-a-day-with-it', '14': '14-the-annoying-moment',
         '15': '15-new-drop-reveal', '16': '16-what-it-feels-like', '17': '17-everything-that-goes-into-one',
-        '18': '18-check-this-before-you-buy', '19': '19-pair-it-with', '21': '21-small-batch', '25': '25-mine-vs-the-usual-kind', '09': '09-who-its-for', '08': '08-a-real-customer-question', '10': '10-three-people-to-gift-it-to', '12': '12-your-order-just-arrived',
+        '18': '18-check-this-before-you-buy', '19': '19-pair-it-with', '21': '21-small-batch', '25': '25-mine-vs-the-usual-kind', '24': '24-make-it-last', '09': '09-who-its-for', '08': '08-a-real-customer-question', '10': '10-three-people-to-gift-it-to', '12': '12-your-order-just-arrived',
         '20': '20-what-buyers-said', '22': '22-put-it-to-the-test', '23': '23-every-option-in-10-seconds',
         'h1': 'halloween/h1-now-you-see-it', 'h2': 'halloween/h2-batty-about', 'h3': 'halloween/h3-caught-in-our-web', 'h5': 'halloween/h5-trick-or-treat', 'h6': 'halloween/h6-once-in-a-blood-moon'}
 TITLES = {'01': 'One product three ways', '02': 'Pack an order with me', '03': 'Before and after', '04': 'A or B', '05': 'Details',
           '06': 'Start to finish', '07': 'How big is it really', '13': 'How to use it in 3 steps', '11': 'A day with it', '14': 'The annoying moment',
           '15': 'New drop reveal', '16': 'What it feels like', '17': 'Everything that goes into one',
-          '18': 'Check this before you buy', '19': 'Pair it with', '21': 'Small batch', '25': 'Mine vs the usual kind', '09': 'Who its for', '08': 'A real customer question', '10': 'Three people to gift it to', '12': 'Your order just arrived',
+          '18': 'Check this before you buy', '19': 'Pair it with', '21': 'Small batch', '25': 'Mine vs the usual kind', '24': 'Make it last', '09': 'Who its for', '08': 'A real customer question', '10': 'Three people to gift it to', '12': 'Your order just arrived',
           '20': 'What buyers said', '22': 'Put it to the test', '23': 'Every option in 10 seconds',
           'h1': 'Now you see it', 'h2': "Things I'm batty about", 'h3': 'Caught in our web', 'h5': 'Trick or treat', 'h6': 'Once in a blood moon'}
 HOOK2 = 'Second hook: Instagram often shows a carousel starting on slide 2, so this one works as a cover on its own. '
@@ -1675,7 +1675,58 @@ def ch1():
         art(doodle('arrow', 0, 200, ACC), (150, 420), 0, 'arrow')])
     return s
 
-RECIPES = {'01': c01, '02': c02, '03': c03, '04': c04, '05': c05, '06': c06, '07': c07, '13': c13, '11': c11, '14': c14, '15': c15, '16': c16, '17': c17, '18': c18, '19': c19, '21': c21, '25': c25, '09': c09, '08': c08, '10': c10, '12': c12, '20': c20, '22': c22, '23': c23, 'h1': ch1, 'h2': ch2, 'h3': ch3, 'h5': ch5, 'h6': ch6}
+def c24():
+    c = {k: Clip(n, t, 6.0) for k, (n, t) in dict(prod=('IMG_1464', 0.5), tip1=('IMG_1430', 0.5), tip2=('IMG_1432', 1.0), watch=('IMG_1464', 3.0),
+                                                    result=('IMG_1464', 3.0), best=('IMG_1464', 2.0)).items()}
+    paper = toned_bg('images', 'Blush Pink Tissue Paper Texture-9.png', (222, 200, 128), BUTTER)
+    def sheet(w):
+        """The real calendar page with its month name covered: (art, label centre offset)."""
+        cal = S.card('fall', 'Minimal October calendar page-40.png', w); d = K.ImageDraw.Draw(cal)
+        d.rectangle((int(cal.width * 0.12), int(cal.height * 0.04), int(cal.width * 0.88), int(cal.height * 0.2)), fill=cal.getpixel((int(cal.width * 0.5), int(cal.height * 0.3))))
+        sh = K.C.shadow(cal, (8, 14), 14, 100); pad = (sh.width - cal.width) / 2
+        return sh, (0, pad + cal.height * 0.12 - sh.height / 2)
+    def page(cc, w, label, rot=0, px=90):
+        a, off = sheet(w); return [art(a, cc, rot, 'calendar page'), text(label, px, at(cc, rot, off), rot, box=WINE, fg=WHITE)]
+    watch, wscr = K.device_art(560, S7.WATCH); s = []
+    S2(s, paper, 'Hook. Swap in a photo of your product.', [
+        photo('Your product (fills the page)', (540, 720), (CW, CH), 0, c['prod'].at(1.0, (CW, CH))),
+        art(word('make it', 180, italic_last=False), (480, 230), -2, 'make it'),
+        art(word('LAST', 300, italic_last=False), (500, 450), -2, 'LAST'),
+        art(doodle('icon', 10, 120, WHITE), (900, 300), 0, 'sparkle'), art(doodle('icon', 8, 90, WHITE), (140, 560), 0, 'sparkle'),
+        guide(FIRST_GUIDE)])
+    S2(s, paper, HOOK2 + 'No photo needed. Edit the page labels and both [bracket] lines.', page((690, 760), 520, 'month 6', 6) + page((410, 960), 520, 'month 1', -6) + [
+        text('[most wear out\nin a year]', 92, (620, 220), -2, align='right'),
+        text('[make yours last]', 62, (330, 1370), -2, align='left'),
+        art(doodle('arrow', 0, 170, WINE), (690, 1365), -2, 'arrow')])
+    S2(s, paper, 'Tip 1: a full-page photo of it. Edit the tip.', [
+        photo('Tip 1 (fills the page)', (540, 720), (CW, CH), 0, c['tip1'].at(1.0, (CW, CH))),
+        art(K.torn_strip(paper, 300, 4), (540, 150), 0, 'torn paper'),
+        text('[rinse after each use]', 64, (380, 140), -2, box=WHITE, align='left')])
+    S2(s, paper, 'Tip 2: swap in its photo. Edit the tip.', [
+        art(K.white_card((700, 900)), (540, 780), 3, 'photo border'),
+        photo('Tip 2', (540, 780), (700, 900), 3, c['tip2'].at(1.0, (700, 900))),
+        text('[store it upright]', 66, (380, 200), -3, box=BUTTER, align='left')])
+    wc = (540, 780)
+    S2(s, paper, 'Swap in a photo of your reminder (or your product) for the watch screen. Edit the day.', [
+        art(watch, wc, -4, 'smartwatch'), dict(K.on_screen(wc, watch, wscr, c['watch'].at(1.0, (400, 400)), 'Your reminder (watch screen)'), rot=-4),
+        text('a 2-minute habit', 76, (540, 210), -2, box=WHITE),
+        text('[every Sunday]', 66, (540, 1300), 2, box=WINE, fg=WHITE)])
+    cc = (540, 860)
+    S2(s, paper, 'No photo needed. Edit the page label to your real number.', [
+        art(doodle('burst', 2, 1000, WINE), cc, 0, 'burst')] + page(cc, 640, 'year 3', -2, 100) + [
+        art(doodle('frame', 0, 560, WINE), at(cc, -2, (0, -232)), 0, 'circle'),
+        art(word('still like new', 140, WINE, edge=WHITE), (540, 220), -2, 'still like new')])
+    S2(s, paper, 'The result: a full-page photo. Edit the line.', [
+        photo('The result (fills the page)', (540, 720), (CW, CH), 0, c['result'].at(1.0, (CW, CH))),
+        text('[still going strong]', 66, (540, 1250), -2, box=BUTTER)])
+    S2(s, paper, 'Swap in a photo of your product at its best. Type its name and your keyword. ' + CAPTION, [
+        art(K.white_card((620, 760)), (540, 960), -3, 'photo border'), photo('Your product', (540, 960), (620, 760), -3, c['best'].at(1.0, (620, 760))),
+        art(word('Comment', 200), (540, 220), 0, 'Comment'),
+        text('"[KEYWORD]"', 76, (540, 390), 2, box=WHITE, pill=True),
+        text('[Product name]', 56, (780, 1370), -3, box=WINE, fg=WHITE)])
+    return s
+
+RECIPES = {'01': c01, '02': c02, '03': c03, '04': c04, '05': c05, '06': c06, '07': c07, '13': c13, '11': c11, '14': c14, '15': c15, '16': c16, '17': c17, '18': c18, '19': c19, '21': c21, '25': c25, '24': c24, '09': c09, '08': c08, '10': c10, '12': c12, '20': c20, '22': c22, '23': c23, 'h1': ch1, 'h2': ch2, 'h3': ch3, 'h5': ch5, 'h6': ch6}
 
 HEX = lambda c: '#%02X%02X%02X' % tuple(c[:3])
 CNAME = {WINE: 'wine', PINK: 'pink', BUTTER: 'butter', BLUE: 'light blue', WHITE: 'white', INK: 'ink', S7.DEEP: 'deep blue', (236, 120, 36): 'orange', (24, 18, 14): 'dark ink'}
