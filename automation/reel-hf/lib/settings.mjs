@@ -14,6 +14,7 @@ import { createRequire } from 'node:module';
 import { execFileSync } from 'node:child_process';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { sweepInBackground } from './stray-browsers.mjs';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 export const ROOT = path.join(HERE, '..');
@@ -67,7 +68,16 @@ export function browser() {
 }
 
 export const puppeteer = () => createRequire(path.join(P.hyperframesDir, 'package.json'))('puppeteer');
-export const launch = (opts = {}) => puppeteer().launch({ executablePath: browser(), ...opts });
+// the browser closes with this script, even when it ends on an error; leftovers from killed scripts get swept
+export async function launch(opts = {}) {
+  sweepInBackground();
+  const b = await puppeteer().launch({ executablePath: browser(), ...opts });
+  const kill = () => { try { b.process()?.kill(); } catch {} };
+  process.once('exit', kill);
+  for (const sig of ['SIGINT', 'SIGTERM', 'SIGBREAK']) process.once(sig, () => { kill(); process.exit(130); });
+  b.once('disconnected', () => process.off('exit', kill));
+  return b;
+}
 
 // a template's values with this person's overrides (settings templates.<name>) merged in
 const isObj = (v) => v && typeof v === 'object' && !Array.isArray(v);
