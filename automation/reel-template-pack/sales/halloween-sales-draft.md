@@ -233,3 +233,8 @@ One finished demo Reel per template, made from your own clips run through the re
 | Things I'm batty about | An opening shot (3 s+), then three favourite products or tools (4 s+ each) | Three favourites |
 | Trick or treat | The trick: a common mistake acted out (5 s+), the treat: your product (6 s+), the proof: it working (6 s+) | A mistake and your offer |
 | Now you see it | From its shot list once built: you with your product, the same shot without it, your product | Your last-chance offer |
+
+## Zips re-attached (2026-10-21, recipe card fix)
+Product 1498 downloads now point at media 1625-1629 (h1 h6 h3 h2 h5; same download ids, so past buyers get the new
+files). Re-upload any time with `node website/scrolly-site/reel-pack-zips.mjs 1498` (run from website/scrolly-site).
+Old zip media 1519-1521, 1523, 1533 are still in the WP library, unused.

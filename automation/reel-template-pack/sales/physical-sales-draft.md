@@ -306,3 +306,8 @@ The live build leaves out the how-to video screen until it is filmed. Still open
   $4.99, 4 downloads (h6, h3, h2, h5 zips uploaded as media 1493-1495, 1497), image media 1496.
 - Product Reel Template Pack: product 1500, DRAFT, $17.99, image media 1499, no downloads yet. To go live: attach the
   finished zips (after the covers step re-zips them), replace [N] in the description with the real count, publish.
+
+## Zips re-attached (2026-10-21, recipe card fix)
+Product 1500 downloads now point at media 1630-1654 (01-25; same download ids). Re-upload with
+`node reel-pack-zips.mjs 1500` from website/scrolly-site. The previous zip media (1522-1587 range) are still in the WP
+library, unused.
