@@ -17,7 +17,7 @@
   "slides": [
     {
       "layout": "image",
-      "media": "8b43a42fa6",
+      "media": "1fb3bd8f6e",
       "grid": "pinned-2026-10",
       "text": "How many views make $1,000?. The math, step by step"
     },
@@ -259,13 +259,6 @@
       "text": "The $1K Challenge gives you your $1K number and what to do each week. Link in bio.",
       "palette": "navy",
       "doodles": [
-        {
-          "k": "arrow",
-          "x": 860,
-          "y": 130,
-          "w": 90,
-          "rot": 200
-        },
         {
           "k": "star",
           "x": 120,

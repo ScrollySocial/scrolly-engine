@@ -204,7 +204,7 @@ body{background:#888;width:${W}px}
 .blk .pos-top{top:170px;text-align:center;align-items:center}
 .blk .pos-bottom{bottom:200px;text-align:center;align-items:center}
 .blk-E .fit{font-weight:700;line-height:1.1;letter-spacing:-.01em}
-.blk em{font-style:normal;color:var(--accent);background:linear-gradient(transparent 60%,var(--mark) 60% 92%,transparent 92%);padding:0 .06em;-webkit-box-decoration-break:clone;box-decoration-break:clone}
+.blk em{font-style:normal;color:inherit;background:none;padding:0}
 .blk-E em{background:none;text-decoration:underline;text-decoration-color:var(--deco);text-decoration-thickness:.07em;text-underline-offset:.12em}
 .blk .ct{position:absolute;top:70px;right:96px;font-size:34px;color:var(--muted);font-weight:600}
 .blk .handle{position:absolute;bottom:70px;left:96px;font-size:32px;color:var(--muted);font-weight:600}
@@ -214,9 +214,9 @@ em{font-style:normal}
 /* D: big serif headline */
 .blk-D{font-family:'${brand.fonts.headline.family}',serif}
 .blk-D .fit{font-weight:400;line-height:.98;letter-spacing:-.01em;text-wrap:balance}
-.blk-D em{font-family:'${brand.fonts.serif.family}',serif;font-style:italic;font-weight:400;font-size:1.04em;letter-spacing:0}
+.blk-D em{font:inherit}
 .blk-D .txt{left:80px;right:80px}
-.blk-D .nod.line{font-family:'${brand.fonts.serif.family}',serif;font-style:italic;font-size:64px;font-weight:400;color:var(--accent);opacity:1;margin-top:40px}
+.blk-D .nod.line,.s.lay .nod.line{font:400 64px/1.1 'Covered By Your Grace',cursive;letter-spacing:.03em;color:var(--ink);opacity:1;margin-top:40px}
 .blk-D .pos-top{top:150px}
 .blk-D .cut{position:absolute;bottom:0;left:50%;transform:translateX(-50%);height:62%;width:auto;filter:drop-shadow(0 12px 24px rgba(10,25,48,.18))}
 .tex-stripes{background-image:repeating-linear-gradient(0deg,var(--tex) 0 90px,transparent 90px 180px)}

@@ -5,22 +5,26 @@ import path from 'node:path';
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { cfg, fileUrl, launch, REPO, W, H } from './lib/common.mjs';
 import { pageHtml } from './lib/templates.mjs';
+import { mediaResolver } from './lib/media.mjs';
 
 const brand = cfg('brand');
 const out = path.join(cfg('media').exportsDir, '_style-samples');
 mkdirSync(out, { recursive: true });
 const stock = fileUrl(path.join(REPO, 'Scrolly Organic Engine/products/1k-club/playbook/design/assets/stock/barista.jpg'));
-const mediaFor = (id) => (id ? { url: stock, focus: '50% 30%' } : null);
+const real = mediaResolver().mediaFor;
+const mediaFor = (id, focus) => (!id ? null : id === 'x' ? { url: stock, focus: '50% 30%' } : real(id, focus));
 
 const samples = [
-  ['offwhite', { text: 'Your next post is already *in your camera roll*' }, 'plain'],
-  ['navy', { text: 'Pick the photo you *almost* deleted', pattern: 'rays' }, 'rays'],
-  ['offwhite', { text: 'Your bio has *one* job', overlay: 'note', pattern: 'grid' }, 'note + grid'],
-  ['navy', { text: 'Write the caption *first*', overlay: 'card' }, 'card'],
+  ['offwhite', { text: 'Your next post is already in your camera roll' }, 'plain'],
+  ['navy', { text: 'Pick the photo you almost deleted', pattern: 'rays' }, 'rays'],
+  ['offwhite', { text: 'Your bio has one job', overlay: 'note', pattern: 'grid' }, 'note + grid'],
+  ['navy', { text: 'Write the caption first', overlay: 'card' }, 'card'],
   ['offwhite', { text: 'Batch a week in *one hour*', overlay: 'circle', pattern: 'dots' }, 'circle + dots'],
-  ['navy', { text: 'Your first slide is *the ad*', overlay: ['highlight', 'sparkle'], pattern: 'stars' }, 'highlight + sparkle + stars'],
-  ['offwhite', { text: 'Film it *where you already are*', overlay: ['polaroid', 'arrow'], media: 'x' }, 'polaroid + arrow'],
-  ['navy', { text: 'Three posts, *one* photo', overlay: ['note', 'sparkle'], pattern: 'stripes' }, 'note + sparkle + stripes'],
+  ['navy', { text: 'Your first slide is the ad', overlay: 'sparkle', pattern: 'stars' }, 'sparkle + stars'],
+  ['offwhite', { text: 'Film it where you already are', overlay: ['polaroid', 'arrow'], media: 'x' }, 'polaroid + arrow (stock stand-in)'],
+  ['mist', { text: 'Three posts, one photo', overlay: ['note', 'sparkle'], pattern: 'stripes' }, 'note + sparkle + stripes'],
+  ['offwhite', { layout: 'text', text: 'Your $1,000 goal is secretly a views goal', photoBg: '1e629b09ae', scrim: 'bottom', doodles: [{ k: 'star', x: 880, y: 120, w: 80 }, { k: 'star', x: 960, y: 230, w: 40 }] }, 'photo + doodles (new)'],
+  ['offwhite', { text: 'Start with your price', pattern: 'dots', doodles: [{ k: 'note', text: 'start here', x: 120, y: 330, rot: -8 }, { k: 'arrow', x: 230, y: 410, w: 80, rot: -20 }, { k: 'star', x: 860, y: 1050, w: 70 }, { k: 'underline', x: 300, y: 860, w: 480, h: 40 }] }, 'doodles (new)'],
 ];
 
 const browser = await launch();
@@ -37,9 +41,9 @@ for (const [n, [palette, slide, label]] of samples.entries()) {
   shots.push({ png: `.var-${n}.png`, label: `${palette} · ${label}` });
 }
 const sheet = path.join(out, '.variety.html');
-writeFileSync(sheet, `<body style="margin:0;background:#fff;font:600 17px sans-serif;display:grid;grid-template-columns:repeat(4,300px);gap:14px 10px;padding:14px;width:max-content">
+writeFileSync(sheet, `<body style="margin:0;background:#fff;font:600 17px sans-serif;display:grid;grid-template-columns:repeat(5,300px);gap:14px 10px;padding:14px;width:max-content">
 ${shots.map((s) => `<div><img src="${s.png}" style="width:300px;height:400px;display:block">${s.label}</div>`).join('')}</body>`);
-await pg.setViewport({ width: 28 + 4 * 310, height: 400 });
+await pg.setViewport({ width: 28 + 5 * 310, height: 400 });
 await pg.goto(fileUrl(sheet), { waitUntil: 'load' });
 await pg.screenshot({ path: path.join(out, 'D-variety.png'), fullPage: true });
 await browser.close();

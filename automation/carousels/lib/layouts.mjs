@@ -70,12 +70,11 @@ export const LAYOUT_CSS = (brand) => `
 .s.lay{font-family:'${brand.fonts.display.family}',sans-serif;padding:120px 96px;justify-content:center;gap:56px}
 .s.lay .txt{position:relative;left:auto;right:auto;transform:none;text-align:left;align-items:flex-start}
 .s.lay .fit{font-size:82px;font-weight:500;line-height:1.16;letter-spacing:-.005em;text-transform:none;text-wrap:pretty}
-.s.lay em{font-family:'${brand.fonts.serif.family}',serif;font-style:italic;font-weight:400;color:var(--accent);font-size:1.16em;text-transform:none;letter-spacing:0;background:linear-gradient(transparent 60%,var(--mark) 60% 92%,transparent 92%);padding:0 .06em}
+.s.lay em{font:inherit;color:inherit;background:none;padding:0}
 /* hook2: serif hook top right, Jost swipe line bottom left */
 .s.lay-hook2 .txt{position:absolute;top:150px;bottom:170px;left:96px;right:96px;display:flex;flex-direction:column;justify-content:space-between}
 .s.lay-hook2 .fit{font-size:140px}
 .h-top{text-align:right;font-family:'${brand.fonts.headline.family}',serif;font-weight:400;line-height:.98;letter-spacing:-.01em;text-wrap:balance}
-.h-top em{font-size:1.04em}
 .h-bot{text-align:left;text-wrap:balance;font-weight:500;font-size:.54em;line-height:1.2;max-width:82%}
 /* number */
 .lay-number .big{font-family:'${brand.fonts.headline.family}',serif;font-weight:400;font-size:360px;line-height:.85;color:var(--accent);letter-spacing:-.01em}

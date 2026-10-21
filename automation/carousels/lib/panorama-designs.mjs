@@ -143,7 +143,7 @@ DESIGNS['pinned-2026-10-v3'] = ({ brand, photo, hooks, stats }) => {
 .hook h1{font-weight:800;font-stretch:75%;font-variation-settings:'wdth' 75;text-transform:uppercase;line-height:.92;letter-spacing:-.005em}
 .hook em{font-family:'${brand.fonts.serif.family}',serif;font-style:italic;font-weight:400;text-transform:none;font-size:1.12em;letter-spacing:0}
 .hook p{margin-top:40px;font-weight:700;font-stretch:88%;font-variation-settings:'wdth' 88;font-size:56px}
-.h2{position:absolute;left:1240px;width:800px;top:250px;color:#fff}.h2 h1{font-size:150px}.h2 em{color:${tan.accent}}
+.h2{position:absolute;left:1260px;width:820px;top:250px;color:#fff}.h2 h1{font-size:150px}.h2 em{color:${tan.accent}}
 .h3{position:absolute;left:2420px;width:730px;top:150px;color:${warm.ink};text-align:right}.h3 h1{font-size:128px}.h3 em{color:${warm.accent}}
 .card{position:absolute;left:2470px;width:680px;top:820px;background:#fff;border-radius:40px;padding:44px 50px;box-shadow:0 20px 50px rgba(60,20,0,.16);rotate:-2deg;display:flex;flex-direction:column;gap:28px}
 .row{display:grid;grid-template-columns:auto 1fr;align-items:baseline;column-gap:20px;row-gap:10px}
@@ -192,11 +192,11 @@ DESIGNS['pinned-2026-10-v4'] = ({ brand, photo, hooks, stats }) => {
 .hl1 p{font-size:82px;line-height:1.4}.hl1 p.sm{font-size:52px;margin-top:22px}
 .hl1 span{background:#fff;padding:.08em .32em;border-radius:.22em;-webkit-box-decoration-break:clone;box-decoration-break:clone}
 .hook h1{font-family:'${brand.fonts.headline.family}',serif;font-weight:400;line-height:.98;letter-spacing:-.01em;text-wrap:balance}
-.hook em{font-family:'${brand.fonts.serif.family}',serif;font-style:italic;font-weight:400;font-size:1.04em;letter-spacing:0;padding:0 .06em}
+.hook em{font:inherit;color:inherit;background:none}
 .hook p{margin-top:40px;font-weight:500;font-size:54px}
-.h2{position:absolute;left:1260px;width:820px;top:300px;color:${navy.ink}}.h2 h1{font-size:168px}.h2 em{color:${navy.accent}}
+.h2{position:absolute;left:1240px;width:800px;top:300px;color:${navy.ink}}.h2 h1{font-size:168px}
 .h3{position:absolute;left:2420px;width:730px;top:150px;color:${light.ink};text-align:right}.h3 h1{font-size:150px}
-.h3 em{color:${light.accent};background:linear-gradient(transparent 60%,${light.mark} 60% 92%,transparent 92%)}
+
 .card{position:absolute;left:2470px;width:680px;top:800px;background:#fff;border-radius:40px;padding:44px 50px;box-shadow:0 20px 50px rgba(10,25,48,.14);rotate:-2deg;display:flex;flex-direction:column;gap:28px}
 .row{display:grid;grid-template-columns:auto 1fr;align-items:baseline;column-gap:20px;row-gap:10px}
 .row b{font-family:'${brand.fonts.headline.family}',serif;font-weight:400;font-size:92px;line-height:1;color:${light.ink}}
