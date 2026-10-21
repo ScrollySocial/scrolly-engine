@@ -5,6 +5,11 @@ evening, so everything heavy happens overnight and finishes before her morning r
 posts, applies her choices, renders, then drafts every new Reel (no nightly cap); page approval + "Add to the Buffer
 queue" = her yes to queue it (no chat confirmation needed).
 
+**Bash rule for unattended runs (found 2026-10-21):** nobody is there to click Allow, so any Bash call that is not on the
+allow list freezes the run forever with no error. Keep every call simple and allow-listed: one command per call, no
+`cd X && ...` followed by git/wc/cat, no `for` loops, no `git -C`. Engine commands are `node lib/...` and
+`npx hyperframes ...` only. For several Reels, make several calls. Read files with the Read tool, not cat.
+
 **Order of a Reel (Mercedes 2026-10-14):** draft = Plan it only (moments with graphics, script, cover, caption; NO
 sounds, music or transitions) → she approves Plan it, or sends changes (stage `revise`: make them, she checks again)
 → Claude's sound pass for the approved plan (stage `sounds`) → she does Edit it → render → she approves the video →
