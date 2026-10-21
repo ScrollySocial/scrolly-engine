@@ -7,11 +7,15 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
+// --live: the page body for scrollyseo.com (publish-live.mjs uploads the {{img:...}} files and publishes it): no draft
+// banner, no review notes, no placeholder marks, no how-to video screen until that video is filmed
+const LIVE = process.argv.includes('--live');
 const v3 = fs.readFileSync(path.join(here, '../../../website/scrolly-site/chrome/v3.css'), 'utf8');
 const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 // [PLACEHOLDER] text gets a highlight so it can't be missed in review (the buyer's own "[brackets]" stay plain)
-const ph = (s) => esc(s).replace(/\[(?!brackets\])([^\]]+)\]/g, '<mark class="ph">[$1]</mark>');
+const ph = (s) => LIVE ? esc(s) : esc(s).replace(/\[(?!brackets\])([^\]]+)\]/g, '<mark class="ph">[$1]</mark>');
 const img = (f) => {
+  if (LIVE) return `{{img:${f}}}`;
   const ext = path.extname(f).slice(1);
   if (ext === 'mp4') return `data:video/mp4;base64,${fs.readFileSync(path.join(here, 'img', f)).toString('base64')}`;
   const type = { jpg: 'jpeg', png: 'png', webp: 'webp' }[ext];
@@ -145,7 +149,7 @@ details.notes>summary{cursor:pointer;font:700 var(--s3-fs-label)/1.4 var(--s3-sa
 @media(max-width:700px){.notes table,.notes tbody,.notes tr,.notes td,.notes th{display:block}.notes thead{display:none}.notes td{border:0;padding:4px 0}.notes tr{border-bottom:1px solid var(--s3-line);padding:10px 0}}
 `;
 
-const shell = (d, css, body) => `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+const shell = (d, css, body) => LIVE ? `<style>@import url('https://fonts.googleapis.com/css2?family=Covered+By+Your+Grace&display=swap');${BASE}${css}</style><div class="s3"><div id="main">${body}</div></div>` : `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>${esc(d.title)}</title><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Covered+By+Your+Grace&display=swap" rel="stylesheet"><style>${v3}</style><style>${BASE}${css}</style></head><body style="margin:0;background:#f7f3ec">
 <div class="draft"><b>DRAFT PREVIEW.</b> Local file only, not published. Highlighted [brackets] are open decisions. The site's global header and footer are left out.
 <details><summary>Open decisions (${d.decisions.length})</summary><ul>${d.decisions.map((x) => `<li>${esc(x)}</li>`).join('')}</ul></details></div>
@@ -155,8 +159,8 @@ const price = (d) => `<span class="amt">${d.was ? `<del>${esc(d.was)}</del>` : '
 // side by side (Mercedes 2026-10-20): steps left, a bigger screen right, so the section stays short
 const howItWorks = (d) => `<section class="film" id="how"><div class="s3-wrap how-row"><div class="how-text"><h2 class="s3-h2">How it works</h2>
   <ol class="steps-col">${STEPS.map(([icon, b]) => `<li>${esc(b)}</li>`).join('')}</ol>
-  <p class="see-note" aria-hidden="true">see it in action<img src="${img('arrow-l-w.webp')}" alt=""></p></div>
-  <div class="monitor"><div class="screen"><div class="play" aria-hidden="true"></div><strong>Your how-to video</strong></div><div class="stand"></div><div class="base"></div></div></div></section>`;
+  ${LIVE ? '' : `<p class="see-note" aria-hidden="true">see it in action<img src="${img('arrow-l-w.webp')}" alt=""></p>`}</div>
+  ${LIVE ? '' : `<div class="monitor"><div class="screen"><div class="play" aria-hidden="true"></div><strong>Your how-to video</strong></div><div class="stand"></div><div class="base"></div></div>`}</div></section>`;
 // "Every template comes with": real sticky notes pinned on, from Trick or treat (Mercedes 2026-10-19: cards were "boring")
 const ROT = [-4, 3, -2, 4, -3, 2];
 // one line icon per item in "Every template comes with" (Mercedes: "can we communicate this visually?")
@@ -397,7 +401,7 @@ ${howItWorks(d)}
   <h2 class="s3-h2">${esc(d.ctaHead)}</h2>
   <div class="buy">${price(d)}<a class="s3-btn" href="${d.buyUrl || '#buy'}">${esc(d.button)}</a></div>
   <p class="s3-fine">${ph(d.ctaLine)}</p></div></section>
-${notes(d)}`;
+${LIVE ? '' : notes(d)}`;
   return shell(d, PCSS + HCSS + HCSS2, body);
 }
 
@@ -525,7 +529,7 @@ ${howItWorks(d)}
   <h2 class="s3-h2">${esc(d.ctaHead)}</h2>
   <div class="buy">${price(d)}<a class="s3-btn" href="${d.buyUrl || '#buy'}">${esc(d.button)}</a></div>
   <p class="s3-fine">${ph(d.ctaLine)}</p></div></section>
-${notes(d)}
+${LIVE ? '' : notes(d)}
 <script>${SCROLL_JS}</script>`;
   return shell(d, PCSS, body);
 }
@@ -653,6 +657,7 @@ const physical = {
   ],
 };
 
-fs.writeFileSync(path.join(here, halloween.file), halloweenPage(halloween));
-fs.writeFileSync(path.join(here, physical.file), physicalPage(physical));
-console.log('wrote', halloween.file, physical.file);
+const out = (f) => LIVE ? f.replace('-preview.html', '-live.html') : f;
+fs.writeFileSync(path.join(here, out(halloween.file)), halloweenPage(halloween));
+fs.writeFileSync(path.join(here, out(physical.file)), physicalPage(physical));
+console.log('wrote', out(halloween.file), out(physical.file));

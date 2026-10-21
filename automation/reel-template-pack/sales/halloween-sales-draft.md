@@ -77,6 +77,13 @@ The Halloween pack is live in WooCommerce as product 1498 ($4.99, $9.99 crossed 
 see it (h1) is being built with her smoke video and added to the product today. Both buy buttons go to
 https://scrollyseo.com/?add-to-cart=1498 (her OK, 2026-10-20). The page itself is not published.
 
+## Page LIVE (2026-10-21)
+
+Published at https://scrollyseo.com/halloween-reels/ (WP page 1570) on Mercedes's go: `node build-previews.mjs --live`
+then `node publish-live.mjs halloween` (re-run both to update; images in WP media, ids in `live-media.json`). The live
+build leaves out the draft banner, review notes and the how-to video screen (not filmed yet: add it back when it is).
+Product 1498 now serves the zips with covers (media 1519-1521, 1523, 1533) and its description lists all five.
+
 ## Open decisions (Mercedes)
 
 | Decision | State |
