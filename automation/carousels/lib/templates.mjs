@@ -61,6 +61,19 @@ export function handStar(c, { pts = 4, fill = false, sw = 3.4, seed = 3 } = {}) 
   return `<svg viewBox="0 0 100 100" overflow="visible"><defs><filter id="${id}"><feTurbulence baseFrequency=".06" numOctaves="2" seed="${Math.round(hr() * 99)}"/><feDisplacementMap in="SourceGraphic" scale="3.5"/></filter><clipPath id="c${id}"><path d="${path(0)}"/></clipPath></defs><g filter="url(#${id})" fill="none" stroke-linecap="round" stroke-linejoin="round"><g clip-path="url(#c${id})">${scrib}</g><path d="${path(4)}" stroke="${c}" stroke-width="${sw}"/><path d="${path(7)}" stroke="${c}" stroke-width="${(sw * .55).toFixed(2)}" opacity=".7"/></g></svg>`;
 }
 
+// Hand-drawn circle and tick box, same marker look as handStar. Doodles must do a job (circle the key number,
+// tick a choice, point at something), never decorate or touch text (Mercedes 2026-10-21).
+function wobble(id, seed, body) {
+  return `<svg viewBox="0 0 100 100" preserveAspectRatio="none" overflow="visible"><defs><filter id="${id}"><feTurbulence baseFrequency=".05" numOctaves="2" seed="${seed}"/><feDisplacementMap in="SourceGraphic" scale="3"/></filter></defs><g filter="url(#${id})" fill="none" stroke-linecap="round" stroke-linejoin="round">${body}</g></svg>`;
+}
+export function handCircle(c, { sw = 3, seed = 5 } = {}) {
+  const loop = (r, o) => `M${50 - r + o} 52 C${50 - r} ${18 + o}, ${50 + r - 6} 6, ${50 + r} 46 S${58} ${96 - o}, ${18 + o} 74 S${30} ${12 + o}, ${64} 10`;
+  return wobble('hc' + seed, seed, `<path d="${loop(46, 0)}" stroke="${c}" stroke-width="${sw}" vector-effect="non-scaling-stroke"/><path d="${loop(44, 4)}" stroke="${c}" stroke-width="${sw * .5}" opacity=".7" vector-effect="non-scaling-stroke"/>`);
+}
+export function handBox(c, { tick = false, sw = 3.4, seed = 9 } = {}) {
+  return wobble('hb' + seed, seed, `<path d="M8 10 L92 6 L95 90 L6 94 Z" stroke="${c}" stroke-width="${sw}"/><path d="M10 13 L90 9 L92 88 L9 91" stroke="${c}" stroke-width="${sw * .5}" opacity=".6"/>${tick ? `<path d="M22 52 L44 76 L96 -8" stroke="${c}" stroke-width="${sw * 1.6}"/>` : ''}`);
+}
+
 // Doodles (Mercedes 2026-10-21: "add doodles"): a hand-drawn layer placed per slide, in the same hand as the Reel
 // covers (Covered By Your Grace notes, drawn arrows) plus sparkle stars like the site footer.
 // slide.doodles = [{k: note|arrow|star|circle|underline|tape, x, y, w, rot, text, c: navy|sky|white|pink, flip,
