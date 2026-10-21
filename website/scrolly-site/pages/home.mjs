@@ -33,13 +33,11 @@ const DOODLES = {
 };
 const doodle = (amt) => { const d = DOODLES[amt]; return d ? `<svg class="dd" viewBox="${d[0]}" preserveAspectRatio="xMidYMid meet" aria-hidden="true" focusable="false">${d[1]}</svg>` : ''; };
 
-// Earned band art (Mercedes 2026-10-20): a daytime torn-paper collage sky in three transparent layers, bottom to top (sky, clouds,
-// strips), with the cut-out shirt on top (made from mockups/rebrand-2026-10/shirt-background-prompt.md). Desktop = landscape 1448x1086
-// layers, phone = portrait 1024x1536 layers; files assets/earned-{desktop,phone}-*.webp. The shirt is shirt-1k-graphite-front-cut-clean.webp
-// (the cut-out with its pale haze removed, so no light box shows on the blue art). Upload them with `node upload-media.mjs <file>`
-// before publishing; until then the URL is the expected upload path (preview-chrome.mjs swaps in the local file).
-// Desktop (chosen 2026-10-20) = muted torn card, stars, muted strips; phone = sky, clouds, strips. Paired by position in the stack.
-const EARNED_ART = [['earned-muted-card.webp', 'earned-phone-sky.webp'], ['earned-desktop3-stars.webp', 'earned-phone-clouds.webp'], ['earned-muted-strips.webp', 'earned-phone-strips.webp']];
+// Earned band art (Mercedes 2026-10-20): a torn-paper collage sky (made from mockups/rebrand-2026-10/shirt-background-prompt.md) with the
+// cut-out shirt on top. Files assets/earned-soft-s2-*.webp + shirt-1k-graphite-front-cut-clean.webp (the cut-out with its pale haze removed).
+// Upload them with `node upload-media.mjs <file>` before publishing; until then the URL is the expected upload path (preview-chrome.mjs
+// swaps in the local file).
+const EARNED_ART = ['earned-soft-s2-card.webp', 'earned-soft-s2-top.webp', 'earned-soft-s2-bottom.webp', 'earned-soft-s2-stars.webp'];
 const MEDIA = JSON.parse(fs.readFileSync(path.join(here, '..', 'media-map.json'), 'utf8'));
 const artUrl = (n) => MEDIA[n]?.url || `https://scrollyseo.com/wp-content/uploads/2026/10/scrolly-${n}`;
 
@@ -114,7 +112,7 @@ export function build() {
  </div>
 </div></section>
 
-<section class="hp-earned" id="earned"><div class="earned-art" aria-hidden="true"><div class="e-top">${EARNED_ART.map(([d, n], i) => `<picture><source media="(min-width:901px)" srcset="${artUrl(d)}" width="1448" height="1086"><img src="${artUrl(n)}" alt="" width="1024" height="1536"${i ? '' : ' fetchpriority="high"'}></picture>`).join('')}</div><div class="e-bot">${EARNED_ART.map(([d]) => `<img src="${artUrl(d)}" alt="" width="1448" height="1086">`).join('')}</div></div><div class="wrap">
+<section class="hp-earned" id="earned"><div class="earned-art" aria-hidden="true"><div class="e-top">${EARNED_ART.map((n, i) => `<img${n.includes('-stars') ? ' class="stars"' : ''} src="${artUrl(n)}" alt="" width="1672" height="941"${i ? '' : ' fetchpriority="high"'}>`).join('')}</div><div class="e-bot">${EARNED_ART.map((n) => `<img src="${artUrl(n)}" alt="" width="1672" height="941">`).join('')}</div></div><div class="wrap">
  <div class="copy">
   <h2><span>Some things can’t be bought.</span> <span><em class="or">They’re earned.</em></span></h2>
   <p>Reach your verified Challenge goal and earn the exclusive Club T-shirt.</p>

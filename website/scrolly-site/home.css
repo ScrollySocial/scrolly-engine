@@ -175,44 +175,37 @@ body:has(.hp){margin:0;background:#f7f3ec}
  .hp-merch .links{flex-direction:column;gap:4px;font-size:1.125rem}
 }
 
-/* Earned collage (Mercedes 2026-10-20). Three transparent torn-paper layers stacked sky, clouds, strips, all the same size: width-based,
-   never cover, centred at the top, no repeat. They are wider than the section, so their torn SIDE edges stay off-screen; the section takes
-   the art's height, so the torn top and bottom edges meet the off-white page. Desktop layers 1448x1086 at 106%, phone 1024x1536 at 112%
-   (<picture> swaps them at 901px). */
-.hp-earned .earned-art img{display:block;position:absolute;top:0;left:50%;max-width:none;height:auto;transform:translateX(-50%)}
+/* Earned collage (Mercedes 2026-10-20, final pick: soft pastel "Set 2"). Four transparent 1672x941 layers, bottom to top: pale card,
+   cloud band along the top (top ~45%), strips along the bottom (bottom ~20%), foil stars. The card is full width, so no side tears.
+   Built in two slices over the card's own pale blue (#dce8f1): the top slice draws the stack from the top and is clipped above the
+   bottom slice; the bottom slice draws it from the bottom and fades in over 30px of plain paper. The middle can then grow to fit the
+   content. Desktop draws the art at 100% width (its natural 16:9 height, ~720px at 1280); phone draws it at 220% so the clouds, stars
+   and strips still read while the pale middle holds the copy and shirt. --aw = drawn width, --ah = drawn height. */
+.hp-earned{--aw:100vw;--ah:calc(var(--aw) * 941 / 1672);position:relative;overflow:hidden}
+.hp-earned .earned-art{position:absolute;inset:0;z-index:0}
+.hp-earned .earned-art::before{content:"";position:absolute;left:0;right:0;top:calc(var(--ah) * .4);bottom:calc(var(--ah) * .2);background:#dce8f1}
+.hp-earned .earned-art img{display:block;position:absolute;top:0;left:50%;width:var(--aw);max-width:none;height:auto;transform:translateX(-50%)}
+/* the top slice stops above the art's own bottom strips (78% of its height), so they never show mid-section on a tall phone band */
+.hp-earned .e-top{position:absolute;top:0;left:0;right:0;height:min(calc(var(--ah) * .78),calc(100% - var(--ah) * .22 + 30px));overflow:hidden}
+.hp-earned .e-bot{position:absolute;left:0;right:0;bottom:0;height:calc(var(--ah) * .22 + 30px);overflow:hidden;-webkit-mask:linear-gradient(transparent,#000 30px);mask:linear-gradient(transparent,#000 30px)}
+.hp-earned .e-bot img{top:auto;bottom:0}
+.hp-earned .wrap{position:relative;z-index:1}
 @media(min-width:901px){
- /* Desktop = three slices so the copy and shirt set the height (Mercedes 2026-10-20: "can this be narrower"), not the 4:3 art.
-    The card is drawn 114% wide (its torn sides run 60-80px deep, so they stay off-screen); --ah is its drawn height.
-    Top: the card + stars drawn from the top (torn top edge, stars, swirl band = top 27%), clipped above the bottom slice.
-    Bottom: the same layers drawn from the bottom (the card's torn bottom + strips = bottom 16%), fading in over 30px of plain paper.
-    Behind both: the card body's pale blue (#e1ebf3), so there is no flash before the art loads. Desktop art = Mercedes's muted set (2026-10-20). */
- .hp-earned{--ah:calc(114vw * .75);position:relative;overflow:hidden;padding:0}
- .hp-earned .earned-art{position:absolute;inset:0;z-index:0}
- .hp-earned .earned-art::before{content:"";position:absolute;left:0;right:0;top:calc(var(--ah) * .27);bottom:calc(var(--ah) * .08);background:#e1ebf3}
- .hp-earned .earned-art img{width:114%}
- .hp-earned .e-top{position:absolute;top:0;left:0;right:0;bottom:calc(var(--ah) * .16 - 30px);overflow:hidden}
- .hp-earned .e-bot{position:absolute;left:0;right:0;bottom:0;height:calc(var(--ah) * .16 + 30px);overflow:hidden;-webkit-mask:linear-gradient(transparent,#000 30px);mask:linear-gradient(transparent,#000 30px)}
- .hp-earned .e-bot img{top:auto;bottom:0}
- /* copy close beside the shirt, on plain blue between the swirl band (top 26%) and the bottom slice; the bottom padding reserves the
-    bottom slice so the copy never reaches the strips, while the shirt may overlap both bands */
- .hp-earned .wrap{position:relative;z-index:1;display:grid;grid-template-columns:minmax(0,460px) auto;justify-content:center;align-items:start;column-gap:clamp(40px,5vw,96px);padding:calc(var(--ah) * .12) 0 calc(var(--ah) * .16 + 8px)}
- .hp-earned .copy{margin-top:calc(var(--ah) * .14);padding:0}
- .hp-earned .shot-col{margin-bottom:calc(var(--ah) * -.1)}
- /* copy on the pale card body: the light-ground style (navy text, "They're earned." on the sky marker, sky tab underlines) */
+ /* natural ratio; copy close beside the shirt, centred in the calm body below the cloud band */
+ .hp-earned{min-height:var(--ah);display:flex;align-items:center;padding:calc(var(--ah) * .25) 0 0}
+ .hp-earned .wrap{display:grid;grid-template-columns:minmax(0,460px) auto;justify-content:center;align-items:center;column-gap:clamp(40px,5vw,96px)}
+ .hp-earned .copy{padding:0}
  .hp-earned h2{font-size:clamp(2rem,2.6vw,3.4rem)}
  .hp-earned h2 span{display:block;white-space:nowrap}
  .hp-earned p{max-width:none}
  .hp-earned .shot-col .cut{display:block;width:auto;height:clamp(400px,34vw,540px)}
 }
 @media(max-width:900px){
- /* phone + tablet: copy on plain off-white, then the art full-bleed with the shirt centred on it */
- .hp-earned{display:grid;grid-template-columns:100%;padding:clamp(48px,8vw,80px) 0 0}
- .hp-earned .wrap{display:contents}
- .hp-earned .copy{grid-row:1;padding:0 var(--gut) 28px}
- .hp-earned .earned-art{position:relative;grid-row:2;grid-column:1;aspect-ratio:1/1.68;overflow:hidden}
- .hp-earned .earned-art img{width:112%}
- .hp-earned .e-top{position:absolute;inset:0}
- .hp-earned .e-bot{display:none}
- .hp-earned .shot-col{grid-row:2;grid-column:1;position:relative;z-index:1;align-self:start;justify-self:center;width:78%;margin-top:36%}
+ /* phone + tablet: the stack at 220% width; copy then shirt on the pale middle, below the cloud band and above the strips */
+ .hp-earned{--aw:220vw;padding:calc(var(--ah) * .4) 0 calc(var(--ah) * .2)}
+ /* at 220% the stars would sit off-screen at the sides, so the star layer alone is drawn at screen width and scatters across the top band */
+ .hp-earned .earned-art img.stars{width:100vw}
+ .hp-earned .copy{padding:0 0 24px}
+ .hp-earned .shot-col{width:min(78%,420px);margin:0 auto calc(var(--ah) * -.08)}
  .hp-earned .shot-col .cut{display:block;width:100%;height:auto}
 }
