@@ -1,10 +1,10 @@
 /* Free Calculators: /calculators/ directory + the 9 calculator pages (pages/calculators.mjs). Sits on the v3 foundation (chrome/v3.css).
-   Warm panels (Mercedes, 2026-10-03: "add the color back, it's a tad bland"): the wireframe's warm cream tints, black text on them,
-   orange only for the button fill, big headline words and arrows (never small text).
+   Blue-mist panels (2026-10 rebrand; were the 2026-10-03 warm peach tints, Mercedes: "add the color back, it's a tad bland"), navy text,
+   sky blue only as the button fill (navy text on it).
 
    TYPE SCALE: the site-wide --s3-fs-* tokens in chrome/v3.css (Mercedes, 2026-10-03: text too small, sizes random). Nothing under
    15px (--s3-fs-label is the floor). Only display-level sizes (s3-display, result numbers, tip numerals, Club amounts) are fluid/fixed exceptions. */
-.cdir{--cx-warm:#f8ece2;--cx-warm2:#f1dccb;--cx-rule:#e2c9b6;
+.cdir{--cx-warm:var(--s3-mist);--cx-warm2:var(--s3-mist-ink);--cx-rule:var(--s3-mist-ink);
   --cx-h2:400 var(--s3-fs-h2)/1 var(--s3-serif);--cx-h3:400 var(--s3-fs-h3)/1.05 var(--s3-serif);
   --cx-title:400 var(--s3-fs-title)/1.1 var(--s3-serif);--cx-lede:var(--s3-fs-lede)/1.45 var(--s3-serif);--cx-body:var(--s3-fs-body-serif)/1.5 var(--s3-serif);--cx-label:var(--s3-fs-label)}
 .cdir .s3-label,.cdir .s3-link{font-size:var(--cx-label)}
@@ -12,13 +12,12 @@
 .cdir .s3-lede{font:var(--cx-lede)}
 .cdir .s3-h2{font:var(--cx-h2)!important;letter-spacing:-.035em!important}
 .cdir .s3-h3{font:var(--cx-h3)!important}
-.cdir .s3-fine{font-size:var(--s3-fs-fine);color:#55514c}
-/* Links + eyebrows in orange like the wireframe (Mercedes, 2026-10-03). --s3-or-text is ~3.1 to 3.6:1 on these backgrounds, which only
-   passes as LARGE text, so orange text here is always 20px bold (--s3-fs-body-serif); never shrink it while it stays orange. */
-.s3 .cdir a.s3-link{color:var(--s3-or-text);font-size:var(--s3-fs-body-serif);letter-spacing:.1em}
-.s3 .cdir .eyebrow{color:var(--s3-or-text);font-size:var(--s3-fs-body-serif)}
+.cdir .s3-fine{font-size:var(--s3-fs-fine);color:var(--s3-muted)}
+/* Links + eyebrows: navy (were orange until the 2026-10 rebrand), kept at the 20px size Mercedes saw on 2026-10-03. */
+.s3 .cdir a.s3-link{color:var(--s3-navy);font-size:var(--s3-fs-body-serif);letter-spacing:.1em}
+.s3 .cdir .eyebrow{color:var(--s3-navy);font-size:var(--s3-fs-body-serif)}
 .cdir .ico{display:grid;place-items:center;flex:none;width:56px;height:56px;border-radius:50%;background:var(--cx-warm2)}
-.cdir .ico svg{width:26px;height:26px;fill:none;stroke:#0a0a0a;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.cdir .ico svg{width:26px;height:26px;fill:none;stroke:var(--s3-navy);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
 
 /* hero */
 .cdir-hero{position:relative;overflow:hidden}
@@ -36,7 +35,7 @@
 .cdir-crumbs a:hover{text-decoration:underline;text-underline-offset:4px}
 .cdir-crumbs [aria-current]{display:inline-flex;align-items:center;min-height:44px;color:var(--s3-ink)}
 
-/* warm panel: the calculator itself (directory featured + each calculator page) */
+/* blue-mist panel: the calculator itself (directory featured + each calculator page) */
 .cdir-panel{background:var(--cx-warm);padding:clamp(28px,4vw,64px)}
 .cdir-panel .s3-split{align-items:start}
 
@@ -45,7 +44,7 @@
 .cdir-form .s3-btn{grid-column:1/-1;justify-self:start}
 .cdir .cdir-form label{font-size:var(--s3-fs-ui);letter-spacing:.01em}
 .cdir-in{position:relative}
-.s3 .cdir-in input{min-height:64px;background:#fff;border-color:#cdb6a3;font:400 var(--s3-fs-num)/1.2 var(--s3-serif)}
+.s3 .cdir-in input{min-height:64px;background:#fff;border-color:#8f8a83;font:400 var(--s3-fs-num)/1.2 var(--s3-serif)}
 .cdir-in>span{position:absolute;top:0;bottom:0;display:flex;align-items:center;font:400 var(--s3-fs-num) var(--s3-serif);color:var(--s3-muted);pointer-events:none}
 .cdir-in.pre>span{left:16px}
 .cdir-in.pre input{padding-left:38px}
@@ -102,7 +101,7 @@
 .cdir-cards .soon{margin-top:auto;display:inline-flex;align-items:center;min-height:44px;color:var(--s3-muted)}
 
 /* bridge to the Clubs */
-.cdir-bridge{background:#f7e9de}
+.cdir-bridge{background:var(--s3-mist)}
 .cdir-bridge .s3-split{align-items:center}
 .cdir-bridge h2{margin-bottom:18px}
 .cdir-bridge .s3-lede{margin-bottom:28px}

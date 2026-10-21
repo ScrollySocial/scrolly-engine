@@ -18,7 +18,7 @@ const RESOURCES = [
   // scorecards that no longer exist on the workbook pages, so the row is now the two free quizzes + calculators, all real screens.
   ['Offer Quiz', 'hp3-res-quiz-offer.webp', '/quiz/', 'Find your first offer'],
   ['Next Move Quiz', 'hp3-res-quizzes.webp', '/next-move/', 'Find your next move'],
-  ['Calculators', 'hp3-res-calculators-v2.webp', '/calculators/'],
+  ['Calculators', 'hp3-res-calculators-v3.webp', '/calculators/'],
 ];
 
 // Hand-drawn doodles over the Club tigers (Mercedes 2026-10-20): a crown on the $24K tiger, sparkles on $1K, speed swooshes on $10K, so the

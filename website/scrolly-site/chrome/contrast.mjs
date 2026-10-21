@@ -12,6 +12,8 @@ const ROWS = [
   ['Muted text on account panel #ece6dc', C.muted, C.panel],
   ['Text on blue-mist card / panel / light button', C.navy, C.mist],
   ['Primary button, tags, sign-up button: navy on sky', C.navy, C.sky],
+  ['Calculator adjust note, sales-page chart tints: navy on mist-ink #c9d1e6', C.navy, C.mistInk],
+  ['Muted text on mist-ink #c9d1e6', C.muted, C.mistInk],
   ['Button hover, sale badge: white on navy', C.white, C.navy],
   ['Earned band text: white on navy', C.white, C.navy],
   ['Accent word on navy ("They’re earned."): sky on navy', C.sky, C.navy],
