@@ -40,9 +40,31 @@ const CLIP = svgUrl('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 150
 const SPARK = '<svg viewBox="0 0 40 40"><path d="M20 0c1.5 12 6.5 17 20 20-13.5 3-18.5 8-20 20C18.5 28 13.5 23 0 20 13.5 17 18.5 12 20 0z" fill="currentColor"/></svg>';
 const ARROW = '<svg viewBox="0 0 220 160"><path d="M12 20c60-12 140 6 170 92" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round"/><path d="M150 96l34 22 12-40" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 
+// Hand-drawn stars (Mercedes 2026-10-21: "more like hand drawn elements rather than computer shapes", and fewer):
+// jittered points, two loose marker passes, a wobble filter, optional scribbled fill. Seeded so a rebuild looks the same.
+export function handStar(c, { pts = 4, fill = false, sw = 3.4, seed = 3 } = {}) {
+  let hs = seed; const hr = () => ((hs = (hs * 9301 + 49297) % 233280) / 233280);
+  const path = (j) => {
+    const p = [];
+    for (let i = 0; i < pts * 2; i++) {
+      const a = (i / (pts * 2)) * Math.PI * 2 - Math.PI / 2, r = i % 2 ? 9 + hr() * 3 : 46 + hr() * 6;
+      p.push([50 + Math.cos(a) * r + (hr() - .5) * j, 50 + Math.sin(a) * r + (hr() - .5) * j]);
+    }
+    return 'M' + p.map(([x, y], i) => {
+      if (!i) return `${x.toFixed(1)} ${y.toFixed(1)}`;
+      const [px, py] = p[i - 1];
+      return `Q${((px + x) / 2 + (hr() - .5) * 6).toFixed(1)} ${((py + y) / 2 + (hr() - .5) * 6).toFixed(1)} ${x.toFixed(1)} ${y.toFixed(1)}`;
+    }).join(' ') + ` Q${(p[0][0] + 3).toFixed(1)} ${(p[0][1] + 2).toFixed(1)} ${(p[0][0] + 1.5).toFixed(1)} ${(p[0][1] + 5).toFixed(1)}`;
+  };
+  const id = 'hs' + seed + '_' + Math.round(hr() * 1e6);
+  const scrib = fill ? Array.from({ length: 9 }, (_, i) => `<path d="M${(30 + hr() * 8).toFixed(1)} ${22 + i * 7} L${(70 - hr() * 8).toFixed(1)} ${32 + i * 7}" stroke="${c}" stroke-width="${(sw * .8).toFixed(2)}" stroke-linecap="round" opacity=".75"/>`).join('') : '';
+  return `<svg viewBox="0 0 100 100" overflow="visible"><defs><filter id="${id}"><feTurbulence baseFrequency=".06" numOctaves="2" seed="${Math.round(hr() * 99)}"/><feDisplacementMap in="SourceGraphic" scale="3.5"/></filter><clipPath id="c${id}"><path d="${path(0)}"/></clipPath></defs><g filter="url(#${id})" fill="none" stroke-linecap="round" stroke-linejoin="round"><g clip-path="url(#c${id})">${scrib}</g><path d="${path(4)}" stroke="${c}" stroke-width="${sw}"/><path d="${path(7)}" stroke="${c}" stroke-width="${(sw * .55).toFixed(2)}" opacity=".7"/></g></svg>`;
+}
+
 // Doodles (Mercedes 2026-10-21: "add doodles"): a hand-drawn layer placed per slide, in the same hand as the Reel
 // covers (Covered By Your Grace notes, drawn arrows) plus sparkle stars like the site footer.
-// slide.doodles = [{k: note|arrow|star|circle|underline|tape, x, y, w, rot, text, c: navy|sky|white|pink, flip}]
+// slide.doodles = [{k: note|arrow|star|circle|underline|tape, x, y, w, rot, text, c: navy|sky|white|pink, flip,
+//   star only: pts (4 or 5), fill (scribbled)}]. Keep stars to about 3 on a cover and 0 to 2 on other slides.
 // Notes are text, so on light grounds they stay navy; sky is for shapes only (sky text on off-white fails contrast).
 const DOODLE_SVG = {
   arrow: '<svg viewBox="0 0 120 170"><path d="M38 8c-30 30-18 70 18 70 26 0 26-34 2-30-30 6-30 60-6 92" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round"/><path d="M34 128l18 22 20-20" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg>',
@@ -52,12 +74,13 @@ const DOODLE_SVG = {
 };
 const DOODLE_C = { navy: '#0a1930', sky: '#4da3ff', white: '#f7f3ec', pink: '#ff3b7f' };
 function doodles(slide, dark) {
-  return (slide.doodles || []).map((d) => {
+  return (slide.doodles || []).map((d, n) => {
     const c = DOODLE_C[d.c] || (d.k === 'note' ? (dark ? DOODLE_C.white : DOODLE_C.navy) : DOODLE_C.sky);
     if (d.k === 'note' && !dark && c !== DOODLE_C.navy && c !== DOODLE_C.white) throw new Error(`doodle note "${d.text}": only navy text on a light ground`);
     const st = `left:${d.x}px;top:${d.y}px;${d.w ? `width:${d.w}px;` : ''}${d.h ? `height:${d.h}px;` : ''}color:${c};rotate:${d.rot || 0}deg;${d.flip ? 'scale:-1 1;' : ''}`;
     if (d.k === 'note') return `<div class="dd dd-note" style="${st}">${esc(d.text)}</div>`;
     if (d.k === 'tape') return `<div class="dd dd-tape" style="${st}"></div>`;
+    if (d.k === 'star') return `<div class="dd dd-star" style="${st}">${handStar(c, { pts: d.pts || 4, fill: !!d.fill, seed: 11 + n * 17 + Math.round(d.x + d.y) })}</div>`;
     if (!DOODLE_SVG[d.k]) throw new Error(`unknown doodle "${d.k}" (note, arrow, star, circle, underline, tape)`);
     return `<div class="dd dd-${d.k}" style="${st}">${DOODLE_SVG[d.k]}</div>`;
   }).join('');
@@ -133,7 +156,7 @@ export function slideHtml(post, slide, i, ctx) {
         slide.media = slide.media || post.media?.pano;
       }
       const m = slide.media ? mediaFor(slide.media, slide.focus) : null;
-      if (['photo', 'pano', 'image'].includes(slide.layout) && !m) throw new Error(`slide ${i + 1}: photo layout needs slide.media`);
+      if (['photo', 'pano', 'image', 'numcover'].includes(slide.layout) && !m) throw new Error(`slide ${i + 1}: photo layout needs slide.media`);
       // photoBg: any layout over a full-bleed photo of Mercedes, with a navy scrim behind the text (white text, sky accents).
       const pb = slide.photoBg ? mediaFor(slide.photoBg, slide.photoFocus) : null;
       const pbHtml = pb ? `<div class="bg pbg" style="background-image:url('${pb.url}');background-position:${pb.focus || 'center'}"></div><div class="scrim scrim-${slide.scrim || 'bottom'}"></div>` : '';

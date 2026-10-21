@@ -46,6 +46,8 @@ function screen(sc = {}, media) {
 export const LAYOUTS = {
   // Slide 2 second hook: two text sections, top right-aligned, bottom left-aligned (content-rules 5).
   hook2: (s) => `<div class="txt fit"><p class="h-top">${rich(s.top)}</p><p class="h-bot">${rich(s.bottom)}</p></div>`,
+  // Photo cover with one big surprising number (Mercedes's pick 2026-10-21): photo + navy fade, number, bold line, handwriting.
+  numcover: (s, m) => `<div class="bg" style="background-image:url('${m.url}');background-position:${m.focus || 'center 10%'}"></div><div class="nc-fade"></div><div class="nc"><div class="nc-big">${esc(s.big)}</div><div class="nc-line">${esc(s.text)}</div>${s.hand ? `<div class="nc-hand">${esc(s.hand)}</div>` : ''}</div>`,
   text: (s) => para(s),
   number: (s) => `<div class="big">${esc(s.big)}</div>${para(s)}`,
   formula: (s) => `<div class="formula">${(s.formula || []).map((t) => (/^[÷×=+−-]$/.test(t)
@@ -133,6 +135,13 @@ export const LAYOUT_CSS = (brand) => `
 .checks{list-style:none;display:flex;flex-direction:column;gap:26px;width:100%}
 .checks li{display:flex;align-items:center;gap:26px;background:var(--paper);color:var(--paper-ink);border-radius:24px;padding:26px 30px;font-size:50px;font-weight:500}
 .ck{width:58px;height:58px;border-radius:50%;background:var(--pop);color:#0a1930;display:grid;place-items:center;flex:none}.ck svg{width:34px}
+/* numcover */
+.lay-numcover{padding:0}
+.nc-fade{position:absolute;left:0;right:0;bottom:0;height:760px;background:linear-gradient(rgba(10,25,48,0),rgba(10,25,48,.92) 45%)}
+.nc{position:absolute;left:40px;right:40px;bottom:110px;text-align:center;color:#fff}
+.nc-big{font-family:'${brand.fonts.headline.family}',serif;font-size:380px;line-height:1;color:#4da3ff;letter-spacing:-.02em}
+.nc-line{font-size:76px;font-weight:800;text-transform:uppercase;line-height:1.05;margin-top:10px}
+.nc-hand{font:400 62px/1.1 'Covered By Your Grace',cursive;letter-spacing:.03em;color:#f7f3ec;margin-top:40px}
 /* image */
 .lay-image{padding:0}
 /* pano */
