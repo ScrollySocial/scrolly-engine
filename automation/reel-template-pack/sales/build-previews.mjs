@@ -202,7 +202,7 @@ const MAP_W = 680, MAP_H = 340, CX = 340, CY = 170, LX = 196, RX = 484;
 const labelY = (side, k) => side === 'l' ? 70 + k * 100 : 35 + k * 90;   // even spacing per side, centred on the phone
 
 const editSection = (d) => `<section class="s3-sec tight edits"><div class="s3-wrap edits-row"><div class="edit-text"><h2 class="s3-h2">Make it yours</h2>
-  <p class="s3-lede" style="margin-top:12px">Change it all in CapCut, on your phone or computer. ${ph('[CONFIRM: phone editing, from the CapCut test]')}</p></div>
+  <p class="s3-lede" style="margin-top:12px">Change it all in CapCut.</p></div>
   <div class="burst-map"><svg class="rays" viewBox="0 0 ${MAP_W} ${MAP_H}" aria-hidden="true">${EDIT_MAP.map(([, , side, k]) => { const x = side === 'l' ? LX + 8 : RX - 8; const y = labelY(side, k); return `<path d="M${CX} ${CY} L${x} ${y}"/><circle cx="${x}" cy="${y}" r="3.5"/>`; }).join('')}</svg>
   <div class="phone"><img src="${img(d.editPhone)}" alt=""></div>
   ${EDIT_MAP.map(([icon, b, side, k]) => `<span class="lbl ${side}" style="${side === 'l' ? `right:${MAP_W - LX}px` : `left:${RX}px`};top:${labelY(side, k) - 16}px"><svg viewBox="0 0 48 48" aria-hidden="true">${icon}</svg>${esc(b)}</span>`).join('')}</div></div></section>`;
@@ -229,14 +229,13 @@ const INCLUDES = (projectNote) => [
   ['A matching carousel', 'Same story as slides. Edit free in Canva.'],
 ];
 const FAQ = (fonts) => [
-  ['Can I do it all on my phone?', '[CONFIRM after the CapCut test: what needs a computer (install) and what works on a phone (edit, post)]'],
   ['How do I edit the carousel?', 'Open its Canva link (a free account works), swap the photos and type over the [brackets].'],
   ['Is music included?', 'No. The Reels have no audio: no music and no sound effects. Add a sound in Instagram after you upload, so your Reel never gets muted.'],
   ['Do I need to install fonts?', fonts],
   ['How do I change the words?', 'Double-click a text box and type.'],
   ['My computer warns me about the installer.', 'That is normal. Click More info, then Run anyway.'],
   ['Can I swap a clip?', 'Yes. Right-click it on the timeline and choose Replace.'],
-  ['Do I need CapCut Pro or Canva Pro?', 'No. The templates open in free CapCut and the carousels in free Canva. [CONFIRM: no Pro features, from the CapCut test of all 25]'],
+  ['Do I need Canva Pro?', 'No. The carousels open in free Canva.'],
 ];
 
 /* ------------------------------------------------------------------ Halloween: night look, real template props */
@@ -397,8 +396,7 @@ ${howItWorks(d)}
 <section class="s3-sec cta-p cta-h" id="buy"><div class="s3-wrap cta-card">
   <h2 class="s3-h2">${esc(d.ctaHead)}</h2>
   <div class="buy">${price(d)}<a class="s3-btn" href="${d.buyUrl || '#buy'}">${esc(d.button)}</a></div>
-  <p class="s3-fine">${ph(d.ctaLine)}</p>
-  <p class="s3-fine">${ph('[REEL EDITOR UPSELL: one line once it has a name, link and launch date]')}</p></div></section>
+  <p class="s3-fine">${ph(d.ctaLine)}</p></div></section>
 ${notes(d)}`;
   return shell(d, PCSS + HCSS + HCSS2, body);
 }
@@ -501,13 +499,13 @@ const SCROLL_JS = `(function(){var row=document.getElementById('reel-row');if(!r
 
 function physicalPage(d) {
   // all 25 as phone previews in one sideways-scrolling row
-  const list = d.templates.map((t, i) => `<div class="rg"><p class="num">${i + 1} of 25${d.launchNow ? (d.launchNow.includes(i + 1) ? ' <span class="in">In today</span>' : ' <span class="soon">Arriving soon</span>') : ''}</p><div class="phone"><img src="${img(`p${String(i + 1).padStart(2, '0')}.jpg`)}" alt="${esc(t.name)}: its Reel cover" loading="lazy"></div>
+  const list = d.templates.map((t, i) => `<div class="rg"><p class="num">${i + 1} of 25</p><div class="phone"><img src="${img(`p${String(i + 1).padStart(2, '0')}.jpg`)}" alt="${esc(t.name)}: its Reel cover" loading="lazy"></div>
     <h3>${esc(t.name)}</h3></div>`).join('');
   const body = `
 <section class="s3-sec hero-p"><div class="prop feed" aria-hidden="true">${[1, 3, 10, 12, 22, 23, 2, 9, 20, 25, 13, 16].map((n) => `<img src="${img(`p${String(n).padStart(2, '0')}.jpg`)}" alt="">`).join('')}</div><img class="prop burst-h" src="${img('burst-mist.webp')}" alt=""><img class="prop tri" src="${img('tripod.webp')}" alt=""><div class="s3-wrap">
   <h1 class="s3-display head-p"><span class="l1">${esc(d.headline.split(': ')[0])}:</span> <span class="done">${esc(d.headline.split(': ')[1])}</span></h1>
   <p class="s3-lede" style="margin-top:28px">${esc(d.sub)}</p>
-  <div class="buy">${price(d)}<a class="s3-btn" href="#buy">${esc(d.button)}</a></div>
+  <div class="buy">${price(d)}<a class="s3-btn" href="${d.buyUrl || '#buy'}">${esc(d.button)}</a></div>
   <p class="s3-fine">${ph(d.priceLine)}</p>
 </div></section>
 <section class="s3-sec tight reels-p"><div class="s3-wrap">
@@ -525,9 +523,8 @@ ${howItWorks(d)}
   <div class="s3-faq two">${d.faq.map(([q, a]) => `<details><summary>${esc(q)}</summary><div>${ph(a)}</div></details>`).join('')}</div></div></section>
 <section class="s3-sec cta-p" id="buy"><div class="s3-wrap cta-card">
   <h2 class="s3-h2">${esc(d.ctaHead)}</h2>
-  <div class="buy">${price(d)}<a class="s3-btn" href="#buy">${esc(d.button)}</a></div>
-  <p class="s3-fine">${ph(d.ctaLine)}</p>
-  <p class="s3-fine">${ph('[REEL EDITOR UPSELL: one line once it has a name, link and launch date]')}</p></div></section>
+  <div class="buy">${price(d)}<a class="s3-btn" href="${d.buyUrl || '#buy'}">${esc(d.button)}</a></div>
+  <p class="s3-fine">${ph(d.ctaLine)}</p></div></section>
 ${notes(d)}
 <script>${SCROLL_JS}</script>`;
   return shell(d, PCSS, body);
@@ -592,20 +589,20 @@ const physical = {
   title: 'Product Reels draft',
   headline: "Your month's content: DONE",
   headlines: ['Reels for the things you make, pack and ship', '25 Reels your product can star in', 'Film a few clips. Drop them in. Post a Reel that sells.', 'Collage Reels for physical products, ready for your clips'],
-  sub: 'A growing pack of 25 Reels for your product. Add your clips and post.',
+  sub: '25 ready-made Reels for your product. Add your clips and post.',
   price: '$17.99',
   button: 'Get all 25 Reels',
-  priceLine: '[N] templates in your download today, about 5 more every day until all 25 are in. [DATE WORDING: your OK]',
-  ctaLine: '[N] in today, the rest arrive as updates. [DATE WORDING: your OK]',
+  priceLine: 'All 25 templates in one download.',
+  ctaLine: 'All 25 templates in one download.',
+  // goes live 2026-10-21 (WooCommerce product 1500, all 25 at launch): the buttons add it to the cart
+  buyUrl: 'https://scrollyseo.com/?add-to-cart=1500',
   whoTags: ['Print on demand', 'Makers', 'Etsy sellers', 'Shopify stores', 'Small-batch brands', 'Boutiques'],
   whoPhotos: [['who-maker.mp4', 'A maker pouring candles'], ['who-pod.mp4', 'Screen printing a design'], ['who-shop.mp4', 'A shop owner packing an order']],
   brandIncludes: true,
   editPhone: 'p23.jpg',
   rc: { phone: 'p09.jpg', slides: ['c09-2.jpg', 'c09-3.jpg', 'c09-6.jpg'] },
-  // the templates in the download on launch day, e.g. [8, 9, 10, 12, 20]; null = not picked yet (shows [N])
-  launchNow: null,
   getTitle: 'All 25 Reels',
-  getLede: 'Swipe to see all 25. [N] are in today; the rest arrive as updates.',
+  getLede: 'Swipe to see all 25.',
   includes: INCLUDES('Real props, collage and motion, built in.'),
   formatNote: '',
   templates: [
@@ -636,13 +633,13 @@ const physical = {
     T('Mine vs the usual kind', 'Show how yours is made differently.', 'a handmade bar next to a store bar', 'a heavyweight tee next to a thin one'),
   ],
   who: 'If you sell a product you can film, these are for you.',
-  faq: [['When do I get all 25?', '[N] are in your download today. About 5 more are added every day until all 25 are in. [DATE WORDING + how buyers get each update: your OK]'], ...FAQ('No, they come with the template.')],
+  faq: [...FAQ('No, they come with the template.')],
   ctaHead: 'A month of Reels, ready for your clips',
   listing: "25 Reel templates for CapCut, made for shops that sell physical products: packing videos, before and afters, gift guides, unboxings, reviews, tests, new drops and more. Film a few clips on your phone, drop them in a folder and double-click the installer: the template opens in CapCut with your clips in place. Type your words over the brackets and export. Each template comes with a shot list, a recipe card, a one-page guide, a phone kit and a matching Instagram carousel you can edit free in Canva. Each one suggests a sound to add in Instagram (no sound files included).",
   decisions: [
     'Price: $17.99 (decided 2026-10-19).',
     'Carousels (2026-10-20): Canva links exist for 01 to 16, 20, 22, 23; 17, 18, 19, 21, 25 are being finished; 24 has none yet. "Every template comes with" lists the carousel, so a template only goes in the download once its carousel link is ready.',
-    'Growing pack (2026-10-20): at least 5 templates at launch, about 5 more a day until all 25. Which ones are in on day one, and the date wording, are yours to pick. All 25 have upload zips now.',
+    'All 25 at launch (2026-10-21): Mercedes approved every template; WooCommerce product 1500 ($17.99), kept as a draft until her publish OK. Both buy buttons add it to the cart. Template 24 has no carousel link yet, while the page says every template comes with one.',
     'Sound picks: none for the zipped templates yet.', 'Reel Editor upsell: no name, link or launch yet.',
     'Mac: Mercedes is testing. The installer is a Windows script; the page names no platform until the test is done.',
     'Before live: the CapCut check of the highlight boxes, then install one zip on a second computer.',

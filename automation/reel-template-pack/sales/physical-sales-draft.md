@@ -78,6 +78,18 @@ to confirm no Pro features.
   for and the buy card (lavender and baby pink are retired; hot pink means Mercedes only). DONE stays navy italic with
   no marker, since hero headlines never get one.
 
+## Ready to publish (2026-10-21)
+
+- All 25 at launch (Mercedes approved every template), not a growing pack: "25 ready-made Reels for your product",
+  "All 25 templates in one download", and the "When do I get all 25?" question removed.
+- Both buy buttons go to https://scrollyseo.com/?add-to-cart=1500 (WooCommerce product 1500, $17.99, a draft until her
+  publish OK).
+- Untested claims removed (both pages): "on your phone or computer", the "Can I do it all on my phone?" question and
+  the CapCut Pro answer. The question is now "Do I need Canva Pro? No. The carousels open in free Canva."
+- The Reel Editor upsell placeholder is gone from both buy sections. No highlighted placeholders remain.
+- Still true on the page: "Is music included? No ... no music and no sound effects", "Your audio" in Make it yours,
+  and "A matching carousel" for every template. Template 24 has no Canva carousel link yet.
+
 ## Open decisions (Mercedes)
 
 | Decision | State |
