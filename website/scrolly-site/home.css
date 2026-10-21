@@ -191,15 +191,17 @@ body:has(.hp){margin:0;background:#f7f3ec}
 .hp-earned .e-bot img{top:auto;bottom:0}
 .hp-earned .wrap{position:relative;z-index:1}
 @media(min-width:901px){
- /* 89% of the art's height (Mercedes: "narrower just a bit", ~640px at 1280): the slices trim ~80px of plain pale middle, the cloud
-    band, stars and strips stay whole. Copy starts just below the cloud band; the shirt sits higher, overlapping the clouds, so it
-    clears the bottom strips. */
- .hp-earned{min-height:calc(var(--ah) * .89);padding:calc(var(--ah) * .385) 0 0}
+ /* Height = the copy: clouds end at 41% of the art under the copy's columns and the strips start 18.9% from its bottom (measured), so the
+    copy sits fully in the plain pale middle with 28px above and below, vertically centred (Mercedes: nothing over the clouds). That
+    trims the plain middle to ~690px at 1280 (natural 720). The shirt sits higher, overlapping the clouds, and clears the strips. */
+ .hp-earned{padding:calc(var(--ah) * .41 + 28px) 0 calc(var(--ah) * .189 + 28px)}
  .hp-earned .wrap{display:grid;grid-template-columns:minmax(0,460px) auto;justify-content:center;align-items:start;column-gap:clamp(40px,5vw,96px)}
  .hp-earned .copy{padding:0}
  .hp-earned h2{margin-bottom:18px}
  .hp-earned .tabs{margin-top:18px}
- .hp-earned .shot-col{margin-top:calc(var(--ah) * -.235)}
+ .hp-earned .shot-col{margin-top:calc(var(--ah) * -.26 - 28px)}
+ /* the star layer sits ~8% of the art's height higher than the card, so every star stays in the top cloud band, clear of the headline */
+ .hp-earned .earned-art img.stars{transform:translate(-50%,calc(var(--ah) * -.08))}
  .hp-earned h2{font-size:clamp(2rem,2.6vw,3.4rem)}
  .hp-earned h2 span{display:block;white-space:nowrap}
  .hp-earned p{max-width:none}
