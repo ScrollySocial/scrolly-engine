@@ -1,43 +1,38 @@
-"""The designed Reel cover as its own editable CapCut project in every buyer folder (Mercedes, 2026-10-21).
+"""The designed Reel cover as the first 0.2 s of every template's CapCut project (Mercedes, 2026-10-21).
 
 CapCut 8.9's own cover editor (the "Cover" button on the main track) only takes a flat picture on the free plan: adding
-or editing text there asks for an upgrade, so an editable cover can't live inside the template project. Instead each
-buyer folder gets a second small project, "NN COVER Title": one still built from build/cover_designs.py cNN() with the
-same editable pieces as the template (the buyer's clip 1 fills the frame, every word is CapCut text, doodles are
-Scrolly Doodles letters, props are pictures). The buyer changes the words, exports one frame and uploads it as the
-Reel's cover on Instagram. The flat cover (NN-.../cover/cover.png) also becomes the home-screen picture
-(draft_cover.jpg) of both projects.
+or editing text there asks for an upgrade. A separate cover project worked but was more steps for buyers, so (her pick)
+the cover is now the opening 0.2 s of the Reel itself, built from build/cover_designs.py cNN() with the same editable
+pieces as the template: the buyer's clip 1 fills the frame (on the main track), every word is CapCut text, doodles are
+Scrolly Doodles letters, props are pictures. Everything else in the template starts 0.2 s later. When posting, the
+buyer picks that first frame as the Reel's cover in Instagram. The flat cover (NN-.../cover/cover.png) is also the
+project's home-screen picture (draft_cover.jpg).
 
 Run after make.py (a rebuild wipes the buyer folder), then zip_upload.py:
     python build/capcut_cover.py 24 02 h6        (from automation/reel-template-pack)
-No video render: the only encode is the cover's 4-second placeholder clip, from one still.
+Running it again swaps the cover for the current design (the layers it added are listed in cover-layers.json in the
+project). No video render and no encode: the cover reuses the template's own clip 1 placeholder.
 """
-import importlib, json, shutil, sys
+import copy, importlib, json, shutil, sys, tempfile
 from pathlib import Path
 from PIL import Image
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import engine as E
 import editable as Ed
-import covers as CV
-from engine import W, H
+from engine import W, H, US
 
-SECS = 4.0     # the cover project's length: a still, long enough to see and to export a frame from
+D = 0.2                     # the cover's length at the start of the Reel (seconds)
+DU = int(round(D * US))
+RECORD = 'cover-layers.json'
 
-HOW_TO = """How to make your Reel cover (free CapCut)
+HOW_TO = """How to set your Reel cover
 
-"{cover}" is your Reel's cover as its own CapCut project. The installer puts it on CapCut's home screen next to the
-template, with your clip 1 in the background.
+The first 0.2 seconds of the template are your Reel's cover: your clip 1 behind the template's words. Change it like
+the rest of the template: double-click a word to change it, its font, colour or outline (the doodles and tape are text
+too, so they recolour the same way), or right-click clip 1 and choose Replace.
 
-1. Open "{cover}" in CapCut.
-2. Swap the background: right-click the clip on the timeline, choose Replace, and pick the clip or photo you want
-   behind the words.
-3. Double-click any word to change it, its font, colour or outline. Doodles are letters too: change their colour the
-   same way.
-4. Export it as a picture: Export, then pick the image option (or export it as a short video and take a screenshot
-   of it on your phone).
-5. On Instagram, when you post the Reel, tap Edit cover, then Add from camera roll, and pick your cover.
-
-Instagram's profile grid shows only the middle of the cover (3:4), so the words already sit in the middle.
+When you post the Reel on Instagram, tap Edit cover and slide to the very first frame. Instagram's profile grid shows
+only the middle of the cover (3:4), so the words already sit in the middle.
 """
 
 
@@ -47,15 +42,14 @@ def spec_for(key):
 
 
 def _project(buyer):
-    """The template's CapCut project in the buyer folder (the one that isn't a COVER project)."""
     hits = [p for p in buyer.iterdir() if p.is_dir() and (p / 'draft_content.json').exists() and ' COVER ' not in p.name]
     if len(hits) != 1: sys.exit(f'{buyer}: expected one template project, found {[p.name for p in hits]}')
     return hits[0]
 
 
 def layers(cv):
-    """covers.Cover -> engine.Layers on 0..SECS, in CapCut's paint order (clip, pictures, then text)."""
-    L = E.Layers(); z = 0; t = (0.0, SECS)
+    """covers.Cover -> engine.Layers on 0..D, in CapCut's paint order (clip, pictures, then text)."""
+    L = E.Layers(); z = 0; t = (0.0, D)
     for l in cv.L:
         if l['kind'] == 'clip':
             L.clip(l['slot'], t, z, l['pos'], (W, H), l['rot']); z += 1
@@ -75,14 +69,47 @@ def layers(cv):
     return L, italic
 
 
-def placeholder_clip(cv, slot, dest):
-    """The cover's clip slot: covers.placeholder() (the dark, video-like card the designed cover shows) as a 4 s clip."""
-    l = next(x for x in cv.L if x['kind'] == 'clip' and x['slot'] == slot)
-    png = dest / f'slot-{slot + 1}.png'; CV.placeholder(slot, l['what'], l['at']).save(png)
-    mp4 = dest / f'slot-{slot + 1}.mp4'
-    E.run([E.FFMPEG, '-v', 'error', '-y', '-loop', '1', '-framerate', '30', '-i', str(png), '-t', str(SECS + 1),
-           '-c:v', 'libx264', '-preset', 'veryfast', '-tune', 'stillimage', '-pix_fmt', 'yuv420p', '-movflags', '+faststart', str(mp4)])
-    png.unlink(); return mp4
+def _shift(d, du):
+    for t in d['tracks']:
+        for s in t['segments']: s['target_timerange']['start'] += du
+    d['duration'] += du
+
+
+def _all_ids(x, out):
+    if isinstance(x, dict):
+        if isinstance(x.get('id'), str): out.add(x['id'])
+        for v in x.values(): _all_ids(v, out)
+    elif isinstance(x, list):
+        for v in x: _all_ids(v, out)
+    return out
+
+
+def strip(proj):
+    """Take out a cover this script added before (cover-layers.json), so a rerun never stacks two covers."""
+    rec_f = proj / RECORD
+    if not rec_f.exists(): return
+    rec = json.loads(rec_f.read_text(encoding='utf-8'))
+    segs, tracks, mats = set(rec['segments']), set(rec['tracks']), set(rec['materials'])
+    for f in _drafts(proj):
+        d = json.loads(f.read_text(encoding='utf-8'))
+        d['tracks'] = [t for t in d['tracks'] if t['id'] not in tracks]
+        for t in d['tracks']: t['segments'] = [s for s in t['segments'] if s['id'] not in segs]
+        for k, v in d['materials'].items():
+            if isinstance(v, list): d['materials'][k] = [m for m in v if not (isinstance(m, dict) and m.get('id') in mats)]
+        _shift(d, -rec['us'])
+        f.write_text(json.dumps(d, ensure_ascii=False, separators=(',', ':')), encoding='utf-8')
+    _meta_duration(proj, -rec['us'])
+    for a in rec['art']: (proj / 'Resources' / 'art' / a).unlink(missing_ok=True)
+    rec_f.unlink()
+
+
+def _drafts(proj):
+    return [proj / 'draft_content.json'] + list((proj / 'Timelines').glob('*/draft_content.json'))
+
+
+def _meta_duration(proj, du):
+    f = proj / 'draft_meta_info.json'; m = json.loads(f.read_text(encoding='utf-8'))
+    m['tm_duration'] = int(m['tm_duration']) + du; f.write_text(json.dumps(m, ensure_ascii=False, separators=(',', ':')), encoding='utf-8')
 
 
 def make(key):
@@ -94,34 +121,75 @@ def make(key):
     if not cover_png.exists(): sys.exit(f'{key}: no designed cover (run build/covers.py {key})')
     import cover_designs as CD
     cv = getattr(CD, f'c{key}')()
-    name = f'{spec["num"]} COVER {main.name.split(" ", 1)[1]}'
-    work = out / '_work_cover'
-    if work.exists(): shutil.rmtree(work)
-    (work / 'art').mkdir(parents=True)
+    for old in buyer.glob('* COVER *'): shutil.rmtree(old)            # the separate cover project (first version)
+    strip(main)
+
     L, italic = layers(cv); E.apply_centering(L.L)
-    slots = sorted({l['slot'] for l in L.L if l['kind'] == 'clip'})
-    if slots != list(range(len(slots))): sys.exit(f'{key}: cover clip slots must start at clip 1: {slots}')
-    slot_files = [placeholder_clip(cv, s, work) for s in slots]
-    art_files = {}
-    for n, img in L.A.items():
-        f = work / 'art' / f'{n}.png'; img.save(f); art_files[n] = f
-    for old in buyer.glob(f'{spec["num"]} COVER *'): shutil.rmtree(old)
-    proj = buyer / name
-    E.build_capcut(proj, name, slot_files, [SECS + 1] * len(slot_files), art_files, L.L)
-    files = [proj / 'draft_content.json'] + list((proj / 'Timelines').glob('*/draft_content.json'))
-    Ed._canvas(cv.stage, files); Ed._flags(files)
-    if italic:
-        (proj / 'Resources' / 'fonts').mkdir(exist_ok=True); shutil.copy2(E.BUNDLED_FONTS['dmsi'], proj / 'Resources' / 'fonts')
-        Ed._italicise(italic, files)
-    lic = Ed.FD / 'dmserifdisplay-OFL.txt'
-    if (proj / 'Resources' / 'fonts').exists() and lic.exists(): shutil.copy2(lic, proj / 'Resources' / 'fonts' / 'DMSerifDisplay-OFL.txt')
-    shutil.rmtree(work)
-    jpg = Image.open(cover_png).convert('RGB')
-    for p in (main, proj): jpg.save(p / 'draft_cover.jpg', quality=90)
-    shutil.copy2(E.HERE / 'installer' / 'install.ps1', buyer / 'install.ps1')    # installs both projects
-    (buyer / 'How to make your cover.txt').write_text(HOW_TO.format(cover=name).replace('\n', '\r\n'), encoding='utf-8')
-    print('cover project:', proj)
-    return proj
+    if {l['slot'] for l in L.L if l['kind'] == 'clip'} - {0}: sys.exit(f'{key}: the cover may only use clip 1')
+    slot1 = main / 'Resources' / 'slots' / 'slot-1.mp4'
+    probe = json.loads((main / 'draft_content.json').read_text(encoding='utf-8'))
+    secs = max(m['duration'] for m in probe['materials']['videos'] if m['path'].endswith('/Resources/slots/slot-1.mp4')) / US
+
+    with tempfile.TemporaryDirectory(prefix=f'cover{key}-') as tmp:
+        tmp = Path(tmp); (tmp / 'art').mkdir()
+        art_files = {}
+        for n, img in L.A.items():
+            f = tmp / 'art' / f'{n}.png'; img.save(f); art_files[n] = f
+        cp = tmp / 'proj'
+        E.build_capcut(cp, 'cover', [slot1], [secs], art_files, L.L)
+        Ed._flags([cp / 'draft_content.json'])
+        if italic: Ed._italicise(italic, [cp / 'draft_content.json'])
+        c = json.loads((cp / 'draft_content.json').read_text(encoding='utf-8'))
+        for a in art_files.values(): shutil.copy2(a, main / 'Resources' / 'art' / a.name)
+        if (cp / 'Resources' / 'fonts').exists():
+            (main / 'Resources' / 'fonts').mkdir(exist_ok=True)
+            for f in (cp / 'Resources' / 'fonts').iterdir():
+                if not (main / 'Resources' / 'fonts' / f.name).exists(): shutil.copy2(f, main / 'Resources' / 'fonts')
+            if italic: shutil.copy2(E.BUNDLED_FONTS['dmsi'], main / 'Resources' / 'fonts')
+            lic = Ed.FD / 'dmserifdisplay-OFL.txt'
+            if lic.exists(): shutil.copy2(lic, main / 'Resources' / 'fonts' / 'DMSerifDisplay-OFL.txt')
+
+    # the cover's clip goes at the head of the main track; its pictures and words on tracks of their own
+    ctracks = c['tracks']; clip_track = ctracks[0]
+    assert clip_track['type'] == 'video' and all(c_['kind'] == 'clip' for c_ in L.L[:1]), 'the cover clip must be the lowest layer'
+    rec = dict(us=DU, segments=[s['id'] for t in ctracks for s in t['segments']], tracks=[t['id'] for t in ctracks[1:]],
+               materials=sorted(_all_ids(c['materials'], set())), art=[a.name for a in art_files.values()])
+    for f in _drafts(main):
+        d = json.loads(f.read_text(encoding='utf-8'))
+        _shift(d, DU)
+        main_track = next(t for t in d['tracks'] if t['type'] == 'video')
+        nxt = main_track['segments'][0] if main_track['segments'] else None
+        head = copy.deepcopy(clip_track['segments'][0])
+        head['render_index'] = nxt['render_index'] if nxt else 0; head['track_render_index'] = nxt.get('track_render_index', 0) if nxt else 0
+        main_track['segments'].insert(0, head)
+        for k, v in c['materials'].items():
+            if isinstance(v, list) and v: d['materials'].setdefault(k, []).extend(copy.deepcopy(v))
+        # the head segment's background: the same Background > Colour as the template's main track
+        if nxt:
+            src = next((m for m in d['materials'].get('canvases', []) if m['id'] in nxt['extra_material_refs']), None)
+            for m in d['materials'].get('canvases', []):
+                if src and m['id'] in head['extra_material_refs']: m.update(type=src['type'], color=src['color'], blur=src['blur'])
+        vids = [i for i, t in enumerate(d['tracks']) if t['type'] == 'video']
+        top_v = max((s['render_index'] for t in d['tracks'] if t['type'] == 'video' for s in t['segments']), default=0)
+        top_t = max((s['render_index'] for t in d['tracks'] if t['type'] == 'text' for s in t['segments']), default=14000)
+        new_v, new_t = [], []
+        for t in ctracks[1:]:
+            t = copy.deepcopy(t)
+            for s in t['segments']:
+                if t['type'] == 'video': top_v += 1; s.update(render_index=top_v, track_render_index=top_v)
+                else: top_t += 1; s.update(render_index=top_t, track_render_index=top_t - 14000)
+            (new_v if t['type'] == 'video' else new_t).append(t)
+        at = (vids[-1] + 1) if vids else 0
+        d['tracks'] = d['tracks'][:at] + new_v + d['tracks'][at:] + new_t
+        f.write_text(json.dumps(d, ensure_ascii=False, separators=(',', ':')), encoding='utf-8')
+    _meta_duration(main, DU)
+    (main / RECORD).write_text(json.dumps(rec), encoding='utf-8')
+    Image.open(cover_png).convert('RGB').save(main / 'draft_cover.jpg', quality=90)
+    shutil.copy2(E.HERE / 'installer' / 'install.ps1', buyer / 'install.ps1')
+    (buyer / 'How to make your cover.txt').unlink(missing_ok=True)
+    (buyer / 'How to set your cover.txt').write_text(HOW_TO.replace('\n', '\r\n'), encoding='utf-8')
+    print(f'{key}: cover in the first {D} s of', main.name)
+    return main
 
 
 if __name__ == '__main__':

@@ -14,6 +14,20 @@ SPECS = {'h5': dict(num='h5', title='Trick or treat', dir='halloween/h5-trick-or
          'h1': dict(num='h1', title='Now you see it', dir='halloween/h1-now-you-see-it')}   # h1 has no CapCut build yet
 
 
+def tape_text(cv, size, pos, rot, tape, dots):
+    """A strip of dotted tape as one editable text layer: rows of bullets on CapCut's text background (no torn ends:
+    a text box is a rectangle). size = the strip's (w, h) in px; the rows and dot size are fitted to it."""
+    rows = 2 if size[1] < 200 else 3
+    def words(n): return '\n'.join((' ' if r % 2 else '') + '  '.join(['•'] * (n - r % 2)) for r in range(rows))
+    def box(px, n):
+        bb = E.text_img(dict(font='montserrat', size=round(px / E.PX_PER_SIZE, 2), words=(words(n),) * 2, color=dots,
+                             box=(tape, 0.0), stroke=None, shadow=False), False).getbbox()
+        return bb[2] - bb[0], bb[3] - bb[1]
+    px = next(p for p in range(int(size[1]), 10, -2) if box(p, 2)[1] <= size[1])
+    n = 2
+    while box(px, n + 1)[0] <= size[0]: n += 1
+    cv.text('montserrat', px, words(n), pos, rot, dots, box=(tape, 0.0))
+
 def c24():
     """24 Make it last: "make it LAST" over the product, the real calendar page on "year 3" (ringed) in the lower
     corner, butter sparkles."""
@@ -33,14 +47,16 @@ def c24():
 
 def c02():
     """02 Pack an order with me: the clip is a photo taped down: blue dotted washi over two corners, the title on the
-    butter gingham washi strip, the shipping label slapped on the lower corner."""
+    butter dotted tape strip, the shipping label slapped on the lower corner. The tape is CapCut text (Mercedes,
+    2026-10-21: the tape colour must change too): dots on the text's own background box, so the buyer recolours the
+    tape (background colour) and its dots (text colour) like any word."""
     import templates.t02 as T, collage as C
     from engine import rot_pt, PX_PER_SIZE
     cv = Cover(T.BUTTER); cv.video(0, 'Picking the order', (440, 960))
-    for (x, y, rr, sd) in ((90, 300, -40, 8), (990, 1640, -40, 9)):
-        cv.art(f'corner-tape{sd}', C.washi(420, 120, 'dots', (T.BLUE, WHITE), seed=sd, alpha=240), (x, y), rot=rr)
-    tape = C.washi(940, 280, 'gingham', (T.BUTTER, WHITE), seed=17, alpha=250); tc = (540, 470); tr = -3
-    cv.art('title-tape', tape, tc, rot=tr)
+    for (x, y, rr) in ((90, 300, -40), (990, 1640, -40)):
+        tape_text(cv, (420, 120), (x, y), rr, T.BLUE, WHITE)
+    tc = (540, 470); tr = -3
+    tape_text(cv, (940, 280), tc, tr, T.BUTTER, (255, 249, 228))
     def on(dy): o = Ed.rot((0, dy), tr); return (tc[0] + o[0], tc[1] + o[1])
     cv.plain('pack an order', 70, on(-62), INK, rot=tr)
     cv.serif('with me', 160, on(42), T.ACCENT, rot=tr)
