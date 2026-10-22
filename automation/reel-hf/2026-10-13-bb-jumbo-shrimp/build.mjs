@@ -15,10 +15,14 @@ R.frames([0, at('sounds'), at('like', 6), at("here's"), at('and', 13), at('so', 
 const NOTES = {};
 const note = (n, title, sound) => (NOTES[n] = { title, sound });
 const S = B.font.statement;
+// times of n spoken words starting at a phrase, and an entrance that shows each word of #id the moment she says it
+// (Mercedes 2026-10-14: on-screen words should work like captions, not appear as one block)
+const seq = (phrase, n, after = 0) => { const t0 = at(phrase, after), i = R.W.findIndex((w) => +w.s.toFixed(2) === t0); return R.W.slice(i, i + n).map((w) => +w.s.toFixed(2)); };
+const say = (id, times) => ({ html: '', anim: times.map((t, k) => `tl.fromTo('#${id} > .w:nth-of-type(${k + 1})', { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.22, ease: 'power3.out' }, ${t});`) });
 
-// F1 hook above her head
+// F1 hook above her head, word by word as she says it
 note(1, 'Hook above her head');
-R.scene(1, [K.fade(46), K.statement('b1', 'Your AI would be better with a <m>brain</m>', { top: 6, size: 11, in: 0.15, swipe: at('brain') })]);
+R.scene(1, [K.fade(46), K.statement('b1', 'Your AI would be better if you gave it a <m>brain</m>', { top: 6, size: 10, swipe: at('brain') + 0.15 }), say('b1', seq('your', 11))]);
 
 // F2 a real-looking dictionary card for "oxymoron"
 note(2, 'Dictionary card: oxymoron');
@@ -34,7 +38,7 @@ R.scene(2, [K.fade(46), {
 // shrimp couldn't be read, huge is fine). Holds through "But hear me out" (handwritten aside) so SHRIMP stays up >1s.
 note(3, 'FUN huge JUMBO on top, huge SHRIMP below; aside: but hear me out');
 const big3 = (word, rot) => word.split('').map((l, i) =>
-  `<span class="jl" style="display:inline-block;rotate:${rot[i % rot.length]}deg;color:${C.peach};-webkit-text-stroke:1.3cqw ${C.ink};paint-order:stroke fill;text-shadow:1.4cqw 1.6cqw 0 ${C.ink}">${l}</span>`).join('');
+  `<span class="jl" data-layout-allow-overlap data-layout-allow-overflow style="display:inline-block;rotate:${rot[i % rot.length]}deg;color:${C.peach};-webkit-text-stroke:1.3cqw ${C.ink};paint-order:stroke fill;text-shadow:1.4cqw 1.6cqw 0 ${C.ink}">${l}</span>`).join('');
 const box3 = (id, top, size) => `<div id="${id}" class="abs" style="left:0;right:0;top:${top}cqw;text-align:center;font-family:'${S}';font-weight:800;font-stretch:78%;font-size:${size}cqw;line-height:1;letter-spacing:-.01em">`;
 R.scene(3, [K.fade(54), {
   html: `${box3('jb3', 2, 31)}${big3('JUMBO', [-7, 4, -3, 6, -5])}</div>${box3('sh3', 112, 29)}${big3('SHRIMP', [5, -4, 3, -6, 4, -3])}</div>`,
@@ -43,7 +47,8 @@ R.scene(3, [K.fade(54), {
     `tl.fromTo('#sh3 .jl', { scale: 1.8, y: 80, opacity: 0 }, { scale: 1, y: 0, opacity: 1, duration: 0.32, ease: 'power4.out', stagger: 0.04 }, ${at('shrimp')});`,
     `tl.fromTo('#jb3', { y: 0 }, { y: -18, duration: 0.12, yoyo: true, repeat: 1, ease: 'power1.inOut', immediateRender: false }, ${at('shrimp') + 0.2});`,
   ],
-}, K.hand('h3', 'but hear me out', { x: 4, y: 42, size: 6.5, r: -5, in: at('hear') })]);
+}, K.hand('h3', 'but hear me out'.split(' ').map((w) => `<span class="w" style="display:inline-block">${w}</span>`).join(' '), { x: 4, y: 42, size: 6.5, r: -5 }),
+  say('h3', seq('but hear', 4))]); // each word as she says it (Mercedes 2026-10-14)
 
 // F4 the ask: generic AI reply (a pattern banned in her voice file), then the extra brain gets attached
 note(4, 'Chat: generic AI reply, then the extra brain gets attached');
@@ -66,7 +71,7 @@ R.scene(6, [K.fade(50), {
     <div style="position:absolute;left:0;right:0;top:6.5cqw;text-align:center;font:800 15cqw/1 '${S}';font-stretch:78%">Hu</div>
     <div style="position:absolute;left:0;right:0;bottom:2.4cqw;text-align:center;font:600 4.4cqw '${B.font.body}'">Human</div></div>`,
   anim: [`pop('#pt7', ${at('human')}, -4);`],
-}, K.hand('h7', 'add this in', { x: 4, y: 12, size: 6.5, r: -6, in: at('add') }), K.arrow('a7', { x: 12, y: 21, w: 16, r: -20, in: at('add') + 0.15 })]);
+}, K.hand('h7', 'add this in', { x: 4, y: 12, size: 6.5, r: -6, in: at('add') }), K.arrow('a7', { x: 17, y: 20, w: 18, r: -25, in: at('add') + 0.15 })]); // tip lands at the tile's left edge (Mercedes: arrow wasn't pointing at the Hu)
 
 // F7 only you
 note(7, 'HELLO badge: only you');
@@ -99,7 +104,7 @@ fx('fx-pop1', 'pop-light', at('brain'));
 fx('fx-pop2', 'pop-bubble', at('oxymorons'));
 fx('fx-wh3', 'whoosh-fast', at('jumbo') - 0.05, 0.55); fx('fx-pop3', 'pop-light', at('shrimp'), 0.7);
 fx('fx-pop4a', 'pop-bubble', at('why')); fx('fx-type4', 'typing-laptop', at('your', 9), 0.35, 1.2);
-fx('fx-pop4b', 'pop-light', at('better', 10)); fx('fx-pop4c', 'pop-bubble', at('additional'));
+fx('fx-pop4b', 'pop-light', at('better', 10)); fx('fx-sw4c', 'swoosh-in', at('additional') - 0.08, 0.5); // brain attaches: a new whoosh (Mercedes 2026-10-14)
 fx('fx-wh5', 'whoosh-fast', win(5).s - 0.12, 0.55); fx('fx-wh5b', 'whoosh-air', at('artificial') - 0.1, 0.45);
 fx('fx-pop6', 'pop-bubble', at('human'));
 fx('fx-pop7', 'pop-light', at('only'));

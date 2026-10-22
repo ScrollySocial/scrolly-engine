@@ -32,11 +32,16 @@ const NOTES = {};
 const note = (n, title, sound) => (NOTES[n] = { title, sound });
 const ME = { kind: 'me' };
 const UI = "'Segoe UI','" + B.font.body + "',sans-serif";
+// times of n spoken words from a phrase, and an entrance that shows each word of #id the moment she says it
+// (Mercedes 2026-10-14: on-screen words should work like captions, not show before she says them)
+const seq = (phrase, n, after = 0) => { const t0 = at(phrase, after), i = R.W.findIndex((w) => +w.s.toFixed(2) === t0); return R.W.slice(i, i + n).map((w) => +w.s.toFixed(2)); };
+const say = (id, times) => ({ html: '', anim: times.map((t, k) => `tl.fromTo('#${id} > .w:nth-of-type(${k + 1})', { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.22, ease: 'power3.out' }, ${t});`) });
+const handWords = (text) => text.split(' ').map((w) => `<span class="w" style="display:inline-block">${w}</span>`).join(' ');
 
-// F1 hook
+// F1 hook, word by word as she says it; captions take over for "it's a completely different experience"
 note(1, 'Hook above her head', 'pop on the swipe');
-R.scene(1, [K.fade(50), K.statement('b1', 'I changed <m>one thing</m> in my business', { top: 6, size: 11, in: 0.15, swipe: at('one') }),
-  K.hand('h1', 'every time I use AI', { x: 44, y: 40, size: 6.5, r: -4, in: at('every') })]);
+R.scene(1, [K.fade(50), K.statement('b1', 'I changed <m>one thing</m> in my business', { top: 6, size: 11, swipe: at('one') + 0.2 }), say('b1', seq('i changed', 7).filter((_, k) => k !== 3)), // "one thing" is one marker span
+  K.hand('h1', handWords('every time I use AI'), { x: 44, y: 40, size: 6.5, r: -4 }), say('h1', seq('every', 5))]);
 
 // F2 explaining her business to two AI apps, again: the same message lands in both windows
 note(2, 'Two AI chat windows (ChatGPT, Claude) get the same “here’s my business” message', 'bubble pop, light pop');
@@ -49,9 +54,17 @@ const win2 = (id, app, x, bg, msgIn) => ({
 R.scene(2, [K.fade(56), win2('w2a', 'ChatGPT', 4, '#f4f4f4', at('chatgpt')), win2('w2b', 'Claude', 53, '#f0eee6', at('claude')),
   K.hand('h2', 'over and over…', { x: 30, y: 47, size: 7, r: -3, in: at('over', 10) })]);
 
-// F3 the answer: one brain for both
-note(3, 'Statement: I gave them both the same brain', 'air whoosh in');
-R.scene(3, [K.fade(46), K.statement('b3', 'I gave them both the <m>same brain</m>', { top: 7, size: 11.5, in: win(3).s + 0.05, swipe: at('same') })]);
+// F3 the answer: one brain for both, drawn instead of written (Mercedes 2026-10-14: a brain emoji with the apps)
+note(3, 'ChatGPT and Claude app tiles, both wired to one brain', 'air whoosh in');
+const tile3 = (id, app, side, bg) => `<div id="${id}" class="abs" style="${side}:5cqw;top:31cqw;width:30cqw;padding:2.6cqw 0;text-align:center;background:${bg};border-radius:2.6cqw;box-shadow:0 1.4cqw 3.6cqw rgba(0,0,0,.4);font:600 4.6cqw/1 ${UI};color:#202124">${app}</div>`;
+R.scene(3, [K.fade(56), {
+  html: `${tile3('ta3', 'ChatGPT', 'left', '#fff')}${tile3('tb3', 'Claude', 'right', '#f0eee6')}
+    <svg id="ln3" class="abs blk" style="left:0;top:3cqw;width:100cqw;height:45cqw" viewBox="0 0 100 45"><g fill="none" stroke="#fff" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round">
+      <path class="draw" pathLength="1" d="M22 27 C24 18 30 14 37 13"/><path class="draw" pathLength="1" d="M34 10 L37.5 13 L34 16"/>
+      <path class="draw" pathLength="1" d="M78 27 C76 18 70 14 63 13"/><path class="draw" pathLength="1" d="M66 10 L62.5 13 L66 16"/></g></svg>
+    <div id="bn3" class="abs" style="left:0;right:0;top:2cqw;text-align:center;font-size:22cqw;line-height:1">🧠</div>`,
+  anim: [`pop('#ta3', ${win(3).s + 0.05});`, `pop('#tb3', ${win(3).s + 0.2});`, `draw('#ln3', ${at('both')}, 0.4);`, `pop('#bn3', ${at('same')}, -4);`],
+}]);
 
 // F4 hours of work figuring it out: a launch notes file fills in as she lists what she figured out
 note(4, 'A launch .md file types in: what you sell, the price, how to market it; aside “hours of work”', 'paper slide, bubble pop, typing');
@@ -60,8 +73,18 @@ R.scene(4, [K.fade(54), K.mdFile('md4', 'mug-launch.md', [
   ['2', '+ selling: speckled mugs, set of 2', 'add'],
   ['3', '+ price: $38', 'add'],
   ['4', '+ marketing: Reels first, then email', 'add'],
-], { top: 5, in: win(4).s + 0.05, typeAt: at('figured'), gap: 0.7 }),
-  K.hand('h4', 'hours of work', { x: 56, y: 45, size: 7, r: -4, in: at('hours') })]);
+], { top: 5, in: win(4).s + 0.05, typeAt: at('figured'), gap: 0.7 }), {
+  // a wall clock whose hands race through the hours (Mercedes 2026-10-14: a clock instead of the words "hours of work")
+  html: `<svg id="ck4" class="abs blk" style="left:70cqw;top:40cqw;width:24cqw;height:24cqw" viewBox="0 0 100 100">
+    <circle cx="50" cy="50" r="45" fill="#fff" stroke="${C.ink}" stroke-width="6"/>
+    ${[0, 30, 60, 90, 120, 150, 180, 210, 240, 270, 300, 330].map((a) => `<line x1="50" y1="11" x2="50" y2="${a % 90 ? 16 : 19}" stroke="${C.ink}" stroke-width="${a % 90 ? 2.5 : 4}" stroke-linecap="round" transform="rotate(${a} 50 50)"/>`).join('')}
+    <line id="ckh4" x1="50" y1="50" x2="50" y2="29" stroke="${C.ink}" stroke-width="6" stroke-linecap="round"/>
+    <line id="ckm4" x1="50" y1="50" x2="50" y2="19" stroke="${C.ink}" stroke-width="4" stroke-linecap="round"/>
+    <circle cx="50" cy="50" r="4.5" fill="${C.ink}"/></svg>`,
+  anim: [`pop('#ck4', ${at('hours')}, 6);`,
+    `tl.fromTo('#ckm4', { rotation: 0 }, { rotation: 1440, svgOrigin: '50 50', duration: 2.6, ease: 'power1.inOut' }, ${at('hours')});`,
+    `tl.fromTo('#ckh4', { rotation: 0 }, { rotation: 120, svgOrigin: '50 50', duration: 2.6, ease: 'power1.inOut' }, ${at('hours')});`],
+}]);
 
 // F5 only some of it makes it into the AI's memory: a real-looking "Saved memories" panel with gaps
 note(5, '“Saved memories” panel: two things saved, the price and plan missing', 'light pop on the panel, nope on “spotty”, bubble pop on the aside');
@@ -91,7 +114,15 @@ R.scene(7, [K.fade(56), K.chat([
   { id: 'c7a', kind: 'ai', text: 'Hey friends! ✨ Our speckled mugs are here!', in: win(7).s + 0.05 },
   { ...ME, id: 'c7b', text: 'I told you: never start with “Hey friends!”', in: at('told'), enter: 'up' },
   { id: 'c7c', kind: 'ai', text: 'You’re right, sorry! Hey friends! ✨ Meet our…', in: at('continue') },
-], { top: 4 })]);
+], { top: 4 }), {
+  // full-screen angry words on "every single time" (Mercedes 2026-10-14), then back to her
+  html: `<div id="an7" class="abs" style="inset:0;background:${C.ink};display:flex;flex-direction:column;justify-content:center;align-items:center;gap:2cqw;font-family:'${B.font.statement}';font-weight:800;font-stretch:78%;color:#fff;line-height:.9;text-transform:uppercase">
+    <div id="an7a" style="font-size:30cqw">Every.</div><div id="an7b" style="font-size:30cqw">Single.</div><div id="an7c" class="big" style="position:static;font-size:34cqw;color:#fff"><span class="mk"><span class="mkbg"></span><span class="mkt">Time.</span></span></div></div>`,
+  anim: [`tl.set('#an7', { opacity: 1 }, ${at('every', 31) - 0.05}); tl.set('#an7', { opacity: 0 }, ${at('and', 33.5) + 0.1}); tl.set('#an7', { opacity: 0 }, 0);`,
+    ...['a', 'b', 'c'].map((k, i) => `tl.fromTo('#an7${k}', { scale: 1.6, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.18, ease: 'power4.out' }, ${seq('every', 3, 31)[i]});`),
+    `tl.fromTo('#an7', { x: -14 }, { x: 14, duration: 0.05, repeat: 7, yoyo: true, ease: 'none', immediateRender: false }, ${seq('every', 3, 31)[2]});`,
+    `swipe('#an7c', ${seq('every', 3, 31)[2] + 0.1});`],
+}]);
 
 // F8 so instead: one place for all of it
 note(8, 'Statement: something I call my Business Brain; aside “all of it”', 'light pop on the swipe, bubble pop on the aside');
@@ -133,7 +164,8 @@ R.scene(11, [K.fade(50), K.paper('p11', [
 note(12, 'End card: name + scrollyseo.com, aside “make your own”', 'air whoosh, chime under “on my website”');
 R.scene(12, [K.fade(50), K.statement('b12', 'Scrolly <m>Business Brain</m>', { top: 6, size: 11, in: win(12).s + 0.1, swipe: at('scrolly', 58) + 0.2 }),
   K.urlBar('u12', 'scrollyseo.com', { top: 31, in: at('website') - 0.6 }),
-  K.hand('h12', 'make your own', { x: 56, y: 44, size: 7.5, in: at('make', 60) - 0.2 }), K.arrow('a12', { x: 34, y: 41, w: 18, r: 190, in: at('make', 60) - 0.1, d: 0.4 })]);
+  // aside + arrow come in after the URL bar they point at (Mercedes 2026-10-14: the arrow showed up before its target)
+  K.hand('h12', 'make your own', { x: 56, y: 44, size: 7.5, in: at('website') - 0.3 }), K.arrow('a12', { x: 40, y: 42.5, w: 16, r: 200, in: at('website') - 0.2, d: 0.4 })]);
 
 // camera: alternate framing per jump cut, punch-in on "every single time", whips into the Brain and the end card
 R.cam.alternate();
@@ -141,7 +173,7 @@ R.cam.punch(at('every', 31));
 R.cam.set(win(9).s, '1.0');
 R.cam.whip(win(9).s); R.cam.whip(win(12).s);
 
-R.captions({ hide: [1, 12], top: (t) => (t >= win(9).s && t < win(10).s ? 150 : 128) });
+R.captions({ hide: [[win(1).s, at("it's") - 0.1], [at('every', 31) - 0.1, at('and', 33.5) + 0.12], 12], top: (t) => (t >= win(9).s && t < win(10).s ? 150 : 128) });
 
 // ---- sound (never the same effect twice in a row) ----
 const fx = R.fx.bind(R);
@@ -149,12 +181,13 @@ fx('fx-pop1', 'pop-light', at('one'));
 fx('fx-pop2a', 'pop-bubble', at('chatgpt')); fx('fx-pop2b', 'pop-light', at('claude'));
 fx('fx-wh3', 'whoosh-air', win(3).s, 0.4);
 fx('fx-pap4', 'paper-slide', win(4).s + 0.05, 0.6); fx('fx-pop4', 'pop-bubble', at('hours')); fx('fx-type4', 'typing-laptop', at('figured'), 0.35, 2.2);
-fx('fx-pop5a', 'pop-light', win(5).s + 0.05); fx('fx-no5', 'nope', at('spotty'), 0.45); fx('fx-pop5b', 'pop-bubble', at('makes'));
+// F5 (Mercedes 2026-10-14): no nope; her pop goes with the grey "not saved" rows, not the handwriting
+fx('fx-pap5a', 'paper-slide', win(5).s + 0.05, 0.5); fx('fx-pop5b', 'pop-bubble', at('spotty'));
 fx('fx-pop6a', 'pop-light', at('explaining')); fx('fx-pop6b', 'pop-bubble', at('product')); fx('fx-pop6c', 'pop-light', at('again', 28));
 fx('fx-pop7a', 'pop-bubble', win(7).s + 0.05); fx('fx-pop7b', 'pop-light', at('told')); fx('fx-pop7c', 'pop-bubble', at('continue'));
 fx('fx-pop8', 'pop-light', at('business', 40));
-fx('fx-wh9', 'whoosh-fast', win(9).s - 0.12, 0.55); fx('fx-pop9', 'pop-bubble', win(9).s + 2.1, 0.5); fx('fx-chk9', 'check', at('free') - 0.2, 0.45);
-fx('fx-pap10', 'paper-slide', win(10).s + 0.05, 0.6); fx('fx-pop10', 'pop-light', at('correct') + 0.5); fx('fx-chk10', 'check', at('up to date') - 0.2, 0.45);
+fx('fx-wh9', 'whoosh-air', win(9).s - 0.1, 0.3); // softer (Mercedes 2026-10-14: the whoosh here was too much) fx('fx-pop9', 'pop-bubble', win(9).s + 2.1, 0.5); fx('fx-chk9', 'check', at('free') - 0.2, 0.45);
+fx('fx-pap10', 'paper-slide', win(10).s + 0.05, 0.6); fx('fx-pop10', 'pop-light', at('correct') + 0.5); fx('fx-sp10', 'sparkle', at('up to date') - 0.2, 0.3); // replaces the check (Mercedes 2026-10-14)
 fx('fx-pap11', 'paper-slide', win(11).s + 0.1, 0.6); fx('fx-chk11a', 'check', at('repeat', 53), 0.4); fx('fx-pop11', 'pop-light', at('mistakes')); fx('fx-chk11c', 'check', at('quality'), 0.4);
 fx('fx-wh12', 'whoosh-air', win(12).s, 0.4); fx('fx-chime12', 'chime', at('website') - 0.4, 0.5, +(R.DUR - at('website') + 0.4 - 0.02).toFixed(2));
 R.music('assets/music/music-a.mp3'); // "Sleepy Cat" (Mixkit, from Reel #2's candidates; Curiosity, Chill Bro, Lonerism, Sweet September, Slow Pop are on other Reels)
