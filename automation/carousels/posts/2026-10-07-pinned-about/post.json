@@ -19,23 +19,10 @@
   },
   "slides": [
     {
-      "layout": "hookcover",
-      "media": "7960072a35",
-      "focus": "center 30%",
-      "pos": "top",
-      "text": "Hi, I'm Mercedes",
-      "hand": "the person behind @scrollysocial",
-      "voice": "mercedes",
-      "doodles": [
-        {
-          "k": "arrow",
-          "x": 280,
-          "y": 640,
-          "w": 110,
-          "rot": -40,
-          "c": "pink"
-        }
-      ]
+      "layout": "image",
+      "media": "964f2050c6",
+      "grid": "pinned-2026-10",
+      "text": "Not sure how to get found online?. I'm here to help you with that."
     },
     {
       "layout": "hook2",

@@ -6,24 +6,24 @@
     "posts": [
       "2026-10-07-pinned-about",
       "2026-10-07-pinned-challenge",
-      "2026-10-07-views-to-1k"
+      "2026-10-22-pinned-free-start"
     ],
     "pinOrderNote": "Grid order left to right. Confirm which pinned post Instagram shows on the left after pinning; re-pin if needed.",
-    "design": "pinned-2026-10-v4",
+    "design": "pinned-2026-10-v7",
     "screen": "4b3aaf72ba",
     "screenFocus": "50% 100%",
     "hooks": [
       {
-        "big": "Allow me to introduce myself",
-        "small": "The person behind @scrollysocial"
+        "big": "Not sure how to get found online?",
+        "small": "I'm here to help you with that."
       },
       {
-        "big": "Want to make *$1,000* in 30 days?",
+        "big": "Want to make $1,000 in 30 days?",
         "small": "Meet the $1K Challenge"
       },
       {
-        "big": "How many *views* make $1,000?",
-        "small": "The math, step by step"
+        "big": "Start here.",
+        "small": "A free quiz, 2 minutes"
       }
     ],
     "stats": [
@@ -39,6 +39,13 @@
         "10,667",
         "views"
       ]
-    ]
+    ],
+    "extras": [
+      "frames/broll/desk-coffee-sip-01-5.jpg",
+      "screens/site/k1-tile2-notion.webp",
+      "screens/site/quiz-offer-phone-cut.png",
+      "screens/site/k1-tile3-notion.webp"
+    ],
+    "_v7note": "2026-10-22: v7 approved by Mercedes. Pinned 3 changed from the views-to-$1K post to a free-start post (Offer Quiz / Next Move Quiz / calculators); that post still needs writing. The text in hooks feeds each post slide 1 alt text; the artwork text lives in the v7 design."
   }
 }

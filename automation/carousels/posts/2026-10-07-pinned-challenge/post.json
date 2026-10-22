@@ -17,12 +17,10 @@
   "media": {},
   "slides": [
     {
-      "layout": "hookcover",
-      "media": "95d583fddb",
-      "focus": "center 40%",
-      "pos": "bottom",
-      "text": "$1,000 in 30 days?",
-      "hand": "here's everything you get →"
+      "layout": "image",
+      "media": "0f794a1f2f",
+      "grid": "pinned-2026-10",
+      "text": "Want to make $1,000 in 30 days?. Meet the $1K Challenge"
     },
     {
       "layout": "hook2",
