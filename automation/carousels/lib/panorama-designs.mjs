@@ -350,7 +350,7 @@ DESIGNS['pinned-2026-10-v7'] = ({ brand, extras }) => {
 <div class="t2"><span class="pre">Want to make</span><b>$1,000</b><span class="post">in 30 days?</span><i>Meet the $1K Challenge →</i></div>
 <div class="burst">${'<svg viewBox="0 0 200 200"><path d="' + Array.from({ length: 24 }, (_, k) => { const a = (k / 24) * Math.PI * 2, r = k % 2 ? 70 : 100; return `${k ? 'L' : 'M'}${(100 + r * Math.cos(a)).toFixed(1)} ${(100 + r * Math.sin(a)).toFixed(1)}`; }).join(' ') + 'Z" fill="' + sky + '"/></svg>'}</div>
 <div class="t3"><p><span>Start here.</span></p></div>
-<div class="hand h3">a free quiz,<br>2 minutes</div>
+<div class="hand h3">a free quiz,<br>3 steps</div>
 <img class="qimg" src="${quiz}">
 <style>
 .canvas{position:relative;width:3240px;height:1440px;overflow:hidden;background:#ecf1fa;font-family:'${brand.fonts.display.family}',sans-serif;color:${light.ink}}

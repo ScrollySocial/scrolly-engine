@@ -18,7 +18,7 @@ const n = conf.posts.length, W = 1080 * n, H = 1440;
 const fams = [...new Set([...Object.values(brand.fonts).map((f) => f.google), 'Covered By Your Grace'])].map((g) => `family=${g.replace(/ /g, '+')}`).join('&');
 const body = DESIGNS[conf.design || group]({
   brand,
-  photo: mediaFor(conf.media, conf.focus),
+  photo: conf.media && mediaFor(conf.media, conf.focus),
   shirt: conf.shirt && fileUrl(path.join(REPO, conf.shirt)),
   screen: conf.screen && mediaFor(conf.screen, conf.screenFocus),
   hooks: conf.hooks,
@@ -58,7 +58,7 @@ tiles.forEach((t, i) => {
   const pf = path.join(HERE, 'posts', conf.posts[i], 'post.json');
   if (it && existsSync(pf)) {
     const post = readJson(pf);
-    post.slides[0] = { layout: 'image', media: it.id, grid: group, text: conf.hooks[i].big.replace(/\*/g, '') + '. ' + conf.hooks[i].small };
+    post.slides[0] = { layout: 'image', media: it.id, grid: group, text: `${conf.hooks[i].big.replace(/\*/g, '').replace(/([^.?!])$/, '$1.')} ${conf.hooks[i].small}` };
     writeJson(pf, post);
   }
   console.log(`tile ${i + 1} → ${conf.posts[i]}: media id ${it?.id}${existsSync(pf) ? ' (slide 1 updated)' : ' (post not created yet)'}`);

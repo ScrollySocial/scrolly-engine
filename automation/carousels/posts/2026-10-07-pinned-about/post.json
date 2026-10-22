@@ -11,29 +11,27 @@
     "mainPoint": "An analytical person who struggled with selling built marketing systems and shares them",
     "structure": "walking-through-slides story",
     "ending": "follow CTA with tiger nod",
-    "slide2Check": "Format change from the panorama cover (hook2 on offwhite); promises the short version of why Scrolly exists, works as a first slide",
+    "slide2Check": "Format change from the v7 panorama cover (hook2); restates the cover's promise (getting found online) as her specialty, so it works as a first slide",
     "mediaPlan": "Mercedes will film a VIDEO of herself walking (not a photo). Split that one video horizontally across the pano slides so she walks through the carousel as people swipe (needs ffmpeg video support). Don't change until she has the clip."
   },
-  "media": {
-    "pano": "stock:runField"
-  },
+  "media": {},
   "slides": [
     {
       "layout": "image",
       "media": "964f2050c6",
       "grid": "pinned-2026-10",
-      "text": "Not sure how to get found online?. I'm here to help you with that."
+      "text": "Not sure how to get found online? I'm here to help you with that."
     },
     {
       "layout": "hook2",
-      "top": "Nice to meet you",
-      "bottom": "Here's the short version of why Scrolly exists →"
+      "top": "Getting you found online is my whole thing.",
+      "bottom": "Here's who I am and how I help →"
     },
     {
       "layout": "photo",
       "media": "1e629b09ae",
       "focus": "center 10%",
-      "text": "Hi, I'm Mercedes. I help you turn content into customers."
+      "text": "Hi, I'm Mercedes. I help you get found online and turn that attention into customers."
     },
     {
       "layout": "photo",
@@ -88,7 +86,7 @@
     "type": "follow"
   },
   "tigerNod": null,
-  "caption": "Follow along for practical tips to help you reach your dreams. I'm Mercedes, and I built Scrolly after years of having business ideas I didn't know how to sell. I'm an analyst at heart, so I learned marketing the only way I know how: break it into steps, build systems, and test what works. Now I share those systems so you don't have to build them from scratch. If you want the full plan for your first $1,000, the $1K Challenge is in my bio.",
+  "caption": "Follow along for practical tips on getting found online and turning it into sales. I'm Mercedes, and I built Scrolly after years of having business ideas I didn't know how to sell. I'm an analyst at heart, so I learned marketing the only way I know how: break it into steps, build systems, and test what works. Now I share those systems so you don't have to build them from scratch. If you want the full plan for your first $1,000, the $1K Challenge is in my bio.",
   "hashtags": [
     "#smallbusiness",
     "#organicmarketing",

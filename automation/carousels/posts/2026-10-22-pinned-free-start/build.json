@@ -1,0 +1,61 @@
+{
+  "builtAt": "2026-10-22T16:54:38.709Z",
+  "exportDir": "C:\\Users\\merce\\OneDrive\\Scrolly Media\\exports\\carousels\\2026-10-22-pinned-free-start",
+  "mediaUsed": [
+    "bff6adb732",
+    "fe440f19cf",
+    "8aeaa75e67"
+  ],
+  "fit": [
+    {
+      "i": 0,
+      "size": 0,
+      "min": 0,
+      "ok": true,
+      "lines": 0
+    },
+    {
+      "i": 1,
+      "size": 140,
+      "min": 48,
+      "ok": true,
+      "lines": 7
+    },
+    {
+      "i": 2,
+      "size": 76,
+      "min": 48,
+      "ok": true,
+      "lines": 4
+    },
+    {
+      "i": 3,
+      "size": 82,
+      "min": 48,
+      "ok": true,
+      "lines": 4
+    },
+    {
+      "i": 4,
+      "size": 76,
+      "min": 48,
+      "ok": true,
+      "lines": 3
+    },
+    {
+      "i": 5,
+      "size": 82,
+      "min": 48,
+      "ok": true,
+      "lines": 1
+    },
+    {
+      "i": 6,
+      "size": 136,
+      "min": 72,
+      "ok": true,
+      "lines": 4
+    }
+  ],
+  "problems": []
+}
