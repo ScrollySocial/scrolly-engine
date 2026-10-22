@@ -1,8 +1,10 @@
 {
-  "builtAt": "2026-10-22T00:12:38.369Z",
+  "builtAt": "2026-10-22T00:30:45.917Z",
   "exportDir": "C:\\Users\\merce\\OneDrive\\Scrolly Media\\exports\\carousels\\2026-10-07-growth-vs-sells",
   "mediaUsed": [
-    "1e629b09ae"
+    "473beb9747",
+    "1e629b09ae",
+    "60167eb7b6"
   ],
   "fit": [
     {
@@ -17,7 +19,7 @@
       "size": 140,
       "min": 48,
       "ok": true,
-      "lines": 7
+      "lines": 4
     },
     {
       "i": 2,

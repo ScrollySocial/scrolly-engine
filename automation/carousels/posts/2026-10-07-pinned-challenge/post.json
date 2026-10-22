@@ -27,7 +27,8 @@
     {
       "layout": "hook2",
       "top": "30 days. One goal: your first $1,000.",
-      "bottom": "Here's everything you get →"
+      "bottom": "Here's everything you get →",
+      "palette": "mist"
     },
     {
       "layout": "phone",
@@ -41,12 +42,13 @@
         "hi": 1
       },
       "text": "Your personal $1K Plan: your $1K number, what to do each week, and a weekly check-in.",
-      "palette": "offwhite"
+      "palette": "navy"
     },
     {
       "layout": "number",
       "big": "30",
-      "text": "consecutive days, one goal: $1,000 in total revenue."
+      "text": "consecutive days, one goal: $1,000 in total revenue.",
+      "palette": "sky"
     },
     {
       "layout": "phone",
@@ -55,7 +57,8 @@
         "onscreen": "This week's Reel ideas",
         "caption": "25 ideas, ready to film"
       },
-      "text": "25 Reel ideas every week, in current formats, ready to film."
+      "text": "25 Reel ideas every week, in current formats, ready to film.",
+      "palette": "offwhite"
     },
     {
       "layout": "checklist",
@@ -68,15 +71,17 @@
         "The $1K Math calculator"
       ],
       "text": "Plus:",
-      "palette": "mist"
+      "palette": "navy"
     },
     {
       "layout": "text",
       "text": "One-time payment. No subscription, ever.",
-      "pattern": "rays"
+      "photoBg": "265ec9a722",
+      "scrim": "full"
     },
     {
-      "text": "Join the $1K Challenge for $75. Link in bio."
+      "text": "Join the $1K Challenge for $75. Link in bio.",
+      "palette": "sky"
     }
   ],
   "cta": {

@@ -50,7 +50,8 @@
       },
       "media": "473beb9747",
       "focus": "50% 25%",
-      "text": "Socialinsider studied 6 million brand Reels from January to June 2026."
+      "text": "Socialinsider studied 6 million brand Reels from January to June 2026.",
+      "palette": "mist"
     },
     {
       "layout": "chart",
@@ -100,12 +101,13 @@
     {
       "layout": "number",
       "big": "10,374",
-      "text": "median views for Reels of 45 to 60 seconds, the most of any length."
+      "text": "median views for Reels of 45 to 60 seconds, the most of any length.",
+      "palette": "navy"
     },
     {
       "layout": "text",
       "text": "Past 3 minutes, views dropped to 4,428, close to Reels under 30 seconds.",
-      "pattern": "dots"
+      "palette": "sky"
     },
     {
       "layout": "checklist",
@@ -115,7 +117,7 @@
         "Walking through a demo"
       ],
       "text": "Give it 45 to 60 seconds when you're:",
-      "palette": "mist"
+      "palette": "offwhite"
     },
     {
       "layout": "photo",
@@ -123,7 +125,8 @@
       "text": "Short Reels still win for testing ideas fast."
     },
     {
-      "text": "Get 25 Reel ideas every week in the $1K Challenge. Link in bio."
+      "text": "Get 25 Reel ideas every week in the $1K Challenge. Link in bio.",
+      "palette": "navy"
     }
   ],
   "cta": {

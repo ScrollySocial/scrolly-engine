@@ -31,7 +31,9 @@
       "layout": "hook2",
       "top": "Your posts are trying to do *two jobs* at once",
       "bottom": "Here's how to split them →",
-      "pattern": "stars"
+      "photoBg": "473beb9747",
+      "photoFocus": "30% center",
+      "scrim": "bottom"
     },
     {
       "layout": "checklist",
@@ -85,7 +87,8 @@
         "caption": "Here's how to get it",
         "link": "Shop now"
       },
-      "text": "Selling content is for people already paying attention: your Stories and your bio."
+      "text": "Selling content is for people already paying attention: your Stories and your bio.",
+      "palette": "sky"
     },
     {
       "layout": "chart",
@@ -116,10 +119,12 @@
     {
       "layout": "text",
       "text": "Reels to reach. Carousels to teach. Stories to sell.",
-      "pattern": "rays"
+      "photoBg": "60167eb7b6",
+      "scrim": "full"
     },
     {
-      "text": "Get a plan for each week in the $1K Challenge. Link in bio."
+      "text": "Get a plan for each week in the $1K Challenge. Link in bio.",
+      "palette": "offwhite"
     }
   ],
   "cta": {
