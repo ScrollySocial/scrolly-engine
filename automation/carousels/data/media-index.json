@@ -1107,6 +1107,34 @@
       "missing": false
     },
     {
+      "id": "261702e921",
+      "type": "photo",
+      "root": "photosDir",
+      "file": "screens/site/k1-tile2-reels-tall.png",
+      "folder": "screens",
+      "width": 900,
+      "height": 1844,
+      "addedAt": "2026-10-22",
+      "tags": [],
+      "notes": "",
+      "textSpace": [],
+      "missing": false
+    },
+    {
+      "id": "386fbc009d",
+      "type": "photo",
+      "root": "photosDir",
+      "file": "screens/site/k1-tile2-reels.webp",
+      "folder": "screens",
+      "width": 900,
+      "height": 1200,
+      "addedAt": "2026-10-22",
+      "tags": [],
+      "notes": "",
+      "textSpace": [],
+      "missing": false
+    },
+    {
       "id": "abd68c9c3f",
       "type": "photo",
       "root": "photosDir",
