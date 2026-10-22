@@ -341,7 +341,7 @@ DESIGNS['pinned-2026-10-v7'] = ({ brand, extras }) => {
   <circle cx="1620" cy="560" r="770" fill="${sky}"/>
   <path d="M120 1240 C 380 1420, 640 1000, 720 860 C 800 720, 1000 520, 1110 640 C 1200 740, 1060 860, 990 760 C 900 620, 1180 300, 1500 160 C 1800 40, 2100 120, 2200 520 C 2260 760, 2120 900, 2090 790 C 2060 680, 2260 660, 2360 740 C 2440 820, 2470 940, 2520 975"
     fill="none" stroke="${navy.bg}" stroke-width="10" stroke-linecap="round" stroke-dasharray="2 28"/>
-  <path d="M2488 933 l 42 44 -50 26" fill="none" stroke="${navy.bg}" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M2530 932 L2526 990 L2476 961" fill="none" stroke="${navy.bg}" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>
 <div class="t1"><h1>Not sure how to get found online?</h1></div>
 <div class="hand h1">I'm here to help<br>you with that!</div>

@@ -880,6 +880,34 @@
       "tags": [],
       "notes": "",
       "textSpace": [],
+      "missing": true
+    },
+    {
+      "id": "5f51a59a5d",
+      "type": "photo",
+      "root": "photosDir",
+      "file": "panoramas/pinned-2026-10-3.png",
+      "folder": "panoramas",
+      "width": 1080,
+      "height": 1440,
+      "addedAt": "2026-10-22",
+      "tags": [],
+      "notes": "",
+      "textSpace": [],
+      "missing": true
+    },
+    {
+      "id": "0feddd6eb6",
+      "type": "photo",
+      "root": "photosDir",
+      "file": "panoramas/pinned-2026-10-3.png",
+      "folder": "panoramas",
+      "width": 1080,
+      "height": 1440,
+      "addedAt": "2026-10-22",
+      "tags": [],
+      "notes": "",
+      "textSpace": [],
       "missing": false
     },
     {
