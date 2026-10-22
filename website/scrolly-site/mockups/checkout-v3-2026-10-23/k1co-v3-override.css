@@ -1,0 +1,56 @@
+/* $1K checkout in the v3 look (preview override; layered after the live k1co CSS). */
+body.scrolly-k1co{background:#f7f3ec}
+.k1co{--ink:#0a1930;--cream:#f7f3ec;--mist:#dfe4f0;--sky:#4da3ff;--muted:#4a4e66;--line:#d9d3ca;font-family:'Jost',system-ui,Arial,sans-serif;color:var(--ink);background:#fff;box-shadow:0 12px 34px rgba(10,25,48,.10);border-radius:18px;overflow:hidden}
+.k1co p,.k1co summary,.k1co label,.k1co li{color:var(--ink)}
+.k1co h1,.k1co h2,.k1co-main .wc-block-components-checkout-step__title{font-family:'Instrument Serif',Georgia,serif!important;font-weight:400!important;text-transform:none!important;letter-spacing:-.01em!important;color:var(--ink)!important}
+.k1co h1{font-size:46px;line-height:1.02}
+.k1co h2,.k1co-main .wc-block-components-checkout-step__title{font-size:30px!important;line-height:1.08}
+.k1co-bar{border-bottom:1px solid var(--line);font-size:15px;letter-spacing:.06em;color:var(--muted)}
+.k1co-intro,.k1co-extras{background:var(--cream);border-right:1px solid var(--line)}
+.k1co-main{background:#fff}
+/* progress tracker: mist card, sky bar */
+.k1co-tracker{background:var(--mist);color:var(--ink);border-radius:14px;padding:16px 18px 18px}
+.k1co-tracker-head{font-family:'Instrument Serif',Georgia,serif;font-weight:400;font-size:24px;text-transform:none}
+.k1co-target{color:var(--ink);font-size:32px}
+.k1co-track{background:#fff;height:12px;border-radius:999px}
+.k1co-track span{background:var(--sky);border-radius:999px}
+.k1co-stages{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;font-size:15px;font-weight:500;text-transform:none;line-height:1.2;color:var(--ink)}
+.k1co-tick{font-size:17px}
+.k1co-tick b{color:var(--sky)}
+/* earned shirt + offer bump: mist panels, no black or orange edges */
+.k1co-earned{background:#fff;border-left:0;border-radius:14px;box-shadow:inset 0 0 0 1px var(--line)}
+.k1co-bump{background:var(--mist);border-left:0;border-radius:14px}
+.k1co-bump label{border-radius:10px}
+.k1co-bump input,.k1co-shipto input,.k1co-option input{accent-color:var(--ink)}
+/* path options */
+.k1co-option{border:1px solid #8f8a83;border-radius:12px}
+.k1co-option:has(input:checked){border:2px solid var(--ink);background:var(--mist)}
+.k1co-option small{font-size:15px;color:var(--muted)}
+.k1co-amt{font-weight:600}
+/* fine print up to the 15px floor */
+.k1co p.k1co-fine,.k1co-main .wc-block-components-checkout-step__description,.k1co-main .wc-block-checkout__order-fields .wc-block-components-select-input:after{font-size:15px!important;color:var(--muted)!important}
+.k1co-main .wc-block-checkout__terms{font-size:15px;font-weight:500}
+.k1co-main .wc-block-checkout__terms a{color:var(--ink)}
+.k1co-faq details{border-bottom:1px solid var(--line)}
+/* WooCommerce fields */
+.k1co-main .wc-block-components-text-input input,.k1co-main .wc-block-components-combobox .components-combobox-control input,.k1co-main .wc-block-components-select select,.k1co-main .wc-blocks-components-select__select{border:1px solid #8f8a83!important;border-radius:10px!important;font-family:'Jost',sans-serif!important;color:var(--ink)!important}
+.k1co-main .wc-block-components-text-input label,.k1co-main .wc-blocks-components-select__label{font-size:15px!important;color:var(--muted)!important}
+.k1co-main .wc-block-components-radio-control-accordion-option,.k1co-main .wc-block-components-radio-control__option{border-color:#8f8a83!important;border-radius:12px!important}
+.k1co-main .wc-block-components-totals-footer-item{font-family:'Instrument Serif',Georgia,serif;border-top:1px solid var(--line)}
+.k1co-main .wc-block-components-totals-footer-item .wc-block-components-totals-item__label,.k1co-main .wc-block-components-totals-footer-item .wc-block-components-totals-item__value{font-weight:400;font-size:28px;text-transform:none}
+/* place order: sky pill, navy text */
+body.scrolly-k1co .k1co-main .wc-block-components-button.wc-block-components-checkout-place-order-button{background:var(--sky)!important;color:var(--ink)!important;border-radius:999px!important;padding:19px!important;font:700 17px/1 'Jost',sans-serif!important;letter-spacing:.06em}
+body.scrolly-k1co .k1co-main .wc-block-components-button.wc-block-components-checkout-place-order-button:hover{background:var(--ink)!important;color:#fff!important}
+body.scrolly-k1co .k1co-main .wc-block-components-button.wc-block-components-checkout-place-order-button *{color:inherit!important}
+.k1co-main .wc-block-components-password-strength .wc-block-components-password-strength__meter{color:var(--sky)!important}
+@media (max-width:780px){
+  .k1co{border-radius:0}
+  .k1co h1{font-size:38px}
+  .k1co-stages{font-size:15px;grid-template-columns:repeat(3,1fr);row-gap:4px}
+  .k1co-intro .k1co-tracker{margin:0;border-radius:14px}
+}
+/* WooCommerce's own 13px text up to the 15px floor */
+.k1co-main .wc-block-checkout__guest-checkout-notice,.k1co-main .wc-block-components-checkbox__label,.k1co-main .wc-block-components-address-card,.k1co-main .wc-block-components-address-card *,.k1co-main .wc-block-components-address-form__address_2-toggle,.k1co-main .wc-block-components-radio-control__label,.k1co-main .wc-block-components-radio-control-accordion-option span,.k1co-main .wc-block-checkout__terms,.k1co-main .wc-block-checkout__terms a,.k1co-main .wc-block-components-panel__button{font-size:15px!important}
+/* tracker stages: one row, shorter labels wrap under the number */
+.k1co-stages{font-size:15px}
+.k1co-stages span{text-align:center}
