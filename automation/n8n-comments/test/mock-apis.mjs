@@ -56,8 +56,11 @@ const routes = [
   ['GET', /^\/log$/, () => ({ log, pages })],
   ['POST', /^\/reset$/, () => ((log = []), (pages = []), { ok: true })],
   ['POST', /^\/test\/approve$/, () => {
-    for (const p of pages) if (['New'].includes(p.properties.Status.select.name)) p.properties.Status = { select: { name: 'Approved' } };
-    for (const p of pages) if (p.properties.Platform.select.name === 'TikTok') p.properties.Status = { select: { name: 'Approved' } };
+    // Stands in for the subscription routine (fills empty drafts) and for Mercedes (approves).
+    for (const p of pages) {
+      if (!p.properties['Draft reply'].rich_text.length) p.properties['Draft reply'] = { rich_text: [{ type: 'text', text: { content: 'Thank you, so glad it helped!' } }] };
+      p.properties.Status = { select: { name: 'Approved' } };
+    }
     return { approved: pages.length };
   }],
 ];

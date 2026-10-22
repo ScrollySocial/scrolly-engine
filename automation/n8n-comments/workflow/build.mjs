@@ -33,7 +33,7 @@ add('About this workflow', 'n8n-nodes-base.stickyNote', 1, [-420, -260], {
   width: 420,
   height: 300,
   content:
-    '## Scrolly comments\nInstagram comment with a keyword → freebie DM (automatic).\nEvery Instagram, YouTube and TikTok comment → Claude sorts it and drafts a reply → Notion **Comment inbox**.\nSet Status = Approved in Notion → the reply is posted within 10 minutes (TikTok: reply by hand).\n\nTest mode is on until COMMENTS_DRY_RUN=false.\nCode lives in automation/n8n-comments/workflow/src (edit there, rebuild, re-import).',
+    '## Scrolly comments\nInstagram comment with a keyword → freebie DM (automatic).\nEvery Instagram, YouTube and TikTok comment → sorted by free word rules → Notion **Comment inbox** as Needs draft.\nClaude (subscription) writes the drafts; set Status = Approved → posted within 10 minutes (TikTok: reply by hand).\nOptional: CLAUDE_API_DRAFTS=true drafts with the paid Claude API instead.\n\nTest mode is on until COMMENTS_DRY_RUN=false.\nCode lives in automation/n8n-comments/workflow/src (edit there, rebuild, re-import).',
 });
 
 webhook('Instagram check', 'GET', 'instagram', [0, 0], 'responseNode');
@@ -53,7 +53,7 @@ codeNode('Fetch TikTok comments', 'fetch-tiktok-comments.js', [220, 600]);
 
 codeNode('New comments only', 'new-comments-only.js', [480, 400]);
 codeNode('Send keyword DMs', 'send-keyword-dms.js', [700, 400]);
-codeNode('Sort and draft (Claude)', 'sort-and-draft.js', [920, 400]);
+codeNode('Sort comments', 'sort-comments.js', [920, 400]);
 codeNode('Add to Comment inbox', 'add-to-inbox.js', [1140, 400]);
 
 schedule('Every 10 min: approved replies', { field: 'minutes', minutesInterval: 10 }, [0, 800]);
@@ -77,8 +77,8 @@ const connections = {
   'Daily 8am: TikTok': link('Fetch TikTok comments'),
   'Fetch TikTok comments': link('New comments only'),
   'New comments only': link('Send keyword DMs'),
-  'Send keyword DMs': link('Sort and draft (Claude)'),
-  'Sort and draft (Claude)': link('Add to Comment inbox'),
+  'Send keyword DMs': link('Sort comments'),
+  'Sort comments': link('Add to Comment inbox'),
   'Every 10 min: approved replies': link('Post approved replies'),
   'Weekly: Instagram token': link('Refresh Instagram token'),
   'Run a job now': link('Pick job'),

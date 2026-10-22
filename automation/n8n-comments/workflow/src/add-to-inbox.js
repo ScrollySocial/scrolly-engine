@@ -32,7 +32,9 @@ for (const item of $input.all()) {
     Type: { select: { name: c.type ? c.type[0].toUpperCase() + c.type.slice(1) : 'Other' } },
     Priority: { checkbox: c.type === 'question' || c.type === 'lead' },
     'Draft reply': rich(c.draft),
-    Status: { select: { name: c.platform === 'TikTok' ? 'Reply by hand' : 'New' } },
+    // No draft yet (free mode): "Needs draft" until Claude writes one on the
+    // subscription. With a draft: ready for review, or typed by hand on TikTok.
+    Status: { select: { name: !c.draft ? 'Needs draft' : c.platform === 'TikTok' ? 'Reply by hand' : 'New' } },
     Author: rich(c.author),
     'Comment ID': rich(c.id),
     'Thread ID': rich(c.threadId),

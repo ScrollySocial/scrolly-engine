@@ -1,6 +1,31 @@
-// Claude sorts each comment (question / lead / praise / spam / other) and drafts
-// a reply in Mercedes's voice. Drafts are never posted from here: they wait in
-// the Notion Comment inbox until she sets Status = Approved.
+// Sorts each comment (question / lead / praise / spam / other) and flags
+// questions and leads, with free word rules, so no AI API is needed.
+// Reply drafts are written later by Claude on Mercedes's subscription (vault
+// skills/draft-comment-replies): rows arrive in the Notion Comment inbox as
+// Status "Needs draft". Nothing is ever posted from here.
+//
+// Optional: CLAUDE_API_DRAFTS=true (plus ANTHROPIC_API_KEY) sorts and drafts each
+// comment with the Claude API instead (paid per comment), and rows arrive as "New"
+// with the draft filled in. Its prompt below follows the same reply rules as the
+// vault skill; change both together.
+
+// ---- free rules (checked in this order: spam, lead, question, praise) ----
+const RULES = {
+  spam: /promote (it|this|your)|promo(tion)? on @|collab|brand ambassador|(dm|message) (me|us) (for|to)|check (out )?(my|our) (bio|page|profile)|crypto|bitcoin|forex|invest(ment|ing)? (opportunity|platform)|earn \$?\d+.{0,12}(daily|weekly|a day|per day)|(real|cheap|free) followers|grow your (account|page|followers)|https?:\/\//i,
+  lead: /how much|price|pricing|cost|how (do|can) i (join|get|buy|sign up|start)|where (do|can) i (get|buy|find|sign up)|sign me up|i('m| am) interested|i need (this|that|help)|i want (this|in)|how to join|\bjoin\b|enroll|send (me )?the link|stuck|nobody buys|no (sales|one buys)|can't (sell|get sales)/i,
+  question: /\?|^(how|what|why|when|where|which|who|can|could|does|do|is|are|should|will|would|any tips)\b/i,
+  praise: /lov(e|ing)|thank|great|amazing|helpful|so good|needed (this|that)|obsessed|genius|perfect|yes+!|🔥|❤|♥|😍|👏|🙌|💯|🥰|🙏/i,
+};
+function sortByRules(text) {
+  const t = String(text || '').trim();
+  if (!t) return 'other';
+  for (const type of ['spam', 'lead', 'question', 'praise']) if (RULES[type].test(t)) return type;
+  // only emojis / punctuation counts as praise
+  if (!/[a-z0-9]/i.test(t)) return 'praise';
+  return 'other';
+}
+
+// ---- optional Claude API path ----
 const SYSTEM = `You sort comments on Mercedes's social media posts and draft her replies.
 Mercedes runs Scrolly (@scrollysocial). She helps small business owners and moms make their first money online with organic social media, starting with little or no audience. Her paid products are the $1K Club and the $1K Club + Challenge, plus a few guides and templates.
 
@@ -30,10 +55,18 @@ const base = cfg('ANTHROPIC_BASE', 'https://api.anthropic.com');
 const model = cfg('CLAUDE_MODEL', 'claude-opus-5-5');
 const effort = cfg('CLAUDE_EFFORT', 'low');
 
+const useApi = cfg('CLAUDE_API_DRAFTS') === 'true' && !!key;
+
 const out = [];
 for (const item of $input.all()) {
   const c = { ...item.json };
   if (c.keywordOnly) {
+    out.push({ json: c });
+    continue;
+  }
+  if (!useApi) {
+    c.type = sortByRules(c.text);
+    c.draft = '';
     out.push({ json: c });
     continue;
   }
@@ -58,7 +91,7 @@ for (const item of $input.all()) {
     c.needsCheck = !!parsed.needs_check;
   } catch (e) {
     logError('claude', e);
-    c.type = 'other';
+    c.type = sortByRules(c.text);
     c.draft = '';
     c.note = `Couldn't draft a reply: ${errText(e)}`;
   }

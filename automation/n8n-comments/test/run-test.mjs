@@ -8,6 +8,10 @@ const MOCK = process.env.MOCK_URL || 'http://localhost:5690';
 const SECRET = 'test-app-secret';
 const RUN = { 'x-run-secret': 'test-run-secret', 'Content-Type': 'application/json' };
 const IG_ID = '17840000000000001';
+// MODE=rules (default: free word rules, drafts come later from the Claude subscription)
+// or MODE=api (container started with CLAUDE_API_DRAFTS=true: sorted + drafted by the Claude API)
+const API = process.env.MODE === 'api';
+console.log(`mode: ${API ? 'Claude API drafts' : 'free rules, Needs draft'}`);
 let failed = 0;
 const check = (name, ok, extra = '') => {
   console.log(`${ok ? 'PASS' : 'FAIL'}  ${name}${ok || !extra ? '' : `  -> ${extra}`}`);
@@ -73,7 +77,13 @@ const igPages = log.pages.filter((p) => p.properties.Platform.select.name === 'I
 check('Inbox has c2 and c3 only (keyword-only c1 not logged)', igPages.length === 2 && igPages.map((p) => p.properties['Comment ID'].rich_text[0].text.content).sort().join() === 'c2,c3', igPages.map((p) => p.properties.Comment.title[0].text.content).join(' | '));
 const c2 = igPages.find((p) => p.properties['Comment ID'].rich_text[0].text.content === 'c2');
 check('c2 flagged as a question with priority', c2?.properties.Type.select.name === 'Question' && c2?.properties.Priority.checkbox === true);
-check('Draft has no em dash', c2 && !c2.properties['Draft reply'].rich_text[0].text.content.includes('—'), c2?.properties['Draft reply'].rich_text[0]?.text.content);
+if (API) {
+  check('API mode: draft written, no em dash, ready for review', c2?.properties.Status.select.name === 'New' && !!c2.properties['Draft reply'].rich_text[0] && !c2.properties['Draft reply'].rich_text[0].text.content.includes('—'), c2?.properties['Draft reply'].rich_text[0]?.text.content);
+} else {
+  check('Free mode: no draft yet, Status Needs draft', c2?.properties.Status.select.name === 'Needs draft' && c2.properties['Draft reply'].rich_text.length === 0, c2?.properties.Status.select.name);
+  const c3 = igPages.find((p) => p.properties['Comment ID'].rich_text[0].text.content === 'c3');
+  check('Free mode: "love this" sorted as praise, no priority', c3?.properties.Type.select.name === 'Praise' && c3?.properties.Priority.checkbox === false);
+}
 check('Instagram row has the post link', c2?.properties.Link?.url === 'https://www.instagram.com/p/TESTPOST/');
 check('Note says the DM was sent', (c2?.properties.Note.rich_text[0]?.text.content || '').startsWith('Keyword PINS: sent'));
 
@@ -96,14 +106,17 @@ const yt = log.pages.filter((p) => p.properties.Platform.select.name === 'YouTub
 const tt = log.pages.filter((p) => p.properties.Platform.select.name === 'TikTok');
 check('YouTube: 1 new comment logged (own + 8-day-old skipped)', yt.length === 1, String(yt.length));
 check('YouTube row keeps thread id + link', yt[0]?.properties['Thread ID'].rich_text[0]?.text.content === 'ytThread1' && yt[0]?.properties.Link.url.includes('lc=ytThread1'));
-check('TikTok: 1 logged (spam + own skipped), marked Reply by hand, lead', tt.length === 1 && tt[0].properties.Status.select.name === 'Reply by hand' && tt[0].properties.Type.select.name === 'Lead', JSON.stringify(tt.map((p) => [p.properties.Status.select.name, p.properties.Type.select.name])));
+check(`TikTok: 1 logged (spam + own skipped), lead, ${API ? 'Reply by hand' : 'Needs draft'}`, tt.length === 1 && tt[0].properties.Status.select.name === (API ? 'Reply by hand' : 'Needs draft') && tt[0].properties.Type.select.name === 'Lead', JSON.stringify(tt.map((p) => [p.properties.Status.select.name, p.properties.Type.select.name])));
 const apify = log.log.find((x) => x.path.includes('apify'));
 check('Apify run is capped and asks for 3 newest videos', apify?.query.maxTotalChargeUsd === '0.10' && apify?.body.resultsPerPage === 3 && apify?.body.profiles[0] === 'scrollysocial');
 await runJob('youtube');
 await sleep(8000);
 check('YouTube re-poll adds no duplicates', (await mockLog()).pages.length === 4);
 
-// 6. Approve everything, post replies
+const claudeCalls = log.log.filter((x) => x.path.startsWith('/anthropic')).length;
+check(API ? 'API mode: Claude API was called' : 'Free mode: no Claude API calls at all', API ? claudeCalls > 0 : claudeCalls === 0, String(claudeCalls));
+
+// 6. Approve everything (empty drafts filled first, as the subscription routine would), post replies
 await fetch(`${MOCK}/test/approve`, { method: 'POST' });
 await runJob('replies');
 log = await waitFor(async () => {

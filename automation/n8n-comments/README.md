@@ -5,8 +5,13 @@ What it does, decisions and Mercedes's setup checklist: vault
 
 - **Instagram comment with a keyword** → one private-reply DM with the freebie link, sent automatically
   (Meta webhook, signature checked, deduped by comment ID).
-- **Every Instagram, YouTube and TikTok comment** → Claude sorts it (question / lead / praise / spam /
-  other) and drafts a reply → a row in the Notion **Comment inbox**. Spam and keyword-only comments aren't logged.
+- **Every Instagram, YouTube and TikTok comment** → sorted by free word rules (question / lead / praise / spam /
+  other; questions and leads flagged) → a row in the Notion **Comment inbox** at Status **Needs draft**. Spam and
+  keyword-only comments aren't logged. No AI API is used.
+- **Drafts** are written by Claude on Mercedes's subscription with the vault skill `skills/draft-comment-replies`
+  ("draft my comment replies", or a scheduled morning task), which sets rows to New (TikTok: Reply by hand).
+- **Optional paid route:** `CLAUDE_API_DRAFTS=true` + `ANTHROPIC_API_KEY` makes n8n sort and draft each comment with
+  the Claude API instead (rows arrive at New with the draft filled in).
 - **Status = Approved in Notion** → the Draft reply (as edited) is posted within 10 minutes; row becomes Posted.
   TikTok has no reply API: those rows say "Reply by hand".
 - **Test mode** (`COMMENTS_DRY_RUN=true`, the default): nothing is sent to Instagram or YouTube.
@@ -57,11 +62,12 @@ Changing `.env` needs `docker compose up -d` (recreates the container). Upgradin
 
 ```bash
 node test/mock-apis.mjs
-docker run -d --name n8n-comments-test -p 5688:5678 --env-file test/env.test -v n8n_comments_test:/home/node/.n8n -v "$PWD/test/config:/data/config:ro" -v "$PWD/workflow:/data/workflow:ro" n8nio/n8n:2.44.6
-node test/run-test.mjs   # needs a fresh volume each time: the state file remembers comments already seen
+bash test/fresh-container.sh            # add  -e CLAUDE_API_DRAFTS=true  for the API mode
+node test/run-test.mjs                  # MODE=api node test/run-test.mjs for the API mode
 ```
 
-(import + publish the workflow in the test container first, same as on the server). `test/env.test` points every
+`fresh-container.sh` starts a clean container (the state file remembers comments, so every run needs one), imports
+and publishes the workflow. `test/env.test` points every
 API at the mock; `test/config/keywords.json` has a test keyword PINS.
 
 ## Helper scripts
