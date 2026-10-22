@@ -23,9 +23,23 @@
       "text": "Not sure how to get found online? I'm here to help you with that."
     },
     {
-      "layout": "hook2",
-      "top": "Getting you found online is my whole thing.",
-      "bottom": "Here's who I am and how I help →"
+      "layout": "hookcover",
+      "media": "336eee3300",
+      "focus": "center 25%",
+      "pos": "bottom",
+      "voice": "mercedes",
+      "text": "Getting you found online is my whole thing",
+      "hand": "here's who I am",
+      "doodles": [
+        {
+          "k": "arrow",
+          "x": 840,
+          "y": 1300,
+          "w": 105,
+          "rot": -95,
+          "c": "pink"
+        }
+      ]
     },
     {
       "layout": "photo",
@@ -34,15 +48,14 @@
       "text": "Hi, I'm Mercedes. I help you get found online and turn that attention into customers."
     },
     {
-      "layout": "photo",
-      "media": "f5e7ef379a",
-      "focus": "center 15%",
-      "text": "I spent years in financial operations and reporting. Numbers are my comfort zone."
+      "layout": "text",
+      "text": "I spent years in financial operations and reporting. Numbers are my comfort zone.",
+      "palette": "navy"
     },
     {
       "layout": "photo",
-      "media": "473beb9747",
-      "focus": "30% center",
+      "media": "b96a511b16",
+      "focus": "center 20%",
       "text": "I kept coming up with business ideas, then getting stuck at the same spot: selling them."
     },
     {
@@ -52,10 +65,25 @@
       "text": "So I learned marketing the way I learn everything: break it down, build a system, test it."
     },
     {
-      "layout": "photo",
-      "media": "95d583fddb",
-      "focus": "center 40%",
-      "text": "What I found: making content is easier than you think. Staying consistent is harder than you think."
+      "layout": "chat",
+      "text": "What I found:",
+      "chat": [
+        {
+          "text": "Is making content hard?"
+        },
+        {
+          "me": true,
+          "text": "Easier than you think."
+        },
+        {
+          "text": "And staying consistent?"
+        },
+        {
+          "me": true,
+          "text": "Harder than you think."
+        }
+      ],
+      "palette": "mist"
     },
     {
       "layout": "photo",
@@ -71,14 +99,14 @@
     },
     {
       "layout": "photo",
-      "media": "f5e7ef379a",
-      "focus": "center 15%",
+      "media": "a91bd739e1",
+      "focus": "center 62%",
       "text": "Off the clock: books, my cats, guitar and French lessons, and anything I can make with my hands. Coffee always hot."
     },
     {
       "layout": "photo",
-      "media": "1e629b09ae",
-      "focus": "center 10%",
+      "media": "4426aa6aa3",
+      "focus": "center 40%",
       "text": "Follow along for practical tips to help you reach your dreams. Go get 'em, tiger :)"
     }
   ],
