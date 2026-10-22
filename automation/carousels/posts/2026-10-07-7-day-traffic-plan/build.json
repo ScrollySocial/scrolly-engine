@@ -1,9 +1,11 @@
 {
-  "builtAt": "2026-10-22T00:14:21.327Z",
+  "builtAt": "2026-10-22T00:27:56.603Z",
   "exportDir": "C:\\Users\\merce\\OneDrive\\Scrolly Media\\exports\\carousels\\2026-10-07-7-day-traffic-plan",
   "mediaUsed": [
+    "f5e7ef379a",
     "542d2ebb5f",
-    "60167eb7b6"
+    "60167eb7b6",
+    "95d583fddb"
   ],
   "fit": [
     {
@@ -18,7 +20,7 @@
       "size": 140,
       "min": 48,
       "ok": true,
-      "lines": 7
+      "lines": 4
     },
     {
       "i": 2,

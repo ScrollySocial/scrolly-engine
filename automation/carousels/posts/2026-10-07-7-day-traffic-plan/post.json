@@ -41,7 +41,9 @@
       "layout": "hook2",
       "top": "One week, seven small moves",
       "bottom": "Here's what to do each day for *more people* on your page →",
-      "pattern": "stripes"
+      "photoBg": "f5e7ef379a",
+      "photoFocus": "center 15%",
+      "scrim": "bottom"
     },
     {
       "layout": "phone",
@@ -54,7 +56,8 @@
         ],
         "link": "your buying page"
       },
-      "text": "Day 1: make your bio say what you sell and where to buy it."
+      "text": "Day 1: make your bio say what you sell and where to buy it.",
+      "palette": "mist"
     },
     {
       "layout": "photo",
@@ -63,9 +66,10 @@
       "text": "Day 2: post a Reel that answers one question your buyer asks."
     },
     {
-      "layout": "text",
-      "text": "Day 3: post a carousel that teaches one thing.",
-      "pattern": "grid"
+      "layout": "number",
+      "palette": "sky",
+      "big": "Day 3",
+      "text": "Post a carousel that teaches one thing."
     },
     {
       "layout": "phone",
@@ -75,7 +79,8 @@
         "link": "your link"
       },
       "media": "60167eb7b6",
-      "text": "Day 4: show the work in Stories, with a link sticker."
+      "text": "Day 4: show the work in Stories, with a link sticker.",
+      "palette": "navy"
     },
     {
       "layout": "chat",
@@ -96,7 +101,9 @@
     {
       "layout": "text",
       "text": "Day 6: repost your best Reel with a new hook.",
-      "pattern": "dots"
+      "photoBg": "95d583fddb",
+      "photoFocus": "center 40%",
+      "scrim": "top"
     },
     {
       "layout": "phone",
@@ -110,10 +117,27 @@
         ],
         "hi": 3
       },
-      "text": "Day 7: see which post got the most link taps, then make another like it."
+      "text": "Day 7: see which post got the most link taps, then make another like it.",
+      "doodles": [
+        {
+          "k": "note",
+          "text": "most\ntaps\nwins",
+          "x": 40,
+          "y": 830,
+          "rot": -8
+        },
+        {
+          "k": "arrow",
+          "x": 90,
+          "y": 1130,
+          "w": 80,
+          "rot": -75
+        }
+      ]
     },
     {
-      "text": "The $1K Challenge turns this into 30 days, with a plan for each week. Link in bio."
+      "text": "The $1K Challenge turns this into 30 days, with a plan for each week. Link in bio.",
+      "palette": "sky"
     }
   ],
   "cta": {
