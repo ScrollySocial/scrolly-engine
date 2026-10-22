@@ -15,8 +15,8 @@ services:
       - NODE_ENV=production
       # The Code nodes read settings from $env, check Meta's signature (crypto)
       # and read the keyword list (fs).
-      # One run at a time: the "already seen" and "DM sent" lists live in the
-      # workflow's static data, and two runs at once would overwrite each other.
+      # One run at a time: the "already seen" and "DM sent" lists live in one
+      # state file (see workflow/src/_lib.js), which must never have two writers.
       - N8N_CONCURRENCY_PRODUCTION_LIMIT=1
       # The TikTok job waits up to 5 minutes for Apify inside a Code node.
       - N8N_RUNNERS_TASK_TIMEOUT=600

@@ -20,3 +20,6 @@ Saved views in use (Content Pipeline, Scrolly Content Tracker):
   (query: `{"mode":"view","view_url":"view://3f9ab38f-4c58-81e3-a763-000cb6af8568"}`)
 - Reel Style Board (style and editing inspiration, newest first; check before editing a Reel):
   view://3feab38f-4c58-81f9-8429-000c8ddaa849
+- Comment inbox, Needs draft (comments waiting for a reply draft; skill draft-comment-replies):
+  view://401ab38f-4c58-814c-a095-000cd613164b
+- Comment inbox, To answer (drafts waiting for Mercedes's OK): view://401ab38f-4c58-8164-a2b1-000cee1deba8
