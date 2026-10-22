@@ -11,7 +11,7 @@
     "mainPoint": "Three free tools, one for each starting point: no offer yet, an idea with no sales yet, or wanting the numbers",
     "structure": "pick-your-path walkthrough",
     "ending": "save CTA",
-    "slide2Check": "Format change from the panorama cover (hook2); makes the same promise (a free first step) from the 'which one fits you' angle, so it works as a first slide",
+    "slide2Check": "Format change from the panorama cover (numcover with her walking toward camera); same promise from the 'which one fits you' angle with a big 3 and a swipe pull, so it works as a first slide",
     "mediaPlan": "Real phone screenshots of the live pages (photos/screens/site/live-*.png). Slide 1 is the locked v7 panorama tile 3."
   },
   "media": {},
@@ -23,10 +23,23 @@
       "text": "Start here. A free quiz, 3 steps"
     },
     {
-      "layout": "hook2",
-      "top": "Three free tools. One fits where you are right now.",
-      "bottom": "Find yours →",
-      "palette": "mist"
+      "layout": "numcover",
+      "media": "8998e1cdc9",
+      "focus": "center 35%",
+      "pos": "bottom",
+      "big": "3",
+      "text": "free tools. One fits where you are right now.",
+      "hand": "swipe to find yours",
+      "doodles": [
+        {
+          "k": "arrow",
+          "x": 880,
+          "y": 1215,
+          "w": 110,
+          "rot": -95,
+          "c": "sky"
+        }
+      ]
     },
     {
       "layout": "phone",
@@ -65,8 +78,22 @@
       "palette": "navy"
     },
     {
-      "text": "Save this so you can find them. All three are free at scrollyseo.com.",
-      "palette": "sky"
+      "layout": "hookcover",
+      "media": "562c236367",
+      "focus": "center 30%",
+      "pos": "top",
+      "text": "Save this for later",
+      "hand": "all 3 are free at scrollyseo.com",
+      "doodles": [
+        {
+          "k": "star",
+          "x": 905,
+          "y": 85,
+          "w": 105,
+          "rot": 12,
+          "c": "sky"
+        }
+      ]
     }
   ],
   "cta": {
