@@ -28,6 +28,80 @@
       "media": [],
       "notionUrl": "https://app.notion.com/p/3f2ab38f4c58815c984bf316568fa42c",
       "status": "approved"
+    },
+    {
+      "id": "2026-10-07-pinned-about",
+      "date": "2026-10-22",
+      "style": "D",
+      "format": null,
+      "palette": "offwhite",
+      "reader": "New visitors deciding whether to follow",
+      "problem": "They don't know who runs Scrolly or why to trust and follow it",
+      "outcome": "They know who Mercedes is, what Scrolly helps with, and why to follow",
+      "topic": "About Mercedes and Scrolly (pinned intro)",
+      "mainPoint": "An analytical person who struggled with selling built marketing systems and shares them",
+      "structure": "walking-through-slides story",
+      "ending": "follow CTA with tiger nod",
+      "hook": "Not sure how to get found online? I'm here to help you with that.",
+      "slide2": "Getting you found online is my whole thing",
+      "slides": 10,
+      "cta": {
+        "type": "follow"
+      },
+      "tigerNod": null,
+      "hashtags": [
+        "#smallbusiness",
+        "#organicmarketing",
+        "#solopreneur"
+      ],
+      "media": [
+        "964f2050c6",
+        "336eee3300",
+        "1e629b09ae",
+        "8aeaa75e67",
+        "b96a511b16",
+        "542d2ebb5f",
+        "265ec9a722",
+        "60167eb7b6",
+        "4426aa6aa3"
+      ],
+      "notionUrl": "https://app.notion.com/p/3f2ab38f4c5881e182f5f3e27f11d542",
+      "status": "approved"
+    },
+    {
+      "id": "2026-10-22-pinned-free-start",
+      "date": "2026-10-22",
+      "style": "D",
+      "format": null,
+      "palette": "offwhite",
+      "reader": "A new visitor who wants to make money or get found online but doesn't know where to begin",
+      "problem": "They don't know which first step fits where they are",
+      "outcome": "They pick one free tool that matches their stage and use it today",
+      "topic": "Free start: the Offer Quiz, the Next Move Quiz and the free calculators",
+      "mainPoint": "Three free tools, one for each starting point: no offer yet, an idea with no sales yet, or wanting the numbers",
+      "structure": "pick-your-path walkthrough",
+      "ending": "save CTA",
+      "hook": "Start here. A free quiz, 3 steps",
+      "slide2": "free tools. One fits where you are right now.",
+      "slides": 7,
+      "cta": {
+        "type": "save"
+      },
+      "tigerNod": null,
+      "hashtags": [
+        "#onlinebusiness",
+        "#digitalproducts",
+        "#sidehustleideas"
+      ],
+      "media": [
+        "bff6adb732",
+        "8998e1cdc9",
+        "fe440f19cf",
+        "8aeaa75e67",
+        "562c236367"
+      ],
+      "notionUrl": "https://app.notion.com/p/401ab38f4c5881a7b6bbfd3884938a8a",
+      "status": "approved"
     }
   ]
 }
