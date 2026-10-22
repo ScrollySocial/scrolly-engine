@@ -25,8 +25,8 @@ const STEPS = [
 
 const INCLUDED = [
   ['The Reel Engine', 'Graphics library, Studio Reel template, review page, cover maker and a setup check.'],
-  ['A 45-minute setup call', 'We install it on your computer together.'],
-  ['Your brand kit', 'Made on the call: your colors, fonts, caption style and anything you never want in a Reel.'],
+  ['Guided setup', 'Open the folder in Claude and say “set up my Reel engine”. It installs what’s missing and checks everything works.'],
+  ['Your brand kit', 'Setup asks for your colors, fonts, caption style and anything you never want in a Reel, and saves them.'],
   ['A finished MP4 and cover', 'For every Reel you approve.'],
   ['Engine updates', 'Through the end of the beta.'],
 ];
@@ -34,7 +34,7 @@ const INCLUDED = [
 const BRING = [
   ['A paid Claude plan', 'Pro ($20 a month) or higher, sold separately. <a href="https://claude.com/pricing" rel="noopener">See current prices</a>.'],
   ['A Windows computer', 'Mac is untested for the beta.'],
-  ['10 free starter sounds', 'Downloaded from Mixkit with our link list. About 5 minutes, once.'],
+  ['25 free starter sounds', 'Downloaded from Mixkit with our link list. About 10 minutes, once.'],
   ['Your posting tool', 'Or post the MP4 straight to Instagram.'],
 ];
 
@@ -42,10 +42,10 @@ const FAQS = [
   ['What kind of Reels does it make?', 'Studio Reels: you talking to camera in one take, with graphics, captions and sounds built from what you say. Other Reel types are outside the beta.'],
   ['Which Claude plan do I need?', 'Pro is the minimum. Claude’s limits are shared with your chats, and rendering uses none of them because it runs on your computer. We’ll measure how many Reels a day fit on Pro with the founding group and share what we find.'],
   ['How long does a Reel take to render?', 'On my laptop, a 60-second Reel takes about 10 to 15 minutes. It runs in the background while you work.'],
-  ['Why do I download the sounds myself?', 'Mixkit’s free license lets you use their sounds in your Reels but doesn’t allow sharing them inside a tool. You download the 10 starter sounds once, and a Reel still renders if one is missing.'],
+  ['Why do I download the sounds myself?', 'Mixkit’s free license lets you use their sounds in your Reels but doesn’t allow sharing them inside a tool. You download the 25 starter sounds once, and a Reel still renders if one is missing.'],
   ['Does it post for me?', 'In the beta you get the finished MP4 and cover, ready for Instagram or your scheduler.'],
   ['Does my footage leave my computer?', 'Your video files, the review page and the renders all stay on your computer. Claude works from your transcript and still frames.'],
-  ['Do I need to know code?', 'No. We install it together on the setup call, and you ask Claude for changes in plain words.'],
+  ['Do I need to know code?', 'No. Claude runs the setup for you and asks a few plain questions, and you ask it for changes in plain words.'],
   ['What does founding mean?', `You’re one of the first ${SEATS} people using it, so expect a few setup bugs. You get the founding price and direct help while we fix them.`],
 ];
 

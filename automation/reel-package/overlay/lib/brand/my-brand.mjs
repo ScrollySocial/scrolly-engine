@@ -39,4 +39,5 @@ export default {
   // (handwritten). The review page can still switch it for one Reel.
   captionFont: 'body',
   site: '', // EDIT ME: your website, shown on end cards (e.g. 'yoursite.com'), or leave empty
+  handle: '', // EDIT ME: your Instagram handle with the @ (e.g. '@yourname'), shown on Follow end cards
 };

@@ -52,7 +52,7 @@ HyperFrames and HeyGen are trademarks of their owner. This product is built on H
 by HeyGen.
 
 ## Not included: sound effects and music
-No sound or music files ship with the engine. `sounds.md` lists the 10 Mixkit sound effects the Studio template uses
+No sound or music files ship with the engine. `sounds.md` lists the 25 Mixkit sound effects the engine's sound library uses
 and how to download them yourself under Mixkit's free license.
 
 ## Credits

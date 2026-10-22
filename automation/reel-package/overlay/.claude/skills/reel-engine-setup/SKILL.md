@@ -50,7 +50,8 @@ Use AskUserQuestion for choices, chat for free text. Recommended option first. D
 9. "Which fonts do you use?" Keep the starter fonts if they have none. For their own: get the font files into
    `lib/assets/fonts` **with their license file next to each**, and update `fontFaces` + `fontFiles`. A Google Font
    is always fine. A paid font: ask whether its license covers video; if unsure, pick a close Google Font instead.
-10. Set `label` (the name shown in the Brand kit dropdown) and `site` (shown on end cards, or empty). Keep `name`
+10. Set `label` (the name shown in the Brand kit dropdown), `site` (shown on end cards, or empty) and `handle`
+    (their @handle from question 2, shown on Follow end cards). Keep `name`
     as `my-brand`: `lib/brand/index.mjs` and `reel-settings.json` → `brand` use that id.
 10a. "How should your captions look?" → `captionFont` in the kit (AskUserQuestion, show each in their fonts if you can):
     - Clean (recommended): the body font, `'body'`.
@@ -64,9 +65,12 @@ Use AskUserQuestion for choices, chat for free text. Recommended option first. D
     best), ask which to keep → settings `holidays` (`[]` hides them all), and whether any colors should change (edit
     `HOLIDAYS` in `holidays.mjs`; another holiday = one more entry there).
 10c. Show them a cover rendered with their kit (`renderCovers` in `lib/cover.mjs`) before calling the look done.
-11. "How loud should background music be under your voice?" → `templates.studio.music.volume`
-    (Quiet bed = the template's 0.05, leave it unset / Very quiet = 0.02). They can still change it per Reel on the
-    review page.
+11. "How loud should background music be under your voice?" → `templates.studio.music.level` (the engine measures
+    each track, so the level holds whatever the song):
+    - Normal (recommended, the default; leave it unset): you hear it clearly, your voice stays well on top.
+    - Quiet: in the background, you notice it if you listen for it → `"quiet"`.
+    - Up front: part of the mood, good for short punchy Reels → `"front"`.
+    They can still change it per Reel on the review page.
 12. "Anything you never want in a Reel?" (free text, optional; examples: a word or phrase, a color, emojis, text over
     their face, a kind of sound) → `rules.list`, one short line each. If they keep a
     longer rules doc, point `rules.doc` + `rules.section` at it; otherwise leave `doc` empty.
@@ -89,7 +93,7 @@ Show them a short plain summary of what you saved (no JSON).
      files; don't invent replacements.
    - WordPress client / tracker id: go back to question 6 or 7.
 3. **NOTE** lines don't block:
-   - Sound effects: point them to `sounds.md` (10 free downloads from Mixkit, ~5 minutes). They drop the downloads in
+   - Sound effects: point them to `sounds.md` (25 free downloads from Mixkit, about 10 minutes; a missing one just stays silent). They drop the downloads in
      `lib/assets/sfx/` and run doctor again, which renames them. **Never download the sounds for them**: the Mixkit
      license is theirs to accept, and the engine must not fetch Mixkit files itself.
    - Claude Code signed in (terminal): fine if they use Claude Code inside the desktop app.

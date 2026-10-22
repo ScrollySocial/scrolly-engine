@@ -62,6 +62,6 @@
   },
 
   "templates": {
-    "_note": "your overrides of lib/templates/*.mjs (deep-merged), e.g. { \"studio\": { \"music\": { \"volume\": 0.02 } } } for very quiet music."
+    "_note": "your overrides of lib/templates/*.mjs (deep-merged), e.g. { \"studio\": { \"music\": { \"level\": \"quiet\" } } } for quieter music (quiet / normal / front)."
   }
 }

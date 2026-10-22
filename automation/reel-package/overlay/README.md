@@ -8,11 +8,12 @@ computer. Nothing is uploaded: transcription, editing and rendering all run loca
 - **A paid Claude plan** with Claude Code (Pro, $20/month, or higher; see claude.com/pricing). Not included.
 - **Claude Code**, in the Claude desktop app (Code tab) or in a terminal.
 - About **3 GB free space** and an internet connection for the first setup (tools and the speech model download once).
-- Optional: **10 free sound effects** you download yourself from Mixkit (see [sounds.md](sounds.md)). Reels build
+- Optional: **25 free sound effects** you download yourself from Mixkit (see [sounds.md](sounds.md)). Reels build
   without them; the sounds just stay silent.
 
 ## 1. Put the folder somewhere permanent
-Unzip this folder to a place it can stay, e.g. `Documents/reel-engine`. Avoid a folder that syncs (OneDrive, Dropbox):
+Unzip this folder to a place it can stay, with a short path, e.g. `Documents/reel-engine` (Windows has a path length
+limit and the speech-to-text helpers nest deep). Avoid a folder that syncs (OneDrive, Dropbox):
 renders write big temporary files.
 
 ## 2. Open it in Claude Code and run setup
@@ -45,8 +46,8 @@ cover uses it:
 **Change any of it later:** tell Claude "change my brand colors", "use a different caption font", "add a never-do
 rule" or "add an Easter kit". The next Reel uses it; Reels you already made stay as they are.
 
-## 3. Add the sounds (optional, 5 minutes)
-Follow [sounds.md](sounds.md): download 10 files from Mixkit, drop them in `lib/assets/sfx/`, run `node lib/doctor.mjs`.
+## 3. Add the sounds (optional, about 10 minutes)
+Follow [sounds.md](sounds.md): download 25 files from Mixkit, drop them in `lib/assets/sfx/`, run `node lib/doctor.mjs`.
 
 ## 4. Make your first Reel
 Film one take on your phone (vertical, 20 to 90 seconds, you talking to the camera). Put it in your footage folder,

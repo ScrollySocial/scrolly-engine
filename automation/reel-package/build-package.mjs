@@ -9,6 +9,7 @@
 // Mercedes, every font with its OFL file. Any failure stops the build.
 // Writes FILES.txt (every shipped file + size) into the package: show it to Mercedes before anything is shared.
 // Usage: node build-package.mjs [out-dir]
+import { spawnSync } from 'node:child_process';
 import { cpSync, existsSync, mkdirSync, readdirSync, readFileSync, rmSync, statSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -20,7 +21,7 @@ const OUT = path.resolve(process.argv[2] || path.join(HERE, `dist/reel-engine-v$
 const fail = (msg) => { console.error(`build-package: ${msg}`); process.exit(1); };
 
 // ---- 1. engine library ----
-const SKIP = [/^brand[\\/]scrolly.*\.mjs$/, /^assets[\\/]sfx[\\/].+\.(mp3|wav)$/i, /^README\.md$/];
+const SKIP = [/^brand[\\/]scrolly.*\.mjs$/, /^assets[\\/]sfx[\\/].+\.(mp3|wav)$/i, /^README\.md$/, /^sounds\.md$/];
 rmSync(OUT, { recursive: true, force: true });
 cpSync(path.join(ENGINE, 'lib'), path.join(OUT, 'lib'), {
   recursive: true,
@@ -31,6 +32,23 @@ cpSync(path.join(ENGINE, 'lib'), path.join(OUT, 'lib'), {
 for (const f of ['components.mjs', 'templates/studio.mjs']) {
   const p = path.join(OUT, 'lib', f);
   writeFileSync(p, readFileSync(p, 'utf8').replace(/\b2026-10-13-bb-voice-file\b/g, 'the first Studio Reel').replace(/\b2026-10-13-bb-know-what-you-sell\b/g, 'the second Studio Reel'));
+}
+
+// sounds: the customer copy keeps the library (names, jobs, lengths, Mixkit ids) but not the owner's downloader, and
+// gets the download checklist as sounds.md, made fresh from that same library
+const node = (args) => { const r = spawnSync(process.execPath, args, { cwd: path.join(ENGINE, 'lib'), encoding: 'utf8' }); if (r.status) fail(`node ${args.join(' ')} failed: ${r.stderr}`); };
+node(['sounds.mjs', '--md']);
+cpSync(path.join(ENGINE, 'lib/sounds.md'), path.join(OUT, 'sounds.md'));
+{
+  const p = path.join(OUT, 'lib/sounds.mjs');
+  let src = readFileSync(p, 'utf8');
+  const cutAt = src.indexOf('const preview = ');
+  if (cutAt < 0) fail("sounds.mjs changed: can't find the downloader (const preview). Update build-package.mjs");
+  src = src.slice(0, cutAt).trimEnd() + '\n';
+  src = src.replace(/^\/\/   - `node lib\/sounds\.mjs --md`[^\n]*\n(\/\/     [^\n]*\n)*/m, "//   - the package's sounds.md is the download checklist made from this list (Mixkit's license forbids shipping\n//     their files inside a tool, so you download them once by hand)\n");
+  src = src.replace(/^\/\/   - `node lib\/sounds\.mjs --get`[^\n]*\n/m, '');
+  if (/--get|--md|fetch\(|mixkit\.co/.test(src)) fail('sounds.mjs: downloader not fully stripped');
+  writeFileSync(p, src);
 }
 
 // ---- 2. the silence-aware cut, standalone (one source of truth: reel-studio/prep.mjs) ----

@@ -4,7 +4,7 @@
 //   1. an end card after she stops talking (her cut-out on a brand color, the ask above her head, a real-looking UI piece),
 //   2. the matching caption line (inserted as the post caption's second sentence unless it's already there),
 //   3. a hook reminder on the Plan step (write the hook so the ending pays it off).
-// Generic for customer kits: wording comes from here + the brand kit (handle, bioLink, site); no Scrolly names.
+// Generic for customer kits: wording comes from here + the brand kit (handle, bioLink, site); no owner names in here.
 // "Comment for a freebie" = she sends the DMs by hand until ManyChat is set up.
 
 const q = (w) => `“${w}”`;

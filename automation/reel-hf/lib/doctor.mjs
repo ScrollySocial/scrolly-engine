@@ -12,6 +12,7 @@
 import { execFileSync, spawnSync } from 'node:child_process';
 import { copyFileSync, existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { createRequire } from 'node:module';
+import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { FILE, P, S, exe, findBrowser, hf, pythonCmd, saveSettings, tool } from './settings.mjs';
@@ -44,7 +45,12 @@ async function step(msg, test, { fix, needs, system, soft } = {}) {
 
 const run = (cmd, a, opts = {}) => {
   const p = spawnSync(cmd, a, { encoding: 'utf8', shell: WIN && /^(npm|npx|claude)$/.test(cmd), stdio: ['ignore', 'pipe', 'pipe'], ...opts });
-  if (p.status !== 0) throw new Error((p.stderr || p.stdout || p.error?.message || `${cmd} failed`).trim().split('\n').slice(-1)[0]);
+  if (p.status !== 0) {
+    // the real reason, not pip's closing "[notice] new release" lines
+    const lines = (p.stderr || p.stdout || p.error?.message || `${cmd} failed`).trim().split(/\r?\n/).map((l) => l.trim()).filter((l) => l && !/^\[notice\]/i.test(l));
+    const why = lines.filter((l) => /^(ERROR|error|HINT)\b/.test(l));
+    throw new Error((why.length ? why.join(' ') : lines.at(-1) || `${cmd} failed`).slice(0, 400));
+  }
   return p.stdout;
 };
 const onPath = (name) => { try { return run(WIN ? 'where' : 'which', [name]).split(/\r?\n/)[0].trim(); } catch { return ''; } };
@@ -59,6 +65,12 @@ const rel = (p) => path.relative(process.cwd(), p) || '.';
 // ---- settings ----
 await step(`settings file ${rel(FILE)}`, () => existsSync(FILE), { needs: 'run the "set up my Reel engine" skill (it asks a few questions and writes this file)' });
 
+// ---- folder path: Windows stops at 260 characters and the speech model's helpers nest deep, so pip fails ----
+const ROOT = path.resolve(HERE, '..');
+await step(`folder path short enough (${ROOT.length} characters)`, () => !WIN || ROOT.length <= 120, {
+  soft: true, needs: 'move this folder somewhere with a shorter path, e.g. Documents\\reel-engine, then run doctor again',
+});
+
 // ---- Node ----
 await step(`Node ${process.versions.node}`, () => +process.versions.node.split('.')[0] >= 20, {
   system: true, fix: () => pkgInstall('OpenJS.NodeJS.LTS', 'node') && 'restart the terminal to use the new Node',
@@ -66,11 +78,15 @@ await step(`Node ${process.versions.node}`, () => +process.versions.node.split('
 });
 
 // ---- Claude Code (plans, edits and builds each Reel; needs a paid Claude plan, Pro or higher) ----
-await step('Claude Code installed', () => onPath('claude') && run('claude', ['--version']).trim(), {
-  soft: true, needs: 'install Claude Code (claude.com/claude-code) and sign in with a paid Claude plan (Pro or higher)',
+// The Claude desktop app (Code tab) needs no `claude` on PATH: count it as installed, and its sign-in as signed in.
+const desktopApp = [process.env.LOCALAPPDATA && path.join(process.env.LOCALAPPDATA, 'AnthropicClaude'), process.env.LOCALAPPDATA && path.join(process.env.LOCALAPPDATA, 'Claude'),
+  '/Applications/Claude.app'].filter(Boolean).find((d) => existsSync(d));
+const claudeAccount = () => { try { return !!JSON.parse(readFileSync(path.join(os.homedir(), '.claude.json'), 'utf8')).oauthAccount; } catch { return false; } };
+await step('Claude Code installed', () => (onPath('claude') && run('claude', ['--version']).trim()) || (desktopApp && 'Claude desktop app'), {
+  soft: true, needs: 'install the Claude desktop app (claude.ai/download) or Claude Code (claude.com/claude-code) and sign in with a paid Claude plan (Pro or higher)',
 });
-await step('Claude Code signed in (terminal)', () => onPath('claude') && JSON.parse(run('claude', ['auth', 'status'])).loggedIn, {
-  soft: true, needs: 'in a terminal run: claude, then sign in. Using Claude Code inside the Claude desktop app? That app signs in on its own, so this is fine',
+await step('Claude Code signed in', () => claudeAccount() || (onPath('claude') && JSON.parse(run('claude', ['auth', 'status'])).loggedIn), {
+  soft: true, needs: 'open Claude (desktop app or a terminal: claude) and sign in with a paid Claude plan (Pro or higher)',
 });
 
 // ---- browser for stills, covers, storyboards (Edge or Chrome) ----
@@ -87,12 +103,17 @@ await step('headless browser (Edge or Chrome)', () => (S.tools.browser && exists
 
 // ---- HyperFrames helper folder: puppeteer (+ ffmpeg/ffprobe/gsap sources) ----
 const hfReq = () => createRequire(path.join(P.hyperframesDir, 'package.json'));
+// always the whole set in one npm install: npm removes anything package.json doesn't list, so installing one helper
+// on its own (after an interrupted first install) would delete the others
+const hfInstall = () => {
+  mkdirSync(P.hyperframesDir, { recursive: true });
+  if (!existsSync(path.join(P.hyperframesDir, 'package.json'))) writeFileSync(path.join(P.hyperframesDir, 'package.json'), JSON.stringify({ name: 'reel-engine-tools', private: true }, null, 1));
+  run('npm', ['install', `puppeteer@${PUPPETEER}`, '@ffprobe-installer/ffprobe', 'ffmpeg-static', 'gsap', hf], { cwd: P.hyperframesDir });
+};
 await step(`puppeteer ${PUPPETEER} in ${rel(P.hyperframesDir)}`, () => hfReq()('puppeteer/package.json').version === PUPPETEER, {
   fix: () => {
-    mkdirSync(P.hyperframesDir, { recursive: true });
-    if (!existsSync(path.join(P.hyperframesDir, 'package.json'))) writeFileSync(path.join(P.hyperframesDir, 'package.json'), JSON.stringify({ name: 'reel-engine-tools', private: true }, null, 1));
-    run('npm', ['install', `puppeteer@${PUPPETEER}`, '@ffprobe-installer/ffprobe', 'gsap', hf], { cwd: P.hyperframesDir });
-    return 'npm install (puppeteer, ffprobe, gsap, hyperframes)';
+    hfInstall();
+    return 'npm install (puppeteer, ffmpeg, ffprobe, gsap, hyperframes)';
   },
   needs: `cd ${rel(P.hyperframesDir)} && npm i puppeteer@${PUPPETEER}`,
 });
@@ -106,10 +127,13 @@ for (const name of ['ffmpeg', 'ffprobe']) {
       let src = onPath(name);
       if (!src) {
         const req = hfReq();
-        if (name === 'ffprobe') { try { src = req('@ffprobe-installer/ffprobe').path; } catch {} }
+        if (name === 'ffprobe') {
+          try { src = req('@ffprobe-installer/ffprobe').path; } catch {}
+          if (!src) { hfInstall(); src = hfReq()('@ffprobe-installer/ffprobe').path; }
+        }
         else {
           try { src = req('ffmpeg-static'); } catch {}
-          if (!src) { mkdirSync(P.hyperframesDir, { recursive: true }); run('npm', ['install', 'ffmpeg-static'], { cwd: P.hyperframesDir }); src = createRequire(path.join(P.hyperframesDir, 'package.json'))('ffmpeg-static'); }
+          if (!src) { hfInstall(); src = hfReq()('ffmpeg-static'); }
         }
       }
       if (!src || !existsSync(src)) throw new Error(`no ${name} found to copy`);
@@ -149,8 +173,8 @@ for (const [label, file] of [['transcribe script', P.transcribeScript], ['silenc
 }
 const sfxDir = SFX_DIR;
 // sounds are downloaded by the person (their own Mixkit license), so missing ones don't block: they stay silent.
-// A download dropped in lib/assets/sfx (Mixkit names it e.g. mixkit-air-woosh-1489.wav; sfx/sources.json maps the
-// number to the engine's name), or one already renamed to <name>.wav, is saved as <name>.mp3.
+// A download dropped in lib/assets/sfx (Mixkit names it e.g. mixkit-air-woosh-1489.wav; the id in lib/sounds.mjs, or an
+// older sfx/sources.json, maps the number to the engine's name), or one already renamed to <name>.wav, is saved as <name>.mp3.
 const sounds = SOUNDS.map((s) => s.name), sfxPath = (s) => path.join(sfxDir, `${s}.mp3`);
 const missingSfx = () => sounds.filter((s) => !existsSync(sfxPath(s)));
 const sfxSources = existsSync(path.join(sfxDir, 'sources.json')) ? JSON.parse(readFileSync(path.join(sfxDir, 'sources.json'), 'utf8')) : {};
@@ -159,7 +183,7 @@ const sfxConverted = [];
 if (FIX) {
   const files = existsSync(sfxDir) ? readdirSync(sfxDir).filter((f) => /\.(wav|mp3|m4a|ogg)$/i.test(f)) : [];
   for (const s of missingSfx()) {
-    const num = sfxSources[s]?.mixkit;
+    const num = sfxSources[s]?.mixkit ?? SOUNDS.find((x) => x.name === s)?.id;
     const src = files.find((f) => f.replace(/\.[^.]+$/, '') === s) || (num && files.find((f) => new RegExp(`(^|\\D)${num}(\\D|$)`).test(f)));
     if (!src) continue;
     try { execFileSync(tool('ffmpeg'), ['-v', 'error', '-y', '-i', path.join(sfxDir, src), '-codec:a', 'libmp3lame', '-q:a', '2', sfxPath(s)]); sfxConverted.push(`${src} → ${s}.mp3`); }
