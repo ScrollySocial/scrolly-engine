@@ -327,3 +327,55 @@ DESIGNS['pinned-2026-10-v6'] = ({ brand, extras }) => {
 .k1{left:1060px;top:700px;width:64px}.k2{left:2120px;top:600px;width:60px}.k3{left:3130px;top:620px;width:56px}
 </style>`;
 };
+
+// v7 (2026-10-22, Mercedes on v6.2: no orange on tile 2, the mist edges on 1 and 3 weren't right, the dotted line needs
+// dramatic movement, more pizzazz, headlines can sit at the bottom too). A sky circle centred on tile 2 spills into both
+// neighbours; a navy dotted line swoops and loops through all three and ends in an arrow at the quiz; headlines go
+// top / bottom / top. extras = [polaroid of her, Content Planner screen, offer-quiz screen].
+DESIGNS['pinned-2026-10-v7'] = ({ brand, extras }) => {
+  const [pol, planner, quiz] = extras;
+  const P = brand.palettes, light = P.offwhite, navy = P.navy;
+  const sky = light.deco;
+  return `
+<svg class="layer" viewBox="0 0 3240 1440">
+  <circle cx="1620" cy="560" r="770" fill="${sky}"/>
+  <path d="M120 1240 C 380 1420, 640 1000, 720 860 C 800 720, 1000 520, 1110 640 C 1200 740, 1060 860, 990 760 C 900 620, 1180 300, 1500 160 C 1800 40, 2100 120, 2200 520 C 2260 760, 2120 900, 2090 790 C 2060 680, 2300 680, 2420 800 C 2500 880, 2540 960, 2540 1040"
+    fill="none" stroke="${navy.bg}" stroke-width="10" stroke-linecap="round" stroke-dasharray="2 28"/>
+  <path d="M2500 1000 l 40 48 40 -44" fill="none" stroke="${navy.bg}" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+<div class="t1"><h1>Not sure how to get found online?</h1></div>
+<div class="hand h1">I'm here to help<br>you with that!</div>
+<div class="pol"><span class="tape"></span><div class="ph" style="background-image:url('${pol}')"></div></div>
+<div class="phone"><div class="notch"></div><div class="scr" style="background-image:url('${planner}')"></div></div>
+<div class="t2"><span class="pre">Want to make</span><b>$1,000</b><span class="post">in 30 days?</span><i>Meet the $1K Challenge →</i></div>
+<div class="burst">${'<svg viewBox="0 0 200 200"><path d="' + Array.from({ length: 24 }, (_, k) => { const a = (k / 24) * Math.PI * 2, r = k % 2 ? 70 : 100; return `${k ? 'L' : 'M'}${(100 + r * Math.cos(a)).toFixed(1)} ${(100 + r * Math.sin(a)).toFixed(1)}`; }).join(' ') + 'Z" fill="' + sky + '"/></svg>'}</div>
+<div class="t3"><p><span>Start here.</span></p></div>
+<div class="hand h3">a free quiz,<br>2 minutes</div>
+<img class="qimg" src="${quiz}">
+<style>
+.canvas{position:relative;width:3240px;height:1440px;overflow:hidden;background:${light.bg};font-family:'${brand.fonts.display.family}',sans-serif;color:${light.ink}}
+.layer{position:absolute;inset:0;width:3240px;height:1440px}
+.t1{position:absolute;left:90px;top:110px;width:900px}
+.t1 h1{font-family:'${brand.fonts.headline.family}',serif;font-weight:400;font-size:150px;line-height:.95;letter-spacing:-.01em}
+.hand{position:absolute;font:400 76px/1.02 'Covered By Your Grace',cursive;letter-spacing:.02em}
+.h1{left:110px;top:470px;rotate:-5deg}
+.pol{position:absolute;left:470px;top:700px;width:560px;background:#fff;padding:24px 24px 90px;rotate:-5deg;box-shadow:0 24px 48px rgba(10,25,48,.28)}
+.pol .ph{height:560px;background-size:cover;background-position:50% 35%}
+.tape{position:absolute;top:-28px;left:50%;width:200px;height:60px;translate:-50% 0;rotate:4deg;background:color-mix(in srgb,${sky} 75%,transparent);z-index:2}
+.phone,.qphone{position:absolute;background:#151515;border-radius:60px;padding:16px;box-shadow:0 28px 56px rgba(10,25,48,.32)}
+.notch{position:absolute;top:26px;left:50%;translate:-50% 0;width:110px;height:30px;border-radius:15px;background:#151515;z-index:2}
+.scr{width:100%;height:100%;border-radius:46px;background-size:cover;background-position:50% 0;background-color:#fff}
+.phone{left:1450px;top:110px;width:380px;height:560px;rotate:-6deg}
+.phone .scr{background-size:100% auto;background-position:0 0;background-repeat:no-repeat}
+.t2{position:absolute;left:1180px;bottom:90px;width:880px;display:flex;flex-direction:column;align-items:flex-start}
+.t2 .pre,.t2 .post{font-weight:700;font-size:62px;text-transform:uppercase;letter-spacing:.12em}
+.t2 b{font-family:'${brand.fonts.headline.family}',serif;font-weight:400;font-size:300px;line-height:.86;letter-spacing:-.02em;margin:4px 0 26px -8px}
+.t2 i{margin-top:30px;font-style:normal;font-weight:600;font-size:42px;background:${navy.bg};color:#fff;padding:16px 30px;border-radius:999px}
+.burst{position:absolute;left:2330px;top:20px;width:430px;rotate:8deg}.burst svg{display:block;width:100%}
+.t3{position:absolute;left:2300px;top:110px;width:850px}
+.t3 p{font-weight:800;font-size:150px;line-height:1.2}
+.t3 span{background:#fff;padding:.02em .22em;border-radius:.14em;box-shadow:0 10px 24px rgba(10,25,48,.12)}
+.h3{left:2300px;top:470px;rotate:-5deg}
+.qimg{position:absolute;left:2640px;top:600px;width:440px;rotate:6deg;filter:drop-shadow(0 26px 40px rgba(10,25,48,.3))}
+</style>`;
+};
