@@ -122,7 +122,7 @@ brand kits, fonts, sounds and Reels across.
 Say **"check my Reel engine"**. Claude runs the setup check, where every line says OK, FIXED, NOTE (doesn't block) or
 NEEDS YOU (with what to do), and fixes what it can.
 - A render that stops on long footage: tell Claude; the engine can split long takes into short pieces.
-- Still stuck: email hello@scrollyseo.com with what Claude said.
+- Still stuck: reply to your order email with what Claude said, and we'll help.
 
 ## For the curious: where things are
 | Folder / file | What it is |
