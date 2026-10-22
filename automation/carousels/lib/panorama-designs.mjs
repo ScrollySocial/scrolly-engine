@@ -276,3 +276,55 @@ DESIGNS['pinned-2026-10-v5'] = ({ brand, hooks, stats, extras }) => {
 .spk{position:absolute}.s1{left:860px;top:520px;width:60px}.s2{left:2080px;top:560px;width:70px}.s3{left:3120px;top:690px;width:56px}
 </style>`;
 };
+
+// v6 (2026-10-22, Mercedes on v5: no big photo of her, no navy edges, no photos of her on the Challenge tile, every
+// headline in its own format; pinned 3 = free start). A pale mist wave still spills from the middle tile into both
+// neighbours; one small polaroid of her crosses seam 1; the real product covers cross seam 2; tile 3 shows the real
+// quiz and calculator screens. Headlines: serif (1), stacked number (2), label boxes + handwriting (3).
+// extras = [polaroid of her, Playbook cover, Quality Tips cover, offer-quiz screen, calculators screen].
+DESIGNS['pinned-2026-10-v6'] = ({ brand, extras }) => {
+  const [pol, cv1, cv2, q1, q2] = extras;
+  const P = brand.palettes, light = P.offwhite, navy = P.navy, mist = P.mist;
+  return `
+<div class="grid"></div>
+<svg class="layer" viewBox="0 0 3240 1440" preserveAspectRatio="none">
+  <path d="M1000 0 C 940 300, 1050 560, 980 820 C 920 1060, 1010 1260, 980 1440 L 2220 1440 C 2260 1220, 2170 1000, 2230 760 C 2290 520, 2190 260, 2240 0 Z" fill="${mist.bg}"/>
+  <path d="M560 760 C 860 640, 1120 840, 1500 780 C 1900 720, 2060 800, 2300 760" fill="none" stroke="${light.deco}" stroke-width="9" stroke-linecap="round" stroke-dasharray="2 26"/>
+</svg>
+<div class="t1"><h1>Allow me to introduce myself</h1><p>The person behind @scrollysocial →</p></div>
+<div class="pol"><span class="tape"></span><div class="ph" style="background-image:url('${pol}')"></div></div>
+<div class="note n1">hi, I'm<br>Mercedes!</div>
+<div class="t2"><span class="pre">Want to make</span><b>$1,000</b><span class="post">in 30 days?</span><i>Meet the $1K Challenge →</i></div>
+<img class="cv c1" src="${cv1}"><img class="cv c2" src="${cv2}">
+<div class="t3"><p><span>Not sure</span></p><p><span>where to start?</span></p></div>
+<div class="note n3">take a free quiz<br>in 2 minutes ↓</div>
+<div class="scr s1" style="background-image:url('${q1}')"></div><div class="scr s2" style="background-image:url('${q2}')"></div>
+<div class="spk k1">${SPARK(light.deco)}</div><div class="spk k2">${SPARK(navy.bg)}</div><div class="spk k3">${SPARK(light.deco)}</div>
+<style>
+.canvas{position:relative;width:3240px;height:1440px;overflow:hidden;background:${light.bg};font-family:'${brand.fonts.display.family}',sans-serif;color:${light.ink}}
+.grid{position:absolute;inset:0;background-image:linear-gradient(${light.tex} 2px,transparent 2px),linear-gradient(90deg,${light.tex} 2px,transparent 2px);background-size:72px 72px;opacity:.6}
+.layer{position:absolute;inset:0;width:3240px;height:1440px}
+.t1{position:absolute;left:90px;top:120px;width:820px}
+.t1 h1{font-family:'${brand.fonts.headline.family}',serif;font-weight:400;font-size:150px;line-height:.96;letter-spacing:-.01em}
+.t1 p{margin-top:36px;font-weight:500;font-size:44px}
+.pol{position:absolute;left:640px;top:690px;width:440px;background:#fff;padding:22px 22px 84px;rotate:6deg;box-shadow:0 22px 44px rgba(10,25,48,.25)}
+.pol .ph{height:500px;background-size:cover;background-position:50% 35%}
+.tape{position:absolute;top:-26px;left:50%;width:180px;height:56px;translate:-50% 0;rotate:-5deg;background:color-mix(in srgb,${light.deco} 70%,transparent);z-index:2}
+.note{position:absolute;font:400 60px/1.05 'Covered By Your Grace',cursive;letter-spacing:.03em}
+.n1{left:180px;top:820px;rotate:-7deg}
+.t2{position:absolute;left:1180px;top:120px;width:880px;display:flex;flex-direction:column;align-items:flex-start}
+.t2 .pre,.t2 .post{font-weight:700;font-size:64px;text-transform:uppercase;letter-spacing:.12em}
+.t2 b{font-family:'${brand.fonts.headline.family}',serif;font-weight:400;font-size:330px;line-height:.9;letter-spacing:-.02em;margin:6px 0 34px -8px}
+.t2 i{margin-top:40px;font-style:normal;font-weight:600;font-size:42px;background:${light.deco};color:${navy.bg};padding:16px 30px;border-radius:999px}
+.cv{position:absolute;width:380px;box-shadow:0 22px 44px rgba(10,25,48,.28);border-radius:6px}
+.c1{left:1480px;top:840px;rotate:-8deg}.c2{left:1830px;top:800px;rotate:7deg}
+.t3{position:absolute;left:2260px;top:140px;width:880px}
+.t3 p{font-weight:700;font-size:104px;line-height:1.32}
+.t3 span{background:#fff;padding:.02em .22em;border-radius:.16em;box-shadow:0 8px 18px rgba(10,25,48,.08)}
+.n3{left:2290px;top:520px;rotate:-4deg}
+.scr{position:absolute;width:400px;height:520px;background-size:cover;background-position:50% 0;border-radius:28px;box-shadow:0 20px 40px rgba(10,25,48,.22)}
+.s1{left:2330px;top:800px;rotate:-5deg}.s2{left:2760px;top:760px;rotate:5deg}
+.spk{position:absolute}.spk svg{display:block;width:100%;height:auto}
+.k1{left:1060px;top:700px;width:64px}.k2{left:2120px;top:600px;width:60px}.k3{left:3130px;top:620px;width:56px}
+</style>`;
+};
