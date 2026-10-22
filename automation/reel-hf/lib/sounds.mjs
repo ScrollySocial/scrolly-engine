@@ -23,27 +23,27 @@ export const JOBS = {
 
 // name = file name in assets/sfx (what build.mjs uses); id = Mixkit item; cat = Mixkit category page it is listed on
 export const SOUNDS = [
-  { name: 'pop-light', job: 'pop', len: 0.18, id: 3005, title: 'Explainer video pops whoosh light pop', cat: 'pop', use: 'small things popping on, list items' },
+  { name: 'pop-light', starter: true, job: 'pop', len: 0.18, id: 3005, title: 'Explainer video pops whoosh light pop', cat: 'pop', use: 'small things popping on, list items' },
   { name: 'pop-bubble', job: 'pop', len: 0.38, id: 2357, title: 'Bubble pop up alert notification', cat: 'pop', use: 'a bigger element popping on' },
   { name: 'pop-message', job: 'pop', len: 0.15, id: 2354, title: 'Message pop alert', cat: 'notification', use: 'a chat bubble or DM arriving', new: true },
-  { name: 'whoosh-air', job: 'whoosh', len: 1.6, id: 1489, title: 'Air woosh', cat: 'whoosh', use: 'a panel or card sliding in' },
+  { name: 'whoosh-air', starter: true, job: 'whoosh', len: 1.6, id: 1489, title: 'Air woosh', cat: 'whoosh', use: 'a panel or card sliding in' },
   { name: 'whoosh-fast', job: 'whoosh', len: 1.4, id: 1490, title: 'Fast whoosh transition', cat: 'whoosh', use: 'whip transitions' },
-  { name: 'swoosh-in', job: 'whoosh', len: 0.8, id: 166, title: 'Fast small sweep transition', cat: 'swoosh', use: 'a small graphic sweeping in', new: true },
+  { name: 'swoosh-in', starter: true, job: 'whoosh', len: 0.8, id: 166, title: 'Fast small sweep transition', cat: 'swoosh', use: 'a small graphic sweeping in', new: true },
   { name: 'swoosh-out', job: 'whoosh', len: 2.2, id: 1482, title: 'Ending wind swoosh', cat: 'swoosh', use: 'a graphic leaving, end of a section', new: true },
   { name: 'zoom-in', job: 'whoosh', len: 0.6, id: 2608, title: 'Air zoom vacuum', cat: 'transition', use: 'zoom-in transitions and punch-ins', new: true },
-  { name: 'check', job: 'success', len: 1.2, id: 957, title: 'Correct positive notification', cat: 'correct', use: 'a tick appearing, the good example' },
+  { name: 'check', starter: true, job: 'success', len: 1.2, id: 957, title: 'Correct positive notification', cat: 'correct', use: 'a tick appearing, the good example' },
   { name: 'reward', job: 'success', len: 2.2, id: 952, title: 'Correct answer reward', cat: 'correct', use: 'the result or payoff moment', new: true },
   { name: 'coins', job: 'success', len: 0.75, id: 1993, title: 'Clinking coins', cat: 'money', use: 'money, sales, prices', new: true },
-  { name: 'nope', job: 'fail', len: 1.2, id: 2876, title: 'Funny fail low tone', cat: 'wrong', use: 'the bad example (one, not three in a row)' },
+  { name: 'nope', starter: true, job: 'fail', len: 1.2, id: 2876, title: 'Funny fail low tone', cat: 'wrong', use: 'the bad example (one, not three in a row)' },
   { name: 'buzzer', job: 'fail', len: 1.25, id: 954, title: 'Wrong long buzzer', cat: 'wrong', use: 'a big "wrong" moment' },
   { name: 'sad-trombone', job: 'fail', len: 5.25, id: 472, title: 'Slow sad trombone fail', cat: 'wrong', use: 'a funny letdown (use rarely)', new: true },
   { name: 'typing-laptop', job: 'typing', len: 2, id: 2531, title: 'Typing on a laptop keyboard', cat: 'click', use: 'longer typing on screen (cut to the moment)' },
-  { name: 'typing-short', job: 'typing', len: 3.6, id: 1376, title: 'Typing on an electronic device', cat: 'typewriter', use: 'a short prompt or word typed', new: true },
+  { name: 'typing-short', starter: true, job: 'typing', len: 3.6, id: 1376, title: 'Typing on an electronic device', cat: 'typewriter', use: 'a short prompt or word typed', new: true },
   { name: 'typewriter-bell', job: 'typing', len: 1.5, id: 1368, title: 'Typewriter return bell', cat: 'typewriter', use: 'end of a typed line, "done"', new: true },
-  { name: 'riser', job: 'riser', len: 2.7, id: 2669, title: 'Short sci-fi swell', cat: 'swell', use: 'a short build into a reveal', new: true },
+  { name: 'riser', starter: true, job: 'riser', len: 2.7, id: 2669, title: 'Short sci-fi swell', cat: 'swell', use: 'a short build into a reveal', new: true },
   { name: 'camera', job: 'click', len: 0.4, id: 1133, title: 'Camera shutter click', cat: 'camera', use: 'a photo, a screenshot, a post appearing', new: true },
   { name: 'mouse-click', job: 'click', len: 0.2, id: 1113, title: 'Mouse click close', cat: 'click', use: 'a cursor clicking a button', new: true },
-  { name: 'chime', job: 'ding', len: 1.25, id: 766, title: 'Alert quick chime', cat: 'notification', use: 'a point landing' },
+  { name: 'chime', starter: true, job: 'ding', len: 1.25, id: 766, title: 'Alert quick chime', cat: 'notification', use: 'a point landing' },
   { name: 'bell', job: 'ding', len: 2.6, id: 933, title: 'Bell notification', cat: 'notification', use: 'a notification, an idea arriving', new: true },
   { name: 'record-scratch', job: 'scratch', len: 1.15, id: 702, title: 'Record player vinyl scratch', cat: 'dj-record-scratch', use: '"wait, stop", a turn in the story', new: true },
   { name: 'paper-slide', job: 'paper', len: 1.0, id: 1530, title: 'Paper slide', cat: 'paper', use: 'a card, receipt or page sliding in' },
@@ -68,6 +68,13 @@ yourself (about 10 minutes).
 3. Rename it to the name in the first column and put it in \`lib/assets/sfx/\`.
 4. Run \`node lib/doctor.mjs\`: it lists any sound still missing. A missing sound is skipped, so a Reel still renders
    without it.
+
+**Short on time? Start with these ${SOUNDS.filter((s) => s.starter).length}.** They cover most Reels; add the rest whenever you like:
+${SOUNDS.filter((s) => s.starter).map((s) => `\`${s.name}.mp3\` (${s.use})`).join(', ')}.
+
+**How the engine uses them:** a few sounds per Reel, each on a moment that earns it (something appears, moves, lands).
+Different sounds can stack, but the same sound never plays twice in a row, except on a list, where every item can get
+the same sound so the items feel like a set. Change any sound per moment on the review page.
 
 Your own sounds work too: drop any short mp3 into \`lib/assets/sfx/\` and it shows up in the review page's sound library.
 Music: download your own tracks the same way (Mixkit's [free music](https://mixkit.co/free-stock-music/) or any library

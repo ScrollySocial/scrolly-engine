@@ -12,6 +12,20 @@ Start with `README.md` (what the person sees) and `lib/README.md` (every engine 
 - Run engine commands from this folder with the Bash sandbox off (npm, pip, the browser, ffmpeg need it).
 - Never add sound or music files to the package for someone; they download their own (`sounds.md`).
 
+## What people say, and what to do
+- "set up my Reel engine" / "change my brand kit" / "add a rule": the **reel-engine-setup** skill.
+- "check my Reel engine" / "check my sounds": `node lib/doctor.mjs` (it renames sound downloads), then say what's left
+  in plain words.
+- "make a Reel from <file>": the steps below. "make the next Reel from my tracker": read `tracker` in settings, take
+  the next row waiting to be edited, confirm it with them, then the steps below with that row's footage.
+- "continue my Reel <folder>": read `<folder>/build.mjs`, `plans/<folder>/plan.json` and `<folder>/review/decisions.json`,
+  say which step it's at, and carry on from there.
+- "move my setup from <old folder>": copy `reel-settings.json`, `lib/brand/*` kits, their fonts (with licenses),
+  `lib/assets/sfx/`, `plans/`, `work/` and the Reel folders into this one, then `node lib/doctor.mjs`.
+
+**One chat per Reel.** If a chat already holds a finished Reel and they ask for a new one, suggest a new chat (it keeps
+the work focused and uses less of their plan); everything you need is in the files.
+
 ## Making a Reel ("make a Reel from <file>")
 1. `node lib/doctor.mjs --check`. Fix anything marked NEEDS YOU first.
 2. `node lib/transcribe-footage.mjs "<Folder>/<File>"` → read the `.txt` transcript.

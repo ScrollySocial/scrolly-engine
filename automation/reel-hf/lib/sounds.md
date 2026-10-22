@@ -10,6 +10,13 @@ yourself (about 10 minutes).
 4. Run `node lib/doctor.mjs`: it lists any sound still missing. A missing sound is skipped, so a Reel still renders
    without it.
 
+**Short on time? Start with these 8.** They cover most Reels; add the rest whenever you like:
+`pop-light.mp3` (small things popping on, list items), `whoosh-air.mp3` (a panel or card sliding in), `swoosh-in.mp3` (a small graphic sweeping in), `check.mp3` (a tick appearing, the good example), `nope.mp3` (the bad example (one, not three in a row)), `typing-short.mp3` (a short prompt or word typed), `riser.mp3` (a short build into a reveal), `chime.mp3` (a point landing).
+
+**How the engine uses them:** a few sounds per Reel, each on a moment that earns it (something appears, moves, lands).
+Different sounds can stack, but the same sound never plays twice in a row, except on a list, where every item can get
+the same sound so the items feel like a set. Change any sound per moment on the review page.
+
 Your own sounds work too: drop any short mp3 into `lib/assets/sfx/` and it shows up in the review page's sound library.
 Music: download your own tracks the same way (Mixkit's [free music](https://mixkit.co/free-stock-music/) or any library
 you have a license for) into your Reel's `assets/music/` folder.

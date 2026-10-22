@@ -1,108 +1,141 @@
-# Reel Engine: getting started
+# Reel Engine: your setup guide
 
-Turn one talking-head take into a finished, graphics-rich Instagram Reel (MP4 + cover), edited by Claude on your own
-computer. Nothing is uploaded: transcription, editing and rendering all run locally.
+The Reel Engine turns one talking-to-camera take into a finished, graphics-rich Instagram Reel (MP4 + cover). Claude
+does the editing on your own computer: it writes the captions, adds graphics and sounds around you, cuts the pauses,
+and renders the video. You check it and approve it.
+
+You do two things during setup: let Claude install itself, and tell it how you want your Reels to look. That's it.
+
+## How it's built (and why)
+
+- **Everything runs on your computer.** Your videos, the transcription, the editing and the rendering all stay on your
+  laptop. Claude works from your transcript and a few still frames, never your video files.
+- **You review each Reel on a page that opens in your browser** (http://localhost:4321). It's a small website running
+  on your own laptop, so it shows your real footage with the real graphics, sounds and music, live.
+- **Why not a claude.ai page (an Artifact)?** That works too, and it can be shared with a teammate. We chose the page on
+  your laptop because it's much faster: an Artifact needs your video uploaded and a new draft rendered for every
+  change, while the local page shows changes right away and uploads nothing.
+- **Claude Code is the editor.** The engine is a set of building blocks (captions, graphics, covers, sounds) plus
+  instructions Claude follows. You talk to it in plain words; it runs the commands.
 
 ## What you need
-- **Windows 10 or 11** (Mac is untested for now).
-- **A paid Claude plan** with Claude Code (Pro, $20/month, or higher; see claude.com/pricing). Not included.
-- **Claude Code**, in the Claude desktop app (Code tab) or in a terminal.
-- About **3 GB free space** and an internet connection for the first setup (tools and the speech model download once).
-- Optional: **25 free sound effects** you download yourself from Mixkit (see [sounds.md](sounds.md)). Reels build
-  without them; the sounds just stay silent.
+- **Windows 10 or 11.** Mac isn't tested yet.
+- **A paid Claude plan** (Pro, $20 a month, or higher; see claude.com/pricing). Not included.
+- **The Claude desktop app** (claude.ai/download), using its **Code** tab. Claude Code in a terminal works too.
+- About **3 GB of free space** and internet for the first setup (tools and the speech model download once).
 
-## 1. Put the folder somewhere permanent
-Unzip this folder to a place it can stay, with a short path, e.g. `Documents/reel-engine` (Windows has a path length
-limit and the speech-to-text helpers nest deep). Avoid a folder that syncs (OneDrive, Dropbox):
-renders write big temporary files.
+## Step 1. Put the folder somewhere permanent (2 minutes)
+Unzip this folder to a short path that stays put, for example `Documents\reel-engine`. Windows limits how long a path
+can be, and the speech-to-text helpers sit deep inside the folder, so a short path matters.
+Avoid a folder that syncs (OneDrive, Dropbox): renders write big temporary files.
 
-## 2. Open it in Claude Code and run setup
-Open the folder in Claude Code and say:
+## Step 2. Let Claude set itself up (15 to 30 minutes, mostly waiting)
+Open the Claude desktop app, go to the **Code** tab, choose this folder, and say:
 
 > **set up my Reel engine**
 
-Claude asks a few plain questions (your name, where your raw videos and finished Reels go, how you post, your colors
-and fonts) and then installs everything that's missing: Node and Python if needed (it asks first), the HyperFrames
-video tools, ffmpeg, a browser path, and the local speech-to-text model. The first run takes 5 to 15 minutes, mostly
-downloads.
+Claude then:
+1. **Asks a few questions:** your first name, your Instagram handle, where your raw videos go and where finished
+   Reels should land. It looks for your folders first, so mostly you just pick one.
+2. **Installs what's missing:** the video tools, ffmpeg, a browser link and the speech-to-text model. If your computer
+   needs Node or Python, Claude asks before installing them.
+3. **Checks everything works** and tells you when it's done ("All set").
 
-It's done when this says **All set**:
-```
-node lib/doctor.mjs --check
-```
+When Claude asks for permission to run a command, that's normal: it's installing tools in this folder.
 
-### Your brand kit (part of setup)
-Setup asks about your look and saves it as your **brand kit** (`lib/brand/my-brand.mjs`), so every Reel, caption and
-cover uses it:
-- **Colors:** seven, by job (background, a warmer light tone, the highlighter behind key words, text, one accent, two
-  soft panel colors). Give Claude your hex codes or a link to your website and it maps them for you.
-- **Fonts:** a clean font for captions, a big bold one for statements, a handwritten one for notes. No fonts of your
-  own? Keep the starter fonts (free, licensed for video). A font you paid for may not allow video: setup asks.
+## Step 3. Choose your look and your rules (10 minutes)
+This is the fun part, and it's all yours. Your Reels can look completely different from ours.
+
+**Your brand kit.** Claude asks for:
+- **Colors:** give it your hex codes or a link to your website, and it picks seven roles from them (background,
+  a warmer light tone, the highlighter behind key words, text, one accent, two soft panel colors). It shows you the
+  mapping before saving.
+- **Fonts:** a clean one for captions, a big one for statements, a handwritten one for notes. No fonts of your own?
+  Keep the starter fonts (free and licensed for video). A font you paid for may not allow video, so Claude asks.
 - **Caption style:** clean, big and bold, or handwritten, and how many words per line.
-- **Never-do rules:** anything you never want in a Reel ("no emojis", "never say hustle", "no text over my face").
-- **Holiday kits:** Halloween, Thanksgiving, Christmas and Valentine's Day versions of your kit (same fonts, festive
-  colors). Pick one for a single Reel on the review page; your normal kit stays the default.
+- **Music level:** Normal (recommended), Quiet or Up front.
+- **Holiday kits:** festive color versions of your kit for Halloween, Thanksgiving, Christmas and Valentine's Day.
+  Pick one for a single Reel on the review page; your normal kit stays the default.
 
-**Change any of it later:** tell Claude "change my brand colors", "use a different caption font", "add a never-do
-rule" or "add an Easter kit". The next Reel uses it; Reels you already made stay as they are.
+Claude renders a cover in your kit so you see it before you're done.
 
-## 3. Add the sounds (optional, about 10 minutes)
-Follow [sounds.md](sounds.md): download 25 files from Mixkit, drop them in `lib/assets/sfx/`, run `node lib/doctor.mjs`.
+**Your rules.** Claude shows you our **recommended starter rules**: things we learned make Reels look polished and
+less AI-made, like keeping graphics off your face, never using "It's not X, it's Y" lines, and never inventing
+numbers or results. Keep each one, switch it off, or add your own ("no emojis", "never say hustle", "no pink").
+The engine follows your list on every Reel.
 
-## 4. Make your first Reel
-Film one take on your phone (vertical, 20 to 90 seconds, you talking to the camera). Put it in your footage folder,
-then tell Claude:
+**Change any of it later:** say "change my brand colors", "use a different caption font", "add a rule" or "add an
+Easter kit". The next Reel uses it; Reels you already made stay as they are.
 
-> **make a Reel from &lt;your file name&gt;**
+## Step 4. Download your sounds (about 10 minutes, optional)
+The engine uses 25 free sound effects from Mixkit (pops, whooshes, ticks, typing, a ding). Mixkit's license lets you
+use them in your Reels but doesn't let us put them inside the engine, so you download them once yourself.
+[sounds.md](sounds.md) has every link, what each sound is for, and **the 8 to start with** if you're short on time.
+Drop the downloads in `lib/assets/sfx/` and tell Claude "check my sounds". A missing sound just stays silent.
 
-What happens:
-1. **Transcribe** your take (on your computer).
-2. **Rough cut:** Claude keeps the best take of each line and trims the pauses; you OK the list.
-3. **Plan:** a moment-by-moment plan of graphics, captions and sounds, built from your own words and your brand kit.
-4. **Review page** on your laptop (http://localhost:4321): see each moment drawn over your footage, change captions,
-   sounds, music and transitions, then approve.
-5. **Draft video** to check (a few minutes for a 60-second Reel). The motion looks choppy on purpose: a draft
-   renders about 3 times faster, so you see your edit sooner. Leave notes or approve it.
-6. **Final video** once you approve the draft: the smooth, full-quality MP4 (about 10 to 15 minutes for a 60-second
-   Reel) and the cover. Finished files land in your exports folder (`final/<reel>.mp4`, `<reel>/cover.png`). Drafts
-   wait in `draft/` and are removed once the final is made. Rather skip the draft? Tell Claude "turn off draft renders".
+Music: add your own tracks (Mixkit's free music or any library you have a license for). Instagram sounds can be added
+in the Instagram app after you post, if your account has them.
 
-## Where things are
-| Folder / file | What it is |
-|---|---|
-| `reel-settings.json` | Your setup: name, folders, posting, rules. Setup writes it; edit it any time |
-| `lib/brand/my-brand.mjs` | Your look: 7 colors by role, 3 fonts, caption style |
-| `lib/brand/holidays.mjs` | Holiday versions of your kit (colors you can change) |
-| `lib/` | The engine: components, Studio template, review page, cover maker, doctor |
-| `lib/assets/sfx/` | Your downloaded sound effects ([sounds.md](sounds.md)) |
-| `tools/` | Transcription and the silence-aware cut (doctor installs their helpers here) |
-| `plans/<reel>/plan.json` | Which parts of your take each Reel keeps |
-| `<yyyy-mm-dd-name>/` | One folder per Reel: its `build.mjs`, `index.html`, review files, renders |
-| `THIRD-PARTY-NOTICES.md` | Open-source pieces and their licenses |
+## Making a Reel
 
-## The commands behind it (Claude runs these for you)
-```
-node lib/doctor.mjs                                   # check + fix the setup (--check = look only)
-node lib/new-reel.mjs 2026-11-02-my-first-reel        # new Reel folder
-node lib/transcribe-footage.mjs "My Series/IMG_0001.MOV"
-node lib/prep-footage.mjs 2026-11-02-my-first-reel 2026-11-02-my-first-reel   # cut → talk.mp4 + words.json
-cd 2026-11-02-my-first-reel && node build.mjs && npm run check && npm run render
-```
-The engine reference (every file in `lib/`) is in [lib/README.md](lib/README.md).
+### Start each Reel in a new chat
+Open a **new chat** in this folder for every Reel and say:
+
+> **make a Reel from IMG_0412.MOV**
+
+(use your file's name; Claude finds it in your footage folder). One chat per Reel works best: each Reel needs a lot of
+detail (your transcript, the plan, your choices), and a fresh chat keeps Claude focused and uses less of your plan's
+limit. Nothing gets lost between chats, because every Reel's plan and choices are saved in its own folder.
+
+**Coming back to a Reel later?** Open a new chat and say "**continue my Reel 2026-11-02-my-first-reel**" (the folder
+name). Claude reads where you left off.
+
+**Keep a content tracker in Notion?** Claude can connect to it during setup. Then you can start a new chat with
+"**make the next Reel from my tracker**" and it picks up the next row, and updates the row when the Reel is done.
+Without a tracker, the file name is all it needs.
+
+### What happens
+1. **Transcribe:** your take becomes text, on your computer.
+2. **Rough cut:** Claude keeps the best take of each line and trims the pauses. You OK the list.
+3. **Plan:** a moment-by-moment plan of graphics, captions and sounds, built from your words, your kit and your rules.
+4. **Review page:** see each moment drawn over your footage; change captions, sounds, music and transitions; approve.
+5. **Draft video:** a quick version to check (a few minutes for a 60-second Reel). It looks choppy on purpose, because
+   a draft renders about 3 times faster. Leave notes or approve it.
+6. **Final video:** the smooth, full-quality MP4 (about 10 to 15 minutes for 60 seconds) and the cover, in your
+   exports folder. Rather skip the draft? Say "turn off draft renders".
+
+Film tips: vertical, 20 to 90 seconds, you talking to the camera in one take. Retakes are fine; Claude keeps the best
+one of each line.
+
+### Good to know about the review page
+- Any browser works (Edge, Chrome, the Claude app's own browser). Your choices save to a file on your computer.
+- The page remembers your step and tab separately in each browser, so a different browser may open on step 1. Your
+  choices are all still there.
+- Keep one window open per Reel. If the same Reel is open twice, the window you change last can overwrite the other.
 
 ## Updating to a new version
-Each update is a new download (the folder name says the version, e.g. `reel-engine-v0.1.0`; `VERSION` inside says it
-too). Unzip it next to your current folder, then copy these from the old folder into the new one:
-- `reel-settings.json` (your setup)
-- `lib/brand/my-brand.mjs`, `lib/brand/holidays.mjs` and any other kit you made, plus your own font files in
-  `lib/assets/fonts/` (with their license files)
-- `lib/assets/sfx/` (your downloaded sounds)
-- `plans/`, `work/` and your Reel folders (`yyyy-mm-dd-…`) if you want to keep editing old Reels there
-
-Then open the new folder in Claude Code and run `node lib/doctor.mjs`. Or just say **"move my setup from
-<old folder>"** and Claude copies them for you.
+Each update is a new download (the folder name and the `VERSION` file say the version). Unzip it next to your current
+folder, open the new folder in Claude and say **"move my setup from <old folder>"**. Claude copies your settings,
+brand kits, fonts, sounds and Reels across.
 
 ## Trouble?
-- Run `node lib/doctor.mjs`. Every line says OK, FIXED, NOTE (doesn't block) or NEEDS YOU (with what to do).
-- "Claude Code signed in (terminal)" as a NOTE is fine if you use Claude Code inside the desktop app.
-- A render that stops on long footage: tell Claude, the engine splits long takes into short pieces for exactly this.
+Say **"check my Reel engine"**. Claude runs the setup check, where every line says OK, FIXED, NOTE (doesn't block) or
+NEEDS YOU (with what to do), and fixes what it can.
+- A render that stops on long footage: tell Claude; the engine can split long takes into short pieces.
+- Still stuck: email hello@scrollyseo.com with what Claude said.
+
+## For the curious: where things are
+| Folder / file | What it is |
+|---|---|
+| `reel-settings.json` | Your setup: name, folders, posting, rules. Setup writes it |
+| `lib/brand/my-brand.mjs` | Your look: 7 colors by role, 3 fonts, caption style |
+| `lib/brand/holidays.mjs` | Holiday versions of your kit |
+| `lib/` | The engine: graphics, the Studio template, review page, cover maker, setup check |
+| `lib/assets/sfx/` | Your downloaded sound effects ([sounds.md](sounds.md)) |
+| `tools/` | Transcription and the silence-aware cut |
+| `plans/<reel>/plan.json` | Which parts of your take each Reel keeps |
+| `<yyyy-mm-dd-name>/` | One folder per Reel: its plan, review choices and renders |
+| `CLAUDE.md` | The instructions Claude follows in this folder |
+| `THIRD-PARTY-NOTICES.md` | Open-source pieces and their licenses |
+
+The commands Claude runs, and every engine file, are listed in [lib/README.md](lib/README.md).

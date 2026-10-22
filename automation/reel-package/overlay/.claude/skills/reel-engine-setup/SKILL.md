@@ -71,9 +71,15 @@ Use AskUserQuestion for choices, chat for free text. Recommended option first. D
     - Quiet: in the background, you notice it if you listen for it → `"quiet"`.
     - Up front: part of the mood, good for short punchy Reels → `"front"`.
     They can still change it per Reel on the review page.
-12. "Anything you never want in a Reel?" (free text, optional; examples: a word or phrase, a color, emojis, text over
-    their face, a kind of sound) → `rules.list`, one short line each. If they keep a
-    longer rules doc, point `rules.doc` + `rules.section` at it; otherwise leave `doc` empty.
+12. **Starter rules.** Read `starter-rules.md` (recommended rules from the engine's maker, grouped by look, sound,
+    covers and captions, each one line with its reason). Explain in one sentence: these keep Reels polished and less
+    AI-made, and every one is optional. Show them a group at a time (AskUserQuestion, multiSelect, all ticked by
+    default) and save the ones they keep to `rules.list`, one short line each. Their brand is theirs: never push a
+    rule they switch off, and never carry over anything about another brand's colors, fonts or voice.
+    No `starter-rules.md` in the folder: skip to 12a.
+12a. "Anything else you never want in a Reel?" (free text, optional; examples: a word or phrase, a color, emojis,
+    text over their face, a kind of sound) → append to `rules.list`. If they keep a longer rules doc, point
+    `rules.doc` + `rules.section` at it; otherwise leave `doc` empty.
 
 Leave `tools` as shipped unless doctor says otherwise (it fills in `tools.browser` itself). On a Mac, set
 `tools.python` to `tools/.venv/bin/python`.
@@ -105,14 +111,16 @@ Ask for one short test clip (or use any in their footage folder): `node lib/tran
 and show them the transcript's first lines. First run downloads the speech model (~150 MB).
 
 ## 5. Hand over
-One short message: what's set up, where finished Reels will land, how to start ("say *make a Reel from <file>*"),
-whether the sounds are still to download, and anything still open. The Reel workflow is in `CLAUDE.md`.
+One short message: what's set up, where finished Reels will land, whether the sounds are still to download (point to
+the 8 starter sounds in `sounds.md`), and anything still open. Then how to start: **open a new chat for each Reel** and
+say *make a Reel from <file>* (or *make the next Reel from my tracker* if one is connected); *continue my Reel
+<folder>* picks one up later. The Reel workflow is in `CLAUDE.md`.
 
 ## Changing it later
 Everything here can change any time; the next Reel uses the new values (Reels already rendered stay as they are).
 - "change my brand colors / fonts / caption style": edit `lib/brand/my-brand.mjs` (steps 8-10a), show a cover.
 - "add / change a holiday kit": `lib/brand/holidays.mjs` + settings `holidays` (step 10b).
-- "add a never-do rule": append to `rules.list`.
+- "add a rule" / "drop a rule": edit `rules.list`; "show me the starter rules again": step 12.
 - "I moved my footage / exports folder": `folders` in settings, then `node lib/doctor.mjs --check`.
 - A second brand (a client, a side project): copy `my-brand.mjs` to a new file with a new `name`, add one line to
   `lib/brand/index.mjs`, and pick it per Reel in the dropdown.
