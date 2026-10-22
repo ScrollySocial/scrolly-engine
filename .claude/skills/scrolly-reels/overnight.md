@@ -129,7 +129,7 @@ moments she kept and redo only the changed moments. Then `node build.mjs && npm 
    localhost:4320". Only if something is waiting on her or something failed.
 4. Last line of the log, exactly one of: `RUN FINISHED <time>` or `RUN STOPPED EARLY <time>: <what's left>`. The 8am
    check-in reads it: a log without this line means the run died (restart, sleep) and gets offered as a resume.
-5. Renders: don't start one after 8:00am (see Catch-up runs). Drafts and sound passes may continue.
+5. Renders: don't start one after 8:00am unless she asked for renders (see Catch-up runs). Drafts and sound passes may continue.
 
 ## Laptop
 Needs: Claude desktop app open, laptop plugged in, lid open, sleep on AC = Never (Settings → System → Power).
