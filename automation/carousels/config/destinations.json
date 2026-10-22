@@ -1,84 +1,85 @@
 {
-  "_note": "The ONLY places a CTA may send people. Confirmed by Mercedes 2026-10-06. If a post needs something not listed here, flag it; never invent it.",
-  "linkInBio": {
-    "confirmed": true,
-    "goesTo": "$1K Challenge ($75, Club + Challenge) checkout on scrollyseo.com",
-    "ctaPhrasing": "link in bio"
+ "_note": "The ONLY places a CTA may send people. Confirmed by Mercedes 2026-10-06. If a post needs something not listed here, flag it; never invent it.",
+ "linkInBio": {
+  "confirmed": true,
+  "goesTo": "$1K Challenge ($75, Club + Challenge) checkout on scrollyseo.com",
+  "ctaPhrasing": "link in bio",
+  "note": "Mercedes 2026-10-23: the main bio link stays the $1K Challenge checkout on every platform. Instagram also carries extra bio links for other products (up to 5); TikTok and YouTube keep only the Challenge link. Other-product CTAs say 'in the links in my bio' on Instagram only. Comment-to-DM (own n8n, Instagram only) is planned, not live."
+ },
+ "offers": [
+  {
+   "id": "1k-club",
+   "name": "$1K Club",
+   "price": 40,
+   "live": true,
+   "source": "LAUNCH-HANDOFF.md 2026-10-03 (variation 582) + Mercedes 2026-10-06",
+   "includes": [
+    "$1K Club playbook PDF: make your first $1K with Instagram, step by step",
+    "Social Media Quality Tips PDF",
+    "Reel and carousel templates: a Reel safe-zone guide and a 3:4 carousel template",
+    "Setup checklist and worksheets (printable)",
+    "$1K Math calculator: how many sales it takes to reach $1,000"
+   ]
   },
-  "offers": [
-    {
-      "id": "1k-club",
-      "name": "$1K Club",
-      "price": 40,
-      "live": true,
-      "source": "LAUNCH-HANDOFF.md 2026-10-03 (variation 582) + Mercedes 2026-10-06",
-      "includes": [
-        "$1K Club playbook PDF: make your first $1K with Instagram, step by step",
-        "Social Media Quality Tips PDF",
-        "Reel and carousel templates: a Reel safe-zone guide and a 3:4 carousel template",
-        "Setup checklist and worksheets (printable)",
-        "$1K Math calculator: how many sales it takes to reach $1,000"
-      ]
-    },
-    {
-      "id": "1k-club-challenge",
-      "name": "$1K Club + Challenge",
-      "price": 75,
-      "live": true,
-      "source": "LAUNCH-HANDOFF.md 2026-10-03 (variation 583) + Mercedes 2026-10-06",
-      "notes": "Shirt is earned, never 'won' or a prize draw. Mercedes 2026-10-07: do NOT show the shirt on Instagram for now (Printify ships the teal shirt; the website still shows a black one that will be removed; design may change). Text mention only if needed.",
-      "includes": [
-        "Everything in the Club",
-        "Personal $1K Plan: your $1K number, what to do each week, weekly check-in",
-        "25 Reel ideas every week (current formats, ready to film) plus 30 carousel and 30 Story templates",
-        "Notion content tracker template",
-        "Auto-posting to Buffer with your AI (guide)",
-        "30 consecutive days, one goal: $1,000 in total revenue",
-        "Stripe shirt: hit $1,000 and it ships free in the lower 48 (earned, never 'won')"
-      ]
-    },
-    {
-      "id": "business-brain",
-      "name": "Business Brain",
-      "price": 47,
-      "live": true,
-      "url": "https://scrollyseo.com/product/business-brain/",
-      "source": "Live product page checked 2026-10-10; Mercedes confirmed live 2026-10-10",
-      "notes": "link in bio goes to the $1K Challenge checkout. A Business Brain CTA needs the bio to also link here (IG allows up to 5 bio links); confirm with Mercedes before using \"link in bio\" for it.",
-      "includes": [
-        "My Business Brain Notion template (works on Notion free, no Notion AI needed)",
-        "Scrolly Brain Skills file: interview, Brain sweep, morning check-in, Monday reset",
-        "2-page Quick Start guide + copy-and-paste settings note",
-        "Skill updates as they improve",
-        "Works with ChatGPT Plus, Claude chat and Claude Code; setup about 20 minutes"
-      ]
-    },
-    {
-      "id": "pinterest-pin-generator",
-      "name": "Pinterest pin generator",
-      "live": false,
-      "notes": "Not live. Upcoming teaser allowed (Mercedes 2026-10-10): drive interest with a follow/save CTA, never link in bio, no price.",
-      "upcoming": true
-    },
-    {
-      "id": "threads-kit",
-      "name": "Threads kit",
-      "live": false,
-      "upcoming": true,
-      "notes": "Going live or into testing 2026-10-10 night (Mercedes). Until live: upcoming teaser only (follow/save CTA, no link, no price). Flip live:true + add price/url once she confirms."
-    }
-  ],
-  "freeResources": [],
-  "commentKeywords": [],
-  "engagementCtas": [
-    "save",
-    "send to a friend",
-    "follow"
-  ],
-  "salesPage": {
-    "url": "https://scrollyseo.com/1k-club/",
-    "checkedAt": "2026-10-09",
-    "note": "Live page text. Only claim inclusions listed here."
+  {
+   "id": "1k-club-challenge",
+   "name": "$1K Club + Challenge",
+   "price": 75,
+   "live": true,
+   "source": "LAUNCH-HANDOFF.md 2026-10-03 (variation 583) + Mercedes 2026-10-06",
+   "notes": "Shirt is earned, never 'won' or a prize draw. Mercedes 2026-10-07: do NOT show the shirt on Instagram for now (Printify ships the teal shirt; the website still shows a black one that will be removed; design may change). Text mention only if needed.",
+   "includes": [
+    "Everything in the Club",
+    "Personal $1K Plan: your $1K number, what to do each week, weekly check-in",
+    "25 Reel ideas every week (current formats, ready to film) plus 30 carousel and 30 Story templates",
+    "Notion content tracker template",
+    "Auto-posting to Buffer with your AI (guide)",
+    "30 consecutive days, one goal: $1,000 in total revenue",
+    "Stripe shirt: hit $1,000 and it ships free in the lower 48 (earned, never 'won')"
+   ]
   },
-  "audience": "People who want to make their first $1K online (MMO niche), starting with little or no audience."
+  {
+   "id": "business-brain",
+   "name": "Business Brain",
+   "price": 47,
+   "live": true,
+   "url": "https://scrollyseo.com/product/business-brain/",
+   "source": "Live product page checked 2026-10-10; Mercedes confirmed live 2026-10-10",
+   "notes": "link in bio goes to the $1K Challenge checkout. A Business Brain CTA needs the bio to also link here (IG allows up to 5 bio links); confirm with Mercedes before using \"link in bio\" for it.",
+   "includes": [
+    "My Business Brain Notion template (works on Notion free, no Notion AI needed)",
+    "Scrolly Brain Skills file: interview, Brain sweep, morning check-in, Monday reset",
+    "2-page Quick Start guide + copy-and-paste settings note",
+    "Skill updates as they improve",
+    "Works with ChatGPT Plus, Claude chat and Claude Code; setup about 20 minutes"
+   ]
+  },
+  {
+   "id": "pinterest-pin-generator",
+   "name": "Pinterest pin generator",
+   "live": false,
+   "notes": "Not live. Upcoming teaser allowed (Mercedes 2026-10-10): drive interest with a follow/save CTA, never link in bio, no price.",
+   "upcoming": true
+  },
+  {
+   "id": "threads-kit",
+   "name": "Threads kit",
+   "live": false,
+   "upcoming": true,
+   "notes": "Going live or into testing 2026-10-10 night (Mercedes). Until live: upcoming teaser only (follow/save CTA, no link, no price). Flip live:true + add price/url once she confirms."
+  }
+ ],
+ "freeResources": [],
+ "commentKeywords": [],
+ "engagementCtas": [
+  "save",
+  "send to a friend",
+  "follow"
+ ],
+ "salesPage": {
+  "url": "https://scrollyseo.com/1k-club/",
+  "checkedAt": "2026-10-09",
+  "note": "Live page text. Only claim inclusions listed here."
+ },
+ "audience": "People who want to make their first $1K online (MMO niche), starting with little or no audience."
 }
