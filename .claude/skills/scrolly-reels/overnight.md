@@ -10,6 +10,11 @@ allow list freezes the run forever with no error. Keep every call simple and all
 `cd X && ...` followed by git/wc/cat, no `for` loops, no `git -C`. Engine commands are `node lib/...` and
 `npx hyperframes ...` only. For several Reels, make several calls. Read files with the Read tool, not cat.
 
+**Paused (Mercedes 2026-10-22):** all Business Brain Reels (folders `2026-10-1x-bb-*`, and any Notion row about the
+Business Brain) are on hold; she may stop selling it. Skip them at every step: no revising, sound passes, renders,
+posting or drafting. Don't delete, undo or unqueue anything. List them as "paused" in the morning note. Remove this
+paragraph only when she says to un-pause them.
+
 **Order of a Reel (Mercedes 2026-10-14):** draft = Plan it only (moments with graphics, script, cover, caption; NO
 sounds, music or transitions) → she approves Plan it, or sends changes (stage `revise`: make them, she checks again)
 → Claude's sound pass for the approved plan (stage `sounds`) → she does Edit it → render → she approves the video →
