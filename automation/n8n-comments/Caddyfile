@@ -1,0 +1,6 @@
+# HTTPS for the comments n8n. Caddy gets and renews the certificate on its own
+# once the DNS record for N8N_HOST (hooks.scrollyseo.com) points at this server.
+{$N8N_HOST} {
+	encode gzip
+	reverse_proxy n8n:5678
+}

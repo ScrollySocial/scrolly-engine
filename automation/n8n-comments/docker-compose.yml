@@ -1,0 +1,58 @@
+# Scrolly comments: n8n + Caddy (automatic HTTPS) on one small server.
+# Separate from the old laptop n8n (automation/n8n/, pinned 1.70.0): this one is
+# public, so it runs a current, patched n8n and is pinned to an exact version.
+# Upgrade by changing the tag on purpose, never :latest (see README.md).
+services:
+  n8n:
+    image: n8nio/n8n:2.44.6
+    container_name: n8n-comments
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      - N8N_PORT=5678
+      - N8N_PROTOCOL=https
+      - N8N_PROXY_HOPS=1
+      - NODE_ENV=production
+      # The Code nodes read settings from $env, check Meta's signature (crypto)
+      # and read the keyword list (fs).
+      # One run at a time: the "already seen" and "DM sent" lists live in the
+      # workflow's static data, and two runs at once would overwrite each other.
+      - N8N_CONCURRENCY_PRODUCTION_LIMIT=1
+      # The TikTok job waits up to 5 minutes for Apify inside a Code node.
+      - N8N_RUNNERS_TASK_TIMEOUT=600
+      - N8N_BLOCK_ENV_ACCESS_IN_NODE=false
+      - NODE_FUNCTION_ALLOW_BUILTIN=crypto,fs
+      - KEYWORDS_FILE=/data/config/keywords.json
+      - EXECUTIONS_DATA_PRUNE=true
+      - EXECUTIONS_DATA_MAX_AGE=336
+      - N8N_DIAGNOSTICS_ENABLED=false
+      - N8N_PERSONALIZATION_ENABLED=false
+    volumes:
+      - n8n_data:/home/node/.n8n
+      - ./config:/data/config:ro
+      - ./workflow:/data/workflow:ro
+    # Only Caddy talks to n8n; nothing is published on the server's own ports.
+    expose:
+      - "5678"
+    mem_limit: 700m
+
+  caddy:
+    image: caddy:2.11.7
+    container_name: caddy-comments
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      - N8N_HOST=${N8N_HOST}
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - n8n
+
+volumes:
+  n8n_data:
+  caddy_data:
+  caddy_config:

@@ -1,0 +1,576 @@
+{
+  "id": "ScrollyComments1",
+  "name": "Scrolly comments",
+  "active": false,
+  "nodes": [
+    {
+      "id": "95a2dae6-8f38-4aac-a991-ccbeca357542",
+      "name": "About this workflow",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -420,
+        -260
+      ],
+      "parameters": {
+        "width": 420,
+        "height": 300,
+        "content": "## Scrolly comments\nInstagram comment with a keyword → freebie DM (automatic).\nEvery Instagram, YouTube and TikTok comment → Claude sorts it and drafts a reply → Notion **Comment inbox**.\nSet Status = Approved in Notion → the reply is posted within 10 minutes (TikTok: reply by hand).\n\nTest mode is on until COMMENTS_DRY_RUN=false.\nCode lives in automation/n8n-comments/workflow/src (edit there, rebuild, re-import)."
+      }
+    },
+    {
+      "id": "cd41b682-6a5d-490e-a26b-28633d5a8431",
+      "name": "Instagram check",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        0,
+        0
+      ],
+      "parameters": {
+        "httpMethod": "GET",
+        "path": "instagram",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "webhookId": "ca71506d-3f7b-442a-a270-c22f7a5b3b44"
+    },
+    {
+      "id": "a18b3c17-6f8c-43ac-aabd-6849d0aae6a5",
+      "name": "Answer Meta check",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        220,
+        0
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "// ---- shared helpers (build.mjs prepends this file to every Code node) ----\n// Settings come from the server's .env (see ../../.env.example). Every base URL\n// is a setting so tests can point the workflow at test/mock-apis.mjs instead of\n// the real Meta / Google / Apify / Anthropic / Notion APIs.\nconst cfg = (key, fallback = '') => {\n  const v = $env[key];\n  return v === undefined || v === null || String(v).trim() === '' ? fallback : String(v).trim();\n};\n// Test mode is ON unless COMMENTS_DRY_RUN=false: nothing is sent to Instagram or\n// YouTube, the inbox rows say what would have been sent.\nconst DRY_RUN = cfg('COMMENTS_DRY_RUN', 'true') !== 'false';\nconst GRAPH = cfg('GRAPH_BASE', 'https://graph.instagram.com/v26.0');\nconst NOTION = cfg('NOTION_BASE', 'https://api.notion.com/v1');\n// State (comments seen, DMs sent, refreshed Instagram token, last errors) lives\n// in one JSON file in n8n's data volume, read fresh by every node and saved when\n// the node ends (build.mjs adds the save). Not workflow static data: n8n hands a\n// queued run the static data from when it was triggered, so two runs close\n// together overwrite each other's lists. N8N_CONCURRENCY_PRODUCTION_LIMIT=1\n// keeps runs one at a time so the file never gets two writers.\nconst fs = require('fs');\nconst STATE_FILE = cfg('STATE_FILE', '/home/node/.n8n/scrolly-comments-state.json');\nlet state = {};\ntry {\n  state = JSON.parse(fs.readFileSync(STATE_FILE, 'utf8'));\n} catch (e) {\n  state = {};\n}\nfunction saveState() {\n  fs.writeFileSync(`${STATE_FILE}.tmp`, JSON.stringify(state));\n  fs.renameSync(`${STATE_FILE}.tmp`, STATE_FILE);\n}\nconst helpers = this.helpers;\nconst now = () => new Date().toISOString();\n\nasync function http(opts) {\n  return helpers.httpRequest({ json: true, timeout: 60000, ...opts });\n}\nfunction errText(e) {\n  const body = e?.response?.body ?? e?.cause?.response?.data ?? e?.description;\n  const detail = body ? (typeof body === 'string' ? body : JSON.stringify(body)) : '';\n  return `${e?.message || e}${detail ? ' ' + detail : ''}`.slice(0, 500);\n}\nfunction remember(listName, id, max = 3000) {\n  state[listName] = state[listName] || {};\n  state[listName][id] = now();\n  const keys = Object.keys(state[listName]);\n  if (keys.length > max) for (const k of keys.slice(0, keys.length - max)) delete state[listName][k];\n}\nfunction logError(where, e) {\n  state.errors = [...(state.errors || []), { at: now(), where, error: errText(e) }].slice(-20);\n}\n// The Instagram token is refreshed weekly by the token job; the newest one lives\n// in the state file, the .env value is only the starting token.\nconst igToken = () => state.igToken || cfg('IG_ACCESS_TOKEN');\nfunction notionHeaders() {\n  return { Authorization: `Bearer ${cfg('NOTION_TOKEN')}`, 'Notion-Version': '2022-06-28' };\n}\n// A run-now call ({job: 'youtube'}) reaches every job node; each one only runs\n// for its own job name, or when its schedule fired (no job on the item).\nfunction isMyJob(name) {\n  const job = $input.first()?.json?.job;\n  return !job || job === name;\n}\n// ---- end shared helpers ----\n\nconst __result = await (async () => {\n// Meta's one-time webhook check: GET ?hub.mode=subscribe&hub.verify_token=...&hub.challenge=...\n// Answer with the challenge only when the token matches META_VERIFY_TOKEN.\nconst q = $input.first().json.query || {};\nconst expected = cfg('META_VERIFY_TOKEN');\nconst ok = expected && q['hub.mode'] === 'subscribe' && q['hub.verify_token'] === expected;\nreturn [{ json: { status: ok ? 200 : 403, body: ok ? String(q['hub.challenge'] ?? '') : 'forbidden' } }];\n\n})();\nsaveState();\nreturn __result;\n"
+      }
+    },
+    {
+      "id": "7e5c88fa-5fb6-434c-a8d2-71fd7474eea7",
+      "name": "Reply to Meta",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        440,
+        0
+      ],
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "={{ $json.body }}",
+        "options": {
+          "responseCode": "={{ $json.status }}"
+        }
+      }
+    },
+    {
+      "id": "2d62e4b9-ac06-491c-a1ff-48ed4fe43fa2",
+      "name": "Instagram comment",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        0,
+        200
+      ],
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "instagram",
+        "responseMode": "onReceived",
+        "options": {
+          "rawBody": true
+        }
+      },
+      "webhookId": "42976a59-383a-41fe-aa88-b4c2aff15113"
+    },
+    {
+      "id": "f764b311-4653-493b-a276-554c576b2913",
+      "name": "Read Instagram comment",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        220,
+        200
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "// ---- shared helpers (build.mjs prepends this file to every Code node) ----\n// Settings come from the server's .env (see ../../.env.example). Every base URL\n// is a setting so tests can point the workflow at test/mock-apis.mjs instead of\n// the real Meta / Google / Apify / Anthropic / Notion APIs.\nconst cfg = (key, fallback = '') => {\n  const v = $env[key];\n  return v === undefined || v === null || String(v).trim() === '' ? fallback : String(v).trim();\n};\n// Test mode is ON unless COMMENTS_DRY_RUN=false: nothing is sent to Instagram or\n// YouTube, the inbox rows say what would have been sent.\nconst DRY_RUN = cfg('COMMENTS_DRY_RUN', 'true') !== 'false';\nconst GRAPH = cfg('GRAPH_BASE', 'https://graph.instagram.com/v26.0');\nconst NOTION = cfg('NOTION_BASE', 'https://api.notion.com/v1');\n// State (comments seen, DMs sent, refreshed Instagram token, last errors) lives\n// in one JSON file in n8n's data volume, read fresh by every node and saved when\n// the node ends (build.mjs adds the save). Not workflow static data: n8n hands a\n// queued run the static data from when it was triggered, so two runs close\n// together overwrite each other's lists. N8N_CONCURRENCY_PRODUCTION_LIMIT=1\n// keeps runs one at a time so the file never gets two writers.\nconst fs = require('fs');\nconst STATE_FILE = cfg('STATE_FILE', '/home/node/.n8n/scrolly-comments-state.json');\nlet state = {};\ntry {\n  state = JSON.parse(fs.readFileSync(STATE_FILE, 'utf8'));\n} catch (e) {\n  state = {};\n}\nfunction saveState() {\n  fs.writeFileSync(`${STATE_FILE}.tmp`, JSON.stringify(state));\n  fs.renameSync(`${STATE_FILE}.tmp`, STATE_FILE);\n}\nconst helpers = this.helpers;\nconst now = () => new Date().toISOString();\n\nasync function http(opts) {\n  return helpers.httpRequest({ json: true, timeout: 60000, ...opts });\n}\nfunction errText(e) {\n  const body = e?.response?.body ?? e?.cause?.response?.data ?? e?.description;\n  const detail = body ? (typeof body === 'string' ? body : JSON.stringify(body)) : '';\n  return `${e?.message || e}${detail ? ' ' + detail : ''}`.slice(0, 500);\n}\nfunction remember(listName, id, max = 3000) {\n  state[listName] = state[listName] || {};\n  state[listName][id] = now();\n  const keys = Object.keys(state[listName]);\n  if (keys.length > max) for (const k of keys.slice(0, keys.length - max)) delete state[listName][k];\n}\nfunction logError(where, e) {\n  state.errors = [...(state.errors || []), { at: now(), where, error: errText(e) }].slice(-20);\n}\n// The Instagram token is refreshed weekly by the token job; the newest one lives\n// in the state file, the .env value is only the starting token.\nconst igToken = () => state.igToken || cfg('IG_ACCESS_TOKEN');\nfunction notionHeaders() {\n  return { Authorization: `Bearer ${cfg('NOTION_TOKEN')}`, 'Notion-Version': '2022-06-28' };\n}\n// A run-now call ({job: 'youtube'}) reaches every job node; each one only runs\n// for its own job name, or when its schedule fired (no job on the item).\nfunction isMyJob(name) {\n  const job = $input.first()?.json?.job;\n  return !job || job === name;\n}\n// ---- end shared helpers ----\n\nconst __result = await (async () => {\n// Meta posts comment events here. Check the X-Hub-Signature-256 header (HMAC\n// SHA-256 of the raw body with the app secret) so nobody else can make the\n// workflow send DMs, then turn each comment into the shared comment shape.\nconst crypto = require('crypto');\nconst item = $input.first();\nconst headers = item.json.headers || {};\nconst secret = cfg('META_APP_SECRET');\nconst sent = String(headers['x-hub-signature-256'] || '');\n\nlet raw;\ntry {\n  raw = await helpers.getBinaryDataBuffer(0, 'data');\n} catch (e) {\n  raw = null;\n}\nif (!secret || !raw || !sent.startsWith('sha256=')) {\n  logError('instagram-signature', new Error(`missing ${!secret ? 'META_APP_SECRET' : !raw ? 'raw body' : 'signature header'}`));\n  return [];\n}\nconst expected = crypto.createHmac('sha256', secret).update(raw).digest('hex');\nconst given = sent.slice(7);\nif (given.length !== expected.length || !crypto.timingSafeEqual(Buffer.from(given), Buffer.from(expected))) {\n  logError('instagram-signature', new Error('signature mismatch, event ignored'));\n  return [];\n}\n\nconst body = JSON.parse(raw.toString('utf8'));\nconst ownId = cfg('IG_USER_ID');\nconst out = [];\nfor (const entry of body.entry || []) {\n  // Instagram Login sends entry.changes[]; some examples put field/value on the entry itself.\n  const changes = entry.changes || (entry.field ? [{ field: entry.field, value: entry.value }] : []);\n  for (const ch of changes) {\n    if (ch.field !== 'comments' || !ch.value) continue;\n    const v = ch.value;\n    const id = v.id || v.comment_id;\n    const authorId = v.from?.id;\n    if (!id || (ownId && authorId === ownId) || (entry.id && authorId === entry.id)) continue; // her own replies\n    out.push({\n      json: {\n        platform: 'Instagram',\n        id: String(id),\n        text: v.text || '',\n        author: v.from?.username || '',\n        authorId: authorId || '',\n        postId: v.media?.id || '',\n        parentId: v.parent_id || '',\n        threadId: '',\n        link: '',\n        createdAt: entry.time ? new Date(entry.time * (entry.time > 1e12 ? 1 : 1000)).toISOString() : now(),\n      },\n    });\n  }\n}\nreturn out;\n\n})();\nsaveState();\nreturn __result;\n"
+      }
+    },
+    {
+      "id": "fa0fe6db-6ba3-4c78-ab19-32f24b0fbf0c",
+      "name": "Every 30 min: YouTube",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        400
+      ],
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 30
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "6c381391-83af-4e33-ae91-d39561c3ac04",
+      "name": "Fetch YouTube comments",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        220,
+        400
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "// ---- shared helpers (build.mjs prepends this file to every Code node) ----\n// Settings come from the server's .env (see ../../.env.example). Every base URL\n// is a setting so tests can point the workflow at test/mock-apis.mjs instead of\n// the real Meta / Google / Apify / Anthropic / Notion APIs.\nconst cfg = (key, fallback = '') => {\n  const v = $env[key];\n  return v === undefined || v === null || String(v).trim() === '' ? fallback : String(v).trim();\n};\n// Test mode is ON unless COMMENTS_DRY_RUN=false: nothing is sent to Instagram or\n// YouTube, the inbox rows say what would have been sent.\nconst DRY_RUN = cfg('COMMENTS_DRY_RUN', 'true') !== 'false';\nconst GRAPH = cfg('GRAPH_BASE', 'https://graph.instagram.com/v26.0');\nconst NOTION = cfg('NOTION_BASE', 'https://api.notion.com/v1');\n// State (comments seen, DMs sent, refreshed Instagram token, last errors) lives\n// in one JSON file in n8n's data volume, read fresh by every node and saved when\n// the node ends (build.mjs adds the save). Not workflow static data: n8n hands a\n// queued run the static data from when it was triggered, so two runs close\n// together overwrite each other's lists. N8N_CONCURRENCY_PRODUCTION_LIMIT=1\n// keeps runs one at a time so the file never gets two writers.\nconst fs = require('fs');\nconst STATE_FILE = cfg('STATE_FILE', '/home/node/.n8n/scrolly-comments-state.json');\nlet state = {};\ntry {\n  state = JSON.parse(fs.readFileSync(STATE_FILE, 'utf8'));\n} catch (e) {\n  state = {};\n}\nfunction saveState() {\n  fs.writeFileSync(`${STATE_FILE}.tmp`, JSON.stringify(state));\n  fs.renameSync(`${STATE_FILE}.tmp`, STATE_FILE);\n}\nconst helpers = this.helpers;\nconst now = () => new Date().toISOString();\n\nasync function http(opts) {\n  return helpers.httpRequest({ json: true, timeout: 60000, ...opts });\n}\nfunction errText(e) {\n  const body = e?.response?.body ?? e?.cause?.response?.data ?? e?.description;\n  const detail = body ? (typeof body === 'string' ? body : JSON.stringify(body)) : '';\n  return `${e?.message || e}${detail ? ' ' + detail : ''}`.slice(0, 500);\n}\nfunction remember(listName, id, max = 3000) {\n  state[listName] = state[listName] || {};\n  state[listName][id] = now();\n  const keys = Object.keys(state[listName]);\n  if (keys.length > max) for (const k of keys.slice(0, keys.length - max)) delete state[listName][k];\n}\nfunction logError(where, e) {\n  state.errors = [...(state.errors || []), { at: now(), where, error: errText(e) }].slice(-20);\n}\n// The Instagram token is refreshed weekly by the token job; the newest one lives\n// in the state file, the .env value is only the starting token.\nconst igToken = () => state.igToken || cfg('IG_ACCESS_TOKEN');\nfunction notionHeaders() {\n  return { Authorization: `Bearer ${cfg('NOTION_TOKEN')}`, 'Notion-Version': '2022-06-28' };\n}\n// A run-now call ({job: 'youtube'}) reaches every job node; each one only runs\n// for its own job name, or when its schedule fired (no job on the item).\nfunction isMyJob(name) {\n  const job = $input.first()?.json?.job;\n  return !job || job === name;\n}\n// ---- end shared helpers ----\n\nconst __result = await (async () => {\n// Newest top-level comments across the whole channel (1 quota unit per call).\n// Reading public comments only needs the API key; posting replies uses OAuth.\nif (!isMyJob('youtube')) return [];\nconst key = cfg('YT_API_KEY');\nconst channel = cfg('YT_CHANNEL_ID');\nif (!key || !channel) return [];\nconst base = cfg('YT_BASE', 'https://www.googleapis.com/youtube/v3');\n\nlet res;\ntry {\n  res = await http({\n    method: 'GET',\n    url: `${base}/commentThreads`,\n    qs: { part: 'snippet', allThreadsRelatedToChannelId: channel, order: 'time', maxResults: 50, textFormat: 'plainText', key },\n  });\n} catch (e) {\n  logError('youtube-fetch', e);\n  return [{ json: { job: 'youtube', error: errText(e) } }];\n}\nconst out = [];\nfor (const t of res.items || []) {\n  const c = t.snippet?.topLevelComment;\n  const s = c?.snippet || {};\n  if (!c || s.authorChannelId?.value === channel) continue;\n  out.push({\n    json: {\n      platform: 'YouTube',\n      id: c.id,\n      text: s.textOriginal || s.textDisplay || '',\n      author: s.authorDisplayName || '',\n      authorId: s.authorChannelId?.value || '',\n      postId: s.videoId || t.snippet?.videoId || '',\n      parentId: '',\n      threadId: t.id,\n      link: `https://www.youtube.com/watch?v=${s.videoId || t.snippet?.videoId}&lc=${c.id}`,\n      createdAt: s.publishedAt || now(),\n    },\n  });\n}\nstate.youtubeCheckedAt = now();\nreturn out;\n\n})();\nsaveState();\nreturn __result;\n"
+      }
+    },
+    {
+      "id": "136f22ac-d34d-4dad-a4d3-38ea715ed1db",
+      "name": "Daily 8am: TikTok",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        600
+      ],
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "days",
+              "daysInterval": 1,
+              "triggerAtHour": 8
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "f6dba2e6-3c6a-4c1c-a7af-6c0c418e16f4",
+      "name": "Fetch TikTok comments",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        220,
+        600
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "// ---- shared helpers (build.mjs prepends this file to every Code node) ----\n// Settings come from the server's .env (see ../../.env.example). Every base URL\n// is a setting so tests can point the workflow at test/mock-apis.mjs instead of\n// the real Meta / Google / Apify / Anthropic / Notion APIs.\nconst cfg = (key, fallback = '') => {\n  const v = $env[key];\n  return v === undefined || v === null || String(v).trim() === '' ? fallback : String(v).trim();\n};\n// Test mode is ON unless COMMENTS_DRY_RUN=false: nothing is sent to Instagram or\n// YouTube, the inbox rows say what would have been sent.\nconst DRY_RUN = cfg('COMMENTS_DRY_RUN', 'true') !== 'false';\nconst GRAPH = cfg('GRAPH_BASE', 'https://graph.instagram.com/v26.0');\nconst NOTION = cfg('NOTION_BASE', 'https://api.notion.com/v1');\n// State (comments seen, DMs sent, refreshed Instagram token, last errors) lives\n// in one JSON file in n8n's data volume, read fresh by every node and saved when\n// the node ends (build.mjs adds the save). Not workflow static data: n8n hands a\n// queued run the static data from when it was triggered, so two runs close\n// together overwrite each other's lists. N8N_CONCURRENCY_PRODUCTION_LIMIT=1\n// keeps runs one at a time so the file never gets two writers.\nconst fs = require('fs');\nconst STATE_FILE = cfg('STATE_FILE', '/home/node/.n8n/scrolly-comments-state.json');\nlet state = {};\ntry {\n  state = JSON.parse(fs.readFileSync(STATE_FILE, 'utf8'));\n} catch (e) {\n  state = {};\n}\nfunction saveState() {\n  fs.writeFileSync(`${STATE_FILE}.tmp`, JSON.stringify(state));\n  fs.renameSync(`${STATE_FILE}.tmp`, STATE_FILE);\n}\nconst helpers = this.helpers;\nconst now = () => new Date().toISOString();\n\nasync function http(opts) {\n  return helpers.httpRequest({ json: true, timeout: 60000, ...opts });\n}\nfunction errText(e) {\n  const body = e?.response?.body ?? e?.cause?.response?.data ?? e?.description;\n  const detail = body ? (typeof body === 'string' ? body : JSON.stringify(body)) : '';\n  return `${e?.message || e}${detail ? ' ' + detail : ''}`.slice(0, 500);\n}\nfunction remember(listName, id, max = 3000) {\n  state[listName] = state[listName] || {};\n  state[listName][id] = now();\n  const keys = Object.keys(state[listName]);\n  if (keys.length > max) for (const k of keys.slice(0, keys.length - max)) delete state[listName][k];\n}\nfunction logError(where, e) {\n  state.errors = [...(state.errors || []), { at: now(), where, error: errText(e) }].slice(-20);\n}\n// The Instagram token is refreshed weekly by the token job; the newest one lives\n// in the state file, the .env value is only the starting token.\nconst igToken = () => state.igToken || cfg('IG_ACCESS_TOKEN');\nfunction notionHeaders() {\n  return { Authorization: `Bearer ${cfg('NOTION_TOKEN')}`, 'Notion-Version': '2022-06-28' };\n}\n// A run-now call ({job: 'youtube'}) reaches every job node; each one only runs\n// for its own job name, or when its schedule fired (no job on the item).\nfunction isMyJob(name) {\n  const job = $input.first()?.json?.job;\n  return !job || job === name;\n}\n// ---- end shared helpers ----\n\nconst __result = await (async () => {\n// TikTok gives creators no comments API, so read comments on her newest videos\n// with the Apify actor clockworks/tiktok-comments-scraper (pay per comment, the\n// run is capped at TIKTOK_MAX_USD). Replies to TikTok comments are typed by hand.\nif (!isMyJob('tiktok')) return [];\nconst token = cfg('APIFY_TOKEN');\nconst handle = cfg('TIKTOK_HANDLE').replace(/^@/, '');\nif (!token || !handle) return [];\nconst base = cfg('APIFY_BASE', 'https://api.apify.com/v2');\n\nlet rows;\ntry {\n  rows = await http({\n    method: 'POST',\n    url: `${base}/acts/clockworks~tiktok-comments-scraper/run-sync-get-dataset-items`,\n    qs: { token, maxTotalChargeUsd: cfg('TIKTOK_MAX_USD', '0.10') },\n    body: {\n      profiles: [handle],\n      resultsPerPage: Number(cfg('TIKTOK_VIDEOS', '3')),\n      profileSorting: 'latest',\n      commentsPerPost: Number(cfg('TIKTOK_COMMENTS_PER_VIDEO', '30')),\n      maxRepliesPerComment: 0,\n    },\n    timeout: 300000,\n  });\n} catch (e) {\n  logError('tiktok-fetch', e);\n  return [{ json: { job: 'tiktok', error: errText(e) } }];\n}\nconst out = [];\nfor (const r of rows || []) {\n  if (r.errorCode || !r.cid || (r.uniqueId || '').toLowerCase() === handle.toLowerCase()) continue;\n  out.push({\n    json: {\n      platform: 'TikTok',\n      id: String(r.cid),\n      text: r.text || '',\n      author: r.uniqueId || '',\n      authorId: r.uid || '',\n      postId: r.videoWebUrl || '',\n      parentId: '',\n      threadId: '',\n      link: r.videoWebUrl || '',\n      createdAt: r.createTimeISO || now(),\n    },\n  });\n}\nstate.tiktokCheckedAt = now();\nreturn out;\n\n})();\nsaveState();\nreturn __result;\n"
+      }
+    },
+    {
+      "id": "d5fdf163-fabd-4568-ae1c-ceccd484bc4d",
+      "name": "New comments only",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        480,
+        400
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "// ---- shared helpers (build.mjs prepends this file to every Code node) ----\n// Settings come from the server's .env (see ../../.env.example). Every base URL\n// is a setting so tests can point the workflow at test/mock-apis.mjs instead of\n// the real Meta / Google / Apify / Anthropic / Notion APIs.\nconst cfg = (key, fallback = '') => {\n  const v = $env[key];\n  return v === undefined || v === null || String(v).trim() === '' ? fallback : String(v).trim();\n};\n// Test mode is ON unless COMMENTS_DRY_RUN=false: nothing is sent to Instagram or\n// YouTube, the inbox rows say what would have been sent.\nconst DRY_RUN = cfg('COMMENTS_DRY_RUN', 'true') !== 'false';\nconst GRAPH = cfg('GRAPH_BASE', 'https://graph.instagram.com/v26.0');\nconst NOTION = cfg('NOTION_BASE', 'https://api.notion.com/v1');\n// State (comments seen, DMs sent, refreshed Instagram token, last errors) lives\n// in one JSON file in n8n's data volume, read fresh by every node and saved when\n// the node ends (build.mjs adds the save). Not workflow static data: n8n hands a\n// queued run the static data from when it was triggered, so two runs close\n// together overwrite each other's lists. N8N_CONCURRENCY_PRODUCTION_LIMIT=1\n// keeps runs one at a time so the file never gets two writers.\nconst fs = require('fs');\nconst STATE_FILE = cfg('STATE_FILE', '/home/node/.n8n/scrolly-comments-state.json');\nlet state = {};\ntry {\n  state = JSON.parse(fs.readFileSync(STATE_FILE, 'utf8'));\n} catch (e) {\n  state = {};\n}\nfunction saveState() {\n  fs.writeFileSync(`${STATE_FILE}.tmp`, JSON.stringify(state));\n  fs.renameSync(`${STATE_FILE}.tmp`, STATE_FILE);\n}\nconst helpers = this.helpers;\nconst now = () => new Date().toISOString();\n\nasync function http(opts) {\n  return helpers.httpRequest({ json: true, timeout: 60000, ...opts });\n}\nfunction errText(e) {\n  const body = e?.response?.body ?? e?.cause?.response?.data ?? e?.description;\n  const detail = body ? (typeof body === 'string' ? body : JSON.stringify(body)) : '';\n  return `${e?.message || e}${detail ? ' ' + detail : ''}`.slice(0, 500);\n}\nfunction remember(listName, id, max = 3000) {\n  state[listName] = state[listName] || {};\n  state[listName][id] = now();\n  const keys = Object.keys(state[listName]);\n  if (keys.length > max) for (const k of keys.slice(0, keys.length - max)) delete state[listName][k];\n}\nfunction logError(where, e) {\n  state.errors = [...(state.errors || []), { at: now(), where, error: errText(e) }].slice(-20);\n}\n// The Instagram token is refreshed weekly by the token job; the newest one lives\n// in the state file, the .env value is only the starting token.\nconst igToken = () => state.igToken || cfg('IG_ACCESS_TOKEN');\nfunction notionHeaders() {\n  return { Authorization: `Bearer ${cfg('NOTION_TOKEN')}`, 'Notion-Version': '2022-06-28' };\n}\n// A run-now call ({job: 'youtube'}) reaches every job node; each one only runs\n// for its own job name, or when its schedule fired (no job on the item).\nfunction isMyJob(name) {\n  const job = $input.first()?.json?.job;\n  return !job || job === name;\n}\n// ---- end shared helpers ----\n\nconst __result = await (async () => {\n// Drop comments already handled (polls see the same comments again) and old\n// ones, so the first YouTube/TikTok run doesn't flood the inbox with history.\nconst maxAgeMs = Number(cfg('MAX_COMMENT_AGE_HOURS', '72')) * 3600 * 1000;\nconst seen = state.seen || {};\nconst out = [];\nconst batch = new Set();\nfor (const item of $input.all()) {\n  const c = item.json;\n  if (!c.id) continue; // error items from a fetch node\n  const key = `${c.platform}:${c.id}`;\n  if (seen[key] || batch.has(key)) continue;\n  const age = Date.now() - new Date(c.createdAt).getTime();\n  if (Number.isFinite(age) && age > maxAgeMs) {\n    remember('seen', key);\n    continue;\n  }\n  batch.add(key);\n  out.push({ json: { ...c, key } });\n}\nreturn out;\n\n})();\nsaveState();\nreturn __result;\n"
+      }
+    },
+    {
+      "id": "65e3bf70-8133-4b2a-a7d4-8580fb56f5b2",
+      "name": "Send keyword DMs",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        700,
+        400
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "// ---- shared helpers (build.mjs prepends this file to every Code node) ----\n// Settings come from the server's .env (see ../../.env.example). Every base URL\n// is a setting so tests can point the workflow at test/mock-apis.mjs instead of\n// the real Meta / Google / Apify / Anthropic / Notion APIs.\nconst cfg = (key, fallback = '') => {\n  const v = $env[key];\n  return v === undefined || v === null || String(v).trim() === '' ? fallback : String(v).trim();\n};\n// Test mode is ON unless COMMENTS_DRY_RUN=false: nothing is sent to Instagram or\n// YouTube, the inbox rows say what would have been sent.\nconst DRY_RUN = cfg('COMMENTS_DRY_RUN', 'true') !== 'false';\nconst GRAPH = cfg('GRAPH_BASE', 'https://graph.instagram.com/v26.0');\nconst NOTION = cfg('NOTION_BASE', 'https://api.notion.com/v1');\n// State (comments seen, DMs sent, refreshed Instagram token, last errors) lives\n// in one JSON file in n8n's data volume, read fresh by every node and saved when\n// the node ends (build.mjs adds the save). Not workflow static data: n8n hands a\n// queued run the static data from when it was triggered, so two runs close\n// together overwrite each other's lists. N8N_CONCURRENCY_PRODUCTION_LIMIT=1\n// keeps runs one at a time so the file never gets two writers.\nconst fs = require('fs');\nconst STATE_FILE = cfg('STATE_FILE', '/home/node/.n8n/scrolly-comments-state.json');\nlet state = {};\ntry {\n  state = JSON.parse(fs.readFileSync(STATE_FILE, 'utf8'));\n} catch (e) {\n  state = {};\n}\nfunction saveState() {\n  fs.writeFileSync(`${STATE_FILE}.tmp`, JSON.stringify(state));\n  fs.renameSync(`${STATE_FILE}.tmp`, STATE_FILE);\n}\nconst helpers = this.helpers;\nconst now = () => new Date().toISOString();\n\nasync function http(opts) {\n  return helpers.httpRequest({ json: true, timeout: 60000, ...opts });\n}\nfunction errText(e) {\n  const body = e?.response?.body ?? e?.cause?.response?.data ?? e?.description;\n  const detail = body ? (typeof body === 'string' ? body : JSON.stringify(body)) : '';\n  return `${e?.message || e}${detail ? ' ' + detail : ''}`.slice(0, 500);\n}\nfunction remember(listName, id, max = 3000) {\n  state[listName] = state[listName] || {};\n  state[listName][id] = now();\n  const keys = Object.keys(state[listName]);\n  if (keys.length > max) for (const k of keys.slice(0, keys.length - max)) delete state[listName][k];\n}\nfunction logError(where, e) {\n  state.errors = [...(state.errors || []), { at: now(), where, error: errText(e) }].slice(-20);\n}\n// The Instagram token is refreshed weekly by the token job; the newest one lives\n// in the state file, the .env value is only the starting token.\nconst igToken = () => state.igToken || cfg('IG_ACCESS_TOKEN');\nfunction notionHeaders() {\n  return { Authorization: `Bearer ${cfg('NOTION_TOKEN')}`, 'Notion-Version': '2022-06-28' };\n}\n// A run-now call ({job: 'youtube'}) reaches every job node; each one only runs\n// for its own job name, or when its schedule fired (no job on the item).\nfunction isMyJob(name) {\n  const job = $input.first()?.json?.job;\n  return !job || job === name;\n}\n// ---- end shared helpers ----\n\nconst __result = await (async () => {\n// Comment keyword -> one private-reply DM with the freebie link (Instagram only;\n// Meta allows one private reply per comment, within 7 days). The keyword list is\n// config/keywords.json, made from automation/carousels/config/destinations.json\n// by scripts/sync-keywords.mjs. Only keywords marked live + dmApproved are in it.\nlet keywords = [];\ntry {\n  keywords = JSON.parse(fs.readFileSync(cfg('KEYWORDS_FILE', '/data/config/keywords.json'), 'utf8')).keywords || [];\n} catch (e) {\n  logError('keywords-file', e);\n}\nconst ownId = cfg('IG_USER_ID');\n\nconst out = [];\nfor (const item of $input.all()) {\n  const c = { ...item.json };\n  const words = (c.text.toUpperCase().match(/[A-Z0-9$]+/g) || []);\n  const hit = keywords.find((k) => words.includes(String(k.keyword).toUpperCase()));\n  if (hit) {\n    c.keyword = hit.keyword;\n    // \"PINS\", \"pins!\", \"PINS please 🙏\" count as keyword-only: no reply draft needed.\n    const rest = words.filter((w) => w !== hit.keyword.toUpperCase() && !/^(PLEASE|PLS|PLZ|THANKS|THANK|YOU|TY)$/.test(w));\n    c.keywordOnly = rest.length === 0;\n  }\n  if (hit && c.platform === 'Instagram') {\n    const text = hit.dm.replace('{url}', hit.url);\n    if (state.dm?.[c.id]) {\n      c.dm = 'already sent';\n    } else if (DRY_RUN) {\n      c.dm = `test mode, would send: ${text}`;\n    } else {\n      try {\n        await http({\n          method: 'POST',\n          url: `${GRAPH}/${ownId || 'me'}/messages`,\n          headers: { Authorization: `Bearer ${igToken()}` },\n          body: { recipient: { comment_id: c.id }, message: { text } },\n        });\n        remember('dm', c.id);\n        c.dm = `sent: ${text}`;\n      } catch (e) {\n        logError('instagram-dm', e);\n        c.dm = `failed: ${errText(e)}`;\n      }\n    }\n  }\n  out.push({ json: c });\n}\nreturn out;\n\n})();\nsaveState();\nreturn __result;\n"
+      }
+    },
+    {
+      "id": "ade5b228-1903-44ee-a612-8c553d204b91",
+      "name": "Sort and draft (Claude)",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        920,
+        400
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "// ---- shared helpers (build.mjs prepends this file to every Code node) ----\n// Settings come from the server's .env (see ../../.env.example). Every base URL\n// is a setting so tests can point the workflow at test/mock-apis.mjs instead of\n// the real Meta / Google / Apify / Anthropic / Notion APIs.\nconst cfg = (key, fallback = '') => {\n  const v = $env[key];\n  return v === undefined || v === null || String(v).trim() === '' ? fallback : String(v).trim();\n};\n// Test mode is ON unless COMMENTS_DRY_RUN=false: nothing is sent to Instagram or\n// YouTube, the inbox rows say what would have been sent.\nconst DRY_RUN = cfg('COMMENTS_DRY_RUN', 'true') !== 'false';\nconst GRAPH = cfg('GRAPH_BASE', 'https://graph.instagram.com/v26.0');\nconst NOTION = cfg('NOTION_BASE', 'https://api.notion.com/v1');\n// State (comments seen, DMs sent, refreshed Instagram token, last errors) lives\n// in one JSON file in n8n's data volume, read fresh by every node and saved when\n// the node ends (build.mjs adds the save). Not workflow static data: n8n hands a\n// queued run the static data from when it was triggered, so two runs close\n// together overwrite each other's lists. N8N_CONCURRENCY_PRODUCTION_LIMIT=1\n// keeps runs one at a time so the file never gets two writers.\nconst fs = require('fs');\nconst STATE_FILE = cfg('STATE_FILE', '/home/node/.n8n/scrolly-comments-state.json');\nlet state = {};\ntry {\n  state = JSON.parse(fs.readFileSync(STATE_FILE, 'utf8'));\n} catch (e) {\n  state = {};\n}\nfunction saveState() {\n  fs.writeFileSync(`${STATE_FILE}.tmp`, JSON.stringify(state));\n  fs.renameSync(`${STATE_FILE}.tmp`, STATE_FILE);\n}\nconst helpers = this.helpers;\nconst now = () => new Date().toISOString();\n\nasync function http(opts) {\n  return helpers.httpRequest({ json: true, timeout: 60000, ...opts });\n}\nfunction errText(e) {\n  const body = e?.response?.body ?? e?.cause?.response?.data ?? e?.description;\n  const detail = body ? (typeof body === 'string' ? body : JSON.stringify(body)) : '';\n  return `${e?.message || e}${detail ? ' ' + detail : ''}`.slice(0, 500);\n}\nfunction remember(listName, id, max = 3000) {\n  state[listName] = state[listName] || {};\n  state[listName][id] = now();\n  const keys = Object.keys(state[listName]);\n  if (keys.length > max) for (const k of keys.slice(0, keys.length - max)) delete state[listName][k];\n}\nfunction logError(where, e) {\n  state.errors = [...(state.errors || []), { at: now(), where, error: errText(e) }].slice(-20);\n}\n// The Instagram token is refreshed weekly by the token job; the newest one lives\n// in the state file, the .env value is only the starting token.\nconst igToken = () => state.igToken || cfg('IG_ACCESS_TOKEN');\nfunction notionHeaders() {\n  return { Authorization: `Bearer ${cfg('NOTION_TOKEN')}`, 'Notion-Version': '2022-06-28' };\n}\n// A run-now call ({job: 'youtube'}) reaches every job node; each one only runs\n// for its own job name, or when its schedule fired (no job on the item).\nfunction isMyJob(name) {\n  const job = $input.first()?.json?.job;\n  return !job || job === name;\n}\n// ---- end shared helpers ----\n\nconst __result = await (async () => {\n// Claude sorts each comment (question / lead / praise / spam / other) and drafts\n// a reply in Mercedes's voice. Drafts are never posted from here: they wait in\n// the Notion Comment inbox until she sets Status = Approved.\nconst SYSTEM = `You sort comments on Mercedes's social media posts and draft her replies.\nMercedes runs Scrolly (@scrollysocial). She helps small business owners and moms make their first money online with organic social media, starting with little or no audience. Her paid products are the $1K Club and the $1K Club + Challenge, plus a few guides and templates.\n\nSort the comment into exactly one type:\n- question: asks something (how, what, where, which tool, does this work for...)\n- lead: shows buying interest or a need she sells help for (price, how to join, \"I need this\", \"where do I get it\", stuck making their first sale)\n- praise: thanks, compliments, emojis, agreement\n- spam: bots, crypto, \"promote it on\", collab or growth offers, unrelated links, scams\n- other: anything else\n\nWrite the reply Mercedes would post publicly:\n- Warm, encouraging, clear and short: 1 or 2 sentences. Reply to what they actually said.\n- Questions: give a genuinely useful answer or one concrete tip when general know-how answers it. Mention \"the link in my bio\" only when they ask about price, joining or getting one of her products.\n- Someone stuck or frustrated: one specific, kind tip first. A bio mention is optional and comes last.\n- Never state prices, results, timelines or product features you were not given. If the answer needs a fact about Mercedes or her products, write a short honest placeholder answer and set needs_check to true.\n- No filler openers (\"Great question\", \"Every journey is different\"). Don't call people by name: the author is a username.\n- Never patronize, never pitch to praise, never promise money or results.\n- No em dashes. No \"It's X, not Y\" or \"isn't X, it's Y\" sentences. No hashtags. At most one emoji.\n- For spam, reply is \"\".\n\nAnswer with JSON only: {\"type\": \"...\", \"reply\": \"...\", \"needs_check\": true|false}`;\n\nconst key = cfg('ANTHROPIC_API_KEY');\nconst base = cfg('ANTHROPIC_BASE', 'https://api.anthropic.com');\n// Current models always think first, so max_tokens leaves room for that; effort\n// low is enough for sorting one comment and drafting one or two sentences.\nconst model = cfg('CLAUDE_MODEL', 'claude-opus-5-5');\nconst effort = cfg('CLAUDE_EFFORT', 'low');\n\nconst out = [];\nfor (const item of $input.all()) {\n  const c = { ...item.json };\n  if (c.keywordOnly) {\n    out.push({ json: c });\n    continue;\n  }\n  try {\n    const res = await http({\n      method: 'POST',\n      url: `${base}/v1/messages`,\n      headers: { 'x-api-key': key, 'anthropic-version': '2023-06-01' },\n      body: {\n        model,\n        max_tokens: 4000,\n        output_config: { effort },\n        system: SYSTEM,\n        messages: [{ role: 'user', content: JSON.stringify({ platform: c.platform, author: c.author, comment: c.text }) }],\n      },\n    });\n    if (res.stop_reason !== 'end_turn') throw new Error(`Claude stopped early (${res.stop_reason})`);\n    const text = (res.content || []).filter((b) => b.type === 'text').map((b) => b.text).join('');\n    const parsed = JSON.parse(text.slice(text.indexOf('{'), text.lastIndexOf('}') + 1));\n    c.type = ['question', 'lead', 'praise', 'spam', 'other'].includes(parsed.type) ? parsed.type : 'other';\n    c.draft = String(parsed.reply || '').replace(/\\s*[—–]\\s*/g, ', ').trim();\n    c.needsCheck = !!parsed.needs_check;\n  } catch (e) {\n    logError('claude', e);\n    c.type = 'other';\n    c.draft = '';\n    c.note = `Couldn't draft a reply: ${errText(e)}`;\n  }\n  out.push({ json: c });\n}\nreturn out;\n\n})();\nsaveState();\nreturn __result;\n"
+      }
+    },
+    {
+      "id": "b40c144e-efee-4ac1-adb4-e7f552afbfc0",
+      "name": "Add to Comment inbox",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1140,
+        400
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "// ---- shared helpers (build.mjs prepends this file to every Code node) ----\n// Settings come from the server's .env (see ../../.env.example). Every base URL\n// is a setting so tests can point the workflow at test/mock-apis.mjs instead of\n// the real Meta / Google / Apify / Anthropic / Notion APIs.\nconst cfg = (key, fallback = '') => {\n  const v = $env[key];\n  return v === undefined || v === null || String(v).trim() === '' ? fallback : String(v).trim();\n};\n// Test mode is ON unless COMMENTS_DRY_RUN=false: nothing is sent to Instagram or\n// YouTube, the inbox rows say what would have been sent.\nconst DRY_RUN = cfg('COMMENTS_DRY_RUN', 'true') !== 'false';\nconst GRAPH = cfg('GRAPH_BASE', 'https://graph.instagram.com/v26.0');\nconst NOTION = cfg('NOTION_BASE', 'https://api.notion.com/v1');\n// State (comments seen, DMs sent, refreshed Instagram token, last errors) lives\n// in one JSON file in n8n's data volume, read fresh by every node and saved when\n// the node ends (build.mjs adds the save). Not workflow static data: n8n hands a\n// queued run the static data from when it was triggered, so two runs close\n// together overwrite each other's lists. N8N_CONCURRENCY_PRODUCTION_LIMIT=1\n// keeps runs one at a time so the file never gets two writers.\nconst fs = require('fs');\nconst STATE_FILE = cfg('STATE_FILE', '/home/node/.n8n/scrolly-comments-state.json');\nlet state = {};\ntry {\n  state = JSON.parse(fs.readFileSync(STATE_FILE, 'utf8'));\n} catch (e) {\n  state = {};\n}\nfunction saveState() {\n  fs.writeFileSync(`${STATE_FILE}.tmp`, JSON.stringify(state));\n  fs.renameSync(`${STATE_FILE}.tmp`, STATE_FILE);\n}\nconst helpers = this.helpers;\nconst now = () => new Date().toISOString();\n\nasync function http(opts) {\n  return helpers.httpRequest({ json: true, timeout: 60000, ...opts });\n}\nfunction errText(e) {\n  const body = e?.response?.body ?? e?.cause?.response?.data ?? e?.description;\n  const detail = body ? (typeof body === 'string' ? body : JSON.stringify(body)) : '';\n  return `${e?.message || e}${detail ? ' ' + detail : ''}`.slice(0, 500);\n}\nfunction remember(listName, id, max = 3000) {\n  state[listName] = state[listName] || {};\n  state[listName][id] = now();\n  const keys = Object.keys(state[listName]);\n  if (keys.length > max) for (const k of keys.slice(0, keys.length - max)) delete state[listName][k];\n}\nfunction logError(where, e) {\n  state.errors = [...(state.errors || []), { at: now(), where, error: errText(e) }].slice(-20);\n}\n// The Instagram token is refreshed weekly by the token job; the newest one lives\n// in the state file, the .env value is only the starting token.\nconst igToken = () => state.igToken || cfg('IG_ACCESS_TOKEN');\nfunction notionHeaders() {\n  return { Authorization: `Bearer ${cfg('NOTION_TOKEN')}`, 'Notion-Version': '2022-06-28' };\n}\n// A run-now call ({job: 'youtube'}) reaches every job node; each one only runs\n// for its own job name, or when its schedule fired (no job on the item).\nfunction isMyJob(name) {\n  const job = $input.first()?.json?.job;\n  return !job || job === name;\n}\n// ---- end shared helpers ----\n\nconst __result = await (async () => {\n// One row per comment in the Notion \"Comment inbox\" (Scrolly Content Tracker).\n// Spam and keyword-only comments are not logged; they're only marked as seen.\n// A comment is marked seen only after its row exists, so a failed write is\n// retried on the next YouTube/TikTok poll.\nconst db = cfg('NOTION_COMMENTS_DB');\nconst clip = (s, n = 1900) => String(s || '').slice(0, n);\nconst rich = (s) => ({ rich_text: s ? [{ type: 'text', text: { content: clip(s) } }] : [] });\nconst out = [];\n\nfor (const item of $input.all()) {\n  const c = item.json;\n  if (c.keywordOnly || c.type === 'spam') {\n    remember('seen', c.key);\n    out.push({ json: { key: c.key, logged: false, why: c.keywordOnly ? 'keyword only' : 'spam', dm: c.dm } });\n    continue;\n  }\n  let link = c.link;\n  if (!link && c.platform === 'Instagram' && c.postId) {\n    try {\n      const m = await http({ method: 'GET', url: `${GRAPH}/${c.postId}`, qs: { fields: 'permalink', access_token: igToken() } });\n      link = m.permalink || '';\n    } catch (e) {\n      link = '';\n    }\n  }\n  const notes = [c.dm ? `Keyword ${c.keyword}: ${c.dm}` : '', c.needsCheck ? 'Check the facts in this draft before approving.' : '', c.note || '']\n    .filter(Boolean)\n    .join(' ');\n  const properties = {\n    Comment: { title: [{ type: 'text', text: { content: clip(c.text, 1900) || '(no text)' } }] },\n    Platform: { select: { name: c.platform } },\n    Type: { select: { name: c.type ? c.type[0].toUpperCase() + c.type.slice(1) : 'Other' } },\n    Priority: { checkbox: c.type === 'question' || c.type === 'lead' },\n    'Draft reply': rich(c.draft),\n    Status: { select: { name: c.platform === 'TikTok' ? 'Reply by hand' : 'New' } },\n    Author: rich(c.author),\n    'Comment ID': rich(c.id),\n    'Thread ID': rich(c.threadId),\n    Received: { date: { start: c.createdAt || now() } },\n    Note: rich(notes),\n  };\n  if (link) properties.Link = { url: link };\n  try {\n    const page = await http({\n      method: 'POST',\n      url: `${NOTION}/pages`,\n      headers: notionHeaders(),\n      body: { parent: { database_id: db }, properties },\n    });\n    remember('seen', c.key);\n    out.push({ json: { key: c.key, logged: true, page: page.id, type: c.type, draft: c.draft, dm: c.dm } });\n  } catch (e) {\n    logError('notion-add', e);\n    out.push({ json: { key: c.key, logged: false, error: errText(e) } });\n  }\n}\nstate.lastRuns = { ...(state.lastRuns || {}), inbox: { at: now(), comments: out.length, logged: out.filter((o) => o.json.logged).length, failed: out.filter((o) => o.json.error).length } };\nreturn out;\n\n})();\nsaveState();\nreturn __result;\n"
+      }
+    },
+    {
+      "id": "c3b1fbc0-f214-438a-acc9-63160b5b87af",
+      "name": "Every 10 min: approved replies",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        800
+      ],
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 10
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "fa01e3b1-356c-4d96-aa40-e96defd681c2",
+      "name": "Post approved replies",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        220,
+        800
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "// ---- shared helpers (build.mjs prepends this file to every Code node) ----\n// Settings come from the server's .env (see ../../.env.example). Every base URL\n// is a setting so tests can point the workflow at test/mock-apis.mjs instead of\n// the real Meta / Google / Apify / Anthropic / Notion APIs.\nconst cfg = (key, fallback = '') => {\n  const v = $env[key];\n  return v === undefined || v === null || String(v).trim() === '' ? fallback : String(v).trim();\n};\n// Test mode is ON unless COMMENTS_DRY_RUN=false: nothing is sent to Instagram or\n// YouTube, the inbox rows say what would have been sent.\nconst DRY_RUN = cfg('COMMENTS_DRY_RUN', 'true') !== 'false';\nconst GRAPH = cfg('GRAPH_BASE', 'https://graph.instagram.com/v26.0');\nconst NOTION = cfg('NOTION_BASE', 'https://api.notion.com/v1');\n// State (comments seen, DMs sent, refreshed Instagram token, last errors) lives\n// in one JSON file in n8n's data volume, read fresh by every node and saved when\n// the node ends (build.mjs adds the save). Not workflow static data: n8n hands a\n// queued run the static data from when it was triggered, so two runs close\n// together overwrite each other's lists. N8N_CONCURRENCY_PRODUCTION_LIMIT=1\n// keeps runs one at a time so the file never gets two writers.\nconst fs = require('fs');\nconst STATE_FILE = cfg('STATE_FILE', '/home/node/.n8n/scrolly-comments-state.json');\nlet state = {};\ntry {\n  state = JSON.parse(fs.readFileSync(STATE_FILE, 'utf8'));\n} catch (e) {\n  state = {};\n}\nfunction saveState() {\n  fs.writeFileSync(`${STATE_FILE}.tmp`, JSON.stringify(state));\n  fs.renameSync(`${STATE_FILE}.tmp`, STATE_FILE);\n}\nconst helpers = this.helpers;\nconst now = () => new Date().toISOString();\n\nasync function http(opts) {\n  return helpers.httpRequest({ json: true, timeout: 60000, ...opts });\n}\nfunction errText(e) {\n  const body = e?.response?.body ?? e?.cause?.response?.data ?? e?.description;\n  const detail = body ? (typeof body === 'string' ? body : JSON.stringify(body)) : '';\n  return `${e?.message || e}${detail ? ' ' + detail : ''}`.slice(0, 500);\n}\nfunction remember(listName, id, max = 3000) {\n  state[listName] = state[listName] || {};\n  state[listName][id] = now();\n  const keys = Object.keys(state[listName]);\n  if (keys.length > max) for (const k of keys.slice(0, keys.length - max)) delete state[listName][k];\n}\nfunction logError(where, e) {\n  state.errors = [...(state.errors || []), { at: now(), where, error: errText(e) }].slice(-20);\n}\n// The Instagram token is refreshed weekly by the token job; the newest one lives\n// in the state file, the .env value is only the starting token.\nconst igToken = () => state.igToken || cfg('IG_ACCESS_TOKEN');\nfunction notionHeaders() {\n  return { Authorization: `Bearer ${cfg('NOTION_TOKEN')}`, 'Notion-Version': '2022-06-28' };\n}\n// A run-now call ({job: 'youtube'}) reaches every job node; each one only runs\n// for its own job name, or when its schedule fired (no job on the item).\nfunction isMyJob(name) {\n  const job = $input.first()?.json?.job;\n  return !job || job === name;\n}\n// ---- end shared helpers ----\n\nconst __result = await (async () => {\n// Every 10 minutes: rows Mercedes set to Status = Approved get their Draft reply\n// (as she edited it) posted as a public reply, then marked Posted.\n// This uses Notion's public API with its own integration token, which is separate\n// from the Claude Notion connector's query allowance.\nif (!isMyJob('replies')) return [];\nconst db = cfg('NOTION_COMMENTS_DB');\nif (!db || !cfg('NOTION_TOKEN')) return [];\nconst text = (p) => (p?.rich_text || p?.title || []).map((t) => t.plain_text ?? t.text?.content ?? '').join('');\n\nlet rows;\ntry {\n  const res = await http({\n    method: 'POST',\n    url: `${NOTION}/databases/${db}/query`,\n    headers: notionHeaders(),\n    body: { filter: { property: 'Status', select: { equals: 'Approved' } }, page_size: 50 },\n  });\n  rows = res.results || [];\n} catch (e) {\n  logError('notion-approved', e);\n  return [{ json: { job: 'replies', error: errText(e) } }];\n}\n\nasync function youtubeAccessToken() {\n  if (state.ytAccess && state.ytAccessUntil > Date.now() + 60000) return state.ytAccess;\n  const res = await http({\n    method: 'POST',\n    url: cfg('GOOGLE_TOKEN_URL', 'https://oauth2.googleapis.com/token'),\n    json: false,\n    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },\n    // (no URLSearchParams in n8n's Code sandbox)\n    body: Object.entries({\n      client_id: cfg('YT_CLIENT_ID'),\n      client_secret: cfg('YT_CLIENT_SECRET'),\n      refresh_token: cfg('YT_REFRESH_TOKEN'),\n      grant_type: 'refresh_token',\n    })\n      .map(([k, v]) => `${encodeURIComponent(k)}=${encodeURIComponent(v)}`)\n      .join('&'),\n  });\n  const t = typeof res === 'string' ? JSON.parse(res) : res;\n  state.ytAccess = t.access_token;\n  state.ytAccessUntil = Date.now() + (t.expires_in || 3600) * 1000;\n  return state.ytAccess;\n}\n\nconst out = [];\nfor (const row of rows) {\n  const p = row.properties || {};\n  const platform = p.Platform?.select?.name;\n  const reply = text(p['Draft reply']).trim();\n  const commentId = text(p['Comment ID']).trim();\n  const threadId = text(p['Thread ID']).trim() || commentId;\n  let status = 'Posted';\n  let note = '';\n  if (!reply || !commentId) {\n    status = 'Error';\n    note = 'Draft reply or Comment ID is empty.';\n  } else if (platform === 'TikTok') {\n    status = 'Reply by hand';\n    note = \"TikTok doesn't allow replies from automations. Copy the draft into TikTok.\";\n  } else if (DRY_RUN) {\n    status = 'Not sent (test mode)';\n    note = `Test mode: would post \"${reply}\"`;\n  } else {\n    try {\n      if (platform === 'Instagram') {\n        await http({ method: 'POST', url: `${GRAPH}/${commentId}/replies`, qs: { message: reply }, headers: { Authorization: `Bearer ${igToken()}` } });\n      } else if (platform === 'YouTube') {\n        await http({\n          method: 'POST',\n          url: `${cfg('YT_BASE', 'https://www.googleapis.com/youtube/v3')}/comments`,\n          qs: { part: 'snippet' },\n          headers: { Authorization: `Bearer ${await youtubeAccessToken()}` },\n          body: { snippet: { parentId: threadId, textOriginal: reply } },\n        });\n      } else {\n        throw new Error(`unknown platform ${platform}`);\n      }\n    } catch (e) {\n      logError('post-reply', e);\n      status = 'Error';\n      note = `Not posted: ${errText(e)}`;\n    }\n  }\n  const properties = { Status: { select: { name: status } } };\n  if (note) properties.Note = { rich_text: [{ type: 'text', text: { content: note.slice(0, 1900) } }] };\n  if (status === 'Posted') properties.Posted = { date: { start: now() } };\n  try {\n    await http({ method: 'PATCH', url: `${NOTION}/pages/${row.id}`, headers: notionHeaders(), body: { properties } });\n  } catch (e) {\n    logError('notion-update', e);\n  }\n  out.push({ json: { page: row.id, platform, status, note } });\n}\nstate.lastRuns = { ...(state.lastRuns || {}), replies: { at: now(), approved: rows.length, posted: out.filter((o) => o.json.status === 'Posted').length, results: out.map((o) => o.json.status) } };\nreturn out;\n\n})();\nsaveState();\nreturn __result;\n"
+      }
+    },
+    {
+      "id": "d88ca363-bc00-45d6-ac12-8f1389c92120",
+      "name": "Weekly: Instagram token",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        1000
+      ],
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "weeks",
+              "weeksInterval": 1,
+              "triggerAtDay": [
+                1
+              ],
+              "triggerAtHour": 6
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "1a870a9b-6473-4be7-a12f-bc43a9ccf621",
+      "name": "Refresh Instagram token",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        220,
+        1000
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "// ---- shared helpers (build.mjs prepends this file to every Code node) ----\n// Settings come from the server's .env (see ../../.env.example). Every base URL\n// is a setting so tests can point the workflow at test/mock-apis.mjs instead of\n// the real Meta / Google / Apify / Anthropic / Notion APIs.\nconst cfg = (key, fallback = '') => {\n  const v = $env[key];\n  return v === undefined || v === null || String(v).trim() === '' ? fallback : String(v).trim();\n};\n// Test mode is ON unless COMMENTS_DRY_RUN=false: nothing is sent to Instagram or\n// YouTube, the inbox rows say what would have been sent.\nconst DRY_RUN = cfg('COMMENTS_DRY_RUN', 'true') !== 'false';\nconst GRAPH = cfg('GRAPH_BASE', 'https://graph.instagram.com/v26.0');\nconst NOTION = cfg('NOTION_BASE', 'https://api.notion.com/v1');\n// State (comments seen, DMs sent, refreshed Instagram token, last errors) lives\n// in one JSON file in n8n's data volume, read fresh by every node and saved when\n// the node ends (build.mjs adds the save). Not workflow static data: n8n hands a\n// queued run the static data from when it was triggered, so two runs close\n// together overwrite each other's lists. N8N_CONCURRENCY_PRODUCTION_LIMIT=1\n// keeps runs one at a time so the file never gets two writers.\nconst fs = require('fs');\nconst STATE_FILE = cfg('STATE_FILE', '/home/node/.n8n/scrolly-comments-state.json');\nlet state = {};\ntry {\n  state = JSON.parse(fs.readFileSync(STATE_FILE, 'utf8'));\n} catch (e) {\n  state = {};\n}\nfunction saveState() {\n  fs.writeFileSync(`${STATE_FILE}.tmp`, JSON.stringify(state));\n  fs.renameSync(`${STATE_FILE}.tmp`, STATE_FILE);\n}\nconst helpers = this.helpers;\nconst now = () => new Date().toISOString();\n\nasync function http(opts) {\n  return helpers.httpRequest({ json: true, timeout: 60000, ...opts });\n}\nfunction errText(e) {\n  const body = e?.response?.body ?? e?.cause?.response?.data ?? e?.description;\n  const detail = body ? (typeof body === 'string' ? body : JSON.stringify(body)) : '';\n  return `${e?.message || e}${detail ? ' ' + detail : ''}`.slice(0, 500);\n}\nfunction remember(listName, id, max = 3000) {\n  state[listName] = state[listName] || {};\n  state[listName][id] = now();\n  const keys = Object.keys(state[listName]);\n  if (keys.length > max) for (const k of keys.slice(0, keys.length - max)) delete state[listName][k];\n}\nfunction logError(where, e) {\n  state.errors = [...(state.errors || []), { at: now(), where, error: errText(e) }].slice(-20);\n}\n// The Instagram token is refreshed weekly by the token job; the newest one lives\n// in the state file, the .env value is only the starting token.\nconst igToken = () => state.igToken || cfg('IG_ACCESS_TOKEN');\nfunction notionHeaders() {\n  return { Authorization: `Bearer ${cfg('NOTION_TOKEN')}`, 'Notion-Version': '2022-06-28' };\n}\n// A run-now call ({job: 'youtube'}) reaches every job node; each one only runs\n// for its own job name, or when its schedule fired (no job on the item).\nfunction isMyJob(name) {\n  const job = $input.first()?.json?.job;\n  return !job || job === name;\n}\n// ---- end shared helpers ----\n\nconst __result = await (async () => {\n// Instagram long-lived tokens last 60 days; refreshing weekly keeps them alive.\n// The new token is kept in the state file (igToken() reads it first).\nif (!isMyJob('token')) return [];\nif (!igToken()) return [];\ntry {\n  const res = await http({\n    method: 'GET',\n    url: cfg('IG_REFRESH_URL', 'https://graph.instagram.com/refresh_access_token'),\n    qs: { grant_type: 'ig_refresh_token', access_token: igToken() },\n  });\n  if (!res.access_token) throw new Error('no access_token in the answer');\n  state.igToken = res.access_token;\n  state.igTokenAt = now();\n  state.lastRuns = { ...(state.lastRuns || {}), token: { at: now(), refreshed: true } };\n  return [{ json: { job: 'token', refreshed: true, expiresInDays: Math.round((res.expires_in || 0) / 86400) } }];\n} catch (e) {\n  logError('instagram-token', e);\n  return [{ json: { job: 'token', refreshed: false, error: errText(e) } }];\n}\n\n})();\nsaveState();\nreturn __result;\n"
+      }
+    },
+    {
+      "id": "5ee6428b-4123-4218-a3d4-9ce66ecc2223",
+      "name": "Run a job now",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -480,
+        700
+      ],
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "comments-run",
+        "responseMode": "onReceived",
+        "options": {}
+      },
+      "webhookId": "9ae04624-f90d-43f4-a30a-ab18d79e4954"
+    },
+    {
+      "id": "57d4f088-d09c-489e-ab84-81a412a5ef73",
+      "name": "Pick job",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -260,
+        700
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "// ---- shared helpers (build.mjs prepends this file to every Code node) ----\n// Settings come from the server's .env (see ../../.env.example). Every base URL\n// is a setting so tests can point the workflow at test/mock-apis.mjs instead of\n// the real Meta / Google / Apify / Anthropic / Notion APIs.\nconst cfg = (key, fallback = '') => {\n  const v = $env[key];\n  return v === undefined || v === null || String(v).trim() === '' ? fallback : String(v).trim();\n};\n// Test mode is ON unless COMMENTS_DRY_RUN=false: nothing is sent to Instagram or\n// YouTube, the inbox rows say what would have been sent.\nconst DRY_RUN = cfg('COMMENTS_DRY_RUN', 'true') !== 'false';\nconst GRAPH = cfg('GRAPH_BASE', 'https://graph.instagram.com/v26.0');\nconst NOTION = cfg('NOTION_BASE', 'https://api.notion.com/v1');\n// State (comments seen, DMs sent, refreshed Instagram token, last errors) lives\n// in one JSON file in n8n's data volume, read fresh by every node and saved when\n// the node ends (build.mjs adds the save). Not workflow static data: n8n hands a\n// queued run the static data from when it was triggered, so two runs close\n// together overwrite each other's lists. N8N_CONCURRENCY_PRODUCTION_LIMIT=1\n// keeps runs one at a time so the file never gets two writers.\nconst fs = require('fs');\nconst STATE_FILE = cfg('STATE_FILE', '/home/node/.n8n/scrolly-comments-state.json');\nlet state = {};\ntry {\n  state = JSON.parse(fs.readFileSync(STATE_FILE, 'utf8'));\n} catch (e) {\n  state = {};\n}\nfunction saveState() {\n  fs.writeFileSync(`${STATE_FILE}.tmp`, JSON.stringify(state));\n  fs.renameSync(`${STATE_FILE}.tmp`, STATE_FILE);\n}\nconst helpers = this.helpers;\nconst now = () => new Date().toISOString();\n\nasync function http(opts) {\n  return helpers.httpRequest({ json: true, timeout: 60000, ...opts });\n}\nfunction errText(e) {\n  const body = e?.response?.body ?? e?.cause?.response?.data ?? e?.description;\n  const detail = body ? (typeof body === 'string' ? body : JSON.stringify(body)) : '';\n  return `${e?.message || e}${detail ? ' ' + detail : ''}`.slice(0, 500);\n}\nfunction remember(listName, id, max = 3000) {\n  state[listName] = state[listName] || {};\n  state[listName][id] = now();\n  const keys = Object.keys(state[listName]);\n  if (keys.length > max) for (const k of keys.slice(0, keys.length - max)) delete state[listName][k];\n}\nfunction logError(where, e) {\n  state.errors = [...(state.errors || []), { at: now(), where, error: errText(e) }].slice(-20);\n}\n// The Instagram token is refreshed weekly by the token job; the newest one lives\n// in the state file, the .env value is only the starting token.\nconst igToken = () => state.igToken || cfg('IG_ACCESS_TOKEN');\nfunction notionHeaders() {\n  return { Authorization: `Bearer ${cfg('NOTION_TOKEN')}`, 'Notion-Version': '2022-06-28' };\n}\n// A run-now call ({job: 'youtube'}) reaches every job node; each one only runs\n// for its own job name, or when its schedule fired (no job on the item).\nfunction isMyJob(name) {\n  const job = $input.first()?.json?.job;\n  return !job || job === name;\n}\n// ---- end shared helpers ----\n\nconst __result = await (async () => {\n// POST /webhook/comments-run with header x-run-secret: RUN_SECRET and body\n// {\"job\": \"youtube\" | \"tiktok\" | \"replies\" | \"token\"} runs one job now (used by\n// tests and by Claude to check things without waiting for the schedule). The\n// results show up in the status webhook (status.js) and the Notion inbox.\nconst item = $input.first().json;\nconst secret = cfg('RUN_SECRET');\nif (!secret || (item.headers || {})['x-run-secret'] !== secret) return [{ json: { job: 'none', error: 'forbidden' } }];\nconst job = String(item.body?.job || '');\nif (!['youtube', 'tiktok', 'replies', 'token'].includes(job)) return [{ json: { job: 'none', error: `unknown job \"${job}\"` } }];\nreturn [{ json: { job } }];\n\n})();\nsaveState();\nreturn __result;\n"
+      }
+    },
+    {
+      "id": "592d72ec-6096-4e11-a1d2-eec19dcba10f",
+      "name": "Status check",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -480,
+        1000
+      ],
+      "parameters": {
+        "httpMethod": "GET",
+        "path": "comments-status",
+        "responseMode": "lastNode",
+        "options": {},
+        "responseData": "firstEntryJson"
+      },
+      "webhookId": "b6efb96d-c03f-4831-a50a-f343d834f902"
+    },
+    {
+      "id": "7985b088-3c5d-4d77-aa54-b3c72100264a",
+      "name": "Status",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -260,
+        1000
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "// ---- shared helpers (build.mjs prepends this file to every Code node) ----\n// Settings come from the server's .env (see ../../.env.example). Every base URL\n// is a setting so tests can point the workflow at test/mock-apis.mjs instead of\n// the real Meta / Google / Apify / Anthropic / Notion APIs.\nconst cfg = (key, fallback = '') => {\n  const v = $env[key];\n  return v === undefined || v === null || String(v).trim() === '' ? fallback : String(v).trim();\n};\n// Test mode is ON unless COMMENTS_DRY_RUN=false: nothing is sent to Instagram or\n// YouTube, the inbox rows say what would have been sent.\nconst DRY_RUN = cfg('COMMENTS_DRY_RUN', 'true') !== 'false';\nconst GRAPH = cfg('GRAPH_BASE', 'https://graph.instagram.com/v26.0');\nconst NOTION = cfg('NOTION_BASE', 'https://api.notion.com/v1');\n// State (comments seen, DMs sent, refreshed Instagram token, last errors) lives\n// in one JSON file in n8n's data volume, read fresh by every node and saved when\n// the node ends (build.mjs adds the save). Not workflow static data: n8n hands a\n// queued run the static data from when it was triggered, so two runs close\n// together overwrite each other's lists. N8N_CONCURRENCY_PRODUCTION_LIMIT=1\n// keeps runs one at a time so the file never gets two writers.\nconst fs = require('fs');\nconst STATE_FILE = cfg('STATE_FILE', '/home/node/.n8n/scrolly-comments-state.json');\nlet state = {};\ntry {\n  state = JSON.parse(fs.readFileSync(STATE_FILE, 'utf8'));\n} catch (e) {\n  state = {};\n}\nfunction saveState() {\n  fs.writeFileSync(`${STATE_FILE}.tmp`, JSON.stringify(state));\n  fs.renameSync(`${STATE_FILE}.tmp`, STATE_FILE);\n}\nconst helpers = this.helpers;\nconst now = () => new Date().toISOString();\n\nasync function http(opts) {\n  return helpers.httpRequest({ json: true, timeout: 60000, ...opts });\n}\nfunction errText(e) {\n  const body = e?.response?.body ?? e?.cause?.response?.data ?? e?.description;\n  const detail = body ? (typeof body === 'string' ? body : JSON.stringify(body)) : '';\n  return `${e?.message || e}${detail ? ' ' + detail : ''}`.slice(0, 500);\n}\nfunction remember(listName, id, max = 3000) {\n  state[listName] = state[listName] || {};\n  state[listName][id] = now();\n  const keys = Object.keys(state[listName]);\n  if (keys.length > max) for (const k of keys.slice(0, keys.length - max)) delete state[listName][k];\n}\nfunction logError(where, e) {\n  state.errors = [...(state.errors || []), { at: now(), where, error: errText(e) }].slice(-20);\n}\n// The Instagram token is refreshed weekly by the token job; the newest one lives\n// in the state file, the .env value is only the starting token.\nconst igToken = () => state.igToken || cfg('IG_ACCESS_TOKEN');\nfunction notionHeaders() {\n  return { Authorization: `Bearer ${cfg('NOTION_TOKEN')}`, 'Notion-Version': '2022-06-28' };\n}\n// A run-now call ({job: 'youtube'}) reaches every job node; each one only runs\n// for its own job name, or when its schedule fired (no job on the item).\nfunction isMyJob(name) {\n  const job = $input.first()?.json?.job;\n  return !job || job === name;\n}\n// ---- end shared helpers ----\n\nconst __result = await (async () => {\n// GET /webhook/comments-status with header x-run-secret: RUN_SECRET answers with\n// what the workflow has been doing: test mode, last checks, last 20 errors.\nconst item = $input.first().json;\nconst secret = cfg('RUN_SECRET');\nif (!secret || (item.headers || {})['x-run-secret'] !== secret) return [{ json: { error: 'forbidden' } }];\nreturn [{\n  json: {\n    testMode: DRY_RUN,\n    commentsSeen: Object.keys(state.seen || {}).length,\n    dmsSent: Object.keys(state.dm || {}).length,\n    youtubeCheckedAt: state.youtubeCheckedAt || null,\n    tiktokCheckedAt: state.tiktokCheckedAt || null,\n    igTokenRefreshedAt: state.igTokenAt || null,\n    lastRuns: state.lastRuns || {},\n    errors: state.errors || [],\n  },\n}];\n\n})();\nsaveState();\nreturn __result;\n"
+      }
+    }
+  ],
+  "connections": {
+    "Instagram check": {
+      "main": [
+        [
+          {
+            "node": "Answer Meta check",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Answer Meta check": {
+      "main": [
+        [
+          {
+            "node": "Reply to Meta",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Instagram comment": {
+      "main": [
+        [
+          {
+            "node": "Read Instagram comment",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read Instagram comment": {
+      "main": [
+        [
+          {
+            "node": "New comments only",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Every 30 min: YouTube": {
+      "main": [
+        [
+          {
+            "node": "Fetch YouTube comments",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch YouTube comments": {
+      "main": [
+        [
+          {
+            "node": "New comments only",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Daily 8am: TikTok": {
+      "main": [
+        [
+          {
+            "node": "Fetch TikTok comments",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch TikTok comments": {
+      "main": [
+        [
+          {
+            "node": "New comments only",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "New comments only": {
+      "main": [
+        [
+          {
+            "node": "Send keyword DMs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send keyword DMs": {
+      "main": [
+        [
+          {
+            "node": "Sort and draft (Claude)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Sort and draft (Claude)": {
+      "main": [
+        [
+          {
+            "node": "Add to Comment inbox",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Every 10 min: approved replies": {
+      "main": [
+        [
+          {
+            "node": "Post approved replies",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Weekly: Instagram token": {
+      "main": [
+        [
+          {
+            "node": "Refresh Instagram token",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Run a job now": {
+      "main": [
+        [
+          {
+            "node": "Pick job",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pick job": {
+      "main": [
+        [
+          {
+            "node": "Fetch YouTube comments",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Fetch TikTok comments",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Post approved replies",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Refresh Instagram token",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Status check": {
+      "main": [
+        [
+          {
+            "node": "Status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "saveManualExecutions": true
+  },
+  "pinData": {},
+  "meta": {
+    "builtBy": "automation/n8n-comments/workflow/build.mjs"
+  }
+}

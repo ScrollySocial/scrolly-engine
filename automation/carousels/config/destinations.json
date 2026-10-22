@@ -70,7 +70,54 @@
     }
   ],
   "freeResources": [],
-  "commentKeywords": [],
+  "commentKeywordsNote": "Instagram comment-to-DM (own n8n, automation/n8n-comments/). One keyword = one freebie. Matching is case-insensitive, whole word. 'dm' is the exact private-reply text sent automatically; drafts until Mercedes OKs them (dmApproved). Only keywords with live:true AND dmApproved:true are sent. Freebie rules: vault products/lead-magnets/freebie-plan-2026-10-23.md. URLs checked 200 on 2026-10-22.",
+  "commentKeywords": [
+    {
+      "keyword": "PINTEREST",
+      "freebie": "Pinterest SEO Starter Scorecard (PDF)",
+      "url": "https://scrollyseo.com/wp-content/uploads/2026/08/pinterest-seo-starter-scorecard.pdf",
+      "leadsTo": "Pinterest SEO Workbook",
+      "live": true,
+      "dmApproved": false,
+      "dm": "Here's your free Pinterest SEO Starter Scorecard: {url} Go through it with your Pinterest account open next to it."
+    },
+    {
+      "keyword": "SHOPIFY",
+      "freebie": "Shopify SEO Self-Audit (PDF)",
+      "url": "https://scrollyseo.com/wp-content/uploads/2026/08/shopify-seo-self-audit.pdf",
+      "leadsTo": "Shopify SEO Workbook",
+      "live": true,
+      "dmApproved": false,
+      "dm": "Here's your free Shopify SEO Self-Audit: {url} Open your store next to it and check one section at a time."
+    },
+    {
+      "keyword": "AUDIT",
+      "freebie": "Organic Traffic Opportunity Scorecard (PDF)",
+      "url": "https://scrollyseo.com/wp-content/uploads/2026/08/organic-traffic-opportunity-scorecard.pdf",
+      "leadsTo": "SEO Site Audit",
+      "live": true,
+      "dmApproved": false,
+      "dm": "Here's your free Organic Traffic Opportunity Scorecard: {url}"
+    },
+    {
+      "keyword": "QUIZ",
+      "freebie": "Offer Quiz + Next Move Quiz (website)",
+      "url": "https://scrollyseo.com/quiz/",
+      "leadsTo": "$1K Club",
+      "live": true,
+      "dmApproved": false,
+      "dm": "Here's the quiz: {url}"
+    },
+    {
+      "keyword": "MATH",
+      "freebie": "$1K Math calculator (website)",
+      "url": "https://scrollyseo.com/calculators/income-goal/",
+      "leadsTo": "$1K Club",
+      "live": true,
+      "dmApproved": false,
+      "dm": "Here's the $1K Math calculator: {url} Put in your price and it shows how many sales it takes to reach $1,000."
+    }
+  ],
   "engagementCtas": [
     "save",
     "send to a friend",

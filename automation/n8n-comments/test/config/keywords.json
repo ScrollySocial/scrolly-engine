@@ -1,0 +1,6 @@
+{
+  "source": "test only",
+  "keywords": [
+    { "keyword": "PINS", "url": "https://example.com/pins.pdf", "dm": "Here you go: {url}" }
+  ]
+}
