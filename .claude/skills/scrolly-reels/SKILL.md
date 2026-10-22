@@ -40,7 +40,7 @@ for every ◆. Don't hard-code a review format into the steps.
 **Every Reel has a purpose (required).** One action it asks for: Follow, Comment a word, Share, Save, Link in bio, or
 Comment for a freebie (`lib/cta.mjs`). Take it from the row's CTA; if the row has none, ask her (chat) or leave it for
 the Plan step, which won't let her approve without one. Write the hook with it in mind (the hook tip per action is in
-`lib/cta.mjs`). "Comment for a freebie" = she DMs by hand until ManyChat is set up.
+`lib/cta.mjs`). Endings offered = settings `cta.offer` (Follow + Link in bio only until n8n comment-to-DM is set up, 2026-10-22). A row asking for a comment CTA: flag it and suggest Follow or Link in bio.
 Slug = `yyyy-mm-dd-<series>-<topic>` (e.g. `2026-10-13-bb-know-what-you-sell`). Footage lives under the footage folder
 (`reel-settings.json` → `folders.footage`), one subfolder per series.
 

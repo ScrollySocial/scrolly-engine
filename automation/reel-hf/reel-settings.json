@@ -65,6 +65,10 @@
     "_note": "list = the short version baked into every build plan; doc + section = the full, growing rule list (new 'love this / never do that' rules go there)."
   },
 
+  "cta": {
+    "offer": ["follow", "link"],
+    "_note": "Endings the Plan step offers. Follow + Link in bio only until comment-to-DM (n8n) is set up (Mercedes 2026-10-22). Delete offer to show all."
+  },
   "templates": {
     "studio": { "music": { "level": "normal", "fallbackVolume": 0.07, "fadeIn": 4.22, "fadeOut": 1.95 } },
     "_note": "per-person overrides of lib/templates/*.mjs (deep-merged). Studio music: measured level Normal (about 21 dB under her voice), slow fade-in."

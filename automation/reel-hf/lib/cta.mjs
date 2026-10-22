@@ -5,7 +5,9 @@
 //   2. the matching caption line (inserted as the post caption's second sentence unless it's already there),
 //   3. a hook reminder on the Plan step (write the hook so the ending pays it off).
 // Generic for customer kits: wording comes from here + the brand kit (handle, bioLink, site); no owner names in here.
-// "Comment for a freebie" = she sends the DMs by hand until ManyChat is set up.
+// "Comment for a freebie" = the DMs go out by hand until comment-to-DM automation (n8n) is set up.
+// settings cta.offer (e.g. ["follow", "link"]) limits which endings the Plan step offers; unset = all of them.
+import { S } from './settings.mjs';
 
 const q = (w) => `“${w}”`;
 const up = (w) => String(w || '').trim().toUpperCase();
@@ -61,7 +63,7 @@ export const CTAS = {
     detailLabel: 'What they get',
     detailHint: 'the checklist',
     hook: 'Tease the freebie’s result in the hook, so commenting feels worth it.',
-    manual: 'You send these DMs yourself for now (no ManyChat yet). Check comments for the word after it posts.',
+    manual: 'You send these DMs yourself for now (no comment automation yet). Check comments for the word after it posts.',
     card: (c) => ({ text: `Comment <m>${up(c.word)}</m>`, ui: 'dm', aside: `I'll DM you ${c.detail || 'the freebie'}` }),
     caption: (c) => `Comment ${q(up(c.word))} and I'll send you ${c.detail || 'the freebie'}.`,
   },
@@ -87,4 +89,5 @@ export function withCtaLine(caption, line) {
 }
 
 // for the review page: labels, field names and hook reminders (no functions)
-export const ctaList = () => Object.entries(CTAS).map(([id, d]) => ({ id, label: d.label, needs: d.needs, detailLabel: d.detailLabel || '', detailHint: d.detailHint || '', hook: d.hook, manual: d.manual || '' }));
+const offered = ([id]) => !Array.isArray(S.cta?.offer) || !S.cta.offer.length || S.cta.offer.includes(id);
+export const ctaList = () => Object.entries(CTAS).filter(offered).map(([id, d]) => ({ id, label: d.label, needs: d.needs, detailLabel: d.detailLabel || '', detailHint: d.detailHint || '', hook: d.hook, manual: d.manual || '' }));
