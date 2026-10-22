@@ -4,7 +4,7 @@
 //   'behind' = text behind her: huge capitals fill the top, she stands in front of the lower lines (ink looks best)
 //   'side'   = off-center: big left-aligned title, her to the right, the aside pointing at her
 //   'photo'  = the full video frame with the title on top
-// Title in the Reel's own type (the kit's statement face: Instrument Serif upright for Scrolly since 2026-10-21, <m>phrase</m> on the brand marker swipe (sky blue), optional handwritten
+// Title in the Reel's own type (the kit's statement face, <m>phrase</m> on the brand marker swipe, optional handwritten
 // aside with a drawn arrow that points at her head), in the middle 3:4 band the grid shows (y 300-1620). Never italic
 // serif, never color-changed words, never a solid band or box behind the text.
 //   await renderCovers({ options: [{ text: 'Stop rewriting <m>every caption</m> AI gives you', aside: "here's the fix" }],
