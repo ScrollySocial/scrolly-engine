@@ -23,6 +23,7 @@ const body = DESIGNS[conf.design || group]({
   screen: conf.screen && mediaFor(conf.screen, conf.screenFocus),
   hooks: conf.hooks,
   stats: conf.stats,
+  extras: (conf.extras || []).map((f) => fileUrl(path.join(media.photosDir, f))),
 });
 const outDir = path.join(media.photosDir, 'panoramas');
 mkdirSync(outDir, { recursive: true });

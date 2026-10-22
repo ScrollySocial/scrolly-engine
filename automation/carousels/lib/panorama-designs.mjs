@@ -212,3 +212,67 @@ DESIGNS['pinned-2026-10-v4'] = ({ brand, photo, hooks, stats }) => {
 .k1{left:1930px;top:1180px;width:90px}.k2{left:2230px;top:1250px;width:60px}.k3{left:1130px;top:1250px;width:70px}
 </style>`;
 };
+
+// v5 (2026-10-22, from Mercedes's seamless-carousel references): one strip that flows across the three tiles. A navy
+// wave runs through the middle tile and spills into both neighbours, a sky-blue dotted path links the three hooks,
+// real photos of her (a sticker-edged cut-out and two taped polaroids) cross the seams. Each hook sits in open space
+// inside its own tile. extras = [cut-out, polaroid A, polaroid B].
+DESIGNS['pinned-2026-10-v5'] = ({ brand, hooks, stats, extras }) => {
+  const [h1, h2, h3] = hooks;
+  const [cut, polA, polB] = extras;
+  const P = brand.palettes, light = P.offwhite, navy = P.navy, mist = P.mist;
+  const plain = (s) => esc(s).replace(/\*([^*]+)\*/g, '$1');
+  const max = Math.log10(Math.max(...stats.map((s) => +s[0].replace(/,/g, ''))));
+  return `
+<div class="grid"></div>
+<svg class="layer" viewBox="0 0 3240 1440" preserveAspectRatio="none">
+  <path d="M1010 0 C 930 260, 1060 520, 960 760 C 870 980, 1000 1220, 940 1440 L 2230 1440 C 2300 1200, 2170 960, 2240 720 C 2310 470, 2180 230, 2250 0 Z" fill="${navy.bg}"/>
+  <path d="M0 1270 C 420 1180, 760 1350, 1180 1290 C 1620 1225, 1900 1360, 2330 1300 C 2700 1250, 2980 1330, 3240 1280 L 3240 1440 L 0 1440 Z" fill="${mist.bg}"/>
+  <path d="M560 470 C 900 420, 1220 640, 1560 600 C 1900 560, 2100 640, 2440 600" fill="none" stroke="${light.deco}" stroke-width="9" stroke-linecap="round" stroke-dasharray="2 26"/>
+</svg>
+<div class="hook k1"><h1>${plain(h1.big)}</h1><p><span>${esc(h1.small)} →</span></p></div>
+<div class="hook k2"><h1>${plain(h2.big)}</h1><p><span>${esc(h2.small)} →</span></p></div>
+<div class="hook k3"><h1>${plain(h3.big)}</h1><p><span>${esc(h3.small)} →</span></p></div>
+<img class="cut" src="${cut}">
+<div class="pol pa"><span class="tape"></span><div class="ph" style="background-image:url('${polA}')"></div></div>
+<div class="pol pb"><span class="tape"></span><div class="ph" style="background-image:url('${polB}')"></div></div>
+<div class="badge"><b>30</b><span>days</span></div>
+<div class="card">${stats.map(([v, l]) => `<div class="row"><b>${esc(v)}</b><span>${esc(l)}</span><i style="width:${Math.max(8, (Math.log10(+v.replace(/,/g, '')) / max) * 100)}%"></i></div>`).join('')}</div>
+<div class="note n1">hi, I'm<br>Mercedes!</div>
+<div class="note n3">do the math<br>with me</div>
+<div class="doodle arr">${ARROW_D}</div>
+<div class="spk s1">${SPARK(light.deco)}</div><div class="spk s2">${SPARK('#fff')}</div><div class="spk s3">${SPARK(light.deco)}</div>
+<style>
+.canvas{position:relative;width:3240px;height:1440px;overflow:hidden;background:${light.bg};font-family:'${brand.fonts.display.family}',sans-serif}
+.grid{position:absolute;inset:0;background-image:linear-gradient(${light.tex} 2px,transparent 2px),linear-gradient(90deg,${light.tex} 2px,transparent 2px);background-size:72px 72px;opacity:.7}
+.layer{position:absolute;inset:0;width:3240px;height:1440px}
+.hook{position:absolute;top:120px}
+.hook h1{font-family:'${brand.fonts.headline.family}',serif;font-weight:400;line-height:.98;letter-spacing:-.01em;text-wrap:balance}
+.hook p{margin-top:34px}
+.hook p span{display:inline-block;font-weight:600;font-size:40px;padding:14px 28px;border-radius:999px}
+.k1{left:90px;width:900px;color:${light.ink}}.k1 h1{font-size:132px}.k1 p span{background:${mist.bg};color:${light.ink}}
+.k2{left:1180px;width:900px;color:#fff}.k2 h1{font-size:150px}.k2 p span{background:${navy.accent};color:${navy.bg}}
+.k3{left:2420px;width:730px;color:${light.ink};text-align:right}.k3 h1{font-size:140px}.k3 p span{background:${mist.bg};color:${light.ink}}
+.cut{position:absolute;left:0;bottom:0;height:820px;
+  filter:drop-shadow(5px 0 0 #fff) drop-shadow(-5px 0 0 #fff) drop-shadow(0 5px 0 #fff) drop-shadow(0 -5px 0 #fff) drop-shadow(0 22px 34px rgba(10,25,48,.25))}
+.pol{position:absolute;background:#fff;padding:22px 22px 80px;box-shadow:0 22px 44px rgba(10,25,48,.28)}
+.pol .ph{background-size:cover;background-position:50% 40%}
+.pa{left:820px;top:760px;width:420px;rotate:7deg}.pa .ph{height:470px}
+.pb{left:1800px;top:820px;width:400px;rotate:-6deg}.pb .ph{height:450px;background-position:50% 55%}
+.tape{position:absolute;top:-26px;left:50%;width:180px;height:56px;translate:-50% 0;rotate:-5deg;background:color-mix(in srgb,${navy.accent} 75%,transparent);z-index:2}
+.badge{position:absolute;left:1520px;top:690px;width:200px;height:200px;border-radius:50%;background:#fff;color:${navy.bg};display:flex;flex-direction:column;align-items:center;justify-content:center;rotate:-10deg;border:9px solid ${navy.accent};box-shadow:0 14px 28px rgba(0,0,0,.3)}
+.badge b{font-family:'${brand.fonts.headline.family}',serif;font-weight:400;font-size:110px;line-height:.85}
+.badge span{font-weight:700;font-size:34px;text-transform:uppercase;letter-spacing:.08em}
+.card{position:absolute;left:2470px;width:640px;top:800px;background:#fff;border-radius:36px;padding:40px 46px;box-shadow:0 20px 50px rgba(10,25,48,.16);rotate:-2deg;display:flex;flex-direction:column;gap:24px}
+.row{display:grid;grid-template-columns:auto 1fr;align-items:baseline;column-gap:18px;row-gap:10px}
+.row b{font-family:'${brand.fonts.headline.family}',serif;font-weight:400;font-size:86px;line-height:1;color:${light.ink}}
+.row span{font-weight:500;font-size:34px;color:#4a4e66}
+.row i{grid-column:1/3;display:block;height:18px;border-radius:9px;background:${light.ink}}
+.row:not(:last-child) i{background:${mist.bg}}
+.note{position:absolute;font:400 58px/1.05 'Covered By Your Grace',cursive;color:${light.ink};letter-spacing:.03em}
+.n1{left:560px;top:760px;rotate:-8deg}
+.n3{left:2470px;top:650px;rotate:-4deg}
+.arr{position:absolute;left:2860px;top:630px;width:84px;color:${light.deco};rotate:-20deg}.arr svg,.spk svg{display:block;width:100%;height:auto}
+.spk{position:absolute}.s1{left:860px;top:520px;width:60px}.s2{left:2080px;top:560px;width:70px}.s3{left:3120px;top:690px;width:56px}
+</style>`;
+};
