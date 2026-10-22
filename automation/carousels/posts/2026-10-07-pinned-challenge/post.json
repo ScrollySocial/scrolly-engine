@@ -11,7 +11,7 @@
     "mainPoint": "30 days, one goal, a personal plan plus weekly Reel ideas and templates, one-time $75",
     "structure": "offer walkthrough",
     "ending": "buy CTA",
-    "slide2Check": "Format change from the v7 panorama cover (hookcover with her photo); restates the promise as 30 days, one goal, and pulls to 'everything you get'",
+    "slide2Check": "Format change from the v7 panorama cover (checkcover, tick-box question); same promise asked as 'ready for your first $1,000?' with a swipe pull, so it works as a first slide",
     "mediaPlan": "Slides 3-4 become screen-recording VIDEOS from Mercedes ($1K Plan in My Account; weekly Reel ideas) once ffmpeg is approved. No shirt images on Instagram (2026-10-07)."
   },
   "media": {},
@@ -23,22 +23,16 @@
       "text": "Want to make $1,000 in 30 days? Meet the $1K Challenge"
     },
     {
-      "layout": "hookcover",
-      "media": "a91bd739e1",
-      "focus": "center 40%",
-      "pos": "bottom",
-      "text": "30 days. One goal: your first $1,000.",
-      "hand": "here's everything you get",
-      "doodles": [
-        {
-          "k": "arrow",
-          "x": 900,
-          "y": 1320,
-          "w": 95,
-          "rot": -95,
-          "c": "sky"
-        }
-      ]
+      "layout": "checkcover",
+      "question": "Ready for your first $1,000?",
+      "options": [
+        "Yes, show me the plan",
+        "Not yet"
+      ],
+      "tick": 0,
+      "hand": "here's everything you get →",
+      "palette": "mist",
+      "text": "Ready for your first $1,000? Yes, show me the plan."
     },
     {
       "layout": "phone",
@@ -58,7 +52,8 @@
       "layout": "number",
       "big": "30",
       "text": "consecutive days, one goal: $1,000 in total revenue.",
-      "palette": "sky"
+      "palette": "sky",
+      "calendar": true
     },
     {
       "layout": "phone",

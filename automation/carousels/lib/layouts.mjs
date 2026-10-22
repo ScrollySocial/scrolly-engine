@@ -60,7 +60,8 @@ export const LAYOUTS = {
   // checkcover: handwritten question, big options with hand-drawn tick boxes (s.tick = index of the ticked one), handwritten footer.
   checkcover: (s) => `<div class="ck-q">${esc(s.question || '')}</div><div class="ck-list">${(s.options || []).map((o, i) => `<div class="ck-row"><span class="ck-box">${handBox('currentColor', { tick: i === s.tick, seed: 21 + i * 12 })}</span><span>${esc(o)}</span></div>`).join('')}</div>${s.hand ? `<div class="ck-foot">${esc(s.hand)}</div>` : ''}`,
   text: (s) => para(s),
-  number: (s) => `<div class="big">${esc(s.big)}</div>${para(s)}`,
+  // number: big number + line. s.calendar = a 30-day calendar card under it (day 1 marked start, day 30 circled).
+  number: (s) => `<div class="big">${esc(s.big)}</div>${para(s)}${s.calendar ? `<div class="cal"><div class="cal-g">${Array.from({ length: 30 }, (_, i) => `<span class="${i === 0 ? 'd1' : i === 29 ? 'd30' : ''}">${i + 1}</span>`).join('')}</div><div class="cal-k"><i class="k1"></i>start<i class="k30"></i>goal day</div></div>` : ''}`,
   formula: (s) => `<div class="formula">${(s.formula || []).map((t) => (/^[÷×=+−-]$/.test(t)
     ? `<span class="op">${t}</span>`
     : `<span class="term"><b>${esc(t.split('|')[0])}</b>${t.includes('|') ? `<small>${esc(t.split('|')[1])}</small>` : ''}</span>`)).join('')}</div>${para(s)}`,
@@ -91,6 +92,13 @@ export const LAYOUT_CSS = (brand) => `
 .h-bot{text-align:left;text-wrap:balance;font-weight:500;font-size:.54em;line-height:1.2;max-width:82%}
 /* number */
 .lay-number .big{font-family:'${brand.fonts.headline.family}',serif;font-weight:400;font-size:360px;line-height:.85;color:var(--accent);letter-spacing:-.01em}
+.cal{margin-top:46px;background:var(--paper);color:var(--paper-ink);border-radius:32px;padding:34px 36px 28px;box-shadow:0 18px 40px rgba(10,25,48,.18);rotate:-2deg}
+.cal-g{display:grid;grid-template-columns:repeat(7,1fr);gap:10px}
+.cal-g span{display:flex;align-items:center;justify-content:center;width:76px;height:76px;margin:0 auto;border-radius:50%;font-weight:500;font-size:34px}
+.cal-g .d1{background:var(--paper-ink);color:var(--paper)}
+.cal-g .d30{background:#4da3ff;color:#0a1930;font-weight:700;box-shadow:0 0 0 6px var(--paper),0 0 0 11px #4da3ff}
+.cal-k{display:flex;align-items:center;gap:14px;margin-top:20px;font-weight:500;font-size:30px}
+.cal-k i{display:inline-block;width:26px;height:26px;border-radius:50%}.cal-k .k1{background:var(--paper-ink)}.cal-k .k30{background:#4da3ff;margin-left:28px}
 /* formula */
 .formula{display:flex;flex-wrap:nowrap;align-items:center;gap:16px}
 .formula .term{display:flex;flex-direction:column;align-items:center;background:var(--paper);color:var(--paper-ink);border-radius:24px;padding:24px 24px 20px}
