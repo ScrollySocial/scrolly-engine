@@ -1,15 +1,15 @@
 {
-  "builtAt": "2026-10-22T17:22:04.602Z",
+  "builtAt": "2026-10-22T17:31:35.192Z",
   "exportDir": "C:\\Users\\merce\\OneDrive\\Scrolly Media\\exports\\carousels\\2026-10-07-pinned-about",
   "mediaUsed": [
     "964f2050c6",
     "336eee3300",
     "1e629b09ae",
+    "8aeaa75e67",
     "b96a511b16",
     "542d2ebb5f",
     "265ec9a722",
     "60167eb7b6",
-    "a91bd739e1",
     "4426aa6aa3"
   ],
   "fit": [
@@ -36,7 +36,7 @@
     },
     {
       "i": 3,
-      "size": 82,
+      "size": 76,
       "min": 48,
       "ok": true,
       "lines": 4
@@ -78,13 +78,6 @@
     },
     {
       "i": 9,
-      "size": 82,
-      "min": 48,
-      "ok": true,
-      "lines": 6
-    },
-    {
-      "i": 10,
       "size": 82,
       "min": 48,
       "ok": true,

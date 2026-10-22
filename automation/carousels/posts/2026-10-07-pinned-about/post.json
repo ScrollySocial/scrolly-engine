@@ -48,9 +48,14 @@
       "text": "Hi, I'm Mercedes. I help you get found online and turn that attention into customers."
     },
     {
-      "layout": "text",
-      "text": "I spent years in financial operations and reporting. Numbers are my comfort zone.",
-      "palette": "navy"
+      "layout": "phone",
+      "screen": {
+        "type": "image"
+      },
+      "media": "8aeaa75e67",
+      "focus": "50% 0%",
+      "text": "I spent years in financial operations and reporting.\nNumbers are my comfort zone.",
+      "palette": "sky"
     },
     {
       "layout": "photo",
@@ -96,12 +101,6 @@
       "media": "60167eb7b6",
       "focus": "center",
       "text": "I love helping small businesses and solopreneurs carve out an income in a world built for big companies."
-    },
-    {
-      "layout": "photo",
-      "media": "a91bd739e1",
-      "focus": "center 62%",
-      "text": "Off the clock: books, my cats, guitar and French lessons, and anything I can make with my hands. Coffee always hot."
     },
     {
       "layout": "photo",
