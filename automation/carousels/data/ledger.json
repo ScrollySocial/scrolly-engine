@@ -102,6 +102,39 @@
       ],
       "notionUrl": "https://app.notion.com/p/401ab38f4c5881a7b6bbfd3884938a8a",
       "status": "approved"
+    },
+    {
+      "id": "2026-10-07-pinned-challenge",
+      "date": "2026-10-22",
+      "style": "D",
+      "format": null,
+      "palette": "navy",
+      "reader": "People who want to make their first $1,000 online and are deciding whether to buy",
+      "problem": "They don't know what the Challenge includes or how it works",
+      "outcome": "They understand what they get for $75 and how to join",
+      "topic": "The $1K Challenge offer (pinned sales post)",
+      "mainPoint": "30 days, one goal, a personal plan plus weekly Reel ideas and templates, one-time $75",
+      "structure": "offer walkthrough",
+      "ending": "buy CTA",
+      "hook": "Want to make $1,000 in 30 days? Meet the $1K Challenge",
+      "slide2": "Ready for your first $1,000? Yes, show me the plan.",
+      "slides": 7,
+      "cta": {
+        "type": "link-in-bio",
+        "offer": "1k-club-challenge"
+      },
+      "tigerNod": null,
+      "hashtags": [
+        "#onlinebusiness",
+        "#smallbusinesstips",
+        "#instagramforbusiness"
+      ],
+      "media": [
+        "0f794a1f2f",
+        "261702e921"
+      ],
+      "notionUrl": "https://app.notion.com/p/3f2ab38f4c588102ade2d6257c0e48db",
+      "status": "approved"
     }
   ]
 }
