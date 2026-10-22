@@ -11,18 +11,35 @@
     "mainPoint": "45 to 60 seconds got the most median views; short Reels still win for testing",
     "structure": "data by bracket",
     "ending": "balanced takeaway + CTA",
-    "slide2Check": "Format change from the cover (hook2: hook top right-aligned, swipe-pull bottom left-aligned); same promise, works as a first slide"
+    "slide2Check": "Big-number photo cover: 45 to 60 seconds got the most views, from 6 million Reels; works as its own cover"
   },
   "media": {},
   "slides": [
     {
-      "text": "How long should your *Reel* be?",
-      "pattern": "rays"
+      "layout": "hookcover",
+      "media": "265ec9a722",
+      "focus": "center 50%",
+      "pos": "top",
+      "text": "How long should your Reel be?",
+      "hand": "the data has an answer →",
+      "doodles": [
+        {
+          "k": "star",
+          "x": 830,
+          "y": 1130,
+          "w": 140,
+          "fill": true
+        }
+      ]
     },
     {
-      "layout": "hook2",
-      "top": "6 million Reels, one clear winner",
-      "bottom": "Here's the length that got the *most views* →"
+      "layout": "numcover",
+      "media": "542d2ebb5f",
+      "focus": "center 60%",
+      "pos": "top",
+      "big": "45–60s",
+      "text": "the Reel length that got the most views",
+      "hand": "6 million Reels studied →"
     },
     {
       "layout": "phone",
@@ -31,7 +48,7 @@
         "onscreen": "How long should this be?",
         "caption": "Testing Reel lengths"
       },
-      "media": "stock:talkCam",
+      "media": "473beb9747",
       "focus": "50% 25%",
       "text": "Socialinsider studied 6 million brand Reels from January to June 2026."
     },
@@ -77,7 +94,8 @@
         ],
         "hi": 2
       },
-      "text": "Median views per Reel, by length"
+      "text": "Median views per Reel, by length",
+      "palette": "offwhite"
     },
     {
       "layout": "number",
@@ -96,11 +114,12 @@
         "Showing a before and after",
         "Walking through a demo"
       ],
-      "text": "Give it 45 to 60 seconds when you're:"
+      "text": "Give it 45 to 60 seconds when you're:",
+      "palette": "mist"
     },
     {
       "layout": "photo",
-      "media": "stock:cameraBack",
+      "media": "60167eb7b6",
       "text": "Short Reels still win for testing ideas fast."
     },
     {

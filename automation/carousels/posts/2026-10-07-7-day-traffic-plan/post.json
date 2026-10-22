@@ -16,7 +16,26 @@
   "media": {},
   "slides": [
     {
-      "text": "The 7-day organic *traffic* plan"
+      "layout": "tilecover",
+      "palette": "navy",
+      "text": "The 7-day organic traffic plan",
+      "hand": "day 1 starts here →",
+      "doodles": [
+        {
+          "k": "star",
+          "x": 120,
+          "y": 130,
+          "w": 150,
+          "fill": true
+        },
+        {
+          "k": "star",
+          "x": 840,
+          "y": 1120,
+          "w": 110,
+          "c": "white"
+        }
+      ]
     },
     {
       "layout": "hook2",
@@ -39,7 +58,7 @@
     },
     {
       "layout": "photo",
-      "media": "stock:talkCam",
+      "media": "542d2ebb5f",
       "focus": "50% 30%",
       "text": "Day 2: post a Reel that answers one question your buyer asks."
     },
@@ -55,7 +74,7 @@
         "caption": "Behind the scenes",
         "link": "your link"
       },
-      "media": "stock:laptopDesk",
+      "media": "60167eb7b6",
       "text": "Day 4: show the work in Stories, with a link sticker."
     },
     {
@@ -101,12 +120,13 @@
     "type": "link-in-bio",
     "offer": "1k-club-challenge"
   },
-  "tigerNod": "image",
+  "tigerNod": "line",
   "caption": "Want the 30-day version? It's the $1K Challenge, link in bio. Organic traffic comes from doing a few things on repeat: a clear bio, posts that answer real questions, and an easy way to click through. Link taps are in your Insights, and they tell you which posts send people to your page.",
   "hashtags": [
     "#organicmarketing",
     "#instagramgrowth",
     "#smallbusinesstips"
   ],
-  "notionUrl": "https://app.notion.com/p/3f2ab38f4c5881328d98e545848dca4a"
+  "notionUrl": "https://app.notion.com/p/3f2ab38f4c5881328d98e545848dca4a",
+  "tigerNodText": "Off you go, tiger."
 }

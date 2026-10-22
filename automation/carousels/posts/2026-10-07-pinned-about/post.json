@@ -19,10 +19,23 @@
   },
   "slides": [
     {
-      "layout": "image",
-      "media": "f5575665ec",
-      "grid": "pinned-2026-10",
-      "text": "Allow me to introduce myself. The person behind @scrollysocial"
+      "layout": "hookcover",
+      "media": "7960072a35",
+      "focus": "center 30%",
+      "pos": "top",
+      "text": "Hi, I'm Mercedes",
+      "hand": "the person behind @scrollysocial",
+      "voice": "mercedes",
+      "doodles": [
+        {
+          "k": "arrow",
+          "x": 280,
+          "y": 640,
+          "w": 110,
+          "rot": -40,
+          "c": "pink"
+        }
+      ]
     },
     {
       "layout": "hook2",
@@ -30,39 +43,57 @@
       "bottom": "Here's the short version of why Scrolly exists →"
     },
     {
-      "layout": "pano",
+      "layout": "photo",
+      "media": "1e629b09ae",
+      "focus": "center 10%",
       "text": "Hi, I'm Mercedes. I help you turn content into customers."
     },
     {
-      "layout": "pano",
+      "layout": "photo",
+      "media": "f5e7ef379a",
+      "focus": "center 15%",
       "text": "I spent years in financial operations and reporting. Numbers are my comfort zone."
     },
     {
-      "layout": "pano",
+      "layout": "photo",
+      "media": "473beb9747",
+      "focus": "30% center",
       "text": "I kept coming up with business ideas, then getting stuck at the same spot: selling them."
     },
     {
-      "layout": "pano",
+      "layout": "photo",
+      "media": "542d2ebb5f",
+      "focus": "center 60%",
       "text": "So I learned marketing the way I learn everything: break it down, build a system, test it."
     },
     {
-      "layout": "pano",
+      "layout": "photo",
+      "media": "95d583fddb",
+      "focus": "center 40%",
       "text": "What I found: making content is easier than you think. Staying consistent is harder than you think."
     },
     {
-      "layout": "pano",
+      "layout": "photo",
+      "media": "265ec9a722",
+      "focus": "center 50%",
       "text": "Scrolly is for you if you want to make money online, or grow your business, without weeks of setup or paying for ads."
     },
     {
-      "layout": "pano",
+      "layout": "photo",
+      "media": "60167eb7b6",
+      "focus": "center",
       "text": "I love helping small businesses and solopreneurs carve out an income in a world built for big companies."
     },
     {
-      "layout": "pano",
+      "layout": "photo",
+      "media": "f5e7ef379a",
+      "focus": "center 15%",
       "text": "Off the clock: books, my cats, guitar and French lessons, and anything I can make with my hands. Coffee always hot."
     },
     {
-      "layout": "pano",
+      "layout": "photo",
+      "media": "1e629b09ae",
+      "focus": "center 10%",
       "text": "Follow along for practical tips to help you reach your dreams. Go get 'em, tiger :)"
     }
   ],

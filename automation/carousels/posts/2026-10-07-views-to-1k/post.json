@@ -11,36 +11,46 @@
     "mainPoint": "Work backward: $1,000 to sales to visitors to views",
     "structure": "worked calculation",
     "ending": "swap in your own numbers + CTA",
-    "slide2Check": "Format change from the panorama photo cover (hook2 on offwhite); same promise, works as a first slide"
+    "slide2Check": "Off-white big-number tile: 20 sales, then asks how many views that is; works as its own cover"
   },
   "media": {},
   "slides": [
     {
-      "layout": "image",
-      "media": "1fb3bd8f6e",
-      "grid": "pinned-2026-10",
-      "text": "How many views make $1,000?. The math, step by step"
-    },
-    {
-      "layout": "hook2",
-      "top": "Your $1,000 goal is secretly a *views* goal",
-      "bottom": "Here's the math, one step at a time →",
-      "photoBg": "1e629b09ae",
-      "scrim": "bottom",
+      "layout": "numcover",
+      "media": "1e629b09ae",
+      "big": "10,667",
+      "text": "views = $1,000",
+      "hand": "here's the math →",
       "doodles": [
         {
           "k": "star",
-          "x": 880,
-          "y": 120,
-          "w": 80
+          "x": 720,
+          "y": 70,
+          "w": 240,
+          "fill": true
         },
         {
           "k": "star",
-          "x": 960,
-          "y": 230,
-          "w": 40
+          "x": 60,
+          "y": 600,
+          "w": 110,
+          "c": "white"
+        },
+        {
+          "k": "star",
+          "x": 900,
+          "y": 560,
+          "w": 100,
+          "pts": 5
         }
       ]
+    },
+    {
+      "layout": "tilecover",
+      "palette": "offwhite",
+      "big": "20",
+      "text": "sales is all $1,000 takes at $50",
+      "hand": "so how many views is that? →"
     },
     {
       "layout": "formula",
@@ -66,12 +76,6 @@
           "y": 350,
           "w": 64,
           "rot": -10
-        },
-        {
-          "k": "star",
-          "x": 900,
-          "y": 400,
-          "w": 56
         }
       ]
     },
@@ -81,18 +85,6 @@
       "text": "visitors bring in those 20 sales, if 2.5% of them buy.",
       "palette": "navy",
       "doodles": [
-        {
-          "k": "star",
-          "x": 800,
-          "y": 330,
-          "w": 90
-        },
-        {
-          "k": "star",
-          "x": 910,
-          "y": 450,
-          "w": 44
-        },
         {
           "k": "underline",
           "x": 96,
@@ -141,16 +133,7 @@
         "=",
         "10,667|views"
       ],
-      "text": "Then divide visitors by the share of viewers who tap through.",
-      "doodles": [
-        {
-          "k": "circle",
-          "x": 330,
-          "y": 410,
-          "w": 300,
-          "h": 280
-        }
-      ]
+      "text": "Then divide visitors by the share of viewers who tap through."
     },
     {
       "layout": "chart",
@@ -175,22 +158,7 @@
         "hi": 0,
         "note": "Views needed for $1,000 at $50, if 2.5% of visitors buy"
       },
-      "text": "That one percentage changes everything.",
-      "doodles": [
-        {
-          "k": "circle",
-          "x": 830,
-          "y": 635,
-          "w": 190,
-          "h": 110
-        },
-        {
-          "k": "star",
-          "x": 960,
-          "y": 590,
-          "w": 44
-        }
-      ]
+      "text": "That one percentage changes everything."
     },
     {
       "layout": "checklist",
@@ -201,15 +169,7 @@
       ],
       "text": "Small fixes that raise it:",
       "photoBg": "473beb9747",
-      "scrim": "top",
-      "doodles": [
-        {
-          "k": "star",
-          "x": 900,
-          "y": 110,
-          "w": 70
-        }
-      ]
+      "scrim": "top"
     },
     {
       "layout": "phone",
@@ -226,18 +186,6 @@
           "y": 620,
           "w": 300,
           "rot": -5
-        },
-        {
-          "k": "star",
-          "x": 860,
-          "y": 760,
-          "w": 70
-        },
-        {
-          "k": "star",
-          "x": 140,
-          "y": 900,
-          "w": 44
         }
       ]
     },
@@ -245,39 +193,11 @@
       "layout": "text",
       "text": "Both percentages are starting guesses. Swap in your own once you've posted.",
       "photoBg": "60167eb7b6",
-      "scrim": "full",
-      "doodles": [
-        {
-          "k": "star",
-          "x": 860,
-          "y": 200,
-          "w": 70
-        }
-      ]
+      "scrim": "full"
     },
     {
       "text": "The $1K Challenge gives you your $1K number and what to do each week. Link in bio.",
-      "palette": "navy",
-      "doodles": [
-        {
-          "k": "star",
-          "x": 120,
-          "y": 220,
-          "w": 70
-        },
-        {
-          "k": "star",
-          "x": 200,
-          "y": 1180,
-          "w": 44
-        },
-        {
-          "k": "star",
-          "x": 900,
-          "y": 1100,
-          "w": 60
-        }
-      ]
+      "palette": "navy"
     }
   ],
   "cta": {

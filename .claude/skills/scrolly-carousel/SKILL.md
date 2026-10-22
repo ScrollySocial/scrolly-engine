@@ -24,15 +24,20 @@ Rendering needs the Bash sandbox disabled (Chrome + Google Fonts).
 | A | One photo of Mercedes on every slide, black text in white Instagram-style highlight | `media.background`, per-slide `pos` top/center/bottom |
 | B | Photo dump: different photo per slide, same highlight text | per-slide `media`, `pos`, optional `focus` ("50% 30%") |
 | C | Trending format recipe (`format`: `notes`, `post-card`) | `format`, optional `formatDate`, `media.avatar` |
-| D | Bold type (kurated-inspired): one line, heavy condensed caps + `*italic serif accent*`, optional cut-out of Mercedes | `palette`, `pattern` (`none`/`stripes`/`grid`/`stars`/`dots`/`rays`, per post or slide), per-slide `overlay` (one holder: `note`/`card`/`polaroid`+`media`; plus decorations `circle`/`highlight`/`arrow`/`sparkle`), per-slide `cutout` |
+| D | Big type: one line in Instrument Serif (`*word*` renders plain: no italic accent, no marker band, Mercedes 2026-10-21), optional cut-out of Mercedes | `palette`, `pattern` (`none`/`stripes`/`grid`/`stars`/`dots`/`rays`, per post or slide), per-slide `overlay` (one holder: `note`/`card`/`polaroid`+`media`; plus decorations `circle`/`highlight`/`arrow`/`sparkle`), per-slide `cutout` |
 | E | Show, don't tell (step cards, chat bubbles, phone/laptop frame, photo + app menu). NOT BUILT YET | `palette` |
 
-Palettes (locked 2026-10-06, "classic"): `warm` (cream, black text, orange accent word) and `tangerine` (orange, white
-text). Wildcards: `blush` (pastel pink) and `mist` (barely-there blue), black text + orange accent, at most 1 in any
-6 posts (check.mjs warns), type + small touches only, never the white note/card overlays (check.mjs errors) so the feed isn't 100% homogenous. Expect the real feed to be photo-heavy (A/B + Reel-first
-carousels), with D tiles between. One palette per post; vary between posts. Variety comes from patterns + overlays (see
-`_style-samples/D-variety.png`): keep it to at most one holder + one decoration per slide, mix slide layouts within a post,
-and keep overlays tied to the content (the circle marks the key word, the arrow points at the photo). No cobalt or other palettes (check.mjs enforces this).
+Palettes (2026-10 rebrand, `config/brand.json`): `offwhite`, `navy`, `mist` and `sky` (navy text on sky). Old names
+`warm`/`tangerine`/`blush` still resolve (paletteAliases). Sky blue does orange's old job (checks, highlighted bar, answer boxes);
+never sky text on light grounds except giant cover numbers. Hot pink = Mercedes only (`"voice": "mercedes"`). Fonts: Jost text,
+Instrument Serif headlines/numbers, Covered By Your Grace handwriting. Look rules + her picked covers: vault
+`brand/writing-and-content-rules.md` (Carousels); mock grid `_style-samples/feed-mix.png` (`node samples-grid.mjs`).
+
+**Covers (slide 1, and slide 2's second hook), Mercedes's pick 2026-10-21:** `numcover` (her photo `media`, `big` number,
+`text` bold line, `hand`, `pos` bottom|top), `hookcover` (photo, `text` caps hook, `hand`, `pos`), `tilecover` (palette tile,
+serif `text` or `big` + `text`, `hand`), `checkcover` (`question`, `options`, `tick` index, `hand`). Any slide can take
+`photoBg` (+`scrim` top|bottom|full) and `doodles` (`star` hand-drawn, `arrow`, `note`, `tape`, `circle`, `underline`). Doodles
+need a job (point, tick, emphasise), 1 to 3 per cover, never touching text.
 
 **Layouts inside a D/E post (content-rules 5 and 7c):** slide 1 = big-type cover (`layout` omitted). Slide 2 = a format
 change that still works as a cover, default `"layout": "hook2"` with `top` (hook, right-aligned) and `bottom`

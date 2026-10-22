@@ -2,6 +2,7 @@
 // `layout` so a post switches formats: text, number, formula, chart, phone, chat, checklist, photo.
 // Paragraph text is left-aligned. Mock app screens show labels and shapes, never invented numbers.
 import { esc } from './common.mjs';
+import { handBox } from './hand.mjs';
 
 const rich = (s) => esc(s).replace(/\n/g, '<br>').replace(/\*([^*]+)\*/g, '<em>$1</em>');
 const ICON = {
@@ -46,8 +47,18 @@ function screen(sc = {}, media) {
 export const LAYOUTS = {
   // Slide 2 second hook: two text sections, top right-aligned, bottom left-aligned (content-rules 5).
   hook2: (s) => `<div class="txt fit"><p class="h-top">${rich(s.top)}</p><p class="h-bot">${rich(s.bottom)}</p></div>`,
-  // Photo cover with one big surprising number (Mercedes's pick 2026-10-21): photo + navy fade, number, bold line, handwriting.
-  numcover: (s, m) => `<div class="bg" style="background-image:url('${m.url}');background-position:${m.focus || 'center 10%'}"></div><div class="nc-fade"></div><div class="nc"><div class="nc-big">${esc(s.big)}</div><div class="nc-line">${esc(s.text)}</div>${s.hand ? `<div class="nc-hand">${esc(s.hand)}</div>` : ''}</div>`,
+  // Cover layouts (Mercedes's picked cover grid, 2026-10-21). All share: Jost 800 caps hook, a handwritten line
+  // (Covered By Your Grace), at most 1 to 3 hand-drawn doodles via slide.doodles, each with a job.
+  // numcover: her photo + navy fade + one big surprising number (sky serif) + bold line + handwriting. pos: bottom | top.
+  numcover: (s, m) => `<div class="bg" style="background-image:url('${m.url}');background-position:${m.focus || 'center 10%'}"></div><div class="nc-fade nc-${s.pos || 'bottom'}"></div><div class="nc nc-${s.pos || 'bottom'}"><div class="nc-big">${esc(s.big)}</div><div class="nc-line">${esc(s.text)}</div>${s.hand ? `<div class="nc-hand">${esc(s.hand)}</div>` : ''}</div>`,
+  // hookcover: her photo + navy fade + bold caps hook + handwriting. pos: top | bottom.
+  hookcover: (s, m) => `<div class="bg" style="background-image:url('${m.url}');background-position:${m.focus || 'center 20%'}"></div><div class="nc-fade nc-${s.pos || 'top'}"></div><div class="nc nc-${s.pos || 'top'}"><div class="hk">${esc(s.text)}</div>${s.hand ? `<div class="nc-hand">${esc(s.hand)}</div>` : ''}</div>`,
+  // tilecover: flat palette tile. With s.big: big sky number + bold line + handwriting. Without: serif statement + handwriting.
+  tilecover: (s) => s.big
+    ? `<div class="tc"><div class="tc-big">${esc(s.big)}</div><div class="tc-line">${esc(s.text)}</div>${s.hand ? `<div class="tc-hand">${esc(s.hand)}</div>` : ''}</div>`
+    : `<div class="tc"><div class="tc-serif">${esc(s.text)}</div>${s.hand ? `<div class="tc-hand tc-sky">${esc(s.hand)}</div>` : ''}</div>`,
+  // checkcover: handwritten question, big options with hand-drawn tick boxes (s.tick = index of the ticked one), handwritten footer.
+  checkcover: (s) => `<div class="ck-q">${esc(s.question || '')}</div><div class="ck-list">${(s.options || []).map((o, i) => `<div class="ck-row"><span class="ck-box">${handBox('currentColor', { tick: i === s.tick, seed: 21 + i * 12 })}</span><span>${esc(o)}</span></div>`).join('')}</div>${s.hand ? `<div class="ck-foot">${esc(s.hand)}</div>` : ''}`,
   text: (s) => para(s),
   number: (s) => `<div class="big">${esc(s.big)}</div>${para(s)}`,
   formula: (s) => `<div class="formula">${(s.formula || []).map((t) => (/^[÷×=+−-]$/.test(t)
@@ -135,13 +146,30 @@ export const LAYOUT_CSS = (brand) => `
 .checks{list-style:none;display:flex;flex-direction:column;gap:26px;width:100%}
 .checks li{display:flex;align-items:center;gap:26px;background:var(--paper);color:var(--paper-ink);border-radius:24px;padding:26px 30px;font-size:50px;font-weight:500}
 .ck{width:58px;height:58px;border-radius:50%;background:var(--pop);color:#0a1930;display:grid;place-items:center;flex:none}.ck svg{width:34px}
-/* numcover */
-.lay-numcover{padding:0}
-.nc-fade{position:absolute;left:0;right:0;bottom:0;height:760px;background:linear-gradient(rgba(10,25,48,0),rgba(10,25,48,.92) 45%)}
-.nc{position:absolute;left:40px;right:40px;bottom:110px;text-align:center;color:#fff}
-.nc-big{font-family:'${brand.fonts.headline.family}',serif;font-size:380px;line-height:1;color:#4da3ff;letter-spacing:-.02em}
-.nc-line{font-size:76px;font-weight:800;text-transform:uppercase;line-height:1.05;margin-top:10px}
-.nc-hand{font:400 62px/1.1 'Covered By Your Grace',cursive;letter-spacing:.03em;color:#f7f3ec;margin-top:40px}
+/* cover layouts */
+.lay-numcover,.lay-hookcover{padding:0}
+.nc-fade{position:absolute;left:0;right:0;height:780px}
+.nc-fade.nc-bottom{bottom:0;background:linear-gradient(rgba(10,25,48,0),rgba(10,25,48,.92) 45%)}
+.nc-fade.nc-top{top:0;background:linear-gradient(rgba(10,25,48,.9) 42%,rgba(10,25,48,0))}
+.nc{position:absolute;left:50px;right:50px;text-align:center;color:#fff}
+.nc.nc-bottom{bottom:110px}.nc.nc-top{top:100px}
+.nc-big{font-family:'${brand.fonts.headline.family}',serif;font-size:360px;line-height:1;color:#4da3ff;letter-spacing:-.02em}
+.nc-line{font-size:72px;font-weight:800;text-transform:uppercase;line-height:1.05;margin-top:10px}
+.hk{font-size:118px;font-weight:800;text-transform:uppercase;line-height:.98;letter-spacing:-.01em;text-wrap:balance}
+.nc-hand,.tc-hand,.ck-q,.ck-foot{font:400 80px/1.1 'Covered By Your Grace',cursive;letter-spacing:.03em}
+.nc-hand{color:#f7f3ec;margin-top:34px}
+.lay-tilecover,.lay-checkcover{padding:100px 60px}
+.tc{width:100%;text-align:center;display:flex;flex-direction:column;align-items:center}
+.tc-big{font-family:'${brand.fonts.headline.family}',serif;font-size:520px;line-height:1;color:#4da3ff;letter-spacing:-.02em}
+.tc-line{font-size:84px;font-weight:800;text-transform:uppercase;line-height:1;margin-top:20px;text-wrap:balance}
+.tc-serif{font-family:'${brand.fonts.headline.family}',serif;font-size:150px;line-height:1;letter-spacing:-.01em;text-wrap:balance}
+.tc-hand{margin-top:70px;font-size:70px}.tc-sky{color:#4da3ff}
+.lay-checkcover{justify-content:center;gap:60px}
+.ck-q{text-align:center;rotate:-3deg}
+.ck-list{display:flex;flex-direction:column;gap:70px;padding-left:20px}
+.ck-row{display:flex;align-items:center;gap:34px;font-size:128px;font-weight:800;line-height:1;text-transform:uppercase}
+.ck-box{width:160px;height:160px;flex:none;display:block}.ck-box svg{width:100%;height:100%;display:block}
+.ck-foot{text-align:center}
 /* image */
 .lay-image{padding:0}
 /* pano */
@@ -150,9 +178,11 @@ export const LAYOUT_CSS = (brand) => `
 .s.lay-pano .txt{position:absolute;left:80px;right:80px;bottom:150px}
 .lay-pano.cover .fit{font-size:88px}
 .s.lay-pano.cover .txt{top:200px;bottom:auto}
-.lay-pano .fit{font-family:'${brand.fonts.highlight.family}',sans-serif;font-weight:500;font-size:66px;line-height:1.42;text-transform:none}
+.lay-pano .fit{font-family:'${brand.fonts.highlight.family}',sans-serif;font-weight:500;font-size:66px;line-height:1.62;text-transform:none}
+/* highlight text on photos: room between lines so the next box never clips descenders */
+.s.lay-photo .fit,.s.lay-pano .fit{line-height:1.62}
 /* photo */
 .lay-photo{padding:0}
 .s.lay-photo .txt{position:absolute;left:80px;right:80px;bottom:150px}
-.lay-photo .fit{font-family:'${brand.fonts.highlight.family}',sans-serif;font-weight:500;font-size:66px;line-height:1.42;text-transform:none}
+.lay-photo .fit{font-family:'${brand.fonts.highlight.family}',sans-serif;font-weight:500;font-size:66px;line-height:1.62;text-transform:none}
 `;

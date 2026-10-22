@@ -16,7 +16,16 @@
   "media": {},
   "slides": [
     {
-      "text": "Content for *growth* vs content that *sells*"
+      "layout": "checkcover",
+      "palette": "sky",
+      "question": "which are you posting?",
+      "options": [
+        "Growth",
+        "Sales"
+      ],
+      "tick": 0,
+      "hand": "(you need both) →",
+      "text": "Which are you posting? Growth or sales"
     },
     {
       "layout": "hook2",
@@ -30,7 +39,8 @@
         "Reach new people",
         "Bring people closer to buying"
       ],
-      "text": "Give every post one job:"
+      "text": "Give every post one job:",
+      "palette": "offwhite"
     },
     {
       "layout": "phone",
@@ -39,7 +49,7 @@
         "onscreen": "Never seen you before",
         "caption": "A Reel for new people"
       },
-      "media": "stock:couchTee",
+      "media": "1e629b09ae",
       "text": "Growth content is for people who don't know you yet."
     },
     {
@@ -65,7 +75,8 @@
         "hi": 0,
         "note": "Reach compared with single images. Buffer, 4M+ posts, Jan 2022 to Oct 2024"
       },
-      "text": "Reels reached the most people in Buffer's analysis of 4 million+ posts."
+      "text": "Reels reached the most people in Buffer's analysis of 4 million+ posts.",
+      "palette": "mist"
     },
     {
       "layout": "phone",
@@ -99,7 +110,8 @@
         "hi": 0,
         "note": "Median engagement per person reached, same Buffer data"
       },
-      "text": "Carousels can do both. They earned the most engagement."
+      "text": "Carousels can do both. They earned the most engagement.",
+      "palette": "offwhite"
     },
     {
       "layout": "text",

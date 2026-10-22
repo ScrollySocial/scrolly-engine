@@ -17,8 +17,11 @@
   "media": {},
   "slides": [
     {
-      "text": "No idea what to post today? *Film this*",
-      "pattern": "rays"
+      "layout": "hookcover",
+      "media": "b01077b718",
+      "pos": "top",
+      "text": "No idea what to post today?",
+      "hand": "film this →"
     },
     {
       "layout": "hook2",

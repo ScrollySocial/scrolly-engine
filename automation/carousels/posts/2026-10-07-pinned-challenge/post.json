@@ -17,10 +17,12 @@
   "media": {},
   "slides": [
     {
-      "layout": "image",
-      "media": "1a82ec0c56",
-      "grid": "pinned-2026-10",
-      "text": "Want to make $1,000 in 30 days?. Meet the $1K Challenge"
+      "layout": "hookcover",
+      "media": "95d583fddb",
+      "focus": "center 40%",
+      "pos": "bottom",
+      "text": "$1,000 in 30 days?",
+      "hand": "here's everything you get →"
     },
     {
       "layout": "hook2",
@@ -38,7 +40,8 @@
         ],
         "hi": 1
       },
-      "text": "Your personal $1K Plan: your $1K number, what to do each week, and a weekly check-in."
+      "text": "Your personal $1K Plan: your $1K number, what to do each week, and a weekly check-in.",
+      "palette": "offwhite"
     },
     {
       "layout": "number",
@@ -64,7 +67,8 @@
         "The full $1K Club Playbook",
         "The $1K Math calculator"
       ],
-      "text": "Plus:"
+      "text": "Plus:",
+      "palette": "mist"
     },
     {
       "layout": "text",

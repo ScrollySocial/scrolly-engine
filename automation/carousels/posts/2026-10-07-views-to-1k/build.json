@@ -1,8 +1,7 @@
 {
-  "builtAt": "2026-10-21T23:21:30.487Z",
+  "builtAt": "2026-10-22T00:15:21.715Z",
   "exportDir": "C:\\Users\\merce\\OneDrive\\Scrolly Media\\exports\\carousels\\2026-10-07-views-to-1k",
   "mediaUsed": [
-    "1fb3bd8f6e",
     "1e629b09ae",
     "473beb9747",
     "4b3aaf72ba",
@@ -18,10 +17,10 @@
     },
     {
       "i": 1,
-      "size": 140,
-      "min": 48,
+      "size": 0,
+      "min": 0,
       "ok": true,
-      "lines": 4
+      "lines": 0
     },
     {
       "i": 2,

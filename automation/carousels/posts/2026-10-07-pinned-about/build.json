@@ -1,9 +1,15 @@
 {
-  "builtAt": "2026-10-07T17:31:54.155Z",
+  "builtAt": "2026-10-22T00:15:52.558Z",
   "exportDir": "C:\\Users\\merce\\OneDrive\\Scrolly Media\\exports\\carousels\\2026-10-07-pinned-about",
   "mediaUsed": [
-    "454f294c5c",
-    "stock:runField"
+    "7960072a35",
+    "1e629b09ae",
+    "f5e7ef379a",
+    "473beb9747",
+    "542d2ebb5f",
+    "95d583fddb",
+    "265ec9a722",
+    "60167eb7b6"
   ],
   "fit": [
     {
@@ -15,73 +21,73 @@
     },
     {
       "i": 1,
-      "size": 132,
+      "size": 140,
       "min": 48,
       "ok": true,
-      "lines": 8
+      "lines": 7
     },
     {
       "i": 2,
-      "size": 94,
+      "size": 82,
+      "min": 48,
+      "ok": true,
+      "lines": 3
+    },
+    {
+      "i": 3,
+      "size": 82,
       "min": 48,
       "ok": true,
       "lines": 4
     },
     {
-      "i": 3,
-      "size": 94,
-      "min": 48,
-      "ok": true,
-      "lines": 5
-    },
-    {
       "i": 4,
-      "size": 94,
+      "size": 82,
       "min": 48,
       "ok": true,
-      "lines": 5
+      "lines": 4
     },
     {
       "i": 5,
-      "size": 94,
+      "size": 82,
       "min": 48,
       "ok": true,
       "lines": 5
     },
     {
       "i": 6,
-      "size": 94,
+      "size": 82,
       "min": 48,
       "ok": true,
-      "lines": 6
+      "lines": 5
     },
     {
       "i": 7,
-      "size": 94,
-      "min": 48,
-      "ok": true,
-      "lines": 7
-    },
-    {
-      "i": 8,
-      "size": 94,
+      "size": 82,
       "min": 48,
       "ok": true,
       "lines": 6
     },
     {
+      "i": 8,
+      "size": 82,
+      "min": 48,
+      "ok": true,
+      "lines": 5
+    },
+    {
       "i": 9,
-      "size": 94,
+      "size": 82,
       "min": 48,
       "ok": true,
       "lines": 6
     },
     {
       "i": 10,
-      "size": 94,
+      "size": 82,
       "min": 48,
       "ok": true,
-      "lines": 5
+      "lines": 4
     }
   ],
   "problems": []
