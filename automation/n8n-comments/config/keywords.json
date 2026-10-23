@@ -1,4 +1,15 @@
 {
   "source": "automation/carousels/config/destinations.json",
-  "keywords": []
+  "keywords": [
+    {
+      "keyword": "QUIZ",
+      "url": "https://scrollyseo.com/quiz/",
+      "dm": "Here's the quiz: {url}"
+    },
+    {
+      "keyword": "MATH",
+      "url": "https://scrollyseo.com/calculators/income-goal/",
+      "dm": "Here's the $1K Math calculator: {url} Put in your price and it shows how many sales it takes to reach $1,000."
+    }
+  ]
 }
