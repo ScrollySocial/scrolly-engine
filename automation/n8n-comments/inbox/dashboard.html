@@ -42,6 +42,11 @@
   .flt label { margin: 0 0 2px; font-size: 13px; color: var(--muted); font-weight: 500; }
   .flt select { padding: 7px 10px; font-size: 15px; }
   .flt-check { flex: 1 1 100%; margin: 2px 0 0; font-size: 15px; }
+  .filter-box { margin-bottom: 12px; }
+  .filter-box summary { display: inline-block; cursor: pointer; border-radius: 999px; padding: 7px 16px; background: var(--mist); font-weight: 500; font-size: 15px; list-style: none; margin-bottom: 10px; }
+  .filter-box summary::-webkit-details-marker { display: none; }
+  .filter-box[open] summary { background: var(--ink); color: var(--white); }
+  @media (min-width: 700px) { .filter-box summary { display: none; } }
   .chart { display: flex; align-items: flex-end; gap: 2px; height: 90px; margin-top: 8px; }
   .chart span { flex: 1; background: var(--sky); border-radius: 3px 3px 0 0; min-height: 2px; }
   .chart-axis { display: flex; justify-content: space-between; font-size: 12px; color: var(--muted); margin-top: 4px; }
@@ -104,6 +109,26 @@
   th, td { text-align: left; padding: 8px 6px; border-bottom: 1px solid var(--line); vertical-align: top; }
   td.n { text-align: right; font-variant-numeric: tabular-nums; }
   .toast { position: fixed; left: 50%; bottom: 20px; transform: translateX(-50%); background: var(--ink); color: var(--white); padding: 10px 18px; border-radius: 999px; font-size: 15px; display: none; max-width: calc(100% - 32px); }
+  /* "What they'll see": app-style previews (Instagram DMs and comments, YouTube comments) */
+  .pv-phone { max-width: 380px; margin: 8px auto 0; border: 1px solid var(--line); border-radius: 26px; overflow: hidden; background: #fff; font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; color: #000; }
+  .pv-ig-head { display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-bottom: 1px solid #efefef; font-size: 15px; }
+  .pv-ig-body { display: flex; flex-direction: column; gap: 8px; padding: 14px 12px 18px; }
+  .pv-avatar { width: 28px; height: 28px; border-radius: 50%; background: #d9d9d9; flex: none; }
+  .pv-avatar.brand { background: var(--ink); }
+  .pv-row { display: flex; align-items: flex-end; gap: 8px; }
+  .pv-row.me { justify-content: flex-end; }
+  .pv-bubble { max-width: 250px; padding: 8px 12px; border-radius: 20px; font-size: 15px; line-height: 1.35; white-space: pre-wrap; overflow-wrap: anywhere; }
+  .pv-bubble.them { background: #efefef; color: #000; }
+  .pv-bubble.me { background: #3797f0; color: #fff; }
+  .pv-note { font-size: 12px; color: #737373; margin: 0 4px 2px; }
+  .pv-sys { align-self: center; text-align: center; font-size: 12px; color: #737373; max-width: 280px; margin: 4px 0; }
+  .pv-post { display: flex; gap: 10px; font-size: 14px; padding-bottom: 10px; border-bottom: 1px solid #efefef; }
+  .pv-yt { padding: 14px; font-family: Roboto, system-ui, sans-serif; font-size: 14px; }
+  .pv-yt-title { font-weight: 600; font-size: 16px; margin-bottom: 12px; }
+  .pv-yt-c { display: flex; gap: 12px; margin-bottom: 12px; overflow-wrap: anywhere; }
+  .pv-yt-c.reply { margin-left: 40px; }
+  .pv-yt-name { font-size: 12px; color: #606060; margin-bottom: 2px; }
+  .pv-avatar.round { width: 32px; height: 32px; }
   .login { max-width: 420px; margin: 12vh auto 0; }
   .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 </style>
@@ -178,8 +203,10 @@ function showLogin(passwordSet) {
 // ---- routing: #inbox, #c/<key>, #keywords, #k/<KEYWORD>, #k/new, #stats ----
 
 let stats = null;
+let ME = {};
 async function route() {
   const me = await api('/api/me').catch(() => ({}));
+  ME = me;
   if (!me.loggedIn) return showLogin(me.passwordSet);
   const hash = decodeURIComponent(location.hash.slice(1)) || 'inbox';
   stats = await api('/api/stats?days=30').catch(() => null);
@@ -226,6 +253,7 @@ const saved = (() => { try { return JSON.parse(localStorage.getItem('inboxFilter
 const filters = { show: 'all', platform: 'all', source: 'all', date: 'all', keywords: false, ...saved };
 const keepFilters = () => { try { localStorage.setItem('inboxFilters', JSON.stringify(filters)); } catch {} };
 const DATES = { today: 1, week: 7, month: 30 };
+let filtersOpen = false;
 function matches(r) {
   if (r.kind === 'out') return false;
   if (!filters.keywords && r.status === 'Handled') return false;
@@ -247,12 +275,19 @@ async function showInbox(body) {
   };
   const kwBox = h('input', { type: 'checkbox', checked: filters.keywords });
   kwBox.addEventListener('change', () => { filters.keywords = kwBox.checked; keepFilters(); route(); });
-  body.append(h('div', { class: 'filters' },
-    select('show', 'Show', [['all', 'Everything'], ['reply', 'Needs a reply'], ['unread', 'Unread']]),
-    select('platform', 'Platform', [['all', 'All'], ['Instagram', 'Instagram'], ['YouTube', 'YouTube'], ['TikTok', 'TikTok']]),
-    select('source', 'Source', [['all', 'All'], ['Comment', 'Comments'], ['DM', 'DMs'], ['Story reply', 'Story replies']]),
-    select('date', 'Date', [['all', 'Any time'], ['today', 'Today'], ['week', 'Last 7 days'], ['month', 'Last 30 days']]),
-    h('label', { class: 'check flt-check' }, kwBox, 'Show keyword comments')));
+  // On a phone the filters fold away behind one "Filters" button (open on wider screens).
+  const active = ['show', 'platform', 'source', 'date'].filter((key) => filters[key] !== 'all').length + (filters.keywords ? 1 : 0);
+  const box = h('details', { class: 'filter-box' },
+    h('summary', { text: `Filters${active ? ` (${active} on)` : ''}` }),
+    h('div', { class: 'filters' },
+      select('show', 'Show', [['all', 'Everything'], ['reply', 'Needs a reply'], ['unread', 'Unread']]),
+      select('platform', 'Platform', [['all', 'All'], ['Instagram', 'Instagram'], ['YouTube', 'YouTube'], ['TikTok', 'TikTok']]),
+      select('source', 'Source', [['all', 'All'], ['Comment', 'Comments'], ['DM', 'DMs'], ['Story reply', 'Story replies']]),
+      select('date', 'Date', [['all', 'Any time'], ['today', 'Today'], ['week', 'Last 7 days'], ['month', 'Last 30 days']]),
+      h('label', { class: 'check flt-check' }, kwBox, 'Show keyword comments')));
+  box.open = window.matchMedia('(min-width: 700px)').matches || filtersOpen;
+  box.addEventListener('toggle', () => (filtersOpen = box.open));
+  body.append(box);
   const shown = conversations
     .map((c) => ({ ...c, hits: c.items.filter(matches) }))
     .filter((c) => c.hits.length)
@@ -391,10 +426,27 @@ async function showKeyword(body, name) {
   const mins = (m) => (m % 60 ? `${m} min` : `${m / 60} h`);
   // The MailerLite panel: the chosen group, its size, and the email sequence(s) it starts.
   const groupPanel = h('div');
+  let groupInfo = null;
+  const newGroupButton = () => h('button', { text: '+ New group for this keyword', on: { click: async () => {
+    const name = prompt('Name for the new MailerLite group', `Freebie: ${k.keyword || k.freebie || 'new'}`);
+    if (!name) return;
+    try {
+      const g = await api('/api/mailerlite/groups', { method: 'POST', body: { name } });
+      groups.groups.push(g);
+      k.mailerliteGroup = g.id;
+      k.mailerliteGroupName = g.name;
+      drawDelivery();
+      toast('Group created in MailerLite.');
+    } catch (e) { toast(e.message); }
+  } } });
   const drawGroup = async () => {
-    if (!k.mailerliteGroup) return groupPanel.replaceChildren(h('p', { class: 'hint', text: 'Pick the group people join when they sign up.' }));
+    groupInfo = null;
+    drawChecklist();
+    if (!k.mailerliteGroup) return groupPanel.replaceChildren(h('p', { class: 'hint', text: 'Pick the group people join when they sign up, or make a new one.' }), h('div', { class: 'row' }, newGroupButton()));
     groupPanel.replaceChildren(h('p', { class: 'hint', text: 'Loading MailerLite…' }));
     const g = await api(`/api/mailerlite/groups/${k.mailerliteGroup}`).catch((e) => ({ connected: false, error: e.message }));
+    groupInfo = g;
+    drawChecklist();
     if (!g.connected) return groupPanel.replaceChildren(h('p', { class: 'warn', text: `Couldn't load MailerLite: ${g.error || ''}` }));
     groupPanel.replaceChildren(
       h('div', { class: 'preview-box' },
@@ -405,7 +457,29 @@ async function showKeyword(body, name) {
             h('strong', { text: `Email sequence: ${a.name}` }),
             `\n${a.enabled ? 'On' : 'Off (nobody gets these emails until it is switched on)'} · ${a.emails} email${a.emails === 1 ? '' : 's'} · ${a.sent} sent${a.openRate != null ? ` · ${a.openRate} opened` : ''}`,
             h('div', { class: 'row' }, h('a', { class: 'button', href: a.url, target: '_blank', rel: 'noopener noreferrer', text: 'Open sequence in MailerLite' }))))
-        : [h('p', { class: 'warn', text: 'No email sequence starts from this group yet, so nobody would get the freebie by email. Ask Claude to set one up.' })]));
+        : [h('p', { class: 'warn', text: 'No email sequence starts from this group yet, so nobody would get the freebie by email. Make one in MailerLite (trigger: "joins group", this group) that sends the freebie link, or ask Claude to set it up.' }),
+           h('div', { class: 'row' }, h('a', { class: 'button', href: 'https://dashboard.mailerlite.com/automations', target: '_blank', rel: 'noopener noreferrer', text: 'Open MailerLite automations' }))]),
+      h('div', { class: 'row' }, newGroupButton()));
+  };
+  // "Ready to go live?": everything a keyword needs to work end to end, ticked off live.
+  const checklist = h('div');
+  const drawChecklist = () => {
+    const usesDms = k.ask.on || k.where.igDms;
+    const items = [
+      [!!k.url, 'Freebie link added'],
+      [k.where.igComments || k.where.igDms || k.where.ytComments, 'Where it works: at least one place picked'],
+    ];
+    if (k.delivery === 'email') {
+      items.push([!!k.mailerliteGroup, 'MailerLite group picked']);
+      items.push([groupInfo?.automations?.some((a) => a.enabled) ?? false, 'An email sequence that sends the freebie is on in MailerLite (starts when someone joins the group)']);
+    }
+    if (usesDms) items.push([!!ME.dmsEnabled, k.ask.on ? 'DMs switched on (needed for "reply READY" and reminders; ask Claude)' : 'DMs switched on (needed for keywords in DMs and Story replies; ask Claude)']);
+    items.push([!!k.dmApproved, 'You approved the messages']);
+    items.push([!!k.live, 'Switched on (top of the page)']);
+    const ready = items.every(([ok]) => ok);
+    checklist.replaceChildren(
+      h('h3', { text: ready ? 'Ready: it works all the way through' : 'Ready to go live?' }),
+      ...items.map(([ok, label]) => h('p', { class: ok ? 'hint' : 'warn', text: `${ok ? '✓' : '○'} ${label}` })));
   };
   // YouTube reply text (public, under the comment).
   const ytSection = h('div');
@@ -430,17 +504,53 @@ async function showKeyword(body, name) {
     box.addEventListener('change', () => { obj[key] = box.checked; onChange?.(); });
     return h('label', { class: 'toggle' }, box, label);
   };
+  // "What they'll see": the messages drawn the way the app shows them (Instagram DMs, the
+  // comment under a post, a YouTube comment and reply), one tab per place the keyword works.
   const previews = h('div');
+  let previewTab = '';
   const fill = (t, link) => String(t || '').replace('{url}', k.url || '(freebie link)').replace('{link}', link);
   const drawPreviews = () => {
-    const link = 'https://hooks.scrollyseo.com/inbox/f/…';
-    const steps = [];
-    if (k.ask.on) steps.push(['1. First DM', k.ask.text || '(write it above)'], [`They reply "${k.ask.word || 'READY'}"`, '']);
-    steps.push([k.ask.on ? '2. Then' : '1. DM', k.delivery === 'email' ? fill(k.linkText, link) : fill(k.dm)]);
-    if (k.delivery === 'email') steps.push(['Signup page', 'They type their email → added to your MailerLite group → MailerLite emails the freebie.']);
-    if (k.delivery === 'email' && k.reminder.on) steps.push([`No signup after ${mins(k.reminder.minutes)}`, fill(k.reminder.text, link)]);
-    if (k.where.ytComments) steps.push(['YouTube: public reply under the comment', fill(k.yt.text, `https://hooks.scrollyseo.com/inbox/s/${k.keyword || 'KEYWORD'}`)]);
-    previews.replaceChildren(...steps.map(([t, m]) => h('div', { class: 'preview-box' }, h('strong', { text: t }), m ? `\n${m}` : '')));
+    const word = k.keyword || 'KEYWORD';
+    const link = 'hooks.scrollyseo.com/inbox/f/…';
+    const tabs = [];
+    if (k.where.igComments) tabs.push(['igc', 'Instagram comment']);
+    if (k.where.igDms) tabs.push(['igd', 'Instagram DM']);
+    if (k.where.ytComments) tabs.push(['yt', 'YouTube comment']);
+    if (!tabs.length) return previews.replaceChildren(h('p', { class: 'hint', text: 'Pick where it works to see a preview.' }));
+    if (!tabs.some(([id]) => id === previewTab)) previewTab = tabs[0][0];
+    const avatar = (cls) => h('span', { class: `pv-avatar ${cls || ''}`, 'aria-hidden': 'true' });
+    const them = (t, note) => h('div', { class: 'pv-row them' }, avatar(), h('div', {}, note ? h('div', { class: 'pv-note', text: note }) : null, h('div', { class: 'pv-bubble them', text: t })));
+    const me = (t, note) => h('div', { class: 'pv-row me' }, h('div', {}, note ? h('div', { class: 'pv-note', text: note }) : null, h('div', { class: 'pv-bubble me', text: t })));
+    const sys = (t) => h('div', { class: 'pv-sys', text: t });
+    let screen;
+    if (previewTab === 'yt') {
+      screen = h('div', { class: 'pv-yt' },
+        h('div', { class: 'pv-yt-title', text: 'Comments' }),
+        h('div', { class: 'pv-yt-c' }, avatar('round'), h('div', {}, h('div', { class: 'pv-yt-name', text: '@viewer · 2 min ago' }), h('div', { text: word }))),
+        h('div', { class: 'pv-yt-c reply' }, avatar('round brand'), h('div', {}, h('div', { class: 'pv-yt-name', text: '@scrollysocial · just now' }), h('div', { text: fill(k.yt.text, k.delivery === 'email' ? `hooks.scrollyseo.com/inbox/s/${word}` : k.url) || '(write the YouTube reply above)' }))));
+    } else {
+      const thread = [];
+      if (previewTab === 'igc') {
+        thread.push(h('div', { class: 'pv-post' }, avatar(), h('div', {}, h('strong', { text: 'someone ' }), word, h('div', { class: 'pv-note', text: 'Comment on your post' }))));
+        thread.push(sys('They get this in their DMs'));
+      } else {
+        thread.push(them(word));
+      }
+      if (k.ask.on && previewTab === 'igc') {
+        thread.push(me(k.ask.text || '(write the first DM above)'), them(k.ask.word || 'READY'));
+      }
+      thread.push(me(k.delivery === 'email' ? fill(k.linkText, link) : fill(k.dm)));
+      if (k.delivery === 'email') {
+        thread.push(sys('They tap the link, type their email on your signup page, and MailerLite emails the freebie'));
+        if (k.reminder.on) thread.push(sys(`If they haven't signed up after ${mins(k.reminder.minutes)}`), me(fill(k.reminder.text, link)));
+      }
+      screen = h('div', { class: 'pv-ig' },
+        h('div', { class: 'pv-ig-head' }, avatar('brand'), h('strong', { text: 'scrollysocial' })),
+        h('div', { class: 'pv-ig-body' }, thread));
+    }
+    previews.replaceChildren(
+      tabs.length > 1 ? h('div', { class: 'chips', role: 'tablist' }, tabs.map(([id, label]) => h('button', { role: 'tab', 'aria-selected': String(id === previewTab), 'aria-pressed': String(id === previewTab), on: { click: () => { previewTab = id; drawPreviews(); } } }, label))) : null,
+      h('div', { class: 'pv-phone' }, screen));
   };
   const deliverySection = h('div');
   const drawDelivery = () => {
@@ -510,9 +620,10 @@ async function showKeyword(body, name) {
         toggle(k, 'live', 'On')),
       isNew ? text(k, 'keyword', 'Keyword (what people comment or DM)', { placeholder: 'MATH', hint: 'One word, letters and numbers.' }) : null,
       h('p', { class: 'hint', text: 'When it\'s on and you\'ve approved the messages below, it works right away.' })),
+    h('div', { class: 'card' }, checklist),
     h('div', { class: 'card' }, h('h3', { text: 'Where it works' }),
-      check(k.where, 'igComments', 'Instagram comments'),
-      check(k.where, 'igDms', 'Instagram DMs and Story replies (needs DMs switched on)'),
+      check(k.where, 'igComments', 'Instagram comments', () => drawPreviews()),
+      check(k.where, 'igDms', 'Instagram DMs and Story replies (needs DMs switched on)', () => drawPreviews()),
       check(k.where, 'ytComments', 'YouTube comments (automatic public reply, since YouTube has no DMs)', () => { drawYt(); drawPreviews(); }),
       ytSection,
       h('p', { class: 'hint', text: 'TikTok doesn\'t allow automated replies, so TikTok keywords land in your inbox to answer by hand.' })),
@@ -528,13 +639,17 @@ async function showKeyword(body, name) {
       s ? h('div', { class: 'funnel' },
         [[s.comments, 'used it'], [f?.asked ?? 0, 'asked to reply'], [f?.linkSent ?? s.dmsSent, 'got the link'], [f?.clicked ?? 0, 'opened it'], [f?.signedUp ?? 0, 'signed up'], [f?.reminded ?? 0, 'reminded']]
           .map(([n, l]) => h('div', {}, h('div', { class: 'big', text: String(n) }), h('div', { class: 'hint', text: l }))))
-        : h('p', { class: 'hint', text: 'Nobody has used it yet.' })) : null,
+        : h('p', { class: 'hint', text: 'Nobody has used it yet.' })) : '',
     h('div', { class: 'row between' },
       h('button', { class: 'primary', text: 'Save', on: { click: save } }),
       !isNew ? h('button', { class: 'danger', text: 'Delete keyword', on: { click: async () => {
         if (!confirm(`Delete ${k.keyword}? People who comment it won't get anything.`)) return;
         try { await api(`/api/keywords/${encodeURIComponent(orig.keyword)}`, { method: 'DELETE' }); kwCache = []; toast('Deleted.'); location.hash = 'keywords'; } catch (e) { toast(e.message); }
       } } }) : null));
+  // The checklist follows every change on the page.
+  body.addEventListener('change', () => drawChecklist());
+  body.addEventListener('input', () => drawChecklist());
+  drawChecklist();
 }
 
 // ---- stats ----

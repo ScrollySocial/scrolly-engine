@@ -555,7 +555,7 @@ async function handle(req, res) {
   const api = path.slice('/inbox/api'.length);
   const body = ['POST', 'PATCH', 'PUT'].includes(req.method) ? await readBody(req) : {};
 
-  if (api === '/me') return send(res, 200, { loggedIn: true, passwordSet: !!db.auth });
+  if (api === '/me') return send(res, 200, { loggedIn: true, passwordSet: !!db.auth, dmsEnabled: env('DMS_ENABLED') === 'true', mailerlite: !!MAILERLITE_KEY });
   if (api === '/rows' && req.method === 'GET') {
     const status = url.searchParams.getAll('status');
     const rows = status.length ? db.rows.filter((r) => status.includes(r.status)) : db.rows;
@@ -626,6 +626,17 @@ async function handle(req, res) {
       });
     } catch (e) {
       return send(res, 200, { connected: false, error: e.message });
+    }
+  }
+  // "+ New group" on a keyword page.
+  if (api === '/mailerlite/groups' && req.method === 'POST') {
+    const name = str(body.name).slice(0, 100);
+    if (!name) return send(res, 400, { error: 'Give the group a name.' });
+    try {
+      const g = (await mailerlite('POST', '/groups', { name })).data || {};
+      return send(res, 200, { id: String(g.id), name: g.name });
+    } catch (e) {
+      return send(res, 400, { error: e.message });
     }
   }
   if (api === '/mailerlite/groups' && req.method === 'GET') {
