@@ -47,6 +47,7 @@ services:
       - INBOX_API_SECRET=${INBOX_API_SECRET}
       - INBOX_SETUP_CODE=${INBOX_SETUP_CODE}
       - RUN_SECRET=${RUN_SECRET}
+      - MAILERLITE_API_KEY=${MAILERLITE_API_KEY:-}
       - YOUTUBE_KEEP_DAYS=${YOUTUBE_KEEP_DAYS:-21}
       - TZ=${TZ:-America/Chicago}
     volumes:

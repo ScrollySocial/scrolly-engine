@@ -39,6 +39,8 @@ const routes = [
     ],
   })],
   ['POST', /^\/yt\/comments$/, () => ({ id: 'ytReply1' })],
+  ['GET', /^\/mailerlite\/groups$/, () => ({ data: [{ id: '111', name: 'FREE freebie' }] })],
+  ['POST', /^\/mailerlite\/subscribers$/, (req, url, body) => ({ data: { id: 'sub1', email: body.email } })],
   ['POST', /^\/google-token$/, () => ({ access_token: 'yt-access', expires_in: 3599 })],
   ['POST', /^\/apify\/acts\/clockworks~tiktok-comments-scraper\/run-sync-get-dataset-items$/, () => [
     { cid: 'tt1', text: 'What price is the club?', uniqueId: 'mia', uid: 'u1', createTimeISO: hoursAgo(3), videoWebUrl: 'https://www.tiktok.com/@scrollysocial/video/1' },

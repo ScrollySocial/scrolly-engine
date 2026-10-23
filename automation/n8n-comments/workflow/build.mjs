@@ -62,6 +62,8 @@ schedule('Weekly: Instagram token', { field: 'weeks', weeksInterval: 1, triggerA
 codeNode('Refresh Instagram token', 'refresh-instagram-token.js', [220, 1000]);
 schedule('Daily 3am: YouTube cleanup', { field: 'days', daysInterval: 1, triggerAtHour: 3 }, [0, 1200]);
 codeNode('YouTube cleanup', 'youtube-cleanup.js', [220, 1200]);
+schedule('Every 15 min: freebie reminders', { field: 'minutes', minutesInterval: 15 }, [0, 1400]);
+codeNode('Send reminders', 'send-reminders.js', [220, 1400]);
 
 webhook('Run a job now', 'POST', 'comments-run', [-480, 700], 'onReceived');
 codeNode('Pick job', 'pick-job.js', [-260, 700]);
@@ -84,8 +86,9 @@ const connections = {
   'Every 10 min: approved replies': link('Post approved replies'),
   'Weekly: Instagram token': link('Refresh Instagram token'),
   'Daily 3am: YouTube cleanup': link('YouTube cleanup'),
+  'Every 15 min: freebie reminders': link('Send reminders'),
   'Run a job now': link('Pick job'),
-  'Pick job': link('Fetch YouTube comments', 'Fetch TikTok comments', 'Post approved replies', 'Refresh Instagram token', 'YouTube cleanup'),
+  'Pick job': link('Fetch YouTube comments', 'Fetch TikTok comments', 'Post approved replies', 'Refresh Instagram token', 'YouTube cleanup', 'Send reminders'),
   'Status check': link('Status'),
 };
 

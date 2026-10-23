@@ -12,4 +12,5 @@ PORT=5691 DATA_DIR="$tmp/data" CONFIG_DIR="$tmp/config" \
   INBOX_API_SECRET=test-inbox-secret INBOX_SETUP_CODE=test-setup-code INBOX_SECURE_COOKIE=false \
   RUN_SECRET=test-run-secret N8N_RUN_URL=http://localhost:5688/webhook/comments-run \
   YOUTUBE_KEEP_DAYS=21 INBOX_TEST_HOOKS=true \
+  MAILERLITE_API_KEY=test-ml MAILERLITE_BASE=http://localhost:5690/mailerlite \
   exec node inbox/server.mjs

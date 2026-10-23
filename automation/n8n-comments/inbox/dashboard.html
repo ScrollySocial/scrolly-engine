@@ -4,66 +4,97 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
-<title>Comment inbox</title>
+<title>Inbox · Scrolly</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Jost:wght@400;500;600&display=swap">
 <style>
-  /* Scrolly v3 colors (vault brand/visual-system.md); private tool, so no header/footer chrome. */
+  /* Scrolly v3 colors (vault brand/visual-system.md); private tool, so no site header/footer. */
   :root {
     --cream: #f7f3ec; --ink: #0a1930; --sky: #4da3ff; --mist: #dfe4f0; --muted: #4a4e66;
-    --line: #d9d3ca; --input: #8f8a83; --white: #fff; --ok: #1d7a46; --bad: #b3261e;
+    --line: #d9d3ca; --input: #8f8a83; --white: #fff; --bad: #b3261e; --good: #1d6b40;
   }
   * { box-sizing: border-box; }
   body { margin: 0; background: var(--cream); color: var(--ink); font: 16px/1.5 Jost, system-ui, sans-serif; }
-  main { max-width: 760px; margin: 0 auto; padding: 16px 16px 80px; }
-  h1, h2 { font-family: 'Instrument Serif', Georgia, serif; font-weight: 400; letter-spacing: -0.01em; margin: 0; }
+  main { max-width: 820px; margin: 0 auto; padding: 16px 16px 80px; }
+  h1, h2, h3 { font-family: 'Instrument Serif', Georgia, serif; font-weight: 400; letter-spacing: -0.01em; margin: 0; }
   h1 { font-size: 2.1rem; }
-  h2 { font-size: 1.6rem; margin: 8px 0 12px; }
-  .top { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin: 8px 0 12px; }
-  .top button { font-size: 15px; }
-  nav { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 6px; margin-bottom: 12px; scrollbar-width: none; }
-  nav::-webkit-scrollbar { display: none; }
-  nav button { flex: none; border: 0; border-radius: 999px; padding: 8px 14px; background: var(--mist); color: var(--ink); font: 500 15px Jost, sans-serif; cursor: pointer; }
-  nav button[aria-current="true"] { background: var(--ink); color: var(--white); }
-  .count { display: inline-block; min-width: 1.4em; margin-left: 4px; padding: 0 6px; border-radius: 999px; background: var(--sky); color: var(--ink); font-size: 13px; text-align: center; }
+  h2 { font-size: 1.7rem; }
+  h3 { font-size: 1.35rem; margin-bottom: 6px; }
+  .top { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 4px 0 12px; }
+  .tabs, .chips { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; margin-bottom: 12px; }
+  .tabs::-webkit-scrollbar, .chips::-webkit-scrollbar { display: none; }
+  .tabs button, .chips button { flex: none; border: 0; border-radius: 999px; padding: 8px 16px; background: var(--mist); color: var(--ink); font: 500 15px Jost, sans-serif; cursor: pointer; }
+  .tabs button[aria-current="true"], .chips button[aria-pressed="true"] { background: var(--ink); color: var(--white); }
+  .chips button { padding: 5px 12px; font-size: 14px; }
+  .count { display: inline-block; min-width: 1.4em; margin-left: 6px; padding: 0 6px; border-radius: 999px; background: var(--sky); color: var(--ink); font-size: 13px; text-align: center; }
+  /* email-style list */
+  .list { background: var(--white); border-radius: 18px; overflow: hidden; }
+  .item { display: grid; grid-template-columns: auto 1fr auto; gap: 4px 12px; width: 100%; text-align: left; border: 0; border-radius: 0; border-bottom: 1px solid var(--line); background: none; padding: 14px 16px; cursor: pointer; font: inherit; color: inherit; }
+  .item:last-child { border-bottom: 0; }
+  .item:hover { background: #fbf9f5; }
+  .dot { width: 10px; height: 10px; border-radius: 50%; margin-top: 7px; background: transparent; }
+  .item.unread .dot { background: var(--sky); }
+  .from { font-weight: 400; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .item.unread .from { font-weight: 600; }
+  .when { color: var(--muted); font-size: 14px; white-space: nowrap; }
+  .preview { grid-column: 2 / 4; color: var(--muted); font-size: 15px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .item.unread .preview { color: var(--ink); }
+  .tags { grid-column: 2 / 4; display: flex; flex-wrap: wrap; gap: 6px; }
+  .pill { border-radius: 999px; padding: 1px 10px; background: var(--mist); color: var(--ink); font-size: 13px; font-weight: 500; }
+  .pill.sky { background: var(--sky); }
+  .pill.on { background: #d5ecdd; color: var(--good); }
+  /* conversation */
+  .head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 12px; margin: 8px 0 14px; }
+  .thread { display: flex; flex-direction: column; gap: 10px; }
+  .bubble { max-width: 86%; border-radius: 18px; padding: 10px 14px; overflow-wrap: anywhere; white-space: pre-wrap; }
+  .bubble.them { align-self: flex-start; background: var(--white); }
+  .bubble.me { align-self: flex-end; background: var(--ink); color: var(--white); }
+  .bubble .meta { font-size: 13px; color: var(--muted); margin-bottom: 2px; }
+  .bubble.me .meta { color: var(--mist); }
+  .bubble.me a { color: var(--white); }
+  .sys { align-self: center; font-size: 13px; color: var(--muted); background: var(--mist); border-radius: 999px; padding: 2px 12px; text-align: center; }
+  .compose { background: var(--white); border-radius: 18px; padding: 14px; }
+  .compose .label { font-size: 14px; color: var(--muted); margin-bottom: 6px; }
+  /* forms */
   .card { background: var(--white); border-radius: 18px; padding: 16px; margin: 0 0 12px; }
-  .meta { display: flex; flex-wrap: wrap; gap: 6px 10px; align-items: center; color: var(--muted); font-size: 15px; }
-  .pill { border-radius: 999px; padding: 1px 10px; background: var(--mist); color: var(--ink); font-size: 14px; font-weight: 500; }
-  .pill.flag { background: var(--sky); }
-  .comment { font-size: 18px; margin: 10px 0; white-space: pre-wrap; overflow-wrap: anywhere; }
-  .note { font-size: 15px; color: var(--muted); margin: 0 0 8px; overflow-wrap: anywhere; }
-  .note.error { color: var(--bad); }
-  textarea, input[type=text], input[type=url], input[type=password] { width: 100%; border: 1px solid var(--input); border-radius: 12px; padding: 10px 12px; font: 16px/1.4 Jost, sans-serif; color: var(--ink); background: var(--white); }
-  textarea { min-height: 84px; resize: vertical; }
-  label { display: block; font-size: 15px; font-weight: 500; margin: 10px 0 4px; }
-  .row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+  label { display: block; font-size: 15px; font-weight: 500; margin: 12px 0 4px; }
+  .hint { font-size: 14px; color: var(--muted); margin: 4px 0 0; }
+  .warn { font-size: 14px; color: var(--bad); margin: 6px 0 0; }
+  textarea, input[type=text], input[type=url], input[type=number], input[type=password], select { width: 100%; border: 1px solid var(--input); border-radius: 12px; padding: 10px 12px; font: 16px/1.4 Jost, sans-serif; color: var(--ink); background: var(--white); }
+  textarea { min-height: 90px; resize: vertical; }
+  input[type=number] { width: 110px; }
+  .check { display: flex; align-items: center; gap: 10px; margin: 10px 0 0; font-weight: 400; }
+  .check input { width: 20px; height: 20px; accent-color: var(--sky); flex: none; margin: 0; }
+  .toggle { display: inline-flex; align-items: center; gap: 10px; font-weight: 500; cursor: pointer; margin: 0; }
+  .toggle input { appearance: none; width: 48px; height: 28px; border-radius: 999px; background: var(--line); position: relative; cursor: pointer; transition: background .15s; margin: 0; }
+  .toggle input::after { content: ''; position: absolute; top: 3px; left: 3px; width: 22px; height: 22px; border-radius: 50%; background: var(--white); transition: left .15s; }
+  .toggle input:checked { background: var(--sky); }
+  .toggle input:checked::after { left: 23px; }
+  .section-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+  .radio { display: grid; gap: 8px; margin-top: 8px; }
+  .radio label { display: flex; gap: 10px; align-items: flex-start; font-weight: 400; margin: 0; border: 1px solid var(--line); border-radius: 12px; padding: 10px 12px; cursor: pointer; }
+  .radio input { accent-color: var(--sky); width: 18px; height: 18px; margin-top: 3px; flex: none; }
+  .preview-box { background: var(--mist); border-radius: 12px; padding: 10px 12px; font-size: 15px; margin-top: 8px; overflow-wrap: anywhere; white-space: pre-wrap; }
+  .row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 12px; }
+  .between { justify-content: space-between; }
   button { border: 0; border-radius: 999px; padding: 10px 18px; font: 500 16px Jost, sans-serif; cursor: pointer; background: var(--mist); color: var(--ink); }
-  button.primary { background: var(--sky); color: var(--ink); }
+  button.primary { background: var(--sky); }
   button.quiet { background: transparent; text-decoration: underline; padding: 10px 6px; }
-  button:disabled { opacity: 0.5; cursor: default; }
-  button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visible { outline: 3px solid var(--sky); outline-offset: 2px; }
+  button.danger { background: transparent; color: var(--bad); text-decoration: underline; padding: 10px 6px; }
+  button:disabled { opacity: .5; cursor: default; }
+  a.button { display: inline-block; border-radius: 999px; padding: 10px 18px; background: var(--mist); color: var(--ink); text-decoration: none; font-weight: 500; }
+  button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible, .item:focus-visible { outline: 3px solid var(--sky); outline-offset: 2px; }
   a { color: var(--ink); }
-  .empty { color: var(--muted); padding: 24px 4px; }
-  .toast { position: fixed; left: 50%; bottom: 20px; transform: translateX(-50%); background: var(--ink); color: var(--white); padding: 10px 18px; border-radius: 999px; font-size: 15px; display: none; max-width: calc(100% - 32px); }
-  .switch { display: flex; align-items: center; gap: 8px; margin-top: 10px; font-size: 15px; }
-  .switch input { width: 20px; height: 20px; accent-color: var(--sky); }
-  .preview { background: var(--mist); border-radius: 12px; padding: 10px 12px; font-size: 15px; margin-top: 8px; overflow-wrap: anywhere; }
+  .empty { color: var(--muted); padding: 28px 16px; text-align: center; }
+  .funnel { display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 8px; }
+  .funnel div { background: var(--mist); border-radius: 12px; padding: 8px 10px; }
+  .big { font-family: 'Instrument Serif', Georgia, serif; font-size: 2rem; line-height: 1; }
   table { width: 100%; border-collapse: collapse; font-size: 15px; }
   th, td { text-align: left; padding: 8px 6px; border-bottom: 1px solid var(--line); vertical-align: top; }
   td.n { text-align: right; font-variant-numeric: tabular-nums; }
-  .big { font-family: 'Instrument Serif', Georgia, serif; font-size: 2.2rem; line-height: 1; }
-  .tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin-bottom: 12px; }
-  .tiles .card { margin: 0; }
-  .person { display: block; width: 100%; text-align: left; border-radius: 18px; background: var(--white); padding: 14px 16px; margin: 0 0 10px; }
-  .person .last { color: var(--muted); font-size: 15px; margin-top: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .thread { display: flex; flex-direction: column; gap: 10px; }
-  .bubble { max-width: 88%; border-radius: 18px; padding: 10px 14px; overflow-wrap: anywhere; white-space: pre-wrap; }
-  .bubble.them { align-self: flex-start; background: var(--white); }
-  .bubble.me { align-self: flex-end; background: var(--ink); color: var(--white); }
-  .bubble .meta { font-size: 13px; margin-bottom: 4px; }
-  .bubble.me .meta { color: var(--mist); }
+  .toast { position: fixed; left: 50%; bottom: 20px; transform: translateX(-50%); background: var(--ink); color: var(--white); padding: 10px 18px; border-radius: 999px; font-size: 15px; display: none; max-width: calc(100% - 32px); }
   .login { max-width: 420px; margin: 12vh auto 0; }
-  .hidden { display: none; }
+  .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 </style>
 </head>
 <body>
@@ -77,9 +108,11 @@ const h = (tag, attrs = {}, ...kids) => {
   for (const [k, v] of Object.entries(attrs)) {
     if (k === 'on') for (const [ev, fn] of Object.entries(v)) el.addEventListener(ev, fn);
     else if (k === 'text') el.textContent = v;
+    else if (k === 'value') el.value = v;
+    else if (k === 'checked') el.checked = !!v;
     else if (v !== false && v != null) el.setAttribute(k, v === true ? '' : v);
   }
-  for (const kid of kids.flat()) if (kid != null) el.append(kid);
+  for (const kid of kids.flat()) if (kid != null && kid !== false) el.append(kid);
   return el;
 };
 function toast(msg) {
@@ -99,29 +132,31 @@ async function api(path, opts = {}) {
 const ago = (iso) => {
   if (!iso) return '';
   const m = Math.round((Date.now() - new Date(iso)) / 60000);
-  if (m < 60) return `${Math.max(m, 1)} min ago`;
-  if (m < 1440) return `${Math.round(m / 60)} h ago`;
-  return `${Math.round(m / 1440)} days ago`;
+  if (m < 60) return `${Math.max(m, 1)}m`;
+  if (m < 1440) return `${Math.round(m / 60)}h`;
+  const d = new Date(iso);
+  return d.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
 };
+const who = (c) => (c.author ? `@${c.author}` : 'Someone');
+const kindLabel = (r) => (r.kind === 'dm' ? (String(r.note || '').startsWith('Story reply') ? 'Story reply' : 'DM') : r.kind === 'out' ? 'DM' : 'Comment');
+const WAITING = ['New', 'Needs draft', 'Error', 'Reply by hand'];
 
 // ---- login ----
-async function showLogin(passwordSet) {
+function showLogin(passwordSet) {
   app.replaceChildren();
-  const msg = h('p', { class: 'note error', role: 'alert' });
+  const msg = h('p', { class: 'warn', role: 'alert' });
   const pw = h('input', { type: 'password', id: 'pw', autocomplete: passwordSet ? 'current-password' : 'new-password' });
   const code = h('input', { type: 'text', id: 'code', autocomplete: 'off' });
   const go = async (e) => {
     e.preventDefault();
     try {
       await api(passwordSet ? '/login' : '/setup', { method: 'POST', body: passwordSet ? { password: pw.value } : { code: code.value.trim(), password: pw.value } });
-      start();
-    } catch (err) {
-      msg.textContent = err.message;
-    }
+      route();
+    } catch (err) { msg.textContent = err.message; }
   };
   app.append(h('form', { class: 'login card', on: { submit: go } },
-    h('h1', { text: 'Comment inbox' }),
-    passwordSet ? null : h('p', { class: 'note', text: 'First visit: enter the setup code Claude gave you, then choose your password (save it in your password manager).' }),
+    h('h1', { text: 'Inbox' }),
+    passwordSet ? null : h('p', { class: 'hint', text: 'First visit: enter the setup code Claude gave you, then choose your password (save it in your password manager).' }),
     passwordSet ? null : [h('label', { for: 'code', text: 'Setup code' }), code],
     h('label', { for: 'pw', text: passwordSet ? 'Password' : 'New password (10+ characters)' }), pw,
     msg,
@@ -129,191 +164,312 @@ async function showLogin(passwordSet) {
   (passwordSet ? pw : code).focus();
 }
 
-// ---- views ----
-const VIEWS = [
-  { id: 'people', label: 'Conversations' },
-  { id: 'answer', label: 'To answer', statuses: ['New', 'Error'] },
-  { id: 'drafts', label: 'Needs draft', statuses: ['Needs draft'] },
-  { id: 'tiktok', label: 'TikTok by hand', statuses: ['Reply by hand'] },
-  { id: 'done', label: 'Done', statuses: ['Approved', 'Posted', 'Skip', 'Not sent (test mode)'] },
-  { id: 'keywords', label: 'Keywords' },
-  { id: 'stats', label: 'Stats' },
-];
-let view = 'people';
-let openThread = null;
-let counts = {};
-const kindLabel = (r) => (r.kind === 'dm' ? (r.note && r.note.startsWith('Story reply') ? 'Story reply' : 'DM') : r.kind === 'out' ? 'DM' : 'Comment');
-
-async function start() {
+// ---- routing: #inbox, #c/<key>, #keywords, #k/<KEYWORD>, #k/new, #stats ----
+let filter = 'unread';
+let stats = null;
+async function route() {
   const me = await api('/api/me').catch(() => ({}));
   if (!me.loggedIn) return showLogin(me.passwordSet);
-  render();
-}
-async function render() {
-  const s = await api('/api/stats?days=30').catch(() => null);
-  if (s) counts = { answer: s.inbox.toAnswer, drafts: s.inbox.needsDraft, tiktok: s.inbox.tiktok };
+  const hash = decodeURIComponent(location.hash.slice(1)) || 'inbox';
+  stats = await api('/api/stats?days=30').catch(() => null);
+  const tab = hash.startsWith('k') ? 'keywords' : hash === 'stats' ? 'stats' : 'inbox';
   const body = h('div');
   app.replaceChildren(
-    h('div', { class: 'top' }, h('h1', { text: 'Comment inbox' }), h('button', { class: 'quiet', text: 'Log out', on: { click: async () => { await api('/logout', { method: 'POST' }); showLogin(true); } } })),
-    h('nav', { 'aria-label': 'Views' }, VIEWS.map((v) => h('button', { 'aria-current': String(v.id === view), on: { click: () => { view = v.id; openThread = null; render(); } } }, v.label, counts[v.id] ? h('span', { class: 'count', text: counts[v.id] }) : null))),
+    h('div', { class: 'top' },
+      h('h1', { text: tab === 'keywords' ? 'Keywords' : tab === 'stats' ? 'Stats' : 'Inbox' }),
+      h('button', { class: 'quiet', text: 'Log out', on: { click: async () => { await api('/logout', { method: 'POST' }); showLogin(true); } } })),
+    h('nav', { class: 'tabs', 'aria-label': 'Sections' },
+      [['inbox', 'Inbox', stats?.inbox.unread], ['keywords', 'Keywords'], ['stats', 'Stats']].map(([id, label, n]) =>
+        h('button', { 'aria-current': String(tab === id), on: { click: () => (location.hash = id) } }, label, n ? h('span', { class: 'count', text: n }) : null))),
     body);
-  const current = VIEWS.find((v) => v.id === view);
-  if (view === 'people') return renderPeople(body);
-  if (view === 'keywords') return renderKeywords(body);
-  if (view === 'stats') return renderStats(body, s);
-  const q = current.statuses.map((x) => `status=${encodeURIComponent(x)}`).join('&');
-  const { rows } = await api(`/api/rows?${q}`);
-  if (view === 'answer') rows.sort((a, b) => (b.priority === true) - (a.priority === true));
-  if (view === 'drafts' && rows.length) body.append(h('p', { class: 'note', text: 'Ask Claude "draft my comment replies" and the drafts appear here, or type your own.' }));
-  if (!rows.length) body.append(h('p', { class: 'empty', text: view === 'answer' ? 'Nothing waiting. Nice.' : 'Nothing here.' }));
-  for (const r of rows) body.append(card(r));
+  try {
+    if (hash.startsWith('c/')) return await showConversation(body, hash.slice(2));
+    if (hash === 'keywords') return await showKeywords(body);
+    if (hash.startsWith('k/')) return await showKeyword(body, hash.slice(2));
+    if (hash === 'stats') return showStats(body);
+    return await showInbox(body);
+  } catch (e) { body.append(h('p', { class: 'warn', text: e.message })); }
 }
+window.addEventListener('hashchange', route);
 
-// Conversations: one row per person; open one to see every comment, DM and reply in order.
-async function renderPeople(body) {
+// ---- inbox list ----
+async function showInbox(body) {
   const { conversations } = await api('/api/conversations');
-  const waiting = conversations.filter((c) => c.waiting).length;
-  if (waiting !== counts.people) { counts.people = waiting; const b = document.querySelector('nav button'); if (b) b.replaceChildren('Conversations', waiting ? h('span', { class: 'count', text: waiting }) : ''); }
-  const c = openThread && conversations.find((x) => x.key === openThread);
-  if (c) return renderThread(body, c);
-  if (!conversations.length) return body.append(h('p', { class: 'empty', text: 'No conversations yet.' }));
-  for (const x of conversations) {
-    const last = x.items[x.items.length - 1];
-    body.append(h('button', { class: 'person', on: { click: () => { openThread = x.key; render(); } } },
-      h('div', { class: 'meta' },
-        h('span', { class: 'pill', text: x.platform }),
-        h('strong', { text: x.author ? `@${x.author}` : 'Someone' }),
-        x.waiting ? h('span', { class: 'pill flag', text: `${x.waiting} waiting` }) : null,
-        h('span', { text: ago(x.last) })),
-      h('div', { class: 'last', text: `${last.kind === 'out' ? 'You: ' : ''}${last.text || ''}` })));
-  }
+  const filters = [['unread', 'Unread'], ['reply', 'Needs a reply'], ['all', 'All']];
+  body.append(h('div', { class: 'chips', role: 'group', 'aria-label': 'Show' },
+    filters.map(([id, label]) => h('button', { 'aria-pressed': String(filter === id), on: { click: () => { filter = id; route(); } } }, label))));
+  const shown = conversations.filter((c) => (filter === 'unread' ? c.unread : filter === 'reply' ? c.waiting : true));
+  if (!shown.length) return body.append(h('div', { class: 'list' }, h('p', { class: 'empty', text: filter === 'all' ? 'No messages yet.' : filter === 'unread' ? "You're all caught up." : 'Nothing needs a reply.' })));
+  body.append(h('div', { class: 'list' }, shown.map((c) => {
+    const last = [...c.items].reverse().find((r) => r.kind !== 'out') || c.items[c.items.length - 1];
+    const flow = c.flows?.[c.flows.length - 1];
+    return h('button', { class: `item${c.unread ? ' unread' : ''}`, on: { click: () => (location.hash = `c/${c.key}`) } },
+      h('span', { class: 'dot', 'aria-hidden': 'true' }),
+      h('span', { class: 'from' }, who(c), c.unread ? h('span', { class: 'sr-only', text: ', unread' }) : null),
+      h('span', { class: 'when', text: ago(c.last) }),
+      h('span', { class: 'preview', text: last.text || '(no text)' }),
+      h('span', { class: 'tags' },
+        h('span', { class: 'pill', text: c.platform }),
+        h('span', { class: 'pill', text: kindLabel(last) }),
+        c.waiting ? h('span', { class: 'pill sky', text: 'Needs a reply' }) : null,
+        flow ? h('span', { class: flow.step === 'signedUp' ? 'pill on' : 'pill', text: `${flow.keyword}: ${STEP_LABEL[flow.step]}` }) : null));
+  })));
 }
+const STEP_LABEL = { asked: 'asked to reply', linkSent: 'got the link', clicked: 'opened the link', signedUp: 'signed up', reminded: 'reminded' };
 
-function renderThread(body, c) {
-  body.append(h('div', { class: 'row' }, h('button', { text: '← All conversations', on: { click: () => { openThread = null; render(); } } })),
-    h('h2', { text: c.author ? `@${c.author}` : 'Someone' }));
-  const thread = h('div', { class: 'thread' });
+// ---- one conversation ----
+async function showConversation(body, key) {
+  const { conversations } = await api('/api/conversations');
+  const c = conversations.find((x) => x.key === key);
+  if (!c) { body.append(h('p', { class: 'empty', text: 'This conversation is gone.' })); return; }
+  if (c.unread) await api('/api/conversations/read', { method: 'POST', body: { key } }).catch(() => {});
+  body.append(
+    h('div', { class: 'row between' },
+      h('button', { text: '← Inbox', on: { click: () => (location.hash = 'inbox') } }),
+      h('button', { class: 'quiet', text: 'Mark as unread', on: { click: async () => { await api('/api/conversations/read', { method: 'POST', body: { key, read: false } }); location.hash = 'inbox'; } } })),
+    h('div', { class: 'head' }, h('h2', { text: who(c) }), h('span', { class: 'pill', text: c.platform })));
+  // Their messages, your replies and the freebie steps, in time order.
+  const events = [];
   for (const r of c.items) {
-    if (r.kind === 'out') {
-      thread.append(h('div', { class: 'bubble me' }, h('div', { class: 'meta', text: `You · DM · ${ago(r.receivedAt)}` }), r.text || ''));
-      continue;
-    }
-    thread.append(h('div', { class: 'bubble them' },
-      h('div', { class: 'meta' }, `${kindLabel(r)} · ${ago(r.receivedAt)} `, r.link ? h('a', { href: r.link, target: '_blank', rel: 'noopener noreferrer', text: 'Open post' }) : null),
-      r.text || '(no text)'));
-    if (r.draft && ['Posted', 'Approved'].includes(r.status)) {
-      thread.append(h('div', { class: 'bubble me' }, h('div', { class: 'meta', text: `You · ${r.status === 'Approved' ? 'posting…' : `${r.kind === 'dm' ? 'DM' : 'reply'} · ${ago(r.postedAt)}`}` }), r.draft));
-    }
-    if (r.dm && r.dm.startsWith('sent')) thread.append(h('div', { class: 'bubble me' }, h('div', { class: 'meta', text: `Automatic freebie DM (${r.keyword})` }), r.dm.replace(/^sent: /, '')));
-    if (['New', 'Needs draft', 'Error', 'Reply by hand'].includes(r.status)) thread.append(card(r));
+    events.push({ at: r.receivedAt, row: r });
+    if (r.draft && ['Posted', 'Approved'].includes(r.status)) events.push({ at: r.postedAt || r.updatedAt || r.receivedAt, reply: r });
+    if (String(r.dm || '').startsWith('sent: ')) events.push({ at: r.receivedAt, auto: r });
+  }
+  for (const f of c.flows || []) for (const s of f.history || []) events.push({ at: s.at, sys: `${f.keyword}: ${STEP_LABEL[s.step]}${s.step === 'signedUp' && f.email ? ` (${f.email})` : ''}` });
+  events.sort((a, b) => String(a.at || '').localeCompare(String(b.at || '')));
+  const thread = h('div', { class: 'thread' });
+  for (const e of events) {
+    if (e.sys) thread.append(h('div', { class: 'sys', text: e.sys }));
+    else if (e.auto) thread.append(h('div', { class: 'bubble me' }, h('div', { class: 'meta', text: `Automatic DM · ${e.auto.keyword}` }), e.auto.dm.replace(/^sent: /, '')));
+    else if (e.reply) thread.append(h('div', { class: 'bubble me' }, h('div', { class: 'meta', text: `You · ${e.reply.kind === 'dm' ? 'DM' : 'reply'} · ${e.reply.status === 'Approved' ? 'sending…' : ago(e.at)}` }), e.reply.draft));
+    else if (e.row.kind === 'out') thread.append(h('div', { class: 'bubble me' }, h('div', { class: 'meta', text: `You · DM · ${ago(e.at)}` }), e.row.text || ''));
+    else thread.append(h('div', { class: 'bubble them' },
+      h('div', { class: 'meta' }, `${kindLabel(e.row)} · ${ago(e.at)} `, e.row.link ? h('a', { href: e.row.link, target: '_blank', rel: 'noopener noreferrer', text: 'Open post' }) : null),
+      e.row.text || '(no text)'));
   }
   body.append(thread);
+  // Reply box for the newest message that's waiting on her.
+  const open = [...c.items].reverse().find((r) => r.kind !== 'out' && WAITING.includes(r.status));
+  if (open) body.append(h('div', { style: 'height:12px' }), composer(open, c));
+  body.append(h('div', { class: 'row' }, h('button', { class: 'danger', text: 'Delete this conversation', on: { click: async () => {
+    if (!confirm(`Delete everything from ${who(c)} for good? Use this when someone asks you to delete their data.`)) return;
+    for (const r of c.items) await api(`/api/rows/${r.id}`, { method: 'DELETE' }).catch(() => {});
+    toast('Deleted.');
+    location.hash = 'inbox';
+  } } })));
 }
 
-function card(r) {
-  const draft = h('textarea', { 'aria-label': 'Reply', placeholder: 'Write your reply' });
-  draft.value = r.draft || '';
-  const set = async (change, msg) => {
+function composer(r, c) {
+  const box = h('textarea', { 'aria-label': 'Your reply', placeholder: 'Write your reply' });
+  box.value = r.draft || '';
+  const set = async (change, msg, back) => {
     try {
       await api(`/api/rows/${r.id}`, { method: 'PATCH', body: change });
       toast(msg);
-      render();
+      if (back) location.hash = 'inbox'; else route();
     } catch (e) { toast(e.message); }
   };
-  const buttons = [];
-  if (r.platform === 'TikTok') {
-    buttons.push(
-      h('button', { class: 'primary', text: 'Copy reply', on: { click: async () => { await navigator.clipboard.writeText(draft.value); toast('Copied. Paste it on TikTok.'); } } }),
-      h('button', { text: 'Done, I replied', on: { click: () => set({ draft: draft.value, status: 'Posted' }, 'Marked as replied.') } }));
-  } else if (['New', 'Error', 'Needs draft'].includes(r.status)) {
-    buttons.push(
-      h('button', { class: 'primary', text: 'Approve & post', on: { click: () => (draft.value.trim() ? set({ draft: draft.value, status: 'Approved', postNow: true }, 'Approved. Posting now.') : toast('Write a reply first.')) } }),
-      h('button', { text: 'Save draft', on: { click: () => set({ draft: draft.value, status: draft.value.trim() ? 'New' : 'Needs draft' }, 'Saved.') } }));
-  }
-  if (!['Posted', 'Skip'].includes(r.status)) buttons.push(h('button', { text: 'Skip', on: { click: () => set({ status: 'Skip' }, 'Skipped.') } }));
-  buttons.push(h('button', { class: 'quiet', text: 'Delete', on: { click: async () => {
-    if (!confirm('Delete this comment from your inbox for good? (Use this for deletion requests.)')) return;
-    await api(`/api/rows/${r.id}`, { method: 'DELETE' }).then(() => { toast('Deleted.'); render(); }, (e) => toast(e.message));
-  } } }));
-  const done = ['Posted', 'Approved', 'Skip', 'Not sent (test mode)'].includes(r.status);
-  return h('article', { class: 'card' },
-    h('div', { class: 'meta' },
-      h('span', { class: 'pill', text: r.platform }),
-      h('span', { class: 'pill', text: kindLabel(r) }),
-      h('span', { class: r.priority ? 'pill flag' : 'pill', text: r.type }),
-      done ? h('span', { class: 'pill', text: r.status }) : null,
-      h('span', { text: r.author ? `@${r.author}` : '' }),
-      h('span', { text: ago(r.receivedAt) }),
-      r.link ? h('a', { href: r.link, target: '_blank', rel: 'noopener noreferrer', text: 'Open post' }) : null),
-    h('p', { class: 'comment', text: r.text || '(no text)' }),
-    r.note ? h('p', { class: r.status === 'Error' ? 'note error' : 'note', text: r.note }) : null,
-    done ? (r.draft ? h('p', { class: 'note', text: `Your reply: ${r.draft}` }) : null) : draft,
+  const tiktok = r.platform === 'TikTok';
+  const label = r.draft ? 'Suggested reply (edit it if you like)' : 'No suggestion yet. Say "draft my comment replies" to Claude, or write your own.';
+  const buttons = tiktok
+    ? [h('button', { class: 'primary', text: 'Copy & open TikTok', on: { click: async () => {
+        try { await navigator.clipboard.writeText(box.value); } catch {}
+        if (r.link) window.open(r.link, '_blank', 'noopener');
+        toast('Copied. Paste it on TikTok, then tap "Mark as replied".');
+      } } }),
+      h('button', { text: 'Mark as replied', on: { click: () => set({ draft: box.value, status: 'Posted' }, 'Marked as replied.', true) } })]
+    : [h('button', { class: 'primary', text: 'Send', on: { click: () => (box.value.trim() ? set({ draft: box.value, status: 'Approved', postNow: true }, 'Sending now.', true) : toast('Write a reply first.')) } })];
+  buttons.push(
+    h('button', { text: 'Mark as read', title: 'No reply needed', on: { click: () => set({ status: 'Skip', read: true }, 'Done, no reply.', true) } }),
+    h('button', { class: 'quiet', text: 'Save draft', on: { click: () => set({ draft: box.value, status: box.value.trim() ? (tiktok ? 'Reply by hand' : 'New') : 'Needs draft' }, 'Draft saved.') } }));
+  return h('div', { class: 'compose' },
+    h('div', { class: 'label', text: `${kindLabel(r)}${r.kind === 'dm' ? ' (Instagram only allows replies within 24 hours of their last message)' : ''} · ${label}` }),
+    r.note && r.status === 'Error' ? h('p', { class: 'warn', text: r.note }) : null,
+    box,
     h('div', { class: 'row' }, buttons));
 }
 
-async function renderKeywords(body) {
-  let { keywords } = await api('/api/keywords');
-  const list = h('div');
-  const draw = () => {
-    list.replaceChildren();
-    keywords.forEach((k, i) => {
-      const field = (key, label, type = 'text') => {
-        const input = h('input', { type, value: k[key] || '', 'aria-label': `${label} for ${k.keyword || 'new keyword'}` });
-        input.addEventListener('input', () => { k[key] = input.value; if (key === 'dm' || key === 'url') prev.textContent = preview(k); });
-        return [h('label', { text: label }), input];
-      };
-      const toggle = (key, label) => {
-        const box = h('input', { type: 'checkbox' });
-        box.checked = !!k[key];
-        box.addEventListener('change', () => (k[key] = box.checked));
-        return h('label', { class: 'switch' }, box, label);
-      };
-      const preview = (x) => (x.dm ? `DM: ${x.dm.replace('{url}', x.url || '(link)')}` : 'No DM text yet.');
-      const prev = h('div', { class: 'preview', text: preview(k) });
-      list.append(h('div', { class: 'card' },
-        field('keyword', 'Keyword (people comment this)'),
-        field('freebie', 'Freebie'),
-        field('url', 'Link', 'url'),
-        field('dm', 'DM text ({url} becomes the link)'),
-        prev,
-        toggle('dmApproved', 'I approve this DM text'),
-        toggle('live', 'Switched on (DMs send automatically)'),
-        h('div', { class: 'row' }, h('button', { class: 'quiet', text: 'Remove keyword', on: { click: () => { keywords.splice(i, 1); draw(); } } }))));
-    });
-  };
-  draw();
-  body.append(
-    h('p', { class: 'note', text: 'A keyword only sends DMs when it is switched on and its DM text is approved. Changes work right away.' }),
-    list,
-    h('div', { class: 'row' },
-      h('button', { text: 'Add keyword', on: { click: () => { keywords.push({ keyword: '', url: '', dm: '', live: false, dmApproved: false }); draw(); } } }),
-      h('button', { class: 'primary', text: 'Save keywords', on: { click: async () => {
-        try { ({ keywords } = await api('/api/keywords', { method: 'PUT', body: { keywords } })); draw(); toast('Keywords saved.'); } catch (e) { toast(e.message); }
-      } } })));
+// ---- keywords ----
+let kwCache = [];
+async function showKeywords(body) {
+  ({ keywords: kwCache } = await api('/api/keywords'));
+  body.append(h('div', { class: 'row between' },
+    h('p', { class: 'hint', text: 'People comment or DM a keyword and get your freebie.' }),
+    h('button', { class: 'primary', text: '+ New keyword', on: { click: () => (location.hash = 'k/new') } })));
+  if (!kwCache.length) return body.append(h('div', { class: 'list' }, h('p', { class: 'empty', text: 'No keywords yet.' })));
+  const perKw = Object.fromEntries((stats?.keywords || []).map((k) => [k.keyword, k]));
+  body.append(h('div', { class: 'list' }, kwCache.map((k) => {
+    const s = perKw[k.keyword];
+    const f = s?.funnel;
+    const on = k.live && k.dmApproved;
+    return h('button', { class: 'item', on: { click: () => (location.hash = `k/${k.keyword}`) } },
+      h('span', { class: 'dot', 'aria-hidden': 'true', style: on ? 'background:#1d6b40' : '' }),
+      h('span', { class: 'from', style: 'font-weight:600', text: k.keyword }),
+      h('span', { class: on ? 'pill on' : 'pill', text: on ? 'On' : k.live && !k.dmApproved ? 'Waiting for your OK' : 'Off' }),
+      h('span', { class: 'preview', text: k.freebie || '(no freebie yet)' }),
+      h('span', { class: 'tags' },
+        h('span', { class: 'pill', text: k.delivery === 'email' ? 'Email signup' : 'Link in DM' }),
+        k.ask?.on ? h('span', { class: 'pill', text: `Asks for "${k.ask.word || 'READY'}"` }) : null,
+        s ? h('span', { class: 'pill', text: f ? `${s.comments} used · ${f.signedUp} signed up` : `${s.comments} used · ${s.dmsSent} DMs` } ) : null));
+  })));
 }
 
-function renderStats(body, s) {
-  if (!s) return body.append(h('p', { class: 'empty', text: 'No stats yet.' }));
-  const tile = (n, label) => h('div', { class: 'card' }, h('div', { class: 'big', text: String(n) }), h('div', { class: 'note', text: label }));
-  const sent = s.keywords.reduce((a, k) => a + k.dmsSent, 0);
-  const comments = s.keywords.reduce((a, k) => a + k.comments, 0);
+async function showKeyword(body, name) {
+  if (!kwCache.length) ({ keywords: kwCache } = await api('/api/keywords'));
+  const isNew = name === 'new';
+  const orig = isNew ? null : kwCache.find((k) => k.keyword === name);
+  if (!isNew && !orig) { body.append(h('p', { class: 'empty', text: 'That keyword is gone.' })); return; }
+  // Work on a copy; nothing changes until Save.
+  const k = JSON.parse(JSON.stringify(orig || { keyword: '', freebie: '', url: '', live: false, dmApproved: false, delivery: 'direct', where: { igComments: true, igDms: true }, ask: { on: false, text: '', word: 'READY' }, dm: 'Here you go: {url}', linkText: 'Here you go! Pop in your email and I\'ll send it straight over: {link}', signup: {}, reminder: { on: false, hours: 4, text: 'Just checking you got this. Your link is still here: {link}' } }));
+  k.where ||= { igComments: true, igDms: true };
+  k.ask ||= { on: false, text: '', word: 'READY' };
+  k.reminder ||= { on: false, hours: 4, text: '' };
+  k.signup ||= {};
+  const groups = await api('/api/mailerlite/groups').catch(() => ({ connected: false, groups: [] }));
+
+  const text = (obj, key, label, opts = {}) => {
+    const input = h(opts.area ? 'textarea' : 'input', { type: opts.type || 'text', id: `f-${label}`, value: obj[key] ?? '', placeholder: opts.placeholder || '' });
+    input.addEventListener('input', () => { obj[key] = input.type === 'number' ? Number(input.value) : input.value; opts.onInput?.(); });
+    return [h('label', { for: `f-${label}`, text: label }), input, opts.hint ? h('p', { class: 'hint', text: opts.hint }) : null];
+  };
+  const check = (obj, key, label, onChange) => {
+    const box = h('input', { type: 'checkbox', checked: obj[key] });
+    box.addEventListener('change', () => { obj[key] = box.checked; onChange?.(); });
+    return h('label', { class: 'check' }, box, label);
+  };
+  const toggle = (obj, key, label, onChange) => {
+    const box = h('input', { type: 'checkbox', role: 'switch', checked: obj[key], 'aria-label': label });
+    box.addEventListener('change', () => { obj[key] = box.checked; onChange?.(); });
+    return h('label', { class: 'toggle' }, box, label);
+  };
+  const previews = h('div');
+  const fill = (t, link) => String(t || '').replace('{url}', k.url || '(freebie link)').replace('{link}', link);
+  const drawPreviews = () => {
+    const link = 'https://hooks.scrollyseo.com/inbox/f/…';
+    const steps = [];
+    if (k.ask.on) steps.push(['1. First DM', k.ask.text || '(write it above)'], [`They reply "${k.ask.word || 'READY'}"`, '']);
+    steps.push([k.ask.on ? '2. Then' : '1. DM', k.delivery === 'email' ? fill(k.linkText, link) : fill(k.dm)]);
+    if (k.delivery === 'email') steps.push(['Signup page', 'They type their email → added to your MailerLite group → MailerLite emails the freebie.']);
+    if (k.delivery === 'email' && k.reminder.on) steps.push([`No signup after ${k.reminder.hours}h`, fill(k.reminder.text, link)]);
+    previews.replaceChildren(...steps.map(([t, m]) => h('div', { class: 'preview-box' }, h('strong', { text: t }), m ? `\n${m}` : '')));
+  };
+  const deliverySection = h('div');
+  const drawDelivery = () => {
+    const radio = (val, title, sub) => {
+      const r = h('input', { type: 'radio', name: 'delivery', value: val, checked: k.delivery === val });
+      r.addEventListener('change', () => { k.delivery = val; drawDelivery(); drawPreviews(); });
+      return h('label', {}, r, h('span', {}, h('strong', { text: title }), h('br'), h('span', { class: 'hint', text: sub })));
+    };
+    const parts = [
+      h('div', { class: 'radio' },
+        radio('direct', 'Link in the DM', 'The DM carries the freebie link. Quick, but you don\'t get their email.'),
+        radio('email', 'Email signup (recommended)', 'The DM carries their personal link; they type their email and MailerLite sends the freebie.')),
+    ];
+    if (k.delivery === 'direct') parts.push(text(k, 'dm', 'DM text', { area: true, hint: '{url} becomes the freebie link.', onInput: drawPreviews }));
+    else {
+      parts.push(text(k, 'linkText', 'DM text', { area: true, hint: '{link} becomes their personal signup link.', onInput: drawPreviews }));
+      parts.push(text(k.signup, 'headline', 'Signup page headline', { placeholder: `Where should I send ${k.freebie || 'your freebie'}?` }));
+      parts.push(text(k.signup, 'text', 'Signup page text', { placeholder: 'Pop in your email and it lands in your inbox in a minute.' }));
+      if (groups.connected) {
+        const sel = h('select', { id: 'f-group' }, h('option', { value: '', text: 'Choose a group…' }), groups.groups.map((g) => h('option', { value: g.id, text: g.name })));
+        sel.value = k.mailerliteGroup || '';
+        sel.addEventListener('change', () => { k.mailerliteGroup = sel.value; k.mailerliteGroupName = sel.selectedOptions[0]?.textContent || ''; });
+        parts.push(h('label', { for: 'f-group', text: 'MailerLite group' }), sel, h('p', { class: 'hint', text: 'MailerLite\'s automation for this group emails the freebie.' }));
+      } else {
+        parts.push(text(k, 'mailerliteGroup', 'MailerLite group ID', { hint: 'MailerLite isn\'t connected to the dashboard yet, so type the group ID (Claude can set this up for you).' }));
+      }
+      parts.push(h('h3', { style: 'margin-top:16px', text: 'Reminder' }),
+        toggle(k.reminder, 'on', 'Send one reminder if they don\'t sign up', () => { drawDelivery(); drawPreviews(); }));
+      if (k.reminder.on) parts.push(
+        text(k.reminder, 'hours', 'After how many hours', { type: 'number', hint: 'Instagram only allows it within 24 hours of their last DM, so 1 to 23.', onInput: drawPreviews }),
+        text(k.reminder, 'text', 'Reminder text', { area: true, hint: '{link} becomes their signup link.', onInput: drawPreviews }),
+        k.ask.on ? null : h('p', { class: 'warn', text: 'Reminders only reach people who have DMed you, so turn on "Ask first" too.' }));
+    }
+    deliverySection.replaceChildren(...parts.flat(3).filter(Boolean));
+  };
+  const askSection = h('div');
+  const drawAsk = () => {
+    askSection.replaceChildren(...[
+      toggle(k.ask, 'on', 'Ask them to reply first', () => { drawAsk(); drawPreviews(); drawDelivery(); }),
+      h('p', { class: 'hint', text: 'Their reply opens a DM conversation, which lets you remind them later. Needs DMs switched on.' }),
+      k.ask.on ? [text(k.ask, 'text', 'First DM', { area: true, placeholder: 'Want the free calculator? Reply READY and I\'ll send it over.', onInput: drawPreviews }), text(k.ask, 'word', 'The word they reply', { placeholder: 'READY', onInput: drawPreviews })] : null,
+    ].flat(3).filter(Boolean));
+  };
+  drawAsk();
+  drawDelivery();
+  drawPreviews();
+
+  const s = (stats?.keywords || []).find((x) => x.keyword === k.keyword);
+  const f = s?.funnel;
+  const save = async () => {
+    const list = kwCache.filter((x) => x !== orig);
+    list.push(k);
+    try {
+      ({ keywords: kwCache } = await api('/api/keywords', { method: 'PUT', body: { keywords: list } }));
+      toast('Saved. Changes work right away.');
+      location.hash = `k/${String(k.keyword).toUpperCase()}`;
+      if (!isNew && orig.keyword === String(k.keyword).toUpperCase()) route();
+    } catch (e) { toast(e.message); }
+  };
   body.append(
-    h('h2', { text: 'Last 30 days' }),
-    h('div', { class: 'tiles' }, tile(comments, 'keyword comments'), tile(sent, 'freebie DMs sent'), tile(s.inbox.toAnswer, 'waiting for you'), tile(s.inbox.needsDraft, 'need a draft')));
-  if (!s.keywords.length) return body.append(h('p', { class: 'empty', text: 'No keyword comments yet.' }));
+    h('div', { class: 'row between' }, h('button', { text: '← Keywords', on: { click: () => (location.hash = 'keywords') } })),
+    h('div', { class: 'card' },
+      h('div', { class: 'section-head' },
+        h('h2', { text: isNew ? 'New keyword' : k.keyword }),
+        toggle(k, 'live', 'On')),
+      isNew ? text(k, 'keyword', 'Keyword (what people comment or DM)', { placeholder: 'MATH', hint: 'One word, letters and numbers.' }) : null,
+      h('p', { class: 'hint', text: 'When it\'s on and you\'ve approved the messages below, it works right away.' })),
+    h('div', { class: 'card' }, h('h3', { text: 'Where it works' }),
+      check(k.where, 'igComments', 'Instagram comments'),
+      check(k.where, 'igDms', 'Instagram DMs and Story replies (needs DMs switched on)'),
+      h('p', { class: 'hint', text: 'YouTube and TikTok don\'t allow DMs from automations, so keywords there just land in your inbox.' })),
+    h('div', { class: 'card' }, h('h3', { text: 'Freebie' }),
+      text(k, 'freebie', 'Name', { placeholder: '$1K Math calculator' }),
+      text(k, 'url', 'Link to the freebie', { type: 'url', placeholder: 'https://…', onInput: drawPreviews }),
+      h('div', { class: 'row' }, h('button', { text: 'Open freebie', on: { click: () => (k.url ? window.open(k.url, '_blank', 'noopener') : toast('Add the link first.')) } }))),
+    h('div', { class: 'card' }, h('h3', { text: 'Step 1: Ask first (optional)' }), askSection),
+    h('div', { class: 'card' }, h('h3', { text: `Step ${k.ask.on ? 2 : 1}: How they get it` }), deliverySection),
+    h('div', { class: 'card' }, h('h3', { text: 'What they\'ll see' }), previews,
+      check(k, 'dmApproved', 'I approve these messages')),
+    !isNew ? h('div', { class: 'card' }, h('h3', { text: 'Last 30 days' }),
+      s ? h('div', { class: 'funnel' },
+        [[s.comments, 'used it'], [f?.asked ?? 0, 'asked to reply'], [f?.linkSent ?? s.dmsSent, 'got the link'], [f?.clicked ?? 0, 'opened it'], [f?.signedUp ?? 0, 'signed up'], [f?.reminded ?? 0, 'reminded']]
+          .map(([n, l]) => h('div', {}, h('div', { class: 'big', text: String(n) }), h('div', { class: 'hint', text: l }))))
+        : h('p', { class: 'hint', text: 'Nobody has used it yet.' })) : null,
+    h('div', { class: 'row between' },
+      h('button', { class: 'primary', text: 'Save', on: { click: save } }),
+      !isNew ? h('button', { class: 'danger', text: 'Delete keyword', on: { click: async () => {
+        if (!confirm(`Delete ${k.keyword}? People who comment it won't get anything.`)) return;
+        try { await api(`/api/keywords/${encodeURIComponent(orig.keyword)}`, { method: 'DELETE' }); kwCache = []; toast('Deleted.'); location.hash = 'keywords'; } catch (e) { toast(e.message); }
+      } } }) : null));
+}
+
+// ---- stats ----
+function showStats(body) {
+  const s = stats;
+  if (!s) return body.append(h('p', { class: 'empty', text: 'No stats yet.' }));
+  const tile = (n, label) => h('div', {}, h('div', { class: 'big', text: String(n) }), h('div', { class: 'hint', text: label }));
+  const sum = (key) => s.keywords.reduce((a, k) => a + (k.funnel?.[key] || 0), 0);
+  body.append(h('div', { class: 'card' }, h('h3', { text: 'Last 30 days' }), h('div', { class: 'funnel' },
+    tile(s.keywords.reduce((a, k) => a + k.comments, 0), 'keyword uses'),
+    tile(s.keywords.reduce((a, k) => a + k.dmsSent, 0), 'freebie DMs'),
+    tile(sum('signedUp'), 'email signups'),
+    tile(s.inbox.unread, 'unread'))));
+  if (!s.keywords.length) return body.append(h('p', { class: 'empty', text: 'No keyword activity yet.' }));
   body.append(h('div', { class: 'card' }, h('table', {},
-    h('thead', {}, h('tr', {}, h('th', { text: 'Keyword' }), h('th', { class: 'n', text: 'Comments' }), h('th', { class: 'n', text: 'DMs sent' }), h('th', { text: 'Top post' }))),
+    h('thead', {}, h('tr', {}, h('th', { text: 'Keyword' }), h('th', { class: 'n', text: 'Used' }), h('th', { class: 'n', text: 'Got link' }), h('th', { class: 'n', text: 'Signed up' }), h('th', { text: 'Top post' }))),
     h('tbody', {}, s.keywords.map((k) => {
       const top = Object.entries(k.posts).sort((a, b) => b[1] - a[1])[0];
       return h('tr', {},
-        h('td', { text: k.keyword }),
+        h('td', {}, h('a', { href: `#k/${k.keyword}`, text: k.keyword })),
         h('td', { class: 'n', text: String(k.comments) }),
-        h('td', { class: 'n', text: k.dmsFailed ? `${k.dmsSent} (${k.dmsFailed} failed)` : String(k.dmsSent) }),
+        h('td', { class: 'n', text: String(k.funnel?.linkSent ?? k.dmsSent) }),
+        h('td', { class: 'n', text: String(k.funnel?.signedUp ?? '-') }),
         h('td', {}, top ? h('a', { href: top[0], target: '_blank', rel: 'noopener noreferrer', text: `${top[1]} on this post` }) : ''));
     })))));
 }
 
-start();
+route();
 </script>
 </body>
 </html>
