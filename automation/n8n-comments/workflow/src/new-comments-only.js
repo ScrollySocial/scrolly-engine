@@ -10,10 +10,9 @@ for (const item of $input.all()) {
   const key = `${c.platform}:${c.id}`;
   if (seen[key] || batch.has(key)) continue;
   const age = Date.now() - new Date(c.createdAt).getTime();
-  if (Number.isFinite(age) && age > maxAgeMs) {
-    remember('seen', key);
-    continue;
-  }
+  // Too old: skipped without remembering it, so the seen list never outlives the
+  // YouTube cleanup (youtube-cleanup.js).
+  if (Number.isFinite(age) && age > maxAgeMs) continue;
   batch.add(key);
   out.push({ json: { ...c, key } });
 }

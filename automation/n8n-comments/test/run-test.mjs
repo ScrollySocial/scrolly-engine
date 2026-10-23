@@ -181,5 +181,32 @@ await waitFor(async () => (await page(testModeRow.id))?.properties.Status.select
 const tm = await page(testModeRow.id);
 check('Test-mode row goes back to New for a fresh OK, nothing posted', tm?.properties.Status.select.name === 'New' && (await repliesTo('c21')) === 0 && tm.properties.Note.rich_text[0]?.text.content.includes('Approve again'), tm?.properties.Status.select.name);
 
+// 10. YouTube cleanup: only YouTube rows older than YOUTUBE_KEEP_DAYS (21) are blanked and trashed
+const seedRow = async (platform, daysAgo, commentId) =>
+  (await fetch(`${MOCK}/test/seed`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ properties: {
+      Comment: { title: [{ text: { content: `${platform} comment` } }] },
+      Platform: { select: { name: platform } },
+      Status: { select: { name: 'Posted' } },
+      Author: { rich_text: [{ type: 'text', text: { content: 'someone' } }] },
+      'Comment ID': { rich_text: [{ type: 'text', text: { content: commentId } }] },
+      Received: { date: { start: new Date(Date.now() - daysAgo * 86400e3).toISOString() } },
+    } }),
+  })).json();
+const oldYt = await seedRow('YouTube', 25, 'yt-old');
+const newYt = await seedRow('YouTube', 2, 'yt-new');
+const oldIg = await seedRow('Instagram', 40, 'ig-old');
+await runJob('cleanup');
+await waitFor(async () => (await page(oldYt.id))?.archived);
+const gone = await page(oldYt.id);
+check('Cleanup trashes YouTube rows older than 21 days, blanked first', gone?.archived && gone.properties.Author.rich_text.length === 0 && gone.properties['Comment ID'].rich_text.length === 0 && gone.properties.Comment.title[0].text.content.includes('removed'), JSON.stringify(gone?.properties.Comment));
+check('Cleanup keeps newer YouTube rows', !(await page(newYt.id))?.archived);
+check('Cleanup leaves Instagram rows alone, however old', !(await page(oldIg.id))?.archived);
+r = await fetch(`${N8N}/webhook/comments-status`, { headers: RUN });
+const afterCleanup = await r.json().catch(() => ({}));
+check('Status shows the cleanup run', afterCleanup.lastRuns?.cleanup?.rowsRemoved === 1, JSON.stringify(afterCleanup.lastRuns?.cleanup));
+
 console.log(failed ? `\n${failed} check(s) failed` : '\nall checks passed');
 process.exit(failed ? 1 : 0);

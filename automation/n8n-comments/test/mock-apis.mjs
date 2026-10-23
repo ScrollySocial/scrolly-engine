@@ -47,13 +47,22 @@ const routes = [
     pages.push(page);
     return page;
   }],
-  ['POST', /^\/notion\/databases\/[^/]+\/query$/, (req, url, body) => ({
-    results: pages.filter((p) => p.properties.Status?.select?.name === body.filter?.select?.equals),
-  })],
+  // Supports the two filters the workflow sends: Status equals X, and
+  // Platform equals X + Received before a date (the YouTube cleanup).
+  ['POST', /^\/notion\/databases\/[^/]+\/query$/, (req, url, body) => {
+    const matches = (p, f) =>
+      f.and
+        ? f.and.every((g) => matches(p, g))
+        : f.date
+          ? (p.properties[f.property]?.date?.start || '') < f.date.before
+          : p.properties[f.property]?.select?.name === f.select?.equals;
+    return { results: pages.filter((p) => !p.archived && matches(p, body.filter || {})), has_more: false };
+  }],
   ['PATCH', /^\/notion\/pages\/[^/]+$/, (req, url, body) => {
     if (failNextPatch) return (failNextPatch = false), FAIL;
     const page = pages.find((p) => p.id === url.pathname.split('/').pop());
-    if (page) Object.assign(page.properties, body.properties);
+    if (page && body.properties) Object.assign(page.properties, body.properties);
+    if (page && body.archived) page.archived = true;
     return page || {};
   }],
   ['GET', /^\/log$/, () => ({ log, pages })],

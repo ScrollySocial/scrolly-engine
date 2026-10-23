@@ -34,7 +34,8 @@ updates in testing). n8n runs one execution at a time (`N8N_CONCURRENCY_PRODUCTI
 | daily 8am | TikTok: Apify `clockworks/tiktok-comments-scraper`, newest 3 videos, 30 comments each, capped at TIKTOK_MAX_USD |
 | every 10 min | post Approved replies from Notion |
 | weekly | refresh the Instagram long-lived token (60-day tokens) |
-| `POST /webhook/comments-run` `{"job": "youtube"\|"tiktok"\|"replies"\|"token"}` | run a job now (header `x-run-secret`) |
+| daily 3am | YouTube cleanup: inbox rows older than `YOUTUBE_KEEP_DAYS` (21) are blanked, then trashed; YouTube IDs pruned from the state file (Google's 30-day limit, promised on scrollyseo.com/privacy/). Instagram and TikTok rows are kept |
+| `POST /webhook/comments-run` `{"job": "youtube"\|"tiktok"\|"replies"\|"token"\|"cleanup"}` | run a job now (header `x-run-secret`) |
 | `GET /webhook/comments-status` | test mode, last checks, last runs, last 20 errors (header `x-run-secret`) |
 
 ## Keywords
