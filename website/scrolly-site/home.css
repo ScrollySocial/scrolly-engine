@@ -199,7 +199,9 @@ body:has(.hp){margin:0;background:#f7f3ec}
  .hp-earned .copy{padding:0}
  .hp-earned h2{margin-bottom:18px}
  .hp-earned .tabs{margin-top:18px}
- .hp-earned .shot-col{margin-top:calc(var(--ah) * -.26 - 28px)}
+ /* 2026-10-23: the shirt's bottom lines up with the copy's bottom (24px lower) at every width. A 0-height bottom-aligned flex column
+    lets the shirt rise into the clouds without making the row taller; the old vw-based lift drifted ~170px above the copy at 1920. */
+ .hp-earned .shot-col{align-self:end;height:0;display:flex;flex-direction:column;justify-content:flex-end;margin:0 0 -24px}
  /* the star layer sits ~8% of the art's height higher than the card, so every star stays in the top cloud band, clear of the headline */
  .hp-earned .earned-art img.stars{transform:translate(-50%,calc(var(--ah) * -.08))}
  .hp-earned h2{font-size:clamp(2rem,2.6vw,3.4rem)}
