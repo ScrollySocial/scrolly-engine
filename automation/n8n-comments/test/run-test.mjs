@@ -242,8 +242,9 @@ const pinsStats = stats.keywords?.find((k) => k.keyword === 'PINS');
 check('Stats count keyword comments and DMs sent per keyword and post', pinsStats?.comments >= 4 && pinsStats?.dmsSent === 4 && pinsStats?.posts['https://www.instagram.com/p/TESTPOST/'] >= 3, JSON.stringify(pinsStats));
 
 // 13. Freebie flow: comment FREE → "reply READY" → READY → personal link → signup page → MailerLite → reminder
-const freeKw = { keyword: 'FREE', freebie: 'Free guide', url: 'https://example.com/free.pdf', live: true, dmApproved: true, delivery: 'email', where: { igComments: true, igDms: true }, ask: { on: true, text: 'Want it? Reply READY.', word: 'READY' }, linkText: 'Grab it here: {link}', mailerliteGroup: '111', reminder: { on: true, hours: 1, text: 'Still want it? {link}' } };
-r = await fetch(`${INBOX}/inbox/api/keywords`, { method: 'PUT', headers: INBOX_KEY, body: JSON.stringify({ keywords: [freeKw] }) });
+const freeKw = { keyword: 'FREE', freebie: 'Free guide', url: 'https://example.com/free.pdf', live: true, dmApproved: true, delivery: 'email', where: { igComments: true, igDms: true }, ask: { on: true, text: 'Want it? Reply READY.', word: 'READY' }, linkText: 'Grab it here: {link}', mailerliteGroup: '111', reminder: { on: true, minutes: 60, text: 'Still want it? {link}' } };
+const ytKw = { keyword: 'YTK', freebie: 'YouTube guide', url: 'https://example.com/yt.pdf', live: true, dmApproved: true, delivery: 'email', where: { igComments: false, igDms: false, ytComments: true }, linkText: 'Grab it here: {link}', mailerliteGroup: '111', yt: { text: 'Grab it here: {link}' } };
+r = await fetch(`${INBOX}/inbox/api/keywords`, { method: 'PUT', headers: INBOX_KEY, body: JSON.stringify({ keywords: [freeKw, ytKw] }) });
 check('Flow keyword saved in the dashboard', r.status === 200, await r.text());
 const dmCount = async () => sentDms(await mockLog()).length;
 let before = await dmCount();
@@ -298,6 +299,31 @@ const fay = (await inbox('/conversations')).conversations.find((x) => x.author =
 check('Conversation shows the flow steps with the person', fay?.flows?.[0]?.history.map((s) => s.step).join() === 'asked,linkSent,clicked,signedUp', JSON.stringify(fay?.flows?.[0]?.history));
 await inbox('/conversations/read', { method: 'POST', body: { key: fay.key } });
 check('Opening a conversation marks it read', (await inbox('/conversations')).conversations.find((x) => x.key === fay.key)?.unread === 0);
+
+// 14. YouTube keyword: automatic public reply with the keyword's shared signup page
+await fetch(`${MOCK}/test/yt-keyword`, { method: 'POST' });
+await runJob('youtube');
+const ytReply = await waitFor(async () => (await mockLog()).log.filter((x) => x.path === '/yt/comments').find((x) => x.body.snippet.parentId === 'ytThread9'));
+check('YouTube keyword: public reply under the comment with the shared signup link', ytReply?.body.snippet.textOriginal === 'Grab it here: http://localhost:5691/inbox/s/YTK' && ytReply?.auth === 'Bearer yt-access', JSON.stringify(ytReply?.body));
+check('YouTube keyword comment is Handled (no reply needed from you)', (await byComment('ytThread9'))?.status === 'Handled');
+page = await fetch(`${INBOX}/inbox/s/YTK`);
+html = await page.text();
+check('Shared signup page opens and posts to itself', page.status === 200 && html.includes('action="/inbox/s/YTK"') && html.includes('YouTube guide'));
+page = await fetch(`${INBOX}/inbox/s/YTK`, { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: 'email=kai%40example.com&consent=yes' });
+html = await page.text();
+const ytFlow = ((await inbox('/flows')).flows || []).find((f) => f.keyword === 'YTK');
+check('Shared signup adds the email to MailerLite and counts as a YouTube signup', page.status === 200 && html.includes('Check your inbox') && ytFlow?.step === 'signedUp' && ytFlow?.platform === 'YouTube', JSON.stringify(ytFlow));
+check('Shared page for a keyword that is off or unknown shows "expired"', (await fetch(`${INBOX}/inbox/s/NOPE`)).status === 404);
+
+// 15. Keyword page details: reminder minutes, the MailerLite panel, the new stats
+const kw = (await inbox('/keywords')).keywords.find((k) => k.keyword === 'FREE');
+check('Reminder is stored in minutes', kw?.reminder.minutes === 60 && kw?.reminder.hours === undefined, JSON.stringify(kw?.reminder));
+r = await fetch(`${INBOX}/inbox/api/keywords`, { method: 'PUT', headers: INBOX_KEY, body: JSON.stringify({ keywords: [{ ...ytKw, yt: { text: 'no link here' } }] }) });
+check('A YouTube reply without the link is refused', r.status === 400);
+const panel = await inbox('/mailerlite/groups/111');
+check('MailerLite panel: group size and the sequence it starts, with links', panel.group?.active === 5 && panel.automations?.length === 1 && panel.automations[0].name === 'FREE delivery' && panel.automations[0].url === 'https://dashboard.mailerlite.com/automations/900', JSON.stringify(panel));
+const st = await inbox('/stats?days=30');
+check('Stats: contacts, new contacts, signups, conversion and 30 daily points', st.totals?.contacts > 0 && st.totals.newContacts > 0 && st.totals.signups === 2 && typeof st.totals.conversion === 'number' && st.series?.length === 30 && st.series.at(-1).signups === 2, JSON.stringify(st.totals));
 
 console.log(failed ? `\n${failed} check(s) failed` : '\nall checks passed');
 process.exit(failed ? 1 : 0);

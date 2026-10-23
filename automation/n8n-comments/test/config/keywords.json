@@ -1,15 +1,50 @@
 {
   "source": "test only",
   "keywords": [
-    { "keyword": "PINS", "url": "https://example.com/pins.pdf", "dm": "Here you go: {url}" },
+    {
+      "keyword": "PINS",
+      "url": "https://example.com/pins.pdf",
+      "dm": "Here you go: {url}"
+    },
     {
       "keyword": "FREE",
       "url": "https://example.com/free.pdf",
       "delivery": "email",
-      "where": { "igComments": true, "igDms": true },
-      "ask": { "on": true, "text": "Want it? Reply READY.", "word": "READY" },
+      "where": {
+        "igComments": true,
+        "igDms": true
+      },
+      "ask": {
+        "on": true,
+        "text": "Want it? Reply READY.",
+        "word": "READY"
+      },
       "linkText": "Grab it here: {link}",
-      "reminder": { "on": true, "hours": 1, "text": "Still want it? {link}" }
+      "reminder": {
+        "on": true,
+        "minutes": 60,
+        "text": "Still want it? {link}"
+      }
+    },
+    {
+      "keyword": "YTK",
+      "url": "https://example.com/yt.pdf",
+      "delivery": "email",
+      "where": {
+        "igComments": false,
+        "igDms": false,
+        "ytComments": true
+      },
+      "ask": {
+        "on": false
+      },
+      "linkText": "",
+      "reminder": {
+        "on": false
+      },
+      "yt": {
+        "text": "Grab it here: {link}"
+      }
     }
   ]
 }

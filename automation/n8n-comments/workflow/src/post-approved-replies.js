@@ -25,28 +25,6 @@ try {
   return [{ json: { job: 'replies', error: errText(e) } }];
 }
 
-async function youtubeAccessToken() {
-  if (state.ytAccess && state.ytAccessUntil > Date.now() + 60000) return state.ytAccess;
-  const res = await http({
-    method: 'POST',
-    url: cfg('GOOGLE_TOKEN_URL', 'https://oauth2.googleapis.com/token'),
-    json: false,
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    // (no URLSearchParams in n8n's Code sandbox)
-    body: Object.entries({
-      client_id: cfg('YT_CLIENT_ID'),
-      client_secret: cfg('YT_CLIENT_SECRET'),
-      refresh_token: cfg('YT_REFRESH_TOKEN'),
-      grant_type: 'refresh_token',
-    })
-      .map(([k, v]) => `${encodeURIComponent(k)}=${encodeURIComponent(v)}`)
-      .join('&'),
-  });
-  const t = typeof res === 'string' ? JSON.parse(res) : res;
-  state.ytAccess = t.access_token;
-  state.ytAccessUntil = Date.now() + (t.expires_in || 3600) * 1000;
-  return state.ytAccess;
-}
 
 const out = [];
 for (const row of rows) {

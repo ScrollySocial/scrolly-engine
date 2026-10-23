@@ -50,7 +50,8 @@ for (const item of $input.all()) {
       logError('inbox-touch', e);
     }
   }
-  let hit = keywords.find((k) => words.includes(String(k.keyword).toUpperCase()) && (isDm ? k.where?.igDms !== false : k.where?.igComments !== false));
+  const allowed = (k) => (c.platform === 'YouTube' ? !!k.where?.ytComments : isDm ? k.where?.igDms !== false : k.where?.igComments !== false);
+  let hit = keywords.find((k) => words.includes(String(k.keyword).toUpperCase()) && allowed(k));
   // "READY" (or her reply word) in a DM answers an open "ask first" flow.
   let readyFlow = null;
   if (!hit && isDm) {
@@ -72,6 +73,44 @@ for (const item of $input.all()) {
     c.keyword = hit.keyword;
     const trigger = readyFlow ? String(hit.ask?.word || 'READY').toUpperCase() : hit.keyword.toUpperCase();
     c.keywordOnly = words.filter((w) => w !== trigger && !FILLER.test(w)).length === 0;
+  }
+  // YouTube has no DMs: an automatic public reply under the comment, with the freebie link
+  // (direct) or the keyword's shared signup page (email).
+  if (hit && c.platform === 'YouTube') {
+    const text = String(hit.yt?.text || '').replace('{url}', hit.url).replace('{link}', `${PUBLIC}/inbox/s/${hit.keyword}`);
+    let result = 'test';
+    if (state.dm?.[c.id]) {
+      c.dm = 'already sent';
+      result = 'already';
+    } else if (DRY_RUN) {
+      c.dm = `test mode, would reply: ${text}`;
+    } else {
+      try {
+        await http({
+          method: 'POST',
+          url: `${cfg('YT_BASE', 'https://www.googleapis.com/youtube/v3')}/comments`,
+          qs: { part: 'snippet' },
+          headers: { Authorization: `Bearer ${await youtubeAccessToken()}` },
+          body: { snippet: { parentId: c.threadId || c.id, textOriginal: text } },
+        });
+        remember('dm', c.id);
+        c.dm = `sent: ${text}`;
+        result = 'sent';
+      } catch (e) {
+        logError('youtube-keyword-reply', e);
+        c.dm = `failed: ${errText(e)}`;
+        result = 'failed';
+      }
+    }
+    if (result !== 'already') {
+      try {
+        await inbox('POST', '/events', { keyword: hit.keyword, platform: 'YouTube', post: c.link || '', result });
+      } catch (e) {
+        logError('inbox-event', e);
+      }
+    }
+    out.push({ json: c });
+    continue;
   }
   if (!hit || c.platform !== 'Instagram') {
     out.push({ json: c });

@@ -11,6 +11,7 @@ let log = [];
 let pages = [];
 let failNextPatch = false;
 let sentCount = 0;
+let ytKeyword = false;
 const FAIL = Symbol('fail');
 const hoursAgo = (h) => new Date(Date.now() - h * 3600e3).toISOString();
 
@@ -33,6 +34,7 @@ const routes = [
   }],
   ['GET', /^\/yt\/commentThreads$/, () => ({
     items: [
+      ...(ytKeyword ? [{ id: 'ytThread9', snippet: { videoId: 'vid2', topLevelComment: { id: 'ytThread9', snippet: { textOriginal: 'YTK', authorDisplayName: 'Kai', authorChannelId: { value: 'UCkai' }, publishedAt: hoursAgo(1), videoId: 'vid2' } } } }] : []),
       { id: 'ytThread1', snippet: { videoId: 'vid1', topLevelComment: { id: 'ytThread1', snippet: { textOriginal: 'How often should I post Shorts?', authorDisplayName: 'Ana', authorChannelId: { value: 'UCana' }, publishedAt: hoursAgo(1), videoId: 'vid1' } } } },
       { id: 'ytThread2', snippet: { videoId: 'vid1', topLevelComment: { id: 'ytThread2', snippet: { textOriginal: 'my own reply', authorDisplayName: 'Scrolly', authorChannelId: { value: 'UCscrolly' }, publishedAt: hoursAgo(1), videoId: 'vid1' } } } },
       { id: 'ytThread3', snippet: { videoId: 'vid0', topLevelComment: { id: 'ytThread3', snippet: { textOriginal: 'old comment', authorDisplayName: 'Bo', authorChannelId: { value: 'UCbo' }, publishedAt: hoursAgo(200), videoId: 'vid0' } } } },
@@ -40,6 +42,11 @@ const routes = [
   })],
   ['POST', /^\/yt\/comments$/, () => ({ id: 'ytReply1' })],
   ['GET', /^\/mailerlite\/groups$/, () => ({ data: [{ id: '111', name: 'FREE freebie' }] })],
+  ['GET', /^\/mailerlite\/groups\/111$/, () => ({ data: { id: '111', name: 'FREE freebie', active_count: 5 } })],
+  ['GET', /^\/mailerlite\/automations$/, () => ({ data: [
+    { id: '900', name: 'FREE delivery', enabled: true, emails_count: 2, stats: { sent: 9, open_rate: { string: '60%' } }, triggers: [{ type: 'subscriber_joins_group', group_ids: ['111'] }] },
+    { id: '901', name: 'Something else', enabled: true, emails_count: 1, stats: {}, triggers: [{ type: 'subscriber_joins_group', group_ids: ['222'] }] },
+  ] })],
   ['POST', /^\/mailerlite\/subscribers$/, (req, url, body) => ({ data: { id: 'sub1', email: body.email } })],
   ['POST', /^\/google-token$/, () => ({ access_token: 'yt-access', expires_in: 3599 })],
   ['POST', /^\/apify\/acts\/clockworks~tiktok-comments-scraper\/run-sync-get-dataset-items$/, () => [
@@ -75,7 +82,7 @@ const routes = [
     return page || {};
   }],
   ['GET', /^\/log$/, () => ({ log, pages })],
-  ['POST', /^\/reset$/, () => ((log = []), (pages = []), (failNextPatch = false), (sentCount = 0), { ok: true })],
+  ['POST', /^\/reset$/, () => ((log = []), (pages = []), (failNextPatch = false), (sentCount = 0), (ytKeyword = false), { ok: true })],
   ['POST', /^\/test\/approve$/, () => {
     // Stands in for the subscription routine (fills empty drafts) and for Mercedes (approves).
     for (const p of pages) {
@@ -90,6 +97,8 @@ const routes = [
     pages.push(page);
     return page;
   }],
+  // From now on the YouTube poll also returns a comment with the keyword YTK.
+  ['POST', /^\/test\/yt-keyword$/, () => ((ytKeyword = true), { ok: true })],
   // The next Notion row update fails, as when Notion has a hiccup after a reply went out.
   ['POST', /^\/test\/fail-next-patch$/, () => ((failNextPatch = true), { ok: true })],
 ];

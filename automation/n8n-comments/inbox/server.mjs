@@ -79,9 +79,14 @@ function cleanKeyword(k) {
   const url = str(k.url);
   if (url && !/^https:\/\/\S+$/.test(url)) throw new Error(`${keyword}: the freebie link must start with https://`);
   const delivery = k.delivery === 'email' ? 'email' : 'direct';
-  const where = { igComments: k.where?.igComments !== false, igDms: k.where?.igDms !== false };
+  // YouTube has no DMs: a keyword there gets an automatic public reply with the freebie link
+  // (direct) or the keyword's shared signup page (email), never a personal link.
+  const where = { igComments: k.where?.igComments !== false, igDms: k.where?.igDms !== false, ytComments: !!k.where?.ytComments };
   const ask = { on: !!k.ask?.on, text: str(k.ask?.text), word: str(k.ask?.word || 'READY').toUpperCase() };
-  const reminder = { on: !!k.reminder?.on, hours: Math.min(23, Math.max(1, Number(k.reminder?.hours) || 4)), text: str(k.reminder?.text) };
+  // Minutes since 2026-10-23 (it was hours); Instagram's 24-hour window caps it at 23 hours.
+  const minutes = Number(k.reminder?.minutes) || (Number(k.reminder?.hours) || 4) * 60;
+  const reminder = { on: !!k.reminder?.on, minutes: Math.min(1380, Math.max(5, Math.round(minutes))), text: str(k.reminder?.text) };
+  const yt = { text: str(k.yt?.text) };
   const out = {
     ...k,
     keyword,
@@ -99,9 +104,12 @@ function cleanKeyword(k) {
     mailerliteGroup: str(k.mailerliteGroup),
     mailerliteGroupName: str(k.mailerliteGroupName),
     reminder,
+    yt,
   };
+  delete out.reminder.hours;
   if (out.live || out.dmApproved) {
-    if (!where.igComments && !where.igDms) throw new Error(`${keyword}: pick where it works (comments, DMs or both)`);
+    if (!where.igComments && !where.igDms && !where.ytComments) throw new Error(`${keyword}: pick where it works`);
+    if (where.ytComments && !yt.text.includes(delivery === 'email' ? '{link}' : '{url}')) throw new Error(`${keyword}: the YouTube reply needs ${delivery === 'email' ? '{link}' : '{url}'} in it`);
     if (ask.on && (!ask.text || !/^[A-Z0-9]{2,20}$/.test(ask.word))) throw new Error(`${keyword}: "ask first" needs its message and a one-word reply`);
     if (delivery === 'direct' && (!url || !out.dm.includes('{url}'))) throw new Error(`${keyword}: direct delivery needs the freebie link and a DM text with {url} in it`);
     if (delivery === 'email' && (!out.linkText.includes('{link}') || !out.mailerliteGroup)) throw new Error(`${keyword}: email delivery needs a DM text with {link} in it and a MailerLite group`);
@@ -127,7 +135,7 @@ function saveKeywords(list) {
     source: 'comment dashboard (hooks.scrollyseo.com/inbox)',
     keywords: clean
       .filter((k) => k.live && k.dmApproved)
-      .map(({ keyword, url, dm, delivery, where, ask, linkText, reminder }) => ({ keyword, url, dm, delivery, where, ask, linkText, reminder })),
+      .map(({ keyword, url, dm, delivery, where, ask, linkText, reminder, yt }) => ({ keyword, url, dm, delivery, where, ask, linkText, reminder, yt })),
   });
   return clean;
 }
@@ -170,7 +178,8 @@ function dueReminders() {
     const k = kws[f.keyword];
     if (!k?.live || !k.reminder?.on || f.remindedAt || !['linkSent', 'clicked'].includes(f.step) || !f.lastInboundAt || !f.dmPersonId) return false;
     const sent = Date.parse(f.linkSentAt || f.createdAt);
-    return Date.now() - sent >= k.reminder.hours * 3600e3 && Date.now() - Date.parse(f.lastInboundAt) < 23 * 3600e3;
+    const wait = (Number(k.reminder.minutes) || (Number(k.reminder.hours) || 4) * 60) * 60e3;
+    return Date.now() - sent >= wait && Date.now() - Date.parse(f.lastInboundAt) < 23 * 3600e3;
   });
 }
 
@@ -189,7 +198,8 @@ async function mailerlite(method, path, body) {
 
 // ---- the public signup page (no login: anyone with the personal link) ----
 const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
-function signupPage(k, token, state = {}) {
+// action: where the form posts (/inbox/f/<token> for a personal link, /inbox/s/<KEYWORD> for the shared one).
+function signupPage(k, action, state = {}) {
   const headline = k?.signup?.headline || `Where should I send ${k?.freebie || 'your freebie'}?`;
   const text = k?.signup?.text || 'Pop in your email and it lands in your inbox in a minute.';
   const body = state.expired
@@ -197,7 +207,7 @@ function signupPage(k, token, state = {}) {
     : state.done
     ? `<h1>Check your inbox</h1><p>It's on its way to <strong>${esc(state.email)}</strong>. If you don't see it in a few minutes, look in Promotions or Spam.</p>`
     : `<h1>${esc(headline)}</h1><p>${esc(text)}</p>
-       <form method="post" action="/inbox/f/${esc(token)}">
+       <form method="post" action="${esc(action)}">
          <label for="email">Your email</label>
          <input id="email" name="email" type="email" required autocomplete="email" value="${esc(state.email || '')}">
          <label class="consent"><input type="checkbox" name="consent" value="yes" required> Send me this freebie and Scrolly emails. I can unsubscribe anytime.</label>
@@ -238,31 +248,53 @@ async function handleSignup(req, res, token) {
   const f = db.flows.find((x) => x.token === token);
   const k = f && readKeywords().find((x) => x.keyword === f.keyword);
   if (!f || !k) return send(res, 404, signupPage(null, '', { expired: true }), 'text/html; charset=utf-8');
+  const action = f.shared ? `/inbox/s/${f.keyword}` : `/inbox/f/${token}`;
   if (req.method === 'GET') {
     if (f.step !== 'signedUp') {
       flowStep(f, 'clicked');
       save();
     }
-    return send(res, 200, signupPage(k, token, f.step === 'signedUp' ? { done: true, email: f.email } : {}), 'text/html; charset=utf-8');
+    return send(res, 200, signupPage(k, action, f.step === 'signedUp' ? { done: true, email: f.email } : {}), 'text/html; charset=utf-8');
   }
   // POST: a few tries a minute is plenty for a person; bots get slowed down.
   const cutoff = Date.now() - 60e3;
   while (signupTries.length && signupTries[0] < cutoff) signupTries.shift();
   signupTries.push(Date.now());
-  if (signupTries.length > 30) return send(res, 429, signupPage(k, token, { error: 'Too many tries right now. Wait a minute and try again.' }), 'text/html; charset=utf-8');
+  if (signupTries.length > 30) return send(res, 429, signupPage(k, action, { error: 'Too many tries right now. Wait a minute and try again.' }), 'text/html; charset=utf-8');
   const form = await readForm(req);
   const email = str(form.email).toLowerCase();
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email) || email.length > 200) return send(res, 400, signupPage(k, token, { email, error: "That email doesn't look right." }), 'text/html; charset=utf-8');
-  if (form.consent !== 'yes') return send(res, 400, signupPage(k, token, { email, error: 'Tick the box so I can email it to you.' }), 'text/html; charset=utf-8');
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email) || email.length > 200) return send(res, 400, signupPage(k, action, { email, error: "That email doesn't look right." }), 'text/html; charset=utf-8');
+  if (form.consent !== 'yes') return send(res, 400, signupPage(k, action, { email, error: 'Tick the box so I can email it to you.' }), 'text/html; charset=utf-8');
   try {
     await mailerlite('POST', '/subscribers', { email, groups: [k.mailerliteGroup], status: 'active' });
   } catch (e) {
     console.error('mailerlite', e.message);
-    return send(res, 502, signupPage(k, token, { email, error: "Something went wrong on my side. Please try again in a minute." }), 'text/html; charset=utf-8');
+    return send(res, 502, signupPage(k, action, { email, error: "Something went wrong on my side. Please try again in a minute." }), 'text/html; charset=utf-8');
   }
   flowStep(f, 'signedUp', { email });
   save();
-  return send(res, 200, signupPage(k, token, { done: true, email }), 'text/html; charset=utf-8');
+  return send(res, 200, signupPage(k, action, { done: true, email }), 'text/html; charset=utf-8');
+}
+// The shared signup page for a keyword (/inbox/s/KEYWORD), used in public YouTube replies:
+// anyone can open it, so it starts a flow only when someone actually signs up.
+async function handleSharedSignup(req, res, name) {
+  const k = readKeywords().find((x) => x.keyword === name.toUpperCase() && x.live && x.dmApproved && x.delivery === 'email');
+  if (!k) return send(res, 404, signupPage(null, '', { expired: true }), 'text/html; charset=utf-8');
+  const f = { token: `s-${randomBytes(9).toString('base64url')}`, keyword: k.keyword, platform: 'YouTube', personId: '', author: '', step: 'linkSent', history: [], createdAt: now(), shared: true };
+  if (req.method === 'GET') {
+    db.events.push({ at: now(), keyword: k.keyword, platform: 'YouTube', post: '', result: 'opened' });
+    save();
+    return send(res, 200, signupPage(k, `/inbox/s/${k.keyword}`), 'text/html; charset=utf-8');
+  }
+  // POST: same checks as the personal page; a flow is recorded only for a real signup.
+  db.flows.push(f);
+  flowStep(f, 'linkSent');
+  flowStep(f, 'clicked');
+  const before = res.statusCode;
+  await handleSignup(req, res, f.token);
+  if (f.step !== 'signedUp') db.flows = db.flows.filter((x) => x !== f);
+  save();
+  return before;
 }
 
 // ---- login ----
@@ -365,7 +397,7 @@ function stats(days) {
   const cutoff = new Date(Date.now() - days * 86400e3).toISOString();
   const by = {};
   for (const e of db.events) {
-    if (e.at < cutoff) continue;
+    if (e.at < cutoff || e.result === 'opened') continue;
     const k = (by[e.keyword] ||= { keyword: e.keyword, comments: 0, dmsSent: 0, dmsFailed: 0, posts: {} });
     k.comments++;
     if (e.result === 'sent') k.dmsSent++;
@@ -381,8 +413,38 @@ function stats(days) {
     if (f.remindedAt) fun.reminded++;
   }
   const open = (s) => db.rows.filter((r) => r.status === s && r.kind !== 'out').length;
+  // Contacts = people who commented or messaged (like ManyChat's contacts), counted by first contact.
+  const firstSeen = {};
+  for (const r of db.rows) {
+    if (r.kind === 'out') continue;
+    const who = `${r.platform}:${(r.author || r.personId || r.id).toLowerCase()}`;
+    const at = r.receivedAt || r.createdAt || '';
+    if (!firstSeen[who] || at < firstSeen[who]) firstSeen[who] = at;
+  }
+  // Daily series for the trend charts (local server dates, oldest first).
+  const day = (iso) => String(iso || '').slice(0, 10);
+  const series = {};
+  for (let i = days - 1; i >= 0; i--) series[day(new Date(Date.now() - i * 86400e3).toISOString())] = { newContacts: 0, keywordUses: 0, dmsSent: 0, signups: 0 };
+  const bump = (iso, key) => series[day(iso)] && series[day(iso)][key]++;
+  for (const at of Object.values(firstSeen)) bump(at, 'newContacts');
+  for (const e of db.events) if (e.result !== 'opened') bump(e.at, 'keywordUses');
+  for (const e of db.events) if (e.result === 'sent') bump(e.at, 'dmsSent');
+  for (const f of db.flows) if (f.signedUpAt) bump(f.signedUpAt, 'signups');
+  const inWindow = Object.values(series);
+  const sum = (k) => inWindow.reduce((a, d) => a + d[k], 0);
+  const linkSent = db.flows.filter((f) => (f.linkSentAt || '') >= cutoff).length;
   return {
     days,
+    totals: {
+      contacts: Object.keys(firstSeen).length,
+      newContacts: sum('newContacts'),
+      keywordUses: sum('keywordUses'),
+      dmsSent: sum('dmsSent'),
+      signups: sum('signups'),
+      subscribersAllTime: db.flows.filter((f) => f.signedUpAt).length,
+      conversion: linkSent ? Math.round((db.flows.filter((f) => (f.linkSentAt || '') >= cutoff && f.signedUpAt).length / linkSent) * 100) : null,
+    },
+    series: Object.entries(series).map(([date, v]) => ({ date, ...v })),
     keywords: Object.values(by).sort((a, b) => b.comments - a.comments),
     inbox: { toAnswer: open('New') + open('Error'), needsDraft: open('Needs draft'), tiktok: open('Reply by hand'), approved: open('Approved'), unread: db.rows.filter((r) => r.kind !== 'out' && !r.read).length },
   };
@@ -449,6 +511,8 @@ async function handle(req, res) {
   if (req.method === 'GET' && path === '/inbox') return send(res, 200, readFileSync(PAGE_FILE, 'utf8'), 'text/html; charset=utf-8');
   const signup = path.match(/^\/inbox\/f\/([A-Za-z0-9_-]{8,40})$/);
   if (signup && ['GET', 'POST'].includes(req.method)) return handleSignup(req, res, signup[1]);
+  const shared = path.match(/^\/inbox\/s\/([A-Za-z0-9$]{2,20})$/);
+  if (shared && ['GET', 'POST'].includes(req.method)) return handleSharedSignup(req, res, shared[1]);
 
   // First visit: set the password, with the one-time setup code from the server's .env.
   if (path === '/inbox/setup' && req.method === 'POST') {
@@ -546,6 +610,22 @@ async function handle(req, res) {
       return send(res, 200, f);
     } catch (e) {
       return send(res, 400, { error: e.message });
+    }
+  }
+  // One group for a keyword page: its size and the automations (email sequences) it starts.
+  const mg = api.match(/^\/mailerlite\/groups\/(\d{1,30})$/);
+  if (mg && req.method === 'GET') {
+    try {
+      const g = (await mailerlite('GET', `/groups/${mg[1]}`)).data || {};
+      const autos = (await mailerlite('GET', '/automations?limit=100')).data || [];
+      const starts = autos.filter((a) => (a.triggers || []).some((t) => (t.group_ids || []).map(String).includes(mg[1])));
+      return send(res, 200, {
+        connected: true,
+        group: { id: String(g.id), name: g.name, active: g.active_count ?? 0, url: `https://dashboard.mailerlite.com/groups/${mg[1]}` },
+        automations: starts.map((a) => ({ id: String(a.id), name: a.name, enabled: !!a.enabled, emails: a.emails_count ?? 0, sent: a.stats?.sent ?? 0, openRate: a.stats?.open_rate?.string ?? a.stats?.open_rate ?? null, url: `https://dashboard.mailerlite.com/automations/${a.id}` })),
+      });
+    } catch (e) {
+      return send(res, 200, { connected: false, error: e.message });
     }
   }
   if (api === '/mailerlite/groups' && req.method === 'GET') {
