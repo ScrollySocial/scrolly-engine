@@ -5,17 +5,25 @@ license lets you use them in your Reels, but doesn't let us ship the files insid
 yourself (about 10 minutes).
 
 1. For each row, open the **download** link (or the category page and find the sound by its exact title).
-2. Press **Download Free SFX** and save the file.
-3. Rename it to the name in the first column and put it in `lib/assets/sfx/`.
-4. Run `node lib/doctor.mjs`: it lists any sound still missing. A missing sound is skipped, so a Reel still renders
-   without it.
+2. Press **Download Free SFX**. Leave the file in your Downloads folder with Mixkit's name; no renaming needed.
+3. Tell Claude "check my sounds" (or run `node lib/doctor.mjs`): it finds the Mixkit downloads in your Downloads
+   folder or `lib/assets/sfx/`, saves them under the engine's names, and lists any sound still missing. A missing
+   sound is skipped, so a Reel still renders without it.
 
 **Short on time? Start with these 8.** They cover most Reels; add the rest whenever you like:
 `pop-light.mp3` (small things popping on, list items), `whoosh-air.mp3` (a panel or card sliding in), `swoosh-in.mp3` (a small graphic sweeping in), `check.mp3` (a tick appearing, the good example), `nope.mp3` (the bad example (one, not three in a row)), `typing-short.mp3` (a short prompt or word typed), `riser.mp3` (a short build into a reveal), `chime.mp3` (a point landing).
 
-**How the engine uses them:** a few sounds per Reel, each on a moment that earns it (something appears, moves, lands).
-Different sounds can stack, but the same sound never plays twice in a row, except on a list, where every item can get
-the same sound so the items feel like a set. Change any sound per moment on the review page.
+**How the engine uses them.** These sound rules are on by default (your own rules win; say "add a rule" to change one):
+1. A few sounds per Reel, each on a moment that earns it (something appears, moves or lands), timed to the word it marks.
+2. Different sounds can stack on one moment.
+3. Never the same sound twice in a row: the second one sounds like a glitch.
+4. Except a spoken list: every item can get the same sound (3 items, 3 of the same pop), so the items feel like a set.
+5. Several marks on one thing (circles, cross-outs) get one sound on the last mark, not one each.
+6. One fail sound per bad example, never two or three fail sounds back to back.
+7. One music track per Reel, one volume level for the whole track, a slow fade in (about 4 seconds) and a short fade out.
+8. Music sits under the voice at Normal by default (clearly heard, voice on top); Quiet and Up front are the other choices.
+
+Change any sound per moment on the review page. If a change puts the same sound twice in a row, the build says so.
 
 Your own sounds work too: drop any short mp3 into `lib/assets/sfx/` and it shows up in the review page's sound library.
 Music: download your own tracks the same way (Mixkit's [free music](https://mixkit.co/free-stock-music/) or any library

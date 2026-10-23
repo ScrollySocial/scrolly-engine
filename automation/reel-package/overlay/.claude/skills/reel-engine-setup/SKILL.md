@@ -76,6 +76,8 @@ Use AskUserQuestion for choices, chat for free text. Recommended option first. D
     AI-made, and every one is optional. Show them a group at a time (AskUserQuestion, multiSelect, all ticked by
     default) and save the ones they keep to `rules.list`, one short line each. Their brand is theirs: never push a
     rule they switch off, and never carry over anything about another brand's colors, fonts or voice.
+    The **Sound** group is already on (the engine's `SOUND_RULES`): show it in one short message instead of asking,
+    and say "add a rule" changes any of it. Don't copy those rules into `rules.list`.
     No `starter-rules.md` in the folder: skip to 12a.
 12a. "Anything else you never want in a Reel?" (free text, optional; examples: a word or phrase, a color, emojis,
     text over their face, a kind of sound) → append to `rules.list`. If they keep a longer rules doc, point
@@ -98,13 +100,19 @@ Show them a short plain summary of what you saved (no JSON).
    - Engine files missing (transcribe script, cut script, fonts): the package is incomplete. Stop and say which
      files; don't invent replacements.
    - WordPress client / tracker id: go back to question 6 or 7.
-3. **NOTE** lines don't block:
-   - Sound effects: point them to `sounds.md` (25 free downloads from Mixkit, about 10 minutes; a missing one just stays silent). They drop the downloads in
-     `lib/assets/sfx/` and run doctor again, which renames them. **Never download the sounds for them**: the Mixkit
-     license is theirs to accept, and the engine must not fetch Mixkit files itself.
+3. **Sounds (walk them through it, about 10 minutes).** The engine already knows which sound goes on which moment;
+   it just needs the files. Mixkit's license doesn't let the engine ship or fetch them, so they press the buttons:
+   - Take doctor's "Start with" names (the 8 starter sounds), find each one's download link in `sounds.md`, and give
+     them as clickable links in one message: "open each link,
+     press Download Free SFX, leave the file in Downloads; tell me when you're done".
+   - Then run `node lib/doctor.mjs`: it finds the Mixkit files in Downloads, saves them under the engine's names and
+     says what's left. Offer the other 17 (all in `sounds.md`) the same way, now or later.
+   - **Never download the sounds for them**, not even with the browser: the license is theirs to accept. A missing
+     sound just stays silent, so skipping this never blocks a Reel.
+4. Other **NOTE** lines don't block:
    - Claude Code signed in (terminal): fine if they use Claude Code inside the desktop app.
    - OneDrive "keep on this device" downloads every take; ask before `--install` pins it, since it can be many GB.
-4. Done when `node lib/doctor.mjs --check` ends with "All set".
+5. Done when `node lib/doctor.mjs --check` ends with "All set".
 
 ## 4. Prove it works (2 minutes)
 Ask for one short test clip (or use any in their footage folder): `node lib/transcribe-footage.mjs "<Folder>/<File>"`

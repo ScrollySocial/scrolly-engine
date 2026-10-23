@@ -22,6 +22,6 @@ export default forTemplate({
   music: { level: 'normal', fallbackVolume: 0.07, fadeIn: 4.22, fadeOut: 1.95 },
   // Graphics density: something new on screen every 1 to 2 seconds, one focal point at a time.
   density: '1-2s',
-  // Sound effects: the library in lib/sounds.mjs, grouped by job (real lengths in seconds). Never the SAME sound back to back, except list items (one shared sound per list is good).
+  // Sound effects: the library in lib/sounds.mjs, grouped by job (real lengths in seconds). Follow SOUND_RULES in lib/sounds.mjs: never the SAME sound back to back, except list items (R.fxList).
   sfxLen,
 });

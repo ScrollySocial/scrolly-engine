@@ -9,13 +9,15 @@ Start with `README.md` (what the person sees) and `lib/README.md` (every engine 
 - If `owner.name` is empty or `node lib/doctor.mjs --check` doesn't end in "All set", run the **reel-engine-setup**
   skill before anything else.
 - Read `rules.list` (and `rules.doc` if set) before planning any Reel, and follow it.
+- The sound rules (`SOUND_RULES` in `lib/sounds.mjs`, also in `sounds.md`) are on by default for every Reel. Their own
+  rules in `rules.list` win when the two disagree.
 - Run engine commands from this folder with the Bash sandbox off (npm, pip, the browser, ffmpeg need it).
 - Never add sound or music files to the package for someone; they download their own (`sounds.md`).
 
 ## What people say, and what to do
 - "set up my Reel engine" / "change my brand kit" / "add a rule": the **reel-engine-setup** skill.
-- "check my Reel engine" / "check my sounds": `node lib/doctor.mjs` (it renames sound downloads), then say what's left
-  in plain words.
+- "check my Reel engine" / "check my sounds": `node lib/doctor.mjs` (it picks up Mixkit downloads from their Downloads
+  folder and renames them), then say what's left in plain words, with the download links (from `sounds.md`) of any missing starter sounds.
 - "make a Reel from <file>": the steps below. "make the next Reel from my tracker": read `tracker` in settings, take
   the next row waiting to be edited, confirm it with them, then the steps below with that row's footage.
 - "continue my Reel <folder>": read `<folder>/build.mjs`, `plans/<folder>/plan.json` and `<folder>/review/decisions.json`,
@@ -33,7 +35,8 @@ the work focused and uses less of their plan); everything you need is in the fil
    the person the kept lines as plain text. Wait for an OK.
 4. `node lib/new-reel.mjs <yyyy-mm-dd-slug>`, then `node lib/prep-footage.mjs <slug> <slug>`.
 5. **Plan the moments:** frames at the start of each idea (`R.frames([0, R.at('words'), …])`), one or two components
-   per frame from `lib/components.mjs`, captions, a few sounds (`R.fx`), never the same sound back to back. Write it in
+   per frame from `lib/components.mjs`, captions, a few sounds (`R.fx`) following the sound rules; the items of a spoken list share one
+   sound with `R.fxList`. The build warns when the same sound plays twice in a row. Write it in
    `<slug>/build.mjs`. Graphics go around the person's body, never over their face.
 6. `cd <slug> && node build.mjs && npm run check` (long takes: the timeout env vars in `lib/README.md`).
 7. Review: give `build.mjs` a `review` branch (the pattern is at the top of `lib/review/export.mjs`), run

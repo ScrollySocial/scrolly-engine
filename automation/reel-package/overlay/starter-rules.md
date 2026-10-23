@@ -21,13 +21,21 @@ Your colors, fonts and voice are never part of these: setup asks for yours.
 | Statements in my big font, key words on the highlighter swipe, side notes handwritten with drawn arrows | A clear, consistent look viewers start to recognise |
 | Never fake proof: no invented numbers, results or testimonials | Protects your credibility (and it's often against platform rules) |
 
-## Sound
+## Sound (already on)
+
+The engine follows these on every Reel without being asked: setup shows them, but you don't have to pick them. To
+change one, say "add a rule" with what you want instead; your own rules always win.
 
 | Rule | Why |
 |---|---|
-| Different sounds can stack, but never the same sound twice in a row | Repeats sound like a glitch |
-| When I list things, every item can get the same sound | The items feel like a set |
-| One music track per Reel, one volume level, with a slow fade in | Easy to adjust on the review page, and never fights your voice |
+| A few sounds per Reel, each on a moment that earns it, timed to the word it marks | Sounds on everything turn into noise |
+| Different sounds can stack on one moment | Layered sounds feel richer |
+| Never the same sound twice in a row (the build warns if it happens) | Repeats sound like a glitch |
+| Except a spoken list: every item can get the same sound (3 items, 3 of the same pop) | The items feel like a set |
+| Several marks on one thing (circles, cross-outs) get one sound, on the last mark | One sound per mark sounds like a stutter |
+| One fail sound per bad example, never two or three in a row | Stacked fail sounds read as a double "womp" |
+| One music track per Reel, one volume level, a slow fade in (about 4 seconds) and a short fade out | Easy to adjust on the review page, and never fights your voice |
+| Music at Normal by default: clearly heard, your voice on top (Quiet and Up front are the other choices) | Too quiet can't be heard on a phone; too loud buries you |
 
 ## Planning and review
 

@@ -53,6 +53,33 @@ export const SOUNDS = [
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 export const SFX_DIR = path.join(HERE, 'assets/sfx');
 export const sfxLen = Object.fromEntries(SOUNDS.map((s) => [s.name, s.len]));
+
+// The sound rules every Reel follows (the engine's maker learned them editing her own Reels). On by default: Claude
+// reads them before planning sounds, sounds.md shows them, and R.write() warns when a build breaks rule 3. A person's
+// own rules (rules.list in reel-settings.json) win over these.
+export const SOUND_RULES = [
+  'A few sounds per Reel, each on a moment that earns it (something appears, moves or lands), timed to the word it marks.',
+  'Different sounds can stack on one moment.',
+  'Never the same sound twice in a row: the second one sounds like a glitch.',
+  'Except a spoken list: every item can get the same sound (3 items, 3 of the same pop), so the items feel like a set.',
+  'Several marks on one thing (circles, cross-outs) get one sound on the last mark, not one each.',
+  'One fail sound per bad example, never two or three fail sounds back to back.',
+  'One music track per Reel, one volume level for the whole track, a slow fade in (about 4 seconds) and a short fade out.',
+  'Music sits under the voice at Normal by default (clearly heard, voice on top); Quiet and Up front are the other choices.',
+];
+const BACK_TO_BACK = 4; // seconds: the same sound again within this gap counts as back to back
+
+// sounds = [{ id, name, t, list? }] → the pairs that break "never the same sound twice in a row" (list items excepted).
+// A list = R.fxList's ids, or older builds' letter-suffixed ids on one moment (fx-pop7a, fx-pop7b, fx-pop7c).
+const listKey = (x) => x.list || (/\d[a-z]$/.test(x.id) ? x.id.slice(0, -1) : null);
+export function soundRepeats(sounds) {
+  const s = [...sounds].sort((a, b) => a.t - b.t), out = [];
+  for (let i = 1; i < s.length; i++) {
+    const a = s[i - 1], b = s[i];
+    if (a.name === b.name && b.t - a.t < BACK_TO_BACK && !(listKey(a) && listKey(a) === listKey(b))) out.push([a, b]);
+  }
+  return out;
+}
 const preview = (id) => `https://assets.mixkit.co/active_storage/sfx/${id}/${id}-preview.mp3`;
 
 function markdown() {
@@ -64,17 +91,18 @@ license lets you use them in your Reels, but doesn't let us ship the files insid
 yourself (about 10 minutes).
 
 1. For each row, open the **download** link (or the category page and find the sound by its exact title).
-2. Press **Download Free SFX** and save the file.
-3. Rename it to the name in the first column and put it in \`lib/assets/sfx/\`.
-4. Run \`node lib/doctor.mjs\`: it lists any sound still missing. A missing sound is skipped, so a Reel still renders
-   without it.
+2. Press **Download Free SFX**. Leave the file in your Downloads folder with Mixkit's name; no renaming needed.
+3. Tell Claude "check my sounds" (or run \`node lib/doctor.mjs\`): it finds the Mixkit downloads in your Downloads
+   folder or \`lib/assets/sfx/\`, saves them under the engine's names, and lists any sound still missing. A missing
+   sound is skipped, so a Reel still renders without it.
 
 **Short on time? Start with these ${SOUNDS.filter((s) => s.starter).length}.** They cover most Reels; add the rest whenever you like:
 ${SOUNDS.filter((s) => s.starter).map((s) => `\`${s.name}.mp3\` (${s.use})`).join(', ')}.
 
-**How the engine uses them:** a few sounds per Reel, each on a moment that earns it (something appears, moves, lands).
-Different sounds can stack, but the same sound never plays twice in a row, except on a list, where every item can get
-the same sound so the items feel like a set. Change any sound per moment on the review page.
+**How the engine uses them.** These sound rules are on by default (your own rules win; say "add a rule" to change one):
+${SOUND_RULES.map((r, i) => `${i + 1}. ${r}`).join('\n')}
+
+Change any sound per moment on the review page. If a change puts the same sound twice in a row, the build says so.
 
 Your own sounds work too: drop any short mp3 into \`lib/assets/sfx/\` and it shows up in the review page's sound library.
 Music: download your own tracks the same way (Mixkit's [free music](https://mixkit.co/free-stock-music/) or any library

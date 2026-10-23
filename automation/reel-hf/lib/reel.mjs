@@ -8,6 +8,7 @@
 //   R.cutout(4, 'assets/cut/f04-cut.webm');       // the speaker, background removed, over that frame's panel
 //   R.cam.alternate(); R.cam.punch(t); R.cam.whip(t);
 //   R.fx('fx-pop1', 'pop-light', t); R.music('assets/music/music-a.mp3');
+//   R.fxList('fx-items', 'pop-light', [t1, t2, t3]); // one shared sound on each item of a spoken list (sound rules: lib/sounds.mjs)
 //   R.captions({ hide: [4, 9], top: (t) => 128 });
 //   R.endCard({ kind: 'save', detail: 'for your next post' });  // the Reel's purpose (lib/cta.mjs); her Plan-step pick wins
 //   R.write();                                    // → index.html
@@ -19,6 +20,7 @@ import { BRANDS, defaultBrand, statementType } from './brand/index.mjs';
 import studio from './templates/studio.mjs';
 import { CTAS, resolveCta, ctaCaption } from './cta.mjs';
 import { musicMix, LEVELS, WARN_UNDER } from './loudness.mjs';
+import { soundRepeats } from './sounds.mjs';
 
 const LIB_SFX = path.join(path.dirname(fileURLToPath(import.meta.url)), 'assets/sfx');
 const LIB_FONTS = path.join(path.dirname(fileURLToPath(import.meta.url)), 'assets/fonts');
@@ -61,7 +63,7 @@ export function reel({ brand, template = studio, words = 'assets/words.json', ou
   let F = [0, DUR], music = '', capHtml = '', capList = [], capHide = [];
   let END = DUR, endInfo = null; // the end card adds a short tail after she stops talking: END = DUR + tail
   const byFrame = {}, cutStill = {}, cutMeta = []; // for the storyboard sheet
-  const sfxData = [], sfxOff = []; let musicData = null; // for the animatic mix (+ switched-off sounds, for the review page)
+  const sfxData = [], sfxOff = [], listOf = {}; let musicData = null; // for the animatic mix (+ switched-off sounds, for the review page)
   // sound changes she made on the review page (review/decisions.json): { sound: { <fx id>: { off, name, vol } }, music: { volume } }
   // caption edits from the page: { <caption #>: { text, style: 'big' | 'hide', mark: [word #], big: [word #] } },
   // captionFont: 'body' | 'statement' | 'hand'. style 'big' = the whole line (older pages); big = single big words,
@@ -122,8 +124,12 @@ export function reel({ brand, template = studio, words = 'assets/words.json', ou
       // a sound that isn't downloaded yet stays silent (the Reel still builds and renders); sounds.md lists the files
       if (!existsSync(`assets/sfx/${file}.mp3`)) { console.log(`sound off: assets/sfx/${file}.mp3 not found (${id})`); sfxOff.push({ id, name: file, base, t: +t, vol, baseVol, d: d ?? T.sfxLen[file], off: true, missing: true }); return; }
       if (ed.vol != null) vol = ed.vol;
-      sfxData.push({ id, name: file, base, file: `assets/sfx/${file}.mp3`, t: +t, vol, baseVol, d: d ?? T.sfxLen[file] });
+      sfxData.push({ id, name: file, base, file: `assets/sfx/${file}.mp3`, t: +t, vol, baseVol, d: d ?? T.sfxLen[file], ...(listOf[id] && { list: listOf[id] }) });
       sfx.push(`<audio id="${id}" src="assets/sfx/${file}.mp3" data-start="${(+t).toFixed(2)}" data-duration="${d ?? T.sfxLen[file]}" data-track-index="${12 + (sfx.length % 4)}" data-volume="${vol}"></audio>`);
+    },
+    // the items of a spoken list: one shared sound each (ids <prefix>-1, -2, …), the one case a sound may repeat in a row
+    fxList(prefix, file, times, vol = 0.6) {
+      times.forEach((t, i) => { listOf[`${prefix}-${i + 1}`] = prefix; R.fx(`${prefix}-${i + 1}`, file, t, vol); });
     },
     // ONE track, ONE level + fades. The level is measured (lib/loudness.mjs): Quiet / Normal / Up front = a fixed number of
     // dB under her voice, whatever the track's own loudness. A fixed `volume` (build.mjs) or an older page's
@@ -248,6 +254,8 @@ ${cells}
       if (!addedDone) { addedDone = true; for (const a of D.addedSfx || []) R.fx(a.id, a.name, a.t, a.vol ?? 0.6); }
       // a CTA she picked always gets its card, even in a build.mjs written before R.endCard existed
       if (!endInfo && D.cta?.kind) R.endCard();
+      // sound rule: never the same sound twice in a row, except list items (R.fxList)
+      for (const [a, b] of soundRepeats(sfxData)) console.warn(`⚠ SAME SOUND TWICE IN A ROW: ${a.name} at ${a.t.toFixed(2)}s (${a.id}) and ${b.t.toFixed(2)}s (${b.id}). Swap one, or use R.fxList if they're items of a spoken list`);
       // a different look for single moments (the review page previews these live, so only the real build sets them)
       const lookJs = () => {
         const by = D.lookByFrame || {};

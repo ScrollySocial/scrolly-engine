@@ -178,22 +178,31 @@ const sfxDir = SFX_DIR;
 const sounds = SOUNDS.map((s) => s.name), sfxPath = (s) => path.join(sfxDir, `${s}.mp3`);
 const missingSfx = () => sounds.filter((s) => !existsSync(sfxPath(s)));
 const sfxSources = existsSync(path.join(sfxDir, 'sources.json')) ? JSON.parse(readFileSync(path.join(sfxDir, 'sources.json'), 'utf8')) : {};
-// downloads dropped in the folder are converted first (fix mode), so the count below is what's really there
+// downloads are converted first (fix mode), so the count below is what's really there. Looks in lib/assets/sfx and in
+// the person's Downloads folder (only files Mixkit named, mixkit-…-<id>.wav), so nobody has to rename or move them.
 const sfxConverted = [];
 if (FIX) {
-  const files = existsSync(sfxDir) ? readdirSync(sfxDir).filter((f) => /\.(wav|mp3|m4a|ogg)$/i.test(f)) : [];
+  const audio = (dir, only = /./) => existsSync(dir) ? readdirSync(dir).filter((f) => /\.(wav|mp3|m4a|ogg)$/i.test(f) && only.test(f)).map((f) => path.join(dir, f)) : [];
+  const files = [...audio(sfxDir), ...audio(path.join(os.homedir(), 'Downloads'), /^mixkit-/i)];
   for (const s of missingSfx()) {
     const num = sfxSources[s]?.mixkit ?? SOUNDS.find((x) => x.name === s)?.id;
-    const src = files.find((f) => f.replace(/\.[^.]+$/, '') === s) || (num && files.find((f) => new RegExp(`(^|\\D)${num}(\\D|$)`).test(f)));
+    const base = (f) => path.basename(f).replace(/\.[^.]+$/, '');
+    const src = files.find((f) => path.dirname(f) === sfxDir && base(f) === s) || (num && files.find((f) => new RegExp(`(^|\\D)${num}(\\D|$)`).test(base(f))));
     if (!src) continue;
-    try { execFileSync(tool('ffmpeg'), ['-v', 'error', '-y', '-i', path.join(sfxDir, src), '-codec:a', 'libmp3lame', '-q:a', '2', sfxPath(s)]); sfxConverted.push(`${src} → ${s}.mp3`); }
-    catch (e) { say('NOTE', `couldn't convert ${src}`, String(e.message).split('\n')[0]); }
+    try { mkdirSync(sfxDir, { recursive: true }); execFileSync(tool('ffmpeg'), ['-v', 'error', '-y', '-i', src, '-codec:a', 'libmp3lame', '-q:a', '2', sfxPath(s)]); sfxConverted.push(`${path.basename(src)} → ${s}.mp3`); }
+    catch (e) { say('NOTE', `couldn't convert ${path.basename(src)}`, String(e.message).split('\n')[0]); }
   }
   if (sfxConverted.length) say('FIXED', `sound downloads saved under the engine's names (${sfxConverted.join(', ')})`);
 }
+// what's still missing, starter sounds first; the download links live in sounds.md (no Mixkit address in engine code)
+const missingNote = () => {
+  const miss = SOUNDS.filter((s) => missingSfx().includes(s.name)), md = existsSync(path.join(HERE, '../sounds.md')) ? 'sounds.md' : 'the package\'s sounds.md';
+  const first = miss.filter((s) => s.starter), rest = miss.filter((s) => !s.starter);
+  return `open each one's download link in ${md}, press Download Free SFX (leave the file in Downloads), then run doctor again. Until then those sounds stay silent.${first.length ? `\n          Start with: ${first.map((s) => s.name).join(', ')}` : ''}${rest.length ? `\n          Then (${rest.length} more): ${rest.map((s) => s.name).join(', ')}` : ''}`;
+};
 await step(`sound effects in lib/assets/sfx (${sounds.length - missingSfx().length} of ${sounds.length})`, () => !missingSfx().length, {
   soft: true,
-  needs: `download them from the links in ${existsSync(path.join(HERE, '../sounds.md')) ? 'sounds.md' : 'the package\'s sounds.md'}, drop them in lib/assets/sfx and run doctor again (missing: ${missingSfx().join(', ')}). Until then those sounds stay silent`,
+  needs: missingNote(),
 });
 const { BRANDS, defaultBrand } = await import('./brand/index.mjs');
 await step(`brand kit "${S.brand || '(not set)'}"`, () => BRANDS[S.brand], {

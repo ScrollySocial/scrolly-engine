@@ -67,11 +67,17 @@ The engine follows your list on every Reel.
 **Change any of it later:** say "change my brand colors", "use a different caption font", "add a rule" or "add an
 Easter kit". The next Reel uses it; Reels you already made stay as they are.
 
-## Step 4. Download your sounds (about 10 minutes, optional)
-The engine uses 25 free sound effects from Mixkit (pops, whooshes, ticks, typing, a ding). Mixkit's license lets you
-use them in your Reels but doesn't let us put them inside the engine, so you download them once yourself.
-[sounds.md](sounds.md) has every link, what each sound is for, and **the 8 to start with** if you're short on time.
-Drop the downloads in `lib/assets/sfx/` and tell Claude "check my sounds". A missing sound just stays silent.
+## Step 4. Download your sounds (about 10 minutes)
+The engine uses 25 free sound effects from Mixkit (pops, whooshes, ticks, typing, a ding) and already knows which one
+goes on which moment. Mixkit's license lets you use them in your Reels but doesn't let us put them inside the engine,
+so you download them once yourself. Setup hands you **the 8 to start with** as links: open each one, press Download
+Free SFX and leave the file in your Downloads folder. Then tell Claude "check my sounds": it finds them, names them and
+tells you what's left. [sounds.md](sounds.md) has all 25 links and what each sound is for. A missing sound just stays
+silent, so you can make Reels before you finish.
+
+**How the sounds are used** (on by default, listed in [sounds.md](sounds.md)): a few per Reel, never the same sound
+twice in a row except on a spoken list, one sound when several marks land on one thing, one music track with one level
+and a slow fade in. Say "add a rule" to change any of it.
 
 Music: add your own tracks (Mixkit's free music or any library you have a license for). Instagram sounds can be added
 in the Instagram app after you post, if your account has them.
