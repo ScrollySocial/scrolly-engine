@@ -87,6 +87,9 @@ function cleanKeyword(k) {
   const minutes = Number(k.reminder?.minutes) || (Number(k.reminder?.hours) || 4) * 60;
   const reminder = { on: !!k.reminder?.on, minutes: Math.min(1380, Math.max(5, Math.round(minutes))), text: str(k.reminder?.text) };
   const yt = { text: str(k.yt?.text) };
+  // Email signup hands the freebie over right away (on the page, plus a DM when Instagram allows),
+  // so no MailerLite sequence is needed (the free plan allows only 3; Mercedes 2026-10-23).
+  const afterSignup = { dm: str(k.afterSignup?.dm) };
   const out = {
     ...k,
     keyword,
@@ -105,6 +108,7 @@ function cleanKeyword(k) {
     mailerliteGroupName: str(k.mailerliteGroupName),
     reminder,
     yt,
+    afterSignup,
   };
   delete out.reminder.hours;
   if (out.live || out.dmApproved) {
@@ -112,7 +116,8 @@ function cleanKeyword(k) {
     if (where.ytComments && !yt.text.includes(delivery === 'email' ? '{link}' : '{url}')) throw new Error(`${keyword}: the YouTube reply needs ${delivery === 'email' ? '{link}' : '{url}'} in it`);
     if (ask.on && (!ask.text || !/^[A-Z0-9]{2,20}$/.test(ask.word))) throw new Error(`${keyword}: "ask first" needs its message and a one-word reply`);
     if (delivery === 'direct' && (!url || !out.dm.includes('{url}'))) throw new Error(`${keyword}: direct delivery needs the freebie link and a DM text with {url} in it`);
-    if (delivery === 'email' && (!out.linkText.includes('{link}') || !out.mailerliteGroup)) throw new Error(`${keyword}: email delivery needs a DM text with {link} in it and a MailerLite group`);
+    if (delivery === 'email' && (!out.linkText.includes('{link}') || !out.mailerliteGroup || !url)) throw new Error(`${keyword}: email signup needs the freebie link, a DM text with {link} in it and a MailerLite group`);
+    if (afterSignup.dm && !afterSignup.dm.includes('{url}')) throw new Error(`${keyword}: the DM after signup needs {url} in it`);
     if (reminder.on && (!reminder.text || !reminder.text.includes('{link}'))) throw new Error(`${keyword}: the reminder needs its text, with {link} in it`);
   }
   return out;
@@ -135,7 +140,7 @@ function saveKeywords(list) {
     source: 'comment dashboard (hooks.scrollyseo.com/inbox)',
     keywords: clean
       .filter((k) => k.live && k.dmApproved)
-      .map(({ keyword, url, dm, delivery, where, ask, linkText, reminder, yt }) => ({ keyword, url, dm, delivery, where, ask, linkText, reminder, yt })),
+      .map(({ keyword, freebie, url, dm, delivery, where, ask, linkText, reminder, yt, afterSignup }) => ({ keyword, freebie, url, dm, delivery, where, ask, linkText, reminder, yt, afterSignup })),
   });
   return clean;
 }
@@ -188,6 +193,15 @@ function startFlow(body) {
   save();
   return f;
 }
+// After signup: the freebie link by DM too, when the keyword has an "after signup" DM and
+// Instagram's 24-hour window is still open (only people who DMed can get one).
+function dueDeliveries() {
+  const kws = Object.fromEntries(readKeywords().map((k) => [k.keyword, k]));
+  return db.flows.filter((f) => {
+    const k = kws[f.keyword];
+    return k?.live && k.afterSignup?.dm && f.step === 'signedUp' && !f.deliveredAt && f.dmPersonId && f.lastInboundAt && Date.now() - Date.parse(f.lastInboundAt) < 23 * 3600e3;
+  });
+}
 // Reminders: link sent (or clicked) but no signup after the keyword's hours, still inside
 // Instagram's 24-hour window after their last DM, and never reminded before.
 function dueReminders() {
@@ -218,19 +232,19 @@ async function mailerlite(method, path, body) {
 const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
 // action: where the form posts (/inbox/f/<token> for a personal link, /inbox/s/<KEYWORD> for the shared one).
 function signupPage(k, action, state = {}) {
-  const headline = k?.signup?.headline || `Where should I send ${k?.freebie || 'your freebie'}?`;
-  const text = k?.signup?.text || 'Pop in your email and it lands in your inbox in a minute.';
+  const headline = k?.signup?.headline || `Get your free ${k?.freebie || "freebie"}`;
+  const text = k?.signup?.text || 'Pop in your email and you can open it right away.';
   const body = state.expired
     ? `<h1>This link has expired</h1><p>Comment the keyword again and you'll get a fresh one.</p>`
     : state.done
-    ? `<h1>Check your inbox</h1><p>It's on its way to <strong>${esc(state.email)}</strong>. If you don't see it in a few minutes, look in Promotions or Spam.</p>`
+    ? `<h1>Here's your ${esc(k?.freebie || 'freebie')}</h1><p><a class="btn" href="${esc(k?.url || '#')}" target="_blank" rel="noopener">Open it</a></p><p>You're on the list with <strong>${esc(state.email)}</strong>. Save this page or the link so you can come back to it anytime.</p>`
     : `<h1>${esc(headline)}</h1><p>${esc(text)}</p>
        <form method="post" action="${esc(action)}">
          <label for="email">Your email</label>
          <input id="email" name="email" type="email" required autocomplete="email" value="${esc(state.email || '')}">
-         <label class="consent"><input type="checkbox" name="consent" value="yes" required> Send me this freebie and Scrolly emails. I can unsubscribe anytime.</label>
+         <label class="consent"><input type="checkbox" name="consent" value="yes" required> Add me to Scrolly's emails too (tips and offers). I can unsubscribe anytime.</label>
          ${state.error ? `<p class="error" role="alert">${esc(state.error)}</p>` : ''}
-         <button type="submit">Send it to me</button>
+         <button type="submit">Get it now</button>
        </form>
        <p class="small">See the <a href="https://scrollyseo.com/privacy/">privacy policy</a>.</p>`;
   return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex">
@@ -248,7 +262,7 @@ input[type=email]{width:100%;box-sizing:border-box;border:1px solid #8f8a83;bord
 .consent input{width:20px;height:20px;margin-top:3px;accent-color:#4da3ff;flex:none}
 button{margin-top:16px;width:100%;border:0;border-radius:999px;padding:13px;background:#4da3ff;color:#0a1930;font:500 17px Jost,sans-serif;cursor:pointer}
 button:focus-visible,input:focus-visible,a:focus-visible{outline:3px solid #4da3ff;outline-offset:2px}
-.error{color:#b3261e}.small{font-size:14px;color:#4a4e66;margin-top:14px}a{color:#0a1930}
+.btn{display:inline-block;margin-top:6px;border-radius:999px;padding:13px 28px;background:#4da3ff;color:#0a1930;font-weight:500;text-decoration:none}.error{color:#b3261e}.small{font-size:14px;color:#4a4e66;margin-top:14px}a{color:#0a1930}
 </style></head><body><main><p class="brand">SCROLLY</p><div class="card">${body}</div></main></body></html>`;
 }
 function readForm(req) {
@@ -290,6 +304,8 @@ async function handleSignup(req, res, token) {
     return send(res, 502, signupPage(k, action, { email, error: "Something went wrong on my side. Please try again in a minute." }), 'text/html; charset=utf-8');
   }
   flowStep(f, 'signedUp', { email });
+  // The DM with the freebie link goes out from n8n right away (its reminder job also sends these).
+  runJob('reminders');
   save();
   return send(res, 200, signupPage(k, action, { done: true, email }), 'text/html; charset=utf-8');
 }
@@ -485,11 +501,14 @@ setInterval(youtubeCleanup, 6 * 3600e3).unref();
 youtubeCleanup();
 
 async function postNow() {
+  return runJob('replies');
+}
+async function runJob(job) {
   if (!RUN_SECRET) return;
   try {
-    await fetch(N8N_RUN_URL, { method: 'POST', headers: { 'x-run-secret': RUN_SECRET, 'Content-Type': 'application/json' }, body: JSON.stringify({ job: 'replies' }) });
+    await fetch(N8N_RUN_URL, { method: 'POST', headers: { 'x-run-secret': RUN_SECRET, 'Content-Type': 'application/json' }, body: JSON.stringify({ job }) });
   } catch {
-    // n8n's own 10-minute run picks it up anyway.
+    // n8n's own scheduled run picks it up anyway.
   }
 }
 
@@ -604,6 +623,7 @@ async function handle(req, res) {
     return send(res, 200, { flows: db.flows.filter((f) => (!q.personId && !q.author ? true : samePerson(f, q)) && (!step.length || step.includes(f.step))) });
   }
   if (api === '/flows/due' && req.method === 'GET') return send(res, 200, { flows: dueReminders() });
+  if (api === '/flows/delivery-due' && req.method === 'GET') return send(res, 200, { flows: dueDeliveries() });
   // Every DM someone sends restarts Instagram's 24-hour window for their open flows.
   if (api === '/flows/touch' && req.method === 'POST') {
     let n = 0;
@@ -624,6 +644,7 @@ async function handle(req, res) {
       if (body.step) flowStep(f, body.step);
       if (body.dmPersonId) f.dmPersonId = str(body.dmPersonId);
       if (body.lastInboundAt) f.lastInboundAt = now();
+      if (body.delivered) f.deliveredAt = f.deliveredAt || now();
       save();
       return send(res, 200, f);
     } catch (e) {

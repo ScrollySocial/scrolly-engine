@@ -24,6 +24,9 @@
         "on": true,
         "minutes": 60,
         "text": "Still want it? {link}"
+      },
+      "afterSignup": {
+        "dm": "Here it is: {url}"
       }
     },
     {

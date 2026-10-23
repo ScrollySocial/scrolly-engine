@@ -484,6 +484,7 @@ async function showKeyword(body, name) {
   k.reminder ||= { on: false, minutes: 60, text: '' };
   if (!k.reminder.minutes) k.reminder.minutes = (Number(k.reminder.hours) || 1) * 60;
   k.yt ||= { text: '' };
+  k.afterSignup ||= { dm: '' };
   k.signup ||= {};
   const groups = await api('/api/mailerlite/groups').catch(() => ({ connected: false, groups: [] }));
   const mins = (m) => (m % 60 ? `${m} min` : `${m / 60} h`);
@@ -518,10 +519,9 @@ async function showKeyword(body, name) {
       ...(g.automations.length
         ? g.automations.map((a) => h('div', { class: 'preview-box' },
             h('strong', { text: `Email sequence: ${a.name}` }),
-            `\n${a.enabled ? 'On' : 'Off (nobody gets these emails until it is switched on)'} · ${a.emails} email${a.emails === 1 ? '' : 's'} · ${a.sent} sent${a.openRate != null ? ` · ${a.openRate} opened` : ''}`,
+            `\n${a.enabled ? 'On' : 'Off'} · ${a.emails} email${a.emails === 1 ? '' : 's'} · ${a.sent} sent${a.openRate != null ? ` · ${a.openRate} opened` : ''}`,
             h('div', { class: 'row' }, h('a', { class: 'button', href: a.url, target: '_blank', rel: 'noopener noreferrer', text: 'Open sequence in MailerLite' }))))
-        : [h('p', { class: 'warn', text: 'No email sequence starts from this group yet, so nobody would get the freebie by email. Make one in MailerLite (trigger: "joins group", this group) that sends the freebie link, or ask Claude to set it up.' }),
-           h('div', { class: 'row' }, h('a', { class: 'button', href: 'https://dashboard.mailerlite.com/automations', target: '_blank', rel: 'noopener noreferrer', text: 'Open MailerLite automations' }))]),
+        : [h('p', { class: 'hint', text: 'No email sequence starts from this group. That\'s fine: the freebie shows on the signup page right away. A welcome sequence is optional (your free MailerLite plan allows 3 active ones).' })]),
       h('div', { class: 'row' }, newGroupButton()));
   };
   // "Ready to go live?": everything a keyword needs to work end to end, ticked off live.
@@ -534,7 +534,6 @@ async function showKeyword(body, name) {
     ];
     if (k.delivery === 'email') {
       items.push([!!k.mailerliteGroup, 'MailerLite group picked']);
-      items.push([groupInfo?.automations?.some((a) => a.enabled) ?? false, 'An email sequence that sends the freebie is on in MailerLite (starts when someone joins the group)']);
     }
     if (usesDms) items.push([!!ME.dmsEnabled, k.ask.on ? 'DMs switched on (needed for "reply READY" and reminders; ask Claude)' : 'DMs switched on (needed for keywords in DMs and Story replies; ask Claude)']);
     items.push([!!k.dmApproved, 'You approved the messages']);
@@ -604,7 +603,8 @@ async function showKeyword(body, name) {
       }
       thread.push(me(k.delivery === 'email' ? fill(k.linkText, link) : fill(k.dm)));
       if (k.delivery === 'email') {
-        thread.push(sys('They tap the link, type their email on your signup page, and MailerLite emails the freebie'));
+        thread.push(sys('They tap the link, type their email (added to your MailerLite list) and see the freebie right away'));
+        if (k.afterSignup?.dm) thread.push(me(fill(k.afterSignup.dm, link)));
         if (k.reminder.on) thread.push(sys(`If they haven't signed up after ${mins(k.reminder.minutes)}`), me(fill(k.reminder.text, link)));
       }
       screen = h('div', { class: 'pv-ig' },
@@ -625,13 +625,14 @@ async function showKeyword(body, name) {
     const parts = [
       h('div', { class: 'radio' },
         radio('direct', 'Link in the DM', 'The DM carries the freebie link. Quick, but you don\'t get their email.'),
-        radio('email', 'Email signup (recommended)', 'The DM carries their personal link; they type their email and MailerLite sends the freebie.')),
+        radio('email', 'Email signup (recommended)', 'The DM carries their personal link; they type their email (added to your MailerLite list) and see the freebie right away.')),
     ];
     if (k.delivery === 'direct') parts.push(text(k, 'dm', 'DM text', { area: true, hint: '{url} becomes the freebie link.', onInput: drawPreviews }));
     else {
       parts.push(text(k, 'linkText', 'DM text', { area: true, hint: '{link} becomes their personal signup link.', onInput: drawPreviews }));
-      parts.push(text(k.signup, 'headline', 'Signup page headline', { placeholder: `Where should I send ${k.freebie || 'your freebie'}?` }));
-      parts.push(text(k.signup, 'text', 'Signup page text', { placeholder: 'Pop in your email and it lands in your inbox in a minute.' }));
+      parts.push(text(k.signup, 'headline', 'Signup page headline', { placeholder: `Get your free ${k.freebie || 'freebie'}` }));
+      parts.push(text(k.signup, 'text', 'Signup page text', { placeholder: 'Pop in your email and you can open it right away.' }));
+      parts.push(text(k.afterSignup, 'dm', 'DM after they sign up (optional)', { area: true, placeholder: `Here's your ${k.freebie || 'freebie'}, as promised: {url}`, hint: '{url} becomes the freebie link. Only reaches people who DMed you (Instagram\'s rule), so it pairs with "Ask first".', onInput: drawPreviews }));
       if (groups.connected) {
         const sel = h('select', { id: 'f-group' }, h('option', { value: '', text: 'Choose a group…' }), groups.groups.map((g) => h('option', { value: g.id, text: g.name })));
         sel.value = k.mailerliteGroup || '';

@@ -242,7 +242,7 @@ const pinsStats = stats.keywords?.find((k) => k.keyword === 'PINS');
 check('Stats count keyword comments and DMs sent per keyword and post', pinsStats?.comments >= 4 && pinsStats?.dmsSent === 4 && pinsStats?.posts['https://www.instagram.com/p/TESTPOST/'] >= 3, JSON.stringify(pinsStats));
 
 // 13. Freebie flow: comment FREE → "reply READY" → READY → personal link → signup page → MailerLite → reminder
-const freeKw = { keyword: 'FREE', freebie: 'Free guide', url: 'https://example.com/free.pdf', live: true, dmApproved: true, delivery: 'email', where: { igComments: true, igDms: true }, ask: { on: true, text: 'Want it? Reply READY.', word: 'READY' }, linkText: 'Grab it here: {link}', mailerliteGroup: '111', reminder: { on: true, minutes: 60, text: 'Still want it? {link}' } };
+const freeKw = { keyword: 'FREE', freebie: 'Free guide', url: 'https://example.com/free.pdf', live: true, dmApproved: true, delivery: 'email', where: { igComments: true, igDms: true }, ask: { on: true, text: 'Want it? Reply READY.', word: 'READY' }, linkText: 'Grab it here: {link}', mailerliteGroup: '111', reminder: { on: true, minutes: 60, text: 'Still want it? {link}' }, afterSignup: { dm: 'Here it is: {url}' } };
 const ytKw = { keyword: 'YTK', freebie: 'YouTube guide', url: 'https://example.com/yt.pdf', live: true, dmApproved: true, delivery: 'email', where: { igComments: false, igDms: false, ytComments: true }, linkText: 'Grab it here: {link}', mailerliteGroup: '111', yt: { text: 'Grab it here: {link}' } };
 r = await fetch(`${INBOX}/inbox/api/keywords`, { method: 'PUT', headers: INBOX_KEY, body: JSON.stringify({ keywords: [freeKw, ytKw] }) });
 check('Flow keyword saved in the dashboard', r.status === 200, await r.text());
@@ -271,9 +271,12 @@ check('Signup page refuses a bad email', page.status === 400);
 page = await fetch(link, { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: 'email=Fay%40Example.com&consent=yes' });
 html = await page.text();
 const ml = (await mockLog()).log.filter((x) => x.path === '/mailerlite/subscribers').pop();
-check('Signup adds them to the keyword\'s MailerLite group', page.status === 200 && html.includes('Check your inbox') && ml?.body.email === 'fay@example.com' && ml?.body.groups[0] === '111' && ml?.auth === 'Bearer test-ml', JSON.stringify(ml));
+check('Signup adds them to the keyword\'s MailerLite group and shows the freebie right away', page.status === 200 && html.includes('href="https://example.com/free.pdf"') && ml?.body.email === 'fay@example.com' && ml?.body.groups[0] === '111' && ml?.auth === 'Bearer test-ml', JSON.stringify(ml));
 flows = (await inbox('/flows?personId=666')).flows || [];
 check('Flow ends at "signed up" with the email', flows[0]?.step === 'signedUp' && flows[0]?.email === 'fay@example.com');
+const delivered = await waitFor(async () => sentDms(await mockLog()).find((d) => d.body.recipient.id === '666' && d.body.message.text === 'Here it is: https://example.com/free.pdf'));
+await sleep(3000);
+check('After signup the freebie link also goes out by DM, once', !!delivered && !!((await inbox('/flows?personId=666')).flows || [])[0]?.deliveredAt && sentDms(await mockLog()).filter((d) => d.body.message.text === 'Here it is: https://example.com/free.pdf').length === 1);
 check('An unknown link shows "expired"', (await fetch(`${INBOX}/inbox/f/notarealtoken123`)).status === 404);
 // Reminder: a second person gets the link but doesn't sign up.
 before = await dmCount();
@@ -312,7 +315,7 @@ check('Shared signup page opens and posts to itself', page.status === 200 && htm
 page = await fetch(`${INBOX}/inbox/s/YTK`, { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: 'email=kai%40example.com&consent=yes' });
 html = await page.text();
 const ytFlow = ((await inbox('/flows')).flows || []).find((f) => f.keyword === 'YTK');
-check('Shared signup adds the email to MailerLite and counts as a YouTube signup', page.status === 200 && html.includes('Check your inbox') && ytFlow?.step === 'signedUp' && ytFlow?.platform === 'YouTube', JSON.stringify(ytFlow));
+check('Shared signup adds the email to MailerLite and counts as a YouTube signup', page.status === 200 && html.includes('https://example.com/yt.pdf') && ytFlow?.step === 'signedUp' && ytFlow?.platform === 'YouTube', JSON.stringify(ytFlow));
 check('Shared page for a keyword that is off or unknown shows "expired"', (await fetch(`${INBOX}/inbox/s/NOPE`)).status === 404);
 
 // 15. Keyword page details: reminder minutes, the MailerLite panel, the new stats
