@@ -2,6 +2,18 @@
   "version": "0.0.1",
   "configurations": [
     {
+      "name": "my-day",
+      "runtimeExecutable": "python",
+      "runtimeArgs": [
+        "-m",
+        "http.server",
+        "8951",
+        "--bind",
+        "127.0.0.1"
+      ],
+      "port": 8951
+    },
+    {
       "name": "website",
       "runtimeExecutable": "python",
       "runtimeArgs": [
