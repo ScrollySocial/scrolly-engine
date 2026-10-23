@@ -238,3 +238,9 @@ One finished demo Reel per template, made from your own clips run through the re
 Product 1498 downloads now point at media 1625-1629 (h1 h6 h3 h2 h5; same download ids, so past buyers get the new
 files). Re-upload any time with `node website/scrolly-site/reel-pack-zips.mjs 1498` (run from website/scrolly-site).
 Old zip media 1519-1521, 1523, 1533 are still in the WP library, unused.
+
+## Shot list PDF download (2026-10-23)
+Each product has a first download, "Shot list (all templates)": every clip for every template in one PDF
+(automation/reel-template-pack/guide/shot-list-<pack>.pdf, built by `python build/shot_list_pdf.py`). Re-upload after a
+rebuild with `node reel-pack-shot-lists.mjs <product id>` from website/scrolly-site (same download id; media 1683 Halloween,
+1682 Product; 1681 is an unused first Halloween copy). reel-pack-zips.mjs leaves that download alone.

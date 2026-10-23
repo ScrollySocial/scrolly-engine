@@ -311,3 +311,9 @@ The live build leaves out the how-to video screen until it is filmed. Still open
 Product 1500 downloads now point at media 1630-1654 (01-25; same download ids). Re-upload with
 `node reel-pack-zips.mjs 1500` from website/scrolly-site. The previous zip media (1522-1587 range) are still in the WP
 library, unused.
+
+## Shot list PDF download (2026-10-23)
+Each product has a first download, "Shot list (all templates)": every clip for every template in one PDF
+(automation/reel-template-pack/guide/shot-list-<pack>.pdf, built by `python build/shot_list_pdf.py`). Re-upload after a
+rebuild with `node reel-pack-shot-lists.mjs <product id>` from website/scrolly-site (same download id; media 1683 Halloween,
+1682 Product; 1681 is an unused first Halloween copy). reel-pack-zips.mjs leaves that download alone.

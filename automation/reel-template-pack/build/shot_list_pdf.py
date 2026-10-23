@@ -9,8 +9,8 @@ ROOT = Path(__file__).resolve().parent.parent
 EDGE = r'C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe'
 
 PACKS = {
-    'halloween': dict(title='Halloween Reel Template Pack', ids=['h6', 'h3', 'h2', 'h5'],
-                      lede='Every clip for all 4 templates on one list. Film the shots that repeat once, tick off each '
+    'halloween': dict(title='Halloween Reel Template Pack', ids=['h1', 'h6', 'h3', 'h2', 'h5'],
+                      lede='Every clip for all 5 templates on one list. Film the shots that repeat once, tick off each '
                            'template as you go, and post before the 31st.'),
     'product': dict(title='Product Reel Template Pack', ids=[f'{n:02d}' for n in range(1, 26)],
                     lede='Every clip for all 25 templates on one list. Film the shots that repeat once, then tick off '

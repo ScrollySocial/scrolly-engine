@@ -28,6 +28,7 @@ for (const pid of process.argv.slice(2).length ? process.argv.slice(2) : Object.
   const zips = fs.readdirSync(dir).filter((f) => f.endsWith('.zip'));
   const downloads = [];
   for (const dl of p.downloads) {
+    if (dl.name.startsWith('Shot list')) { downloads.push(dl); continue; }   // the PDF: reel-pack-shot-lists.mjs
     const tid = (dl.name.match(/\((h\d)\)/) || dl.name.match(/^(\d\d) /) || [])[1];
     const zip = zips.find((z) => z.startsWith(`Template ${tid} - `));
     if (!tid || !zip) throw new Error(`product ${pid}: no zip for download "${dl.name}"`);
