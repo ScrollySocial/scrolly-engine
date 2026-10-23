@@ -13,7 +13,7 @@ for (const item of $input.all()) {
     continue;
   }
   const link = c.link || (c.platform === 'Instagram' && c.kind !== 'dm' ? await igPermalink(c.postId) : '');
-  const notes = [c.note || '', c.needsCheck ? 'Check the facts in this draft before approving.' : '', c.dm && !c.keywordOnly ? `Keyword ${c.keyword}: ${c.dm}` : '']
+  const notes = [c.note || '', c.needsCheck ? 'Check the facts in this draft before approving.' : '', c.dm && !c.keywordOnly ? (c.keyword ? `Keyword ${c.keyword}: ${c.dm}` : `Welcome DM: ${c.dm}`) : '']
     .filter(Boolean)
     .join(' ');
   // No draft yet (free mode): "Needs draft" until Claude writes one on the subscription.

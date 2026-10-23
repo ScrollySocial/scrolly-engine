@@ -129,6 +129,7 @@
   .pv-yt-c.reply { margin-left: 40px; }
   .pv-yt-name { font-size: 12px; color: #606060; margin-bottom: 2px; }
   .pv-avatar.round { width: 32px; height: 32px; }
+  .welcome summary { cursor: pointer; font-size: 15px; }
   .emoji-wrap { position: relative; display: inline-block; }
   .emoji-toggle { padding: 8px 12px; font-size: 18px; line-height: 1; }
   .emoji-grid { position: absolute; z-index: 5; bottom: calc(100% + 6px); left: 0; width: 290px; max-width: calc(100vw - 48px); display: grid; grid-template-columns: repeat(8, 1fr); gap: 2px; background: var(--white); border: 1px solid var(--line); border-radius: 14px; padding: 8px; box-shadow: 0 6px 24px rgba(10, 25, 48, .12); }
@@ -341,7 +342,7 @@ async function showConversation(body, key) {
   const thread = h('div', { class: 'thread' });
   for (const e of events) {
     if (e.sys) thread.append(h('div', { class: 'sys', text: e.sys }));
-    else if (e.auto) thread.append(h('div', { class: 'bubble me' }, h('div', { class: 'meta', text: `Automatic DM · ${e.auto.keyword}` }), e.auto.dm.replace(/^sent: /, '')));
+    else if (e.auto) thread.append(h('div', { class: 'bubble me' }, h('div', { class: 'meta', text: e.auto.keyword ? `Automatic DM · ${e.auto.keyword}` : 'Automatic welcome DM' }), e.auto.dm.replace(/^sent: /, '')));
     else if (e.reply) thread.append(h('div', { class: 'bubble me' }, h('div', { class: 'meta', text: `You · ${e.reply.kind === 'dm' ? 'DM' : 'reply'} · ${e.reply.status === 'Approved' ? 'sending…' : ago(e.at)}` }), e.reply.draft));
     else if (e.row.kind === 'out') thread.append(h('div', { class: 'bubble me' }, h('div', { class: 'meta', text: `You · DM · ${ago(e.at)}` }), e.row.text || ''));
     else thread.append(h('div', { class: 'bubble them' },
@@ -422,6 +423,7 @@ async function showKeywords(body) {
   body.append(h('div', { class: 'row between' },
     h('p', { class: 'hint', text: 'People comment or DM a keyword and get your freebie.' }),
     h('button', { class: 'primary', text: '+ New keyword', on: { click: () => (location.hash = 'k/new') } })));
+  body.append(await welcomeCard());
   if (!kwCache.length) return body.append(h('div', { class: 'list' }, h('p', { class: 'empty', text: 'No keywords yet.' })));
   const perKw = Object.fromEntries((stats?.keywords || []).map((k) => [k.keyword, k]));
   body.append(h('div', { class: 'list' }, kwCache.map((k) => {
@@ -438,6 +440,36 @@ async function showKeywords(body) {
         k.ask?.on ? h('span', { class: 'pill', text: `Asks for "${k.ask.word || 'READY'}"` }) : null,
         s ? h('span', { class: 'pill', text: f ? `${s.comments} used · ${f.signedUp} signed up` : `${s.comments} used · ${s.dmsSent} DMs` } ) : null));
   })));
+}
+
+// The first-DM welcome: one automatic message the first time someone new DMs you (not a keyword).
+async function welcomeCard() {
+  const s = await api('/api/settings').catch(() => ({}));
+  const w = { on: false, approved: false, text: '', ...(s.welcome || {}) };
+  const area = h('textarea', { id: 'f-welcome', placeholder: 'Hi! Thanks for the message, I read every one and reply as soon as I can.' });
+  area.value = w.text;
+  const bubble = h('div', { class: 'pv-bubble me' });
+  const drawBubble = () => (bubble.textContent = w.text || '(write it above)');
+  area.addEventListener('input', () => { w.text = area.value; drawBubble(); });
+  drawBubble();
+  const box = (key, label, cls) => {
+    const b = h('input', { type: 'checkbox', checked: w[key], ...(cls ? { role: 'switch', 'aria-label': label } : {}) });
+    b.addEventListener('change', () => (w[key] = b.checked));
+    return h('label', { class: cls || 'check' }, b, label);
+  };
+  return h('details', { class: 'card welcome' },
+    h('summary', {}, h('strong', { text: 'Welcome message' }), ` · ${w.on && w.approved ? 'On' : 'Off'}: sent once, the first time someone new DMs you`),
+    h('div', { class: 'row' }, box('on', 'On', 'toggle')),
+    h('label', { for: 'f-welcome', text: 'Message' }), area,
+    h('div', { class: 'row', style: 'margin-top:6px' }, emojiButton(area)),
+    h('p', { class: 'hint', text: 'Their message still lands in your inbox for a real reply. DMs with a keyword get the keyword reply instead.' }),
+    h('div', { class: 'pv-phone' }, h('div', { class: 'pv-ig-body' },
+      h('div', { class: 'pv-row them' }, h('span', { class: 'pv-avatar', 'aria-hidden': 'true' }), h('div', { class: 'pv-bubble them', text: 'Hi! Quick question about your posts' })),
+      h('div', { class: 'pv-row me' }, h('div', {}, h('div', { class: 'pv-note', text: 'Automatic' }), bubble)))),
+    box('approved', 'I approve this message'),
+    h('div', { class: 'row' }, h('button', { class: 'primary', text: 'Save', on: { click: async () => {
+      try { await api('/api/settings', { method: 'PUT', body: { welcome: w } }); toast('Saved. It works right away.'); route(); } catch (e) { toast(e.message); }
+    } } })));
 }
 
 async function showKeyword(body, name) {

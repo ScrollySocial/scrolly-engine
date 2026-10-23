@@ -112,6 +112,30 @@ for (const item of $input.all()) {
     out.push({ json: c });
     continue;
   }
+  // First DM from someone new (and not a keyword): one automatic welcome, once per person,
+  // only when she switched it on and approved the text. Their message still goes to her inbox.
+  if (!hit && isDm && c.platform === 'Instagram' && c.authorId && !state.welcomed?.[c.authorId]) {
+    let welcome = null;
+    try {
+      welcome = JSON.parse(fs.readFileSync(cfg('SETTINGS_FILE', '/data/config/settings.json'), 'utf8')).welcome;
+    } catch (e) {
+      welcome = null;
+    }
+    if (welcome?.on && welcome.approved && welcome.text) {
+      if (DRY_RUN) {
+        c.dm = `test mode, would send: ${welcome.text}`;
+      } else {
+        try {
+          c.dmMid = await sendDm({ id: c.authorId }, welcome.text);
+          c.dm = `sent: ${welcome.text}`;
+          remember('welcomed', c.authorId);
+        } catch (e) {
+          logError('instagram-welcome', e);
+          c.dm = `failed: ${errText(e)}`;
+        }
+      }
+    }
+  }
   if (!hit || c.platform !== 'Instagram') {
     out.push({ json: c });
     continue;

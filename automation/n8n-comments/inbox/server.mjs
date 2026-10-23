@@ -139,6 +139,24 @@ function saveKeywords(list) {
   });
   return clean;
 }
+// ---- settings (CONFIG_DIR/settings.json, read by n8n too): the first-DM welcome message ----
+const SETTINGS = join(CONFIG_DIR, 'settings.json');
+function readSettings() {
+  try {
+    return JSON.parse(readFileSync(SETTINGS, 'utf8'));
+  } catch {
+    return {};
+  }
+}
+function saveSettings(body) {
+  const welcome = { on: !!body.welcome?.on, approved: !!body.welcome?.approved, text: str(body.welcome?.text).slice(0, 1000) };
+  if (welcome.on && !welcome.text) throw new Error('Write the welcome message first.');
+  const out = { ...readSettings(), welcome, updatedAt: now() };
+  mkdirSync(CONFIG_DIR, { recursive: true });
+  writeFileSync(`${SETTINGS}.tmp`, JSON.stringify(out, null, 2) + '\n');
+  renameSync(`${SETTINGS}.tmp`, SETTINGS);
+  return out;
+}
 function deleteKeyword(name) {
   const list = readKeywords();
   const rest = list.filter((k) => str(k.keyword).toUpperCase() !== str(name).toUpperCase());
@@ -678,6 +696,14 @@ async function handle(req, res) {
   if (api === '/keywords' && req.method === 'PUT') {
     try {
       return send(res, 200, { keywords: saveKeywords(body.keywords || []) });
+    } catch (e) {
+      return send(res, 400, { error: e.message });
+    }
+  }
+  if (api === '/settings' && req.method === 'GET') return send(res, 200, readSettings());
+  if (api === '/settings' && req.method === 'PUT') {
+    try {
+      return send(res, 200, saveSettings(body));
     } catch (e) {
       return send(res, 400, { error: e.message });
     }

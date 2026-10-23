@@ -325,5 +325,23 @@ check('MailerLite panel: group size and the sequence it starts, with links', pan
 const st = await inbox('/stats?days=30');
 check('Stats: contacts, new contacts, signups, conversion and 30 daily points', st.totals?.contacts > 0 && st.totals.newContacts > 0 && st.totals.signups === 2 && typeof st.totals.conversion === 'number' && st.series?.length === 30 && st.series.at(-1).signups === 2, JSON.stringify(st.totals));
 
+// 16. Welcome DM: the first DM from someone new gets one automatic welcome, never twice
+const { writeFileSync, rmSync } = await import('node:fs');
+const settingsFile = new URL('./config/settings.json', import.meta.url);
+writeFileSync(settingsFile, JSON.stringify({ welcome: { on: true, approved: true, text: 'Hi! Thanks for the message.' } }));
+before = await dmCount();
+await postIg(dmEvent([{ sender: { id: '888' }, recipient: { id: IG_ID }, timestamp: Date.now(), message: { mid: 'dm40', text: 'hello there' } }]));
+await waitFor(async () => !!(await byComment('dm40')));
+last = sentDms(await mockLog()).pop();
+const dm40 = await byComment('dm40');
+check('First DM from someone new: one automatic welcome, their message still needs a reply', (await dmCount()) === before + 1 && last?.body.recipient.id === '888' && last?.body.message.text === 'Hi! Thanks for the message.' && dm40?.status === 'Needs draft' && (dm40?.note || '').includes('Welcome DM'), JSON.stringify(dm40));
+before = await dmCount();
+await postIg(dmEvent([{ sender: { id: '888' }, recipient: { id: IG_ID }, timestamp: Date.now(), message: { mid: 'dm41', text: 'are you there?' } }]));
+await waitFor(async () => !!(await byComment('dm41')));
+check('Second DM from the same person: no second welcome', (await dmCount()) === before);
+rmSync(settingsFile);
+r = await fetch(`${INBOX}/inbox/api/settings`, { method: 'PUT', headers: INBOX_KEY, body: JSON.stringify({ welcome: { on: true, approved: false, text: '' } }) });
+check('Dashboard refuses to switch the welcome on without a message', r.status === 400);
+
 console.log(failed ? `\n${failed} check(s) failed` : '\nall checks passed');
 process.exit(failed ? 1 : 0);

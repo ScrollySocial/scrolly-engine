@@ -23,6 +23,7 @@ services:
       - N8N_BLOCK_ENV_ACCESS_IN_NODE=false
       - NODE_FUNCTION_ALLOW_BUILTIN=crypto,fs
       - KEYWORDS_FILE=/data/config/keywords.json
+      - SETTINGS_FILE=/data/config/settings.json
       - EXECUTIONS_DATA_PRUNE=true
       - EXECUTIONS_DATA_MAX_AGE=336
       - N8N_DIAGNOSTICS_ENABLED=false
