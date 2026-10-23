@@ -446,7 +446,7 @@ function stats(days) {
     },
     series: Object.entries(series).map(([date, v]) => ({ date, ...v })),
     keywords: Object.values(by).sort((a, b) => b.comments - a.comments),
-    inbox: { toAnswer: open('New') + open('Error'), needsDraft: open('Needs draft'), tiktok: open('Reply by hand'), approved: open('Approved'), unread: db.rows.filter((r) => r.kind !== 'out' && !r.read).length },
+    inbox: { toAnswer: open('New') + open('Error'), needsDraft: open('Needs draft'), tiktok: open('Reply by hand'), approved: open('Approved'), unread: db.rows.filter((r) => r.kind !== 'out' && !r.read && !['Handled', 'Skip'].includes(r.status)).length },
   };
 }
 
