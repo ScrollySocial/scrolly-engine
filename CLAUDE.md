@@ -20,6 +20,7 @@ Saved views in use (Content Pipeline, Scrolly Content Tracker):
   (query: `{"mode":"view","view_url":"view://3f9ab38f-4c58-81e3-a763-000cb6af8568"}`)
 - Reel Style Board (style and editing inspiration, newest first; check before editing a Reel):
   view://3feab38f-4c58-81f9-8429-000c8ddaa849
-- Comment inbox, Needs draft (comments waiting for a reply draft; skill draft-comment-replies):
-  view://401ab38f-4c58-814c-a095-000cd613164b
-- Comment inbox, To answer (drafts waiting for Mercedes's OK): view://401ab38f-4c58-8164-a2b1-000cee1deba8
+
+Comments and DMs are NOT in Notion anymore (2026-10-23): they live in Mercedes's own dashboard at
+https://hooks.scrollyseo.com/inbox (`automation/n8n-comments/inbox/`). The draft-comment-replies skill reads and writes
+it through its API; the old Notion Comment inbox sits in the Trash bin page.
