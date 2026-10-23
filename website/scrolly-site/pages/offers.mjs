@@ -40,7 +40,7 @@ const TIER_PAGES = {
     h1: 'Want to start making money online?', h1b: 'We’ve got you.',
     goal: 'Earn your first $1,000.00 online', pct: ['$1K', 'your first goal'], end: 'Earn your <span>first stripe.</span>',
     intro: 'The Club gives you the plan. The Challenge gives you 30 consecutive days to go get it, and a shirt when you do.',
-    club: { one: 'Your plan, yours to keep. One-time.', items: [['The $1K Club playbook (PDF)', 'Make your first $1K with Instagram, step by step.'], ['Reel and carousel templates', 'A Reel safe-zone guide and a 3:4 carousel template.'], ['$1K Math calculator', 'How many sales it takes to reach $1,000.']] },
+    club: { one: 'Your plan, yours to keep. One-time.', items: [['The $1K Club playbook (PDF)', 'Make your first $1K with Instagram, step by step.'], ['Reel guide + carousel template', 'A Reel safe-zone guide and one 3:4 carousel template.'], ['Setup checklist + worksheets', 'An Instagram setup checklist and printable worksheets.']] },
     chal: { one: 'Everything in the Club, plus:', items: [['Your personal $1K Plan', 'Your $1K number, what to do each week, and a weekly check-in.'], ['25 Reel ideas every week', 'Current formats, ready to film. Plus 30 carousel and 30 Story templates.'], ['30 consecutive days, one goal', '$1,000 in total revenue.'], ['Your stripe shirt', 'Hit $1,000 and it ships free in the lower 48. Pick your size at checkout.']] },
     // 2026-10-10: graphite winner shirt replaces the teal one (front print only, so front + model photo).
     shirt: ['shirt-1k-graphite-front-cut.webp', 'Front of the graphite $1K Club winner shirt: a white line tiger above The $1k Club and Earn your stripes.', 'shirt-1k-graphite-model.webp', 'A man wearing the graphite $1K Club winner shirt.'],
@@ -95,7 +95,7 @@ const PRODUCTS = {
   '1k': [
     { n: '$1K Club Playbook', d: 'Step by step to your first $1K.', club: true, img: 'k1-cover-playbook-fill.webp', full: true },
     { n: 'Social Media Quality Tips', d: 'Make your content stop the scroll.', club: true, img: 'k1-cover-quality-tips-fill.webp', full: true },
-    { n: 'Reel + carousel templates', d: 'A Reel safe-zone guide and a 3:4 carousel template. The Challenge adds 60 ready-made Canva templates.', club: true, img: 'k1-tile-templates-filled.webp', full: true },
+    { n: 'Reel guide + carousel template', d: 'A Reel safe-zone guide and one 3:4 carousel template. The Challenge adds 60 ready-made Canva templates.', club: true, img: 'k1-tile-templates-filled.webp', full: true },
     { n: '$1K Math calculator', d: 'How many sales it takes to reach $1,000.', club: true, img: 'k1-tile2-calculator.webp', full: true },
     { n: 'Your $1K Plan', d: 'Your number, weekly steps and a weekly check-in.', img: 'k1-tile2-plan.webp', full: true },
     { n: '25 Reel ideas a week', d: 'Fresh, current formats, ready to film.', img: 'k1-tile2-reels.webp', full: true },
@@ -107,8 +107,9 @@ const PRODUCTS = {
 // Comparison rows (short names). Coming-soon tiers fall back to their preview step names.
 const COMPARE = {
   '1k': {
-    club: ['$1K Club Playbook', 'Social Media Quality Tips', 'Reel and carousel templates', '$1K Math calculator'],
-    chal: ['Everything in the Club', 'Your personal $1K Plan + weekly check-in', '25 Reel ideas every week', 'Notion content tracker template', 'Auto-posting to Buffer with your AI', '30 carousel + 30 Story templates', 'Stripe shirt, earned at $1K'],
+    // 2026-10-23: Club lists only what Club buyers download (the calculator is free on the site); Challenge templates named as 60 Canva.
+    club: ['$1K Club Playbook', 'Social Media Quality Tips', 'Reel safe-zone guide + 1 carousel template', 'Instagram setup checklist + worksheets'],
+    chal: ['Everything in the Club', 'Your personal $1K Plan + weekly check-in', '25 Reel ideas every week', '60 Canva templates (30 carousel, 30 Story)', 'Notion content tracker template', 'Auto-posting to Buffer with your AI', 'Stripe shirt when you prove $1K in revenue'],
   },
 };
 // Explainer video per tier (URL of an uploaded MP4). '' = no video section until the video exists (Mercedes 2026-10-09:
