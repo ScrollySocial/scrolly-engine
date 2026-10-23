@@ -248,7 +248,7 @@ if ( ! defined( 'SCROLLY_K1CO_V' ) ) {
 		$extras = '<section class="k1co-extras">'
 			. '<h2>What’s inside</h2>'
 			. '<p class="k1co-tick"><b aria-hidden="true">✓</b><span>The $1K Club Playbook, setup checklist, and worksheets.</span></p>'
-			. '<p class="k1co-tick"><b aria-hidden="true">✓</b><span>Reel and carousel templates, plus the $1K Math calculator.</span></p>'
+			. '<p class="k1co-tick"><b aria-hidden="true">✓</b><span>A Reel safe-zone guide, a carousel template, and the $1K Math calculator.</span></p>'
 			. '<p class="k1co-tick"><b aria-hidden="true">✓</b><span>Add the Challenge for a personal $1K Plan, weekly check-ins, and 25 current Reel ideas each week.</span></p>'
 			. '<div class="k1co-earned"><div class="k1co-earned-shirt">' . scrolly_k1co_img( 'front', 'Winner shirt front', '' ) . scrolly_k1co_img( 'back', 'Winner shirt back', '' ) . '</div>'
 			. '<h2>The shirt is earned.</h2>'
