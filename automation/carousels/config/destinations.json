@@ -116,6 +116,33 @@
       "live": true,
       "dmApproved": true,
       "dm": "Here's the $1K Math calculator: {url} Put in your price and it shows how many sales it takes to reach $1,000."
+    },
+    {
+      "keyword": "EARN1K",
+      "freebie": "To decide (Mercedes picked the keyword 2026-10-23)",
+      "url": "",
+      "leadsTo": "$1K Club + Challenge (https://scrollyseo.com/1k-club/)",
+      "live": false,
+      "dmApproved": false,
+      "dm": ""
+    },
+    {
+      "keyword": "SPOOKY",
+      "freebie": "To decide; no free template from the pack (Mercedes 2026-10-23)",
+      "url": "",
+      "leadsTo": "Halloween Reel Template Pack (https://scrollyseo.com/halloween-reels/)",
+      "live": false,
+      "dmApproved": false,
+      "dm": ""
+    },
+    {
+      "keyword": "SHOPREELS",
+      "freebie": "To decide; no free template from the pack (Mercedes 2026-10-23)",
+      "url": "",
+      "leadsTo": "Product Reel Template Pack (https://scrollyseo.com/product-reels/)",
+      "live": false,
+      "dmApproved": false,
+      "dm": ""
     }
   ],
   "engagementCtas": [
