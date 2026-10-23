@@ -1,25 +1,19 @@
-// Every 10 minutes: rows Mercedes set to Status = Approved get their Draft reply
-// (as she edited it) posted as a public reply, then marked Posted.
-// This uses Notion's public API with its own integration token, which is separate
-// from the Claude Notion connector's query allowance.
+// Every 10 minutes (or right away when she taps "Approve & post"): rows Mercedes
+// approved in her dashboard get their reply (as she edited it) posted, then marked
+// Posted. Comments get a public reply; DMs get a DM back.
 if (!isMyJob('replies')) return [];
-const db = cfg('NOTION_COMMENTS_DB');
-if (!db || !cfg('NOTION_TOKEN')) return [];
-const text = (p) => (p?.rich_text || p?.title || []).map((t) => t.plain_text ?? t.text?.content ?? '').join('');
-const rowsAt = async (status) =>
-  (await http({ method: 'POST', url: `${NOTION}/databases/${db}/query`, headers: notionHeaders(), body: { filter: { property: 'Status', select: { equals: status } }, page_size: 50 } })).results || [];
-const setRow = (id, properties) => http({ method: 'PATCH', url: `${NOTION}/pages/${id}`, headers: notionHeaders(), body: { properties } });
-const noteProp = (note) => ({ rich_text: [{ type: 'text', text: { content: note.slice(0, 1900) } }] });
+const rowsAt = async (status) => (await inbox('GET', `/rows?status=${encodeURIComponent(status)}`)).rows || [];
+const setRow = (id, change) => inbox('PATCH', `/rows/${id}`, change);
 
 // Once test mode is off, rows that were approved while it was on go back to New
 // (the To answer view) so she can approve them again; nothing is posted unasked.
 if (!DRY_RUN) {
   try {
     for (const row of await rowsAt('Not sent (test mode)')) {
-      await setRow(row.id, { Status: { select: { name: 'New' } }, Note: noteProp('Approved while test mode was on, so it was not sent. Approve again to post it.') });
+      await setRow(row.id, { status: 'New', note: 'Approved while test mode was on, so it was not sent. Approve again to post it.' });
     }
   } catch (e) {
-    logError('notion-test-mode-rows', e);
+    logError('inbox-test-mode-rows', e);
   }
 }
 
@@ -27,7 +21,7 @@ let rows;
 try {
   rows = await rowsAt('Approved');
 } catch (e) {
-  logError('notion-approved', e);
+  logError('inbox-approved', e);
   return [{ json: { job: 'replies', error: errText(e) } }];
 }
 
@@ -56,21 +50,21 @@ async function youtubeAccessToken() {
 
 const out = [];
 for (const row of rows) {
-  const p = row.properties || {};
-  const platform = p.Platform?.select?.name;
-  const reply = text(p['Draft reply']).trim();
-  const commentId = text(p['Comment ID']).trim();
-  const threadId = text(p['Thread ID']).trim() || commentId;
+  const platform = row.platform;
+  const reply = String(row.draft || '').trim();
+  const commentId = String(row.commentId || '').trim();
+  const threadId = String(row.threadId || '').trim() || commentId;
   let status = 'Posted';
   let note = '';
-  // A reply that went out but whose row didn't save as Posted (Notion hiccup) is
+  let replyMid = '';
+  // A reply that went out but whose row didn't save as Posted (a hiccup) is
   // still Approved on the next run: only retry the row update, never post twice.
   const postedAt = state.repliesPosted?.[row.id];
   if (postedAt) {
     note = 'Posted once already; this run only marked the row.';
   } else if (!reply || !commentId) {
     status = 'Error';
-    note = 'Draft reply or Comment ID is empty.';
+    note = 'The reply or the comment id is empty.';
   } else if (platform === 'TikTok') {
     status = 'Reply by hand';
     note = "TikTok doesn't allow replies from automations. Copy the draft into TikTok.";
@@ -79,7 +73,16 @@ for (const row of rows) {
     note = `Test mode: would post "${reply}"`;
   } else {
     try {
-      if (platform === 'Instagram') {
+      if (platform === 'Instagram' && row.kind === 'dm') {
+        // Instagram only allows a reply within 24 hours of their last message.
+        const res = await http({
+          method: 'POST',
+          url: `${GRAPH}/${cfg('IG_USER_ID') || 'me'}/messages`,
+          headers: { Authorization: `Bearer ${igToken()}` },
+          body: { recipient: { id: row.personId }, message: { text: reply } },
+        });
+        replyMid = res?.message_id || '';
+      } else if (platform === 'Instagram') {
         await http({ method: 'POST', url: `${GRAPH}/${commentId}/replies`, qs: { message: reply }, headers: { Authorization: `Bearer ${igToken()}` } });
       } else if (platform === 'YouTube') {
         await http({
@@ -98,16 +101,19 @@ for (const row of rows) {
     } catch (e) {
       logError('post-reply', e);
       status = 'Error';
-      note = `Not posted: ${errText(e)}`;
+      note = row.kind === 'dm'
+        ? `Not sent. Instagram only allows replies within 24 hours of their last message; reply in the Instagram app. (${errText(e)})`
+        : `Not posted: ${errText(e)}`;
     }
   }
-  const properties = { Status: { select: { name: status } } };
-  if (note) properties.Note = noteProp(note);
-  if (status === 'Posted') properties.Posted = { date: { start: postedAt || now() } };
+  const change = { status };
+  if (note) change.note = note;
+  if (replyMid) change.replyMid = replyMid;
+  if (status === 'Posted') change.postedAt = postedAt || now();
   try {
-    await setRow(row.id, properties);
+    await setRow(row.id, change);
   } catch (e) {
-    logError('notion-update', e);
+    logError('inbox-update', e);
   }
   out.push({ json: { page: row.id, platform, status, note } });
 }

@@ -36,6 +36,28 @@ services:
       - "5678"
     mem_limit: 700m
 
+  # Mercedes's comment dashboard and the inbox n8n writes to (inbox/server.mjs, no npm
+  # packages). It gets only the settings it needs, not the platform tokens.
+  inbox:
+    image: node:22.11.0-alpine
+    container_name: inbox-comments
+    restart: unless-stopped
+    command: ["node", "/app/server.mjs"]
+    environment:
+      - INBOX_API_SECRET=${INBOX_API_SECRET}
+      - INBOX_SETUP_CODE=${INBOX_SETUP_CODE}
+      - RUN_SECRET=${RUN_SECRET}
+      - YOUTUBE_KEEP_DAYS=${YOUTUBE_KEEP_DAYS:-21}
+      - TZ=${TZ:-America/Chicago}
+    volumes:
+      - ./inbox:/app:ro
+      - inbox_data:/data
+      # keywords-all.json (edited in the dashboard) and keywords.json (read by n8n)
+      - ./config:/config
+    expose:
+      - "3000"
+    mem_limit: 128m
+
   caddy:
     image: caddy:2.11.7
     container_name: caddy-comments
@@ -51,8 +73,10 @@ services:
       - caddy_config:/config
     depends_on:
       - n8n
+      - inbox
 
 volumes:
   n8n_data:
+  inbox_data:
   caddy_data:
   caddy_config:

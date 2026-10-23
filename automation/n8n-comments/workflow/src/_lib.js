@@ -10,7 +10,10 @@ const cfg = (key, fallback = '') => {
 // YouTube, the inbox rows say what would have been sent.
 const DRY_RUN = cfg('COMMENTS_DRY_RUN', 'true') !== 'false';
 const GRAPH = cfg('GRAPH_BASE', 'https://graph.instagram.com/v26.0');
-const NOTION = cfg('NOTION_BASE', 'https://api.notion.com/v1');
+// The comment inbox (inbox/server.mjs) on the private Docker network; it replaced Notion on 2026-10-23.
+const INBOX = cfg('INBOX_BASE', 'http://inbox:3000');
+// Instagram DMs are read only when DMS_ENABLED=true (switched on after the privacy page covers them).
+const DMS = cfg('DMS_ENABLED') === 'true';
 // State (comments seen, DMs sent, refreshed Instagram token, last errors) lives
 // in one JSON file in n8n's data volume, read fresh by every node and saved when
 // the node ends (build.mjs adds the save). Not workflow static data: n8n hands a
@@ -52,8 +55,32 @@ function logError(where, e) {
 // The Instagram token is refreshed weekly by the token job; the newest one lives
 // in the state file, the .env value is only the starting token.
 const igToken = () => state.igToken || cfg('IG_ACCESS_TOKEN');
-function notionHeaders() {
-  return { Authorization: `Bearer ${cfg('NOTION_TOKEN')}`, 'Notion-Version': '2022-06-28' };
+function inbox(method, path, body) {
+  return http({ method, url: `${INBOX}/inbox/api${path}`, headers: { 'x-inbox-secret': cfg('INBOX_API_SECRET') }, ...(body ? { body } : {}) });
+}
+// Post links and DM senders' usernames, looked up once and remembered.
+async function igPermalink(mediaId) {
+  if (!mediaId) return '';
+  state.permalinks = Object.keys(state.permalinks || {}).length > 2000 ? {} : state.permalinks || {};
+  if (state.permalinks[mediaId] === undefined) {
+    try {
+      state.permalinks[mediaId] = (await http({ method: 'GET', url: `${GRAPH}/${mediaId}`, qs: { fields: 'permalink', access_token: igToken() } })).permalink || '';
+    } catch (e) {
+      return '';
+    }
+  }
+  return state.permalinks[mediaId];
+}
+async function igUsername(igsid) {
+  state.people = Object.keys(state.people || {}).length > 2000 ? {} : state.people || {};
+  if (state.people[igsid] === undefined) {
+    try {
+      state.people[igsid] = (await http({ method: 'GET', url: `${GRAPH}/${igsid}`, qs: { fields: 'username', access_token: igToken() } })).username || '';
+    } catch (e) {
+      return '';
+    }
+  }
+  return state.people[igsid];
 }
 // A run-now call ({job: 'youtube'}) reaches every job node; each one only runs
 // for its own job name, or when its schedule fired (no job on the item).

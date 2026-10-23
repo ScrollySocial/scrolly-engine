@@ -33,7 +33,7 @@ add('About this workflow', 'n8n-nodes-base.stickyNote', 1, [-420, -260], {
   width: 420,
   height: 300,
   content:
-    '## Scrolly comments\nInstagram comment with a keyword → freebie DM (automatic).\nEvery Instagram, YouTube and TikTok comment → sorted by free word rules → Notion **Comment inbox** as Needs draft.\nClaude (subscription) writes the drafts; set Status = Approved → posted within 10 minutes (TikTok: reply by hand).\nOptional: CLAUDE_API_DRAFTS=true drafts with the paid Claude API instead.\n\nTest mode is on until COMMENTS_DRY_RUN=false.\nCode lives in automation/n8n-comments/workflow/src (edit there, rebuild, re-import).',
+    '## Scrolly comments\nInstagram comment with a keyword → freebie DM (automatic).\nEvery Instagram, YouTube and TikTok comment → sorted by free word rules → the comment inbox (hooks.scrollyseo.com/inbox) as Needs draft.\nClaude (subscription) writes the drafts; approve in the dashboard → posted right away or within 10 minutes (TikTok: reply by hand).\nOptional: CLAUDE_API_DRAFTS=true drafts with the paid Claude API instead.\n\nTest mode is on until COMMENTS_DRY_RUN=false.\nCode lives in automation/n8n-comments/workflow/src (edit there, rebuild, re-import).',
 });
 
 webhook('Instagram check', 'GET', 'instagram', [0, 0], 'responseNode');

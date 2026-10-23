@@ -2,7 +2,8 @@
 //   IG_ACCESS_TOKEN=... node scripts/instagram-setup.mjs
 // (or put {"accessToken": "..."} in .secrets/instagram.json). It prints the
 // account's IG_USER_ID and turns on comment notifications for the app
-// (POST /me/subscribed_apps?subscribed_fields=comments). Prints no secrets.
+// (POST /me/subscribed_apps?subscribed_fields=comments; add --with-dms for
+// comments,messages). Prints no secrets.
 import { readFileSync, existsSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -24,7 +25,9 @@ if (me.error) {
 console.log(`Account: @${me.username} (${me.account_type})`);
 console.log(`IG_USER_ID=${me.user_id}`);
 
+// --with-dms also turns on DM notifications (only once the privacy page covers DMs).
+const fields = process.argv.includes('--with-dms') ? 'comments,messages' : 'comments';
 const sub = await (
-  await fetch(`${GRAPH}/me/subscribed_apps?subscribed_fields=comments&access_token=${encodeURIComponent(token)}`, { method: 'POST' })
+  await fetch(`${GRAPH}/me/subscribed_apps?subscribed_fields=${fields}&access_token=${encodeURIComponent(token)}`, { method: 'POST' })
 ).json();
-console.log(sub.success ? 'Comment notifications: ON' : `Comment notifications failed: ${JSON.stringify(sub.error || sub)}`);
+console.log(sub.success ? `Notifications ON for: ${fields}` : `Notifications failed: ${JSON.stringify(sub.error || sub)}`);

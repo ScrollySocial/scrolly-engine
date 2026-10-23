@@ -23,23 +23,38 @@ for (const item of $input.all()) {
   }
   if (hit && c.platform === 'Instagram') {
     const text = hit.dm.replace('{url}', hit.url);
+    let result = 'test';
     if (state.dm?.[c.id]) {
       c.dm = 'already sent';
+      result = 'already';
     } else if (DRY_RUN) {
       c.dm = `test mode, would send: ${text}`;
     } else {
       try {
-        await http({
+        // A comment gets a private reply to that comment; a DM gets a normal DM back to its sender.
+        const recipient = c.kind === 'dm' ? { id: c.authorId } : { comment_id: c.id };
+        const res = await http({
           method: 'POST',
           url: `${GRAPH}/${ownId || 'me'}/messages`,
           headers: { Authorization: `Bearer ${igToken()}` },
-          body: { recipient: { comment_id: c.id }, message: { text } },
+          body: { recipient, message: { text } },
         });
         remember('dm', c.id);
         c.dm = `sent: ${text}`;
+        c.dmMid = res?.message_id || '';
+        result = 'sent';
       } catch (e) {
         logError('instagram-dm', e);
         c.dm = `failed: ${errText(e)}`;
+        result = 'failed';
+      }
+    }
+    // Stats for the dashboard: keyword, post and result only, no names or comment text.
+    if (result !== 'already') {
+      try {
+        await inbox('POST', '/events', { keyword: hit.keyword, platform: c.platform, post: c.kind === 'dm' ? '' : await igPermalink(c.postId), result });
+      } catch (e) {
+        logError('inbox-event', e);
       }
     }
   }

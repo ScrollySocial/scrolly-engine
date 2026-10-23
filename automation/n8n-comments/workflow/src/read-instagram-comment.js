@@ -51,5 +51,40 @@ for (const entry of body.entry || []) {
       },
     });
   }
+  // DMs (and Story replies) arrive as entry.messaging[]; only read once DMS_ENABLED=true.
+  if (!DMS) continue;
+  for (const m of entry.messaging || []) {
+    const msg = m.message;
+    if (!msg?.mid || msg.is_deleted || msg.is_unsupported) continue;
+    const at = m.timestamp ? new Date(m.timestamp).toISOString() : now();
+    const text = msg.text || (msg.attachments?.length ? `(${msg.attachments[0].type || 'attachment'})` : '');
+    // Echo = a DM sent from her account (the Instagram app or this automation): kept for the conversation view.
+    if (msg.is_echo) {
+      try {
+        await inbox('POST', '/rows', { kind: 'out', platform: 'Instagram', commentId: msg.mid, personId: m.recipient?.id || '', author: await igUsername(m.recipient?.id), text, status: 'Posted', receivedAt: at });
+      } catch (e) {
+        logError('inbox-echo', e);
+      }
+      continue;
+    }
+    const sender = m.sender?.id;
+    if (!sender || sender === ownId || sender === entry.id) continue;
+    out.push({
+      json: {
+        platform: 'Instagram',
+        kind: 'dm',
+        id: String(msg.mid),
+        text,
+        author: await igUsername(sender),
+        authorId: sender,
+        postId: '',
+        parentId: '',
+        threadId: '',
+        link: '',
+        note: msg.reply_to?.story ? 'Story reply' : '',
+        createdAt: at,
+      },
+    });
+  }
 }
 return out;

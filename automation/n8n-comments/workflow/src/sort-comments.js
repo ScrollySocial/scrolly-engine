@@ -36,6 +36,8 @@ Sort the comment into exactly one type:
 - spam: bots, crypto, "promote it on", collab or growth offers, unrelated links, scams
 - other: anything else
 
+If kind is "dm", it is a private message to her (or a reply to her Story) and the reply is sent privately; the same rules apply.
+
 Write the reply Mercedes would post publicly:
 - Warm, encouraging, clear and short: 1 or 2 sentences. Reply to what they actually said.
 - Questions: give a genuinely useful answer or one concrete tip when general know-how answers it. Mention "the link in my bio" only when they ask about price, joining or getting one of her products.
@@ -80,7 +82,7 @@ for (const item of $input.all()) {
         max_tokens: 4000,
         output_config: { effort },
         system: SYSTEM,
-        messages: [{ role: 'user', content: JSON.stringify({ platform: c.platform, author: c.author, comment: c.text }) }],
+        messages: [{ role: 'user', content: JSON.stringify({ platform: c.platform, kind: c.kind || 'comment', author: c.author, comment: c.text }) }],
       },
     });
     if (res.stop_reason !== 'end_turn') throw new Error(`Claude stopped early (${res.stop_reason})`);

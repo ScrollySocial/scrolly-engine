@@ -1,5 +1,7 @@
-// Stand-in for Instagram Graph, YouTube, Google OAuth, Apify, Anthropic and Notion
-// so the workflow can be tested end to end without sending anything real.
+// Stand-in for Instagram Graph, YouTube, Google OAuth, Apify and Anthropic so the
+// workflow can be tested end to end without sending anything real. (The Notion
+// routes are left from before the comment dashboard; the inbox itself runs for
+// real in tests, see test/run-inbox.sh.)
 // Every request is recorded; GET /log returns them, POST /reset clears them.
 //   node test/mock-apis.mjs            (listens on 5690)
 import http from 'node:http';
@@ -8,6 +10,7 @@ const PORT = Number(process.env.MOCK_PORT || 5690);
 let log = [];
 let pages = [];
 let failNextPatch = false;
+let sentCount = 0;
 const FAIL = Symbol('fail');
 const hoursAgo = (h) => new Date(Date.now() - h * 3600e3).toISOString();
 
@@ -20,10 +23,14 @@ function claudeAnswer(comment) {
 }
 
 const routes = [
-  ['POST', /^\/graph\/[^/]+\/messages$/, () => ({ recipient_id: 'r1', message_id: 'm1' })],
+  ['POST', /^\/graph\/[^/]+\/messages$/, () => ({ recipient_id: 'r1', message_id: `mid-sent-${++sentCount}` })],
   ['POST', /^\/graph\/[^/]+\/replies$/, () => ({ id: 'reply1' })],
   ['GET', /^\/graph\/refresh$/, () => ({ access_token: 'refreshed-token', token_type: 'bearer', expires_in: 5184000 })],
-  ['GET', /^\/graph\/[^/]+$/, (req, url) => ({ id: url.pathname.split('/').pop(), permalink: 'https://www.instagram.com/p/TESTPOST/' })],
+  // A media id answers with its permalink, a person id with a username.
+  ['GET', /^\/graph\/[^/]+$/, (req, url) => {
+    const id = url.pathname.split('/').pop();
+    return { id, permalink: 'https://www.instagram.com/p/TESTPOST/', username: `user${id}` };
+  }],
   ['GET', /^\/yt\/commentThreads$/, () => ({
     items: [
       { id: 'ytThread1', snippet: { videoId: 'vid1', topLevelComment: { id: 'ytThread1', snippet: { textOriginal: 'How often should I post Shorts?', authorDisplayName: 'Ana', authorChannelId: { value: 'UCana' }, publishedAt: hoursAgo(1), videoId: 'vid1' } } } },
@@ -66,7 +73,7 @@ const routes = [
     return page || {};
   }],
   ['GET', /^\/log$/, () => ({ log, pages })],
-  ['POST', /^\/reset$/, () => ((log = []), (pages = []), (failNextPatch = false), { ok: true })],
+  ['POST', /^\/reset$/, () => ((log = []), (pages = []), (failNextPatch = false), (sentCount = 0), { ok: true })],
   ['POST', /^\/test\/approve$/, () => {
     // Stands in for the subscription routine (fills empty drafts) and for Mercedes (approves).
     for (const p of pages) {
