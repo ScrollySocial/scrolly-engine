@@ -6,16 +6,26 @@ if (!isMyJob('replies')) return [];
 const db = cfg('NOTION_COMMENTS_DB');
 if (!db || !cfg('NOTION_TOKEN')) return [];
 const text = (p) => (p?.rich_text || p?.title || []).map((t) => t.plain_text ?? t.text?.content ?? '').join('');
+const rowsAt = async (status) =>
+  (await http({ method: 'POST', url: `${NOTION}/databases/${db}/query`, headers: notionHeaders(), body: { filter: { property: 'Status', select: { equals: status } }, page_size: 50 } })).results || [];
+const setRow = (id, properties) => http({ method: 'PATCH', url: `${NOTION}/pages/${id}`, headers: notionHeaders(), body: { properties } });
+const noteProp = (note) => ({ rich_text: [{ type: 'text', text: { content: note.slice(0, 1900) } }] });
+
+// Once test mode is off, rows that were approved while it was on go back to New
+// (the To answer view) so she can approve them again; nothing is posted unasked.
+if (!DRY_RUN) {
+  try {
+    for (const row of await rowsAt('Not sent (test mode)')) {
+      await setRow(row.id, { Status: { select: { name: 'New' } }, Note: noteProp('Approved while test mode was on, so it was not sent. Approve again to post it.') });
+    }
+  } catch (e) {
+    logError('notion-test-mode-rows', e);
+  }
+}
 
 let rows;
 try {
-  const res = await http({
-    method: 'POST',
-    url: `${NOTION}/databases/${db}/query`,
-    headers: notionHeaders(),
-    body: { filter: { property: 'Status', select: { equals: 'Approved' } }, page_size: 50 },
-  });
-  rows = res.results || [];
+  rows = await rowsAt('Approved');
 } catch (e) {
   logError('notion-approved', e);
   return [{ json: { job: 'replies', error: errText(e) } }];
@@ -53,7 +63,12 @@ for (const row of rows) {
   const threadId = text(p['Thread ID']).trim() || commentId;
   let status = 'Posted';
   let note = '';
-  if (!reply || !commentId) {
+  // A reply that went out but whose row didn't save as Posted (Notion hiccup) is
+  // still Approved on the next run: only retry the row update, never post twice.
+  const postedAt = state.repliesPosted?.[row.id];
+  if (postedAt) {
+    note = 'Posted once already; this run only marked the row.';
+  } else if (!reply || !commentId) {
     status = 'Error';
     note = 'Draft reply or Comment ID is empty.';
   } else if (platform === 'TikTok') {
@@ -77,6 +92,9 @@ for (const row of rows) {
       } else {
         throw new Error(`unknown platform ${platform}`);
       }
+      // Saved straight away, so even a crash before the row update can't repost it.
+      remember('repliesPosted', row.id);
+      saveState();
     } catch (e) {
       logError('post-reply', e);
       status = 'Error';
@@ -84,10 +102,10 @@ for (const row of rows) {
     }
   }
   const properties = { Status: { select: { name: status } } };
-  if (note) properties.Note = { rich_text: [{ type: 'text', text: { content: note.slice(0, 1900) } }] };
-  if (status === 'Posted') properties.Posted = { date: { start: now() } };
+  if (note) properties.Note = noteProp(note);
+  if (status === 'Posted') properties.Posted = { date: { start: postedAt || now() } };
   try {
-    await http({ method: 'PATCH', url: `${NOTION}/pages/${row.id}`, headers: notionHeaders(), body: { properties } });
+    await setRow(row.id, properties);
   } catch (e) {
     logError('notion-update', e);
   }

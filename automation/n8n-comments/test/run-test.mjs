@@ -147,5 +147,39 @@ check('Status shows only the forged-signature error', (status.errors || []).ever
 r = await fetch(`${N8N}/webhook/comments-status`);
 check('Status refuses without the secret', JSON.stringify(await r.json().catch(() => ({}))).includes('forbidden'));
 
+// 9. Finishing replies safely (after 8: the failed row update below is logged as an error on purpose)
+const seed = async (status, commentId) =>
+  (await fetch(`${MOCK}/test/seed`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ properties: {
+      Comment: { title: [{ text: { content: 'seeded comment' } }] },
+      Platform: { select: { name: 'Instagram' } },
+      Status: { select: { name: status } },
+      'Draft reply': { rich_text: [{ type: 'text', text: { content: 'Thank you!' } }] },
+      'Comment ID': { rich_text: [{ type: 'text', text: { content: commentId } }] },
+      'Thread ID': { rich_text: [] },
+      Note: { rich_text: [] },
+    } }),
+  })).json();
+const page = async (id) => (await mockLog()).pages.find((p) => p.id === id);
+const repliesTo = async (commentId) => (await mockLog()).log.filter((x) => x.path === `/graph/${commentId}/replies`).length;
+
+const approved = await seed('Approved', 'c20');
+await fetch(`${MOCK}/test/fail-next-patch`, { method: 'POST' });
+await runJob('replies');
+await waitFor(async () => (await repliesTo('c20')) > 0);
+await sleep(3000);
+check('Row update fails after posting: row still Approved', (await page(approved.id))?.properties.Status.select.name === 'Approved');
+await runJob('replies');
+await waitFor(async () => (await page(approved.id))?.properties.Status.select.name === 'Posted');
+check('Next run marks it Posted without posting it again', (await page(approved.id))?.properties.Status.select.name === 'Posted' && (await repliesTo('c20')) === 1, String(await repliesTo('c20')));
+
+const testModeRow = await seed('Not sent (test mode)', 'c21');
+await runJob('replies');
+await waitFor(async () => (await page(testModeRow.id))?.properties.Status.select.name === 'New');
+const tm = await page(testModeRow.id);
+check('Test-mode row goes back to New for a fresh OK, nothing posted', tm?.properties.Status.select.name === 'New' && (await repliesTo('c21')) === 0 && tm.properties.Note.rich_text[0]?.text.content.includes('Approve again'), tm?.properties.Status.select.name);
+
 console.log(failed ? `\n${failed} check(s) failed` : '\nall checks passed');
 process.exit(failed ? 1 : 0);

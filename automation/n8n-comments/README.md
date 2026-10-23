@@ -13,7 +13,11 @@ What it does, decisions and Mercedes's setup checklist: vault
 - **Optional paid route:** `CLAUDE_API_DRAFTS=true` + `ANTHROPIC_API_KEY` makes n8n sort and draft each comment with
   the Claude API instead (rows arrive at New with the draft filled in).
 - **Status = Approved in Notion** → the Draft reply (as edited) is posted within 10 minutes; row becomes Posted.
-  TikTok has no reply API: those rows say "Reply by hand".
+  TikTok has no reply API: those rows say "Reply by hand". Each posted row is remembered in the state file, so if
+  Notion fails to save "Posted" the next run only fixes the row and never posts the reply twice. A failed post
+  becomes Error, which shows in the "To answer" view.
+- **Going live:** once `COMMENTS_DRY_RUN=false`, rows at "Not sent (test mode)" go back to New (with a note) for a
+  fresh OK; they are never posted without one.
 - **Test mode** (`COMMENTS_DRY_RUN=true`, the default): nothing is sent to Instagram or YouTube.
 
 One workflow, `workflow/scrolly-comments.json`, built from `workflow/src/*.js` by `node workflow/build.mjs`

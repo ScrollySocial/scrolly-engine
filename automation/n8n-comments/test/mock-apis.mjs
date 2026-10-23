@@ -7,6 +7,8 @@ import http from 'node:http';
 const PORT = Number(process.env.MOCK_PORT || 5690);
 let log = [];
 let pages = [];
+let failNextPatch = false;
+const FAIL = Symbol('fail');
 const hoursAgo = (h) => new Date(Date.now() - h * 3600e3).toISOString();
 
 function claudeAnswer(comment) {
@@ -49,12 +51,13 @@ const routes = [
     results: pages.filter((p) => p.properties.Status?.select?.name === body.filter?.select?.equals),
   })],
   ['PATCH', /^\/notion\/pages\/[^/]+$/, (req, url, body) => {
+    if (failNextPatch) return (failNextPatch = false), FAIL;
     const page = pages.find((p) => p.id === url.pathname.split('/').pop());
     if (page) Object.assign(page.properties, body.properties);
     return page || {};
   }],
   ['GET', /^\/log$/, () => ({ log, pages })],
-  ['POST', /^\/reset$/, () => ((log = []), (pages = []), { ok: true })],
+  ['POST', /^\/reset$/, () => ((log = []), (pages = []), (failNextPatch = false), { ok: true })],
   ['POST', /^\/test\/approve$/, () => {
     // Stands in for the subscription routine (fills empty drafts) and for Mercedes (approves).
     for (const p of pages) {
@@ -63,6 +66,14 @@ const routes = [
     }
     return { approved: pages.length };
   }],
+  // Adds a ready-made inbox row ({properties}), e.g. one at "Not sent (test mode)".
+  ['POST', /^\/test\/seed$/, (req, url, body) => {
+    const page = { id: `page-${pages.length + 1}`, properties: body.properties };
+    pages.push(page);
+    return page;
+  }],
+  // The next Notion row update fails, as when Notion has a hiccup after a reply went out.
+  ['POST', /^\/test\/fail-next-patch$/, () => ((failNextPatch = true), { ok: true })],
 ];
 
 http
@@ -82,8 +93,9 @@ http
         log.push({ method: req.method, path: url.pathname, query: Object.fromEntries(url.searchParams), auth: req.headers.authorization || req.headers['x-api-key'] || '', body });
       }
       const out = route ? route[2](req, url, body) : { error: 'no mock route' };
-      res.writeHead(route ? 200 : 404, { 'Content-Type': 'application/json' });
-      res.end(JSON.stringify(out));
+      const code = out === FAIL ? 502 : route ? 200 : 404;
+      res.writeHead(code, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify(out === FAIL ? { error: 'test failure' } : out));
     });
   })
   .listen(PORT, () => console.log(`mock APIs on http://localhost:${PORT}`));
