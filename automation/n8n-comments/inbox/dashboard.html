@@ -129,6 +129,12 @@
   .pv-yt-c.reply { margin-left: 40px; }
   .pv-yt-name { font-size: 12px; color: #606060; margin-bottom: 2px; }
   .pv-avatar.round { width: 32px; height: 32px; }
+  .emoji-wrap { position: relative; display: inline-block; }
+  .emoji-toggle { padding: 8px 12px; font-size: 18px; line-height: 1; }
+  .emoji-grid { position: absolute; z-index: 5; bottom: calc(100% + 6px); left: 0; width: 290px; max-width: calc(100vw - 48px); display: grid; grid-template-columns: repeat(8, 1fr); gap: 2px; background: var(--white); border: 1px solid var(--line); border-radius: 14px; padding: 8px; box-shadow: 0 6px 24px rgba(10, 25, 48, .12); }
+  .emoji-grid[hidden] { display: none; }
+  .emoji { background: none; padding: 4px; font-size: 20px; border-radius: 8px; }
+  .emoji:hover { background: var(--mist); }
   .login { max-width: 420px; margin: 12vh auto 0; }
   .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 </style>
@@ -360,6 +366,12 @@ function composer(r, c) {
   const set = async (change, msg, back) => {
     try {
       await api(`/api/rows/${r.id}`, { method: 'PATCH', body: change });
+      // In a DM thread one reply answers everything before it: close their older waiting DMs too.
+      if (r.kind === 'dm' && ['Approved', 'Skip'].includes(change.status)) {
+        for (const o of c.items) {
+          if (o.id !== r.id && o.kind === 'dm' && WAITING.includes(o.status)) await api(`/api/rows/${o.id}`, { method: 'PATCH', body: { status: 'Skip', read: true, note: 'Answered in the same DM thread.' } }).catch(() => {});
+        }
+      }
       toast(msg);
       if (back) location.hash = 'inbox'; else route();
     } catch (e) { toast(e.message); }
@@ -381,7 +393,26 @@ function composer(r, c) {
     h('div', { class: 'label', text: `${kindLabel(r)}${r.kind === 'dm' ? ' (Instagram only allows replies within 24 hours of their last message)' : ''} · ${label}` }),
     r.note && r.status === 'Error' ? h('p', { class: 'warn', text: r.note }) : null,
     box,
-    h('div', { class: 'row' }, buttons));
+    h('div', { class: 'row' }, emojiButton(box), buttons));
+}
+
+// A small emoji picker that puts the emoji where the cursor is. (Phones have an emoji key;
+// on Windows, Win + . opens the full emoji panel in any box.)
+const EMOJIS = '😊 😍 🥰 😂 🤣 😅 🙌 👏 🙏 💪 👍 👋 🤝 ✨ 🔥 💯 ❤️ 🧡 💛 💚 💙 💜 🖤 🤍 🎉 🥳 ✅ 👉 👇 📌 💡 📈 💰 💸 🛍️ 📦 📝 📲 🎥 📸 ⭐ 🌟 🤔 😉 😎 🫶 💕 🌸'.split(' ');
+function emojiButton(field) {
+  const grid = h('div', { class: 'emoji-grid', role: 'group', 'aria-label': 'Emojis', hidden: true },
+    EMOJIS.map((e) => h('button', { type: 'button', class: 'emoji', 'aria-label': `Insert ${e}`, text: e, on: { click: () => {
+      const at = field.selectionStart ?? field.value.length;
+      field.value = field.value.slice(0, at) + e + field.value.slice(field.selectionEnd ?? at);
+      field.focus();
+      field.selectionStart = field.selectionEnd = at + e.length;
+      field.dispatchEvent(new Event('input', { bubbles: true }));
+    } } })));
+  const toggle = h('button', { type: 'button', class: 'emoji-toggle', 'aria-label': 'Emojis', 'aria-expanded': 'false', text: '😊', on: { click: () => {
+    grid.hidden = !grid.hidden;
+    toggle.setAttribute('aria-expanded', String(!grid.hidden));
+  } } });
+  return h('span', { class: 'emoji-wrap' }, toggle, grid);
 }
 
 // ---- keywords ----
@@ -492,7 +523,7 @@ async function showKeyword(body, name) {
   const text = (obj, key, label, opts = {}) => {
     const input = h(opts.area ? 'textarea' : 'input', { type: opts.type || 'text', id: `f-${label}`, value: obj[key] ?? '', placeholder: opts.placeholder || '' });
     input.addEventListener('input', () => { obj[key] = input.type === 'number' ? Number(input.value) : input.value; opts.onInput?.(); });
-    return [h('label', { for: `f-${label}`, text: label }), input, opts.hint ? h('p', { class: 'hint', text: opts.hint }) : null];
+    return [h('label', { for: `f-${label}`, text: label }), input, opts.area ? h('div', { class: 'row', style: 'margin-top:6px' }, emojiButton(input)) : null, opts.hint ? h('p', { class: 'hint', text: opts.hint }) : null];
   };
   const check = (obj, key, label, onChange) => {
     const box = h('input', { type: 'checkbox', checked: obj[key] });
