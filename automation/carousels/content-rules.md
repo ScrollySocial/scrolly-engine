@@ -82,8 +82,8 @@ Working draft from Mercedes. Expect several rounds of revision. Change this file
 - CTA appears on the last slide AND in the first two sentences of the caption.
 - Only confirmed resources, URLs, offers, prices, inclusions, and keywords, taken from `destinations.json`. If something is missing there, flag it; never invent it.
 - ManyChat switch (`manychat` in brand config):
-  - `false` (now): no "comment X" CTAs. Use save, send to a friend, follow, or link in bio.
-  - `true`: every CTA is a comment-keyword CTA, using a confirmed keyword.
+  - `false`: no "comment X" CTAs. Use save, send to a friend, follow, or link in bio.
+  - `true` (now, since 2026-10-23: her own n8n comment automation is live): every CTA is a comment-keyword CTA, using a keyword that is switched on with an approved DM (MATH, QUIZ so far).
 
 ## 10. Caption
 - CTA within the first two sentences.
