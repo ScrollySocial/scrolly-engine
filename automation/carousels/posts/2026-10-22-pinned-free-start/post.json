@@ -10,7 +10,7 @@
     "topic": "Free start: the Offer Quiz, the Next Move Quiz and the free calculators",
     "mainPoint": "Three free tools, one for each starting point: no offer yet, an idea with no sales yet, or wanting the numbers",
     "structure": "pick-your-path walkthrough",
-    "ending": "save CTA",
+    "ending": "comment QUIZ CTA (keyword live, DM sends scrollyseo.com/quiz/)",
     "slide2Check": "Format change from the panorama cover (numcover with her walking toward camera); same promise from the 'which one fits you' angle with a big 3 and a swipe pull, so it works as a first slide",
     "mediaPlan": "Real phone screenshots of the live pages (photos/screens/site/live-*.png). Slide 1 is the locked v7 panorama tile 3."
   },
@@ -82,13 +82,13 @@
       "media": "562c236367",
       "focus": "center 30%",
       "pos": "top",
-      "text": "Save this for later",
+      "text": "Comment QUIZ and I'll send you the quiz",
       "hand": "all 3 are free at scrollyseo.com",
       "doodles": [
         {
           "k": "star",
           "x": 905,
-          "y": 85,
+          "y": 600,
           "w": 105,
           "rot": 12,
           "c": "sky"
@@ -97,10 +97,11 @@
     }
   ],
   "cta": {
-    "type": "save"
+    "type": "comment",
+    "keyword": "QUIZ"
   },
   "tigerNod": null,
-  "caption": "Save this so you have all three when you're ready. They're free at scrollyseo.com: the Offer Quiz, the Next Move Quiz and 10 business calculators. The Offer Quiz is for when you have skills but nothing to sell yet. The Next Move Quiz is for when you know what you want to sell but haven't made a sale. The calculators show what it takes to reach your income goal, with no signup. Start with the one that matches where you are today.",
+  "caption": "Comment QUIZ and I'll send you the free quiz in a DM. All three tools are free at scrollyseo.com: the Offer Quiz, the Next Move Quiz and 10 business calculators. The Offer Quiz is for when you have skills but nothing to sell yet. The Next Move Quiz is for when you know what you want to sell but haven't made a sale. The calculators show what it takes to reach your income goal, with no signup. Start with the one that matches where you are today.",
   "hashtags": [
     "#onlinebusiness",
     "#digitalproducts",
