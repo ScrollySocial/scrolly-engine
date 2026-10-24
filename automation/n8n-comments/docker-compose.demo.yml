@@ -16,6 +16,8 @@ services:
       - INBOX_DEMO=true
       - DEMO_RESTART_HOURS=24
       - DEMO_BUY_URL=${DEMO_BUY_URL:-}
+      # The sales page shows the demo in a frame (localhost:8934 = Mercedes's local site preview).
+      - DEMO_FRAME_ANCESTORS=https://scrollyseo.com https://www.scrollyseo.com http://localhost:8934
       - N8N_HOST=bloomstudio.duckdns.org
       - EMAIL_LIST=builtin
       - DMS_ENABLED=true

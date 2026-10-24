@@ -37,6 +37,8 @@ const TEST_HOOKS = env('INBOX_TEST_HOOKS') === 'true';
 // nothing saved or sent, sample connection checks. DEMO_BUY_URL: where "Get Chat Manager" goes.
 const DEMO = env('INBOX_DEMO') === 'true';
 const DEMO_BUY_URL = env('DEMO_BUY_URL');
+// Sites allowed to show the demo in a frame (the sales page), e.g. "https://scrollyseo.com https://www.scrollyseo.com".
+const DEMO_FRAME_ANCESTORS = env('DEMO_FRAME_ANCESTORS').replace(/[^a-z0-9:/. *-]/gi, '');
 const DEMO_READONLY = "Demo: changes aren't saved here. In your own Chat Manager this works right away.";
 // The public demo restarts once a day (Docker brings it back), so its made-up activity stays recent.
 if (DEMO && env('DEMO_RESTART_HOURS')) setTimeout(() => process.exit(0), Number(env('DEMO_RESTART_HOURS')) * 3600e3).unref();
@@ -627,14 +629,13 @@ const N8N_STATUS_URL = env('N8N_STATUS_URL', N8N_RUN_URL.replace(/comments-run$/
 const redact = (s) => String(s || '').replace(/(access_token|refresh_token|api_key|key|token)=[^&\s"']+/gi, '$1=…').replace(/\b[A-Za-z0-9_-]{60,}\b/g, '…').slice(0, 300);
 let healthCache = null;
 const DEMO_HEALTH = {
-  state: 'warn',
+  state: 'ok',
   checks: [
     { id: 'n8n', name: 'Automation', state: 'ok', text: 'Running.', fix: '' },
     { id: 'instagram', name: 'Instagram', state: 'ok', text: 'Working. Last keyword DM 12 min ago.', fix: '' },
     { id: 'youtube', name: 'YouTube', state: 'ok', text: 'Working. Last checked 9 min ago.', fix: '' },
     { id: 'tiktok', name: 'TikTok', state: 'off', text: 'Not connected.', fix: '' },
-    { id: 'email', name: 'Email list', state: 'ok', text: 'Built-in list: signups are kept here (Email list tab).', fix: '' },
-    { id: 'replies', name: 'Replies you sent', state: 'warn', text: "1 reply didn't send. Instagram only allows DM replies within 24 hours of their last message.", fix: 'Open them in the Inbox to try again.' },
+    { id: 'email', name: 'Email list', state: 'ok', text: 'Built-in list: signups are kept here (Email list tab).', fix: '' },
   ],
   errors: [],
 };
@@ -758,7 +759,8 @@ function send(res, code, body, type = 'application/json') {
     'Cache-Control': 'no-store',
     'X-Content-Type-Options': 'nosniff',
     'Referrer-Policy': 'no-referrer',
-    'X-Frame-Options': 'DENY',
+    // The public demo may be shown inside the sales page; every other dashboard never in a frame.
+    ...(DEMO && DEMO_FRAME_ANCESTORS ? { 'Content-Security-Policy': `frame-ancestors ${DEMO_FRAME_ANCESTORS}` } : { 'X-Frame-Options': 'DENY' }),
   });
   res.end(type === 'application/json' ? JSON.stringify(body) : body);
 }

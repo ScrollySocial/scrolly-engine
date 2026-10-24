@@ -12,6 +12,9 @@ export const title = 'Chat Manager, Scrolly';
 const ASSET = (f) => `chat-manager/${f}`;
 const PRICE = '$97';
 const BUY_URL = '#buy';
+// The live demo (a made-up shop on Mercedes's server, nothing saved or sent): automation/n8n-comments/docker-compose.demo.yml.
+// It allows being framed by scrollyseo.com only (DEMO_FRAME_ANCESTORS).
+const DEMO_URL = 'https://demo.scrollyseo.com/inbox';
 
 const STEPS = [
   ['Pick a keyword', 'Name your freebie, add its link and read the preview of every message before it goes live.'],
@@ -20,9 +23,12 @@ const STEPS = [
 ];
 
 const INCLUDED = [
-  ['Comment and DM keywords', 'Instagram comments, DMs and Story replies, plus YouTube comments.'],
+  ['Comment and DM keywords', 'Instagram comments, DMs and Story replies, plus YouTube comments. Start from a ready-made template.'],
+  ['“Check your DMs” replies', 'A short public reply under their comment, in a few wordings that take turns.'],
+  ['Only for followers', 'Optional: the freebie goes out once they follow you.'],
   ['Email signups', 'A signup page in your colors, one reminder DM, and your list in MailerLite, Kit, Mailchimp, beehiiv, Flodesk, a webhook, or kept on your server with a CSV download.'],
   ['One inbox', 'Instagram, YouTube and TikTok comments with suggested replies you approve.'],
+  ['Stats and a health check', 'Signups, top posts and your reply time, plus a check that tells you when a connection needs you.'],
   ['Setup by Claude', 'Say “set up my Chat Manager”. Claude clicks through with you or follows the step-by-step guide.'],
   ['Updates', 'Say “update my Chat Manager” after downloading a new version.'],
 ];
@@ -41,6 +47,7 @@ const COMPARE = [
   ['YouTube comment keywords', 'Yes, as a public reply', 'No'],
   ['TikTok', 'Comments in your inbox, you paste the reply', 'DM replies in beta for TikTok Business accounts'],
   ['Email signup page with a personal link', 'Yes, with a reminder DM', 'Collects email inside the DM'],
+  ['“Check your DMs” reply under the comment', 'Yes', 'Yes'],
   ['Price', `${PRICE} once + $6 a month server`, 'Pro from about $29 a month, more as contacts grow'],
   ['Your data', 'On your own server', 'On ManyChat’s servers'],
 ];
@@ -60,6 +67,7 @@ const half = Math.ceil(FAQS.length / 2);
 const faqCol = (rows) => `<div>${rows.map(([q, a]) => `<details><summary>${q}</summary><div>${a}</div></details>`).join('')}</div>`;
 const list = (rows) => `<ul>${rows.map(([h, p]) => `<li><b>${h}</b><span>${p}</span></li>`).join('')}</ul>`;
 const buyBtn = (cls = '') => `<a class="s3-btn ${cls}" href="${BUY_URL}">Get Chat Manager</a>`;
+const demoBtn = (cls = 'black') => `<a class="s3-btn ${cls}" href="${DEMO_URL}" target="_blank" rel="noopener">Try the demo</a>`;
 
 const CSS = `
 .s3 .cm-hero{padding:clamp(28px,4vw,64px) 0 var(--s3-sec)}
@@ -91,6 +99,11 @@ const CSS = `
 .s3 .cm-compare tbody th{font-weight:500}
 .s3 .cm-faq .s3-faq{display:grid;grid-template-columns:1fr 1fr;gap:0 48px;margin-top:20px}
 .s3 .cm-faq .s3-faq>div details:first-child{border-top:1px solid var(--s3-line)}
+.s3 .cm-link{font:500 var(--s3-fs-ui)/1.3 var(--s3-sans);color:var(--s3-ink);text-underline-offset:4px}
+.s3 .cm-demo .s3-lede{margin-top:16px;max-width:720px}
+.s3 .cm-window{margin-top:clamp(24px,3vw,40px);border-radius:16px;overflow:hidden;background:#fff;box-shadow:0 0 0 1px var(--s3-line)}
+.s3 .cm-window iframe{display:block;width:100%;height:min(760px,80vh);border:0}
+.s3 .cm-demo .cm-buy{margin-top:24px}
 .s3 .cm-end{background:var(--s3-mist)}
 .s3 .cm-end .s3-lede{margin:18px 0 28px}
 .s3 .cm-end .s3-fine{margin-top:28px}
@@ -99,6 +112,7 @@ const CSS = `
  .s3 .cm-faq .s3-faq>div+div details:first-child{border-top:0}
 }
 @media(max-width:700px){
+ .s3 .cm-window{display:none}
  .s3 .cm-buy{flex-direction:column;align-items:stretch}
  .s3 .cm-compare table{min-width:0}
  .s3 .cm-compare th,.s3 .cm-compare td{padding:12px 8px}
@@ -112,7 +126,7 @@ export function build() {
  <div>
   <h1><span>Comment a word.</span><span>Get the freebie.</span></h1>
   <p class="s3-lede">Chat Manager sends your freebie when someone comments or DMs a keyword, signs them up to your email list, and puts every Instagram, YouTube and TikTok comment in one inbox. It runs on your own server, and Claude sets it up with you.</p>
-  <div class="cm-buy"><div class="cm-cost">${PRICE}<small>One-time, plus a $6 a month server</small></div>${buyBtn()}</div>
+  <div class="cm-buy"><div class="cm-cost">${PRICE}<small>One-time, plus a $6 a month server</small></div>${buyBtn()}<a class="cm-link" href="#demo">Try the demo →</a></div>
  </div>
  <figure class="cm-shots">
   <img src="${ASSET('preview-dm.png')}" alt="Preview of the Instagram DMs a keyword sends: reply READY, the signup link, the freebie and one reminder" width="570" height="927">
@@ -124,6 +138,12 @@ export function build() {
  <h2 class="s3-h2">Three steps.</h2>
  <div class="cm-steps">${STEPS.map(([h, p], i) => `<div><h3 class="s3-h3"><span class="s3-num">${i + 1}</span>${h}</h3><p>${p}</p></div>`).join('')}</div>
  <figure class="cm-inbox"><img src="${ASSET('inbox.png')}" alt="The Chat Manager inbox with an Instagram comment, an Instagram DM and a TikTok comment waiting for replies" width="1260" height="840" loading="lazy"></figure>
+</div></section>
+<section class="cm-demo s3-sec" id="demo"><div class="s3-wrap">
+ <h2 class="s3-h2">Click around the real thing.</h2>
+ <p class="s3-lede">This is Chat Manager for a made-up shop. Open a conversation, try a keyword template, look at the stats. Nothing you do here is saved or sent.</p>
+ <div class="cm-window"><iframe src="${DEMO_URL}" title="Chat Manager demo for a made-up shop"></iframe></div>
+ <div class="cm-buy">${demoBtn()}</div>
 </div></section>
 <section class="s3-sec"><div class="s3-wrap">
  <h2 class="s3-h2">What you get, and what you bring.</h2>
