@@ -4,29 +4,29 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
-<title>Inbox · Scrolly</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Jost:wght@400;500;600&display=swap">
+<title>Inbox</title>
 <style>
-  /* Scrolly v3 colors (vault brand/visual-system.md); private tool, so no site header/footer. */
+  /* Neutral defaults; applyProfile() swaps in the owner's colors and fonts from config/profile.json
+     (Mercedes's: Scrolly v3, vault brand/visual-system.md). Private tool, so no site header/footer. */
   :root {
-    --cream: #f7f3ec; --ink: #0a1930; --sky: #4da3ff; --mist: #dfe4f0; --muted: #4a4e66;
-    --line: #d9d3ca; --input: #8f8a83; --white: #fff; --bad: #b3261e; --good: #1d6b40;
+    --cream: #f6f4f0; --ink: #1d1d1f; --sky: #2f6fed; --sky-ink: #ffffff; --mist: #e4e6ee; --muted: #55555c;
+    --line: #d9d6d0; --input: #8f8a83; --white: #fff; --bad: #b3261e; --good: #1d6b40;
+    --body-font: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; --head-font: Georgia, serif;
   }
   * { box-sizing: border-box; }
-  body { margin: 0; background: var(--cream); color: var(--ink); font: 16px/1.5 Jost, system-ui, sans-serif; }
+  body { margin: 0; background: var(--cream); color: var(--ink); font: 16px/1.5 var(--body-font); }
   main { max-width: 820px; margin: 0 auto; padding: 16px 16px 80px; }
-  h1, h2, h3 { font-family: 'Instrument Serif', Georgia, serif; font-weight: 400; letter-spacing: -0.01em; margin: 0; }
+  h1, h2, h3 { font-family: var(--head-font); font-weight: 400; letter-spacing: -0.01em; margin: 0; }
   h1 { font-size: 2.1rem; }
   h2 { font-size: 1.7rem; }
   h3 { font-size: 1.35rem; margin-bottom: 6px; }
   .top { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 4px 0 12px; }
   .tabs, .chips { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; margin-bottom: 12px; }
   .tabs::-webkit-scrollbar, .chips::-webkit-scrollbar { display: none; }
-  .tabs button, .chips button { flex: none; border: 0; border-radius: 999px; padding: 8px 16px; background: var(--mist); color: var(--ink); font: 500 15px Jost, sans-serif; cursor: pointer; }
+  .tabs button, .chips button { flex: none; border: 0; border-radius: 999px; padding: 8px 16px; background: var(--mist); color: var(--ink); font: 500 15px var(--body-font); cursor: pointer; }
   .tabs button[aria-current="true"], .chips button[aria-pressed="true"] { background: var(--ink); color: var(--white); }
   .chips button { padding: 5px 12px; font-size: 14px; }
-  .count { display: inline-block; min-width: 1.4em; margin-left: 6px; padding: 0 6px; border-radius: 999px; background: var(--sky); color: var(--ink); font-size: 13px; text-align: center; }
+  .count { display: inline-block; min-width: 1.4em; margin-left: 6px; padding: 0 6px; border-radius: 999px; background: var(--sky); color: var(--sky-ink); font-size: 13px; text-align: center; }
   /* email-style list */
   .list { background: var(--white); border-radius: 18px; overflow: hidden; }
   .item { display: grid; grid-template-columns: auto 1fr auto; gap: 4px 12px; width: 100%; text-align: left; border: 0; border-radius: 0; border-bottom: 1px solid var(--line); background: none; padding: 14px 16px; cursor: pointer; font: inherit; color: inherit; }
@@ -57,7 +57,7 @@
   .item.unread .preview { color: var(--ink); }
   .tags { grid-column: 2 / 4; display: flex; flex-wrap: wrap; gap: 6px; }
   .pill { border-radius: 999px; padding: 1px 10px; background: var(--mist); color: var(--ink); font-size: 13px; font-weight: 500; }
-  .pill.sky { background: var(--sky); }
+  .pill.sky { background: var(--sky); color: var(--sky-ink); }
   .pill.on { background: #d5ecdd; color: var(--good); }
   /* conversation */
   .head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 12px; margin: 8px 0 14px; }
@@ -76,7 +76,7 @@
   label { display: block; font-size: 15px; font-weight: 500; margin: 12px 0 4px; }
   .hint { font-size: 14px; color: var(--muted); margin: 4px 0 0; }
   .warn { font-size: 14px; color: var(--bad); margin: 6px 0 0; }
-  textarea, input[type=text], input[type=url], input[type=number], input[type=password], select { width: 100%; border: 1px solid var(--input); border-radius: 12px; padding: 10px 12px; font: 16px/1.4 Jost, sans-serif; color: var(--ink); background: var(--white); }
+  textarea, input[type=text], input[type=url], input[type=number], input[type=password], select { width: 100%; border: 1px solid var(--input); border-radius: 12px; padding: 10px 12px; font: 16px/1.4 var(--body-font); color: var(--ink); background: var(--white); }
   textarea { min-height: 90px; resize: vertical; }
   input[type=number] { width: 110px; }
   .check { display: flex; align-items: center; gap: 10px; margin: 10px 0 0; font-weight: 400; }
@@ -93,8 +93,8 @@
   .preview-box { background: var(--mist); border-radius: 12px; padding: 10px 12px; font-size: 15px; margin-top: 8px; overflow-wrap: anywhere; white-space: pre-wrap; }
   .row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 12px; }
   .between { justify-content: space-between; }
-  button { border: 0; border-radius: 999px; padding: 10px 18px; font: 500 16px Jost, sans-serif; cursor: pointer; background: var(--mist); color: var(--ink); }
-  button.primary { background: var(--sky); }
+  button { border: 0; border-radius: 999px; padding: 10px 18px; font: 500 16px var(--body-font); cursor: pointer; background: var(--mist); color: var(--ink); }
+  button.primary { background: var(--sky); color: var(--sky-ink); }
   button.quiet { background: transparent; text-decoration: underline; padding: 10px 6px; }
   button.danger { background: transparent; color: var(--bad); text-decoration: underline; padding: 10px 6px; }
   button:disabled { opacity: .5; cursor: default; }
@@ -104,7 +104,7 @@
   .empty { color: var(--muted); padding: 28px 16px; text-align: center; }
   .funnel { display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 8px; }
   .funnel div { background: var(--mist); border-radius: 12px; padding: 8px 10px; }
-  .big { font-family: 'Instrument Serif', Georgia, serif; font-size: 2rem; line-height: 1; }
+  .big { font-family: var(--head-font); font-size: 2rem; line-height: 1; }
   table { width: 100%; border-collapse: collapse; font-size: 15px; }
   th, td { text-align: left; padding: 8px 6px; border-bottom: 1px solid var(--line); vertical-align: top; }
   td.n { text-align: right; font-variant-numeric: tabular-nums; }
@@ -211,20 +211,41 @@ function showLogin(passwordSet) {
 
 let stats = null;
 let ME = {};
+// The owner's name in the tab title, their colors and fonts (config/profile.json via /api/me).
+let profileApplied = false;
+function applyProfile(me) {
+  const p = me.profile || {};
+  document.title = p.brand ? `Inbox · ${p.brand}` : 'Inbox';
+  if (profileApplied || !p.look) return;
+  profileApplied = true;
+  const L = p.look;
+  const css = document.documentElement.style;
+  const color = (v) => /^#[0-9a-f]{3,8}$/i.test(String(v || ''));
+  for (const [v, key] of [['--cream', 'background'], ['--ink', 'text'], ['--muted', 'muted'], ['--sky', 'button'], ['--sky-ink', 'buttonText'], ['--white', 'card']]) if (color(L[key])) css.setProperty(v, L[key]);
+  const font = (v) => String(v || '').replace(/[^A-Za-z0-9 -]/g, '').trim();
+  if (font(L.bodyFont)) css.setProperty('--body-font', `'${font(L.bodyFont)}', system-ui, sans-serif`);
+  if (font(L.headingFont)) css.setProperty('--head-font', `'${font(L.headingFont)}', Georgia, serif`);
+  if (/^https:\/\/fonts\.googleapis\.com\/\S+$/.test(L.fontsUrl || '')) document.head.append(h('link', { rel: 'stylesheet', href: L.fontsUrl }));
+}
+// Where links in previews point (yourname.duckdns.org) and the Instagram handle shown in them.
+const HOST = () => ME.publicHost || location.host;
+const HANDLE = () => ME.profile?.handle || 'you';
+const listWhere = () => (!ME.list || ['builtin', 'webhook'].includes(ME.list.id) ? 'your email list' : `your ${ME.list.name} list`);
 async function route() {
   const me = await api('/api/me').catch(() => ({}));
   ME = me;
   if (!me.loggedIn) return showLogin(me.passwordSet);
+  applyProfile(me);
   const hash = decodeURIComponent(location.hash.slice(1)) || 'inbox';
   stats = await api('/api/stats?days=30').catch(() => null);
-  const tab = hash.startsWith('k') ? 'keywords' : hash === 'stats' ? 'stats' : 'inbox';
+  const tab = hash.startsWith('k') ? 'keywords' : hash === 'stats' ? 'stats' : hash === 'emails' ? 'emails' : 'inbox';
   const body = h('div');
   app.replaceChildren(
     h('div', { class: 'top' },
-      h('h1', { text: tab === 'keywords' ? 'Keywords' : tab === 'stats' ? 'Stats' : 'Inbox' }),
+      h('h1', { text: { keywords: 'Keywords', stats: 'Stats', emails: 'Email list' }[tab] || 'Inbox' }),
       h('button', { class: 'quiet', text: 'Log out', on: { click: async () => { await api('/logout', { method: 'POST' }); showLogin(true); } } })),
     h('nav', { class: 'tabs', 'aria-label': 'Sections' },
-      [['inbox', 'Inbox', stats?.inbox.unread], ['keywords', 'Keywords'], ['stats', 'Stats']].map(([id, label, n]) =>
+      [['inbox', 'Inbox', stats?.inbox.unread], ['keywords', 'Keywords'], ['emails', 'Email list', me.waitingSignups], ['stats', 'Stats']].map(([id, label, n]) =>
         h('button', { 'aria-current': String(tab === id), on: { click: () => (location.hash = id) } }, label, n ? h('span', { class: 'count', text: n }) : null))),
     body);
   try {
@@ -232,6 +253,7 @@ async function route() {
     if (hash === 'keywords') return await showKeywords(body);
     if (hash.startsWith('k/')) return await showKeyword(body, hash.slice(2));
     if (hash === 'stats') return await showStats(body);
+    if (hash === 'emails') return await showEmailList(body);
     return await showInbox(body);
   } catch (e) { body.append(h('p', { class: 'warn', text: e.message })); }
 }
@@ -486,43 +508,44 @@ async function showKeyword(body, name) {
   k.yt ||= { text: '' };
   k.afterSignup ||= { dm: '' };
   k.signup ||= {};
-  const groups = await api('/api/mailerlite/groups').catch(() => ({ connected: false, groups: [] }));
+  // The email list (lists.mjs on the server). Some tools need one target per keyword: a MailerLite
+  // group, Kit tag, Mailchimp audience, beehiiv publication or Flodesk segment.
+  const L = ME.list || { id: 'builtin', name: 'Built-in list', needsTarget: false };
+  const targets = L.needsTarget ? await api('/api/lists/targets').catch((e) => ({ connected: false, targets: [], error: e.message })) : { connected: true, targets: [] };
+  k.list = { id: k.list?.id || k.mailerliteGroup || '', name: k.list?.name || k.mailerliteGroupName || '' };
   const mins = (m) => (m % 60 ? `${m} min` : `${m / 60} h`);
-  // The MailerLite panel: the chosen group, its size, and the email sequence(s) it starts.
   const groupPanel = h('div');
-  let groupInfo = null;
-  const newGroupButton = () => h('button', { text: '+ New group for this keyword', on: { click: async () => {
-    const name = prompt('Name for the new MailerLite group', `Freebie: ${k.keyword || k.freebie || 'new'}`);
+  const newTargetButton = () => (L.canCreate ? h('button', { text: `+ New ${L.label} for this keyword`, on: { click: async () => {
+    const name = prompt(`Name for the new ${L.name} ${L.label}`, `Freebie: ${k.keyword || k.freebie || 'new'}`);
     if (!name) return;
     try {
-      const g = await api('/api/mailerlite/groups', { method: 'POST', body: { name } });
-      groups.groups.push(g);
-      k.mailerliteGroup = g.id;
-      k.mailerliteGroupName = g.name;
+      const t = await api('/api/lists/targets', { method: 'POST', body: { name } });
+      targets.targets.push(t);
+      k.list = { id: t.id, name: t.name };
       drawDelivery();
-      toast('Group created in MailerLite.');
+      toast(`Made in ${L.name}.`);
     } catch (e) { toast(e.message); }
-  } } });
+  } } }) : null);
+  // Under the picker: MailerLite also shows the group's size and the email sequences it starts.
   const drawGroup = async () => {
-    groupInfo = null;
     drawChecklist();
-    if (!k.mailerliteGroup) return groupPanel.replaceChildren(h('p', { class: 'hint', text: 'Pick the group people join when they sign up, or make a new one.' }), h('div', { class: 'row' }, newGroupButton()));
-    groupPanel.replaceChildren(h('p', { class: 'hint', text: 'Loading MailerLite…' }));
-    const g = await api(`/api/mailerlite/groups/${k.mailerliteGroup}`).catch((e) => ({ connected: false, error: e.message }));
-    groupInfo = g;
-    drawChecklist();
-    if (!g.connected) return groupPanel.replaceChildren(h('p', { class: 'warn', text: `Couldn't load MailerLite: ${g.error || ''}` }));
+    if (!L.needsTarget) return groupPanel.replaceChildren();
+    if (!k.list.id) return groupPanel.replaceChildren(h('p', { class: 'hint', text: `Pick the ${L.label} people join when they sign up${L.canCreate ? ', or make a new one' : ` (make it in ${L.name} first)`}.` }), h('div', { class: 'row' }, newTargetButton()));
+    if (!L.hasDetail) return groupPanel.replaceChildren(h('div', { class: 'row' }, newTargetButton()));
+    groupPanel.replaceChildren(h('p', { class: 'hint', text: `Loading ${L.name}…` }));
+    const g = await api(`/api/lists/targets/${encodeURIComponent(k.list.id)}`).catch((e) => ({ connected: false, error: e.message }));
+    if (!g.connected || !g.group) return groupPanel.replaceChildren(h('p', { class: 'warn', text: `Couldn't load ${L.name}: ${g.error || ''}` }));
     groupPanel.replaceChildren(
       h('div', { class: 'preview-box' },
         h('strong', { text: g.group.name }), `\n${g.group.active} active subscriber${g.group.active === 1 ? '' : 's'}`,
-        h('div', { class: 'row' }, h('a', { class: 'button', href: g.group.url, target: '_blank', rel: 'noopener noreferrer', text: 'Open group in MailerLite' }))),
+        h('div', { class: 'row' }, h('a', { class: 'button', href: g.group.url, target: '_blank', rel: 'noopener noreferrer', text: `Open group in ${L.name}` }))),
       ...(g.automations.length
         ? g.automations.map((a) => h('div', { class: 'preview-box' },
             h('strong', { text: `Email sequence: ${a.name}` }),
             `\n${a.enabled ? 'On' : 'Off'} · ${a.emails} email${a.emails === 1 ? '' : 's'} · ${a.sent} sent${a.openRate != null ? ` · ${a.openRate} opened` : ''}`,
-            h('div', { class: 'row' }, h('a', { class: 'button', href: a.url, target: '_blank', rel: 'noopener noreferrer', text: 'Open sequence in MailerLite' }))))
-        : [h('p', { class: 'hint', text: 'No email sequence starts from this group. That\'s fine: the freebie shows on the signup page right away. A welcome sequence is optional (your free MailerLite plan allows 3 active ones).' })]),
-      h('div', { class: 'row' }, newGroupButton()));
+            h('div', { class: 'row' }, h('a', { class: 'button', href: a.url, target: '_blank', rel: 'noopener noreferrer', text: `Open sequence in ${L.name}` }))))
+        : [h('p', { class: 'hint', text: "No email sequence starts from this group. That's fine: the freebie shows on the signup page right away. A welcome sequence is optional." })]),
+      h('div', { class: 'row' }, newTargetButton()));
   };
   // "Ready to go live?": everything a keyword needs to work end to end, ticked off live.
   const checklist = h('div');
@@ -533,7 +556,7 @@ async function showKeyword(body, name) {
       [k.where.igComments || k.where.igDms || k.where.ytComments, 'Where it works: at least one place picked'],
     ];
     if (k.delivery === 'email') {
-      items.push([!!k.mailerliteGroup, 'MailerLite group picked']);
+      if (L.needsTarget) items.push([!!k.list.id, `${L.name} ${L.label} picked`]);
     }
     if (usesDms) items.push([!!ME.dmsEnabled, k.ask.on ? 'DMs switched on (needed for "reply READY" and reminders; ask Claude)' : 'DMs switched on (needed for keywords in DMs and Story replies; ask Claude)']);
     items.push([!!k.dmApproved, 'You approved the messages']);
@@ -573,7 +596,7 @@ async function showKeyword(body, name) {
   const fill = (t, link) => String(t || '').replace('{url}', k.url || '(freebie link)').replace('{link}', link);
   const drawPreviews = () => {
     const word = k.keyword || 'KEYWORD';
-    const link = 'hooks.scrollyseo.com/inbox/f/…';
+    const link = `${HOST()}/inbox/f/…`;
     const tabs = [];
     if (k.where.igComments) tabs.push(['igc', 'Instagram comment']);
     if (k.where.igDms) tabs.push(['igd', 'Instagram DM']);
@@ -589,7 +612,7 @@ async function showKeyword(body, name) {
       screen = h('div', { class: 'pv-yt' },
         h('div', { class: 'pv-yt-title', text: 'Comments' }),
         h('div', { class: 'pv-yt-c' }, avatar('round'), h('div', {}, h('div', { class: 'pv-yt-name', text: '@viewer · 2 min ago' }), h('div', { text: word }))),
-        h('div', { class: 'pv-yt-c reply' }, avatar('round brand'), h('div', {}, h('div', { class: 'pv-yt-name', text: '@scrollysocial · just now' }), h('div', { text: fill(k.yt.text, k.delivery === 'email' ? `hooks.scrollyseo.com/inbox/s/${word}` : k.url) || '(write the YouTube reply above)' }))));
+        h('div', { class: 'pv-yt-c reply' }, avatar('round brand'), h('div', {}, h('div', { class: 'pv-yt-name', text: `@${HANDLE()} · just now` }), h('div', { text: fill(k.yt.text, k.delivery === 'email' ? `${HOST()}/inbox/s/${word}` : k.url) || '(write the YouTube reply above)' }))));
     } else {
       const thread = [];
       if (previewTab === 'igc') {
@@ -603,12 +626,12 @@ async function showKeyword(body, name) {
       }
       thread.push(me(k.delivery === 'email' ? fill(k.linkText, link) : fill(k.dm)));
       if (k.delivery === 'email') {
-        thread.push(sys('They tap the link, type their email (added to your MailerLite list) and see the freebie right away'));
+        thread.push(sys(`They tap the link, type their email (added to ${listWhere()}) and see the freebie right away`));
         if (k.afterSignup?.dm) thread.push(me(fill(k.afterSignup.dm, link)));
         if (k.reminder.on) thread.push(sys(`If they haven't signed up after ${mins(k.reminder.minutes)}`), me(fill(k.reminder.text, link)));
       }
       screen = h('div', { class: 'pv-ig' },
-        h('div', { class: 'pv-ig-head' }, avatar('brand'), h('strong', { text: 'scrollysocial' })),
+        h('div', { class: 'pv-ig-head' }, avatar('brand'), h('strong', { text: HANDLE() })),
         h('div', { class: 'pv-ig-body' }, thread));
     }
     previews.replaceChildren(
@@ -625,7 +648,7 @@ async function showKeyword(body, name) {
     const parts = [
       h('div', { class: 'radio' },
         radio('direct', 'Link in the DM', 'The DM carries the freebie link. Quick, but you don\'t get their email.'),
-        radio('email', 'Email signup (recommended)', 'The DM carries their personal link; they type their email (added to your MailerLite list) and see the freebie right away.')),
+        radio('email', 'Email signup (recommended)', `The DM carries their personal link; they type their email (added to ${listWhere()}) and see the freebie right away.`)),
     ];
     if (k.delivery === 'direct') parts.push(text(k, 'dm', 'DM text', { area: true, hint: '{url} becomes the freebie link.', onInput: drawPreviews }));
     else {
@@ -633,14 +656,16 @@ async function showKeyword(body, name) {
       parts.push(text(k.signup, 'headline', 'Signup page headline', { placeholder: `Get your free ${k.freebie || 'freebie'}` }));
       parts.push(text(k.signup, 'text', 'Signup page text', { placeholder: 'Pop in your email and you can open it right away.' }));
       parts.push(text(k.afterSignup, 'dm', 'DM after they sign up (optional)', { area: true, placeholder: `Here's your ${k.freebie || 'freebie'}, as promised: {url}`, hint: '{url} becomes the freebie link. Only reaches people who DMed you (Instagram\'s rule), so it pairs with "Ask first".', onInput: drawPreviews }));
-      if (groups.connected) {
-        const sel = h('select', { id: 'f-group' }, h('option', { value: '', text: 'Choose a group…' }), groups.groups.map((g) => h('option', { value: g.id, text: g.name })));
-        sel.value = k.mailerliteGroup || '';
-        sel.addEventListener('change', () => { k.mailerliteGroup = sel.value; k.mailerliteGroupName = sel.selectedOptions[0]?.textContent || ''; drawGroup(); });
-        parts.push(h('label', { for: 'f-group', text: 'MailerLite group' }), sel, groupPanel);
+      if (!L.needsTarget) {
+        parts.push(h('p', { class: 'hint', style: 'margin-top:12px', text: L.id === 'webhook' ? 'Each signup goes to your webhook and stays in your Email list too.' : 'Signups go to your Email list (tab at the top), ready to download as a CSV.' }));
+      } else if (targets.connected) {
+        const sel = h('select', { id: 'f-group' }, h('option', { value: '', text: `Choose a ${L.label}…` }), targets.targets.map((t) => h('option', { value: t.id, text: t.name })));
+        sel.value = k.list.id || '';
+        sel.addEventListener('change', () => { k.list = { id: sel.value, name: sel.value ? sel.selectedOptions[0]?.textContent || '' : '' }; drawGroup(); });
+        parts.push(h('label', { for: 'f-group', text: `${L.name} ${L.label}` }), sel, groupPanel);
         drawGroup();
       } else {
-        parts.push(text(k, 'mailerliteGroup', 'MailerLite group ID', { hint: 'MailerLite isn\'t connected to the dashboard yet, so type the group ID (Claude can set this up for you).' }));
+        parts.push(h('p', { class: 'warn', text: `Couldn't load your ${L.name} ${L.label}s (${targets.error || 'not connected'}). Ask Claude: "check my ${L.name} connection".` }));
       }
       parts.push(h('h3', { style: 'margin-top:16px', text: 'Reminder' }),
         toggle(k.reminder, 'on', 'Send one reminder if they don\'t sign up', () => { drawDelivery(); drawPreviews(); }));
@@ -714,6 +739,42 @@ async function showKeyword(body, name) {
   body.addEventListener('change', () => drawChecklist());
   body.addEventListener('input', () => drawChecklist());
   drawChecklist();
+}
+
+// ---- email list: everyone who signed up for a freebie (kept on this server whatever tool is connected) ----
+async function showEmailList(body) {
+  const { subscribers, list } = await api('/api/subscribers');
+  const stuck = subscribers.filter((x) => ['waiting', 'failed'].includes(x.status));
+  const tool = list.id === 'builtin' ? null : list.name;
+  body.append(h('div', { class: 'card' },
+    h('h3', { text: `${subscribers.length} ${subscribers.length === 1 ? 'person' : 'people'} on your list` }),
+    h('p', { class: 'hint', text: tool
+      ? `New signups go to ${tool} and are kept here too.`
+      : 'Your list lives here on your server. Download it any time and import it into an email tool (MailerLite, Kit, Mailchimp and others all take a CSV).' }),
+    h('div', { class: 'row' },
+      h('a', { class: 'button', href: '/inbox/api/subscribers.csv', download: '', text: 'Download CSV' }),
+      list.id === 'builtin' ? null : h('button', { text: 'Send a test signup', on: { click: async () => {
+        const email = prompt(`Your email, to send one test signup to ${tool}`);
+        if (!email) return;
+        const listId = list.needsTarget ? prompt(`Which ${list.label}? Paste its ID (open a keyword to see the names)`, kwCache.find((k) => k.list?.id)?.list.id || '') : '';
+        try { await api('/api/lists/test', { method: 'POST', body: { email, listId } }); toast(`Sent. Check ${tool}.`); } catch (e) { toast(e.message); }
+      } } }))));
+  if (stuck.length) body.append(h('div', { class: 'card' },
+    h('h3', { text: `${stuck.length} signup${stuck.length === 1 ? '' : 's'} didn't reach ${tool || 'your email tool'} yet` }),
+    h('p', { class: 'hint', text: `They got their freebie and are safe here. Last reason: ${stuck[0].error || 'unknown'}. It tries again every 15 minutes.` }),
+    h('div', { class: 'row' }, h('button', { class: 'primary', text: 'Try again now', on: { click: async () => {
+      try { const r = await api('/api/subscribers/retry', { method: 'POST' }); toast(r.waiting ? `${r.waiting} still waiting.` : 'All sent.'); route(); } catch (e) { toast(e.message); }
+    } } }))));
+  if (!subscribers.length) return body.append(h('div', { class: 'list' }, h('p', { class: 'empty', text: 'Nobody yet. Signups from your keywords show up here.' })));
+  const label = { kept: 'Kept here', sent: `In ${tool || 'your tool'}`, waiting: 'Waiting to send', failed: "Didn't send", new: 'New' };
+  body.append(h('div', { class: 'card' }, h('table', {},
+    h('thead', {}, h('tr', {}, h('th', { text: 'Email' }), h('th', { class: 'sr-only', text: 'Delete' }))),
+    h('tbody', {}, subscribers.map((x) => h('tr', {},
+      h('td', { style: 'overflow-wrap:anywhere' }, x.email, h('div', { class: 'hint', text: `${x.keyword} · ${ago(x.at)} · ${label[x.status] || x.status}` })),
+      h('td', {}, h('button', { class: 'danger', text: 'Delete', 'aria-label': `Delete ${x.email}`, on: { click: async () => {
+        if (!confirm(`Delete ${x.email} from this list? (For a deletion request, also remove them in ${tool || 'any tool you imported the list into'}.)`)) return;
+        try { await api(`/api/subscribers/${x.id}`, { method: 'DELETE' }); toast('Deleted.'); route(); } catch (e) { toast(e.message); }
+      } } }))))))));
 }
 
 // ---- stats ----

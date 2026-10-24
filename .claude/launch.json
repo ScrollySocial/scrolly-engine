@@ -86,6 +86,14 @@
         "8950"
       ],
       "port": 8950
+    },
+    {
+      "name": "chat-manager-demo",
+      "runtimeExecutable": "node",
+      "runtimeArgs": [
+        "automation/n8n-comments/test/demo-inbox.mjs"
+      ],
+      "port": 5697
     }
   ]
 }

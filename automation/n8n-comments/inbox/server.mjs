@@ -679,7 +679,8 @@ async function handle(req, res) {
   if (!path.startsWith('/inbox/api/')) return send(res, 404, { error: 'not found' });
   const viaSecret = secretOk(req);
   if (!viaSecret) {
-    if (path === '/inbox/api/me') return send(res, 200, { loggedIn: sessionOk(req), passwordSet: !!db.auth });
+    // Logged out: /me only says whether a password exists. Logged in, it falls through to the full answer.
+    if (path === '/inbox/api/me' && !sessionOk(req)) return send(res, 200, { loggedIn: false, passwordSet: !!db.auth });
     if (!sessionOk(req)) return send(res, 401, { error: 'Please log in.' });
     if (!sameOrigin(req)) return send(res, 403, { error: 'forbidden' });
   }
