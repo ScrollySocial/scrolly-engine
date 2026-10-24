@@ -25,6 +25,11 @@
   bonus made only for the freebie, never added to the paid pack). Video-first rewrite: the carved face is a window on
   the buyer's clip, the camera flies in through the mouth and then an eye; nothing flies at the lens. Motion test v2 (opens on the pumpkin, clip only glimpsed through the face; her v1 note: the hook made no sense with the product already showing):
   `build/motion_h4.py` -> `halloween/h4-whats-inside/preview/motion-test.mp4` (stills: `python build/motion_h4.py 0.6 4.6`).
+  **Motion test v2 APPROVED 2026-10-23** ("The pumpkin works"). Fully editable CapCut build: `build/templates/th4.py`
+  (`python build/make.py h4`, test copy "h4 Whats inside" in her CapCut via `install_test.py h4`; zip
+  `halloween/for-upload/Template h4 - Whats inside.zip` via `zip_upload.py h4`). CapCut limit: no pumpkin-shaped
+  mask, so the pumpkin is one picture on a round patch of night, which comes along when it swings in over clip 1 and
+  rises over clip 2. Not yet checked in her CapCut. Not uploaded: it's the free SPOOKY download, never in product 1498.
 
 Buyers are online business owners and influencers, so every template is a whole Reel with a business job and a CTA,
 not just a Halloween look. Cute, not scary. Real photographed objects; only the playful layer (washi tape, white
