@@ -84,7 +84,7 @@ const SETUP = [
 
 // Plain words first (Mercedes 2026-10-24: "a $6 a month server" scares people off).
 const BRING = [
-  ['spark', 'A paid Claude plan', 'Pro or higher. Claude does the setup with you.'],
+  ['spark', 'A paid Claude plan', 'Pro or higher, for setup and any changes you want. Day to day, Chat Manager runs on its own without Claude.'],
   ['server', 'About $6 a month for hosting', 'Chat Manager needs a spot online that’s always on, like a tiny rented computer. Claude creates it for you at DigitalOcean, in your name. You only add a card.'],
   ['camera', 'An Instagram Professional account', 'Creator or Business. It’s free to switch.'],
   ['clock', 'About an hour, once', 'You make a few free accounts (Meta for developers, Google Cloud, DigitalOcean), sign in, paste keys and press approve.'],
@@ -104,6 +104,7 @@ const COMPARE = [
 
 const FAQS = [
   ['Do I need to code?', 'No. Claude runs every command and asks a few plain questions.'],
+  ['Does it use up my Claude usage?', 'Only when you set it up, update it, change it or ask Claude to draft replies. Keyword replies, signups and stats run on your hosting without Claude. Fully automatic AI replies would be an add-on that uses Claude’s pay-as-you-go API.'],
   ['What does it cost each month?', 'About $6 for hosting, the same however many people message you. Apify’s free monthly credit covers TikTok comments.'],
   ['What is the hosting, exactly?', 'A small computer in a data center that stays on day and night, so your keywords answer even when your laptop is closed. Claude sets it up and you never need to touch it.'],
   ['Can I really change it?', 'Yes. It’s your own copy of the software. Ask Claude for new colors, fonts, a chart or a feature, and it edits your copy.'],
