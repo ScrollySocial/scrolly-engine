@@ -1,118 +1,131 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><title>Shot list: Your order just arrived</title>
+<html lang="en"><head><meta charset="utf-8"><title>The product shop shot list</title>
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Jost:wght@400;500;600&family=Covered+By+Your+Grace&display=swap" rel="stylesheet">
 <style>
   @page { size: Letter; margin: 0; }
   * { box-sizing: border-box; }
   html, body { margin: 0; }
-  body { background: #f7f3ec; color: #0a1930; font: 11.5pt/1.45 Jost, Arial, sans-serif;
+  body { background: #f7f3ec; color: #0a1930; font: 10.6pt/1.4 Jost, Arial, sans-serif;
          -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-  .page { width: 8.5in; height: 11in; padding: 0.6in 0.65in 0.5in; position: relative; overflow: hidden;
+  .page { width: 8.5in; height: 11in; padding: 0.5in 0.6in 0.5in; position: relative; overflow: hidden;
           page-break-after: always; }
   .page:last-child { page-break-after: auto; }
-  h1 { font: 400 46pt/1 'Instrument Serif', Georgia, serif; margin: 0 0 8pt; }
-  h2 { font: 400 22pt/1.1 'Instrument Serif', Georgia, serif; margin: 0 0 8pt; }
-  .lede { font-size: 13pt; color: #4a4e66; margin: 0 0 12pt; max-width: 4.6in; }
-  .hand { font: 17pt/1.15 'Covered By Your Grace', cursive; color: #0a1930; }
-  .top { display: grid; grid-template-columns: 1fr 1.7in; gap: 0.35in; align-items: start; }
-  .top img { width: 1.7in; border-radius: 10pt; display: block; box-shadow: 0 4pt 14pt rgba(10,25,48,.15); }
-  .top .hand { margin-top: 6pt; text-align: center; }
-  .facts { display: flex; gap: 10pt; margin: 0 0 6pt; }
-  .facts span { background: #dfe4f0; border-radius: 99pt; padding: 3pt 11pt; font-weight: 500; font-size: 10.5pt; }
-  ol.shots { list-style: none; padding: 0; margin: 14pt 0 0; }
-  ol.shots li { display: grid; grid-template-columns: 0.55in 1fr; gap: 0 10pt; padding: 8pt 0;
-                border-top: 1px solid #d9d3ca; }
-  .n { font: 400 36pt/0.9 'Instrument Serif', Georgia, serif; }
-  .shots b { font-weight: 600; font-size: 12.5pt; }
-  .shots .len { font-weight: 500; color: #0a1930; background: #4da3ff; border-radius: 4pt; padding: 0 6pt;
-                margin-left: 6pt; font-size: 10pt; }
-  .shots p { margin: 2pt 0 0; }
-  .shots .tip { color: #4a4e66; }
-  .box { background: #fff; border-radius: 12pt; padding: 14pt 16pt; margin-bottom: 14pt; }
-  table { border-collapse: collapse; width: 100%; font-size: 11pt; }
-  td, th { text-align: left; padding: 5pt 6pt; border-top: 1px solid #d9d3ca; vertical-align: top; }
-  th { font-weight: 600; border-top: 0; }
-  td.ex { font: 14pt/1.1 'Covered By Your Grace', cursive; }
-  .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 14pt; }
-  ul { margin: 4pt 0 0; padding-left: 16pt; }
-  li { margin: 2pt 0; }
-  .navy { background: #0a1930; color: #fff; border-radius: 12pt; padding: 16pt 18pt; }
-  .navy h2 { color: #fff; }
-  .navy a { color: #4da3ff; font-weight: 600; text-decoration: none; }
-  .foot { position: absolute; bottom: 0.35in; left: 0.65in; right: 0.65in; font-size: 9pt; color: #4a4e66;
+  h1 { font: 400 40pt/1 'Instrument Serif', Georgia, serif; margin: 0 0 6pt; }
+  h2 { font: 400 20pt/1.1 'Instrument Serif', Georgia, serif; margin: 0 0 6pt; }
+  .lede { font-size: 12pt; color: #4a4e66; margin: 0 0 8pt; }
+  .hand { font: 15pt/1.15 'Covered By Your Grace', cursive; }
+  .top { display: grid; grid-template-columns: 1fr 3.1in; gap: 0.3in; align-items: start; }
+  .strip { display: grid; grid-template-columns: repeat(4, 1fr); gap: 5pt; }
+  .strip img { width: 100%; aspect-ratio: 3/4; object-fit: cover; border-radius: 6pt; display: block; }
+  .tick { display: inline-block; width: 12pt; height: 12pt; border: 1.6px solid #0a1930; border-radius: 3pt;
+          background: #fff; vertical-align: -2pt; }
+  table { border-collapse: collapse; width: 100%; }
+  td, th { text-align: left; padding: 4.5pt 6pt; border-top: 1px solid #d9d3ca; vertical-align: top; }
+  th { font-weight: 600; border-top: 0; font-size: 9.5pt; color: #4a4e66; }
+  .clips td:first-child { width: 20pt; padding-top: 8pt; }
+  .clips b { font-size: 11.5pt; font-weight: 600; }
+  .clips .how { color: #4a4e66; }
+  .clips td.use { width: 2.15in; font-size: 10pt; }
+  .len { font-weight: 500; background: #4da3ff; border-radius: 4pt; padding: 0 5pt; margin-left: 5pt; font-size: 9pt; }
+  .box { background: #fff; border-radius: 12pt; padding: 12pt 15pt; margin-bottom: 11pt; }
+  .recipes { display: grid; grid-template-columns: 1fr 1fr; gap: 11pt; }
+  .recipes .box { margin: 0; }
+  .recipes ol { margin: 4pt 0 0; padding-left: 15pt; }
+  .recipes li { margin: 1pt 0; }
+  .words { font: 13pt/1.15 'Covered By Your Grace', cursive; margin: 5pt 0 0; }
+  .lines { height: 16pt; border-bottom: 1px solid #8f8a83; }
+  .foot { position: absolute; bottom: 0.3in; left: 0.6in; right: 0.6in; font-size: 9pt; color: #4a4e66;
           display: flex; justify-content: space-between; }
+  .more { font-size: 10pt; color: #4a4e66; margin: 0; }
+  .more a { color: #0a1930; font-weight: 600; }
 </style></head>
 <body>
 
 <section class="page">
   <div class="top">
     <div>
-      <h1>Your order just arrived</h1>
-      <p class="lede">A 25-second product Reel that follows one parcel from your table to your customer's hands.
-        Here's every clip to film, in order, with where to put your phone.</p>
-      <div class="facts"><span>4 clips</span><span>about 25 seconds</span><span>film upright</span></div>
+      <h1>The product shop shot list</h1>
+      <p class="lede">Ten clips to film in one afternoon. The same few shots turn up in Reel after Reel, so film them
+        once and you have footage for weeks of posts.</p>
+      <p class="hand">tick each one off as you film it</p>
     </div>
-    <div><img src="../12-your-order-just-arrived/carousel/slides/01.png" alt="The opening shot, finished">
-      <p class="hand">how it looks finished</p></div>
+    <div class="strip">
+      <img src="../02-pack-an-order/carousel/slides/01.png" alt="">
+      <img src="../05-details/carousel/slides/01.png" alt="">
+      <img src="../07-how-big-is-it/carousel/slides/01.png" alt="">
+      <img src="../12-your-order-just-arrived/carousel/slides/06.png" alt="">
+    </div>
   </div>
 
-  <ol class="shots">
-    <li><span class="n">1</span><div><b>The doorstep</b><span class="len">at least 6 s</span>
-      <p>The parcel landing on the doorstep or sitting there waiting. Start recording before it lands so you catch the drop.</p>
-      <p class="tip">Phone: propped at knee height, facing the door. Daylight from the side shows the box best.</p></div></li>
-    <li><span class="n">2</span><div><b>On its way</b><span class="len">at least 3 s</span>
-      <p>Pick one: you packing it at your table, handing it to the courier, or the parcel in a bag on the move.</p>
-      <p class="tip">Phone: above the table for packing. Three seconds is short, so start on the action: the tape going on, the hand-off.</p></div></li>
-    <li><span class="n">3</span><div><b>The unboxing</b><span class="len">at least 7 s</span>
-      <p>Hands opening it: lid off, tissue back, the product lifted out. This is the longest clip, so let it breathe.</p>
-      <p class="tip">Phone: straight above the box, or across the table at eye level. Get the lid off within the first 2 seconds.</p></div></li>
-    <li><span class="n">4</span><div><b>In use</b><span class="len">at least 4 s</span>
-      <p>Your product doing its job in a real place: the candle lit on a shelf, the mug in a hand, the brush in hair.</p>
-      <p class="tip">Phone: close, at the height you'd see it in real life. Real rooms look better here than a plain backdrop.</p></div></li>
-  </ol>
-
-  <p class="hand" style="margin-top:6pt">film all four in one go: one parcel, one afternoon</p>
+  <table class="clips" style="margin-top:8pt">
+    <tr><th></th><th>Film this</th><th>Use it for</th></tr>
+    <tr><td><span class="tick"></span></td><td><b>Your product on its own</b><span class="len">5 s</span>
+      <div class="how">On a plain table in daylight. Hold the shot still, then do one slow push in.</div></td>
+      <td class="use">Almost every Reel: the opening, the ending, "check this before you buy"</td></tr>
+    <tr><td><span class="tick"></span></td><td><b>Your product in use</b><span class="len">3 clips, 4 s each</span>
+      <div class="how">In a real room, used the way a customer uses it. Film three different moments.</div></td>
+      <td class="use">"One product, three ways", "a day with it", the end of any Reel</td></tr>
+    <tr><td><span class="tick"></span></td><td><b>In your hand</b><span class="len">3 s</span>
+      <div class="how">Picked up and turned once, so people can judge the size.</div></td>
+      <td class="use">"How big is it?", answering a customer question</td></tr>
+    <tr><td><span class="tick"></span></td><td><b>Close-ups</b><span class="len">4 clips, 4 s each</span>
+      <div class="how">Phone a hand's width away: the texture, the stitching, the label, the clasp.</div></td>
+      <td class="use">"The details", a new drop reveal, "what it feels like"</td></tr>
+    <tr><td><span class="tick"></span></td><td><b>Packing an order</b><span class="len">3 clips, 4 s each</span>
+      <div class="how">Phone above the table: the product going in, the extras going in, the box closing.</div></td>
+      <td class="use">"Pack an order with me", "your order just arrived", small batch</td></tr>
+    <tr><td><span class="tick"></span></td><td><b>The unboxing</b><span class="len">7 s</span>
+      <div class="how">Hands opening it from the customer's side. Get the lid off in the first 2 seconds.</div></td>
+      <td class="use">"Your order just arrived", gift Reels</td></tr>
+    <tr><td><span class="tick"></span></td><td><b>Making it</b><span class="len">3 stages, 4 s each</span>
+      <div class="how">Raw materials, the middle, the finished piece. Same angle each time.</div></td>
+      <td class="use">"Start to finish", "everything that goes into one"</td></tr>
+    <tr><td><span class="tick"></span></td><td><b>Before and after</b><span class="len">2 clips, 5 s each</span>
+      <div class="how">The problem your product fixes, then the same spot fixed. Keep the phone in one place.</div></td>
+      <td class="use">"Before and after", "the annoying moment", "mine vs the usual kind"</td></tr>
+    <tr><td><span class="tick"></span></td><td><b>You, talking to camera</b><span class="len">8 s</span>
+      <div class="how">Phone at eye level, window in front of you. One sentence about who it's for.</div></td>
+      <td class="use">"Who it's for", the ending of a test or comparison</td></tr>
+    <tr><td><span class="tick"></span></td><td><b>Your shop, scrolling</b><span class="len">4 s</span>
+      <div class="how">A screen recording of your shop page, scrolled slowly from the top.</div></td>
+      <td class="use">"Every option in 10 seconds", gift guides, any call to shop</td></tr>
+  </table>
   <div class="foot"><span>Scrolly · scrollyseo.com</span><span>1 of 2</span></div>
 </section>
 
 <section class="page">
+  <h2 style="font-size:26pt">Four Reels you can make from these clips</h2>
+  <p class="lede">Put the clips in this order in any editing app, add the words, and post.</p>
+  <div class="recipes">
+    <div class="box"><b>How big is it?</b>
+      <ol><li>Your product on its own</li><li>In your hand</li><li>In use</li></ol>
+      <p class="words">how big is it really? / this big / and it fits right here</p></div>
+    <div class="box"><b>The details</b>
+      <ol><li>Close-ups 1 to 4</li><li>Your product on its own</li></ol>
+      <p class="words">the details you'd miss online / and all together</p></div>
+    <div class="box"><b>Pack an order with me</b>
+      <ol><li>Packing: the product going in</li><li>Packing: the extras</li><li>Packing: the box closing</li></ol>
+      <p class="words">pack an order with me / the little extras / on its way to you</p></div>
+    <div class="box"><b>Before and after</b>
+      <ol><li>Before</li><li>After</li><li>Your product on its own</li></ol>
+      <p class="words">before / after / the thing that fixed it</p></div>
+  </div>
+
+  <div class="box" style="margin-top:12pt">
+    <h2>Before you film</h2>
+    <p style="margin:0"><span class="tick"></span> Film upright &nbsp; <span class="tick"></span> Clean the lens
+      &nbsp; <span class="tick"></span> Record every clip 2 seconds longer than its time &nbsp; <span class="tick"></span> Start right on the action</p>
+  </div>
   <div class="box">
-    <h2>Words to put on screen</h2>
-    <p style="margin:0 0 6pt">They go in this order over the clips. Keep each line to 1 to 3 words: a slash starts a new line.</p>
-    <table>
-      <tr><th>On screen</th><th>Your version, for example</th></tr>
-      <tr><td>POV: your [product] / just arrived</td><td class="ex">POV: your candle / just arrived</td></tr>
-      <tr><td>[out for delivery...]</td><td class="ex">out for delivery...</td></tr>
-      <tr><td>[delivered!]</td><td class="ex">delivered!</td></tr>
-      <tr><td>[what's inside?]</td><td class="ex">what's inside?</td></tr>
-      <tr><td>[packed with / love + a little / surprise]</td><td class="ex">packed with / love + a little / surprise</td></tr>
-      <tr><td>comment "[KEYWORD]"</td><td class="ex">comment "CANDLE"</td></tr>
-    </table>
+    <h2>Plan your filming day</h2>
+    <p style="margin:0 0 2pt">Which product are you filming, and where in your home is the best light?</p>
+    <div class="lines"></div><div class="lines"></div>
+    <p style="margin:10pt 0 2pt">Your first three Reels from this list:</p>
+    <div class="lines"></div><div class="lines"></div><div class="lines"></div>
   </div>
 
-  <div class="cols">
-    <div class="box">
-      <h2>Before you film</h2>
-      <ul>
-        <li>Pack a real order (or a sample one) with the extras you always add: the card, the tissue, the sticker.</li>
-        <li>Clean the lens and turn off portrait mode.</li>
-        <li>Record each clip a second or two longer than its time, so you have room to trim.</li>
-      </ul>
-    </div>
-    <div class="box">
-      <h2>Caption idea</h2>
-      <p style="margin:0">Every order gets packed by hand, card and all. Which one would you open first? Comment
-        "[KEYWORD]" and I'll send you the link.</p>
-    </div>
-  </div>
-
-  <div class="navy">
-    <h2>Want it already edited?</h2>
-    <p style="margin:0 0 8pt">This Reel is template 12 in the Product Reel Template Pack: the CapCut project with
-      the graphics, timing and cover built in, so you drop these four clips in and post. The pack has 25 like it,
-      about a month of product Reels.</p>
-    <a href="https://scrollyseo.com/product-reels/">scrollyseo.com/product-reels</a>
-  </div>
+  <p class="more">These ten clips cover most of the 25 Reels in the Product Reel Template Pack, where each Reel's edit,
+    graphics and cover are already done in CapCut: <a href="https://scrollyseo.com/product-reels/">scrollyseo.com/product-reels</a></p>
   <div class="foot"><span>Scrolly · scrollyseo.com</span><span>2 of 2</span></div>
 </section>
 
