@@ -33,6 +33,7 @@ const I = {
   spark: '<path d="M24 5l4 13 13 4-13 4-4 13-4-13-13-4 13-4z"/>',
   check: '<circle cx="24" cy="24" r="18"/><path d="M15 24l6 6 12-12"/>',
   power: '<path d="M24 6v16"/><path d="M14 12a15 15 0 1 0 20 0"/>',
+  gift: '<rect x="6" y="18" width="36" height="24" rx="2"/><path d="M4 12h40v6H4zM24 12v30"/><path d="M24 12c-4-8-14-6-10 0M24 12c4-8 14-6 10 0"/>',
   flat: '<path d="M6 24V8a2 2 0 0 1 2-2h16l18 18-18 18z"/><circle cx="15" cy="15" r="3"/>',
   brush: '<path d="M38 6L20 24l4 4L42 10z"/><path d="M18 26c-6 0-8 4-8 8 0 3-2 5-4 6 8 2 16-2 16-10z"/>',
 };
@@ -41,7 +42,7 @@ const icon = (k) => `<svg viewBox="0 0 48 48" aria-hidden="true">${I[k]}</svg>`;
 const FLOW = [
   ['comment', 'They comment', 'A keyword under your Reel.'],
   ['dm', 'They get a DM', 'Plus a “check your DMs” reply.'],
-  ['mail', 'They sign up', 'Their email goes to your list.'],
+  ['gift', 'They get the freebie', 'And their email joins your list.'],
   ['inbox', 'You see it all', 'One inbox, every platform.'],
 ];
 
@@ -74,7 +75,7 @@ const FEATURES = [
 const SETUP = [
   ['download', 'Download', 'Get the kit.'],
   ['spark', 'Ask Claude', '“Set up my Chat Manager.”'],
-  ['check', 'Approve', 'Sign in and paste a few keys.'],
+  ['check', 'Connect', 'Make a few free accounts, sign in, paste the keys.'],
   ['power', 'Go live', 'Turn your first keyword on.'],
 ];
 
@@ -83,15 +84,14 @@ const BRING = [
   ['A paid Claude plan', 'Pro or higher. Claude does the setup with you.'],
   ['About $6 a month for hosting', 'Chat Manager needs a spot online that’s always on, like a tiny rented computer. Claude creates it for you at DigitalOcean, in your name. You only add a card.'],
   ['An Instagram Professional account', 'Creator or Business. It’s free to switch.'],
-  ['About an hour, once', 'You sign in, paste a few keys and press approve.'],
+  ['About an hour, once', 'You make a few free accounts (Meta for developers, Google Cloud, DigitalOcean), sign in, paste keys and press approve.'],
 ];
 
 // Plain and checkable; no claim here without a source (vault comment-to-dm-n8n-plan.md and the prices above).
 const COMPARE = [
   ['What you pay', `${PRICE} once + about $6 a month`, 'From $17 a month, more as your audience grows'],
   ['Price tied to how many people message you', 'No', 'Yes'],
-  ['Instagram comment → DM', 'Yes', 'Yes'],
-  ['DM and Story reply keywords', 'Yes', 'Yes'],
+  ['Instagram comment, DM and Story reply keywords', 'Yes', 'Yes'],
   ['“Check your DMs” reply under the comment', 'Yes', 'Yes'],
   ['YouTube comment keywords', 'Yes', 'No'],
   ['Email signup page with a personal link', 'Yes, with a reminder DM', 'Collects email inside the DM'],
@@ -106,10 +106,20 @@ const FAQS = [
   ['Can I really change it?', 'Yes. It’s your own copy of the software. Ask Claude for new colors, fonts, a chart or a feature, and it edits your copy.'],
   ['Does it work on Facebook?', 'Not yet. It works on Instagram and YouTube, and brings your TikTok comments into your inbox.'],
   ['Does it reply on TikTok?', 'TikTok gives no way to reply automatically, so TikTok comments land in your inbox with a suggested reply and a Copy and open TikTok button.'],
-  ['I don’t have a website.', 'Setup gives you a free address (yourname.duckdns.org) with your privacy page on it.'],
-  ['I don’t use an email tool.', 'Your list stays on your server. Download it as a CSV whenever you start one.'],
+  ['I don’t have a website.', 'Setup gives you a free web address (yourname.duckdns.org) with a secure https connection and your privacy page on it. Your dashboard is behind your own password.'],
+  ['I don’t use an email tool.', 'Freebies still go out: people see theirs right after signing up. The emails are kept on your server, ready to download as a CSV whenever you start an email tool.'],
   ['Is it allowed by Instagram?', 'It uses Meta’s official Instagram API with an app that only works on your own account.'],
-  ['Mac or Windows?', 'Setup is tested on Windows. It only needs tools Macs have built in too, and a Mac test is next.'],
+  ['Mac or Windows?', 'Both. Setup uses tools that work on Windows and Mac.'],
+];
+
+// Limits to know before buying: the platforms' own rules, stated plainly.
+const LIMITS = [
+  ['Instagram’s 24-hour rule', 'Follow-ups and reminders only reach people who messaged you in the last 24 hours. Each comment gets one private reply.'],
+  ['Professional accounts only', 'Instagram needs a Creator or Business account. Personal accounts can’t be automated.'],
+  ['YouTube replies in public', 'YouTube has no DMs, so keyword comments get a public reply with the link.'],
+  ['TikTok and Facebook', 'TikTok comments come into your inbox to answer by hand. Facebook isn’t supported yet.'],
+  ['Replies you write yourself', 'Keyword replies are automatic. Other comments wait in your inbox; Claude can draft replies in chat.'],
+  ['You own the upkeep', 'It runs on your own hosting. Updates are one sentence to Claude, and there are no setup calls.'],
 ];
 
 const half = Math.ceil(FAQS.length / 2);
@@ -161,21 +171,22 @@ const yoursChat = `
 </div>`;
 
 const CSS = `
-.s3 .cm-hero{padding:clamp(28px,4vw,64px) 0 var(--s3-sec);overflow:hidden}
+.s3 .cm-hero{padding:clamp(24px,3vw,48px) 0;overflow:hidden}
 .s3 .cm-hero .s3-wrap{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);align-items:center;gap:clamp(32px,4vw,80px)}
-.s3 .cm-hero h1{font-size:clamp(3rem,5.4vw,6rem)!important;line-height:.95!important;letter-spacing:-.015em!important}
+.s3 .cm-hero h1{font-size:clamp(3rem,min(5vw,9vh),5.4rem)!important;line-height:.95!important;letter-spacing:-.015em!important}
 .s3 .cm-hero h1 span{display:block}
 .s3 .cm-hero h1 em{font-style:italic}
 .s3 .cm-hero .s3-lede{margin-top:24px;max-width:31em}
-.s3 .cm-points{list-style:none;margin:22px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:10px}
-.s3 .cm-points li{padding:8px 16px;border-radius:999px;background:var(--s3-mist);font-weight:500}
+.s3 .cm-points{list-style:none;margin:20px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:6px 28px}
+.s3 .cm-points li{display:flex;align-items:center;gap:8px;font-weight:500}
+.s3 .cm-points li::before{content:"✓";color:var(--s3-ink);font-weight:700}
 .s3 .cm-buy{display:flex;flex-wrap:wrap;align-items:center;gap:20px 28px;margin-top:32px}
 .s3 .cm-cost{font:400 clamp(2.6rem,3.6vw,3.4rem)/1 var(--s3-serif)}
 .s3 .cm-cost small{display:block;margin-top:10px;font:700 var(--s3-fs-label)/1.3 var(--s3-sans);letter-spacing:.16em;text-transform:uppercase}
 .s3 .cm-link{font:500 var(--s3-fs-ui)/1.3 var(--s3-sans);color:var(--s3-ink);text-underline-offset:4px}
 .s3 .cm-stage{display:flex;justify-content:center}
-.s3 .cm-phone{width:min(320px,100%);aspect-ratio:9/19.5;padding:11px;border-radius:52px;background:#141518;box-shadow:inset 0 0 0 2px #3a3c42,0 40px 80px rgba(10,25,48,.22)}
-.s3 .cm-screen{position:relative;height:100%;border-radius:42px;background:#fff;overflow:hidden;display:flex;flex-direction:column;font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;color:#000}
+.s3 .cm-phone{height:min(540px,calc(100vh - 200px));min-height:420px;aspect-ratio:9/17;max-width:100%;padding:10px;border-radius:46px;background:#141518;box-shadow:inset 0 0 0 2px #3a3c42,0 40px 80px rgba(10,25,48,.22)}
+.s3 .cm-screen{position:relative;height:100%;border-radius:37px;background:#fff;overflow:hidden;display:flex;flex-direction:column;font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;color:#000}
 .s3 .cm-status{display:flex;align-items:center;justify-content:space-between;padding:14px 26px 6px;font-size:15px;font-weight:600}
 .s3 .cm-island{width:96px;height:28px;border-radius:999px;background:#000}
 .s3 .cm-ph-head{display:flex;align-items:center;gap:10px;padding:8px 14px 10px;border-bottom:1px solid #efefef;font-size:15px}
@@ -186,7 +197,7 @@ const CSS = `
 .s3 .cm-ph-post{padding:12px 14px;border-bottom:1px solid #efefef;display:grid;gap:10px;font-size:15px;line-height:1.35}
 .s3 .cm-c{display:flex;gap:10px;align-items:flex-start}
 .s3 .cm-c.reply{margin-left:30px}
-.s3 .cm-ph-dm{flex:1;padding:12px;display:flex;flex-direction:column;gap:8px}
+.s3 .cm-ph-dm{flex:1;padding:10px 12px;display:flex;flex-direction:column;gap:7px;overflow:hidden}
 .s3 .cm-b{max-width:84%;padding:9px 13px;border-radius:20px;font-size:15px;line-height:1.35}
 .s3 .cm-b.me{align-self:flex-end;background:#3797f0;color:#fff}
 .s3 .cm-b.them{align-self:flex-start;background:#efefef}
@@ -202,23 +213,21 @@ const CSS = `
 .s3 .cm-flow::before{content:"";position:absolute;top:40px;left:12.5%;right:12.5%;border-top:2px dashed var(--s3-sky);opacity:.6}
 .s3 .cm-flow li{position:relative}
 .s3 .cm-flow svg{position:relative;box-sizing:content-box;width:44px;height:44px;padding:16px;border-radius:50%;background:var(--s3-navy);box-shadow:0 0 0 2px var(--s3-sky);color:var(--s3-sky);fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
-.s3 .cm-feat svg,.s3 .cm-why svg{width:52px;height:52px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.s3 .cm-feat svg,.s3 .cm-why svg{width:44px;height:44px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
 .s3 .cm-flow b,.s3 .cm-feat b,.s3 .cm-why b{display:block;margin-top:14px;font:400 var(--s3-fs-title)/1.15 var(--s3-serif)}
 .s3 .cm-flow span,.s3 .cm-feat span,.s3 .cm-why span{display:block;margin-top:6px}
 .s3 .cm-band .cm-flow span{color:var(--s3-mist)}
 .s3 .cm-demo{padding:clamp(40px,4vw,64px) 0}
 .s3 .cm-demo-head{display:flex;flex-wrap:wrap;align-items:end;justify-content:space-between;gap:16px 32px}
 .s3 .cm-demo .s3-lede{margin-top:10px}
-.s3 .cm-laptop{max-width:1040px;margin:clamp(20px,2.4vw,32px) auto 0}
-.s3 .cm-lid{padding:14px 14px 18px;border-radius:22px 22px 0 0;background:#141518;box-shadow:inset 0 0 0 2px #3a3c42}
-.s3 .cm-lid::before{content:"";display:block;width:8px;height:8px;margin:0 auto 8px;border-radius:50%;background:#2c2e33}
-.s3 .cm-lid iframe{display:block;width:100%;height:min(540px,calc(100vh - 330px));min-height:380px;border:0;border-radius:6px;background:#fff}
-.s3 .cm-base{position:relative;height:18px;margin:0 -6%;border-radius:0 0 18px 18px;background:linear-gradient(#d7dbe5,#aeb5c6)}
-.s3 .cm-base::before{content:"";position:absolute;left:50%;top:0;width:120px;height:7px;transform:translateX(-50%);border-radius:0 0 8px 8px;background:#9aa2b5}
+.s3 .cm-laptop{width:min(100%,calc((100vh - 250px) * 1.5));min-width:min(100%,640px);margin:clamp(16px,2vw,28px) auto 0}
+.s3 .cm-lid{padding:2.2% 2.2% 2.6%;border-radius:18px 18px 4px 4px;background:#141518;box-shadow:inset 0 0 0 2px #3a3c42}
+.s3 .cm-lid iframe{display:block;width:100%;aspect-ratio:16/10;border:0;border-radius:4px;background:#fff}
+.s3 .cm-base{position:relative;height:14px;margin:0 -9%;border-radius:2px 2px 16px 16px;background:linear-gradient(#e2e5ec,#b3b9c8)}
+.s3 .cm-base::before{content:"";position:absolute;left:50%;top:0;width:16%;height:6px;transform:translateX(-50%);border-radius:0 0 8px 8px;background:#9aa2b5}
 .s3 .cm-demo-phone{display:none}
 .s3 .cm-why{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(12px,1.6vw,24px);margin:clamp(28px,3vw,48px) 0 0;list-style:none;padding:0}
 .s3 .cm-why li{background:#fff;border-radius:20px;padding:clamp(24px,2.6vw,36px)}
-.s3 .cm-why li:nth-child(2){background:var(--s3-mist)}
 .s3 .cm-yours{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:clamp(24px,4vw,72px);align-items:center}
 .s3 .cm-yours .s3-lede{margin-top:16px}
 .s3 .cm-chat{display:flex;flex-direction:column;gap:10px;padding:clamp(20px,2.4vw,32px);border-radius:20px;background:#fff}
@@ -226,7 +235,7 @@ const CSS = `
 .s3 .cm-q{align-self:flex-end;background:var(--s3-navy);color:#fff}
 .s3 .cm-a{align-self:flex-start;background:var(--s3-mist)}
 .s3 .cm-tiers{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(12px,2vw,32px);margin-top:clamp(28px,3vw,48px)}
-.s3 .cm-cols{display:flex;align-items:flex-end;justify-content:center;gap:10px;height:260px;border-bottom:2px solid var(--s3-ink)}
+.s3 .cm-cols{display:flex;align-items:flex-end;justify-content:center;gap:10px;height:min(220px,28vh);border-bottom:2px solid var(--s3-ink)}
 .s3 .cm-cols div{position:relative;width:min(56px,40%);border-radius:10px 10px 0 0}
 .s3 .cm-cols .mc{background:var(--s3-navy)}
 .s3 .cm-cols .us{background:var(--s3-sky)}
@@ -239,15 +248,18 @@ const CSS = `
 .s3 .cm-key .mc::before{background:var(--s3-navy)}
 .s3 .cm-key .us::before{background:var(--s3-sky)}
 .s3 .cm-feat{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(12px,1.6vw,24px);margin:clamp(28px,3vw,48px) 0 0;list-style:none;padding:0}
-.s3 .cm-feat li{background:#fff;border-radius:18px;padding:clamp(20px,2vw,28px)}
-.s3 .cm-feat li:nth-child(even){background:var(--s3-mist)}
+.s3 .cm-feat li{background:#fff;border-radius:18px;padding:clamp(18px,1.8vw,24px)}
+.s3 .cm-limits{display:grid;grid-template-columns:repeat(3,1fr);gap:0 clamp(24px,3vw,48px);margin-top:clamp(24px,3vw,40px)}
+.s3 .cm-limits div{padding:16px 0;border-top:1px solid var(--s3-line)}
+.s3 .cm-limits b{display:block;font-weight:500}
+.s3 .cm-limits span{display:block;margin-top:4px}
 .s3 .cm-bring{display:grid;grid-template-columns:1fr 1fr;gap:0 clamp(24px,3vw,56px);margin-top:clamp(28px,3vw,40px)}
 .s3 .cm-bring div{padding:18px 0;border-top:1px solid var(--s3-line)}
 .s3 .cm-bring b{display:block;font:400 var(--s3-fs-title)/1.15 var(--s3-serif)}
 .s3 .cm-bring span{display:block;margin-top:6px}
 .s3 .cm-compare{margin-top:clamp(24px,3vw,40px);overflow-x:auto}
 .s3 .cm-compare table{width:100%;min-width:560px;border-collapse:collapse;background:#fff;border-radius:16px;overflow:hidden}
-.s3 .cm-compare th,.s3 .cm-compare td{text-align:left;padding:14px 18px;border-bottom:1px solid var(--s3-line);vertical-align:top}
+.s3 .cm-compare th,.s3 .cm-compare td{text-align:left;padding:11px 18px;border-bottom:1px solid var(--s3-line);vertical-align:top}
 .s3 .cm-compare thead th{font:700 var(--s3-fs-label)/1.3 var(--s3-sans);letter-spacing:.12em;text-transform:uppercase}
 .s3 .cm-compare thead th:nth-child(2){background:var(--s3-sky)}
 .s3 .cm-compare tbody th{font-weight:500}
@@ -257,7 +269,8 @@ const CSS = `
 .s3 .cm-end .s3-lede{margin:18px auto 28px;max-width:30em}
 .s3 .cm-end .s3-fine{margin-top:28px;max-width:52em;margin-left:auto;margin-right:auto}
 @media(max-width:900px){
- .s3 .cm-hero .s3-wrap,.s3 .cm-faq .s3-faq,.s3 .cm-bring,.s3 .cm-yours,.s3 .cm-why{grid-template-columns:1fr}
+ .s3 .cm-hero .s3-wrap,.s3 .cm-faq .s3-faq,.s3 .cm-bring,.s3 .cm-yours,.s3 .cm-why,.s3 .cm-limits{grid-template-columns:1fr}
+ .s3 .cm-phone{height:auto;width:min(300px,100%);min-height:0}
  .s3 .cm-flow,.s3 .cm-feat,.s3 .cm-tiers{grid-template-columns:1fr 1fr;row-gap:40px}
  .s3 .cm-flow::before{display:none}
  .s3 .cm-faq .s3-faq>div+div details:first-child{border-top:0}
@@ -319,6 +332,10 @@ export function build() {
 <section class="s3-sec"><div class="s3-wrap">
  <h2 class="s3-h2">What you need</h2>
  <div class="cm-bring">${BRING.map(([b, p]) => `<div><b>${b}</b><span>${p}</span></div>`).join('')}</div>
+</div></section>
+<section class="s3-sec"><div class="s3-wrap">
+ <h2 class="s3-h2">Good to know before you buy</h2>
+ <div class="cm-limits">${LIMITS.map(([b, p]) => `<div><b>${b}</b><span>${p}</span></div>`).join('')}</div>
 </div></section>
 <section class="s3-sec"><div class="s3-wrap">
  <h2 class="s3-h2">Chat Manager vs ManyChat</h2>
