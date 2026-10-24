@@ -143,7 +143,7 @@ def frame(t):
         pumpkin(im, 1050 + 40 * ease(t / 2.2), (W / 2 + rock * 6, 1180), (0.5, 0.5), inside=vid('a', t), glow=0.35)
         corn_floor(im, t, 0.25)
         slam(im, t, -0.1, (W / 2, 360), "what's", 200, CREAM); letters(im, t, 0.4, (W / 2, 600), 'inside?', 250, BUTTER)
-        D.draw_on(im, SPARK, (905, 470), t, 1.0, 0.2, 15)
+        D.draw_on(im, SPARK, (910, 250), t, 1.0, 0.2, 15)
     # 2.2-3.2  fly in through the mouth: clip A is what was inside
     elif t < 3.2:
         im = sky.copy(); u = (t - 2.2) / 1.0; halo(im, (W / 2, 1180), 1350 * (1 - u))
