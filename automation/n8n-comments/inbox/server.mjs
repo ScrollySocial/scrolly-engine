@@ -318,7 +318,8 @@ const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '
 function signupPage(k, action, state = {}) {
   const pr = readProfile();
   const brand = pr.brand;
-  const headline = k?.signup?.headline || `Get your free ${k?.freebie || "freebie"}`;
+  // "Free tote bag pattern" reads as "Get your free tote bag pattern", never "free Free".
+  const headline = k?.signup?.headline || `Get your free ${String(k?.freebie || "freebie").replace(/^free\s+/i, "")}`;
   const text = k?.signup?.text || 'Pop in your email and you can open it right away.';
   const body = state.expired
     ? `<h1>This link has expired</h1><p>Comment the keyword again and you'll get a fresh one.</p>`

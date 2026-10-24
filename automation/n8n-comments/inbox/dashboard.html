@@ -653,7 +653,7 @@ async function showKeyword(body, name) {
     if (k.delivery === 'direct') parts.push(text(k, 'dm', 'DM text', { area: true, hint: '{url} becomes the freebie link.', onInput: drawPreviews }));
     else {
       parts.push(text(k, 'linkText', 'DM text', { area: true, hint: '{link} becomes their personal signup link.', onInput: drawPreviews }));
-      parts.push(text(k.signup, 'headline', 'Signup page headline', { placeholder: `Get your free ${k.freebie || 'freebie'}` }));
+      parts.push(text(k.signup, 'headline', 'Signup page headline', { placeholder: `Get your free ${String(k.freebie || 'freebie').replace(/^free\s+/i, '')}` }));
       parts.push(text(k.signup, 'text', 'Signup page text', { placeholder: 'Pop in your email and you can open it right away.' }));
       parts.push(text(k.afterSignup, 'dm', 'DM after they sign up (optional)', { area: true, placeholder: `Here's your ${k.freebie || 'freebie'}, as promised: {url}`, hint: '{url} becomes the freebie link. Only reaches people who DMed you (Instagram\'s rule), so it pairs with "Ask first".', onInput: drawPreviews }));
       if (!L.needsTarget) {
