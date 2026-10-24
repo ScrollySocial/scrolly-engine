@@ -94,6 +94,20 @@
         "automation/n8n-comments/test/demo-inbox.mjs"
       ],
       "port": 5697
+    },
+    {
+      "name": "chat-manager-guide",
+      "runtimeExecutable": "python",
+      "runtimeArgs": [
+        "-m",
+        "http.server",
+        "5698",
+        "--bind",
+        "127.0.0.1",
+        "--directory",
+        "automation/n8n-comments/kit/guide"
+      ],
+      "port": 5698
     }
   ]
 }

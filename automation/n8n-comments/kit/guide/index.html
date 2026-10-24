@@ -1,0 +1,259 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chat Manager setup guide</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Jost:wght@400;500;600&display=swap">
+<style>
+  :root { --cream: #f7f3ec; --ink: #0a1930; --sky: #4da3ff; --mist: #dfe4f0; --muted: #4a4e66; --line: #d9d3ca; --warn: #fff4d6; --warn-line: #e0b84c; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--cream); color: var(--ink); font: 17px/1.6 Jost, system-ui, sans-serif; }
+  main { max-width: 820px; margin: 0 auto; padding: 32px 16px 80px; }
+  h1, h2, h3 { font-family: 'Instrument Serif', Georgia, serif; font-weight: 400; letter-spacing: -0.01em; line-height: 1.15; }
+  h1 { font-size: 2.6rem; margin: 0 0 8px; }
+  h2 { font-size: 2rem; margin: 48px 0 8px; padding-top: 8px; border-top: 1px solid var(--line); }
+  h3 { font-size: 1.4rem; margin: 28px 0 6px; }
+  a { color: var(--ink); }
+  nav ol { columns: 2; padding-left: 20px; }
+  @media (max-width: 600px) { nav ol { columns: 1; } h1 { font-size: 2.1rem; } }
+  .lead { font-size: 1.1rem; color: var(--muted); }
+  .say { background: var(--white, #fff); border-radius: 14px; padding: 12px 16px; margin: 12px 0; }
+  .say code { font-size: 15px; }
+  code { background: var(--mist); border-radius: 6px; padding: 1px 6px; font-size: 0.92em; overflow-wrap: anywhere; }
+  .trap { background: var(--warn); border-left: 5px solid var(--warn-line); border-radius: 10px; padding: 12px 16px; margin: 14px 0; }
+  .trap strong:first-child { display: block; margin-bottom: 2px; }
+  figure { margin: 14px 0 22px; }
+  figure img { width: 100%; height: auto; border: 1px solid var(--line); border-radius: 12px; background: #fff; }
+  figcaption { font-size: 15px; color: var(--muted); margin-top: 6px; }
+  ol.steps > li { margin-bottom: 10px; }
+  table { width: 100%; border-collapse: collapse; font-size: 16px; background: #fff; border-radius: 12px; overflow: hidden; }
+  th, td { text-align: left; padding: 9px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  .table-wrap { overflow-x: auto; }
+</style>
+</head>
+<body>
+<main>
+<h1>Chat Manager setup guide</h1>
+<p class="lead">Every step to get Chat Manager running on your own server, with screenshots and every trap we hit along the way. Claude follows this guide with you: you do the clicking, Claude checks each step and runs everything else.</p>
+
+<nav aria-label="Steps"><ol>
+  <li><a href="#before">Before you start</a></li>
+  <li><a href="#digitalocean">Your server (DigitalOcean)</a></li>
+  <li><a href="#duckdns">Your web address (DuckDNS)</a></li>
+  <li><a href="#meta">Instagram (Meta app)</a></li>
+  <li><a href="#google">YouTube (Google Cloud)</a></li>
+  <li><a href="#tiktok">TikTok (Apify)</a></li>
+  <li><a href="#email">Your email list</a></li>
+  <li><a href="#test">Switch it on and test</a></li>
+  <li><a href="#using">Using it day to day</a></li>
+  <li><a href="#traps">All the traps in one list</a></li>
+</ol></nav>
+
+<h2 id="before">1. Before you start</h2>
+<p>Open the Chat Manager folder in Claude Code and say:</p>
+<p class="say"><code>set up my Chat Manager</code></p>
+<p>Claude asks a few questions (your brand, your colors, which platforms, where emails go) and writes your settings. When a step needs a key, Claude opens a small page on your computer where you paste it. Your keys stay in the <code>.secrets</code> folder on your computer and on your own server, so you never paste one into the chat.</p>
+<p>You'll need: a card for DigitalOcean ($6 a month), your Instagram login, a Facebook login for Meta's developer site, and for YouTube the Google account that owns your channel. Plan on about an hour.</p>
+
+<h2 id="digitalocean">2. Your server (DigitalOcean)</h2>
+<ol class="steps">
+  <li>Sign up at <a href="https://www.digitalocean.com">digitalocean.com</a> and add your card. New accounts sometimes ask for a quick identity check; that's normal.</li>
+  <li>Go to <strong>API</strong> in the left menu (or <a href="https://cloud.digitalocean.com/account/api/tokens">cloud.digitalocean.com/account/api/tokens</a>) → <strong>Generate New Token</strong>. Name it "Chat Manager", <strong>Full Access</strong>, 30 days is fine. Copy it.</li>
+  <li>Paste it on the key page Claude opens. Claude checks it, then makes the server for you: the $6 plan (1 GB), in the city closest to you, with a firewall and everything Chat Manager needs.</li>
+</ol>
+<div class="trap"><strong>The $4 server is too small.</strong> Chat Manager needs the $6 one (1 GB). Claude picks it for you.</div>
+
+<h2 id="duckdns">3. Your web address (DuckDNS)</h2>
+<p>Meta and Google need a web address that starts with <code>https://</code>. You don't need a website: DuckDNS gives you a free one.</p>
+<ol class="steps">
+  <li>Go to <a href="https://www.duckdns.org">duckdns.org</a> and sign in (Google, GitHub and others work).</li>
+  <li>Type the name you want in <strong>sub domain</strong> (for example your brand) and click <strong>add domain</strong>. Your address is <code>yourname.duckdns.org</code>.</li>
+  <li>Paste the <strong>token</strong> from the top of the page and your name on the key page. Claude points the address at your server, installs Chat Manager (5 to 10 minutes) and shows you your dashboard and your privacy page.</li>
+</ol>
+<p><strong>Have a website?</strong> You can use a subdomain like <code>hooks.yoursite.com</code> instead: add one "A record" at your domain company pointing to the server's address (Claude tells you the numbers).</p>
+<p>On your dashboard's first visit, Claude shows your one-time setup code on your computer. Type it, then choose your password and save it in your password manager.</p>
+
+<h2 id="meta">4. Instagram (Meta app)</h2>
+<p>This is the longest part. You're making a small app that only works with your own Instagram account, so there's no App Review and no business verification.</p>
+
+<h3>Your Instagram account</h3>
+<ol class="steps">
+  <li>It must be <strong>Professional</strong> (Creator or Business): Instagram → Settings → Account type and tools → Switch to professional account.</li>
+  <li>Instagram → Settings → Messages and story replies → Message controls → <strong>Connected tools → Allow access to messages</strong>.</li>
+</ol>
+
+<h3>Make the app</h3>
+<ol class="steps">
+  <li>Go to <a href="https://developers.facebook.com">developers.facebook.com</a> and log in with Facebook.</li>
+</ol>
+<div class="trap"><strong>"Account confirmation needed… unusual activity"</strong> on your first visit is normal for a new developer account. Click <strong>Confirm Account</strong> and follow the steps.</div>
+<figure><img src="img/meta-01-account-confirmation.jpg" alt="Meta's Account confirmation needed box with a Confirm Account button" loading="lazy"><figcaption>Click Confirm Account.</figcaption></figure>
+<ol class="steps" start="2">
+  <li><strong>My Apps → Create app.</strong> A popup says <strong>"There's a new way to create apps"</strong>: click <strong>Create app</strong>.</li>
+</ol>
+<figure><img src="img/meta-02-new-way-popup.jpg" alt="Meta popup There's a new way to create apps, with a Create app button" loading="lazy"></figure>
+<ol class="steps" start="3">
+  <li>Name it "(your brand) Chat Manager" and add your email. Use case: <strong>Manage messaging &amp; content on Instagram</strong>.</li>
+</ol>
+<figure><img src="img/meta-03-use-case.jpg" alt="List of Meta use cases with Manage messaging and content on Instagram ticked" loading="lazy"></figure>
+<ol class="steps" start="4">
+  <li>Business portfolio: <strong>I don't want to connect a business portfolio yet</strong>. Then create the app (Meta may ask for your Facebook password again).</li>
+</ol>
+<figure><img src="img/meta-04-no-business-portfolio.jpg" alt="Business portfolio step with I don't want to connect a business portfolio yet selected" loading="lazy"></figure>
+
+<h3>Add your Instagram account as a tester</h3>
+<div class="trap"><strong>Do this before "Add account".</strong> Give your Instagram account the <strong>Instagram Tester</strong> role, then accept the invite in Instagram. Pick Instagram Tester, which is a different role from Administrator, Developer and Tester.</div>
+<ol class="steps">
+  <li>App roles → Roles → <strong>Add people</strong> → under "Additional roles" pick <strong>Instagram Tester</strong> → type your Instagram username → Add.</li>
+</ol>
+<figure><img src="img/meta-05-instagram-tester.jpg" alt="Add people to your app dialog with Instagram Tester selected and a username typed" loading="lazy"></figure>
+<ol class="steps" start="2">
+  <li>Accept it in Instagram: <a href="https://www.instagram.com/accounts/manage_access/">instagram.com/accounts/manage_access</a> → <strong>Tester invites</strong> → <strong>Accept</strong>.</li>
+</ol>
+<figure><img src="img/meta-06-accept-tester-invite.jpg" alt="Instagram Apps and websites settings on the Tester invites tab with an Accept button" loading="lazy"></figure>
+
+<h3>Token, secret and webhook</h3>
+<ol class="steps">
+  <li>Use cases → <strong>Customize</strong> → <strong>API setup with Instagram login</strong>.</li>
+</ol>
+<figure><img src="img/meta-07-api-setup-instagram-login.jpg" alt="Customize use case page with API setup with Instagram login selected" loading="lazy"></figure>
+<ol class="steps" start="2">
+  <li>Step 2 "Generate access tokens": <strong>Add account</strong>, sign in to Instagram and click <strong>Allow</strong>, then <strong>Generate token</strong> and copy it.</li>
+</ol>
+<figure><img src="img/meta-08-instagram-allow.jpg" alt="Instagram window asking to allow the app to access comments and messages" loading="lazy"></figure>
+<ol class="steps" start="3">
+  <li>At the top: <strong>Instagram app secret → Show</strong>, copy it. Paste the token and the secret on the key page.</li>
+  <li>Step 3 "Configure webhooks": Callback URL <code>https://yourname.duckdns.org/webhook/instagram</code>. Verify token: Claude shows it on your computer with a Copy button. Click <strong>Verify and save</strong>.</li>
+</ol>
+<figure><img src="img/meta-09-webhook-callback.jpg" alt="Configure webhooks with the callback URL and a hidden verify token filled in" loading="lazy"></figure>
+<div class="trap"><strong>Only <code>comments</code> subscribed</strong> (and <code>messages</code> if you turned DMs on). Meta pre-ticks several message fields: turn the others off. Then turn on your account's <strong>Webhook Subscription</strong> switch.</div>
+<figure><img src="img/meta-10-only-comments-subscribed.jpg" alt="Webhook fields list with only comments subscribed" loading="lazy"></figure>
+<div class="trap"><strong>Skip step 4 "Set up Instagram business login" and step 5 "Complete app review".</strong> You don't need either for your own account.</div>
+
+<h3>App settings and Publish</h3>
+<ol class="steps">
+  <li>App settings → <strong>Basic</strong>. Fill in all of these:
+    <ul>
+      <li>Contact email</li>
+      <li>Privacy policy URL: <code>https://yourname.duckdns.org/privacy</code></li>
+      <li><strong>Terms of Service URL</strong>: <code>https://yourname.duckdns.org/terms</code> (easy to miss)</li>
+      <li>User data deletion: pick <strong>Data deletion instructions URL</strong> (the other choice is the callback) and paste <code>https://yourname.duckdns.org/privacy#delete-your-data</code></li>
+      <li>App icon: a 1024 × 1024 PNG (your logo on a square; in Canva: Custom size 1024 × 1024, Download, PNG)</li>
+      <li>Category: <strong>Business and pages</strong></li>
+      <li>App domains: <code>yourname.duckdns.org</code></li>
+    </ul>
+    Skip "Data Protection Officer". Click <strong>Save changes</strong> and wait for the green "Changes saved".</li>
+</ol>
+<figure><img src="img/meta-11-basic-settings.jpg" alt="Meta App settings Basic page filled in with privacy, terms, data deletion URL, icon and category" loading="lazy"><figcaption>Our example with our own website's pages; yours point to your DuckDNS address.</figcaption></figure>
+<div class="trap"><strong>The Meta app icon starts no review.</strong> (Google's logo does: see the YouTube part.)</div>
+<ol class="steps" start="2">
+  <li>Left menu → <strong>Publish</strong>.</li>
+</ol>
+<div class="trap"><strong>Don't add anything on "Customize use case".</strong> The Publish page links to a list with "+ Add" buttons (Human Agent, Instagram Public Content Access, ads_management…). Extra permissions can send your app to App Review. Go back and click the blue <strong>Publish</strong> button.</div>
+<figure><img src="img/meta-12-dont-add-features.jpg" alt="Permissions and features list with Add buttons that you should leave alone" loading="lazy"><figcaption>Leave every "+ Add" here alone.</figcaption></figure>
+<figure><img src="img/meta-13-publish.jpg" alt="Publish page with the blue Publish button at the bottom right" loading="lazy"></figure>
+<figure><img src="img/meta-14-published.jpg" alt="Your app was successfully published message" loading="lazy"><figcaption>Webhooks only arrive once the app is published.</figcaption></figure>
+<p>Claude then turns on comment (and DM) notifications for your account and saves your account ID.</p>
+<div class="trap"><strong>Two app IDs.</strong> The App ID on the dashboard is different from the Instagram app ID in API setup. Use the one a step asks for.</div>
+
+<h2 id="google">5. YouTube (Google Cloud)</h2>
+<p>Only if you want YouTube comments in your inbox and YouTube keywords. Nothing here needs billing.</p>
+<div class="trap"><strong>Skip "Get started for free".</strong> That button is the $300 trial, and its step 2 asks for a card. Go straight to <a href="https://console.cloud.google.com">console.cloud.google.com</a> and tick only the plain Terms of Service.</div>
+<figure><img src="img/google-01-terms-only.jpg" alt="Google Cloud welcome box with only the Terms of Service box ticked and Agree and continue" loading="lazy"></figure>
+<ol class="steps">
+  <li>Select a project → <strong>New project</strong>, name it "chat-manager", Create.</li>
+</ol>
+<figure><img src="img/google-02-new-project.jpg" alt="New project form in Google Cloud" loading="lazy"></figure>
+<ol class="steps" start="2">
+  <li>APIs &amp; Services → Library → search <strong>YouTube Data API v3</strong> → <strong>Enable</strong>.</li>
+</ol>
+<figure><img src="img/google-03-enable-youtube-api.jpg" alt="YouTube Data API v3 page with the Enable button" loading="lazy"></figure>
+<ol class="steps" start="3">
+  <li>Credentials → Create credentials → <strong>API key</strong>. In the wizard, "What data will you be accessing?" → <strong>Public data</strong>. Copy the key.</li>
+</ol>
+<div class="trap"><strong>The "sensitive data… verification 4-6 weeks" popup in the wizard doesn't apply</strong> to your own channel. Pick Public data and carry on.</div>
+<figure><img src="img/google-04-public-data.jpg" alt="Create credentials wizard with the sensitive data popup next to the Public data choice" loading="lazy"></figure>
+<ol class="steps" start="4">
+  <li>Google Auth Platform → <strong>Get started</strong>: app name "(your brand) Chat Manager", your support email, Audience <strong>External</strong>, contact email, agree, Create.</li>
+  <li><strong>Branding</strong>: home page <code>https://yourname.duckdns.org/</code>, privacy policy <code>https://yourname.duckdns.org/privacy</code>, authorized domain <code>yourname.duckdns.org</code>. Save.</li>
+</ol>
+<div class="trap"><strong>Never upload an App logo.</strong> A logo makes Google require verification, which takes 4 to 6 weeks.</div>
+<figure><img src="img/google-05-branding-no-logo.jpg" alt="Google Branding page with the App logo upload left empty" loading="lazy"><figcaption>Leave "Logo file to upload" empty.</figcaption></figure>
+<figure><img src="img/google-06-app-domain.jpg" alt="App domain fields for home page, privacy policy and authorized domain" loading="lazy"></figure>
+<ol class="steps" start="6">
+  <li><strong>Audience → Publish app → Confirm</strong>, so it says <strong>In production</strong>.</li>
+</ol>
+<div class="trap"><strong>Left in "Testing", the YouTube sign-in expires every 7 days</strong> and replies silently stop. Publish it. Never click "Submit for verification".</div>
+<figure><img src="img/google-07-push-to-production.jpg" alt="Push to production dialog with a Confirm button" loading="lazy"></figure>
+<figure><img src="img/google-08-in-production.jpg" alt="Audience page showing Publishing status In production" loading="lazy"></figure>
+<ol class="steps" start="7">
+  <li>Clients → <strong>Create client</strong> → Application type <strong>Desktop app</strong>, name "Chat Manager". Copy the Client ID and Client secret and paste them with the API key on the key page.</li>
+</ol>
+<div class="trap"><strong>Untick "Use this client for an AI-powered agent"</strong> if it's there. Chat Manager doesn't need it.</div>
+<figure><img src="img/google-09-desktop-client-untick-agent.jpg" alt="Create OAuth client form with Desktop app chosen and the AI-powered agent box" loading="lazy"></figure>
+<ol class="steps" start="8">
+  <li>Claude opens a Google sign-in link. Sign in with the account that owns your channel.</li>
+</ol>
+<div class="trap"><strong>"Google hasn't verified this app" is expected.</strong> It's your own app: click <strong>Advanced → Go to (your app name)</strong>, then Allow.</div>
+
+<h2 id="tiktok">6. TikTok (Apify)</h2>
+<p>TikTok doesn't let any tool reply for you, so TikTok comments arrive in your inbox with a suggested reply and a <strong>Copy &amp; open TikTok</strong> button. They're read once a day through Apify.</p>
+<ol class="steps">
+  <li>Make a free account at <a href="https://apify.com">apify.com</a> (it includes $5 of credit every month; Chat Manager caps each daily check at $0.10).</li>
+  <li>Settings → API &amp; Integrations → copy your <strong>Personal API token</strong> and paste it with your TikTok username on the key page.</li>
+</ol>
+
+<h2 id="email">7. Your email list</h2>
+<p>When someone signs up for a freebie, their email is always kept on your server: open <strong>Email list</strong> in your dashboard to see everyone and <strong>Download CSV</strong> to import them anywhere. You can also send each signup straight to your email tool:</p>
+<div class="table-wrap"><table>
+  <thead><tr><th>Tool</th><th>Where the key is</th><th>Each keyword picks a</th></tr></thead>
+  <tbody>
+    <tr><td>MailerLite</td><td>Integrations → MailerLite API → Generate new token</td><td>group</td></tr>
+    <tr><td>Kit</td><td>Settings → Developer → API keys (a v4 key)</td><td>tag</td></tr>
+    <tr><td>Mailchimp</td><td>Profile → Extras → API keys</td><td>audience (plus a tag with the keyword)</td></tr>
+    <tr><td>beehiiv</td><td>Settings → Workspace settings → API</td><td>publication</td></tr>
+    <tr><td>Flodesk</td><td>Account settings → Integrations → API keys</td><td>segment</td></tr>
+    <tr><td>Anything else</td><td>A webhook URL: Zapier "Catch Hook", Make "Custom webhook", an n8n Webhook node</td><td>(every signup)</td></tr>
+  </tbody>
+</table></div>
+<p>Menus move around; if yours looks different, look for "API" in the tool's settings. After connecting, use <strong>Send a test signup</strong> in the Email list tab.</p>
+
+<h2 id="test">8. Switch it on and test</h2>
+<ol class="steps">
+  <li>In your dashboard: <strong>Keywords → + New keyword</strong>. Add the freebie's name and link, pick where it works, read the preview, tick <strong>I approve these messages</strong> and switch it on. The checklist at the top shows what's left.</li>
+  <li><strong>Test mode is on</strong> at first: nothing is sent. From a second Instagram account (a friend's or a spare one), comment your keyword on one of your posts. Your inbox shows what would have been sent.</li>
+  <li>Tell Claude to switch test mode off, then test once more: the DM arrives for real, and a signup shows up in your Email list.</li>
+</ol>
+
+<h2 id="using">9. Using it day to day</h2>
+<ul>
+  <li><strong>Inbox:</strong> every comment and DM worth answering, newest first. Open one, edit the suggested reply, press Send. TikTok: Copy &amp; open TikTok.</li>
+  <li><strong>Drafts on your Claude plan:</strong> say <code>draft my comment replies</code> and Claude writes a reply for each waiting comment. You still approve each one.</li>
+  <li><strong>Keywords:</strong> one page per keyword with its stats.</li>
+  <li><strong>Updates:</strong> download the new version from My Account → Downloads, unzip it over your folder and say <code>update my Chat Manager</code>. Your keywords, inbox, list and keys stay.</li>
+  <li><strong>Check:</strong> <code>check my Chat Manager</code> tests every part and says what needs you.</li>
+  <li><strong>Keep a copy of your <code>.secrets</code> folder</strong> somewhere safe: it's the only copy of your keys and your server key.</li>
+</ul>
+
+<h2 id="traps">10. All the traps in one list</h2>
+<ul>
+  <li>Google: never upload an app logo (4 to 6 weeks of verification).</li>
+  <li>Google: skip "Get started for free" (it's the $300 trial and asks for a card).</li>
+  <li>Google: Public data in the credentials wizard; the verification popup there doesn't apply.</li>
+  <li>Google: Publish app → In production, or replies stop every 7 days.</li>
+  <li>Google: untick "Use this client for an AI-powered agent". Never "Submit for verification".</li>
+  <li>Google: "hasn't verified this app" at sign-in is expected: Advanced → Go to.</li>
+  <li>Meta: "Account confirmation needed" on a first visit is normal.</li>
+  <li>Meta: Instagram Tester role first, and accept the invite in Instagram.</li>
+  <li>Meta: only <code>comments</code> (and <code>messages</code>) subscribed, and the Webhook Subscription switch on.</li>
+  <li>Meta: skip "business login" and "app review" steps.</li>
+  <li>Meta: all five Basic fields, including Terms of Service and "Data deletion instructions URL".</li>
+  <li>Meta: no "+ Add" features before Publish.</li>
+  <li>Meta: two different app IDs.</li>
+  <li>DigitalOcean: the $6 server, never the $4 one.</li>
+</ul>
+<p class="lead">Stuck? Tell Claude what you see (a screenshot helps). <code>check my Chat Manager</code> points at the part that needs attention.</p>
+</main>
+</body>
+</html>
