@@ -1,4 +1,4 @@
-# Scrolly comments: n8n + Caddy (automatic HTTPS) on one small server.
+# Chat Manager: n8n + the dashboard + Caddy (automatic HTTPS) on one small server.
 # Separate from the old laptop n8n (automation/n8n/, pinned 1.70.0): this one is
 # public, so it runs a current, patched n8n and is pinned to an exact version.
 # Upgrade by changing the tag on purpose, never :latest (see README.md).
@@ -24,6 +24,7 @@ services:
       - NODE_FUNCTION_ALLOW_BUILTIN=crypto,fs
       - KEYWORDS_FILE=/data/config/keywords.json
       - SETTINGS_FILE=/data/config/settings.json
+      - PROFILE_FILE=/data/config/profile.json
       - EXECUTIONS_DATA_PRUNE=true
       - EXECUTIONS_DATA_MAX_AGE=336
       - N8N_DIAGNOSTICS_ENABLED=false
@@ -32,12 +33,15 @@ services:
       - n8n_data:/home/node/.n8n
       - ./config:/data/config:ro
       - ./workflow:/data/workflow:ro
-    # Only Caddy talks to n8n; nothing is published on the server's own ports.
+    # Only Caddy talks to n8n from outside. The editor is reachable from the server itself
+    # (127.0.0.1) for an SSH tunnel, never from the internet.
     expose:
       - "5678"
+    ports:
+      - "127.0.0.1:5678:5678"
     mem_limit: 700m
 
-  # Mercedes's comment dashboard and the inbox n8n writes to (inbox/server.mjs, no npm
+  # The dashboard, signup pages and the inbox n8n writes to (inbox/server.mjs, no npm
   # packages). It gets only the settings it needs, not the platform tokens.
   inbox:
     image: node:22.11.0-alpine
@@ -48,7 +52,15 @@ services:
       - INBOX_API_SECRET=${INBOX_API_SECRET}
       - INBOX_SETUP_CODE=${INBOX_SETUP_CODE}
       - RUN_SECRET=${RUN_SECRET}
+      - N8N_HOST=${N8N_HOST}
+      - EMAIL_LIST=${EMAIL_LIST:-}
       - MAILERLITE_API_KEY=${MAILERLITE_API_KEY:-}
+      - KIT_API_KEY=${KIT_API_KEY:-}
+      - MAILCHIMP_API_KEY=${MAILCHIMP_API_KEY:-}
+      - BEEHIIV_API_KEY=${BEEHIIV_API_KEY:-}
+      - FLODESK_API_KEY=${FLODESK_API_KEY:-}
+      - LIST_WEBHOOK_URL=${LIST_WEBHOOK_URL:-}
+      - LIST_WEBHOOK_SECRET=${LIST_WEBHOOK_SECRET:-}
       - DMS_ENABLED=${DMS_ENABLED:-false}
       - YOUTUBE_KEEP_DAYS=${YOUTUBE_KEEP_DAYS:-21}
       - TZ=${TZ:-America/Chicago}

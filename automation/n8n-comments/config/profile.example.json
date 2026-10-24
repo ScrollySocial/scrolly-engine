@@ -1,0 +1,22 @@
+{
+  "_note": "Your Chat Manager profile. The setup skill fills this in from your answers; edit it any time (it's read on every visit, no restart). No keys here: those live in the server's .env.",
+  "brand": "Your brand name",
+  "handle": "yourinstagram",
+  "owner": "Your first name",
+  "about": "One or two sentences about you and what you sell. Only used if you switch on automatic Claude API drafts.",
+  "privacyUrl": "/privacy",
+  "look": {
+    "background": "#f6f4f0",
+    "card": "#ffffff",
+    "text": "#1d1d1f",
+    "muted": "#55555c",
+    "button": "#2f6fed",
+    "buttonText": "#ffffff",
+    "headingFont": "",
+    "bodyFont": "",
+    "fontsUrl": ""
+  },
+  "signup": {
+    "consent": "Send me your emails too. I can unsubscribe anytime."
+  }
+}

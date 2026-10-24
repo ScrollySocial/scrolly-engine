@@ -326,7 +326,7 @@ const kw = (await inbox('/keywords')).keywords.find((k) => k.keyword === 'FREE')
 check('Reminder is stored in minutes', kw?.reminder.minutes === 60 && kw?.reminder.hours === undefined, JSON.stringify(kw?.reminder));
 r = await fetch(`${INBOX}/inbox/api/keywords`, { method: 'PUT', headers: INBOX_KEY, body: JSON.stringify({ keywords: [{ ...ytKw, yt: { text: 'no link here' } }] }) });
 check('A YouTube reply without the link is refused', r.status === 400);
-const panel = await inbox('/mailerlite/groups/111');
+const panel = await inbox('/lists/targets/111');
 check('MailerLite panel: group size and the sequence it starts, with links', panel.group?.active === 5 && panel.automations?.length === 1 && panel.automations[0].name === 'FREE delivery' && panel.automations[0].url === 'https://dashboard.mailerlite.com/automations/900', JSON.stringify(panel));
 const st = await inbox('/stats?days=30');
 check('Stats: contacts, new contacts, signups, conversion and 30 daily points', st.totals?.contacts > 0 && st.totals.newContacts > 0 && st.totals.signups === 2 && typeof st.totals.conversion === 'number' && st.series?.length === 30 && st.series.at(-1).signups === 2, JSON.stringify(st.totals));

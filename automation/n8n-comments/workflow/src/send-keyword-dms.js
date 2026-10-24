@@ -16,7 +16,7 @@ try {
   logError('keywords-file', e);
 }
 const ownId = cfg('IG_USER_ID');
-const PUBLIC = cfg('INBOX_PUBLIC_URL', 'https://hooks.scrollyseo.com');
+const PUBLIC = cfg('INBOX_PUBLIC_URL', `https://${cfg('N8N_HOST', 'localhost')}`);
 const wordsOf = (t) => String(t || '').toUpperCase().match(/[A-Z0-9$]+/g) || [];
 const FILLER = /^(PLEASE|PLS|PLZ|THANKS|THANK|YOU|TY|HI|HEY|YES|OK|OKAY)$/;
 

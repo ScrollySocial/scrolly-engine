@@ -1,13 +1,24 @@
-# HTTPS for the comments n8n and the comment dashboard. Caddy gets and renews the
-# certificate on its own once the DNS record for N8N_HOST (hooks.scrollyseo.com)
-# points at this server.
+# HTTPS for Chat Manager. Caddy gets and renews the certificate on its own once the DNS
+# record for N8N_HOST (yourname.duckdns.org, or hooks.scrollyseo.com for Mercedes) points
+# at this server.
+#
+# Only three things are public: the webhooks Meta and the dashboard call (/webhook/*), the
+# dashboard with its signup pages (/inbox*), and the owner's home, privacy and terms pages.
+# The n8n editor is never public, so nobody can claim it; reach it through an SSH tunnel
+# when needed (README.md "n8n editor").
 {$N8N_HOST} {
 	encode gzip
-	# The dashboard and its API (inbox/server.mjs); everything else is n8n.
+	handle /webhook/* {
+		reverse_proxy n8n:5678
+	}
 	handle /inbox* {
 		reverse_proxy inbox:3000
 	}
+	@pages path / /privacy /privacy/ /terms /terms/
+	handle @pages {
+		reverse_proxy inbox:3000
+	}
 	handle {
-		reverse_proxy n8n:5678
+		respond "Not found" 404
 	}
 }

@@ -9,7 +9,7 @@ try {
 } catch (e) {
   logError('keywords-file', e);
 }
-const PUBLIC = cfg('INBOX_PUBLIC_URL', 'https://hooks.scrollyseo.com');
+const PUBLIC = cfg('INBOX_PUBLIC_URL', `https://${cfg('N8N_HOST', 'localhost')}`);
 let due = [];
 try {
   due = (await inbox('GET', '/flows/due')).flows || [];

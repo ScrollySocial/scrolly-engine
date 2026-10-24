@@ -1,5 +1,7 @@
-// Scrolly comment inbox: Mercedes's private dashboard (https://hooks.scrollyseo.com/inbox)
-// and the store n8n writes comments to. Replaced the Notion Comment inbox on 2026-10-23.
+// Chat Manager inbox: the owner's private dashboard (https://<N8N_HOST>/inbox), the public
+// signup pages, and the store n8n writes comments to. Started as Mercedes's Scrolly inbox
+// (replaced her Notion Comment inbox on 2026-10-23); everything about one person lives in
+// CONFIG_DIR/profile.json and the server's .env.
 // No npm packages: Node's own http, crypto and fs. Runs next to n8n (docker-compose.yml).
 //
 // Who can call /inbox/api/*:
@@ -10,9 +12,10 @@
 // ones, read by n8n on every comment).
 import http from 'node:http';
 import { randomBytes, scryptSync, timingSafeEqual } from 'node:crypto';
-import { readFileSync, writeFileSync, renameSync, mkdirSync } from 'node:fs';
+import { readFileSync, writeFileSync, renameSync, mkdirSync, existsSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { provider, listInfo } from './lists.mjs';
 
 const env = (k, d = '') => (process.env[k] ?? '').trim() || d;
 const PORT = Number(env('PORT', '3000'));
@@ -26,10 +29,8 @@ const YOUTUBE_KEEP_DAYS = Number(env('YOUTUBE_KEEP_DAYS', '21'));
 // "Approve & post" asks n8n to post right away instead of waiting for the 10-minute run.
 const N8N_RUN_URL = env('N8N_RUN_URL', 'http://n8n:5678/webhook/comments-run');
 const RUN_SECRET = env('RUN_SECRET');
-// Freebie signups: the signup page adds the email to the keyword's MailerLite group, and
-// MailerLite's own automation for that group emails the freebie.
-const MAILERLITE_KEY = env('MAILERLITE_API_KEY');
-const MAILERLITE_BASE = env('MAILERLITE_BASE', 'https://connect.mailerlite.com/api');
+// The address people see in links (signup pages, previews).
+const PUBLIC_HOST = env('N8N_HOST', env('PUBLIC_HOST', 'localhost'));
 // Tests only (test/run-inbox.sh): lets the end-to-end test make the next row update fail.
 const TEST_HOOKS = env('INBOX_TEST_HOOKS') === 'true';
 let failNextPatch = false;
@@ -46,7 +47,7 @@ const SESSION_DAYS = 30;
 // ---- storage: one JSON file, written atomically ----
 mkdirSync(DATA_DIR, { recursive: true });
 const DATA_FILE = join(DATA_DIR, 'inbox.json');
-let db = { rows: [], events: [], flows: [], auth: null, sessions: {} };
+let db = { rows: [], events: [], flows: [], subscribers: [], auth: null, sessions: {} };
 try {
   db = { ...db, ...JSON.parse(readFileSync(DATA_FILE, 'utf8')) };
 } catch {}
@@ -69,8 +70,8 @@ function readKeywords() {
 }
 // A keyword delivers its freebie one of two ways:
 //   direct: the DM carries the freebie link ({url}), as MATH and QUIZ did from the start;
-//   email:  the DM carries a personal signup link ({link}); the signup page adds the email to the
-//           keyword's MailerLite group and MailerLite emails the freebie.
+//   email:  the DM carries a personal signup link ({link}); the signup page keeps the email, adds it
+//           to the keyword's list in the connected email tool (lists.mjs) and shows the freebie.
 // Optional before either: "ask first" (reply READY), and after an email link: one reminder DM.
 const str = (v) => String(v ?? '').trim();
 function cleanKeyword(k) {
@@ -104,19 +105,24 @@ function cleanKeyword(k) {
     dm: str(k.dm),
     linkText: str(k.linkText),
     signup: { headline: str(k.signup?.headline), text: str(k.signup?.text) },
-    mailerliteGroup: str(k.mailerliteGroup),
-    mailerliteGroupName: str(k.mailerliteGroupName),
+    // The keyword's group / tag / audience / publication / segment in the connected email tool.
+    // Keywords saved before 2026-10-24 kept it as mailerliteGroup(Name).
+    list: { id: str(k.list?.id || k.mailerliteGroup), name: str(k.list?.name || k.mailerliteGroupName) },
     reminder,
     yt,
     afterSignup,
   };
   delete out.reminder.hours;
+  delete out.mailerliteGroup;
+  delete out.mailerliteGroupName;
   if (out.live || out.dmApproved) {
     if (!where.igComments && !where.igDms && !where.ytComments) throw new Error(`${keyword}: pick where it works`);
     if (where.ytComments && !yt.text.includes(delivery === 'email' ? '{link}' : '{url}')) throw new Error(`${keyword}: the YouTube reply needs ${delivery === 'email' ? '{link}' : '{url}'} in it`);
     if (ask.on && (!ask.text || !/^[A-Z0-9]{2,20}$/.test(ask.word))) throw new Error(`${keyword}: "ask first" needs its message and a one-word reply`);
     if (delivery === 'direct' && (!url || !out.dm.includes('{url}'))) throw new Error(`${keyword}: direct delivery needs the freebie link and a DM text with {url} in it`);
-    if (delivery === 'email' && (!out.linkText.includes('{link}') || !out.mailerliteGroup || !url)) throw new Error(`${keyword}: email signup needs the freebie link, a DM text with {link} in it and a MailerLite group`);
+    const p = provider();
+    if (delivery === 'email' && (!out.linkText.includes('{link}') || !url)) throw new Error(`${keyword}: email signup needs the freebie link and a DM text with {link} in it`);
+    if (delivery === 'email' && p.needsTarget && !out.list.id) throw new Error(`${keyword}: pick the ${p.name} ${p.label} people join`);
     if (afterSignup.dm && !afterSignup.dm.includes('{url}')) throw new Error(`${keyword}: the DM after signup needs {url} in it`);
     if (reminder.on && (!reminder.text || !reminder.text.includes('{link}'))) throw new Error(`${keyword}: the reminder needs its text, with {link} in it`);
   }
@@ -144,6 +150,52 @@ function saveKeywords(list) {
   });
   return clean;
 }
+// ---- profile (CONFIG_DIR/profile.json): who this is and how their pages look ----
+// Written by the setup skill (example: config/profile.example.json). Read on every request, so an
+// edit shows without a restart. Neutral defaults so a missing file never shows someone else's brand.
+const PROFILE = join(CONFIG_DIR, 'profile.json');
+const PROFILE_DEFAULTS = {
+  brand: 'My freebies',
+  handle: '',
+  privacyUrl: '/privacy',
+  look: { background: '#f6f4f0', card: '#ffffff', text: '#1d1d1f', muted: '#55555c', button: '#2f6fed', buttonText: '#ffffff', headingFont: '', bodyFont: '', fontsUrl: '' },
+  signup: { consent: 'Send me your emails too. I can unsubscribe anytime.' },
+};
+function readProfile() {
+  let p = {};
+  try {
+    p = JSON.parse(readFileSync(PROFILE, 'utf8'));
+  } catch {}
+  return { ...PROFILE_DEFAULTS, ...p, look: { ...PROFILE_DEFAULTS.look, ...p.look }, signup: { ...PROFILE_DEFAULTS.signup, ...p.signup } };
+}
+const cssColor = (v, d) => (/^#[0-9a-f]{3,8}$/i.test(String(v || '')) ? v : d);
+const cssFont = (v) => String(v || '').replace(/[^A-Za-z0-9 \-]/g, '').trim();
+// The look of every public page (signup, privacy, home), from profile.look.
+function pageStyle(pr) {
+  const L = pr.look;
+  const D = PROFILE_DEFAULTS.look;
+  const head = cssFont(L.headingFont);
+  const bodyF = cssFont(L.bodyFont);
+  const fonts = /^https:\/\/fonts\.googleapis\.com\/\S+$/.test(L.fontsUrl || '') ? `<link rel="stylesheet" href="${esc(L.fontsUrl)}">` : '';
+  return `${fonts}<style>
+:root{--bg:${cssColor(L.background, D.background)};--card:${cssColor(L.card, D.card)};--ink:${cssColor(L.text, D.text)};--muted:${cssColor(L.muted, D.muted)};--btn:${cssColor(L.button, D.button)};--btn-ink:${cssColor(L.buttonText, D.buttonText)}}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.5 ${bodyF ? `'${bodyF}',` : ''}system-ui,sans-serif}
+main{max-width:460px;margin:10vh auto 0;padding:0 16px}
+main.wide{max-width:720px;margin-top:6vh;padding-bottom:60px}
+.card{background:var(--card);border-radius:20px;padding:24px}
+.brand{font-family:${head ? `'${head}',` : ''}Georgia,serif;font-size:1.3rem;letter-spacing:.04em;margin:0 0 12px}
+h1,h2{font-family:${head ? `'${head}',` : ''}Georgia,serif;font-weight:400;line-height:1.1;letter-spacing:-.01em}
+h1{font-size:2rem;margin:0 0 8px}h2{font-size:1.4rem;margin:24px 0 6px}
+label{display:block;font-weight:500;margin:14px 0 6px;font-size:15px}
+input[type=email]{width:100%;box-sizing:border-box;border:1px solid var(--muted);border-radius:12px;padding:12px;font:inherit}
+.consent{display:flex;gap:10px;align-items:flex-start;font-weight:400}
+.consent input{width:20px;height:20px;margin-top:3px;accent-color:var(--btn);flex:none}
+button{margin-top:16px;width:100%;border:0;border-radius:999px;padding:13px;background:var(--btn);color:var(--btn-ink);font-weight:500;font-size:17px;font-family:inherit;cursor:pointer}
+button:focus-visible,input:focus-visible,a:focus-visible{outline:3px solid var(--btn);outline-offset:2px}
+.btn{display:inline-block;margin-top:6px;border-radius:999px;padding:13px 28px;background:var(--btn);color:var(--btn-ink);font-weight:500;text-decoration:none}.error{color:#b3261e}.small{font-size:14px;color:var(--muted);margin-top:14px}a{color:var(--ink)}
+</style>`;
+}
+
 // ---- settings (CONFIG_DIR/settings.json, read by n8n too): the first-DM welcome message ----
 const SETTINGS = join(CONFIG_DIR, 'settings.json');
 function readSettings() {
@@ -215,23 +267,57 @@ function dueReminders() {
   });
 }
 
-// ---- MailerLite ----
-async function mailerlite(method, path, body) {
-  if (!MAILERLITE_KEY) throw new Error('MailerLite is not connected yet');
-  const res = await fetch(`${MAILERLITE_BASE}${path}`, {
-    method,
-    headers: { Authorization: `Bearer ${MAILERLITE_KEY}`, 'Content-Type': 'application/json', Accept: 'application/json' },
-    body: body ? JSON.stringify(body) : undefined,
-  });
-  const data = await res.json().catch(() => ({}));
-  if (!res.ok) throw new Error(data.message || `MailerLite answered ${res.status}`);
-  return data;
+// ---- the email list: every signup is kept here, and sent on to the connected tool ----
+// A tool being down never costs a signup: the person still gets the freebie, the signup waits
+// here and is retried (every 15 minutes, up to 8 times); the dashboard shows what didn't go through.
+const MAX_TRIES = 8;
+async function sendSignup(sub) {
+  const p = provider();
+  sub.provider = p.id;
+  if (p.id === 'builtin') {
+    sub.status = 'kept';
+    return;
+  }
+  sub.tries = (sub.tries || 0) + 1;
+  try {
+    if (p.needsTarget && !sub.listId) throw new Error(`no ${p.name} ${p.label} picked for ${sub.keyword}`);
+    await p.add(sub);
+    sub.status = 'sent';
+    sub.sentAt = now();
+    delete sub.error;
+  } catch (e) {
+    sub.status = sub.tries >= MAX_TRIES ? 'failed' : 'waiting';
+    sub.error = String(e.message || e).slice(0, 300);
+    console.error('email list', sub.error);
+  }
+}
+function keepSignup({ email, keyword, freebie, platform, listId, consent }) {
+  // One entry per email per keyword; signing up again only refreshes the date.
+  let sub = db.subscribers.find((x) => x.email === email && x.keyword === keyword);
+  if (sub) sub.at = now();
+  else db.subscribers.push((sub = { id: newId(), email, keyword, freebie, platform, listId, consent, at: now(), status: 'new' }));
+  return sub;
+}
+async function retrySignups() {
+  const waiting = db.subscribers.filter((x) => x.status === 'waiting' || x.status === 'new');
+  for (const sub of waiting) await sendSignup(sub);
+  if (waiting.length) save();
+}
+setInterval(() => retrySignups().catch(() => {}), 15 * 60e3).unref();
+const csvCell = (v) => (/[",\r\n]/.test(String(v ?? '')) ? `"${String(v).replace(/"/g, '""')}"` : String(v ?? ''));
+function subscribersCsv() {
+  const head = ['email', 'keyword', 'freebie', 'platform', 'signed_up', 'consent_wording', 'sent_to', 'status'];
+  const lines = db.subscribers.map((x) => [x.email, x.keyword, x.freebie, x.platform, x.at, x.consent, x.provider || '', x.status].map(csvCell).join(','));
+  // A byte-order mark so Excel opens the file as UTF-8.
+  return String.fromCharCode(0xfeff) + [head.join(','), ...lines].join('\r\n') + '\r\n';
 }
 
 // ---- the public signup page (no login: anyone with the personal link) ----
 const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
 // action: where the form posts (/inbox/f/<token> for a personal link, /inbox/s/<KEYWORD> for the shared one).
 function signupPage(k, action, state = {}) {
+  const pr = readProfile();
+  const brand = pr.brand;
   const headline = k?.signup?.headline || `Get your free ${k?.freebie || "freebie"}`;
   const text = k?.signup?.text || 'Pop in your email and you can open it right away.';
   const body = state.expired
@@ -242,31 +328,31 @@ function signupPage(k, action, state = {}) {
        <form method="post" action="${esc(action)}">
          <label for="email">Your email</label>
          <input id="email" name="email" type="email" required autocomplete="email" value="${esc(state.email || '')}">
-         <label class="consent"><input type="checkbox" name="consent" value="yes" required> Add me to Scrolly's emails too (tips and offers). I can unsubscribe anytime.</label>
+         <label class="consent"><input type="checkbox" name="consent" value="yes" required> ${esc(pr.signup.consent)}</label>
          ${state.error ? `<p class="error" role="alert">${esc(state.error)}</p>` : ''}
          <button type="submit">Get it now</button>
        </form>
-       <p class="small">See the <a href="https://scrollyseo.com/privacy/">privacy policy</a>.</p>`;
+       <p class="small">See the <a href="${esc(pr.privacyUrl)}">privacy policy</a>.</p>`;
   return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex">
-<title>${esc(state.done ? `Here's your ${k?.freebie || 'freebie'}` : state.expired ? 'Link expired' : headline)} · Scrolly</title>
-<meta name="description" content="${esc(state.done || state.expired ? 'Scrolly' : text)}">
-<meta property="og:title" content="${esc(state.done || state.expired ? 'Scrolly' : headline)}">
-<meta property="og:description" content="${esc(state.done || state.expired ? 'Scrolly' : text)}">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Jost:wght@400;500&display=swap">
-<style>
-body{margin:0;background:#f7f3ec;color:#0a1930;font:17px/1.5 Jost,system-ui,sans-serif}
-main{max-width:460px;margin:10vh auto 0;padding:0 16px}
-.card{background:#fff;border-radius:20px;padding:24px}
-.brand{font-family:'Instrument Serif',Georgia,serif;font-size:1.3rem;letter-spacing:.04em;margin:0 0 12px}
-h1{font-family:'Instrument Serif',Georgia,serif;font-weight:400;font-size:2rem;line-height:1.1;margin:0 0 8px;letter-spacing:-.01em}
-label{display:block;font-weight:500;margin:14px 0 6px;font-size:15px}
-input[type=email]{width:100%;box-sizing:border-box;border:1px solid #8f8a83;border-radius:12px;padding:12px;font:17px Jost,sans-serif}
-.consent{display:flex;gap:10px;align-items:flex-start;font-weight:400}
-.consent input{width:20px;height:20px;margin-top:3px;accent-color:#4da3ff;flex:none}
-button{margin-top:16px;width:100%;border:0;border-radius:999px;padding:13px;background:#4da3ff;color:#0a1930;font:500 17px Jost,sans-serif;cursor:pointer}
-button:focus-visible,input:focus-visible,a:focus-visible{outline:3px solid #4da3ff;outline-offset:2px}
-.btn{display:inline-block;margin-top:6px;border-radius:999px;padding:13px 28px;background:#4da3ff;color:#0a1930;font-weight:500;text-decoration:none}.error{color:#b3261e}.small{font-size:14px;color:#4a4e66;margin-top:14px}a{color:#0a1930}
-</style></head><body><main><p class="brand">SCROLLY</p><div class="card">${body}</div></main></body></html>`;
+<title>${esc(state.done ? `Here's your ${k?.freebie || 'freebie'}` : state.expired ? 'Link expired' : headline)} · ${esc(brand)}</title>
+<meta name="description" content="${esc(state.done || state.expired ? brand : text)}">
+<meta property="og:title" content="${esc(state.done || state.expired ? brand : headline)}">
+<meta property="og:description" content="${esc(state.done || state.expired ? brand : text)}">
+${pageStyle(pr)}</head><body><main><p class="brand">${esc(brand.toUpperCase())}</p><div class="card">${body}</div></main></body></html>`;
+}
+// The owner's public pages (/, /privacy, /terms): HTML they own in CONFIG_DIR/pages/<name>.html
+// (the setup skill fills in templates/privacy.html), shown in their look. Meta and Google need
+// a privacy policy, terms and a home page link even when someone has no website.
+const PAGES = { '/': 'home', '/privacy': 'privacy', '/terms': 'terms' };
+function publicPage(name) {
+  const pr = readProfile();
+  const file = join(CONFIG_DIR, 'pages', `${name}.html`);
+  const inner = existsSync(file) ? readFileSync(file, 'utf8') : name === 'home' ? `<h1>${esc(pr.brand)}</h1><p>Freebies and replies for ${esc(pr.handle ? `@${pr.handle}` : pr.brand)}.</p>` : null;
+  if (inner === null) return null;
+  const title = (inner.match(/<h1[^>]*>([^<]{1,120})<\/h1>/) || [])[1] || pr.brand;
+  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>${esc(title)} · ${esc(pr.brand)}</title>
+${pageStyle(pr)}</head><body><main class="wide"><p class="brand">${esc(pr.brand.toUpperCase())}</p><div class="card">${inner}</div></main></body></html>`;
 }
 function readForm(req) {
   return new Promise((resolve) => {
@@ -302,12 +388,9 @@ async function handleSignup(req, res, token) {
   const email = str(form.email).toLowerCase();
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email) || email.length > 200) return send(res, 400, signupPage(k, action, { email, error: "That email doesn't look right." }), 'text/html; charset=utf-8');
   if (form.consent !== 'yes') return send(res, 400, signupPage(k, action, { email, error: 'Tick the box so I can email it to you.' }), 'text/html; charset=utf-8');
-  try {
-    await mailerlite('POST', '/subscribers', { email, groups: [k.mailerliteGroup], status: 'active' });
-  } catch (e) {
-    console.error('mailerlite', e.message);
-    return send(res, 502, signupPage(k, action, { email, error: "Something went wrong on my side. Please try again in a minute." }), 'text/html; charset=utf-8');
-  }
+  // Kept here first, then sent on to the email tool; if the tool fails, retrySignups tries again.
+  const sub = keepSignup({ email, keyword: k.keyword, freebie: k.freebie, platform: f.platform, listId: k.list?.id || k.mailerliteGroup || '', consent: readProfile().signup.consent });
+  await sendSignup(sub);
   flowStep(f, 'signedUp', { email });
   // The DM with the freebie link goes out from n8n right away (its reminder job also sends these).
   runJob('reminders');
@@ -552,6 +635,10 @@ async function handle(req, res) {
   const path = url.pathname.replace(/\/+$/, '') || '/';
 
   if (path === '/inbox/health') return send(res, 200, { ok: true });
+  if (req.method === 'GET' && PAGES[path]) {
+    const page = publicPage(PAGES[path]);
+    return page ? send(res, 200, page, 'text/html; charset=utf-8') : send(res, 404, 'Not found', 'text/plain');
+  }
   if (req.method === 'GET' && path === '/inbox') return send(res, 200, readFileSync(PAGE_FILE, 'utf8'), 'text/html; charset=utf-8');
   const signup = path.match(/^\/inbox\/f\/([A-Za-z0-9_-]{8,40})$/);
   if (signup && ['GET', 'POST'].includes(req.method)) return handleSignup(req, res, signup[1]);
@@ -599,7 +686,7 @@ async function handle(req, res) {
   const api = path.slice('/inbox/api'.length);
   const body = ['POST', 'PATCH', 'PUT'].includes(req.method) ? await readBody(req) : {};
 
-  if (api === '/me') return send(res, 200, { loggedIn: true, passwordSet: !!db.auth, dmsEnabled: env('DMS_ENABLED') === 'true', mailerlite: !!MAILERLITE_KEY });
+  if (api === '/me') return send(res, 200, { loggedIn: true, passwordSet: !!db.auth, dmsEnabled: env('DMS_ENABLED') === 'true', list: listInfo(), profile: readProfile(), publicHost: PUBLIC_HOST, waitingSignups: db.subscribers.filter((x) => ['waiting', 'failed'].includes(x.status)).length });
   if (api === '/rows' && req.method === 'GET') {
     const status = url.searchParams.getAll('status');
     const rows = status.length ? db.rows.filter((r) => status.includes(r.status)) : db.rows;
@@ -658,40 +745,74 @@ async function handle(req, res) {
       return send(res, 400, { error: e.message });
     }
   }
-  // One group for a keyword page: its size and the automations (email sequences) it starts.
-  const mg = api.match(/^\/mailerlite\/groups\/(\d{1,30})$/);
-  if (mg && req.method === 'GET') {
+  // The email list: which tool is connected, its groups / tags / audiences / publications / segments.
+  if (api === '/lists' && req.method === 'GET') return send(res, 200, listInfo());
+  if (api === '/lists/targets' && req.method === 'GET') {
+    const p = provider();
+    if (!p.targets) return send(res, 200, { connected: p.connected(), targets: [] });
     try {
-      const g = (await mailerlite('GET', `/groups/${mg[1]}`)).data || {};
-      const autos = (await mailerlite('GET', '/automations?limit=100')).data || [];
-      const starts = autos.filter((a) => (a.triggers || []).some((t) => (t.group_ids || []).map(String).includes(mg[1])));
-      return send(res, 200, {
-        connected: true,
-        group: { id: String(g.id), name: g.name, active: g.active_count ?? 0, url: `https://dashboard.mailerlite.com/groups/${mg[1]}` },
-        automations: starts.map((a) => ({ id: String(a.id), name: a.name, enabled: !!a.enabled, emails: a.emails_count ?? 0, sent: a.stats?.sent ?? 0, openRate: a.stats?.open_rate?.string ?? a.stats?.open_rate ?? null, url: `https://dashboard.mailerlite.com/automations/${a.id}` })),
-      });
+      return send(res, 200, { connected: true, targets: await p.targets() });
     } catch (e) {
-      return send(res, 200, { connected: false, error: e.message });
+      return send(res, 200, { connected: false, targets: [], error: e.message });
     }
   }
-  // "+ New group" on a keyword page.
-  if (api === '/mailerlite/groups' && req.method === 'POST') {
+  // "+ New group / tag / segment" on a keyword page.
+  if (api === '/lists/targets' && req.method === 'POST') {
+    const p = provider();
     const name = str(body.name).slice(0, 100);
-    if (!name) return send(res, 400, { error: 'Give the group a name.' });
+    if (!p.create) return send(res, 400, { error: `Make the ${p.label} in ${p.name}, then pick it here.` });
+    if (!name) return send(res, 400, { error: `Give the ${p.label} a name.` });
     try {
-      const g = (await mailerlite('POST', '/groups', { name })).data || {};
-      return send(res, 200, { id: String(g.id), name: g.name });
+      return send(res, 200, await p.create(name));
     } catch (e) {
       return send(res, 400, { error: e.message });
     }
   }
-  if (api === '/mailerlite/groups' && req.method === 'GET') {
+  // One target's extra panel (MailerLite: group size and the email sequences it starts).
+  const lt = api.match(/^\/lists\/targets\/([A-Za-z0-9_-]{1,60})$/);
+  if (lt && req.method === 'GET') {
+    const p = provider();
+    if (!p.detail) return send(res, 200, { connected: p.connected() });
     try {
-      const data = await mailerlite('GET', '/groups?limit=100&sort=name');
-      return send(res, 200, { connected: true, groups: (data.data || []).map((g) => ({ id: String(g.id), name: g.name })) });
+      return send(res, 200, { connected: true, ...(await p.detail(lt[1])) });
     } catch (e) {
-      return send(res, 200, { connected: false, groups: [], error: e.message });
+      return send(res, 200, { connected: false, error: e.message });
     }
+  }
+  // "Send a test signup": proves the connection without a real person (not kept in the list).
+  if (api === '/lists/test' && req.method === 'POST') {
+    const p = provider();
+    if (p.id === 'builtin') return send(res, 200, { ok: true, note: 'The built-in list needs no connection.' });
+    const test = { email: str(body.email).toLowerCase(), keyword: str(body.keyword || 'TEST').toUpperCase(), freebie: 'Test signup', platform: 'Instagram', listId: str(body.listId), consent: readProfile().signup.consent, at: now(), test: true };
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(test.email)) return send(res, 400, { error: 'Type the email to test with (yours).' });
+    try {
+      if (p.needsTarget && !test.listId) throw new Error(`Pick the ${p.label} first.`);
+      await p.add(test);
+      return send(res, 200, { ok: true });
+    } catch (e) {
+      return send(res, 400, { error: e.message });
+    }
+  }
+  // Everyone who signed up (kept on this server whatever tool is connected).
+  if (api === '/subscribers' && req.method === 'GET') return send(res, 200, { subscribers: [...db.subscribers].sort((a, b) => b.at.localeCompare(a.at)), list: listInfo() });
+  if (api === '/subscribers.csv' && req.method === 'GET') {
+    res.setHeader('Content-Disposition', `attachment; filename="email-list-${now().slice(0, 10)}.csv"`);
+    return send(res, 200, subscribersCsv(), 'text/csv; charset=utf-8');
+  }
+  // "Try again now" for signups the email tool didn't take.
+  if (api === '/subscribers/retry' && req.method === 'POST') {
+    for (const x of db.subscribers) if (x.status === 'failed') x.tries = 0, (x.status = 'waiting');
+    await retrySignups();
+    return send(res, 200, { waiting: db.subscribers.filter((x) => x.status === 'waiting').length });
+  }
+  // Deletion requests: removes the email from this server (they also need removing in the email tool).
+  const sd = api.match(/^\/subscribers\/([a-f0-9]{16})$/);
+  if (sd && req.method === 'DELETE') {
+    const gone = db.subscribers.find((x) => x.id === sd[1]);
+    db.subscribers = db.subscribers.filter((x) => x.id !== sd[1]);
+    for (const f of db.flows) if (gone && f.email === gone.email) delete f.email;
+    save();
+    return send(res, gone ? 200 : 404, { deleted: gone ? 1 : 0 });
   }
   const m = api.match(/^\/rows\/([a-f0-9]+)$/);
   if (TEST_HOOKS && api === '/test/fail-next-patch') return (failNextPatch = true), send(res, 200, { ok: true });
