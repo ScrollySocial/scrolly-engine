@@ -29,7 +29,8 @@
   (`python build/make.py h4`, test copy "h4 Whats inside" in her CapCut via `install_test.py h4`; zip
   `halloween/for-upload/Template h4 - Whats inside.zip` via `zip_upload.py h4`). CapCut limit: no pumpkin-shaped
   mask, so the pumpkin is one picture on a round patch of night, which comes along when it swings in over clip 1 and
-  rises over clip 2. Not yet checked in her CapCut. Not uploaded: it's the free SPOOKY download, never in product 1498.
+  rises over clip 2. **Checked in her CapCut 2026-10-24** ("h4 Whats inside (2) looks right") after two fixes: pictures were
+  stretched (engine.SCALE_XY opt-in writes ScaleX + ScaleY) and Bodoni words drew at ~0.67 size (th4 BODONI_K = 1.49). Not uploaded: it's the free SPOOKY download, never in product 1498.
 
 Buyers are online business owners and influencers, so every template is a whole Reel with a business job and a CTA,
 not just a Halloween look. Cute, not scary. Real photographed objects; only the playful layer (washi tape, white
