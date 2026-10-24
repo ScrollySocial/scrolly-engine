@@ -108,7 +108,7 @@ const FAQS = [
   ['What does it cost each month?', 'About $6 for hosting, the same however many people message you. Apify’s free monthly credit covers TikTok comments.'],
   ['What is the hosting, exactly?', 'A small computer in a data center that stays on day and night, so your keywords answer even when your laptop is closed. Claude sets it up and you never need to touch it.'],
   ['Can I really change it?', 'Yes. It’s your own copy of the software. Ask Claude for new colors, fonts, a chart or a feature, and it edits your copy.'],
-  ['Does it work on Facebook?', 'Not yet. It works on Instagram and YouTube, and brings your TikTok comments into your inbox.'],
+  ['Does it work on Facebook?', 'Not out of the box. The software can work with Facebook Pages, but Meta first has to review and approve your app by hand, which takes days and isn’t guaranteed. So Facebook isn’t part of the setup included.'],
   ['Does it reply on TikTok?', 'TikTok gives no way to reply automatically, so TikTok comments land in your inbox with a suggested reply and a Copy and open TikTok button.'],
   ['I don’t have a website.', 'Setup gives you a free web address (yourname.duckdns.org) with a secure https connection and your privacy page on it. Your dashboard is behind your own password.'],
   ['I don’t use an email tool.', 'Freebies still go out: people see theirs right after signing up. The emails are kept on your server, ready to download as a CSV whenever you start an email tool.'],
@@ -121,7 +121,7 @@ const LIMITS = [
   ['Instagram’s 24-hour rule', 'Follow-ups and reminders only reach people who messaged you in the last 24 hours. Each comment gets one private reply.'],
   ['Professional accounts only', 'Instagram needs a Creator or Business account. Personal accounts can’t be automated.'],
   ['YouTube replies in public', 'YouTube has no DMs, so keyword comments get a public reply with the link.'],
-  ['TikTok and Facebook', 'TikTok comments come into your inbox to answer by hand. Facebook isn’t supported yet.'],
+  ['TikTok and Facebook', 'TikTok comments come into your inbox to answer by hand. Facebook Pages need Meta’s manual review (days, and not guaranteed), so they aren’t part of the setup included.'],
   ['Other comments', 'Keyword replies are automatic. Other comments wait in your inbox for you to answer. Want Claude to answer them on its own? It’s your software, so ask Claude to add it.'],
   ['You own the upkeep', 'It runs on your own hosting. Updates are one sentence to Claude, and there are no setup calls.'],
 ];
