@@ -136,6 +136,25 @@
   .emoji-grid[hidden] { display: none; }
   .emoji { background: none; padding: 4px; font-size: 20px; border-radius: 8px; }
   .emoji:hover { background: var(--mist); }
+  /* connections (Stats) and the problem banner (Inbox) */
+  .checks { display: grid; gap: 0; }
+  .chk { display: grid; grid-template-columns: auto 1fr; gap: 2px 12px; padding: 10px 0; border-bottom: 1px solid var(--line); }
+  .chk:last-child { border-bottom: 0; }
+  .state { width: 12px; height: 12px; border-radius: 50%; margin-top: 6px; background: var(--line); }
+  .state.ok { background: var(--good); }
+  .state.warn { background: #b26a00; }
+  .state.bad { background: var(--bad); }
+  .chk .hint { grid-column: 2; margin: 0; }
+  .banner { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 12px; border-radius: 18px; padding: 12px 16px; margin: 0 0 12px; background: #fde8e6; color: var(--ink); }
+  .banner.warn { background: #fdf0d9; }
+  .banner.demo { background: var(--mist); }
+  .change { font-size: 13px; color: var(--muted); margin-top: 2px; }
+  .change.up { color: var(--good); }
+  .change.down { color: var(--bad); }
+  .templates { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px; }
+  .template { text-align: left; border-radius: 18px; padding: 14px 16px; background: var(--white); border: 1px solid var(--line); }
+  .template:hover { border-color: var(--ink); }
+  .template strong { display: block; font-size: 17px; margin-bottom: 4px; }
   .login { max-width: 420px; margin: 12vh auto 0; }
   .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 </style>
@@ -210,6 +229,7 @@ function showLogin(passwordSet) {
 // ---- routing: #inbox, #c/<key>, #keywords, #k/<KEYWORD>, #k/new, #stats ----
 
 let stats = null;
+let HEALTH = null;
 let ME = {};
 // The owner's name in the tab title, their colors and fonts (config/profile.json via /api/me).
 let profileApplied = false;
@@ -237,7 +257,7 @@ async function route() {
   if (!me.loggedIn) return showLogin(me.passwordSet);
   applyProfile(me);
   const hash = decodeURIComponent(location.hash.slice(1)) || 'inbox';
-  stats = await api('/api/stats?days=30').catch(() => null);
+  [stats, HEALTH] = await Promise.all([api('/api/stats?days=30').catch(() => null), api('/api/health').catch(() => null)]);
   const tab = hash.startsWith('k') ? 'keywords' : hash === 'stats' ? 'stats' : hash === 'emails' ? 'emails' : 'inbox';
   const body = h('div');
   app.replaceChildren(
@@ -247,7 +267,16 @@ async function route() {
     h('nav', { class: 'tabs', 'aria-label': 'Sections' },
       [['inbox', 'Inbox', stats?.inbox.unread], ['keywords', 'Keywords'], ['emails', 'Email list', me.waitingSignups], ['stats', 'Stats']].map(([id, label, n]) =>
         h('button', { 'aria-current': String(tab === id), on: { click: () => (location.hash = id) } }, label, n ? h('span', { class: 'count', text: n }) : null))),
+    me.demo ? h('div', { class: 'banner demo', role: 'note' }, h('span', { text: 'Demo: everything here is made up, and nothing is sent.' })) : null,
     body);
+  // Something broken or worth a look: one line on the Inbox, details on Stats.
+  const problems = (HEALTH?.checks || []).filter((c) => ['bad', 'warn'].includes(c.state));
+  if (tab === 'inbox' && problems.length) {
+    const worst = problems.find((c) => c.state === 'bad') || problems[0];
+    body.append(h('div', { class: `banner ${worst.state}`, role: worst.state === 'bad' ? 'alert' : 'status' },
+      h('span', {}, h('strong', { text: `${worst.name}: ` }), worst.text, problems.length > 1 ? ` (+${problems.length - 1} more)` : ''),
+      h('button', { text: 'See connections', on: { click: () => (location.hash = 'stats') } })));
+  }
   try {
     if (hash.startsWith('c/')) return await showConversation(body, hash.slice(2));
     if (hash === 'keywords') return await showKeywords(body);
@@ -494,13 +523,36 @@ async function welcomeCard() {
     } } })));
 }
 
+// "+ New keyword" starts from a tested template (#k/new picks one, #k/new:<id> opens it).
+const blankKeyword = () => ({ keyword: '', freebie: '', url: '', live: false, dmApproved: false, delivery: 'direct', where: { igComments: true, igDms: true, ytComments: false }, ask: { on: false, text: '', word: 'READY' }, dm: 'Here you go: {url}', linkText: 'Here you go! Pop in your email and I\'ll send it straight over: {link}', signup: {}, reminder: { on: false, minutes: 60, text: 'Just checking you got this. Your link is still here: {link}' }, yt: { text: '' }, afterSignup: { dm: '' } });
+const TEMPLATES = [
+  { id: 'email', title: 'Freebie by email (recommended)', text: 'They reply READY, get their own signup link, type their email and see the freebie. Grows your email list, with one reminder if they forget.',
+    make: (k) => Object.assign(k, { delivery: 'email', ask: { on: true, text: 'Want it? Reply READY and I\'ll send it over.', word: 'READY' }, linkText: 'Here you go! Pop in your email and it opens right away: {link}', reminder: { on: true, minutes: 60, text: 'Just checking you got this. Your link is still here: {link}' }, afterSignup: { dm: 'Here it is, as promised: {url}' } }) },
+  { id: 'link', title: 'Freebie link', text: 'The DM carries the link straight away. The quickest for them, but you don\'t get their email.',
+    make: (k) => Object.assign(k, { delivery: 'direct', dm: 'Here you go! {url}' }) },
+  { id: 'offer', title: 'Product or offer', text: 'Someone comments a word like PRICE or INFO and gets the page with the details, price and how to buy.',
+    make: (k) => Object.assign(k, { delivery: 'direct', dm: 'Thanks for asking! Here\'s everything about it, with the price and how to get it: {url}' }) },
+  { id: 'waitlist', title: 'Waitlist or launch list', text: 'They join a list for something coming soon. The link after signup can be a thank-you page.',
+    make: (k) => Object.assign(k, { delivery: 'email', linkText: 'You\'re almost on the list! Add your email here: {link}', signup: { headline: 'Join the waitlist', text: 'Pop in your email and you\'ll hear first when it opens.' } }) },
+  { id: 'blank', title: 'Start from scratch', text: 'An empty keyword with every option to set yourself.', make: (k) => k },
+];
+function showTemplates(body) {
+  body.append(
+    h('div', { class: 'row between' }, h('button', { text: '← Keywords', on: { click: () => (location.hash = 'keywords') } })),
+    h('h2', { style: 'margin:8px 0 4px', text: 'New keyword' }),
+    h('p', { class: 'hint', style: 'margin-bottom:12px', text: 'Pick a starting point. You can change every message and setting on the next page, and nothing goes live until you switch it on and approve it.' }),
+    h('div', { class: 'templates' }, TEMPLATES.map((t) => h('button', { class: 'template', on: { click: () => (location.hash = `k/new:${t.id}`) } }, h('strong', { text: t.title }), h('span', { class: 'hint', text: t.text })))));
+}
+
 async function showKeyword(body, name) {
+  if (name === 'new') return showTemplates(body);
   if (!kwCache.length) ({ keywords: kwCache } = await api('/api/keywords'));
-  const isNew = name === 'new';
+  const tpl = name.startsWith('new:') ? TEMPLATES.find((t) => t.id === name.slice(4)) || TEMPLATES.at(-1) : null;
+  const isNew = !!tpl;
   const orig = isNew ? null : kwCache.find((k) => k.keyword === name);
   if (!isNew && !orig) { body.append(h('p', { class: 'empty', text: 'That keyword is gone.' })); return; }
   // Work on a copy; nothing changes until Save.
-  const k = JSON.parse(JSON.stringify(orig || { keyword: '', freebie: '', url: '', live: false, dmApproved: false, delivery: 'direct', where: { igComments: true, igDms: true }, ask: { on: false, text: '', word: 'READY' }, dm: 'Here you go: {url}', linkText: 'Here you go! Pop in your email and I\'ll send it straight over: {link}', signup: {}, reminder: { on: false, minutes: 60, text: 'Just checking you got this. Your link is still here: {link}' }, yt: { text: '' } }));
+  const k = JSON.parse(JSON.stringify(orig || tpl.make(blankKeyword())));
   k.where ||= { igComments: true, igDms: true };
   k.ask ||= { on: false, text: '', word: 'READY' };
   k.reminder ||= { on: false, minutes: 60, text: '' };
@@ -777,6 +829,34 @@ async function showEmailList(body) {
       } } }))))))));
 }
 
+// ---- connections: is everything working? (server: health() in server.mjs) ----
+async function connectionsCard(fresh) {
+  const hl = fresh ? await api('/api/health?fresh=1').catch(() => null) : HEALTH || (await api('/api/health').catch(() => null));
+  const card = h('div', { class: 'card' });
+  if (!hl) return card.append(h('h3', { text: 'Connections' }), h('p', { class: 'warn', text: "Couldn't check the connections right now." })), card;
+  const word = { ok: 'Working', warn: 'Worth a look', bad: 'Not working', off: 'Not connected' };
+  card.append(
+    h('div', { class: 'section-head' },
+      h('h3', { text: hl.state === 'ok' ? 'Connections: all working' : hl.state === 'bad' ? 'Connections: something is broken' : 'Connections: worth a look' }),
+      h('button', { class: 'quiet', text: 'Check again', on: { click: async () => { HEALTH = null; card.replaceWith(await connectionsCard(true)); } } })),
+    h('div', { class: 'checks' }, hl.checks.map((c) => h('div', { class: 'chk' },
+      h('span', { class: `state ${c.state}`, role: 'img', 'aria-label': word[c.state] }),
+      h('strong', { text: c.name }),
+      h('p', { class: 'hint', text: c.text }),
+      c.fix && c.state !== 'ok' ? h('p', { class: 'hint', style: 'color:var(--ink)', text: c.fix }) : null))));
+  if (hl.errors?.length) card.append(h('details', {},
+    h('summary', { class: 'hint', style: 'cursor:pointer', text: `Error log (${hl.errors.length} this week)` }),
+    hl.errors.map((e) => h('p', { class: 'hint', style: 'overflow-wrap:anywhere', text: `${ago(e.at)} · ${e.where}: ${e.error}` }))));
+  return card;
+}
+
+// "Reel DQx7abc" from an Instagram link, "Video abc123" from YouTube: tells posts apart in Top posts.
+function postLabel(link) {
+  const m = String(link).match(/instagram\.com\/(reel|p|tv)\/([^/?#]+)/) || String(link).match(/[?&]v=([^&#]+)/);
+  if (!m) return 'Open post';
+  return m.length === 3 ? `${m[1] === 'reel' ? 'Reel' : 'Post'} ${m[2]}` : `Video ${m[1]}`;
+}
+
 // ---- stats ----
 let statDays = 30;
 async function showStats(body) {
@@ -785,17 +865,48 @@ async function showStats(body) {
   const period = h('select', { id: 'st-days', 'aria-label': 'Period' }, [[7, 'Last 7 days'], [30, 'Last 30 days'], [90, 'Last 90 days']].map(([v, t]) => h('option', { value: v, text: t })));
   period.value = String(statDays);
   period.addEventListener('change', () => { statDays = Number(period.value); route(); });
-  const tile = (n, label) => h('div', {}, h('div', { class: 'big', text: String(n) }), h('div', { class: 'hint', text: label }));
   const t = s.totals;
+  const p = s.previous || {};
+  // "+18% vs the previous 30 days"; conversion compares percentage points.
+  const change = (key) => {
+    const now = t[key];
+    const before = p[key];
+    if (now == null || before == null) return null;
+    if (key === 'conversion') {
+      const d = now - before;
+      return h('div', { class: `change${d > 0 ? ' up' : d < 0 ? ' down' : ''}`, text: d ? `${d > 0 ? '+' : ''}${d} points vs before` : 'same as before' });
+    }
+    if (!before) return h('div', { class: `change${now ? ' up' : ''}`, text: now ? 'new this period' : 'same as before' });
+    const pct = Math.round(((now - before) / before) * 100);
+    return h('div', { class: `change${pct > 0 ? ' up' : pct < 0 ? ' down' : ''}`, text: pct ? `${pct > 0 ? '+' : ''}${pct}% vs previous ${s.days} days` : 'same as before' });
+  };
+  const tile = (n, label, key) => h('div', {}, h('div', { class: 'big', text: String(n) }), h('div', { class: 'hint', text: label }), key ? change(key) : null);
   body.append(
+    await connectionsCard(),
     h('div', { class: 'filters' }, h('div', { class: 'flt' }, h('label', { for: 'st-days', text: 'Period' }), period)),
     h('div', { class: 'card' }, h('div', { class: 'funnel' },
       tile(t.contacts, 'contacts (all time)'),
-      tile(t.newContacts, 'new contacts'),
-      tile(t.keywordUses, 'keyword uses'),
-      tile(t.dmsSent, 'freebie DMs / replies'),
-      tile(t.signups, 'email signups'),
-      tile(t.conversion == null ? '-' : `${t.conversion}%`, 'got the link → signed up'))));
+      tile(t.newContacts, 'new contacts', 'newContacts'),
+      tile(t.keywordUses, 'keyword uses', 'keywordUses'),
+      tile(t.dmsSent, 'freebie DMs / replies', 'dmsSent'),
+      tile(t.signups, 'email signups', 'signups'),
+      tile(t.conversion == null ? '-' : `${t.conversion}%`, 'got the link → signed up', 'conversion'))));
+  // Top posts: which Reel or post to make more of.
+  if (s.posts?.length) body.append(h('div', { class: 'card' }, h('h3', { text: 'Top posts' }),
+    h('p', { class: 'hint', text: 'The posts and Reels people commented a keyword on. Signups per post count from 24 Oct 2026.' }),
+    h('table', {},
+      h('thead', {}, h('tr', {}, h('th', { text: 'Post' }), h('th', { class: 'n', text: 'Keyword uses' }), h('th', { class: 'n', text: 'Signups' }))),
+      h('tbody', {}, s.posts.map((x) => h('tr', {},
+        h('td', {}, h('a', { href: x.post, target: '_blank', rel: 'noopener noreferrer', text: postLabel(x.post) }), h('div', { class: 'hint', text: x.keywords.join(', ') })),
+        h('td', { class: 'n', text: String(x.uses) }),
+        h('td', { class: 'n', text: String(x.signups) })))))));
+  // Her own replies (not keywords): how quickly they went out.
+  const r = s.replies || {};
+  const dur = (m) => (m == null ? '-' : m < 60 ? `${m} min` : m < 1440 ? `${Math.round(m / 60)} h` : `${Math.round(m / 1440)} days`);
+  body.append(h('div', { class: 'card' }, h('h3', { text: 'Your replies' }), h('div', { class: 'funnel' },
+    tile(r.answered ?? 0, 'answered by you'),
+    tile(dur(r.medianMinutes), 'typical reply time'),
+    tile(r.waiting ?? 0, 'waiting now'))));
   // Daily bar charts. Each bar's label is read out for screen readers.
   const chart = (key, title) => {
     const max = Math.max(1, ...s.series.map((d) => d[key]));

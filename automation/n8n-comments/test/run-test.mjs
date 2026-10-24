@@ -265,8 +265,8 @@ await fetch(link, { headers: { 'User-Agent': 'facebookexternalhit/1.1 (+http://w
 check('Instagram\'s link-preview robot doesn\'t count as opening the link', ((await inbox('/flows?personId=666')).flows || [])[0]?.step === 'linkSent');
 let page = await fetch(link);
 let html = await page.text();
-check('Signup page title reads as a signup (what the DM preview card shows)', /<title>Get your free Free guide · Scrolly<\/title>/.test(html) && html.includes('og:description'));
-check('Signup page opens with an email form', page.status === 200 && html.includes('type="email"') && html.includes('Free guide'));
+check('Signup page title reads as a signup (what the DM preview card shows)', /<title>Get your free guide · Scrolly<\/title>/.test(html) && html.includes('og:description'));
+check('Signup page opens with an email form', page.status === 200 && html.includes('type="email"') && /free guide/i.test(html));
 flows = (await inbox('/flows?personId=666')).flows || [];
 check('Opening the link is recorded', flows[0]?.step === 'clicked', flows[0]?.step);
 page = await fetch(link, { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: 'email=not-an-email&consent=yes' });
@@ -330,6 +330,9 @@ const panel = await inbox('/lists/targets/111');
 check('MailerLite panel: group size and the sequence it starts, with links', panel.group?.active === 5 && panel.automations?.length === 1 && panel.automations[0].name === 'FREE delivery' && panel.automations[0].url === 'https://dashboard.mailerlite.com/automations/900', JSON.stringify(panel));
 const st = await inbox('/stats?days=30');
 check('Stats: contacts, new contacts, signups, conversion and 30 daily points', st.totals?.contacts > 0 && st.totals.newContacts > 0 && st.totals.signups === 2 && typeof st.totals.conversion === 'number' && st.series?.length === 30 && st.series.at(-1).signups === 2, JSON.stringify(st.totals));
+check('Stats: the previous period, top posts and her reply time', st.previous?.signups === 0 && st.previous.keywordUses === 0 && Array.isArray(st.posts) && st.posts.every((p) => p.post && p.uses >= 0) && typeof st.replies?.answered === 'number' && typeof st.replies.waiting === 'number', JSON.stringify({ previous: st.previous, posts: st.posts, replies: st.replies }));
+const hl = await inbox('/health?fresh=1');
+check('Connections: n8n answers, each check has a state and a sentence, no keys shown', hl.checks?.find((c) => c.id === 'n8n')?.state !== 'bad' && hl.checks.every((c) => ['ok', 'warn', 'bad', 'off'].includes(c.state) && c.name && c.text) && !/(access_token|api_key)=[^…]/.test(JSON.stringify(hl)), JSON.stringify(hl));
 
 // 16. Welcome DM: the first DM from someone new gets one automatic welcome, never twice
 const { writeFileSync, rmSync } = await import('node:fs');

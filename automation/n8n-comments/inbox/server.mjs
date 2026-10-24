@@ -33,6 +33,8 @@ const RUN_SECRET = env('RUN_SECRET');
 const PUBLIC_HOST = env('N8N_HOST', env('PUBLIC_HOST', 'localhost'));
 // Tests only (test/run-inbox.sh): lets the end-to-end test make the next row update fail.
 const TEST_HOOKS = env('INBOX_TEST_HOOKS') === 'true';
+// Demo dashboards (test/demo-inbox.mjs): made-up data, a "Demo" banner, sample connection checks.
+const DEMO = env('INBOX_DEMO') === 'true';
 let failNextPatch = false;
 // Read on every visit (small file), so an updated dashboard shows without a restart.
 const PAGE_FILE = join(dirname(fileURLToPath(import.meta.url)), 'dashboard.html');
@@ -239,7 +241,7 @@ function flowStep(f, step, extra = {}) {
 function startFlow(body) {
   const open = db.flows.find((f) => f.keyword === body.keyword && f.step !== 'signedUp' && samePerson(f, body));
   if (open) return open;
-  const f = { token: randomBytes(12).toString('base64url'), keyword: body.keyword, platform: body.platform || 'Instagram', personId: str(body.personId), author: str(body.author), step: body.step || 'linkSent', history: [], createdAt: now() };
+  const f = { token: randomBytes(12).toString('base64url'), keyword: body.keyword, platform: body.platform || 'Instagram', personId: str(body.personId), author: str(body.author), post: str(body.post), step: body.step || 'linkSent', history: [], createdAt: now() };
   flowStep(f, f.step);
   db.flows.push(f);
   save();
@@ -555,24 +557,152 @@ function stats(days) {
   for (const e of db.events) if (e.result !== 'opened') bump(e.at, 'keywordUses');
   for (const e of db.events) if (e.result === 'sent') bump(e.at, 'dmsSent');
   for (const f of db.flows) if (f.signedUpAt) bump(f.signedUpAt, 'signups');
-  const inWindow = Object.values(series);
-  const sum = (k) => inWindow.reduce((a, d) => a + d[k], 0);
-  const linkSent = db.flows.filter((f) => (f.linkSentAt || '') >= cutoff).length;
+  // Totals for this period and the one before it (same length), for "+18% vs the previous 30 days".
+  const span = (from, to) => {
+    const inside = (iso) => !!iso && iso >= from && iso < to;
+    const linkSent = db.flows.filter((f) => inside(f.linkSentAt));
+    return {
+      newContacts: Object.values(firstSeen).filter(inside).length,
+      keywordUses: db.events.filter((e) => e.result !== 'opened' && inside(e.at)).length,
+      dmsSent: db.events.filter((e) => e.result === 'sent' && inside(e.at)).length,
+      signups: db.flows.filter((f) => inside(f.signedUpAt)).length,
+      conversion: linkSent.length ? Math.round((linkSent.filter((f) => f.signedUpAt).length / linkSent.length) * 100) : null,
+    };
+  };
+  const end = new Date(Date.now() + 60e3).toISOString();
+  const prevCutoff = new Date(Date.now() - 2 * days * 86400e3).toISOString();
+  // Top posts: which Reel or post brought the keyword comments, DMs and (from 2026-10-24) signups.
+  const posts = {};
+  const post = (link, platform) => (posts[link] ||= { post: link, platform, keywords: [], uses: 0, dmsSent: 0, signups: 0 });
+  for (const e of db.events) {
+    if (!e.post || e.at < cutoff || e.result === 'opened') continue;
+    const p = post(e.post, e.platform);
+    p.uses++;
+    if (e.result === 'sent') p.dmsSent++;
+    if (!p.keywords.includes(e.keyword)) p.keywords.push(e.keyword);
+  }
+  for (const f of db.flows) if (f.post && (f.signedUpAt || '') >= cutoff) post(f.post, f.platform).signups++;
+  // Her reply time: comments and DMs she answered herself (not keywords), from arriving to posted.
+  const answered = db.rows.filter((r) => r.kind !== 'out' && r.status === 'Posted' && r.postedAt && r.receivedAt && r.postedAt >= cutoff);
+  const waits = answered.map((r) => (Date.parse(r.postedAt) - Date.parse(r.receivedAt)) / 60e3).filter((m) => m >= 0).sort((a, b) => a - b);
   return {
     days,
     totals: {
       contacts: Object.keys(firstSeen).length,
-      newContacts: sum('newContacts'),
-      keywordUses: sum('keywordUses'),
-      dmsSent: sum('dmsSent'),
-      signups: sum('signups'),
+      ...span(cutoff, end),
       subscribersAllTime: db.flows.filter((f) => f.signedUpAt).length,
-      conversion: linkSent ? Math.round((db.flows.filter((f) => (f.linkSentAt || '') >= cutoff && f.signedUpAt).length / linkSent) * 100) : null,
     },
+    previous: span(prevCutoff, cutoff),
     series: Object.entries(series).map(([date, v]) => ({ date, ...v })),
     keywords: Object.values(by).sort((a, b) => b.comments - a.comments),
+    posts: Object.values(posts).sort((a, b) => b.signups - a.signups || b.uses - a.uses).slice(0, 10),
+    replies: { answered: waits.length, medianMinutes: waits.length ? Math.round(waits[Math.floor(waits.length / 2)]) : null, waiting: db.rows.filter((r) => r.kind !== 'out' && ['New', 'Needs draft', 'Error', 'Reply by hand'].includes(r.status)).length },
     inbox: { toAnswer: open('New') + open('Error'), needsDraft: open('Needs draft'), tiktok: open('Reply by hand'), approved: open('Approved'), unread: db.rows.filter((r) => r.kind !== 'out' && !r.read && !['Handled', 'Skip'].includes(r.status)).length },
   };
+}
+
+// ---- health: is every connection working? (the "Connections" card on Stats, a banner on Inbox) ----
+// Read from n8n's status webhook (test mode, last checks, its last 20 errors) and this server's own
+// data. Each check: state ok | warn | bad | off, a plain sentence, and what to do about it.
+const N8N_STATUS_URL = env('N8N_STATUS_URL', N8N_RUN_URL.replace(/comments-run$/, 'comments-status'));
+// Error texts can carry a key from a failed request URL; never show one.
+const redact = (s) => String(s || '').replace(/(access_token|refresh_token|api_key|key|token)=[^&\s"']+/gi, '$1=…').replace(/\b[A-Za-z0-9_-]{60,}\b/g, '…').slice(0, 300);
+let healthCache = null;
+const DEMO_HEALTH = {
+  state: 'warn',
+  checks: [
+    { id: 'n8n', name: 'Automation', state: 'ok', text: 'Running.', fix: '' },
+    { id: 'instagram', name: 'Instagram', state: 'ok', text: 'Working. Last keyword DM 12 min ago.', fix: '' },
+    { id: 'youtube', name: 'YouTube', state: 'ok', text: 'Working. Last checked 9 min ago.', fix: '' },
+    { id: 'tiktok', name: 'TikTok', state: 'off', text: 'Not connected.', fix: '' },
+    { id: 'email', name: 'Email list', state: 'ok', text: 'Built-in list: signups are kept here (Email list tab).', fix: '' },
+    { id: 'replies', name: 'Your replies', state: 'warn', text: "1 reply didn't send. Instagram only allows DM replies within 24 hours of their last message.", fix: 'Open them in the Inbox to try again.' },
+  ],
+  errors: [],
+};
+async function health() {
+  if (DEMO) return { ...DEMO_HEALTH, at: now() };
+  if (healthCache && Date.now() - healthCache.at < 60e3) return healthCache.value;
+  const checks = [];
+  const add = (id, name, state, text, fix = '') => checks.push({ id, name, state, text, fix });
+  const since = (h) => new Date(Date.now() - h * 3600e3).toISOString();
+  const agoText = (iso) => {
+    const m = Math.round((Date.now() - Date.parse(iso)) / 60e3);
+    return m < 90 ? `${Math.max(m, 1)} min ago` : m < 2880 ? `${Math.round(m / 60)} hours ago` : `${Math.round(m / 1440)} days ago`;
+  };
+  let st = null;
+  let stError = '';
+  if (!RUN_SECRET) stError = 'RUN_SECRET is missing from the server settings';
+  else {
+    try {
+      const r = await fetch(N8N_STATUS_URL, { headers: { 'x-run-secret': RUN_SECRET }, signal: AbortSignal.timeout(6000) });
+      st = await r.json();
+      if (st.error) throw new Error(st.error);
+    } catch (e) {
+      st = null;
+      stError = redact(e.message || e);
+    }
+  }
+  const errs = (st?.errors || []).map((e) => ({ ...e, error: redact(e.error) }));
+  const latest = (re, h) => errs.filter((e) => re.test(e.where) && e.at >= since(h)).sort((a, b) => b.at.localeCompare(a.at));
+  // 1. The automation itself.
+  if (!st) add('n8n', 'Automation', 'bad', `Can't reach it (${stError}). Nothing gets answered until it's back.`, 'Ask Claude: "check my Chat Manager server".');
+  else if (st.testMode) add('n8n', 'Automation', 'warn', 'Test mode is on: keyword DMs and replies are not really sent.', 'Ask Claude to switch test mode off when you are ready.');
+  else add('n8n', 'Automation', 'ok', 'Running.');
+  if (st) {
+    // 2. Instagram: key renewal, message checks, DMs that didn't go out.
+    const token = latest(/^instagram-token$/, 8 * 24);
+    const sig = latest(/^instagram-signature$/, 24);
+    const dms = latest(/^instagram-(dm|reminder|delivery|welcome)$/, 7 * 24);
+    const lastDm = db.events.filter((e) => e.platform === 'Instagram' && e.result === 'sent').map((e) => e.at).sort().pop();
+    const keyAge = st.igTokenRefreshedAt ? (Date.now() - Date.parse(st.igTokenRefreshedAt)) / 86400e3 : null;
+    if (token.length) add('instagram', 'Instagram', 'bad', `The Instagram key couldn't be renewed: ${token[0].error}`, 'Ask Claude: "renew my Instagram key". Keys run out 60 days after the last renewal.');
+    else if (keyAge != null && keyAge > 50) add('instagram', 'Instagram', 'bad', `The Instagram key was last renewed ${Math.round(keyAge)} days ago and runs out at 60.`, 'Ask Claude: "renew my Instagram key".');
+    else if (sig.length) add('instagram', 'Instagram', 'bad', 'Instagram messages are being ignored: the app secret check failed.', 'Ask Claude: "check my Meta app secret".');
+    else if (dms.length) add('instagram', 'Instagram', 'warn', `${dms.length} DM${dms.length === 1 ? '' : 's'} didn't send this week. Last reason: ${dms[0].error}`, 'Instagram only allows DMs within 24 hours of their last message; other reasons: ask Claude.');
+    else add('instagram', 'Instagram', 'ok', lastDm ? `Working. Last keyword DM ${agoText(lastDm)}.` : 'Working. No keyword DMs yet.');
+    // 3. YouTube (checked every 30 minutes) and TikTok (daily), when connected.
+    const feed = (id, name, checkedAt, re, maxHours, fixText) => {
+      const err = latest(re, 48)[0];
+      if (!checkedAt && !err) return add(id, name, 'off', 'Not connected.');
+      if (err && (!checkedAt || err.at > checkedAt)) {
+        const expired = /invalid_grant|expired|revoked/i.test(err.error);
+        return add(id, name, 'bad', expired ? `The ${name} sign-in ran out (${err.error}).` : `The last check failed: ${err.error}`, expired && id === 'youtube' ? 'If your Google app is still in "Testing", sign-ins end after 7 days: publish it, then ask Claude to reconnect YouTube.' : fixText);
+      }
+      if (Date.now() - Date.parse(checkedAt) > maxHours * 3600e3) return add(id, name, 'warn', `Last checked ${agoText(checkedAt)}.`, fixText);
+      add(id, name, 'ok', `Working. Last checked ${agoText(checkedAt)}.`);
+    };
+    feed('youtube', 'YouTube', st.youtubeCheckedAt, /^youtube-/, 2, 'Ask Claude: "check my YouTube connection".');
+    feed('tiktok', 'TikTok', st.tiktokCheckedAt, /^tiktok-/, 26, 'Ask Claude: "check my TikTok import".');
+    // 4. n8n writing to this dashboard.
+    const link = latest(/^inbox-/, 24);
+    if (link.length) add('inbox', 'Dashboard link', 'warn', `The automation couldn't reach this dashboard ${link.length} time${link.length === 1 ? '' : 's'} today. Last: ${link[0].error}`, 'Usually a restart; ask Claude: "check my Chat Manager server".');
+  }
+  // 5. The email tool.
+  const p = provider();
+  const stuck = db.subscribers.filter((x) => ['waiting', 'failed'].includes(x.status));
+  if (p.id === 'builtin') add('email', 'Email list', 'ok', 'Built-in list: signups are kept here (Email list tab).');
+  else if (!p.connected()) add('email', p.name, 'bad', `No ${p.name} key on the server, so signups wait here.`, `Ask Claude: "connect ${p.name}".`);
+  else {
+    let reach = '';
+    if (p.targets) {
+      try {
+        await p.targets();
+      } catch (e) {
+        reach = redact(e.message || e);
+      }
+    }
+    if (reach) add('email', p.name, 'bad', `Can't reach ${p.name}: ${reach}`, `Ask Claude: "check my ${p.name} connection".`);
+    else if (stuck.length) add('email', p.name, 'warn', `${stuck.length} signup${stuck.length === 1 ? '' : 's'} haven't reached ${p.name} yet (they got their freebie). Last reason: ${redact(stuck[0].error) || 'unknown'}`, 'Email list tab → "Try again now".');
+    else add('email', p.name, 'ok', 'Connected.');
+  }
+  // 6. Replies she approved that didn't post.
+  const failed = db.rows.filter((r) => r.kind !== 'out' && r.status === 'Error');
+  if (failed.length) add('replies', 'Your replies', 'warn', `${failed.length} repl${failed.length === 1 ? 'y' : 'ies'} didn't send. ${redact(failed[0].note)}`, 'Open them in the Inbox to try again.');
+  const recent = errs.filter((e) => e.at >= since(7 * 24)).sort((a, b) => b.at.localeCompare(a.at)).slice(0, 10);
+  const value = { at: now(), state: checks.some((c) => c.state === 'bad') ? 'bad' : checks.some((c) => c.state === 'warn') ? 'warn' : 'ok', checks, errors: recent };
+  healthCache = { at: Date.now(), value };
+  return value;
 }
 
 // ---- daily YouTube cleanup (real delete on this server) ----
@@ -688,7 +818,11 @@ async function handle(req, res) {
   const api = path.slice('/inbox/api'.length);
   const body = ['POST', 'PATCH', 'PUT'].includes(req.method) ? await readBody(req) : {};
 
-  if (api === '/me') return send(res, 200, { loggedIn: true, passwordSet: !!db.auth, dmsEnabled: env('DMS_ENABLED') === 'true', list: listInfo(), profile: readProfile(), publicHost: PUBLIC_HOST, waitingSignups: db.subscribers.filter((x) => ['waiting', 'failed'].includes(x.status)).length });
+  if (api === '/health' && req.method === 'GET') {
+    if (url.searchParams.get('fresh')) healthCache = null;
+    return send(res, 200, await health());
+  }
+  if (api === '/me') return send(res, 200, { loggedIn: true, demo: DEMO, passwordSet: !!db.auth, dmsEnabled: env('DMS_ENABLED') === 'true', list: listInfo(), profile: readProfile(), publicHost: PUBLIC_HOST, waitingSignups: db.subscribers.filter((x) => ['waiting', 'failed'].includes(x.status)).length });
   if (api === '/rows' && req.method === 'GET') {
     const status = url.searchParams.getAll('status');
     const rows = status.length ? db.rows.filter((r) => status.includes(r.status)) : db.rows;

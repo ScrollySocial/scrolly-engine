@@ -154,7 +154,8 @@ for (const item of $input.all()) {
       } else {
         step = 'linkSent';
       }
-      if (!flow) flow = await inbox('POST', '/flows', { keyword: hit.keyword, platform: 'Instagram', personId: c.authorId, author: c.author, step: step || 'linkSent' });
+      // post: which Reel or post it came from, for the dashboard's top posts (signups per post).
+      if (!flow) flow = await inbox('POST', '/flows', { keyword: hit.keyword, platform: 'Instagram', personId: c.authorId, author: c.author, post: isDm ? '' : await igPermalink(c.postId), step: step || 'linkSent' });
       if (step === 'linkSent') {
         text = hit.delivery === 'email' ? hit.linkText.replace('{link}', `${PUBLIC}/inbox/f/${flow.token}`) : hit.dm.replace('{url}', hit.url);
       }
