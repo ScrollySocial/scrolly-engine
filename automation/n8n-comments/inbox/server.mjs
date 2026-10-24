@@ -248,7 +248,10 @@ function signupPage(k, action, state = {}) {
        </form>
        <p class="small">See the <a href="https://scrollyseo.com/privacy/">privacy policy</a>.</p>`;
   return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex">
-<title>${esc(k?.freebie || 'Your freebie')} · Scrolly</title>
+<title>${esc(state.done ? `Here's your ${k?.freebie || 'freebie'}` : state.expired ? 'Link expired' : headline)} · Scrolly</title>
+<meta name="description" content="${esc(state.done || state.expired ? 'Scrolly' : text)}">
+<meta property="og:title" content="${esc(state.done || state.expired ? 'Scrolly' : headline)}">
+<meta property="og:description" content="${esc(state.done || state.expired ? 'Scrolly' : text)}">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Jost:wght@400;500&display=swap">
 <style>
 body{margin:0;background:#f7f3ec;color:#0a1930;font:17px/1.5 Jost,system-ui,sans-serif}
@@ -275,6 +278,8 @@ function readForm(req) {
     req.on('end', () => resolve(Object.fromEntries(new URLSearchParams(raw))));
   });
 }
+// Link-preview robots (Instagram/Facebook fetch every link in a DM) aren't people opening it.
+const isRobot = (req) => /facebookexternalhit|meta-externalagent|facebot|bot\b|crawler|spider|preview|whatsapp/i.test(String(req.headers['user-agent'] || ''));
 const signupTries = [];
 async function handleSignup(req, res, token) {
   const f = db.flows.find((x) => x.token === token);
@@ -282,7 +287,7 @@ async function handleSignup(req, res, token) {
   if (!f || !k) return send(res, 404, signupPage(null, '', { expired: true }), 'text/html; charset=utf-8');
   const action = f.shared ? `/inbox/s/${f.keyword}` : `/inbox/f/${token}`;
   if (req.method === 'GET') {
-    if (f.step !== 'signedUp') {
+    if (f.step !== 'signedUp' && !isRobot(req)) {
       flowStep(f, 'clicked');
       save();
     }
@@ -316,8 +321,10 @@ async function handleSharedSignup(req, res, name) {
   if (!k) return send(res, 404, signupPage(null, '', { expired: true }), 'text/html; charset=utf-8');
   const f = { token: `s-${randomBytes(9).toString('base64url')}`, keyword: k.keyword, platform: 'YouTube', personId: '', author: '', step: 'linkSent', history: [], createdAt: now(), shared: true };
   if (req.method === 'GET') {
-    db.events.push({ at: now(), keyword: k.keyword, platform: 'YouTube', post: '', result: 'opened' });
-    save();
+    if (!isRobot(req)) {
+      db.events.push({ at: now(), keyword: k.keyword, platform: 'YouTube', post: '', result: 'opened' });
+      save();
+    }
     return send(res, 200, signupPage(k, `/inbox/s/${k.keyword}`), 'text/html; charset=utf-8');
   }
   // POST: same checks as the personal page; a flow is recorded only for a real signup.
