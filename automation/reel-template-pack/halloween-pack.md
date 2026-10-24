@@ -23,7 +23,7 @@
 - h4 pumpkin: parked ("maybe scratch"). The pack is 5 templates: h6, h3, h5, h2, h1.
 - **h4 What's inside? is back as the FREE bonus template** for the SPOOKY comment keyword (Mercedes 2026-10-23: a
   bonus made only for the freebie, never added to the paid pack). Video-first rewrite: the carved face is a window on
-  the buyer's clip, the camera flies in through the mouth and then an eye; nothing flies at the lens. Motion test v1:
+  the buyer's clip, the camera flies in through the mouth and then an eye; nothing flies at the lens. Motion test v2 (opens on the pumpkin, clip only glimpsed through the face; her v1 note: the hook made no sense with the product already showing):
   `build/motion_h4.py` -> `halloween/h4-whats-inside/preview/motion-test.mp4` (stills: `python build/motion_h4.py 0.6 4.6`).
 
 Buyers are online business owners and influencers, so every template is a whole Reel with a business job and a CTA,

@@ -126,69 +126,71 @@ def halo(img, c, d, a=1.0):
     B.moon_glow(img, int(d), (int(c[0] - d / 2), int(c[1] - d / 2)), colors=((255, 170, 70), (220, 90, 20)), blur=90)
 
 HOOK = ((('what\'s', W / 2, 380), 0.0),)
+def dive(im, t, t0, dur, width, start, frac, inside, glow=0.0):
+    """The camera flies in through one carved hole (frac) until the clip behind it fills the screen."""
+    u = ease_in((t - t0) / dur); fx, fy = frac
+    c = (start[0] + (fx - 0.5) * width * (1 - u) + (W / 2 - start[0]) * u,
+         start[1] + (fy - 0.5) * width * (1 - u) + (H / 2 - start[1]) * u)
+    pumpkin(im, width * (1 + 20 * u), c, frac, inside=inside, glow=glow * (1 - u))
+
 def frame(t):
-    # 0.0-2.0  clip A full screen, big hook from frame 1
-    if t < 2.0:
-        im = vid('a', t)
-        slam(im, t, -0.1, (W / 2, 390), "what's", 200, CREAM); letters(im, t, 0.45, (W / 2, 640), 'inside?', 250, BUTTER)
-        D.draw_on(im, SPARK, (900, 520), t, 1.1, 0.2)
-        # the pumpkin's stem peeks up from the bottom edge: something is coming
-        if t > 1.4: pumpkin(im, 1500, (W / 2, H + 760 - 140 * ease((t - 1.4) / 0.6)), (0.5, 0.5))
-    # 2.0-3.2  the pumpkin rises over the clip; clip A now only shows through the carved face; the night closes in
+    # v2 (her note: "what's inside?" made no sense with the product already on screen): the Reel opens on the pumpkin,
+    # the clip only glimpsed through the carved face, and the first fly-in through the mouth is the answer.
+    # 0.0-2.2  graphic stage: the pumpkin rocks a little (something's in there), the clip flickers through its face
+    if t < 2.2:
+        im = sky.copy(); halo(im, (W / 2, 1180), 1350)
+        rock = 2.5 * math.sin(t * 7) * (1 if t < 1.6 else 0.4)
+        pumpkin(im, 1050 + 40 * ease(t / 2.2), (W / 2 + rock * 6, 1180), (0.5, 0.5), inside=vid('a', t), glow=0.35)
+        corn_floor(im, t, 0.25)
+        slam(im, t, -0.1, (W / 2, 360), "what's", 200, CREAM); letters(im, t, 0.4, (W / 2, 600), 'inside?', 250, BUTTER)
+        D.draw_on(im, SPARK, (905, 470), t, 1.0, 0.2, 15)
+    # 2.2-3.2  fly in through the mouth: clip A is what was inside
     elif t < 3.2:
-        u = ease((t - 2.0) / 1.2); clip = vid('a', t)
-        im = Image.blend(clip, sky, clamp((u - 0.35) / 0.5))
-        halo(im, (W / 2, 1150), 1300 * clamp((u - 0.5) / 0.5))
-        pumpkin(im, 1500 - 520 * u, (W / 2, H + 620 - (H + 620 - 1150) * u), (0.5, 0.5), inside=clip)
-        k = 1 - clamp((t - 2.0) / 0.4)
-        if k > 0: slam(im, 9, 0, (W / 2, 390), "what's", 200, CREAM); letters(im, 9, 0, (W / 2, 640), 'inside?', 250, BUTTER)
-    # 3.2-5.0  graphic stage: the lit pumpkin on the candy-corn floor; "something new"
-    elif t < 5.0:
-        im = sky.copy(); halo(im, (W / 2, 1150), 1300)
-        pumpkin(im, 980, (W / 2, 1150), (0.5, 0.5), inside=vid('a', t), glow=ease((t - 3.4) / 0.8))
-        corn_floor(im, t, 3.3)
-        word(im, t, 3.45, (W / 2, 330), 'something', 70, CREAM); letters(im, t, 3.8, (W / 2, 520), 'new', 250, BUTTER)
-        D.draw_on(im, SPARK, (250, 470), t, 4.2, 0.2); D.draw_on(im, SPARK, (840, 600), t, 4.35, 0.2, 20)
-    # 5.0-6.0  the camera flies in through the mouth; clip B is inside
-    elif t < 6.0:
-        u = ease_in((t - 5.0) / 1.0); im = sky.copy()
-        mx, my = MOUTH; cx, cy = W / 2 + (mx - 0.5) * 980 * (1 - u), 1150 + (my - 0.5) * 980 * (1 - u) + (H / 2 - 1150) * u
-        halo(im, (W / 2, 1150), 1300 * (1 - u))
-        pumpkin(im, 980 * (1 + 18 * u), (cx, cy), (mx, my), inside=vid('b', t - 5.0), glow=1 - u)
-        if u < 0.15: corn_floor(im, 9, 0)
-    # 6.0-8.4  clip B full screen; the launch date; two small pumpkins sit on the bottom edge
-    elif t < 8.4:
-        im = vid('b', t - 5.0)
-        for i, (x, w) in enumerate(((150, 300), (930, 240))):
-            k = back_out((t - 6.2 - i * 0.12) / 0.35)
-            if k > 0.02: sp = sized(SMALL, w * min(1, k), f'sp{i}'); im.alpha_composite(sp, (int(x - sp.width / 2), H - sp.height + 40))
-        word(im, t, 6.3, (W / 2, 360), 'launching', 70, CREAM); letters(im, t, 6.65, (W / 2, 560), 'Oct 31', 220, BUTTER)
-        D.draw_on(im, ARROW, (300, 820), t, 7.3, 0.3, -35)
-    # 8.4-9.4  the pumpkin swings in from the right over clip B, clip C glowing in its eyes; we dive into the right eye
-    elif t < 9.4:
-        u = (t - 8.4) / 1.0; im = vid('b', t - 5.0)
+        im = sky.copy(); u = (t - 2.2) / 1.0; halo(im, (W / 2, 1180), 1350 * (1 - u))
+        if u < 0.2: corn_floor(im, 9, 0)
+        dive(im, t, 2.2, 1.0, 1090, (W / 2, 1180), MOUTH, vid('a', t), glow=0.35)
+    # 3.2-5.2  clip A full screen: the answer
+    elif t < 5.2:
+        im = vid('a', t)
+        word(im, t, 3.35, (W / 2, 360), 'something', 70, CREAM); letters(im, t, 3.7, (W / 2, 560), 'new', 250, BUTTER)
+        D.draw_on(im, SPARK, (250, 500), t, 4.2, 0.2); D.draw_on(im, SPARK, (830, 620), t, 4.35, 0.2, 20)
+    # 5.2-6.2  the pumpkin swings in from the right over clip A, clip B in its face; we dive into the right eye
+    elif t < 6.2:
+        u = (t - 5.2) / 1.0; im = vid('a', t)
         if u < 0.45:
-            k = ease(u / 0.45); pumpkin(im, 1250, (W + 700 - (W / 2 + 700) * k, 1050), (0.5, 0.5), inside=vid('c', t - 8.4))
-        else:
-            k = ease_in((u - 0.45) / 0.55); ex, ey = EYE_R
-            pumpkin(im, 1250 * (1 + 22 * k), (W / 2 + (ex - 0.5) * 1250 * (1 - k), 1050 + (ey - 0.5) * 1250 * (1 - k) + (H / 2 - 1050) * k), (ex, ey), inside=vid('c', t - 8.4))
-    # 9.4-11.6  clip C full screen; "first look" with a hand-drawn underline
-    elif t < 11.6:
-        im = vid('c', t - 8.4)
-        word(im, t, 9.55, (W / 2, 360), 'get the', 70, CREAM); letters(im, t, 9.9, (W / 2, 560), 'first look', 190, BUTTER)
-        D.draw_on(im, LINE, (W / 2, 690), t, 10.6, 0.35)
-    # 11.6-14.5  CTA: the lit pumpkin home again, the floor, comment PUMPKIN
+            k = ease(u / 0.45); pumpkin(im, 1250, (W + 700 - (W / 2 + 700) * k, 1050), (0.5, 0.5), inside=vid('b', t - 5.2))
+        else: dive(im, t, 5.2 + 0.45, 0.55, 1250, (W / 2, 1050), EYE_R, vid('b', t - 5.2))
+    # 6.2-8.6  clip B full screen; the launch date; two small pumpkins sit on the bottom edge
+    elif t < 8.6:
+        im = vid('b', t - 5.2)
+        for i, (x, w) in enumerate(((150, 300), (930, 240))):
+            k = back_out((t - 6.4 - i * 0.12) / 0.35)
+            if k > 0.02: sp = sized(SMALL, w * min(1, k), f'sp{i}'); im.alpha_composite(sp, (int(x - sp.width / 2), H - sp.height + 40))
+        word(im, t, 6.5, (W / 2, 360), 'launching', 70, CREAM); letters(im, t, 6.85, (W / 2, 560), 'Oct 31', 220, BUTTER)
+        D.draw_on(im, ARROW, (300, 820), t, 7.5, 0.3, -35)
+    # 8.6-9.8  the pumpkin rises from the bottom over clip B, clip C glowing in its face; we dive through the mouth
+    elif t < 9.8:
+        u = (t - 8.6) / 1.2; im = vid('b', t - 5.2)
+        if u < 0.45:
+            k = ease(u / 0.45); pumpkin(im, 1150, (W / 2, H + 700 - (H + 700 - 1100) * k), (0.5, 0.5), inside=vid('c', t - 8.6))
+        else: dive(im, t, 8.6 + 0.54, 0.66, 1150, (W / 2, 1100), MOUTH, vid('c', t - 8.6))
+    # 9.8-11.8  clip C full screen; "first look" with a hand-drawn underline
+    elif t < 11.8:
+        im = vid('c', t - 8.6)
+        word(im, t, 9.95, (W / 2, 360), 'get the', 70, CREAM); letters(im, t, 10.3, (W / 2, 560), 'first look', 190, BUTTER)
+        D.draw_on(im, LINE, (W / 2, 690), t, 11.0, 0.35)
+    # 11.8-14.6  CTA: the lit pumpkin home again (now fully lit), the floor, comment PUMPKIN
     else:
         im = sky.copy(); halo(im, (W / 2, 1250), 1200)
         pumpkin(im, 820, (W / 2, 1250 + 8 * math.sin(t * 3)), (0.5, 0.5), inside=vid('c', 2.2), glow=1.0)
-        corn_floor(im, t, 11.7)
-        word(im, t, 11.8, (W / 2, 330), 'comment', 72, CREAM); letters(im, t, 12.1, (W / 2, 520), 'PUMPKIN', 200, BUTTER)
-        word(im, t, 12.8, (W / 2, 700), 'to get in first', 66, CREAM)
-        D.draw_on(im, SPARK, (150, 330), t, 12.5, 0.2, -15); D.draw_on(im, SPARK, (930, 330), t, 12.65, 0.2, 15)
+        corn_floor(im, t, 11.9)
+        word(im, t, 12.0, (W / 2, 330), 'comment', 72, CREAM); letters(im, t, 12.3, (W / 2, 520), 'PUMPKIN', 200, BUTTER)
+        word(im, t, 13.0, (W / 2, 700), 'to get in first', 66, CREAM)
+        D.draw_on(im, SPARK, (150, 330), t, 12.7, 0.2, -15); D.draw_on(im, SPARK, (930, 330), t, 12.85, 0.2, 15)
     return im.convert('RGB')
 
 def main():
-    n = int(14.5 * FPS); fdir = TMP / 'out'; fdir.mkdir(exist_ok=True)
+    n = int(14.6 * FPS); fdir = TMP / 'out'; fdir.mkdir(exist_ok=True)
     for i in range(n):
         frame(i / FPS).save(fdir / f'{i:04d}.jpg', quality=88)
     mp4 = OUT / 'motion-test.mp4'
