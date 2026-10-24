@@ -1,3 +1,5 @@
 .env
 .secrets/
 kit/guide/shots-raw/
+kit/.secrets/
+kit/dist/
