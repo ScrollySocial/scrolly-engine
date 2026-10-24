@@ -34,6 +34,9 @@ const I = {
   check: '<circle cx="24" cy="24" r="18"/><path d="M15 24l6 6 12-12"/>',
   power: '<path d="M24 6v16"/><path d="M14 12a15 15 0 1 0 20 0"/>',
   gift: '<rect x="6" y="18" width="36" height="24" rx="2"/><path d="M4 12h40v6H4zM24 12v30"/><path d="M24 12c-4-8-14-6-10 0M24 12c4-8 14-6 10 0"/>',
+  server: '<rect x="8" y="7" width="32" height="13" rx="3"/><rect x="8" y="27" width="32" height="13" rx="3"/><path d="M15 13.5h2M15 33.5h2M25 13.5h8M25 33.5h8"/>',
+  camera: '<rect x="6" y="6" width="36" height="36" rx="10"/><circle cx="24" cy="24" r="8"/><circle cx="34.5" cy="13.5" r="1.5"/>',
+  clock: '<circle cx="24" cy="24" r="18"/><path d="M24 13v11l7 5"/>',
   flat: '<path d="M6 24V8a2 2 0 0 1 2-2h16l18 18-18 18z"/><circle cx="15" cy="15" r="3"/>',
   brush: '<path d="M38 6L20 24l4 4L42 10z"/><path d="M18 26c-6 0-8 4-8 8 0 3-2 5-4 6 8 2 16-2 16-10z"/>',
 };
@@ -81,10 +84,10 @@ const SETUP = [
 
 // Plain words first (Mercedes 2026-10-24: "a $6 a month server" scares people off).
 const BRING = [
-  ['A paid Claude plan', 'Pro or higher. Claude does the setup with you.'],
-  ['About $6 a month for hosting', 'Chat Manager needs a spot online that’s always on, like a tiny rented computer. Claude creates it for you at DigitalOcean, in your name. You only add a card.'],
-  ['An Instagram Professional account', 'Creator or Business. It’s free to switch.'],
-  ['About an hour, once', 'You make a few free accounts (Meta for developers, Google Cloud, DigitalOcean), sign in, paste keys and press approve.'],
+  ['spark', 'A paid Claude plan', 'Pro or higher. Claude does the setup with you.'],
+  ['server', 'About $6 a month for hosting', 'Chat Manager needs a spot online that’s always on, like a tiny rented computer. Claude creates it for you at DigitalOcean, in your name. You only add a card.'],
+  ['camera', 'An Instagram Professional account', 'Creator or Business. It’s free to switch.'],
+  ['clock', 'About an hour, once', 'You make a few free accounts (Meta for developers, Google Cloud, DigitalOcean), sign in, paste keys and press approve.'],
 ];
 
 // Plain and checkable; no claim here without a source (vault comment-to-dm-n8n-plan.md and the prices above).
@@ -118,7 +121,7 @@ const LIMITS = [
   ['Professional accounts only', 'Instagram needs a Creator or Business account. Personal accounts can’t be automated.'],
   ['YouTube replies in public', 'YouTube has no DMs, so keyword comments get a public reply with the link.'],
   ['TikTok and Facebook', 'TikTok comments come into your inbox to answer by hand. Facebook isn’t supported yet.'],
-  ['Replies you write yourself', 'Keyword replies are automatic. Other comments wait in your inbox; Claude can draft replies in chat.'],
+  ['Other comments', 'Keyword replies are automatic. Other comments wait in your inbox for you to answer. Want Claude to answer them on its own? It’s your software, so ask Claude to add it.'],
   ['You own the upkeep', 'It runs on your own hosting. Updates are one sentence to Claude, and there are no setup calls.'],
 ];
 
@@ -133,17 +136,17 @@ const heroPhone = `
 <div class="cm-phone" role="img" aria-label="Someone comments MATH under a Reel and gets a public reply saying it was sent to their DMs. In their DMs they reply READY, get a signup link and join the email list.">
  <div class="cm-screen">
   <div class="cm-status"><span>9:41</span><i class="cm-island"></i><span>5G</span></div>
-  <div class="cm-ph-head"><span class="cm-back">‹</span><span class="cm-av me"></span><div><b>yourshop</b><small>Comments</small></div></div>
+  <div class="cm-ph-head"><span class="cm-back">‹</span><b>Comments</b></div>
   <div class="cm-ph-post">
    <div class="cm-c a1"><span class="cm-av"></span><div><b>sam.makes</b> MATH</div></div>
    <div class="cm-c reply a2"><span class="cm-av me"></span><div><b>yourshop</b> Sent it to your DMs! 💌</div></div>
   </div>
   <div class="cm-ph-dm">
    <p class="cm-sys a3">In Sam’s DMs</p>
-   <div class="cm-b me a3">Want the free calculator? Reply READY and I’ll send it over.</div>
+   <div class="cm-b me a3">Want the free calculator? Reply READY 👇</div>
    <div class="cm-b them a4">READY</div>
-   <div class="cm-b me a5">Here you go! Pop in your email and it opens right away: yourshop.com/f/…</div>
-   <p class="cm-sys a6">✓ Sam joined your email list</p>
+   <div class="cm-b me a5">Here you go! yourshop.com/f/…</div>
+   <p class="cm-sys a6">✓ Sam joined your list</p>
   </div>
   <i class="cm-home"></i>
  </div>
@@ -185,24 +188,24 @@ const CSS = `
 .s3 .cm-cost small{display:block;margin-top:10px;font:700 var(--s3-fs-label)/1.3 var(--s3-sans);letter-spacing:.16em;text-transform:uppercase}
 .s3 .cm-link{font:500 var(--s3-fs-ui)/1.3 var(--s3-sans);color:var(--s3-ink);text-underline-offset:4px}
 .s3 .cm-stage{display:flex;justify-content:center}
-.s3 .cm-phone{height:min(540px,calc(100vh - 200px));min-height:420px;aspect-ratio:9/17;max-width:100%;padding:10px;border-radius:46px;background:#141518;box-shadow:inset 0 0 0 2px #3a3c42,0 40px 80px rgba(10,25,48,.22)}
+.s3 .cm-phone{height:min(540px,calc(100vh - 190px));min-height:430px;aspect-ratio:9/17;max-width:100%;padding:10px;border-radius:46px;background:#141518;box-shadow:inset 0 0 0 2px #3a3c42,0 40px 80px rgba(10,25,48,.22)}
 .s3 .cm-screen{position:relative;height:100%;border-radius:37px;background:#fff;overflow:hidden;display:flex;flex-direction:column;font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;color:#000}
-.s3 .cm-status{display:flex;align-items:center;justify-content:space-between;padding:14px 26px 6px;font-size:15px;font-weight:600}
-.s3 .cm-island{width:96px;height:28px;border-radius:999px;background:#000}
-.s3 .cm-ph-head{display:flex;align-items:center;gap:10px;padding:8px 14px 10px;border-bottom:1px solid #efefef;font-size:15px}
+.s3 .cm-status{display:flex;align-items:center;justify-content:space-between;padding:12px 24px 4px;font-size:15px;font-weight:600}
+.s3 .cm-island{width:84px;height:24px;border-radius:999px;background:#000}
+.s3 .cm-ph-head{display:flex;align-items:center;gap:10px;padding:4px 14px 8px;border-bottom:1px solid #efefef;font-size:15px}
 .s3 .cm-ph-head small{display:block;color:#737373;font-size:15px}
 .s3 .cm-back{font-size:28px;line-height:1;margin-right:2px}
 .s3 .cm-av{width:30px;height:30px;border-radius:50%;background:#d9d9d9;flex:none}
 .s3 .cm-av.me{background:var(--s3-navy)}
-.s3 .cm-ph-post{padding:12px 14px;border-bottom:1px solid #efefef;display:grid;gap:10px;font-size:15px;line-height:1.35}
+.s3 .cm-ph-post{padding:10px 14px;border-bottom:1px solid #efefef;display:grid;gap:8px;font-size:15px;line-height:1.3}
 .s3 .cm-c{display:flex;gap:10px;align-items:flex-start}
 .s3 .cm-c.reply{margin-left:30px}
-.s3 .cm-ph-dm{flex:1;padding:10px 12px;display:flex;flex-direction:column;gap:7px;overflow:hidden}
-.s3 .cm-b{max-width:84%;padding:9px 13px;border-radius:20px;font-size:15px;line-height:1.35}
+.s3 .cm-ph-dm{flex:1;padding:8px 12px;display:flex;flex-direction:column;justify-content:center;gap:7px}
+.s3 .cm-b{max-width:84%;padding:8px 13px;border-radius:20px;font-size:15px;line-height:1.3}
 .s3 .cm-b.me{align-self:flex-end;background:#3797f0;color:#fff}
 .s3 .cm-b.them{align-self:flex-start;background:#efefef}
-.s3 .cm-sys{align-self:center;margin:4px 0;font-size:15px;color:#555}
-.s3 .cm-home{display:block;width:120px;height:5px;margin:8px auto 10px;border-radius:999px;background:#000}
+.s3 .cm-sys{align-self:center;margin:2px 0;font-size:15px;color:#555}
+.s3 .cm-home{display:block;flex:none;width:110px;height:5px;margin:6px auto 9px;border-radius:999px;background:#000}
 .s3 .cm-phone .a1,.s3 .cm-phone .a2,.s3 .cm-phone .a3,.s3 .cm-phone .a4,.s3 .cm-phone .a5,.s3 .cm-phone .a6{animation:cm-in 12s infinite both}
 .s3 .cm-phone .a2{animation-delay:1.2s}.s3 .cm-phone .a3{animation-delay:2.4s}.s3 .cm-phone .a4{animation-delay:3.6s}.s3 .cm-phone .a5{animation-delay:4.8s}.s3 .cm-phone .a6{animation-delay:6s}
 @keyframes cm-in{0%{opacity:0;transform:translateY(10px)}4%,90%{opacity:1;transform:none}100%{opacity:0}}
@@ -249,10 +252,13 @@ const CSS = `
 .s3 .cm-key .us::before{background:var(--s3-sky)}
 .s3 .cm-feat{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(12px,1.6vw,24px);margin:clamp(28px,3vw,48px) 0 0;list-style:none;padding:0}
 .s3 .cm-feat li{background:#fff;border-radius:18px;padding:clamp(18px,1.8vw,24px)}
-.s3 .cm-limits{display:grid;grid-template-columns:repeat(3,1fr);gap:0 clamp(24px,3vw,48px);margin-top:clamp(24px,3vw,40px)}
-.s3 .cm-limits div{padding:16px 0;border-top:1px solid var(--s3-line)}
-.s3 .cm-limits b{display:block;font-weight:500}
-.s3 .cm-limits span{display:block;margin-top:4px}
+.s3 .cm-need span{font-size:var(--s3-fs-fine)}
+.s3 .cm-know{border-radius:24px;background:var(--s3-mist);padding:clamp(28px,3.4vw,52px)}
+.s3 .cm-limits{display:grid;grid-template-columns:repeat(2,1fr);gap:18px clamp(24px,4vw,64px);margin:clamp(20px,2.4vw,32px) 0 0;padding:0;list-style:none}
+.s3 .cm-limits li{position:relative;padding-left:40px}
+.s3 .cm-limits li::before{content:"i";position:absolute;left:0;top:1px;width:26px;height:26px;border-radius:50%;background:var(--s3-navy);color:#fff;font:italic 400 1.1rem/26px var(--s3-serif);text-align:center}
+.s3 .cm-limits b{display:block;font-weight:600}
+.s3 .cm-limits span{display:block;margin-top:2px}
 .s3 .cm-bring{display:grid;grid-template-columns:1fr 1fr;gap:0 clamp(24px,3vw,56px);margin-top:clamp(28px,3vw,40px)}
 .s3 .cm-bring div{padding:18px 0;border-top:1px solid var(--s3-line)}
 .s3 .cm-bring b{display:block;font:400 var(--s3-fs-title)/1.15 var(--s3-serif)}
@@ -331,11 +337,7 @@ export function build() {
 </div></section>
 <section class="s3-sec"><div class="s3-wrap">
  <h2 class="s3-h2">What you need</h2>
- <div class="cm-bring">${BRING.map(([b, p]) => `<div><b>${b}</b><span>${p}</span></div>`).join('')}</div>
-</div></section>
-<section class="s3-sec"><div class="s3-wrap">
- <h2 class="s3-h2">Good to know before you buy</h2>
- <div class="cm-limits">${LIMITS.map(([b, p]) => `<div><b>${b}</b><span>${p}</span></div>`).join('')}</div>
+ <ul class="cm-feat cm-need">${steps(BRING)}</ul>
 </div></section>
 <section class="s3-sec"><div class="s3-wrap">
  <h2 class="s3-h2">Chat Manager vs ManyChat</h2>
@@ -343,6 +345,12 @@ export function build() {
   <thead><tr><th scope="col"></th><th scope="col">Chat Manager</th><th scope="col">ManyChat</th></tr></thead>
   <tbody>${COMPARE.map(([a, b, c]) => `<tr><th scope="row">${a}</th><td>${b}</td><td>${c}</td></tr>`).join('')}</tbody>
  </table></div>
+</div></section>
+<section class="s3-sec"><div class="s3-wrap">
+ <div class="cm-know">
+  <h2 class="s3-h2">Good to know before you buy</h2>
+  <ul class="cm-limits">${LIMITS.map(([b, p]) => `<li><b>${b}</b><span>${p}</span></li>`).join('')}</ul>
+ </div>
 </div></section>
 <section class="cm-faq s3-sec"><div class="s3-wrap">
  <h2 class="s3-h2">Questions</h2>
