@@ -98,7 +98,11 @@ export function lint(post) {
   if (!CTA_PATTERNS[cta.type]) E(`cta.type must be one of ${Object.keys(CTA_PATTERNS).join(', ')}`);
   if (cta.type === 'comment' && !brand.manychat) E('comment CTAs are off until ManyChat is set up (brand.manychat=false)');
   if (brand.manychat && cta.type !== 'comment') E('ManyChat is on: CTA must be a comment keyword');
-  if (cta.type === 'comment' && !dest.commentKeywords.includes(cta.keyword)) E(`keyword "${cta.keyword}" is not a confirmed comment keyword`);
+  if (cta.type === 'comment') {
+    const kw = dest.commentKeywords.find((k) => (k.keyword || k) === cta.keyword);
+    if (!kw) E(`keyword "${cta.keyword}" is not a confirmed comment keyword`);
+    else if (kw.live === false || kw.dmApproved === false) E(`keyword "${cta.keyword}" isn't live with an approved DM yet`);
+  }
   if (cta.type === 'link-in-bio' && !dest.linkInBio.confirmed) E('link in bio destination not confirmed');
   if (!brand.manychat && /\bcomment\b/i.test([slides.at(-1)?.text, post.caption].join(' '))) E('"comment" CTA wording while ManyChat is off');
   if (cta.offer && !dest.offers.some((o) => o.id === cta.offer && o.live)) E(`offer "${cta.offer}" is not a confirmed live offer`);
