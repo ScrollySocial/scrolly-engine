@@ -10,6 +10,9 @@
 // "Reply under the comment" (optional): after the DM goes out, a short public reply like "Sent
 // you a DM!" under their comment. Several wordings, used in turn, so it never looks like a bot
 // posting the same line again and again.
+// "Only for followers" (optional, needs "ask first"): when they reply READY, Instagram says whether
+// they follow her; if not, they get her "follow me first" DM and the flow waits for their next READY.
+// If Instagram can't tell (an error), the link goes out: nobody is left without their freebie.
 // A comment can only get ONE private-reply DM (Meta's rule, within 7 days); a DM conversation
 // can get more, but only within 24 hours of their last message.
 let keywords = [];
@@ -42,6 +45,15 @@ async function publicReply(hit, c) {
     c.note = `${c.note ? `${c.note} ` : ''}Replied under the comment.`;
   } catch (e) {
     logError('instagram-public-reply', e);
+  }
+}
+async function followsMe(igsid) {
+  try {
+    const p = await http({ method: 'GET', url: `${GRAPH}/${igsid}`, qs: { fields: 'is_user_follow_business', access_token: igToken() } });
+    return p?.is_user_follow_business !== false;
+  } catch (e) {
+    logError('instagram-follow-check', e);
+    return true;
   }
 }
 async function event(keyword, c, result) {
@@ -183,6 +195,13 @@ for (const item of $input.all()) {
     continue;
   }
 
+  // Only for followers: not following yet → the "follow me first" DM instead of the link.
+  let gated = false;
+  if (readyFlow && hit.ask?.on && hit.followGate?.on && hit.followGate.text && !(await followsMe(c.authorId))) {
+    gated = true;
+    text = hit.followGate.text;
+  }
+
   let result = 'test';
   if (!readyFlow && state.dm?.[c.id]) {
     c.dm = 'already sent';
@@ -195,7 +214,7 @@ for (const item of $input.all()) {
       remember('dm', c.id);
       c.dm = `sent: ${text}`;
       result = 'sent';
-      if (flow && readyFlow) await inbox('PATCH', `/flows/${flow.token}`, { step: 'linkSent', dmPersonId: c.authorId, lastInboundAt: true });
+      if (flow && readyFlow) await inbox('PATCH', `/flows/${flow.token}`, gated ? { followGated: true, dmPersonId: c.authorId, lastInboundAt: true } : { step: 'linkSent', dmPersonId: c.authorId, lastInboundAt: true });
       else if (flow && isDm) await inbox('PATCH', `/flows/${flow.token}`, { dmPersonId: c.authorId, lastInboundAt: true });
       if (!isDm && !readyFlow) await publicReply(hit, c);
     } catch (e) {

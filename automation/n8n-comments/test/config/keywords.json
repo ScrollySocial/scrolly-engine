@@ -31,6 +31,10 @@
       "publicReply": {
         "on": true,
         "text": "Sent you a DM!\nCheck your DMs!"
+      },
+      "followGate": {
+        "on": true,
+        "text": "Follow me first, then reply READY again."
       }
     },
     {

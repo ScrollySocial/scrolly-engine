@@ -99,6 +99,8 @@ function cleanKeyword(k) {
   // so no MailerLite sequence is needed (the free plan allows only 3; Mercedes 2026-10-23).
   const afterSignup = { dm: str(k.afterSignup?.dm) };
   // A short public reply under the Instagram comment ("Sent you a DM!"), one wording per line, used in turn.
+  // Only for followers: the DM people get when they reply READY but don't follow yet (needs "ask first").
+  const followGate = { on: !!k.followGate?.on, text: str(k.followGate?.text) };
   const publicReply = { on: !!k.publicReply?.on, text: str(k.publicReply?.text).split('\n').map((l) => l.trim()).filter(Boolean).slice(0, 10).join('\n') };
   const out = {
     ...k,
@@ -121,6 +123,7 @@ function cleanKeyword(k) {
     yt,
     afterSignup,
     publicReply,
+    followGate,
   };
   delete out.reminder.hours;
   delete out.mailerliteGroup;
@@ -133,6 +136,8 @@ function cleanKeyword(k) {
     const p = provider();
     if (delivery === 'email' && (!out.linkText.includes('{link}') || !url)) throw new Error(`${keyword}: email signup needs the freebie link and a DM text with {link} in it`);
     if (delivery === 'email' && p.needsTarget && !out.list.id) throw new Error(`${keyword}: pick the ${p.name} ${p.label} people join`);
+    if (followGate.on && !ask.on) throw new Error(`${keyword}: "only for followers" needs "ask them to reply first" switched on`);
+    if (followGate.on && !followGate.text) throw new Error(`${keyword}: write the "follow me first" message`);
     if (publicReply.on && !publicReply.text) throw new Error(`${keyword}: write at least one reply for under the comment`);
     if (afterSignup.dm && !afterSignup.dm.includes('{url}')) throw new Error(`${keyword}: the DM after signup needs {url} in it`);
     if (reminder.on && (!reminder.text || !reminder.text.includes('{link}'))) throw new Error(`${keyword}: the reminder needs its text, with {link} in it`);
@@ -157,7 +162,7 @@ function saveKeywords(list) {
     source: 'comment dashboard (hooks.scrollyseo.com/inbox)',
     keywords: clean
       .filter((k) => k.live && k.dmApproved)
-      .map(({ keyword, freebie, url, dm, delivery, where, ask, linkText, reminder, yt, afterSignup, publicReply }) => ({ keyword, freebie, url, dm, delivery, where, ask, linkText, reminder, yt, afterSignup, publicReply })),
+      .map(({ keyword, freebie, url, dm, delivery, where, ask, linkText, reminder, yt, afterSignup, publicReply, followGate }) => ({ keyword, freebie, url, dm, delivery, where, ask, linkText, reminder, yt, afterSignup, publicReply, followGate })),
   });
   return clean;
 }
@@ -547,7 +552,8 @@ function stats(days) {
   for (const f of db.flows) {
     if ((f.createdAt || '') < cutoff) continue;
     const k = (by[f.keyword] ||= { keyword: f.keyword, comments: 0, dmsSent: 0, dmsFailed: 0, posts: {} });
-    const fun = (k.funnel ||= { asked: 0, linkSent: 0, clicked: 0, signedUp: 0, reminded: 0 });
+    const fun = (k.funnel ||= { asked: 0, followGated: 0, linkSent: 0, clicked: 0, signedUp: 0, reminded: 0 });
+    if (f.followGatedAt) fun.followGated++;
     for (const s of ['asked', 'linkSent', 'clicked', 'signedUp']) if (f[`${s}At`]) fun[s]++;
     if (f.remindedAt) fun.reminded++;
   }
@@ -889,6 +895,11 @@ async function handle(req, res) {
       if (body.dmPersonId) f.dmPersonId = str(body.dmPersonId);
       if (body.lastInboundAt) f.lastInboundAt = now();
       if (body.delivered) f.deliveredAt = f.deliveredAt || now();
+      // Replied READY but didn't follow yet: told to follow first (counted, the flow stays at "asked").
+      if (body.followGated) {
+        f.followGatedAt = f.followGatedAt || now();
+        f.history.push({ at: now(), step: 'followGated' });
+      }
       save();
       return send(res, 200, f);
     } catch (e) {

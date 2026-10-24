@@ -376,7 +376,7 @@ async function showInbox(body) {
         flow ? h('span', { class: flow.step === 'signedUp' ? 'pill on' : 'pill', text: `${flow.keyword}: ${STEP_LABEL[flow.step]}` }) : null));
   })));
 }
-const STEP_LABEL = { asked: 'asked to reply', linkSent: 'got the link', clicked: 'opened the link', signedUp: 'signed up', reminded: 'reminded' };
+const STEP_LABEL = { followGated: 'asked to follow first', asked: 'asked to reply', linkSent: 'got the link', clicked: 'opened the link', signedUp: 'signed up', reminded: 'reminded' };
 
 // ---- one conversation ----
 async function showConversation(body, key) {
@@ -569,6 +569,8 @@ async function showKeyword(body, name) {
   k.yt ||= { text: '' };
   k.afterSignup ||= { dm: '' };
   k.publicReply ||= { on: false, text: '' };
+  k.followGate ||= { on: false, text: '' };
+  const followGateDefault = () => `Almost there! Follow @${HANDLE()} first, then reply ${k.ask.word || 'READY'} again and I'll send it straight over 💛`;
   k.signup ||= {};
   // The email list (lists.mjs on the server). Some tools need one target per keyword: a MailerLite
   // group, Kit tag, Mailchimp audience, beehiiv publication or Flodesk segment.
@@ -697,6 +699,7 @@ async function showKeyword(body, name) {
       }
       if (k.ask.on && previewTab === 'igc') {
         thread.push(me(k.ask.text || '(write the first DM above)'), them(k.ask.word || 'READY'));
+        if (k.followGate.on) thread.push(sys('If they don\'t follow you yet'), me(k.followGate.text || followGateDefault()), sys('They follow you and reply again'), them(k.ask.word || 'READY'));
       }
       thread.push(me(k.delivery === 'email' ? fill(k.linkText, link) : fill(k.dm)));
       if (k.delivery === 'email') {
@@ -756,6 +759,12 @@ async function showKeyword(body, name) {
       toggle(k.ask, 'on', 'Ask them to reply first', () => { drawAsk(); drawPreviews(); drawDelivery(); }),
       h('p', { class: 'hint', text: 'Their reply opens a DM conversation, which lets you remind them later. Needs DMs switched on.' }),
       k.ask.on ? [text(k.ask, 'text', 'First DM', { area: true, placeholder: 'Want the free calculator? Reply READY and I\'ll send it over.', onInput: drawPreviews }), text(k.ask, 'word', 'The word they reply', { placeholder: 'READY', onInput: drawPreviews })] : null,
+      k.ask.on ? [
+        h('h3', { style: 'margin-top:16px', text: 'Only for followers (optional)' }),
+        toggle(k.followGate, 'on', 'Send the freebie only to people who follow you', () => { if (k.followGate.on && !k.followGate.text) k.followGate.text = followGateDefault(); drawAsk(); drawPreviews(); }),
+        h('p', { class: 'hint', text: 'When they reply, Instagram tells us whether they follow you. If not, they get the message below, and the freebie goes out once they follow and reply again. Every freebie wins a follower, though a few people may not finish.' }),
+        k.followGate.on ? text(k.followGate, 'text', 'Follow-first message', { area: true, onInput: drawPreviews }) : null,
+      ] : null,
     ].flat(3).filter(Boolean));
   };
   drawAsk();
@@ -802,7 +811,7 @@ async function showKeyword(body, name) {
       check(k, 'dmApproved', 'I approve these messages')),
     !isNew ? h('div', { class: 'card' }, h('h3', { text: 'Last 30 days' }),
       s ? h('div', { class: 'funnel' },
-        [[s.comments, 'used it'], [f?.asked ?? 0, 'asked to reply'], [f?.linkSent ?? s.dmsSent, 'got the link'], [f?.clicked ?? 0, 'opened it'], [f?.signedUp ?? 0, 'signed up'], [f?.reminded ?? 0, 'reminded']]
+        [[s.comments, 'used it'], [f?.asked ?? 0, 'asked to reply'], ...(k.followGate?.on || f?.followGated ? [[f?.followGated ?? 0, 'asked to follow first']] : []), [f?.linkSent ?? s.dmsSent, 'got the link'], [f?.clicked ?? 0, 'opened it'], [f?.signedUp ?? 0, 'signed up'], [f?.reminded ?? 0, 'reminded']]
           .map(([n, l]) => h('div', {}, h('div', { class: 'big', text: String(n) }), h('div', { class: 'hint', text: l }))))
         : h('p', { class: 'hint', text: 'Nobody has used it yet.' })) : '',
     h('div', { class: 'row between' },

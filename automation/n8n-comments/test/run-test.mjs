@@ -242,7 +242,7 @@ const pinsStats = stats.keywords?.find((k) => k.keyword === 'PINS');
 check('Stats count keyword comments and DMs sent per keyword and post', pinsStats?.comments >= 4 && pinsStats?.dmsSent === 4 && pinsStats?.posts['https://www.instagram.com/p/TESTPOST/'] >= 3, JSON.stringify(pinsStats));
 
 // 13. Freebie flow: comment FREE → "reply READY" → READY → personal link → signup page → MailerLite → reminder
-const freeKw = { keyword: 'FREE', freebie: 'Free guide', url: 'https://example.com/free.pdf', live: true, dmApproved: true, delivery: 'email', where: { igComments: true, igDms: true }, ask: { on: true, text: 'Want it? Reply READY.', word: 'READY' }, linkText: 'Grab it here: {link}', mailerliteGroup: '111', reminder: { on: true, minutes: 60, text: 'Still want it? {link}' }, afterSignup: { dm: 'Here it is: {url}' }, publicReply: { on: true, text: 'Sent you a DM!\nCheck your DMs!' } };
+const freeKw = { keyword: 'FREE', freebie: 'Free guide', url: 'https://example.com/free.pdf', live: true, dmApproved: true, delivery: 'email', where: { igComments: true, igDms: true }, ask: { on: true, text: 'Want it? Reply READY.', word: 'READY' }, linkText: 'Grab it here: {link}', mailerliteGroup: '111', reminder: { on: true, minutes: 60, text: 'Still want it? {link}' }, afterSignup: { dm: 'Here it is: {url}' }, publicReply: { on: true, text: 'Sent you a DM!\nCheck your DMs!' }, followGate: { on: true, text: 'Follow me first, then reply READY again.' } };
 const ytKw = { keyword: 'YTK', freebie: 'YouTube guide', url: 'https://example.com/yt.pdf', live: true, dmApproved: true, delivery: 'email', where: { igComments: false, igDms: false, ytComments: true }, linkText: 'Grab it here: {link}', mailerliteGroup: '111', yt: { text: 'Grab it here: {link}' } };
 r = await fetch(`${INBOX}/inbox/api/keywords`, { method: 'PUT', headers: INBOX_KEY, body: JSON.stringify({ keywords: [freeKw, ytKw] }) });
 check('Flow keyword saved in the dashboard', r.status === 200, await r.text());
@@ -264,6 +264,24 @@ last = sentDms(await mockLog()).pop();
 const link = (last?.body.message.text || '').match(/http:\/\/localhost:5691\/inbox\/f\/[A-Za-z0-9_-]+/)?.[0];
 check('READY in a DM: personal signup link sent by DM to them', last?.body.recipient.id === '666' && !!link, JSON.stringify(last?.body));
 check('READY DM is Handled (no reply needed)', (await byComment('dm30'))?.status === 'Handled');
+
+// 13b. Only for followers: 999 doesn't follow, replies READY → "follow me first"; follows, READY again → the link
+before = await dmCount();
+await postIg(igEvent([{ id: 'c50', text: 'FREE', from: { id: '999', username: 'hal' }, media: { id: 'media1' } }]));
+await waitFor(async () => (await dmCount()) > before);
+before = await dmCount();
+await postIg(dmEvent([{ sender: { id: '999' }, recipient: { id: IG_ID }, timestamp: Date.now(), message: { mid: 'dm50', text: 'READY' } }]));
+await waitFor(async () => (await dmCount()) > before);
+last = sentDms(await mockLog()).pop();
+let hal = ((await inbox('/flows?personId=999')).flows || [])[0];
+check('Not a follower yet: READY gets the "follow me first" DM, no link, flow still waiting', last?.body.recipient.id === '999' && last?.body.message.text === 'Follow me first, then reply READY again.' && hal?.step === 'asked' && !!hal?.followGatedAt, JSON.stringify({ msg: last?.body, hal }));
+await fetch(`${MOCK}/test/follow/999`, { method: 'POST' });
+before = await dmCount();
+await postIg(dmEvent([{ sender: { id: '999' }, recipient: { id: IG_ID }, timestamp: Date.now(), message: { mid: 'dm51', text: 'READY' } }]));
+await waitFor(async () => (await dmCount()) > before);
+last = sentDms(await mockLog()).pop();
+hal = ((await inbox('/flows?personId=999')).flows || [])[0];
+check('After following, READY again sends their signup link', last?.body.recipient.id === '999' && /\/inbox\/f\//.test(last?.body.message.text || '') && hal?.step === 'linkSent', JSON.stringify({ msg: last?.body, step: hal?.step }));
 await fetch(link, { headers: { 'User-Agent': 'facebookexternalhit/1.1 (+http://www.facebook.com/externalhit_uatext.php)' } });
 check('Instagram\'s link-preview robot doesn\'t count as opening the link', ((await inbox('/flows?personId=666')).flows || [])[0]?.step === 'linkSent');
 let page = await fetch(link);
@@ -303,7 +321,7 @@ await runJob('reminders');
 await sleep(6000);
 check('Never reminded twice', (await dmCount()) === before);
 const freeStats = (await inbox('/stats?days=30')).keywords.find((k) => k.keyword === 'FREE');
-check('Stats show the funnel: 2 asked, 2 got the link, 1 opened, 1 signed up, 1 reminded', JSON.stringify(freeStats?.funnel) === JSON.stringify({ asked: 2, linkSent: 2, clicked: 1, signedUp: 1, reminded: 1 }), JSON.stringify(freeStats?.funnel));
+check('Stats show the funnel: 3 asked, 1 asked to follow first, 3 got the link, 1 opened, 1 signed up, 1 reminded', JSON.stringify(freeStats?.funnel) === JSON.stringify({ asked: 3, followGated: 1, linkSent: 3, clicked: 1, signedUp: 1, reminded: 1 }), JSON.stringify(freeStats?.funnel));
 const fay = (await inbox('/conversations')).conversations.find((x) => x.author === 'fay');
 check('Conversation shows the flow steps with the person', fay?.flows?.[0]?.history.map((s) => s.step).join() === 'asked,linkSent,clicked,signedUp', JSON.stringify(fay?.flows?.[0]?.history));
 await inbox('/conversations/read', { method: 'POST', body: { key: fay.key } });

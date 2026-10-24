@@ -12,6 +12,7 @@ let pages = [];
 let failNextPatch = false;
 let sentCount = 0;
 let ytKeyword = false;
+const followers = new Set();
 const FAIL = Symbol('fail');
 const hoursAgo = (h) => new Date(Date.now() - h * 3600e3).toISOString();
 
@@ -28,9 +29,10 @@ const routes = [
   ['POST', /^\/graph\/[^/]+\/replies$/, () => ({ id: 'reply1' })],
   ['GET', /^\/graph\/refresh$/, () => ({ access_token: 'refreshed-token', token_type: 'bearer', expires_in: 5184000 })],
   // A media id answers with its permalink, a person id with a username.
+  ['POST', /^\/test\/follow\/[^/]+$/, (req, url) => (followers.add(url.pathname.split('/').pop()), { ok: true })],
   ['GET', /^\/graph\/[^/]+$/, (req, url) => {
     const id = url.pathname.split('/').pop();
-    return { id, permalink: 'https://www.instagram.com/p/TESTPOST/', username: `user${id}` };
+    return { id, permalink: 'https://www.instagram.com/p/TESTPOST/', username: `user${id}`, is_user_follow_business: id !== '999' || followers.has(id) };
   }],
   ['GET', /^\/yt\/commentThreads$/, () => ({
     items: [
