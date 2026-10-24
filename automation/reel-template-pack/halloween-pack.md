@@ -21,6 +21,10 @@
   a big dotted-night sheet with a bat-shaped hole, scaled with keyframes (CapCut has no bat mask). Not yet checked in CapCut.
 - **h1 Now you see it: APPROVED 2026-10-20 (motion test v4) and built fully editable.** `build/motion_h1.py`, `build/templates/th1.py`, `build/tower_h1.py` (her clock tower with its painted hands taken off the dial; real brass hands sweep to midnight). Her smoke ships in the project (`Resources/smoke/smoke-h1.mov`, made from smoke.mov: from 0.8 s, 4.6 s, 720x1280 ProRes 4444 with alpha, not in git) on its own track above the text, so it rolls over the hook. Test copy "h1 Now you see it" in her CapCut; zip in `halloween/for-upload/`. Not yet checked in CapCut: that the smoke's transparency and its place above the text hold there.
 - h4 pumpkin: parked ("maybe scratch"). The pack is 5 templates: h6, h3, h5, h2, h1.
+- **h4 What's inside? is back as the FREE bonus template** for the SPOOKY comment keyword (Mercedes 2026-10-23: a
+  bonus made only for the freebie, never added to the paid pack). Video-first rewrite: the carved face is a window on
+  the buyer's clip, the camera flies in through the mouth and then an eye; nothing flies at the lens. Motion test v1:
+  `build/motion_h4.py` -> `halloween/h4-whats-inside/preview/motion-test.mp4` (stills: `python build/motion_h4.py 0.6 4.6`).
 
 Buyers are online business owners and influencers, so every template is a whole Reel with a business job and a CTA,
 not just a Halloween look. Cute, not scary. Real photographed objects; only the playful layer (washi tape, white
