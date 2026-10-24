@@ -209,10 +209,16 @@ def clone_refs(proto_mats, new_mats, refs, anim=None, speed=1.0):
 def cx_(x): return (x - W / 2) / (W / 2)
 def cy_(y): return (H / 2 - y) / (H / 2)
 
+# Opt-in (templates set engine.SCALE_XY = True; h4 2026-10-24): her CapCut 8.9.1 drew h4's pictures with only their
+# width animated (ScaleX) and the height left at full size, so every growing picture came out stretched. With the flag,
+# a scale animation is written as ScaleX + ScaleY with uniform scale off. Off by default so approved builds don't change.
+SCALE_XY = False
+
 def keyframes(kf, base_scale, dur):
     out = []
+    if SCALE_XY and 'scale' in kf: kf = dict(kf, scale_y=kf['scale'])
     conv = {'x': ('KFTypePositionX', cx_), 'y': ('KFTypePositionY', cy_), 'rot': ('KFTypeRotation', float),
-            'scale': ('KFTypeScaleX', lambda v: v * base_scale)}
+            'scale': ('KFTypeScaleX', lambda v: v * base_scale), 'scale_y': ('KFTypeScaleY', lambda v: v * base_scale)}
     for prop, pts in kf.items():
         name, f = conv[prop]
         out.append({'id': uid(), 'material_id': '', 'property_type': name, 'keyframe_list': [{
@@ -258,7 +264,7 @@ def build_capcut(folder, name, slot_files, slot_secs, art_files, L):
         s['clip'] = {'scale': {'x': base_scale, 'y': base_scale}, 'rotation': float(l['rot']),
                      'transform': {'x': cx_(l['pos'][0]), 'y': cy_(l['pos'][1])},
                      'flip': {'vertical': False, 'horizontal': False}, 'alpha': 1.0}
-        if 'uniform_scale' in s: s['uniform_scale'] = {'on': True, 'value': base_scale}
+        if 'uniform_scale' in s: s['uniform_scale'] = {'on': not (SCALE_XY and 'scale' in l['kf']), 'value': base_scale}
         return s
 
     by_z = {}

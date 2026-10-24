@@ -21,6 +21,9 @@ import editable as Ed
 from editable_halloween import kf, popk, tone_overlay
 import storyboard_halloween as B
 import motion_h4 as M
+import engine
+engine.SCALE_XY = True                                     # see engine.SCALE_XY: pictures stretched in her CapCut without it
+BODONI_K = 1.49   # her CapCut draws Bodoni Moda at about 0.67 of engine.PX_PER_SIZE (measured on the 2026-10-24 test copy)
 
 BUTTER, CREAM, EDGE = M.BUTTER, M.CREAM, M.EDGE        # BUTTER is the accent: buyers change it to their brand colour
 SPEC = dict(num='h4', title="What's inside?", subtitle='15 seconds. Three clips: your new product, then two more of it.',
@@ -115,7 +118,7 @@ def reel():
     sheet = pumpkin_sheet(); glow_lo, glow_hi = glow_sheet(0.35), glow_sheet(1.0)
     def say(font, px, words, t, pos, tracks, color):
         f = kf(pos, t[0], **tracks)
-        if font == 'bodoni': r.text('bodoni', px, words, t[0], t[1], f, color, stroke=(EDGE, 0.03), shadow=True)
+        if font == 'bodoni': r.text('bodoni', px * BODONI_K, words, t[0], t[1], f, color, stroke=(EDGE, 0.03), shadow=True)
         else: r.text('montserrat', px * 0.85, words, t[0], t[1], f, color, stroke=(EDGE, 0.03), shadow=True)
     def letters(word, px, y, t0, end, color=BUTTER, step=0.06):
         font = B.F(B.SERIF, px); d = ImageDraw.Draw(Image.new('L', (4, 4)))
