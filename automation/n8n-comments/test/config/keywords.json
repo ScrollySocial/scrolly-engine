@@ -27,6 +27,10 @@
       },
       "afterSignup": {
         "dm": "Here it is: {url}"
+      },
+      "publicReply": {
+        "on": true,
+        "text": "Sent you a DM!\nCheck your DMs!"
       }
     },
     {

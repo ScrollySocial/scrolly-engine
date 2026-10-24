@@ -1,0 +1,12 @@
+# The public demo (docker-compose.demo.yml). Appended to the live Caddyfile on Mercedes's
+# server once the DNS record for demo.scrollyseo.com points at it. Only the dashboard paths.
+demo.scrollyseo.com {
+	encode gzip
+	redir / /inbox
+	handle /inbox* {
+		reverse_proxy demo:3000
+	}
+	handle {
+		respond "Not found" 404
+	}
+}

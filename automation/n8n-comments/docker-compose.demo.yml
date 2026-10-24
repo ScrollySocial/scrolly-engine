@@ -1,0 +1,28 @@
+# Mercedes's public Chat Manager demo (demo.scrollyseo.com): the made-up "Bloom Studio" shop,
+# no login, nothing saved or sent. Not part of the kit. Started next to the live system with
+#   docker compose -f docker-compose.yml -f docker-compose.demo.yml up -d
+# and served by the demo block in Caddyfile.demo (added to the live Caddyfile).
+# The data is rebuilt on every start and the server restarts itself daily, so it stays recent.
+services:
+  demo:
+    image: node:22.11.0-alpine
+    container_name: chatmgr-demo
+    restart: unless-stopped
+    command: ["sh", "-c", "node /demo/seed.mjs /tmp/config /tmp/data && exec node /app/server.mjs"]
+    environment:
+      - PORT=3000
+      - DATA_DIR=/tmp/data
+      - CONFIG_DIR=/tmp/config
+      - INBOX_DEMO=true
+      - DEMO_RESTART_HOURS=24
+      - DEMO_BUY_URL=${DEMO_BUY_URL:-}
+      - N8N_HOST=bloomstudio.duckdns.org
+      - EMAIL_LIST=builtin
+      - DMS_ENABLED=true
+      - TZ=${TZ:-America/Chicago}
+    volumes:
+      - ./inbox:/app:ro
+      - ./demo:/demo:ro
+    expose:
+      - "3000"
+    mem_limit: 96m

@@ -242,7 +242,7 @@ const pinsStats = stats.keywords?.find((k) => k.keyword === 'PINS');
 check('Stats count keyword comments and DMs sent per keyword and post', pinsStats?.comments >= 4 && pinsStats?.dmsSent === 4 && pinsStats?.posts['https://www.instagram.com/p/TESTPOST/'] >= 3, JSON.stringify(pinsStats));
 
 // 13. Freebie flow: comment FREE → "reply READY" → READY → personal link → signup page → MailerLite → reminder
-const freeKw = { keyword: 'FREE', freebie: 'Free guide', url: 'https://example.com/free.pdf', live: true, dmApproved: true, delivery: 'email', where: { igComments: true, igDms: true }, ask: { on: true, text: 'Want it? Reply READY.', word: 'READY' }, linkText: 'Grab it here: {link}', mailerliteGroup: '111', reminder: { on: true, minutes: 60, text: 'Still want it? {link}' }, afterSignup: { dm: 'Here it is: {url}' } };
+const freeKw = { keyword: 'FREE', freebie: 'Free guide', url: 'https://example.com/free.pdf', live: true, dmApproved: true, delivery: 'email', where: { igComments: true, igDms: true }, ask: { on: true, text: 'Want it? Reply READY.', word: 'READY' }, linkText: 'Grab it here: {link}', mailerliteGroup: '111', reminder: { on: true, minutes: 60, text: 'Still want it? {link}' }, afterSignup: { dm: 'Here it is: {url}' }, publicReply: { on: true, text: 'Sent you a DM!\nCheck your DMs!' } };
 const ytKw = { keyword: 'YTK', freebie: 'YouTube guide', url: 'https://example.com/yt.pdf', live: true, dmApproved: true, delivery: 'email', where: { igComments: false, igDms: false, ytComments: true }, linkText: 'Grab it here: {link}', mailerliteGroup: '111', yt: { text: 'Grab it here: {link}' } };
 r = await fetch(`${INBOX}/inbox/api/keywords`, { method: 'PUT', headers: INBOX_KEY, body: JSON.stringify({ keywords: [freeKw, ytKw] }) });
 check('Flow keyword saved in the dashboard', r.status === 200, await r.text());
@@ -252,6 +252,9 @@ await postIg(igEvent([{ id: 'c30', text: 'FREE', from: { id: '666', username: 'f
 await waitFor(async () => (await dmCount()) > before);
 let last = sentDms(await mockLog()).pop();
 check('Comment FREE: private reply asks them to reply READY', last?.body.recipient.comment_id === 'c30' && last?.body.message.text === 'Want it? Reply READY.', JSON.stringify(last?.body));
+await waitFor(async () => (await mockLog()).log.some((x) => x.path === '/graph/c30/replies'));
+const under = (await mockLog()).log.filter((x) => x.path === '/graph/c30/replies');
+check('Comment FREE: one public reply under the comment, after the DM', under.length === 1 && under[0].query.message === 'Sent you a DM!', JSON.stringify(under.map((x) => x.query)));
 let flows = (await inbox('/flows?personId=666')).flows || [];
 check('Flow started at "asked"', flows.length === 1 && flows[0].step === 'asked', JSON.stringify(flows));
 before = await dmCount();

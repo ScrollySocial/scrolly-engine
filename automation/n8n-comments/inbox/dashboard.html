@@ -148,6 +148,12 @@
   .banner { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 12px; border-radius: 18px; padding: 12px 16px; margin: 0 0 12px; background: #fde8e6; color: var(--ink); }
   .banner.warn { background: #fdf0d9; }
   .banner.demo { background: var(--mist); }
+  .charts { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 0 12px; }
+  .fold summary { display: flex; align-items: center; gap: 10px; cursor: pointer; list-style: none; }
+  .fold summary::-webkit-details-marker { display: none; }
+  .fold summary::after { content: '▾'; margin-left: auto; color: var(--muted); }
+  .fold[open] summary::after { content: '▴'; }
+  .fold summary .state { margin-top: 0; }
   .change { font-size: 13px; color: var(--muted); margin-top: 2px; }
   .change.up { color: var(--good); }
   .change.down { color: var(--bad); }
@@ -260,15 +266,17 @@ async function route() {
   [stats, HEALTH] = await Promise.all([api('/api/stats?days=30').catch(() => null), api('/api/health').catch(() => null)]);
   const tab = hash.startsWith('k') ? 'keywords' : hash === 'stats' ? 'stats' : hash === 'emails' ? 'emails' : 'inbox';
   const body = h('div');
-  app.replaceChildren(
+  app.replaceChildren(...[
     h('div', { class: 'top' },
       h('h1', { text: { keywords: 'Keywords', stats: 'Stats', emails: 'Email list' }[tab] || 'Inbox' }),
-      h('button', { class: 'quiet', text: 'Log out', on: { click: async () => { await api('/logout', { method: 'POST' }); showLogin(true); } } })),
+      me.demo ? null : h('button', { class: 'quiet', text: 'Log out', on: { click: async () => { await api('/logout', { method: 'POST' }); showLogin(true); } } })),
     h('nav', { class: 'tabs', 'aria-label': 'Sections' },
       [['inbox', 'Inbox', stats?.inbox.unread], ['keywords', 'Keywords'], ['emails', 'Email list', me.waitingSignups], ['stats', 'Stats']].map(([id, label, n]) =>
         h('button', { 'aria-current': String(tab === id), on: { click: () => (location.hash = id) } }, label, n ? h('span', { class: 'count', text: n }) : null))),
-    me.demo ? h('div', { class: 'banner demo', role: 'note' }, h('span', { text: 'Demo: everything here is made up, and nothing is sent.' })) : null,
-    body);
+    me.demo ? h('div', { class: 'banner demo', role: 'note' },
+      h('span', { text: 'Demo: a made-up shop. Click around: nothing is saved or sent.' }),
+      me.demoBuyUrl ? h('a', { class: 'button', style: 'background:var(--ink);color:var(--white)', href: me.demoBuyUrl, text: 'Get Chat Manager' }) : null) : null,
+    body].filter(Boolean));
   // Something broken or worth a look: one line on the Inbox, details on Stats.
   const problems = (HEALTH?.checks || []).filter((c) => ['bad', 'warn'].includes(c.state));
   if (tab === 'inbox' && problems.length) {
@@ -524,7 +532,8 @@ async function welcomeCard() {
 }
 
 // "+ New keyword" starts from a tested template (#k/new picks one, #k/new:<id> opens it).
-const blankKeyword = () => ({ keyword: '', freebie: '', url: '', live: false, dmApproved: false, delivery: 'direct', where: { igComments: true, igDms: true, ytComments: false }, ask: { on: false, text: '', word: 'READY' }, dm: 'Here you go: {url}', linkText: 'Here you go! Pop in your email and I\'ll send it straight over: {link}', signup: {}, reminder: { on: false, minutes: 60, text: 'Just checking you got this. Your link is still here: {link}' }, yt: { text: '' }, afterSignup: { dm: '' } });
+const blankKeyword = () => ({ keyword: '', freebie: '', url: '', live: false, dmApproved: false, delivery: 'direct', where: { igComments: true, igDms: true, ytComments: false }, ask: { on: false, text: '', word: 'READY' }, dm: 'Here you go: {url}', linkText: 'Here you go! Pop in your email and I\'ll send it straight over: {link}', signup: {}, reminder: { on: false, minutes: 60, text: 'Just checking you got this. Your link is still here: {link}' }, yt: { text: '' }, afterSignup: { dm: '' }, publicReply: { on: true, text: PUBLIC_REPLY_DEFAULT } });
+const PUBLIC_REPLY_DEFAULT = ['Sent it to your DMs! 💌', 'Just sent you a DM, check your inbox!', 'It\'s in your DMs now 🙌'].join('\n');
 const TEMPLATES = [
   { id: 'email', title: 'Freebie by email (recommended)', text: 'They reply READY, get their own signup link, type their email and see the freebie. Grows your email list, with one reminder if they forget.',
     make: (k) => Object.assign(k, { delivery: 'email', ask: { on: true, text: 'Want it? Reply READY and I\'ll send it over.', word: 'READY' }, linkText: 'Here you go! Pop in your email and it opens right away: {link}', reminder: { on: true, minutes: 60, text: 'Just checking you got this. Your link is still here: {link}' }, afterSignup: { dm: 'Here it is, as promised: {url}' } }) },
@@ -559,6 +568,7 @@ async function showKeyword(body, name) {
   if (!k.reminder.minutes) k.reminder.minutes = (Number(k.reminder.hours) || 1) * 60;
   k.yt ||= { text: '' };
   k.afterSignup ||= { dm: '' };
+  k.publicReply ||= { on: false, text: '' };
   k.signup ||= {};
   // The email list (lists.mjs on the server). Some tools need one target per keyword: a MailerLite
   // group, Kit tag, Mailchimp audience, beehiiv publication or Flodesk segment.
@@ -618,6 +628,16 @@ async function showKeyword(body, name) {
       h('h3', { text: ready ? 'Ready: it works all the way through' : 'Ready to go live?' }),
       ...items.map(([ok, label]) => h('p', { class: ok ? 'hint' : 'warn', text: `${ok ? '✓' : '○'} ${label}` })));
   };
+  // The public reply under an Instagram comment ("Sent you a DM!"), one wording per line.
+  const replySection = h('div');
+  const drawReply = () => {
+    replySection.replaceChildren(...(k.where.igComments ? [
+      h('h3', { style: 'margin-top:16px', text: 'Reply under the comment' }),
+      toggle(k.publicReply, 'on', 'Reply publicly after the DM goes out', () => { drawReply(); drawPreviews(); }),
+      h('p', { class: 'hint', text: 'Tells them (and everyone reading the comments) to check their DMs.' }),
+      ...(k.publicReply.on ? text(k.publicReply, 'text', 'Replies (one per line)', { area: true, placeholder: PUBLIC_REPLY_DEFAULT, hint: 'Write a few: they take turns, so it never looks like a bot posting the same line over and over.', onInput: () => drawPreviews() }) : []),
+    ] : []).filter(Boolean));
+  };
   // YouTube reply text (public, under the comment).
   const ytSection = h('div');
   const drawYt = () => {
@@ -669,6 +689,8 @@ async function showKeyword(body, name) {
       const thread = [];
       if (previewTab === 'igc') {
         thread.push(h('div', { class: 'pv-post' }, avatar(), h('div', {}, h('strong', { text: 'someone ' }), word, h('div', { class: 'pv-note', text: 'Comment on your post' }))));
+        const firstReply = String(k.publicReply?.text || '').split('\n').map((l) => l.trim()).find(Boolean);
+        if (k.publicReply?.on && firstReply) thread.push(h('div', { class: 'pv-post', style: 'margin-left:38px' }, avatar('brand'), h('div', {}, h('strong', { text: `${HANDLE()} ` }), firstReply, h('div', { class: 'pv-note', text: 'Your reply under their comment' }))));
         thread.push(sys('They get this in their DMs'));
       } else {
         thread.push(them(word));
@@ -737,6 +759,7 @@ async function showKeyword(body, name) {
     ].flat(3).filter(Boolean));
   };
   drawAsk();
+  drawReply();
   drawYt();
   drawDelivery();
   drawPreviews();
@@ -763,10 +786,11 @@ async function showKeyword(body, name) {
       h('p', { class: 'hint', text: 'When it\'s on and you\'ve approved the messages below, it works right away.' })),
     h('div', { class: 'card' }, checklist),
     h('div', { class: 'card' }, h('h3', { text: 'Where it works' }),
-      check(k.where, 'igComments', 'Instagram comments', () => drawPreviews()),
+      check(k.where, 'igComments', 'Instagram comments', () => { drawReply(); drawPreviews(); }),
       check(k.where, 'igDms', 'Instagram DMs and Story replies (needs DMs switched on)', () => drawPreviews()),
       check(k.where, 'ytComments', 'YouTube comments (automatic public reply, since YouTube has no DMs)', () => { drawYt(); drawPreviews(); }),
       ytSection,
+      replySection,
       h('p', { class: 'hint', text: 'TikTok doesn\'t allow automated replies, so TikTok keywords land in your inbox to answer by hand.' })),
     h('div', { class: 'card' }, h('h3', { text: 'Freebie' }),
       text(k, 'freebie', 'Name', { placeholder: '$1K Math calculator' }),
@@ -774,7 +798,7 @@ async function showKeyword(body, name) {
       h('div', { class: 'row' }, h('button', { text: 'Open freebie', on: { click: () => (k.url ? window.open(k.url, '_blank', 'noopener') : toast('Add the link first.')) } }))),
     h('div', { class: 'card' }, h('h3', { text: 'Step 1: Ask first (optional)' }), askSection),
     h('div', { class: 'card' }, h('h3', { text: `Step ${k.ask.on ? 2 : 1}: How they get it` }), deliverySection),
-    h('div', { class: 'card' }, h('h3', { text: 'What they\'ll see' }), previews,
+    h('div', { class: 'card' }, h('h3', { text: 'Preview: what they\'ll see' }), previews,
       check(k, 'dmApproved', 'I approve these messages')),
     !isNew ? h('div', { class: 'card' }, h('h3', { text: 'Last 30 days' }),
       s ? h('div', { class: 'funnel' },
@@ -832,13 +856,14 @@ async function showEmailList(body) {
 // ---- connections: is everything working? (server: health() in server.mjs) ----
 async function connectionsCard(fresh) {
   const hl = fresh ? await api('/api/health?fresh=1').catch(() => null) : HEALTH || (await api('/api/health').catch(() => null));
-  const card = h('div', { class: 'card' });
-  if (!hl) return card.append(h('h3', { text: 'Connections' }), h('p', { class: 'warn', text: "Couldn't check the connections right now." })), card;
+  const card = h('details', { class: 'card fold', id: 'connections' });
+  if (!hl) return card.append(h('summary', {}, h('h3', { text: 'Connections' })), h('p', { class: 'warn', text: "Couldn't check the connections right now." })), card;
+  card.open = !!fresh || hl.state === 'bad';
   const word = { ok: 'Working', warn: 'Worth a look', bad: 'Not working', off: 'Not connected' };
   card.append(
-    h('div', { class: 'section-head' },
-      h('h3', { text: hl.state === 'ok' ? 'Connections: all working' : hl.state === 'bad' ? 'Connections: something is broken' : 'Connections: worth a look' }),
-      h('button', { class: 'quiet', text: 'Check again', on: { click: async () => { HEALTH = null; card.replaceWith(await connectionsCard(true)); } } })),
+    h('summary', {}, h('span', { class: `state ${hl.state}`, 'aria-hidden': 'true' }),
+      h('h3', { text: hl.state === 'ok' ? 'Connections: all working' : hl.state === 'bad' ? 'Connections: something is broken' : 'Connections: worth a look' })),
+    h('div', { class: 'row' }, h('button', { text: 'Check again', on: { click: async () => { HEALTH = null; card.replaceWith(await connectionsCard(true)); } } })),
     h('div', { class: 'checks' }, hl.checks.map((c) => h('div', { class: 'chk' },
       h('span', { class: `state ${c.state}`, role: 'img', 'aria-label': word[c.state] }),
       h('strong', { text: c.name }),
@@ -881,8 +906,12 @@ async function showStats(body) {
     return h('div', { class: `change${pct > 0 ? ' up' : pct < 0 ? ' down' : ''}`, text: pct ? `${pct > 0 ? '+' : ''}${pct}% vs previous ${s.days} days` : 'same as before' });
   };
   const tile = (n, label, key) => h('div', {}, h('div', { class: 'big', text: String(n) }), h('div', { class: 'hint', text: label }), key ? change(key) : null);
+  // Charts first; Connections folds away at the bottom (a line up top only when something needs a look).
+  const problems = (HEALTH?.checks || []).filter((c) => ['bad', 'warn'].includes(c.state));
+  if (problems.length) body.append(h('div', { class: `banner ${problems.some((c) => c.state === 'bad') ? 'bad' : 'warn'}`, role: 'status' },
+    h('span', { text: `${problems.map((c) => c.name).join(', ')}: worth a look.` }),
+    h('button', { text: 'See connections', on: { click: () => { const d = document.getElementById('connections'); d.open = true; d.scrollIntoView({ behavior: 'smooth' }); } } })));
   body.append(
-    await connectionsCard(),
     h('div', { class: 'filters' }, h('div', { class: 'flt' }, h('label', { for: 'st-days', text: 'Period' }), period)),
     h('div', { class: 'card' }, h('div', { class: 'funnel' },
       tile(t.contacts, 'contacts (all time)'),
@@ -891,22 +920,6 @@ async function showStats(body) {
       tile(t.dmsSent, 'freebie DMs / replies', 'dmsSent'),
       tile(t.signups, 'email signups', 'signups'),
       tile(t.conversion == null ? '-' : `${t.conversion}%`, 'got the link → signed up', 'conversion'))));
-  // Top posts: which Reel or post to make more of.
-  if (s.posts?.length) body.append(h('div', { class: 'card' }, h('h3', { text: 'Top posts' }),
-    h('p', { class: 'hint', text: 'The posts and Reels people commented a keyword on. Signups per post count from 24 Oct 2026.' }),
-    h('table', {},
-      h('thead', {}, h('tr', {}, h('th', { text: 'Post' }), h('th', { class: 'n', text: 'Keyword uses' }), h('th', { class: 'n', text: 'Signups' }))),
-      h('tbody', {}, s.posts.map((x) => h('tr', {},
-        h('td', {}, h('a', { href: x.post, target: '_blank', rel: 'noopener noreferrer', text: postLabel(x.post) }), h('div', { class: 'hint', text: x.keywords.join(', ') })),
-        h('td', { class: 'n', text: String(x.uses) }),
-        h('td', { class: 'n', text: String(x.signups) })))))));
-  // Her own replies (not keywords): how quickly they went out.
-  const r = s.replies || {};
-  const dur = (m) => (m == null ? '-' : m < 60 ? `${m} min` : m < 1440 ? `${Math.round(m / 60)} h` : `${Math.round(m / 1440)} days`);
-  body.append(h('div', { class: 'card' }, h('h3', { text: 'Your replies' }), h('div', { class: 'funnel' },
-    tile(r.answered ?? 0, 'answered by you'),
-    tile(dur(r.medianMinutes), 'typical reply time'),
-    tile(r.waiting ?? 0, 'waiting now'))));
   // Daily bar charts. Each bar's label is read out for screen readers.
   const chart = (key, title) => {
     const max = Math.max(1, ...s.series.map((d) => d[key]));
@@ -917,9 +930,17 @@ async function showStats(body) {
         s.series.map((d) => h('span', { title: `${d.date}: ${d[key]}`, style: `height:${Math.round((d[key] / max) * 100)}%` }))),
       h('div', { class: 'chart-axis' }, h('span', { text: s.series[0]?.date.slice(5) || '' }), h('span', { text: s.series[s.series.length - 1]?.date.slice(5) || '' })));
   };
-  body.append(chart('newContacts', 'New contacts'), chart('signups', 'Email signups'), chart('keywordUses', 'Keyword uses'));
-  if (!s.keywords.length) return body.append(h('p', { class: 'empty', text: 'No keyword activity in this period.' }));
-  body.append(h('div', { class: 'card' }, h('h3', { text: 'Per keyword' }), h('table', {},
+  body.append(h('div', { class: 'charts' }, chart('keywordUses', 'Keyword uses'), chart('signups', 'Email signups'), chart('newContacts', 'New contacts')));
+  // Top posts: which Reel or post to make more of.
+  if (s.posts?.length) body.append(h('div', { class: 'card' }, h('h3', { text: 'Top posts' }),
+    h('p', { class: 'hint', text: 'The posts and Reels people commented a keyword on. Signups per post count from 24 Oct 2026.' }),
+    h('table', {},
+      h('thead', {}, h('tr', {}, h('th', { text: 'Post' }), h('th', { class: 'n', text: 'Keyword uses' }), h('th', { class: 'n', text: 'Signups' }))),
+      h('tbody', {}, s.posts.map((x) => h('tr', {},
+        h('td', {}, h('a', { href: x.post, target: '_blank', rel: 'noopener noreferrer', text: postLabel(x.post) }), h('div', { class: 'hint', text: x.keywords.join(', ') })),
+        h('td', { class: 'n', text: String(x.uses) }),
+        h('td', { class: 'n', text: String(x.signups) })))))));
+  if (s.keywords.length) body.append(h('div', { class: 'card' }, h('h3', { text: 'Per keyword' }), h('table', {},
     h('thead', {}, h('tr', {}, h('th', { text: 'Keyword' }), h('th', { class: 'n', text: 'Used' }), h('th', { class: 'n', text: 'Got link' }), h('th', { class: 'n', text: 'Signed up' }), h('th', { class: 'n', text: 'Conversion' }), h('th', { text: 'Top post' }))),
     h('tbody', {}, s.keywords.map((k) => {
       const top = Object.entries(k.posts).sort((a, b) => b[1] - a[1])[0];
@@ -933,6 +954,14 @@ async function showStats(body) {
         h('td', { class: 'n', text: conv }),
         h('td', {}, top ? h('a', { href: top[0], target: '_blank', rel: 'noopener noreferrer', text: `${top[1]} on this post` }) : ''));
     })))));
+  // Her own replies (not keywords): how quickly they went out.
+  const r = s.replies || {};
+  const dur = (m) => (m == null ? '-' : m < 60 ? `${m} min` : m < 1440 ? `${Math.round(m / 60)} h` : `${Math.round(m / 1440)} days`);
+  body.append(h('div', { class: 'card' }, h('h3', { text: 'Your replies' }), h('div', { class: 'funnel' },
+    tile(r.answered ?? 0, 'answered by you'),
+    tile(dur(r.medianMinutes), 'typical reply time'),
+    tile(r.waiting ?? 0, 'waiting now'))));
+  body.append(await connectionsCard());
 }
 
 route();

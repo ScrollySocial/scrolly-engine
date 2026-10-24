@@ -27,6 +27,7 @@ copy('config/profile.example.json');
 // Self-test the buyer (or Claude) can run after an update
 copy('test/run-kit-test.mjs');
 copy('test/demo-inbox.mjs');
+copy('demo/seed.mjs');
 // Setup, skills, guide, docs
 copy('kit/setup', 'setup');
 copy('kit/skills/chat-manager-setup', '.claude/skills/chat-manager-setup');

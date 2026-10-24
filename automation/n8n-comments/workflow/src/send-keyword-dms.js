@@ -7,6 +7,9 @@
 //   email:  one DM with a personal signup link ({link}); the signup page adds the email to
 //           MailerLite and MailerLite emails the freebie.
 // "Ask first": the first DM only says "reply READY"; the link goes out when they reply.
+// "Reply under the comment" (optional): after the DM goes out, a short public reply like "Sent
+// you a DM!" under their comment. Several wordings, used in turn, so it never looks like a bot
+// posting the same line again and again.
 // A comment can only get ONE private-reply DM (Meta's rule, within 7 days); a DM conversation
 // can get more, but only within 24 hours of their last message.
 let keywords = [];
@@ -28,6 +31,18 @@ async function sendDm(recipient, text) {
     body: { recipient, message: { text } },
   });
   return res?.message_id || '';
+}
+async function publicReply(hit, c) {
+  const lines = String(hit.publicReply?.text || '').split('\n').map((l) => l.trim()).filter(Boolean);
+  if (!hit.publicReply?.on || !lines.length) return;
+  const n = state.publicReplyN || 0;
+  state.publicReplyN = n + 1;
+  try {
+    await http({ method: 'POST', url: `${GRAPH}/${c.id}/replies`, qs: { message: lines[n % lines.length] }, headers: { Authorization: `Bearer ${igToken()}` } });
+    c.note = `${c.note ? `${c.note} ` : ''}Replied under the comment.`;
+  } catch (e) {
+    logError('instagram-public-reply', e);
+  }
 }
 async function event(keyword, c, result) {
   try {
@@ -182,6 +197,7 @@ for (const item of $input.all()) {
       result = 'sent';
       if (flow && readyFlow) await inbox('PATCH', `/flows/${flow.token}`, { step: 'linkSent', dmPersonId: c.authorId, lastInboundAt: true });
       else if (flow && isDm) await inbox('PATCH', `/flows/${flow.token}`, { dmPersonId: c.authorId, lastInboundAt: true });
+      if (!isDm && !readyFlow) await publicReply(hit, c);
     } catch (e) {
       logError('instagram-dm', e);
       c.dm = `failed: ${errText(e)}`;

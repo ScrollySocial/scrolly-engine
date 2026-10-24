@@ -33,8 +33,13 @@ const RUN_SECRET = env('RUN_SECRET');
 const PUBLIC_HOST = env('N8N_HOST', env('PUBLIC_HOST', 'localhost'));
 // Tests only (test/run-inbox.sh): lets the end-to-end test make the next row update fail.
 const TEST_HOOKS = env('INBOX_TEST_HOOKS') === 'true';
-// Demo dashboards (test/demo-inbox.mjs): made-up data, a "Demo" banner, sample connection checks.
+// Demo dashboards (test/demo-inbox.mjs, the public demo.scrollyseo.com): made-up data, no login,
+// nothing saved or sent, sample connection checks. DEMO_BUY_URL: where "Get Chat Manager" goes.
 const DEMO = env('INBOX_DEMO') === 'true';
+const DEMO_BUY_URL = env('DEMO_BUY_URL');
+const DEMO_READONLY = "Demo: changes aren't saved here. In your own Chat Manager this works right away.";
+// The public demo restarts once a day (Docker brings it back), so its made-up activity stays recent.
+if (DEMO && env('DEMO_RESTART_HOURS')) setTimeout(() => process.exit(0), Number(env('DEMO_RESTART_HOURS')) * 3600e3).unref();
 let failNextPatch = false;
 // Read on every visit (small file), so an updated dashboard shows without a restart.
 const PAGE_FILE = join(dirname(fileURLToPath(import.meta.url)), 'dashboard.html');
@@ -93,6 +98,8 @@ function cleanKeyword(k) {
   // Email signup hands the freebie over right away (on the page, plus a DM when Instagram allows),
   // so no MailerLite sequence is needed (the free plan allows only 3; Mercedes 2026-10-23).
   const afterSignup = { dm: str(k.afterSignup?.dm) };
+  // A short public reply under the Instagram comment ("Sent you a DM!"), one wording per line, used in turn.
+  const publicReply = { on: !!k.publicReply?.on, text: str(k.publicReply?.text).split('\n').map((l) => l.trim()).filter(Boolean).slice(0, 10).join('\n') };
   const out = {
     ...k,
     keyword,
@@ -113,6 +120,7 @@ function cleanKeyword(k) {
     reminder,
     yt,
     afterSignup,
+    publicReply,
   };
   delete out.reminder.hours;
   delete out.mailerliteGroup;
@@ -125,6 +133,7 @@ function cleanKeyword(k) {
     const p = provider();
     if (delivery === 'email' && (!out.linkText.includes('{link}') || !url)) throw new Error(`${keyword}: email signup needs the freebie link and a DM text with {link} in it`);
     if (delivery === 'email' && p.needsTarget && !out.list.id) throw new Error(`${keyword}: pick the ${p.name} ${p.label} people join`);
+    if (publicReply.on && !publicReply.text) throw new Error(`${keyword}: write at least one reply for under the comment`);
     if (afterSignup.dm && !afterSignup.dm.includes('{url}')) throw new Error(`${keyword}: the DM after signup needs {url} in it`);
     if (reminder.on && (!reminder.text || !reminder.text.includes('{link}'))) throw new Error(`${keyword}: the reminder needs its text, with {link} in it`);
   }
@@ -148,7 +157,7 @@ function saveKeywords(list) {
     source: 'comment dashboard (hooks.scrollyseo.com/inbox)',
     keywords: clean
       .filter((k) => k.live && k.dmApproved)
-      .map(({ keyword, freebie, url, dm, delivery, where, ask, linkText, reminder, yt, afterSignup }) => ({ keyword, freebie, url, dm, delivery, where, ask, linkText, reminder, yt, afterSignup })),
+      .map(({ keyword, freebie, url, dm, delivery, where, ask, linkText, reminder, yt, afterSignup, publicReply }) => ({ keyword, freebie, url, dm, delivery, where, ask, linkText, reminder, yt, afterSignup, publicReply })),
   });
   return clean;
 }
@@ -323,7 +332,9 @@ function signupPage(k, action, state = {}) {
   // "Free tote bag pattern" reads as "Get your free tote bag pattern", never "free Free".
   const headline = k?.signup?.headline || `Get your free ${String(k?.freebie || "freebie").replace(/^free\s+/i, "")}`;
   const text = k?.signup?.text || 'Pop in your email and you can open it right away.';
-  const body = state.expired
+  const body = state.demo
+    ? `<h1>That's the demo</h1><p>In your own Chat Manager, their email goes to your list and the freebie opens right here.</p>`
+    : state.expired
     ? `<h1>This link has expired</h1><p>Comment the keyword again and you'll get a fresh one.</p>`
     : state.done
     ? `<h1>Here's your ${esc(k?.freebie || 'freebie')}</h1><p><a class="btn" href="${esc(k?.url || '#')}" target="_blank" rel="noopener">Open it</a></p><p>You're on the list with <strong>${esc(state.email)}</strong>. Save this page or the link so you can come back to it anytime.</p>`
@@ -442,6 +453,7 @@ function cookies(req) {
   return Object.fromEntries((req.headers.cookie || '').split(';').map((c) => c.trim().split('=')).filter((p) => p.length === 2));
 }
 function sessionOk(req) {
+  if (DEMO) return true;
   const sid = cookies(req).sid;
   const until = sid && db.sessions[sid];
   return !!until && until > Date.now();
@@ -616,7 +628,7 @@ const DEMO_HEALTH = {
     { id: 'youtube', name: 'YouTube', state: 'ok', text: 'Working. Last checked 9 min ago.', fix: '' },
     { id: 'tiktok', name: 'TikTok', state: 'off', text: 'Not connected.', fix: '' },
     { id: 'email', name: 'Email list', state: 'ok', text: 'Built-in list: signups are kept here (Email list tab).', fix: '' },
-    { id: 'replies', name: 'Your replies', state: 'warn', text: "1 reply didn't send. Instagram only allows DM replies within 24 hours of their last message.", fix: 'Open them in the Inbox to try again.' },
+    { id: 'replies', name: 'Replies you sent', state: 'warn', text: "1 reply didn't send. Instagram only allows DM replies within 24 hours of their last message.", fix: 'Open them in the Inbox to try again.' },
   ],
   errors: [],
 };
@@ -698,7 +710,7 @@ async function health() {
   }
   // 6. Replies she approved that didn't post.
   const failed = db.rows.filter((r) => r.kind !== 'out' && r.status === 'Error');
-  if (failed.length) add('replies', 'Your replies', 'warn', `${failed.length} repl${failed.length === 1 ? 'y' : 'ies'} didn't send. ${redact(failed[0].note)}`, 'Open them in the Inbox to try again.');
+  if (failed.length) add('replies', 'Replies you sent', 'warn', `${failed.length} repl${failed.length === 1 ? 'y' : 'ies'} didn't send. ${redact(failed[0].note)}`, 'Open them in the Inbox to try again.');
   const recent = errs.filter((e) => e.at >= since(7 * 24)).sort((a, b) => b.at.localeCompare(a.at)).slice(0, 10);
   const value = { at: now(), state: checks.some((c) => c.state === 'bad') ? 'bad' : checks.some((c) => c.state === 'warn') ? 'warn' : 'ok', checks, errors: recent };
   healthCache = { at: Date.now(), value };
@@ -772,6 +784,7 @@ async function handle(req, res) {
   }
   if (req.method === 'GET' && path === '/inbox') return send(res, 200, readFileSync(PAGE_FILE, 'utf8'), 'text/html; charset=utf-8');
   const signup = path.match(/^\/inbox\/f\/([A-Za-z0-9_-]{8,40})$/);
+  if (DEMO && (signup || path.startsWith('/inbox/s/')) && req.method === 'POST') return send(res, 200, signupPage(null, '', { demo: true }), 'text/html; charset=utf-8');
   if (signup && ['GET', 'POST'].includes(req.method)) return handleSignup(req, res, signup[1]);
   const shared = path.match(/^\/inbox\/s\/([A-Za-z0-9$]{2,20})$/);
   if (shared && ['GET', 'POST'].includes(req.method)) return handleSharedSignup(req, res, shared[1]);
@@ -816,13 +829,14 @@ async function handle(req, res) {
     if (!sameOrigin(req)) return send(res, 403, { error: 'forbidden' });
   }
   const api = path.slice('/inbox/api'.length);
+  if (DEMO && req.method !== 'GET') return send(res, 403, { error: DEMO_READONLY, demo: true });
   const body = ['POST', 'PATCH', 'PUT'].includes(req.method) ? await readBody(req) : {};
 
   if (api === '/health' && req.method === 'GET') {
     if (url.searchParams.get('fresh')) healthCache = null;
     return send(res, 200, await health());
   }
-  if (api === '/me') return send(res, 200, { loggedIn: true, demo: DEMO, passwordSet: !!db.auth, dmsEnabled: env('DMS_ENABLED') === 'true', list: listInfo(), profile: readProfile(), publicHost: PUBLIC_HOST, waitingSignups: db.subscribers.filter((x) => ['waiting', 'failed'].includes(x.status)).length });
+  if (api === '/me') return send(res, 200, { loggedIn: true, demo: DEMO, demoBuyUrl: DEMO ? DEMO_BUY_URL : '', passwordSet: !!db.auth, dmsEnabled: env('DMS_ENABLED') === 'true', list: listInfo(), profile: readProfile(), publicHost: PUBLIC_HOST, waitingSignups: db.subscribers.filter((x) => ['waiting', 'failed'].includes(x.status)).length });
   if (api === '/rows' && req.method === 'GET') {
     const status = url.searchParams.getAll('status');
     const rows = status.length ? db.rows.filter((r) => status.includes(r.status)) : db.rows;
