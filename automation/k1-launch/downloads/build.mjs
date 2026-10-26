@@ -47,7 +47,7 @@ ol{padding-left:20px;font-size:13.5px;line-height:1.5}li{margin:0 0 9px}b{font-w
 .ft{position:absolute;left:56px;right:56px;bottom:30px;display:flex;justify-content:space-between;font:800 10px 'Public Sans';letter-spacing:.14em;text-transform:uppercase;color:#55504a}</style></head><body>
 <div class="pg"><div class="eb">$1K Club download</div><h1 class="disp">${title}</h1><p class="sub">${sub}</p>
 <div class="grid"><img src="${img}"><div><ol>${rows.map((r) => `<li>${r}</li>`).join('')}</ol>${foot}</div></div>
-<div class="ft"><span>Scrolly · $1K Club Playbook</span><span>scrollyseo.com</span></div></div></body></html>`;
+<div class="ft"><span>The Ambition Department · $1K Club Playbook</span><span>theambitiondepartment.com</span></div></div></body></html>`;
 
 const D1 = guidePage('Reel safe-zone package', 'Instagram puts its buttons, username, caption and menus on top of your video. Keep your hook, your subject and your ask inside the teal box, and they stay visible.',
   '/dist/D-1-reel-safe-zone/reel-safe-zone-labeled-guide.png',
@@ -86,12 +86,12 @@ const D3 = `<!doctype html><html><head>${base}<style>@page{size:8.5in 11in;margi
 ${sec('1. Account type', ['<b>Switch to a professional account</b> if you haven\'t: Profile → menu (the three lines) → Account type and tools → Switch to professional account → pick a category.', '<b>Creator or Business?</b> Choose <b>Business</b> if you need product tags or a shop, lead forms, an address on your profile, or a tool that requires Business. Otherwise choose <b>Creator</b>. Neither gets more reach, and neither gives you music rights.'])}
 ${sec('2. Four settings that matter', ['<b>Keep the account public.</b> Private accounts can\'t be recommended to new people.', '<b>Check Account Status</b> (in Settings). It shows whether your account can be recommended to people who don\'t follow you, and what to fix if not. Check again if your reach suddenly collapses.', '<b>Allow search engines:</b> leave "Allow public photos and videos to appear in search engine results" on.', '<b>Connect Facebook sharing</b> (section 4).'])}
 ${sec('3. Your profile is your buying hub', ['<b>Name field</b> says what you do: "Frank | Handyman in Austin."', '<b>Bio</b> passes the 10-second test: what you sell, who it\'s for, the price or "from $__," and what to do next.', '<b>First link</b> goes straight to your one next step (a product, booking, quote, or checkout page, never a generic homepage).', '<b>Action button</b> (if your booking tool supports one), <b>3 pinned posts</b> (best proof, clearest offer explainer, most-asked question), and <b>Highlights</b>: "How to buy," "Reviews," "FAQ."'])}
-<div class="ft"><span>Scrolly · $1K Club Playbook</span><span>1 / 2</span></div></div>
+<div class="ft"><span>The Ambition Department · $1K Club Playbook</span><span>1 / 2</span></div></div>
 <div class="pg">
 ${sec('4. Facebook: set it once (5 minutes)', ['Instagram → Profile → menu (the three lines) → <b>Accounts Center</b> → <b>Connected experiences</b> → <b>Sharing across profiles</b>.', 'Choose your Instagram account as the source and your <b>Facebook Page</b> as the destination.', 'Turn on automatic sharing for <b>posts</b> and <b>Reels</b>. Stories are optional: check how yours look on Facebook first.', 'Confirm your Facebook Reels audience is <b>Public</b> (in Facebook\'s Reels settings).', 'After your first few Reels, look at them on Facebook: video, audio and caption. If a Reel\'s music didn\'t carry over, reshare it with original or cleared audio.'])}
 ${sec('5. Before you post anything', ['A folder outside Instagram (Google Drive, Dropbox, or iCloud) for clean master files, carousel source files, photos, hooks that worked, and proof screenshots (with permission).', 'Your one next step and its exact link, written down.', 'The phone test done: open your profile as a customer, tap your link, try to buy, book, or request a quote, and fix the first friction point.', 'Insights location found: Profile → Professional dashboard (account-wide), and "View insights" under any post.'])}
 <div class="card" style="margin-top:18px"><b>Menu names change.</b> Instagram moves and renames settings from time to time, and they can differ between iPhone and Android. If a step doesn't match your app, search for the setting's name in Settings.</div>
-<div class="ft"><span>Scrolly · $1K Club Playbook</span><span>2 / 2</span></div></div></body></html>`;
+<div class="ft"><span>The Ambition Department · $1K Club Playbook</span><span>2 / 2</span></div></div></body></html>`;
 
 // ---- render
 const files = { '/src/overlay.html': overlay(false), '/src/overlay-labeled.html': overlay(true), '/src/d1.html': D1, '/src/slide.html': slide(false), '/src/slide-overlay.html': slide(true), '/src/d2.html': D2, '/src/d3.html': D3 };
@@ -105,7 +105,7 @@ const server = http.createServer((q, r) => {
 });
 await new Promise((r) => server.listen(0, '127.0.0.1', r));
 const origin = `http://127.0.0.1:${server.address().port}`;
-const browser = await puppeteer.launch({ executablePath: 'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe', headless: 'new' });
+const browser = await puppeteer.launch({ executablePath: process.env.PDF_BROWSER || 'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe', headless: 'new' });
 const page = await browser.newPage();
 async function png(src, out, w, h) {
   await page.setViewport({ width: w, height: h }); await page.goto(origin + src, { waitUntil: 'networkidle0' }); await page.evaluate(() => document.fonts.ready);

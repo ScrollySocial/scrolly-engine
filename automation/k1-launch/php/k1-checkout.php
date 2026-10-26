@@ -239,7 +239,7 @@ if ( ! defined( 'SCROLLY_K1CO_V' ) ) {
 		$intro = '<section class="k1co-intro">'
 			. '<h1>Earn your first stripe.</h1>'
 			. '<p class="k1co-sub">Choose the $1K Club plan or add your first 30-day Challenge attempt. Make the next move for your business.</p>'
-			. '<div class="k1co-art">' . scrolly_k1co_img( 'collage', 'Scrolly $1K Club Playbook collage with desktop and phone previews', 'k1co-collage' ) . '</div>'
+			. '<div class="k1co-art">' . scrolly_k1co_img( 'collage', 'The Ambition Department $1K Club Playbook collage with desktop and phone previews', 'k1co-collage' ) . '</div>'
 			. '<div class="k1co-tracker" aria-hidden="true"><div class="k1co-tracker-head"><strong>Your first $1K</strong><strong class="k1co-target">$1K</strong></div>'
 			. '<div class="k1co-track"><span></span></div>'
 			. '<div class="k1co-stages"><span>01 Start</span><span>02 Build</span><span>03 Progress</span><span>04 Verify</span><span>05 Stripe earned</span></div></div>'

@@ -22,7 +22,7 @@ computer and press the approve buttons; Claude does the rest. Plan on about an h
 
 ## Later
 
-- **update my Chat Manager**: after downloading a new version from My Account → Downloads on scrollyseo.com.
+- **update my Chat Manager**: after downloading a new version from My Account → Downloads on theambitiondepartment.com.
 - **check my Chat Manager**: tests every part and says what needs you.
 - **draft my comment replies**: Claude writes reply drafts on your plan; you approve them in your dashboard.
 

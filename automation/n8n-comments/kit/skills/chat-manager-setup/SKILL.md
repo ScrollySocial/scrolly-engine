@@ -192,7 +192,7 @@ for updates). Running cost: $6 a month for the server.
 
 ## Update ("update my Chat Manager")
 
-1. The buyer downloads the newest zip from their account on scrollyseo.com (My Account → Downloads) and unzips it
+1. The buyer downloads the newest zip from their account on theambitiondepartment.com (My Account → Downloads) and unzips it
    over this folder (their `.secrets` and `config` stay; the zip has neither).
 2. If the DigitalOcean token expired, they don't need a new one: updates go over SSH with the kit's own key.
 3. `node setup/cm.mjs update`: backs up their settings, keys and inbox to `.secrets/backups`, uploads the new code,

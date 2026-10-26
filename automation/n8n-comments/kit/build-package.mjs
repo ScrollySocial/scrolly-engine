@@ -36,6 +36,26 @@ if (existsSync(join(KIT, 'guide', 'index.html'))) copy('kit/guide', 'guide', (p)
 for (const f of ['README.md', 'CHANGELOG.md', 'VERSION']) copy(`kit/${f}`, f);
 writeFileSync(join(out, '.gitignore'), '.secrets/\n.env\nconfig/profile.json\nconfig/pages/\nconfig/keywords*.json\nconfig/settings.json\n');
 
+// ---- rename: customers see The Ambition Department / Chat Manager, never Scrolly (renamed 2026-10-26).
+// Ids and file names (ScrollyComments1, scrolly-comments.json) stay: the setup script and her live server use them.
+const RENAME = [
+  [/Scrolly comments/g, 'Chat Manager comments'],
+  [/ \(hooks\.scrollyseo\.com\/inbox\)/g, ''],
+  [/, or hooks\.scrollyseo\.com for Mercedes/g, ''],
+  [/scrollyseo\.com/g, 'theambitiondepartment.com'],
+  [/Scrolly v3/g, 'The Ambition Department'],
+  [/Mercedes's Scrolly inbox/g, "Mercedes's own inbox"],
+];
+const renameWalk = (d) => readdirSync(d).forEach((f) => {
+  const p = join(d, f);
+  if (statSync(p).isDirectory()) return renameWalk(p);
+  if (/\.(png|jpe?g|webp|zip|ico|woff2?)$/i.test(p)) return;
+  const before = readFileSync(p, 'utf8');
+  const after = RENAME.reduce((t, [re, to]) => t.replace(re, to), before);
+  if (after !== before) writeFileSync(p, after);
+});
+renameWalk(out);
+
 // ---- leak check: nothing of Mercedes's live setup may ship ----
 const FORBIDDEN = [
   [/157\.245\.142\.39/, "her server's IP"],

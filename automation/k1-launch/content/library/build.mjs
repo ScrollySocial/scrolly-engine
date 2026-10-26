@@ -102,7 +102,7 @@ h1{font:400 34px/1.05 'DM Serif Display';margin:6px 0 8px}.sub{font:400 12.5px/1
 .card h3{font:400 19px/1.1 'DM Serif Display';margin:0 0 8px;padding-bottom:6px;border-bottom:3px solid #${C.hi}}
 .card p{font:400 11.5px/1.4 'DM Sans';margin:0 0 7px}.card span{display:block;font:700 9px/1.3 'DM Sans';letter-spacing:.1em;text-transform:uppercase;color:#6b665c;margin-bottom:1px}
 .ft{position:absolute;left:50px;right:50px;bottom:24px;display:flex;justify-content:space-between;font:700 9px 'DM Sans';letter-spacing:.12em;text-transform:uppercase;color:#6b665c}</style></head><body>
-${chunks.map((c, i) => `<div class="pg">${i === 0 ? head : `<div class="eb" style="margin-bottom:14px">Template ideas · ${esc(s.id)} ${esc(s.name)} (continued)</div>`}<div class="grid">${c.map(card).join('')}</div><div class="ft"><span>Scrolly $1K Challenge · template ideas</span><span>${i + 1} / ${chunks.length}</span></div></div>`).join('')}
+${chunks.map((c, i) => `<div class="pg">${i === 0 ? head : `<div class="eb" style="margin-bottom:14px">Template ideas · ${esc(s.id)} ${esc(s.name)} (continued)</div>`}<div class="grid">${c.map(card).join('')}</div><div class="ft"><span>The Ambition Department $1K Challenge · template ideas</span><span>${i + 1} / ${chunks.length}</span></div></div>`).join('')}
 </body></html>`;
 }
 

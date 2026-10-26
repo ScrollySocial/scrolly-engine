@@ -157,8 +157,8 @@ if ( ! defined( 'SCROLLY_K1R_EP' ) ) {
 			. '<label><input type="radio" name="display" value="anon"> Don\'t show my name</label>'
 			. '<label for="k1r-business" class="k1r-sub">Business name (if you picked that)</label><input id="k1r-business" name="business" type="text" maxlength="80"></fieldset>';
 		$h .= '<fieldset><legend>Can we share it? (tick any, or none to keep it private)</legend>'
-			. '<label class="chk"><input type="checkbox" name="ok_site" value="1"> You can quote my review on scrollyseo.com</label>'
-			. '<label class="chk"><input type="checkbox" name="ok_social" value="1"> You can quote my review on Scrolly\'s social media</label>'
+			. '<label class="chk"><input type="checkbox" name="ok_site" value="1"> You can quote my review on theambitiondepartment.com</label>'
+			. '<label class="chk"><input type="checkbox" name="ok_social" value="1"> You can quote my review on The Ambition Department\'s social media</label>'
 			. '<label class="chk"><input type="checkbox" name="ok_edit" value="1"> You can shorten it or fix typos, as long as the meaning stays the same</label></fieldset>';
 		$h .= '<button class="btn" type="submit">Send my review</button></form></div></div>';
 		return $h;
@@ -324,7 +324,7 @@ if ( ! defined( 'SCROLLY_K1R_EP' ) ) {
 				"Congratulations on your verified \$1,000! Your story could show someone else that it's possible. Would you take 2 minutes to tell it?" ),
 		);
 		list( $subject, $line ) = $copy[ $kind ];
-		$body = "Hi $first,\n\n$line\n\nIt takes about 2 minutes: $link\n\nHonest is best. Good or bad, every review helps us make it better.\n\nScrolly\nscrollyseo.com\n\n"
+		$body = "Hi $first,\n\n$line\n\nIt takes about 2 minutes: $link\n\nHonest is best. Good or bad, every review helps us make it better.\n\nThe Ambition Department\ntheambitiondepartment.com\n\n"
 			. 'Rather not get these? ' . scrolly_k1r_optout_url( $uid );
 		return wp_mail( $u->user_email, $subject, $body );
 	}
