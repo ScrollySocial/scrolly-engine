@@ -6,7 +6,7 @@ import { wp } from './wp-client.mjs';
 const COVERS = [
   { id: 58, name: 'Shopify SEO Workbook', file: 'assets/cover-shopify-seo-workbook.webp', alt: 'Scrolly Shopify SEO Workbook cover' },
   { id: 69, name: 'Pinterest SEO Workbook', file: 'assets/cover-pinterest-seo-workbook.webp', alt: 'Scrolly Pinterest SEO Workbook cover' },
-  { id: 24, name: 'SEO Site Audit', file: 'assets/cover-seo-site-audit.webp', alt: 'Scrolly SEO Site Audit cover' },
+  { id: 24, name: 'SEO Site Audit', file: 'assets/cover-seo-site-audit-tad.webp', alt: 'The Ambition Department SEO Site Audit cover' },
 ];
 
 for (const c of COVERS) {

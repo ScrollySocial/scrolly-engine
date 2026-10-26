@@ -367,7 +367,7 @@ async function renderPdf(mdName, pdfName, fresh) {
         margin: { top: '0.75in', bottom: '0.75in', left: '0.6in', right: '0.6in' },
         displayHeaderFooter: true,
         headerTemplate:
-          '<div style="font-family:Arial,sans-serif;font-size:7px;color:#5c6478;width:100%;text-align:center;padding-top:6px;">ScrollySEO | Organic Search Opportunity Report</div>',
+          '<div style="font-family:Arial,sans-serif;font-size:7px;color:#5c6478;width:100%;text-align:center;padding-top:6px;">The Ambition Department | Organic Search Opportunity Report</div>',
         footerTemplate:
           `<div style="font-family:Arial,sans-serif;font-size:7px;color:#5c6478;width:100%;text-align:center;padding-bottom:6px;">${displayName} &bull; Confidential &bull; ${renderDate} &bull; Page <span class="pageNumber"></span> of <span class="totalPages"></span></div>`,
       },
@@ -376,7 +376,7 @@ async function renderPdf(mdName, pdfName, fresh) {
     // machine (left broken from an unrelated failed npm install sharing the
     // same ~/.cache/puppeteer path) — point at the system's installed Edge
     // instead when present, rather than depending on that download at all.
-    const edgePath = 'C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe';
+    const edgePath = process.env.PDF_BROWSER || 'C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe'; // PDF_BROWSER: another Chromium when Edge won't start
     if (existsSync(edgePath)) {
       pdfConfig.launch_options = { executablePath: edgePath };
     }

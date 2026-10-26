@@ -1,6 +1,6 @@
 <div class="cover">
   <div class="cover-top">
-    <div class="cover-brand">Scrolly<span>SEO</span></div>
+    <div class="cover-brand">The Ambition <span>Department</span></div>
     <div class="cover-gradient-bar"></div>
     <div class="cover-eyebrow">Organic Search Opportunity Report</div>
     <h1>Mulberry Creek Nursery &amp; Landscaping</h1>
@@ -10,7 +10,7 @@
     <div><span class="cm-label">Website</span><span class="cm-value">mulberrycreektx.com</span></div>
     <div><span class="cm-label">Location</span><span class="cm-value">Wills Point, TX</span></div>
     <div><span class="cm-label">Report Date</span><span class="cm-value">August 15, 2026</span></div>
-    <div><span class="cm-label">Prepared By</span><span class="cm-value">Scrolly SEO</span></div>
+    <div><span class="cm-label">Prepared By</span><span class="cm-value">The Ambition Department</span></div>
   </div>
 </div>
 
