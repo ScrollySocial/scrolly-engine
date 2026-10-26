@@ -7,6 +7,9 @@
 // (automation/n8n-comments/docker-compose.demo.yml), framed by theambitiondepartment.com only.
 // ManyChat prices: checked on manychat.com/pricing 2026-10-26 (monthly: Free 25, Essential $17/250, Pro $39/2,500,
 // Business $99/7,500, Advanced $199/25,000 active contacts; channels Instagram, TikTok, WhatsApp, Messenger, no YouTube).
+// Others, checked on their own pricing pages 2026-10-26: LinkDM Free 1,000 DMs/mo, Pro $19/mo (comment auto-reply is Pro);
+// CreatorFlow Free 500 DMs/mo incl. comment-to-DM, Pro $15/mo monthly ($12 yearly), email gate on paid; Inro Free 100
+// active contacts, Pro from EUR 12.99/mo for 500, priced by contacts. None list YouTube.
 // Before publishing: create the WooCommerce download (kit/dist zip) and point BUY_URL at its add-to-cart link.
 import { s3shell } from '../lib.mjs';
 
@@ -189,6 +192,7 @@ const CSS = `
 .s3 .cm-cost{font:400 clamp(2.6rem,3.6vw,3.4rem)/1 var(--s3-serif)}
 .s3 .cm-cost small{display:block;margin-top:10px;font:700 var(--s3-fs-label)/1.3 var(--s3-sans);letter-spacing:.16em;text-transform:uppercase}
 .s3 .cm-link{font:500 var(--s3-fs-ui)/1.3 var(--s3-sans);color:var(--s3-ink);text-underline-offset:4px}
+.s3 .cm-others{margin:28px 0 0;max-width:46em;font:400 var(--s3-fs-body)/1.55 var(--s3-sans);color:var(--s3-ink)}
 .s3 .cm-beta{margin:18px 0 0;max-width:34em;font:500 var(--s3-fs-ui)/1.45 var(--s3-sans);color:var(--s3-ink)}
 .s3 .cm-stage{display:flex;justify-content:center}
 .s3 .cm-phone{height:min(540px,calc(100vh - 190px));min-height:430px;aspect-ratio:9/17;max-width:100%;padding:10px;border-radius:46px;background:#141518;box-shadow:inset 0 0 0 2px #3a3c42,0 40px 80px rgba(10,25,48,.22)}
@@ -349,6 +353,7 @@ export function build() {
   <thead><tr><th scope="col"></th><th scope="col">Chat Manager</th><th scope="col">ManyChat</th></tr></thead>
   <tbody>${COMPARE.map(([a, b, c]) => `<tr><th scope="row">${a}</th><td>${b}</td><td>${c}</td></tr>`).join('')}</tbody>
  </table></div>
+ <p class="cm-others"><b>And the smaller Instagram tools?</b> They work the same way: a free plan with limits, then a monthly fee. LinkDM is free for 1,000 DMs a month, then $19 a month. CreatorFlow is free for 500 DMs a month, then $15 a month, and collects emails only on paid plans. Inro is free for 100 contacts, then from €12.99 a month, rising as your audience grows. None of them list YouTube.</p>
 </div></section>
 <section class="s3-sec"><div class="s3-wrap">
  <div class="cm-know">
@@ -365,7 +370,7 @@ export function build() {
  <p class="s3-lede">${PRICE} one-time. Download it, open it in Claude and say “set up my Chat Manager”.</p>
  <p class="cm-beta">${BETA}</p>
  ${buyBtn()}
- <p class="s3-fine">Claude is made by Anthropic and is sold separately. ManyChat is a trademark of ManyChat, Inc. ManyChat prices are its monthly plans by active contacts (Essential, Pro, Business, Advanced), checked October 2026; going over a plan’s contacts costs extra. Hosting is DigitalOcean’s basic server.</p>
+ <p class="s3-fine">Claude is made by Anthropic and is sold separately. ManyChat, LinkDM, CreatorFlow and Inro are trademarks of their owners. Their prices are their monthly plans as listed on each company's pricing page, checked October 2026; ManyChat's are by active contacts (Essential, Pro, Business, Advanced), and going over a plan’s contacts costs extra. Hosting is DigitalOcean’s basic server.</p>
 </div></section>`;
   return s3shell(body, CSS);
 }
