@@ -67,6 +67,14 @@ const TIERS = [
   ['7,500', 'Business', 99],
   ['25,000', 'Advanced', 199],
 ];
+// Monthly cost at the same four audience sizes, from each tool's own pricing page (2026-10-26). LinkDM and CreatorFlow
+// count DMs, not people: counted as one DM per person (the cheapest reading for them). Inro bills in euros (its calculator).
+// null = no plan of that size listed. [label, amount, shown]
+const OTHERS = [
+  ['LinkDM', [[0, 'Free'], [19, '$19'], [19, '$19'], [19, '$19']]],
+  ['CreatorFlow', [[0, 'Free'], [15, '$15'], [30, '$30'], [null, 'No plan this size']]],
+  ['Inro', [[12.99, '€12.99'], [49.99, '€49.99'], [124.99, '€124.99'], [339.99, '€339.99']]],
+];
 
 const FEATURES = [
   ['comment', 'Keywords', 'Comments, DMs and Story replies'],
@@ -95,15 +103,19 @@ const BRING = [
 ];
 
 // Plain and checkable; no claim here without a source (vault comment-to-dm-n8n-plan.md and the prices above).
+// Columns: Chat Manager, ManyChat, LinkDM, CreatorFlow, Inro. Competitors only get "Yes" where their own pricing page
+// lists the feature (2026-10-26); otherwise "Not listed".
+const TOOLS = ['Chat Manager', 'ManyChat', 'LinkDM', 'CreatorFlow', 'Inro'];
 const COMPARE = [
-  ['What you pay', `${PRICE} once + about $6 a month`, 'Free for up to 25 people a month, then from $17 a month, more as your audience grows'],
-  ['Price tied to how many people message you', 'No', 'Yes'],
-  ['Instagram comment, DM and Story reply keywords', 'Yes', 'Yes'],
-  ['“Check your DMs” reply under the comment', 'Yes', 'Yes'],
-  ['YouTube comment keywords', 'Yes', 'No'],
-  ['Email signup page with a personal link', 'Yes, with a reminder DM', 'Collects email inside the DM'],
-  ['Change the look or add features', 'Yes, it’s your own copy', 'No'],
-  ['Your data', 'On your own server', 'On ManyChat’s servers'],
+  ['What you pay', `${PRICE} once + about $6 a month`, 'Free for 25 people a month, then from $17 a month', 'Free for 1,000 DMs a month, then $19 a month', 'Free for 500 DMs a month, then $15 a month', 'Free for 100 contacts a month, then from €12.99 a month'],
+  ['Price tied to how many people message you', 'No', 'Yes', 'Yes', 'Yes', 'Yes'],
+  ['Instagram comment and DM keywords', 'Yes', 'Yes', 'Yes', 'Yes', 'Yes'],
+  ['Story reply keywords', 'Yes', 'Yes', 'Yes', 'Yes', 'Not listed'],
+  ['“Check your DMs” reply under the comment', 'Yes', 'Yes', 'Yes, on Pro', 'Not listed', 'Not listed'],
+  ['YouTube comment keywords', 'Yes', 'No', 'Not listed', 'Not listed', 'Not listed'],
+  ['Collect emails', 'Yes, on a signup page with a reminder DM', 'Yes, inside the DM', 'Lead capture, on Pro', 'Yes, on Pro', 'Not listed'],
+  ['Change the look or add features', 'Yes, it’s your own copy', 'No', 'No', 'No', 'No'],
+  ['Your data', 'On your own server', 'On ManyChat’s servers', 'On LinkDM’s servers', 'On CreatorFlow’s servers', 'On Inro’s servers'],
 ];
 
 const FAQS = [
@@ -157,15 +169,24 @@ const heroPhone = `
  </div>
 </div>`;
 
-const maxTier = TIERS[TIERS.length - 1][2];
+// One small bar list per audience size; bars scale to the most expensive tool at that size.
+const tierRows = (i) => [
+  ['ManyChat', TIERS[i][2], `$${TIERS[i][2]}`, 'mc'],
+  ...OTHERS.map(([name, v]) => [name, v[i][0], v[i][1], 'ot']),
+  ['Chat Manager', 6, 'about $6', 'us'],
+];
 const tierChart = `
-<div class="cm-tiers" role="img" aria-label="Monthly cost by audience size. ManyChat: ${TIERS.map(([n, p, c]) => `${n} contacts, ${p}, $${c}`).join('; ')}. Chat Manager: about $6 at every size.">
- ${TIERS.map(([n, plan, cost]) => `<div class="cm-tier">
-  <div class="cm-cols"><div class="mc" style="height:${Math.round((cost / maxTier) * 100)}%"><span>$${cost}</span></div><div class="us" style="height:${Math.max(4, Math.round((6 / maxTier) * 100))}%"><span>$6</span></div></div>
-  <p><b>${n}</b> people a month<br><small>ManyChat ${plan}</small></p>
- </div>`).join('')}
+<div class="cm-tiers">
+ ${TIERS.map(([n], i) => {
+    const rows = tierRows(i);
+    const max = Math.max(...rows.map((r) => r[1] || 0));
+    return `<div class="cm-tier" role="img" aria-label="${n} people a month: ${rows.map((r) => `${r[0]} ${r[2]}`).join(', ')}">
+  <h3><b>${n}</b> people a month</h3>
+  <ul aria-hidden="true">${rows.map(([name, amt, shown, cls]) => `<li class="${cls}"><span class="nm">${name}</span>${amt === null ? `<span class="na">${shown}</span>` : `<span class="bar"><i style="width:${Math.max(2, Math.round(((amt || 0) / max) * 100))}%"></i></span><span class="pr">${shown}</span>`}</li>`).join('')}</ul>
+ </div>`;
+  }).join('')}
 </div>
-<div class="cm-key" aria-hidden="true"><span class="mc">ManyChat, monthly</span><span class="us">Chat Manager hosting</span></div>`;
+<p class="cm-key">Monthly cost to run. Chat Manager is ${PRICE} once, then about $6 a month for hosting.</p>`;
 
 // "It's your software": what owning the code looks like, as a chat with Claude.
 const yoursChat = `
@@ -192,7 +213,6 @@ const CSS = `
 .s3 .cm-cost{font:400 clamp(2.6rem,3.6vw,3.4rem)/1 var(--s3-serif)}
 .s3 .cm-cost small{display:block;margin-top:10px;font:700 var(--s3-fs-label)/1.3 var(--s3-sans);letter-spacing:.16em;text-transform:uppercase}
 .s3 .cm-link{font:500 var(--s3-fs-ui)/1.3 var(--s3-sans);color:var(--s3-ink);text-underline-offset:4px}
-.s3 .cm-others{margin:28px 0 0;max-width:46em;font:400 var(--s3-fs-body)/1.55 var(--s3-sans);color:var(--s3-ink)}
 .s3 .cm-beta{margin:18px 0 0;max-width:34em;font:500 var(--s3-fs-ui)/1.45 var(--s3-sans);color:var(--s3-ink)}
 .s3 .cm-stage{display:flex;justify-content:center}
 .s3 .cm-phone{height:min(540px,calc(100vh - 190px));min-height:430px;aspect-ratio:9/17;max-width:100%;padding:10px;border-radius:46px;background:#141518;box-shadow:inset 0 0 0 2px #3a3c42,0 40px 80px rgba(10,25,48,.22)}
@@ -244,19 +264,19 @@ const CSS = `
 .s3 .cm-q,.s3 .cm-a{max-width:80%;padding:12px 16px;border-radius:18px}
 .s3 .cm-q{align-self:flex-end;background:var(--s3-navy);color:#fff}
 .s3 .cm-a{align-self:flex-start;background:var(--s3-mist)}
-.s3 .cm-tiers{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(12px,2vw,32px);margin-top:clamp(28px,3vw,48px)}
-.s3 .cm-cols{display:flex;align-items:flex-end;justify-content:center;gap:10px;height:min(220px,28vh);border-bottom:2px solid var(--s3-ink)}
-.s3 .cm-cols div{position:relative;width:min(56px,40%);border-radius:10px 10px 0 0}
-.s3 .cm-cols .mc{background:var(--s3-navy)}
-.s3 .cm-cols .us{background:var(--s3-sky)}
-.s3 .cm-cols span{position:absolute;bottom:100%;left:50%;transform:translateX(-50%);padding-bottom:6px;font:400 1.5rem/1 var(--s3-serif);white-space:nowrap}
-.s3 .cm-tier p{margin:12px 0 0;text-align:center}
-.s3 .cm-tier small{font-size:var(--s3-fs-fine);color:var(--s3-muted)}
-.s3 .cm-key{display:flex;flex-wrap:wrap;gap:12px 28px;margin-top:24px}
-.s3 .cm-key span{display:flex;align-items:center;gap:8px}
-.s3 .cm-key span::before{content:"";width:18px;height:18px;border-radius:4px}
-.s3 .cm-key .mc::before{background:var(--s3-navy)}
-.s3 .cm-key .us::before{background:var(--s3-sky)}
+.s3 .cm-tiers{display:grid;grid-template-columns:repeat(2,1fr);gap:clamp(16px,2vw,28px);margin-top:clamp(28px,3vw,48px)}
+.s3 .cm-tier{background:#fff;border-radius:18px;padding:clamp(18px,2vw,26px)}
+.s3 .cm-tier h3{margin:0 0 14px;font:400 var(--s3-fs-lede)/1.2 var(--s3-sans)}
+.s3 .cm-tier ul{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.s3 .cm-tier li{display:grid;grid-template-columns:7.5em 1fr 6.2em;align-items:center;gap:12px}
+.s3 .cm-tier .nm{font-weight:500}
+.s3 .cm-tier .bar{height:14px;background:var(--s3-mist);border-radius:7px;overflow:hidden}
+.s3 .cm-tier .bar i{display:block;height:100%;border-radius:7px;background:var(--s3-navy)}
+.s3 .cm-tier .us .bar i{background:var(--s3-sky)}
+.s3 .cm-tier .us .nm,.s3 .cm-tier .us .pr{font-weight:700}
+.s3 .cm-tier .pr{text-align:right;white-space:nowrap}
+.s3 .cm-tier .na{grid-column:2/4;color:var(--s3-muted)}
+.s3 .cm-key{margin:20px 0 0}
 .s3 .cm-feat{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(12px,1.6vw,24px);margin:clamp(28px,3vw,48px) 0 0;list-style:none;padding:0}
 .s3 .cm-feat li{background:#fff;border-radius:18px;padding:clamp(18px,1.8vw,24px)}
 .s3 .cm-need span{font-size:var(--s3-fs-fine)}
@@ -271,11 +291,13 @@ const CSS = `
 .s3 .cm-bring b{display:block;font:400 var(--s3-fs-title)/1.15 var(--s3-serif)}
 .s3 .cm-bring span{display:block;margin-top:6px}
 .s3 .cm-compare{margin-top:clamp(24px,3vw,40px);overflow-x:auto}
-.s3 .cm-compare table{width:100%;min-width:560px;border-collapse:collapse;background:#fff;border-radius:16px;overflow:hidden}
+.s3 .cm-compare table{width:100%;min-width:900px;border-collapse:collapse;background:#fff;border-radius:16px;overflow:hidden}
 .s3 .cm-compare th,.s3 .cm-compare td{text-align:left;padding:11px 18px;border-bottom:1px solid var(--s3-line);vertical-align:top}
 .s3 .cm-compare thead th{font:700 var(--s3-fs-label)/1.3 var(--s3-sans);letter-spacing:.12em;text-transform:uppercase}
 .s3 .cm-compare thead th:nth-child(2){background:var(--s3-sky)}
-.s3 .cm-compare tbody th{font-weight:500}
+.s3 .cm-compare tbody th{font-weight:500;position:sticky;left:0;background:#fff;min-width:11em}
+.s3 .cm-compare thead th:first-child{position:sticky;left:0;background:#fff}
+.s3 .cm-swipe{display:none;margin:12px 0 0;color:var(--s3-muted)}
 .s3 .cm-faq .s3-faq{display:grid;grid-template-columns:1fr 1fr;gap:0 48px;margin-top:20px}
 .s3 .cm-faq .s3-faq>div details:first-child{border-top:1px solid var(--s3-line)}
 .s3 .cm-end{background:var(--s3-mist);text-align:center}
@@ -284,7 +306,8 @@ const CSS = `
 @media(max-width:900px){
  .s3 .cm-hero .s3-wrap,.s3 .cm-faq .s3-faq,.s3 .cm-bring,.s3 .cm-yours,.s3 .cm-why,.s3 .cm-limits{grid-template-columns:1fr}
  .s3 .cm-phone{height:auto;width:min(300px,100%);min-height:0}
- .s3 .cm-flow,.s3 .cm-feat,.s3 .cm-tiers{grid-template-columns:1fr 1fr;row-gap:40px}
+ .s3 .cm-flow,.s3 .cm-feat{grid-template-columns:1fr 1fr;row-gap:40px}
+ .s3 .cm-tiers{grid-template-columns:1fr}
  .s3 .cm-flow::before{display:none}
  .s3 .cm-faq .s3-faq>div+div details:first-child{border-top:0}
 }
@@ -292,8 +315,11 @@ const CSS = `
  .s3 .cm-laptop{display:none}
  .s3 .cm-buy{flex-direction:column;align-items:stretch}
  .s3 .cm-link{text-align:center}
- .s3 .cm-cols{height:200px}
- .s3 .cm-compare table{min-width:0}
+ .s3 .cm-tier li{grid-template-columns:6.8em 1fr 5.6em;gap:8px}
+ .s3 .cm-compare table{min-width:0;width:auto}
+ .s3 .cm-compare tbody th{min-width:8.2em;max-width:8.2em}
+ .s3 .cm-compare td{min-width:9.5em}
+ .s3 .cm-swipe{display:block}
  .s3 .cm-compare th,.s3 .cm-compare td{padding:12px 8px}
  .s3 .cm-compare thead th{letter-spacing:.06em}
 }
@@ -328,7 +354,7 @@ export function build() {
 </div></section>
 <section class="s3-sec"><div class="s3-wrap">
  <h2 class="s3-h2">Grow all you like. The cost doesn’t.</h2>
- <p class="s3-lede" style="margin-top:16px;max-width:40em">ManyChat charges by how many people message you each month. Chat Manager’s hosting stays about $6, whatever your size.</p>
+ <p class="s3-lede" style="margin-top:16px;max-width:40em">The monthly tools charge more as more people message you. Chat Manager’s hosting stays about $6, whatever your size.</p>
  ${tierChart}
 </div></section>
 <section class="s3-sec"><div class="s3-wrap cm-yours">
@@ -348,12 +374,12 @@ export function build() {
  <ul class="cm-feat cm-need">${steps(BRING)}</ul>
 </div></section>
 <section class="s3-sec"><div class="s3-wrap">
- <h2 class="s3-h2">Chat Manager vs ManyChat</h2>
+ <h2 class="s3-h2">Chat Manager vs the monthly tools</h2>
+ <p class="cm-swipe">Swipe the table to see every tool →</p>
  <div class="cm-compare"><table>
-  <thead><tr><th scope="col"></th><th scope="col">Chat Manager</th><th scope="col">ManyChat</th></tr></thead>
-  <tbody>${COMPARE.map(([a, b, c]) => `<tr><th scope="row">${a}</th><td>${b}</td><td>${c}</td></tr>`).join('')}</tbody>
+  <thead><tr><th scope="col"></th>${TOOLS.map((t) => `<th scope="col">${t}</th>`).join('')}</tr></thead>
+  <tbody>${COMPARE.map(([a, ...v]) => `<tr><th scope="row">${a}</th>${v.map((x) => `<td>${x}</td>`).join('')}</tr>`).join('')}</tbody>
  </table></div>
- <p class="cm-others"><b>And the smaller Instagram tools?</b> They work the same way: a free plan with limits, then a monthly fee. LinkDM is free for 1,000 DMs a month, then $19 a month. CreatorFlow is free for 500 DMs a month, then $15 a month, and collects emails only on paid plans. Inro is free for 100 contacts, then from €12.99 a month, rising as your audience grows. None of them list YouTube.</p>
 </div></section>
 <section class="s3-sec"><div class="s3-wrap">
  <div class="cm-know">
@@ -370,7 +396,7 @@ export function build() {
  <p class="s3-lede">${PRICE} one-time. Download it, open it in Claude and say “set up my Chat Manager”.</p>
  <p class="cm-beta">${BETA}</p>
  ${buyBtn()}
- <p class="s3-fine">Claude is made by Anthropic and is sold separately. ManyChat, LinkDM, CreatorFlow and Inro are trademarks of their owners. Their prices are their monthly plans as listed on each company's pricing page, checked October 2026; ManyChat's are by active contacts (Essential, Pro, Business, Advanced), and going over a plan’s contacts costs extra. Hosting is DigitalOcean’s basic server.</p>
+ <p class="s3-fine">Claude is made by Anthropic and is sold separately. ManyChat, LinkDM, CreatorFlow and Inro are trademarks of their owners. Their prices are their monthly plans as listed on each company's pricing page, checked October 2026. ManyChat and Inro charge by contacts; LinkDM and CreatorFlow by DMs, counted here as one DM per person, which is the cheapest case for them. Inro bills in euros. “Not listed” means the company's pricing page doesn't mention it. Hosting is DigitalOcean’s basic server.</p>
 </div></section>`;
   return s3shell(body, CSS);
 }
