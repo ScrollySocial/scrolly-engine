@@ -11,7 +11,7 @@ const TIERS = {
   '24k': { amt: '$24K', word: '$24,000', cls: 't3', tag: 'Scale it.', tile: 'Grow to $24K profit months using paid advertising for the next level.', ids: { club: 306, challenge: 307 } },
 };
 
-const mailto = (name) => `mailto:hello@scrollyseo.com?subject=${encodeURIComponent('Launch updates: ' + name)}&body=${encodeURIComponent(`Hi Scrolly, please let me know when ${name} is ready to launch. Thank you!`)}`;
+const mailto = (name) => `mailto:hello@scrollyseo.com?subject=${encodeURIComponent('Launch updates: ' + name)}&body=${encodeURIComponent(`Hi there, please let me know when ${name} is ready to launch. Thank you!`)}`;
 const money = (n) => '$' + (Number.isInteger(n) ? n : n.toFixed(2));
 const cart = (id) => `/?add-to-cart=${id}`;
 
@@ -29,10 +29,10 @@ const btnMail = (name) => `<a class="btn btn-black" href="${mailto(name)}"><span
 const faq = (rows) => `<section class="band cr"><div class="in"><div class="head"><span class="eyebrow or k1-eb">A few useful answers</span><h2 class="disp" style="margin-top:12px">Before you join.</h2></div><div class="faq">${rows.map(([q, a]) => `<details><summary>${q}</summary><p>${a}</p></details>`).join('')}</div></div></section>`;
 
 const PREVIEW = {
-  '10k-club': { h1: 'Build toward your next $10,000.', lede: 'The next Scrolly Club is taking shape: practical organic-growth direction for businesses ready to work toward a bigger goal.', steps: [['Find opportunities', 'Identify organic-growth opportunities that fit your business and stage.'], ['Put ideas to work', 'Turn the next growth priorities into practical actions.'], ['Learn as you go', 'Review what you tried and use real results to inform the next step.']] },
-  '24k-club': { h1: 'Build toward a $24,000 month.', lede: 'The next Scrolly Club is taking shape: practical organic-growth direction for businesses ready to work toward a bigger goal.', steps: [['Find opportunities', 'Identify organic-growth opportunities that fit your business and stage.'], ['Put ideas to work', 'Turn the next growth priorities into practical actions.'], ['Learn as you go', 'Review what you tried and use real results to inform the next step.']] },
-  '10k-challenge': { h1: 'Take on your next $10,000.', lede: 'A focused Scrolly Challenge for businesses ready to take on a bigger revenue goal. The format and entry details are being developed.', steps: [['Set your goal', 'Work toward your next $10,000. Challenge duration and entry requirements will be confirmed before launch.'], ['Take action', 'Put focused organic-growth work into practice. The final support and opportunity format is still being developed.'], ['Review your progress', 'Track your attempt and review the evidence of progress.']] },
-  '24k-challenge': { h1: 'Take on a $24,000 month.', lede: 'A focused Scrolly Challenge for businesses ready to take on a bigger revenue goal. The format and entry details are being developed.', steps: [['Set your goal', 'Work toward a $24,000 month. Challenge duration and entry requirements will be confirmed before launch.'], ['Take action', 'Put focused organic-growth work into practice. The final support and opportunity format is still being developed.'], ['Review your progress', 'Track your attempt and review the evidence of progress.']] },
+  '10k-club': { h1: 'Build toward your next $10,000.', lede: 'The next Club is taking shape: practical organic-growth direction for businesses ready to work toward a bigger goal.', steps: [['Find opportunities', 'Identify organic-growth opportunities that fit your business and stage.'], ['Put ideas to work', 'Turn the next growth priorities into practical actions.'], ['Learn as you go', 'Review what you tried and use real results to inform the next step.']] },
+  '24k-club': { h1: 'Build toward a $24,000 month.', lede: 'The next Club is taking shape: practical organic-growth direction for businesses ready to work toward a bigger goal.', steps: [['Find opportunities', 'Identify organic-growth opportunities that fit your business and stage.'], ['Put ideas to work', 'Turn the next growth priorities into practical actions.'], ['Learn as you go', 'Review what you tried and use real results to inform the next step.']] },
+  '10k-challenge': { h1: 'Take on your next $10,000.', lede: 'A focused Challenge for businesses ready to take on a bigger revenue goal. The format and entry details are being developed.', steps: [['Set your goal', 'Work toward your next $10,000. Challenge duration and entry requirements will be confirmed before launch.'], ['Take action', 'Put focused organic-growth work into practice. The final support and opportunity format is still being developed.'], ['Review your progress', 'Track your attempt and review the evidence of progress.']] },
+  '24k-challenge': { h1: 'Take on a $24,000 month.', lede: 'A focused Challenge for businesses ready to take on a bigger revenue goal. The format and entry details are being developed.', steps: [['Set your goal', 'Work toward a $24,000 month. Challenge duration and entry requirements will be confirmed before launch.'], ['Take action', 'Put focused organic-growth work into practice. The final support and opportunity format is still being developed.'], ['Review your progress', 'Track your attempt and review the evidence of progress.']] },
 };
 
 const TIER_PAGES = {
@@ -335,7 +335,7 @@ ${VIDEO[tk] ? `<section class="cl-video cl-sec"><div class="s3-wrap">
   <li><div class="amt">${clubP}<small>Club</small></div><p>The Playbook and starter tools, yours to keep.</p><a class="s3-link" href="${joinUrl(clubV)}"><span class="tx">Join the Club</span>${arrow}</a></li>
  </ul>` : ''}
 </div></section>`;
-  return { key: c.key, id: c.id, title: `${c.amt} Club + Challenge, Scrolly`, html: s3shell(body, TIER_CSS, CALC_SCRIPT) };
+  return { key: c.key, id: c.id, title: `${c.amt} Club + Challenge, The Ambition Department`, html: s3shell(body, TIER_CSS, CALC_SCRIPT) };
 }
 
 function forwardPage(key, id, title, to, label) {
@@ -383,7 +383,7 @@ ${faq([
 <section class="cta-end"><span class="eyebrow" style="color:var(--lav)">Ready when you are</span><h2 class="disp" style="margin-top:14px">Take on your <span class="it or">30 days.</span></h2><p>${open ? `${price} per 30-day attempt. Requires the $1K Club.` : 'The $1K Challenge is not open for purchase yet. Request launch news by email.'}</p><div class="actions">${open ? `<a class="btn btn-white" href="${cart(challenge1k.id)}"><span>Add to cart — ${price}</span></a>` : `<a class="btn btn-white" href="${mailto('$1K Challenge')}"><span>Request launch news</span></a>`}<a class="btn btn-line" href="/1k-club/"><span>See the $1K Club</span></a></div></section>`;
   void body; // 2026-09-23: the Challenge is sold on the combined /1k-club/ page; this URL forwards there. Old body kept above for reference.
   const fwd = `<section class="k1s" style="text-align:center"><h1 class="disp" style="font-size:clamp(40px,6vw,80px)">The $1K Challenge lives here now.</h1><p style="margin-top:18px"><a class="btn btn-black" href="/1k-club/#how"><span>See the $1K Club + Challenge</span></a></p></section><script>location.replace('/1k-club/#how')</script>`;
-  return { key: '1k-challenge', id: 303, title: '$1K Challenge — Scrolly', html: shell(fwd) };
+  return { key: '1k-challenge', id: 303, title: '$1K Challenge, The Ambition Department', html: shell(fwd) };
 }
 
 // ---------------------------------------------------------------- $10K / $24K previews (contents not decided — no invented details)
@@ -406,10 +406,10 @@ ${faq([
     [`Can I buy ${name} today?`, `No. ${name} is coming soon and is not open for purchase.`],
     [`Is ${t.amt} a guaranteed outcome?`, 'No. It is a revenue goal. Revenue is not profit, and results vary with your offer, customers, market, and execution.'],
     ['What will it cost and include?', 'Final pricing, features, and access terms will be confirmed before checkout opens.'],
-    ['Can I start with the $1K Club?', 'Yes — the <a class="ulink" href="/1k-club/">$1K Club</a> is where Scrolly starts.'],
+    ['Can I start with the $1K Club?', 'Yes — the <a class="ulink" href="/1k-club/">$1K Club</a> is where it all starts.'],
   ])}
-<section class="cta-end"><span class="eyebrow" style="color:var(--lav)">Next up</span><h2 class="disp" style="margin-top:14px">${name} is <span class="it or">coming soon.</span></h2><p>Request launch news by email, or use our contact form to ask a question. The launch-news button opens your email app; your request is sent only when you send the email.</p><div class="actions"><a class="btn btn-white" href="${mailto(name)}"><span>Request launch news</span></a><a class="btn btn-line" href="/contact/"><span>Contact Scrolly</span></a></div></section>`;
-  return { key, id: t.ids[kind], title: `${name} — Scrolly`, html: shell(body) };
+<section class="cta-end"><span class="eyebrow" style="color:var(--lav)">Next up</span><h2 class="disp" style="margin-top:14px">${name} is <span class="it or">coming soon.</span></h2><p>Request launch news by email, or use our contact form to ask a question. The launch-news button opens your email app; your request is sent only when you send the email.</p><div class="actions"><a class="btn btn-white" href="${mailto(name)}"><span>Request launch news</span></a><a class="btn btn-line" href="/contact/"><span>Contact us</span></a></div></section>`;
+  return { key, id: t.ids[kind], title: `${name}, The Ambition Department`, html: shell(body) };
 }
 
 // ---------------------------------------------------------------- collections
@@ -421,7 +421,7 @@ function collection(kind) {
 <section class="phero">
  <div class="in">
   <div>
-   <div class="eyebrow">Scrolly ${K}s</div>
+   <div class="eyebrow">Ambition Department ${K}s</div>
    <h1 class="disp h-xl" style="margin-top:12px">${isClub ? 'Choose a goal.<br><span class="it or">Build your approach.</span>' : 'Choose a goal.<br><span class="it or">Put it into action.</span>'}</h1>
    <p class="lede">${isClub ? 'Practical organic-growth ideas and tools, organized around the revenue goal you want to work toward next.' : 'A focused attempt with a defined goal, actions to try, and progress to review — organized around the revenue goal you want to work toward next.'}</p>
    <div class="actions"><a class="btn" href="#goals"><span>Choose your goal</span>${ICON_UR(20)}</a></div>
@@ -438,7 +438,7 @@ function collection(kind) {
  <p class="fine">The amounts are revenue goals, not product prices or promised outcomes. Availability and pricing are shown on each page.</p>
 </section>
 ${endCta({ h: 'Go get ’em,', h2: 'Tiger', btn: 'Browse digital products', href: '/digital-products/', eyebrow: 'Start today' })}`;
-  return { key: isClub ? 'clubs' : 'challenges', id: isClub ? 314 : 315, title: `Scrolly ${K}s`, html: shell(body) };
+  return { key: isClub ? 'clubs' : 'challenges', id: isClub ? 314 : 315, title: `${K}s, The Ambition Department`, html: shell(body) };
 }
 
 export function buildAll() {

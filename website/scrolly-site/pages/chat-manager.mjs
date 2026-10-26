@@ -11,7 +11,7 @@
 import { s3shell } from '../lib.mjs';
 
 export const id = null;
-export const title = 'Chat Manager, Scrolly';
+export const title = 'Chat Manager, The Ambition Department';
 
 const PRICE = '$97';
 const BUY_URL = '#buy';

@@ -14,6 +14,8 @@ body{background:#f7f3ec}
 .scxg-hdr{position:relative;z-index:60;display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:24px;min-height:96px;padding:16px var(--gut);background:var(--cream)}
 .scxg-logo{display:block;justify-self:start;color:var(--navy);text-decoration:none}
 .scxg-wm{display:block;font:400 2.2rem/1 var(--serif);letter-spacing:-.01em}
+.scxg-wm svg{display:block;width:4.6em;height:auto} /* The Ambition Department wordmark (2026-10-26); sized by the font-size rules on .scxg-wm */
+@media(max-width:700px){.scxg-hdr .scxg-wm svg{width:140px}}
 .scxg-hdr nav{display:flex;justify-self:center;align-items:center;gap:clamp(24px,2.4vw,52px);font-size:18px;font-weight:500;letter-spacing:.01em}
 .scxg-hdr nav a{text-decoration:none;white-space:nowrap;padding:12px 0;border-bottom:2px solid transparent}
 .scxg-hdr nav a:hover{border-bottom-color:var(--sky)}

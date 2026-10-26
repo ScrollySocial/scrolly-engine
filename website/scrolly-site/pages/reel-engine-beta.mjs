@@ -5,7 +5,7 @@
 import { s3shell } from '../lib.mjs';
 
 export const id = null;
-export const title = 'Reel Engine Founding Beta, Scrolly';
+export const title = 'Reel Engine Founding Beta, The Ambition Department';
 
 const ASSET = (f) => `reel-engine-beta/${f}`;
 const PRICE = '$97';
@@ -97,7 +97,7 @@ export function build() {
 <section class="rb-hero"><div class="s3-wrap">
  <div>
   <h1><span>Film one take.</span><em>Claude edits it.</em></h1>
-  <p class="s3-lede">The Scrolly Reel Engine turns one talking-head take into a finished Reel with graphics, captions, sounds and a cover, in your brand. You check it in three steps, and it renders on your computer.</p>
+  <p class="s3-lede">The Reel Engine turns one talking-head take into a finished Reel with graphics, captions, sounds and a cover, in your brand. You check it in three steps, and it renders on your computer.</p>
   <div class="rb-buy"><div class="rb-cost">${PRICE}<small>One-time. Founding beta, ${SEATS} seats</small></div>${seatBtn()}</div>
  </div>
  <figure class="rb-reels">

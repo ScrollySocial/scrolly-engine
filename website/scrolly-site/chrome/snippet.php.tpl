@@ -57,7 +57,7 @@ if ( ! defined( 'SCXG_CSS_ID' ) ) {
 	}
 
 	function scxg_logo( $extra_class = '' ) {
-		return '<a class="' . esc_attr( $extra_class ) . '" href="' . esc_url( home_url( '/' ) ) . '" aria-label="Scrolly home">' . scxg_store( SCXG_LOGO_ID ) . '</a>';
+		return '<a class="' . esc_attr( $extra_class ) . '" href="' . esc_url( home_url( '/' ) ) . '" aria-label="The Ambition Department home">' . scxg_store( SCXG_LOGO_ID ) . '</a>';
 	}
 
 	function scxg_header_html() {
@@ -103,7 +103,7 @@ if ( ! defined( 'SCXG_CSS_ID' ) ) {
 		}
 		$html  = '<div class="scxg"><footer class="scxg-ftr"><div class="row1">' . scxg_logo( 'logo' );
 		$html .= '<nav aria-label="Footer"><ul>' . $links . '</ul></nav></div><hr>';
-		$html .= '<div class="copy">&copy; ' . esc_html( gmdate( 'Y' ) ) . ' Scrolly. Earn Your Stripes.</div></footer></div>';
+		$html .= '<div class="copy">&copy; ' . esc_html( gmdate( 'Y' ) ) . ' The Ambition Department. Earn Your Stripes.</div></footer></div>';
 		return $html;
 	}
 

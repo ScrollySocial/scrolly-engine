@@ -140,9 +140,9 @@ function refundEdit(html) {
   const intro = '<p class="fp-intro">All digital products are final sale. Please review this policy before you buy.</p>\n\n</header>\n<div class="fp-card">\n\n<strong>Effective date:</strong> September 23, 2026\n';
   const body = [
     '<h2>All digital products are final sale</h2>',
-    'Every Scrolly digital product is final sale and nonrefundable once the order is completed, because access is delivered electronically. This includes the $1K, $10K and $24K Clubs and Challenges, downloadable workbooks and personalized SEO audits.',
+    'Every Ambition Department digital product is final sale and nonrefundable once the order is completed, because access is delivered electronically. This includes the $1K, $10K and $24K Clubs and Challenges, downloadable workbooks and personalized SEO audits.',
     '<h2>Personalized SEO audits</h2>',
-    'If Scrolly SEO fails to deliver an audit within the stated delivery window and has not communicated a delay, you may request a full refund.',
+    'If The Ambition Department fails to deliver an audit within the stated delivery window and has not communicated a delay, you may request a full refund.',
     '<h2>Challenge stripe shirts</h2>',
     'Stripe shirts are earned rewards for verified Challenge results, not purchases. If your shirt arrives damaged or misprinted, contact us and we will make it right.',
     '',

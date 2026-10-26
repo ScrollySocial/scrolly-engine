@@ -90,7 +90,7 @@ ${hero({ h1: 'Good tools.', em: 'Useful next steps.', lede: 'Workbooks and tools
  <div class="rail cat-tees dig" data-live="${CATS.digital}" data-live-map="${map}">${digitalCards(digitalProducts)}</div>
 </div></section>
 ${close()}`;
-  return { key: 'digital-products', id: 312, title: 'Digital products, Scrolly', html: s3shell(body, CSS, LIVE) };
+  return { key: 'digital-products', id: 312, title: 'Digital products, The Ambition Department', html: s3shell(body, CSS, LIVE) };
 }
 
 function shop() {
@@ -106,12 +106,12 @@ ${hero({ h1: 'For the builders.', em: 'For the doers.', lede: 'Tees printed to o
 <section class="s3-sec"><div class="s3-wrap">
  <h2 class="s3-h2">Wear the brand. <em class="or">Earn the stripe.</em></h2>
  <div class="cat-two">
-  <div><h3 class="s3-h3">Scrolly tees</h3><p>Open to everyone.</p></div>
+  <div><h3 class="s3-h3">Ambition Department tees</h3><p>Open to everyone.</p></div>
   <div><h3 class="s3-h3">Challenge stripe shirts</h3><p>Earned by hitting a verified Challenge goal. Not sold here.</p><p><a class="s3-link" href="/#clubs">Explore the Challenges${arrow}</a></p></div>
  </div>
 </div></section>
 ${close()}`;
-  return { key: 'scrolly-shop', id: 313, title: 'Scrolly merch', html: s3shell(body, CSS, LIVE) };
+  return { key: 'scrolly-shop', id: 313, title: 'The Ambition Department merch', html: s3shell(body, CSS, LIVE) };
 }
 
 function seoTools() {
@@ -127,7 +127,7 @@ ${hero({ h1: 'Be easier', em: 'to discover.', lede: 'SEO is one part of organic 
  <div class="cat-prods">${product(PRODUCTS.shopify)}${product(PRODUCTS.pinterest)}</div>
 </div></section>
 ${close()}`;
-  return { key: 'seo-tools', id: 316, title: 'SEO tools and services, Scrolly', html: s3shell(body, CSS) };
+  return { key: 'seo-tools', id: 316, title: 'SEO tools and services, The Ambition Department', html: s3shell(body, CSS) };
 }
 
 export function buildAll() {

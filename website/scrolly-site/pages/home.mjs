@@ -78,7 +78,7 @@ var p=qs.querySelector('.prev'),nx=qs.querySelector('.next');if(p)p.addEventList
 })();`;
 if (SCRIPT.includes('&')) throw new Error('home script must not contain &');
 
-export const title = 'Scrolly: Make your first $1,000';
+export const title = 'The Ambition Department: Make your first $1,000';
 export const slug = 'scrolly-home';
 export const id = 161;
 
@@ -133,7 +133,7 @@ ${quotes()}
 
 <section class="hp-merch" id="products"><div class="wrap">
  <div class="grid">
-  <div><h2>Less scrolling.<br><em class="or">More Scrolly.</em></h2>
+  <div><h2>Less scrolling.<br><em class="or">More selling.</em></h2>
   <div class="links"><a href="/digital-products/">Digital products <span aria-hidden="true">→</span></a><a href="/scrolly-shop/">Shop <span aria-hidden="true">→</span></a></div></div>
   <!-- Real shop tees (2026-10-07): replaced the hp3-merch.webp photo, whose cap, mug and bottle aren't real products. -->
   <ul class="tees">${merch.slice(0, 4).map((p) => `<li><a href="${p.href}"><img src="${p.image.src}" alt="${p.image.alt.replace(/"/g, '&quot;')}" width="${p.image.w}" height="${p.image.h}" loading="lazy"><span>${p.name.trim()}</span></a></li>`).join('')}</ul>
