@@ -87,7 +87,7 @@ if ( ! defined( 'SCROLLY_K1_PRODUCT' ) ) {
 	// One deliberate difference: the original only allowed a claim after day 30; here a claim opens as soon as $1,000 is logged.
 	define( 'SCROLLY_K1_GOAL', 1000 );
 	define( 'SCROLLY_K1_CLAIM_GRACE_DAYS', 14 );
-	define( 'SCROLLY_K1_ADMIN_EMAIL', 'hello@scrollyseo.com' );
+	define( 'SCROLLY_K1_ADMIN_EMAIL', 'hello@theambitiondepartment.com' );
 
 	/** Revenue logged with a date inside the Challenge window (refunds are logged as negative amounts). */
 	function scrolly_k1_window_revenue( $log, $w ) {
