@@ -63,8 +63,8 @@
 .cdir-hero.home .cdir-panel{padding:clamp(28px,3.4vw,52px) clamp(24px,3.6vw,60px)}
 .cdir-feat .intro{max-width:none;margin-bottom:32px}
 .cdir-feat .intro h2{margin:0}
-/* the question in Jost, not the narrow serif (Mercedes, 2026-10-26) */
-.cdir .cdir-hero.home .intro .s3-h2{font:500 clamp(1.75rem,2.6vw,2.5rem)/1.15 var(--s3-sans)!important;letter-spacing:-.01em!important}
+/* the question: centred Jost capitals, like the site's labels but bigger (Mercedes, 2026-10-26: not the narrow serif) */
+.cdir .cdir-hero.home .intro .s3-h2{font:700 clamp(1.25rem,1.9vw,1.75rem)/1.25 var(--s3-sans)!important;letter-spacing:.08em!important;text-transform:uppercase;text-align:center}
 .cdir-hero.home .cdir-in input{min-height:56px}
 .cdir-hero.home .cdir-form.row .s3-btn{min-height:56px}
 .cdir-hero.home .cdir-res{margin-top:28px;padding-top:24px}
