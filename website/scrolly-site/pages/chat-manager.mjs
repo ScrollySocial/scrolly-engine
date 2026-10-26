@@ -5,8 +5,8 @@
 // Local preview only: no WordPress page or product yet, so `id` is null and publish.mjs skips it. PRICE is a
 // placeholder (Mercedes decides). The live demo is the real dashboard for a made-up shop
 // (automation/n8n-comments/docker-compose.demo.yml), framed by theambitiondepartment.com only.
-// ManyChat prices: monthly billing after its 2026-03-02 change, as summarized by setsmart.io, flowgent.ai and
-// elev8or.io (checked 2026-10-24; one of them checked manychat.com/pricing on 2026-10-15). Re-check before publishing.
+// ManyChat prices: checked on manychat.com/pricing 2026-10-26 (monthly: Free 25, Essential $17/250, Pro $39/2,500,
+// Business $99/7,500, Advanced $199/25,000 active contacts; channels Instagram, TikTok, WhatsApp, Messenger, no YouTube).
 // Before publishing: create the WooCommerce download (kit/dist zip) and point BUY_URL at its add-to-cart link.
 import { s3shell } from '../lib.mjs';
 
@@ -14,7 +14,8 @@ export const id = null;
 export const title = 'Chat Manager, The Ambition Department';
 
 const PRICE = '$97';
-const BUY_URL = '#buy';
+const BUY_URL = '/?add-to-cart=1764'; // WooCommerce product 1764 (private until the page is approved)
+const BETA = 'Founding beta: the first 10 buyers get it at this price and help shape the next version.';
 const DEMO_URL = 'https://demo.scrollyseo.com/inbox';
 
 // Line icons (48x48, stroke only), drawn like the Product Reels page icons.
@@ -92,7 +93,7 @@ const BRING = [
 
 // Plain and checkable; no claim here without a source (vault comment-to-dm-n8n-plan.md and the prices above).
 const COMPARE = [
-  ['What you pay', `${PRICE} once + about $6 a month`, 'From $17 a month, more as your audience grows'],
+  ['What you pay', `${PRICE} once + about $6 a month`, 'Free for up to 25 people a month, then from $17 a month, more as your audience grows'],
   ['Price tied to how many people message you', 'No', 'Yes'],
   ['Instagram comment, DM and Story reply keywords', 'Yes', 'Yes'],
   ['“Check your DMs” reply under the comment', 'Yes', 'Yes'],
@@ -188,6 +189,7 @@ const CSS = `
 .s3 .cm-cost{font:400 clamp(2.6rem,3.6vw,3.4rem)/1 var(--s3-serif)}
 .s3 .cm-cost small{display:block;margin-top:10px;font:700 var(--s3-fs-label)/1.3 var(--s3-sans);letter-spacing:.16em;text-transform:uppercase}
 .s3 .cm-link{font:500 var(--s3-fs-ui)/1.3 var(--s3-sans);color:var(--s3-ink);text-underline-offset:4px}
+.s3 .cm-beta{margin:18px 0 0;max-width:34em;font:500 var(--s3-fs-ui)/1.45 var(--s3-sans);color:var(--s3-ink)}
 .s3 .cm-stage{display:flex;justify-content:center}
 .s3 .cm-phone{height:min(540px,calc(100vh - 190px));min-height:430px;aspect-ratio:9/17;max-width:100%;padding:10px;border-radius:46px;background:#141518;box-shadow:inset 0 0 0 2px #3a3c42,0 40px 80px rgba(10,25,48,.22)}
 .s3 .cm-screen{position:relative;height:100%;border-radius:37px;background:#fff;overflow:hidden;display:flex;flex-direction:column;font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;color:#000}
@@ -304,6 +306,7 @@ export function build() {
   <p class="s3-lede">Someone comments a keyword, your freebie lands in their DMs, and they join your list. Pay once and it’s yours, with no monthly bill that grows with your audience.</p>
   <ul class="cm-points"><li>About $6 a month to run</li><li>Instagram and YouTube</li><li>Yours to change</li></ul>
   <div class="cm-buy"><div class="cm-cost">${PRICE}<small>One-time</small></div>${buyBtn()}<a class="cm-link" href="#demo">Try the demo →</a></div>
+  <p class="cm-beta">${BETA}</p>
  </div>
  <div class="cm-stage">${heroPhone}</div>
 </div></section>
@@ -360,6 +363,7 @@ export function build() {
 <section class="cm-end s3-sec" id="buy"><div class="s3-wrap">
  <h2 class="s3-h2">Your keywords, your list, your software.</h2>
  <p class="s3-lede">${PRICE} one-time. Download it, open it in Claude and say “set up my Chat Manager”.</p>
+ <p class="cm-beta">${BETA}</p>
  ${buyBtn()}
  <p class="s3-fine">Claude is made by Anthropic and is sold separately. ManyChat is a trademark of ManyChat, Inc. ManyChat prices are its monthly plans by active contacts (Essential, Pro, Business, Advanced), checked October 2026; going over a plan’s contacts costs extra. Hosting is DigitalOcean’s basic server.</p>
 </div></section>`;
