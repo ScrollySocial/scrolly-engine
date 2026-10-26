@@ -2,7 +2,7 @@
 // her round 2: a real-looking phone (no star doodle), flow icons joined by a line (arrows sat against the icons), the
 // demo on a laptop that fits one screen, "vs", a reworked hero, and the real benefits: one flat ~$6 a month whatever
 // your audience (ManyChat charges by contacts, and Pro is not even its top tier), YouTube, and it's your own software.
-// Local preview only: no WordPress page or product yet, so `id` is null and publish.mjs skips it. PRICE is a
+// LIVE 2026-10-26 as WP page 1767 (/chat-manager/), product 1764 (founding beta, stock 10). PRICE is a
 // placeholder (Mercedes decides). The live demo is the real dashboard for a made-up shop
 // (automation/n8n-comments/docker-compose.demo.yml), framed by theambitiondepartment.com only.
 // ManyChat prices: checked on manychat.com/pricing 2026-10-26 (monthly: Free 25, Essential $17/250, Pro $39/2,500,
@@ -13,7 +13,7 @@
 // Before publishing: create the WooCommerce download (kit/dist zip) and point BUY_URL at its add-to-cart link.
 import { s3shell } from '../lib.mjs';
 
-export const id = null;
+export const id = 1767; // WP page, published 2026-10-26 (founding beta)
 export const title = 'Chat Manager, The Ambition Department';
 
 const PRICE = '$97';

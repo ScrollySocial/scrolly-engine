@@ -45,6 +45,9 @@ export const DIGITAL_MAP = {
   69: { href: '/pinterest-seo-workbook/', sub: 'Digital workbook' },
   24: { href: '/seo-site-audit/', sub: 'Personalized site audit' },
   1387: { sub: 'Notion template for your AI' },
+  1498: { href: '/halloween-reels/', sub: '5 CapCut templates' },
+  1500: { href: '/product-reels/', sub: '25 CapCut templates' },
+  1764: { href: '/chat-manager/', sub: 'Comment-to-DM kit, founding beta' },
 };
 
 async function idsIn(slug) {
