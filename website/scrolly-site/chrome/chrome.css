@@ -75,9 +75,10 @@ body{background:#f7f3ec}
   background-image:var(--ftr-strips,none),var(--ftr-sky,none),linear-gradient(var(--fnavy),var(--fnavy));
   background-position:top center,top center,0 calc(max(100vw,1150px) * .2);background-repeat:no-repeat;background-size:max(100%,1150px) auto,max(100%,1150px) auto,100% 100%}
 /* desktop (2026-10-23, the footer was taller than a laptop screen): the torn strips are lifted 15% of the art's width over the swirl's
-   tail, and a navy layer between strips and sky starts where the lifted strips end, so the sky's lighter bottom never shows below them */
+   tail, and a navy layer between strips and sky starts where the lifted strips end, so the sky's lighter bottom never shows below them.
+   2026-10-26: both move up by however much the height cap (--fw, below) shrinks the tiger row, so the menu text stays on the bottom paper. */
 @media(min-width:1001px){.scxg-ftr.v3{background-image:var(--ftr-strips,none),linear-gradient(var(--fnavy),var(--fnavy)),var(--ftr-sky,none);
-  background-position:center calc(max(100vw,1150px) * -.15),0 calc(max(100vw,1150px) * .4),top center;background-size:max(100%,1150px) auto,100% 100%,max(100%,1150px) auto}}
+  background-position:center calc(max(100vw,1150px) * -.15 - (max(100vw,1150px) - var(--fw)) * .32),0 calc(max(100vw,1150px) * .4 - (max(100vw,1150px) - var(--fw)) * .32),top center;background-size:max(100%,1150px) auto,100% 100%,max(100%,1150px) auto}}
 .scxg-ftr .fstars{position:absolute;top:0;left:50%;z-index:0;width:max(100%,1150px);aspect-ratio:1672/941;transform:translateX(-50%);background-image:var(--ftr-stars);background-size:100% 100%;background-repeat:no-repeat;pointer-events:none;animation:scxgtw 5s ease-in-out infinite}
 /* foil glint: a brighter copy of the star layer, revealed by a diagonal band that sweeps across */
 .scxg-ftr .fstars::after{content:"";position:absolute;inset:0;background:inherit;filter:brightness(1.8) saturate(1.15);-webkit-mask:linear-gradient(105deg,transparent 42%,#000 50%,transparent 58%) 150% 0/300% 100% no-repeat;mask:linear-gradient(105deg,transparent 42%,#000 50%,transparent 58%) 150% 0/300% 100% no-repeat;animation:scxgglint 8s ease-in-out infinite}
@@ -87,8 +88,11 @@ body{background:#f7f3ec}
 .scxg-ftr .w{position:relative;z-index:1;width:calc(100% - 2 * var(--gut));margin:0 auto}
 /* the tiger row reaches down past the art's (lifted) torn-paper strips (to 32% of the art's width), so the tiger stands on them and the
    menu columns start on the plain navy below, never crossed by a paper edge */
-.scxg-ftr .fhero{position:relative;z-index:1;display:grid;grid-template-columns:minmax(0,1.3fr) minmax(420px,.7fr);align-items:end;gap:20px;min-height:calc(max(100vw,1150px) * .32);padding-top:calc(max(100vw,1150px) * .04)}
-.scxg-ftr .ftiger{display:block;width:min(1400px,80vw);max-width:none;height:auto;margin-left:-16vw;align-self:end;position:relative;z-index:1}
+/* --fw: the width the tiger row is sized from. Capped by the window height (2026-10-26, Mercedes: "you shouldn't have to scroll on the FOOTER"),
+   so tiger row + menu + legal row (~275px) always fit one screen; on short wide windows the tiger simply gets smaller. */
+.scxg-ftr{--fw:min(max(100vw,1150px),calc((100vh - 300px) / .32))}
+.scxg-ftr .fhero{position:relative;z-index:1;display:grid;grid-template-columns:minmax(0,1.3fr) minmax(420px,.7fr);align-items:end;gap:20px;min-height:calc(var(--fw) * .32);padding-top:calc(var(--fw) * .04)}
+.scxg-ftr .ftiger{display:block;width:min(1400px,80vw,calc(var(--fw) * .8));max-width:none;height:auto;margin-left:-16vw;align-self:end;position:relative;z-index:1}
 .scxg-ftr .fbrand{display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:24px;align-self:center;padding-right:3vw;position:relative;z-index:2}
 .scxg-ftr .fquote{margin:0;font:italic 400 clamp(2.8rem,3.9vw,5.4rem)/1 var(--serif);letter-spacing:-.01em;color:#f5f1ff;white-space:nowrap;text-shadow:0 0 18px #050f20,0 0 36px #050f20}
 .scxg-ftr .fquote em{color:var(--pink)}
