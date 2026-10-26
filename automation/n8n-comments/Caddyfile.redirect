@@ -1,0 +1,7 @@
+
+# Old domain (renamed to The Ambition Department, 2026-10-26). Mercedes's server only, appended to the live Caddyfile
+# like Caddyfile.demo; never part of the customer kit. Every scrollyseo.com link keeps its path on the new site, with
+# HTTPS (Caddy gets the certificate once the @ and www A records point at this server). hooks/demo are unaffected.
+scrollyseo.com, www.scrollyseo.com {
+	redir https://theambitiondepartment.com{uri} permanent
+}

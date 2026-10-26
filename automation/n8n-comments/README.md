@@ -79,3 +79,10 @@ API at the mock; `test/config/keywords.json` has a test keyword PINS.
 
 - `scripts/instagram-setup.mjs`: prints IG_USER_ID and turns on comment notifications for the app.
 - `scripts/youtube-auth.mjs`: one-time Google sign-in, saves the refresh token to `.secrets/youtube-token.json`.
+
+## Old domain redirect (2026-10-26)
+
+scrollyseo.com and www point (A records) at this server so old links keep working after the rename to
+theambitiondepartment.com. `Caddyfile.redirect` is appended to the live `/opt/n8n-comments/Caddyfile` (backup
+`Caddyfile.bak-redirect-2026-10-26`); it 301s every path to the same path on the new domain, with Caddy's own HTTPS.
+Mercedes's server only: the kit packages `Caddyfile` alone. hooks.scrollyseo.com and demo.scrollyseo.com are unaffected.
