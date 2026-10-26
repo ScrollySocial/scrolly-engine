@@ -83,13 +83,13 @@ final class Scrolly_Offer_Finder {
   if($row['mail_status']==='sending')return new WP_Error('sending','Your email is being prepared. Please wait.',['status'=>409]);
   $profile=json_decode($row['profile'],true);if(($profile['quiz_version']??'')===Scrolly_Locator_Model::VERSION)return new WP_Error('signup','Use the disclosed Business Locator signup form to request this kit.',['status'=>400]);$o=($profile['tool']??'')==='quiz'?self::quiz_result($profile):null;foreach(self::catalog() as $x)if($x['id']===$offer)$o=$x;if(!$o)return new WP_Error('offer','Offer not found.',['status'=>400]);
   $consent=$r->get_param('consent')===true && Scrolly_MailerLite_Router::ready();
-  $profile['marketing_consent']=['requested'=>$consent,'requested_at'=>current_time('mysql',true),'copy_version'=>'phase1-v1','copy'=>'Also send me Scrolly tips and offers. Unsubscribe anytime.','privacy'=>get_privacy_policy_url()]; $confirm=$consent?bin2hex(random_bytes(32)):'';
+  $profile['marketing_consent']=['requested'=>$consent,'requested_at'=>current_time('mysql',true),'copy_version'=>'phase1-v1','copy'=>'Also send me tips and offers from The Ambition Department. Unsubscribe anytime.','privacy'=>get_privacy_policy_url()]; $confirm=$consent?bin2hex(random_bytes(32)):'';
   if($consent)set_transient('sq_confirm_'.hash('sha256',$confirm),['response_id'=>$row['response_id'],'email'=>$email,'offer'=>$offer],DAY_IN_SECONDS);
   $wpdb->update($t,['profile'=>wp_json_encode($profile),'email'=>$email,'chosen_offer'=>$offer,'consent'=>$consent?1:0,'confirmed_at'=>null,'mail_status'=>'sending','sync_status'=>$consent?'awaiting_confirmation':'not_requested'],['id'=>$row['id']]);
   $body=($profile['tool']??'')==='quiz'?self::quiz_email($o,$profile):self::email_plan($o,$profile);
-  if($consent)$body.='<p>You also requested Scrolly tips and offers. <a href="'.esc_url(add_query_arg('scrolly_offer_confirm',$confirm,home_url('/'))).'">Confirm that subscription</a>. This link expires in 24 hours.</p>';
+  if($consent)$body.='<p>You also requested tips and offers from The Ambition Department. <a href="'.esc_url(add_query_arg('scrolly_offer_confirm',$confirm,home_url('/'))).'">Confirm that subscription</a>. This link expires in 24 hours.</p>';
   $body.='</body></html>';
-  $sent=wp_mail($email,(($profile['tool']??'')==='quiz'?'Your free Scrolly kit: ':'Your Scrolly Offer Starter Plan: ').$o['title'],$body,['Content-Type: text/html; charset=UTF-8']);
+  $sent=wp_mail($email,(($profile['tool']??'')==='quiz'?'Your free kit from The Ambition Department: ':'Your Offer Starter Plan: ').$o['title'],$body,['Content-Type: text/html; charset=UTF-8']);
   $wpdb->update($t,['mail_status'=>$sent?'accepted':'failed'],['id'=>$row['id']]);
   if(!$sent)return new WP_Error('mail','We could not send your email. Your plan is still available on this page. Please try again later.',['status'=>502]);
   return rest_ensure_response(['message'=>'Your plan has been sent. Check your inbox and spam folder.'.($consent?' Confirm the optional subscription using the link in your email.':'')]);
@@ -107,10 +107,10 @@ final class Scrolly_Offer_Finder {
  static function view(){
   if(isset($_GET['scrolly_offer_confirm'])){
    nocache_headers();$token=sanitize_text_field(wp_unslash($_GET['scrolly_offer_confirm']));if(!preg_match('/^[a-f0-9]{64}$/',$token))wp_die('Invalid confirmation link.');$key='sq_confirm_'.hash('sha256',$token);$info=get_transient($key);if(!$info)wp_die('This confirmation link has expired. Request your plan again.');
-   if(($_SERVER['REQUEST_METHOD']??'GET')!=='POST')wp_die('<p>Confirm your optional Scrolly tips and offers subscription.</p><form method="post"><button type="submit">Confirm subscription</button></form>','Confirm Scrolly subscription',['response'=>200]);
+   if(($_SERVER['REQUEST_METHOD']??'GET')!=='POST')wp_die('<p>Confirm your optional subscription to tips and offers from The Ambition Department.</p><form method="post"><button type="submit">Confirm subscription</button></form>','Confirm your subscription to The Ambition Department',['response'=>200]);
    global $wpdb;$t=self::table();$row=$wpdb->get_row($wpdb->prepare("SELECT * FROM $t WHERE response_id=%s",$info['response_id']),ARRAY_A);if(!$row||!$row['consent']||$row['email']!==$info['email'])wp_die('This subscription request is no longer current.');
    $status=self::sync($info['email'],$row);$wpdb->update($t,['confirmed_at'=>current_time('mysql',true),'sync_status'=>$status],['id'=>$row['id']]);if($status==='synced')delete_transient($key);
-   wp_die($status==='synced'?'Your Scrolly subscription is confirmed.':($status==='not_configured'?'Your request is confirmed. Email-list setup is still pending.':($status==='not_reactivated'?'Your resource is available. Your existing email-list status was preserved; no marketing subscription was activated.':'We could not complete your subscription. Please retry this link later.')),'Scrolly subscription',['response'=>200]);
+   wp_die($status==='synced'?'Your subscription to The Ambition Department is confirmed.':($status==='not_configured'?'Your request is confirmed. Email-list setup is still pending.':($status==='not_reactivated'?'Your resource is available. Your existing email-list status was preserved; no marketing subscription was activated.':'We could not complete your subscription. Please retry this link later.')),'The Ambition Department subscription',['response'=>200]);
   }
   if(!isset($_GET['scrolly_offer_view'])&&!isset($_GET['scrolly_quiz_view']))return;
   nocache_headers();header('Content-Type: text/html; charset=UTF-8');header('X-Frame-Options: SAMEORIGIN');
