@@ -81,6 +81,12 @@
 .cdir-res .s3-label{margin-top:8px}
 
 /* calculator page: numbers | results */
+/* 2026-10-26, to match the directory: a sky-blue band (navy Jost capitals) heads the panel. Desktop shows one band over both columns
+   (aria-hidden copy); the real h2s are visually hidden there and become their own bands when the columns stack. */
+.cdir-tool .cdir-panel{--px:clamp(24px,4vw,64px);padding:0 var(--px) clamp(28px,4vw,64px)}
+.cdir-band{margin:0 calc(-1 * var(--px)) 32px;padding:18px var(--px);background:var(--s3-sky)}
+.cdir .cdir-band p,.cdir .cdir-tool h2.bandh{font:700 clamp(1.1rem,1.5vw,1.35rem)/1.25 var(--s3-sans)!important;letter-spacing:.08em!important;text-transform:uppercase;color:var(--s3-navy);margin:0}
+.cdir .cdir-tool h2.bandh{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 .cdir-tool .left{padding-right:clamp(0px,3vw,56px);border-right:1px solid var(--cx-rule)}
 .cdir-tool h2{margin-bottom:10px}
 .cdir-tool .sub{font:var(--cx-body);margin-bottom:28px}
@@ -128,6 +134,9 @@
 .cdir-clubs p{margin:12px 0 8px;font:var(--cx-body)}
 
 @media(max-width:1000px){
+ .cdir-band{display:none}
+ .cdir .cdir-tool h2.bandh{position:static;width:auto;height:auto;overflow:visible;clip:auto;white-space:normal;margin:0 calc(-1 * var(--px)) 24px;padding:16px var(--px);background:var(--s3-sky)}
+ .cdir .cdir-tool .s3-split>div:last-child>h2.bandh{margin-top:36px}
  .cdir-cards{grid-template-columns:1fr 1fr}
  .cdir-form.row{grid-template-columns:1fr 1fr}
  .cdir-form.row .s3-btn{grid-column:1/-1}

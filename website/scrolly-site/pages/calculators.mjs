@@ -78,8 +78,7 @@ const field = (x, presets) => {
 // size for every row, so one calculator's numbers always match (Mercedes, 2026-10-15). Same rule as sz() in the page script.
 const sz = (t) => (t.length > 7 ? ' l' : t.length > 5 ? ' m' : '');
 const szAll = (res) => sz(res.reduce((m, [v]) => (v.length > m.length ? v : m), ''));
-const NOTE = '<p class="s3-fine cdir-note">Estimates, not guarantees. Change the numbers to match your business.</p>';
-const BTN = '<button class="s3-btn" type="submit">Calculate <span aria-hidden="true">→</span></button>';
+const NOTE = '<p class="s3-fine cdir-note">Estimates, not guarantees.</p>';
 
 // Cards link only to calculator pages that are published (id set in calculators-data.mjs); the rest say "Coming soon".
 // Calculator pages: the climbing tiger (Mercedes, 2026-10-03), cropped to the tiger + rocks on the right and faded into the cream on the left.
@@ -115,7 +114,7 @@ function directory() {
   <h2 class="s3-h2" id="cdir-feat-h">How many views does it take to reach your goal?</h2>
  </div>
  <div>
-  <form id="cdir-form" class="cdir-form row" novalidate>${feat.fields.map((x) => field(x.k === 'view' ? { ...x, label: 'Viewers to website' } : x)).join('')}</form>
+  <form id="cdir-form" class="cdir-form row" novalidate>${feat.fields.map((x) => field(x)).join('')}</form>
   <div class="cdir-res" aria-live="polite">${res.map(([v], i) => `<div>${ico(ICON_BY_SLUG[feat.slug][1][i])}<div><div class="v" id="cdir-v${i}">${v}</div><div class="s3-label">${feat.outs[i].replace(/ needed$/, '').replace(/^Estimated v/, 'V')}</div></div></div>`).join('')}</div>
   <div class="foot"><p class="s3-fine">Estimates, not guarantees.</p><a class="s3-btn" href="${href(bySlug['views-per-post'])}">See the full calculator <span aria-hidden="true">→</span></a></div>
  </div>
@@ -134,25 +133,24 @@ function tool(c) {
   const body = `
 <section class="cdir-hero tool"><div class="s3-wrap">
  <div class="copy">
-  <nav class="cdir-crumbs s3-label" aria-label="Breadcrumb"><ol><li><a href="/">Home</a></li><li><a href="/calculators/">Calculators</a></li><li aria-current="page">${c.name.replace(/ Calculator$/, '')}</li></ol></nav>
-  <p class="s3-label eyebrow">Free calculator</p>
   <h1 class="s3-display">${c.name}</h1>
   <p class="s3-lede">${c.lede}</p>
  </div>
  ${climb()}
 </div></section>
 
-<section class="cdir-tool s3-sec tight"><div class="s3-wrap"><div class="cdir-panel s3-split">
+<section class="cdir-tool s3-sec tight"><div class="s3-wrap"><div class="cdir-panel">
+ <div class="cdir-band s3-split" aria-hidden="true"><p>Your numbers</p><p>Your results</p></div>
+ <div class="s3-split">
  <div class="left">
-  <h2 class="s3-h3">Your numbers</h2>
-  <p class="sub">Enter your numbers to see what it takes.</p>
-  <form id="cdir-form" class="cdir-form" novalidate>${c.fields.map((x) => field(x, true)).join('')}${NOTE}${BTN}</form>
+  <h2 class="bandh">Your numbers</h2>
+  <form id="cdir-form" class="cdir-form" novalidate>${c.fields.map((x) => field(x, true)).join('')}${NOTE}</form>
  </div>
  <div>
-  <h2 class="s3-h3">Your results</h2>
-  <p class="sub">Here’s what it takes.</p>
+  <h2 class="bandh">Your results</h2>
   <div class="cdir-rows" aria-live="polite">${res.map(([v, t], i) => `<div><div class="v${szAll(res)}" id="cdir-v${i}">${v}</div>${ico(ICON_BY_SLUG[c.slug][1][i])}<div><p class="s3-label">${c.outs[i]}</p><p class="t" id="cdir-t${i}">${t}</p></div></div>`).join('')}</div>
   <div class="cdir-adjust">${ico('trend')}<p><b>Want to adjust your assumptions?</b>Change any number to see how your results move.</p></div>
+ </div>
  </div>
 </div></div></section>
 

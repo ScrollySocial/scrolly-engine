@@ -10,7 +10,8 @@ export const media = JSON.parse(fs.readFileSync(path.join(here, 'media-map.json'
 export const img = (name) => {
   const m = media[name];
   if (!m) throw new Error('unknown asset ' + name);
-  return m.url;
+  // media-map.json predates the 2026-10-26 domain move; rename-live.mjs swapped the domain on live pages, so builds must too
+  return m.url.replace('https://scrollyseo.com/', 'https://theambitiondepartment.com/');
 };
 
 export const ICON_UR = (s = 20) => `<svg width="${s}" height="${s}" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" aria-hidden="true"><path d="M3 15L15 3M6 3h9v9"/></svg>`;

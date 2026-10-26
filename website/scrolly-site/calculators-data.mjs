@@ -32,7 +32,7 @@ export const CALCS = [
     slug: 'income-goal', id: 1151, group: 'make', name: 'Income Goal Calculator',
     short: 'Set an income goal and an offer price. See how many sales, visitors and views it takes.',
     lede: 'Set your income goal and offer price. See how many sales, website visitors and views it takes to get there.',
-    fields: [$('goal', 'Monthly revenue goal', 1000, 50), $('aov', 'Average order value', 50), P('view', 'Viewers who visit your website', 0.3, 0.1, VISIT), P('conv', 'Visitors who buy', 1.4, 0.1, BUY)],
+    fields: [$('goal', 'Monthly revenue goal', 1000, 50), $('aov', 'Average order value', 50), P('view', 'Viewers to website', 0.3, 0.1, VISIT), P('conv', 'Visitors who buy', 1.4, 0.1, BUY)],
     // Results run in the same order as the inputs and the funnel: views, then visitors, then sales (Mercedes, 2026-10-15).
     outs: ['Estimated views needed', 'Website visitors needed', 'Sales needed'],
     fn: `function(v,H){var s=H.up(H.div(v.goal,v.aov)),vi=H.up(H.div(s,v.conv/100)),vw=H.up(H.div(vi,v.view/100));
@@ -116,7 +116,7 @@ return [[H.num(d*v.days),H.num(v.per)+' a day on '+H.num(v.plat)+' platforms is 
     slug: 'views-per-post', id: 1479, group: 'grow', name: 'Views Per Post Calculator',
     short: 'See how many views each post needs to reach your income goal.',
     lede: 'Put in your income goal, your rates and how often you post. See how many views each post needs, on average, to get there.',
-    fields: [$('goal', 'Monthly revenue goal', 1000, 50), $('aov', 'Average order value', 50), P('view', 'Viewers who visit your website', 0.3, 0.1, VISIT), P('conv', 'Visitors who buy', 1.4, 0.1, BUY), N('per', 'New posts per day', 1), N('plat', 'Platforms you share each post on', 3)],
+    fields: [$('goal', 'Monthly revenue goal', 1000, 50), $('aov', 'Average order value', 50), P('view', 'Viewers to website', 0.3, 0.1, VISIT), P('conv', 'Visitors who buy', 1.4, 0.1, BUY), N('per', 'New posts per day', 1), N('plat', 'Platforms you share each post on', 3)],
     outs: ['Views needed a month', 'Posts a month', 'Average views per post'],
     fn: `function(v,H){var s=H.up(H.div(v.goal,v.aov)),vi=H.up(H.div(s,v.conv/100)),vw=H.up(H.div(vi,v.view/100)),p=Math.round(v.per*v.plat*30),a=H.up(H.div(vw,p));
 return [[H.num(vw),H.num(s)+(s===1?' sale':' sales')+' at '+H.money(v.aov)+' takes about '+H.num(vi)+' visitors, which is about '+H.num(vw)+' views.'],
