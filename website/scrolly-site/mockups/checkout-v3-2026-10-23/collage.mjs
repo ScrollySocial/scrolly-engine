@@ -19,11 +19,11 @@ const html = `<!doctype html><html><head><meta charset="utf-8"><style>
 </style></head><body><div class="stage"><div class="blob"></div>
 ${phone('p1', u('k1-tile2-notion.webp'), '0 64px')}
 ${phone('p2', u('k1-tile2-reels-tall.png'))}
-${phone('p3', u('live-calculators.png'))}
+${phone('p3', u('live-calculators-2026-10-26.png'), '0 64px')}
 <svg class="spark s1" viewBox="0 0 40 40"><path d="M20 0c1.5 12 6.5 17 20 20-13.5 3-18.5 8-20 20C18.5 28 13.5 23 0 20 13.5 17 18.5 12 20 0z" fill="#4da3ff"/></svg>
 <svg class="spark s2" viewBox="0 0 40 40"><path d="M20 0c1.5 12 6.5 17 20 20-13.5 3-18.5 8-20 20C18.5 28 13.5 23 0 20 13.5 17 18.5 12 20 0z" fill="#0a1930"/></svg>
 </div></body></html>`;
-const out = 'C:/Users/merce/AppData/Local/Temp/claude/C--Users-merce-Scrolly-Organic-Engine/7946faa0-6244-4049-97fe-44d71392d0de/scratchpad/co/';
+const out = process.env.COLLAGE_OUT || 'C:/Users/merce/AppData/Local/Temp/claude/co/';
 writeFileSync(out + 'collage.html', html);
 const b = await launch(); const pg = await b.newPage();
 await pg.setViewport({ width: 1800, height: 1200 });
