@@ -110,21 +110,16 @@ function directory() {
    <nav class="cdir-crumbs s3-label" aria-label="Breadcrumb"><ol><li><a href="/">Home</a></li><li aria-current="page">Calculators</li></ol></nav>
    <h1 class="s3-h2">Free business calculators</h1>
   </div>
-  <div class="aside">
-   <p class="s3-lede">Work out what it takes to reach your income goal, and the numbers behind it.</p>
-   <p class="s3-label">No signup. No spreadsheet.</p>
-  </div>
+  <p class="aside s3-label">No signup. No spreadsheet.</p>
  </div>
  <div class="cdir-panel">
  <div class="intro">
-  <p class="s3-label eyebrow">Featured calculator</p>
   <h2 class="s3-h2" id="cdir-feat-h">How many views does it take to make $1,000?</h2>
-  <p class="s3-lede">Turn a revenue goal into sales, website visitors and views.</p>
  </div>
  <div>
   <form id="cdir-form" class="cdir-form row" novalidate>${feat.fields.map((x) => field(x)).join('')}${BTN}</form>
   <div class="cdir-res" aria-live="polite">${res.map(([v], i) => `<div>${ico(ICON_BY_SLUG[feat.slug][1][i])}<div><div class="v" id="cdir-v${i}">${v}</div><div class="s3-label">${feat.outs[i].replace(/ needed$/, '').replace(/^Estimated v/, 'V')}</div></div></div>`).join('')}</div>
-  <div class="foot"><p class="s3-fine">Estimates, not guarantees. Change the numbers to match your business.</p>
+  <div class="foot"><p class="s3-fine">Estimates, not guarantees.</p>
   ${feat.id ? `<a class="s3-link more" href="${href(feat)}"><span class="tx">Open the full calculator</span> <span aria-hidden="true">→</span></a>` : ''}</div>
  </div>
  </div>
