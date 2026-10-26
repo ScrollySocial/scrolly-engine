@@ -20,7 +20,7 @@ if ( ! defined( 'SCROLLY_K1R_EP' ) ) {
 	define( 'SCROLLY_K1R_EP', 'leave-a-review' );
 	define( 'SCROLLY_K1R_TYPE', 'scrolly_review' );
 	define( 'SCROLLY_K1R_CONTENT_DAYS', 7 );
-	define( 'SCROLLY_K1R_TO', defined( 'SCROLLY_K1_ADMIN_EMAIL' ) ? SCROLLY_K1_ADMIN_EMAIL : 'hello@scrollyseo.com' );
+	define( 'SCROLLY_K1R_TO', defined( 'SCROLLY_K1_ADMIN_EMAIL' ) ? SCROLLY_K1_ADMIN_EMAIL : 'hello@theambitiondepartment.com' );
 
 	function scrolly_k1r_ready() {
 		return function_exists( 'scrolly_k1_access' ) && function_exists( 'scrolly_k1_window' ) && function_exists( 'scrolly_k1_status' );

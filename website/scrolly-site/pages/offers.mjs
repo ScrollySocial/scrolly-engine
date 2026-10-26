@@ -11,7 +11,7 @@ const TIERS = {
   '24k': { amt: '$24K', word: '$24,000', cls: 't3', tag: 'Scale it.', tile: 'Grow to $24K profit months using paid advertising for the next level.', ids: { club: 306, challenge: 307 } },
 };
 
-const mailto = (name) => `mailto:hello@scrollyseo.com?subject=${encodeURIComponent('Launch updates: ' + name)}&body=${encodeURIComponent(`Hi there, please let me know when ${name} is ready to launch. Thank you!`)}`;
+const mailto = (name) => `mailto:hello@theambitiondepartment.com?subject=${encodeURIComponent('Launch updates: ' + name)}&body=${encodeURIComponent(`Hi there, please let me know when ${name} is ready to launch. Thank you!`)}`;
 const money = (n) => '$' + (Number.isInteger(n) ? n : n.toFixed(2));
 const cart = (id) => `/?add-to-cart=${id}`;
 

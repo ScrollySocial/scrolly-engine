@@ -284,7 +284,7 @@ def club_body():
 <p class="sx-eyebrow" style="color:var(--club)">Next up</p>
 <h2 id="sx-l-h" class="sx-h2" style="color:#fff">$1K Club is<br>coming soon.</h2>
 <p class="sx-lede" style="color:rgba(255,255,255,.86)">Enrollment is not open yet. Request launch news by email, or use our contact form to ask a question. Final features, pricing, and launch details will be confirmed before checkout opens.</p>
-<div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:30px"><a class="btn btn--club" href="mailto:hello@scrollyseo.com?subject=Launch%20updates%3A%20%241K%20Club&amp;body=Hi%20Scrolly%2C%20please%20let%20me%20know%20when%20%241K%20Club%20is%20ready%20to%20launch.%20Thank%20you!">Request launch news {ARROW}</a><a class="btn btn--ghost" href="/contact/">Contact Scrolly</a></div>
+<div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:30px"><a class="btn btn--club" href="mailto:hello@theambitiondepartment.com?subject=Launch%20updates%3A%20%241K%20Club&amp;body=Hi%20Scrolly%2C%20please%20let%20me%20know%20when%20%241K%20Club%20is%20ready%20to%20launch.%20Thank%20you!">Request launch news {ARROW}</a><a class="btn btn--ghost" href="/contact/">Contact Scrolly</a></div>
 <p class="sx-fine" style="color:rgba(255,255,255,.7);margin-top:16px">The launch-news button opens your email app. Your request is sent only when you send the email.</p>
 </div>
 <nav class="sx-more" aria-label="Other goals">

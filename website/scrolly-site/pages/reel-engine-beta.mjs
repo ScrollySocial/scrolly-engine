@@ -10,7 +10,7 @@ export const title = 'Reel Engine Founding Beta, The Ambition Department';
 const ASSET = (f) => `reel-engine-beta/${f}`;
 const PRICE = '$97';
 const SEATS = 10;
-const SEAT_URL = `mailto:hello@scrollyseo.com?subject=${encodeURIComponent('Reel Engine Founding Beta')}`;
+const SEAT_URL = `mailto:hello@theambitiondepartment.com?subject=${encodeURIComponent('Reel Engine Founding Beta')}`;
 
 const REELS = [
   { v: 'know.mp4', poster: 'know-cover.jpg', label: 'Reel: Your AI should know what you’re selling' },
