@@ -117,14 +117,10 @@ ${close()}`;
 function seoTools() {
   const impl = `<article class="cat-prod"><a class="cv" href="/implementation/" tabindex="-1" aria-hidden="true"><span class="soon">Coming soon</span></a><p class="s3-label tag">Coming soon</p><h3><a href="/implementation/">Implementation</a></h3><p>Support for turning approved recommendations into real website changes. Still in development: join the early-access list to hear when it is ready.</p><div class="acts"><a class="s3-btn black" href="/implementation/">View Implementation</a></div></article>`;
   const body = `
-${hero({ h1: 'Be easier', em: 'to discover.', lede: 'SEO is one part of organic growth. Keep moving with a site audit, implementation help, or a practical platform workbook.', btn: 'Explore the tools', href: '#tools' })}
+${hero({ h1: 'Be easier', em: 'to discover.', lede: 'SEO is one part of organic growth. Keep moving with a site audit or implementation help.', btn: 'Explore the tools', href: '#tools' })}
 <section class="s3-sec" id="tools"><div class="s3-wrap">
  <div class="cat-head"><h2 class="s3-h2">A focused plan for your search presence.</h2></div>
  <div class="cat-prods">${product(PRODUCTS.audit)}${impl}</div>
-</div></section>
-<section class="s3-sec"><div class="s3-wrap">
- <div class="cat-head"><h2 class="s3-h2">Build with a workbook.</h2><p class="s3-lede">Prefer to work through it yourself? Choose Shopify or Pinterest.</p></div>
- <div class="cat-prods">${product(PRODUCTS.shopify)}${product(PRODUCTS.pinterest)}</div>
 </div></section>
 ${close()}`;
   return { key: 'seo-tools', id: 316, title: 'SEO tools and services, The Ambition Department', html: s3shell(body, CSS) };
