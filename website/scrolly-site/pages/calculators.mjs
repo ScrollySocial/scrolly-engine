@@ -115,10 +115,9 @@ function directory() {
   <h2 class="s3-h2" id="cdir-feat-h">How many views does it take to reach your goal?</h2>
  </div>
  <div>
-  <form id="cdir-form" class="cdir-form row" novalidate>${feat.fields.map((x) => field(x.k === 'view' ? { ...x, label: 'Viewers to website' } : x)).join('')}${BTN}</form>
+  <form id="cdir-form" class="cdir-form row" novalidate>${feat.fields.map((x) => field(x.k === 'view' ? { ...x, label: 'Viewers to website' } : x)).join('')}</form>
   <div class="cdir-res" aria-live="polite">${res.map(([v], i) => `<div>${ico(ICON_BY_SLUG[feat.slug][1][i])}<div><div class="v" id="cdir-v${i}">${v}</div><div class="s3-label">${feat.outs[i].replace(/ needed$/, '').replace(/^Estimated v/, 'V')}</div></div></div>`).join('')}</div>
-  <div class="foot"><p class="s3-fine">Estimates, not guarantees.</p>
-  ${feat.id ? `<a class="s3-link more" href="${href(feat)}"><span class="tx">Open the full calculator</span> <span aria-hidden="true">→</span></a>` : ''}</div>
+  <div class="foot"><p class="s3-fine">Estimates, not guarantees.</p><a class="s3-btn" href="${href(bySlug['views-per-post'])}">See the full calculator <span aria-hidden="true">→</span></a></div>
  </div>
  </div>
 </div></section>

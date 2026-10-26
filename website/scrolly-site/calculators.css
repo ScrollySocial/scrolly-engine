@@ -67,7 +67,8 @@
 /* the question: centred Jost capitals, like the site's labels but bigger (Mercedes, 2026-10-26: not the narrow serif) */
 .cdir .cdir-hero.home .intro .s3-h2{font:700 clamp(1.25rem,1.9vw,1.75rem)/1.25 var(--s3-sans)!important;letter-spacing:.08em!important;text-transform:uppercase;text-align:center}
 .cdir-hero.home .cdir-in input{min-height:56px}
-.cdir-hero.home .cdir-form.row .s3-btn{min-height:56px}
+@media(min-width:1001px){.cdir-hero.home .cdir-form.row{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.cdir-feat .foot .s3-btn{white-space:nowrap}
 .cdir-hero.home .cdir-res{margin-top:28px;padding-top:24px}
 .cdir-hero.home .cdir-res .v{font-size:clamp(2.8rem,4vw,4rem)}
 .cdir-feat .foot{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:4px 32px;margin-top:20px}
