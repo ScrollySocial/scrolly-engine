@@ -28,7 +28,7 @@ if ( ! defined( 'SCROLLY_K1_PRODUCT' ) ) {
 	// Content Tracker (public Notion template, never a private workspace URL) + its companion guide, Auto-Posting with Your AI
 	// (2026-10-08, replaced the Make blueprint): a protected WooCommerce download on 583 and 280 whose file name contains
 	// SCROLLY_K1_GUIDE_FILE. Video URL: set once recorded.
-	define( 'SCROLLY_K1_TRACKER_URL', 'https://antique-sweater-bd0.notion.site/Content-Tracker-3f0ab38f4c5881e2a658f557f4f34d03' );
+	define( 'SCROLLY_K1_TRACKER_URL', 'https://antique-sweater-bd0.notion.site/Content-Planner-3f6ab38f4c58814aa91cc340ceb304d6' );
 	define( 'SCROLLY_K1_GUIDE_FILE', 'Auto-Posting-With-Your-AI' );
 	define( 'SCROLLY_K1_TRACKER_VIDEO', '' );
 	define( 'SCROLLY_K1_EP_PLAN', 'my-1k-plan' );
@@ -87,7 +87,7 @@ if ( ! defined( 'SCROLLY_K1_PRODUCT' ) ) {
 	// One deliberate difference: the original only allowed a claim after day 30; here a claim opens as soon as $1,000 is logged.
 	define( 'SCROLLY_K1_GOAL', 1000 );
 	define( 'SCROLLY_K1_CLAIM_GRACE_DAYS', 14 );
-	define( 'SCROLLY_K1_ADMIN_EMAIL', 'hello@scrollyseo.com' );
+	define( 'SCROLLY_K1_ADMIN_EMAIL', 'hello@theambitiondepartment.com' );
 
 	/** Revenue logged with a date inside the Challenge window (refunds are logged as negative amounts). */
 	function scrolly_k1_window_revenue( $log, $w ) {
@@ -1155,36 +1155,59 @@ K1CALC;
 	//   below the table was easy to miss). The setup steps follow the table.
 	/** Setup steps for the Content Tracker + AI auto-posting rows above. */
 	function scrolly_k1_automation_html( $uid ) {
-		$h   = '<h2>Set up your Content Tracker + auto-posting</h2><p>The Content Tracker and the Auto-Posting with Your AI guide in the list above work together. Plan your posts in Notion, and your AI sends them to Buffer.</p>';
+		$h   = '<h2>Set up your Content Planner + auto-posting</h2><p>The Content Planner and the Auto-Posting with Your AI guide in the list above work together. Plan your posts in Notion, and your AI sends them to Buffer.</p>';
 		if ( SCROLLY_K1_TRACKER_VIDEO ) {
 			$h .= '<p><a href="' . esc_url( SCROLLY_K1_TRACKER_VIDEO ) . '" target="_blank" rel="noopener">Watch the setup video</a></p>';
 		}
 		$h  .= '<h3>Set it up in 4 steps</h3><ol>'
-			. '<li><strong>Duplicate the Content Tracker.</strong> Click its button in the list above, then click Duplicate at the top right in Notion.</li>'
+			. '<li><strong>Duplicate the Content Planner.</strong> Click its button in the list above, then click Duplicate at the top right in Notion.</li>'
 			. '<li><strong>Connect Notion and Buffer to your AI.</strong> Step 2 of the guide has the settings for Claude and ChatGPT.</li>'
 			. '<li><strong>Get one post ready.</strong> Delete the example rows, fill in one finished post with its captions and media, and set its Status to Ready.</li>'
 			. '<li><strong>Send it.</strong> Copy the message from Step 5 of the guide to your AI. Check that the post shows up in Buffer and its Status changes to Queued.</li></ol>';
 		$h  .= '<div class="sec teal"><h3>How it works</h3>'
 			. '<p>Your AI takes your Ready posts in Publish Order (lowest number first), adds them to your Buffer queue, and marks them Queued. Ask for it any time, or set it to run once a day (Step 6 of the guide).</p>'
 			. '<p><strong>Status:</strong> Idea → Ready → Queued → Published. Mark a post Published once it’s live, or ask your AI to check Buffer and update it.</p>'
-			. '<p style="margin:16px 0 0;padding-left:14px;border-left:4px solid var(--s3-orange);font-size:var(--s3-fs-fine)"><strong>Keep these field names:</strong> Status, Publish Order, Platforms, Instagram Caption, TikTok Caption, YouTube Title, YouTube Description, Media Links. Your AI reads them by name. Everything else in the tracker is yours to change.</p></div>';
+			. '<p style="margin:16px 0 0;padding-left:14px;border-left:4px solid var(--s3-orange);font-size:var(--s3-fs-fine)"><strong>Keep these field names:</strong> Status, Publish Order, Platforms, Instagram Caption, TikTok Caption, YouTube Title, YouTube Description, Media Links. Your AI reads them by name. Everything else in the planner is yours to change.</p></div>';
 		return $h;
 	}
-	// Adds the Content Tracker as a row just before the guide row, for Challenge buyers who have the guide.
+	// Adds the Content Planner as a row for Challenge buyers: just before the guide row when the order has the guide,
+	// otherwise after the last Challenge row (2026-10-15: an order without the guide row showed no planner button at all).
 	add_filter( 'woocommerce_customer_get_downloadable_products', function ( $downloads ) {
-		$out = array();
+		$uid = get_current_user_id();
+		if ( ! $uid || ! scrolly_k1_access( $uid )['challenge'] ) {
+			return $downloads;
+		}
+		$row = function ( $d ) {
+			return array_merge( (array) $d, array(
+				'download_url'        => SCROLLY_K1_TRACKER_URL,
+				'download_id'         => 'k1-content-tracker',
+				'download_name'       => 'Content Planner (Notion template)',
+				'downloads_remaining' => '',
+				'access_expires'      => null,
+				'file'                => array( 'name' => 'Content Planner (Notion template)', 'file' => SCROLLY_K1_TRACKER_URL ),
+			) );
+		};
+		$out  = array();
+		$done = false;
+		$last = null; // index in $out of the last row from a $1K Challenge product
 		foreach ( (array) $downloads as $d ) {
-			if ( isset( $d['file']['file'] ) && false !== strpos( $d['file']['file'], SCROLLY_K1_GUIDE_FILE ) && get_current_user_id() && scrolly_k1_access( get_current_user_id() )['challenge'] ) {
-				$out[] = array_merge( $d, array(
-					'download_url'        => SCROLLY_K1_TRACKER_URL,
-					'download_id'         => 'k1-content-tracker',
-					'download_name'       => 'Content Tracker (Notion template)',
-					'downloads_remaining' => '',
-					'access_expires'      => null,
-					'file'                => array( 'name' => 'Content Tracker (Notion template)', 'file' => SCROLLY_K1_TRACKER_URL ),
-				) );
+			if ( ! $done && isset( $d['file']['file'] ) && false !== strpos( $d['file']['file'], SCROLLY_K1_GUIDE_FILE ) ) {
+				$out[] = $row( $d );
+				$done  = true;
 			}
 			$out[] = $d;
+			if ( isset( $d['product_name'] ) && false !== stripos( $d['product_name'], 'Challenge' ) ) {
+				$last = count( $out ) - 1;
+			}
+		}
+		if ( ! $done ) {
+			$base = null !== $last ? $out[ $last ] : ( $out ? end( $out ) : array( 'product_name' => '$1K Challenge', 'product_url' => '', 'order_id' => 0, 'order_key' => '', 'product_id' => 0 ) );
+			$new  = $row( $base );
+			if ( null !== $last ) {
+				array_splice( $out, $last + 1, 0, array( $new ) );
+			} else {
+				$out[] = $new;
+			}
 		}
 		return $out;
 	} );

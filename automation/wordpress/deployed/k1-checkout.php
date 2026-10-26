@@ -18,13 +18,13 @@
  * WPCode: PHP Snippet · Auto Insert · Run Everywhere. Needs WooCommerce 9.9+ (site runs 11.x).
  */
 if ( ! defined( 'SCROLLY_K1CO_V' ) ) {
-	define( 'SCROLLY_K1CO_V', '1' );
+	define( 'SCROLLY_K1CO_V', '2' );
 	define( 'SCROLLY_K1CO_PRODUCT', 279 );
 	define( 'SCROLLY_K1CO_CLUB', 582 );
 	define( 'SCROLLY_K1CO_BUNDLE', 583 );
 	// Media library attachment ids: checkout collage, winner shirt front, winner shirt back.
 	if ( ! defined( 'SCROLLY_K1CO_MEDIA' ) ) {
-		define( 'SCROLLY_K1CO_MEDIA', array( 'collage' => 862, 'front' => 1433, 'back' => 0 ) ); // 2026-10-10: graphite winner shirt, front only (its back is blank).
+		define( 'SCROLLY_K1CO_MEDIA', array( 'collage' => 1679, 'front' => 597, 'back' => 596 ) );
 	}
 
 	/** The cart is exactly one $1K Club package, quantity 1. */
@@ -113,7 +113,10 @@ if ( ! defined( 'SCROLLY_K1CO_V' ) ) {
 	// A "Join" click replaces any $1K package already in the cart (one package per order; 279 is sold individually),
 	// so clicking Club, going back and clicking Challenge never errors or leaves two packages in the cart.
 	add_filter( 'woocommerce_add_to_cart_validation', function ( $ok, $product_id ) {
-		if ( $ok && SCROLLY_K1CO_PRODUCT === (int) $product_id && function_exists( 'WC' ) && WC()->cart ) {
+		// Links like ?add-to-cart=583 pass the variation id here, not 279.
+		$adding = wc_get_product( $product_id );
+		$parent = ( $adding && $adding->get_parent_id() ) ? $adding->get_parent_id() : (int) $product_id;
+		if ( $ok && SCROLLY_K1CO_PRODUCT === (int) $parent && function_exists( 'WC' ) && WC()->cart ) {
 			foreach ( WC()->cart->get_cart() as $key => $item ) {
 				if ( SCROLLY_K1CO_PRODUCT === (int) $item['product_id'] ) {
 					WC()->cart->remove_cart_item( $key );
@@ -123,9 +126,50 @@ if ( ! defined( 'SCROLLY_K1CO_V' ) ) {
 		return $ok;
 	}, 20, 2 );
 
+	// Buyers who already have an account never have to leave checkout to log in. If a logged-out buyer enters an email
+	// that already has an account, WooCommerce would stop with "An account is already registered". Instead: skip creating
+	// an account for this request, place the order as usual, then attach it to the existing account (only for $1K orders),
+	// so the Club/Challenge tabs appear when they next log in. Nobody is logged in and the account's details aren't changed.
+	add_filter( 'rest_request_before_callbacks', function ( $response, $handler, $request ) {
+		if ( $request instanceof WP_REST_Request && '/wc/store/v1/checkout' === $request->get_route() && 'POST' === $request->get_method() && ! is_user_logged_in() ) {
+			$billing = (array) $request->get_param( 'billing_address' );
+			$email   = sanitize_email( $billing['email'] ?? '' );
+			$user    = $email ? get_user_by( 'email', $email ) : false;
+			if ( $user ) {
+				$GLOBALS['scrolly_k1co_existing_user'] = (int) $user->ID;
+				$request->set_param( 'create_account', false );
+			}
+		}
+		return $response;
+	}, 10, 3 );
+	add_filter( 'woocommerce_checkout_registration_required', function ( $required ) {
+		return empty( $GLOBALS['scrolly_k1co_existing_user'] ) ? $required : false;
+	}, 99 );
+	add_action( 'woocommerce_store_api_checkout_order_processed', function ( $order ) {
+		$uid = (int) ( $GLOBALS['scrolly_k1co_existing_user'] ?? 0 );
+		if ( ! $uid || $order->get_customer_id() ) {
+			return;
+		}
+		$is_k1 = false;
+		foreach ( $order->get_items() as $item ) {
+			$is_k1 = $is_k1 || in_array( (int) $item->get_product_id(), array( SCROLLY_K1CO_PRODUCT, 280 ), true );
+		}
+		if ( $is_k1 ) {
+			$order->set_customer_id( $uid );
+			$order->add_order_note( 'Buyer checked out without logging in; order linked to the existing account for ' . $order->get_billing_email() . '.' );
+			$order->save();
+		}
+	} );
+
 	// "Join" buttons land straight on checkout (k1-straight-to-checkout.php), where "added to your cart" is noise.
 	add_filter( 'wc_add_to_cart_message_html', function ( $message, $products ) {
-		return isset( $products[ SCROLLY_K1CO_PRODUCT ] ) ? '' : $message;
+		foreach ( array_keys( (array) $products ) as $id ) { // 279, or 582/583 from ?add-to-cart=583 links
+			$p = wc_get_product( $id );
+			if ( $p && SCROLLY_K1CO_PRODUCT === ( $p->get_parent_id() ? $p->get_parent_id() : (int) $id ) ) {
+				return '';
+			}
+		}
+		return $message;
 	}, 10, 2 );
 
 	function scrolly_k1co_money( $amount ) {
@@ -195,7 +239,7 @@ if ( ! defined( 'SCROLLY_K1CO_V' ) ) {
 		$intro = '<section class="k1co-intro">'
 			. '<h1>Earn your first stripe.</h1>'
 			. '<p class="k1co-sub">Choose the $1K Club plan or add your first 30-day Challenge attempt. Make the next move for your business.</p>'
-			. '<div class="k1co-art">' . scrolly_k1co_img( 'collage', 'Scrolly $1K Club Playbook collage with desktop and phone previews', 'k1co-collage' ) . '</div>'
+			. '<div class="k1co-art">' . scrolly_k1co_img( 'collage', 'The Ambition Department $1K Club Playbook collage with desktop and phone previews', 'k1co-collage' ) . '</div>'
 			. '<div class="k1co-tracker" aria-hidden="true"><div class="k1co-tracker-head"><strong>Your first $1K</strong><strong class="k1co-target">$1K</strong></div>'
 			. '<div class="k1co-track"><span></span></div>'
 			. '<div class="k1co-stages"><span>01 Start</span><span>02 Build</span><span>03 Progress</span><span>04 Verify</span><span>05 Stripe earned</span></div></div>'
@@ -204,7 +248,7 @@ if ( ! defined( 'SCROLLY_K1CO_V' ) ) {
 		$extras = '<section class="k1co-extras">'
 			. '<h2>What’s inside</h2>'
 			. '<p class="k1co-tick"><b aria-hidden="true">✓</b><span>The $1K Club Playbook, setup checklist, and worksheets.</span></p>'
-			. '<p class="k1co-tick"><b aria-hidden="true">✓</b><span>Reel and carousel templates, plus the $1K Math calculator.</span></p>'
+			. '<p class="k1co-tick"><b aria-hidden="true">✓</b><span>A Reel safe-zone guide, a carousel template, and the $1K Math calculator.</span></p>'
 			. '<p class="k1co-tick"><b aria-hidden="true">✓</b><span>Add the Challenge for a personal $1K Plan, weekly check-ins, and 25 current Reel ideas each week.</span></p>'
 			. '<div class="k1co-earned"><div class="k1co-earned-shirt">' . scrolly_k1co_img( 'front', 'Winner shirt front', '' ) . scrolly_k1co_img( 'back', 'Winner shirt back', '' ) . '</div>'
 			. '<h2>The shirt is earned.</h2>'
@@ -406,8 +450,24 @@ if ( ! defined( 'SCROLLY_K1CO_V' ) ) {
 			}, 50);
 		}
 	});
+	// Copy only after typing pauses, so the copy rides along with WooCommerce's own address update instead of adding
+	// requests per keystroke (the host answers bursts with 429 "Too Many Requests", shown as "Something went wrong").
+	var syncTimer = null;
+	function syncSoon() {
+		clearTimeout(syncTimer);
+		syncTimer = setTimeout(syncAddress, 1200);
+	}
+	// ...and right before the order is placed, so the shirt address is never a stale copy.
+	['pointerdown', 'keydown'].forEach(function (type) {
+		document.addEventListener(type, function (e) {
+			if (e.target.closest ? e.target.closest('.wc-block-components-checkout-place-order-button') : false) {
+				clearTimeout(syncTimer);
+				syncAddress();
+			}
+		}, true);
+	});
 	filters();
-	wp.data.subscribe(function () { paint(); syncAddress(); }, CART);
+	wp.data.subscribe(function () { paint(); syncSoon(); }, CART);
 	paint();
 	syncAddress();
 })();
@@ -416,56 +476,61 @@ JS;
 
 	function scrolly_k1co_css() {
 		return <<<'CSS'
-body.scrolly-k1co{background:#f4f1ec}
+body.scrolly-k1co{background:#f7f3ec}
 body.scrolly-k1co .page-content>h1:first-of-type,body.scrolly-k1co .page-content>.wp-block-heading:first-of-type,body.scrolly-k1co h1:has(+ .k1co),body.scrolly-k1co .wp-block-post-title,body.scrolly-k1co .entry-title{display:none!important}
 body.scrolly-k1co .page-content>.k1co{max-width:1040px!important;padding:0!important}
-.k1co{--ink:#000;--cream:#fbf8f3;--teal:#94ece1;--orange:#ff6338;--line:#e6e1dc;font-family:'Public Sans',system-ui,Arial,sans-serif;color:var(--ink);background:var(--cream);max-width:1040px;margin:clamp(16px,3vw,32px) auto 64px;box-shadow:0 12px 30px #0002;display:grid;grid-template-columns:1fr 1fr;grid-template-areas:"bar bar" "intro main" "extras main";grid-template-rows:auto auto 1fr;text-align:left}
+.k1co{--ink:#0a1930;--cream:#f7f3ec;--mist:#dfe4f0;--sky:#4da3ff;--muted:#4a4e66;--field:#8f8a83;--line:#d9d3ca;font-family:'Jost',system-ui,Arial,sans-serif;color:var(--ink);background:#fff;max-width:1040px;margin:clamp(16px,3vw,32px) auto 64px;box-shadow:0 12px 34px rgba(10,25,48,.10);border-radius:18px;overflow:hidden;display:grid;grid-template-columns:1fr 1fr;grid-template-areas:"bar bar" "intro main" "extras main";grid-template-rows:auto auto 1fr;text-align:left}
 .k1co *{box-sizing:border-box}
 .k1co p,.k1co summary,.k1co label,.k1co-main .wc-block-components-checkout-step__content{font-size:16px}
 .k1co-main input[type=checkbox],.k1co-main input[type=radio]{min-height:0!important}
-.k1co h1,.k1co h2{font-family:'Archivo','Arial Black',Arial,sans-serif;font-weight:900;text-transform:uppercase;letter-spacing:-.02em;color:var(--ink);margin:0}
-.k1co h1{font-size:34px;line-height:1;margin:0 0 12px}
-.k1co h2{font-size:21px;line-height:1.1;margin:24px 0 10px}
+.k1co h1,.k1co h2{font-family:'Instrument Serif',Georgia,serif;font-weight:400;text-transform:none;letter-spacing:-.01em;color:var(--ink);margin:0}
+.k1co h1{font-size:46px;line-height:1.02;margin:0 0 12px}
+.k1co h2{font-size:30px;line-height:1.08;margin:24px 0 10px}
 .k1co p{line-height:1.45;margin:0 0 12px;color:var(--ink)}
-.k1co-bar{grid-area:bar;height:52px;display:flex;align-items:center;justify-content:flex-end;padding:0 30px;border-bottom:1px solid #ddd;font-size:12px;text-transform:uppercase;letter-spacing:.02em}
-.k1co-intro{grid-area:intro;padding:34px 34px 0;border-right:1px solid var(--line)}
-.k1co-extras{grid-area:extras;padding:0 34px 46px;border-right:1px solid var(--line)}
+.k1co-bar{grid-area:bar;height:52px;display:flex;align-items:center;justify-content:flex-end;padding:0 30px;border-bottom:1px solid var(--line);font-size:15px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+.k1co-intro{grid-area:intro;padding:34px 34px 0;border-right:1px solid var(--line);background:var(--cream)}
+.k1co-extras{grid-area:extras;padding:0 34px 46px;border-right:1px solid var(--line);background:var(--cream)}
 .k1co-main{grid-area:main;background:#fff;padding:32px;display:flex;flex-direction:column;min-width:0}
 .k1co-sub{font-size:16px;max-width:410px}
 .k1co-art{margin:16px -12px 17px}
 .k1co-collage{display:block;width:100%;height:auto}
-.k1co-tracker{padding:14px 16px 17px;background:#000;color:#fff;margin-bottom:20px}
-.k1co-tracker-head{display:flex;justify-content:space-between;align-items:flex-end;font-family:'Archivo','Arial Black',Arial,sans-serif;font-weight:900;font-size:16px;text-transform:uppercase}
-.k1co-target{color:var(--teal);font-size:26px}
-.k1co-track{height:14px;background:var(--cream);border-radius:5px;margin:13px 0 8px;overflow:hidden}
-.k1co-track span{display:block;width:39%;height:100%;background:var(--teal)}
-.k1co-stages{display:flex;justify-content:space-between;gap:4px;font-size:10px;font-weight:700;text-transform:uppercase}
+.k1co-tracker{padding:16px 18px 18px;background:var(--mist);color:var(--ink);border-radius:14px;margin-bottom:20px}
+.k1co-tracker-head{display:flex;justify-content:space-between;align-items:flex-end;font-family:'Instrument Serif',Georgia,serif;font-weight:400;font-size:24px}
+.k1co-target{color:var(--ink);font-size:32px}
+.k1co-track{height:12px;background:#fff;border-radius:999px;margin:13px 0 8px;overflow:hidden}
+.k1co-track span{display:block;width:39%;height:100%;background:var(--sky);border-radius:999px}
+.k1co-stages{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;font-size:15px;font-weight:500;line-height:1.2}
+.k1co-stages span{text-align:center}
 .k1co-tick{display:flex;gap:10px;margin:14px 0;font-size:17px;line-height:1.35}
-.k1co-tick b{font-size:19px}
-.k1co-earned{background:#fff;border-left:6px solid #000;padding:22px;margin-top:18px;overflow:hidden}
+.k1co-tick b{font-size:19px;color:var(--sky)}
+.k1co-earned{background:#fff;border-radius:14px;box-shadow:inset 0 0 0 1px var(--line);padding:22px;margin-top:18px;overflow:hidden}
 .k1co-earned h2{margin-top:0}
 .k1co-earned-shirt{float:right;width:142px;height:115px;display:flex;align-items:center;margin:-10px -8px 4px 8px}
-.k1co-earned-shirt img{width:112px;height:115px;object-fit:contain;filter:drop-shadow(0 2px 3px #0004)}
+.k1co-earned-shirt img{width:70px;height:108px;object-fit:contain;filter:drop-shadow(0 2px 3px #0004)}
 .k1co-faq{margin-top:26px}
-.k1co-faq details{border-bottom:1px solid #ddd;padding:12px 0}
+.k1co-faq details{border-bottom:1px solid var(--line);padding:12px 0}
 .k1co-faq summary{cursor:pointer;font-weight:700}
 .k1co-faq details p{margin:10px 0 0}
 .k1co-main>h2:first-child,.k1co-path h2{margin-top:0}
-.k1co-option{display:flex;gap:11px;align-items:flex-start;padding:14px;border:2px solid #ddd;border-radius:7px;margin:9px 0;cursor:pointer;background:#fff}
-.k1co-option:has(input:checked){border-color:#000;background:#f8f5f0}
-.k1co-option input{accent-color:#000;margin:3px 0 0;min-height:0}
-.k1co-option small{display:block;color:#555;line-height:1.35;margin-top:4px;font-size:13px}
+.k1co-option{display:flex;gap:11px;align-items:flex-start;padding:14px;border:1px solid var(--field);border-radius:12px;margin:9px 0;cursor:pointer;background:#fff}
+.k1co-option:has(input:checked){border:2px solid var(--ink);background:var(--mist)}
+.k1co-option input{accent-color:var(--ink);margin:3px 0 0;min-height:0}
+.k1co-option small{display:block;color:var(--muted);line-height:1.35;margin-top:4px;font-size:15px}
 .k1co-option strong{display:block;font-size:16px;font-weight:700;line-height:1.3}
-.k1co-amt{margin-left:auto;font-weight:900;font-size:16px}
+.k1co-amt{margin-left:auto;font-weight:600;font-size:16px}
 .k1co-busy .k1co-path,.k1co-busy .k1co-bump{opacity:.6;pointer-events:none}
-.k1co-bump{background:#fff0e5;border-left:6px solid var(--orange);padding:18px;margin:8px 0 15px}
+.k1co-bump{background:var(--mist);border-radius:14px;padding:18px;margin:8px 0 15px}
 .k1co-bump h2{margin:0 0 8px}
-.k1co-bump label{display:flex;align-items:flex-start;gap:10px;background:#fff;padding:12px;margin-top:12px;cursor:pointer;font-weight:700}
-.k1co-bump input{accent-color:#000;margin-top:3px;min-height:0}
+.k1co-bump label{display:flex;align-items:flex-start;gap:10px;background:#fff;border-radius:10px;padding:12px;margin-top:12px;cursor:pointer;font-weight:700}
+.k1co-bump input{accent-color:var(--ink);margin-top:3px;min-height:0}
 .k1co-lines{margin-top:4px}
 /* Billing address sits inside Contact information: no heading of its own. */
 .k1co-main .wc-block-checkout__billing-fields .wc-block-components-checkout-step__heading,.k1co-main .wc-block-checkout__billing-fields .wc-block-components-checkout-step__description{display:none}
 .k1co-main .wc-block-checkout__billing-fields{margin-top:12px}
+/* Password strength meter in brand colours (WooCommerce uses red/yellow/green): sky = weak, navy = OK/strong; label text navy. */
+.k1co-main .wc-block-components-password-strength .wc-block-components-password-strength__meter{color:var(--sky)!important}
+.k1co-main .wc-block-components-password-strength .wc-block-components-password-strength__meter[value="3"],.k1co-main .wc-block-components-password-strength .wc-block-components-password-strength__meter[value="4"]{color:var(--ink)!important}
+.k1co-main .wc-block-components-password-strength .wc-block-components-password-strength__result{color:var(--ink)!important}
 /* Country moved below ZIP: WooCommerce gives it no top gap because it is normally first. */
 .k1co-main .wc-block-components-address-form .wc-block-components-address-form__country{margin-top:12px!important}
 /* Challenge shirt address: our toggle replaces WooCommerce's "Use same address for billing". */
@@ -473,14 +538,14 @@ body.scrolly-k1co .page-content>.k1co{max-width:1040px!important;padding:0!impor
 .k1co-bundle .k1co-shipto{display:block}
 .k1co-shipto h2{margin:24px 0 6px}
 .k1co-shipto label{display:flex;align-items:flex-start;gap:10px;font-weight:700;cursor:pointer;margin:4px 0 8px}
-.k1co-shipto input{accent-color:#000;margin-top:3px}
+.k1co-shipto input{accent-color:var(--ink);margin-top:3px}
 .k1co-main .wc-block-checkout__use-address-for-billing{display:none!important}
 .k1co-main .wc-block-checkout__shipping-fields .wc-block-components-checkout-step__heading{display:none}
 .k1co-shipsame .k1co-main .wc-block-checkout__shipping-fields,.k1co-club .k1co-main .wc-block-checkout__shipping-fields{display:none!important}
 .k1co-line{display:flex;justify-content:space-between;margin:10px 0;font-size:16px}
 .k1co-chal-line{display:none}
 .k1co-bundle .k1co-chal-line{display:flex}
-.k1co p.k1co-fine{font-size:12px;color:#555;line-height:1.35}
+.k1co p.k1co-fine{font-size:15px;color:var(--muted);line-height:1.4}
 .k1co-off .k1co-path,.k1co-off .k1co-bump,.k1co-off .k1co-lines{display:none}
 /* Flatten WooCommerce's checkout so its steps and our pieces stack in mockup order inside .k1co-main. */
 .k1co-main .wp-block-woocommerce-checkout,.k1co-main .wc-block-checkout,.k1co-main .wc-block-components-sidebar-layout,.k1co-main .wc-block-components-main,.k1co-main .wc-block-checkout__form,.k1co-main .wc-block-components-sidebar,.k1co-main .wp-block-woocommerce-checkout-fields-block,.k1co-main .wp-block-woocommerce-checkout-totals-block{display:contents!important}
@@ -503,34 +568,39 @@ body.scrolly-k1co .page-content>.k1co{max-width:1040px!important;padding:0!impor
 .k1co-main .wp-block-woocommerce-checkout-express-payment-block,.k1co-main .wc-block-components-express-payment,.k1co-main .wc-block-components-express-payment-continue-rule,.k1co-main .wc-block-checkout__shipping-option,.k1co-main .wc-block-components-order-summary__button-text,.k1co-main .wc-block-components-checkout-order-summary__title,.k1co-main .wp-block-woocommerce-checkout-order-summary-cart-items-block,.k1co-main .wc-block-components-order-summary,.k1co-main .wp-block-woocommerce-checkout-order-summary-subtotal-block,.k1co-main .wp-block-woocommerce-checkout-order-summary-shipping-block,.k1co-main .wc-block-checkout__order-notes,.k1co-main .wc-block-checkout__actions .checkout-order-summary-block-fill-wrapper{display:none!important}
 .k1co-main .wp-block-woocommerce-checkout-order-summary-block{border:0!important;padding:0!important;margin:0!important;background:none!important}
 .k1co-main .wc-block-components-totals-wrapper{border:0!important;padding:0!important}
-.k1co-main .wc-block-components-totals-footer-item{border-top:1px solid #ddd;padding-top:14px!important;margin-top:4px;font-family:'Archivo','Arial Black',Arial,sans-serif}
-.k1co-main .wc-block-components-totals-footer-item .wc-block-components-totals-item__label{font-weight:900;font-size:20px;text-transform:uppercase}
-.k1co-main .wc-block-components-totals-footer-item .wc-block-components-totals-item__value{font-weight:900;font-size:20px}
+.k1co-main .wc-block-components-totals-footer-item{border-top:1px solid var(--line);padding-top:14px!important;margin-top:4px;font-family:'Instrument Serif',Georgia,serif}
+.k1co-main .wc-block-components-totals-footer-item .wc-block-components-totals-item__label{font-weight:400;font-size:28px}
+.k1co-main .wc-block-components-totals-footer-item .wc-block-components-totals-item__value{font-weight:400;font-size:28px}
 .k1co-main .wc-block-components-checkout-step{margin:0;padding:0;border:0}
 .k1co-main .wc-block-components-checkout-step__heading{margin:24px 0 10px}
-.k1co-main .wc-block-components-checkout-step__title{font-family:'Archivo','Arial Black',Arial,sans-serif!important;font-weight:900!important;font-size:21px!important;text-transform:uppercase;letter-spacing:-.02em;color:#000}
+.k1co-main .wc-block-components-checkout-step__title{font-family:'Instrument Serif',Georgia,serif!important;font-weight:400!important;font-size:30px!important;text-transform:none;letter-spacing:-.01em;color:var(--ink)}
 .k1co-main .wc-block-components-checkout-step__container:before,.k1co-main .wc-block-components-checkout-step__heading:before,.k1co-main .wc-block-components-checkout-step:after{display:none!important}
-.k1co-main .wc-block-components-checkout-step__description{font-size:12px;color:#555;line-height:1.35;margin-bottom:8px}
+.k1co-main .wc-block-components-checkout-step__description{font-size:15px;color:var(--muted);line-height:1.35;margin-bottom:8px}
 .k1co-main .wc-block-checkout__order-fields .wc-block-components-checkout-step__heading{display:none}
-.k1co-main .wc-block-checkout__order-fields .wc-block-components-select-input:after{content:"Shirts use US men’s sizing. We save this preference now; you can confirm it after a verified win.";display:block;font-size:12px;color:#555;line-height:1.35;margin-top:6px}
-.k1co-main .wc-block-checkout__terms{margin:17px 0 8px;font-size:13px;font-weight:700}
-.k1co-main .wc-block-checkout__terms a{color:#000;text-decoration:underline}
+.k1co-main .wc-block-checkout__order-fields .wc-block-components-select-input:after{content:"Shirts use US men’s sizing. We save this preference now; you can confirm it after a verified win.";display:block;font-size:15px;color:var(--muted);line-height:1.4;margin-top:6px}
+.k1co-main .wc-block-checkout__terms{margin:17px 0 8px;font-size:15px;font-weight:500}
+.k1co-main .wc-block-checkout__terms a{color:var(--ink);text-decoration:underline}
 .k1co-main .wc-block-checkout__actions_row{display:block}
-body.scrolly-k1co .k1co-main .wc-block-components-button.wc-block-components-checkout-place-order-button{width:100%;background:var(--orange)!important;color:#000!important;border:0!important;border-radius:6px!important;padding:17px!important;font-weight:900!important;min-height:0}
-body.scrolly-k1co .k1co-main .wc-block-components-button.wc-block-components-checkout-place-order-button:hover{background:#e8522b!important;color:#000!important}
-body.scrolly-k1co .k1co-main .wc-block-components-button.wc-block-components-checkout-place-order-button *{color:#000!important}
+body.scrolly-k1co .k1co-main .wc-block-components-button.wc-block-components-checkout-place-order-button{width:100%;background:var(--sky)!important;color:var(--ink)!important;border:0!important;border-radius:999px!important;padding:19px!important;font:700 17px/1 'Jost',sans-serif!important;letter-spacing:.06em;min-height:0}
+body.scrolly-k1co .k1co-main .wc-block-components-button.wc-block-components-checkout-place-order-button:hover{background:var(--ink)!important;color:#fff!important}
+body.scrolly-k1co .k1co-main .wc-block-components-button.wc-block-components-checkout-place-order-button *{color:inherit!important}
+/* WooCommerce's own small text up to the 15px floor; fields in the site style. */
+.k1co-main .wc-block-checkout__guest-checkout-notice,.k1co-main .wc-block-components-checkbox__label,.k1co-main .wc-block-components-address-card,.k1co-main .wc-block-components-address-card *,.k1co-main .wc-block-components-address-form__address_2-toggle,.k1co-main .wc-block-components-radio-control__label,.k1co-main .wc-block-components-radio-control-accordion-option span,.k1co-main .wc-block-checkout__terms a,.k1co-main .wc-block-components-panel__button{font-size:15px!important}
+.k1co-main .wc-block-components-text-input input,.k1co-main .wc-block-components-combobox .components-combobox-control input,.k1co-main .wc-blocks-components-select__select{border:1px solid var(--field)!important;border-radius:10px!important;font-family:'Jost',sans-serif!important;color:var(--ink)!important}
+.k1co-main .wc-block-components-text-input label,.k1co-main .wc-blocks-components-select__label{font-size:15px!important;color:var(--muted)!important}
+.k1co-main .wc-block-components-radio-control-accordion-option,.k1co-main .wc-block-components-radio-control__option{border-color:var(--field)!important;border-radius:12px!important}
 @media (max-width:780px){
-	.k1co{grid-template-columns:1fr;grid-template-areas:"bar" "intro" "main" "extras";grid-template-rows:auto;margin:0 auto}
+	.k1co{grid-template-columns:1fr;grid-template-areas:"bar" "intro" "main" "extras";grid-template-rows:auto;margin:0 auto;border-radius:0}
 	.k1co-bar{padding:0 17px;justify-content:flex-start}
 	.k1co-intro{padding:22px 22px 0;border:0}
-	.k1co-intro .k1co-tracker{margin:0 -22px}
+	.k1co-intro .k1co-tracker{margin:0}
 	.k1co-art{margin:12px -10px 0}
 	.k1co-main{padding:20px}
 	.k1co-extras{padding:22px;border:0}
-	.k1co h1{font-size:28px}
-	.k1co-stages{font-size:8px}
+	.k1co h1{font-size:38px}
+	.k1co-stages{grid-template-columns:repeat(3,1fr);row-gap:4px}
 	.k1co-earned-shirt{width:100px;height:90px}
-	.k1co-earned-shirt img{width:88px;height:90px}
+	.k1co-earned-shirt img{width:50px;height:88px}
 }
 CSS;
 	}
