@@ -24,7 +24,7 @@ if ( ! defined( 'SCROLLY_K1CO_V' ) ) {
 	define( 'SCROLLY_K1CO_BUNDLE', 583 );
 	// Media library attachment ids: checkout collage, winner shirt front, winner shirt back.
 	if ( ! defined( 'SCROLLY_K1CO_MEDIA' ) ) {
-		define( 'SCROLLY_K1CO_MEDIA', array( 'collage' => 1773, 'front' => 597, 'back' => 596 ) );
+		define( 'SCROLLY_K1CO_MEDIA', array( 'collage' => 1773, 'front' => 1845, 'back' => 0 ) );
 	}
 
 	/** The cart is exactly one $1K Club package, quantity 1. */

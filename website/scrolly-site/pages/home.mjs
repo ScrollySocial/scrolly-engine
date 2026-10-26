@@ -118,8 +118,8 @@ export function build() {
   <p>Reach your verified Challenge goal and earn the exclusive Club T-shirt.</p>
   <nav class="tabs" aria-label="Challenges"><a href="/1k-club/#join">$1K Club</a><a href="/10k-club/">$10K Club</a><a href="/24k-club/">$24K Club</a></nav>
  </div>
- <!-- 2026-10-10: the graphite winner shirt (Printify) replaced the teal one; same shirt as /1k-club/. -->
- <div class="shot-col"><img class="cut" src="${artUrl('shirt-1k-graphite-front-cut-clean.webp')}" alt="The graphite $1K Club winner shirt: a white line tiger above The $1k Club and Earn your stripes." width="1553" height="1594" loading="lazy"></div>
+ <!-- 2026-10-26: the chambray "Dared to Succeed" earned shirt (framed model photo) replaced the graphite one. -->
+ <div class="shot-col"><img class="cut framed" src="${artUrl('shirt-1k-dared-model.webp')}" alt="A woman wearing the chambray $1K Challenge earned shirt: a knight riding a leaping tiger above Dared to Succeed." width="1200" height="1200" loading="lazy" style="border:12px solid #fff;border-radius:6px;box-shadow:0 24px 50px rgba(10,25,48,.35);transform:rotate(2.5deg);aspect-ratio:1/1;object-fit:cover;width:100%;max-width:420px;height:auto"></div>
 </div></section>
 
 ${quotes()}

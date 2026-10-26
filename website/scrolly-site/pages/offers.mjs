@@ -43,7 +43,7 @@ const TIER_PAGES = {
     club: { one: 'Your plan, yours to keep. One-time.', items: [['The $1K Club playbook (PDF)', 'Make your first $1K with Instagram, step by step.'], ['Reel guide + carousel template', 'A Reel safe-zone guide and one 3:4 carousel template.'], ['Setup checklist + worksheets', 'An Instagram setup checklist and printable worksheets.'], ['$1K Math calculator', 'In your account: how many sales it takes to reach $1,000.']] },
     chal: { one: 'Everything in the Club, plus:', items: [['Your personal $1K Plan', 'Your $1K number, what to do each week, and a weekly check-in.'], ['25 Reel ideas every week', 'Current formats, ready to film. Plus 30 carousel and 30 Story templates.'], ['30 consecutive days, one goal', '$1,000 in total revenue.'], ['Your stripe shirt', 'Hit $1,000 and it ships free in the lower 48. Pick your size at checkout.']] },
     // 2026-10-10: graphite winner shirt replaces the teal one (front print only, so front + model photo).
-    shirt: ['shirt-1k-graphite-front-cut.webp', 'Front of the graphite $1K Club winner shirt: a white line tiger above The $1k Club and Earn your stripes.', 'shirt-1k-graphite-model.webp', 'A man wearing the graphite $1K Club winner shirt.'],
+    shirt: ['shirt-1k-dared-front-cut.webp', 'Front of the chambray $1K Challenge earned shirt: a knight riding a leaping tiger above Dared to Succeed.', 'shirt-1k-dared-model.webp', 'A woman wearing the chambray $1K Challenge earned shirt: a knight riding a leaping tiger above Dared to Succeed.'],
     caption: 'Hit $1,000 in 30 consecutive days and your stripe shirt ships free in the lower 48.',
     faqs: [
       ['Is $1,000 guaranteed?', 'No, and that’s the point. It isn’t a guarantee. It’s a realistic plan built to give you a real shot at it, and the win means something because it isn’t handed to you. Results depend on your offer, your customers and the work you put in.'],
@@ -101,7 +101,7 @@ const PRODUCTS = {
     { n: '25 Reel ideas a week', d: 'Fresh, current formats, ready to film.', img: 'k1-tile2-reels.webp', full: true },
     { n: 'Notion content tracker', d: 'Plan and track every post in one place.', img: 'k1-tile3-notion.webp', full: true },
     { n: 'Auto-posting with your AI', d: 'Claude or ChatGPT queues your posts in Buffer for Instagram, TikTok and YouTube.', img: 'k1-tile3-autopost.webp', full: true },
-    { n: 'Stripe shirt', d: 'Earned when you hit $1,000 and verify it.', img: 'shirt-1k-graphite-front-cut.webp' },
+    { n: 'Stripe shirt', d: 'Earned when you hit $1,000 and verify it.', img: 'shirt-1k-dared-front-cut.webp' },
   ],
 };
 // Comparison rows (short names). Coming-soon tiers fall back to their preview step names.
