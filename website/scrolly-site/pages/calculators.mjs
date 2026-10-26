@@ -114,7 +114,7 @@ function directory() {
  </div>
  <div class="cdir-panel">
  <div class="intro">
-  <h2 class="s3-h2" id="cdir-feat-h">How many views does it take to make $1,000?</h2>
+  <h2 class="s3-h2" id="cdir-feat-h">How many views does it take to reach your goal?</h2>
  </div>
  <div>
   <form id="cdir-form" class="cdir-form row" novalidate>${feat.fields.map((x) => field(x)).join('')}${BTN}</form>
