@@ -107,10 +107,8 @@ function directory() {
 <section class="cdir-feat cdir-hero home"><div class="s3-wrap">
  <div class="cdir-top">
   <div>
-   <nav class="cdir-crumbs s3-label" aria-label="Breadcrumb"><ol><li><a href="/">Home</a></li><li aria-current="page">Calculators</li></ol></nav>
    <h1 class="s3-h2">Free business calculators</h1>
   </div>
-  <p class="aside s3-label">No signup. No spreadsheet.</p>
  </div>
  <div class="cdir-panel">
  <div class="intro">
