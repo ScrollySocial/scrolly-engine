@@ -169,24 +169,22 @@ const heroPhone = `
  </div>
 </div>`;
 
-// One small bar list per audience size; bars scale to the most expensive tool at that size.
-const tierRows = (i) => [
-  ['ManyChat', TIERS[i][2], `$${TIERS[i][2]}`, 'mc'],
-  ...OTHERS.map(([name, v]) => [name, v[i][0], v[i][1], 'ot']),
-  ['Chat Manager', 6, 'about $6', 'us'],
+// One grouped bar chart: five bars per audience size, all on one scale (the most expensive bar = full height).
+const SERIES = [
+  ['ManyChat', 'mc', TIERS.map((t) => [t[2], `$${t[2]}`])],
+  ...OTHERS.map(([name, v], k) => [name, ['ld', 'cf', 'in'][k], v.map(([a, shown]) => [a, a === null ? 'None' : a === 0 ? 'Free' : `${shown[0]}${Math.round(a)}`])]),
+  ['Chat Manager', 'us', TIERS.map(() => [6, '$6'])],
 ];
+const maxCost = Math.max(...SERIES.flatMap(([, , v]) => v.map(([a]) => a || 0)));
 const tierChart = `
-<div class="cm-tiers">
- ${TIERS.map(([n], i) => {
-    const rows = tierRows(i);
-    const max = Math.max(...rows.map((r) => r[1] || 0));
-    return `<div class="cm-tier" role="img" aria-label="${n} people a month: ${rows.map((r) => `${r[0]} ${r[2]}`).join(', ')}">
-  <h3><b>${n}</b> people a month</h3>
-  <ul aria-hidden="true">${rows.map(([name, amt, shown, cls]) => `<li class="${cls}"><span class="nm">${name}</span>${amt === null ? `<span class="na">${shown}</span>` : `<span class="bar"><i style="width:${Math.max(2, Math.round(((amt || 0) / max) * 100))}%"></i></span><span class="pr">${shown}</span>`}</li>`).join('')}</ul>
- </div>`;
-  }).join('')}
+<div class="cm-tiers" role="img" aria-label="Monthly cost by audience size. ${TIERS.map(([n], i) => `${n} people: ${SERIES.map(([name, , v]) => `${name} ${v[i][1]}`).join(', ')}`).join('. ')}.">
+ ${TIERS.map(([n], i) => `<div class="cm-tier">
+  <div class="cm-cols">${SERIES.map(([name, cls, v]) => `<div class="${cls}${v[i][0] === null ? ' none' : ''}" style="height:${v[i][0] === null ? 0 : Math.max(2, Math.round(((v[i][0] || 0) / maxCost) * 100))}%"><span>${v[i][1]}</span></div>`).join('')}</div>
+  <p><b>${n}</b> people a month</p>
+ </div>`).join('')}
 </div>
-<p class="cm-key">Monthly cost to run. Chat Manager is ${PRICE} once, then about $6 a month for hosting.</p>`;
+<div class="cm-key" aria-hidden="true">${SERIES.map(([name, cls]) => `<span class="${cls}">${name}</span>`).join('')}</div>
+<p class="cm-keynote">Monthly cost to run. Chat Manager is ${PRICE} once, then about $6 a month for hosting.</p>`;
 
 // "It's your software": what owning the code looks like, as a chat with Claude.
 const yoursChat = `
@@ -264,19 +262,21 @@ const CSS = `
 .s3 .cm-q,.s3 .cm-a{max-width:80%;padding:12px 16px;border-radius:18px}
 .s3 .cm-q{align-self:flex-end;background:var(--s3-navy);color:#fff}
 .s3 .cm-a{align-self:flex-start;background:var(--s3-mist)}
-.s3 .cm-tiers{display:grid;grid-template-columns:repeat(2,1fr);gap:clamp(16px,2vw,28px);margin-top:clamp(28px,3vw,48px)}
-.s3 .cm-tier{background:#fff;border-radius:18px;padding:clamp(18px,2vw,26px)}
-.s3 .cm-tier h3{margin:0 0 14px;font:400 var(--s3-fs-lede)/1.2 var(--s3-sans)}
-.s3 .cm-tier ul{list-style:none;margin:0;padding:0;display:grid;gap:10px}
-.s3 .cm-tier li{display:grid;grid-template-columns:7.5em 1fr 6.2em;align-items:center;gap:12px}
-.s3 .cm-tier .nm{font-weight:500}
-.s3 .cm-tier .bar{height:14px;background:var(--s3-mist);border-radius:7px;overflow:hidden}
-.s3 .cm-tier .bar i{display:block;height:100%;border-radius:7px;background:var(--s3-navy)}
-.s3 .cm-tier .us .bar i{background:var(--s3-sky)}
-.s3 .cm-tier .us .nm,.s3 .cm-tier .us .pr{font-weight:700}
-.s3 .cm-tier .pr{text-align:right;white-space:nowrap}
-.s3 .cm-tier .na{grid-column:2/4;color:var(--s3-muted)}
-.s3 .cm-key{margin:20px 0 0}
+.s3 .cm-tiers{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(12px,2vw,32px);margin-top:clamp(40px,4vw,64px)}
+.s3 .cm-cols{display:flex;align-items:flex-end;justify-content:center;gap:clamp(4px,.6vw,8px);height:min(240px,30vh);border-bottom:2px solid var(--s3-ink)}
+.s3 .cm-cols div{position:relative;flex:1;max-width:44px;border-radius:8px 8px 0 0;border:1.5px solid var(--s3-navy);border-bottom:0}
+.s3 .cm-cols div.none{border:0}
+.s3 .cm-cols span{position:absolute;bottom:100%;left:50%;transform:translateX(-50%);padding-bottom:5px;font:500 15px/1 var(--s3-sans);white-space:nowrap}
+.s3 .cm-cols .us span{font-weight:700}
+.s3 .mc{--c:var(--s3-navy)}.s3 .ld{--c:#3f5579}.s3 .cf{--c:#8592ad}.s3 .in{--c:#fff}.s3 .us{--c:var(--s3-sky)}
+.s3 .cm-cols div{background:var(--c)}
+.s3 .cm-cols .us{border-color:var(--s3-sky)}
+.s3 .cm-tier p{margin:12px 0 0;text-align:center}
+.s3 .cm-key{display:flex;flex-wrap:wrap;gap:12px 24px;margin-top:28px}
+.s3 .cm-key span{display:flex;align-items:center;gap:8px}
+.s3 .cm-key span::before{content:"";width:18px;height:18px;border-radius:4px;background:var(--c);border:1.5px solid var(--s3-navy)}
+.s3 .cm-key .us::before{border-color:var(--s3-sky)}
+.s3 .cm-keynote{margin:14px 0 0}
 .s3 .cm-feat{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(12px,1.6vw,24px);margin:clamp(28px,3vw,48px) 0 0;list-style:none;padding:0}
 .s3 .cm-feat li{background:#fff;border-radius:18px;padding:clamp(18px,1.8vw,24px)}
 .s3 .cm-need span{font-size:var(--s3-fs-fine)}
@@ -307,7 +307,7 @@ const CSS = `
  .s3 .cm-hero .s3-wrap,.s3 .cm-faq .s3-faq,.s3 .cm-bring,.s3 .cm-yours,.s3 .cm-why,.s3 .cm-limits{grid-template-columns:1fr}
  .s3 .cm-phone{height:auto;width:min(300px,100%);min-height:0}
  .s3 .cm-flow,.s3 .cm-feat{grid-template-columns:1fr 1fr;row-gap:40px}
- .s3 .cm-tiers{grid-template-columns:1fr}
+ .s3 .cm-tiers{grid-template-columns:1fr 1fr;row-gap:48px}
  .s3 .cm-flow::before{display:none}
  .s3 .cm-faq .s3-faq>div+div details:first-child{border-top:0}
 }
@@ -315,7 +315,8 @@ const CSS = `
  .s3 .cm-laptop{display:none}
  .s3 .cm-buy{flex-direction:column;align-items:stretch}
  .s3 .cm-link{text-align:center}
- .s3 .cm-tier li{grid-template-columns:6.8em 1fr 5.6em;gap:8px}
+ .s3 .cm-tiers{grid-template-columns:1fr;row-gap:36px}
+ .s3 .cm-cols{height:170px}
  .s3 .cm-compare table{min-width:0;width:auto}
  .s3 .cm-compare tbody th{min-width:8.2em;max-width:8.2em}
  .s3 .cm-compare td{min-width:9.5em}
