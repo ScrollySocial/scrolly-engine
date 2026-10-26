@@ -4,7 +4,7 @@
 // your audience (ManyChat charges by contacts, and Pro is not even its top tier), YouTube, and it's your own software.
 // Local preview only: no WordPress page or product yet, so `id` is null and publish.mjs skips it. PRICE is a
 // placeholder (Mercedes decides). The live demo is the real dashboard for a made-up shop
-// (automation/n8n-comments/docker-compose.demo.yml), framed by scrollyseo.com only.
+// (automation/n8n-comments/docker-compose.demo.yml), framed by theambitiondepartment.com only.
 // ManyChat prices: monthly billing after its 2026-03-02 change, as summarized by setsmart.io, flowgent.ai and
 // elev8or.io (checked 2026-10-24; one of them checked manychat.com/pricing on 2026-10-15). Re-check before publishing.
 // Before publishing: create the WooCommerce download (kit/dist zip) and point BUY_URL at its add-to-cart link.

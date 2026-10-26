@@ -1,4 +1,4 @@
-// Link previews (Open Graph) for scrollyseo.com, one entry per WP page ID.
+// Link previews (Open Graph) for theambitiondepartment.com, one entry per WP page ID.
 // title/desc show when a link is shared (Pinterest, iMessage, Facebook, LinkedIn). Copy comes from each page's own hero text.
 // art = image in ../assets used on the 1200x630 share card; fit 'contain' for cut-out tigers/covers, 'cover' for full photos.
 // Pages not listed fall back to their WP title + the default description + the default card (see snippet.php.tpl).

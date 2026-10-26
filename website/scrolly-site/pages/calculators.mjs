@@ -10,7 +10,7 @@ import { img, media, s3shell } from '../lib.mjs';
 import { CALCS, GROUPS, HELPERS, PRESET_JS, compute, presetHtml } from '../calculators-data.mjs';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
-const DIR_ID = 1132; // https://scrollyseo.com/calculators/
+const DIR_ID = 1132; // https://theambitiondepartment.com/calculators/
 const href = (c) => `/calculators/${c.slug}/`;
 const bySlug = Object.fromEntries(CALCS.map((c) => [c.slug, c]));
 

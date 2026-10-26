@@ -2,11 +2,11 @@
 Usage (from automation/reel-template-pack): python build/shot_list_pdf.py halloween product
 Reads each template's buyer-folder "1 Put your clips here/READ ME.txt" (made by engine.py), so rebuild after make.py.
 Writes guide/shot-list-<pack>.html and .pdf (Edge headless print), in the How to use guide's style."""
-import html, re, subprocess, sys
+import html, os, re, subprocess, sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-EDGE = r'C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe'
+EDGE = os.environ.get('PDF_BROWSER') or r'C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe'  # PDF_BROWSER: another Chromium when Edge won't start
 
 PACKS = {
     'halloween': dict(title='Halloween Reel Template Pack', ids=['h1', 'h6', 'h3', 'h2', 'h5'],
@@ -99,7 +99,7 @@ def build(pack):
   <div class="grid">{''.join(cards)}</div>
   <div class="reuse"><h3>Film once, use in several</h3><ul>{reuse_li}</ul>
     <p style="margin:4pt 0 0" class="muted">Times are the shortest each clip can be. One long take can be trimmed for several templates.</p></div>
-  <div class="foot"><b>SCROLLY</b><span>Go get 'em, Tiger.</span></div>
+  <div class="foot"><b>THE AMBITION DEPARTMENT</b><span>Go get 'em, Tiger.</span></div>
 </body></html>"""
     out = ROOT / 'guide' / f'shot-list-{pack}.html'
     out.write_text(page, encoding='utf-8')

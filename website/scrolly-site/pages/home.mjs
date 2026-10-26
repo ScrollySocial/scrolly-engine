@@ -12,7 +12,7 @@ const CSS = min(fs.readFileSync(path.join(here, '..', 'home.css'), 'utf8'));
 // Real member quotes only (with permission). The section stays hidden while this is empty. Shape: { q: 'quote text', who: 'Name, business' }
 const TESTIMONIALS = [];
 
-// Free Resources (images 2026-10-07: real calculator screenshot, the three real free PDF titles, a B&W tiger; the old photos showed books and mugs that aren't products). href: a URL, a list of [label, URL] links (Downloads = the free MailerLite lead magnets), or null, which renders "Coming soon" instead of an arrow link (tracked in Notion: scrollyseo.com missing links).
+// Free Resources (images 2026-10-07: real calculator screenshot, the three real free PDF titles, a B&W tiger; the old photos showed books and mugs that aren't products). href: a URL, a list of [label, URL] links (Downloads = the free MailerLite lead magnets), or null, which renders "Coming soon" instead of an arrow link (tracked in Notion: theambitiondepartment.com missing links).
 const RESOURCES = [
   // 2026-10-10: Blog card removed (no blog yet, and no image matched the phone-screen cards). The old Downloads card linked to free
   // scorecards that no longer exist on the workbook pages, so the row is now the two free quizzes + calculators, all real screens.
@@ -39,7 +39,7 @@ const doodle = (amt) => { const d = DOODLES[amt]; return d ? `<svg class="dd" vi
 // swaps in the local file).
 const EARNED_ART = ['earned-soft-s2-card.webp', 'earned-soft-s2-top.webp', 'earned-soft-s2-bottom.webp', 'earned-soft-s2-stars.webp'];
 const MEDIA = JSON.parse(fs.readFileSync(path.join(here, '..', 'media-map.json'), 'utf8'));
-const artUrl = (n) => MEDIA[n]?.url || `https://scrollyseo.com/wp-content/uploads/2026/10/scrolly-${n}`;
+const artUrl = (n) => MEDIA[n]?.url || `https://theambitiondepartment.com/wp-content/uploads/2026/10/scrolly-${n}`;
 
 const CLUBS = [
   ['$1K', 'Make your first $1,000.', 'hp3-club-1k-tiger.webp', 'Tiger walking', '/1k-club/', 'Start here.'],
