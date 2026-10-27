@@ -47,7 +47,7 @@ export function entryFromPost(post) {
     topic: post.brief.topic, mainPoint: post.brief.mainPoint, structure: post.brief.structure, ending: post.brief.ending,
     hook: post.slides[0]?.text, slide2: post.slides[1]?.text, slides: post.slides.length,
     cta: post.cta, tigerNod: post.tigerNod || null, hashtags: post.hashtags, media: post._mediaUsed || [],
-    notionUrl: post.notionUrl || null, status: 'approved',
+    plannerId: post.plannerId || null, notionUrl: post.notionUrl || null, status: 'approved',
   };
 }
 

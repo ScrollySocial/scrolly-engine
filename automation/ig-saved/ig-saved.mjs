@@ -1,23 +1,26 @@
-// Instagram saved folder -> Notion Content Pipeline (Scrolly Content Tracker), as Idea rows. Claude writes the Notion rows (MCP); this script does the rest.
+// Instagram saved folder -> Mercedes's Content Planner (automation/planner, replaced Notion's Content Pipeline 2026-10-27),
+// one Idea card per save.
 //
 //   node ig-saved/ig-saved.mjs scan <export-folder>                    list saved folders + counts
 //   node ig-saved/ig-saved.mjs scan <export-folder> --folder "Name"    new posts in that folder -> batch
 //   node ig-saved/ig-saved.mjs enrich <batch> [--yes]                  caption lookup via Apify (estimate only without --yes)
-//   node ig-saved/ig-saved.mjs rows <batch>                            build rows.json (Content Pipeline properties)
-//   node ig-saved/ig-saved.mjs done <batch> [--pages pages.json]       record imported posts in the ledger
+//   node ig-saved/ig-saved.mjs rows <batch>                            build rows.json (planner cards; Claude may rewrite titles)
+//   node ig-saved/ig-saved.mjs done <batch>                            add the cards to the planner + record them in the ledger
 //
 // A batch is a folder under ig-saved/data/batches/. The ledger (data/imported.json) stops re-imports across exports.
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { findExportFiles, parseCollections, parsePosts } from './lib/export.mjs';
+import { cleanIdea } from '../planner/lib/ideas.mjs';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const DATA = path.join(here, 'data');
 const LEDGER = path.join(DATA, 'imported.json');
 const ACTOR = 'apify/instagram-scraper';
 const EST_USD_PER_POST = 0.0027; // conservative; check the logged usageTotalUsd after a run and adjust
-const NOTES_MAX = 1900; // Notion rich-text property limit is 2000
+const NOTES_MAX = 7900; // planner notes hold 8000 characters
+const PLANNER = path.join(here, '..', 'planner', 'data', 'ideas.json');
 
 const [cmd, target, ...rest] = process.argv.slice(2);
 const flag = (name) => { const i = rest.indexOf(name); return i === -1 ? null : (rest[i + 1] ?? true); };
@@ -101,7 +104,7 @@ function rows() {
   const byCode = new Map(enriched.filter((i) => i.shortCode).map((i) => [i.shortCode, i]));
   const kindLabel = { reel: 'Reel', p: 'Post', tv: 'Video' };
   const typeLabel = { Sidecar: 'Carousel', Image: 'Photo post', Video: 'Reel' };
-  const formatFor = { Reel: 'Reel', Video: 'Reel', Carousel: 'Carousel' };
+  const formatFor = { Reel: 'Reel', Video: 'Reel', Carousel: 'Carousel', 'Photo post': 'Single image' };
 
   const out = posts.map((p) => {
     const e = byCode.get(p.shortcode);
@@ -117,13 +120,13 @@ function rows() {
     const notes = (head + body).replace(/\s*[–—]\s*/g, ', ');
     return {
       shortcode: p.shortcode,
-      // Content Pipeline row (Mercedes 2026-10-13: each save is an Idea in the Content Tracker).
-      properties: {
-        Content: cleanTitle(e?.caption, handle, p.kind),
-        Status: 'Idea',
-        ...(formatFor[kind] ? { Format: JSON.stringify([formatFor[kind]]) } : {}),
-        'Research / Source File': p.url,
-        Notes: notes.length > NOTES_MAX ? `${notes.slice(0, NOTES_MAX - 3)}...` : notes,
+      // Planner card (Mercedes 2026-10-13: each save is an Idea; 2026-10-27: in the planner, Instagram lane at Idea).
+      card: {
+        title: cleanTitle(e?.caption, handle, p.kind),
+        format: formatFor[kind] || '',
+        link: p.url,
+        notes: notes.length > NOTES_MAX ? `${notes.slice(0, NOTES_MAX - 3)}...` : notes,
+        lanes: { instagram: { stage: 'Idea' } },
       },
     };
   });
@@ -135,15 +138,22 @@ function done() {
   const dir = batchDir(target);
   const { folder } = readJson(path.join(dir, 'posts.json'));
   const rowsList = readJson(path.join(dir, 'rows.json'));
-  const pagesFile = flag('--pages');
-  const pages = pagesFile && pagesFile !== true ? readJson(pagesFile, {}) : {};
   const ledger = readJson(LEDGER, {});
+  const planner = readJson(PLANNER);
   const at = new Date().toISOString();
-  // With --pages, only rows that actually got a Notion page are recorded, so failed rows retry next time.
-  const marked = Object.keys(pages).length ? rowsList.filter((r) => pages[r.shortcode]) : rowsList;
-  for (const r of marked) ledger[r.shortcode] = { folder, page: pages[r.shortcode] || null, importedAt: at };
+  let added = 0;
+  for (const r of rowsList) {
+    if (ledger[r.shortcode]) continue; // already imported (a re-run of the same batch)
+    const card = cleanIdea(r.card);
+    planner.ideas.unshift(card);
+    ledger[r.shortcode] = { folder, card: card.id, importedAt: at };
+    added++;
+  }
+  // Planner first, then the ledger: a crash in between can only cause a duplicate card, never a lost save.
+  fs.writeFileSync(`${PLANNER}.tmp`, JSON.stringify(planner, null, 1));
+  fs.renameSync(`${PLANNER}.tmp`, PLANNER);
   writeJson(LEDGER, ledger);
-  console.log(`Ledger: ${marked.length} of ${rowsList.length} marked imported (${Object.keys(ledger).length} total).`);
+  console.log(`Planner: ${added} Idea cards added (${rowsList.length - added} were already imported). Ledger: ${Object.keys(ledger).length} total.`);
 }
 
 const cmds = { scan, enrich, rows, done };

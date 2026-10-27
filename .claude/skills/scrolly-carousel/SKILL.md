@@ -1,12 +1,13 @@
 ---
 name: scrolly-carousel
-description: Make an Instagram carousel for Scrolly (Mercedes's own account) end to end, with no Canva or SaaS tools. Plans the idea, checks it against past carousels so content never repeats, researches and verifies claims, writes slides and caption to Scrolly's content rules, picks photos from the shared media library, renders 1080×1440 PNGs, and records the approved post in the Notion Content Pipeline. Use when Mercedes asks for a carousel, carousel ideas, or to turn an idea/reel/blog into a carousel.
+description: Make an Instagram carousel for Scrolly (Mercedes's own account) end to end, with no Canva or SaaS tools. Plans the idea, checks it against past carousels so content never repeats, researches and verifies claims, writes slides and caption to Scrolly's content rules, picks photos from the shared media library, renders 1080×1440 PNGs, and records the approved post in Mercedes's Content Planner (automation/planner). Use when Mercedes asks for a carousel, carousel ideas, or to turn an idea/reel/blog into a carousel.
 ---
 
 # Scrolly carousel
 
 Everything lives in `automation/carousels/`. Run commands from that folder. The scripts are plain Node + headless Chrome,
-so any agent (Claude, Codex) can run this skill; Notion steps use the Notion MCP connector.
+so any agent (Claude, Codex) can run this skill. Posts are tracked in her Content Planner (switched from Notion's Content
+Pipeline 2026-10-27) through `node ../planner/tracker.mjs …` (usage at the top of that file); never write to Notion.
 Rendering needs the Bash sandbox disabled (Chrome + Google Fonts).
 
 ## Read first, every time
@@ -54,15 +55,15 @@ Video slides are not supported yet (ffmpeg via Docker, planned with the reels ed
 
 ## Workflow
 
-**1. Idea.** From an approved research idea card (`node ideas.mjs`; made by the scrolly-research skill), from Mercedes, or Content Pipeline rows (Notion data source `collection://d2cc8645-5399-4d65-91e2-d535e5cc98bc`)
-with Status = Idea, or its Source Ideas relation. If the idea can't support 5 worthwhile slides, say so and suggest another format.
+**1. Idea.** From an approved research idea card (`node ideas.mjs`; made by the scrolly-research skill), from Mercedes, or planner cards at Idea
+(`node ../planner/tracker.mjs list format=Carousel stage=Idea`, or `list stage=Idea` for any format worth turning into a carousel). If the idea can't support 5 worthwhile slides, say so and suggest another format.
 
 **2. Brief + repeat check (before writing slides).** First `node check-topic.mjs "<topic>"`: it compares against
 approved carousels, drafts in `posts/`, and every idea card including REJECTED and USED ones. Never re-propose a
 rejected topic or remake a used/drafted one; if close, pick a clearly new angle and say which earlier piece it differs from.
 `node new-post.mjs <slug> <A-E>` → fill `brief` (reader, problem, outcome, topic, mainPoint, structure, ending) and a draft hook,
 then `node check.mjs <id>`. Treat every SIMILAR line as a possible repeat: open the old entry (`data/ledger.json`) and judge it.
-If it's the same point, pick a new angle or tell Mercedes. Also check the Content Pipeline for published posts on the same topic.
+If it's the same point, pick a new angle or tell Mercedes. Also check the planner for posts on the same topic (`node ../planner/tracker.mjs find <topic words>`).
 Choose a structure and ending different from the last few posts (`node ledger.mjs list`).
 
 **3. Research.** Follow `research/guidelines.md`; new-post.mjs copies the research record template into `research.md`. Verify every factual claim first. Log claim, source URL, how verified in `research.md`. Drop anything unverifiable.
@@ -93,14 +94,18 @@ Does every middle slide carry real substance and make the next worth reading, wi
 know exactly what to do? Is the caption adding context, an example, a caveat or an application? CTA confirmed?
 
 **8. Show Mercedes.** Give her the `preview.html` path in the exports folder (it shows a phone-style swipe view + caption +
-grid; the files sync to her phone through OneDrive). Nothing goes to Notion or the ledger before she approves.
+grid; the files sync to her phone through OneDrive). Nothing goes to the planner or the ledger before she approves.
 
 **9. After approval.**
-- Create a row in Content Pipeline: Content = short title; Format = Carousel; Platforms = Instagram; Status = Approved (NEVER "Ready": any row set to Ready gets added to the Buffer posting queue (no longer Make, 2026-10-13), so Ready means "post this"; Edit while stand-ins remain);
-  Carousel Style = matching option (e.g. "A · One photo"); Hook = slide 1 text; Instagram Caption = caption + hashtags;
-  CTA = CTA in words; Carousel ID = post id; Media Used = comma-separated media ids (from `posts/<id>/build.json`);
-  Product = the offer's club if the CTA sells one; Notes = export folder path. Link Source Ideas if it came from one.
-- `node ledger.mjs add <id> <notion-page-url>` (also marks the source idea card `used`).
+- Record it in the planner. If it came from a planner card, update that card; otherwise make one. Write a patch JSON
+  (Write tool, e.g. `posts/<id>/planner-patch.json`) with: title = short title; format "Carousel"; hook = slide 1 text;
+  cta = CTA in words; carouselId = post id; mediaUsed = comma-separated media ids (from `posts/<id>/build.json`);
+  product = the offer's club if the CTA sells one; link = export folder path; notesAppend = "Carousel style: <A-E name>";
+  `"lanes": {"instagram": {"stage": "Ready", "caption": "<caption + hashtags>"}}` (stage "Edit" while stand-ins
+  remain). Add a `tiktok` lane only if she wants it there too. Then `node ../planner/tracker.mjs update <card id> <patch>`
+  or `node ../planner/tracker.mjs new <patch>` (prints the new card id). **Never** set a lane to Scheduled: that means
+  it's in the Buffer queue, which only happens when she queues it.
+- `node ledger.mjs add <id> <card id>` (also marks the source idea card `used`).
 - If she changes copy after approval, rebuild and re-run `ledger.mjs add` (it replaces the entry).
 
 ## Reels → covers + twin carousels (2026-10-10)

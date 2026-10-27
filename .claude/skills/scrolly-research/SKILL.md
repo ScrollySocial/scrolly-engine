@@ -15,7 +15,8 @@ Files live in `automation/carousels/research/`. Run commands from `automation/ca
 ## Idea research (when she asks for ideas)
 0. Before proposing anything: `node ideas.mjs` (see what's proposed, approved, used, REJECTED) and
    `node check-topic.mjs "<candidate>"` for each candidate. Don't re-propose rejected or used ideas or anything
-   already drafted/approved; also glance at Notion Content Pipeline rows for the same topic. Remember the niche is
+   already drafted/approved; also check her Content Planner for the same topic (`node ../planner/tracker.mjs find
+   <topic words>`, run from automation/carousels; the planner replaced Notion's Content Pipeline 2026-10-27). Remember the niche is
    ORGANIC MARKETING (business-context.md); taxes, fees, legal and admin topics were rejected.
 1. Pick 1-2 pillars (or her requested topic). Search the SUBJECT off the app: studies, government/official data,
    platform help docs and announcements, payment/marketplace policy changes, small-business research, credible journalism.

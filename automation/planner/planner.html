@@ -16,6 +16,7 @@
     }
   }
   * { box-sizing: border-box; }
+  [hidden] { display: none !important; }
   body {
     margin: 0; background: var(--bg); color: var(--ink);
     font: 16px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif;
@@ -347,7 +348,8 @@ function renderIdeas() {
   $('ideaStageFilter').hidden = ideaFilter !== 'all';
   $('ideaStageFilter').innerHTML = groups.map((g) => `<button class="chip" type="button" aria-pressed="${g === ideaGroupFilter}" data-ig="${esc(g)}">${esc(g)} (${inGroup(g).length})</button>`).join('');
   const n = (p) => live.filter((i) => i.lanes[p]).length;
-  $('ideaFilter').innerHTML = [['all', `All (${live.length})`], ...state.options.platforms.map((p) => [p, `${PNAME[p]} (${n(p)})`])]
+  const stories = live.filter((i) => i.format === 'Story' && i.lanes.instagram).length;
+  $('ideaFilter').innerHTML = [['all', `All (${live.length})`], ...state.options.platforms.map((p) => [p, `${PNAME[p]} (${n(p)})`]), ['stories', `Stories (${stories})`]]
     .map(([k, l]) => `<button class="chip" type="button" aria-pressed="${k === ideaFilter}" data-if="${k}">${esc(l)}</button>`).join('');
   if (!live.length) {
     $('ideaView').innerHTML = '<p class="empty">No ideas yet. Add your first one.</p>';
@@ -370,17 +372,20 @@ function renderIdeas() {
       </button>`).join('')}</div>`;
     return;
   }
-  const p = ideaFilter;
-  const mine = live.filter((i) => i.lanes[p]);
+  // "Stories" = the Instagram board, Story cards only
+  const p = ideaFilter === 'stories' ? 'instagram' : ideaFilter;
+  const mine = live.filter((i) => i.lanes[p] && (ideaFilter !== 'stories' || i.format === 'Story'));
   $('ideaView').innerHTML = `<div class="board">${stagesFor(p).map((s) => {
-    const cards = mine.filter((i) => i.lanes[p].stage === s).sort((a, b) => (a.lanes[p].date || '9').localeCompare(b.lanes[p].date || '9'));
+    const cards = mine.filter((i) => i.lanes[p].stage === s)
+      .sort((a, b) => (a.lanes[p].date || '9').localeCompare(b.lanes[p].date || '9') || (a.order ?? 1e9) - (b.order ?? 1e9));
     return `<div class="col${cards.length ? '' : ' none'}"><h4>${esc(s)} <span>${cards.length}</span></h4>${cards.map((i) => `
       <div class="idea" data-edit="${esc(i.id)}">
         <span class="t">${esc(i.title)}</span>
         <span class="m">${[ideaMeta(i), i.lanes[p].date ? fmtDate(i.lanes[p].date) : ''].filter(Boolean).join(' · ')}</span>
         <select data-move="${esc(i.id)}" data-p="${p}" aria-label="Move to">${stagesFor(p).map((x) => `<option${x === s ? ' selected' : ''}>${esc(x)}</option>`).join('')}</select>
       </div>`).join('')}</div>`;
-  }).join('')}</div>${live.length > mine.length ? `<p class="sub" style="margin-top:8px">${live.length - mine.length} ideas aren't planned for ${PNAME[p]}. Open one and tick ${PNAME[p]} to add it here.</p>` : ''}`;
+  }).join('')}</div>${ideaFilter === 'stories' ? '<p class="sub" style="margin-top:8px">A Story card is one day of Stories. Film = photos to shoot, Edit = lines written and slides to render. Add one with + New idea and Format "Story".</p>'
+    : live.length > mine.length ? `<p class="sub" style="margin-top:8px">${live.length - mine.length} ideas aren't planned for ${PNAME[p]}. Open one and tick ${PNAME[p]} to add it here.</p>` : ''}`;
 }
 
 function laneFields(p, l) {
