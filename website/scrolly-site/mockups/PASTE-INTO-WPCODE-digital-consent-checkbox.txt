@@ -1,0 +1,22 @@
+/**
+ * Required checkout tickbox for digital products (2026-10-27).
+ * EU/UK consumer rules: a buyer of digital content keeps a 14-day right to cancel unless, before paying, they expressly ask for
+ * immediate access and acknowledge they lose that right. This adds that tickbox to every checkout (worded so it also reads
+ * fine on a shirt-only order), WooCommerce refuses the order until it's ticked, and the tick is saved on the order as proof.
+ * Uses WooCommerce's Additional Checkout Fields API, so it works in the block checkout.
+ * WPCode: PHP snippet, Auto Insert, Run Everywhere.
+ */
+add_action( 'woocommerce_init', function () {
+	if ( ! function_exists( 'woocommerce_register_additional_checkout_field' ) ) {
+		return;
+	}
+	woocommerce_register_additional_checkout_field(
+		array(
+			'id'       => 'tad/digital-consent',
+			'label'    => 'I want my digital products right away. I understand that once I can download them, all sales are final and I lose the 14-day right to cancel.',
+			'location' => 'order',
+			'type'     => 'checkbox',
+			'required' => true,
+		)
+	);
+} );

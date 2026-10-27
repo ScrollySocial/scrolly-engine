@@ -74,6 +74,11 @@ const CSS = `
 @media(max-width:900px){.s3 .cat-hero.split .s3-wrap,.s3 .cat-prods,.s3 .cat-split,.s3 .cat-two{grid-template-columns:1fr}.s3 .cat-tees{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:420px){.s3 .cat-end .s3-btn{letter-spacing:.04em;padding-left:14px;padding-right:14px}.s3 .cat-end .s3-btn span[aria-hidden]{display:none}}
 @media(max-width:520px){.s3 .cat-tees{gap:36px 16px}.s3 .cat-tees h3{font-size:var(--s3-fs-lede)!important}}
+/* Digital products: 5 across on desktop (Mercedes 2026-10-27), square shared-style photos; the Shop tees keep 3 */
+.s3 .cat-tees.dig{grid-template-columns:repeat(5,minmax(0,1fr));gap:40px clamp(16px,2vw,28px)}
+.s3 .cat-tees.dig h3{font-size:var(--s3-fs-lede)!important}
+@media(max-width:1100px){.s3 .cat-tees.dig{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:700px){.s3 .cat-tees.dig{grid-template-columns:repeat(2,minmax(0,1fr));gap:32px 16px}}
 `;
 
 // Same grid as the tees on Scrolly Shop. Every published product in the Digital products category shows up here,
@@ -115,12 +120,12 @@ ${close()}`;
 }
 
 function seoTools() {
-  const impl = `<article class="cat-prod"><a class="cv" href="/implementation/" tabindex="-1" aria-hidden="true"><span class="soon">Coming soon</span></a><p class="s3-label tag">Coming soon</p><h3><a href="/implementation/">Implementation</a></h3><p>Support for turning approved recommendations into real website changes. Still in development: join the early-access list to hear when it is ready.</p><div class="acts"><a class="s3-btn black" href="/implementation/">View Implementation</a></div></article>`;
+  // Implementation is hidden for now (2026-10-27): its card came off; page 263 is private.
   const body = `
-${hero({ h1: 'Be easier', em: 'to discover.', lede: 'SEO is one part of organic growth. Keep moving with a site audit or implementation help.', btn: 'Explore the tools', href: '#tools' })}
+${hero({ h1: 'Be easier', em: 'to discover.', lede: 'SEO is one part of organic growth. Find out exactly what to fix with a site audit.', btn: 'Explore the tools', href: '#tools' })}
 <section class="s3-sec" id="tools"><div class="s3-wrap">
  <div class="cat-head"><h2 class="s3-h2">A focused plan for your search presence.</h2></div>
- <div class="cat-prods">${product(PRODUCTS.audit)}${impl}</div>
+ <div class="cat-prods">${product(PRODUCTS.audit)}</div>
 </div></section>
 ${close()}`;
   return { key: 'seo-tools', id: 316, title: 'SEO tools and services, The Ambition Department', html: s3shell(body, CSS) };
