@@ -13,4 +13,6 @@ Run from the project folder, then open http://localhost:4330:
 - `buffer-snapshot.mjs`: "refresh my planner" without a key. Claude runs the Buffer connector's
   `list_posts` twice (queue statuses, then the last 30 sent) and `get_channel` for the three channels,
   saves the results, and runs `node automation/planner/buffer-snapshot.mjs <channels.json> <queue.json> <sent.json>`.
+- `lib/ideas.mjs` + `data/ideas.json`: the Ideas board, one card per idea with a lane per platform
+  (Instagram, TikTok, YouTube, Pinterest). Claude may edit `ideas.json` directly; the page re-reads it on load.
 - `data/pin-status.json`: her "Seen it live" / "Missing" clicks. `data/buffer-snapshot.json`: last saved Buffer copy.

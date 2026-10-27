@@ -85,6 +85,51 @@
   .times { display: grid; grid-template-columns: 44px 1fr; gap: 2px 8px; margin-top: 8px; color: var(--muted); }
   .times b { color: var(--ink); font-weight: 600; }
   @media (max-width: 900px) { .channels { grid-template-columns: 1fr; } }
+  .head { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .primary { background: var(--ink); color: var(--bg); border: 0; border-radius: 999px; padding: 8px 18px; font: inherit; font-size: 15px; font-weight: 600; cursor: pointer; }
+  .ghost { background: none; border: 1px solid var(--line); color: var(--ink); border-radius: 999px; padding: 8px 18px; font: inherit; font-size: 15px; cursor: pointer; }
+  .ideas { display: grid; gap: 8px; }
+  .idea {
+    display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 6px 14px; align-items: center; width: 100%; text-align: left;
+    background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; font: inherit; color: var(--ink); cursor: pointer;
+  }
+  .idea:hover { border-color: var(--sky); }
+  .idea .t { font-weight: 650; }
+  .idea .m { color: var(--muted); font-size: 15px; }
+  .lanes { display: flex; flex-wrap: wrap; gap: 6px; justify-content: flex-end; }
+  .lane { border-radius: 8px; padding: 2px 8px; font-size: 15px; background: var(--mist); white-space: nowrap; }
+  .lane.off { background: none; color: var(--done); border: 1px dashed var(--line); }
+  .lane.posted { background: var(--ok); color: #fff; }
+  .lane.ready { background: var(--sky); color: #0a1930; }
+  @media (max-width: 700px) { .idea { grid-template-columns: 1fr; } .lanes { justify-content: flex-start; } }
+  .board { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(170px, 1fr); gap: 10px; overflow-x: auto; padding-bottom: 8px; align-items: start; }
+  .col { background: var(--mist); border-radius: 12px; padding: 10px; min-height: 80px; }
+  /* Phones: stages stack, and empty ones step aside */
+  @media (max-width: 700px) {
+    .board { grid-auto-flow: row; grid-template-columns: 1fr; }
+    .col.none { display: none; }
+  }
+  .col h4 { margin: 0 0 8px; font-size: 15px; display: flex; justify-content: space-between; }
+  .col h4 span { color: var(--muted); font-weight: 400; }
+  .col .idea { grid-template-columns: 1fr; padding: 10px; margin-bottom: 8px; }
+  .col .idea select { font: inherit; font-size: 15px; margin-top: 4px; max-width: 100%; }
+  #editor { width: min(94vw, 720px); max-width: none; max-height: 92vh; padding: 0; }
+  #ideaForm { padding: 20px; display: grid; gap: 12px; }
+  #ideaForm label { display: grid; gap: 4px; font-size: 15px; font-weight: 600; }
+  #ideaForm input, #ideaForm select, #ideaForm textarea {
+    font: inherit; font-weight: 400; color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; width: 100%;
+  }
+  #ideaForm textarea { min-height: 84px; resize: vertical; }
+  #ideaForm textarea.caption { min-height: 180px; }
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  @media (max-width: 560px) { .two { grid-template-columns: 1fr; } }
+  fieldset { border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; margin: 0; display: grid; gap: 10px; }
+  legend { font-weight: 700; padding: 0 6px; }
+  .count { font-weight: 400; color: var(--muted); }
+  .count.over { color: var(--warn); font-weight: 700; }
+  .preview { font-weight: 400; font-size: 15px; color: var(--muted); background: var(--mist); border-radius: 8px; padding: 8px 10px; }
+  .preview b { color: var(--ink); }
+  .actions { display: flex; flex-wrap: wrap; gap: 8px; justify-content: space-between; }
   a { color: var(--ink); text-decoration-color: var(--sky); text-underline-offset: 3px; }
   dialog { border: 0; border-radius: 14px; padding: 0; background: var(--card); max-width: min(92vw, 520px); }
   dialog img { display: block; width: 100%; height: auto; }
@@ -98,6 +143,7 @@
   <h1>Content Planner</h1>
   <p class="sub" id="sub">Loading…</p>
   <nav>
+    <a class="chip" href="#ideas">Ideas</a>
     <a class="chip" href="#pinterest">Pinterest</a>
     <a class="chip" href="#ch-Instagram">Instagram</a>
     <a class="chip" href="#ch-TikTok">TikTok</a>
@@ -105,6 +151,16 @@
     <a class="chip" href="#pages">Pins by page</a>
     <button class="chip" id="refresh" type="button">Refresh Buffer</button>
   </nav>
+
+  <section id="ideas">
+    <div class="head">
+      <h2>Ideas</h2>
+      <button class="primary" type="button" id="newIdea">+ New idea</button>
+    </div>
+    <p class="sub">One card per idea. Each platform moves along on its own, from Idea to Posted.</p>
+    <div class="row" id="ideaFilter" style="margin:14px 0 14px"></div>
+    <div id="ideaView"></div>
+  </section>
 
   <section id="pinterest">
     <h2>Pinterest</h2>
@@ -129,6 +185,7 @@
   </section>
 </main>
 <dialog id="zoom"><img alt=""></dialog>
+<dialog id="editor"><form method="dialog" id="ideaForm"></form></dialog>
 
 <script>
 const $ = (id) => document.getElementById(id);
@@ -253,11 +310,176 @@ function renderPages() {
   $('pageTable').innerHTML = `<thead><tr><th>Page</th><th>Pins</th><th>Time passed</th><th>Next Pin</th><th>Board</th></tr></thead><tbody>${rows.join('')}</tbody>`;
 }
 
+// ---- Ideas ----
+const PNAME = { instagram: 'Instagram', tiktok: 'TikTok', youtube: 'YouTube', pinterest: 'Pinterest' };
+let ideaFilter = 'all';
+try { ideaFilter = localStorage.getItem('planner.ideaFilter') || 'all'; } catch {}
+const stagesFor = (p) => (p === 'pinterest' ? state.options.pinStages : state.options.stages);
+const laneClass = (p, l) => !l ? 'off' : ['Posted', 'Live'].includes(l.stage) ? 'posted' : ['Ready', 'Scheduled', 'Pins made'].includes(l.stage) ? 'ready' : '';
+const bufferPost = (id) => id && state.buffer.posts.find((p) => p.id === id);
+const pinsFor = (page) => (page ? state.pins.filter((p) => p.page === page) : []);
+const fmtDate = (d) => (d ? new Date(`${d}T12:00:00`).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : '');
+
+function ideaMeta(i) {
+  return [i.format, i.series, i.product].filter(Boolean).map(esc).join(' · ');
+}
+
+function renderIdeas() {
+  const live = state.ideas.filter((i) => !i.archived);
+  const n = (p) => live.filter((i) => i.lanes[p]).length;
+  $('ideaFilter').innerHTML = [['all', `All (${live.length})`], ...state.options.platforms.map((p) => [p, `${PNAME[p]} (${n(p)})`])]
+    .map(([k, l]) => `<button class="chip" type="button" aria-pressed="${k === ideaFilter}" data-if="${k}">${esc(l)}</button>`).join('');
+  if (!live.length) {
+    $('ideaView').innerHTML = '<p class="empty">No ideas yet. Add your first one.</p>';
+    return;
+  }
+  if (ideaFilter === 'all') {
+    $('ideaView').innerHTML = `<div class="ideas">${live.map((i) => `
+      <button class="idea" type="button" data-edit="${esc(i.id)}">
+        <span><span class="t">${esc(i.title)}</span><br><span class="m">${ideaMeta(i) || '&nbsp;'}</span></span>
+        <span class="lanes">${state.options.platforms.map((p) => {
+          const l = i.lanes[p];
+          return `<span class="lane ${laneClass(p, l)}">${PNAME[p]}: ${l ? esc(l.stage) : 'not planned'}</span>`;
+        }).join('')}</span>
+      </button>`).join('')}</div>`;
+    return;
+  }
+  const p = ideaFilter;
+  const mine = live.filter((i) => i.lanes[p]);
+  $('ideaView').innerHTML = `<div class="board">${stagesFor(p).map((s) => {
+    const cards = mine.filter((i) => i.lanes[p].stage === s).sort((a, b) => (a.lanes[p].date || '9').localeCompare(b.lanes[p].date || '9'));
+    return `<div class="col${cards.length ? '' : ' none'}"><h4>${esc(s)} <span>${cards.length}</span></h4>${cards.map((i) => `
+      <div class="idea" data-edit="${esc(i.id)}">
+        <span class="t">${esc(i.title)}</span>
+        <span class="m">${[ideaMeta(i), i.lanes[p].date ? fmtDate(i.lanes[p].date) : ''].filter(Boolean).join(' · ')}</span>
+        <select data-move="${esc(i.id)}" data-p="${p}" aria-label="Move to">${stagesFor(p).map((x) => `<option${x === s ? ' selected' : ''}>${esc(x)}</option>`).join('')}</select>
+      </div>`).join('')}</div>`;
+  }).join('')}</div>${live.length > mine.length ? `<p class="sub" style="margin-top:8px">${live.length - mine.length} ideas aren't planned for ${PNAME[p]}. Open one and tick ${PNAME[p]} to add it here.</p>` : ''}`;
+}
+
+function laneFields(p, l) {
+  const on = Boolean(l);
+  l = l || {};
+  const post = bufferPost(l.bufferId);
+  const stage = `<label>Stage<select name="${p}.stage">${stagesFor(p).map((s) => `<option${s === l.stage ? ' selected' : ''}>${esc(s)}</option>`).join('')}</select></label>`;
+  const date = `<label>${p === 'pinterest' ? 'First Pin date' : 'Post date'}<input type="date" name="${p}.date" value="${esc(l.date || '')}"></label>`;
+  let body = `<div class="two">${stage}${date}</div>`;
+  if (p === 'instagram' || p === 'tiktok') {
+    const max = p === 'instagram' ? 2200 : 4000;
+    body += `<label>${PNAME[p]} caption <span class="count" data-count="${p}" data-max="${max}"></span>
+      <textarea class="caption" name="${p}.caption">${esc(l.caption || '')}</textarea></label>
+      ${p === 'instagram' ? `<div class="preview" data-preview="${p}"></div>` : ''}`;
+  }
+  if (p === 'youtube') {
+    body += `<label>YouTube title <span class="count" data-count="youtube.title" data-max="100"></span><input name="youtube.title" value="${esc(l.title || '')}"></label>
+      <label>YouTube description<textarea name="youtube.caption">${esc(l.caption || '')}</textarea></label>`;
+  }
+  if (p === 'pinterest') {
+    const n = pinsFor(l.page).length;
+    body += `<label>Site page the Pins link to<input name="pinterest.page" value="${esc(l.page || '')}" placeholder="/calculators/"></label>
+      ${l.page ? `<div class="preview">${n ? `<b>${n} Pins</b> already link to this page (batch files).` : 'No Pins link to this page yet.'}</div>` : ''}`;
+  }
+  if (p !== 'pinterest') {
+    body += `<input type="hidden" name="${p}.bufferId" value="${esc(l.bufferId || '')}">
+      ${post ? `<div class="preview">In Buffer: <b>${esc(post.status === 'sent' ? 'posted' : post.status)}</b>${post.dueAt ? `, ${esc(fmtWhen(post.dueAt))}` : ''}</div>` : ''}`;
+  }
+  return `<fieldset><legend><label style="display:flex;gap:8px;align-items:center"><input type="checkbox" name="${p}.on"${on ? ' checked' : ''} style="width:auto"> ${PNAME[p]}</label></legend>
+    <div data-lane="${p}"${on ? '' : ' hidden'}>${body}</div></fieldset>`;
+}
+
+function openEditor(id) {
+  const i = state.ideas.find((x) => x.id === id) || { id: '', title: '', lanes: {} };
+  const f = $('ideaForm');
+  f.dataset.id = i.id;
+  f.innerHTML = `
+    <h2>${i.id ? 'Edit idea' : 'New idea'}</h2>
+    <label>Idea<input name="title" value="${esc(i.title)}" required placeholder="What's it about?"></label>
+    <div class="two">
+      <label>Format<select name="format"><option value="">Pick one</option>${state.options.formats.map((x) => `<option${x === i.format ? ' selected' : ''}>${esc(x)}</option>`).join('')}</select></label>
+      <label>Series<input name="series" value="${esc(i.series || '')}"></label>
+    </div>
+    <div class="two">
+      <label>Product<input name="product" value="${esc(i.product || '')}"></label>
+      <label>Script or working file<input name="link" value="${esc(i.link || '')}" placeholder="Link or file path"></label>
+    </div>
+    <label>Hook<input name="hook" value="${esc(i.hook || '')}"></label>
+    <label>Notes<textarea name="notes">${esc(i.notes || '')}</textarea></label>
+    ${state.options.platforms.map((p) => laneFields(p, i.lanes[p])).join('')}
+    <div class="actions">
+      <span>${i.id ? `<button class="ghost" type="button" data-archive="${esc(i.id)}">${i.archived ? 'Bring back' : 'Archive'}</button>` : ''}</span>
+      <span style="display:flex;gap:8px"><button class="ghost" type="button" data-close>Cancel</button><button class="primary" type="submit">Save</button></span>
+    </div>`;
+  updateCounts();
+  $('editor').showModal();
+}
+
+function updateCounts() {
+  const f = $('ideaForm');
+  f.querySelectorAll('[data-count]').forEach((el) => {
+    const field = el.dataset.count.includes('.') ? el.dataset.count : `${el.dataset.count}.caption`;
+    const len = (f.elements[field]?.value || '').length;
+    el.textContent = `${len.toLocaleString()} / ${Number(el.dataset.max).toLocaleString()}`;
+    el.classList.toggle('over', len > Number(el.dataset.max));
+  });
+  const pv = f.querySelector('[data-preview="instagram"]');
+  if (pv) {
+    const text = f.elements['instagram.caption'].value;
+    pv.innerHTML = text ? `Shows before "more": <b>${esc(text.slice(0, 125))}</b>${text.length > 125 ? '…' : ''}` : 'The first 125 characters show before "more", so the first line has to earn the tap.';
+  }
+}
+
+function formIdea() {
+  const f = $('ideaForm');
+  const v = (n) => f.elements[n]?.value ?? '';
+  const lanes = {};
+  for (const p of state.options.platforms) {
+    lanes[p] = f.elements[`${p}.on`].checked
+      ? { stage: v(`${p}.stage`), date: v(`${p}.date`), caption: v(`${p}.caption`), title: v(`${p}.title`), bufferId: v(`${p}.bufferId`), page: v(`${p}.page`) }
+      : null;
+  }
+  const old = state.ideas.find((x) => x.id === f.dataset.id);
+  return { id: f.dataset.id || undefined, title: v('title'), format: v('format'), series: v('series'), product: v('product'), link: v('link'), hook: v('hook'), notes: v('notes'), archived: old?.archived || false, lanes };
+}
+
+async function postIdea(idea) {
+  const r = await fetch('/api/idea', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(idea) });
+  if (!r.ok) throw new Error((await r.json()).error || r.status);
+  const saved = (await r.json()).idea;
+  const k = state.ideas.findIndex((x) => x.id === saved.id);
+  if (k >= 0) state.ideas[k] = saved;
+  else state.ideas.unshift(saved);
+  renderIdeas();
+}
+
+$('ideaForm').addEventListener('input', (e) => {
+  if (e.target.type === 'checkbox') {
+    $('ideaForm').querySelector(`[data-lane="${e.target.name.split('.')[0]}"]`).hidden = !e.target.checked;
+  }
+  updateCounts();
+});
+$('ideaForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  try {
+    await postIdea(formIdea());
+    $('editor').close();
+  } catch (err) {
+    alert(`Couldn't save: ${err.message}`);
+  }
+});
+document.addEventListener('change', async (e) => {
+  const s = e.target;
+  if (!s.dataset.move) return;
+  const idea = structuredClone(state.ideas.find((x) => x.id === s.dataset.move));
+  idea.lanes[s.dataset.p].stage = s.value;
+  await postIdea(idea);
+});
+
 async function load(refresh) {
   try {
     const r = await fetch(`/api/data${refresh ? '?refresh=1' : ''}`);
     state = await r.json();
     $('sub').textContent = `Today is ${fmtDay(state.now)}. Times are US Eastern.`;
+    renderIdeas();
     renderPins();
     renderBuffer();
     renderPages();
@@ -268,7 +490,23 @@ async function load(refresh) {
 
 document.addEventListener('click', async (e) => {
   const t = e.target;
-  if (t.dataset.f) {
+  const edit = t.closest('[data-edit]');
+  if (t.dataset.if) {
+    ideaFilter = t.dataset.if;
+    try { localStorage.setItem('planner.ideaFilter', ideaFilter); } catch {}
+    renderIdeas();
+  } else if (t.id === 'newIdea') {
+    openEditor('');
+  } else if (t.dataset.archive) {
+    const idea = structuredClone(state.ideas.find((x) => x.id === t.dataset.archive));
+    idea.archived = !idea.archived;
+    await postIdea(idea);
+    $('editor').close();
+  } else if (t.hasAttribute('data-close') || t.id === 'editor') {
+    $('editor').close();
+  } else if (edit && t.tagName !== 'SELECT' && t.tagName !== 'OPTION') {
+    openEditor(edit.dataset.edit);
+  } else if (t.dataset.f) {
     pinFilter = t.dataset.f;
     try { localStorage.setItem('planner.pinFilter', pinFilter); } catch {}
     renderPins();

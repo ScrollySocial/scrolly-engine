@@ -6,12 +6,14 @@
 //   - Pin batches: automation/pins/out/batch-*/batch.json + automation/pins/batches/<batch>-media.json
 //   - Buffer: live from api.buffer.com when automation/.env has BUFFER_API_KEY, else data/buffer-snapshot.json
 //     (Claude refreshes it with the Buffer connector, see buffer-snapshot.mjs)
-// Writes: data/pin-status.json, only when she marks a Pin as seen live or missing on Pinterest.
+//   - Ideas: data/ideas.json (one card per idea, a lane per platform)
+// Writes: data/pin-status.json (her "Seen it live" / "Missing" clicks) and data/ideas.json (her idea edits).
 import http from 'node:http';
 import { readFileSync, writeFileSync, renameSync, readdirSync, existsSync, mkdirSync } from 'node:fs';
 import { join, dirname, extname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { liveFetch } from './lib/buffer.mjs';
+import { cleanIdea, PLATFORMS, STAGES, PIN_STAGES, FORMATS } from './lib/ideas.mjs';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const PINS = join(here, '..', 'pins');
@@ -70,6 +72,19 @@ function pins() {
   return out;
 }
 
+// ---- Ideas ----
+const IDEAS_FILE = join(DATA, 'ideas.json');
+const ideas = () => readJson(IDEAS_FILE, { ideas: [] }).ideas;
+function saveIdea(input) {
+  const list = ideas();
+  const i = list.findIndex((x) => x.id === input.id);
+  const idea = cleanIdea(input, i >= 0 ? list[i] : null);
+  if (i >= 0) list[i] = idea;
+  else list.unshift(idea);
+  writeJson(IDEAS_FILE, { ideas: list });
+  return idea;
+}
+
 // ---- Buffer ----
 let cache = null; // live results, kept 60s so reloading the page doesn't spend the rate limit
 async function buffer(force) {
@@ -114,11 +129,22 @@ http
         return send(res, 200, readFileSync(join(here, 'planner.html')), TYPES['.html']);
       }
       if (req.method === 'GET' && url.pathname === '/api/data') {
-        return send(res, 200, { now: new Date().toISOString(), pins: pins(), buffer: await buffer(url.searchParams.has('refresh')) });
+        return send(res, 200, {
+          now: new Date().toISOString(),
+          options: { platforms: PLATFORMS, stages: STAGES, pinStages: PIN_STAGES, formats: FORMATS },
+          ideas: ideas(),
+          pins: pins(),
+          buffer: await buffer(url.searchParams.has('refresh')),
+        });
+      }
+      // Writes: same-origin only, the page is the one caller.
+      if (req.method === 'POST' && req.headers.origin && req.headers.origin !== `http://${req.headers.host}`) {
+        return send(res, 403, { error: 'origin' });
+      }
+      if (req.method === 'POST' && url.pathname === '/api/idea') {
+        return send(res, 200, { idea: saveIdea(await readBody(req)) });
       }
       if (req.method === 'POST' && url.pathname === '/api/pin-mark') {
-        // Same-origin only: the page is the one caller.
-        if (req.headers.origin && req.headers.origin !== `http://${req.headers.host}`) return send(res, 403, { error: 'origin' });
         const { id, mark } = await readBody(req);
         if (!pins().some((p) => p.id === id)) return send(res, 404, { error: 'unknown pin' });
         if (mark !== null && !MARKS.includes(mark)) return send(res, 400, { error: 'bad mark' });
