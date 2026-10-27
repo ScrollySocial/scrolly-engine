@@ -45,22 +45,34 @@ const photoHtml = `<!doctype html><html><head><meta charset="utf-8"><style>${BAS
   })();
 </script></body></html>`;
 
-// Cover: logo + homepage line on the left, three board-cover Pins fanned on the right.
-const pins = ['01-reels', '08-pricing', '05-planning'].map((f) => fileUrl(path.join(COVERS, f + '.png')));
+// Cover: logo, homepage line and a follow line on the left; a laptop (homepage) and phone (calculators) on the right,
+// showing fresh captures of the live site from site-shots.mjs. Real device proportions: 16:10 laptop screen, ~19.5:9 phone.
+const SHOT = (f) => fileUrl(path.join(OUT, f));
 const coverHtml = `<!doctype html><html><head><meta charset="utf-8">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif&display=block">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Jost:wght@600&display=block">
 <style>${BASE}
   body { width: 1920px; height: 1080px; position: relative; }
-  .left { position: absolute; left: 190px; top: 50%; transform: translateY(-50%); width: 760px; }
-  .line { font-family: 'Instrument Serif', Georgia, serif; font-size: 92px; line-height: 1.05; margin-top: 40px; }
-  .pin { position: absolute; width: 290px; aspect-ratio: 2/3; background: center/cover no-repeat; border-radius: 20px;
-         box-shadow: 0 24px 50px rgba(10,25,48,.22); }
-  .p1 { left: 1010px; top: 290px; transform: rotate(-6deg); }
-  .p2 { left: 1305px; top: 245px; transform: rotate(2deg); z-index: 2; }
-  .p3 { left: 1600px; top: 300px; transform: rotate(7deg); }
+  .left { position: absolute; left: 150px; top: 50%; transform: translateY(-50%); width: 760px; }
+  .line { font-family: 'Instrument Serif', Georgia, serif; font-size: 88px; line-height: 1.05; margin-top: 34px; }
+  .follow { display: inline-block; margin-top: 40px; background: ${NAVY}; color: #fff; font: 600 34px/1 Jost, Arial, sans-serif;
+            padding: 22px 36px 24px; border-radius: 999px; }
+  .laptop { position: absolute; left: 980px; top: 250px; width: 820px; filter: drop-shadow(0 26px 40px rgba(10,25,48,.22)); }
+  .lid { background: #1b1f27; border-radius: 26px 26px 0 0; padding: 22px 22px 26px; }
+  .screen { aspect-ratio: 16/10; background: center top/cover no-repeat; border-radius: 4px; }
+  .base { height: 22px; margin: 0 -48px; background: linear-gradient(#c9cdd6, #a9aeb9); border-radius: 0 0 22px 22px; position: relative; }
+  .base::before { content: ''; position: absolute; left: 50%; top: 0; width: 130px; height: 9px; transform: translateX(-50%);
+                  background: #9ca1ad; border-radius: 0 0 10px 10px; }
+  .phone { position: absolute; left: 1600px; top: 430px; width: 236px; aspect-ratio: 236/492; background: #1b1f27; border-radius: 40px;
+           padding: 11px; filter: drop-shadow(0 26px 40px rgba(10,25,48,.28)); }
+  .phone .screen { aspect-ratio: auto; height: 100%; border-radius: 30px; }
 </style></head><body>
-  <div class="left"><div class="logo">${LOGO}</div><div class="line">Less scrolling.<br>More selling.</div></div>
-  ${pins.map((u, i) => `<div class="pin p${i + 1}" style="background-image:url('${u}')"></div>`).join('')}
+  <div class="left">
+    <div class="logo" style="width:640px">${LOGO}</div>
+    <div class="line">Less scrolling.<br>More selling.</div>
+    <div class="follow">Follow for tips to grow your business online</div>
+  </div>
+  <div class="laptop"><div class="lid"><div class="screen" style="background-image:url('${SHOT('shot-laptop.png')}')"></div></div><div class="base"></div></div>
+  <div class="phone"><div class="screen" style="background-image:url('${SHOT('shot-phone.png')}')"></div></div>
 </body></html>`;
 
 mkdirSync(OUT, { recursive: true });
