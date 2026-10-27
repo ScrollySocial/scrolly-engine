@@ -335,7 +335,7 @@ export function build() {
   const body = `
 <section class="cm-hero"><div class="s3-wrap">
  <div>
-  <h1><span>Turn comments into</span><span><em>email signups.</em></span></h1>
+  <h1><span>Turn comments into</span><span><em class="or">email signups.</em></span></h1>
   <p class="s3-lede">Your own comment-to-DM software for Instagram and YouTube.<br>About $6 a month to run, whatever your list size.</p>
   <div class="cm-buy">${buyBtn()}<a class="cm-link" href="#demo">Try the demo →</a></div>
  </div>
