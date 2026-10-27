@@ -1,6 +1,6 @@
 ---
 name: scrolly-reels
-description: Edit Mercedes's raw footage into a finished Scrolly Reel (MP4 + cover) with the HyperFrames Reel engine, starting with the Studio type (one talking-head take, graphics-rich). Transcribes, makes a silence-aware rough cut, plans each beat's graphics, copy and sounds, runs her review checkpoints, builds and renders, makes the cover, and records the Reel on its Content Pipeline row in Notion. Use when Mercedes says "new Reel", "make/edit a Reel", "next Reel from Notion", drops footage to edit, or asks to continue a Reel in automation/reel-hf/.
+description: Edit Mercedes's raw footage into a finished Scrolly Reel (MP4 + cover) with the HyperFrames Reel engine, starting with the Studio type (one talking-head take, graphics-rich). Transcribes, makes a silence-aware rough cut, plans each beat's graphics, copy and sounds, runs her review checkpoints, builds and renders, makes the cover, and records the Reel on its card in her Content Planner (automation/planner). Use when Mercedes says "new Reel", "make/edit a Reel", "next Reel", "next Reel from the planner", drops footage to edit, or asks to continue a Reel in automation/reel-hf/.
 ---
 
 # Scrolly Reels
@@ -21,7 +21,8 @@ say so and offer Studio or wait.
 ## Never
 - Never render or rebuild over her Studio edits without diffing them into `build.mjs` first (ignore `data-hf-id`).
 - Never show her a text description where a picture or video can go. She judges visually.
-- Never set Status = **Ready** unless she says to queue it: any Ready row is added to the Buffer posting queue.
+- Never put a Reel in the Buffer queue (Instagram lane **Scheduled**) unless she chose "Add to the Buffer queue" on
+  the review page or says so.
 - Never log the engine or a Reel to the Business Brain (still being worked out, Mercedes 2026-10-13).
 - Never download music or sound effects without listing exact file, source and size first.
 
@@ -33,14 +34,16 @@ for every ◆. Don't hard-code a review format into the steps.
 (the `reel-engine-setup` skill walks through it).
 
 **1. Start.** Two doors, one process:
-- From chat: she names the idea or drops footage. Create the Content Pipeline row (database = `reel-settings.json` → `tracker.database`):
-  Content = working title, Format = Reel, Platforms = Instagram, Status = Edit, Series, Product if it sells one.
-- From Notion: "next Reel" = the first row with Format Reel and Status Edit (sort by Publish Order, then created);
-  or the row she names. Read Hook, CTA, Series, Edit Notes, Filming Notes.
+- From chat: she names the idea or drops footage. Make a card in her Content Planner (`reel-settings.json` →
+  `tracker`, switched from Notion 2026-10-27): write a patch with title = working title, format "Reel", series,
+  product if it sells one, filmingNotes, and `"lanes": {"instagram": {"stage": "Edit"}}`, then
+  `node ../planner/tracker.mjs new <patch.json>` (prints the card id).
+- From the planner: "next Reel" = the first card from `node ../planner/tracker.mjs reels-to-edit` without `drafted`,
+  or the card she names (`tracker.mjs find <words>`). Read hook, cta, series, editNotes, filmingNotes.
 **Every Reel has a purpose (required).** One action it asks for: Follow, Comment a word, Share, Save, Link in bio, or
-Comment for a freebie (`lib/cta.mjs`). Take it from the row's CTA; if the row has none, ask her (chat) or leave it for
+Comment for a freebie (`lib/cta.mjs`). Take it from the card's cta; if the card has none, ask her (chat) or leave it for
 the Plan step, which won't let her approve without one. Write the hook with it in mind (the hook tip per action is in
-`lib/cta.mjs`). Endings offered = settings `cta.offer` (Follow + Link in bio only until n8n comment-to-DM is set up, 2026-10-22). A row asking for a comment CTA: flag it and suggest Follow or Link in bio.
+`lib/cta.mjs`). Endings offered = settings `cta.offer` (Follow + Link in bio only until n8n comment-to-DM is set up, 2026-10-22). A card asking for a comment CTA: flag it and suggest Follow or Link in bio.
 Slug = `yyyy-mm-dd-<series>-<topic>` (e.g. `2026-10-13-bb-know-what-you-sell`). Footage lives under the footage folder
 (`reel-settings.json` → `folders.footage`), one subfolder per series.
 
@@ -91,10 +94,11 @@ Then `node build.mjs review` so step 3 plays the render. Fine-tuning can also ha
 build.mjs before step 3 (brand voice; leave the CTA line out: the build inserts it as the second sentence from the
 Ending pick; Business Brain = name + scrollyseo.com, never
 the price; bio link = $1K Challenge; exactly 3 hashtags; no em dashes; no "It's X, not Y"). She edits it on the page.
-`node lib/review/import.mjs <reel>` gives her final caption, hashtags and "When you approve" choice. Update the row:
-Hook (on-screen hook), Instagram Caption (her final caption + hashtags), CTA (her Ending pick + word), Series, Media Used (footage + b-roll ids),
-Script / Working File (the Reel folder), Notes (final MP4 + cover paths). Status: **Ready** only if she chose "Add to
-the Buffer queue" (Ready = added to the Buffer queue), otherwise **Approved**. Buffer only takes media by a live,
+`node lib/review/import.mjs <reel>` gives her final caption, hashtags and "When you approve" choice. Update the
+planner card (`node ../planner/tracker.mjs update <id> <patch.json>`): hook (on-screen hook), cta (her Ending pick +
+word), series, mediaUsed (footage + b-roll ids), reelFolder + link (the Reel folder), notesAppend (final MP4 + cover
+paths), and `lanes.instagram` with caption (her final caption + hashtags). Instagram stage: **Scheduled** with the
+Buffer post id and date once it's in the Buffer queue, otherwise **Ready**. Buffer only takes media by a live,
 non-expiring URL (no Notion file links); how the queue picks up the video file is **open**: confirm with her the first time.
 
 **8. Learn.** Every "love this / never do that" she says goes into the **Her rules** section of the handoff spec the
@@ -103,9 +107,10 @@ same session, so the next Reel starts from it. A component joins `lib/` only aft
 
 ## Overnight run (scheduled)
 The scheduled task **reels-overnight** (12:30am daily) runs this skill unattended by `overnight.md` (this folder):
-posts what she approved on the page, applies her choices, renders approved Reels, drafts every new Studio row, and
+posts what she approved on the page, applies her choices, renders approved Reels, drafts every new Studio card, and
 leaves everything on the review hub (http://localhost:4320, `lib/review/hub.mjs`). Where each Reel stands:
-`node lib/pipeline.mjs`. Rows already drafted are in `automation/reel-hf/rows.json`. In a chat session, the same
+`node lib/pipeline.mjs`. Cards already drafted have `reelFolder` set (`rows.json` is the old Notion ledger, kept as
+history only). In a chat session, the same
 scripts work by hand: `lib/render-ready.mjs`, `lib/post-reel.mjs`.
 
 ## Later (not built)

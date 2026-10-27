@@ -1,5 +1,5 @@
-// Posting order for the review hub, copied from Notion (the Content Pipeline row's Publish Order / Publish Date).
-// Notion is the only place the order is set: whenever Claude reads the "Reels to edit" view (overnight run, or by
+// Posting order for the review hub, copied from the Content Planner (the card's order / Instagram date).
+// The planner is the only place the order is set: whenever Claude reads tracker.mjs reels-to-edit (overnight run, or by
 // hand), it records each Reel's values here so http://localhost:4320 can number the Reels. Never edit by hand.
 // Usage: node lib/schedule.mjs <reel> [order=<number>] [date=<yyyy-mm-dd or ISO>]   (missing = not scheduled)
 //        node lib/schedule.mjs --show

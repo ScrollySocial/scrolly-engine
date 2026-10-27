@@ -15,9 +15,12 @@ The Notion workspace's query allowance is small. To read a list of rows, use a s
 (`notion-query-data-sources` with mode "view"). Never SQL or rows mode. If no view fits, ask Mercedes before creating
 one; don't fall back to a query. Fetching or updating a single page by its URL is fine.
 
-Saved views in use (Content Pipeline, Scrolly Content Tracker):
-- Reels to edit (Format Reel + Status Edit, by Publish Order): view://3f9ab38f-4c58-81e3-a763-000cb6af8568
-  (query: `{"mode":"view","view_url":"view://3f9ab38f-4c58-81e3-a763-000cb6af8568"}`)
+Content ideas and posts moved off Notion's Content Pipeline (2026-10-27): they live in Mercedes's Content Planner,
+`automation/planner/` (page http://localhost:4330, data `data/ideas.json`, command line `tracker.mjs`; plan in vault
+`products/my-planner/plan.md`). The nightly Reel run reads `node ../planner/tracker.mjs reels-to-edit` instead of the
+old "Reels to edit" view. Don't add or change content in the Notion Pipeline; it's being retired.
+
+Saved views in use (Scrolly Content Tracker):
 - Reel Style Board (style and editing inspiration, newest first; check before editing a Reel):
   view://3feab38f-4c58-81f9-8429-000c8ddaa849
 

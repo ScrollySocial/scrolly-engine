@@ -10,7 +10,13 @@ allow list freezes the run forever with no error. Keep every call simple and all
 `cd X && ...` followed by git/wc/cat, no `for` loops, no `git -C`. Engine commands are `node lib/...` and
 `npx hyperframes ...` only. For several Reels, make several calls. Read files with the Read tool, not cat.
 
-**Paused (Mercedes 2026-10-22):** all Business Brain Reels (folders `2026-10-1x-bb-*`, and any Notion row about the
+**Tracker (switched 2026-10-27):** Reel ideas live in Mercedes's own Content Planner, not Notion. Read and change
+them only with `node ../planner/tracker.mjs …` (run from `automation/reel-hf`; see the top of that file). For an
+update, write the patch JSON with the Write tool to `_runs/patch-<card id>.json`, then
+`node ../planner/tracker.mjs update <card id> _runs/patch-<card id>.json`. Never touch Notion's Content Pipeline:
+it's being retired.
+
+**Paused (Mercedes 2026-10-22):** all Business Brain Reels (folders `2026-10-1x-bb-*`, and any planner card about the
 Business Brain) are on hold; she may stop selling it. Skip them at every step: no revising, sound passes, renders,
 posting or drafting. Don't delete, undo or unqueue anything. List them as "paused" in the morning note. Remove this
 paragraph only when she says to un-pause them.
@@ -42,9 +48,11 @@ For each Reel at stage `post`, `node lib/review/import.mjs <reel>` for her final
   media, prints `videoUrl`). Buffer: organization + Instagram channel from `get_account` / `list_channels` (or memory
   `project_buffer_ai_posting_test`), `create_post` with her caption + hashtags, Instagram type reel, the `videoUrl`,
   `thumbnailOffset: 0`, mode addToQueue. Then `node lib/post-reel.mjs <reel> --buffer <post id> --scheduled <due time>`.
-  Notion row (from `rows.json`): Status **Scheduled**, Publish Date = Buffer's due time, URL = videoUrl, Instagram Caption,
-  Hook, CTA, Series, Media Used, Script / Working File, Notes = WP media id + final MP4 + cover paths (skill step 7).
-- **postAfter = hold**: fill the row the same way, Status **Approved**, no upload, no Buffer.
+  Planner card (the one whose `reelFolder` is this Reel; `node ../planner/tracker.mjs find <title words>` if unsure):
+  patch `lanes.instagram` = { stage **Scheduled**, date = Buffer's due date (yyyy-mm-dd), caption = her final caption +
+  hashtags, bufferId = the Buffer post id }, plus `mediaUrl` = videoUrl, hook, cta, series, mediaUsed, and
+  `notesAppend` = WP media id + final MP4 + cover paths (skill step 7).
+- **postAfter = hold**: patch the card the same way with `lanes.instagram.stage` **Ready**, no bufferId, no upload, no Buffer.
 - Never post anything she hasn't approved on the page. A Reel with video notes after its render is not approved: treat
   it in B.
 
@@ -89,25 +97,24 @@ moments she kept and redo only the changed moments. Then `node build.mjs && npm 
    `node lib/render-ready.mjs --only <reel>` once if there's time; otherwise put the problem in the morning note.
 4. A failed Reel (see `renders/render.log`) doesn't stop the others. Note it.
 
-## D. Draft new Reels (Notion rows → review pages)
-1. Read the Notion saved view **Reels to edit** (Format Reel + Status Edit, by Publish Order):
-   `notion-query-data-sources` with `{"mode":"view","view_url":"view://3f9ab38f-4c58-81e3-a763-000cb6af8568"}`.
-   **Never** SQL or rows mode on Notion lists (small query allowance; repo-root CLAUDE.md). Skip rows already in
-   `automation/reel-hf/rows.json`, but first copy every listed Reel's posting order to the review hub:
-   `node lib/schedule.mjs <slug> order=<Publish Order or -> date=<Publish Date or ->` (Notion is the only place the order
-   is set; the hub at localhost:4320 numbers the Reels from this copy).
-2. A row is a **Studio** Reel when its footage is talking-head take(s) of her. The footage is named in **Filming Notes**
+## D. Draft new Reels (planner cards → review pages)
+1. `node ../planner/tracker.mjs reels-to-edit` lists the Reel cards waiting at Edit (Format Reel, Instagram lane at
+   Edit, by posting order). A card with `drafted` set already has a Reel folder: skip it, but first copy every drafted
+   Reel's posting order to the review hub: `node lib/schedule.mjs <drafted> order=<order or -> date=<date or ->` (the
+   planner is the only place the order is set; the hub at localhost:4320 numbers the Reels from this copy). Skip
+   `drafted` values that start with `../` (edited before the engine).
+2. A card is a **Studio** Reel when its footage is talking-head take(s) of her. The footage is named in **filmingNotes**
    (paths relative to the footage folder, `reel-settings.json` → `folders.footage`, e.g. `videos/Business
-   Brain/IMG_2008` → find the file by name). Skip and log (with the reason) rows where: the footage file isn't there
+   Brain/IMG_2008` → find the file by name). Skip and log (with the reason) cards where: the footage file isn't there
    (OneDrive not synced), it's a screen recording (Demo), b-roll or short intro clips (Quick Cut / Chill), multi-angle
-   (Film), the Notes say it was already edited, or no footage is named. These types aren't built yet.
-3. For each Studio row, run skill steps 2-5 **without stopping at the ◆ checkpoints** (she reviews all of it on the page
+   (Film), the notes say it was already edited, or no footage is named. These types aren't built yet.
+3. For each Studio card, run skill steps 2-5 **without stopping at the ◆ checkpoints** (she reviews all of it on the page
    in the morning), but **stop at Plan it: no sound pass in a draft** (B2 does it after she approves the plan). To keep
-   context small, you may hand each Reel to its own subagent with this runbook, the skill and the row's text; run at
+   context small, you may hand each Reel to its own subagent with this runbook, the skill and the card's text; run at
    most 3 at once (heavy video steps one at a time). **Save points:** before the first step write
-   `automation/reel-hf/_runs/progress/<notion page id>.md` (row title, slug), and after every step below add one line
+   `automation/reel-hf/_runs/progress/<card id>.md` (card title, slug), and after every step below add one line
    ("done: transcribed IMG_2008", "done: plan.json", …). A run that finds this file continues from the next step instead
-   of starting over. Delete the file once the row is in rows.json. Per Reel:
+   of starting over. Delete the file once the card's `reelFolder` is set. Per Reel:
    - Transcribe every take named (`node lib/transcribe-footage.mjs …`), pick the best take of each line (Filming Notes
      say which take is best; follow them), drop retakes, false starts, "link in bio" lines when Notes say so, asides.
    - Slug `yyyy-mm-dd-<series>-<topic>` (today's date), `plan.json`, `node lib/new-reel.mjs <slug>`,
@@ -115,14 +122,15 @@ moments she kept and redo only the changed moments. Then `node build.mjs && npm 
    - Plan the moments in build.mjs (follow the last approved Reel's build.mjs as the pattern), stills + cut-out stills,
      5-6 `COVERS` lines (the viewer's problem in their words) + `coverCut`, the `POST` caption (writing rules; no CTA
      line in it: the build adds it; Business Brain = name + scrollyseo.com, never the price; exactly 3 hashtags; no
-     em dashes). `R.endCard({ kind, word, detail })` from the row's CTA (`lib/cta.mjs` kinds); no CTA on the row =
+     em dashes). `R.endCard({ kind, word, detail })` from the card's cta (`lib/cta.mjs` kinds); no cta on the card =
      leave it out, the page makes her pick one before she can approve the plan. Write the hook to set up that CTA.
    - Captions yes; **no** `R.fx`, music or transitions yet (B2 adds them after she approves the plan).
    - `node build.mjs && npm run check` (long footage: the PRODUCER_* timeouts), then `node build.mjs review`.
-   - Add the row to `rows.json` (page id → slug). Notion row: Status stays **Edit**; Script / Working File and Edit
-     Notes = "Draft ready for review <date>: automation/reel-hf/<slug> (open http://localhost:4320)". Hook = the
-     on-screen hook if the row has none.
-4. Never: set Status Ready, post, download music or sound effects, log the engine or a Reel to the Business Brain.
+   - Patch the card: `reelFolder` = slug, `link` = "automation/reel-hf/<slug>", `editNotes` = "Draft ready for review
+     <date> (open http://localhost:4320)", `hook` = the on-screen hook if the card has none. The Instagram lane stays
+     at **Edit**.
+4. Never: set a lane to Ready or Scheduled outside step A, post, download music or sound effects, log the engine or a
+   Reel to the Business Brain.
 
 ## E. Wrap up (always, even after a failure)
 1. `node lib/review/hub.mjs --start` (one page for every Reel: http://localhost:4320).

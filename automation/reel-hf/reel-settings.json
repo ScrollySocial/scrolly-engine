@@ -44,12 +44,12 @@
   },
 
   "tracker": {
-    "app": "notion",
-    "database": "collection://d2cc8645-5399-4d65-91e2-d535e5cc98bc",
-    "name": "Content Pipeline",
-    "statuses": { "edit": "Edit", "approved": "Approved", "ready": "Ready", "scheduled": "Scheduled" },
+    "app": "planner",
+    "cli": "../planner/tracker.mjs",
+    "name": "Content Planner",
+    "statuses": { "edit": "Edit", "hold": "Ready", "scheduled": "Scheduled" },
     "rows": "rows.json",
-    "_note": "Where Reel ideas and posts are tracked. app 'none' = start Reels from chat only. ready = the status that adds a post to the scheduler's queue. rows = row id → Reel folder ledger."
+    "_note": "Where Reel ideas and posts are tracked. app 'planner' = Mercedes's Content Planner (automation/planner, switched from the Notion Content Pipeline 2026-10-27), read and changed with the cli; 'none' = start Reels from chat only. statuses = the Instagram lane's stage: edit = waiting to be drafted, hold = approved but not queued, scheduled = in the Buffer queue. A card's reelFolder says it's drafted; rows = the old Notion row id → Reel folder ledger, history only."
   },
 
   "rules": {

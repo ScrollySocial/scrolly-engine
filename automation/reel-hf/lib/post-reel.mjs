@@ -4,7 +4,7 @@
 // offset, so the cover goes in as the first frame), H.264 CRF 20 capped at 9 Mbps (~45-65 MB for 60s).
 // videoHost 'none': stops at the posting copy and prints its path (post it by hand).
 // Then Claude adds it to the scheduler (Buffer: create_post, addToQueue, Instagram reel, thumbnailOffset 0) and updates
-// the tracker row; this script records it in <reel>/review/posted.json only after that
+// the tracker card; this script records it in <reel>/review/posted.json only after that
 // (pass --buffer <post id> --scheduled <iso> on a second call to record it).
 // Usage: node lib/post-reel.mjs <reel>                       → posting copy + WP upload, prints JSON
 //        node lib/post-reel.mjs <reel> --buffer <id> --scheduled <iso>  → writes review/posted.json

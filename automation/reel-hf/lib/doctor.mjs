@@ -242,7 +242,11 @@ for (const [label, dir] of [['exports folder', P.exports], ['transcripts folder'
 if (S.posting.videoHost === 'wordpress') {
   await step(`WordPress client ${rel(P.wordpressClient)}`, () => existsSync(P.wordpressClient), { needs: 'set posting.wordpressClient, or posting.videoHost to "none"' });
 }
-if (S.tracker.app && S.tracker.app !== 'none') {
+if (S.tracker.app === 'planner') {
+  // Mercedes's own Content Planner (automation/planner), read and changed through its command-line tool
+  const cli = path.resolve(ROOT, S.tracker.cli || '../planner/tracker.mjs');
+  await step(`planner tracker ${rel(cli)}`, () => existsSync(cli), { needs: 'set tracker.cli to the planner\'s tracker.mjs, or tracker.app to "none"' });
+} else if (S.tracker.app && S.tracker.app !== 'none') {
   await step(`${S.tracker.app} tracker id set`, () => !!S.tracker.database, { needs: 'set tracker.database (the setup skill finds it), or tracker.app to "none"' });
 }
 if (S.rules.doc) await step(`rules doc ${rel(P.rulesDoc)}`, () => existsSync(P.rulesDoc), { needs: 'fix rules.doc in reel-settings.json, or remove it to keep rules in rules.list only' });

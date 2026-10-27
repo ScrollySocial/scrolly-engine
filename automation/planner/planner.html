@@ -434,6 +434,12 @@ function openEditor(id) {
       <label>Posting order (lower posts first)<input name="order" type="number" value="${i.order ?? ''}"></label>
     </div>
     <label>Notes<textarea name="notes">${esc(i.notes || '')}</textarea></label>
+    <div class="two">
+      <label>Filming notes (footage files, best takes)<textarea name="filmingNotes">${esc(i.filmingNotes || '')}</textarea></label>
+      <label>Edit notes<textarea name="editNotes">${esc(i.editNotes || '')}</textarea></label>
+    </div>
+    ${i.reelFolder ? `<div class="preview">Reel engine folder: <b>${esc(i.reelFolder)}</b>${i.reelFolder.startsWith('../') ? '' : ' · review it at <a href="http://localhost:4320" target="_blank" rel="noopener">localhost:4320</a>'}</div>` : ''}
+    ${i.mediaUrl ? `<div class="preview">Posted file: <a href="${esc(i.mediaUrl)}" target="_blank" rel="noopener">${esc(i.mediaUrl.split('/').pop())}</a></div>` : ''}
     ${state.options.platforms.map((p) => laneFields(p, i.lanes[p])).join('')}
     ${i.notionId || i.fromNotion || i.carouselId || i.mediaUsed ? `<details><summary>More from Notion</summary><div class="times" style="grid-template-columns:auto 1fr">
       ${i.notionId ? `<b>Notion row</b><a href="https://www.notion.so/${esc(i.notionId)}" target="_blank" rel="noopener">Open in Notion</a>` : ''}
@@ -476,11 +482,19 @@ function formIdea() {
   // Start from the saved card so fields the form doesn't show (carousel checks, Notion extras) are kept.
   const old = state.ideas.find((x) => x.id === f.dataset.id) || {};
   return { ...old, id: f.dataset.id || undefined, title: v('title'), format: v('format'), series: v('series'), product: v('product'),
-    link: v('link'), hook: v('hook'), cta: v('cta'), order: v('order'), notes: v('notes'), archived: old.archived || false, lanes };
+    link: v('link'), hook: v('hook'), cta: v('cta'), order: v('order'), notes: v('notes'),
+    filmingNotes: v('filmingNotes'), editNotes: v('editNotes'), archived: old.archived || false, lanes };
 }
 
 async function postIdea(idea) {
   const r = await fetch('/api/idea', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(idea) });
+  if (r.status === 409) {
+    // The nightly Reel run (or Claude) changed this card meanwhile: show the newer copy instead of overwriting it.
+    alert((await r.json()).error);
+    $('editor').close();
+    await load();
+    throw Object.assign(new Error('changed elsewhere'), { handled: true });
+  }
   if (!r.ok) throw new Error((await r.json()).error || r.status);
   const saved = (await r.json()).idea;
   const k = state.ideas.findIndex((x) => x.id === saved.id);
@@ -505,7 +519,7 @@ $('ideaForm').addEventListener('submit', async (e) => {
     await postIdea(formIdea());
     $('editor').close();
   } catch (err) {
-    alert(`Couldn't save: ${err.message}`);
+    if (!err.handled) alert(`Couldn't save: ${err.message}`);
   }
 });
 document.addEventListener('change', async (e) => {
@@ -513,7 +527,11 @@ document.addEventListener('change', async (e) => {
   if (!s.dataset.move) return;
   const idea = structuredClone(state.ideas.find((x) => x.id === s.dataset.move));
   idea.lanes[s.dataset.p].stage = s.value;
-  await postIdea(idea);
+  try {
+    await postIdea(idea);
+  } catch (err) {
+    if (!err.handled) alert(`Couldn't save: ${err.message}`);
+  }
 });
 
 async function load(refresh) {

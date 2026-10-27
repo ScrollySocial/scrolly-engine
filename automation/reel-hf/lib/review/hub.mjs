@@ -108,7 +108,7 @@ function page() {
   const title = (slug) => { try { return JSON.parse(readFileSync(path.join(ROOT, slug, 'review/reel.json'), 'utf8')).title || slug; } catch { return slug; } };
   const yours = rows.filter((r) => ['plan', 'edit', 'approve'].includes(r.stage)).length;
   const claude = rows.filter((r) => ['revise', 'sounds', 'render', 'final', 'post', 'no-page'].includes(r.stage)).length;
-  // posting order, copied from Notion (lib/schedule.mjs): rank among the Reels not posted yet, by Publish Order then date
+  // posting order, copied from the Content Planner (lib/schedule.mjs): rank among the Reels not posted yet, by Publish Order then date
   const S = readSchedule(), sched = (r) => S[r.slug] || {};
   const byPost = (a, b) => (sched(a).order ?? Infinity) - (sched(b).order ?? Infinity) || String(sched(a).date || '9').localeCompare(String(sched(b).date || '9')) || a.slug.localeCompare(b.slug);
   const queued = rows.filter((r) => r.stage !== 'done' && (sched(r).order != null || sched(r).date)).sort(byPost);

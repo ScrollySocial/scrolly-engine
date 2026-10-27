@@ -78,6 +78,10 @@ const ideas = () => readJson(IDEAS_FILE, { ideas: [] }).ideas;
 function saveIdea(input) {
   const list = ideas();
   const i = list.findIndex((x) => x.id === input.id);
+  // The nightly Reel run edits ideas.json too (tracker.mjs): refuse a save made from an older copy.
+  if (i >= 0 && input.updatedAt && input.updatedAt !== list[i].updatedAt) {
+    throw Object.assign(new Error('This card changed since the page loaded. Reload, then make your change again.'), { code: 409 });
+  }
   const idea = cleanIdea(input, i >= 0 ? list[i] : null);
   if (i >= 0) list[i] = idea;
   else list.unshift(idea);
@@ -161,7 +165,7 @@ http
       }
       send(res, 404, { error: 'not found' });
     } catch (e) {
-      send(res, 500, { error: e.message });
+      send(res, e.code === 409 ? 409 : 500, { error: e.message });
     }
   })
   .listen(PORT, '127.0.0.1', () => console.log(`Content planner: http://localhost:${PORT}`));

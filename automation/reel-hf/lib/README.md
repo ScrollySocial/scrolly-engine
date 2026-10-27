@@ -5,8 +5,8 @@ what appears when; this folder owns the look, motion, footage handling, captions
 Spec and decisions: vault `products/content-engine/reel-engine-handoff.md`. Workflow: the `scrolly-reels` skill (`.claude/skills/scrolly-reels/`).
 
 **One person's setup lives in `../reel-settings.json`, never in `lib/`:** name, Instagram handle, default brand kit,
-footage + exports folders, browser path, tool locations, review ports, posting route, tracker (Notion database id and
-statuses), personal rules and template overrides (e.g. music level). The values in the file are Mercedes's, so her
+footage + exports folders, browser path, tool locations, review ports, posting route, tracker (Mercedes: her Content
+Planner's `tracker.mjs`; or a Notion database id; plus statuses), personal rules and template overrides (e.g. music level). The values in the file are Mercedes's, so her
 setup runs as before. A new person runs the **`reel-engine-setup`** skill (`.claude/skills/reel-engine-setup/`): it
 asks a few questions, writes the file and runs `doctor.mjs`, which installs what's missing.
 
@@ -29,7 +29,7 @@ asks a few questions, writes the file and runs `doctor.mjs`, which installs what
 | `render-ready.mjs` | Renders every Reel with Plan it + Edit it approved: build, check, render, the picked cover, page refresh. First a quick draft (15 fps, draft quality, ~2.7× faster) to exports/draft for Approve it; once that's approved, the full-quality render to exports/final (the one that gets posted). Settings `render.draft: false` skips the draft; `--full` forces full quality |
 | `post-reel.mjs` | Posting copy (cover as frame 0, CRF 20, ≤9 Mbps) → WordPress media (never-expiring link for Buffer) when settings `posting.videoHost` = wordpress; `--buffer <id>` records it |
 | `review/hub.mjs` | One page for every Reel: http://localhost:4320 (`--start` runs it in the background); opens each Reel's page on 4331+ (settings `review`) |
-| `../rows.json` | Tracker row → Reel folder ledger (settings `tracker.rows`), so the overnight run never drafts a row twice |
+| `../rows.json` | Old Notion row → Reel folder ledger, history only. With the planner tracker, a card's `reelFolder` says it's drafted, so the overnight run never drafts one twice |
 | `../../reel-package/` | Builds the customer copy: `node build-package.mjs` → `dist/reel-engine/` (blank settings + brand kit, no sounds, licenses) |
 | `loudness.mjs` | Music level, measured: Quiet / Normal / Up front = 25 / 21 / 17 dB under the voice (ffmpeg ebur128, cached in `<reel>/assets/.loudness.json`); warns when music is over 26 dB under |
 | `sounds.mjs` | The sound library: 25 sounds grouped by job, with Mixkit sources. `--md` writes `sounds.md` (customer download checklist), `--get` fills missing files into `assets/sfx` |

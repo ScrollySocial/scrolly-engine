@@ -49,6 +49,11 @@ export function cleanIdea(input, existing) {
     product: str(input.product, 100),
     series: str(input.series, 100),
     link: str(input.link, 500), // script or working file
+    filmingNotes: str(input.filmingNotes, 3000), // Reels: the footage files and best takes (the nightly run reads it)
+    editNotes: str(input.editNotes, 3000),
+    // The Reel's folder, relative to automation/reel-hf (set = already drafted; the nightly run skips it)
+    reelFolder: /^[\w./-]{1,160}$/.test(input.reelFolder || '') ? input.reelFolder : '',
+    mediaUrl: str(input.mediaUrl, 500), // the posted video or image (WordPress media)
     order: input.order !== '' && input.order != null && Number.isFinite(order) ? order : null, // posting order, lower first
     // used by the carousel skill's repeat checks
     carouselId: str(input.carouselId, 200),
