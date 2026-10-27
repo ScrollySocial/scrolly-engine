@@ -11,6 +11,6 @@ Run from the project folder, then open http://localhost:4330:
 - `planner.html`: the page (read on every visit, so edits show without a restart).
 - `lib/buffer.mjs`: post shape + live Buffer read when `BUFFER_API_KEY` is in `automation/.env`.
 - `buffer-snapshot.mjs`: "refresh my planner" without a key. Claude runs the Buffer connector's
-  `list_posts` twice (queue statuses, then the last 30 sent), saves the results, and runs
-  `node automation/planner/buffer-snapshot.mjs <queue.json> <sent.json>`.
+  `list_posts` twice (queue statuses, then the last 30 sent) and `get_channel` for the three channels,
+  saves the results, and runs `node automation/planner/buffer-snapshot.mjs <channels.json> <queue.json> <sent.json>`.
 - `data/pin-status.json`: her "Seen it live" / "Missing" clicks. `data/buffer-snapshot.json`: last saved Buffer copy.

@@ -70,6 +70,21 @@
   .post.open .cap { max-height: none; }
   .post .more { background: none; border: 0; color: var(--sky); font: inherit; font-size: 15px; padding: 0; cursor: pointer; }
   .empty { color: var(--muted); }
+  .channels { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; margin-top: 14px; align-items: start; }
+  .channel { background: var(--mist); border-radius: 14px; padding: 14px; scroll-margin-top: 64px; }
+  .channel h3 { margin: 0; font: 600 21px/1.2 Georgia, serif; }
+  .channel .handle { color: var(--muted); font-size: 15px; }
+  .channel h4 { margin: 16px 0 8px; font-size: 15px; }
+  .counts { display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0 0; }
+  .counts span { background: var(--card); border-radius: 999px; padding: 2px 10px; font-size: 15px; }
+  .counts b { font-weight: 700; }
+  .channel .post { grid-template-columns: 56px 1fr; }
+  .channel .post img { width: 56px; height: 75px; }
+  .channel details { margin-top: 14px; font-size: 15px; }
+  .channel summary { cursor: pointer; font-weight: 600; }
+  .times { display: grid; grid-template-columns: 44px 1fr; gap: 2px 8px; margin-top: 8px; color: var(--muted); }
+  .times b { color: var(--ink); font-weight: 600; }
+  @media (max-width: 900px) { .channels { grid-template-columns: 1fr; } }
   a { color: var(--ink); text-decoration-color: var(--sky); text-underline-offset: 3px; }
   dialog { border: 0; border-radius: 14px; padding: 0; background: var(--card); max-width: min(92vw, 520px); }
   dialog img { display: block; width: 100%; height: auto; }
@@ -84,7 +99,9 @@
   <p class="sub" id="sub">Loading…</p>
   <nav>
     <a class="chip" href="#pinterest">Pinterest</a>
-    <a class="chip" href="#buffer">Buffer</a>
+    <a class="chip" href="#ch-Instagram">Instagram</a>
+    <a class="chip" href="#ch-TikTok">TikTok</a>
+    <a class="chip" href="#ch-YouTube">YouTube</a>
     <a class="chip" href="#pages">Pins by page</a>
     <button class="chip" id="refresh" type="button">Refresh Buffer</button>
   </nav>
@@ -101,15 +118,8 @@
   <section id="buffer">
     <h2>Buffer</h2>
     <p class="sub" id="bufSource"></p>
-    <div class="stats" id="bufStats"></div>
-    <h3>In the queue (posts in this order)</h3>
-    <div class="posts" id="bufQueue"></div>
-    <h3>Ready to queue next (drafts)</h3>
-    <div class="posts" id="bufDrafts"></div>
-    <h3>Didn't post (errors)</h3>
-    <div class="posts" id="bufErrors"></div>
-    <h3>Posted</h3>
-    <div class="posts" id="bufSent"></div>
+    <div class="note" id="bufLimit"></div>
+    <div class="channels" id="bufChannels"></div>
   </section>
 
   <section id="pages">
@@ -186,23 +196,45 @@ function postCard(p) {
   </div>`;
 }
 
+const FREE_PLAN_LIMIT = 10; // Buffer Free: 10 scheduled posts across all channels
+const DAYS = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
+const fmtClock = (hm) => {
+  const [h, m] = hm.split(':').map(Number);
+  return `${h % 12 || 12}:${String(m).padStart(2, '0')}${h < 12 ? 'am' : 'pm'}`;
+};
+
 function renderBuffer() {
   const b = state.buffer;
-  const by = (s) => b.posts.filter((p) => s.includes(p.status));
-  const queue = by(['scheduled', 'sending', 'needs_approval']).sort((x, y) => (x.dueAt || '').localeCompare(y.dueAt || ''));
-  const drafts = by(['draft']);
-  const errors = by(['error']);
-  const sent = by(['sent']).sort((x, y) => (y.sentAt || y.dueAt || '').localeCompare(x.sentAt || x.dueAt || ''));
+  const channels = b.channels?.length ? b.channels
+    : ['Instagram', 'TikTok', 'YouTube'].map((name) => ({ name, schedule: [] }));
+  const scheduled = b.posts.filter((p) => ['scheduled', 'sending', 'needs_approval'].includes(p.status)).length;
   $('bufSource').innerHTML = b.live
     ? `Live from Buffer, ${esc(fmtWhen(b.takenAt))}.`
     : `Saved copy from ${b.takenAt ? esc(fmtWhen(b.takenAt)) : 'never'}. ${esc(b.note || '')} Ask Claude to "refresh my planner" for a new one.`;
-  $('bufStats').innerHTML = [['In the queue', queue.length], ['Drafts', drafts.length], ['Errors', errors.length], ['Posted (last 30)', sent.length]]
-    .map(([l, n]) => `<div class="stat"><b>${n}</b><span>${l}</span></div>`).join('');
-  const fill = (id, list, empty) => ($(id).innerHTML = list.length ? list.map(postCard).join('') : `<p class="empty">${empty}</p>`);
-  fill('bufQueue', queue, 'Nothing is scheduled in Buffer right now.');
-  fill('bufDrafts', drafts, 'No drafts.');
-  fill('bufErrors', errors, 'None.');
-  fill('bufSent', sent, 'Nothing posted yet.');
+  $('bufLimit').innerHTML = `<b>${scheduled} of ${FREE_PLAN_LIMIT}</b> scheduled posts used. Buffer's free plan holds ${FREE_PLAN_LIMIT} across all three channels together.`;
+  const list = (posts, empty) => (posts.length ? `<div class="posts">${posts.map(postCard).join('')}</div>` : `<p class="empty">${empty}</p>`);
+  $('bufChannels').innerHTML = channels.map((c) => {
+    const mine = b.posts.filter((p) => p.channel === c.name);
+    const by = (s) => mine.filter((p) => s.includes(p.status));
+    const queue = by(['scheduled', 'sending', 'needs_approval']).sort((x, y) => (x.dueAt || '').localeCompare(y.dueAt || ''));
+    const drafts = by(['draft']);
+    const errors = by(['error']);
+    const sent = by(['sent']).sort((x, y) => (y.sentAt || y.dueAt || '').localeCompare(x.sentAt || x.dueAt || ''));
+    const slots = c.schedule.reduce((n, d) => n + d.times.length, 0);
+    const days = DAYS.map((d) => c.schedule.find((s) => s.day === d)).filter(Boolean);
+    return `<div class="channel" id="ch-${esc(c.name)}">
+      <h3>${esc(c.name)}</h3>
+      <div class="handle">${c.link ? `<a href="${esc(c.link)}" target="_blank" rel="noopener">${esc(c.handle)}</a>` : ''}${c.paused ? ' · <span class="err">Queue paused</span>' : ''}</div>
+      <div class="counts"><span><b>${queue.length}</b> queued</span><span><b>${drafts.length}</b> drafts</span>${errors.length ? `<span><b>${errors.length}</b> failed</span>` : ''}<span><b>${sent.length}</b> posted</span></div>
+      <h4>In the queue (posts in this order)</h4>${list(queue, 'Empty. Nothing will post here until you queue something.')}
+      <h4>Drafts, ready to queue next</h4>${list(drafts, 'No drafts.')}
+      ${errors.length ? `<h4>Didn't post</h4>${list(errors, '')}` : ''}
+      ${days.length ? `<details><summary>Posting times: ${slots} a week</summary>
+        <div class="times">${days.map((d) => `<b>${d.day[0].toUpperCase() + d.day.slice(1)}</b><span>${d.times.map(fmtClock).join(', ') || 'off'}</span>`).join('')}</div>
+        <p class="m">Buffer's times, in ${esc((c.timezone || '').replace('America/', '').replace('_', ' '))} time. A queued post takes the next free time.</p></details>` : ''}
+      <details><summary>Posted (${sent.length})</summary>${list(sent, 'Nothing posted from Buffer yet.')}</details>
+    </div>`;
+  }).join('');
 }
 
 function renderPages() {

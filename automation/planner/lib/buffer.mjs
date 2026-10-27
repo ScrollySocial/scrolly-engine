@@ -25,7 +25,27 @@ export function normalizePost(n) {
   };
 }
 
-const POST_FIELDS = `id status text dueAt sentAt createdAt channelId channelService
+// A channel and its Buffer posting times (wall-clock times in the channel's own timezone).
+export function normalizeChannel(c) {
+  return {
+    id: c.id,
+    name: CHANNELS[c.id] || c.service,
+    handle: c.name,
+    link: c.externalLink || null,
+    timezone: c.timezone,
+    paused: Boolean(c.isQueuePaused),
+    schedule: (c.postingSchedule || []).map((d) => ({ day: d.day, times: d.paused ? [] : d.times })),
+  };
+}
+
+const CHANNEL_QUERY = `query PlannerChannels($org: OrganizationId!) {
+  channels(input: { organizationId: $org }) {
+    id name service timezone isQueuePaused externalLink
+    postingSchedule { day times paused }
+  }
+}`;
+
+const POST_FIELDS =`id status text dueAt sentAt createdAt channelId channelService
   error { message }
   assets { type source thumbnail }`;
 
@@ -37,22 +57,25 @@ const QUERY = `query Planner($org: OrganizationId!, $status: [PostStatus!], $fir
   }
 }`;
 
-async function page(key, status, first, direction) {
+async function gql(key, query, variables) {
   const res = await fetch('https://api.buffer.com', {
     method: 'POST',
     headers: { 'content-type': 'application/json', authorization: `Bearer ${key}` },
-    body: JSON.stringify({
-      query: QUERY,
-      variables: { org: ORG_ID, status, first, sort: [{ field: 'dueAt', direction }] },
-    }),
+    body: JSON.stringify({ query, variables }),
   });
   const body = await res.json();
   if (body.errors?.length) throw new Error(body.errors.map((e) => e.message).join('; '));
-  return body.data.posts.edges.map((e) => normalizePost(e.node));
+  return body.data;
+}
+
+async function page(key, status, first, direction) {
+  const data = await gql(key, QUERY, { org: ORG_ID, status, first, sort: [{ field: 'dueAt', direction }] });
+  return data.posts.edges.map((e) => normalizePost(e.node));
 }
 
 export async function liveFetch(key) {
+  const { channels } = await gql(key, CHANNEL_QUERY, { org: ORG_ID });
   const queue = await page(key, ['draft', 'needs_approval', 'scheduled', 'sending', 'error'], 100, 'asc');
   const sent = await page(key, ['sent'], 30, 'desc');
-  return { takenAt: new Date().toISOString(), live: true, posts: [...queue, ...sent] };
+  return { takenAt: new Date().toISOString(), live: true, channels: channels.map(normalizeChannel), posts: [...queue, ...sent] };
 }
