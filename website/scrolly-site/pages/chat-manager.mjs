@@ -18,7 +18,7 @@ export const title = 'Chat Manager, The Ambition Department';
 
 const PRICE = '$97';
 const BUY_URL = '/?add-to-cart=1764'; // WooCommerce product 1764 (private until the page is approved)
-const BETA = 'Founding beta: the first 10 buyers get it at this price and help shape the next version.';
+const BETA = 'Founding beta price · first 10 buyers';
 const DEMO_URL = 'https://demo.scrollyseo.com/inbox';
 
 // Line icons (48x48, stroke only), drawn like the Product Reels page icons.
@@ -140,6 +140,8 @@ const LIMITS = [
   ['TikTok and Facebook', 'TikTok comments come into your inbox to answer by hand. Facebook Pages need Meta’s manual review (days, and not guaranteed), so they aren’t part of the setup included.'],
   ['Other comments', 'Keyword replies are automatic. Other comments wait in your inbox for you to answer. Want Claude to answer them on its own? It’s your software, so ask Claude to add it.'],
   ['You own the upkeep', 'It runs on your own hosting. Updates are one sentence to Claude, and there are no setup calls.'],
+  ['Claude is separate', 'You need your own Claude plan to set it up and change it. Claude is made by Anthropic and sold separately.'],
+  ['How we compared prices', 'Each tool’s monthly plan from its own pricing page, checked October 2026. DMs count as one per person, the cheapest case for them. Inro bills in euros. “Not listed” means their page doesn’t mention it.'],
 ];
 
 const half = Math.ceil(FAQS.length / 2);
@@ -204,14 +206,11 @@ const CSS = `
 .s3 .cm-hero h1 span{display:block}
 .s3 .cm-hero h1 em{font-style:italic}
 .s3 .cm-hero .s3-lede{margin-top:24px;max-width:31em}
-.s3 .cm-points{list-style:none;margin:20px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:6px 28px}
-.s3 .cm-points li{display:flex;align-items:center;gap:8px;font-weight:500}
-.s3 .cm-points li::before{content:"✓";color:var(--s3-ink);font-weight:700}
 .s3 .cm-buy{display:flex;flex-wrap:wrap;align-items:center;gap:20px 28px;margin-top:32px}
-.s3 .cm-cost{font:400 clamp(2.6rem,3.6vw,3.4rem)/1 var(--s3-serif)}
-.s3 .cm-cost small{display:block;margin-top:10px;font:700 var(--s3-fs-label)/1.3 var(--s3-sans);letter-spacing:.16em;text-transform:uppercase}
 .s3 .cm-link{font:500 var(--s3-fs-ui)/1.3 var(--s3-sans);color:var(--s3-ink);text-underline-offset:4px}
-.s3 .cm-beta{margin:18px 0 0;max-width:34em;font:500 var(--s3-fs-ui)/1.45 var(--s3-sans);color:var(--s3-ink)}
+.s3 .cm-beta{display:inline-block;margin:0 0 18px;padding:8px 18px;border-radius:999px;background:var(--s3-navy);color:#fff;font:700 var(--s3-fs-label)/1.3 var(--s3-sans);letter-spacing:.14em;text-transform:uppercase}
+/* two cream sections in a row: one gap between them, not two */
+.s3 .s3-sec:not(.cm-band):not(.cm-end)+.s3-sec:not(.cm-band):not(.cm-end){padding-top:0}
 .s3 .cm-stage{display:flex;justify-content:center}
 .s3 .cm-phone{height:min(540px,calc(100vh - 190px));min-height:430px;aspect-ratio:9/17;max-width:100%;padding:10px;border-radius:46px;background:#141518;box-shadow:inset 0 0 0 2px #3a3c42,0 40px 80px rgba(10,25,48,.22)}
 .s3 .cm-screen{position:relative;height:100%;border-radius:37px;background:#fff;overflow:hidden;display:flex;flex-direction:column;font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;color:#000}
@@ -236,6 +235,10 @@ const CSS = `
 @keyframes cm-in{0%{opacity:0;transform:translateY(10px)}4%,90%{opacity:1;transform:none}100%{opacity:0}}
 @media(prefers-reduced-motion:reduce){.s3 .cm-phone .a1,.s3 .cm-phone .a2,.s3 .cm-phone .a3,.s3 .cm-phone .a4,.s3 .cm-phone .a5,.s3 .cm-phone .a6{animation:none}}
 .s3 .cm-band{background:var(--s3-navy);color:#fff}
+.s3 .cm-mid>.s3-h2,.s3 .cm-mid>.s3-lede,.s3 .cm-mid>.cm-swipe{text-align:center}
+.s3 .cm-mid>.s3-lede{max-width:none}
+.s3 .cm-mid .cm-key{justify-content:center}
+.s3 .cm-mid .cm-keynote{text-align:center}
 .s3 .cm-band .s3-h2{color:#fff!important}
 .s3 .cm-flow{position:relative;display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(16px,2vw,32px);margin:clamp(28px,3vw,48px) 0 0;list-style:none;padding:0;text-align:center}
 .s3 .cm-flow::before{content:"";position:absolute;top:40px;left:12.5%;right:12.5%;border-top:2px dashed var(--s3-sky);opacity:.6}
@@ -302,7 +305,6 @@ const CSS = `
 .s3 .cm-faq .s3-faq>div details:first-child{border-top:1px solid var(--s3-line)}
 .s3 .cm-end{background:var(--s3-mist);text-align:center}
 .s3 .cm-end .s3-lede{margin:18px auto 28px;max-width:30em}
-.s3 .cm-end .s3-fine{margin-top:28px;max-width:52em;margin-left:auto;margin-right:auto}
 @media(max-width:900px){
  .s3 .cm-hero .s3-wrap,.s3 .cm-faq .s3-faq,.s3 .cm-bring,.s3 .cm-yours,.s3 .cm-why,.s3 .cm-limits{grid-template-columns:1fr}
  .s3 .cm-phone{height:auto;width:min(300px,100%);min-height:0}
@@ -334,47 +336,45 @@ export function build() {
 <section class="cm-hero"><div class="s3-wrap">
  <div>
   <h1><span>Turn comments into</span><span><em>email signups.</em></span></h1>
-  <p class="s3-lede">Someone comments a keyword, your freebie lands in their DMs, and they join your list. Pay once and it’s yours, with no monthly bill that grows with your audience.</p>
-  <ul class="cm-points"><li>About $6 a month to run</li><li>Instagram and YouTube</li><li>Yours to change</li></ul>
-  <div class="cm-buy"><div class="cm-cost">${PRICE}<small>One-time</small></div>${buyBtn()}<a class="cm-link" href="#demo">Try the demo →</a></div>
-  <p class="cm-beta">${BETA}</p>
+  <p class="s3-lede">Your own comment-to-DM software for Instagram and YouTube.<br>About $6 a month to run, whatever your list size.</p>
+  <div class="cm-buy">${buyBtn()}<a class="cm-link" href="#demo">Try the demo →</a></div>
  </div>
  <div class="cm-stage">${heroPhone}</div>
 </div></section>
-<section class="cm-band s3-sec"><div class="s3-wrap">
+<section class="cm-band s3-sec"><div class="s3-wrap cm-mid">
  <h2 class="s3-h2">How it works</h2>
  <ol class="cm-flow">${steps(FLOW)}</ol>
 </div></section>
 <section class="cm-demo" id="demo"><div class="s3-wrap">
- <div class="cm-demo-head"><div><h2 class="s3-h2">Click around the real thing.</h2><p class="s3-lede">A made-up shop. Nothing here is saved or sent.</p></div><a class="s3-btn black" href="${DEMO_URL}" target="_blank" rel="noopener">Open full screen</a></div>
+ <div class="cm-demo-head"><div><h2 class="s3-h2">Click around the real thing.</h2><p class="s3-lede">A made-up shop. Nothing here is saved or sent.</p></div><a class="s3-btn" href="${DEMO_URL}" target="_blank" rel="noopener">Open full screen</a></div>
  <div class="cm-laptop"><div class="cm-lid"><iframe src="${DEMO_URL}" title="Chat Manager demo for a made-up shop"></iframe></div><div class="cm-base" aria-hidden="true"></div></div>
 </div></section>
-<section class="s3-sec"><div class="s3-wrap">
+<section class="s3-sec"><div class="s3-wrap cm-mid">
  <h2 class="s3-h2">Why it beats a monthly bill</h2>
  <ul class="cm-why">${steps(WHY)}</ul>
 </div></section>
-<section class="s3-sec"><div class="s3-wrap">
+<section class="s3-sec"><div class="s3-wrap cm-mid">
  <h2 class="s3-h2">Grow all you like. The cost doesn’t.</h2>
- <p class="s3-lede" style="margin-top:16px;max-width:40em">The monthly tools charge more as more people message you. Chat Manager’s hosting stays about $6, whatever your size.</p>
+ <p class="s3-lede" style="margin-top:16px">The monthly tools charge more as more people message you. Chat Manager’s hosting stays about $6, whatever your size.</p>
  ${tierChart}
 </div></section>
 <section class="s3-sec"><div class="s3-wrap cm-yours">
  <div><h2 class="s3-h2">It’s your software.</h2><p class="s3-lede">You get your own copy, not a login to someone else’s app. Want new colors, your fonts, another chart or a whole new feature? Ask Claude and it changes your copy.</p></div>
  ${yoursChat}
 </div></section>
-<section class="s3-sec"><div class="s3-wrap">
+<section class="s3-sec"><div class="s3-wrap cm-mid">
  <h2 class="s3-h2">Everything it does</h2>
  <ul class="cm-feat">${steps(FEATURES)}</ul>
 </div></section>
-<section class="cm-band s3-sec"><div class="s3-wrap">
+<section class="cm-band s3-sec"><div class="s3-wrap cm-mid">
  <h2 class="s3-h2">Set up in an afternoon</h2>
  <ol class="cm-flow">${steps(SETUP)}</ol>
 </div></section>
-<section class="s3-sec"><div class="s3-wrap">
+<section class="s3-sec"><div class="s3-wrap cm-mid">
  <h2 class="s3-h2">What you need</h2>
  <ul class="cm-feat cm-need">${steps(BRING)}</ul>
 </div></section>
-<section class="s3-sec"><div class="s3-wrap">
+<section class="s3-sec"><div class="s3-wrap cm-mid">
  <h2 class="s3-h2">Chat Manager vs the monthly tools</h2>
  <p class="cm-swipe">Swipe the table to see every tool →</p>
  <div class="cm-compare"><table>
@@ -388,16 +388,15 @@ export function build() {
   <ul class="cm-limits">${LIMITS.map(([b, p]) => `<li><b>${b}</b><span>${p}</span></li>`).join('')}</ul>
  </div>
 </div></section>
-<section class="cm-faq s3-sec"><div class="s3-wrap">
+<section class="cm-faq s3-sec"><div class="s3-wrap cm-mid">
  <h2 class="s3-h2">Questions</h2>
  <div class="s3-faq">${faqCol(FAQS.slice(0, half))}${faqCol(FAQS.slice(half))}</div>
 </div></section>
 <section class="cm-end s3-sec" id="buy"><div class="s3-wrap">
+ <p class="cm-beta">${BETA}</p>
  <h2 class="s3-h2">Your keywords, your list, your software.</h2>
  <p class="s3-lede">${PRICE} one-time. Download it, open it in Claude and say “set up my Chat Manager”.</p>
- <p class="cm-beta">${BETA}</p>
  ${buyBtn()}
- <p class="s3-fine">Claude is made by Anthropic and is sold separately. ManyChat, LinkDM, CreatorFlow and Inro are trademarks of their owners. Their prices are their monthly plans as listed on each company's pricing page, checked October 2026. ManyChat and Inro charge by contacts; LinkDM and CreatorFlow by DMs, counted here as one DM per person, which is the cheapest case for them. Inro bills in euros. “Not listed” means the company's pricing page doesn't mention it. Hosting is DigitalOcean’s basic server.</p>
 </div></section>`;
   return s3shell(body, CSS);
 }
