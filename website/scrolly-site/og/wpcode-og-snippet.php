@@ -1,12 +1,12 @@
 /**
- * Scrolly — link previews (Open Graph + meta description) on every page.
+ * The Ambition Department: link previews (Open Graph + meta description) on every page.
  *
- * Titles, descriptions and share images live in a private WP page as JSON ("Scrolly link previews data"),
+ * Titles, descriptions and share images live in a private WP page as JSON ("Link previews data"),
  * pushed by  node og/publish.mjs , so they can change without touching this snippet.
  * Pages without their own entry use their WP title + the default description + the default card.
  * Products use their own photo and short description.
  *
- * WPCode: PHP Snippet · Insert method "Auto Insert" · Location "Run Everywhere" (front end only).
+ * WPCode: PHP Snippet Â· Insert method "Auto Insert" Â· Location "Run Everywhere" (front end only).
  */
 if ( ! defined( 'SCXOG_DATA_ID' ) ) {
 	define( 'SCXOG_DATA_ID', 1419 );
@@ -54,9 +54,9 @@ if ( ! defined( 'SCXOG_DATA_ID' ) ) {
 		}
 		$url = is_singular() ? get_permalink( $id ) : home_url( '/' );
 
-		$out  = "\n<!-- Scrolly link previews -->\n";
+		$out  = "\n<!-- Link previews -->\n";
 		$out .= '<meta name="description" content="' . esc_attr( $desc ) . '">' . "\n";
-		$out .= '<meta property="og:site_name" content="Scrolly">' . "\n";
+		$out .= '<meta property="og:site_name" content="The Ambition Department">' . "\n";
 		$out .= '<meta property="og:type" content="website">' . "\n";
 		$out .= '<meta property="og:title" content="' . esc_attr( $title ) . '">' . "\n";
 		$out .= '<meta property="og:description" content="' . esc_attr( $desc ) . '">' . "\n";
