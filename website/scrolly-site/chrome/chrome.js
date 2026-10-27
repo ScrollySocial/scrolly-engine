@@ -54,7 +54,7 @@
      voice), and the footer signup + social links. */
   var CFG={art:{sky:'https://theambitiondepartment.com/wp-content/uploads/2026/10/scrolly-ftr-sky.webp',strips:'https://theambitiondepartment.com/wp-content/uploads/2026/10/scrolly-ftr-strips.webp',stars:'https://theambitiondepartment.com/wp-content/uploads/2026/10/scrolly-ftr-stars.webp'},
     tiger:'https://theambitiondepartment.com/wp-content/uploads/2026/10/scrolly-hp3-footer-tiger.webp',tw:1800,th:600,
-    join:['/next-move/','Take the quiz'],quote:['Go get ’em,','Tiger.'],
+    join:['/next-move/','Take the quiz'],quote:null, // 2026-10-26: 'Go get ’em, Tiger.' removed at Mercedes's request
     signup:{action:'https://assets.mailerlite.com/jsonp/2596740/forms/200782368424855203/subscribe',field:'fields[email]'},/* MailerLite form 2QLk6d "Less scrolling, more Scrolly" */
     social:[['Instagram','https://www.instagram.com/scrollysocial/'],['TikTok','https://www.tiktok.com/@scrollysocial'],['YouTube','https://www.youtube.com/@ScrollySocial'],['X','https://x.com/scrollysocial']]/* format: e.g. [['Instagram','https://instagram.com/...'],['TikTok','...'],['YouTube','...'],['Pinterest','...'],['Facebook','...']] */};
   var ICO={Instagram:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>',
@@ -78,7 +78,7 @@
     if(CFG.social.length)soc+='<div class="social">'+CFG.social.map(function(s){return '<a href="'+esc(s[1])+'" aria-label="The Ambition Department on '+esc(s[0])+' (opens in a new tab)" rel="noopener" target="_blank">'+(ICO[s[0]]||esc(s[0]))+'</a>'}).join('')+'</div>';
     if(CFG.art){f.style.setProperty('--ftr-sky','url("'+CFG.art.sky+'")');f.style.setProperty('--ftr-strips','url("'+CFG.art.strips+'")');f.style.setProperty('--ftr-stars','url("'+CFG.art.stars+'")')}
     f.innerHTML=(CFG.art?'<div class="fstars" aria-hidden="true"></div>':'')
-      +'<div class="fhero"><img class="ftiger" src="'+CFG.tiger+'" alt="" width="'+CFG.tw+'" height="'+CFG.th+'" loading="lazy" decoding="async"><div class="fbrand"><p class="fquote">'+esc(CFG.quote[0])+' <em>'+esc(CFG.quote[1])+'</em></p></div></div>'
+      +'<div class="fhero"><img class="ftiger" src="'+CFG.tiger+'" alt="" width="'+CFG.tw+'" height="'+CFG.th+'" loading="lazy" decoding="async">'+(CFG.quote?'<div class="fbrand"><p class="fquote">'+esc(CFG.quote[0])+' <em>'+esc(CFG.quote[1])+'</em></p></div>':'')+'</div>'
       +'<div class="w fnav">'+'<div class="fid">'+(logo?logo.outerHTML:'')+soc+'</div>'+cols+(sign?'<div class="col fsign"><h2>Tips by email</h2>'+sign+'</div>':'')+'</div>'
       +'<div class="w fbot">'+legal.join('')+'<span>© '+new Date().getFullYear()+' The Ambition Department</span></div>';
     f.classList.add('v3');
