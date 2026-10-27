@@ -158,7 +158,10 @@
       <button class="primary" type="button" id="newIdea">+ New idea</button>
     </div>
     <p class="sub">One card per idea. Each platform moves along on its own, from Idea to Posted.</p>
-    <div class="row" id="ideaFilter" style="margin:14px 0 14px"></div>
+    <div class="row" id="ideaFilter" style="margin:14px 0 10px"></div>
+    <input id="ideaSearch" type="search" placeholder="Search ideas" aria-label="Search ideas"
+      style="font:inherit;font-size:15px;width:100%;max-width:420px;padding:8px 12px;border:1px solid var(--line);border-radius:999px;background:var(--card);color:var(--ink);margin:0 0 14px">
+    <div class="row" id="ideaStageFilter" style="margin:0 0 14px"></div>
     <div id="ideaView"></div>
   </section>
 
@@ -324,8 +327,25 @@ function ideaMeta(i) {
   return [i.format, i.series, i.product].filter(Boolean).map(esc).join(' · ');
 }
 
+// "All" view groups: where an idea is overall, from its lanes
+const DONE = ['Posted', 'Live'];
+function ideaGroup(i) {
+  const ls = Object.values(i.lanes).filter(Boolean);
+  if (i.archived) return 'Archived';
+  if (ls.length && ls.every((l) => DONE.includes(l.stage) || l.stage === 'Needs Pins')) return ls.some((l) => DONE.includes(l.stage)) ? 'Posted' : 'Just ideas';
+  return ls.some((l) => !['Idea', 'Needs Pins'].includes(l.stage)) ? 'In progress' : 'Just ideas';
+}
+let ideaGroupFilter = 'In progress';
+let ideaQuery = '';
+try { ideaGroupFilter = localStorage.getItem('planner.ideaGroup') || 'In progress'; } catch {}
+const matches = (i) => !ideaQuery || `${i.title} ${i.hook} ${i.notes} ${i.series} ${i.product}`.toLowerCase().includes(ideaQuery);
+
 function renderIdeas() {
-  const live = state.ideas.filter((i) => !i.archived);
+  const live = state.ideas.filter((i) => !i.archived && matches(i));
+  const groups = ['In progress', 'Just ideas', 'Posted', 'Archived'];
+  const inGroup = (g) => state.ideas.filter((i) => ideaGroup(i) === g && matches(i));
+  $('ideaStageFilter').hidden = ideaFilter !== 'all';
+  $('ideaStageFilter').innerHTML = groups.map((g) => `<button class="chip" type="button" aria-pressed="${g === ideaGroupFilter}" data-ig="${esc(g)}">${esc(g)} (${inGroup(g).length})</button>`).join('');
   const n = (p) => live.filter((i) => i.lanes[p]).length;
   $('ideaFilter').innerHTML = [['all', `All (${live.length})`], ...state.options.platforms.map((p) => [p, `${PNAME[p]} (${n(p)})`])]
     .map(([k, l]) => `<button class="chip" type="button" aria-pressed="${k === ideaFilter}" data-if="${k}">${esc(l)}</button>`).join('');
@@ -334,7 +354,13 @@ function renderIdeas() {
     return;
   }
   if (ideaFilter === 'all') {
-    $('ideaView').innerHTML = `<div class="ideas">${live.map((i) => `
+    const rank = (i) => Math.max(...Object.values(i.lanes).filter(Boolean).map((l) => state.options.stages.indexOf(l.stage)), -1);
+    const shown = inGroup(ideaGroupFilter).sort((a, b) => rank(b) - rank(a) || (a.order ?? 1e9) - (b.order ?? 1e9));
+    if (!shown.length) {
+      $('ideaView').innerHTML = '<p class="empty">Nothing here.</p>';
+      return;
+    }
+    $('ideaView').innerHTML = `<div class="ideas">${shown.map((i) => `
       <button class="idea" type="button" data-edit="${esc(i.id)}">
         <span><span class="t">${esc(i.title)}</span><br><span class="m">${ideaMeta(i) || '&nbsp;'}</span></span>
         <span class="lanes">${state.options.platforms.map((p) => {
@@ -403,8 +429,18 @@ function openEditor(id) {
       <label>Script or working file<input name="link" value="${esc(i.link || '')}" placeholder="Link or file path"></label>
     </div>
     <label>Hook<input name="hook" value="${esc(i.hook || '')}"></label>
+    <div class="two">
+      <label>Call to action<input name="cta" value="${esc(i.cta || '')}"></label>
+      <label>Posting order (lower posts first)<input name="order" type="number" value="${i.order ?? ''}"></label>
+    </div>
     <label>Notes<textarea name="notes">${esc(i.notes || '')}</textarea></label>
     ${state.options.platforms.map((p) => laneFields(p, i.lanes[p])).join('')}
+    ${i.notionId || i.fromNotion || i.carouselId || i.mediaUsed ? `<details><summary>More from Notion</summary><div class="times" style="grid-template-columns:auto 1fr">
+      ${i.notionId ? `<b>Notion row</b><a href="https://www.notion.so/${esc(i.notionId)}" target="_blank" rel="noopener">Open in Notion</a>` : ''}
+      ${i.carouselId ? `<b>Carousel ID</b><span>${esc(i.carouselId)}</span>` : ''}
+      ${i.mediaUsed ? `<b>Media used</b><span>${esc(i.mediaUsed)}</span>` : ''}
+      ${Object.entries(i.fromNotion || {}).map(([k, x]) => `<b>${esc(k)}</b><span>${esc(x)}</span>`).join('')}
+    </div></details>` : ''}
     <div class="actions">
       <span>${i.id ? `<button class="ghost" type="button" data-archive="${esc(i.id)}">${i.archived ? 'Bring back' : 'Archive'}</button>` : ''}</span>
       <span style="display:flex;gap:8px"><button class="ghost" type="button" data-close>Cancel</button><button class="primary" type="submit">Save</button></span>
@@ -437,8 +473,10 @@ function formIdea() {
       ? { stage: v(`${p}.stage`), date: v(`${p}.date`), caption: v(`${p}.caption`), title: v(`${p}.title`), bufferId: v(`${p}.bufferId`), page: v(`${p}.page`) }
       : null;
   }
-  const old = state.ideas.find((x) => x.id === f.dataset.id);
-  return { id: f.dataset.id || undefined, title: v('title'), format: v('format'), series: v('series'), product: v('product'), link: v('link'), hook: v('hook'), notes: v('notes'), archived: old?.archived || false, lanes };
+  // Start from the saved card so fields the form doesn't show (carousel checks, Notion extras) are kept.
+  const old = state.ideas.find((x) => x.id === f.dataset.id) || {};
+  return { ...old, id: f.dataset.id || undefined, title: v('title'), format: v('format'), series: v('series'), product: v('product'),
+    link: v('link'), hook: v('hook'), cta: v('cta'), order: v('order'), notes: v('notes'), archived: old.archived || false, lanes };
 }
 
 async function postIdea(idea) {
@@ -451,6 +489,10 @@ async function postIdea(idea) {
   renderIdeas();
 }
 
+$('ideaSearch').addEventListener('input', (e) => {
+  ideaQuery = e.target.value.trim().toLowerCase();
+  renderIdeas();
+});
 $('ideaForm').addEventListener('input', (e) => {
   if (e.target.type === 'checkbox') {
     $('ideaForm').querySelector(`[data-lane="${e.target.name.split('.')[0]}"]`).hidden = !e.target.checked;
@@ -491,7 +533,11 @@ async function load(refresh) {
 document.addEventListener('click', async (e) => {
   const t = e.target;
   const edit = t.closest('[data-edit]');
-  if (t.dataset.if) {
+  if (t.dataset.ig) {
+    ideaGroupFilter = t.dataset.ig;
+    try { localStorage.setItem('planner.ideaGroup', ideaGroupFilter); } catch {}
+    renderIdeas();
+  } else if (t.dataset.if) {
     ideaFilter = t.dataset.if;
     try { localStorage.setItem('planner.ideaFilter', ideaFilter); } catch {}
     renderIdeas();

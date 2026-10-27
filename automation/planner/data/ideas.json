@@ -2,17 +2,25 @@
  "ideas": [
   {
    "id": "a5dcff2497ce",
-   "title": "About me: why I built this",
+   "title": "PINNED 1: Not sure how to get found online? (carousel)",
    "format": "Carousel",
-   "hook": "",
-   "notes": "Buffer draft from Oct 22. Still says Scrolly and links scrollyseo.com: rename before queueing.",
-   "product": "",
-   "series": "Pinned posts",
+   "hook": "Not sure how to get found online? I'm here to help you with that.",
+   "cta": "Follow along for practical tips (follow CTA)",
+   "notes": "Buffer draft from Oct 22 (Instagram + TikTok). Still says Scrolly and links scrollyseo.com: rename before queueing.\n\nApproved by Mercedes 2026-10-22. Pinned post 1 of 3 (left tile of the v7 pinned panorama). Post all three pinned posts the same day. Files: OneDrive > Scrolly Media > exports > carousels > 2026-10-07-pinned-about. 10 slides.\n\nNotion status was Approved",
+   "product": "Scrolly Brand",
+   "series": "",
    "link": "",
-   "notionId": "",
+   "order": null,
+   "carouselId": "2026-10-07-pinned-about",
+   "mediaUsed": "964f2050c6, 336eee3300, 1e629b09ae, 8aeaa75e67, b96a511b16, 542d2ebb5f, 265ec9a722, 60167eb7b6, 4426aa6aa3",
+   "notionId": "3f2ab38f4c5881e182f5f3e27f11d542",
+   "fromNotion": {
+    "Carousel Style": "D · Bold type + layouts",
+    "Timeliness": "Evergreen"
+   },
    "archived": false,
    "createdAt": "2026-10-27T20:48:46.838Z",
-   "updatedAt": "2026-10-27T20:48:46.838Z",
+   "updatedAt": "2026-10-27T20:57:24.735Z",
    "lanes": {
     "instagram": {
      "stage": "Ready",
@@ -36,17 +44,25 @@
   },
   {
    "id": "ce4e757758d8",
-   "title": "Start here: free quiz + 10 calculators",
+   "title": "PINNED 3: Start here (free quiz + calculators carousel)",
    "format": "Carousel",
-   "hook": "",
-   "notes": "Buffer draft from Oct 22. Still says Scrolly and links scrollyseo.com: rename before queueing.",
-   "product": "",
-   "series": "Pinned posts",
+   "hook": "Start here. A free quiz, 3 steps",
+   "cta": "Save this; all three are free at [scrollyseo.com](http://scrollyseo.com) (save CTA; bio link goes to the Challenge checkout)",
+   "notes": "Buffer draft from Oct 22 (Instagram + TikTok). Still says Scrolly and links scrollyseo.com: rename before queueing.\n\nApproved by Mercedes 2026-10-22. Pinned post 3 of 3 (right tile of the v7 pinned panorama); replaces the views-to-$1K post in the pinned row. Post all three pinned posts the same day. Facts checked on the live pages ([research.md](http://research.md)). Files: OneDrive > Scrolly Media > exports > carousels > 2026-10-22-pinned-free-start. 7 slides.\n\nNotion status was Approved",
+   "product": "Scrolly Brand",
+   "series": "",
    "link": "",
-   "notionId": "",
+   "order": null,
+   "carouselId": "2026-10-22-pinned-free-start",
+   "mediaUsed": "bff6adb732, 8998e1cdc9, fe440f19cf, 8aeaa75e67, 562c236367",
+   "notionId": "401ab38f4c5881a7b6bbfd3884938a8a",
+   "fromNotion": {
+    "Carousel Style": "D · Bold type + layouts",
+    "Timeliness": "Evergreen"
+   },
    "archived": false,
    "createdAt": "2026-10-27T20:48:46.840Z",
-   "updatedAt": "2026-10-27T20:48:46.840Z",
+   "updatedAt": "2026-10-27T20:56:20.770Z",
    "lanes": {
     "instagram": {
      "stage": "Ready",
@@ -77,17 +93,25 @@
   },
   {
    "id": "00a97d625e3e",
-   "title": "$1K Challenge: what you get",
+   "title": "PINNED 2: Want to make $1,000 in 30 days? (carousel)",
    "format": "Carousel",
-   "hook": "",
-   "notes": "Buffer draft from Oct 22. Still says Scrolly and links scrollyseo.com: rename before queueing. Price on the slides is $75; check it against the current offer.",
+   "hook": "Want to make $1,000 in 30 days? Meet the $1K Challenge",
+   "cta": "Join the $1K Challenge for $75: link in bio",
+   "notes": "Buffer draft from Oct 22 (Instagram + TikTok). Still says Scrolly and links scrollyseo.com: rename before queueing.\n\nApproved by Mercedes 2026-10-22. Pinned post 2 of 3 (middle tile of the v7 pinned panorama). Post all three pinned posts the same day. Facts checked on the live /1k-club/ page 2026-10-22. Slide 3 is a labelled mock of the $1K Plan screen (swap for a screen recording later). Files: OneDrive > Scrolly Media > exports > carousels > 2026-10-07-pinned-challenge. 7 slides.\n\nNotion status was Approved",
    "product": "$1K Club",
-   "series": "Pinned posts",
+   "series": "",
    "link": "",
-   "notionId": "",
+   "order": null,
+   "carouselId": "2026-10-07-pinned-challenge",
+   "mediaUsed": "0f794a1f2f, 261702e921",
+   "notionId": "3f2ab38f4c588102ade2d6257c0e48db",
+   "fromNotion": {
+    "Carousel Style": "D · Bold type + layouts",
+    "Timeliness": "Evergreen"
+   },
    "archived": false,
    "createdAt": "2026-10-27T20:48:46.840Z",
-   "updatedAt": "2026-10-27T20:48:46.840Z",
+   "updatedAt": "2026-10-27T20:56:20.777Z",
    "lanes": {
     "instagram": {
      "stage": "Ready",
@@ -118,17 +142,24 @@
   },
   {
    "id": "d019168f5155",
-   "title": "Never get AI slop again (voice file)",
+   "title": "Reel: Give your AI a voice file",
    "format": "Reel",
-   "hook": "",
-   "notes": "",
-   "product": "Business Brain",
-   "series": "",
-   "link": "",
-   "notionId": "",
+   "hook": "Ever asked AI to write for you?",
+   "cta": "Scrolly Business Brain at [scrollyseo.com](http://scrollyseo.com) (no price on screen; end card + caption)",
+   "notes": "Video for Buffer (WP media 1457, cover baked in as frame 0): [https://scrollyseo.com/wp-content/uploads/2026/10/reel-2026-10-13-give-your-ai-a-voice-file-v2.mp4](https://scrollyseo.com/wp-content/uploads/2026/10/reel-2026-10-13-give-your-ai-a-voice-file-v2.mp4). Cover PNG (WP media 1456): [https://scrollyseo.com/wp-content/uploads/2026/10/reel-2026-10-13-give-your-ai-a-voice-file-cover.png](https://scrollyseo.com/wp-content/uploads/2026/10/reel-2026-10-13-give-your-ai-a-voice-file-cover.png). Unused first upload without cover: WP media 1455. Master: OneDrive/Scrolly Media/exports/reels/final/[2026-10-13-give-your-ai-a-voice-file.mp](http://2026-10-13-give-your-ai-a-voice-file.mp)4. Caption: Mercedes's own words 2026-10-13.\n\nFilming notes: Filmed 2026-10-12. videos/Business Brain/IMG_1995 (one clean take).\n\nEdit notes: Studio Reel #1 (HyperFrames engine), storyboard v4 approved; music turned way down (her Studio edit). Replaces the 2026-10-12 first edit.",
+   "product": "Scrolly Brand",
+   "series": "Business Brain",
+   "link": "file:///C:/Users/merce/Scrolly%20Organic%20Engine/automation/reel-hf/2026-10-13-bb-voice-file/",
+   "order": 1,
+   "carouselId": "",
+   "mediaUsed": "Business Brain/IMG_1995 (86s); her carousel covers feed1-3; Business Brain home mockup (brain.png); Mixkit music + sound effects",
+   "notionId": "3f7ab38f4c58817994cfe72d9368d688",
+   "fromNotion": {
+    "Timeliness": "Evergreen"
+   },
    "archived": false,
    "createdAt": "2026-10-27T20:48:46.841Z",
-   "updatedAt": "2026-10-27T20:48:46.841Z",
+   "updatedAt": "2026-10-27T20:56:20.769Z",
    "lanes": {
     "instagram": {
      "stage": "Posted",
@@ -140,6 +171,4309 @@
     },
     "tiktok": null,
     "youtube": null,
+    "pinterest": null
+   }
+  },
+  {
+   "id": "cdb053e35e54",
+   "title": "Content for growth vs content that sells (carousel)",
+   "format": "Carousel",
+   "hook": "Content for growth vs content that sells",
+   "cta": "Get a plan for each week in the $1K Challenge. Link in bio.",
+   "notes": "Status Edit until Mercedes's photo replaces the stock stand-in (slide 4). Files: OneDrive > Scrolly Media > exports > carousels > 2026-10-07-growth-vs-sells. 9 slides, tangerine.",
+   "product": "$1K Club",
+   "series": "",
+   "link": "",
+   "order": null,
+   "carouselId": "2026-10-07-growth-vs-sells",
+   "mediaUsed": "STAND-IN to swap: stock:couchTee",
+   "notionId": "3f2ab38f4c58811dae79f16c7cf56563",
+   "fromNotion": {
+    "Carousel Style": "D · Bold type + layouts",
+    "Timeliness": "Evergreen"
+   },
+   "archived": false,
+   "createdAt": "2026-10-27T20:56:20.764Z",
+   "updatedAt": "2026-10-27T20:56:20.764Z",
+   "lanes": {
+    "instagram": {
+     "stage": "Edit",
+     "date": "2026-10-08",
+     "caption": "Want a plan for what to post each week? It's in the $1K Challenge, link in bio. Most accounts mix the two jobs in every post, so they do neither well. Before you post, decide: is this one for strangers or for people already interested? Then write the hook, the caption and the next step for that person.\n\n#contentstrategy #instagramtips #smallbusinessmarketing",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "tiktok": null,
+    "youtube": null,
+    "pinterest": null
+   }
+  },
+  {
+   "id": "542f58754cbd",
+   "title": "The 7-day organic traffic plan (carousel)",
+   "format": "Carousel",
+   "hook": "The 7-day organic traffic plan",
+   "cta": "The $1K Challenge turns this into 30 days, with a plan for each week. Link in bio.",
+   "notes": "Status Edit until Mercedes's photos replace the stock stand-ins (slides 4 and 6); plan: her photo on the cover too. Files: OneDrive > Scrolly Media > exports > carousels > 2026-10-07-7-day-traffic-plan. 10 slides, warm.",
+   "product": "$1K Club",
+   "series": "",
+   "link": "",
+   "order": null,
+   "carouselId": "2026-10-07-7-day-traffic-plan",
+   "mediaUsed": "STAND-INS to swap: stock:talkCam, stock:laptopDesk",
+   "notionId": "3f2ab38f4c5881328d98e545848dca4a",
+   "fromNotion": {
+    "Carousel Style": "D · Bold type + layouts",
+    "Timeliness": "Evergreen"
+   },
+   "archived": false,
+   "createdAt": "2026-10-27T20:56:20.766Z",
+   "updatedAt": "2026-10-27T20:56:20.766Z",
+   "lanes": {
+    "instagram": {
+     "stage": "Edit",
+     "date": "2026-10-08",
+     "caption": "Want the 30-day version? It's the $1K Challenge, link in bio. Organic traffic comes from doing a few things on repeat: a clear bio, posts that answer real questions, and an easy way to click through. Link taps are in your Insights, and they tell you which posts send people to your page.\n\n#organicmarketing #instagramgrowth #smallbusinesstips",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "tiktok": null,
+    "youtube": null,
+    "pinterest": null
+   }
+  },
+  {
+   "id": "4f793757ca19",
+   "title": "How long should your Reel be? (carousel)",
+   "format": "Carousel",
+   "hook": "How long should your Reel be?",
+   "cta": "Get 25 Reel ideas every week in the $1K Challenge. Link in bio.",
+   "notes": "Status Edit until Mercedes's photos replace the 2 stock stand-ins (slides 3 and 8). Files: OneDrive > Scrolly Media > exports > carousels > 2026-10-07-reel-length. 9 slides, tangerine.",
+   "product": "$1K Club",
+   "series": "",
+   "link": "",
+   "order": null,
+   "carouselId": "2026-10-07-reel-length",
+   "mediaUsed": "STAND-INS to swap: stock:talkCam, stock:cameraBack",
+   "notionId": "3f2ab38f4c588149a3ccf398460df4a2",
+   "fromNotion": {
+    "Carousel Style": "D · Bold type + layouts",
+    "Timeliness": "Timely"
+   },
+   "archived": false,
+   "createdAt": "2026-10-27T20:56:20.767Z",
+   "updatedAt": "2026-10-27T20:56:20.767Z",
+   "lanes": {
+    "instagram": {
+     "stage": "Edit",
+     "date": "2026-10-08",
+     "caption": "25 ready-to-film Reel ideas land every week in the $1K Challenge, link in bio. These numbers come from Socialinsider's look at 6 million Reels posted by brands from January to June 2026. \"Median\" means the middle Reel in each length group, so one viral video can't skew the number. A good way to use this: pick the length that fits the job. Explaining a process or showing a before and after? Give it 45 to 60 seconds. Testing a new hook or format? A short Reel gets you an answer faster.\n\n#instagramreels #reelstips #contentcreationtips",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "tiktok": null,
+    "youtube": null,
+    "pinterest": null
+   }
+  },
+  {
+   "id": "b5faebdb1e55",
+   "title": "How many views does it take to make $1,000.00? (carousel)",
+   "format": "Carousel",
+   "hook": "How many views does it take to make $1,000.00?",
+   "cta": "The $1K Challenge gives you your $1K number and what to do each week. Link in bio.",
+   "notes": "Pinned post 3 of 3 (right tile of the pinned panorama with the about-me and $1K Challenge posts). Edit until Mercedes's photo replaces the stand-in panorama. Added slide 9: real screenshot of the free calculator. Keep off 'Ready' (Make Buffer scenario picks up Ready rows). Files: OneDrive > Scrolly Media > exports > carousels > 2026-10-07-views-to-1k. 11 slides.",
+   "product": "$1K Club",
+   "series": "",
+   "link": "",
+   "order": null,
+   "carouselId": "2026-10-07-views-to-1k",
+   "mediaUsed": "STAND-IN to swap: stock:talkCam (shared pinned panorama cover); 4b3aaf72ba (real calculator screenshot)",
+   "notionId": "3f2ab38f4c58815c984bf316568fa42c",
+   "fromNotion": {
+    "Carousel Style": "D · Bold type + layouts",
+    "Timeliness": "Evergreen"
+   },
+   "archived": false,
+   "createdAt": "2026-10-27T20:56:20.767Z",
+   "updatedAt": "2026-10-27T20:56:20.767Z",
+   "lanes": {
+    "instagram": {
+     "stage": "Edit",
+     "date": "2026-10-08",
+     "caption": "Your $1K number and a plan for each week are in the $1K Challenge, link in bio. Want to check the math yourself first? Here's where the 2.5% comes from: Littledata's study of 421 Shopify stores found a median of 1.4% of visits ending in a sale, and Dynamic Yield's data from 400+ brands averages 2.66%. One clear offer shown to people who already watched your videos can reasonably aim near 2.5%, but plan with the lower number too. One more thing: Instagram counts replays as views, so views are always higher than the number of people.\n\n#smallbusinesstips #instagramforbusiness #onlinebusiness",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "tiktok": null,
+    "youtube": null,
+    "pinterest": null
+   }
+  },
+  {
+   "id": "ca238e60308e",
+   "title": "Live Tutorial #1: Set up Instagram as a professional account",
+   "format": "Live",
+   "hook": "",
+   "cta": "",
+   "notes": "LIVE show. Never set Status to Ready (the Make automation queues Ready rows).",
+   "product": "Scrolly Brand",
+   "series": "Live Tutorial",
+   "link": "",
+   "order": null,
+   "carouselId": "",
+   "mediaUsed": "",
+   "notionId": "3f3ab38f4c58810eb89afe4c518888ec",
+   "fromNotion": {
+    "Target Length (min)": "30"
+   },
+   "archived": false,
+   "createdAt": "2026-10-27T20:56:20.767Z",
+   "updatedAt": "2026-10-27T20:56:20.767Z",
+   "lanes": {
+    "instagram": null,
+    "tiktok": null,
+    "youtube": {
+     "stage": "Script",
+     "date": "2026-10-09",
+     "caption": "",
+     "title": "How to set up your Instagram professional account (step by step, live)",
+     "bufferId": "",
+     "page": ""
+    },
+    "pinterest": null
+   }
+  },
+  {
+   "id": "3534239239b0",
+   "title": "Morning Huddle #1: Day one, why I'm doing this",
+   "format": "Live",
+   "hook": "Day 1 of a daily 30-minute huddle for people building something online",
+   "cta": "",
+   "notes": "LIVE show. Never set Status to Ready (the Make automation queues Ready rows).",
+   "product": "Scrolly Brand",
+   "series": "Morning Huddle",
+   "link": "",
+   "order": null,
+   "carouselId": "",
+   "mediaUsed": "",
+   "notionId": "3f3ab38f4c58817da0a5c94aff45f525",
+   "fromNotion": {
+    "Target Length (min)": "30"
+   },
+   "archived": false,
+   "createdAt": "2026-10-27T20:56:20.768Z",
+   "updatedAt": "2026-10-27T20:56:20.768Z",
+   "lanes": {
+    "instagram": null,
+    "tiktok": {
+     "stage": "Script",
+     "date": "2026-10-09",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "youtube": null,
+    "pinterest": null
+   }
+  },
+  {
+   "id": "fa9c22f43c03",
+   "title": "Morning Huddle #2: Your $1K math in plain numbers",
+   "format": "Live",
+   "hook": "How many sales do you actually need to make $1,000 this month?",
+   "cta": "",
+   "notes": "LIVE show. Never set Status to Ready (the Make automation queues Ready rows).",
+   "product": "Scrolly Brand",
+   "series": "Morning Huddle",
+   "link": "",
+   "order": null,
+   "carouselId": "",
+   "mediaUsed": "",
+   "notionId": "3f3ab38f4c588156a290f55cb7ca4f93",
+   "fromNotion": {
+    "Target Length (min)": "30"
+   },
+   "archived": false,
+   "createdAt": "2026-10-27T20:56:20.768Z",
+   "updatedAt": "2026-10-27T20:56:20.768Z",
+   "lanes": {
+    "instagram": null,
+    "tiktok": {
+     "stage": "Script",
+     "date": "2026-10-12",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "youtube": null,
+    "pinterest": null
+   }
+  },
+  {
+   "id": "b7b377e717b8",
+   "title": "Live Tutorial #2: Make an Instagram carousel in free Canva",
+   "format": "Live",
+   "hook": "",
+   "cta": "",
+   "notes": "LIVE show. Never set Status to Ready (the Make automation queues Ready rows). Size: 1080 x 1440 px (3:4).",
+   "product": "Scrolly Brand",
+   "series": "Live Tutorial",
+   "link": "",
+   "order": null,
+   "carouselId": "",
+   "mediaUsed": "",
+   "notionId": "3f3ab38f4c5881b78d10dfe2fc98c148",
+   "fromNotion": {
+    "Target Length (min)": "30"
+   },
+   "archived": false,
+   "createdAt": "2026-10-27T20:56:20.768Z",
+   "updatedAt": "2026-10-27T20:56:20.768Z",
+   "lanes": {
+    "instagram": null,
+    "tiktok": null,
+    "youtube": {
+     "stage": "Script",
+     "date": "2026-10-12",
+     "caption": "",
+     "title": "Make an Instagram carousel in free Canva (3:4, 1080 x 1440)",
+     "bufferId": "",
+     "page": ""
+    },
+    "pinterest": null
+   }
+  },
+  {
+   "id": "704a127a96ae",
+   "title": "Live Tutorial #3: How many views to make $1,000 (free calculator)",
+   "format": "Live",
+   "hook": "",
+   "cta": "",
+   "notes": "LIVE show. Never set Status to Ready. Confirm you're OK showing the free calculator ([scrollyseo.com/calculators](http://scrollyseo.com/calculators)) as a CTA.",
+   "product": "Scrolly Brand",
+   "series": "Live Tutorial",
+   "link": "",
+   "order": null,
+   "carouselId": "",
+   "mediaUsed": "",
+   "notionId": "3f3ab38f4c58812e9a70ca3ad5278849",
+   "fromNotion": {
+    "Target Length (min)": "30"
+   },
+   "archived": false,
+   "createdAt": "2026-10-27T20:56:20.768Z",
+   "updatedAt": "2026-10-27T20:56:20.768Z",
+   "lanes": {
+    "instagram": null,
+    "tiktok": null,
+    "youtube": {
+     "stage": "Script",
+     "date": "2026-10-13",
+     "caption": "",
+     "title": "How many views do you need to make $1,000? (worked out live)",
+     "bufferId": "",
+     "page": ""
+    },
+    "pinterest": null
+   }
+  },
+  {
+   "id": "0504eaa4f594",
+   "title": "Morning Huddle #3: Post the thing you've been sitting on",
+   "format": "Live",
+   "hook": "What's the post you keep not posting?",
+   "cta": "",
+   "notes": "LIVE show. Never set Status to Ready (the Make automation queues Ready rows).",
+   "product": "Scrolly Brand",
+   "series": "Morning Huddle",
+   "link": "",
+   "order": null,
+   "carouselId": "",
+   "mediaUsed": "",
+   "notionId": "3f3ab38f4c58814c914acf040874e797",
+   "fromNotion": {
+    "Target Length (min)": "30"
+   },
+   "archived": false,
+   "createdAt": "2026-10-27T20:56:20.768Z",
+   "updatedAt": "2026-10-27T20:56:20.768Z",
+   "lanes": {
+    "instagram": null,
+    "tiktok": {
+     "stage": "Script",
+     "date": "2026-10-13",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "youtube": null,
+    "pinterest": null
+   }
+  },
+  {
+   "id": "f049840d9d41",
+   "title": "Morning Huddle #4: The first 2 seconds",
+   "format": "Live",
+   "hook": "Drop your hook and I'll rewrite it live",
+   "cta": "",
+   "notes": "LIVE show. Never set Status to Ready (the Make automation queues Ready rows).",
+   "product": "Scrolly Brand",
+   "series": "Morning Huddle",
+   "link": "",
+   "order": null,
+   "carouselId": "",
+   "mediaUsed": "",
+   "notionId": "3f3ab38f4c5881a39354f8c72ee72bb7",
+   "fromNotion": {
+    "Target Length (min)": "30"
+   },
+   "archived": false,
+   "createdAt": "2026-10-27T20:56:20.769Z",
+   "updatedAt": "2026-10-27T20:56:20.769Z",
+   "lanes": {
+    "instagram": null,
+    "tiktok": {
+     "stage": "Script",
+     "date": "2026-10-14",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "youtube": null,
+    "pinterest": null
+   }
+  },
+  {
+   "id": "438212665831",
+   "title": "Live Tutorial #4: Reel safe zones, text that doesn't get covered",
+   "format": "Live",
+   "hook": "",
+   "cta": "",
+   "notes": "LIVE show. Never set Status to Ready (the Make automation queues Ready rows). Reel size: 1080 x 1920 px (9:16).",
+   "product": "Scrolly Brand",
+   "series": "Live Tutorial",
+   "link": "",
+   "order": null,
+   "carouselId": "",
+   "mediaUsed": "",
+   "notionId": "3f3ab38f4c5881ba9d89ee302a3c0a52",
+   "fromNotion": {
+    "Target Length (min)": "30"
+   },
+   "archived": false,
+   "createdAt": "2026-10-27T20:56:20.769Z",
+   "updatedAt": "2026-10-27T20:56:20.769Z",
+   "lanes": {
+    "instagram": null,
+    "tiktok": null,
+    "youtube": {
+     "stage": "Script",
+     "date": "2026-10-14",
+     "caption": "",
+     "title": "Instagram Reel safe zones: where to put text so it's not covered (1080 x 1920)",
+     "bufferId": "",
+     "page": ""
+    },
+    "pinterest": null
+   }
+  },
+  {
+   "id": "eb16f9842e37",
+   "title": "Reel: Your AI should know what you're selling",
+   "format": "Reel",
+   "hook": "Your AI should know what you're selling",
+   "cta": "Scrolly Business Brain at [scrollyseo.com](http://scrollyseo.com) (no price on screen; end card + caption)",
+   "notes": "Buffer shows this posted Oct 14 (Notion still said Scheduled).\n\nVideo for Buffer (WP media 1458, cover baked in as frame 0): [https://scrollyseo.com/wp-content/uploads/2026/10/reel-2026-10-13-know-what-you-sell-v2.mp4](https://scrollyseo.com/wp-content/uploads/2026/10/reel-2026-10-13-know-what-you-sell-v2.mp4). Cover PNG (WP media 1454): [https://scrollyseo.com/wp-content/uploads/2026/10/reel-2026-10-13-know-what-you-sell-cover.png](https://scrollyseo.com/wp-content/uploads/2026/10/reel-2026-10-13-know-what-you-sell-cover.png) (style A, text behind her on ink). Unused first upload without cover: WP media 1453. Master: OneDrive/Scrolly Media/exports/reels/final/[2026-10-13-bb-know-what-you-sell.mp](http://2026-10-13-bb-know-what-you-sell.mp)4.\n\nFilming notes: Filmed 2026-10-12. videos/Business Brain/IMG_1996 (has retakes to cut).\n\nEdit notes: Studio Reel #2 (HyperFrames engine). Storyboard v1 approved, music Curiosity. Fixes after animatic: one nope on the circled blanks; dropped run-together \"because otherwise\" retake (gap gone).",
+   "product": "Scrolly Brand",
+   "series": "Business Brain",
+   "link": "file:///C:/Users/merce/Scrolly%20Organic%20Engine/automation/reel-hf/2026-10-13-bb-know-what-you-sell/",
+   "order": 2,
+   "carouselId": "",
+   "mediaUsed": "Business Brain/IMG_1996 (cut to 61s); music: Mixkit \"Curiosity\"; Business Brain home mockup (brain.png); 26 Mixkit sound effects",
+   "notionId": "3f7ab38f4c5881b29528d244316b404a",
+   "fromNotion": null,
+   "archived": false,
+   "createdAt": "2026-10-27T20:56:20.769Z",
+   "updatedAt": "2026-10-27T20:56:20.769Z",
+   "lanes": {
+    "instagram": {
+     "stage": "Posted",
+     "date": "2026-10-14",
+     "caption": "If your AI keeps writing [PRICE] in your posts, it doesn't know what you sell yet. The Scrolly Business Brain gives ChatGPT and Claude one place to read your offers, prices and customers. Find it at [scrollyseo.com](http://scrollyseo.com).\n\nHere's what changed for me: my offers, prices, who each one is for and what I'm working on all live in one central place. When I ask AI for a post, it reads that first and writes with the real details.\n\nYou still check the output. You just stop spending more time correcting AI than it would take to write the post yourself.\n\nWhat does your AI get wrong most often about your business? 👇",
+     "title": "",
+     "bufferId": "6acec91b33507eb5b0e55f13",
+     "page": ""
+    },
+    "tiktok": null,
+    "youtube": null,
+    "pinterest": null
+   }
+  },
+  {
+   "id": "f72e177e3cb1",
+   "title": "Morning Huddle #5: People buy from people",
+   "format": "Live",
+   "hook": "You don't have to dance. You do have to show up.",
+   "cta": "",
+   "notes": "LIVE show. Never set Status to Ready (the Make automation queues Ready rows).",
+   "product": "Scrolly Brand",
+   "series": "Morning Huddle",
+   "link": "",
+   "order": null,
+   "carouselId": "",
+   "mediaUsed": "",
+   "notionId": "3f3ab38f4c588103849afe21f6f42f4c",
+   "fromNotion": {
+    "Target Length (min)": "30"
+   },
+   "archived": false,
+   "createdAt": "2026-10-27T20:56:20.770Z",
+   "updatedAt": "2026-10-27T20:56:20.770Z",
+   "lanes": {
+    "instagram": null,
+    "tiktok": {
+     "stage": "Script",
+     "date": "2026-10-15",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "youtube": null,
+    "pinterest": null
+   }
+  },
+  {
+   "id": "f7f60f4ec9ba",
+   "title": "Live Tutorial #5: Schedule a week of posts free in Meta Business Suite",
+   "format": "Live",
+   "hook": "",
+   "cta": "",
+   "notes": "LIVE show. Never set Status to Ready (the Make automation queues Ready rows).",
+   "product": "Scrolly Brand",
+   "series": "Live Tutorial",
+   "link": "",
+   "order": null,
+   "carouselId": "",
+   "mediaUsed": "",
+   "notionId": "3f3ab38f4c588104aea2c840b8dafcc9",
+   "fromNotion": {
+    "Target Length (min)": "30"
+   },
+   "archived": false,
+   "createdAt": "2026-10-27T20:56:20.770Z",
+   "updatedAt": "2026-10-27T20:56:20.770Z",
+   "lanes": {
+    "instagram": null,
+    "tiktok": null,
+    "youtube": {
+     "stage": "Script",
+     "date": "2026-10-15",
+     "caption": "",
+     "title": "Schedule a week of Instagram posts for free (Meta Business Suite, live)",
+     "bufferId": "",
+     "page": ""
+    },
+    "pinterest": null
+   }
+  },
+  {
+   "id": "0afb9d1cc4cb",
+   "title": "Morning Huddle #6: Friday wins",
+   "format": "Live",
+   "hook": "Tell me one win from this week, even a tiny one",
+   "cta": "",
+   "notes": "LIVE show. Never set Status to Ready (the Make automation queues Ready rows).",
+   "product": "Scrolly Brand",
+   "series": "Morning Huddle",
+   "link": "",
+   "order": null,
+   "carouselId": "",
+   "mediaUsed": "",
+   "notionId": "3f3ab38f4c5881208d26f07b679403ba",
+   "fromNotion": {
+    "Target Length (min)": "30"
+   },
+   "archived": false,
+   "createdAt": "2026-10-27T20:56:20.770Z",
+   "updatedAt": "2026-10-27T20:56:20.770Z",
+   "lanes": {
+    "instagram": null,
+    "tiktok": {
+     "stage": "Script",
+     "date": "2026-10-16",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "youtube": null,
+    "pinterest": null
+   }
+  },
+  {
+   "id": "24c8c5cc3a32",
+   "title": "Live Tutorial #6: Write 10 hooks for your business in 30 minutes",
+   "format": "Live",
+   "hook": "",
+   "cta": "",
+   "notes": "LIVE show. Never set Status to Ready (the Make automation queues Ready rows).",
+   "product": "Scrolly Brand",
+   "series": "Live Tutorial",
+   "link": "",
+   "order": null,
+   "carouselId": "",
+   "mediaUsed": "",
+   "notionId": "3f3ab38f4c58814f806ee368f28e9d47",
+   "fromNotion": {
+    "Target Length (min)": "30"
+   },
+   "archived": false,
+   "createdAt": "2026-10-27T20:56:20.770Z",
+   "updatedAt": "2026-10-27T20:56:20.770Z",
+   "lanes": {
+    "instagram": null,
+    "tiktok": null,
+    "youtube": {
+     "stage": "Script",
+     "date": "2026-10-16",
+     "caption": "",
+     "title": "Write 10 scroll-stopping hooks for your business (live)",
+     "bufferId": "",
+     "page": ""
+    },
+    "pinterest": null
+   }
+  },
+  {
+   "id": "1ad4b0c23b50",
+   "title": "Captions people actually read",
+   "format": "Reel",
+   "hook": "",
+   "cta": "",
+   "notes": "World idea (Mercedes): she's drowning in words, then the lesson is the way out. Leads to template packs. Series rules: vault products/content-engine/[series-scrolly-studio.md](http://series-scrolly-studio.md)",
+   "product": "",
+   "series": "The Scrolly Studio",
+   "link": "",
+   "order": null,
+   "carouselId": "",
+   "mediaUsed": "",
+   "notionId": "3ffab38f4c588114bb66d604e661d6ff",
+   "fromNotion": {
+    "Timeliness": "Evergreen"
+   },
+   "archived": false,
+   "createdAt": "2026-10-27T20:56:20.770Z",
+   "updatedAt": "2026-10-27T20:56:20.770Z",
+   "lanes": {
+    "instagram": {
+     "stage": "Idea",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "tiktok": null,
+    "youtube": null,
+    "pinterest": null
+   }
+  },
+  {
+   "id": "8900f3033124",
+   "title": "The first 3 seconds that stop the scroll",
+   "format": "Reel",
+   "hook": "",
+   "cta": "",
+   "notes": "Teach a skill she already has, with before/after examples. Leads to the Reel editor. World: not picked yet. Series rules: vault products/content-engine/[series-scrolly-studio.md](http://series-scrolly-studio.md)",
+   "product": "",
+   "series": "The Scrolly Studio",
+   "link": "",
+   "order": null,
+   "carouselId": "",
+   "mediaUsed": "",
+   "notionId": "3ffab38f4c58811e8af1d0304093b08d",
+   "fromNotion": {
+    "Timeliness": "Evergreen"
+   },
+   "archived": false,
+   "createdAt": "2026-10-27T20:56:20.771Z",
+   "updatedAt": "2026-10-27T20:56:20.771Z",
+   "lanes": {
+    "instagram": {
+     "stage": "Idea",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "tiktok": null,
+    "youtube": null,
+    "pinterest": null
+   }
+  },
+  {
+   "id": "087e6eff61e0",
+   "title": "How I got 10K new followers in 1 month",
+   "format": "Reel",
+   "hook": "",
+   "cta": "",
+   "notes": "ONLY film once it's real: proof = her own Instagram Insights screenshots. The lesson = what actually got her there (likely this series). Replaces the 'first sale' idea (Mercedes 2026-10-19: no 'I'm trying to make $X' episodes). World: not picked yet. Series rules: vault products/content-engine/[series-scrolly-studio.md](http://series-scrolly-studio.md)",
+   "product": "",
+   "series": "The Scrolly Studio",
+   "link": "",
+   "order": null,
+   "carouselId": "",
+   "mediaUsed": "",
+   "notionId": "3ffab38f4c588122a89fe2fa1a8c55e4",
+   "fromNotion": {
+    "Timeliness": "Timely"
+   },
+   "archived": false,
+   "createdAt": "2026-10-27T20:56:20.771Z",
+   "updatedAt": "2026-10-27T20:56:20.771Z",
+   "lanes": {
+    "instagram": {
+     "stage": "Idea",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "tiktok": null,
+    "youtube": null,
+    "pinterest": null
+   }
+  },
+  {
+   "id": "6b10f3573841",
+   "title": "What to post when you only have 20 minutes a week",
+   "format": "Reel",
+   "hook": "",
+   "cta": "",
+   "notes": "Show her real system, steps on screen. World: not picked yet. Series rules: vault products/content-engine/[series-scrolly-studio.md](http://series-scrolly-studio.md)",
+   "product": "$1K Club",
+   "series": "The Scrolly Studio",
+   "link": "",
+   "order": null,
+   "carouselId": "",
+   "mediaUsed": "",
+   "notionId": "3ffab38f4c58819e966cc6b57b27e7e2",
+   "fromNotion": {
+    "Timeliness": "Evergreen"
+   },
+   "archived": false,
+   "createdAt": "2026-10-27T20:56:20.771Z",
+   "updatedAt": "2026-10-27T20:56:20.771Z",
+   "lanes": {
+    "instagram": {
+     "stage": "Idea",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "tiktok": null,
+    "youtube": null,
+    "pinterest": null
+   }
+  },
+  {
+   "id": "c8b3a8f2f588",
+   "title": "Why your Reels look homemade (3 fixes)",
+   "format": "Reel",
+   "hook": "",
+   "cta": "",
+   "notes": "Teach a skill she already has. Leads to the Reel editor / template packs. World: not picked yet (world = the problem as a picture). Series rules: vault products/content-engine/[series-scrolly-studio.md](http://series-scrolly-studio.md)",
+   "product": "",
+   "series": "The Scrolly Studio",
+   "link": "",
+   "order": null,
+   "carouselId": "",
+   "mediaUsed": "",
+   "notionId": "3ffab38f4c5881c9b234e84624c870e9",
+   "fromNotion": {
+    "Timeliness": "Evergreen"
+   },
+   "archived": false,
+   "createdAt": "2026-10-27T20:56:20.771Z",
+   "updatedAt": "2026-10-27T20:56:20.771Z",
+   "lanes": {
+    "instagram": {
+     "stage": "Idea",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "tiktok": null,
+    "youtube": null,
+    "pinterest": null
+   }
+  },
+  {
+   "id": "6e28cbc11934",
+   "title": "Ballet 3: Step back to see the pattern",
+   "format": "Reel",
+   "hook": "Zoom out and your posts start making a shape.",
+   "cta": "",
+   "notes": "Top-down view reveals the pattern. Ties to the $50 Club / Opportunity Engine idea of looking at your business from a distance. Watch the writing rules: no contrast slogans in the final copy.",
+   "product": "",
+   "series": "Ballet",
+   "link": "",
+   "order": null,
+   "carouselId": "",
+   "mediaUsed": "",
+   "notionId": "3feab38f4c588158abcbd0fa6c13c6e5",
+   "fromNotion": {
+    "Timeliness": "Evergreen"
+   },
+   "archived": false,
+   "createdAt": "2026-10-27T20:56:20.771Z",
+   "updatedAt": "2026-10-27T20:56:20.771Z",
+   "lanes": {
+    "instagram": {
+     "stage": "Idea",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "tiktok": null,
+    "youtube": null,
+    "pinterest": null
+   }
+  },
+  {
+   "id": "561b7982431e",
+   "title": "Ballet 4: Effortless takes reps",
+   "format": "Reel",
+   "hook": "It looks effortless from above.",
+   "cta": "",
+   "notes": "Ballet looks easy because of years of practice; same with content that looks effortless. Most emotional of the series, hardest to tie to an offer.",
+   "product": "",
+   "series": "Ballet",
+   "link": "",
+   "order": null,
+   "carouselId": "",
+   "mediaUsed": "",
+   "notionId": "3feab38f4c588164b16bd0da3299e314",
+   "fromNotion": {
+    "Timeliness": "Evergreen"
+   },
+   "archived": false,
+   "createdAt": "2026-10-27T20:56:20.771Z",
+   "updatedAt": "2026-10-27T20:56:20.771Z",
+   "lanes": {
+    "instagram": {
+     "stage": "Idea",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "tiktok": null,
+    "youtube": null,
+    "pinterest": null
+   }
+  },
+  {
+   "id": "e88b0258b598",
+   "title": "Ballet 1: One Reel, many shapes",
+   "format": "Reel",
+   "hook": "I filmed one Reel. Here's everything it became.",
+   "cta": "",
+   "notes": "Repurposing message. Each ballerina formation is a format (flower = carousel, wreath = Pin, star = Story, repeat pattern = a week of posts). Same dancer every time, rearranged. Visual refs: Mercedes's ChatGPT 'Cupcake Image Series' chat (top-down ballerinas combined into objects). Use as style reference only; make final images ourselves. CTA still open.",
+   "product": "",
+   "series": "Ballet",
+   "link": "",
+   "order": null,
+   "carouselId": "",
+   "mediaUsed": "",
+   "notionId": "3feab38f4c588178b74dcfe6a2c379c6",
+   "fromNotion": {
+    "Timeliness": "Evergreen"
+   },
+   "archived": false,
+   "createdAt": "2026-10-27T20:56:20.771Z",
+   "updatedAt": "2026-10-27T20:56:20.771Z",
+   "lanes": {
+    "instagram": {
+     "stage": "Idea",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "tiktok": null,
+    "youtube": null,
+    "pinterest": null
+   }
+  },
+  {
+   "id": "546937b4078a",
+   "title": "Ballet 2: One post vs. a system (the bouquet)",
+   "format": "Reel",
+   "hook": "One post is a dancer. A content system is the whole bouquet.",
+   "cta": "",
+   "notes": "Consistency adds up: single posts combine into something bigger. Fits Business Brain or the Club. Same ballerina-formation visuals as the series.",
+   "product": "",
+   "series": "Ballet",
+   "link": "",
+   "order": null,
+   "carouselId": "",
+   "mediaUsed": "",
+   "notionId": "3feab38f4c58818091cfcedf76d613b2",
+   "fromNotion": {
+    "Timeliness": "Evergreen"
+   },
+   "archived": false,
+   "createdAt": "2026-10-27T20:56:20.773Z",
+   "updatedAt": "2026-10-27T20:56:20.773Z",
+   "lanes": {
+    "instagram": {
+     "stage": "Idea",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "tiktok": null,
+    "youtube": null,
+    "pinterest": null
+   }
+  },
+  {
+   "id": "9687d877c91c",
+   "title": "Ballet 5: Ballerina Bouquet template pack teaser",
+   "format": "Reel",
+   "hook": "Ballerina Bouquet: a Reel template pack",
+   "cta": "",
+   "notes": "Series finale. Possible Reel Template Pack (like the Halloween pack) built from the ballerina formations; this Reel teases and sells it. Pack itself is only an idea so far.",
+   "product": "",
+   "series": "Ballet",
+   "link": "",
+   "order": null,
+   "carouselId": "",
+   "mediaUsed": "",
+   "notionId": "3feab38f4c5881b69f2ae76734e5d4ff",
+   "fromNotion": {
+    "Timeliness": "Evergreen"
+   },
+   "archived": false,
+   "createdAt": "2026-10-27T20:56:20.773Z",
+   "updatedAt": "2026-10-27T20:56:20.773Z",
+   "lanes": {
+    "instagram": {
+     "stage": "Idea",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "tiktok": null,
+    "youtube": null,
+    "pinterest": null
+   }
+  },
+  {
+   "id": "9d6337c3bedc",
+   "title": "Reel: AI + a brain = jumbo shrimp",
+   "format": "Reel",
+   "hook": "",
+   "cta": "",
+   "notes": "",
+   "product": "",
+   "series": "",
+   "link": "",
+   "order": null,
+   "carouselId": "",
+   "mediaUsed": "",
+   "notionId": "3f9ab38f4c5881a38bb2f1cefc84d794",
+   "fromNotion": null,
+   "archived": false,
+   "createdAt": "2026-10-27T20:56:20.773Z",
+   "updatedAt": "2026-10-27T20:56:20.773Z",
+   "lanes": {
+    "instagram": {
+     "stage": "Edit",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "tiktok": null,
+    "youtube": null,
+    "pinterest": null
+   }
+  },
+  {
+   "id": "9053921a2e6c",
+   "title": "Brother's secret $1K series: digital sports trivia and game-night products",
+   "format": "",
+   "hook": "",
+   "cta": "",
+   "notes": "Moved from the Brain's 'My AI wants to remember' on 2026-10-13 (unapproved idea note from 2026-10-12).",
+   "product": "$1K Club",
+   "series": "",
+   "link": "",
+   "order": null,
+   "carouselId": "",
+   "mediaUsed": "",
+   "notionId": "3f8ab38f4c5881028427e5df905282bb",
+   "fromNotion": null,
+   "archived": false,
+   "createdAt": "2026-10-27T20:56:20.773Z",
+   "updatedAt": "2026-10-27T20:56:20.773Z",
+   "lanes": {
+    "instagram": null,
+    "tiktok": null,
+    "youtube": null,
+    "pinterest": null
+   }
+  },
+  {
+   "id": "2336e529f706",
+   "title": "$1K Club Reel",
+   "format": "Reel",
+   "hook": "",
+   "cta": "",
+   "notes": "Moved from the Brain's My to-dos on 2026-10-13 (was 'Film the $1K Club Reel', due 2026-10-09).",
+   "product": "$1K Club",
+   "series": "",
+   "link": "",
+   "order": null,
+   "carouselId": "",
+   "mediaUsed": "",
+   "notionId": "3f8ab38f4c588170ae0affa60676adc2",
+   "fromNotion": null,
+   "archived": false,
+   "createdAt": "2026-10-27T20:56:20.773Z",
+   "updatedAt": "2026-10-27T20:56:20.773Z",
+   "lanes": {
+    "instagram": {
+     "stage": "Film",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "tiktok": null,
+    "youtube": null,
+    "pinterest": null
+   }
+  },
+  {
+   "id": "78c1748ee807",
+   "title": "$1K Club sales video",
+   "format": "",
+   "hook": "",
+   "cta": "",
+   "notes": "Moved from the Brain's My to-dos on 2026-10-13 (was 'Film and edit the $1K Club sales video', due 2026-10-09).",
+   "product": "$1K Club",
+   "series": "",
+   "link": "",
+   "order": null,
+   "carouselId": "",
+   "mediaUsed": "",
+   "notionId": "3f8ab38f4c5881c49d22f9e10afe0f5f",
+   "fromNotion": null,
+   "archived": false,
+   "createdAt": "2026-10-27T20:56:20.773Z",
+   "updatedAt": "2026-10-27T20:56:20.773Z",
+   "lanes": {
+    "instagram": null,
+    "tiktok": null,
+    "youtube": null,
+    "pinterest": null
+   }
+  },
+  {
+   "id": "6e82f05675a8",
+   "title": "Reel: The number one thing I regret not doing sooner with AI",
+   "format": "Reel",
+   "hook": "The number one thing I regret not doing sooner in my business when it comes to AI",
+   "cta": "Scrolly Business Brain on my website",
+   "notes": "Not edited yet.\n\nFilming notes: Filmed 2026-10-12. videos/Business Brain/IMG_2008.\n\nEdit notes: Draft ready for review 2026-10-14: automation/reel-hf/2026-10-14-bb-regret-not-sooner (open [http://localhost:4320](http://localhost:4320))",
+   "product": "Scrolly Brand",
+   "series": "Business Brain",
+   "link": "Draft ready for review 2026-10-14: automation/reel-hf/2026-10-14-bb-regret-not-sooner (open http://localhost:4320)",
+   "order": null,
+   "carouselId": "",
+   "mediaUsed": "",
+   "notionId": "3f7ab38f4c58810bbe5de98d356639e4",
+   "fromNotion": null,
+   "archived": false,
+   "createdAt": "2026-10-27T20:56:20.773Z",
+   "updatedAt": "2026-10-27T20:56:20.773Z",
+   "lanes": {
+    "instagram": {
+     "stage": "Edit",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "tiktok": null,
+    "youtube": null,
+    "pinterest": null
+   }
+  },
+  {
+   "id": "d7cc27377368",
+   "title": "Reel: What exactly is a business brain? (sock drawer)",
+   "format": "Reel",
+   "hook": "If you can organize your sock drawer, you can build a business brain",
+   "cta": "Scrolly Business Brain on my website",
+   "notes": "Not edited yet. Walks through the 4 files: business, offers, voice, current work.\n\nFilming notes: Filmed 2026-10-12. videos/Business Brain/IMG_2005.\n\nEdit notes: Draft ready for review 2026-10-14: automation/reel-hf/2026-10-14-bb-sock-drawer (open [http://localhost:4320](http://localhost:4320))",
+   "product": "Scrolly Brand",
+   "series": "Business Brain",
+   "link": "Draft ready for review 2026-10-14: automation/reel-hf/2026-10-14-bb-sock-drawer (open http://localhost:4320)",
+   "order": null,
+   "carouselId": "",
+   "mediaUsed": "",
+   "notionId": "3f7ab38f4c58811281e8c12acc525129",
+   "fromNotion": null,
+   "archived": false,
+   "createdAt": "2026-10-27T20:56:20.773Z",
+   "updatedAt": "2026-10-27T20:56:20.773Z",
+   "lanes": {
+    "instagram": {
+     "stage": "Edit",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "tiktok": null,
+    "youtube": null,
+    "pinterest": null
+   }
+  },
+  {
+   "id": "7ba5b5f1e5ce",
+   "title": "Reel: I use ChatGPT and Claude, so I gave them one brain",
+   "format": "Reel",
+   "hook": "I use both ChatGPT and Claude in my business",
+   "cta": "Scrolly Business Brain on my website",
+   "notes": "Not edited yet. Notion as the shared source between both AIs.\n\nFilming notes: Filmed 2026-10-12. videos/Business Brain/IMG_1997 (many retakes), hook take IMG_1998.\n\nEdit notes: Draft ready for review 2026-10-14: automation/reel-hf/2026-10-14-bb-chatgpt-and-claude (open [http://localhost:4320](http://localhost:4320))",
+   "product": "Scrolly Brand",
+   "series": "Business Brain",
+   "link": "Draft ready for review 2026-10-14: automation/reel-hf/2026-10-14-bb-chatgpt-and-claude (open http://localhost:4320)",
+   "order": null,
+   "carouselId": "",
+   "mediaUsed": "",
+   "notionId": "3f7ab38f4c588112ae78d5670fb8287d",
+   "fromNotion": null,
+   "archived": false,
+   "createdAt": "2026-10-27T20:56:20.773Z",
+   "updatedAt": "2026-10-27T20:56:20.773Z",
+   "lanes": {
+    "instagram": {
+     "stage": "Edit",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "tiktok": null,
+    "youtube": null,
+    "pinterest": null
+   }
+  },
+  {
+   "id": "fc4dec7fb299",
+   "title": "Reel: I changed one thing in my business (Business Brain)",
+   "format": "Reel",
+   "hook": "I changed one thing in my business, and now every time I use AI it's a completely different experience",
+   "cta": "Scrolly Business Brain on my website",
+   "notes": "Not edited yet.\n\nFilming notes: Filmed 2026-10-12. videos/Business Brain/IMG_2003 (main), alternate hooks IMG_2001 and IMG_2002.\n\nEdit notes: Draft ready for review 2026-10-14: automation/reel-hf/2026-10-14-bb-changed-one-thing (open [http://localhost:4320](http://localhost:4320))",
+   "product": "Scrolly Brand",
+   "series": "Business Brain",
+   "link": "Draft ready for review 2026-10-14: automation/reel-hf/2026-10-14-bb-changed-one-thing (open http://localhost:4320)",
+   "order": null,
+   "carouselId": "",
+   "mediaUsed": "",
+   "notionId": "3f7ab38f4c58815c97f8dc369832c120",
+   "fromNotion": null,
+   "archived": false,
+   "createdAt": "2026-10-27T20:56:20.773Z",
+   "updatedAt": "2026-10-27T20:56:20.773Z",
+   "lanes": {
+    "instagram": {
+     "stage": "Edit",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "tiktok": null,
+    "youtube": null,
+    "pinterest": null
+   }
+  },
+  {
+   "id": "693723e019bc",
+   "title": "Reel: How many business ideas have you lost in AI chats?",
+   "format": "Reel",
+   "hook": "How many great business ideas have you forgotten because they're buried in an old AI conversation?",
+   "cta": "Scrolly Business Brain on my website",
+   "notes": "Not edited yet.\n\nFilming notes: Filmed 2026-10-12. videos/Business Brain/IMG_2004 (3 hook takes; best is the third), CTA takes IMG_2006 and IMG_2007.\n\nEdit notes: Draft ready for review 2026-10-14: automation/reel-hf/2026-10-14-bb-lost-ideas (open [http://localhost:4320](http://localhost:4320))",
+   "product": "Scrolly Brand",
+   "series": "Business Brain",
+   "link": "Draft ready for review 2026-10-14: automation/reel-hf/2026-10-14-bb-lost-ideas (open http://localhost:4320)",
+   "order": null,
+   "carouselId": "",
+   "mediaUsed": "",
+   "notionId": "3f7ab38f4c588182ae4fd5adf63305c1",
+   "fromNotion": null,
+   "archived": false,
+   "createdAt": "2026-10-27T20:56:20.773Z",
+   "updatedAt": "2026-10-27T20:56:20.773Z",
+   "lanes": {
+    "instagram": {
+     "stage": "Edit",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "tiktok": null,
+    "youtube": null,
+    "pinterest": null
+   }
+  },
+  {
+   "id": "48e6f31fd9e0",
+   "title": "Reel: Inside the $1K Challenge member account",
+   "format": "Reel",
+   "hook": "",
+   "cta": "",
+   "notes": "Not edited yet. Could become several short Reels (one feature each) plus a YouTube walkthrough. Check for personal info on screen before posting.\n\nFilming notes: Filmed 2026-10-12. videos/Behind the Account- $1k Challenge/Demo of My account for $1k Challenge Buyers (Desktop).mp4 (8 min screen recording).",
+   "product": "$1K Club",
+   "series": "Behind the account",
+   "link": "",
+   "order": null,
+   "carouselId": "",
+   "mediaUsed": "",
+   "notionId": "3f7ab38f4c58819e9d1ee9628673c261",
+   "fromNotion": null,
+   "archived": false,
+   "createdAt": "2026-10-27T20:56:20.774Z",
+   "updatedAt": "2026-10-27T20:56:20.774Z",
+   "lanes": {
+    "instagram": {
+     "stage": "Edit",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "tiktok": null,
+    "youtube": null,
+    "pinterest": null
+   }
+  },
+  {
+   "id": "38c5c972ec1c",
+   "title": "Reel: AI needs a brain (jumbo shrimp)",
+   "format": "Reel",
+   "hook": "AI needs a brain. That sounds like an oxymoron, right?",
+   "cta": "Scrolly Business Brain on my website",
+   "notes": "Not edited yet. Full takes end on 'link in my bio': cut that line.\n\nFilming notes: Filmed 2026-10-12. videos/Business Brain/IMG_1991 (cleanest full take), IMG_1990 (longer), short version in 'Just don't use the part...' (skip its last line).",
+   "product": "Scrolly Brand",
+   "series": "Business Brain",
+   "link": "",
+   "order": null,
+   "carouselId": "",
+   "mediaUsed": "",
+   "notionId": "3f7ab38f4c5881aa8c63c7a27ef2269b",
+   "fromNotion": null,
+   "archived": false,
+   "createdAt": "2026-10-27T20:56:20.774Z",
+   "updatedAt": "2026-10-27T20:56:20.774Z",
+   "lanes": {
+    "instagram": {
+     "stage": "Edit",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "tiktok": null,
+    "youtube": null,
+    "pinterest": null
+   }
+  },
+  {
+   "id": "7437d98a03cd",
+   "title": "Reel: Brother Day 1, a secret account for my brother",
+   "format": "Reel",
+   "hook": "Day 1: a secret account for my brother",
+   "cta": "Follow for Day 2. My plan is the $1K Challenge. Link in bio.",
+   "notes": "Edited by Claude 2026-10-12 (about 72s, captions, no music). Output: OneDrive/Scrolly Media/exports/reels/edits/[2026-10-12-brother-day-1.mp](http://2026-10-12-brother-day-1.mp)4. Cut list: automation/carousels/reels/2026-10-12-brother-day-1/edit.json.\n\nFilming notes: Filmed 2026-10-12. videos/Brother/Day 1 talking Head: IMG_1984 (intro), Taking Quiz Talking Head, digital product direction, desktop quiz recording. IMG_1982/1983/1985/1986 = alternate takes.",
+   "product": "$1K Club",
+   "series": "Secret account for my brother",
+   "link": "",
+   "order": null,
+   "carouselId": "",
+   "mediaUsed": "",
+   "notionId": "3f7ab38f4c5881b5aeacf1367dd55aab",
+   "fromNotion": {
+    "Timeliness": "Timely"
+   },
+   "archived": false,
+   "createdAt": "2026-10-27T20:56:20.774Z",
+   "updatedAt": "2026-10-27T20:56:20.774Z",
+   "lanes": {
+    "instagram": {
+     "stage": "Edit",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "tiktok": null,
+    "youtube": null,
+    "pinterest": null
+   }
+  },
+  {
+   "id": "12550651de69",
+   "title": "Reel: Try this intros (4 clips)",
+   "format": "Reel",
+   "hook": "",
+   "cta": "",
+   "notes": "Not reviewed yet. Intro clips to pair with sample Reels.\n\nFilming notes: Filmed 2026-10-12. videos/Try This Reel Intros: IMG_2009 to IMG_2012 (5 to 9s each).",
+   "product": "$1K Club",
+   "series": "Don't know what to post? Try this",
+   "link": "",
+   "order": null,
+   "carouselId": "",
+   "mediaUsed": "",
+   "notionId": "3f7ab38f4c5881ceb886f16ef2c45d82",
+   "fromNotion": null,
+   "archived": false,
+   "createdAt": "2026-10-27T20:56:20.774Z",
+   "updatedAt": "2026-10-27T20:56:20.774Z",
+   "lanes": {
+    "instagram": {
+     "stage": "Edit",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "tiktok": null,
+    "youtube": null,
+    "pinterest": null
+   }
+  },
+  {
+   "id": "1dc3d232117d",
+   "title": "Reel: I got tired of re-explaining my business to AI",
+   "format": "Reel",
+   "hook": "I got tired of re-explaining my business to AI",
+   "cta": "Business Brain is $47 at [scrollyseo.com](http://scrollyseo.com)",
+   "notes": "Batch 1, Reel 3. Sells Business Brain ($47). Bio link = $1K Challenge checkout, so the CTA names [scrollyseo.com](http://scrollyseo.com) instead of 'link in bio'. Preview: OneDrive/Scrolly Media/exports/reels/previews/[sample-business-brain.mp](http://sample-business-brain.mp)4.\n\nFilming notes: Nothing to film. Built from existing b-roll.",
+   "product": "Scrolly Brand",
+   "series": "Business Brain",
+   "link": "",
+   "order": null,
+   "carouselId": "",
+   "mediaUsed": "",
+   "notionId": "3f6ab38f4c5881129c3aedc40a241d14",
+   "fromNotion": {
+    "Timeliness": "Evergreen"
+   },
+   "archived": false,
+   "createdAt": "2026-10-27T20:56:20.774Z",
+   "updatedAt": "2026-10-27T20:56:20.774Z",
+   "lanes": {
+    "instagram": {
+     "stage": "Script",
+     "date": "",
+     "caption": "Business Brain is $47 at [scrollyseo.com](http://scrollyseo.com). It's a Notion template your ChatGPT or Claude fills in by interviewing you, then uses every time you ask for a caption, a DM reply or a plan for the week.\n\n#notiontemplate #chatgptforbusiness #smallbusinesstools",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "tiktok": null,
+    "youtube": null,
+    "pinterest": null
+   }
+  },
+  {
+   "id": "f20daa6de1ce",
+   "title": "Reel: Want to make money online? Start here",
+   "format": "Reel",
+   "hook": "Want to make money online? Start with one number",
+   "cta": "The $1K Challenge walks you through it for 30 days. Link in bio.",
+   "notes": "Batch 1, Reel 2. Preview: OneDrive/Scrolly Media/exports/reels/previews/[sample-start-here.mp](http://sample-start-here.mp)4. Spec: automation/carousels/reels/sample-start-here/reel.json.\n\nFilming notes: Nothing to film. Built from existing b-roll.",
+   "product": "$1K Club",
+   "series": "Start here",
+   "link": "",
+   "order": null,
+   "carouselId": "",
+   "mediaUsed": "",
+   "notionId": "3f6ab38f4c5881218159d85ea08b3c2b",
+   "fromNotion": {
+    "Timeliness": "Evergreen"
+   },
+   "archived": false,
+   "createdAt": "2026-10-27T20:56:20.774Z",
+   "updatedAt": "2026-10-27T20:56:20.774Z",
+   "lanes": {
+    "instagram": {
+     "stage": "Script",
+     "date": "",
+     "caption": "The $1K Challenge walks you through your $1K plan for 30 days. Link in bio. Start with one product and its price, work backward to the number of sales that makes $1,000, then to the views it takes to get there. That number tells you how much content you actually need.\n\n#makemoneyonline #smallbusinesstips #organicmarketing",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "tiktok": null,
+    "youtube": null,
+    "pinterest": null
+   }
+  },
+  {
+   "id": "584d92c70712",
+   "title": "Reel: Schedule a post from Notion in 60 seconds",
+   "format": "Reel",
+   "hook": "Schedule a week of posts from Notion in 60 seconds",
+   "cta": "The Notion tracker and auto-posting guide come with the $1K Challenge. Link in bio.",
+   "notes": "Batch 1, Reel 5. Needs the screen recording before it can be built.\n\nFilming notes: Screen recording only: one post going from the Notion content tracker into the Buffer queue. No face.",
+   "product": "$1K Club",
+   "series": "60-second tutorial",
+   "link": "",
+   "order": null,
+   "carouselId": "",
+   "mediaUsed": "",
+   "notionId": "3f6ab38f4c58816a9e3de10790993a90",
+   "fromNotion": {
+    "Est Film Time (min)": "10",
+    "Timeliness": "Evergreen"
+   },
+   "archived": false,
+   "createdAt": "2026-10-27T20:56:20.774Z",
+   "updatedAt": "2026-10-27T20:56:20.774Z",
+   "lanes": {
+    "instagram": {
+     "stage": "Script",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "tiktok": null,
+    "youtube": null,
+    "pinterest": null
+   }
+  },
+  {
+   "id": "4559e880d016",
+   "title": "Reel: Same mug, two spots (lighting)",
+   "format": "Reel",
+   "hook": "Same phone, same mug, two spots",
+   "cta": "Social Media Quality Tips comes with the $1K Club. Link in bio.",
+   "notes": "Batch 1, Reel 7. Bio link = $1K Challenge checkout (includes the Club), so 'link in bio' still works.\n\nFilming notes: Hands only: film your mug facing a window for 5 seconds, then with the window behind it for 5 seconds.",
+   "product": "$1K Club",
+   "series": "Social Media Quality Tips",
+   "link": "",
+   "order": null,
+   "carouselId": "",
+   "mediaUsed": "",
+   "notionId": "3f6ab38f4c588178bd26e6e885676cc6",
+   "fromNotion": {
+    "Est Film Time (min)": "5",
+    "Timeliness": "Evergreen"
+   },
+   "archived": false,
+   "createdAt": "2026-10-27T20:56:20.774Z",
+   "updatedAt": "2026-10-27T20:56:20.774Z",
+   "lanes": {
+    "instagram": {
+     "stage": "Script",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "tiktok": null,
+    "youtube": null,
+    "pinterest": null
+   }
+  },
+  {
+   "id": "d8dd188eb798",
+   "title": "Reel: $25 vs $50 product, views to make $1,000",
+   "format": "Reel",
+   "hook": "$25 product or $50 product: how many views to make $1,000?",
+   "cta": "The $1K Challenge builds your plan around your number. Link in bio.",
+   "notes": "Batch 1, Reel 4. Numbers are from Mercedes's calculator recording at 7.5% visit and 2.5% buy. Insight = the pricing decision, not the arithmetic (Brain content principles). Not rendered yet.\n\nFilming notes: Already filmed: screen recording videos/screens/[calc-views-to-1000-01.mp](http://calc-views-to-1000-01.mp)4 (shows $50, $25, $15 and $60).",
+   "product": "$1K Club",
+   "series": "Business math",
+   "link": "",
+   "order": null,
+   "carouselId": "",
+   "mediaUsed": "",
+   "notionId": "3f6ab38f4c5881a0b471e71e4f26a58a",
+   "fromNotion": {
+    "Timeliness": "Evergreen"
+   },
+   "archived": false,
+   "createdAt": "2026-10-27T20:56:20.774Z",
+   "updatedAt": "2026-10-27T20:56:20.774Z",
+   "lanes": {
+    "instagram": {
+     "stage": "Script",
+     "date": "",
+     "caption": "The $1K Challenge builds your 30-day plan around your own number. Link in bio. At the same visit and buy rates, halving your price doubles the views you need to reach $1,000. Before you pick a price, check what it asks of your content.\n\n#pricingstrategy #smallbusinesstips #organicmarketing",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "tiktok": null,
+    "youtube": null,
+    "pinterest": null
+   }
+  },
+  {
+   "id": "47525cfc2462",
+   "title": "Reel: No idea what to post? Film this",
+   "format": "Reel",
+   "hook": "No idea what to post today? Film this",
+   "cta": "25 Reel ideas like this every week come with the $1K Challenge. Link in bio.",
+   "notes": "Batch 1, Reel 1. Preview: OneDrive/Scrolly Media/exports/reels/previews/[sample-what-to-post.mp](http://sample-what-to-post.mp)4. Spec: automation/carousels/reels/sample-what-to-post/reel.json. Cover + twin carousel get made after this row is approved.\n\nFilming notes: Nothing to film. Built from existing b-roll.",
+   "product": "$1K Club",
+   "series": "Don't know what to post? Try this",
+   "link": "",
+   "order": null,
+   "carouselId": "",
+   "mediaUsed": "",
+   "notionId": "3f6ab38f4c5881c19ab9e7d0e4ba40a3",
+   "fromNotion": {
+    "Timeliness": "Evergreen"
+   },
+   "archived": false,
+   "createdAt": "2026-10-27T20:56:20.774Z",
+   "updatedAt": "2026-10-27T20:56:20.774Z",
+   "lanes": {
+    "instagram": {
+     "stage": "Script",
+     "date": "",
+     "caption": "The $1K Challenge gives you 25 Reel ideas like this every week, ready to film. Link in bio. This one works on a busy day because it takes one ordinary clip and one line. Swap in what you sell, keep the line short enough to read in two seconds, and end on the step you want people to take.\n\n#reelideas #contentideas #smallbusinessmarketing",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "tiktok": null,
+    "youtube": null,
+    "pinterest": null
+   }
+  },
+  {
+   "id": "61617b8e3b49",
+   "title": "Reel: Building my brother an account that makes $1,000 (Day 1)",
+   "format": "Reel",
+   "hook": "Building my brother an account that makes $1,000 in 30 days",
+   "cta": "I'm using the $1K Challenge plan. Link in bio.",
+   "notes": "Batch 1, Reel 6. Real progress only, no invented sales. Early Christmas present angle.\n\nFilming notes: Screen recording of setting up his new account (blur his name). Only after he says OK. Christmas-themed cover.",
+   "product": "$1K Club",
+   "series": "Secret account for my brother",
+   "link": "",
+   "order": null,
+   "carouselId": "",
+   "mediaUsed": "",
+   "notionId": "3f6ab38f4c5881ce8f71c235ddfb27b1",
+   "fromNotion": {
+    "Est Film Time (min)": "10",
+    "Timeliness": "Timely"
+   },
+   "archived": false,
+   "createdAt": "2026-10-27T20:56:20.774Z",
+   "updatedAt": "2026-10-27T20:56:20.774Z",
+   "lanes": {
+    "instagram": {
+     "stage": "Script",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "tiktok": null,
+    "youtube": null,
+    "pinterest": null
+   }
+  },
+  {
+   "id": "740995e2e87a",
+   "title": "Pinterest SEO Tutorial for Beginners",
+   "format": "YouTube long-form",
+   "hook": "",
+   "cta": "",
+   "notes": "Demonstrate Pinterest discovery and practical optimization. Recovered from prior Scrolly YouTube planning; review before filming.",
+   "product": "",
+   "series": "Tutorials & Teardowns",
+   "link": "",
+   "order": null,
+   "carouselId": "",
+   "mediaUsed": "",
+   "notionId": "3f5ab38f4c588102a88ae4bd4f2cd616",
+   "fromNotion": {
+    "Target Length (min)": "10"
+   },
+   "archived": false,
+   "createdAt": "2026-10-27T20:56:20.774Z",
+   "updatedAt": "2026-10-27T20:56:20.774Z",
+   "lanes": {
+    "instagram": null,
+    "tiktok": null,
+    "youtube": {
+     "stage": "Idea",
+     "date": "",
+     "caption": "",
+     "title": "Pinterest SEO Tutorial for Beginners",
+     "bufferId": "",
+     "page": ""
+    },
+    "pinterest": null
+   }
+  },
+  {
+   "id": "700c962f2753",
+   "title": "What Keywords Should a Small Business Target?",
+   "format": "YouTube long-form",
+   "hook": "",
+   "cta": "",
+   "notes": "Beginner keyword selection using real examples and sourced research. Recovered from prior Scrolly YouTube planning; review before filming.",
+   "product": "",
+   "series": "Tutorials & Teardowns",
+   "link": "",
+   "order": null,
+   "carouselId": "",
+   "mediaUsed": "",
+   "notionId": "3f5ab38f4c588104a846e00144065181",
+   "fromNotion": {
+    "Target Length (min)": "10"
+   },
+   "archived": false,
+   "createdAt": "2026-10-27T20:56:20.775Z",
+   "updatedAt": "2026-10-27T20:56:20.775Z",
+   "lanes": {
+    "instagram": null,
+    "tiktok": null,
+    "youtube": {
+     "stage": "Idea",
+     "date": "",
+     "caption": "",
+     "title": "What Keywords Should a Small Business Target?",
+     "bufferId": "",
+     "page": ""
+    },
+    "pinterest": null
+   }
+  },
+  {
+   "id": "b3c72e8ca0ac",
+   "title": "Building Scrolly in Public: Day 30 Results",
+   "format": "YouTube long-form",
+   "hook": "",
+   "cta": "",
+   "notes": "Transparent outcome review, including failures and limitations. Recovered from prior Scrolly YouTube planning; review before filming.",
+   "product": "",
+   "series": "Build Scrolly With Me",
+   "link": "",
+   "order": null,
+   "carouselId": "",
+   "mediaUsed": "",
+   "notionId": "3f5ab38f4c58810a904afb27a5fc7614",
+   "fromNotion": {
+    "Target Length (min)": "10"
+   },
+   "archived": false,
+   "createdAt": "2026-10-27T20:56:20.775Z",
+   "updatedAt": "2026-10-27T20:56:20.775Z",
+   "lanes": {
+    "instagram": null,
+    "tiktok": null,
+    "youtube": {
+     "stage": "Idea",
+     "date": "",
+     "caption": "",
+     "title": "Building Scrolly in Public: Day 30 Results",
+     "bufferId": "",
+     "page": ""
+    },
+    "pinterest": null
+   }
+  },
+  {
+   "id": "aa367944e449",
+   "title": "Would Your Life Change With an Extra $1,000 a Month?",
+   "format": "YouTube long-form",
+   "hook": "",
+   "cta": "",
+   "notes": "Explore what an additional reliable $1,000 monthly could mean; no income promises. Recovered from prior Scrolly YouTube planning; review before filming.",
+   "product": "",
+   "series": "Your First $1K",
+   "link": "",
+   "order": null,
+   "carouselId": "",
+   "mediaUsed": "",
+   "notionId": "3f5ab38f4c58810b9b94e0f311a87c09",
+   "fromNotion": {
+    "Target Length (min)": "10"
+   },
+   "archived": false,
+   "createdAt": "2026-10-27T20:56:20.775Z",
+   "updatedAt": "2026-10-27T20:56:20.775Z",
+   "lanes": {
+    "instagram": null,
+    "tiktok": null,
+    "youtube": {
+     "stage": "Idea",
+     "date": "",
+     "caption": "",
+     "title": "Would Your Life Change With an Extra $1,000 a Month?",
+     "bufferId": "",
+     "page": ""
+    },
+    "pinterest": null
+   }
+  },
+  {
+   "id": "a31f85ee6a18",
+   "title": "Building Scrolly in Public: Day 21 Update",
+   "format": "YouTube long-form",
+   "hook": "",
+   "cta": "",
+   "notes": "Document actual results when available. Recovered from prior Scrolly YouTube planning; review before filming.",
+   "product": "",
+   "series": "Build Scrolly With Me",
+   "link": "",
+   "order": null,
+   "carouselId": "",
+   "mediaUsed": "",
+   "notionId": "3f5ab38f4c588135ace2d1ec84f6b08f",
+   "fromNotion": {
+    "Target Length (min)": "10"
+   },
+   "archived": false,
+   "createdAt": "2026-10-27T20:56:20.775Z",
+   "updatedAt": "2026-10-27T20:56:20.775Z",
+   "lanes": {
+    "instagram": null,
+    "tiktok": null,
+    "youtube": {
+     "stage": "Idea",
+     "date": "",
+     "caption": "",
+     "title": "Building Scrolly in Public: Day 21 Update",
+     "bufferId": "",
+     "page": ""
+    },
+    "pinterest": null
+   }
+  },
+  {
+   "id": "9c93656e1269",
+   "title": "How I'd Market a Business for $0 in 2027",
+   "format": "YouTube long-form",
+   "hook": "",
+   "cta": "",
+   "notes": "Organic channel selection and repeatable no-ad distribution plan. Recovered from prior Scrolly YouTube planning; review before filming.",
+   "product": "",
+   "series": "Marketing That Makes Money",
+   "link": "",
+   "order": null,
+   "carouselId": "",
+   "mediaUsed": "",
+   "notionId": "3f5ab38f4c58814faf13c073b3e02fc1",
+   "fromNotion": {
+    "Target Length (min)": "10"
+   },
+   "archived": false,
+   "createdAt": "2026-10-27T20:56:20.775Z",
+   "updatedAt": "2026-10-27T20:56:20.775Z",
+   "lanes": {
+    "instagram": null,
+    "tiktok": null,
+    "youtube": {
+     "stage": "Idea",
+     "date": "",
+     "caption": "",
+     "title": "How I'd Market a Business for $0 in 2027",
+     "bufferId": "",
+     "page": ""
+    },
+    "pinterest": null
+   }
+  },
+  {
+   "id": "47e77a5992f0",
+   "title": "How a T-Shirt Seller Could Work Toward Their First $1K",
+   "format": "YouTube long-form",
+   "hook": "",
+   "cta": "",
+   "notes": "Illustrative product-business example with simple order math. Recovered from prior Scrolly YouTube planning; review before filming.",
+   "product": "",
+   "series": "Your First $1K",
+   "link": "",
+   "order": null,
+   "carouselId": "",
+   "mediaUsed": "",
+   "notionId": "3f5ab38f4c5881509f50f5ac5f453998",
+   "fromNotion": {
+    "Target Length (min)": "10"
+   },
+   "archived": false,
+   "createdAt": "2026-10-27T20:56:20.775Z",
+   "updatedAt": "2026-10-27T20:56:20.775Z",
+   "lanes": {
+    "instagram": null,
+    "tiktok": null,
+    "youtube": {
+     "stage": "Idea",
+     "date": "",
+     "caption": "",
+     "title": "How a T-Shirt Seller Could Work Toward Their First $1K",
+     "bufferId": "",
+     "page": ""
+    },
+    "pinterest": null
+   }
+  },
+  {
+   "id": "cf9dbdac4a13",
+   "title": "What If You Have Literally No Audience?",
+   "format": "YouTube long-form",
+   "hook": "",
+   "cta": "",
+   "notes": "Explain first-customer paths and organic visibility with a small or zero audience. Recovered from prior Scrolly YouTube planning; review before filming.",
+   "product": "",
+   "series": "Your First $1K",
+   "link": "",
+   "order": null,
+   "carouselId": "",
+   "mediaUsed": "",
+   "notionId": "3f5ab38f4c58815f9350e99d2c29102d",
+   "fromNotion": {
+    "Target Length (min)": "10"
+   },
+   "archived": false,
+   "createdAt": "2026-10-27T20:56:20.775Z",
+   "updatedAt": "2026-10-27T20:56:20.775Z",
+   "lanes": {
+    "instagram": null,
+    "tiktok": null,
+    "youtube": {
+     "stage": "Idea",
+     "date": "",
+     "caption": "",
+     "title": "What If You Have Literally No Audience?",
+     "bufferId": "",
+     "page": ""
+    },
+    "pinterest": null
+   }
+  },
+  {
+   "id": "6154723d853c",
+   "title": "7 Shopify SEO Mistakes to Check",
+   "format": "YouTube long-form",
+   "hook": "",
+   "cta": "",
+   "notes": "Evergreen diagnostic walkthrough; no unverified audit claims. Recovered from prior Scrolly YouTube planning; review before filming.",
+   "product": "",
+   "series": "Tutorials & Teardowns",
+   "link": "",
+   "order": null,
+   "carouselId": "",
+   "mediaUsed": "",
+   "notionId": "3f5ab38f4c588165b2f8d6d71ae989db",
+   "fromNotion": {
+    "Target Length (min)": "10"
+   },
+   "archived": false,
+   "createdAt": "2026-10-27T20:56:20.775Z",
+   "updatedAt": "2026-10-27T20:56:20.775Z",
+   "lanes": {
+    "instagram": null,
+    "tiktok": null,
+    "youtube": {
+     "stage": "Idea",
+     "date": "",
+     "caption": "",
+     "title": "7 Shopify SEO Mistakes to Check",
+     "bufferId": "",
+     "page": ""
+    },
+    "pinterest": null
+   }
+  },
+  {
+   "id": "ee7405f7a388",
+   "title": "The $1K Club Is $40. Who Is It For?",
+   "format": "YouTube long-form",
+   "hook": "",
+   "cta": "",
+   "notes": "Explain audience, scope, price and the separately priced Challenge accurately. Recovered from prior Scrolly YouTube planning; review before filming.",
+   "product": "",
+   "series": "Your First $1K",
+   "link": "",
+   "order": null,
+   "carouselId": "",
+   "mediaUsed": "",
+   "notionId": "3f5ab38f4c588172a452c0bb3bb81990",
+   "fromNotion": {
+    "Target Length (min)": "10"
+   },
+   "archived": false,
+   "createdAt": "2026-10-27T20:56:20.775Z",
+   "updatedAt": "2026-10-27T20:56:20.775Z",
+   "lanes": {
+    "instagram": null,
+    "tiktok": null,
+    "youtube": {
+     "stage": "Idea",
+     "date": "",
+     "caption": "",
+     "title": "The $1K Club Is $40. Who Is It For?",
+     "bufferId": "",
+     "page": ""
+    },
+    "pinterest": null
+   }
+  },
+  {
+   "id": "74acef003acb",
+   "title": "Does SEO Still Work With ChatGPT?",
+   "format": "YouTube long-form",
+   "hook": "",
+   "cta": "",
+   "notes": "Research-backed discussion of search behavior and SEO. Recovered from prior Scrolly YouTube planning; review before filming.",
+   "product": "",
+   "series": "Tutorials & Teardowns",
+   "link": "",
+   "order": null,
+   "carouselId": "",
+   "mediaUsed": "",
+   "notionId": "3f5ab38f4c5881888785c676ed79c347",
+   "fromNotion": {
+    "Target Length (min)": "10"
+   },
+   "archived": false,
+   "createdAt": "2026-10-27T20:56:20.775Z",
+   "updatedAt": "2026-10-27T20:56:20.775Z",
+   "lanes": {
+    "instagram": null,
+    "tiktok": null,
+    "youtube": {
+     "stage": "Idea",
+     "date": "",
+     "caption": "",
+     "title": "Does SEO Still Work With ChatGPT?",
+     "bufferId": "",
+     "page": ""
+    },
+    "pinterest": null
+   }
+  },
+  {
+   "id": "94bc6e2f40f1",
+   "title": "What I Accomplished Today Building Scrolly",
+   "format": "YouTube long-form",
+   "hook": "",
+   "cta": "",
+   "notes": "Behind-the-scenes daily DIY accomplishments and review. Recovered from prior Scrolly YouTube planning; review before filming.",
+   "product": "",
+   "series": "Build Scrolly With Me",
+   "link": "",
+   "order": null,
+   "carouselId": "",
+   "mediaUsed": "",
+   "notionId": "3f5ab38f4c588196b45bc1c3967f3c14",
+   "fromNotion": {
+    "Target Length (min)": "10"
+   },
+   "archived": false,
+   "createdAt": "2026-10-27T20:56:20.775Z",
+   "updatedAt": "2026-10-27T20:56:20.775Z",
+   "lanes": {
+    "instagram": null,
+    "tiktok": null,
+    "youtube": {
+     "stage": "Idea",
+     "date": "",
+     "caption": "",
+     "title": "What I Accomplished Today Building Scrolly",
+     "bufferId": "",
+     "page": ""
+    },
+    "pinterest": null
+   }
+  },
+  {
+   "id": "56c3f2abaeb8",
+   "title": "How to Turn 30 Videos Into 150 Publishing Opportunities",
+   "format": "YouTube long-form",
+   "hook": "",
+   "cta": "",
+   "notes": "Cross-platform distribution math; explain that opportunities are not unique original videos. Recovered from prior Scrolly YouTube planning; review before filming.",
+   "product": "",
+   "series": "Marketing That Makes Money",
+   "link": "",
+   "order": null,
+   "carouselId": "",
+   "mediaUsed": "",
+   "notionId": "3f5ab38f4c5881bab4ffc16a1352304c",
+   "fromNotion": {
+    "Target Length (min)": "10"
+   },
+   "archived": false,
+   "createdAt": "2026-10-27T20:56:20.775Z",
+   "updatedAt": "2026-10-27T20:56:20.775Z",
+   "lanes": {
+    "instagram": null,
+    "tiktok": null,
+    "youtube": {
+     "stage": "Idea",
+     "date": "",
+     "caption": "",
+     "title": "How to Turn 30 Videos Into 150 Publishing Opportunities",
+     "bufferId": "",
+     "page": ""
+    },
+    "pinterest": null
+   }
+  },
+  {
+   "id": "f18ad2f2b406",
+   "title": "Can I Grow Scrolly From Scratch Without Ads? Day 1",
+   "format": "YouTube long-form",
+   "hook": "",
+   "cta": "",
+   "notes": "Start a transparent build-in-public experiment; record real baselines. Recovered from prior Scrolly YouTube planning; review before filming.",
+   "product": "",
+   "series": "Build Scrolly With Me",
+   "link": "",
+   "order": null,
+   "carouselId": "",
+   "mediaUsed": "",
+   "notionId": "3f5ab38f4c5881ca8a7acd05998ac87e",
+   "fromNotion": {
+    "Target Length (min)": "10"
+   },
+   "archived": false,
+   "createdAt": "2026-10-27T20:56:20.775Z",
+   "updatedAt": "2026-10-27T20:56:20.775Z",
+   "lanes": {
+    "instagram": null,
+    "tiktok": null,
+    "youtube": {
+     "stage": "Idea",
+     "date": "",
+     "caption": "",
+     "title": "Can I Grow Scrolly From Scratch Without Ads? Day 1",
+     "bufferId": "",
+     "page": ""
+    },
+    "pinterest": null
+   }
+  },
+  {
+   "id": "14afc9e7baf1",
+   "title": "How to Pick Your First Marketing Channel",
+   "format": "YouTube long-form",
+   "hook": "",
+   "cta": "",
+   "notes": "Show how offer, buyer and content strengths influence channel choice. Recovered from prior Scrolly YouTube planning; review before filming.",
+   "product": "",
+   "series": "Marketing That Makes Money",
+   "link": "",
+   "order": null,
+   "carouselId": "",
+   "mediaUsed": "",
+   "notionId": "3f5ab38f4c5881dcae1bdb0786e3f906",
+   "fromNotion": {
+    "Target Length (min)": "10"
+   },
+   "archived": false,
+   "createdAt": "2026-10-27T20:56:20.775Z",
+   "updatedAt": "2026-10-27T20:56:20.775Z",
+   "lanes": {
+    "instagram": null,
+    "tiktok": null,
+    "youtube": {
+     "stage": "Idea",
+     "date": "",
+     "caption": "",
+     "title": "How to Pick Your First Marketing Channel",
+     "bufferId": "",
+     "page": ""
+    },
+    "pinterest": null
+   }
+  },
+  {
+   "id": "7ed4d7d661bb",
+   "title": "How a Handyman Could Find Their First Customers Online",
+   "format": "YouTube long-form",
+   "hook": "",
+   "cta": "",
+   "notes": "Illustrative example; distinguish hypothetical numbers from proof. Recovered from prior Scrolly YouTube planning; review before filming.",
+   "product": "",
+   "series": "Your First $1K",
+   "link": "",
+   "order": null,
+   "carouselId": "",
+   "mediaUsed": "",
+   "notionId": "3f5ab38f4c5881dcb20bc66cd344ea48",
+   "fromNotion": {
+    "Target Length (min)": "10"
+   },
+   "archived": false,
+   "createdAt": "2026-10-27T20:56:20.775Z",
+   "updatedAt": "2026-10-27T20:56:20.775Z",
+   "lanes": {
+    "instagram": null,
+    "tiktok": null,
+    "youtube": {
+     "stage": "Idea",
+     "date": "",
+     "caption": "",
+     "title": "How a Handyman Could Find Their First Customers Online",
+     "bufferId": "",
+     "page": ""
+    },
+    "pinterest": null
+   }
+  },
+  {
+   "id": "9c2b0472bed4",
+   "title": "Building Scrolly in Public: Day 14 Update",
+   "format": "YouTube long-form",
+   "hook": "",
+   "cta": "",
+   "notes": "Document real changes and lessons once day 14 arrives. Recovered from prior Scrolly YouTube planning; review before filming.",
+   "product": "",
+   "series": "Build Scrolly With Me",
+   "link": "",
+   "order": null,
+   "carouselId": "",
+   "mediaUsed": "",
+   "notionId": "3f5ab38f4c5881faa3d5c09f4d8a632e",
+   "fromNotion": {
+    "Target Length (min)": "10"
+   },
+   "archived": false,
+   "createdAt": "2026-10-27T20:56:20.775Z",
+   "updatedAt": "2026-10-27T20:56:20.775Z",
+   "lanes": {
+    "instagram": null,
+    "tiktok": null,
+    "youtube": {
+     "stage": "Idea",
+     "date": "",
+     "caption": "",
+     "title": "Building Scrolly in Public: Day 14 Update",
+     "bufferId": "",
+     "page": ""
+    },
+    "pinterest": null
+   }
+  },
+  {
+   "id": "51fb99a1308c",
+   "title": "How to pick the right channel for YOUR business",
+   "format": "YouTube long-form",
+   "hook": "Everyone says be consistent on the popular platform. Nobody tells you it might be the wrong one for what you sell.",
+   "cta": "",
+   "notes": "Imported 2026-10-09 from the 9/14 launch package (Video 3). Full outline: products/1k-club/launch-package/[02-youtube-long-form.md](http://02-youtube-long-form.md).",
+   "product": "$1K Club",
+   "series": "",
+   "link": "",
+   "order": null,
+   "carouselId": "",
+   "mediaUsed": "",
+   "notionId": "3f5ab38f4c58811491c0c279aaea41b8",
+   "fromNotion": {
+    "Target Length (min)": "12",
+    "Creator": "Mercedes",
+    "Today Focus": "Not Today"
+   },
+   "archived": false,
+   "createdAt": "2026-10-27T20:56:20.776Z",
+   "updatedAt": "2026-10-27T20:56:20.776Z",
+   "lanes": {
+    "instagram": null,
+    "tiktok": null,
+    "youtube": {
+     "stage": "Idea",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "pinterest": null
+   }
+  },
+  {
+   "id": "d84e6898ea57",
+   "title": "You don't have a traffic problem (you have this problem)",
+   "format": "YouTube long-form",
+   "hook": "If I gave you 10,000 more visitors tomorrow, would you actually make more money, or just have a bigger number that still doesn't convert?",
+   "cta": "",
+   "notes": "Imported 2026-10-09 from the 9/14 launch package (Video 1). Full outline: products/1k-club/launch-package/[02-youtube-long-form.md](http://02-youtube-long-form.md). Check it still fits your views-based $1K Math before scripting.",
+   "product": "$1K Club",
+   "series": "",
+   "link": "",
+   "order": null,
+   "carouselId": "",
+   "mediaUsed": "",
+   "notionId": "3f5ab38f4c5881349b28e740a35e5b49",
+   "fromNotion": {
+    "Target Length (min)": "10",
+    "Creator": "Mercedes",
+    "Today Focus": "Not Today"
+   },
+   "archived": false,
+   "createdAt": "2026-10-27T20:56:20.776Z",
+   "updatedAt": "2026-10-27T20:56:20.776Z",
+   "lanes": {
+    "instagram": null,
+    "tiktok": null,
+    "youtube": {
+     "stage": "Idea",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "pinterest": null
+   }
+  },
+  {
+   "id": "27b374f0aebf",
+   "title": "I did the math on what it actually takes to hit $1,000",
+   "format": "YouTube long-form",
+   "hook": "'I want to make $1,000' is a wish, not a plan. Here's the actual math behind that number.",
+   "cta": "",
+   "notes": "Imported 2026-10-09 from the 9/14 launch package (Video 4). Overlaps with the 'You don't need a viral video to make $1K' row; pick one or merge. Should use the Playbook ch. 6 views math. Full outline: products/1k-club/launch-package/[02-youtube-long-form.md](http://02-youtube-long-form.md).",
+   "product": "$1K Club",
+   "series": "",
+   "link": "",
+   "order": null,
+   "carouselId": "",
+   "mediaUsed": "",
+   "notionId": "3f5ab38f4c5881599f77cda3e979441f",
+   "fromNotion": {
+    "Target Length (min)": "10",
+    "Creator": "Mercedes",
+    "Today Focus": "Not Today"
+   },
+   "archived": false,
+   "createdAt": "2026-10-27T20:56:20.776Z",
+   "updatedAt": "2026-10-27T20:56:20.776Z",
+   "lanes": {
+    "instagram": null,
+    "tiktok": null,
+    "youtube": {
+     "stage": "Idea",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "pinterest": null
+   }
+  },
+  {
+   "id": "247c1e4f5289",
+   "title": "Why posting more content doesn't fix a revenue problem",
+   "format": "YouTube long-form",
+   "hook": "You posted every day this month. Do you know which post, if any, actually made you money?",
+   "cta": "",
+   "notes": "Imported 2026-10-09 from the 9/14 launch package (Video 8). Full outline: products/1k-club/launch-package/[02-youtube-long-form.md](http://02-youtube-long-form.md).",
+   "product": "$1K Club",
+   "series": "",
+   "link": "",
+   "order": null,
+   "carouselId": "",
+   "mediaUsed": "",
+   "notionId": "3f5ab38f4c588185b5add442a229ea7c",
+   "fromNotion": {
+    "Target Length (min)": "8",
+    "Creator": "Mercedes",
+    "Today Focus": "Not Today"
+   },
+   "archived": false,
+   "createdAt": "2026-10-27T20:56:20.776Z",
+   "updatedAt": "2026-10-27T20:56:20.776Z",
+   "lanes": {
+    "instagram": null,
+    "tiktok": null,
+    "youtube": {
+     "stage": "Idea",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "pinterest": null
+   }
+  },
+  {
+   "id": "c826caa170e8",
+   "title": "Your offer might be the problem (not your marketing)",
+   "format": "YouTube long-form",
+   "hook": "Before you spend one more hour on content: what if the offer itself is the problem? Not your captions. The offer.",
+   "cta": "",
+   "notes": "Imported 2026-10-09 from the 9/14 launch package (Video 5). Full outline: products/1k-club/launch-package/[02-youtube-long-form.md](http://02-youtube-long-form.md).",
+   "product": "$1K Club",
+   "series": "",
+   "link": "",
+   "order": null,
+   "carouselId": "",
+   "mediaUsed": "",
+   "notionId": "3f5ab38f4c588195b473e71ff478e4e9",
+   "fromNotion": {
+    "Target Length (min)": "10",
+    "Creator": "Mercedes",
+    "Today Focus": "Not Today"
+   },
+   "archived": false,
+   "createdAt": "2026-10-27T20:56:20.776Z",
+   "updatedAt": "2026-10-27T20:56:20.776Z",
+   "lanes": {
+    "instagram": null,
+    "tiktok": null,
+    "youtube": {
+     "stage": "Idea",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "pinterest": null
+   }
+  },
+  {
+   "id": "70631fb7d0e2",
+   "title": "Stop guessing who your customer is",
+   "format": "YouTube long-form",
+   "hook": "If your customer research is a made-up 'Sarah, 28-40, loves self-care', that's a guess with a name on it. Here's what works instead.",
+   "cta": "",
+   "notes": "Imported 2026-10-09 from the 9/14 launch package (Video 6). Full outline: products/1k-club/launch-package/[02-youtube-long-form.md](http://02-youtube-long-form.md).",
+   "product": "$1K Club",
+   "series": "",
+   "link": "",
+   "order": null,
+   "carouselId": "",
+   "mediaUsed": "",
+   "notionId": "3f5ab38f4c5881b6b4eec84192a85cd7",
+   "fromNotion": {
+    "Target Length (min)": "11",
+    "Creator": "Mercedes",
+    "Today Focus": "Not Today"
+   },
+   "archived": false,
+   "createdAt": "2026-10-27T20:56:20.776Z",
+   "updatedAt": "2026-10-27T20:56:20.776Z",
+   "lanes": {
+    "instagram": null,
+    "tiktok": null,
+    "youtube": {
+     "stage": "Idea",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "pinterest": null
+   }
+  },
+  {
+   "id": "b1112b4017b9",
+   "title": "Why I built the $1K Club instead of another course",
+   "format": "YouTube long-form",
+   "hook": "Why I built the $1K Club, why it's priced the way it is, and why it's not a subscription.",
+   "cta": "",
+   "notes": "Imported 2026-10-09 from the 9/14 launch package (Video 9, originally titled 'Why I Built a $50 System'). OUTDATED PRICE: rewrite for $40 Club / $75 Club + Challenge. Full outline: products/1k-club/launch-package/[02-youtube-long-form.md](http://02-youtube-long-form.md).",
+   "product": "$1K Club",
+   "series": "",
+   "link": "",
+   "order": null,
+   "carouselId": "",
+   "mediaUsed": "",
+   "notionId": "3f5ab38f4c5881b8aa48e929529d54a6",
+   "fromNotion": {
+    "Target Length (min)": "10",
+    "Creator": "Mercedes",
+    "Today Focus": "Not Today"
+   },
+   "archived": false,
+   "createdAt": "2026-10-27T20:56:20.776Z",
+   "updatedAt": "2026-10-27T20:56:20.776Z",
+   "lanes": {
+    "instagram": null,
+    "tiktok": null,
+    "youtube": {
+     "stage": "Idea",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "pinterest": null
+   }
+  },
+  {
+   "id": "4add0d22d79e",
+   "title": "Inside the $1K Club: everything you get",
+   "format": "YouTube long-form",
+   "hook": "I'll walk you through the whole thing so you know exactly what you're getting before you buy.",
+   "cta": "",
+   "notes": "Imported 2026-10-09 from the 9/14 launch package (Video 10). OUTDATED: written for the $50, 7-module version. Rebuild around the Playbook + My Account + weekly Reel ideas, $40 / $75. Full outline: products/1k-club/launch-package/[02-youtube-long-form.md](http://02-youtube-long-form.md).",
+   "product": "$1K Club",
+   "series": "",
+   "link": "",
+   "order": null,
+   "carouselId": "",
+   "mediaUsed": "",
+   "notionId": "3f5ab38f4c5881d692cce03e153ae83c",
+   "fromNotion": {
+    "Target Length (min)": "12",
+    "Creator": "Mercedes",
+    "Today Focus": "Not Today"
+   },
+   "archived": false,
+   "createdAt": "2026-10-27T20:56:20.776Z",
+   "updatedAt": "2026-10-27T20:56:20.776Z",
+   "lanes": {
+    "instagram": null,
+    "tiktok": null,
+    "youtube": {
+     "stage": "Idea",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "pinterest": null
+   }
+  },
+  {
+   "id": "3d03d89e6e9d",
+   "title": "The hidden reason your traffic isn't converting",
+   "format": "YouTube long-form",
+   "hook": "You're getting visits and almost nothing turns into a sale. Here are the three places that's actually happening.",
+   "cta": "",
+   "notes": "Imported 2026-10-09 from the 9/14 launch package (Video 2). Full outline: products/1k-club/launch-package/[02-youtube-long-form.md](http://02-youtube-long-form.md).",
+   "product": "$1K Club",
+   "series": "",
+   "link": "",
+   "order": null,
+   "carouselId": "",
+   "mediaUsed": "",
+   "notionId": "3f5ab38f4c5881da86d3e39e5f28cf54",
+   "fromNotion": {
+    "Target Length (min)": "12",
+    "Creator": "Mercedes",
+    "Today Focus": "Not Today"
+   },
+   "archived": false,
+   "createdAt": "2026-10-27T20:56:20.776Z",
+   "updatedAt": "2026-10-27T20:56:20.776Z",
+   "lanes": {
+    "instagram": null,
+    "tiktok": null,
+    "youtube": {
+     "stage": "Idea",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "pinterest": null
+   }
+  },
+  {
+   "id": "4efde820edb7",
+   "title": "Free teardown: what's killing these websites' conversions",
+   "format": "YouTube long-form",
+   "hook": "I'm going to look at three public small business websites and walk through exactly what I think is costing them sales.",
+   "cta": "",
+   "notes": "Imported 2026-10-09 from the 9/14 launch package (Video 7). Screen-share, could double as a Live Tutorial. Get permission or use your own/demo sites. Full outline: products/1k-club/launch-package/[02-youtube-long-form.md](http://02-youtube-long-form.md).",
+   "product": "Scrolly Brand",
+   "series": "",
+   "link": "",
+   "order": null,
+   "carouselId": "",
+   "mediaUsed": "",
+   "notionId": "3f5ab38f4c5881e7b5f5d76c539b272b",
+   "fromNotion": {
+    "Target Length (min)": "15",
+    "Creator": "Mercedes",
+    "Today Focus": "Not Today"
+   },
+   "archived": false,
+   "createdAt": "2026-10-27T20:56:20.776Z",
+   "updatedAt": "2026-10-27T20:56:20.776Z",
+   "lanes": {
+    "instagram": null,
+    "tiktok": null,
+    "youtube": {
+     "stage": "Idea",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "pinterest": null
+   }
+  },
+  {
+   "id": "f64f29946967",
+   "title": "Reel: How many views does $1,000 take?",
+   "format": "Reel",
+   "hook": "On screen (first second, top of the 3:4 band): How many views does $1,000 take? / (read the caption)",
+   "cta": "Free Income Goal calculator ([scrollyseo.com/calculators/income-goal/](http://scrollyseo.com/calculators/income-goal/))",
+   "notes": "Drafted by Claude 2026-10-08 from Playbook $1K math. Mercedes to confirm she's OK with the free calculator as the CTA.\n\nFilming notes: Mercedes 2026-10-08: use a phone screen recording of her using the Income Goal calculator instead of b-roll. Record on iPhone (Control Center > Screen Recording) at [scrollyseo.com/calculators/income-goal/](http://scrollyseo.com/calculators/income-goal/).\n\nEdit notes: Footage = her calculator screen recording (to film). Hook and caption drafts above still apply; revisit once the recording exists.",
+   "product": "$1K Club",
+   "series": "",
+   "link": "",
+   "order": null,
+   "carouselId": "",
+   "mediaUsed": "",
+   "notionId": "3f3ab38f4c58810a8f98c8ee4ee8633c",
+   "fromNotion": {
+    "Timeliness": "Evergreen",
+    "Est Edit Time (min)": "10"
+   },
+   "archived": false,
+   "createdAt": "2026-10-27T20:56:20.776Z",
+   "updatedAt": "2026-10-27T20:56:20.776Z",
+   "lanes": {
+    "instagram": {
+     "stage": "Film",
+     "date": "",
+     "caption": "Your $1,000 goal tells you how many views you need, and the free Income Goal calculator on [scrollyseo.com](http://scrollyseo.com) works it out for you. Here's the math it does:\n\n1. $1,000 ÷ your average order value = the sales you need\n2. Sales ÷ the % of website visitors who buy = the visitors you need\n3. Visitors ÷ the % of viewers who click through to your site = the views you need\n\nThat last number is your target for the month. Plan your posts around it.",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "tiktok": null,
+    "youtube": null,
+    "pinterest": null
+   }
+  },
+  {
+   "id": "0a15ae5f669c",
+   "title": "Reel: 1 Reel idea = 3 Trial Reels",
+   "format": "Reel",
+   "hook": "On screen (first second): 1 Reel idea = 3 Trial Reels / (read the caption)",
+   "cta": "$1K Club Playbook",
+   "notes": "Drafted by Claude 2026-10-08 from Playbook ch. 9 (Trial Reel routine; Instagram help is the source there).\n\nEdit notes: Micro-Reel, 8s, no talking. [couch-writing-01.mp](http://couch-writing-01.mp)4 0:02–0:07 → [couch-lookup-smile-01.mp](http://couch-lookup-smile-01.mp)4 0:00–0:03. Text sits low (over the couch) so it doesn't cover her face. Preview: OneDrive/Scrolly Media/exports/reels/previews/[PREVIEW-trial-reels.mp](http://PREVIEW-trial-reels.mp)4 (no music; add a song in Edits).",
+   "product": "$1K Club",
+   "series": "",
+   "link": "",
+   "order": null,
+   "carouselId": "",
+   "mediaUsed": "videos/broll/[couch-writing-01.mp](http://couch-writing-01.mp)4, videos/broll/[couch-lookup-smile-01.mp](http://couch-lookup-smile-01.mp)4",
+   "notionId": "3f3ab38f4c588147b381dceecd1ab354",
+   "fromNotion": {
+    "Timeliness": "Evergreen",
+    "Est Edit Time (min)": "10"
+   },
+   "archived": false,
+   "createdAt": "2026-10-27T20:56:20.777Z",
+   "updatedAt": "2026-10-27T20:56:20.777Z",
+   "lanes": {
+    "instagram": {
+     "stage": "Edit",
+     "date": "",
+     "caption": "Post every new Reel idea as three Trial Reels, then share only the winner to your feed. The full routine is in the $1K Club Playbook. Here's how it works:\n\n1. Version 1: the Reel as you first made it.\n2. A new hook: same Reel, different opening line and first frame.\n3. A bigger edit: a different first clip, a new order, a tighter cut, or a different format.\n4. After 24 hours, compare views, shares, and comments.\n5. Open the best one's insights and tap Share to everyone.\n\nTrial Reels go to people who don't follow you yet, so each one is a free test.",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "tiktok": null,
+    "youtube": null,
+    "pinterest": null
+   }
+  },
+  {
+   "id": "102231ff1460",
+   "title": "Reel: Your first 3 seconds",
+   "format": "Reel",
+   "hook": "On screen (first second): 3 ways to stop the scroll in your first 3 seconds / (read the caption)",
+   "cta": "$1K Club Playbook",
+   "notes": "Drafted by Claude 2026-10-08 from Playbook ch. 9. Parked: Mercedes says a reel about visual hooks must itself open on a real visual hook, and the current b-roll doesn't. Needs new footage first.\n\nEdit notes: Edited clips, about 9s, no talking. Cut: [notebook-hand-01.mp](http://notebook-hand-01.mp)4 0:03–0:06 (pen on paper close-up) → [desk-typing-01.mp](http://desk-typing-01.mp)4 0:03–0:09 (typing at the desk). Change clips on the beat. Text on screen throughout. Export without music.",
+   "product": "$1K Club",
+   "series": "",
+   "link": "",
+   "order": null,
+   "carouselId": "",
+   "mediaUsed": "",
+   "notionId": "3f3ab38f4c5881dfa606d78b17e95fe2",
+   "fromNotion": {
+    "Timeliness": "Evergreen",
+    "Est Edit Time (min)": "15"
+   },
+   "archived": false,
+   "createdAt": "2026-10-27T20:56:20.777Z",
+   "updatedAt": "2026-10-27T20:56:20.777Z",
+   "lanes": {
+    "instagram": {
+     "stage": "Idea",
+     "date": "",
+     "caption": "Your Reel insights show a skip rate: the share of viewers who swiped away in the first 3 seconds. The $1K Club Playbook covers how to read it. Three ways to keep that number down:\n\n1. Start on the subject. Your product, your work, or your face, in the very first frame.\n2. Put the hook on screen in the first second, in your buyer's words.\n3. Give the eyes something to notice: movement, a close-up, or an unusual angle.",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "tiktok": null,
+    "youtube": null,
+    "pinterest": null
+   }
+  },
+  {
+   "id": "3f200b9ae58f",
+   "title": "Start making an income online — beginner audience to first sales",
+   "format": "YouTube long-form",
+   "hook": "Working concept: You can start generating your first sales online even with a beginner-sized audience — and build a system that makes the work more repeatable and streamlined.",
+   "cta": "$1K Club + Challenge",
+   "notes": "Working title/concept, not final copy. Focus on beginner audience → first sales → repeatable organic system/streamlined workflow. Avoid guarantees; frame as a practical path and show how Scrolly helps structure the work.",
+   "product": "$1K Club",
+   "series": "$1K Club / Beginner Path",
+   "link": "",
+   "order": null,
+   "carouselId": "",
+   "mediaUsed": "",
+   "notionId": "3ecab38f4c58812980d2d60901c84bec",
+   "fromNotion": {
+    "Est Film Time (min)": "20",
+    "Target Length (min)": "10",
+    "Creator": "Mercedes",
+    "Est Edit Time (min)": "30",
+    "Today Focus": "Today",
+    "Blog Status": "Planned"
+   },
+   "archived": false,
+   "createdAt": "2026-10-27T20:56:20.777Z",
+   "updatedAt": "2026-10-27T20:56:20.777Z",
+   "lanes": {
+    "instagram": null,
+    "tiktok": null,
+    "youtube": {
+     "stage": "Script",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "pinterest": null
+   }
+  },
+  {
+   "id": "b323238b6dab",
+   "title": "I built this for people tired of vague marketing advice.",
+   "format": "Reel",
+   "hook": "",
+   "cta": "See what's inside the Club",
+   "notes": "Founder rationale, concrete product preview, price and value proposition.\n\nAlso planned in Notion for: Facebook\n\nNotion formats: Reel, Short",
+   "product": "$1K Club",
+   "series": "$1K Club — Direct Sell",
+   "link": "",
+   "order": null,
+   "carouselId": "",
+   "mediaUsed": "",
+   "notionId": "3ecab38f4c588103a500df18aebb57fc",
+   "fromNotion": {
+    "Timeliness": "Evergreen",
+    "Creator": "Mercedes",
+    "Today Focus": "Not Today"
+   },
+   "archived": false,
+   "createdAt": "2026-10-27T20:56:20.777Z",
+   "updatedAt": "2026-10-27T20:56:20.777Z",
+   "lanes": {
+    "instagram": {
+     "stage": "Idea",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "tiktok": {
+     "stage": "Idea",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "youtube": {
+     "stage": "Idea",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "pinterest": {
+     "stage": "Needs Pins",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    }
+   }
+  },
+  {
+   "id": "0981516170e2",
+   "title": "What if you have literally no audience?",
+   "format": "Reel",
+   "hook": "",
+   "cta": "Start with the $40 Club plan",
+   "notes": "One offer; one buyer; one channel; one measurable action. Avoid promising a sale.\n\nAlso planned in Notion for: Facebook\n\nNotion formats: Reel, Short",
+   "product": "$1K Club",
+   "series": "$1K Objections",
+   "link": "",
+   "order": null,
+   "carouselId": "",
+   "mediaUsed": "",
+   "notionId": "3ecab38f4c58810ea7d1dff64610de5d",
+   "fromNotion": {
+    "Timeliness": "Evergreen",
+    "Creator": "Mercedes",
+    "Today Focus": "Not Today"
+   },
+   "archived": false,
+   "createdAt": "2026-10-27T20:56:20.778Z",
+   "updatedAt": "2026-10-27T20:56:20.778Z",
+   "lanes": {
+    "instagram": {
+     "stage": "Idea",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "tiktok": {
+     "stage": "Idea",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "youtube": {
+     "stage": "Idea",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "pinterest": {
+     "stage": "Needs Pins",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    }
+   }
+  },
+  {
+   "id": "278d651f1a0d",
+   "title": "How many customers would a handyman need for another $1K?",
+   "format": "Reel",
+   "hook": "",
+   "cta": "Calculate yours in the Club",
+   "notes": "Hypothetical $250/$500/$1K jobs → 4/2/1; explain lead assumptions clearly.\n\nAlso planned in Notion for: Facebook\n\nNotion formats: Reel, Short",
+   "product": "$1K Club",
+   "series": "Can This Business Make $1K?",
+   "link": "",
+   "order": null,
+   "carouselId": "",
+   "mediaUsed": "",
+   "notionId": "3ecab38f4c5881119904fa7ecf67f1ff",
+   "fromNotion": {
+    "Timeliness": "Evergreen",
+    "Creator": "Mercedes",
+    "Today Focus": "Not Today"
+   },
+   "archived": false,
+   "createdAt": "2026-10-27T20:56:20.778Z",
+   "updatedAt": "2026-10-27T20:56:20.778Z",
+   "lanes": {
+    "instagram": {
+     "stage": "Idea",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "tiktok": {
+     "stage": "Idea",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "youtube": {
+     "stage": "Idea",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "pinterest": {
+     "stage": "Needs Pins",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    }
+   }
+  },
+  {
+   "id": "1589144fb5e8",
+   "title": "Here's Scrolly's own $1K Math.",
+   "format": "Reel",
+   "hook": "",
+   "cta": "Join the Club / Challenge",
+   "notes": "Use $40 Club, $35 Challenge and $75 combined-purchase scenarios accurately; do not imply a bundle SKU unless one exists.\n\nAlso planned in Notion for: Facebook\n\nNotion formats: Reel, Short",
+   "product": "$1K Club",
+   "series": "$1K Math",
+   "link": "",
+   "order": null,
+   "carouselId": "",
+   "mediaUsed": "",
+   "notionId": "3ecab38f4c588119aee4c45f733f9a95",
+   "fromNotion": {
+    "Timeliness": "Evergreen",
+    "Creator": "Mercedes",
+    "Today Focus": "Not Today"
+   },
+   "archived": false,
+   "createdAt": "2026-10-27T20:56:20.778Z",
+   "updatedAt": "2026-10-27T20:56:20.778Z",
+   "lanes": {
+    "instagram": {
+     "stage": "Idea",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "tiktok": {
+     "stage": "Idea",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "youtube": {
+     "stage": "Idea",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "pinterest": {
+     "stage": "Needs Pins",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    }
+   }
+  },
+  {
+   "id": "158ef7762181",
+   "title": "Stop asking how many followers you need.",
+   "format": "Reel",
+   "hook": "",
+   "cta": "Run your numbers in the Club",
+   "notes": "Goal → offer price → buyer count → traffic/conversion assumption. Followers are only one traffic source.\n\nAlso planned in Notion for: Facebook\n\nNotion formats: Reel, Short",
+   "product": "$1K Club",
+   "series": "$1K Math",
+   "link": "",
+   "order": null,
+   "carouselId": "",
+   "mediaUsed": "",
+   "notionId": "3ecab38f4c588133a855e60115a85e19",
+   "fromNotion": {
+    "Timeliness": "Evergreen",
+    "Creator": "Mercedes",
+    "Today Focus": "Not Today"
+   },
+   "archived": false,
+   "createdAt": "2026-10-27T20:56:20.778Z",
+   "updatedAt": "2026-10-27T20:56:20.778Z",
+   "lanes": {
+    "instagram": {
+     "stage": "Idea",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "tiktok": {
+     "stage": "Idea",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "youtube": {
+     "stage": "Idea",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "pinterest": {
+     "stage": "Needs Pins",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    }
+   }
+  },
+  {
+   "id": "2f75cb67f695",
+   "title": "The first thing I want you to calculate inside the Club.",
+   "format": "Reel",
+   "hook": "",
+   "cta": "Join the $40 Club",
+   "notes": "Use only a verified live $1K Math screen/demo; no mockup substitution.\n\nAlso planned in Notion for: Facebook\n\nNotion formats: Reel, Short",
+   "product": "$1K Club",
+   "series": "$1K Club — Product Demo",
+   "link": "",
+   "order": null,
+   "carouselId": "",
+   "mediaUsed": "",
+   "notionId": "3ecab38f4c588144aff0cf2d3218a10d",
+   "fromNotion": {
+    "Timeliness": "Evergreen",
+    "Creator": "Mercedes",
+    "Today Focus": "Not Today"
+   },
+   "archived": false,
+   "createdAt": "2026-10-27T20:56:20.778Z",
+   "updatedAt": "2026-10-27T20:56:20.778Z",
+   "lanes": {
+    "instagram": {
+     "stage": "Idea",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "tiktok": {
+     "stage": "Idea",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "youtube": {
+     "stage": "Idea",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "pinterest": {
+     "stage": "Needs Pins",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    }
+   }
+  },
+  {
+   "id": "0981f0eda03b",
+   "title": "You don't need a viral video to make $1K.",
+   "format": "YouTube long-form",
+   "hook": "",
+   "cta": "Work out your path in the Club",
+   "notes": "100×$10, 20×$50, 10×$100, 4×$250. Buyers and fit matter, not just views.\n\nFilming notes: Talking head. Today's long-form #1 replacement for the SEO video. Expand the core idea into a 10-minute discussion that leads naturally to the $1K Club + Challenge.\n\nAlso planned in Notion for: Facebook",
+   "product": "$1K Club",
+   "series": "$1K Club / Objections",
+   "link": "",
+   "order": null,
+   "carouselId": "",
+   "mediaUsed": "",
+   "notionId": "3ecab38f4c5881799a9afbea06da08f1",
+   "fromNotion": {
+    "Est Film Time (min)": "20",
+    "Timeliness": "Evergreen",
+    "Target Length (min)": "10",
+    "Creator": "Mercedes",
+    "Est Edit Time (min)": "30",
+    "Today Focus": "Today",
+    "Blog Status": "Planned"
+   },
+   "archived": false,
+   "createdAt": "2026-10-27T20:56:20.778Z",
+   "updatedAt": "2026-10-27T20:56:20.778Z",
+   "lanes": {
+    "instagram": {
+     "stage": "Script",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "tiktok": {
+     "stage": "Script",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "youtube": {
+     "stage": "Script",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "pinterest": {
+     "stage": "Needs Pins",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    }
+   }
+  },
+  {
+   "id": "ca33d775770d",
+   "title": "Let's do the $1K Math on a T-shirt shop.",
+   "format": "Reel",
+   "hook": "",
+   "cta": "Work through your model",
+   "notes": "Hypothetical $25×40=$1K gross; distinguish revenue from contribution/profit.\n\nAlso planned in Notion for: Facebook\n\nNotion formats: Reel, Short",
+   "product": "$1K Club",
+   "series": "Can This Business Make $1K?",
+   "link": "",
+   "order": null,
+   "carouselId": "",
+   "mediaUsed": "",
+   "notionId": "3ecab38f4c58818eac63c960aa9e8fba",
+   "fromNotion": {
+    "Timeliness": "Evergreen",
+    "Creator": "Mercedes",
+    "Today Focus": "Not Today"
+   },
+   "archived": false,
+   "createdAt": "2026-10-27T20:56:20.778Z",
+   "updatedAt": "2026-10-27T20:56:20.778Z",
+   "lanes": {
+    "instagram": {
+     "stage": "Idea",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "tiktok": {
+     "stage": "Idea",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "youtube": {
+     "stage": "Idea",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "pinterest": {
+     "stage": "Needs Pins",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    }
+   }
+  },
+  {
+   "id": "3bb30b4c479c",
+   "title": "Here's the least glamorous way to plan a $1K month.",
+   "format": "Reel",
+   "hook": "",
+   "cta": "Work out your path",
+   "notes": "Paper math plus realistic sales assumptions; anti-hype framing.\n\nAlso planned in Notion for: Facebook\n\nNotion formats: Reel, Short",
+   "product": "$1K Club",
+   "series": "$1K Math",
+   "link": "",
+   "order": null,
+   "carouselId": "",
+   "mediaUsed": "",
+   "notionId": "3ecab38f4c58818fb6eaffb473923cd7",
+   "fromNotion": {
+    "Timeliness": "Evergreen",
+    "Creator": "Mercedes",
+    "Today Focus": "Not Today"
+   },
+   "archived": false,
+   "createdAt": "2026-10-27T20:56:20.778Z",
+   "updatedAt": "2026-10-27T20:56:20.778Z",
+   "lanes": {
+    "instagram": {
+     "stage": "Idea",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "tiktok": {
+     "stage": "Idea",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "youtube": {
+     "stage": "Idea",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "pinterest": {
+     "stage": "Needs Pins",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    }
+   }
+  },
+  {
+   "id": "a82a82ad724a",
+   "title": "I'm launching a $40 product with a tiny audience.",
+   "format": "Reel",
+   "hook": "",
+   "cta": "Follow the experiment; Club link if useful",
+   "notes": "Real baseline; testing Scrolly publicly; share actual output/visits/orders and attributable results. $1M gross is a stretch goal, not a forecast.\n\nAlso planned in Notion for: Facebook\n\nNotion formats: Reel, Short",
+   "product": "$1K Club",
+   "series": "Build in Public",
+   "link": "",
+   "order": null,
+   "carouselId": "",
+   "mediaUsed": "",
+   "notionId": "3ecab38f4c58819083abf2b95a59ed66",
+   "fromNotion": {
+    "Timeliness": "Evergreen",
+    "Creator": "Mercedes",
+    "Today Focus": "Not Today"
+   },
+   "archived": false,
+   "createdAt": "2026-10-27T20:56:20.779Z",
+   "updatedAt": "2026-10-27T20:56:20.779Z",
+   "lanes": {
+    "instagram": {
+     "stage": "Idea",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "tiktok": {
+     "stage": "Idea",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "youtube": {
+     "stage": "Idea",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "pinterest": {
+     "stage": "Needs Pins",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    }
+   }
+  },
+  {
+   "id": "19eee5d8695c",
+   "title": "The $1K Club is $40. Here's who it's for.",
+   "format": "Reel",
+   "hook": "",
+   "cta": "Join the Club; optional Challenge",
+   "notes": "Active offer/$1K gross goal; verified live inclusions; $40 Club; $35 Challenge.\n\nAlso planned in Notion for: Facebook\n\nNotion formats: Reel, Short",
+   "product": "$1K Club",
+   "series": "$1K Club — Direct Sell",
+   "link": "",
+   "order": null,
+   "carouselId": "",
+   "mediaUsed": "",
+   "notionId": "3ecab38f4c58819d95c3c96bd52f7308",
+   "fromNotion": {
+    "Timeliness": "Evergreen",
+    "Creator": "Mercedes",
+    "Today Focus": "Not Today"
+   },
+   "archived": false,
+   "createdAt": "2026-10-27T20:56:20.779Z",
+   "updatedAt": "2026-10-27T20:56:20.779Z",
+   "lanes": {
+    "instagram": {
+     "stage": "Idea",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "tiktok": {
+     "stage": "Idea",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "youtube": {
+     "stage": "Idea",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "pinterest": {
+     "stage": "Needs Pins",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    }
+   }
+  },
+  {
+   "id": "ac0105cc8f9a",
+   "title": "How far can organic content take this tiny business?",
+   "format": "Reel",
+   "hook": "",
+   "cta": "Follow the experiment",
+   "notes": "Founder diary using actual baseline and tracking; share real results.\n\nAlso planned in Notion for: Facebook\n\nNotion formats: Reel, Short",
+   "product": "$1K Club",
+   "series": "Build in Public",
+   "link": "",
+   "order": null,
+   "carouselId": "",
+   "mediaUsed": "",
+   "notionId": "3ecab38f4c5881a4abc9eb92e8c5745f",
+   "fromNotion": {
+    "Timeliness": "Evergreen",
+    "Creator": "Mercedes",
+    "Today Focus": "Not Today"
+   },
+   "archived": false,
+   "createdAt": "2026-10-27T20:56:20.779Z",
+   "updatedAt": "2026-10-27T20:56:20.779Z",
+   "lanes": {
+    "instagram": {
+     "stage": "Idea",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "tiktok": {
+     "stage": "Idea",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "youtube": {
+     "stage": "Idea",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "pinterest": {
+     "stage": "Needs Pins",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    }
+   }
+  },
+  {
+   "id": "27657b1e8f19",
+   "title": "A photographer's next $1K might be fewer bookings than you think.",
+   "format": "Reel",
+   "hook": "",
+   "cta": "Do your $1K Math",
+   "notes": "Hypothetical $250/$500/$1K packages → 4/2/1; include capacity and inquiry assumptions.\n\nAlso planned in Notion for: Facebook\n\nNotion formats: Reel, Short",
+   "product": "$1K Club",
+   "series": "Can This Business Make $1K?",
+   "link": "",
+   "order": null,
+   "carouselId": "",
+   "mediaUsed": "",
+   "notionId": "3ecab38f4c5881ab999bdb614c15c339",
+   "fromNotion": {
+    "Timeliness": "Evergreen",
+    "Creator": "Mercedes",
+    "Today Focus": "Not Today"
+   },
+   "archived": false,
+   "createdAt": "2026-10-27T20:56:20.779Z",
+   "updatedAt": "2026-10-27T20:56:20.779Z",
+   "lanes": {
+    "instagram": {
+     "stage": "Idea",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "tiktok": {
+     "stage": "Idea",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "youtube": {
+     "stage": "Idea",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "pinterest": {
+     "stage": "Needs Pins",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    }
+   }
+  },
+  {
+   "id": "71e76f4cb8bb",
+   "title": "Watch me put a real business into the $1K Math.",
+   "format": "Reel",
+   "hook": "",
+   "cta": "Try your own business in the Club",
+   "notes": "Actual demo using a hypothetical service; tests specificity.\n\nAlso planned in Notion for: Facebook\n\nNotion formats: Reel, Short",
+   "product": "$1K Club",
+   "series": "$1K Club — Product Demo",
+   "link": "",
+   "order": null,
+   "carouselId": "",
+   "mediaUsed": "",
+   "notionId": "3ecab38f4c5881fcbea7d1f2933e9e6c",
+   "fromNotion": {
+    "Timeliness": "Evergreen",
+    "Creator": "Mercedes",
+    "Today Focus": "Not Today"
+   },
+   "archived": false,
+   "createdAt": "2026-10-27T20:56:20.779Z",
+   "updatedAt": "2026-10-27T20:56:20.779Z",
+   "lanes": {
+    "instagram": {
+     "stage": "Idea",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "tiktok": {
+     "stage": "Idea",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "youtube": {
+     "stage": "Idea",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "pinterest": {
+     "stage": "Needs Pins",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    }
+   }
+  },
+  {
+   "id": "4828962aa9b8",
+   "title": "Today's short-form slot 4",
+   "format": "Reel",
+   "hook": "",
+   "cta": "",
+   "notes": "Can be original short-form or repurposed from today's long-form videos. Replace placeholder title once selected.\n\nAlso planned in Notion for: Facebook\n\nNotion formats: Reel, Short",
+   "product": "",
+   "series": "Daily Content",
+   "link": "",
+   "order": null,
+   "carouselId": "",
+   "mediaUsed": "",
+   "notionId": "3ecab38f4c588104ae9aeb35844649da",
+   "fromNotion": {
+    "Creator": "Mercedes",
+    "Today Focus": "Today"
+   },
+   "archived": false,
+   "createdAt": "2026-10-27T20:56:20.779Z",
+   "updatedAt": "2026-10-27T20:56:20.779Z",
+   "lanes": {
+    "instagram": {
+     "stage": "Idea",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "tiktok": {
+     "stage": "Idea",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "youtube": {
+     "stage": "Idea",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "pinterest": {
+     "stage": "Needs Pins",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    }
+   }
+  },
+  {
+   "id": "6cb25cc4d515",
+   "title": "Today's short-form slot 8",
+   "format": "Reel",
+   "hook": "",
+   "cta": "",
+   "notes": "Can be original short-form or repurposed from today's long-form videos. Replace placeholder title once selected.\n\nAlso planned in Notion for: Facebook\n\nNotion formats: Reel, Short",
+   "product": "",
+   "series": "Daily Content",
+   "link": "",
+   "order": null,
+   "carouselId": "",
+   "mediaUsed": "",
+   "notionId": "3ecab38f4c58811491ede8684c8659fb",
+   "fromNotion": {
+    "Creator": "Mercedes",
+    "Today Focus": "Today"
+   },
+   "archived": false,
+   "createdAt": "2026-10-27T20:56:20.779Z",
+   "updatedAt": "2026-10-27T20:56:20.779Z",
+   "lanes": {
+    "instagram": {
+     "stage": "Idea",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "tiktok": {
+     "stage": "Idea",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "youtube": {
+     "stage": "Idea",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "pinterest": {
+     "stage": "Needs Pins",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    }
+   }
+  },
+  {
+   "id": "fc6a8fab3da2",
+   "title": "Today's short-form slot 7",
+   "format": "Reel",
+   "hook": "",
+   "cta": "",
+   "notes": "Can be original short-form or repurposed from today's long-form videos. Replace placeholder title once selected.\n\nAlso planned in Notion for: Facebook\n\nNotion formats: Reel, Short",
+   "product": "",
+   "series": "Daily Content",
+   "link": "",
+   "order": null,
+   "carouselId": "",
+   "mediaUsed": "",
+   "notionId": "3ecab38f4c588123ad26cb524a00b32d",
+   "fromNotion": {
+    "Creator": "Mercedes",
+    "Today Focus": "Today"
+   },
+   "archived": false,
+   "createdAt": "2026-10-27T20:56:20.780Z",
+   "updatedAt": "2026-10-27T20:56:20.780Z",
+   "lanes": {
+    "instagram": {
+     "stage": "Idea",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "tiktok": {
+     "stage": "Idea",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "youtube": {
+     "stage": "Idea",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "pinterest": {
+     "stage": "Needs Pins",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    }
+   }
+  },
+  {
+   "id": "f960ad7042ab",
+   "title": "Daily accomplishments — short recap",
+   "format": "Reel",
+   "hook": "",
+   "cta": "",
+   "notes": "Required short #9. Summary/recap derived from today's third talking-head daily accomplishments/review video.\n\nAlso planned in Notion for: Facebook\n\nNotion formats: Reel, Short\n\nNotion status was Approved",
+   "product": "",
+   "series": "Daily DIY Accomplishments",
+   "link": "",
+   "order": null,
+   "carouselId": "",
+   "mediaUsed": "",
+   "notionId": "3ecab38f4c58813ea5fdd33ba61f9e94",
+   "fromNotion": {
+    "Creator": "Mercedes",
+    "Parent Content": "https://app.notion.com/p/3ecab38f4c588145a614ee1718bae16e",
+    "Today Focus": "Today"
+   },
+   "archived": false,
+   "createdAt": "2026-10-27T20:56:20.780Z",
+   "updatedAt": "2026-10-27T20:56:20.780Z",
+   "lanes": {
+    "instagram": {
+     "stage": "Idea",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "tiktok": {
+     "stage": "Idea",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "youtube": {
+     "stage": "Idea",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "pinterest": {
+     "stage": "Needs Pins",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    }
+   }
+  },
+  {
+   "id": "a0c937038c3b",
+   "title": "Today's short-form slot 6",
+   "format": "Reel",
+   "hook": "",
+   "cta": "",
+   "notes": "Can be original short-form or repurposed from today's long-form videos. Replace placeholder title once selected.\n\nAlso planned in Notion for: Facebook\n\nNotion formats: Reel, Short",
+   "product": "",
+   "series": "Daily Content",
+   "link": "",
+   "order": null,
+   "carouselId": "",
+   "mediaUsed": "",
+   "notionId": "3ecab38f4c588148b932c62d5a68965f",
+   "fromNotion": {
+    "Creator": "Mercedes",
+    "Today Focus": "Today"
+   },
+   "archived": false,
+   "createdAt": "2026-10-27T20:56:20.780Z",
+   "updatedAt": "2026-10-27T20:56:20.780Z",
+   "lanes": {
+    "instagram": {
+     "stage": "Idea",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "tiktok": {
+     "stage": "Idea",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "youtube": {
+     "stage": "Idea",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "pinterest": {
+     "stage": "Needs Pins",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    }
+   }
+  },
+  {
+   "id": "be6351d730ba",
+   "title": "Today's short-form slot 3",
+   "format": "Reel",
+   "hook": "",
+   "cta": "",
+   "notes": "Can be original short-form or repurposed from today's long-form videos. Replace placeholder title once selected.\n\nAlso planned in Notion for: Facebook\n\nNotion formats: Reel, Short",
+   "product": "",
+   "series": "Daily Content",
+   "link": "",
+   "order": null,
+   "carouselId": "",
+   "mediaUsed": "",
+   "notionId": "3ecab38f4c5881718bfeeffdbb374760",
+   "fromNotion": {
+    "Creator": "Mercedes",
+    "Today Focus": "Today"
+   },
+   "archived": false,
+   "createdAt": "2026-10-27T20:56:20.780Z",
+   "updatedAt": "2026-10-27T20:56:20.780Z",
+   "lanes": {
+    "instagram": {
+     "stage": "Idea",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "tiktok": {
+     "stage": "Idea",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "youtube": {
+     "stage": "Idea",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "pinterest": {
+     "stage": "Needs Pins",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    }
+   }
+  },
+  {
+   "id": "aa5372d89f95",
+   "title": "Today's short-form slot 1",
+   "format": "Reel",
+   "hook": "",
+   "cta": "",
+   "notes": "Can be original short-form or repurposed from today's long-form videos. Replace placeholder title once selected.\n\nAlso planned in Notion for: Facebook\n\nNotion formats: Reel, Short",
+   "product": "",
+   "series": "Daily Content",
+   "link": "",
+   "order": null,
+   "carouselId": "",
+   "mediaUsed": "",
+   "notionId": "3ecab38f4c5881858debc2a295d09f40",
+   "fromNotion": {
+    "Creator": "Mercedes",
+    "Today Focus": "Today"
+   },
+   "archived": false,
+   "createdAt": "2026-10-27T20:56:20.780Z",
+   "updatedAt": "2026-10-27T20:56:20.780Z",
+   "lanes": {
+    "instagram": {
+     "stage": "Idea",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "tiktok": {
+     "stage": "Idea",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "youtube": {
+     "stage": "Idea",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "pinterest": {
+     "stage": "Needs Pins",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    }
+   }
+  },
+  {
+   "id": "cee8003acb8e",
+   "title": "Today's short-form slot 5",
+   "format": "Reel",
+   "hook": "",
+   "cta": "",
+   "notes": "Can be original short-form or repurposed from today's long-form videos. Replace placeholder title once selected.\n\nAlso planned in Notion for: Facebook\n\nNotion formats: Reel, Short",
+   "product": "",
+   "series": "Daily Content",
+   "link": "",
+   "order": null,
+   "carouselId": "",
+   "mediaUsed": "",
+   "notionId": "3ecab38f4c5881bbb0ffe1c64388bb16",
+   "fromNotion": {
+    "Creator": "Mercedes",
+    "Today Focus": "Today"
+   },
+   "archived": false,
+   "createdAt": "2026-10-27T20:56:20.780Z",
+   "updatedAt": "2026-10-27T20:56:20.780Z",
+   "lanes": {
+    "instagram": {
+     "stage": "Idea",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "tiktok": {
+     "stage": "Idea",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "youtube": {
+     "stage": "Idea",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "pinterest": {
+     "stage": "Needs Pins",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    }
+   }
+  },
+  {
+   "id": "2ac2d1c274e7",
+   "title": "Today's short-form slot 2",
+   "format": "Reel",
+   "hook": "",
+   "cta": "",
+   "notes": "Can be original short-form or repurposed from today's long-form videos. Replace placeholder title once selected.\n\nAlso planned in Notion for: Facebook\n\nNotion formats: Reel, Short",
+   "product": "",
+   "series": "Daily Content",
+   "link": "",
+   "order": null,
+   "carouselId": "",
+   "mediaUsed": "",
+   "notionId": "3ecab38f4c5881cd98e6c6e91c3f3b49",
+   "fromNotion": {
+    "Creator": "Mercedes",
+    "Today Focus": "Today"
+   },
+   "archived": false,
+   "createdAt": "2026-10-27T20:56:20.780Z",
+   "updatedAt": "2026-10-27T20:56:20.780Z",
+   "lanes": {
+    "instagram": {
+     "stage": "Idea",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "tiktok": {
+     "stage": "Idea",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "youtube": {
+     "stage": "Idea",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "pinterest": {
+     "stage": "Needs Pins",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    }
+   }
+  },
+  {
+   "id": "67376eedc82b",
+   "title": "Why high-intent traffic still matters",
+   "format": "Reel",
+   "hook": "",
+   "cta": "",
+   "notes": "Repurposing opportunity from SEO long-form: contrast discovery/attention with high-intent search behavior using sourced claims.\n\nNotion formats: Reel, Short, Carousel",
+   "product": "Scrolly Brand",
+   "series": "",
+   "link": "",
+   "order": null,
+   "carouselId": "",
+   "mediaUsed": "",
+   "notionId": "3ecab38f4c588132a68acaf1d8320f24",
+   "fromNotion": {
+    "Timeliness": "Evergreen",
+    "Creator": "Mercedes"
+   },
+   "archived": false,
+   "createdAt": "2026-10-27T20:56:20.780Z",
+   "updatedAt": "2026-10-27T20:56:20.780Z",
+   "lanes": {
+    "instagram": {
+     "stage": "Idea",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "tiktok": {
+     "stage": "Idea",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "youtube": {
+     "stage": "Idea",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "pinterest": {
+     "stage": "Needs Pins",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    }
+   }
+  },
+  {
+   "id": "93af4385f8e7",
+   "title": "Building the $10K diagnostic dashboard in public",
+   "format": "Reel",
+   "hook": "",
+   "cta": "",
+   "notes": "Document real product development and explain what the diagnostic is designed to solve without overstating capability before it exists.\n\nNotion formats: Reel, Short",
+   "product": "$10K Club",
+   "series": "",
+   "link": "",
+   "order": null,
+   "carouselId": "",
+   "mediaUsed": "",
+   "notionId": "3ecab38f4c58819fa993f27e18b31bd0",
+   "fromNotion": {
+    "Timeliness": "Timely",
+    "Creator": "Mercedes"
+   },
+   "archived": false,
+   "createdAt": "2026-10-27T20:56:20.781Z",
+   "updatedAt": "2026-10-27T20:56:20.781Z",
+   "lanes": {
+    "instagram": {
+     "stage": "Idea",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "tiktok": {
+     "stage": "Idea",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "youtube": {
+     "stage": "Idea",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "pinterest": null
+   }
+  },
+  {
+   "id": "a247324a33a6",
+   "title": "What it actually takes to make your first $1K",
+   "format": "Reel",
+   "hook": "",
+   "cta": "",
+   "notes": "Use transparent $1K Math and scenario assumptions; distinguish planning math from guarantees.\n\nNotion formats: Reel, Short, Carousel",
+   "product": "$1K Club",
+   "series": "",
+   "link": "",
+   "order": null,
+   "carouselId": "",
+   "mediaUsed": "",
+   "notionId": "3ecab38f4c5881a2af31c87a0a1f7c09",
+   "fromNotion": {
+    "Timeliness": "Evergreen",
+    "Creator": "Mercedes"
+   },
+   "archived": false,
+   "createdAt": "2026-10-27T20:56:20.781Z",
+   "updatedAt": "2026-10-27T20:56:20.781Z",
+   "lanes": {
+    "instagram": {
+     "stage": "Idea",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "tiktok": {
+     "stage": "Idea",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "youtube": {
+     "stage": "Idea",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "pinterest": {
+     "stage": "Needs Pins",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    }
+   }
+  },
+  {
+   "id": "6752a7fff151",
+   "title": "$1K Plan calculator walkthrough",
+   "format": "Reel",
+   "hook": "",
+   "cta": "",
+   "notes": "Show the actual calculator/math on screen; useful product proof without inventing a case study.\n\nNotion formats: Reel, Short",
+   "product": "$1K Club",
+   "series": "",
+   "link": "",
+   "order": null,
+   "carouselId": "",
+   "mediaUsed": "",
+   "notionId": "3ecab38f4c5881f8b23fe4a0f7f9083b",
+   "fromNotion": {
+    "Timeliness": "Evergreen",
+    "Creator": "Mercedes"
+   },
+   "archived": false,
+   "createdAt": "2026-10-27T20:56:20.781Z",
+   "updatedAt": "2026-10-27T20:56:20.781Z",
+   "lanes": {
+    "instagram": {
+     "stage": "Idea",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "tiktok": {
+     "stage": "Idea",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "youtube": {
+     "stage": "Idea",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "pinterest": {
+     "stage": "Needs Pins",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    }
+   }
+  },
+  {
+   "id": "c650ec4e921e",
+   "title": "Would your life change with $1K/month reliably?",
+   "format": "Reel",
+   "hook": "",
+   "cta": "",
+   "notes": "Better suited to a Reel/Short than a 10-minute long-form. $1K Club positioning; no guarantees or invented success claims.\n\nFilming notes: Talking head. Today's long-form #2. Position around reliable extra revenue without guarantees.\n\nNotion formats: Reel, Short\n\nNotion status was Approved",
+   "product": "$1K Club",
+   "series": "$1K Club / Growth",
+   "link": "",
+   "order": null,
+   "carouselId": "",
+   "mediaUsed": "",
+   "notionId": "3ecab38f4c5881229d95c55a50212a69",
+   "fromNotion": {
+    "Timeliness": "Evergreen",
+    "Creator": "Mercedes",
+    "Today Focus": "Not Today",
+    "Blog Status": "Not Planned"
+   },
+   "archived": false,
+   "createdAt": "2026-10-27T20:56:20.781Z",
+   "updatedAt": "2026-10-27T20:56:20.781Z",
+   "lanes": {
+    "instagram": null,
+    "tiktok": null,
+    "youtube": {
+     "stage": "Idea",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "pinterest": null
+   }
+  },
+  {
+   "id": "8f333e08c393",
+   "title": "Scrolly build-in-public series",
+   "format": "Reel",
+   "hook": "",
+   "cta": "",
+   "notes": "Document the real build rather than inventing a case study. Can cover product, website, content-system and automation work.\n\nFilming notes: Talking head. Today's long-form #3: daily accomplishments/review. Create one summary Reel from this video.\n\nNotion formats: Reel, Short",
+   "product": "Scrolly Brand",
+   "series": "Daily DIY Accomplishments",
+   "link": "",
+   "order": null,
+   "carouselId": "",
+   "mediaUsed": "",
+   "notionId": "3ecab38f4c588145a614ee1718bae16e",
+   "fromNotion": {
+    "Est Film Time (min)": "20",
+    "Timeliness": "Evergreen",
+    "Target Length (min)": "10",
+    "Repurposed Children": "https://app.notion.com/p/3ecab38f4c58813ea5fdd33ba61f9e94",
+    "Creator": "Mercedes",
+    "Est Edit Time (min)": "30",
+    "Today Focus": "Today",
+    "Blog Status": "Not Planned"
+   },
+   "archived": false,
+   "createdAt": "2026-10-27T20:56:20.781Z",
+   "updatedAt": "2026-10-27T20:56:20.781Z",
+   "lanes": {
+    "instagram": {
+     "stage": "Script",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "tiktok": {
+     "stage": "Script",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "youtube": {
+     "stage": "Script",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "pinterest": null
+   }
+  },
+  {
+   "id": "8200ddc4609a",
+   "title": "Is SEO even worth it going into 2027?",
+   "format": "YouTube long-form",
+   "hook": "If AI can answer a question without sending someone to your website, TikTok is becoming a search engine for younger shoppers, and publishers are watching Google traffic disappear — is SEO even worth doing going into 2027?",
+   "cta": "",
+   "notes": "Save for later. Do not prioritize while current content focus is selling the $1K Club + Challenge.\n\nFilming notes: Talking head. Today's long-form #1. Keep delivery conversational and engaging; use sourced evidence.\n\nNotion status was Approved",
+   "product": "Scrolly Brand",
+   "series": "Scrolly Growth / Search",
+   "link": "",
+   "order": null,
+   "carouselId": "",
+   "mediaUsed": "",
+   "notionId": "3ecab38f4c5881cebb67f1c0f89f1ae3",
+   "fromNotion": {
+    "Est Film Time (min)": "20",
+    "Timeliness": "Timely",
+    "Target Length (min)": "10",
+    "Creator": "Mercedes",
+    "Est Edit Time (min)": "30",
+    "Today Focus": "Not Today",
+    "Blog Status": "Planned"
+   },
+   "archived": false,
+   "createdAt": "2026-10-27T20:56:20.781Z",
+   "updatedAt": "2026-10-27T20:56:20.781Z",
+   "lanes": {
+    "instagram": null,
+    "tiktok": null,
+    "youtube": {
+     "stage": "Idea",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
     "pinterest": null
    }
   }
