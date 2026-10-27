@@ -102,7 +102,7 @@
     {
       "keyword": "QUIZ",
       "freebie": "Offer Quiz + Next Move Quiz (website)",
-      "url": "https://theambitiondepartment.com/quiz/",
+      "url": "https://theambitiondepartment.com/quiz/?utm_source=instagram&utm_medium=dm&utm_campaign=quiz",
       "leadsTo": "$1K Club",
       "live": true,
       "dmApproved": true,
@@ -111,7 +111,7 @@
     {
       "keyword": "MATH",
       "freebie": "$1K Math calculator (website)",
-      "url": "https://theambitiondepartment.com/calculators/income-goal/",
+      "url": "https://theambitiondepartment.com/calculators/income-goal/?utm_source=instagram&utm_medium=dm&utm_campaign=math",
       "leadsTo": "$1K Club",
       "live": true,
       "dmApproved": true,
@@ -147,7 +147,7 @@
     {
       "keyword": "PLAN",
       "freebie": "The plan for your first $1,000 ($1K Club page)",
-      "url": "https://theambitiondepartment.com/1k-club/",
+      "url": "https://theambitiondepartment.com/1k-club/?utm_source=instagram&utm_medium=dm&utm_campaign=plan",
       "leadsTo": "$1K Club + Challenge",
       "live": false,
       "dmApproved": true,
@@ -157,7 +157,7 @@
     {
       "keyword": "CHALLENGE",
       "freebie": "$1K Challenge page",
-      "url": "https://theambitiondepartment.com/1k-club/",
+      "url": "https://theambitiondepartment.com/1k-club/?utm_source=instagram&utm_medium=dm&utm_campaign=challenge",
       "leadsTo": "$1K Club + Challenge",
       "live": false,
       "dmApproved": true,
