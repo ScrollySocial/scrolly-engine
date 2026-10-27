@@ -28,7 +28,7 @@ Links in captions can't be tapped. Links in DMs can. And because the person aske
 
 Picking a keyword
 Use one short word that's easy to spell on a phone: MATH, QUIZ, GUIDE.
-Match it to what they'll get, so the keyword explains itself.
+Match it to what they'll get, so people know what they're asking for.
 Say it near the start of your caption and again at the end.
 
 Writing the DM

@@ -127,15 +127,17 @@ ${phone(p, 290, st)}${arrowToPhone(st, g, 290)}${sparkles(st, g)}<div class="dom
 export const C = (p) => {
   const st = p.style, g = GROUNDS[st.ground], h = HEAD[st.head];
   const mark = (i) => (st.marker === 'tick' ? `<b class="mk dd2">${DOOD.tick}</b>` : st.marker === 'hand' ? `<b class="mk dd2">${HAND_DIGIT[i]}</b>` : `<b class="mk">${i + 1}</b>`);
+  // More than three items (e.g. a five-check list): tighter rows and a smaller number so the list stays on the Pin.
+  const many = p.items.length > 3;
   const bigNum = st.marker === 'hand' ? `<span style="font-family:Doodles">${HAND_DIGIT[Number(p.num) - 1] || esc(p.num)}</span>` : esc(p.num);
   return `<style>${BASE(g, st)}
   .col { position: absolute; top: 150px; left: 80px; right: 80px; z-index: 3; }
   .h { position: static; ${st.align === 'center' ? 'text-align:center;' : ''} }
-  .num { font: 400 300px/.8 Anton, Impact, sans-serif; color: ${g.accent}; }
+  .num { font: 400 ${many ? 200 : 300}px/.8 Anton, Impact, sans-serif; color: ${g.accent}; }
   .t { font: ${h.css.replace('{s}', Math.round(h.size * .62))}; ${h.upper ? 'text-transform: uppercase;' : ''} margin-top: 14px; }
   .ser { font: 400 70px/1.05 ${SERIF[st.serif]}; margin-top: 18px; color: ${g.sub}; }
-  ol { list-style: none; margin-top: 90px; padding: 0; }
-  li { display: flex; gap: 32px; align-items: center; padding: 38px ${st.cards ? '36px' : '0'}; ${st.cards ? `background: ${tint(g.dark ? '#ffffff' : '#ffffff', g.dark ? .1 : .6)}; border-radius: 22px; margin-bottom: 22px;` : `border-top: 3px solid ${tint(g.ink, .5)};`} font: 600 62px/1.15 Jost; }
+  ol { list-style: none; margin-top: ${many ? 50 : 90}px; padding: 0; }
+  li { display: flex; gap: 32px; align-items: center; padding: ${many ? 22 : 38}px ${st.cards ? '36px' : '0'}; ${st.cards ? `background: ${tint(g.dark ? '#ffffff' : '#ffffff', g.dark ? .1 : .6)}; border-radius: 22px; margin-bottom: 22px;` : `border-top: 3px solid ${tint(g.ink, .5)};`} font: 600 ${many ? 50 : 62}px/1.15 Jost; }
   .mk { font: 400 80px/1 Anton, Impact, sans-serif; color: ${g.accent}; min-width: 60px; text-align: center; }
   .dd2 { font-family: Doodles; font-weight: 400; }
 </style>${shape(st, g)}<div class="col"><div class="h"><div class="num">${bigNum}</div><div class="t">${accentLine(p.head, { ...st, accentMode: st.accentMode === 'underline' ? 'underline' : 'none' })}</div><div class="ser">${esc(p.serif)}</div></div>
