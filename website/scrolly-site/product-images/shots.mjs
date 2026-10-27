@@ -27,7 +27,7 @@ const SHOTS = [
   { slug: 'chat-manager', layout: 'pair', html: phone(comments, 'l') + phone(dms, 'r') },
   { slug: 'halloween-reel-pack', layout: 'fan', html: phone(poster('h3.jpg'), 'l') + phone(poster('h5.jpg'), 'r') + phone(poster('h6.jpg'), 'c') },
   { slug: 'product-reel-pack', layout: 'fan', html: phone(poster('p12.jpg'), 'l') + phone(poster('p22.jpg'), 'r') + phone(poster('p10.jpg'), 'c') },
-  { slug: 'seo-site-audit', layout: 'print', html: `<div class="sheet back"></div><div class="sheet front"><img src="${UP}cover-seo-site-audit-tad.webp" alt=""></div>` },
+  { slug: 'seo-site-audit', layout: 'print', html: `<div class="sheet back"></div><div class="sheet front"><img src="${pathToFileURL(path.join(here, '../assets/cover-seo-site-audit-v3.webp')).href}" alt=""></div>` },
 ];
 
 const css = `
