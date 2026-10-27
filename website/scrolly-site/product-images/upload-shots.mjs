@@ -1,6 +1,6 @@
 // Usage (from website/scrolly-site): node product-images/upload-shots.mjs
 // Uploads the shared-style product photos from out-v3/ (made by shots.mjs) and sets each as its WooCommerce product's main image.
-// Old images stay in the media library (ids printed), so this is reversible. 2026-10-27, Mercedes's OK.
+// Pass slugs to upload only those (e.g. seo-site-audit). Old images stay in the media library (ids printed), so this is reversible. 2026-10-27, Mercedes's OK.
 import fs from 'fs';
 import { wp } from '../wp-client.mjs';
 
@@ -11,7 +11,8 @@ const SHOTS = [
   { id: 24, name: 'SEO Site Audit', slug: 'seo-site-audit', alt: 'The Ambition Department SEO Site Audit report' },
 ];
 
-for (const s of SHOTS) {
+const only = process.argv.slice(2);
+for (const s of SHOTS.filter((x) => !only.length || only.includes(x.slug))) {
   const before = (await wp(`/wp-json/wc/v3/products/${s.id}`)).json;
   if (before.name !== s.name) throw new Error(`product ${s.id} is "${before.name}", expected "${s.name}"`);
   const file = `product-images/out-v3/${s.slug}.webp`;

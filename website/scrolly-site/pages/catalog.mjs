@@ -13,14 +13,16 @@ const LIVE = fs.readFileSync(path.join(here, '..', 'src', 'live-cards.js'), 'utf
 const PRODUCTS = {
   shopify: { id: 58, name: 'Shopify SEO Workbook', price: '$59', tag: 'For your online store', blurb: 'Research keywords, organize your store, improve product pages, and build a practical SEO plan.', page: '/shopify-seo-workbook/' },
   pinterest: { id: 69, name: 'Pinterest SEO Workbook', price: '$29', tag: 'For visual discovery', blurb: 'Turn audience research into an intentional keyword, board, Pin, and publishing system.', page: '/pinterest-seo-workbook/' },
-  audit: { id: 24, name: 'SEO Site Audit', price: '$299', tag: 'Understand your priorities', blurb: 'Explore a personalized analysis of your site and a prioritized roadmap for what to improve.', page: '/seo-site-audit/' },
+  audit: { id: 24, name: 'SEO Site Audit', price: '$299', tag: 'Understand your priorities', blurb: 'Explore a personalized analysis of your site and a prioritized roadmap for what to improve.', page: '/seo-site-audit/',
+    // The product photo is now a square shot of the report; this panel shows the flat v3 cover (media 1956, 2026-10-27).
+    cover: { src: 'https://theambitiondepartment.com/wp-content/uploads/2026/10/cover-seo-site-audit-v3-600x900.webp', w: 600, h: 900, alt: 'The Ambition Department SEO Site Audit cover' } },
 };
 const live = (p) => digitalProducts.find((d) => d.id === p.id) || {};
 const arrow = ' <span aria-hidden="true">→</span>';
 
 // One product: cover on a quiet panel, audience line, name, blurb, price, then "View details" + "Add to cart".
 function product(p, { buy = true } = {}) {
-  const im = live(p).image;
+  const im = p.cover || live(p).image;
   const cover = im ? `<img src="${im.src}" alt="${esc(im.alt || p.name + ' cover')}" width="${im.w}" height="${im.h}" loading="lazy">` : `<span class="soon">${esc(p.name)}</span>`;
   const price = live(p).price || p.price;
   return `<article class="cat-prod"><a class="cv" href="${p.page}" tabindex="-1" aria-hidden="true">${cover}</a><p class="s3-label tag">${p.tag}</p><h3><a href="${p.page}">${p.name}</a></h3><p>${p.blurb}</p><p class="amt">${price}</p><div class="acts"><a class="s3-btn black" href="${p.page}" aria-label="View details: ${esc(p.name)}">View details</a>${buy ? `<a class="s3-btn" href="/?add-to-cart=${p.id}" aria-label="Add to cart: ${esc(p.name)}">Add to cart</a>` : ''}</div></article>`;

@@ -101,12 +101,6 @@
   "w": 1200,
   "h": 630
  },
- "seo-site-audit": {
-  "id": 1901,
-  "url": "https://theambitiondepartment.com/wp-content/uploads/2026/10/ambition-og-seo-site-audit.jpg",
-  "w": 1200,
-  "h": 630
- },
  "shopify-seo-workbook": {
   "id": 1902,
   "url": "https://theambitiondepartment.com/wp-content/uploads/2026/10/ambition-og-shopify-seo-workbook.jpg",
@@ -140,6 +134,12 @@
  "product-reels": {
   "id": 1909,
   "url": "https://theambitiondepartment.com/wp-content/uploads/2026/10/ambition-og-product-reels.jpg",
+  "w": 1200,
+  "h": 630
+ },
+ "seo-site-audit": {
+  "id": 1959,
+  "url": "https://theambitiondepartment.com/wp-content/uploads/2026/10/ambition-og-seo-site-audit-1.jpg",
   "w": 1200,
   "h": 630
  }
