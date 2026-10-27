@@ -33,7 +33,7 @@ const PAGES = [
     { layout: 'A', ...PAL.blush, big: ['Price', 'check'], serif: 'How many customers does each price need?', chip: 'Free calculator',
       title: 'Price Check: How Many Customers Does Each Price Need?', desc: 'Compare three price points side by side and see how many customers each one needs to reach your goal. A free pricing calculator for small businesses.', keywords: 'pricing calculator, how to price products, pricing strategy, small business pricing' },
     { layout: 'D', ...PAL.navy, serif: 'Compare three prices side by side', sub: 'See how many customers each one needs to reach your goal.', btn_t: 'Free calculator',
-      title: 'Compare Three Prices Side by Side', desc: 'Not sure what to charge? Put in three prices and see how many customers each one needs to reach your goal. Free calculator, no maths needed.', keywords: 'what to charge, pricing your products, pricing calculator, small business' },
+      title: 'Compare Three Prices Side by Side', desc: 'Not sure what to charge? Put in three prices and see how many customers each one needs to reach your goal. Free calculator, no math needed.', keywords: 'what to charge, pricing your products, pricing calculator, small business' },
   ] },
   { link: '/calculators/sales-goal/', board: B.goals, pins: [
     { layout: 'A', ...PAL.blush, big: ['Sales', 'goal'], serif: 'per month, per week and per day', chip: 'Free calculator',
