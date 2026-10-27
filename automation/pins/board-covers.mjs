@@ -1,69 +1,75 @@
 // Renders the 13 Pinterest board covers (1000x1500 Pins; Pinterest crops a centre square for the cover)
 // plus profile-preview.png showing the square crops side by side, the way the profile grid shows them.
-// Usage: node board-covers.mjs   Output: pins/out/board-covers/
+// Usage: node board-covers.mjs [navy|cream]   (one ground for the whole set; default navy)
+// Output: pins/out/board-covers/<ground>/
 import { writeFileSync, readFileSync, mkdirSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { launch, fileUrl, esc } from '../carousels/lib/common.mjs';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
-const OUT = path.join(HERE, 'out/board-covers');
 const LOGO = readFileSync(path.join(HERE, '../../Scrolly Organic Engine/brand/assets/ambition-department-logo.svg'), 'utf8');
 
 // Brand grounds (brand/visual-system.md). Hot pink means Mercedes, so it stays off product boards.
+// Mercedes 2026-10-27: one colour for the whole set, no bright sky-blue grounds.
 const GROUNDS = {
-  navy: { bg: '#0a1930', ink: '#ffffff', sub: '#4da3ff' },
-  sky: { bg: '#4da3ff', ink: '#0a1930', sub: '#0a1930' },
-  mist: { bg: '#dfe4f0', ink: '#0a1930', sub: '#4a4e66' },
-  cream: { bg: '#f7f3ec', ink: '#0a1930', sub: '#4a4e66' },
+  navy: { bg: '#0a1930', ink: '#ffffff', serif: '#dfe4f0', chipBg: '#4da3ff', chipInk: '#0a1930', grain: 0.10 },
+  cream: { bg: '#f7f3ec', ink: '#0a1930', serif: '#0a1930', chipBg: '#0a1930', chipInk: '#ffffff', grain: 0.07 },
 };
+const gName = process.argv[2] || 'navy';
+const c = GROUNDS[gName];
+if (!c) { console.log('Usage: node board-covers.mjs [navy|cream]'); process.exit(1); }
+const OUT = path.join(HERE, 'out/board-covers', gName);
 
-// Exact live board names (pin-generator-plan.md). Big words read at thumbnail size; the full name sits under the cover.
+// Exact live board names (pin-generator-plan.md). Pin anatomy from her references: serif lead-in, heavy sans keyword, chip.
 const BOARDS = [
-  { file: '01-reels', board: 'Instagram Reels Ideas for Small Business', big: ['Reels'], sub: 'ideas for small business', g: 'navy' },
-  { file: '02-capcut', board: 'CapCut Reel Templates', big: ['CapCut'], sub: 'Reel templates', g: 'sky' },
-  { file: '03-growth', board: 'Instagram Growth Tips for Small Business', big: ['Instagram', 'growth'], sub: 'tips for small business', g: 'mist' },
-  { file: '04-carousels', board: 'Instagram Carousel and Canva Templates', big: ['Carousel'], sub: 'and Canva templates', g: 'cream' },
-  { file: '05-planning', board: 'Social Media Content Planning', big: ['Content', 'planning'], sub: 'for social media', g: 'sky' },
-  { file: '06-dm', board: 'Instagram DM Automation', big: ['DM', 'automation'], sub: 'for Instagram', g: 'navy' },
-  { file: '07-ai', board: 'AI Tools for Small Business', big: ['AI tools'], sub: 'for small business', g: 'cream' },
-  { file: '08-pricing', board: 'Pricing Your Products and Services', big: ['Pricing'], sub: 'products and services', g: 'mist' },
-  { file: '09-goals', board: 'Small Business Goal Setting', big: ['Goal', 'setting'], sub: 'for small business', g: 'navy' },
-  { file: '10-seo', board: 'Website SEO for Small Business', big: ['Website', 'SEO'], sub: 'for small business', g: 'sky' },
-  { file: '11-marketing', board: 'Business Marketing Ideas', big: ['Marketing', 'ideas'], sub: 'for business', g: 'mist' },
-  { file: '12-holiday', board: 'Holiday Marketing Ideas for Small Business', big: ['Holiday', 'marketing'], sub: 'ideas for small business', g: 'cream' },
-  { file: '13-pinterest', board: 'Pinterest Marketing for Small Business', big: ['Pinterest', 'marketing'], sub: 'for small business', g: 'navy' },
+  { file: '01-reels', board: 'Instagram Reels Ideas for Small Business', top: 'Instagram', big: ['Reels'], chip: 'Ideas for small business' },
+  { file: '02-capcut', board: 'CapCut Reel Templates', top: 'Editable', big: ['CapCut'], chip: 'Reel templates' },
+  { file: '03-growth', board: 'Instagram Growth Tips for Small Business', top: 'Instagram', big: ['Growth'], chip: 'Tips for small business' },
+  { file: '04-carousels', board: 'Instagram Carousel and Canva Templates', top: 'Instagram', big: ['Carousels'], chip: 'Canva templates' },
+  { file: '05-planning', board: 'Social Media Content Planning', top: 'Social media', big: ['Content', 'planning'], chip: 'Plan a week in one sitting' },
+  { file: '06-dm', board: 'Instagram DM Automation', top: 'Instagram', big: ['DM', 'automation'], chip: 'Comment to DM' },
+  { file: '07-ai', board: 'AI Tools for Small Business', top: 'Small business', big: ['AI tools'], chip: 'ChatGPT and Claude' },
+  { file: '08-pricing', board: 'Pricing Your Products and Services', top: 'Your products', big: ['Pricing'], chip: 'Free calculators' },
+  { file: '09-goals', board: 'Small Business Goal Setting', top: 'Small business', big: ['Goal', 'setting'], chip: 'Free calculators' },
+  { file: '10-seo', board: 'Website SEO for Small Business', top: 'Website', big: ['SEO'], chip: 'For small business' },
+  { file: '11-marketing', board: 'Business Marketing Ideas', top: 'Business', big: ['Marketing'], chip: 'Ideas' },
+  { file: '12-holiday', board: 'Holiday Marketing Ideas for Small Business', top: 'Holiday', big: ['Marketing'], chip: 'Black Friday to Christmas' },
+  { file: '13-pinterest', board: 'Pinterest Marketing for Small Business', top: 'Small business', big: ['Pinterest'], chip: 'Marketing tips' },
 ];
 
 const W = 1000, H = 1500, SQ = 1000; // the cover crop is the middle 1000x1000
 
-const coverHtml = (b) => {
-  const c = GROUNDS[b.g];
-  return `<!doctype html><html><head><meta charset="utf-8">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@500;800&display=block">
+// Paper grain so flat colour reads as printed stock, not a web panel.
+const GRAIN = `url("data:image/svg+xml;base64,${Buffer.from(`<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .5 0 0 0 0 .5 0 0 0 0 .5 0 0 0 ${c.grain} 0'/></filter><rect width='100%' height='100%' filter='url(#n)'/></svg>`).toString('base64')}")`;
+
+const coverHtml = (b) => `<!doctype html><html><head><meta charset="utf-8">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@600;800&family=Instrument+Serif&display=block">
 <style>
   * { margin: 0; box-sizing: border-box; }
-  body { width: ${W}px; height: ${H}px; background: ${c.bg}; color: ${c.ink}; font-family: Jost, Arial, sans-serif; overflow: hidden; }
+  body { width: ${W}px; height: ${H}px; background-color: ${c.bg}; background-image: ${GRAIN}; color: ${c.ink}; font-family: Jost, Arial, sans-serif; overflow: hidden; }
   .sq { position: absolute; left: 0; top: ${(H - SQ) / 2}px; width: ${SQ}px; height: ${SQ}px;
-        display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 0 90px; }
-  .big { font-weight: 800; text-transform: uppercase; line-height: .9; letter-spacing: -.01em; }
+        display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 0 80px 90px; }
+  .top { font-family: 'Instrument Serif', Georgia, serif; font-size: 120px; line-height: 1; color: ${c.serif}; margin-bottom: 18px; }
+  .big { font-weight: 800; text-transform: uppercase; line-height: .88; letter-spacing: -.015em; }
   .big span { display: block; white-space: nowrap; }
-  .sub { margin-top: 44px; font-weight: 500; font-size: 74px; line-height: 1.1; color: ${c.sub}; }
-  .logo { position: absolute; bottom: 70px; left: 50%; transform: translateX(-50%); width: 230px; color: ${c.ink}; }
+  .chip { margin-top: 48px; background: ${c.chipBg}; color: ${c.chipInk}; font-weight: 600; font-size: 58px; line-height: 1;
+          padding: 24px 46px 27px; border-radius: 999px; white-space: nowrap; }
+  .logo { position: absolute; bottom: 60px; left: 50%; transform: translateX(-50%); width: 210px; color: ${c.ink}; }
   .logo svg { width: 100%; height: auto; display: block; }
 </style></head><body>
   <div class="sq">
+    <div class="top">${esc(b.top)}</div>
     <div class="big">${b.big.map((w) => `<span>${esc(w)}</span>`).join('')}</div>
-    <div class="sub">${esc(b.sub)}</div>
+    <div class="chip">${esc(b.chip)}</div>
     <div class="logo">${LOGO}</div>
   </div>
 <script>
-  // Largest size where every line fits the safe width and the block leaves room for the sub line and logo.
-  const big = document.querySelector('.big'), maxW = ${SQ - 180}, maxH = ${b.big.length > 1 ? 420 : 300};
-  let s = 260; big.style.fontSize = s + 'px';
+  // Largest size where every line fits the safe width and the block leaves room for the lead-in, chip and logo.
+  const big = document.querySelector('.big'), maxW = ${SQ - 160}, maxH = ${b.big.length > 1 ? 380 : 260};
+  let s = 300; big.style.fontSize = s + 'px';
   while (s > 60 && ([...big.children].some((l) => l.scrollWidth > maxW) || big.offsetHeight > maxH)) { s -= 2; big.style.fontSize = s + 'px'; }
 </script></body></html>`;
-};
 
 const previewHtml = () => `<!doctype html><html><head><meta charset="utf-8">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@500;700&display=block">
@@ -86,8 +92,10 @@ for (const b of BOARDS) {
   writeFileSync(f, coverHtml(b));
   await pg.goto(fileUrl(f), { waitUntil: 'networkidle0' });
   await pg.evaluate(() => document.fonts.ready);
-  const ok = await pg.evaluate(() => [...document.fonts].some((x) => x.family.replace(/"/g, '') === 'Jost' && x.status === 'loaded'));
-  if (!ok) console.log(`WARN ${b.file}: Jost did not load`);
+  const missing = await pg.evaluate(() => ['Jost', 'Instrument Serif'].filter((n) => ![...document.fonts].some((x) => x.family.replace(/"/g, '') === n && x.status === 'loaded')));
+  if (missing.length) console.log(`WARN ${b.file}: ${missing.join(', ')} did not load`);
+  const chipW = await pg.evaluate(() => document.querySelector('.chip').offsetWidth);
+  if (chipW > 840) console.log(`WARN ${b.file}: chip is ${chipW}px wide, shorten it`);
   await pg.screenshot({ path: path.join(OUT, b.file + '.png') });
   console.log('cover  ' + b.file);
 }
