@@ -1,7 +1,7 @@
 // Instagram single-image posts. Caption text: automation/planner/data/captions/<id>.md. Pins: automation/pins/batch-02.mjs.
 // link = the site page the post teaches (its Pins link there, never to Instagram while a page fits).
 export const POSTS = [
-  { id: '2026-11-02-three-prices', link: '/calculators/price-to-customers/', tile: 'prices', image: {
+  { id: '2026-11-02-three-prices', link: '/calculators/profit/', tile: 'prices', image: {
     head: ['One $1,000 goal,', 'three prices'],
     rows: [['$15', '67', 'customers'], ['$35', '29', 'customers'], ['$60', '17', 'customers']],
     circle: '17',
