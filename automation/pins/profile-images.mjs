@@ -9,17 +9,41 @@ import { launch, fileUrl } from '../carousels/lib/common.mjs';
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const OUT = path.join(HERE, 'out/profile');
 const COVERS = path.join(HERE, 'out/board-covers/navy');
-const LOGO = readFileSync(path.join(HERE, '../../Scrolly Organic Engine/brand/assets/ambition-department-logo.svg'), 'utf8');
+// The website header logo: same paths, with "Ambition" as its own path (.amb) so it can be sky blue (Mercedes 2026-10-27).
+const LOGO = readFileSync(path.join(HERE, '../../website/scrolly-site/chrome/logo.html'), 'utf8')
+  .replace(/ aria-hidden="true" focusable="false"/, '');
 
-const MIST = '#dfe4f0', NAVY = '#0a1930';
+const MIST = '#dfe4f0', NAVY = '#0a1930', SKY = '#4da3ff';
 const GRAIN = `url("data:image/svg+xml;base64,${Buffer.from(`<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .5 0 0 0 0 .5 0 0 0 0 .5 0 0 0 .07 0'/></filter><rect width='100%' height='100%' filter='url(#n)'/></svg>`).toString('base64')}")`;
-const BASE = `* { margin: 0; box-sizing: border-box; } body { background-color: ${MIST}; background-image: ${GRAIN}; color: ${NAVY}; overflow: hidden; } svg { display: block; width: 100%; height: auto; }`;
+const BASE = `* { margin: 0; box-sizing: border-box; } body { background-color: ${MIST}; background-image: ${GRAIN}; color: ${NAVY}; overflow: hidden; } svg { display: block; width: 100%; height: auto; } .amb { fill: ${SKY}; }`;
 
-// Profile photo: navy logo on blue mist, kept inside the circle crop.
+// Profile photo: logo on blue mist, as big as the circle crop allows. The page measures the logo's actual ink
+// (not its box, whose corners are empty), centres it, and scales it until the farthest inked pixel sits just inside the circle.
 const photoHtml = `<!doctype html><html><head><meta charset="utf-8"><style>${BASE}
-  body { width: 1000px; height: 1000px; display: flex; align-items: center; justify-content: center; }
-  .logo { width: 820px; margin-top: -20px; }
-</style></head><body><div class="logo">${LOGO}</div></body></html>`;
+  body { width: 1000px; height: 1000px; position: relative; }
+  .logo { position: absolute; transform-origin: 0 0; width: 1591px; }
+</style></head><body><div class="logo">${LOGO}</div>
+<script>
+  window.fit = (async () => {
+    const svg = document.querySelector('.logo svg');
+    const src = new XMLSerializer().serializeToString(svg).replace('currentColor', '#000');
+    const img = new Image(); img.src = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(src)));
+    await img.decode();
+    const W = 1591, H = 540, cv = Object.assign(document.createElement('canvas'), { width: W, height: H });
+    const cx = cv.getContext('2d'); cx.drawImage(img, 0, 0, W, H);
+    const a = cx.getImageData(0, 0, W, H).data, pts = [];
+    let x0 = W, x1 = 0, y0 = H, y1 = 0;
+    for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) if (a[(y * W + x) * 4 + 3] > 40) {
+      pts.push(x, y); if (x < x0) x0 = x; if (x > x1) x1 = x; if (y < y0) y0 = y; if (y > y1) y1 = y;
+    }
+    const mx = (x0 + x1) / 2, my = (y0 + y1) / 2;
+    let r = 0; for (let i = 0; i < pts.length; i += 2) r = Math.max(r, Math.hypot(pts[i] - mx, pts[i + 1] - my));
+    const s = 470 / r; // 30px breathing room inside the 500px radius
+    const el = document.querySelector('.logo');
+    el.style.transform = 'translate(' + (500 - mx * s) + 'px,' + (500 - my * s) + 'px) scale(' + s + ')';
+    return Math.round(W * s);
+  })();
+</script></body></html>`;
 
 // Cover: logo + homepage line on the left, three board-cover Pins fanned on the right.
 const pins = ['01-reels', '08-pricing', '05-planning'].map((f) => fileUrl(path.join(COVERS, f + '.png')));
@@ -48,6 +72,7 @@ for (const [name, html, w, h] of [['profile-photo', photoHtml, 1000, 1000], ['pr
   await pg.setViewport({ width: w, height: h, deviceScaleFactor: 1 });
   await pg.goto(fileUrl(f), { waitUntil: 'networkidle0' });
   await pg.evaluate(() => document.fonts.ready);
+  if (name === 'profile-photo') console.log(`logo   ${await pg.evaluate(() => window.fit)}px wide`);
   await pg.screenshot({ path: path.join(OUT, name + '.png') });
   console.log('image  ' + name);
 }
