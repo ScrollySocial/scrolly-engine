@@ -14,6 +14,7 @@ body{background:#f7f3ec}
 .scxg-hdr{position:relative;z-index:60;display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:24px;min-height:96px;padding:16px var(--gut);background:var(--cream)}
 .scxg-logo{display:block;justify-self:start;color:var(--navy);text-decoration:none}
 .scxg-wm{display:block;font:400 2.2rem/1 var(--serif);letter-spacing:-.01em}
+.scxg-hdr .scxg-logo,.scxg-hdr .scxg-logo:visited,.scxg-hdr .scxg-logo:hover{color:var(--navy)!important}
 .scxg-wm svg{display:block;width:4.6em;height:auto} /* The Ambition Department wordmark (2026-10-26); sized by the font-size rules on .scxg-wm */
 @media(max-width:700px){.scxg-hdr .scxg-wm svg{width:140px}}
 /* "Ambition" in the header logo is sky blue, the button colour (Mercedes, 2026-10-26, done with the rename); "The" and "DEPARTMENT" stay navy.
@@ -112,7 +113,9 @@ body{background:#f7f3ec}
 .scxg-ftr .social a{width:44px;height:44px;display:grid;place-items:center;color:#fff}
 .scxg-ftr .social a:hover{color:var(--sky)}
 .scxg-ftr .social svg{width:22px;height:22px}
-.scxg-ftr .fnav{display:grid;grid-template-columns:1.3fr repeat(4,1fr);gap:38px;align-items:start;padding:16px 0 8px}
+.scxg-ftr .fnav{display:grid;grid-template-columns:1.2fr repeat(3,1fr) 1.6fr;gap:38px;align-items:start;padding:16px 0 8px}
+.scxg-ftr .fid .social{margin-top:18px;gap:6px;margin-left:-10px}
+.scxg-ftr .fsign .signup{max-width:360px}
 .scxg-ftr .fnav .logo .scxg-wm{font-size:2.4rem}
 .scxg-ftr .col h2{font-family:var(--sans)!important;font-weight:700!important;line-height:1.3;margin:0 0 8px;font-size:15px;letter-spacing:.14em;text-transform:uppercase;color:#fff}
 .scxg-ftr .col a,.scxg-ftr .col .scxg-soon{display:block;padding:4px 0;font-size:18px;color:var(--mist)}
@@ -120,7 +123,7 @@ body{background:#f7f3ec}
 .scxg-ftr .col .scxg-soon{color:var(--mist-ink)}
 .scxg-ftr .fbot{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:4px 36px;padding:4px 0 12px;font-size:17px;color:var(--mist-ink)}
 .scxg-ftr .fbot a{display:inline-flex;align-items:center;min-height:44px;color:var(--mist-ink)}
-@media(max-width:1000px){.scxg-ftr .fhero{grid-template-columns:1fr;min-height:0;padding-top:calc(max(100vw,1150px) * .345)}.scxg-ftr .ftiger{width:125%;max-width:none;margin-left:-22%}.scxg-ftr .fbrand{padding:0 20px 28px}.scxg-ftr .fquote{white-space:normal}.scxg-ftr .fnav{grid-template-columns:repeat(2,1fr)}.scxg-ftr .fnav>.logo{grid-column:1/-1}}
+@media(max-width:1000px){.scxg-ftr .fhero{grid-template-columns:1fr;min-height:0;padding-top:calc(max(100vw,1150px) * .345)}.scxg-ftr .ftiger{width:125%;max-width:none;margin-left:-22%}.scxg-ftr .fbrand{padding:0 20px 28px}.scxg-ftr .fquote{white-space:normal}.scxg-ftr .fnav{grid-template-columns:repeat(2,1fr)}.scxg-ftr .fnav>.fid,.scxg-ftr .fnav>.fsign{grid-column:1/-1}}
 @media(max-width:700px){.scxg-ftr .w{width:calc(100% - 32px)}.scxg-ftr .fbrand{padding:0 16px 24px}.scxg-ftr .fquote{font-size:2.6rem}.scxg-ftr .fbot{gap:4px 24px}}
 /* WooCommerce block cart/checkout buttons: sky pill, navy text (white on sky fails contrast), no underline */
 body .wc-block-cart__submit-button,body .wc-block-components-checkout-place-order-button,body .wc-block-components-button:not(.is-link){color:#0a1930!important;text-decoration:none!important;border-radius:999px!important}

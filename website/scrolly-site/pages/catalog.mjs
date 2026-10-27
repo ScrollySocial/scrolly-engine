@@ -36,7 +36,7 @@ const close = (btn = 'Explore Clubs + Challenges', href = '/#clubs') =>
 const CSS = `
 .s3 .cat-hero{padding:clamp(40px,6vw,96px) 0 clamp(16px,3vw,40px)}
 .s3 .cat-hero h1{font-size:clamp(3rem,6vw,6.2rem)!important;line-height:.94!important;letter-spacing:-.05em!important}
-.s3 .cat-hero h1 em{display:block}
+.s3 .cat-hero h1 em{display:block;width:fit-content}
 .s3 .cat-hero .s3-lede{margin-top:26px}
 .s3 .cat-acts{display:flex;flex-wrap:wrap;gap:14px;margin-top:34px}
 .s3 .cat-hero .s3-fine{margin-top:18px}
@@ -86,7 +86,7 @@ function digital() {
   const body = `
 ${hero({ h1: 'Good tools.', em: 'Useful next steps.', lede: 'Workbooks and tools to help you research, plan, and get your business found.', btn: 'Browse the products', href: '#products', fine: 'Revenue figures are goals, not guaranteed results.' })}
 <section class="s3-sec" id="products"><div class="s3-wrap">
- <h2 class="s3-h2">The products</h2>
+ <h2 class="s3-h2 s3-sr">The products</h2>
  <div class="rail cat-tees dig" data-live="${CATS.digital}" data-live-map="${map}">${digitalCards(digitalProducts)}</div>
 </div></section>
 ${close()}`;

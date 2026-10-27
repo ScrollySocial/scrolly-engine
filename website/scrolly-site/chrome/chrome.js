@@ -72,13 +72,14 @@
     [].slice.call(document.querySelectorAll('.scxg-drawer .top>li')).forEach(function(li){var a=li.querySelector(':scope>a');if(!a)return;
       var kids=[].slice.call(li.querySelectorAll(':scope>ul>li>a'));if(!kids.length)kids=[a];
       cols+='<div class="col"><h2>'+esc(a.textContent)+'</h2><ul>'+kids.map(function(k){return '<li>'+lk(k)+'</li>'}).join('')+'</ul></div>'});
-    var contact='';
-    if(CFG.signup)contact+='<form class="signup" method="post" action="'+esc(CFG.signup.action)+'" target="_blank"><label for="scxg-email" style="position:absolute;left:-9999px">Your email</label><input id="scxg-email" type="email" name="'+esc(CFG.signup.field)+'" placeholder="Your email" autocomplete="email" required><input type="hidden" name="ml-submit" value="1"><input type="hidden" name="anticsrf" value="true"><button type="submit" aria-label="Subscribe">→</button></form><p class="signup-note" role="status">Organic marketing tips by email. Unsubscribe anytime.</p>';
-    if(CFG.social.length)contact+='<div class="social">'+CFG.social.map(function(s){return '<a href="'+esc(s[1])+'" aria-label="The Ambition Department on '+esc(s[0])+' (opens in a new tab)" rel="noopener" target="_blank">'+(ICO[s[0]]||esc(s[0]))+'</a>'}).join('')+'</div>';
+    /* 2026-10-26 (Mercedes): social icons sit under the logo; the signup is the last column of the logo row. */
+    var sign='',soc='';
+    if(CFG.signup)sign+='<form class="signup" method="post" action="'+esc(CFG.signup.action)+'" target="_blank"><label for="scxg-email" style="position:absolute;left:-9999px">Your email</label><input id="scxg-email" type="email" name="'+esc(CFG.signup.field)+'" placeholder="Your email" autocomplete="email" required><input type="hidden" name="ml-submit" value="1"><input type="hidden" name="anticsrf" value="true"><button type="submit" aria-label="Subscribe">→</button></form><p class="signup-note" role="status">Organic marketing tips by email. Unsubscribe anytime.</p>';
+    if(CFG.social.length)soc+='<div class="social">'+CFG.social.map(function(s){return '<a href="'+esc(s[1])+'" aria-label="The Ambition Department on '+esc(s[0])+' (opens in a new tab)" rel="noopener" target="_blank">'+(ICO[s[0]]||esc(s[0]))+'</a>'}).join('')+'</div>';
     if(CFG.art){f.style.setProperty('--ftr-sky','url("'+CFG.art.sky+'")');f.style.setProperty('--ftr-strips','url("'+CFG.art.strips+'")');f.style.setProperty('--ftr-stars','url("'+CFG.art.stars+'")')}
     f.innerHTML=(CFG.art?'<div class="fstars" aria-hidden="true"></div>':'')
-      +'<div class="fhero"><img class="ftiger" src="'+CFG.tiger+'" alt="" width="'+CFG.tw+'" height="'+CFG.th+'" loading="lazy" decoding="async"><div class="fbrand"><p class="fquote">'+esc(CFG.quote[0])+' <em>'+esc(CFG.quote[1])+'</em></p>'+(contact?'<div class="fcontact">'+contact+'</div>':'')+'</div></div>'
-      +'<div class="w fnav">'+(logo?logo.outerHTML:'')+cols+'</div>'
+      +'<div class="fhero"><img class="ftiger" src="'+CFG.tiger+'" alt="" width="'+CFG.tw+'" height="'+CFG.th+'" loading="lazy" decoding="async"><div class="fbrand"><p class="fquote">'+esc(CFG.quote[0])+' <em>'+esc(CFG.quote[1])+'</em></p></div></div>'
+      +'<div class="w fnav">'+'<div class="fid">'+(logo?logo.outerHTML:'')+soc+'</div>'+cols+(sign?'<div class="col fsign"><h2>Tips by email</h2>'+sign+'</div>':'')+'</div>'
       +'<div class="w fbot">'+legal.join('')+'<span>© '+new Date().getFullYear()+' The Ambition Department</span></div>';
     f.classList.add('v3');
     /* Signup posts to MailerLite in the background and shows the result in place (no new tab); a failed request falls back to a normal submit. */
