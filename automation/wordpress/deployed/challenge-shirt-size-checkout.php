@@ -1,7 +1,7 @@
 /**
  * Scrolly: Challenge shirt size at checkout (block checkout).
  *
- * Adds a required "Stripe shirt size (Adult Men's)" dropdown to the WooCommerce block checkout, shown ONLY when the cart holds
+ * Adds a required "Earned shirt size (US men's sizing)" dropdown to the WooCommerce block checkout, shown ONLY when the cart holds
  * the $1K Club + Challenge variation (583) or the members-only Challenge re-buy (280). Club-only buyers never see it.
  * The chosen size is saved on the order and shows in wp-admin order screens and order emails automatically, so Mercedes can
  * place the Printify order by hand once a member's $1K is verified.
@@ -53,7 +53,7 @@ $scrolly_shirt_size_field = function () {
 	woocommerce_register_additional_checkout_field(
 		array(
 			'id'          => 'scrolly/shirt-size',
-			'label'       => "Preferred winner shirt size (US men's sizing)",
+			'label'       => "Earned shirt size (US men's sizing)",
 			'location'    => 'order', // under the Challenge upgrade on the $1K checkout (k1-checkout.php); stored as _wc_other/scrolly/shirt-size
 			'type'        => 'select',
 			'placeholder' => 'Select your size',

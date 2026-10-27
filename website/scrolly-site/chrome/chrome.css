@@ -131,6 +131,14 @@ body .wc-block-cart__submit-button *,body .wc-block-components-checkout-place-or
 body .wc-block-cart__submit-button,body .wc-block-components-checkout-place-order-button{background:#4da3ff!important;border-color:#4da3ff!important}
 body .wc-block-cart__submit-button:hover,body .wc-block-components-checkout-place-order-button:hover{background:#0a1930!important;border-color:#0a1930!important}
 body .wc-block-cart__submit-button:hover *,body .wc-block-components-checkout-place-order-button:hover *{color:#fff!important}
+/* 2026-10-27: an older theme rule kept Place Order orange on every checkout except the $1K one; these win on specificity.
+   Same for the tick boxes and radio dots, which a min-height rule stretched to 20x44. */
+html body .wc-block-checkout .wc-block-components-button.wc-block-components-checkout-place-order-button{background:#4da3ff!important;border:0!important;border-radius:999px!important;color:#0a1930!important;font:800 15px/1 "Jost",Arial,sans-serif!important;letter-spacing:.14em!important;text-transform:uppercase!important;min-height:60px}
+html body .wc-block-checkout .wc-block-components-button.wc-block-components-checkout-place-order-button:hover{background:#0a1930!important}
+html body .wc-block-checkout .wc-block-components-button.wc-block-components-checkout-place-order-button:hover *{color:#fff!important}
+html body .wc-block-checkout :is(input[type=checkbox],input[type=radio]){min-height:0!important;flex:none}
+html body .wc-block-checkout .wc-block-components-checkbox__input[type=checkbox]{width:22px!important;height:22px!important;border-radius:5px!important;border:1.5px solid #0a1930!important}
+html body .wc-block-checkout .wc-block-components-radio-control__input[type=radio]{width:20px!important;height:20px!important}
 /* cart button + cart drawer (built by chrome.js from the WooCommerce Store API) */
 .scxg-cart{position:relative;width:44px;height:44px;flex:none;display:flex;align-items:center;justify-content:center;border:0;background:transparent;color:#0a1930;padding:0;cursor:pointer}
 .scxg-cart svg{width:26px;height:26px}
@@ -159,9 +167,9 @@ body .wc-block-cart__submit-button:hover *,body .wc-block-components-checkout-pl
 .scxg-cd .go:hover{background:#0a1930;color:#fff!important}
 .scxg-cd .vc{display:block;text-align:center;margin-top:12px;font-weight:500;font-size:18px;color:#0a1930!important}
 
-/* checkout: "Your stripe shirt" heading above the shirt-size field (tagged by chrome.js) */
+/* checkout: "Your earned shirt" heading above the shirt-size field (tagged by chrome.js) */
 .scxg-shirt-sec{margin-top:30px!important}
-.scxg-shirt-sec::before{content:"Your stripe shirt";display:block;margin:0 0 6px;font-family:"Instrument Serif",Georgia,'Times New Roman',serif;font-weight:400;font-size:26px;line-height:1.15;letter-spacing:-.01em;color:#0a1930}
+.scxg-shirt-sec::before{content:"Your earned shirt";display:block;margin:0 0 6px;font-family:"Instrument Serif",Georgia,'Times New Roman',serif;font-weight:400;font-size:26px;line-height:1.15;letter-spacing:-.01em;color:#0a1930}
 .scxg-shirt-sec::after{content:"Pick your size now. It ships free in the lower 48 when you hit $1,000.";display:block;margin-top:8px;font-size:17px;line-height:1.4;color:#0a1930}
 
 /* WP admin bar (logged-in admins only): v3.css's theme layer turns every input[type=submit] into a pill, which made the

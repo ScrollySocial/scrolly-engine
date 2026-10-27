@@ -41,7 +41,7 @@
     document.addEventListener('keydown',function(e){if(e.key==='Escape'){if(cd.classList.contains('open'))cset(false)}});
     load()}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',cart);else cart();
-  /* Checkout: give the Challenge shirt-size field (registered in the Contact section) its own "Your stripe shirt" heading.
+  /* Checkout: give the Challenge shirt-size field (registered in the Contact section) its own "Your earned shirt" heading.
      Finds the select by id, climbs to the row that sits beside the email field, and tags it; CSS draws the heading. */
   function shirtSec(){var s=document.querySelector('select[id*="shirt-size"]');if(!s)return;var el=s;
     while(el.parentElement){if(el.parentElement.querySelector('input[type="email"]'))break;el=el.parentElement}

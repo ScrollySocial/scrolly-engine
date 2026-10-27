@@ -22,7 +22,7 @@ if ( ! defined( 'SCROLLY_K1CO_V' ) ) {
 	define( 'SCROLLY_K1CO_PRODUCT', 279 );
 	define( 'SCROLLY_K1CO_CLUB', 582 );
 	define( 'SCROLLY_K1CO_BUNDLE', 583 );
-	// Media library attachment ids: checkout collage, winner shirt front, winner shirt back.
+	// Media library attachment ids: checkout collage, earned shirt front, earned shirt back (0 = none).
 	if ( ! defined( 'SCROLLY_K1CO_MEDIA' ) ) {
 		define( 'SCROLLY_K1CO_MEDIA', array( 'collage' => 1773, 'front' => 1845, 'back' => 0 ) );
 	}
@@ -237,12 +237,12 @@ if ( ! defined( 'SCROLLY_K1CO_V' ) ) {
 		};
 
 		$intro = '<section class="k1co-intro">'
-			. '<h1>Earn your first stripe.</h1>'
+			. '<h1>Go after your first $1,000.</h1>'
 			. '<p class="k1co-sub">Choose the $1K Club plan or add your first 30-day Challenge attempt. Make the next move for your business.</p>'
 			. '<div class="k1co-art">' . scrolly_k1co_img( 'collage', 'The Ambition Department $1K Club Playbook collage with desktop and phone previews', 'k1co-collage' ) . '</div>'
 			. '<div class="k1co-tracker" aria-hidden="true"><div class="k1co-tracker-head"><strong>Your first $1K</strong><strong class="k1co-target">$1K</strong></div>'
 			. '<div class="k1co-track"><span></span></div>'
-			. '<div class="k1co-stages"><span>01 Start</span><span>02 Build</span><span>03 Progress</span><span>04 Verify</span><span>05 Stripe earned</span></div></div>'
+			. '<div class="k1co-stages"><span>01 Start</span><span>02 Build</span><span>03 Progress</span><span>04 Verify</span><span>05 Shirt earned</span></div></div>'
 			. '</section>';
 
 		$extras = '<section class="k1co-extras">'
@@ -250,9 +250,9 @@ if ( ! defined( 'SCROLLY_K1CO_V' ) ) {
 			. '<p class="k1co-tick"><b aria-hidden="true">✓</b><span>The $1K Club Playbook, setup checklist, and worksheets.</span></p>'
 			. '<p class="k1co-tick"><b aria-hidden="true">✓</b><span>A Reel safe-zone guide, a carousel template, and the $1K Math calculator.</span></p>'
 			. '<p class="k1co-tick"><b aria-hidden="true">✓</b><span>Add the Challenge for a personal $1K Plan, weekly check-ins, and 25 current Reel ideas each week.</span></p>'
-			. '<div class="k1co-earned"><div class="k1co-earned-shirt">' . scrolly_k1co_img( 'front', 'Winner shirt front', '' ) . scrolly_k1co_img( 'back', 'Winner shirt back', '' ) . '</div>'
+			. '<div class="k1co-earned"><div class="k1co-earned-shirt">' . scrolly_k1co_img( 'front', 'Front of the chambray earned shirt: a knight riding a leaping tiger above Dared to Succeed', '' ) . scrolly_k1co_img( 'back', 'Earned shirt back', '' ) . '</div>'
 			. '<h2>The shirt is earned.</h2>'
-			. '<p>Reach $1,000 in total revenue during your 30 consecutive Challenge days, complete verification, and claim your winner shirt. Shipping is included in the lower 48.</p></div>'
+			. '<p>Reach $1,000 in total revenue during your 30 consecutive Challenge days, verify it, and your earned shirt is yours. Shipping is included in the lower 48.</p></div>'
 			. '<div class="k1co-faq"><h2>Before you join</h2>'
 			. '<details><summary>Is $1,000 guaranteed?</summary><p>No. Your results depend on your business and execution.</p></details>'
 			. '<details><summary>When do the 30 days start?</summary><p>When you press “Start my 30 days” in My $1K Plan, after checkout. Your 30 consecutive days begin that day.</p></details>'
@@ -266,12 +266,12 @@ if ( ! defined( 'SCROLLY_K1CO_V' ) ) {
 			. '<label class="k1co-option"><input type="radio" name="k1co-offer" value="bundle"' . $check( 'bundle' === $pkg ) . '><span><strong>Club + Challenge</strong><small>Everything in the Club, plus one 30-day attempt.</small></span><span class="k1co-amt">' . esc_html( $both ) . '</span></label>'
 			. '</div>';
 
-		$bump = '<div class="k1co-bump"><h2>Go for your first stripe.</h2>'
-			. '<p>Add your first $1K Challenge attempt for ' . esc_html( $add ) . '. Get your personal $1K Plan, weekly check-ins, and 25 current Reel ideas each week. A verified win makes you eligible to claim the exclusive shirt.</p>'
+		$bump = '<div class="k1co-bump"><h2>Add the Challenge.</h2>'
+			. '<p>Add your first $1K Challenge attempt for ' . esc_html( $add ) . '. Get your personal $1K Plan, weekly check-ins, and 25 current Reel ideas each week. Hit $1,000 in 30 consecutive days and verify it to earn the shirt.</p>'
 			. '<label><input type="checkbox" class="k1co-bump-check"' . $check( 'bundle' === $pkg ) . '><span>Yes, add the Challenge to my Club order: ' . esc_html( $add ) . '</span></label></div>';
 
 		// Challenge only: the shirt ships to the billing address unless the buyer unticks this and enters another address.
-		$shipto = '<div class="k1co-shipto"><h2>Potential shirt shipping address</h2>'
+		$shipto = '<div class="k1co-shipto"><h2>Where to ship your shirt</h2>'
 			. '<p class="k1co-fine">Only used if you complete and verify the Challenge, then claim the shirt. Nothing ships today.</p>'
 			. '<label><input type="checkbox" class="k1co-shipto-check" checked><span>Ship my shirt to my billing address</span></label></div>';
 
@@ -577,7 +577,15 @@ body.scrolly-k1co .page-content>.k1co{max-width:1040px!important;padding:0!impor
 .k1co-main .wc-block-components-checkout-step__container:before,.k1co-main .wc-block-components-checkout-step__heading:before,.k1co-main .wc-block-components-checkout-step:after{display:none!important}
 .k1co-main .wc-block-components-checkout-step__description{font-size:15px;color:var(--muted);line-height:1.35;margin-bottom:8px}
 .k1co-main .wc-block-checkout__order-fields .wc-block-components-checkout-step__heading{display:none}
-.k1co-main .wc-block-checkout__order-fields .wc-block-components-select-input:after{content:"Shirts use US men’s sizing. We save this preference now; you can confirm it after a verified win.";display:block;font-size:15px;color:var(--muted);line-height:1.4;margin-top:6px}
+/* 2026-10-27: the order-fields group holds the shirt size AND the required digital-consent tickbox (digital-consent-checkbox.php).
+   Open the group so the shirt size stays here and the tickbox sits just above the Terms line and Place Order. */
+.k1co-main .wc-block-checkout__order-fields,.k1co-main .wc-block-checkout__order-fields>.wc-block-components-checkout-step__content,.k1co-main .wc-block-checkout__order-fields .wc-block-components-address-form{display:contents}
+.k1co-main .wc-block-checkout__order-fields .wc-block-components-checkout-step__heading{display:none}
+.k1co-main .wc-block-components-select-input-scrolly-shirt-size{order:7;margin-top:30px}
+.k1co-main .wc-block-components-select-input-scrolly-shirt-size::before{content:"Your earned shirt";display:block;margin:0 0 10px;font:400 26px/1.15 'Instrument Serif',Georgia,serif;letter-spacing:-.01em;color:var(--ink)}
+.k1co-main .wc-block-components-address-form__tad-digital-consent{order:11;margin:22px 0 0}
+.k1co-main .scxg-shirt-sec::before,.k1co-main .scxg-shirt-sec::after{content:none!important;display:none!important}
+.k1co-main .wc-block-checkout__order-fields .wc-block-components-select-input:after{content:"Shirts use US men’s sizing. We save this preference now; you can change it until your shirt is ordered.";display:block;font-size:15px;color:var(--muted);line-height:1.4;margin-top:6px}
 .k1co-main .wc-block-checkout__terms{margin:17px 0 8px;font-size:15px;font-weight:500}
 .k1co-main .wc-block-checkout__terms a{color:var(--ink);text-decoration:underline}
 .k1co-main .wc-block-checkout__actions_row{display:block}
