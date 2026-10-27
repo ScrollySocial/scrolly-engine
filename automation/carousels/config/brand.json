@@ -1,7 +1,7 @@
 {
   "_note": "Everything account-specific lives here so a customer version is just a different brand.json.",
-  "handle": "@scrollysocial",
-  "_handleNote": "Confirmed by Mercedes 2026-10-07.",
+  "handle": "@AmbitionDeptHQ",
+  "_handleNote": "The Ambition Department rename (vault brand/rename-ambition-department.md, decided 2026-10-26); was @scrollysocial.",
   "manychat": true,
   "hashtagsPerPost": 3,
   "_fontsNote": "2026-10 rebrand (vault brand/visual-system.md): Jost for running text, labels and highlight text; Instrument Serif for headlines, big numbers and the italic key word. Bricolage Grotesque and Figtree are retired.",

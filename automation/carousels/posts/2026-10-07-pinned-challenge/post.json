@@ -3,12 +3,12 @@
   "style": "D",
   "palette": "navy",
   "brief": {
-    "source": "Live sales page scrollyseo.com/1k-club (inclusions in config/destinations.json); Mercedes's hook 2026-10-07; pinned post 2 of 3",
+    "source": "Live sales page theambitiondepartment.com/1k-club (inclusions in config/destinations.json); Mercedes's hook 2026-10-07; pinned post 2 of 3",
     "reader": "People who want to make their first $1,000 online and are deciding whether to buy",
     "problem": "They don't know what the Challenge includes or how it works",
-    "outcome": "They understand what they get for $75 and how to join",
+    "outcome": "They understand what they get for $45 and how to join",
     "topic": "The $1K Challenge offer (pinned sales post)",
-    "mainPoint": "30 days, one goal, a personal plan plus weekly Reel ideas and templates, one-time $75",
+    "mainPoint": "30 days, one goal, a personal plan plus weekly Reel ideas and templates, one-time $45",
     "structure": "offer walkthrough",
     "ending": "buy CTA",
     "slide2Check": "Format change from the v7 panorama cover (checkcover, tick-box question); same promise asked as 'ready for your first $1,000?' with a swipe pull, so it works as a first slide",
@@ -80,8 +80,8 @@
     },
     {
       "layout": "tilecover",
-      "big": "$75",
-      "text": "One time, no subscription. Join the $1K Challenge: link in bio.",
+      "big": "$45",
+      "text": "One time, no subscription. Comment CHALLENGE and I'll send you the link.",
       "hand": "your first $1,000 starts here",
       "palette": "navy",
       "doodles": [
@@ -97,11 +97,12 @@
     }
   ],
   "cta": {
-    "type": "link-in-bio",
+    "type": "comment",
+    "keyword": "CHALLENGE",
     "offer": "1k-club-challenge"
   },
   "tigerNod": null,
-  "caption": "The $1K Challenge is $75, one time, at the link in my bio. It gives you 30 consecutive days and one goal: $1,000 in total revenue. You get your personal $1K Plan with your number and what to do each week, 25 Reel ideas every week, 30 carousel and 30 Story templates, a Notion content tracker, a guide to auto-posting with your AI, and the full $1K Club Playbook. Prefer to go at your own pace? The $1K Club is $40 and gives you the plan to keep. Results not guaranteed; revenue is before costs.",
+  "caption": "Comment CHALLENGE and I'll send you the link to the $1K Challenge. It's $45, one time, for 30 consecutive days and one goal: $1,000 in total revenue. You get your personal $1K Plan with your number and what to do each week, 25 Reel ideas every week, 30 carousel and 30 Story templates, a Notion content tracker, a guide to auto-posting with your AI, and the full $1K Club Playbook. Prefer to go at your own pace? The $1K Club is $10 and gives you the plan to keep. Results not guaranteed; revenue is before costs.",
   "hashtags": [
     "#onlinebusiness",
     "#smallbusinesstips",

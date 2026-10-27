@@ -3,14 +3,14 @@
   "style": "D",
   "palette": "offwhite",
   "brief": {
-    "source": "Live pages checked 2026-10-22: scrollyseo.com/quiz/ (Find your first offer, step 1 of 3), /next-move/ (Find your next business move, question 1 of 6, free result then optional action kit + emails), /calculators/ (10 free calculators, 'No signup. No spreadsheet.'); pinned post 3 of 3 (Mercedes 2026-10-22: pinned 3 = free start)",
+    "source": "Live pages checked 2026-10-22: theambitiondepartment.com/quiz/ (Find your first offer, step 1 of 3), /next-move/ (Find your next business move, question 1 of 6, free result then optional action kit + emails), /calculators/ (10 free calculators, 'No signup. No spreadsheet.'); pinned post 3 of 3 (Mercedes 2026-10-22: pinned 3 = free start)",
     "reader": "A new visitor who wants to make money or get found online but doesn't know where to begin",
     "problem": "They don't know which first step fits where they are",
     "outcome": "They pick one free tool that matches their stage and use it today",
     "topic": "Free start: the Offer Quiz, the Next Move Quiz and the free calculators",
     "mainPoint": "Three free tools, one for each starting point: no offer yet, an idea with no sales yet, or wanting the numbers",
     "structure": "pick-your-path walkthrough",
-    "ending": "comment QUIZ CTA (keyword live, DM sends scrollyseo.com/quiz/)",
+    "ending": "comment QUIZ CTA (keyword live, DM sends theambitiondepartment.com/quiz/)",
     "slide2Check": "Format change from the panorama cover (numcover with her walking toward camera); same promise from the 'which one fits you' angle with a big 3 and a swipe pull, so it works as a first slide",
     "mediaPlan": "Real phone screenshots of the live pages (photos/screens/site/live-*.png). Slide 1 is the locked v7 panorama tile 3."
   },
@@ -46,7 +46,7 @@
       "screen": {
         "type": "image"
       },
-      "media": "fe440f19cf",
+      "media": "41dad77ce0",
       "focus": "50% 0%",
       "text": "No offer yet? The Offer Quiz asks what you can do in 3 steps, then suggests digital product ideas.",
       "palette": "offwhite"
@@ -62,7 +62,7 @@
       "screen": {
         "type": "image"
       },
-      "media": "8aeaa75e67",
+      "media": "445fcb4e36",
       "focus": "50% 0%",
       "text": "Want the math? 10 free calculators, from views to profit, with no signup.",
       "palette": "mist"
@@ -83,7 +83,7 @@
       "focus": "center 30%",
       "pos": "top",
       "text": "Comment QUIZ and I'll send you the quiz",
-      "hand": "all 3 are free at scrollyseo.com",
+      "hand": "all 3 are free",
       "doodles": [
         {
           "k": "star",
@@ -101,7 +101,7 @@
     "keyword": "QUIZ"
   },
   "tigerNod": null,
-  "caption": "Comment QUIZ and I'll send you the free quiz in a DM. All three tools are free at scrollyseo.com: the Offer Quiz, the Next Move Quiz and 10 business calculators. The Offer Quiz is for when you have skills but nothing to sell yet. The Next Move Quiz is for when you know what you want to sell but haven't made a sale. The calculators show what it takes to reach your income goal, with no signup. Start with the one that matches where you are today.",
+  "caption": "Comment QUIZ and I'll send you the free quiz in a DM. All three tools are free at theambitiondepartment.com: the Offer Quiz, the Next Move Quiz and 10 business calculators. The Offer Quiz is for when you have skills but nothing to sell yet. The Next Move Quiz is for when you know what you want to sell but haven't made a sale. The calculators show what it takes to reach your income goal, with no signup. Start with the one that matches where you are today.",
   "hashtags": [
     "#onlinebusiness",
     "#digitalproducts",

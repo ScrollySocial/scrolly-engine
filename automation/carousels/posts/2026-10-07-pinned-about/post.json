@@ -5,12 +5,12 @@
   "brief": {
     "source": "Mercedes's own answers in chat 2026-10-07 (about-me questions); pinned post 1 of 3",
     "reader": "New visitors deciding whether to follow",
-    "problem": "They don't know who runs Scrolly or why to trust and follow it",
-    "outcome": "They know who Mercedes is, what Scrolly helps with, and why to follow",
-    "topic": "About Mercedes and Scrolly (pinned intro)",
+    "problem": "They don't know who runs The Ambition Department or why to trust and follow it",
+    "outcome": "They know who Mercedes is, what The Ambition Department helps with, and why to follow",
+    "topic": "About Mercedes and The Ambition Department (pinned intro)",
     "mainPoint": "An analytical person who struggled with selling built marketing systems and shares them",
     "structure": "walking-through-slides story",
-    "ending": "follow CTA with tiger nod",
+    "ending": "comment PLAN CTA with tiger nod (rebrand 2026-10-27; was follow)",
     "slide2Check": "Format change from the v7 panorama cover (hook2); restates the cover's promise (getting found online) as her specialty, so it works as a first slide",
     "mediaPlan": "Mercedes will film a VIDEO of herself walking (not a photo). Split that one video horizontally across the pano slides so she walks through the carousel as people swipe (needs ffmpeg video support). Don't change until she has the clip."
   },
@@ -52,7 +52,7 @@
       "screen": {
         "type": "image"
       },
-      "media": "8aeaa75e67",
+      "media": "445fcb4e36",
       "focus": "50% 0%",
       "text": "I spent years in financial operations and reporting.\nNumbers are my comfort zone.",
       "palette": "sky"
@@ -94,7 +94,7 @@
       "layout": "photo",
       "media": "265ec9a722",
       "focus": "center 50%",
-      "text": "Scrolly is for you if you want to make money online, or grow your business, without weeks of setup or paying for ads."
+      "text": "The Ambition Department is for you if you want to make money online, or grow your business, without weeks of setup or paying for ads."
     },
     {
       "layout": "photo",
@@ -106,14 +106,15 @@
       "layout": "photo",
       "media": "4426aa6aa3",
       "focus": "center 40%",
-      "text": "Follow along for practical tips to help you reach your dreams. Go get 'em, tiger :)"
+      "text": "Comment PLAN and I'll send you the plan for your first $1,000. Go get 'em, tiger :)"
     }
   ],
   "cta": {
-    "type": "follow"
+    "type": "comment",
+    "keyword": "PLAN"
   },
   "tigerNod": null,
-  "caption": "Follow along for practical tips on getting found online and turning it into sales. I'm Mercedes, and I built Scrolly after years of having business ideas I didn't know how to sell. I'm an analyst at heart, so I learned marketing the only way I know how: break it into steps, build systems, and test what works. Now I share those systems so you don't have to build them from scratch. If you want the full plan for your first $1,000, the $1K Challenge is in my bio.",
+  "caption": "Comment PLAN and I'll send you the plan for your first $1,000. I'm Mercedes, and I started The Ambition Department after years of having business ideas I didn't know how to sell. I'm an analyst at heart, so I learned marketing the only way I know how: break it into steps, build systems, and test what works. Now I share those systems so you don't have to build them from scratch. Follow along for practical tips on getting found online and turning it into sales.",
   "hashtags": [
     "#smallbusiness",
     "#organicmarketing",
