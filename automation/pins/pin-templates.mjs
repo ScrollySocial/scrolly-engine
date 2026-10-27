@@ -21,7 +21,7 @@ const BASE = `* { margin: 0; box-sizing: border-box; } body { width: 1000px; hei
   .phone { position: absolute; aspect-ratio: 236/492; background: #1b1f27; border-radius: 52px; padding: 14px; box-shadow: 0 30px 60px rgba(0,0,0,.22); }
   .phone .scr { width: 100%; height: 100%; border-radius: 40px; background: center top/cover no-repeat; }
   .dom { position: absolute; top: 56px; left: 0; right: 0; text-align: center; font: 600 26px/1 Jost, Arial, sans-serif; letter-spacing: .16em; text-transform: uppercase; }`;
-// The domain sits at the top: at the bottom it ran across the phone (Mercedes 2026-10-27).
+// The domain sits at the top: at the bottom it ran across the phone. The whole phone stays inside the Pin; cut off it looked odd (Mercedes 2026-10-27).
 
 // A: bold condensed headline + serif line, phone rising from the bottom (her "20 content ideas" / Kutcher-ad structure).
 const A = (p) => `<style>${BASE}
@@ -30,10 +30,10 @@ const A = (p) => `<style>${BASE}
   .big { font: 400 170px/.92 Anton, Impact, sans-serif; text-transform: uppercase; letter-spacing: .005em; }
   .ser { font: 400 92px/1 'Instrument Serif', Georgia, serif; margin-top: 18px; }
   .chip { display: inline-block; margin-top: 34px; background: ${p.ink}; color: ${p.bg}; font: 800 36px/1 Jost; letter-spacing: .12em; text-transform: uppercase; padding: 20px 36px 22px; border-radius: 999px; }
-  .phone { left: 50%; transform: translateX(-50%); top: 880px; }
+  .phone { left: 50%; transform: translateX(-50%); bottom: 60px; }
   .dom { color: ${p.ink}; }
 </style><div class="h"><div class="big">${p.big.map(esc).join('<br>')}</div><div class="ser">${esc(p.serif)}</div><div class="chip">${esc(p.chip)}</div></div>
-${phone(p.shot, 330)}<div class="dom">${DOMAIN}</div>`;
+${phone(p.shot, 290)}<div class="dom">${DOMAIN}</div>`;
 
 // C: numbered list Pin (her "4 content planning tips" / "6 steps" references).
 const C = (p) => `<style>${BASE}
@@ -56,10 +56,10 @@ const D = (p) => `<style>${BASE}
   .ser { font: 400 132px/.98 'Instrument Serif', Georgia, serif; }
   .sub { font: 500 46px/1.25 Jost; margin-top: 30px; opacity: .95; }
   .btn { display: inline-block; margin-top: 40px; background: ${p.btn}; color: ${p.bg}; font: 800 36px/1 Jost; letter-spacing: .12em; text-transform: uppercase; padding: 24px 42px 26px; border-radius: 999px; }
-  .phone { left: 50%; transform: translateX(-50%) rotate(4deg); top: 900px; }
+  .phone { left: 50%; transform: translateX(-50%) rotate(4deg); bottom: 70px; }
   .dom { color: #fff; }
 </style><div class="h"><div class="ser">${esc(p.serif)}</div><div class="sub">${esc(p.sub)}</div><div class="btn">${esc(p.btn_t)}</div></div>
-${phone(p.shot, 320)}<div class="dom">${DOMAIN}</div>`;
+${phone(p.shot, 280)}<div class="dom">${DOMAIN}</div>`;
 
 // Pin palette (Mercedes 2026-10-27: every colour needs a reason; no old Scrolly orange or yellow).
 // Text is always brand navy, so every Pin still reads as hers. Grounds:
