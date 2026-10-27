@@ -5,7 +5,7 @@
 import { writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { launch, esc } from '../carousels/lib/common.mjs';
-import { HERE, SITE, PAL, captureShots, renderPins } from './lib/templates.mjs';
+import { HERE, SITE, PAL, captureShots, renderPins, styleFor } from './lib/templates.mjs';
 
 const OUT = path.join(HERE, 'out/batch-01');
 
@@ -120,10 +120,13 @@ const START = '2026-10-28', SLOTS = ['14:00:00', '18:00:00', '23:00:00']; // UTC
 // Alternate which Pin goes first so the same layout doesn't run for days in a row.
 const order = [...PAGES.map((p, i) => [i, i % 2]), ...PAGES.map((p, i) => [i, 1 - (i % 2)])];
 const day = (n) => { const d = new Date(START + 'T00:00:00Z'); d.setUTCDate(d.getUTCDate() + n); return d.toISOString().slice(0, 10); };
+// Each Pin gets its own style (ground, pattern, fonts, doodles, phone position), rotated per layout.
+const seenLayout = { A: 0, C: 0, D: 0 };
 const pins = order.map(([pi, k], n) => {
   const page = PAGES[pi], p = page.pins[k];
+  const style = styleFor(p.layout, seenLayout[p.layout]++);
   const slug = page.link.replace(/^\/|\/$/g, '').replace(/\//g, '-');
-  return { ...p, id: `pin-${String(n + 1).padStart(2, '0')}-${slug}-${p.layout.toLowerCase()}`, link: page.link, url: SITE + page.link + '?utm_source=pinterest', board: page.board, date: `${day(Math.floor(n / 3))}T${SLOTS[n % 3]}`, pinTitle: p.title, pinDesc: p.desc };
+  return { ...p, id: `pin-${String(n + 1).padStart(2, '0')}-${slug}-${p.layout.toLowerCase()}`, link: page.link, url: SITE + page.link + '?utm_source=pinterest', board: page.board, date: `${day(Math.floor(n / 3))}T${SLOTS[n % 3]}`, pinTitle: p.title, pinDesc: p.desc, style };
 });
 
 // Rule checks before anything is shown.
