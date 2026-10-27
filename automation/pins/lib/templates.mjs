@@ -74,12 +74,21 @@ const phone = (p, w, st) => {
   const rot = { left: -5, right: 5, center: 0 }[st.phone] + (st.tilt || 0);
   return `<div class="phone" style="width:${w}px;${x};transform:rotate(${rot}deg)"><div class="scr" style="background-image:url('${fileUrl(shotFile(p.link))}')"></div></div>`;
 };
-// One single-headed curved arrow from the free side toward the phone (the double-headed loop arrow was out, Mercedes 2026-10-27).
-const arrowToPhone = (st, g) => {
+// One hand-drawn straight arrow (Reel pack arrows/00.png as a luminance mask, so it takes the accent colour), placed
+// by geometry: it starts in the empty space beside the phone and its tip stops just short of the phone's screen.
+// Mercedes 2026-10-27: no double-headed loop arrow; the curved glyph had a stray dash; the arrow must point at the phone.
+const ARROW = fileUrl(path.resolve(HERE, '../reel-template-pack/assets/props/doodles/arrows/00.png'));
+const arrowToPhone = (st, g, w) => {
   if (!st.doodles.includes('arrow')) return '';
-  if (st.phone === 'left') return doodle(DOOD.arrowCurve, `right:110px;top:1020px;font-size:210px;color:${g.accent};transform:scaleX(-1) rotate(35deg)`);
-  if (st.phone === 'right') return doodle(DOOD.arrowCurve, `left:110px;top:1020px;font-size:210px;color:${g.accent};transform:rotate(35deg)`);
-  return doodle(DOOD.arrowCurve, `left:110px;top:1000px;font-size:210px;color:${g.accent};transform:rotate(35deg)`);
+  const h = w * 492 / 236, top = 1500 - 70 - h;
+  const left = { left: 120, right: 1000 - 120 - w, center: 500 - w / 2 }[st.phone];
+  const fromRight = st.phone === 'left';
+  const tip = { x: fromRight ? left + w + 28 : left - 28, y: top + h * (st.phone === 'center' ? .28 : .38) };
+  const start = { x: tip.x + (fromRight ? 250 : -250), y: tip.y - 120 };
+  if (st.phone === 'center') { start.x = tip.x - 220; start.y = tip.y - 140; }
+  const len = Math.hypot(tip.x - start.x, tip.y - start.y), ang = Math.atan2(tip.y - start.y, tip.x - start.x) * 180 / Math.PI;
+  const ht = Math.round(len * 152 / 420);
+  return `<div class="dd" style="left:${start.x}px;top:${start.y}px;width:${Math.round(len)}px;height:${ht}px;transform-origin:0 50%;transform:translateY(-50%) rotate(${ang.toFixed(1)}deg);background:${g.accent};-webkit-mask:url('${ARROW}') center/100% 100% no-repeat;mask:url('${ARROW}') center/100% 100% no-repeat;mask-mode:luminance"></div>`;
 };
 const sparkles = (st, g) => (st.doodles.includes('sparkle') ? doodle(DOOD.sparkle, `right:44px;top:30px;font-size:90px;color:${g.accent}`) : '')
   + (st.doodles.includes('heart') ? doodle(DOOD.heart, `${st.phone === 'right' ? 'left' : 'right'}:70px;bottom:120px;font-size:110px;color:${g.accent};transform:rotate(12deg)`) : '')
@@ -111,7 +120,7 @@ export const A = (p) => {
   .ser { font: 400 88px/1.02 ${SERIF[st.serif]}; margin-top: ${st.accentMode === 'underline' && st.accentLine === p.big.length - 1 ? 46 : 18}px; color: ${g.sub}; }
   .chip { display: inline-block; margin-top: 34px; background: ${chipBg}; color: ${chipInk}; font: 800 36px/1 Jost; letter-spacing: .12em; text-transform: uppercase; padding: 20px 36px 22px; border-radius: ${st.chipShape === 'tag' ? '10px' : '999px'}; ${st.chipShape === 'tag' ? 'transform: rotate(-3deg);' : ''} }
 </style>${shape(st, g)}<div class="h"><div class="big">${lines.join('<br>')}</div><div class="ser">${esc(p.serif)}</div><div class="chip">${esc(p.chip)}</div></div>
-${phone(p, 290, st)}${arrowToPhone(st, g)}${sparkles(st, g)}<div class="dom">${DOMAIN}</div>`;
+${phone(p, 290, st)}${arrowToPhone(st, g, 290)}${sparkles(st, g)}<div class="dom">${DOMAIN}</div>`;
 };
 
 // C: numbered list Pin (her "4 content planning tips" / "6 steps" references). Three items.
@@ -142,7 +151,7 @@ export const D = (p) => {
   .sub { font: 500 46px/1.25 Jost; margin-top: 30px; color: ${g.sub}; }
   .btn { display: inline-block; margin-top: 40px; background: ${g.accent}; color: ${g.bg}; font: 800 36px/1 Jost; letter-spacing: .12em; text-transform: uppercase; padding: 24px 42px 26px; border-radius: 999px; }
 </style>${shape(st, g)}<div class="h"><div class="ser">${esc(p.serif)}</div><div class="sub">${esc(p.sub)}</div><div class="btn">${esc(p.btn_t)}</div></div>
-${phone(p, 280, st)}${arrowToPhone(st, g)}${sparkles(st, g)}<div class="dom">${DOMAIN}</div>`;
+${phone(p, 280, st)}${arrowToPhone(st, g, 280)}${sparkles(st, g)}<div class="dom">${DOMAIN}</div>`;
 };
 
 export const LAYOUTS = { A, C, D };
