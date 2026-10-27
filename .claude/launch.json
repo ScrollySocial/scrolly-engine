@@ -108,6 +108,14 @@
         "automation/n8n-comments/kit/guide"
       ],
       "port": 5698
+    },
+    {
+      "name": "planner",
+      "runtimeExecutable": "node",
+      "runtimeArgs": [
+        "automation/planner/server.mjs"
+      ],
+      "port": 4330
     }
   ]
 }
