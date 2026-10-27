@@ -43,7 +43,7 @@ for every ◆. Don't hard-code a review format into the steps.
 **Every Reel has a purpose (required).** One action it asks for: Follow, Comment a word, Share, Save, Link in bio, or
 Comment for a freebie (`lib/cta.mjs`). Take it from the card's cta; if the card has none, ask her (chat) or leave it for
 the Plan step, which won't let her approve without one. Write the hook with it in mind (the hook tip per action is in
-`lib/cta.mjs`). Endings offered = settings `cta.offer` (Follow + Link in bio only until n8n comment-to-DM is set up, 2026-10-22). A card asking for a comment CTA: flag it and suggest Follow or Link in bio.
+`lib/cta.mjs`). Endings offered = settings `cta.offer`: **Comment a word only** (Mercedes 2026-10-27: every post except Stories asks for a comment word that Chat Manager answers with a DM). Use the card's `keyword`; it must be live in Chat Manager (repo copy: `automation/carousels/config/destinations.json` `commentKeywords`, live + dmApproved; the dashboard at hooks.scrollyseo.com/inbox is the real list). No keyword on the card, or one that isn't live: suggest a live one (MATH, QUIZ) or ask her to add the new word with its DM text in Chat Manager; never invent a freebie.
 Slug = `yyyy-mm-dd-<series>-<topic>` (e.g. `2026-10-13-bb-know-what-you-sell`). Footage lives under the footage folder
 (`reel-settings.json` → `folders.footage`), one subfolder per series.
 

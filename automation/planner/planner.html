@@ -97,6 +97,10 @@
   .idea:hover { border-color: var(--sky); }
   .idea .t { font-weight: 650; }
   .idea .m { color: var(--muted); font-size: 15px; }
+  .kw { display: inline-block; font-size: 15px; border-radius: 6px; padding: 0 8px; margin-top: 4px; justify-self: start; }
+  .kw-ok { background: var(--mist); }
+  .kw-check { border: 1px dashed var(--sky); }
+  .kw-missing { border: 1px solid var(--warn); color: var(--warn); }
   .lanes { display: flex; flex-wrap: wrap; gap: 6px; justify-content: flex-end; }
   .lane { border-radius: 8px; padding: 2px 8px; font-size: 15px; background: var(--mist); white-space: nowrap; }
   .lane.off { background: none; color: var(--done); border: 1px dashed var(--line); }
@@ -130,6 +134,7 @@
   .count.over { color: var(--warn); font-weight: 700; }
   .preview { font-weight: 400; font-size: 15px; color: var(--muted); background: var(--mist); border-radius: 8px; padding: 8px 10px; }
   .preview b { color: var(--ink); }
+  .ghost.danger { border-color: var(--warn); color: var(--warn); }
   .actions { display: flex; flex-wrap: wrap; gap: 8px; justify-content: space-between; }
   a { color: var(--ink); text-decoration-color: var(--sky); text-underline-offset: 3px; }
   dialog { border: 0; border-radius: 14px; padding: 0; background: var(--card); max-width: min(92vw, 520px); }
@@ -328,6 +333,23 @@ function ideaMeta(i) {
   return [i.format, i.series, i.product].filter(Boolean).map(esc).join(' · ');
 }
 
+// Every post except Stories asks for a comment word (Mercedes 2026-10-27). Live = in the repo's Chat Manager list with
+// an approved DM; anything else may still be set up on the dashboard, so it says "check" rather than "wrong".
+function kwState(i) {
+  if (i.format === 'Story') return i.keyword ? 'ok' : 'story';
+  if (!i.keyword) return 'missing';
+  const k = (state.options.keywords || []).find((x) => x.keyword === i.keyword);
+  return k?.live ? 'ok' : 'check';
+}
+function kwNote(i) {
+  return { ok: 'live in Chat Manager', story: 'optional for Stories', missing: 'needed for every post', check: 'check it is set up in Chat Manager' }[kwState(i)];
+}
+function kwBadge(i) {
+  const s = kwState(i);
+  if (s === 'story') return '';
+  return `<span class="kw kw-${s}">${s === 'missing' ? 'No comment word' : `Comment ${esc(i.keyword)}${s === 'check' ? ' (check)' : ''}`}</span>`;
+}
+
 // "All" view groups: where an idea is overall, from its lanes
 const DONE = ['Posted', 'Live'];
 function ideaGroup(i) {
@@ -343,8 +365,10 @@ const matches = (i) => !ideaQuery || `${i.title} ${i.hook} ${i.notes} ${i.series
 
 function renderIdeas() {
   const live = state.ideas.filter((i) => !i.archived && matches(i));
-  const groups = ['In progress', 'Just ideas', 'Posted', 'Archived'];
-  const inGroup = (g) => state.ideas.filter((i) => ideaGroup(i) === g && matches(i));
+  const groups = ['In progress', 'Just ideas', 'Posted', 'Archived', 'No comment word'];
+  // 'No comment word' = posts still to make (not posted, not archived) that don't ask for a comment word yet
+  const inGroup = (g) => state.ideas.filter((i) => matches(i) && (g === 'No comment word'
+    ? !i.archived && ideaGroup(i) !== 'Posted' && kwState(i) === 'missing' : ideaGroup(i) === g));
   $('ideaStageFilter').hidden = ideaFilter !== 'all';
   $('ideaStageFilter').innerHTML = groups.map((g) => `<button class="chip" type="button" aria-pressed="${g === ideaGroupFilter}" data-ig="${esc(g)}">${esc(g)} (${inGroup(g).length})</button>`).join('');
   const n = (p) => live.filter((i) => i.lanes[p]).length;
@@ -364,7 +388,7 @@ function renderIdeas() {
     }
     $('ideaView').innerHTML = `<div class="ideas">${shown.map((i) => `
       <button class="idea" type="button" data-edit="${esc(i.id)}">
-        <span><span class="t">${esc(i.title)}</span><br><span class="m">${ideaMeta(i) || '&nbsp;'}</span></span>
+        <span><span class="t">${esc(i.title)}</span><br><span class="m">${ideaMeta(i) || '&nbsp;'}</span> ${kwBadge(i)}</span>
         <span class="lanes">${state.options.platforms.map((p) => {
           const l = i.lanes[p];
           return `<span class="lane ${laneClass(p, l)}">${PNAME[p]}: ${l ? esc(l.stage) : 'not planned'}</span>`;
@@ -381,7 +405,7 @@ function renderIdeas() {
     return `<div class="col${cards.length ? '' : ' none'}"><h4>${esc(s)} <span>${cards.length}</span></h4>${cards.map((i) => `
       <div class="idea" data-edit="${esc(i.id)}">
         <span class="t">${esc(i.title)}</span>
-        <span class="m">${[ideaMeta(i), i.lanes[p].date ? fmtDate(i.lanes[p].date) : ''].filter(Boolean).join(' · ')}</span>
+        <span class="m">${[ideaMeta(i), i.lanes[p].date ? fmtDate(i.lanes[p].date) : ''].filter(Boolean).join(' · ')}</span>${kwBadge(i)}
         <select data-move="${esc(i.id)}" data-p="${p}" aria-label="Move to">${stagesFor(p).map((x) => `<option${x === s ? ' selected' : ''}>${esc(x)}</option>`).join('')}</select>
       </div>`).join('')}</div>`;
   }).join('')}</div>${ideaFilter === 'stories' ? '<p class="sub" style="margin-top:8px">A Story card is one day of Stories. Film = photos to shoot, Edit = lines written and slides to render. Add one with + New idea and Format "Story".</p>'
@@ -434,6 +458,9 @@ function openEditor(id) {
       <label>Script or working file<input name="link" value="${esc(i.link || '')}" placeholder="Link or file path"></label>
     </div>
     <label>Hook<input name="hook" value="${esc(i.hook || '')}"></label>
+    <label>Comment word (Chat Manager DMs the freebie) <span class="count">${esc(kwNote(i))}</span>
+      <input name="keyword" value="${esc(i.keyword || '')}" list="kwList" placeholder="${i.format === 'Story' ? 'Stories can skip this' : 'e.g. MATH'}" style="text-transform:uppercase">
+      <datalist id="kwList">${(state.options.keywords || []).map((k) => `<option value="${esc(k.keyword)}">${esc(k.freebie)}${k.live ? '' : ' (not live)'}</option>`).join('')}</datalist></label>
     <div class="two">
       <label>Call to action<input name="cta" value="${esc(i.cta || '')}"></label>
       <label>Posting order (lower posts first)<input name="order" type="number" value="${i.order ?? ''}"></label>
@@ -453,7 +480,8 @@ function openEditor(id) {
       ${Object.entries(i.fromNotion || {}).map(([k, x]) => `<b>${esc(k)}</b><span>${esc(x)}</span>`).join('')}
     </div></details>` : ''}
     <div class="actions">
-      <span>${i.id ? `<button class="ghost" type="button" data-archive="${esc(i.id)}">${i.archived ? 'Bring back' : 'Archive'}</button>` : ''}</span>
+      <span style="display:flex;gap:8px">${i.id ? `<button class="ghost" type="button" data-archive="${esc(i.id)}">${i.archived ? 'Bring back' : 'Archive'}</button>
+        <button class="ghost danger" type="button" data-delete="${esc(i.id)}">Delete</button>` : ''}</span>
       <span style="display:flex;gap:8px"><button class="ghost" type="button" data-close>Cancel</button><button class="primary" type="submit">Save</button></span>
     </div>`;
   updateCounts();
@@ -487,7 +515,7 @@ function formIdea() {
   // Start from the saved card so fields the form doesn't show (carousel checks, Notion extras) are kept.
   const old = state.ideas.find((x) => x.id === f.dataset.id) || {};
   return { ...old, id: f.dataset.id || undefined, title: v('title'), format: v('format'), series: v('series'), product: v('product'),
-    link: v('link'), hook: v('hook'), cta: v('cta'), order: v('order'), notes: v('notes'),
+    link: v('link'), hook: v('hook'), cta: v('cta'), keyword: v('keyword').trim(), order: v('order'), notes: v('notes'),
     filmingNotes: v('filmingNotes'), editNotes: v('editNotes'), archived: old.archived || false, lanes };
 }
 
@@ -571,6 +599,14 @@ document.addEventListener('click', async (e) => {
     idea.archived = !idea.archived;
     await postIdea(idea);
     $('editor').close();
+  } else if (t.dataset.delete) {
+    const idea = state.ideas.find((x) => x.id === t.dataset.delete);
+    if (!confirm(`Delete "${idea.title}"? It disappears from your planner.`)) return;
+    const r = await fetch('/api/idea-delete', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ id: idea.id }) });
+    if (!r.ok) return alert(`Couldn't delete: ${(await r.json()).error}`);
+    state.ideas = state.ideas.filter((x) => x.id !== idea.id);
+    $('editor').close();
+    renderIdeas();
   } else if (t.hasAttribute('data-close') || t.id === 'editor') {
     $('editor').close();
   } else if (edit && t.tagName !== 'SELECT' && t.tagName !== 'OPTION') {

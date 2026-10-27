@@ -7,7 +7,7 @@
 //                                          cards matching all filters given (stage on that platform, or any lane)
 //   node tracker.mjs update <id> <patch>   merge a JSON patch file into a card
 //   node tracker.mjs new <patch>           make a card from a JSON patch file, prints its id
-// Patch: any card fields (title, hook, cta, series, product, link, filmingNotes, editNotes, reelFolder, mediaUrl,
+// Patch: any card fields (title, hook, cta, keyword, series, product, link, filmingNotes, editNotes, reelFolder, mediaUrl,
 // mediaUsed, order, format), "notesAppend": "text" to add a paragraph to notes, and
 // "lanes": { "instagram": { "stage": "Scheduled", "date": "2026-10-30", "caption": "...", "bufferId": "..." } }
 // (only the lane fields given change; "instagram": null takes the platform off).
@@ -47,7 +47,7 @@ if (cmd === 'reels-to-edit') {
     .sort((x, y) => (x.order ?? 1e9) - (y.order ?? 1e9) || (x.lanes.instagram.date || '9').localeCompare(y.lanes.instagram.date || '9') || x.createdAt.localeCompare(y.createdAt));
   out(list.map((i) => ({
     id: i.id, title: i.title, order: i.order, date: i.lanes.instagram.date || null, drafted: i.reelFolder || null,
-    hook: i.hook, cta: i.cta, series: i.series, product: i.product, filmingNotes: i.filmingNotes, editNotes: i.editNotes, notes: i.notes,
+    hook: i.hook, cta: i.cta, keyword: i.keyword || null, series: i.series, product: i.product, filmingNotes: i.filmingNotes, editNotes: i.editNotes, notes: i.notes,
   })));
 } else if (cmd === 'show') {
   out(byId(a));

@@ -99,7 +99,7 @@ grid; the files sync to her phone through OneDrive). Nothing goes to the planner
 **9. After approval.**
 - Record it in the planner. If it came from a planner card, update that card; otherwise make one. Write a patch JSON
   (Write tool, e.g. `posts/<id>/planner-patch.json`) with: title = short title; format "Carousel"; hook = slide 1 text;
-  cta = CTA in words; carouselId = post id; mediaUsed = comma-separated media ids (from `posts/<id>/build.json`);
+  cta = CTA in words; keyword = the comment word (every post ends on one, Mercedes 2026-10-27); carouselId = post id; mediaUsed = comma-separated media ids (from `posts/<id>/build.json`);
   product = the offer's club if the CTA sells one; link = export folder path; notesAppend = "Carousel style: <A-E name>";
   `"lanes": {"instagram": {"stage": "Ready", "caption": "<caption + hashtags>"}}` (stage "Edit" while stand-ins
   remain). Add a `tiktok` lane only if she wants it there too. Then `node ../planner/tracker.mjs update <card id> <patch>`

@@ -66,8 +66,8 @@
   },
 
   "cta": {
-    "offer": ["follow", "link"],
-    "_note": "Endings the Plan step offers. Follow + Link in bio only until comment-to-DM (n8n) is set up (Mercedes 2026-10-22). Delete offer to show all."
+    "offer": ["comment"],
+    "_note": "Endings the Plan step offers. Comment a word only (Mercedes 2026-10-27: every post asks for a comment word that Chat Manager answers with a DM; use the planner card's keyword, live in Chat Manager). Delete offer to show all."
   },
   "templates": {
     "studio": { "music": { "level": "normal", "fallbackVolume": 0.07, "fadeIn": 4.22, "fadeOut": 1.95 } },

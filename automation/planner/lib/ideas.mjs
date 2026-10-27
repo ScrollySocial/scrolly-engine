@@ -45,6 +45,8 @@ export function cleanIdea(input, existing) {
     format: FORMATS.includes(input.format) ? input.format : '',
     hook: str(input.hook, 500),
     cta: str(input.cta, 500),
+    // Every post except Stories asks for a comment word that Chat Manager answers with a DM (Mercedes 2026-10-27)
+    keyword: /^[A-Za-z0-9]{2,20}$/.test(input.keyword || '') ? input.keyword.toUpperCase() : '',
     notes: str(input.notes, 8000),
     product: str(input.product, 100),
     series: str(input.series, 100),

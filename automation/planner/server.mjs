@@ -89,6 +89,25 @@ function saveIdea(input) {
   return idea;
 }
 
+// Her Delete button: the card leaves the board; a copy goes to data/deleted.json so a mis-click can be undone.
+const DELETED_FILE = join(DATA, 'deleted.json');
+function deleteIdea(id) {
+  const list = ideas();
+  const i = list.findIndex((x) => x.id === id);
+  if (i < 0) throw Object.assign(new Error('no such card'), { code: 404 });
+  const bin = readJson(DELETED_FILE, { deleted: [] });
+  bin.deleted.unshift({ ...list[i], deletedAt: new Date().toISOString() });
+  writeJson(DELETED_FILE, bin);
+  list.splice(i, 1);
+  writeJson(IDEAS_FILE, { ideas: list });
+}
+
+// ---- Comment words ----
+// The repo copy of Chat Manager's keyword list. The dashboard (hooks.scrollyseo.com/inbox) is the real list, so a word
+// missing here may still work there; the page says "check it in Chat Manager" instead of calling it wrong.
+const keywords = () => readJson(join(here, '..', 'carousels', 'config', 'destinations.json'), {}).commentKeywords
+  ?.map((k) => ({ keyword: k.keyword, live: Boolean(k.live && k.dmApproved), freebie: k.freebie })) || [];
+
 // ---- Buffer ----
 let cache = null; // live results, kept 60s so reloading the page doesn't spend the rate limit
 async function buffer(force) {
@@ -135,7 +154,7 @@ http
       if (req.method === 'GET' && url.pathname === '/api/data') {
         return send(res, 200, {
           now: new Date().toISOString(),
-          options: { platforms: PLATFORMS, stages: STAGES, pinStages: PIN_STAGES, formats: FORMATS },
+          options: { platforms: PLATFORMS, stages: STAGES, pinStages: PIN_STAGES, formats: FORMATS, keywords: keywords() },
           ideas: ideas(),
           pins: pins(),
           buffer: await buffer(url.searchParams.has('refresh')),
@@ -147,6 +166,10 @@ http
       }
       if (req.method === 'POST' && url.pathname === '/api/idea') {
         return send(res, 200, { idea: saveIdea(await readBody(req)) });
+      }
+      if (req.method === 'POST' && url.pathname === '/api/idea-delete') {
+        deleteIdea((await readBody(req)).id);
+        return send(res, 200, { ok: true });
       }
       if (req.method === 'POST' && url.pathname === '/api/pin-mark') {
         const { id, mark } = await readBody(req);
@@ -165,7 +188,7 @@ http
       }
       send(res, 404, { error: 'not found' });
     } catch (e) {
-      send(res, e.code === 409 ? 409 : 500, { error: e.message });
+      send(res, [404, 409].includes(e.code) ? e.code : 500, { error: e.message });
     }
   })
   .listen(PORT, '127.0.0.1', () => console.log(`Content planner: http://localhost:${PORT}`));

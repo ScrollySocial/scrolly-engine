@@ -5,8 +5,8 @@
 //   2. the matching caption line (inserted as the post caption's second sentence unless it's already there),
 //   3. a hook reminder on the Plan step (write the hook so the ending pays it off).
 // Generic for customer kits: wording comes from here + the brand kit (handle, bioLink, site); no owner names in here.
-// "Comment for a freebie" = the DMs go out by hand until comment-to-DM automation (n8n) is set up.
-// settings cta.offer (e.g. ["follow", "link"]) limits which endings the Plan step offers; unset = all of them.
+// "Comment a word": Mercedes's Chat Manager (comment-to-DM) answers the word with a DM. Customers without it can still
+// use the other endings. settings cta.offer (e.g. ["comment"]) limits which endings the Plan step offers; unset = all.
 import { S } from './settings.mjs';
 
 const q = (w) => `“${w}”`;

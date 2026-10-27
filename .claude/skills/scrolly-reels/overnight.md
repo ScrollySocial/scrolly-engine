@@ -122,8 +122,10 @@ moments she kept and redo only the changed moments. Then `node build.mjs && npm 
    - Plan the moments in build.mjs (follow the last approved Reel's build.mjs as the pattern), stills + cut-out stills,
      5-6 `COVERS` lines (the viewer's problem in their words) + `coverCut`, the `POST` caption (writing rules; no CTA
      line in it: the build adds it; Business Brain = name + scrollyseo.com, never the price; exactly 3 hashtags; no
-     em dashes). `R.endCard({ kind, word, detail })` from the card's cta (`lib/cta.mjs` kinds); no cta on the card =
-     leave it out, the page makes her pick one before she can approve the plan. Write the hook to set up that CTA.
+     em dashes). Every Reel ends on **Comment a word** (Mercedes 2026-10-27): `R.endCard({ kind: 'comment', word:
+     <card keyword>, detail })` when the card's `keyword` is live in Chat Manager (`automation/carousels/config/
+     destinations.json` → live + dmApproved). No keyword, or one that isn't live: leave the end card out (the page makes
+     her pick before she can approve the plan) and put the question in the morning note. Write the hook to set up that CTA.
    - Captions yes; **no** `R.fx`, music or transitions yet (B2 adds them after she approves the plan).
    - `node build.mjs && npm run check` (long footage: the PRODUCER_* timeouts), then `node build.mjs review`.
    - Patch the card: `reelFolder` = slug, `link` = "automation/reel-hf/<slug>", `editNotes` = "Draft ready for review
