@@ -270,7 +270,9 @@ def c12():
     cv = Cover((212, 211, 207)); cv.video(0, 'The doorstep', (560, 880))
     cv.serif("it's here", 230, (540, 520), WHITE, WINE)
     ml = thing('Sealed kraft padded mailer-39.png', 420); cv.art('mailer', ml, (720, 1360), rot=-10, hero=True)
-    bell = thing('Vintage brass doorbell with ivory button-43.png', 220); cv.art('doorbell', bell, (200, 1300), rot=4)
+    import storyboard_b2 as S                                   # flood cut keeps the ivory button (as the Reel's bell)
+    bell = P.die_cut(S.fitw(S.cut('images', 'Vintage brass doorbell with ivory button-43.png', tol=6), 220), 8)
+    cv.art('doorbell', bell, (200, 1300), rot=4)
     cv.doodle('icon', 8, 120, (900, 330), BUTTER, WHITE, rot=10)
     return cv
 
