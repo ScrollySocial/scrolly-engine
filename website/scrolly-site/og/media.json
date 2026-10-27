@@ -124,5 +124,23 @@
   "url": "https://theambitiondepartment.com/wp-content/uploads/2026/10/ambition-og-implementation.jpg",
   "w": 1200,
   "h": 630
+ },
+ "chat-manager": {
+  "id": 1907,
+  "url": "https://theambitiondepartment.com/wp-content/uploads/2026/10/ambition-og-chat-manager.jpg",
+  "w": 1200,
+  "h": 630
+ },
+ "halloween-reels": {
+  "id": 1908,
+  "url": "https://theambitiondepartment.com/wp-content/uploads/2026/10/ambition-og-halloween-reels.jpg",
+  "w": 1200,
+  "h": 630
+ },
+ "product-reels": {
+  "id": 1909,
+  "url": "https://theambitiondepartment.com/wp-content/uploads/2026/10/ambition-og-product-reels.jpg",
+  "w": 1200,
+  "h": 630
  }
 }
