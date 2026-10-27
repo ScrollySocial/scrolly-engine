@@ -1,0 +1,42 @@
+/**
+ * Chat Manager checkout note (2026-10-27).
+ * When Chat Manager (product 1764) is in the cart, one short line sits just above the Terms line and Place Order:
+ * digital download, all sales final, Claude and hosting paid separately. Works with the block checkout (it's drawn
+ * by JavaScript, so the note is added once the checkout has rendered) and with the classic one.
+ * WPCode: PHP snippet, Auto Insert, Run Everywhere.
+ */
+add_action( 'wp_footer', function () {
+	if ( ! function_exists( 'is_checkout' ) || ! is_checkout() || is_order_received_page() || ! WC()->cart ) {
+		return;
+	}
+	$has_cm = false;
+	foreach ( WC()->cart->get_cart() as $item ) {
+		if ( 1764 === (int) $item['product_id'] ) {
+			$has_cm = true;
+			break;
+		}
+	}
+	if ( ! $has_cm ) {
+		return;
+	}
+	$note = 'Chat Manager is a digital download, so all sales are final. You’ll also need your own Claude plan and about $6 a month for hosting, both paid separately.';
+	?>
+	<style>#tad-cm-note{margin:0 0 16px;padding:14px 18px;border-radius:12px;background:#e3e7f2;color:#0a1930;font-size:15px;line-height:1.5}</style>
+	<script>
+	(function () {
+		var NOTE = <?php echo wp_json_encode( $note ); ?>;
+		function put() {
+			if (document.getElementById('tad-cm-note')) return;
+			var at = document.querySelector('.wc-block-checkout__terms, .woocommerce-terms-and-conditions-wrapper, .wc-block-components-checkout-place-order-button, #place_order');
+			if (!at) return;
+			var p = document.createElement('p');
+			p.id = 'tad-cm-note';
+			p.textContent = NOTE;
+			at.parentNode.insertBefore(p, at);
+		}
+		put();
+		new MutationObserver(put).observe(document.body, { childList: true, subtree: true });
+	})();
+	</script>
+	<?php
+} );
