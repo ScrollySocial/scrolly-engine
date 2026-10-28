@@ -420,7 +420,7 @@ function renderIdeas() {
     : live.length > mine.length ? `<p class="sub" style="margin-top:8px">${live.length - mine.length} ideas aren't planned for ${PNAME[p]}. Open one and tick ${PNAME[p]} to add it here.</p>` : ''}`;
 }
 
-function laneFields(p, l) {
+function laneFields(p, l, i) {
   const on = Boolean(l);
   l = l || {};
   const post = bufferPost(l.bufferId);
@@ -444,7 +444,8 @@ function laneFields(p, l) {
   }
   if (p !== 'pinterest') {
     body += `<input type="hidden" name="${p}.bufferId" value="${esc(l.bufferId || '')}">
-      ${post ? `<div class="preview">In Buffer: <b>${esc(post.status === 'sent' ? 'posted' : post.status)}</b>${post.dueAt ? `, ${esc(fmtWhen(post.dueAt))}` : ''}</div>` : ''}
+      ${QUEUEABLE.includes(p) ? `<label style="display:flex;gap:8px;align-items:center;font-weight:400"><input type="checkbox" name="${p}.byHand"${byHand(i, l) ? ' checked' : ''} style="width:auto"> I'll post it myself (to add music). Buffer sends a reminder to my phone at the time.</label>` : ''}
+      ${post ?`<div class="preview">In Buffer: <b>${esc(post.status === 'sent' ? 'posted' : post.status)}</b>${post.dueAt ? `, ${esc(fmtWhen(post.dueAt))}` : ''}</div>` : ''}
       ${QUEUEABLE.includes(p) && l.stage === 'Ready' ? `<button class="primary" type="button" data-queue="${p}">Queue it in Buffer</button>` : ''}`;
   }
   return `<fieldset><legend><label style="display:flex;gap:8px;align-items:center"><input type="checkbox" name="${p}.on"${on ? ' checked' : ''} style="width:auto"> ${PNAME[p]}</label></legend>
@@ -481,7 +482,7 @@ function openEditor(id) {
     </div>
     ${i.reelFolder ? `<div class="preview">Reel engine folder: <b>${esc(i.reelFolder)}</b>${i.reelFolder.startsWith('../') ? '' : ' · review it at <a href="http://localhost:4320" target="_blank" rel="noopener">localhost:4320</a>'}</div>` : ''}
     ${i.mediaUrl ? `<div class="preview">Posted file: <a href="${esc(i.mediaUrl)}" target="_blank" rel="noopener">${esc(i.mediaUrl.split('/').pop())}</a></div>` : ''}
-    ${state.options.platforms.map((p) => laneFields(p, i.lanes[p])).join('')}
+    ${state.options.platforms.map((p) => laneFields(p, i.lanes[p], i)).join('')}
     ${i.notionId || i.fromNotion || i.carouselId || i.mediaUsed ? `<details><summary>More from Notion</summary><div class="times" style="grid-template-columns:auto 1fr">
       ${i.notionId ? `<b>Notion row</b><a href="https://www.notion.so/${esc(i.notionId)}" target="_blank" rel="noopener">Open in Notion</a>` : ''}
       ${i.carouselId ? `<b>Carousel ID</b><span>${esc(i.carouselId)}</span>` : ''}
@@ -518,7 +519,7 @@ function formIdea() {
   const lanes = {};
   for (const p of state.options.platforms) {
     lanes[p] = f.elements[`${p}.on`].checked
-      ? { stage: v(`${p}.stage`), date: v(`${p}.date`), caption: v(`${p}.caption`), title: v(`${p}.title`), bufferId: v(`${p}.bufferId`), page: v(`${p}.page`) }
+      ? { stage: v(`${p}.stage`), date: v(`${p}.date`), caption: v(`${p}.caption`), title: v(`${p}.title`), bufferId: v(`${p}.bufferId`), page: v(`${p}.page`), ...(f.elements[`${p}.byHand`] ? { byHand: f.elements[`${p}.byHand`].checked } : {}) }
       : null;
   }
   // Start from the saved card so fields the form doesn't show (carousel checks, Notion extras) are kept.
@@ -578,6 +579,8 @@ document.addEventListener('change', async (e) => {
 
 // ---- Queue it ----
 const QUEUEABLE = ['instagram', 'tiktok'];
+// Post it myself: Buffer's "Notify me" (Mercedes 2026-10-28: carousels get music added in the app). Carousels default to it.
+const byHand = (card, lane) => (typeof lane?.byHand === 'boolean' ? lane.byHand : card?.format === 'Carousel');
 async function openQueue(id, platform) {
   const body = $('queueBody');
   body.innerHTML = '<p class="sub">Checking…</p>';
@@ -588,7 +591,7 @@ async function openQueue(id, platform) {
   const card = state.ideas.find((x) => x.id === id);
   body.innerHTML = `
     <h2>Queue in Buffer: ${esc(p.channel)}</h2>
-    <p class="sub" style="margin:0">${esc(card.title)}<br>Goes to the end of your ${esc(p.channel)} queue; Buffer picks the next free time. ${p.scheduled != null ? `${p.scheduled} of 10 free-plan posts are scheduled now.` : ''}</p>
+    <p class="sub" style="margin:0">${esc(card.title)}<br>Goes to the end of your ${esc(p.channel)} queue; Buffer picks the next free time. ${p.byHand ? '<b>You post this one yourself:</b> at that time the Buffer app on your phone reminds you and opens it in the app, where you add music and share.' : 'Buffer posts it automatically.'} ${p.scheduled != null ? `${p.scheduled} of 10 free-plan posts are scheduled now.` : ''}</p>
     <div class="qslides">${p.media.map((m) => m.preview ? `<img src="${esc(m.preview)}" alt="${esc(m.alt || '')}" title="${esc(m.alt || '')}">` : '<div class="preview">Video</div>').join('')}</div>
     <p class="sub" style="margin:0">${p.media.length} ${p.media.length === 1 ? 'file' : 'slides'}${p.toUpload ? `, ${p.toUpload} to upload to WordPress (named tad-carousel-…)` : ', already on WordPress'}${p.draft ? '. Uses your existing Buffer draft for this post.' : '.'}</p>
     <div class="qcap">${esc(p.caption)}</div>
@@ -603,7 +606,8 @@ async function confirmQueue(btn) {
   const r = await fetch('/api/queue', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ id: btn.dataset.qconfirm, platform: btn.dataset.p, updatedAt: btn.dataset.u }) });
   const res = await r.json();
   if (!r.ok) { btn.disabled = false; btn.textContent = 'Try again'; $('queueBody').insertAdjacentHTML('beforeend', `<p class="qbad">${esc(res.error)}</p>`); return; }
-  $('queueBody').innerHTML = `<h2>Queued</h2><p>Buffer will post it ${res.post.dueAt ? esc(fmtWhen(res.post.dueAt)) + ' (US Eastern)' : 'at the next free time'}. The card is now at Scheduled.</p><div class="actions"><span></span><button class="primary" type="button" data-qclose>Done</button></div>`;
+  const when = res.post.dueAt ? esc(fmtWhen(res.post.dueAt)) + ' (US Eastern)' : 'at the next free time';
+  $('queueBody').innerHTML = `<h2>Queued</h2><p>${res.byHand ? `Buffer will remind you on your phone ${when} to post it yourself and add music.` : `Buffer will post it ${when}.`} The card is now at Scheduled.</p><div class="actions"><span></span><button class="primary" type="button" data-qclose>Done</button></div>`;
   $('editor').close();
   load();
 }

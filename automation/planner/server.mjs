@@ -194,7 +194,7 @@ http
         const lane = { ...card.lanes[platform], stage: 'Scheduled', bufferId: post.id, date: (post.dueAt || '').slice(0, 10) };
         const saved = saveIdea({ ...card, lanes: { ...card.lanes, [platform]: lane } });
         cache = null; // next page load reads Buffer fresh
-        return send(res, 200, { post, idea: saved });
+        return send(res, 200, { post, byHand: post.byHand, idea: saved });
       }
       if (req.method === 'POST' && url.pathname === '/api/idea-delete') {
         deleteIdea((await readBody(req)).id);

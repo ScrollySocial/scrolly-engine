@@ -87,12 +87,13 @@ export async function scheduledCount(key) {
   return (await page(key, ['scheduled', 'sending'], 100, 'asc')).length;
 }
 
-export async function queuePost(key, { platform, bufferId, text, assets }) {
+export async function queuePost(key, { platform, bufferId, text, assets, byHand = false }) {
   const channelId = CHANNEL_IDS[platform];
   if (!channelId) throw new Error(`no Buffer channel for ${platform}`);
   const video = assets.some((a) => a.video);
   const metadata = platform === 'instagram' ? { instagram: { type: video ? 'reel' : 'post', shouldShareToFeed: true } } : undefined;
-  const base = { text, assets, ...(metadata ? { metadata } : {}), mode: 'addToQueue', schedulingType: 'automatic' };
+  const base = { text, assets, ...(metadata ? { metadata } : {}), mode: 'addToQueue', schedulingType: byHand ? 'notification' : 'automatic' };
+  // notification = Buffer's "Notify me": the Buffer phone app reminds her at the time and hands the post to Instagram/TikTok.
   let result;
   // Reuse her draft only if it's still a draft on the same channel; a scheduled or sent post is never touched.
   const existing = bufferId ? (await gql(key, ONE, { id: bufferId }).catch(() => null))?.post : null;

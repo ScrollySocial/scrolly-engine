@@ -27,3 +27,7 @@ A Ready Instagram or TikTok lane gets a **Queue it** button (card editor and the
    `addToQueue`, never "post now". The card's lane becomes Scheduled with the Buffer id and date.
 Needs `BUFFER_API_KEY` in `automation/.env` (Buffer: profile icon > API > Personal Access > + New Key; free plan = 1 key).
 YouTube and Reels aren't covered (YouTube needs a title + category; Reels go through the nightly run).
+- **Post it myself (2026-10-28):** each Instagram/TikTok lane has "I'll post it myself (to add music)". When ticked, Queue it
+  sends the post to Buffer as "Notify me" (`schedulingType: notification`): at the time, the Buffer phone app reminds her and
+  hands the post to Instagram/TikTok, where she adds music and shares. Carousels default to ticked; everything else posts
+  automatically. Saved on the lane as `byHand`.

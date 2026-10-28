@@ -86,6 +86,8 @@ export function plan(card, platform, { keywords = [], scheduled = null } = {}) {
     media: (media || []).map(({ file, ...m }) => m),
     toUpload: (media || []).filter((m) => !m.url).length,
     draft: lane?.bufferId || null,
+    // Post it herself via Buffer's "Notify me" (to add music); unset = carousels yes, everything else automatic.
+    byHand: typeof lane?.byHand === 'boolean' ? lane.byHand : card.format === 'Carousel',
     scheduled,
     problems,
     warnings,
@@ -141,7 +143,7 @@ export async function run(card, platform, key, keywords) {
   if (!media) media = p.media;
 
   const assets = media.map((m) => (m.video ? { video: { url: m.url } } : { image: { url: m.url, metadata: { altText: m.alt || card.title } } }));
-  return queuePost(key, { platform, bufferId: p.draft, text: p.caption, assets });
+  return { ...(await queuePost(key, { platform, bufferId: p.draft, text: p.caption, assets, byHand: p.byHand })), byHand: p.byHand };
 }
 
 export { CHANNEL_IDS };

@@ -35,6 +35,8 @@ export function cleanIdea(input, existing) {
       title: str(l.title, 200), // YouTube title
       bufferId: /^[a-f\d]{24}$/.test(l.bufferId || '') ? l.bufferId : '',
       page: str(l.page, 300), // Pinterest: the site page its Pins link to
+      // Instagram/TikTok: post it herself via Buffer's "Notify me" (to add music). Unset = by format (carousels: yes).
+      ...(typeof l.byHand === 'boolean' ? { byHand: l.byHand } : {}),
     };
   }
   const now = new Date().toISOString();
