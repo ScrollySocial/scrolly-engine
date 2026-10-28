@@ -1,5 +1,6 @@
 ---
 slug: replace-manychat-with-claude
+draftPostId: 1971
 wpId:
 title: Replace ManyChat with Claude: How I Built My Own Comment-to-DM
 description: I replaced ManyChat with my own Instagram comment-to-DM system that Claude built and set up. What it does, what it costs, the setup traps, and who should stay on ManyChat.
