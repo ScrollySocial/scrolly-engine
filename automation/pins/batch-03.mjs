@@ -1,5 +1,6 @@
 // Batch 3 (2026-10-28): 5 Pins for guide B1, /guides/replace-manychat-with-claude/ (live 2026-10-28).
-// Two use the guide's own top photo, one is a video Pin (Mercedes 2026-10-28: mix photos, video and graphics to test) (phone on a tripod showing the keyword DM chat); three use stock already in
+// Round 3 (Mercedes 2026-10-28): headlines land at a glance (no jargon), no Pin-board collage behind the phone.
+// One uses a real phone photo showing the keyword DM chat, three use stock, one is a video Pin. (phone on a tripod showing the keyword DM chat); three use stock already in
 // assets/stock that no ManyChat Pin has used. Copy only claims what the guide says.
 // Schedule: a 4th daily slot (12pm US Eastern) next to batches 1 and 2, every 3 days so the link never repeats within 3 days.
 // Usage: node batch-03.mjs   Output: pins/out/batch-03/ (PNG per Pin, review.html, batch.json, sheet.png)
@@ -11,27 +12,26 @@ import { composeVideoPin } from './lib/video.mjs';
 
 const OUT = path.join(HERE, 'out/batch-03');
 const P = (s) => `pexels-${s}`;
-const OWN = 'own-guide-manychat-hero';
+const PHONE = 'own-phone-dm-plain';
 const B = { dm: 'Instagram DM Automation', ai: 'AI Tools for Small Business' };
 const LINK = '/guides/replace-manychat-with-claude/';
 
 const PINS = [
-  { id: 'g1-replaced-g', layout: 'G', photo: OWN, focus: 'center 40%', ground: 'blush', scriptFont: 'caveatbrush', arrow: false, board: B.ai, badge: 'About $6 a month', lines: [{ t: 'how I', script: true }, { t: 'replaced' }, { t: 'ManyChat' }, { t: 'with Claude', script: true }],
-    title: 'How I Replaced ManyChat with Claude', desc: 'I had Claude build my own Instagram comment-to-DM system on a small server for about $6 a month. What it does, what it costs, the setup traps, and who should stay on ManyChat.', keywords: 'manychat alternative, replace manychat with claude, claude ai, instagram dm automation' },
-  { id: 'g2-can-claude-f', layout: 'F', photo: P('5390124-cozy-laptop'), hl: 'marker', board: B.dm, serif: 'Can Claude replace ManyChat?', sel: 'here is what I found',
-    title: 'Can Claude Replace ManyChat? Here Is What I Found', desc: "Claude can set up your own comment-to-DM software for Instagram, with YouTube comment replies too. What it can and can't do compared with ManyChat, and what it costs each month.", keywords: 'can claude replace manychat, manychat vs claude, instagram comment to dm, ai automation' },
-  { id: 'g3-cost-e', layout: 'E', photo: P('13550510-desk-candle'), cardTop: 840, pin: 'cream', hl: 'caveatbrush', board: B.dm, serif: 'ManyChat vs your own setup', small: 'what it really costs',
-    title: 'ManyChat vs Your Own Setup: What It Really Costs', desc: 'ManyChat charges more as more people message you. My own comment-to-DM setup costs about $6 a month for the server, however many people comment. The full cost breakdown.', keywords: 'manychat pricing, manychat alternative, instagram automation cost, comment to dm' },
-  { id: 'g4-traps-e', layout: 'E', photo: OWN, focus: 'center 30%', cardTop: 120, tilt: 1.5, pin: 'white', hl: 'reenie', board: B.dm, serif: 'Setup traps that cost me time', small: 'read these before you build',
-    title: 'The Setup Traps That Cost Me Time (Read Before You Build)', desc: 'Building your own Instagram comment-to-DM tool? The Google and Meta settings that cause weeks of waiting or a manual review, and how to skip them.', keywords: 'instagram api, meta developer app, instagram dm automation, self hosted manychat' },
-  { id: 'v1-own-tool-e', layout: 'E', video: P('v7681923-woman-laptop'), cardTop: 860, pin: 'blue', hl: 'marker', board: B.ai, serif: 'Build your own comment-to-DM tool', small: 'how I did it with Claude',
-    title: 'Build Your Own Instagram Comment-to-DM Tool', desc: "Comment a keyword, get the link by DM. How I built my own version with Claude, n8n and Instagram's official API, and what it does every day.", keywords: 'instagram comment to dm automation, n8n, claude ai, instagram automation tools' },
+  { id: 'h1-replaced-g', layout: 'G', photo: PHONE, focus: 'center 35%', ground: 'blush', scriptFont: process.env.SCRIPT || 'grace', arrow: false, board: B.ai, badge: 'Free guide', lines: [{ t: 'how I', script: true }, { t: 'replaced' }, { t: 'ManyChat' }, { t: 'for $6 a month', script: true }],
+    title: 'How I Replaced ManyChat for $6 a Month', desc: 'I had Claude build my own Instagram auto-reply setup on a small server for about $6 a month, plus the Claude plan I already had. What it does, what it costs, and who should stay on ManyChat.', keywords: 'manychat alternative, replace manychat with claude, claude ai, instagram dm automation' },
+  { id: 'h2-stop-f', layout: 'F', photo: P('5390124-cozy-laptop'), hl: 'marker', board: B.dm, serif: 'Stop overpaying for ManyChat', sel: 'do this instead',
+    title: 'Stop Overpaying for ManyChat: Do This Instead', desc: 'ManyChat charges more as more people message you. I had Claude set up my own version on a $6-a-month server instead. What it can do, what it costs, and who should stay on ManyChat.', keywords: 'manychat alternative, manychat pricing, instagram dm automation, save money small business' },
+  { id: 'h3-diy-e', layout: 'E', photo: P('13550510-desk-candle'), cardTop: 840, pin: 'cream', hl: 'caveatbrush', board: B.dm, serif: 'How to DIY your own ManyChat setup', small: 'Instagram approved!',
+    title: 'How to DIY Your Own ManyChat Setup (Instagram Approved!)', desc: "Comment a keyword, get the link by DM, through Instagram's official API. How I set up my own version with Claude, step by step, plus the settings that slowed me down.", keywords: 'diy manychat, self hosted manychat, instagram api, instagram comment to dm automation' },
+  { id: 'h4-39-vs-6-f', layout: 'F', photo: P('5473151-woman-laptop'), hl: 'reenie', board: B.dm, serif: 'ManyChat Pro is $39 a month. Mine is $6.', sel: "here's how",
+    title: "ManyChat Pro Is $39 a Month. Mine Is $6. Here's How", desc: 'ManyChat Pro is $39 a month for up to 2,500 contacts. My own Instagram auto-reply setup runs on a $6-a-month server, plus the Claude plan I already had, however many people comment.', keywords: 'manychat pricing, manychat pro, manychat alternative, instagram automation cost' },
+  { id: 'h5-link-e', layout: 'E', video: P('v7681923-woman-laptop'), cardTop: 860, pin: 'blue', hl: 'marker', board: B.ai, serif: 'Send your link to every commenter', small: 'automatically, for $6 a month',
+    title: 'Send Your Link to Every Commenter, Automatically', desc: 'Someone comments your keyword on Instagram and gets your link by DM, automatically. How I set it up with Claude for about $6 a month, without ManyChat.', keywords: 'instagram auto reply, instagram dm automation, manychat alternative, claude ai' },
 ];
 
 // 12pm US Eastern: 16:00 UTC until Nov 1 (EDT), 17:00 UTC from Nov 2 (EST).
 const DAYS = ['2026-10-29', '2026-11-01', '2026-11-04', '2026-11-07', '2026-11-10'];
-PINS.forEach((p, i) => { p.link = LINK; p.date = `${DAYS[i]}T${DAYS[i] < '2026-11-02' ? '16' : '17'}:00:00`; p.id = `pin3-${String(i + 1).padStart(2, '0')}-${p.id}${p.layout === 'G' ? '-v2' : ''}`; });
-// -v2: Pin 1 was redone after upload (Sacramento script swapped for Caveat Brush), so the old upload isn't reused.
+PINS.forEach((p, i) => { p.link = LINK; p.date = `${DAYS[i]}T${DAYS[i] < '2026-11-02' ? '16' : '17'}:00:00`; p.id = `pin3-${String(i + 1).padStart(2, '0')}-${p.id}`; });
 const url = (p) => SITE + p.link + '?utm_source=pinterest';
 
 const errs = [];
