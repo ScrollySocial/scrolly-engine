@@ -35,7 +35,7 @@ const PRODUCTS = {
     url: '/chat-manager/',
     btn: 'See Chat Manager',
     slim: 'Want this without building it from scratch? Chat Manager is the same setup as a kit.',
-    img: '../product-images/out-v3/chat-manager.webp',
+    img: 'https://theambitiondepartment.com/wp-content/uploads/2026/10/product-chat-manager-v3.webp',
     alt: 'Chat Manager: a keyword comment sends the freebie by DM and the person joins your email list',
   },
 };

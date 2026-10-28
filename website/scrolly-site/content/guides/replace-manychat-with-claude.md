@@ -69,9 +69,9 @@ They get the freebie | And their email joins your list.
 You see it all | One inbox for Instagram, YouTube and TikTok.
 :::
 
-![WRITE alt text: describe the screenshot](REPLACE-phone-comment-and-dm.webp "WRITE a caption: the keyword comment and the DM it got, with the date")
+![A keyword comment, the DM asking them to reply READY, the signup link, the freebie and a reminder](../content/guides/img/manychat-demo-dm-preview.webp "What someone sees after commenting a keyword: the DM, their personal signup link, the freebie and one reminder. From my Chat Manager demo, a made-up shop.")
 
-![WRITE alt text: describe the screenshot](REPLACE-inbox-dashboard.webp "WRITE a caption: your inbox or stats page, names blurred")
+![The Chat Manager inbox with Instagram, TikTok and YouTube comments and DMs in one list](../content/guides/img/manychat-demo-inbox.webp "One inbox for Instagram, TikTok and YouTube. From my Chat Manager demo, a made-up shop.")
 
 :::cta slim Want to view an interactive demo of my personal software? | /chat-manager/#demo | Check it out
 
@@ -98,7 +98,7 @@ Before you go live with the automations, you need to make sure that there is a p
 
 Then you are ready to start adding in your keywords and testing! Congratulations.
 
-![WRITE alt text: describe the screenshot](REPLACE-meta-webhook-screen.webp "WRITE a caption: which screen this is and what to click")
+![Meta app webhook settings with only the comments field subscribed](../content/guides/img/manychat-meta-webhook-comments.webp "My Meta app's webhook settings during setup: only comments is subscribed.")
 
 ## Setup traps that cost me time
 
