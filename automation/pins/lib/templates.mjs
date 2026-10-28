@@ -211,6 +211,8 @@ export const F = (p) => {
 // G: stacked white label bars in a heavy sans, script lines between, a photo filling the bottom and a round dark badge
 // with a hand-drawn arrow pointing at it (her Levee Road "explode your Pinterest traffic" reference, 2026-10-28).
 // lines: [{ t, script: true } | { t }]
+// scriptFont: 'caveatbrush' swaps Sacramento for an upright brush hand with room above and below (Mercedes 2026-10-28:
+// Sacramento capitals were hard to read and touched the bars).
 export const G = (p) => {
   const g = GROUNDS[p.ground || 'blush'];
   return `<style>* { margin: 0; box-sizing: border-box; } ${FACES}
@@ -220,10 +222,11 @@ export const G = (p) => {
   .h { position: absolute; top: 110px; left: 30px; right: 30px; text-align: center; z-index: 2; }
   .bar { display: inline-block; background: #fff; font: 800 ${p.barSize || 178}px/1 Jost; white-space: nowrap; text-transform: uppercase; letter-spacing: -.01em; padding: 16px 28px 20px; margin: 6px 0; }
   .scr { font: 400 ${p.scriptSize || 176}px/1 Sacramento, cursive; margin: -10px 0 -6px; white-space: nowrap; }
+  ${p.scriptFont === 'caveatbrush' ? `.scr { font: 400 ${p.scriptSize || 120}px/1.05 'Caveat Brush', cursive; margin: 14px 0 10px; }` : ''}
   .badge { position: absolute; right: 50px; bottom: ${(p.photoH || 520) - 250}px; width: 280px; height: 280px; border-radius: 50%; background: #2b2b2b; color: #fff; display: flex; align-items: center; justify-content: center; text-align: center; font: 800 40px/1.05 Jost; text-transform: uppercase; padding: 46px; transform: rotate(-10deg); z-index: 3; }
   .arr { position: absolute; left: 260px; bottom: ${(p.photoH || 520) - 140}px; width: 360px; height: 120px; background: #fff; filter: drop-shadow(0 3px 8px rgba(0,0,0,.65)); -webkit-mask: url('${ARROW}') center/100% 100% no-repeat; mask: url('${ARROW}') center/100% 100% no-repeat; mask-mode: luminance; transform: rotate(10deg); z-index: 3; }
 </style><div class="photo"></div><div class="h">${p.lines.map((l) => (l.script ? `<div class="scr">${esc(l.t)}</div>` : `<div><span class="bar">${esc(l.t)}</span></div>`)).join('')}</div>
-<div class="arr"></div><div class="badge">${esc(p.badge)}</div><div class="dom">${DOMAIN}</div>`;
+${p.arrow === false ? "" : `<div class="arr"></div>`}<div class="badge">${esc(p.badge)}</div><div class="dom">${DOMAIN}</div>`;
 };
 
 // H: a cream graphic with a serif headline, one panel showing a video (or photo) of a person, and handwritten notes with

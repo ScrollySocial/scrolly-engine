@@ -1,8 +1,4 @@
 {
- "pin3-01-g1-replaced-g": {
-  "media": 2028,
-  "url": "https://theambitiondepartment.com/wp-content/uploads/2026/10/pin3-01-g1-replaced-g.png"
- },
  "pin3-02-g2-can-claude-f": {
   "media": 2029,
   "url": "https://theambitiondepartment.com/wp-content/uploads/2026/10/pin3-02-g2-can-claude-f.png"
@@ -15,8 +11,12 @@
   "media": 2031,
   "url": "https://theambitiondepartment.com/wp-content/uploads/2026/10/pin3-04-g4-traps-e.png"
  },
- "pin3-05-g5-own-tool-g": {
-  "media": 2032,
-  "url": "https://theambitiondepartment.com/wp-content/uploads/2026/10/pin3-05-g5-own-tool-g.png"
+ "pin3-01-g1-replaced-g-v2": {
+  "media": 2033,
+  "url": "https://theambitiondepartment.com/wp-content/uploads/2026/10/pin3-01-g1-replaced-g-v2.png"
+ },
+ "pin3-05-v1-own-tool-e": {
+  "media": 2034,
+  "url": "https://theambitiondepartment.com/wp-content/uploads/2026/10/pin3-05-v1-own-tool-e.mp4"
  }
 }
