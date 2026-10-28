@@ -4,42 +4,49 @@ type: ig-single-image
 channel: instagram
 publish: 2026-11-04 11:00 America/New_York
 status: sample
-image: automation/ig-posts/out/2026-11-04-comment-to-dm.png
+image: needs her photo or short video, "cute" (her idea 2026-10-28); headline on it: "that feeling when Claude replaced your ManyChat"
 teaches: /chat-manager/
-keyword: MATH (live; check whether it currently sends the link directly or asks "reply READY" first, and match the wording)
-pins: [pin-02-chat-manager-d, pin-05-chat-manager-a]
+keyword: MATH (live; check whether it currently sends the link directly or asks "reply READY" first, and match point 3)
+pins: [pin-02-chat-manager-d, pin-05-chat-manager-c]
 sources:
-  - Meta limit, one private reply per comment within 7 days: vault products/content-engine/comment-to-dm-n8n-plan.md
-  - About $6 a month to run, one inbox, replies approved before posting: same plan + the live /chat-manager/ page
+  - Her own words 2026-10-28: never paid for ManyChat, thought it was too expensive; set up with approval before replies; AI could send replies automatically if a user wants
+  - Meta limit, one private reply per comment within 7 days; inbox sorting, Claude drafts, approve before posting, keyword on/off, keyword and DM stats: vault products/content-engine/comment-to-dm-n8n-plan.md
+  - About $6 a month to run: same plan + live /chat-manager/ page
   - Founding beta $97, 10 spots: vault brand/rename-ambition-department.md (product 1764, stock 10)
-  - ManyChat prices its paid plans by contact count: well-known, re-check manychat.com/pricing before posting
 ---
-Comment MATH on this post and check your DMs. The message you get is sent by software I built, and it costs me about $6 a month to run.
+that feeling when Claude replaced your ManyChat 😌
 
-Here's how comment-to-DM works, so you can decide if it's right for your account.
+I wanted comment-to-DM on my posts, and I didn't want to pay ManyChat's monthly price. I thought it was too expensive (it was). So I built my own with Claude's help, and it runs for about $6 a month.
 
-What happens
-1. Someone comments a keyword you chose, like MATH.
-2. Instagram lets a business account send one private reply to that comment, within 7 days of it.
-3. That reply lands in their DMs with your link, freebie or question.
+Here's everything it does, and what you'd need to do the same 👇
 
-Why it helps
-Links in captions can't be tapped. Links in DMs can. And because the person asked for it, they're expecting your message and more likely to open it.
+What happens when you comment MATH on my posts
+1. My setup spots the keyword in your comment.
+2. Instagram lets a business account send one private reply to each comment, within 7 days of it. My setup sends that reply for me.
+3. You get my free $1K Math calculator in your DMs.
 
-Picking a keyword
-Use one short word that's easy to spell on a phone: MATH, QUIZ, GUIDE.
-Match it to what they'll get, so people know what they're asking for.
-Say it near the start of your caption and again at the end.
+What else it does
+4. Puts every comment and DM in one inbox, so nothing slips past me.
+5. Sorts them: keyword, question or a kind comment.
+6. Drafts a reply to each question, written by Claude.
+7. Waits for me to approve every reply before it posts. That's how I like it.
+8. If you'd rather not check each one, you can set it up so AI sends the replies on its own.
+9. Keeps my list of keywords, each one easy to switch on or off.
+10. Shows how many people used each keyword and how many DMs went out.
 
-Writing the DM
-Two or three short lines: say thanks, give the link, and tell them the first thing to do. For example:
-"Here's your free calculator: theambitiondepartment.com/calculators/income-goal/. Start with your income goal, it takes two minutes."
+What it costs me
+11. A small server: about $6 a month, however many people comment.
+12. The Claude subscription I already pay for, for the drafts.
+13. No fee per contact, so my bill stays the same as my list grows.
 
-What it costs
-Popular apps like ManyChat price their paid plans by how many contacts you have, so the bill grows with your list. I wanted a flat cost, so I built Chat Manager. It runs on a small server I rent for about $6 a month, whatever my list size. It sends the keyword DMs, keeps my comments and DMs in one inbox, and lets me approve each reply before it posts.
+What you'd need to copy it
+14. A professional Instagram account (business or creator).
+15. A Meta developer app. It's free, and the guide walks you through it.
+16. A small server of your own.
+17. A bit of patience for the setup steps, done once.
 
-Chat Manager is now a kit you install yourself, with a step-by-step guide that includes setting up your own Meta developer app. It's in founding beta at $97 for the first 10 buyers. Details are linked in my bio.
+Chat Manager is my setup packaged as a kit you install yourself, with a step-by-step guide. It's in founding beta at $97 for the first 10 buyers. The link is in my bio.
 
-Try it first: comment MATH below and watch your DMs.
+Want to see it work? Comment MATH below and check your DMs 👇
 
-#instagramtips #dmautomation #smallbusinessmarketing
+#instagramtips #dmautomation #claudeai
