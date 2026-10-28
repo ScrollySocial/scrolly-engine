@@ -73,6 +73,38 @@ async function page(key, status, first, direction) {
   return data.posts.edges.map((e) => normalizePost(e.node));
 }
 
+// ---- Queue it (her click on a card, after the preview) ----
+// Adds one post to the end of a channel's Buffer queue: updates her existing draft when the card has one, otherwise
+// creates the post. Always mode addToQueue, never shareNow. Buffer re-checks the whole post on every edit, so the
+// text, assets and metadata are always sent in full.
+export const CHANNEL_IDS = Object.fromEntries(Object.entries(CHANNELS).map(([id, name]) => [name.toLowerCase(), id]));
+const RESULT = `... on PostActionSuccess { post { id status dueAt } } ... on MutationError { message }`;
+const CREATE = `mutation PlannerCreate($input: CreatePostInput!) { createPost(input: $input) { ${RESULT} } }`;
+const EDIT = `mutation PlannerEdit($input: EditPostInput!) { editPost(input: $input) { ${RESULT} } }`;
+const ONE = `query PlannerPost($id: PostId!) { post(input: { id: $id }) { id status channelId } }`;
+
+export async function scheduledCount(key) {
+  return (await page(key, ['scheduled', 'sending'], 100, 'asc')).length;
+}
+
+export async function queuePost(key, { platform, bufferId, text, assets }) {
+  const channelId = CHANNEL_IDS[platform];
+  if (!channelId) throw new Error(`no Buffer channel for ${platform}`);
+  const video = assets.some((a) => a.video);
+  const metadata = platform === 'instagram' ? { instagram: { type: video ? 'reel' : 'post', shouldShareToFeed: true } } : undefined;
+  const base = { text, assets, ...(metadata ? { metadata } : {}), mode: 'addToQueue', schedulingType: 'automatic' };
+  let result;
+  // Reuse her draft only if it's still a draft on the same channel; a scheduled or sent post is never touched.
+  const existing = bufferId ? (await gql(key, ONE, { id: bufferId }).catch(() => null))?.post : null;
+  if (existing?.status === 'draft' && existing.channelId === channelId) {
+    result = (await gql(key, EDIT, { input: { id: bufferId, ...base, saveToDraft: false } })).editPost;
+  } else {
+    result = (await gql(key, CREATE, { input: { channelId, ...base } })).createPost;
+  }
+  if (!result?.post) throw new Error(result?.message || 'Buffer refused the post');
+  return result.post; // { id, status, dueAt }
+}
+
 export async function liveFetch(key) {
   const { channels } = await gql(key, CHANNEL_QUERY, { org: ORG_ID });
   const queue = await page(key, ['draft', 'needs_approval', 'scheduled', 'sending', 'error'], 100, 'asc');

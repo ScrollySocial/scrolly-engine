@@ -136,6 +136,11 @@
   .preview { font-weight: 400; font-size: 15px; color: var(--muted); background: var(--mist); border-radius: 8px; padding: 8px 10px; }
   .preview b { color: var(--ink); }
   .ghost.danger { border-color: var(--warn); color: var(--warn); }
+  #queueDlg { width: min(94vw, 760px); max-width: none; max-height: 92vh; padding: 0; }
+  .qslides { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 6px; }
+  .qslides img { width: auto !important; display: inline-block !important; height: 220px; aspect-ratio: 3 / 4; object-fit: cover; border-radius: 8px; border: 1px solid var(--line); flex: none; }
+  .qcap { white-space: pre-wrap; font-size: 15px; background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; max-height: 220px; overflow: auto; }
+  .qbad { color: var(--warn); font-weight: 600; } .qwarn { color: var(--muted); }
   .actions { display: flex; flex-wrap: wrap; gap: 8px; justify-content: space-between; }
   a { color: var(--ink); text-decoration-color: var(--sky); text-underline-offset: 3px; }
   dialog { border: 0; border-radius: 14px; padding: 0; background: var(--card); max-width: min(92vw, 520px); }
@@ -196,6 +201,7 @@
 </main>
 <dialog id="zoom"><img alt=""></dialog>
 <dialog id="editor"><form method="dialog" id="ideaForm"></form></dialog>
+<dialog id="queueDlg"><div id="queueBody" style="padding:20px;display:grid;gap:12px"></div></dialog>
 
 <script>
 const $ = (id) => document.getElementById(id);
@@ -408,7 +414,7 @@ function renderIdeas() {
       <div class="idea" data-edit="${esc(i.id)}">
         <span class="t">${esc(i.title)}</span>
         <span class="m">${[ideaMeta(i), i.lanes[p].date ? fmtDate(i.lanes[p].date) : ''].filter(Boolean).join(' · ')}</span>${kwBadge(i)}
-        <select data-move="${esc(i.id)}" data-p="${p}" aria-label="Move to">${stagesFor(p).map((x) => `<option${x === s ? ' selected' : ''}>${esc(x)}</option>`).join('')}</select>
+        ${QUEUEABLE.includes(p) && s === 'Ready' ? `<button class="ghost" type="button" data-queue="${p}" data-card="${esc(i.id)}" style="margin-top:6px">Queue it</button>` : ''}<select data-move="${esc(i.id)}" data-p="${p}" aria-label="Move to">${stagesFor(p).map((x) => `<option${x === s ? ' selected' : ''}>${esc(x)}</option>`).join('')}</select>
       </div>`).join('')}</div>`;
   }).join('')}</div>${ideaFilter === 'stories' ? '<p class="sub" style="margin-top:8px">A Story card is one day of Stories. Film = photos to shoot, Edit = lines written and slides to render. Add one with + New idea and Format "Story".</p>'
     : live.length > mine.length ? `<p class="sub" style="margin-top:8px">${live.length - mine.length} ideas aren't planned for ${PNAME[p]}. Open one and tick ${PNAME[p]} to add it here.</p>` : ''}`;
@@ -438,7 +444,8 @@ function laneFields(p, l) {
   }
   if (p !== 'pinterest') {
     body += `<input type="hidden" name="${p}.bufferId" value="${esc(l.bufferId || '')}">
-      ${post ? `<div class="preview">In Buffer: <b>${esc(post.status === 'sent' ? 'posted' : post.status)}</b>${post.dueAt ? `, ${esc(fmtWhen(post.dueAt))}` : ''}</div>` : ''}`;
+      ${post ? `<div class="preview">In Buffer: <b>${esc(post.status === 'sent' ? 'posted' : post.status)}</b>${post.dueAt ? `, ${esc(fmtWhen(post.dueAt))}` : ''}</div>` : ''}
+      ${QUEUEABLE.includes(p) && l.stage === 'Ready' ? `<button class="primary" type="button" data-queue="${p}">Queue it in Buffer</button>` : ''}`;
   }
   return `<fieldset><legend><label style="display:flex;gap:8px;align-items:center"><input type="checkbox" name="${p}.on"${on ? ' checked' : ''} style="width:auto"> ${PNAME[p]}</label></legend>
     <div data-lane="${p}"${on ? '' : ' hidden'}>${body}</div></fieldset>`;
@@ -569,6 +576,38 @@ document.addEventListener('change', async (e) => {
   }
 });
 
+// ---- Queue it ----
+const QUEUEABLE = ['instagram', 'tiktok'];
+async function openQueue(id, platform) {
+  const body = $('queueBody');
+  body.innerHTML = '<p class="sub">Checking…</p>';
+  $('queueDlg').showModal();
+  const r = await fetch('/api/queue-plan', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ id, platform }) });
+  const p = await r.json();
+  if (!r.ok) { body.innerHTML = `<p class="qbad">${esc(p.error)}</p><button class="ghost" type="button" data-qclose>Close</button>`; return; }
+  const card = state.ideas.find((x) => x.id === id);
+  body.innerHTML = `
+    <h2>Queue in Buffer: ${esc(p.channel)}</h2>
+    <p class="sub" style="margin:0">${esc(card.title)}<br>Goes to the end of your ${esc(p.channel)} queue; Buffer picks the next free time. ${p.scheduled != null ? `${p.scheduled} of 10 free-plan posts are scheduled now.` : ''}</p>
+    <div class="qslides">${p.media.map((m) => m.preview ? `<img src="${esc(m.preview)}" alt="${esc(m.alt || '')}" title="${esc(m.alt || '')}">` : '<div class="preview">Video</div>').join('')}</div>
+    <p class="sub" style="margin:0">${p.media.length} ${p.media.length === 1 ? 'file' : 'slides'}${p.toUpload ? `, ${p.toUpload} to upload to WordPress (named tad-carousel-…)` : ', already on WordPress'}${p.draft ? '. Uses your existing Buffer draft for this post.' : '.'}</p>
+    <div class="qcap">${esc(p.caption)}</div>
+    ${p.problems.map((x) => `<p class="qbad" style="margin:0">${esc(x)}</p>`).join('')}
+    ${p.warnings.map((x) => `<p class="qwarn" style="margin:0">Note: ${esc(x)}</p>`).join('')}
+    <div class="actions"><span></span><span style="display:flex;gap:8px"><button class="ghost" type="button" data-qclose>Cancel</button>
+      ${p.ok ? `<button class="primary" type="button" data-qconfirm="${esc(id)}" data-p="${esc(platform)}" data-u="${esc(p.updatedAt)}">Confirm: add to the queue</button>` : ''}</span></div>`;
+}
+async function confirmQueue(btn) {
+  btn.disabled = true;
+  btn.textContent = 'Uploading and queueing…';
+  const r = await fetch('/api/queue', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ id: btn.dataset.qconfirm, platform: btn.dataset.p, updatedAt: btn.dataset.u }) });
+  const res = await r.json();
+  if (!r.ok) { btn.disabled = false; btn.textContent = 'Try again'; $('queueBody').insertAdjacentHTML('beforeend', `<p class="qbad">${esc(res.error)}</p>`); return; }
+  $('queueBody').innerHTML = `<h2>Queued</h2><p>Buffer will post it ${res.post.dueAt ? esc(fmtWhen(res.post.dueAt)) + ' (US Eastern)' : 'at the next free time'}. The card is now at Scheduled.</p><div class="actions"><span></span><button class="primary" type="button" data-qclose>Done</button></div>`;
+  $('editor').close();
+  load();
+}
+
 async function load(refresh) {
   try {
     const r = await fetch(`/api/data${refresh ? '?refresh=1' : ''}`);
@@ -586,7 +625,13 @@ async function load(refresh) {
 document.addEventListener('click', async (e) => {
   const t = e.target;
   const edit = t.closest('[data-edit]');
-  if (t.dataset.ig) {
+  if (t.dataset.queue) {
+    openQueue(t.dataset.card || $('ideaForm').dataset.id, t.dataset.queue);
+  } else if (t.dataset.qconfirm) {
+    confirmQueue(t);
+  } else if (t.hasAttribute('data-qclose') || t.id === 'queueDlg') {
+    $('queueDlg').close();
+  } else if (t.dataset.ig) {
     ideaGroupFilter = t.dataset.ig;
     try { localStorage.setItem('planner.ideaGroup', ideaGroupFilter); } catch {}
     renderIdeas();

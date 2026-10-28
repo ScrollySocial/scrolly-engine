@@ -13,6 +13,7 @@ import { readFileSync, writeFileSync, renameSync, readdirSync, existsSync, mkdir
 import { join, dirname, extname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { liveFetch } from './lib/buffer.mjs';
+import { plan as queuePlan, run as queueRun } from './lib/queue.mjs';
 import { cleanIdea, PLATFORMS, STAGES, PIN_STAGES, FORMATS } from './lib/ideas.mjs';
 
 const here = dirname(fileURLToPath(import.meta.url));
@@ -169,6 +170,32 @@ http
       if (req.method === 'POST' && url.pathname === '/api/idea') {
         return send(res, 200, { idea: saveIdea(await readBody(req)) });
       }
+      // Queue it, step 1: the preview. Changes nothing.
+      if (req.method === 'POST' && url.pathname === '/api/queue-plan') {
+        const { id, platform } = await readBody(req);
+        const card = ideas().find((x) => x.id === id);
+        if (!card) return send(res, 404, { error: 'no such card' });
+        const key = envKey('BUFFER_API_KEY');
+        const b = await buffer(false);
+        const scheduled = b.posts.filter((p) => ['scheduled', 'sending'].includes(p.status)).length;
+        const p = queuePlan(card, platform, { keywords: keywords(), scheduled });
+        if (!key) p.problems.unshift('Add BUFFER_API_KEY to automation/.env first (Buffer > profile icon > API > + New Key), then restart the planner.');
+        return send(res, 200, { ...p, ok: p.problems.length === 0, updatedAt: card.updatedAt });
+      }
+      // Queue it, step 2: her Confirm click. Uploads missing slides, adds the post to the Buffer queue, updates the card.
+      if (req.method === 'POST' && url.pathname === '/api/queue') {
+        const { id, platform, updatedAt } = await readBody(req);
+        const key = envKey('BUFFER_API_KEY');
+        if (!key) return send(res, 400, { error: 'No BUFFER_API_KEY in automation/.env yet.' });
+        const card = ideas().find((x) => x.id === id);
+        if (!card) return send(res, 404, { error: 'no such card' });
+        if (updatedAt !== card.updatedAt) return send(res, 409, { error: 'This card changed since the preview. Reload and preview again.' });
+        const post = await queueRun(card, platform, key, keywords());
+        const lane = { ...card.lanes[platform], stage: 'Scheduled', bufferId: post.id, date: (post.dueAt || '').slice(0, 10) };
+        const saved = saveIdea({ ...card, lanes: { ...card.lanes, [platform]: lane } });
+        cache = null; // next page load reads Buffer fresh
+        return send(res, 200, { post, idea: saved });
+      }
       if (req.method === 'POST' && url.pathname === '/api/idea-delete') {
         deleteIdea((await readBody(req)).id);
         return send(res, 200, { ok: true });
@@ -201,7 +228,7 @@ http
       }
       send(res, 404, { error: 'not found' });
     } catch (e) {
-      send(res, [404, 409].includes(e.code) ? e.code : 500, { error: e.message });
+      send(res, [400, 404, 409].includes(e.code) ? e.code : 500, { error: e.message });
     }
   })
   .listen(PORT, '127.0.0.1', () => console.log(`Content planner: http://localhost:${PORT}`));

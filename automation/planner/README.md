@@ -16,3 +16,14 @@ Run from the project folder, then open http://localhost:4330:
 - `lib/ideas.mjs` + `data/ideas.json`: the Ideas board, one card per idea with a lane per platform
   (Instagram, TikTok, YouTube, Pinterest). Claude may edit `ideas.json` directly; the page re-reads it on load.
 - `data/pin-status.json`: her "Seen it live" / "Missing" clicks. `data/buffer-snapshot.json`: last saved Buffer copy.
+
+## Queue it (built 2026-10-28)
+A Ready Instagram or TikTok lane gets a **Queue it** button (card editor and the platform board).
+1. `POST /api/queue-plan` shows the preview: slides (carousel export) or the card's `mediaUrl`, the lane's caption, alt
+   texts, the comment-word check (Instagram posts need a live Chat Manager word), Buffer's free-plan count. Changes nothing.
+2. Her **Confirm** → `POST /api/queue`: uploads slides WordPress doesn't have yet as `tad-carousel-*` (record in
+   `automation/carousels/posts/<id>/wp-media.json`; re-rendered slides get a new name), then `lib/buffer.mjs queuePost`:
+   updates her Buffer draft if the card has one (still a draft, same channel), else creates the post; always
+   `addToQueue`, never "post now". The card's lane becomes Scheduled with the Buffer id and date.
+Needs `BUFFER_API_KEY` in `automation/.env` (Buffer: profile icon > API > Personal Access > + New Key; free plan = 1 key).
+YouTube and Reels aren't covered (YouTube needs a title + category; Reels go through the nightly run).
