@@ -13,7 +13,7 @@ export const SITE = 'https://theambitiondepartment.com';
 export const DOMAIN = 'theambitiondepartment.com';
 export const SHOTS_DIR = path.join(HERE, 'out/shots');
 const PACK_FONTS = path.resolve(HERE, '../reel-template-pack/assets/fonts');
-const GOOGLE = 'https://fonts.googleapis.com/css2?family=Anton&family=Jost:wght@500;600;800&family=Instrument+Serif&display=block';
+const GOOGLE = 'https://fonts.googleapis.com/css2?family=Anton&family=Jost:wght@500;600;800&family=Instrument+Serif&family=Reenie+Beanie&family=Caveat+Brush&family=Permanent+Marker&family=Sacramento&display=block';
 const FACES = `@font-face { font-family: 'Doodles'; src: url('${fileUrl(path.join(PACK_FONTS, 'ScrollyDoodles.otf'))}'); }
   @font-face { font-family: 'DM Serif Display'; src: url('${fileUrl(path.join(PACK_FONTS, 'dmserifdisplay-DMSerifDisplay-Regular.ttf'))}'); }
   @font-face { font-family: 'Bodoni Moda'; src: url('${fileUrl(path.join(PACK_FONTS, 'BodoniModa.ttf'))}'); font-weight: 400 900; }`;
@@ -162,40 +162,94 @@ ${phone(p, 280, st)}${arrowToPhone(st, g, 280)}${sparkles(st, g)}<div class="dom
 const PROPS = path.resolve(HERE, '../reel-template-pack/assets/props');
 const photoBg = (p) => `<div style="position:absolute;inset:0;background:url('${fileUrl(stockFile(p.photo))}') ${p.focus || 'center'}/cover no-repeat"></div>`;
 
-// E: a paper note card pinned onto the photo with a real photographed push pin (Reel pack prop).
+// Fun fonts for the highlighted line (Mercedes 2026-10-28: the plain sans highlight wasn't fun enough). Size factor
+// evens out how big each font looks. Shown side by side in the test set so she can pick.
+export const HL = {
+  reenie: { css: "'Reenie Beanie', cursive", k: 1.5 },
+  caveatbrush: { css: "'Caveat Brush', cursive", k: 1.15 },
+  marker: { css: "'Permanent Marker', cursive", k: 1 },
+  sacramento: { css: "'Sacramento', cursive", k: 1.45 },
+};
+const hlCss = (p, px) => { const f = HL[p.hl || 'caveatbrush']; return `font: 400 ${Math.round(px * f.k)}px/1.15 ${f.css};`; };
+// Photo or video: for a video Pin the page is rendered with a see-through background and laid over the clip by ffmpeg.
+const bg = (p) => (p.video ? '' : photoBg(p));
+const bodyBg = (p) => (p.video ? 'background: transparent;' : '');
+
+// E: a paper note card pinned onto the photo with a real photographed push pin (Reel pack prop). No small label on top
+// (she dislikes the eyebrow line): just the benefit headline and one highlighted line in a fun font.
 export const E = (p) => {
   const st = p.style || {}, top = p.cardTop ?? 760;
   return `<style>* { margin: 0; box-sizing: border-box; } ${FACES}
-  body { width: 1000px; height: 1500px; overflow: hidden; position: relative; font-family: Jost, Arial, sans-serif; }
-  .dom { position: absolute; top: 46px; left: 0; right: 0; text-align: center; font: 600 26px/1 Jost; letter-spacing: .16em; text-transform: uppercase; color: ${p.domInk || '#fff'}; text-shadow: 0 1px 8px rgba(0,0,0,.35); z-index: 3; }
-  .h { position: absolute; left: 90px; right: 90px; top: ${top}px; background: #fbf8f2; border-radius: 6px; padding: 70px 60px 56px; transform: rotate(${p.tilt ?? -2}deg); box-shadow: 0 24px 50px rgba(0,0,0,.28); z-index: 2; color: #2b2320; }
-  .tag { font: 600 26px/1 Jost; letter-spacing: .18em; text-transform: uppercase; color: #8a7a70; }
-  .ser { font: 400 ${p.size || 104}px/1 ${SERIF[st.serif || 'instrument']}; margin-top: 22px; }
-  .small { margin-top: 26px; font: 500 36px/1.3 Jost; }
-  .small span { background: ${p.mark || '#cfe3ff'}; padding: 2px 8px; }
+  body { width: 1000px; height: 1500px; overflow: hidden; position: relative; font-family: Jost, Arial, sans-serif; ${bodyBg(p)} }
+  .dom { position: absolute; top: 46px; left: 0; right: 0; text-align: center; font: 600 26px/1 Jost; letter-spacing: .16em; text-transform: uppercase; color: ${p.domInk || '#fff'}; text-shadow: 0 1px 8px rgba(0,0,0,.45); z-index: 3; }
+  .h { position: absolute; left: 90px; right: 90px; top: ${top}px; background: #fbf8f2; border-radius: 6px; padding: 66px 60px 54px; transform: rotate(${p.tilt ?? -2}deg); box-shadow: 0 24px 50px rgba(0,0,0,.28); z-index: 2; color: #2b2320; }
+  .ser { font: 400 ${p.size || 104}px/1 ${SERIF[st.serif || 'instrument']}; }
+  .small { margin-top: 26px; ${hlCss(p, 52)} }
+  .small { white-space: nowrap; } .small span { background: ${p.mark || '#cfe3ff'}; padding: 0 10px; }
   .pinhead { position: absolute; left: 50%; top: -34px; width: 74px; transform: translateX(-50%) rotate(-12deg); filter: drop-shadow(0 6px 6px rgba(0,0,0,.35)); }
-</style>${photoBg(p)}<div class="h"><img class="pinhead" src="${fileUrl(path.join(PROPS, 'pin-head-' + (p.pin || 'blue') + '.png'))}"><div class="tag">${esc(p.tag)}</div><div class="ser">${esc(p.serif)}</div><div class="small"><span>${esc(p.small)}</span></div></div><div class="dom">${DOMAIN}</div>`;
+</style>${bg(p)}<div class="h"><img class="pinhead" src="${fileUrl(path.join(PROPS, 'pin-head-' + (p.pin || 'blue') + '.png'))}"><div class="ser">${esc(p.serif)}</div><div class="small"><span>${esc(p.small)}</span></div></div><div class="dom">${DOMAIN}</div>`;
 };
 
-// F: big serif headline straight on the photo, with the subtitle in a phone-style text-selection highlight (blue box
+// F: big serif headline straight on the photo, with the next line in a phone-style text-selection highlight (blue box
 // with the two round drag handles), like her "Want the lazy way to edit TikToks & Reels?" reference.
 export const F = (p) => {
   const st = p.style || {}, ink = p.ink || '#ffffff';
   return `<style>* { margin: 0; box-sizing: border-box; } ${FACES}
-  body { width: 1000px; height: 1500px; overflow: hidden; position: relative; font-family: Jost, Arial, sans-serif; }
-  .shade { position: absolute; inset: 0; background: linear-gradient(${p.shadeTop === false ? '0deg' : '180deg'}, rgba(0,0,0,${p.shade ?? .45}) 0%, rgba(0,0,0,0) 55%); }
-  .dom { position: absolute; top: 46px; left: 0; right: 0; text-align: center; font: 600 26px/1 Jost; letter-spacing: .16em; text-transform: uppercase; color: ${ink}; z-index: 3; }
+  body { width: 1000px; height: 1500px; overflow: hidden; position: relative; font-family: Jost, Arial, sans-serif; ${bodyBg(p)} }
+  .shade { position: absolute; inset: 0; background: linear-gradient(${p.textBottom ? '0deg' : '180deg'}, rgba(0,0,0,${p.shade ?? .5}) 0%, rgba(0,0,0,0) 58%); }
+  .dom { position: absolute; top: 46px; left: 0; right: 0; text-align: center; font: 600 26px/1 Jost; letter-spacing: .16em; text-transform: uppercase; color: ${ink}; text-shadow: 0 1px 8px rgba(0,0,0,.45); z-index: 3; }
   .h { position: absolute; left: 70px; right: 70px; ${p.textBottom ? 'bottom: 120px;' : 'top: 130px;'} color: ${ink}; z-index: 3; }
   .ser { font: 400 ${p.size || 136}px/.98 ${SERIF[st.serif || 'instrument']}; text-shadow: 0 2px 18px rgba(0,0,0,.25); }
-  .sel { position: relative; display: inline-block; margin-top: 34px; font: 500 46px/1.2 Jost; color: #fff; background: rgba(46,120,246,.85); padding: 6px 14px 8px; }
+  .sel { position: relative; display: inline-block; margin-top: 34px; ${hlCss(p, 64)} color: #fff; background: rgba(46,120,246,.85); padding: 4px 16px 8px; white-space: nowrap; }
   .sel::before, .sel::after { content: ''; position: absolute; width: 4px; background: #2e78f6; top: -8px; bottom: -8px; }
   .sel::before { left: -4px; } .sel::after { right: -4px; }
   .sel i { position: absolute; width: 18px; height: 18px; border-radius: 50%; background: #2e78f6; }
   .sel i.a { left: -11px; top: -24px; } .sel i.b { right: -11px; bottom: -24px; }
-</style>${photoBg(p)}<div class="shade"></div><div class="h"><div class="ser">${esc(p.serif)}</div><div class="sel"><i class="a"></i>${esc(p.sel)}<i class="b"></i></div></div><div class="dom">${DOMAIN}</div>`;
+</style>${bg(p)}<div class="shade"></div><div class="h"><div class="ser">${esc(p.serif)}</div><div class="sel"><i class="a"></i>${esc(p.sel)}<i class="b"></i></div></div><div class="dom">${DOMAIN}</div>`;
 };
 
-export const LAYOUTS = { A, C, D, E, F };
+// G: stacked white label bars in a heavy sans, script lines between, a photo filling the bottom and a round dark badge
+// with a hand-drawn arrow pointing at it (her Levee Road "explode your Pinterest traffic" reference, 2026-10-28).
+// lines: [{ t, script: true } | { t }]
+export const G = (p) => {
+  const g = GROUNDS[p.ground || 'blush'];
+  return `<style>* { margin: 0; box-sizing: border-box; } ${FACES}
+  body { width: 1000px; height: 1500px; overflow: hidden; position: relative; font-family: Jost, Arial, sans-serif; background: ${g.bg}; color: #15110f; }
+  .photo { position: absolute; left: 0; right: 0; bottom: 0; height: ${p.photoH || 560}px; background: url('${fileUrl(stockFile(p.photo))}') ${p.focus || 'center'}/cover no-repeat; }
+  .dom { position: absolute; top: 46px; left: 0; right: 0; text-align: center; font: 600 24px/1 Jost; letter-spacing: .16em; text-transform: uppercase; z-index: 3; }
+  .h { position: absolute; top: 110px; left: 30px; right: 30px; text-align: center; z-index: 2; }
+  .bar { display: inline-block; background: #fff; font: 800 ${p.barSize || 120}px/1 Jost; text-transform: uppercase; letter-spacing: -.01em; padding: 16px 28px 20px; margin: 6px 0; }
+  .scr { font: 400 ${p.scriptSize || 128}px/1 Sacramento, cursive; margin: -6px 0 -4px; }
+  .badge { position: absolute; right: 56px; bottom: ${(p.photoH || 560) - 170}px; width: 300px; height: 300px; border-radius: 50%; background: #2b2b2b; color: #fff; display: flex; align-items: center; justify-content: center; text-align: center; font: 800 44px/1.05 Jost; text-transform: uppercase; padding: 40px; transform: rotate(-10deg); z-index: 3; }
+  .arr { position: absolute; left: 150px; bottom: ${(p.photoH || 560) - 240}px; width: 330px; height: 120px; background: #15110f; -webkit-mask: url('${ARROW}') center/100% 100% no-repeat; mask: url('${ARROW}') center/100% 100% no-repeat; mask-mode: luminance; transform: rotate(8deg); z-index: 3; }
+</style><div class="photo"></div><div class="h">${p.lines.map((l) => (l.script ? `<div class="scr">${esc(l.t)}</div>` : `<div><span class="bar">${esc(l.t)}</span></div>`)).join('')}</div>
+<div class="arr"></div><div class="badge">${esc(p.badge)}</div><div class="dom">${DOMAIN}</div>`;
+};
+
+// H: a cream graphic with a serif headline, one panel showing a video (or photo) of a person, and handwritten notes with
+// hand-drawn arrows pointing into it (her Digital Priestess "Set up & monetise Pinterest in one weekend" reference,
+// 2026-10-28, where the panel is a video). For a video Pin the panel is a see-through hole; video.mjs puts the clip there.
+// Window: left 50, top 440, 500x960. Notes sit to its right with an arrow beside each note's first line.
+export const H_WINDOW = { x: 50, y: 440, w: 500, h: 960 };
+export const H = (p) => {
+  const g = GROUNDS[p.ground || 'cream'], W = H_WINDOW, accent = p.accent || '#b5485f';
+  const win = p.video ? '' : `background:url('${fileUrl(stockFile(p.photo))}') ${p.focus || 'center'}/cover no-repeat;`;
+  // The page background is drawn as four panels around the window so the window itself stays see-through.
+  const frame = `<div style="position:absolute;left:0;top:0;width:1000px;height:${W.y}px;background:${g.bg}"></div><div style="position:absolute;left:0;top:${W.y}px;width:${W.x}px;height:${1500 - W.y}px;background:${g.bg}"></div><div style="position:absolute;left:${W.x + W.w}px;top:${W.y}px;width:${1000 - W.x - W.w}px;height:${1500 - W.y}px;background:${g.bg}"></div><div style="position:absolute;left:${W.x}px;top:${W.y + W.h}px;width:${W.w}px;height:${1500 - W.y - W.h}px;background:${g.bg}"></div>`;
+  const corners = `<div style="position:absolute;left:${W.x - 30}px;top:${W.y - 30}px;width:${W.w + 60}px;height:${W.h + 60}px;border-radius:64px;border:30px solid ${g.bg};z-index:1"></div>`;
+  const notes = p.notes.map((n, i) => `<div class="note" style="top:${W.y + 90 + i * 300}px">${esc(n)}</div><div class="nar" style="top:${W.y + 100 + i * 300}px"></div>`).join('');
+  return `<style>* { margin: 0; box-sizing: border-box; } ${FACES}
+  body { width: 1000px; height: 1500px; overflow: hidden; position: relative; font-family: Jost, Arial, sans-serif; ${p.video ? 'background: transparent;' : `background: ${g.bg};`} color: ${g.ink}; }
+  .win { position: absolute; left: ${W.x}px; top: ${W.y}px; width: ${W.w}px; height: ${W.h}px; border-radius: 34px; ${win} }
+  .dom { position: absolute; top: 46px; left: 0; right: 0; text-align: center; font: 600 24px/1 Jost; letter-spacing: .16em; text-transform: uppercase; z-index: 3; }
+  .h { position: absolute; top: 110px; left: 60px; right: 60px; text-align: center; z-index: 3; }
+  .ser { font: 400 ${p.size || 112}px/.98 'Instrument Serif', Georgia, serif; }
+  .ser em { font-style: normal; font-family: ${HL[p.hl || 'sacramento'].css}; color: ${accent}; font-size: 1.2em; }
+  .note { position: absolute; left: ${W.x + W.w + 130}px; right: 30px; z-index: 3; ${hlCss(p, 44)} transform: rotate(-4deg); }
+  .nar { position: absolute; left: ${W.x + W.w - 24}px; width: 140px; height: 52px; background: ${g.ink}; -webkit-mask: url('${ARROW}') center/100% 100% no-repeat; mask: url('${ARROW}') center/100% 100% no-repeat; mask-mode: luminance; transform: scaleX(-1) rotate(-14deg); z-index: 3; }
+</style>${p.video ? frame : ''}<div class="win"></div>${corners}<div class="h"><div class="ser">${p.headHtml}</div></div>${notes}<div class="dom">${DOMAIN}</div>`;
+};
+export const LAYOUTS = { A, C, D, E, F, G, H };
 
 // Stock photos: id -> local file in assets/stock/ (downloaded once from Pexels, credits in assets/stock/credits.json).
 export const STOCK_DIR = path.join(HERE, 'assets/stock');
@@ -271,8 +325,13 @@ export async function renderPins(browser, pins, outDir) {
       const h = document.querySelector('.h'), below = document.querySelector('.phone, ol');
       const big = h.querySelector('.big, .ser, .t');
       const fits = () => [...h.querySelectorAll('.big, .ser, .t')].every((c) => c.scrollWidth <= c.clientWidth + 2) && (!below || h.getBoundingClientRect().bottom < below.getBoundingClientRect().top - 24);
-      let s = parseFloat(getComputedStyle(big).fontSize);
-      while (!fits() && s > 60) { s -= 4; big.style.fontSize = s + 'px'; }
+      let s = big ? parseFloat(getComputedStyle(big).fontSize) : 0;
+      while (big && !fits() && s > 60) { s -= 4; big.style.fontSize = s + 'px'; }
+      // Highlighted lines (and handwritten notes) never wrap or run off the Pin: shrink each until it fits (Mercedes 2026-10-28: cut-off fonts).
+      for (const el of document.querySelectorAll('.sel, .small')) {
+        const box = el.parentElement.getBoundingClientRect(); let fs = parseFloat(getComputedStyle(el).fontSize);
+        while (el.getBoundingClientRect().right > Math.min(box.right, 970) && fs > 24) { fs -= 2; el.style.fontSize = fs + 'px'; }
+      }
       const out = [];
       if (!fits()) out.push('headline does not fit above the ' + (below?.tagName === 'OL' ? 'list' : 'phone'));
       const ph = document.querySelector('.phone')?.getBoundingClientRect();
@@ -291,7 +350,8 @@ export async function renderPins(browser, pins, outDir) {
       return out.join('; ');
     });
     if (issue) problems.push(`${p.id}: ${issue}`);
-    await pg.screenshot({ path: path.join(outDir, p.id + '.png') });
+    // Video Pins: a see-through overlay that ffmpeg lays over the clip (see video.mjs).
+    await pg.screenshot({ path: path.join(outDir, p.id + (p.video ? '.overlay' : '') + '.png'), omitBackground: !!p.video });
   }
   await pg.close();
   return problems;
