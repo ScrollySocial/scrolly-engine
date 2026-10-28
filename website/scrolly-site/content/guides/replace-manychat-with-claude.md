@@ -1,12 +1,12 @@
 ---
 slug: replace-manychat-with-claude
 draftPostId: 1971
-wpId:
+wpId: 2025
 title: Replace ManyChat with Claude: How I Built My Own Comment-to-DM
-description: I replaced ManyChat with my own Instagram comment-to-DM system that Claude built and set up. What it does, what it costs, the setup traps, and who should stay on ManyChat.
+description: I replaced ManyChat with my own Instagram comment-to-DM system that Claude built. What it does, what it costs, the setup traps, and who should stay put.
 h1: How I replaced ManyChat
 h1Italic: with Claude
-lede: I decided to see if there's a way that I could build my own version of ManyChat using Claude, and it turns out… you can.
+lede: I decided to see if there's a way that I could build my own ManyChat alternative using Claude, and it turns out… you can.
 author: Mercedes
 authorBio: I'm Mercedes, founder of The Ambition Department. I build my own business tools with Claude and share the systems so you don't have to start from scratch.
 authorPhoto:
@@ -17,7 +17,7 @@ updated: 2026-10-28
 ---
 
 :::answer
-Claude can help you to set up your own individual software that can replace ManyChat with most of the same features ManyChat offers. It can re-create the comment-to-DM system for Instagram with an official API using n8n on your own small server (currently this costs $6 monthly from DigitalOcean).
+Claude can help you to set up your own individual software, so you can replace ManyChat with Claude and keep most of the same features ManyChat offers. It can re-create the comment-to-DM system for Instagram with an official API using n8n on your own small server (currently this costs $6 monthly from DigitalOcean).
 :::
 
 :::intro
@@ -28,7 +28,7 @@ The great advantage is that this setup can include auto-responding to YouTube co
 
 ## Why I wouldn't pay for ManyChat
 
-ManyChat does have a free tier and I tried it out, but many of the automations that I wanted to run were restricted to the paying tiers. I honestly felt that the cost of the service was kind of extreme once you start getting into significant contacts for a business. It's like paying for a second email platform. So I decided to see if there's a way that I could build my own version of ManyChat using Claude, and it turns out… you can.
+ManyChat does have a free tier and I tried it out, but many of the automations that I wanted to run were restricted to the paying tiers. I honestly felt that the cost of the service was kind of extreme once you start getting into significant contacts for a business. It's like paying for a second email platform. So I decided to see if there's a way that I could build my own ManyChat alternative using Claude, and it turns out… you can.
 
 ## What "replacing ManyChat with Claude" actually means
 
