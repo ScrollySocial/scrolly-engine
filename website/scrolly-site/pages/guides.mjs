@@ -229,7 +229,7 @@ const CSS = `
 .gd-body li+li{margin-top:.45em}
 .gd-body a{text-decoration-color:var(--s3-sky);text-decoration-thickness:2px;text-underline-offset:3px}
 .gd-body code{font-size:.95em;background:var(--s3-mist);padding:.08em .35em;border-radius:6px}
-.gd-body figure img{border-radius:16px;width:100%}
+.gd-body figure img{border-radius:16px;width:auto;max-width:100%;max-height:620px;display:block;margin:0 auto}
 .gd-shot{aspect-ratio:16/10;border-radius:16px;border:2px dashed #8f8a83;display:grid;place-items:center;color:var(--s3-muted);font-size:var(--s3-fs-body)}
 .gd-body figcaption{margin-top:10px;font-size:var(--s3-fs-fine);color:var(--s3-muted)}
 .gd-body blockquote{border-left:3px solid var(--s3-pink);padding-left:22px}
