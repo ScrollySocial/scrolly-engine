@@ -8,7 +8,7 @@ export const PLATFORMS = ['instagram', 'tiktok', 'youtube', 'pinterest'];
 export const STAGES = ['Idea', 'Script', 'Film', 'Edit', 'Ready', 'Scheduled', 'Posted'];
 // Pins come from the generator and the bulk CSV, so Pinterest has its own steps.
 export const PIN_STAGES = ['Needs Pins', 'Pins made', 'Scheduled', 'Live'];
-export const FORMATS = ['Reel', 'Carousel', 'Single image', 'Short', 'YouTube long-form', 'Live', 'Story'];
+export const FORMATS = ['Reel', 'Carousel', 'Single image', 'Short', 'YouTube long-form', 'Live', 'Story', 'Blog post'];
 
 const str = (v, max) => (typeof v === 'string' ? v.slice(0, max) : '');
 function cleanExtras(x) {

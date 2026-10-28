@@ -1,6 +1,43 @@
 {
  "ideas": [
   {
+   "id": "4a6299831427",
+   "title": "Blog: How I replaced ManyChat with Claude",
+   "format": "Blog post",
+   "hook": "",
+   "cta": "",
+   "keyword": "",
+   "notes": "Guide B1, written by Mercedes, LIVE 2026-10-28 (WP page 2025). Source: website/scrolly-site/content/guides/replace-manychat-with-claude.md.\n\nPins: batch 3, 5 Pins (automation/pins/out/batch-03), dated Oct 29, Nov 1, 4, 7, 10 at 12pm ET. CSV: OneDrive Scrolly Media/exports/pins/pinterest-batch-03.csv. Move Pinterest to Scheduled once the CSV is uploaded.\n\nTo do: request indexing in Google Search Console.",
+   "product": "Chat Manager",
+   "series": "Guides",
+   "link": "https://theambitiondepartment.com/guides/replace-manychat-with-claude/",
+   "filmingNotes": "",
+   "editNotes": "",
+   "reelFolder": "",
+   "mediaUrl": "",
+   "order": null,
+   "carouselId": "",
+   "mediaUsed": "",
+   "notionId": "",
+   "fromNotion": null,
+   "archived": false,
+   "createdAt": "2026-10-28T19:34:08.839Z",
+   "updatedAt": "2026-10-28T19:34:08.839Z",
+   "lanes": {
+    "instagram": null,
+    "tiktok": null,
+    "youtube": null,
+    "pinterest": {
+     "stage": "Pins made",
+     "date": "2026-10-29",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": "/guides/replace-manychat-with-claude/"
+    }
+   }
+  },
+  {
    "id": "40d4bb6f7700",
    "title": "Story day 7: $1K Club: the $1K Math calculator",
    "format": "Story",
