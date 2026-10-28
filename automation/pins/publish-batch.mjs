@@ -11,10 +11,14 @@ import path from 'node:path';
 import { HERE } from './lib/templates.mjs';
 import { wp } from '../../website/scrolly-site/wp-client.mjs';
 
+// Optional: --pins 16-30 writes a CSV with only those Pin numbers (e.g. to re-add Pins deleted on Pinterest).
 const batch = process.argv[2];
-if (!batch) { console.log('Usage: node publish-batch.mjs <batch, e.g. batch-01>'); process.exit(1); }
+if (!batch) { console.log('Usage: node publish-batch.mjs <batch, e.g. batch-01> [--pins 16-30]'); process.exit(1); }
 const dir = path.join(HERE, 'out', batch);
-const rows = JSON.parse(readFileSync(path.join(dir, 'batch.json'), 'utf8'));
+const pinsArg = process.argv[process.argv.indexOf('--pins') + 1];
+const [lo, hi] = process.argv.includes('--pins') ? pinsArg.split('-').map(Number) : [1, Infinity];
+const rows = JSON.parse(readFileSync(path.join(dir, 'batch.json'), 'utf8')).filter((r) => { const n = Number(r.id.slice(4, 6)); return n >= lo && n <= (hi || lo); });
+const csvName = process.argv.includes('--pins') ? `${batch}-pins-${pinsArg}` : batch;
 const recFile = path.join(HERE, 'batches', batch + '-media.json');
 mkdirSync(path.dirname(recFile), { recursive: true });
 const rec = existsSync(recFile) ? JSON.parse(readFileSync(recFile, 'utf8')) : {};
@@ -75,9 +79,9 @@ if (errs.length) { errs.forEach((e) => console.log('ERROR  ' + e)); process.exit
 const q = (s) => `"${String(s ?? '').replace(/"/g, '""')}"`;
 const csv = ['Title,Media URL,Pinterest board,Thumbnail,Description,Link,Publish date,Keywords',
   ...rows.map((r) => [r.title, rec[r.id].url, r.board, '', r.description, r.url, r.date, r.keywords].map(q).join(','))].join('\r\n') + '\r\n';
-const out = path.join(dir, batch + '.csv');
+const out = path.join(dir, csvName + '.csv');
 writeFileSync(out, csv);
 const od = 'C:/Users/merce/OneDrive/Scrolly Media/exports/pins';
 mkdirSync(od, { recursive: true });
-copyFileSync(out, path.join(od, `pinterest-${batch}.csv`));
-console.log(`csv    ${rows.length} rows, all checks passed -> ${path.join(od, `pinterest-${batch}.csv`)}`);
+copyFileSync(out, path.join(od, `pinterest-${csvName}.csv`));
+console.log(`csv    ${rows.length} rows, all checks passed -> ${path.join(od, `pinterest-${csvName}.csv`)}`);
