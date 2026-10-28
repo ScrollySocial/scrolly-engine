@@ -7,7 +7,7 @@
    "hook": "",
    "cta": "",
    "keyword": "",
-   "notes": "Guide B1, written by Mercedes, LIVE 2026-10-28 (WP page 2025). Source: website/scrolly-site/content/guides/replace-manychat-with-claude.md.\n\nPins: batch 3, 5 Pins (automation/pins/out/batch-03), dated Oct 29, Nov 1, 4, 7, 10 at 12pm ET. CSV: OneDrive Scrolly Media/exports/pins/pinterest-batch-03.csv. Move Pinterest to Scheduled once the CSV is uploaded.\n\nTo do: request indexing in Google Search Console.",
+   "notes": "Guide B1, written by Mercedes, LIVE 2026-10-28 (WP page 2025). Source: website/scrolly-site/content/guides/replace-manychat-with-claude.md.\n\nPins: batch 3, 5 Pins (automation/pins/out/batch-03), dated Oct 29, Nov 1, 4, 7, 10 at 12pm ET. CSV: OneDrive Scrolly Media/exports/pins/pinterest-batch-03.csv. Move Pinterest to Scheduled once the CSV is uploaded.\n\nTo do: request indexing in Google Search Console.\n\n2026-10-28: Mercedes uploaded the batch 3 CSV to Pinterest (round 3 copy, media 2035-2039).",
    "product": "Chat Manager",
    "series": "Guides",
    "link": "https://theambitiondepartment.com/guides/replace-manychat-with-claude/",
@@ -22,13 +22,13 @@
    "fromNotion": null,
    "archived": false,
    "createdAt": "2026-10-28T19:34:08.839Z",
-   "updatedAt": "2026-10-28T19:34:08.839Z",
+   "updatedAt": "2026-10-28T19:54:58.092Z",
    "lanes": {
     "instagram": null,
     "tiktok": null,
     "youtube": null,
     "pinterest": {
-     "stage": "Pins made",
+     "stage": "Scheduled",
      "date": "2026-10-29",
      "caption": "",
      "title": "",
@@ -314,7 +314,7 @@
    },
    "archived": false,
    "createdAt": "2026-10-27T20:48:46.838Z",
-   "updatedAt": "2026-10-28T19:48:14.557Z",
+   "updatedAt": "2026-10-28T19:54:12.488Z",
    "lanes": {
     "instagram": {
      "stage": "Posted",
@@ -325,8 +325,8 @@
      "page": ""
     },
     "tiktok": {
-     "stage": "Ready",
-     "date": "",
+     "stage": "Scheduled",
+     "date": "2026-10-28",
      "caption": "Comment PLAN and I'll send you the link to the plan for your first $1,000.\n\n#smallbusinesstips #onlinebusiness #solopreneur",
      "title": "",
      "bufferId": "6ada9030cc1b7cdc08bc883a",
@@ -361,7 +361,7 @@
    },
    "archived": false,
    "createdAt": "2026-10-27T20:48:46.840Z",
-   "updatedAt": "2026-10-28T19:48:15.039Z",
+   "updatedAt": "2026-10-28T19:54:16.780Z",
    "lanes": {
     "instagram": {
      "stage": "Scheduled",
@@ -372,8 +372,8 @@
      "page": ""
     },
     "tiktok": {
-     "stage": "Ready",
-     "date": "",
+     "stage": "Scheduled",
+     "date": "2026-10-29",
      "caption": "Comment QUIZ and I'll send you the free quiz + 10 calculators to find your next move.\n\n#onlinebusiness #digitalproducts #sidehustleideas",
      "title": "",
      "bufferId": "6ada90279ef33e7811a766e2",
@@ -415,7 +415,7 @@
    },
    "archived": false,
    "createdAt": "2026-10-27T20:48:46.840Z",
-   "updatedAt": "2026-10-28T19:48:14.815Z",
+   "updatedAt": "2026-10-28T19:54:20.350Z",
    "lanes": {
     "instagram": {
      "stage": "Scheduled",
@@ -426,8 +426,8 @@
      "page": ""
     },
     "tiktok": {
-     "stage": "Ready",
-     "date": "",
+     "stage": "Scheduled",
+     "date": "2026-10-29",
      "caption": "Comment CHALLENGE and I'll send you the link. $1,000 in 30 days, $45 one time. Results not guaranteed.\n\n#onlinebusiness #smallbusinesstips #tiktokforbusiness",
      "title": "",
      "bufferId": "6ada901f8d2197cb2a041c07",
