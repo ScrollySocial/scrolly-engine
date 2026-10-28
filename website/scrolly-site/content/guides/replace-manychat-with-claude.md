@@ -20,9 +20,11 @@ updated: 2026-10-28
 Claude can help you to setup your own individual software that can replace ManyChat with most of the same features ManyChat offers. It can re-create the comment-to-DM system for Instagram with an official API using n8n on your own small server (currently this costs $6 monthly from DigitalOcean).
 :::
 
+:::intro
 You can also have Claude help you setup the connection with Facebook for automated responses to Facebook Page comments, but it takes individual review and approval with the platform which is not guaranteed. The place where ManyChat has an advantage over Claude is that ManyChat can auto-reply to TikTok DMs: there is a lack of an available API integration that enables you to imitate this feature on your own server.
 
 The great advantage is that this setup can include auto-responding to YouTube comments. ManyChat cannot do this, and a separate software is required if you also post on YouTube. One setup with Claude can include the platforms Instagram, YouTube and, if you choose to get approval, Facebook. This is all only $6 monthly regardless of how many comments or contacts you have without any additional costs (other than a Claude plan)!
+:::
 
 ## Why I wouldn't pay for ManyChat
 
@@ -71,7 +73,7 @@ You see it all | One inbox for Instagram, YouTube and TikTok.
 
 ![WRITE alt text: describe the screenshot](REPLACE-inbox-dashboard.webp "WRITE a caption: your inbox or stats page, names blurred")
 
-:::cta slim
+:::cta slim Want to view an interactive demo of my personal software? | /chat-manager/#demo | Check it out
 
 ## What it costs compared with ManyChat
 
@@ -86,11 +88,11 @@ To scrape your account's public TikTok comments you can use Apify, this can be d
 25,000 people | ManyChat $199 | Your own $6
 :::
 
-:::cta slim Chat Manager is $97 once, then about $6 a month for hosting, however many people message you.
+:::cta slim If instead of building your own you want to simply create your accounts and be ready to go, you can copy my software instructions for Claude. My Chat Manager is $97 once (at launch), then only $6 a month for server hosting, regardless of how many people message you.
 
 ## How the setup works
 
-How the setup works, first you have to setup your various accounts. With Claude's help this does take a few hours to setup and complete. Some users might have an existing website, but some will need to setup a free web address. Everyone will need to setup their server unless you are a super-techie and already had that beforehand. Then you need an account as a Meta developer to make this app official. If you wanted to also use this to respond to YouTube comments you will need to establish that connection through official API as well. You could optionally set it to respond to Facebook comments, however this requires a manual review so it is more work and not guaranteed to be approved.
+First you have to setup your various accounts. With Claude's help this does take a few hours to setup and complete. Some users might have an existing website, but some will need to setup a free web address. Everyone will need to setup their server unless you are a super-techie and already had that beforehand. Then you need an account as a Meta developer to make this app official. If you wanted to also use this to respond to YouTube comments you will need to establish that connection through official API as well. You could optionally set it to respond to Facebook comments, however this requires a manual review so it is more work and not guaranteed to be approved.
 
 Before you go live with the automations, you need to make sure that there is a privacy page for your new chat application (you can use a free Notion page if needed). At this point you can setup how the dashboard looks with Claude. This step might also require some significant tweaking to get it to fully replace ManyChat.
 
@@ -128,7 +130,7 @@ There is no way to automate the integration with auto-DMing in TikTok like you c
 
 ## Who should stay on ManyChat
 
-ManyChat is still the best solution for users who rely on automated TikTok DMs, or WhatsApp automations to run their business as those cannot be officially replicated using Claude. At least not yet.
+ManyChat is still the best solution for users who rely on automated TikTok DMs, or WhatsApp automations to run their business as those cannot be officially replicated using Claude. At least, not yet...
 
 ## Build it yourself or use my kit
 

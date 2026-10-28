@@ -9,7 +9,9 @@
 //   :::trap Title ... :::        a "watch out" box for a setup trap
 //   :::note ... :::              writing prompt for Mercedes; shows in the draft only
 //   :::cta                       the product card (front matter `product`)
+//   :::intro ... :::             paragraphs between the short answer and "In this guide"
 //   :::cta slim Sentence         a one-line mention with a link to the product (default sentence: PRODUCTS[].slim)
+//   :::cta slim Sentence | url | Link text   the same, linking somewhere else (e.g. the demo)
 //   :::bars Title ... :::        bar chart, one line per group: `250 people | ManyChat $17 | Your own $6`
 //   :::flow ... :::              connected steps, one line each: `Title | one short line`
 //   :::faq  ?? Question / answer lines ... :::
@@ -118,6 +120,7 @@ function render(file, { draft }) {
   const toc = [];
   const faqs = [];
   let answer = '';
+  let intro = '';
   let sources = '';
   let notes = 0;
   const product = PRODUCTS[fm.product];
@@ -136,13 +139,15 @@ function render(file, { draft }) {
     if (kind === 'cta') {
       if (!arg.startsWith('slim')) { html += card; continue; }
       if (!product) throw new Error(`${file}: :::cta slim needs a product`);
-      html += `<p class="gd-slim">${inline(arg.slice(4).trim() || product.slim)} <a href="${product.url}">${product.btn} →</a></p>`;
+      const [say, url, btn] = arg.slice(4).split('|').map((s) => s.trim());
+      html += `<p class="gd-slim">${inline(say || product.slim)} <a href="${url || product.url}">${inline(btn || product.btn)} →</a></p>`;
       continue;
     }
     const inner = [];
     while (++i < lines.length && lines[i].trim() !== ':::') inner.push(lines[i]);
     const text = inner.join('\n');
     if (kind === 'answer') answer = blocks(text);
+    else if (kind === 'intro') intro = blocks(text);
     else if (kind === 'trap') html += `<div class="gd-trap"><p class="gd-trap-t">${inline(arg || 'Watch out')}</p>${blocks(text)}</div>`;
     else if (kind === 'note') { notes++; if (draft) html += `<div class="gd-note"><p class="gd-note-t">Writing note (not published)</p>${blocks(text)}</div>`; }
     else if (kind === 'faq') text.split(/^\?\? /m).slice(1).forEach((qa) => { const [q, ...a] = qa.split('\n'); faqs.push([q.trim(), a.join('\n').trim()]); });
@@ -177,6 +182,7 @@ function render(file, { draft }) {
 </header>
 <div class="gd-body s3-read">
  ${answer ? `<div class="gd-answer"><p class="gd-answer-t">The short answer</p>${answer}</div>` : ''}
+ ${intro ? `<div class="gd-intro">${intro}</div>` : ''}
  ${tocHtml}
  <article>${html}${faqHtml}${sources}</article>
  <aside class="gd-author" aria-label="About the author"><div class="gd-face" aria-hidden="true">${fm.authorPhoto ? `<img src="${fm.authorPhoto}" alt="">` : 'M'}</div><div><p class="gd-author-n">Written by ${esc(fm.author)}</p><p>${inline(fm.authorBio)}</p></div></aside>
@@ -215,7 +221,9 @@ const CSS = `
 .gd-body{padding-bottom:var(--s3-sec)}
 .gd-body article>*+*{margin-top:1.1em}
 .gd-body p,.gd-body li{font-size:var(--s3-fs-body);line-height:1.65}
-.gd-body h2{font-size:var(--s3-fs-h3)!important;line-height:1.08;margin-top:2.2em!important;scroll-margin-top:110px}
+.gd-body h2{font-size:var(--s3-fs-h3)!important;line-height:1.08;margin-top:1.4em!important;scroll-margin-top:110px}
+.s3 .gd-intro{margin-top:28px}
+.s3 .gd-intro p+p{margin-top:1.1em}
 .gd-body h3{font-size:var(--s3-fs-title)!important;line-height:1.15;margin-top:1.6em!important;scroll-margin-top:110px}
 .gd-body ul,.gd-body ol{padding-left:1.3em}
 .gd-body li+li{margin-top:.45em}
