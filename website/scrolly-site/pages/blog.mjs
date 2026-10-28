@@ -6,7 +6,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { s3shell, esc } from '../lib.mjs';
 
-export const id = null; // set once the WP page exists
+export const id = 2040; // WP page /blog/ (LIVE 2026-10-28)
 export const title = 'Blog';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
