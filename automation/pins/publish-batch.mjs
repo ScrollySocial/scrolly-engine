@@ -17,7 +17,7 @@ if (!batch) { console.log('Usage: node publish-batch.mjs <batch, e.g. batch-01> 
 const dir = path.join(HERE, 'out', batch);
 const pinsArg = process.argv[process.argv.indexOf('--pins') + 1];
 const [lo, hi] = process.argv.includes('--pins') ? pinsArg.split('-').map(Number) : [1, Infinity];
-const rows = JSON.parse(readFileSync(path.join(dir, 'batch.json'), 'utf8')).filter((r) => { const n = Number(r.id.slice(4, 6)); return n >= lo && n <= (hi || lo); });
+const rows = JSON.parse(readFileSync(path.join(dir, 'batch.json'), 'utf8')).filter((r) => { const n = Number(r.id.match(/^pin\d*-(\d+)/)[1]); return n >= lo && n <= (hi || lo); });
 const csvName = process.argv.includes('--pins') ? `${batch}-pins-${pinsArg}` : batch;
 const recFile = path.join(HERE, 'batches', batch + '-media.json');
 mkdirSync(path.dirname(recFile), { recursive: true });
@@ -30,17 +30,19 @@ const BOARDS = ['Small Business Goal Setting', 'Pricing your Products and Servic
 // 1. Upload.
 // The host often answers 502 while the upload still lands (2026-10-27), so after an error look the file up by name
 // before trying again; that way a retry never makes a duplicate.
-const findUploaded = async (id) => {
+// Video Pins (batch.json video: true) upload their MP4; the CSV Thumbnail is then a timestamp (1 second in).
+const ext = (r) => (r.video ? '.mp4' : '.png');
+const findUploaded = async (id, e) => {
   const s = await wp(`/wp-json/wp/v2/media?search=${encodeURIComponent(id)}&per_page=5&_fields=id,source_url`);
-  return Array.isArray(s.json) ? s.json.find((m) => m.source_url.endsWith('/' + id + '.png')) : null;
+  return Array.isArray(s.json) ? s.json.find((m) => m.source_url.endsWith('/' + id + e)) : null;
 };
 for (const r of rows) {
   if (rec[r.id]) continue;
   let m = null;
   for (let tries = 0; tries < 3 && !m; tries++) {
-    m = await findUploaded(r.id);
+    m = await findUploaded(r.id, ext(r));
     if (m) break;
-    const r1 = await wp('/wp-json/wp/v2/media', { method: 'POST', headers: { 'Content-Type': 'image/png', 'Content-Disposition': `attachment; filename="${r.id}.png"` }, body: readFileSync(path.join(dir, r.id + '.png')) });
+    const r1 = await wp('/wp-json/wp/v2/media', { method: 'POST', headers: { 'Content-Type': r.video ? 'video/mp4' : 'image/png', 'Content-Disposition': `attachment; filename="${r.id}${ext(r)}"` }, body: readFileSync(path.join(dir, r.id + ext(r))) });
     if (r1.json?.id) m = r1.json;
     else { console.log(`retry  ${r.id} (${r1.status})`); await new Promise((ok) => setTimeout(ok, 8000)); }
   }
@@ -75,10 +77,10 @@ for (const r of rows) {
 if (new Set(rows.map((r) => r.title)).size !== rows.length) errs.push('duplicate titles');
 if (errs.length) { errs.forEach((e) => console.log('ERROR  ' + e)); process.exit(1); }
 
-// 3. CSV (column names from Pinterest's bulk upload help page; Thumbnail is for video only, so blank).
+// 3. CSV (column names from Pinterest's bulk upload help page; Thumbnail is for video only: a timestamp, here 00:01).
 const q = (s) => `"${String(s ?? '').replace(/"/g, '""')}"`;
 const csv = ['Title,Media URL,Pinterest board,Thumbnail,Description,Link,Publish date,Keywords',
-  ...rows.map((r) => [r.title, rec[r.id].url, r.board, '', r.description, r.url, r.date, r.keywords].map(q).join(','))].join('\r\n') + '\r\n';
+  ...rows.map((r) => [r.title, rec[r.id].url, r.board, r.video ? '00:01' : '', r.description, r.url, r.date, r.keywords].map(q).join(','))].join('\r\n') + '\r\n';
 const out = path.join(dir, csvName + '.csv');
 writeFileSync(out, csv);
 const od = 'C:/Users/merce/OneDrive/Scrolly Media/exports/pins';

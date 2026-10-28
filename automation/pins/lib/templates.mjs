@@ -205,7 +205,7 @@ export const F = (p) => {
   .sel::before { left: -4px; } .sel::after { right: -4px; }
   .sel i { position: absolute; width: 18px; height: 18px; border-radius: 50%; background: #2e78f6; }
   .sel i.a { left: -11px; top: -24px; } .sel i.b { right: -11px; bottom: -24px; }
-</style>${bg(p)}<div class="shade"></div><div class="h"><div class="ser">${esc(p.serif)}</div><div class="sel"><i class="a"></i>${esc(p.sel)}<i class="b"></i></div></div><div class="dom">${DOMAIN}</div>`;
+</style>${bg(p)}${p.dim ? `<div style="position:absolute;inset:0;background:rgba(0,0,0,${p.dim})"></div>` : ''}<div class="shade"></div><div class="h"><div class="ser">${esc(p.serif)}</div><div class="sel"><i class="a"></i>${esc(p.sel)}<i class="b"></i></div></div><div class="dom">${DOMAIN}</div>`;
 };
 
 // G: stacked white label bars in a heavy sans, script lines between, a photo filling the bottom and a round dark badge
@@ -221,7 +221,7 @@ export const G = (p) => {
   .bar { display: inline-block; background: #fff; font: 800 ${p.barSize || 178}px/1 Jost; white-space: nowrap; text-transform: uppercase; letter-spacing: -.01em; padding: 16px 28px 20px; margin: 6px 0; }
   .scr { font: 400 ${p.scriptSize || 176}px/1 Sacramento, cursive; margin: -10px 0 -6px; white-space: nowrap; }
   .badge { position: absolute; right: 50px; bottom: ${(p.photoH || 520) - 250}px; width: 280px; height: 280px; border-radius: 50%; background: #2b2b2b; color: #fff; display: flex; align-items: center; justify-content: center; text-align: center; font: 800 40px/1.05 Jost; text-transform: uppercase; padding: 46px; transform: rotate(-10deg); z-index: 3; }
-  .arr { position: absolute; left: 260px; bottom: ${(p.photoH || 520) - 140}px; width: 360px; height: 120px; background: #15110f; -webkit-mask: url('${ARROW}') center/100% 100% no-repeat; mask: url('${ARROW}') center/100% 100% no-repeat; mask-mode: luminance; transform: rotate(10deg); z-index: 3; }
+  .arr { position: absolute; left: 260px; bottom: ${(p.photoH || 520) - 140}px; width: 360px; height: 120px; background: #fff; filter: drop-shadow(0 3px 8px rgba(0,0,0,.65)); -webkit-mask: url('${ARROW}') center/100% 100% no-repeat; mask: url('${ARROW}') center/100% 100% no-repeat; mask-mode: luminance; transform: rotate(10deg); z-index: 3; }
 </style><div class="photo"></div><div class="h">${p.lines.map((l) => (l.script ? `<div class="scr">${esc(l.t)}</div>` : `<div><span class="bar">${esc(l.t)}</span></div>`)).join('')}</div>
 <div class="arr"></div><div class="badge">${esc(p.badge)}</div><div class="dom">${DOMAIN}</div>`;
 };
@@ -329,14 +329,15 @@ export async function renderPins(browser, pins, outDir) {
       while (big && !fits() && s > 60) { s -= 4; big.style.fontSize = s + 'px'; }
       // Highlighted lines (and handwritten notes) never wrap or run off the Pin: shrink each until it fits (Mercedes 2026-10-28: cut-off fonts).
       for (const el of document.querySelectorAll('.bar, .scr')) { let fs = parseFloat(getComputedStyle(el).fontSize); while (el.getBoundingClientRect().width > 940 && fs > 40) { fs -= 4; el.style.fontSize = fs + 'px'; } }
-      // G: the whole text block must end above the photo (70px spare: script descenders hang below the line box); shrink bars and script lines together until it does.
+      // G: the whole text block must end above the photo (110px spare: script descenders hang below the line box); shrink bars and script lines together until it does.
       const gph = document.querySelector('.photo');
       if (gph) { let k = 1; const parts = [...document.querySelectorAll('.bar, .scr')].map((e) => [e, parseFloat(getComputedStyle(e).fontSize)]);
-        while (h.getBoundingClientRect().bottom > gph.getBoundingClientRect().top - 70 && k > .5) { k -= .03; parts.forEach(([e, s]) => { e.style.fontSize = s * k + 'px'; }); } }
+        while (h.getBoundingClientRect().bottom > gph.getBoundingClientRect().top - 110 && k > .5) { k -= .03; parts.forEach(([e, s]) => { e.style.fontSize = s * k + 'px'; }); } }
       for (const b of document.querySelectorAll('.badge')) { let fs = parseFloat(getComputedStyle(b).fontSize); while ((b.scrollWidth > b.clientWidth || b.scrollHeight > b.clientHeight) && fs > 20) { fs -= 2; b.style.fontSize = fs + 'px'; } }
       for (const el of document.querySelectorAll('.sel, .small')) {
-        const box = el.parentElement.getBoundingClientRect(); let fs = parseFloat(getComputedStyle(el).fontSize);
-        while (el.getBoundingClientRect().right > Math.min(box.right, 970) && fs > 24) { fs -= 2; el.style.fontSize = fs + 'px'; }
+        const ink = el.querySelector('span') || el, card = el.closest('.h').getBoundingClientRect(), pad = el.classList.contains('small') ? 40 : 0;
+        let fs = parseFloat(getComputedStyle(el).fontSize);
+        while (ink.getBoundingClientRect().right > Math.min(card.right - pad, 970) && fs > 24) { fs -= 2; el.style.fontSize = fs + 'px'; }
       }
       const out = [];
       if (!fits()) out.push('headline does not fit above the ' + (below?.tagName === 'OL' ? 'list' : 'phone'));

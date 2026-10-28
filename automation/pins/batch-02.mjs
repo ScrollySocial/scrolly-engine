@@ -45,7 +45,7 @@ const PINS = [
     title: 'Will That Course Pay for Itself? Do the Math First', desc: 'Before you buy a course, tool or ad budget, see how many sales it takes to break even. A free break-even calculator.', keywords: 'break even calculator, business investment, is it worth it, small business costs' },
   { id: 'p9-hub-g', layout: 'G', photo: P('3747068-macbook-white'), ground: 'mist', link: '/calculators/', board: B.goals, badge: 'All free', lines: [{ t: 'the', script: true }, { t: '10 numbers' }, { t: 'that run' }, { t: 'your business', script: true }],
     title: 'The 10 Numbers That Run Your Business', desc: 'Ten free calculators for small business owners: income goal, sales goal, pricing, profit, break-even, conversion rate, order value, traffic, content output and views per post.', keywords: 'business calculators, small business numbers, free business tools, goal setting' },
-  { id: 'p10-week-f', layout: 'F', photo: P('12497427-laptop-bed'), textBottom: true, hl: 'sacramento', link: '/1k-club/', board: B.planning, serif: 'Copy my system for a week of posts', sel: 'plan it in one sitting',
+  { id: 'p10-week-f', layout: 'F', photo: P('12497427-laptop-bed'), textBottom: true, dim: .3, shade: .75, hl: 'sacramento', link: '/1k-club/', board: B.planning, serif: 'Copy my system for a week of posts', sel: 'plan it in one sitting',
     title: 'Copy My System for a Week of Posts', desc: 'Plan a week of social media posts in one sitting. The $1K Club is a complete toolkit to plan, create and post organic content.', keywords: 'content planning, social media plan, batch content, week of posts' },
   { id: 'p11-week-g', layout: 'G', photo: P('8498522-computer-dog'), ground: 'latte', link: '/1k-club/', board: B.growth, badge: "Here's how", lines: [{ t: 'plan a', script: true }, { t: 'week of' }, { t: 'posts' }, { t: 'in one sitting', script: true }],
     title: 'Plan a Week of Posts in One Sitting', desc: 'Here is how to plan a full week of Instagram posts in one sitting, with a complete toolkit for organic content.', keywords: 'instagram content plan, plan posts, instagram growth tips, organic marketing' },
@@ -76,7 +76,8 @@ for (let slot = 0; queue.length && slot < 90; slot++) {
   pick.date = new Date(t).toISOString().slice(0, 19); last[url(pick)] = t; prevLayout = pick.layout; queue.splice(queue.indexOf(pick), 1);
 }if (queue.length) throw new Error('could not schedule: ' + queue.map((p) => p.id).join(', '));
 PINS.sort((a, b) => a.date.localeCompare(b.date));
-PINS.forEach((p, i) => { p.id = `pin2-${String(i + 1).padStart(2, '0')}-${p.id}`; });
+// Revised 2026-10-28 after upload had started: G Pins (arrow, spacing) get a -v2 file name so old uploads aren't reused.
+PINS.forEach((p, i) => { p.id = `pin2-${String(i + 1).padStart(2, '0')}-${p.id}${p.layout === 'G' ? '-v2' : ''}`; });
 
 // Rule checks.
 const errs = [];
