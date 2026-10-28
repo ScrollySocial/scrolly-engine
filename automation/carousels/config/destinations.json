@@ -163,6 +163,26 @@
       "dmApproved": true,
       "dm": "Here's the $1K Challenge: {url} It's $45 one time, with 30 days, your personal $1K Plan and 25 Reel ideas every week.",
       "_note": "DM text approved and set up in Chat Manager by Mercedes (she confirmed 2026-10-28)."
+    },
+    {
+      "keyword": "MANYCHAT",
+      "freebie": "Guide: How I replaced ManyChat with Claude",
+      "url": "https://theambitiondepartment.com/guides/replace-manychat-with-claude/?utm_source=instagram&utm_medium=dm&utm_campaign=manychat",
+      "leadsTo": "Chat Manager",
+      "live": true,
+      "dmApproved": true,
+      "dm": "Here's my full guide to replacing ManyChat with Claude: what it does, what it costs and the setup traps. {url}",
+      "_note": "DM text approved by Mercedes 2026-10-28; live in Chat Manager the same day (Instagram comments + DMs, and YouTube comments with the same text as a public reply)."
+    },
+    {
+      "keyword": "HALLOWEEN",
+      "freebie": "Halloween Reel Templates page",
+      "url": "https://theambitiondepartment.com/halloween-reels/?utm_source=instagram&utm_medium=dm&utm_campaign=halloween",
+      "leadsTo": "Halloween Reel Template Pack",
+      "live": true,
+      "dmApproved": true,
+      "dm": "Here are my 5 Halloween Reel templates for CapCut, $4.99 until the 31st. {url}",
+      "_note": "DM text approved by Mercedes 2026-10-28; live in Chat Manager the same day. The DM names the Halloween price: switch it off (or reword) after Oct 31."
     }
   ],
   "engagementCtas": [
