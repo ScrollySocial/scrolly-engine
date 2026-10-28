@@ -3,7 +3,7 @@ id: 2026-11-04-comment-to-dm
 type: ig-single-image
 channel: instagram
 publish: 2026-11-04 11:00 America/New_York
-status: sample
+status: approved (caption, 2026-10-28; image waits for her photo)
 image: needs her photo or short video, "cute" (her idea 2026-10-28); headline on it: "that feeling when Claude replaced your ManyChat"
 teaches: /chat-manager/
 keyword: MATH (live; check whether it currently sends the link directly or asks "reply READY" first, and match point 3)
