@@ -186,8 +186,10 @@ export const E = (p) => {
   .ser { font: 400 ${p.size || 104}px/1 ${SERIF[st.serif || 'instrument']}; }
   .small { margin-top: 26px; ${hlCss(p, 62)} }
   .small { white-space: nowrap; } .small span { background: ${p.mark || '#cfe3ff'}; padding: 0 10px; }
+  /* p.prop: a real cut-out object (e.g. a gift bow, 2026-10-28 "a TOUCH cuter") on the card's top corner instead of the push pin. */
+  .propimg { position: absolute; right: -46px; top: -80px; width: 210px; transform: rotate(14deg); filter: drop-shadow(0 10px 12px rgba(0,0,0,.35)); }
   .pinhead { position: absolute; left: 50%; top: -34px; width: 74px; transform: translateX(-50%) rotate(-12deg); filter: drop-shadow(0 6px 6px rgba(0,0,0,.35)); }
-</style>${bg(p)}<div class="h"><img class="pinhead" src="${fileUrl(path.join(PROPS, 'pin-head-' + (p.pin || 'blue') + '.png'))}"><div class="ser">${esc(p.serif)}</div><div class="small"><span>${esc(p.small)}</span></div></div><div class="dom">${DOMAIN}</div>`;
+</style>${bg(p)}<div class="h">${p.prop ? `<img class="propimg" src="${fileUrl(path.join(STOCK_DIR, p.prop + '.png'))}">` : `<img class="pinhead" src="${fileUrl(path.join(PROPS, 'pin-head-' + (p.pin || 'blue') + '.png'))}">`}<div class="ser">${esc(p.serif)}</div><div class="small"><span>${esc(p.small)}</span></div></div><div class="dom">${DOMAIN}</div>`;
 };
 
 // F: big serif headline straight on the photo, with the next line in a phone-style text-selection highlight (blue box
