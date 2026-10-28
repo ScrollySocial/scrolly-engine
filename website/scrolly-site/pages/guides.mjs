@@ -12,6 +12,7 @@
 //   :::intro ... :::             paragraphs between the short answer and "In this guide"
 //   :::cta slim Sentence         a one-line mention with a link to the product (default sentence: PRODUCTS[].slim)
 //   :::cta slim Sentence | url | Link text   the same, linking somewhere else (e.g. the demo)
+//   :::cta hand Sentence | url | Link text   a centred handwritten link line in sky blue (e.g. the demo)
 //   :::bars Title ... :::        bar chart, one line per group: `250 people | ManyChat $17 | Your own $6`
 //   :::flow ... :::              connected steps, one line each: `Title | one short line`
 //   :::faq  ?? Question / answer lines ... :::
@@ -137,6 +138,11 @@ function render(file, { draft }) {
     flush();
     const [, kind, arg] = m;
     if (kind === 'cta') {
+      if (arg.startsWith('hand')) {
+        const [say, url, btn] = arg.slice(4).split('|').map((s) => s.trim());
+        html += `<p class="gd-hand"><a href="${url}">${inline(say)} ${inline(btn)} →</a></p>`;
+        continue;
+      }
       if (!arg.startsWith('slim')) { html += card; continue; }
       if (!product) throw new Error(`${file}: :::cta slim needs a product`);
       const [say, url, btn] = arg.slice(4).split('|').map((s) => s.trim());
@@ -173,7 +179,7 @@ function render(file, { draft }) {
   const ld = [{ '@context': 'https://schema.org', '@type': 'Article', headline: fm.title, description: fm.description, dateModified: fm.updated, datePublished: fm.published || fm.updated, author: { '@type': 'Person', name: fm.author, url: SITE + '/about/' }, publisher: { '@type': 'Organization', name: 'The Ambition Department', url: SITE }, mainEntityOfPage: `${SITE}/guides/${fm.slug}/` }];
   if (faqs.length) ld.push({ '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faqs.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a.replace(/\*|`|\[|\]\([^)]*\)/g, '') } })) });
 
-  const page = `
+  const page = `${/:::cta hand/.test(body) ? '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Covered+By+Your+Grace&display=swap">' : ''}
 <header class="gd-hero s3-wrap">
  <div class="gd-hero-txt"><h1>${inline(fm.h1)} <em class="or">${inline(fm.h1Italic)}</em></h1>
  <p class="s3-lede">${inline(fm.lede)}</p>
@@ -276,6 +282,10 @@ const CSS = `
 /* Slim product mention */
 .s3 .gd-slim{border-left:3px solid var(--s3-sky);padding:6px 0 6px 20px;font-size:var(--s3-fs-body)}
 .gd-slim a{font-weight:700;white-space:nowrap}
+/* handwritten one-liner (Covered By Your Grace, loaded by the page); #2f80ed is 3.5:1 on cream, AA for large text */
+.s3 .gd-hand{text-align:center;transform:rotate(-2deg);margin:1.6em 0!important}
+.s3 .gd-hand a{font:400 clamp(1.7rem,3.2vw,2.2rem)/1.2 'Covered By Your Grace',cursive;color:#2f80ed;text-decoration:none;-webkit-text-stroke:.6px #2f80ed}
+.s3 .gd-hand a:hover{text-decoration:underline;text-decoration-thickness:2px}
 
 /* Bar chart */
 .gd-bars{background:#fff;border-radius:18px;padding:26px 28px}

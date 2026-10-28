@@ -672,5 +672,21 @@
   "url": "https://theambitiondepartment.com/wp-content/uploads/2026/10/shirt-1k-dared-front-cut.webp",
   "w": 1600,
   "h": 1435
+ },
+ "guides/manychat-hero.webp": {
+  "id": 2020,
+  "url": "https://theambitiondepartment.com/wp-content/uploads/2026/10/tad-guide-manychat-hero.webp"
+ },
+ "guides/manychat-demo-dm-preview.webp": {
+  "id": 2021,
+  "url": "https://theambitiondepartment.com/wp-content/uploads/2026/10/tad-guide-manychat-demo-dm-preview.webp"
+ },
+ "guides/manychat-demo-inbox.webp": {
+  "id": 2022,
+  "url": "https://theambitiondepartment.com/wp-content/uploads/2026/10/tad-guide-manychat-demo-inbox.webp"
+ },
+ "guides/manychat-meta-webhook-comments.webp": {
+  "id": 2023,
+  "url": "https://theambitiondepartment.com/wp-content/uploads/2026/10/tad-guide-manychat-meta-webhook-comments.webp"
  }
 }

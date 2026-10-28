@@ -10,7 +10,7 @@ lede: I decided to see if there's a way that I could build my own version of Man
 author: Mercedes
 authorBio: I'm Mercedes, founder of The Ambition Department. I build my own business tools with Claude and share the systems so you don't have to start from scratch.
 authorPhoto:
-heroImage: ../content/guides/img/manychat-hero.webp
+heroImage: https://theambitiondepartment.com/wp-content/uploads/2026/10/tad-guide-manychat-hero.webp
 heroAlt: A phone on a tripod showing a keyword comment and the DM conversation it starts, over my Instagram carousels
 product: chat-manager
 updated: 2026-10-28
@@ -69,11 +69,11 @@ They get the freebie | And their email joins your list.
 You see it all | One inbox for Instagram, YouTube and TikTok.
 :::
 
-![A keyword comment, the DM asking them to reply READY, the signup link, the freebie and a reminder](../content/guides/img/manychat-demo-dm-preview.webp "What someone sees after commenting a keyword: the DM, their personal signup link, the freebie and one reminder. From my Chat Manager demo, a made-up shop.")
+![A keyword comment, the DM asking them to reply READY, the signup link, the freebie and a reminder](https://theambitiondepartment.com/wp-content/uploads/2026/10/tad-guide-manychat-demo-dm-preview.webp "What someone sees after commenting a keyword: the DM, their personal signup link, the freebie and one reminder. From my Chat Manager demo, a made-up shop.")
 
-![The Chat Manager inbox with Instagram, TikTok and YouTube comments and DMs in one list](../content/guides/img/manychat-demo-inbox.webp "One inbox for Instagram, TikTok and YouTube. From my Chat Manager demo, a made-up shop.")
+![The Chat Manager inbox with Instagram, TikTok and YouTube comments and DMs in one list](https://theambitiondepartment.com/wp-content/uploads/2026/10/tad-guide-manychat-demo-inbox.webp "One inbox for Instagram, TikTok and YouTube. From my Chat Manager demo, a made-up shop.")
 
-:::cta slim Want to view an interactive demo of my personal software? | /chat-manager/#demo | Check it out
+:::cta hand Want to view an interactive demo of my personal software? | /chat-manager/#demo | Check it out
 
 ## What it costs compared with ManyChat
 
@@ -98,7 +98,7 @@ Before you go live with the automations, you need to make sure that there is a p
 
 Then you are ready to start adding in your keywords and testing! Congratulations.
 
-![Meta app webhook settings with only the comments field subscribed](../content/guides/img/manychat-meta-webhook-comments.webp "My Meta app's webhook settings during setup: only comments is subscribed.")
+![Meta app webhook settings with only the comments field subscribed](https://theambitiondepartment.com/wp-content/uploads/2026/10/tad-guide-manychat-meta-webhook-comments.webp "My Meta app's webhook settings during setup: only comments is subscribed.")
 
 ## Setup traps that cost me time
 
