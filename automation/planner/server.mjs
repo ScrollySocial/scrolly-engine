@@ -43,6 +43,8 @@ function writeJson(f, v) {
   renameSync(`${f}.tmp`, f);
 }
 
+const CAROUSEL_EXPORTS = readJson(join(here, '..', 'carousels', 'config', 'media.json'), {}).exportsDir || '';
+
 // ---- Pins ----
 const STATUS_FILE = join(DATA, 'pin-status.json');
 const MARKS = ['Live', 'Missing', 'Deleted']; // what she saw on Pinterest; no mark = not checked yet. Deleted = she removed it before it posted.
@@ -185,6 +187,17 @@ http
       if (req.method === 'GET' && img) {
         const f = join(PINS, 'out', img[1], img[2]);
         if (existsSync(f)) return send(res, 200, readFileSync(f), TYPES[extname(f)]);
+      }
+      // Rendered carousel slides (carousel engine exports folder), for previews before anything is posted
+      const slide = url.pathname.match(/^\/carousel-img\/([\w-]+)\/(slide-\d+\.png)$/);
+      if (req.method === 'GET' && slide) {
+        const f = join(CAROUSEL_EXPORTS, slide[1], slide[2]);
+        if (existsSync(f)) return send(res, 200, readFileSync(f), TYPES['.png']);
+      }
+      // Preview pages Claude writes before queueing (previews/<name>.html), shown to her for approval
+      const prev = url.pathname.match(/^\/previews\/([\w-]+\.html)$/);
+      if (req.method === 'GET' && prev && existsSync(join(here, 'previews', prev[1]))) {
+        return send(res, 200, readFileSync(join(here, 'previews', prev[1])), TYPES['.html']);
       }
       send(res, 404, { error: 'not found' });
     } catch (e) {
