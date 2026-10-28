@@ -258,10 +258,15 @@
    "format": "Carousel",
    "hook": "Not sure how to get found online? I'm here to help you with that.",
    "cta": "Follow along for practical tips (follow CTA)",
-   "notes": "Rebranded 2026-10-27: re-rendered as The Ambition Department with new site screenshots and \"Comment PLAN\". Waiting on PLAN: add it in Chat Manager with its DM text (draft in automation/carousels/config/destinations.json), then the carousel check passes. The old Buffer drafts (Instagram + TikTok) still hold the Scrolly version: replace them when this is queued.\n\nBuffer draft from Oct 22 (Instagram + TikTok). Still says Scrolly and links scrollyseo.com: rename before queueing.\n\nApproved by Mercedes 2026-10-22. Pinned post 1 of 3 (left tile of the v7 pinned panorama). Post all three pinned posts the same day. Files: OneDrive > Scrolly Media > exports > carousels > 2026-10-07-pinned-about. 10 slides.\n\nNotion status was Approved",
+   "keyword": "PLAN",
+   "notes": "Rebranded 2026-10-27: re-rendered as The Ambition Department with new site screenshots and \"Comment PLAN\". Waiting on PLAN: add it in Chat Manager with its DM text (draft in automation/carousels/config/destinations.json), then the carousel check passes. The old Buffer drafts (Instagram + TikTok) still hold the Scrolly version: replace them when this is queued.\n\nBuffer draft from Oct 22 (Instagram + TikTok). Still says Scrolly and links scrollyseo.com: rename before queueing.\n\nApproved by Mercedes 2026-10-22. Pinned post 1 of 3 (left tile of the v7 pinned panorama). Post all three pinned posts the same day. Files: OneDrive > Scrolly Media > exports > carousels > 2026-10-07-pinned-about. 10 slides.\n\nNotion status was Approved\n\nQueued in Buffer 2026-10-28 (her OK): Instagram post 6ada9012986f204cd2509c23, slides on WordPress as tad-carousel-* (media 1995-2019). Pin all three after they post: Start here first, then Challenge, then About last.",
    "product": "The Ambition Department",
    "series": "",
    "link": "OneDrive/Scrolly Media/exports/carousels/2026-10-07-pinned-about (preview.html)",
+   "filmingNotes": "",
+   "editNotes": "",
+   "reelFolder": "",
+   "mediaUrl": "",
    "order": null,
    "carouselId": "2026-10-07-pinned-about",
    "mediaUsed": "964f2050c6, 336eee3300, 1e629b09ae, 8aeaa75e67, b96a511b16, 542d2ebb5f, 265ec9a722, 60167eb7b6, 4426aa6aa3",
@@ -272,11 +277,11 @@
    },
    "archived": false,
    "createdAt": "2026-10-27T20:48:46.838Z",
-   "updatedAt": "2026-10-27T21:58:14.954Z",
+   "updatedAt": "2026-10-28T16:58:41.131Z",
    "lanes": {
     "instagram": {
-     "stage": "Edit",
-     "date": "",
+     "stage": "Scheduled",
+     "date": "2026-10-28",
      "caption": "Comment PLAN and I'll send you the plan for your first $1,000. I'm Mercedes, and I started The Ambition Department after years of having business ideas I didn't know how to sell. I'm an analyst at heart, so I learned marketing the only way I know how: break it into steps, build systems, and test what works. Now I share those systems so you don't have to build them from scratch. Follow along for practical tips on getting found online and turning it into sales.\n\n#smallbusiness #organicmarketing #solopreneur",
      "title": "",
      "bufferId": "6ada9012986f204cd2509c23",
@@ -292,8 +297,7 @@
     },
     "youtube": null,
     "pinterest": null
-   },
-   "keyword": "PLAN"
+   }
   },
   {
    "id": "ce4e757758d8",
@@ -301,10 +305,15 @@
    "format": "Carousel",
    "hook": "Start here. A free quiz, 3 steps",
    "cta": "Save this; all three are free at scrollyseo.com (http://scrollyseo.com) (save CTA; bio link goes to the Challenge checkout)",
-   "notes": "Rebranded 2026-10-27: re-rendered as The Ambition Department with new site screenshots and \"Comment QUIZ\". Ready for Instagram once you approve the preview. The old Buffer drafts (Instagram + TikTok) still hold the Scrolly version: replace them when this is queued.\n\nBuffer draft from Oct 22 (Instagram + TikTok). Still says Scrolly and links scrollyseo.com: rename before queueing.\n\nApproved by Mercedes 2026-10-22. Pinned post 3 of 3 (right tile of the v7 pinned panorama); replaces the views-to-$1K post in the pinned row. Post all three pinned posts the same day. Facts checked on the live pages (research.md (http://research.md)). Files: OneDrive > Scrolly Media > exports > carousels > 2026-10-22-pinned-free-start. 7 slides.\n\nNotion status was Approved",
+   "keyword": "QUIZ",
+   "notes": "Rebranded 2026-10-27: re-rendered as The Ambition Department with new site screenshots and \"Comment QUIZ\". Ready for Instagram once you approve the preview. The old Buffer drafts (Instagram + TikTok) still hold the Scrolly version: replace them when this is queued.\n\nBuffer draft from Oct 22 (Instagram + TikTok). Still says Scrolly and links scrollyseo.com: rename before queueing.\n\nApproved by Mercedes 2026-10-22. Pinned post 3 of 3 (right tile of the v7 pinned panorama); replaces the views-to-$1K post in the pinned row. Post all three pinned posts the same day. Facts checked on the live pages (research.md (http://research.md)). Files: OneDrive > Scrolly Media > exports > carousels > 2026-10-22-pinned-free-start. 7 slides.\n\nNotion status was Approved\n\nQueued in Buffer 2026-10-28 (her OK): Instagram post 6ada9009986f204cd2509b34, slides on WordPress as tad-carousel-* (media 1995-2019). Pin all three after they post: Start here first, then Challenge, then About last.",
    "product": "The Ambition Department",
    "series": "",
    "link": "OneDrive/Scrolly Media/exports/carousels/2026-10-22-pinned-free-start (preview.html)",
+   "filmingNotes": "",
+   "editNotes": "",
+   "reelFolder": "",
+   "mediaUrl": "",
    "order": null,
    "carouselId": "2026-10-22-pinned-free-start",
    "mediaUsed": "bff6adb732, 8998e1cdc9, fe440f19cf, 8aeaa75e67, 562c236367",
@@ -315,11 +324,11 @@
    },
    "archived": false,
    "createdAt": "2026-10-27T20:48:46.840Z",
-   "updatedAt": "2026-10-27T21:58:14.962Z",
+   "updatedAt": "2026-10-28T16:58:41.469Z",
    "lanes": {
     "instagram": {
-     "stage": "Ready",
-     "date": "",
+     "stage": "Scheduled",
+     "date": "2026-10-28",
      "caption": "Comment QUIZ and I'll send you the free quiz in a DM. All three tools are free at theambitiondepartment.com: the Offer Quiz, the Next Move Quiz and 10 business calculators. The Offer Quiz is for when you have skills but nothing to sell yet. The Next Move Quiz is for when you know what you want to sell but haven't made a sale. The calculators show what it takes to reach your income goal, with no signup. Start with the one that matches where you are today.\n\n#onlinebusiness #digitalproducts #sidehustleideas",
      "title": "",
      "bufferId": "6ada9009986f204cd2509b34",
@@ -342,8 +351,7 @@
      "bufferId": "",
      "page": "/calculators/"
     }
-   },
-   "keyword": "QUIZ"
+   }
   },
   {
    "id": "00a97d625e3e",
@@ -351,10 +359,15 @@
    "format": "Carousel",
    "hook": "Want to make $1,000 in 30 days? Meet the $1K Challenge",
    "cta": "Join the $1K Challenge for $75: link in bio",
-   "notes": "Rebranded 2026-10-27: re-rendered as The Ambition Department with new site screenshots, $45 / $10 prices and \"Comment CHALLENGE\". Waiting on CHALLENGE: add it in Chat Manager with its DM text (draft in automation/carousels/config/destinations.json), then the carousel check passes. The old Buffer drafts (Instagram + TikTok) still hold the Scrolly version: replace them when this is queued.\n\nBuffer draft from Oct 22 (Instagram + TikTok). Still says Scrolly and links scrollyseo.com: rename before queueing.\n\nApproved by Mercedes 2026-10-22. Pinned post 2 of 3 (middle tile of the v7 pinned panorama). Post all three pinned posts the same day. Facts checked on the live /1k-club/ page 2026-10-22. Slide 3 is a labelled mock of the $1K Plan screen (swap for a screen recording later). Files: OneDrive > Scrolly Media > exports > carousels > 2026-10-07-pinned-challenge. 7 slides.\n\nNotion status was Approved",
+   "keyword": "CHALLENGE",
+   "notes": "Rebranded 2026-10-27: re-rendered as The Ambition Department with new site screenshots, $45 / $10 prices and \"Comment CHALLENGE\". Waiting on CHALLENGE: add it in Chat Manager with its DM text (draft in automation/carousels/config/destinations.json), then the carousel check passes. The old Buffer drafts (Instagram + TikTok) still hold the Scrolly version: replace them when this is queued.\n\nBuffer draft from Oct 22 (Instagram + TikTok). Still says Scrolly and links scrollyseo.com: rename before queueing.\n\nApproved by Mercedes 2026-10-22. Pinned post 2 of 3 (middle tile of the v7 pinned panorama). Post all three pinned posts the same day. Facts checked on the live /1k-club/ page 2026-10-22. Slide 3 is a labelled mock of the $1K Plan screen (swap for a screen recording later). Files: OneDrive > Scrolly Media > exports > carousels > 2026-10-07-pinned-challenge. 7 slides.\n\nNotion status was Approved\n\nQueued in Buffer 2026-10-28 (her OK): Instagram post 6ada9002cc1b7cdc08bc8037, slides on WordPress as tad-carousel-* (media 1995-2019). Pin all three after they post: Start here first, then Challenge, then About last.",
    "product": "$1K Club",
    "series": "",
    "link": "OneDrive/Scrolly Media/exports/carousels/2026-10-07-pinned-challenge (preview.html)",
+   "filmingNotes": "",
+   "editNotes": "",
+   "reelFolder": "",
+   "mediaUrl": "",
    "order": null,
    "carouselId": "2026-10-07-pinned-challenge",
    "mediaUsed": "0f794a1f2f, 261702e921",
@@ -365,11 +378,11 @@
    },
    "archived": false,
    "createdAt": "2026-10-27T20:48:46.840Z",
-   "updatedAt": "2026-10-27T21:58:14.962Z",
+   "updatedAt": "2026-10-28T16:58:41.301Z",
    "lanes": {
     "instagram": {
-     "stage": "Edit",
-     "date": "",
+     "stage": "Scheduled",
+     "date": "2026-10-28",
      "caption": "Comment CHALLENGE and I'll send you the link to the $1K Challenge. It's $45, one time, for 30 consecutive days and one goal: $1,000 in total revenue. You get your personal $1K Plan with your number and what to do each week, 25 Reel ideas every week, 30 carousel and 30 Story templates, a Notion content tracker, a guide to auto-posting with your AI, and the full $1K Club Playbook. Prefer to go at your own pace? The $1K Club is $10 and gives you the plan to keep. Results not guaranteed; revenue is before costs.\n\n#onlinebusiness #smallbusinesstips #instagramforbusiness",
      "title": "",
      "bufferId": "6ada9002cc1b7cdc08bc8037",
@@ -392,8 +405,7 @@
      "bufferId": "",
      "page": "/1k-club/"
     }
-   },
-   "keyword": "CHALLENGE"
+   }
   },
   {
    "id": "d019168f5155",
