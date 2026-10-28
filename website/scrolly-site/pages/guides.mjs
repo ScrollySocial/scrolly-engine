@@ -9,6 +9,9 @@
 //   :::trap Title ... :::        a "watch out" box for a setup trap
 //   :::note ... :::              writing prompt for Mercedes; shows in the draft only
 //   :::cta                       the product card (front matter `product`)
+//   :::cta slim Sentence         a one-line mention with a link to the product (default sentence: PRODUCTS[].slim)
+//   :::bars Title ... :::        bar chart, one line per group: `250 people | ManyChat $17 | Your own $6`
+//   :::flow ... :::              connected steps, one line each: `Title | one short line`
 //   :::faq  ?? Question / answer lines ... :::
 //   :::sources  - list ... :::   bibliography at the back (writing rules: sources go last)
 import fs from 'fs';
@@ -29,6 +32,7 @@ const PRODUCTS = {
     price: '$97 founding beta, first 10 buyers',
     url: '/chat-manager/',
     btn: 'See Chat Manager',
+    slim: 'Want this without building it from scratch? Chat Manager is the same setup as a kit.',
     img: '../product-images/out-v3/chat-manager.webp',
     alt: 'Chat Manager: a keyword comment sends the freebie by DM and the person joins your email list',
   },
@@ -91,6 +95,24 @@ function blocks(text, toc) {
   return out.join('');
 }
 
+// Grouped horizontal bars. The last series is drawn in sky blue (the reader's own option), the others in mist ink.
+// Values are printed beside each bar, and the same numbers sit in a screen-reader table.
+function bars(title, text) {
+  const groups = text.split('\n').filter((l) => l.includes('|')).map((l) => {
+    const [label, ...cells] = l.split('|').map((c) => c.trim());
+    return [label, cells.map((c) => { const m = c.match(/^(.*?)\s+(\S*?)([\d.,]+)(\S*)$/); if (!m) throw new Error('bars: bad value ' + c); return [m[1], m[2] + m[3] + m[4], parseFloat(m[3].replace(/,/g, ''))]; })];
+  });
+  const max = Math.max(...groups.flatMap(([, c]) => c.map((x) => x[2])));
+  const names = groups[0][1].map((x) => x[0]);
+  return `<figure class="gd-bars">${title ? `<figcaption>${inline(title)}</figcaption>` : ''}<div aria-hidden="true">${groups.map(([label, cells]) => `<div class="gd-bar-g"><p>${inline(label)}</p>${cells.map(([n, v, a], k) => `<div class="gd-bar${k === cells.length - 1 ? ' you' : ''}"><span class="gd-bar-n">${inline(n)}</span><span class="gd-bar-t"><i style="width:${Math.max(1.5, (a / max) * 100).toFixed(1)}%"></i><b>${esc(v)}</b></span></div>`).join('')}</div>`).join('')}</div><div class="gd-sr"><table><caption>${inline(title || 'Chart')}</caption><thead><tr><th scope="col"></th>${names.map((n) => `<th scope="col">${inline(n)}</th>`).join('')}</tr></thead><tbody>${groups.map(([label, cells]) => `<tr><th scope="row">${inline(label)}</th>${cells.map((x) => `<td>${esc(x[1])}</td>`).join('')}</tr>`).join('')}</tbody></table></div></figure>`;
+}
+
+// Connected steps (order matters, so they're numbered).
+function flow(text) {
+  const rows = text.split('\n').filter((l) => l.includes('|')).map((l) => l.split('|').map((c) => c.trim()));
+  return `<ol class="gd-flow" style="--n:${rows.length}">${rows.map(([t, d]) => `<li><b>${inline(t)}</b><span>${inline(d || '')}</span></li>`).join('')}</ol>`;
+}
+
 function render(file, { draft }) {
   const { fm, body } = frontMatter(fs.readFileSync(path.join(DIR, file), 'utf8').replace(/\r\n/g, '\n'));
   const toc = [];
@@ -111,7 +133,12 @@ function render(file, { draft }) {
     if (!m) { run.push(lines[i]); continue; }
     flush();
     const [, kind, arg] = m;
-    if (kind === 'cta') { html += card; continue; }
+    if (kind === 'cta') {
+      if (!arg.startsWith('slim')) { html += card; continue; }
+      if (!product) throw new Error(`${file}: :::cta slim needs a product`);
+      html += `<p class="gd-slim">${inline(arg.slice(4).trim() || product.slim)} <a href="${product.url}">${product.btn} →</a></p>`;
+      continue;
+    }
     const inner = [];
     while (++i < lines.length && lines[i].trim() !== ':::') inner.push(lines[i]);
     const text = inner.join('\n');
@@ -119,6 +146,8 @@ function render(file, { draft }) {
     else if (kind === 'trap') html += `<div class="gd-trap"><p class="gd-trap-t">${inline(arg || 'Watch out')}</p>${blocks(text)}</div>`;
     else if (kind === 'note') { notes++; if (draft) html += `<div class="gd-note"><p class="gd-note-t">Writing note (not published)</p>${blocks(text)}</div>`; }
     else if (kind === 'faq') text.split(/^\?\? /m).slice(1).forEach((qa) => { const [q, ...a] = qa.split('\n'); faqs.push([q.trim(), a.join('\n').trim()]); });
+    else if (kind === 'bars') html += bars(arg, text);
+    else if (kind === 'flow') html += flow(text);
     else if (kind === 'sources') sources = `<section class="gd-sources" aria-labelledby="sources"><h2 id="sources">Sources</h2>${blocks(text)}</section>`;
     else throw new Error(`${file}: unknown block :::${kind}`);
   }
@@ -236,6 +265,31 @@ const CSS = `
 .gd-author-n{font:400 var(--s3-fs-title)/1.1 var(--s3-serif)!important;margin-bottom:6px!important}
 .gd-author p{font-size:var(--s3-fs-body)}
 
+/* Slim product mention */
+.s3 .gd-slim{border-left:3px solid var(--s3-sky);padding:6px 0 6px 20px;font-size:var(--s3-fs-body)}
+.gd-slim a{font-weight:700;white-space:nowrap}
+
+/* Bar chart */
+.gd-bars{background:#fff;border-radius:18px;padding:26px 28px}
+.gd-bars figcaption{font:400 var(--s3-fs-title)/1.15 var(--s3-serif);color:var(--s3-ink);margin:0 0 18px}
+.gd-bar-g+.gd-bar-g{margin-top:18px}
+.s3 .gd-bar-g>p{font-weight:700;font-size:var(--s3-fs-fine);margin-bottom:8px}
+.gd-bar{display:grid;grid-template-columns:110px 1fr;gap:12px;align-items:center;font-size:var(--s3-fs-fine)}
+.gd-bar+.gd-bar{margin-top:6px}
+.gd-bar-t{display:flex;align-items:center;gap:10px}
+.gd-bar-t i{display:block;height:22px;border-radius:0 6px 6px 0;background:var(--s3-muted)}
+.gd-bar.you .gd-bar-t i{background:var(--s3-sky)}
+.gd-bar-t b{white-space:nowrap}
+.gd-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* Flow */
+.s3 .gd-flow{list-style:none;padding:0;display:grid;grid-template-columns:repeat(var(--n),1fr);gap:20px;counter-reset:f;position:relative}
+.gd-flow li{counter-increment:f;position:relative;padding-top:58px;margin:0!important}
+.gd-flow li::before{content:counter(f);position:absolute;top:0;left:0;width:42px;height:42px;border-radius:50%;background:var(--s3-navy);color:#fff;display:grid;place-items:center;font:400 1.5rem/1 var(--s3-serif);z-index:1}
+.gd-flow li:not(:last-child)::after{content:"";position:absolute;top:20px;left:42px;right:-20px;height:2px;background:var(--s3-sky)}
+.gd-flow b{display:block;font:400 var(--s3-fs-title)/1.1 var(--s3-serif);margin-bottom:6px}
+.gd-flow span{display:block;font-size:var(--s3-fs-fine);line-height:1.5;color:var(--s3-muted)}
+
 /* Writing notes: draft preview only */
 .gd-note{border:2px dashed #8f8a83;border-radius:16px;padding:20px 24px;background:#fffbe8}
 .gd-note p,.gd-note li{font-size:var(--s3-fs-fine)!important}
@@ -243,6 +297,11 @@ const CSS = `
 
 @media (max-width:900px){.gd-hero{grid-template-columns:1fr}.gd-hero-pic{max-height:none}}
 @media (max-width:700px){
+ .s3 .gd-flow{grid-template-columns:1fr;gap:22px}
+ .gd-flow li{padding:0 0 0 60px;min-height:42px}
+ .gd-flow li:not(:last-child)::after{top:42px;left:20px;right:auto;bottom:-22px;width:2px;height:auto}
+ .gd-bar{grid-template-columns:84px 1fr;gap:8px}
+ .gd-bars{padding:22px 18px}
  .gd-toc ol{columns:1}
  .gd-cta{grid-template-columns:1fr;padding:20px}
  .gd-cta img{max-width:220px}

@@ -24,6 +24,10 @@ updated: 2026-10-27
 
 **Top picture.** Beside the title goes one real picture: you at your laptop with the inbox open, or a clean screenshot of a keyword DM on your phone. Put the file name after `heroImage:` at the top of this file and a short description after `heroAlt:`. The same goes for `authorPhoto:` (a photo of you, shown in a pink ring).
 
+**Pictures and charts.** The page has a picture, chart or graphic about every 300 words so it never reads as a wall of text: 2 step graphics, 1 cost chart, 4 screenshot spots and the product card. The step graphics and chart are drawn by the page from the words and numbers in this file, so you can reword any label. The screenshots must be your own.
+
+**Chat Manager mentions.** Three, spread out: a one-line mention after "What mine does", another after the cost chart, and the full card near the end. That's the most a helpful guide can carry before it reads like a sales page, which readers trust less and Google ranks lower. Each mention sits right where a reader would think "can I just buy this?".
+
 **Length.** Aim for 1,800 to 2,500 words. Short paragraphs (2 to 4 sentences).
 
 **Facts below** come from your build notes (vault `products/content-engine/comment-to-dm-n8n-plan.md` and the Chat Manager page source). Each says where it's from. Re-check any price on the day you publish and change the "checked" date.
@@ -78,6 +82,14 @@ Facts:
 - Day to day there are no Claude costs. Keyword replies, signups and stats run without Claude.
 - Optional: fully automatic reply drafts through Claude's pay-as-you-go API. Your notes: under 1 cent a comment on Opus 5.5, far less on Haiku 5.5. You chose the free route: drafts come from your Claude subscription and wait for your OK.
 - Accuracy rule: never say Claude answers DMs on its own. Keyword DMs are automatic. Other comments wait in your inbox for you.
+
+The graphic below shows the three parts. Reword the labels if you like (keep each short).
+:::
+
+:::flow
+Claude builds it | Sets everything up with you, once. You come back to Claude only for changes.
+n8n runs it | Free automation software on your own small server, on day and night.
+Instagram sends it | The DMs go out through Instagram's official API.
 :::
 
 ## What mine does every day
@@ -100,9 +112,23 @@ What it does (from the kit's changelog, version 1.0.0):
 - A health check that tells you when something needs you.
 
 Add one honest line about how it's gone since it went live (only numbers you can see in your Stats, no guesses).
+
+Below: a graphic of what happens, then your two screenshots (phone, then dashboard), then the first Chat Manager mention.
 :::
 
-![WRITE alt text: describe the screenshot](REPLACE-with-your-screenshot.webp "WRITE a caption: what it shows and when")
+:::flow
+They comment | A keyword like MATH under your post.
+They get a DM | Plus a "sent you a DM" reply under the comment.
+They get the freebie | And their email joins your list.
+You see it all | One inbox for Instagram, YouTube and TikTok.
+:::
+
+![WRITE alt text: describe the screenshot](REPLACE-phone-comment-and-dm.webp "WRITE a caption: the keyword comment and the DM it got, with the date")
+
+![WRITE alt text: describe the screenshot](REPLACE-inbox-dashboard.webp "WRITE a caption: your inbox or stats page, names blurred")
+
+:::cta slim
+
 
 ## What it costs compared with ManyChat
 
@@ -126,7 +152,18 @@ Suggested table (re-check ManyChat's prices on the day you publish):
 | 25,000 | $199 | about $6 |
 
 Later, link to the ManyChat cost calculator (guide B3) here once it exists.
+
+The chart below is drawn from these numbers. Update them when you re-check ManyChat's prices.
 :::
+
+:::bars What it costs each month
+250 people | ManyChat $17 | Your own $6
+2,500 people | ManyChat $39 | Your own $6
+7,500 people | ManyChat $99 | Your own $6
+25,000 people | ManyChat $199 | Your own $6
+:::
+
+:::cta slim Chat Manager is $97 once, then about $6 a month for hosting, however many people message you.
 
 ## How the setup works, step by step
 
@@ -142,7 +179,11 @@ An overview, not the full tutorial (the full n8n tutorial is guide B2; link to i
 7. **Test mode first.** Nothing gets sent; the inbox shows what would have been sent. Turn it off once a real test from a second account works.
 
 Your total time, roughly? (The Chat Manager page says about an hour, once.)
+
+Screenshot spot below: one Meta screen, for example the webhook page with only `comments` ticked.
 :::
+
+![WRITE alt text: describe the screenshot](REPLACE-meta-webhook-screen.webp "WRITE a caption: which screen this is and what to click")
 
 ## The setup traps that cost me time
 
@@ -164,7 +205,7 @@ Google (for YouTube):
 Small but real:
 - Saving keys in Notepad: pick "All files" and check the file name (one of yours lost its first letter).
 
-Add your screenshots of the Meta screens if you still have them.
+Add your screenshots of the Meta screens if you still have them: the "Customize use case" page with the + Add buttons to leave alone would be a good one, right above or inside a trap box.
 :::
 
 :::trap Untick Meta's extra webhook fields
