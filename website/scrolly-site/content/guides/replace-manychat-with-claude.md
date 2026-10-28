@@ -10,8 +10,8 @@ lede: I decided to see if there's a way that I could build my own version of Man
 author: Mercedes
 authorBio: I'm Mercedes, founder of The Ambition Department. I build my own business tools with Claude and share the systems so you don't have to start from scratch.
 authorPhoto:
-heroImage:
-heroAlt:
+heroImage: ../content/guides/img/manychat-hero.webp
+heroAlt: A phone on a tripod showing a keyword comment and the DM conversation it starts, over my Instagram carousels
 product: chat-manager
 updated: 2026-10-28
 ---
