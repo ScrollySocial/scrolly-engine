@@ -57,6 +57,7 @@
   .pill.check { border-color: var(--sky); color: var(--ink); }
   .pill.live, .pill.sent { background: var(--ok); border-color: var(--ok); color: #fff; }
   .pill.missing, .pill.error { background: var(--warn); border-color: var(--warn); color: #fff; }
+  .pill.deleted { opacity: .55; text-decoration: line-through; }
   .pill.draft { border-style: dashed; }
   .mark { border: 1px solid var(--line); background: none; color: var(--ink); border-radius: 8px; padding: 2px 10px; font: inherit; font-size: 15px; cursor: pointer; }
   .mark:hover { border-color: var(--sky); }
@@ -210,6 +211,7 @@ try { pinFilter = localStorage.getItem('planner.pinFilter') || 'All'; } catch {}
 function pinState(p, now) {
   if (p.mark === 'Live') return ['Live', 'live'];
   if (p.mark === 'Missing') return ['Missing', 'missing'];
+  if (p.mark === 'Deleted') return ['Deleted', 'deleted'];
   if (!p.uploaded) return ['Not uploaded', 'draft'];
   return new Date(p.when) > now ? ['Scheduled', 'scheduled'] : ["Check it's live", 'check'];
 }
@@ -218,7 +220,7 @@ function renderPins() {
   const now = new Date(state.now);
   const pins = state.pins.map((p) => ({ ...p, st: pinState(p, now) }));
   const count = (l) => pins.filter((p) => p.st[0] === l).length;
-  const labels = ['Scheduled', "Check it's live", 'Live', 'Missing', 'Not uploaded'];
+  const labels = ['Scheduled', "Check it's live", 'Live', 'Missing', 'Deleted', 'Not uploaded'];
   $('pinStats').innerHTML = [['Pins', pins.length], ...labels.filter((l) => count(l)).map((l) => [l, count(l)])]
     .map(([l, n]) => `<div class="stat"><b>${n}</b><span>${esc(l)}</span></div>`).join('');
   $('pinFilter').innerHTML = ['All', ...labels.filter((l) => count(l))]

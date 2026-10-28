@@ -45,7 +45,7 @@ function writeJson(f, v) {
 
 // ---- Pins ----
 const STATUS_FILE = join(DATA, 'pin-status.json');
-const MARKS = ['Live', 'Missing']; // what she saw on Pinterest; no mark = not checked yet
+const MARKS = ['Live', 'Missing', 'Deleted']; // what she saw on Pinterest; no mark = not checked yet. Deleted = she removed it before it posted.
 
 function pins() {
   const marks = readJson(STATUS_FILE, {});
@@ -181,7 +181,7 @@ http
         writeJson(STATUS_FILE, marks);
         return send(res, 200, { ok: true });
       }
-      const img = url.pathname.match(/^\/pin-img\/(batch-\d+)\/(pin-[a-z0-9-]+\.png)$/);
+      const img = url.pathname.match(/^\/pin-img\/(batch-\d+)\/(pin\d*-[a-z0-9-]+\.png)$/);
       if (req.method === 'GET' && img) {
         const f = join(PINS, 'out', img[1], img[2]);
         if (existsSync(f)) return send(res, 200, readFileSync(f), TYPES[extname(f)]);
