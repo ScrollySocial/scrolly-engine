@@ -6,7 +6,7 @@ title: Replace ManyChat with Claude: How I Built My Own Comment-to-DM
 description: I replaced ManyChat with my own Instagram comment-to-DM system that Claude built and set up. What it does, what it costs, the setup traps, and who should stay on ManyChat.
 h1: How I replaced ManyChat
 h1Italic: with Claude
-lede: I wouldn't pay ManyChat's per-contact prices, so I had Claude build me my own comment-to-DM software instead. Here's what it does, what it costs and the traps I hit.
+lede: I decided to see if there's a way that I could build my own version of ManyChat using Claude, and it turns out… you can.
 author: Mercedes
 authorBio: I'm Mercedes, founder of The Ambition Department. I build my own business tools with Claude and share the systems so you don't have to start from scratch.
 authorPhoto:
@@ -17,34 +17,24 @@ updated: 2026-10-28
 ---
 
 :::answer
-Yes, mostly. Claude can set up your own private software that does most of what ManyChat does, including Instagram comment-to-DM through Instagram's official API. It runs on n8n on your own small server, about $6 a month at DigitalOcean, however many people comment. ManyChat still wins on TikTok DMs.
+Claude can help you to setup your own individual software that can replace ManyChat with most of the same features ManyChat offers. It can re-create the comment-to-DM system for Instagram with an official API using n8n on your own small server (currently this costs $6 monthly from DigitalOcean).
 :::
+
+You can also have Claude help you setup the connection with Facebook for automated responses to Facebook Page comments, but it takes individual review and approval with the platform which is not guaranteed. The place where ManyChat has an advantage over Claude is that ManyChat can auto-reply to TikTok DMs: there is a lack of an available API integration that enables you to imitate this feature on your own server.
+
+The great advantage is that this setup can include auto-responding to YouTube comments. ManyChat cannot do this, and a separate software is required if you also post on YouTube. One setup with Claude can include the platforms Instagram, YouTube and, if you choose to get approval, Facebook. This is all only $6 monthly regardless of how many comments or contacts you have without any additional costs (other than a Claude plan)!
 
 ## Why I wouldn't pay for ManyChat
 
-ManyChat does have a free tier and I tried it out, but many of the automations I wanted to run were restricted to the paying tiers. I felt the cost was kind of extreme once you start getting a significant number of contacts for a business. It's like paying for a second email platform.
-
-ManyChat charges by how many people you interact with each month (prices from manychat.com/pricing, monthly billing, checked October 28, 2026):
-
-| Plan | Price a month | Contacts |
-| --- | --- | --- |
-| Free | $0 | 25 |
-| Essential | $17 | 250 |
-| Pro | $39 | 2,500 |
-| Business | $99 | 7,500 |
-| Advanced | $199 | 25,000 |
-
-So I decided to see if I could replace ManyChat with Claude and build my own version. It turns out you can. I decided on October 22, built and tested it that same day, and it went live on October 23.
+ManyChat does have a free tier and I tried it out, but many of the automations that I wanted to run were restricted to the paying tiers. I honestly felt that the cost of the service was kind of extreme once you start getting into significant contacts for a business. It's like paying for a second email platform. So I decided to see if there's a way that I could build my own version of ManyChat using Claude, and it turns out… you can.
 
 ## What "replacing ManyChat with Claude" actually means
 
-For me it was a couple of hours of researching the options and then setting up the accounts you need to make what is essentially your own private software.
+For me it was a couple of hours of researching the solutions available and then setting up the various accounts you need to make what is essentially your own, private, software. To do this, you need a server so that your automation always stays on. Meaning if you ran just off your laptop, anytime you powered it down you would lose the ability to run the automation and people might, at best, experience a delay in the comment feature. Which is not a good customer experience.
 
-You need a server so your automation always stays on. If you ran it off your laptop, anytime you powered it down the automation would stop, and people would at best get a delay after commenting. That's not a good customer experience. It seemed worth $6 a month to keep it always on, especially since the price of the server doesn't depend on how many contacts you have.
+It seemed worthwhile for the $6 a month to ensure that the automation was always turned on. Especially when you consider that the price of the server is not dependent on the number of contacts that you have. The automation is run via a program called n8n, Claude builds this for you, so you do not have to be technical. You can also add as many words into your automation as you want with no restrictions.
 
-The automation runs in a program called n8n. Claude builds it for you, so you don't have to be technical. You can add as many keywords as you want, with no restrictions.
-
-It's set up through Instagram's official API: you create your own personal app that only works on your account. So it's 100% official and legit from Instagram's perspective.
+This automation is setup with the Instagram official API: you are creating your own personal application. So it is 100% official and legit from Instagram's perspective.
 
 :::flow
 Claude builds it | Sets everything up with you, once. You come back to Claude only for changes.
@@ -52,21 +42,23 @@ n8n runs it | Free automation software on your own small server, on day and nigh
 Instagram sends it | The DMs go out through Instagram's official API.
 :::
 
-You can add Facebook Page comments too, but Meta reviews those apps by hand instead of automatically. I can't guarantee you'll pass their review, but in theory, with a little more work, you could answer Facebook comments the same way you do on Instagram.
+You also CAN do this for Facebook as well, however it has an individualized review instead of an automated review. So I cannot guarantee that you will pass their review, but in theory with a little more work, you can also respond to Facebook comments in the same way you would on Instagram if you chose to take on this extra work.
 
-If you're on YouTube and want to answer comments that use a keyword there too, you can add a YouTube connection. This is great because ManyChat doesn't include YouTube at all, so YouTubers would need separate software to get the same result.
+If you use YouTube and would also like to respond to comments with specific words in YouTube, you can also add in a YouTube integration. This is great because ManyChat does NOT include YouTube at all and so YouTubers would need a separate software to achieve this same result.
 
-Finally, TikTok. I set it up so my Chat Manager receives every TikTok comment, but there's no way to reply to TikTok comments automatically. Even ManyChat can't do this. I still like having them, because I can copy and paste replies from my Chat Manager into TikTok easily. ManyChat can auto-reply to TikTok DMs (in beta, for TikTok Business accounts), and that isn't something I've been able to re-create with the official APIs available.
+Finally TikTok, I set it up so that the Chat Manager receives every TikTok comment, however there is NO WAY to respond back to comments on TikTok. Even ManyChat cannot do this. However, I did like this because it enables me to copy/paste from my Chat Manager into TikTok easily. ManyChat has recently received an approval to auto-respond to DMs in TikTok, this is not something that I have been able to re-create using the available official API integrations with Claude.
 
 ## What mine does every day
 
-Every day my Chat Manager answers anyone who comments a keyword with their link. It replies both with a public comment and with a private DM.
+Every day my Chat Manager is able to respond to commenters who use the keyword with their link. It responds both as a public comment and as a private DM.
 
-I also set mine up to ask them to reply to me by DM before it sends the link. That way I can follow up with them in the DMs instead of only sending the link they asked for. If they forget to reply, it sends them one follow-up DM.
+I set mine up to also ask them to respond to me via DM before sending them the link. This enables me to be able to follow-up with them in the DMs instead of only being able to send the requested link.
 
-It also replies to YouTube comments that use a keyword, with the link they asked for.
+If they forget, then I send them a follow up DM.
 
-For TikTok, I use Apify to load my comments, and my Chat Manager drafts replies. I then copy and paste them into the TikTok app myself.
+I also have mine setup so that it auto-responds to YouTube comments with the requested link.
+
+I also use Apify to load my TikTok comments, and draft replies in my Chat Manager. I then copy/paste them from my Chat Manager to the TikTok app manually.
 
 :::flow
 They comment | A keyword like MATH under your post.
@@ -83,13 +75,9 @@ You see it all | One inbox for Instagram, YouTube and TikTok.
 
 ## What it costs compared with ManyChat
 
-Building your own chat software with Claude costs a small amount, and the price stays the same as you grow.
+The cost is small and consistent with building your own Chat Management software using Claude. First of all, you need to have a paid Claude plan. The lowest Claude plan is currently $20, although you could go through other tools to get this for a more affordable price. Then you need a server, I chose to use DigitalOcean, it's $6 a month and straightforward pricing. Google also offers a "free" server, but it charges about $3.60 a month for its public IP address.
 
-First, you need a paid Claude plan. The lowest one is currently $20 a month. Then you need a server. I chose DigitalOcean: it's $6 a month with straightforward pricing. Google also offers a "free" server, but it still charges about $3.60 a month for its public IP address.
-
-To load your account's public TikTok comments you can use Apify. Its free monthly credit covers it, and even paid it would cost $3 a month at most. I'm on the free plan. The server also needs a web address. If you don't have a website or don't want to buy a domain, you can get one free with DuckDNS.
-
-So my personal cost is $6 a month on top of the Claude subscription I already had.
+To scrape your account's public TikTok comments you can use Apify, this can be done using free credit and if going into paid Apify scraping would cost $3 a month max, I am able to use the free plan though. It also does use a website address to host the server, if you don't have one or want to purchase one, this can be free with DuckDNS. So my personal cost is $6 a month in addition to my existing Claude subscription.
 
 :::bars What it costs each month
 250 people | ManyChat $17 | Your own $6
@@ -100,79 +88,67 @@ So my personal cost is $6 a month on top of the Claude subscription I already ha
 
 :::cta slim Chat Manager is $97 once, then about $6 a month for hosting, however many people message you.
 
-## How the setup works, step by step
+## How the setup works
 
-First you set up your accounts. With Claude's help this takes a few hours. Some people already have a website, and others will need a free web address. Everyone needs a server, unless you're a super techie and already have one.
+How the setup works, first you have to setup your various accounts. With Claude's help this does take a few hours to setup and complete. Some users might have an existing website, but some will need to setup a free web address. Everyone will need to setup their server unless you are a super-techie and already had that beforehand. Then you need an account as a Meta developer to make this app official. If you wanted to also use this to respond to YouTube comments you will need to establish that connection through official API as well. You could optionally set it to respond to Facebook comments, however this requires a manual review so it is more work and not guaranteed to be approved.
 
-Then you need a Meta developer account to make your app official. If you also want to answer YouTube comments, you connect YouTube through its official API as well. You can optionally add Facebook comments, but that needs a manual review, so it's more work and approval isn't guaranteed.
+Before you go live with the automations, you need to make sure that there is a privacy page for your new chat application (you can use a free Notion page if needed). At this point you can setup how the dashboard looks with Claude. This step might also require some significant tweaking to get it to fully replace ManyChat.
 
-Before you go live, your new chat app needs a privacy page. A free Notion page works if you don't have a website. Then you can set up how your dashboard looks. This step can take some tweaking to get it to fully replace ManyChat for you.
-
-Then you're ready to add your keywords and start testing. Congratulations!
-
-1. **Get a server.** Claude creates it with you.
-2. **Get a web address with HTTPS.** DuckDNS (free) or your own domain, plus Caddy for the secure certificate.
-3. **Make a Meta developer app** and give your Instagram account the Instagram Tester role.
-4. **Publish the app.** Apps for your own account skip App Review.
-5. **Add a privacy page.** A public Notion page works.
-6. **Add your keywords** and approve each DM's wording.
-7. **Use test mode first,** then turn it off.
+Then you are ready to start adding in your keywords and testing! Congratulations.
 
 ![WRITE alt text: describe the screenshot](REPLACE-meta-webhook-screen.webp "WRITE a caption: which screen this is and what to click")
 
-## The setup traps that cost me time
+## Setup traps that cost me time
 
-:::trap Don't upload a logo to your Google app
-You need a Google app for YouTube. Do NOT add a logo to it. Simply adding a logo image triggers a 4 to 6 week verification process. You don't need a logo, and you skip all that waiting if you don't upload one.
+:::trap Don't add a Google logo
+When setting up your Google account do NOT add in a logo. Simply adding a logo image triggers a 4-6 week verification process. You do not need a logo and can skip all this time if you do not upload one.
 :::
 
-:::trap Publish your Google app out of Testing
-If you leave your Google app in Testing, it makes you sign in again every 7 days, and YouTube replies stop until you do. Publish it to In production.
+:::trap Don't leave Google in testing mode
+If you leave your Google application in testing mode it will require you to sign in every 7 days.
 :::
 
-:::trap Don't add extras when you publish your Meta app
-Some options you can select during setup can send your Instagram app to manual review. Don't click any + Add buttons on the Customize use case page if you don't want to go through App Review.
+:::trap Skip the + Add buttons
+There are fields that you can select or change during the setup that might trigger manual review for Instagram. Selecting any +Add or Customize options are not recommended if you do not want to go through app review.
 :::
 
-It also took some use and tweaking during testing to get the dashboard working and looking the way I wanted.
+Additionally it did take some use and tweaking for me to get the dashboard to function and display as I wanted as part of the testing process.
 
 ## What Instagram won't let any tool do
 
-These limits come from Instagram itself, so they apply to ManyChat too:
+This tool can send 1 private DM per comment within 7 days. If the comments are older than 7 days they cannot go through the tool.
 
-- You can send one private DM per comment, within 7 days of the comment. Older comments can't get a DM.
-- Follow-up DMs only work within 24 hours of the person's last message to you.
-- You need an Instagram Creator or Business account. It's free to switch.
-- No tool can DM new followers automatically. Instagram only allows DMs to people who commented or messaged you first.
+If it has been longer than 24 hours since their last message, you cannot use the tool to send them a follow-up DM.
+
+You must have a creator or business account for this to work with Instagram.
+
+There is not a way to auto-DM new Instagram followers, with ManyChat or with this tool.
+
+There is no way to automate the integration with auto-DMing in TikTok like you can with ManyChat.
 
 ## Who should stay on ManyChat
 
-ManyChat is still the best solution for people who rely on automated TikTok DMs or WhatsApp automations to run their business, because those can't be officially replicated with Claude. At least not yet.
-
-- **Stay on ManyChat if you:** need WhatsApp, Messenger or TikTok DMs, or want zero setup.
-- **Build your own if you:** have a growing audience, want YouTube keywords, want your own data, and are OK spending a few hours on setup.
+ManyChat is still the best solution for users who rely on automated TikTok DMs, or WhatsApp automations to run their business as those cannot be officially replicated using Claude. At least not yet.
 
 ## Build it yourself or use my kit
 
-If you have plenty of time and you're scrappy, you should be able to use this guide and your Claude to build your own Chat Manager.
+If you have plenty of time on your hands and are scrappy you should be able to use this guide and your Claude to build your own Chat Manager.
 
-If this feels confusing or overwhelming, or you'd rather save yourself the time and just get posting, you can copy my work! I made a customer version of my own software that you can re-create with Claude. It comes with Claude setup instructions, so instead of taking hours to set up the accounts, it should only take maybe 30 minutes of your active work while Claude does the rest.
+However, if this feels confusing or overwhelming, or you would rather save yourself the time and just get posting, you can copy my work! I made a customer version of my personal software that you can use to re-create your own using Claude. It also has specific Claude setup instructions so that instead of taking 2 hours to setup the accounts it should only take maybe 30 minutes of your active work while Claude does the rest!
 
-I also spent a lot of time after setting up the connections making the Chat Manager easy to use and maintain. That's time you'd spend tweaking regularly if you build your own.
+I spent a lot of time after setting up the connections optimizing the layout of the Chat Manager so that it is easy to use and maintain. This is additional time that you will have to spend regularly tweaking if you choose to go the build your own route.
 
 :::cta
 
 :::faq
 ?? Can Claude replace ManyChat?
-Yes. Claude can help you create your own private software that replaces all but one or two of ManyChat's current features. There's no tiered pricing, though it does use outside tools and not all of them are free. It costs about $6 a month, however many contacts or chats you have.
-?? Do I need to know how to code?
-Absolutely not. As long as you have Claude Code, you can build this.
+Yes, Claude can help you create your own, private software that replaces all but one or two features that exist in ManyChat currently. It can do so with no tiered pricing, but it does use external tools not all of which are free. The current cost is $6 per month regardless of contact or chat counts.
+?? Do I need to code?
+Absolutely not, as long as you have Claude Code you can build this.
 ?? Is it allowed by Instagram?
-Yes. It's set up with Instagram's official API, through an app that only works on your own account, so it's 100% legit.
+Yes, it is setup using Instagram's official API and is 100% legit!
 ?? Does Claude answer my DMs automatically?
-You choose how much is automatic. Mine auto-replies to keyword comments, and it writes drafts for normal comments without a keyword. I can update a draft before posting it. You could set it to answer 100% of comments through your Claude plan or paid API use, but then you're bound by the AI's automatic replies. I set mine to drafts only, to keep costs low and avoid that risk.
-?? What does it cost each month?
-About $6 for the server, the same however many people message you. Your Claude plan is separate.
+You can choose the extent of the automation. You can set it up so that it auto-responds to specific Keyword comments, that's what mine does. Mine also writes drafts to comments that don't have a keyword and are just normal engagement. I can then go in and update that draft if I like before posting. If you wanted, you could setup rules for the Chat Manager to respond to 100% of all comments through either your monthly software plan, or through additional paid API usage, but that does contain additional risk as you are bound by the AI's automated response. I setup mine to only do automated drafts to keep the costs low and to not take on that additional risk.
 :::
 
 :::sources
