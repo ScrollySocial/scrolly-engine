@@ -17,6 +17,7 @@ const readJson = (f, d) => {
 };
 const EXPORTS = readJson(join(CAROUSELS, 'config', 'media.json'), {}).exportsDir || '';
 export const FREE_PLAN_LIMIT = 10; // Buffer Free: scheduled posts across all channels
+const NAMES = { instagram: 'Instagram', tiktok: 'TikTok', youtube: 'YouTube', pinterest: 'Pinterest' };
 export const QUEUEABLE = ['instagram', 'tiktok']; // YouTube needs a title + category; Reels go through the nightly run
 
 // Alt text for a carousel slide: its words, with the big number some layouts show separately ("30" + "consecutive days")
@@ -52,7 +53,7 @@ export function plan(card, platform, { keywords = [], scheduled = null } = {}) {
   const lane = card.lanes?.[platform];
   const problems = [];
   if (!QUEUEABLE.includes(platform)) problems.push(`Queue it works for Instagram and TikTok for now.`);
-  const name = platform[0].toUpperCase() + platform.slice(1);
+  const name = (NAMES[platform] || platform);
   if (!lane) problems.push(`This idea isn't planned for ${name}.`);
   else if (['Scheduled', 'Posted'].includes(lane.stage)) problems.push(`This one is already ${lane.stage === 'Posted' ? 'posted' : 'in the Buffer queue'} on ${name}.`);
   else if (lane.stage !== 'Ready') problems.push(`Move the ${name} lane to Ready first (it's at ${lane.stage}).`);
@@ -80,7 +81,7 @@ export function plan(card, platform, { keywords = [], scheduled = null } = {}) {
 
   return {
     platform,
-    channel: platform[0].toUpperCase() + platform.slice(1),
+    channel: (NAMES[platform] || platform),
     caption,
     media: (media || []).map(({ file, ...m }) => m),
     toUpload: (media || []).filter((m) => !m.url).length,
