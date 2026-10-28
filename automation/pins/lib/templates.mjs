@@ -3,7 +3,7 @@
 // a pill, real UI from her live site. Pins aren't limited to brand colours (her call); board covers are.
 // v3 (2026-10-27, "too cookie cutter"): every Pin gets its own style: ground, pattern, headline font, accent,
 // hand-drawn doodles (her ScrollyDoodles font from the Reel packs) and phone position. See styleFor().
-import { writeFileSync, mkdirSync, existsSync } from 'node:fs';
+import { writeFileSync, readFileSync, mkdirSync, existsSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { fileUrl, esc } from '../../carousels/lib/common.mjs';
@@ -156,7 +156,65 @@ export const D = (p) => {
 ${phone(p, 280, st)}${arrowToPhone(st, g, 280)}${sparkles(st, g)}<div class="dom">${DOMAIN}</div>`;
 };
 
-export const LAYOUTS = { A, C, D };
+// Photo Pins (2026-10-28, from her Digital Priestess / "lazy way to edit" references). Photos are free stock from
+// Pexels (her call; she picks against "lame" stock: warm, cosy, real-looking, nobody posing at the camera), kept in
+// assets/stock/ with a credits file. The text never speaks for the person in the photo.
+const PROPS = path.resolve(HERE, '../reel-template-pack/assets/props');
+const photoBg = (p) => `<div style="position:absolute;inset:0;background:url('${fileUrl(stockFile(p.photo))}') ${p.focus || 'center'}/cover no-repeat"></div>`;
+
+// E: a paper note card pinned onto the photo with a real photographed push pin (Reel pack prop).
+export const E = (p) => {
+  const st = p.style || {}, top = p.cardTop ?? 760;
+  return `<style>* { margin: 0; box-sizing: border-box; } ${FACES}
+  body { width: 1000px; height: 1500px; overflow: hidden; position: relative; font-family: Jost, Arial, sans-serif; }
+  .dom { position: absolute; top: 46px; left: 0; right: 0; text-align: center; font: 600 26px/1 Jost; letter-spacing: .16em; text-transform: uppercase; color: ${p.domInk || '#fff'}; text-shadow: 0 1px 8px rgba(0,0,0,.35); z-index: 3; }
+  .h { position: absolute; left: 90px; right: 90px; top: ${top}px; background: #fbf8f2; border-radius: 6px; padding: 70px 60px 56px; transform: rotate(${p.tilt ?? -2}deg); box-shadow: 0 24px 50px rgba(0,0,0,.28); z-index: 2; color: #2b2320; }
+  .tag { font: 600 26px/1 Jost; letter-spacing: .18em; text-transform: uppercase; color: #8a7a70; }
+  .ser { font: 400 ${p.size || 104}px/1 ${SERIF[st.serif || 'instrument']}; margin-top: 22px; }
+  .small { margin-top: 26px; font: 500 36px/1.3 Jost; }
+  .small span { background: ${p.mark || '#cfe3ff'}; padding: 2px 8px; }
+  .pinhead { position: absolute; left: 50%; top: -34px; width: 74px; transform: translateX(-50%) rotate(-12deg); filter: drop-shadow(0 6px 6px rgba(0,0,0,.35)); }
+</style>${photoBg(p)}<div class="h"><img class="pinhead" src="${fileUrl(path.join(PROPS, 'pin-head-' + (p.pin || 'blue') + '.png'))}"><div class="tag">${esc(p.tag)}</div><div class="ser">${esc(p.serif)}</div><div class="small"><span>${esc(p.small)}</span></div></div><div class="dom">${DOMAIN}</div>`;
+};
+
+// F: big serif headline straight on the photo, with the subtitle in a phone-style text-selection highlight (blue box
+// with the two round drag handles), like her "Want the lazy way to edit TikToks & Reels?" reference.
+export const F = (p) => {
+  const st = p.style || {}, ink = p.ink || '#ffffff';
+  return `<style>* { margin: 0; box-sizing: border-box; } ${FACES}
+  body { width: 1000px; height: 1500px; overflow: hidden; position: relative; font-family: Jost, Arial, sans-serif; }
+  .shade { position: absolute; inset: 0; background: linear-gradient(${p.shadeTop === false ? '0deg' : '180deg'}, rgba(0,0,0,${p.shade ?? .45}) 0%, rgba(0,0,0,0) 55%); }
+  .dom { position: absolute; top: 46px; left: 0; right: 0; text-align: center; font: 600 26px/1 Jost; letter-spacing: .16em; text-transform: uppercase; color: ${ink}; z-index: 3; }
+  .h { position: absolute; left: 70px; right: 70px; ${p.textBottom ? 'bottom: 120px;' : 'top: 130px;'} color: ${ink}; z-index: 3; }
+  .ser { font: 400 ${p.size || 136}px/.98 ${SERIF[st.serif || 'instrument']}; text-shadow: 0 2px 18px rgba(0,0,0,.25); }
+  .sel { position: relative; display: inline-block; margin-top: 34px; font: 500 46px/1.2 Jost; color: #fff; background: rgba(46,120,246,.85); padding: 6px 14px 8px; }
+  .sel::before, .sel::after { content: ''; position: absolute; width: 4px; background: #2e78f6; top: -8px; bottom: -8px; }
+  .sel::before { left: -4px; } .sel::after { right: -4px; }
+  .sel i { position: absolute; width: 18px; height: 18px; border-radius: 50%; background: #2e78f6; }
+  .sel i.a { left: -11px; top: -24px; } .sel i.b { right: -11px; bottom: -24px; }
+</style>${photoBg(p)}<div class="shade"></div><div class="h"><div class="ser">${esc(p.serif)}</div><div class="sel"><i class="a"></i>${esc(p.sel)}<i class="b"></i></div></div><div class="dom">${DOMAIN}</div>`;
+};
+
+export const LAYOUTS = { A, C, D, E, F };
+
+// Stock photos: id -> local file in assets/stock/ (downloaded once from Pexels, credits in assets/stock/credits.json).
+export const STOCK_DIR = path.join(HERE, 'assets/stock');
+export const stockFile = (id) => path.join(STOCK_DIR, id + '.jpg');
+export async function ensureStock(list) {
+  mkdirSync(STOCK_DIR, { recursive: true });
+  const credFile = path.join(STOCK_DIR, 'credits.json');
+  const cred = existsSync(credFile) ? JSON.parse(readFileSync(credFile, 'utf8')) : {};
+  for (const s of list) {
+    if (!existsSync(stockFile(s.id))) {
+      const r = await fetch(s.src + (s.src.includes('?') ? '&' : '?') + 'auto=compress&cs=tinysrgb&w=1500');
+      if (!r.ok) throw new Error(`stock ${s.id}: ${r.status}`);
+      writeFileSync(stockFile(s.id), Buffer.from(await r.arrayBuffer()));
+      console.log('stock  ' + s.id);
+    }
+    cred[s.id] = { source: s.page, license: 'Pexels License (free to use, no attribution required)', picked: s.picked };
+  }
+  writeFileSync(credFile, JSON.stringify(cred, null, 1) + '\n');
+}
 
 // Style rotation: each list is cycled at a different pace, so neighbouring Pins never share the same mix.
 const CYCLE = {
@@ -212,7 +270,7 @@ export async function renderPins(browser, pins, outDir) {
     const issue = await pg.evaluate(() => {
       const h = document.querySelector('.h'), below = document.querySelector('.phone, ol');
       const big = h.querySelector('.big, .ser, .t');
-      const fits = () => [...h.children].every((c) => c.scrollWidth <= c.clientWidth + 2) && (!below || h.getBoundingClientRect().bottom < below.getBoundingClientRect().top - 24);
+      const fits = () => [...h.querySelectorAll('.big, .ser, .t')].every((c) => c.scrollWidth <= c.clientWidth + 2) && (!below || h.getBoundingClientRect().bottom < below.getBoundingClientRect().top - 24);
       let s = parseFloat(getComputedStyle(big).fontSize);
       while (!fits() && s > 60) { s -= 4; big.style.fontSize = s + 'px'; }
       const out = [];

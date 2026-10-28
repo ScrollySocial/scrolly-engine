@@ -1,0 +1,27 @@
+{
+ "pexels-11179596-face-mask": {
+  "source": "https://www.pexels.com/photo/woman-lying-down-in-face-mask-with-cucumbers-11179596/",
+  "license": "Pexels License (free to use, no attribution required)",
+  "picked": "Mercedes"
+ },
+ "pexels-19553430-tree-ornament": {
+  "source": "https://www.pexels.com/video/a-christmas-tree-with-a-red-ornament-on-it-19553430/",
+  "license": "Pexels License (free to use, no attribution required)",
+  "picked": "Mercedes (video poster frame)"
+ },
+ "pexels-3201314-tree-snow": {
+  "source": "https://www.pexels.com/video/christmas-tree-with-snow-and-glitters-3201314/",
+  "license": "Pexels License (free to use, no attribution required)",
+  "picked": "Mercedes (video poster frame)"
+ },
+ "pexels-5390124-cozy-laptop": {
+  "source": "https://www.pexels.com/photo/woman-in-brown-sweater-using-her-laptop-5390124/",
+  "license": "Pexels License (free to use, no attribution required)",
+  "picked": "Claude"
+ },
+ "pexels-13550510-desk-candle": {
+  "source": "https://www.pexels.com/photo/coffee-cup-and-laptop-on-wooden-table-13550510/",
+  "license": "Pexels License (free to use, no attribution required)",
+  "picked": "Claude"
+ }
+}
