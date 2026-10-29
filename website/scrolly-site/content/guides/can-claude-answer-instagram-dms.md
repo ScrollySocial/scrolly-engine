@@ -2,112 +2,131 @@
 slug: can-claude-answer-instagram-dms
 wpId:
 title: Can Claude Answer Instagram DMs? What Instagram Actually Allows
-description: Can Claude answer your Instagram DMs? What it can do on its own, the three ways to set it up, Instagram's DM rules, and what I chose.
+description: Can Claude answer your Instagram DMs? What it can and can't do on its own, what you need, the three ways to set it up, and Instagram's DM rules.
 h1: Can Claude answer
 h1Italic: Instagram DMs?
-lede: [WRITE one sentence in your words, under 30 words.]
+lede: Not on its own, but Claude Code can help you build your own app that does. Claude Code makes it easier than it sounds.
 author: Mercedes
 authorBio: I'm Mercedes, founder of The Ambition Department. I build my own business tools with Claude and share the systems so you don't have to start from scratch.
 authorPhoto:
-heroImage:
-heroAlt:
+heroImage: https://theambitiondepartment.com/wp-content/uploads/2026/10/tad-guide-claude-dms-hero.webp
+heroAlt: A phone on a tripod showing a keyword comment and the Instagram DM conversation it starts
 product: chat-manager
 updated: 2026-10-29
 ---
 
-:::note
-**Outline for Mercedes (2026-10-29).** Write a paragraph or two under each heading in your own words, like yesterday, and
-paste it in chat. Aim for 1,000 to 1,500 words.
-
-**Keywords (from the cluster plan, B7).** Main: *can claude answer instagram dms* (use it in the short answer and once in
-a heading). Also, once each if they fit: *can claude send instagram dms*, *claude instagram dm automation*,
-*instagram dm policy*, *claude code instagram automation*.
-
-**Links to put in.** Your ManyChat guide (/guides/replace-manychat-with-claude/) and the ManyChat cost calculator (once
-it's live).
-:::
-
-:::note
-**The short answer.** The question: "Can Claude answer Instagram DMs?" 2 or 3 sentences, 40 to 60 words.
-
-Facts to work from:
-- Not on its own: Claude has no way into your Instagram account by itself.
-- It can once it's connected through Instagram's official API, with an app that only works on your own account.
-- Keyword DMs can be fully automatic. Other DMs: Claude can write a draft that waits for your OK.
+:::answer
+Can Claude answer Instagram DMs? Not on its own: an existing Claude subscription can't connect to your Instagram and respond to comments or DMs. But Claude Code can help you build your own application that does. You have to use external tools and create an official Instagram app through Instagram's API.
 :::
 
 ## Why I wanted Claude answering my DMs
 
-:::note
-Your story, in your words:
-- How many comments and DMs you get, and how long answering them takes (only real numbers).
-- What you wanted: answer fast, sound like you, never miss a lead, without paying per contact.
-:::
+As a business owner, I know how important it is not just to monetize your audience on social media, but to also own your audience. ManyChat has come on the scene and been an amazing solution at turning a social audience into an asset your business owns… your email list! You can now turn every post into an opportunity to easily put your most engaged audience onto your own email list.
+
+However, the tiers on ManyChat add up quickly. Not only is 25 contacts a very low limit on the free plan, it is also restrictive in the types of automations that you can set up. The advantage of ManyChat is that it is an official integration and doesn't put your account at risk by using it.
+
+Another important part of owning a business is figuring out a way to reduce your costs. Reducing your operating costs is very important in business, particularly as we are all dealing with an inflationary environment. So in an effort to keep my personal business costs low, I found a way to forgo the expensive ManyChat subscription, and create my own personal application with most of the features I actually used, for a fraction of the cost. And you can do this too, even if you're not tech savvy!
 
 ## What Claude can and can't do on its own
 
-:::note
-Facts:
-- On its own, Claude can't read or send your Instagram DMs. It needs a tool that's connected to Instagram.
-- **Never give Claude (or any AI) your Instagram password**, and don't use browser bots that click around the app for
-  you. Automating the app itself is against Instagram's rules and can get the account restricted.
-- The safe way is Instagram's official API, through your own Meta developer app. That's what you built.
-:::
+Like I said, Claude is not just doing this by signing up for a Claude Code subscription, it takes some work. And not all of the features of ManyChat can be replicated at present. However, the features that I was able to reproduce by essentially creating my own software were significant enough for me to fully forgo using ManyChat entirely.
+
+So, first of all, you do need a Claude Pro plan because you will need Claude Code for this. Claude Code is going to build the tool that replaces ManyChat, so no actual coding on your end. But you do need to set some things up.
+
+Also, you do NOT want to create a tool that logs into your Instagram account through a web browser and responds to comments by clicking around on the screen. This is not allowed by Instagram and can get your account restricted! There is an official way that takes some manual setup, but is actually more efficient, and it's officially approved in the end.
+
+Instead of going through a browser, you set up a Meta developer app, which, if you do it right, can be published for your own Instagram account without Meta's App Review, using the official API. This is also better because none of your personal passwords are being given to a browser bot. Instead, the API secret code lives in a private file for proper password security.
+
+### What you'll need
+
+So you are going to need more tools to complete this automation than just Claude Code, including:
+
+- A web address (I have a place you can get one for free for this project!)
+- A server (this is the additional ongoing cost; the best one I found is $6 a month through DigitalOcean)
+- Your Instagram account needs to be a creator or business account
+- A Google Cloud account (only if you want to auto-respond to YouTube comments)
+- Apify (if you want to load, but not respond to, TikTok comments)
+- A privacy page (if you don't have a website, you can use Notion to host this)
+- An email tool (I would imagine you already have this if you are using ManyChat, though!)
+
+### What Claude Code can't do for you
+
+1. Well, you need to create all your own accounts and passwords.
+2. Saving your API keys.
+3. You also have to do the actual testing after the tool gets built. You either need a second account or a friend to help you with comments and DMs for testing.
+
+### The limitations of this DIY ManyChat replacement
+
+- First of all, it doesn't work with all the same applications as ManyChat does. Setting up an officially approved Instagram connection is relatively straightforward, as long as you don't select any extra customizations in your Meta app. (For the YouTube part, don't add a logo to your Google app: even just adding a logo routes it into manual verification, which takes weeks!)
+- However, integrating with Facebook does require a manual approval process. This can be done through your own setup, but it takes more time to get through this process. TikTok also doesn't offer a way to reply to comments like Instagram does.
+- ManyChat is currently testing auto-responses in TikTok DMs; you cannot self-replicate this integration. However, even ManyChat does not have the ability to auto-respond to TikTok comments.
+- Finally (and this likely applies to only a small group of people), there are limitations around WhatsApp. You can set up an official API connection to respond to messages. This is not something that I used, and it is out of scope for this article. But if you choose to build this, know there are costs per message with WhatsApp.
+
+For everything else ManyChat does and doesn't do compared with this setup, see [how I replaced ManyChat with Claude](/guides/replace-manychat-with-claude/).
 
 ## The 3 ways to set it up
 
-:::note
-Explain each in 2 or 3 sentences. This is the heart of the post.
+What is cool about this setup is that it can be personalized to how you want to run your business. Once you have your software created, there are 3 main ways that you can communicate with your audience.
 
-1. **Keyword DMs, no AI needed.** Someone comments or DMs a keyword (like MATH) and gets the link automatically.
-   Mine does this every day.
-2. **Claude drafts, you approve (what I chose).** Every other comment or DM lands in your inbox with a reply written in
-   your voice. You edit it if you like and send it. This runs on the Claude plan you already pay for.
-3. **Fully automatic AI replies.** Claude answers everything itself through its pay-as-you-go API. Your notes: under 1
-   cent per comment on Opus 5.5, far less on Haiku 5.5. The catch: you're trusting every reply without reading it.
+:::flow
+Keyword DMs | Someone comments a keyword and gets your link automatically.
+Claude drafts | Every other comment or DM gets a draft reply that you send or edit.
+Fully automatic | Claude answers everything itself, through its paid API.
 :::
+
+**1. Keyword DMs.** You can use this tool as a way to auto-respond to keywords, sending people a link to get them on your email list, as you would do with ManyChat. Once it's set up, this part runs on your server on its own, without using Claude at all.
+
+**2. Claude drafts, you approve.** Additionally, you could also have Claude draft responses to all DMs and comments. Then, when you go to review your messages in the tool, you can send as is or simply update before replying. There are a couple of caveats to this:
+
+- You can only reply to a message through the API (your tool) if it is less than 24 hours old.
+- You cannot directly reply to TikTok through the tool, but you can copy and paste between the two.
+
+**3. Fully automatic replies.** If you want to get really techie with your setup, you can also set it up to auto-respond to all comments and DMs on Instagram.
+
+- You would need to add a Claude API key for this to be completed, which could incur an additional cost beyond the monthly Claude subscription.
+- When setting this up, you need to be sure to include very specific instructions on your business, your voice, and how to answer the most common comments and questions.
+
+![A keyword comment, the DM asking them to reply READY, the signup link, the freebie and a reminder](https://theambitiondepartment.com/wp-content/uploads/2026/10/tad-guide-manychat-demo-dm-preview.webp "What someone sees after commenting a keyword. From my Chat Manager demo, a made-up shop.")
+
+:::cta hand Want to view an interactive demo of my personal software? | /chat-manager/#demo | Check it out
 
 ## What Instagram allows (the DM rules)
 
-:::note
-State each once, plainly (from Meta's Instagram Platform docs and your setup):
-- One private DM per comment, sent within 7 days of the comment.
+These are Instagram's rules, so they apply to every tool, ManyChat included:
+
+- You can send one private DM per comment, and you have 7 days from the comment to send it.
 - After that, you can only message someone within 24 hours of their last message to you.
-- No cold DMs: you can't message someone who hasn't commented or messaged you first. So no tool can auto-DM new followers.
-- Creator or Business account needed (free to switch).
-- Your own Meta app for your own account doesn't need Meta's App Review.
-:::
+- No cold DMs: you can't message someone who hasn't commented or messaged you first, so no tool can auto-DM new followers.
+- You need a creator or business account. Switching is free.
+- An app that only works on your own account doesn't need Meta's App Review.
 
 ## What I chose and why
 
-:::note
-Your call, your reasons: drafts only, to keep the cost at your existing Claude plan and so nothing goes out that you
-haven't read. Keyword DMs stay automatic. One line on how it's going (only real numbers).
-:::
+For me, I chose not to set up fully automatic replies, for two reasons. The first is I made this whole tool in order to save money, so I want to keep the tool's costs as low as possible. It might not be a huge cost; it depends on a few factors, including the Claude model you run it on as well as how much volume of comments and DMs you have.
+
+The second reason that I chose not to was because I am then responsible for what my Claude responds in the messages and comments. I have seen enough stories of chatbots hallucinating that it's not something I am personally comfortable with yet. So I prefer to leave the messages in my tool in draft status, and if I'm happy with their accuracy and feel they match my voice, only then send.
+
+![The Chat Manager inbox with Instagram, TikTok and YouTube comments and DMs in one list](https://theambitiondepartment.com/wp-content/uploads/2026/10/tad-guide-manychat-demo-inbox.webp "Every comment and DM in one inbox, with drafts waiting for my OK. From my Chat Manager demo, a made-up shop.")
 
 ## Build it yourself or use my kit
 
-:::note
-Same soft close as the ManyChat guide: the free route is your ManyChat guide; Chat Manager is the kit ($97 founding
-beta, first 10 buyers, plus about $6 a month hosting and your Claude plan).
-:::
+If you'd like to build your own, my guide on [how I replaced ManyChat with Claude](/guides/replace-manychat-with-claude/) walks through the setup and the traps. If you'd rather skip the setup, Chat Manager is my own software as a kit that Claude sets up with you.
 
 :::cta
 
 :::faq
 ?? Can Claude send Instagram DMs?
-[WRITE. Fact: yes, once it's connected through the official API; it only messages people who commented or messaged you first.]
+Yes, once it's connected through Instagram's official API. It can only message people who commented on your posts or messaged you first.
 ?? Is it against Instagram's rules?
-[WRITE. Fact: the official API is allowed; passwords and browser bots aren't.]
+Not when you use the official API through your own Meta app. Giving an AI your password or using a browser bot that clicks around the app is against the rules.
 ?? Will the replies sound like me?
-[WRITE. Fact: the drafts follow your own voice notes, and you can edit every one before it sends.]
+The drafts follow your own voice notes, and you can edit every one before it sends.
 ?? Can it DM my new followers?
-[WRITE. Fact: no tool can; Instagram doesn't allow messaging people who haven't contacted you.]
+No tool can. Instagram doesn't allow messaging people who haven't contacted you first.
 ?? Does it work on TikTok too?
-[WRITE. Fact: TikTok comments land in the inbox with a suggested reply to copy and paste; TikTok has no reply API.]
+TikTok comments can land in your inbox with a suggested reply to copy and paste. TikTok has no way to reply to comments automatically.
 :::
 
 :::sources
 - Instagram Platform: Private Replies and Messaging, developers.facebook.com/docs/instagram-platform, checked October 24, 2026
-- Instagram Terms of Use, help.instagram.com, checked [WRITE date]
 :::
