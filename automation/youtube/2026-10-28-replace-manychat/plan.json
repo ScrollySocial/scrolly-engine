@@ -5,7 +5,7 @@
  "_decisions": "Mercedes 2026-10-29: CHATTERBOX kept (keyword added live), no 250-contacts line, 'less than an hour' kept, full ~13 min kept, cold open on 2066 (same outfit).",
  "_left_out": "2051 (says ManyChat only works with Instagram and Facebook; it also does WhatsApp, TikTok, Telegram), 2052 (repeats the hook), 2039 0-24 (repeats the prices; says Pro is for 250 contacts), 2040 5.1-7.8 ('and that's for 250 contacts': Pro is up to 2,500, 250 is Essential $17), 2041 retake + 2042 (false starts, 2043 is the full take), 2048 55-64 (retake of the line before), 2049 0-21 (2053 says it shorter), 2049 68-72 (garbled), 2050 'excuse me', 2054 false start, 2057 0-24 (the 'screen scrape' line she rephrased), 2058 130-158 (repeats the own-your-data point), 2059 19-24 (trails off), 2060 36-39 (repeat), 2061 44-47 (false start), 2062 + 2064 (2063 is the full take)",
  "segments": [
-  { "src": "2026-10-28-session/reels/IMG_2066.MOV", "in": 0.34, "out": 10.9, "cropY": 0.58, "beat": "Cold open (Reel intro)" },
+  { "src": "2026-10-28-session/reels/IMG_2066.MOV", "in": 0.34, "out": 10.9, "fit": "blur", "beat": "Cold open (Reel intro)" },
   { "src": "2026-10-28-session/youtube/IMG_2040.MOV", "in": 1.01, "out": 4.67, "beat": "Hook: $39 vs $6" },
   { "src": "2026-10-28-session/youtube/IMG_2040.MOV", "in": 7.79, "out": 23.35 },
   { "src": "2026-10-28-session/youtube/IMG_2040.MOV", "in": 27.53, "out": 35.05 },

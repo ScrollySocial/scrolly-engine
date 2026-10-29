@@ -1,6 +1,7 @@
 // YouTube long-form rough cut: the Reel engine's cut rules (reel-studio/prep.mjs) for horizontal 16:9 video.
 // Reads youtube/<id>/plan.json:
 //   { "title": "...", "maxPause": 0.6, "segments": [ { "src": "<under footage folder>", "in": 1.0, "out": 23.3, "beat": "Hook", "cropY": 0.2 } ] }
+//   cropY = where a 16:9 window sits on a vertical take; "fit": "blur" shows the whole vertical take over a blurred copy instead
 // Each cut point moves into real silence (0.12s air before speech, 0.2s after), pauses longer than maxPause shrink
 // to a breath when no transcript word starts inside them, HDR (iPhone HLG) is tone-mapped to SDR.
 // Writes <exports>/<id>/roughcut.mp4 (1920×1080 30fps, -14 LUFS) and youtube/<id>/timeline.md (where each beat starts).
@@ -68,11 +69,15 @@ const parts = [], beats = [];
 let t = 0;
 for (const [i, { s, start, end, first }] of pieces.entries()) {
   const f = src(s), dur = +(end - start).toFixed(3);
-  const key = createHash('sha1').update(JSON.stringify([s.src, start, end, W])).digest('hex').slice(0, 12);
+  const key = createHash('sha1').update(JSON.stringify([s.src, start, end, W, s.fit ?? 'crop', s.cropY])).digest('hex').slice(0, 12);
   const file = path.join(cache, `seg-${key}.mp4`);
   if (!existsSync(file)) {
     // cropY: where the 16:9 window sits on a taller (vertical) take, 0 = top, 0.5 = middle (default)
-    const vf = `${isHdr(f) ? TM : ''}scale=${W}:${H}:force_original_aspect_ratio=increase:flags=lanczos,crop=${W}:${H}:(iw-${W})/2:(ih-${H})*${s.cropY ?? 0.5},fps=${FPS},setsar=1,format=yuv420p`;
+    // fit "blur": the whole vertical take in the middle, a soft blurred copy of it filling the sides (no close crop)
+    const fit = s.fit === 'blur'
+      ? `split[a][b];[a]scale=${W}:${H}:force_original_aspect_ratio=increase,crop=${W}:${H},gblur=sigma=40,eq=brightness=-0.04[bg];[b]scale=-2:${H}:flags=lanczos[fg];[bg][fg]overlay=(W-w)/2:0`
+      : `scale=${W}:${H}:force_original_aspect_ratio=increase:flags=lanczos,crop=${W}:${H}:(iw-${W})/2:(ih-${H})*${s.cropY ?? 0.5}`;
+    const vf = `${isHdr(f) ? TM : ''}${fit},fps=${FPS},setsar=1,format=yuv420p`;
     const af = `aresample=48000,afade=t=in:d=0.015,afade=t=out:st=${(dur - 0.015).toFixed(3)}:d=0.015`;
     execFileSync(FF, ['-v', 'error', '-y', '-ss', String(start), '-t', String(dur), '-i', f, '-vf', vf, '-af', af,
       '-c:v', 'libx264', '-preset', 'veryfast', '-crf', '18', '-c:a', 'aac', '-b:a', '192k', '-ac', '2', file]);

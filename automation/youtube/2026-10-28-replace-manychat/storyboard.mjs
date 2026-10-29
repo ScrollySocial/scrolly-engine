@@ -27,8 +27,8 @@ const css = `
 .abs{position:absolute}
 .card{position:absolute;background:${C.paper};color:${C.navy};padding:34px 44px 38px;box-shadow:0 18px 44px rgba(10,25,48,.35);border-radius:6px}
 .lbl{font:700 30px/1 Fig;letter-spacing:.02em;color:${C.navy};opacity:.75}
-.num{font:400 170px/.9 Serif;color:${C.navy};letter-spacing:-.01em}
-.num small{font-size:70px}
+.num{font:900 150px/.95 Fig;color:${C.navy};letter-spacing:-.03em}
+.num small{font-size:60px;font-weight:700}
 .hand{position:absolute;font:400 54px/1.05 Hand;color:${C.navy}}
 .note{background:${C.paper};padding:18px 28px 22px;box-shadow:0 12px 30px rgba(10,25,48,.35);border-radius:4px}
 .receipt{position:absolute;width:520px;background:${C.paper};padding:40px 44px 70px;font:400 44px/1.25 Hand;color:#2b2724;rotate:-3deg;box-shadow:0 18px 40px rgba(10,25,48,.35);
@@ -36,8 +36,8 @@ const css = `
 .receipt b{font-weight:400;color:${C.navy};box-shadow:inset 0 -.32em 0 ${C.sky}}
 .receipt .row{display:flex;justify-content:space-between;gap:20px}
 .receipt .tot{border-top:3px dashed #2b2724;margin-top:16px;padding-top:12px;font-size:54px;color:${C.navy}}
-.giant{position:absolute;font:400 470px/.8 Serif;color:${C.navy};-webkit-text-stroke:34px ${C.paper};paint-order:stroke fill;letter-spacing:-.03em}
-.num.xl{font-size:250px}.num.xl small{font-size:96px}
+.giant{position:absolute;font:900 400px/.85 Fig;color:${C.navy};-webkit-text-stroke:30px ${C.paper};paint-order:stroke fill;letter-spacing:-.03em;text-transform:uppercase}
+.num.xl{font-size:210px}.num.xl small{font-size:80px}
 .pill{position:absolute;background:${C.cream};color:${C.navy};font:600 34px/1 Fig;padding:20px 34px;border-radius:999px;box-shadow:0 10px 30px rgba(10,25,48,.3)}
 `;
 const RING = 'M18 52 C14 18 70 6 112 8 C170 11 196 34 190 58 C184 86 120 96 76 92 C34 88 6 70 22 40';
@@ -46,29 +46,29 @@ const arrowPath = (color, w) => `<path d="M8 12 C40 4 86 18 98 64" fill="none" s
 const arrow = (x, y, w, r = 0, color = C.navy) => `<svg class="abs" style="left:${x}px;top:${y}px;width:${w}px;height:${w * 0.75}px;rotate:${r}deg;overflow:visible" viewBox="0 0 120 90">${arrowPath(C.paper, 14)}${arrowPath(color, 6)}</svg>`;
 
 const stills = {
-  // 0:00 cold open: word-by-word punches on her tight shot, each word huge and timed to her voice, around her head (never over her face).
-  // She moves in this take: each word goes on whichever side is open at that moment.
+  // 0:00 cold open: the vertical Reel take zoomed out (whole frame in the middle, blurred copy on the sides; plan.json fit "blur"),
+  // word-by-word punches in Figtree heavy on the sides, each timed to her voice (never over her face).
   '0a-punch-hundreds': `<div class="bg" style="background-image:url('${frame('IMG_2066_2.7')}')"></div>
-    <div class="giant " style="left:14px;top:330px;font-size:250px;rotate:-4deg">$100s</div>`,
+    <div class="giant" style="left:40px;top:380px;font-size:190px;rotate:-4deg;text-transform:none">$100s</div>`,
   '0b-punch-month': `<div class="bg" style="background-image:url('${frame('IMG_2066_4.5')}')"></div>
-    <div class="giant " style="left:14px;top:330px;font-size:250px;rotate:-4deg">$100s</div>
-    <div class="giant " style="left:20px;top:600px;font-size:185px;rotate:3deg">a month</div>`,
+    <div class="giant" style="left:40px;top:380px;font-size:190px;rotate:-4deg;text-transform:none">$100s</div>
+    <div class="giant" style="left:1310px;top:330px;font-size:150px;line-height:.9;rotate:3deg">a<br>month</div>`,
   '0c-punch-six': `<div class="bg" style="background-image:url('${frame('IMG_2066_7.0')}')"></div>
-    <div class="giant " style="left:-16px;top:230px">$6</div>`,
+    <div class="giant" style="left:50px;top:300px">$6</div>`,
   '0d-punch-data': `<div class="bg" style="background-image:url('${frame('IMG_2066_9.5')}')"></div>
-    <div class="giant " style="left:-16px;top:230px">$6</div>
-    <div class="giant " style="left:1520px;top:440px;font-size:160px;line-height:.85;rotate:3deg">your<br>data</div>`,
+    <div class="giant" style="left:50px;top:300px">$6</div>
+    <div class="giant" style="left:1310px;top:330px;font-size:150px;line-height:.9;rotate:3deg">your<br>data</div>`,
   // 0:10 hook: ManyChat Pro on the left, hers on the right, ringed; hand note for "even if my computer is off".
   '1-side-statements': `<div class="bg" style="background-image:url('${frame('IMG_2040')}')"></div>
     <div class="card" style="left:20px;top:250px;rotate:-2deg"><div class="lbl" style="font-size:38px">MANYCHAT PRO</div><div class="num xl">$39<small>/mo</small></div></div>
     <div class="card" style="left:1330px;top:200px;rotate:2deg"><div class="lbl" style="font-size:38px">MINE</div><div class="num xl">$6<small>/mo</small></div></div>
-    ${ring(1330, 280, 520, 290, C.sky, 9, true)}
+    ${ring(1240, 140, 660, 460, C.sky, 9, true)}
     <div class="hand note" style="left:1400px;top:660px;rotate:-4deg">still runs when<br>my laptop is off</div>
-    ${arrow(1330, 560, 110, 200)}`,
+    ${arrow(1310, 590, 100, 200)}`,
   // chapter card, 1.5 s: number + title (same words become the YouTube chapter).
   '2-chapter-card': `<div class="abs" style="inset:0;background:${C.navy}"></div>
     <div class="abs" style="left:0;right:0;top:360px;text-align:center;font:700 40px/1 Fig;letter-spacing:.3em;color:${C.sky}">CHAPTER 5</div>
-    <div class="abs" style="left:0;right:0;top:430px;text-align:center;font:400 200px/1 Serif;color:${C.cream}">The costs</div>
+    <div class="abs" style="left:0;right:0;top:430px;text-align:center;font:900 180px/1 Fig;letter-spacing:-.03em;color:${C.cream}">The costs</div>
     <div class="abs" style="left:860px;width:200px;top:690px;height:4px;background:${C.sky}"></div>`,
   // demo: the real inbox fills the frame, her in a rounded box bottom-right (outside the inbox column), PATTERN ringed.
   '3-screen-takeover': `<div class="bg" style="background:#fff3f0 url('${url(path.join(CACHE, 'screens', 'inbox.png'))}') top center/1920px auto no-repeat"></div>
