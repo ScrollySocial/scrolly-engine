@@ -1,5 +1,9 @@
 # Chat Manager changes
 
+## Unreleased
+- "Here or by email": two buttons on the first DM, "Send it here" (link by DM) or "By email" (signup link).
+- Flows tab: every keyword drawn as connected step cards with its numbers from the last 30 days.
+
 ## 1.0.0
 First version: Instagram comment and DM keywords (link in the DM, or "reply READY" → personal signup link → email
 list → freebie shown right away), reminders and an after-signup DM inside Instagram's 24-hour window, a first-DM

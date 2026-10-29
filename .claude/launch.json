@@ -110,6 +110,14 @@
       "port": 5698
     },
     {
+      "name": "chat-manager-demo",
+      "runtimeExecutable": "node",
+      "runtimeArgs": [
+        "automation/n8n-comments/test/demo-inbox.mjs"
+      ],
+      "port": 5697
+    },
+    {
       "name": "planner",
       "runtimeExecutable": "node",
       "runtimeArgs": [

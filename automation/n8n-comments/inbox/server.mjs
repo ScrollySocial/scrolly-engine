@@ -104,6 +104,9 @@ function cleanKeyword(k) {
   // Only for followers: the DM people get when they reply READY but don't follow yet (needs "ask first").
   const followGate = { on: !!k.followGate?.on, text: str(k.followGate?.text) };
   const publicReply = { on: !!k.publicReply?.on, text: str(k.publicReply?.text).split('\n').map((l) => l.trim()).filter(Boolean).slice(0, 10).join('\n') };
+  // "Let them choose": the first DM gets two buttons, "Send it here" (the freebie link by DM, the
+  // keyword's DM text) or "By email" (the signup link). Instagram cuts button titles at 20 characters.
+  const choice = { on: !!k.choice?.on, here: str(k.choice?.here || 'Send it here').slice(0, 20), email: str(k.choice?.email || 'By email').slice(0, 20) };
   const out = {
     ...k,
     keyword,
@@ -126,6 +129,7 @@ function cleanKeyword(k) {
     afterSignup,
     publicReply,
     followGate,
+    choice,
   };
   delete out.reminder.hours;
   delete out.mailerliteGroup;
@@ -138,6 +142,8 @@ function cleanKeyword(k) {
     const p = provider();
     if (delivery === 'email' && (!out.linkText.includes('{link}') || !url)) throw new Error(`${keyword}: email signup needs the freebie link and a DM text with {link} in it`);
     if (delivery === 'email' && p.needsTarget && !out.list.id) throw new Error(`${keyword}: pick the ${p.name} ${p.label} people join`);
+    if (choice.on && (!ask.on || delivery !== 'email')) throw new Error(`${keyword}: "let them choose" needs "ask them to reply first" and email signup`);
+    if (choice.on && !out.dm.includes('{url}')) throw new Error(`${keyword}: "let them choose" needs the "Send it here" DM text, with {url} in it`);
     if (followGate.on && !ask.on) throw new Error(`${keyword}: "only for followers" needs "ask them to reply first" switched on`);
     if (followGate.on && !followGate.text) throw new Error(`${keyword}: write the "follow me first" message`);
     if (publicReply.on && !publicReply.text) throw new Error(`${keyword}: write at least one reply for under the comment`);
@@ -164,7 +170,7 @@ function saveKeywords(list) {
     source: 'comment dashboard (hooks.scrollyseo.com/inbox)',
     keywords: clean
       .filter((k) => k.live && k.dmApproved)
-      .map(({ keyword, freebie, url, dm, delivery, where, ask, linkText, reminder, yt, afterSignup, publicReply, followGate }) => ({ keyword, freebie, url, dm, delivery, where, ask, linkText, reminder, yt, afterSignup, publicReply, followGate })),
+      .map(({ keyword, freebie, url, dm, delivery, where, ask, linkText, reminder, yt, afterSignup, publicReply, followGate, choice }) => ({ keyword, freebie, url, dm, delivery, where, ask, linkText, reminder, yt, afterSignup, publicReply, followGate, choice })),
   });
   return clean;
 }
@@ -242,7 +248,9 @@ function deleteKeyword(name) {
 
 // ---- freebie flows: one per person per keyword ----
 // Steps: asked (told to reply READY) → linkSent → clicked → signedUp; reminded can happen once after linkSent/clicked.
-const FLOW_STEPS = ['asked', 'linkSent', 'clicked', 'signedUp', 'reminded'];
+// sentHere: they tapped "Send it here" (let them choose), so the link went by DM and the flow is done.
+const FLOW_STEPS = ['asked', 'linkSent', 'clicked', 'signedUp', 'reminded', 'sentHere'];
+const flowDone = (f) => f.step === 'signedUp' || f.step === 'sentHere';
 const samePerson = (f, q) => (q.personId && (f.personId === q.personId || f.dmPersonId === q.personId)) || (q.author && f.author && f.author.toLowerCase() === String(q.author).toLowerCase());
 function flowStep(f, step, extra = {}) {
   if (!FLOW_STEPS.includes(step)) throw new Error(`unknown step "${step}"`);
@@ -255,7 +263,7 @@ function flowStep(f, step, extra = {}) {
   Object.assign(f, extra);
 }
 function startFlow(body) {
-  const open = db.flows.find((f) => f.keyword === body.keyword && f.step !== 'signedUp' && samePerson(f, body));
+  const open = db.flows.find((f) => f.keyword === body.keyword && !flowDone(f) && samePerson(f, body));
   if (open) return open;
   const f = { token: randomBytes(12).toString('base64url'), keyword: body.keyword, platform: body.platform || 'Instagram', personId: str(body.personId), author: str(body.author), post: str(body.post), step: body.step || 'linkSent', history: [], createdAt: now() };
   flowStep(f, f.step);
@@ -554,10 +562,11 @@ function stats(days) {
   for (const f of db.flows) {
     if ((f.createdAt || '') < cutoff) continue;
     const k = (by[f.keyword] ||= { keyword: f.keyword, comments: 0, dmsSent: 0, dmsFailed: 0, posts: {} });
-    const fun = (k.funnel ||= { asked: 0, followGated: 0, linkSent: 0, clicked: 0, signedUp: 0, reminded: 0 });
+    const fun = (k.funnel ||= { asked: 0, followGated: 0, linkSent: 0, clicked: 0, signedUp: 0, reminded: 0, sentHere: 0, delivered: 0 });
     if (f.followGatedAt) fun.followGated++;
-    for (const s of ['asked', 'linkSent', 'clicked', 'signedUp']) if (f[`${s}At`]) fun[s]++;
+    for (const s of ['asked', 'linkSent', 'clicked', 'signedUp', 'sentHere']) if (f[`${s}At`]) fun[s]++;
     if (f.remindedAt) fun.reminded++;
+    if (f.deliveredAt) fun.delivered++;
   }
   const open = (s) => db.rows.filter((r) => r.status === s && r.kind !== 'out').length;
   // Contacts = people who commented or messaged (like ManyChat's contacts), counted by first contact.
@@ -880,7 +889,7 @@ async function handle(req, res) {
   if (api === '/flows/touch' && req.method === 'POST') {
     let n = 0;
     for (const f of db.flows) {
-      if (f.step === 'signedUp' || !samePerson(f, body)) continue;
+      if (flowDone(f) || !samePerson(f, body)) continue;
       f.lastInboundAt = now();
       if (body.personId) f.dmPersonId = body.personId;
       n++;

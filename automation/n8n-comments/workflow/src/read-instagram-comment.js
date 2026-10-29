@@ -82,6 +82,8 @@ for (const entry of body.entry || []) {
         threadId: '',
         link: '',
         note: msg.reply_to?.story ? 'Story reply' : '',
+        // A tapped button ("Send it here" / "By email") arrives as its title, with our payload here.
+        payload: msg.quick_reply?.payload || '',
         createdAt: at,
       },
     });

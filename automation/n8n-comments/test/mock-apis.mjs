@@ -12,6 +12,8 @@ let pages = [];
 let failNextPatch = false;
 let sentCount = 0;
 let ytKeyword = false;
+// POST /test/no-buttons-on-comments: private replies (comment_id) refuse quick replies, to test the plain-text fallback.
+let noButtonsOnComments = false;
 const followers = new Set();
 const FAIL = Symbol('fail');
 const hoursAgo = (h) => new Date(Date.now() - h * 3600e3).toISOString();
@@ -25,7 +27,8 @@ function claudeAnswer(comment) {
 }
 
 const routes = [
-  ['POST', /^\/graph\/[^/]+\/messages$/, () => ({ recipient_id: 'r1', message_id: `mid-sent-${++sentCount}` })],
+  ['POST', /^\/graph\/[^/]+\/messages$/, (req, url, body) => (noButtonsOnComments && body?.recipient?.comment_id && body?.message?.quick_replies ? FAIL : { recipient_id: 'r1', message_id: `mid-sent-${++sentCount}` })],
+  ['POST', /^\/test\/no-buttons-on-comments$/, () => ((noButtonsOnComments = true), { ok: true })],
   ['POST', /^\/graph\/[^/]+\/replies$/, () => ({ id: 'reply1' })],
   ['GET', /^\/graph\/refresh$/, () => ({ access_token: 'refreshed-token', token_type: 'bearer', expires_in: 5184000 })],
   // A media id answers with its permalink, a person id with a username.
@@ -84,7 +87,7 @@ const routes = [
     return page || {};
   }],
   ['GET', /^\/log$/, () => ({ log, pages })],
-  ['POST', /^\/reset$/, () => ((log = []), (pages = []), (failNextPatch = false), (sentCount = 0), (ytKeyword = false), { ok: true })],
+  ['POST', /^\/reset$/, () => ((log = []), (pages = []), (failNextPatch = false), (sentCount = 0), (ytKeyword = false), (noButtonsOnComments = false), { ok: true })],
   ['POST', /^\/test\/approve$/, () => {
     // Stands in for the subscription routine (fills empty drafts) and for Mercedes (approves).
     for (const p of pages) {

@@ -13,6 +13,8 @@
 // "Only for followers" (optional, needs "ask first"): when they reply READY, Instagram says whether
 // they follow her; if not, they get her "follow me first" DM and the flow waits for their next READY.
 // If Instagram can't tell (an error), the link goes out: nobody is left without their freebie.
+// "Let them choose" (optional, needs "ask first" and email): the first DM has two buttons, "Send it
+// here" (the freebie link by DM, flow ends at sentHere) or "By email" (their signup link, as above).
 // A comment can only get ONE private-reply DM (Meta's rule, within 7 days); a DM conversation
 // can get more, but only within 24 hours of their last message.
 let keywords = [];
@@ -26,14 +28,42 @@ const PUBLIC = cfg('INBOX_PUBLIC_URL', `https://${cfg('N8N_HOST', 'localhost')}`
 const wordsOf = (t) => String(t || '').toUpperCase().match(/[A-Z0-9$]+/g) || [];
 const FILLER = /^(PLEASE|PLS|PLZ|THANKS|THANK|YOU|TY|HI|HEY|YES|OK|OKAY)$/;
 
-async function sendDm(recipient, text) {
-  const res = await http({
+async function sendDm(recipient, text, buttons) {
+  const send = (message) => http({
     method: 'POST',
     url: `${GRAPH}/${ownId || 'me'}/messages`,
     headers: { Authorization: `Bearer ${igToken()}` },
-    body: { recipient, message: { text } },
+    body: { recipient, message },
   });
+  let res;
+  if (buttons?.length) {
+    try {
+      res = await send({ text, quick_replies: buttons.map(([title, payload]) => ({ content_type: 'text', title, payload })) });
+    } catch (e) {
+      // Meta's docs don't promise buttons on a comment's private reply: if they're refused, the same
+      // message goes out as text, telling them which word to reply (both words work, see pickOf).
+      logError('instagram-buttons', e);
+      res = await send({ text: `${text}\n\nReply HERE or EMAIL.` });
+    }
+  } else {
+    res = await send({ text });
+  }
   return res?.message_id || '';
+}
+// "Let them choose": which button they tapped (our payload), or the word they typed instead.
+// Their ask word (READY) counts as email, the keyword's usual way.
+const choiceButtons = (k) => [[k.choice.here || 'Send it here', `CM_HERE:${k.keyword}`], [k.choice.email || 'By email', `CM_EMAIL:${k.keyword}`]];
+function pickOf(k, c, words) {
+  if (c.payload === `CM_HERE:${k.keyword}`) return 'here';
+  if (c.payload === `CM_EMAIL:${k.keyword}`) return 'email';
+  if (words.includes('EMAIL') || words.includes('MAIL')) return 'email';
+  if (words.includes('HERE')) return 'here';
+  if (words.includes(String(k.ask?.word || 'READY').toUpperCase())) return 'email';
+  // A tapped button whose title has neither word (she renamed them) still matches by its title.
+  const title = (t) => wordsOf(t).join(' ');
+  if (title(c.text) === title(k.choice.here)) return 'here';
+  if (title(c.text) === title(k.choice.email)) return 'email';
+  return '';
 }
 async function publicReply(hit, c) {
   const lines = String(hit.publicReply?.text || '').split('\n').map((l) => l.trim()).filter(Boolean);
@@ -79,16 +109,20 @@ for (const item of $input.all()) {
   }
   const allowed = (k) => (c.platform === 'YouTube' ? !!k.where?.ytComments : isDm ? k.where?.igDms !== false : k.where?.igComments !== false);
   let hit = keywords.find((k) => words.includes(String(k.keyword).toUpperCase()) && allowed(k));
-  // "READY" (or her reply word) in a DM answers an open "ask first" flow.
+  // "READY" (or her reply word) in a DM answers an open "ask first" flow; with "let them choose",
+  // so does a tapped button (or HERE / EMAIL typed).
   let readyFlow = null;
+  let pick = '';
   if (!hit && isDm) {
     try {
       const { flows } = await inbox('GET', `/flows?personId=${encodeURIComponent(c.authorId)}&author=${encodeURIComponent(c.author)}&step=asked`);
       for (const f of flows || []) {
         const k = keywords.find((x) => x.keyword === f.keyword);
-        if (k && words.includes(String(k.ask?.word || 'READY').toUpperCase())) {
+        const p = k?.choice?.on ? pickOf(k, c, words) : '';
+        if (k && (p || words.includes(String(k.ask?.word || 'READY').toUpperCase()))) {
           hit = k;
           readyFlow = f;
+          pick = p;
           break;
         }
       }
@@ -99,7 +133,8 @@ for (const item of $input.all()) {
   if (hit) {
     c.keyword = hit.keyword;
     const trigger = readyFlow ? String(hit.ask?.word || 'READY').toUpperCase() : hit.keyword.toUpperCase();
-    c.keywordOnly = words.filter((w) => w !== trigger && !FILLER.test(w)).length === 0;
+    const answers = pick ? ['HERE', 'EMAIL', 'MAIL', ...wordsOf(hit.choice.here), ...wordsOf(hit.choice.email)] : [];
+    c.keywordOnly = !!(pick && c.payload) || words.filter((w) => w !== trigger && !answers.includes(w) && !FILLER.test(w)).length === 0;
   }
   // YouTube has no DMs: an automatic public reply under the comment, with the freebie link
   // (direct) or the keyword's shared signup page (email).
@@ -171,19 +206,24 @@ for (const item of $input.all()) {
   // What to send now.
   const recipient = isDm ? { id: c.authorId } : { comment_id: c.id };
   let text;
+  let buttons = null;
   let flow = readyFlow;
   let step = '';
+  // "Let them choose" asks in a DM conversation too (the buttons need a reply to answer).
+  const choosing = !!hit.choice?.on && !!hit.ask?.on;
   try {
     if (hit.delivery === 'email' || (hit.ask?.on && !isDm)) {
-      if (hit.ask?.on && !isDm && !readyFlow) {
+      if (hit.ask?.on && (!isDm || choosing) && !readyFlow) {
         step = 'asked';
         text = hit.ask.text;
+        if (choosing) buttons = choiceButtons(hit);
       } else {
-        step = 'linkSent';
+        step = choosing && pick === 'here' ? 'sentHere' : 'linkSent';
       }
       // post: which Reel or post it came from, for the dashboard's top posts (signups per post).
       if (!flow) flow = await inbox('POST', '/flows', { keyword: hit.keyword, platform: 'Instagram', personId: c.authorId, author: c.author, post: isDm ? '' : await igPermalink(c.postId), step: step || 'linkSent' });
-      if (step === 'linkSent') {
+      if (step === 'sentHere') text = hit.dm.replace('{url}', hit.url);
+      else if (step === 'linkSent') {
         text = hit.delivery === 'email' ? hit.linkText.replace('{link}', `${PUBLIC}/inbox/f/${flow.token}`) : hit.dm.replace('{url}', hit.url);
       }
     } else {
@@ -210,11 +250,12 @@ for (const item of $input.all()) {
     c.dm = `test mode, would send: ${text}`;
   } else {
     try {
-      c.dmMid = await sendDm(recipient, text);
+      // Not following yet: the follow-first message carries the buttons again, to tap once they follow.
+      c.dmMid = await sendDm(recipient, text, gated ? (choosing ? choiceButtons(hit) : null) : buttons);
       remember('dm', c.id);
       c.dm = `sent: ${text}`;
       result = 'sent';
-      if (flow && readyFlow) await inbox('PATCH', `/flows/${flow.token}`, gated ? { followGated: true, dmPersonId: c.authorId, lastInboundAt: true } : { step: 'linkSent', dmPersonId: c.authorId, lastInboundAt: true });
+      if (flow && readyFlow) await inbox('PATCH', `/flows/${flow.token}`, gated ? { followGated: true, dmPersonId: c.authorId, lastInboundAt: true } : { step, dmPersonId: c.authorId, lastInboundAt: true });
       else if (flow && isDm) await inbox('PATCH', `/flows/${flow.token}`, { dmPersonId: c.authorId, lastInboundAt: true });
       if (!isDm && !readyFlow) await publicReply(hit, c);
     } catch (e) {

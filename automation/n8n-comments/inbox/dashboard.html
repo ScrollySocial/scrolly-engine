@@ -161,6 +161,43 @@
   .template { text-align: left; border-radius: 18px; padding: 14px 16px; background: var(--white); border: 1px solid var(--line); }
   .template:hover { border-color: var(--ink); }
   .template strong { display: block; font-size: 17px; margin-bottom: 4px; }
+  /* Flows tab: each keyword drawn as connected step cards (read-only; messages change on the keyword page) */
+  main.wide { max-width: 1480px; }
+  .flow-canvas { position: relative; overflow-x: auto; margin: 12px -16px -16px; padding: 20px 16px 24px; border-radius: 0 0 18px 18px; background: var(--cream) radial-gradient(circle, var(--line) 1px, transparent 1.2px) 0 0 / 18px 18px; }
+  .flow-grid { position: relative; display: grid; grid-auto-columns: 236px; column-gap: 56px; row-gap: 22px; align-items: start; width: max-content; }
+  .flow-lines { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; overflow: visible; }
+  .flow-lines path { fill: none; stroke: var(--input); stroke-width: 2; }
+  .flow-lines path.not { stroke: var(--bad); stroke-dasharray: 6 5; }
+  .flow-lines path.yes { stroke: var(--good); }
+  .fnode { position: relative; z-index: 1; background: var(--white); border-radius: 16px; padding: 12px 14px; box-shadow: 0 1px 2px rgba(10, 25, 48, .08), 0 4px 14px rgba(10, 25, 48, .06); font-size: 15px; }
+  .fnode .ftype { display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--muted); }
+  .fnode .ftype .icon { width: 16px; height: 16px; margin: 0; color: var(--ink); }
+  .fnode .ftitle { font-weight: 600; font-size: 16px; margin: 2px 0 8px; }
+  .fnode .fbubble { background: var(--mist); border-radius: 12px; padding: 8px 10px; white-space: pre-wrap; overflow-wrap: anywhere; display: -webkit-box; -webkit-line-clamp: 5; -webkit-box-orient: vertical; overflow: hidden; }
+  .fnode .hint { font-size: 14px; }
+  .fnode .fwait { margin-top: 8px; border-radius: 10px; padding: 5px 10px; background: var(--cream); color: var(--ink); font-size: 14px; text-align: center; }
+  .fnode .fstats { display: flex; gap: 18px; margin-bottom: 8px; }
+  .fnode .fstats b { display: block; font: 400 24px/1 var(--head-font); color: var(--ink); }
+  .fnode .fstats span { font-size: 13px; color: var(--muted); }
+  .fnode .fport { position: relative; display: flex; justify-content: flex-end; align-items: center; margin-top: 8px; padding-right: 4px; font-size: 14px; }
+  .fnode .fport::after { content: ''; position: absolute; right: -21px; width: 10px; height: 10px; border-radius: 50%; border: 2px solid var(--input); background: var(--white); }
+  .fnode .fport.btn { justify-content: center; border: 1px solid var(--line); border-radius: 999px; padding: 4px 12px; }
+  .fnode .fport.not { color: var(--bad); }
+  .fnode .fport.not::after { border-color: var(--bad); }
+  .fnode .fport.yes::after { border-color: var(--good); }
+  .fnode.trigger { border-top: 4px solid var(--sky); }
+  .fnode.end { border-top: 4px solid var(--good); }
+  .fnode .fafter { display: none; font-size: 13px; color: var(--muted); margin-bottom: 4px; }
+  /* Phones: the steps stack top to bottom, each saying which step (or button) leads to it. */
+  @media (max-width: 699px) {
+    .flow-canvas { overflow: visible; }
+    .flow-grid { display: flex; flex-direction: column; gap: 26px; width: auto; }
+    .flow-lines, .fnode .fport::after { display: none; }
+    .fnode .fafter { display: block; }
+    .fnode + .fnode::before { content: ''; position: absolute; top: -27px; left: 28px; height: 26px; border-left: 2px solid var(--input); }
+  }
+  .pv-qr { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 6px; }
+  .pv-qr span { border: 1px solid #3797f0; color: #3797f0; border-radius: 999px; padding: 4px 12px; font-size: 14px; }
   .login { max-width: 420px; margin: 12vh auto 0; }
   .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 </style>
@@ -232,7 +269,7 @@ function showLogin(passwordSet) {
   (passwordSet ? pw : code).focus();
 }
 
-// ---- routing: #inbox, #c/<key>, #keywords, #k/<KEYWORD>, #k/new, #stats ----
+// ---- routing: #inbox, #c/<key>, #keywords, #k/<KEYWORD>, #k/new, #flows, #stats, #emails ----
 
 let stats = null;
 let HEALTH = null;
@@ -264,14 +301,15 @@ async function route() {
   applyProfile(me);
   const hash = decodeURIComponent(location.hash.slice(1)) || 'inbox';
   [stats, HEALTH] = await Promise.all([api('/api/stats?days=30').catch(() => null), api('/api/health').catch(() => null)]);
-  const tab = hash.startsWith('k') ? 'keywords' : hash === 'stats' ? 'stats' : hash === 'emails' ? 'emails' : 'inbox';
+  const tab = hash.startsWith('k') ? 'keywords' : ['stats', 'emails', 'flows'].includes(hash) ? hash : 'inbox';
+  app.classList.toggle('wide', tab === 'flows');
   const body = h('div');
   app.replaceChildren(...[
     h('div', { class: 'top' },
-      h('h1', { text: { keywords: 'Keywords', stats: 'Stats', emails: 'Email list' }[tab] || 'Inbox' }),
+      h('h1', { text: { keywords: 'Keywords', flows: 'Flows', stats: 'Stats', emails: 'Email list' }[tab] || 'Inbox' }),
       me.demo ? null : h('button', { class: 'quiet', text: 'Log out', on: { click: async () => { await api('/logout', { method: 'POST' }); showLogin(true); } } })),
     h('nav', { class: 'tabs', 'aria-label': 'Sections' },
-      [['inbox', 'Inbox', stats?.inbox.unread], ['keywords', 'Keywords'], ['emails', 'Email list', me.waitingSignups], ['stats', 'Stats']].map(([id, label, n]) =>
+      [['inbox', 'Inbox', stats?.inbox.unread], ['keywords', 'Keywords'], ['flows', 'Flows'], ['emails', 'Email list', me.waitingSignups], ['stats', 'Stats']].map(([id, label, n]) =>
         h('button', { 'aria-current': String(tab === id), on: { click: () => (location.hash = id) } }, label, n ? h('span', { class: 'count', text: n }) : null))),
     me.demo ? h('div', { class: 'banner demo', role: 'note' },
       h('span', { text: 'Demo: a made-up shop. Click around: nothing is saved or sent.' }),
@@ -290,6 +328,7 @@ async function route() {
     if (hash === 'keywords') return await showKeywords(body);
     if (hash.startsWith('k/')) return await showKeyword(body, hash.slice(2));
     if (hash === 'stats') return await showStats(body);
+    if (hash === 'flows') return await showFlows(body);
     if (hash === 'emails') return await showEmailList(body);
     return await showInbox(body);
   } catch (e) { body.append(h('p', { class: 'warn', text: e.message })); }
@@ -302,6 +341,8 @@ const ICONS = {
   Instagram: '<rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.3" cy="6.7" r="1" fill="currentColor"/>',
   YouTube: '<rect x="2.5" y="5.5" width="19" height="13" rx="4"/><path d="M10 9.2v5.6l5-2.8z" fill="currentColor"/>',
   TikTok: '<path d="M14 3v11.5a3.5 3.5 0 1 1-3.5-3.5"/><path d="M14 3c.4 2.6 2.2 4.2 5 4.4"/>',
+  Email: '<rect x="3" y="5" width="18" height="14" rx="3"/><path d="M4 7l8 6 8-6"/>',
+  Condition: '<path d="M12 3l9 9-9 9-9-9z"/>',
 };
 function icon(platform) {
   const svg = document.createElementNS(SVGNS, 'svg');
@@ -495,7 +536,7 @@ async function showKeywords(body) {
       h('span', { class: on ? 'pill on' : 'pill', text: on ? 'On' : k.live && !k.dmApproved ? 'Waiting for your OK' : 'Off' }),
       h('span', { class: 'preview', text: k.freebie || '(no freebie yet)' }),
       h('span', { class: 'tags' },
-        h('span', { class: 'pill', text: k.delivery === 'email' ? 'Email signup' : 'Link in DM' }),
+        h('span', { class: 'pill', text: k.choice?.on ? 'Here or by email' : k.delivery === 'email' ? 'Email signup' : 'Link in DM' }),
         k.ask?.on ? h('span', { class: 'pill', text: `Asks for "${k.ask.word || 'READY'}"` }) : null,
         s ? h('span', { class: 'pill', text: f ? `${s.comments} used · ${f.signedUp} signed up` : `${s.comments} used · ${s.dmsSent} DMs` } ) : null));
   })));
@@ -532,11 +573,13 @@ async function welcomeCard() {
 }
 
 // "+ New keyword" starts from a tested template (#k/new picks one, #k/new:<id> opens it).
-const blankKeyword = () => ({ keyword: '', freebie: '', url: '', live: false, dmApproved: false, delivery: 'direct', where: { igComments: true, igDms: true, ytComments: false }, ask: { on: false, text: '', word: 'READY' }, dm: 'Here you go: {url}', linkText: 'Here you go! Pop in your email and I\'ll send it straight over: {link}', signup: {}, reminder: { on: false, minutes: 60, text: 'Just checking you got this. Your link is still here: {link}' }, yt: { text: '' }, afterSignup: { dm: '' }, publicReply: { on: true, text: PUBLIC_REPLY_DEFAULT } });
+const blankKeyword = () => ({ keyword: '', freebie: '', url: '', live: false, dmApproved: false, delivery: 'direct', where: { igComments: true, igDms: true, ytComments: false }, ask: { on: false, text: '', word: 'READY' }, dm: 'Here you go: {url}', linkText: 'Here you go! Pop in your email and I\'ll send it straight over: {link}', signup: {}, reminder: { on: false, minutes: 60, text: 'Just checking you got this. Your link is still here: {link}' }, yt: { text: '' }, afterSignup: { dm: '' }, publicReply: { on: true, text: PUBLIC_REPLY_DEFAULT }, choice: { on: false, here: 'Send it here', email: 'By email' } });
 const PUBLIC_REPLY_DEFAULT = ['Sent it to your DMs! 💌', 'Just sent you a DM, check your inbox!', 'It\'s in your DMs now 🙌'].join('\n');
 const TEMPLATES = [
   { id: 'email', title: 'Freebie by email (recommended)', text: 'They reply READY, get their own signup link, type their email and see the freebie. Grows your email list, with one reminder if they forget.',
     make: (k) => Object.assign(k, { delivery: 'email', ask: { on: true, text: 'Want it? Reply READY and I\'ll send it over.', word: 'READY' }, linkText: 'Here you go! Pop in your email and it opens right away: {link}', reminder: { on: true, minutes: 60, text: 'Just checking you got this. Your link is still here: {link}' }, afterSignup: { dm: 'Here it is, as promised: {url}' } }) },
+  { id: 'choose', title: 'Here or by email', text: 'Two buttons in the first DM: "Send it here" gets the link right in Instagram, "By email" gets their signup link. People pick, and your list still grows.',
+    make: (k) => Object.assign(k, { delivery: 'email', ask: { on: true, text: 'Want it right here, or by email so it\'s saved in your inbox?', word: 'READY' }, choice: { on: true, here: 'Send it here', email: 'By email' }, dm: 'Here you go! {url}', linkText: 'Here you go! Pop in your email and it opens right away: {link}', reminder: { on: true, minutes: 60, text: 'Just checking you got this. Your link is still here: {link}' }, afterSignup: { dm: 'Here it is, as promised: {url}' } }) },
   { id: 'link', title: 'Freebie link', text: 'The DM carries the link straight away. The quickest for them, but you don\'t get their email.',
     make: (k) => Object.assign(k, { delivery: 'direct', dm: 'Here you go! {url}' }) },
   { id: 'offer', title: 'Product or offer', text: 'Someone comments a word like PRICE or INFO and gets the page with the details, price and how to buy.',
@@ -570,6 +613,7 @@ async function showKeyword(body, name) {
   k.afterSignup ||= { dm: '' };
   k.publicReply ||= { on: false, text: '' };
   k.followGate ||= { on: false, text: '' };
+  k.choice ||= { on: false, here: 'Send it here', email: 'By email' };
   const followGateDefault = () => `Almost there! Follow @${HANDLE()} first, then reply ${k.ask.word || 'READY'} again and I'll send it straight over 💛`;
   k.signup ||= {};
   // The email list (lists.mjs on the server). Some tools need one target per keyword: a MailerLite
@@ -697,9 +741,15 @@ async function showKeyword(body, name) {
       } else {
         thread.push(them(word));
       }
-      if (k.ask.on && previewTab === 'igc') {
-        thread.push(me(k.ask.text || '(write the first DM above)'), them(k.ask.word || 'READY'));
-        if (k.followGate.on) thread.push(sys('If they don\'t follow you yet'), me(k.followGate.text || followGateDefault()), sys('They follow you and reply again'), them(k.ask.word || 'READY'));
+      // "Let them choose": the buttons under the first DM, then both answers.
+      const choosing = k.choice.on && k.ask.on;
+      const buttons = () => h('div', { class: 'pv-qr', 'aria-label': 'Buttons' }, h('span', { text: k.choice.here || 'Send it here' }), h('span', { text: k.choice.email || 'By email' }));
+      if (k.ask.on && (previewTab === 'igc' || choosing)) {
+        const answer = choosing ? k.choice.email || 'By email' : k.ask.word || 'READY';
+        thread.push(me(k.ask.text || '(write the first DM above)'));
+        if (choosing) thread.push(buttons(), sys(`If they tap "${k.choice.here || 'Send it here'}"`), them(k.choice.here || 'Send it here'), me(fill(k.dm)), sys(`If they tap "${answer}"`));
+        thread.push(them(answer));
+        if (k.followGate.on) thread.push(sys('If they don\'t follow you yet'), me(k.followGate.text || followGateDefault()), ...(choosing ? [buttons()] : []), sys('They follow you and answer again'), them(answer));
       }
       thread.push(me(k.delivery === 'email' ? fill(k.linkText, link) : fill(k.dm)));
       if (k.delivery === 'email') {
@@ -718,15 +768,33 @@ async function showKeyword(body, name) {
   const deliverySection = h('div');
   const drawDelivery = () => {
     const radio = (val, title, sub) => {
-      const r = h('input', { type: 'radio', name: 'delivery', value: val, checked: k.delivery === val });
-      r.addEventListener('change', () => { k.delivery = val; drawDelivery(); drawYt(); drawPreviews(); });
+      const r = h('input', { type: 'radio', name: 'delivery', value: val, checked: (k.choice.on ? 'choose' : k.delivery) === val });
+      r.addEventListener('change', () => {
+        // "Let them choose" is email signup plus two buttons on the "ask first" DM.
+        k.choice.on = val === 'choose';
+        k.delivery = val === 'direct' ? 'direct' : 'email';
+        if (k.choice.on && !k.ask.on) {
+          k.ask.on = true;
+          k.ask.text ||= 'Want it right here, or by email so it\'s saved in your inbox?';
+        }
+        if (k.choice.on && !String(k.dm || '').includes('{url}')) k.dm = 'Here you go! {url}';
+        drawAsk(); drawDelivery(); drawYt(); drawPreviews();
+      });
       return h('label', {}, r, h('span', {}, h('strong', { text: title }), h('br'), h('span', { class: 'hint', text: sub })));
     };
     const parts = [
       h('div', { class: 'radio' },
         radio('direct', 'Link in the DM', 'The DM carries the freebie link. Quick, but you don\'t get their email.'),
-        radio('email', 'Email signup (recommended)', `The DM carries their personal link; they type their email (added to ${listWhere()}) and see the freebie right away.`)),
+        radio('email', 'Email signup (recommended)', `The DM carries their personal link; they type their email (added to ${listWhere()}) and see the freebie right away.`),
+        radio('choose', 'Let them choose: here or by email', 'Two buttons on the first DM. "Send it here" gets the freebie link in Instagram; "By email" gets their signup link. Uses "Ask first".')),
     ];
+    if (k.choice.on) parts.push(
+      h('h3', { style: 'margin-top:16px', text: 'The two buttons' }),
+      text(k.choice, 'here', 'Button 1 (gets it in Instagram)', { placeholder: 'Send it here', hint: 'Up to 20 characters each (Instagram cuts longer ones).', onInput: drawPreviews }),
+      text(k.choice, 'email', 'Button 2 (gets it by email)', { placeholder: 'By email', onInput: drawPreviews }),
+      text(k, 'dm', 'DM for button 1', { area: true, hint: '{url} becomes the freebie link.', onInput: drawPreviews }),
+      h('p', { class: 'hint', text: 'Typing works too: HERE or EMAIL (or your reply word, for email) count as a tap.' }),
+      h('h3', { style: 'margin-top:16px', text: 'For button 2 (email)' }));
     if (k.delivery === 'direct') parts.push(text(k, 'dm', 'DM text', { area: true, hint: '{url} becomes the freebie link.', onInput: drawPreviews }));
     else {
       parts.push(text(k, 'linkText', 'DM text', { area: true, hint: '{link} becomes their personal signup link.', onInput: drawPreviews }));
@@ -756,9 +824,9 @@ async function showKeyword(body, name) {
   const askSection = h('div');
   const drawAsk = () => {
     askSection.replaceChildren(...[
-      toggle(k.ask, 'on', 'Ask them to reply first', () => { drawAsk(); drawPreviews(); drawDelivery(); }),
+      toggle(k.ask, 'on', 'Ask them to reply first', () => { if (!k.ask.on) k.choice.on = false; drawAsk(); drawPreviews(); drawDelivery(); }),
       h('p', { class: 'hint', text: 'Their reply opens a DM conversation, which lets you remind them later. Needs DMs switched on.' }),
-      k.ask.on ? [text(k.ask, 'text', 'First DM', { area: true, placeholder: 'Want the free calculator? Reply READY and I\'ll send it over.', onInput: drawPreviews }), text(k.ask, 'word', 'The word they reply', { placeholder: 'READY', onInput: drawPreviews })] : null,
+      k.ask.on ? [text(k.ask, 'text', 'First DM', { area: true, placeholder: k.choice.on ? 'Want it right here, or by email?' : 'Want the free calculator? Reply READY and I\'ll send it over.', hint: k.choice.on ? 'Your two buttons show under it (set them in Step 2).' : '', onInput: drawPreviews }), text(k.ask, 'word', 'The word they reply', { placeholder: 'READY', onInput: drawPreviews })] : null,
       k.ask.on ? [
         h('h3', { style: 'margin-top:16px', text: 'Only for followers (optional)' }),
         toggle(k.followGate, 'on', 'Send the freebie only to people who follow you', () => { if (k.followGate.on && !k.followGate.text) k.followGate.text = followGateDefault(); drawAsk(); drawPreviews(); }),
@@ -811,7 +879,7 @@ async function showKeyword(body, name) {
       check(k, 'dmApproved', 'I approve these messages')),
     !isNew ? h('div', { class: 'card' }, h('h3', { text: 'Last 30 days' }),
       s ? h('div', { class: 'funnel' },
-        [[s.comments, 'used it'], [f?.asked ?? 0, 'asked to reply'], ...(k.followGate?.on || f?.followGated ? [[f?.followGated ?? 0, 'asked to follow first']] : []), [f?.linkSent ?? s.dmsSent, 'got the link'], [f?.clicked ?? 0, 'opened it'], [f?.signedUp ?? 0, 'signed up'], [f?.reminded ?? 0, 'reminded']]
+        [[s.comments, 'used it'], [f?.asked ?? 0, 'asked to reply'], ...(k.followGate?.on || f?.followGated ? [[f?.followGated ?? 0, 'asked to follow first']] : []), ...(k.choice?.on || f?.sentHere ? [[f?.sentHere ?? 0, 'chose "here"']] : []), [f?.linkSent ?? s.dmsSent, k.choice?.on ? 'chose email' : 'got the link'], [f?.clicked ?? 0, 'opened it'], [f?.signedUp ?? 0, 'signed up'], [f?.reminded ?? 0, 'reminded']]
           .map(([n, l]) => h('div', {}, h('div', { class: 'big', text: String(n) }), h('div', { class: 'hint', text: l }))))
         : h('p', { class: 'hint', text: 'Nobody has used it yet.' })) : '',
     h('div', { class: 'row between' },
@@ -971,6 +1039,145 @@ async function showStats(body) {
     tile(dur(r.medianMinutes), 'typical reply time'),
     tile(r.waiting ?? 0, 'waiting now'))));
   body.append(await connectionsCard());
+}
+
+// ---- flows: every keyword as connected step cards, like a flow builder (read-only) ----
+// One card per step with what happened in the last 30 days; lines join each step (or each
+// button / "if not" branch) to the next. Messages change on the keyword's page.
+function flowGraph(k, s) {
+  const f = s?.funnel || {};
+  const nodes = [];
+  const edges = [];
+  const add = (n) => (nodes.push(n), (n.id = `n${nodes.length}`), n);
+  const link = (from, to, port, cls) => edges.push({ from: from.id, to: to.id, port, cls });
+  const fill = (t, l) => String(t || '').replace('{url}', k.url || '(freebie link)').replace('{link}', l || `${HOST()}/inbox/f/…`);
+  const mins = (m) => (m % 60 ? `${m} min` : `${m / 60} h`);
+  const where = [k.where?.igComments !== false && `comments ${k.keyword} on a post or Reel`, k.where?.igDms !== false && `DMs ${k.keyword} or replies to a Story`, k.where?.ytComments && `comments ${k.keyword} on YouTube`].filter(Boolean);
+  const trigger = add({ col: 1, row: 1, cls: 'trigger', icon: 'Instagram', type: 'Trigger', title: 'When someone…', lines: where, stats: [[s?.comments ?? 0, 'used it']] });
+  const igOnly = k.where?.igComments === false && k.where?.igDms === false;
+  let col = 2;
+  let prev = trigger;
+  let port = null;
+  const choosing = !!(k.choice?.on && k.ask?.on);
+  let emailRow = 1;
+  if (!igOnly && k.ask?.on) {
+    const ask = add({ col: col++, row: 1, icon: 'Instagram', type: 'Send message', title: 'First DM', bubble: k.ask.text, wait: choosing ? 'Waiting for them to tap a button' : `Waiting for them to reply ${k.ask.word || 'READY'}`, stats: [[f.asked ?? 0, 'sent']],
+      ports: choosing ? [['here', k.choice.here || 'Send it here', 'btn'], ['email', k.choice.email || 'By email', 'btn']] : [] });
+    link(prev, ask, port);
+    prev = ask;
+    if (k.followGate?.on) {
+      const gate = add({ col: col++, row: 1, icon: 'Condition', type: 'Condition', title: 'Do they follow you?', lines: ['Instagram tells us when they answer.'], ports: [['yes', 'Yes', 'yes'], ['no', 'Not yet', 'not']] });
+      if (choosing) link(ask, gate, 'here'), link(ask, gate, 'email');
+      else link(ask, gate, null);
+      const again = add({ col, row: 2, icon: 'Instagram', type: 'Send message', title: 'Follow me first', bubble: k.followGate.text, wait: 'Then they answer again', stats: [[f.followGated ?? 0, 'sent']] });
+      link(gate, again, 'no', 'not');
+      prev = gate;
+      port = 'yes';
+    }
+    if (choosing) {
+      const here = add({ col, row: 1, cls: 'end', icon: 'Instagram', type: 'Send message', title: `"${k.choice.here || 'Send it here'}"`, bubble: fill(k.dm), stats: [[f.sentHere ?? 0, 'sent']] });
+      link(prev, here, port || 'here', port ? 'yes' : '');
+      emailRow = k.followGate?.on ? 3 : 2;
+      port = port || 'email';
+    }
+  }
+  if (!igOnly && k.delivery !== 'email') {
+    const dm = add({ col: col++, row: 1, cls: 'end', icon: 'Instagram', type: 'Send message', title: 'The freebie', bubble: fill(k.dm), stats: [[f.linkSent || s?.dmsSent || 0, 'sent']] });
+    link(prev, dm, port, port === 'yes' ? 'yes' : '');
+  } else if (!igOnly) {
+    const r = emailRow;
+    const msg = add({ col: col++, row: r, icon: 'Instagram', type: 'Send message', title: choosing ? `"${k.choice.email || 'By email'}"` : 'Their signup link', bubble: fill(k.linkText), stats: [[f.linkSent ?? 0, 'sent'], [f.clicked ?? 0, 'opened']],
+      ports: k.reminder?.on ? [['next', 'Next step', ''], ['not', `If no signup after ${mins(k.reminder.minutes || 60)}`, 'not']] : [] });
+    link(prev, msg, port, port === 'yes' ? 'yes' : '');
+    const list = ME.list && !['builtin', 'webhook'].includes(ME.list.id) ? `${ME.list.name}${k.list?.name ? ` (${k.list.name})` : ''}` : 'your email list';
+    const rate = f.linkSent ? `${Math.round(((f.signedUp ?? 0) / f.linkSent) * 100)}%` : '-';
+    const page = add({ col: col++, row: r, cls: k.afterSignup?.dm ? '' : 'end', icon: 'Email', type: 'Signup page', title: k.signup?.headline || `Get your free ${String(k.freebie || 'freebie').replace(/^free\s+/i, '')}`, lines: ['They type their email and see the freebie right away.', `Added to ${list}.`], stats: [[f.signedUp ?? 0, 'signed up'], [rate, 'of links sent']] });
+    link(msg, page, k.reminder?.on ? 'next' : null);
+    if (k.afterSignup?.dm) {
+      const after = add({ col: col++, row: r, cls: 'end', icon: 'Instagram', type: 'Send message', title: 'After they sign up', bubble: fill(k.afterSignup.dm), stats: [[f.delivered ?? 0, 'sent']] });
+      link(page, after, null);
+    }
+    if (k.reminder?.on) {
+      const rem = add({ col: msg.col + 1, row: r + 1, icon: 'Instagram', type: 'Send message', title: 'One reminder', bubble: fill(k.reminder.text), stats: [[f.reminded ?? 0, 'sent']] });
+      link(msg, rem, 'not', 'not');
+    }
+  }
+  // Public replies (under the Instagram comment, on YouTube) run beside the DMs.
+  let row = Math.max(...nodes.map((n) => n.row)) + 1;
+  const pub = [];
+  if (k.where?.igComments !== false && k.publicReply?.on) pub.push(['Instagram', 'Reply under the comment', String(k.publicReply.text || '').split('\n')[0]]);
+  if (k.where?.ytComments) pub.push(['YouTube', 'Reply on YouTube', fill(k.yt?.text, k.delivery === 'email' ? `${HOST()}/inbox/s/${k.keyword}` : k.url)]);
+  for (const [ic, title, bubble] of pub) link(trigger, add({ col: 2, row: igOnly ? 1 : row++, cls: 'end', icon: ic, type: 'Public reply', title, bubble }), null);
+  return { nodes, edges };
+}
+function drawFlow(k, s) {
+  const { nodes, edges } = flowGraph(k, s);
+  const grid = h('div', { class: 'flow-grid' });
+  const els = {};
+  // "After First DM · By email": what leads here, shown on phones instead of the lines.
+  const after = (n) => {
+    const e = edges.find((x) => x.to === n.id);
+    const from = e && nodes.find((x) => x.id === e.from);
+    if (!from) return '';
+    const port = e.port && e.port !== 'next' ? from.ports?.find(([id]) => id === e.port)?.[1] : '';
+    return `After ${from.title}${port ? ` · ${port}` : ''}`;
+  };
+  for (const n of nodes) {
+    const el = h('div', { class: `fnode ${n.cls || ''}`, style: `grid-column:${n.col};grid-row:${n.row}` },
+      after(n) ? h('div', { class: 'fafter', 'aria-hidden': 'true', text: after(n) }) : null,
+      h('div', { class: 'ftype' }, icon(n.icon), n.type),
+      h('div', { class: 'ftitle', text: n.title }),
+      n.stats?.length ? h('div', { class: 'fstats' }, n.stats.map(([v, l]) => h('div', {}, h('b', { text: String(v) }), h('span', { text: l })))) : null,
+      n.bubble != null ? h('div', { class: 'fbubble', text: n.bubble || '(no message yet)' }) : null,
+      (n.lines || []).map((l) => h('p', { class: 'hint', text: l })),
+      n.wait ? h('div', { class: 'fwait', text: n.wait }) : null,
+      (n.ports || []).map(([id, label, cls]) => h('div', { class: `fport ${cls}`, 'data-port': id, text: label })));
+    els[n.id] = el;
+    grid.append(el);
+  }
+  const svg = document.createElementNS(SVGNS, 'svg');
+  svg.setAttribute('class', 'flow-lines');
+  svg.setAttribute('aria-hidden', 'true');
+  grid.prepend(svg);
+  // Lines are drawn once the cards have their size, and again whenever it changes.
+  const lines = () => {
+    const box = grid.getBoundingClientRect();
+    if (!box.width) return;
+    svg.replaceChildren(...edges.map((e) => {
+      const from = els[e.from];
+      const out = (e.port && from.querySelector(`[data-port="${e.port}"]`)) || from;
+      const a = out.getBoundingClientRect();
+      const b = els[e.to].getBoundingClientRect();
+      const x1 = (out === from ? a.right : from.getBoundingClientRect().right + 2) - box.left;
+      const y1 = (out === from ? a.top + Math.min(44, a.height / 2) : a.top + a.height / 2) - box.top;
+      const x2 = b.left - box.left;
+      const y2 = b.top + 44 - box.top;
+      const bend = Math.max(28, (x2 - x1) / 2);
+      const p = document.createElementNS(SVGNS, 'path');
+      p.setAttribute('d', `M${x1},${y1} C${x1 + bend},${y1} ${x2 - bend},${y2} ${x2},${y2}`);
+      if (e.cls) p.setAttribute('class', e.cls);
+      return p;
+    }));
+  };
+  new ResizeObserver(lines).observe(grid);
+  const summary = nodes.map((n) => `${n.type}: ${n.title}${n.stats?.length ? ` (${n.stats.map(([v, l]) => `${v} ${l}`).join(', ')})` : ''}`).join('. ');
+  return h('div', { class: 'flow-canvas' }, h('p', { class: 'sr-only', text: `${k.keyword} flow. ${summary}.` }), grid);
+}
+async function showFlows(body) {
+  ({ keywords: kwCache } = await api('/api/keywords'));
+  body.append(h('p', { class: 'hint', style: 'margin-bottom:12px', text: 'Each keyword\'s automation, step by step, with what happened in the last 30 days. To change a message, open the keyword.' }));
+  if (!kwCache.length) return body.append(h('div', { class: 'list' }, h('p', { class: 'empty', text: 'No keywords yet. Make one on the Keywords tab and its flow shows here.' })));
+  const perKw = Object.fromEntries((stats?.keywords || []).map((k) => [k.keyword, k]));
+  for (const k of kwCache) {
+    const on = k.live && k.dmApproved;
+    body.append(h('div', { class: 'card' },
+      h('div', { class: 'section-head' },
+        h('div', {}, h('h2', { text: k.keyword }), h('p', { class: 'hint', text: k.freebie || '(no freebie yet)' })),
+        h('div', { class: 'row', style: 'margin:0' },
+          h('span', { class: on ? 'pill on' : 'pill', text: on ? 'On' : k.live && !k.dmApproved ? 'Waiting for your OK' : 'Off' }),
+          h('button', { text: 'Edit messages', on: { click: () => (location.hash = `k/${k.keyword}`) } }))),
+      drawFlow(k, perKw[k.keyword])));
+  }
 }
 
 route();

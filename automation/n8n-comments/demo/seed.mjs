@@ -1,7 +1,7 @@
 // The made-up "Bloom Studio" shop behind every Chat Manager demo: the local one
 // (test/demo-inbox.mjs) and the public one (demo.scrollyseo.com, docker-compose.demo.yml).
 //   node demo/seed.mjs <configDir> <dataDir>
-// Writes a profile, two keywords, about two months of keyword activity, a handful of
+// Writes a profile, three keywords, about two months of keyword activity, a handful of
 // conversations and an email list. Times are relative to now, with a fixed pattern (no
 // randomness), so the demo always looks recent and screen recordings match.
 // Every handle ends in ".demo" and every email is @example.com: nobody real is shown.
@@ -22,6 +22,7 @@ export function seed(cfg, data) {
   }));
   writeFileSync(join(cfg, 'keywords-all.json'), JSON.stringify({ keywords: [
     { keyword: 'PATTERN', freebie: 'Free tote bag pattern', url: 'https://example.com/tote.pdf', live: true, dmApproved: true, delivery: 'email', where: { igComments: true, igDms: true }, ask: { on: true, text: 'Want the free pattern? Reply READY and I\'ll send it over.', word: 'READY' }, linkText: 'Here you go! Pop in your email and it opens right away: {link}', signup: { headline: 'Get your free tote bag pattern', text: 'Pop in your email and you can open it right away.' }, reminder: { on: true, minutes: 60, text: 'Just checking you got this. Your link is still here: {link}' }, afterSignup: { dm: 'Here\'s your pattern, as promised: {url}' }, list: {} },
+    { keyword: 'FABRIC', freebie: 'Fabric cheat sheet', url: 'https://example.com/fabric.pdf', live: true, dmApproved: true, delivery: 'email', where: { igComments: true, igDms: true }, ask: { on: true, text: 'Want the fabric cheat sheet right here, or by email so it’s saved in your inbox?', word: 'READY' }, choice: { on: true, here: 'Send it here', email: 'By email' }, dm: 'Here you go! {url}', linkText: 'Pop in your email and it opens right away: {link}', signup: { headline: 'Get the fabric cheat sheet' }, reminder: { on: true, minutes: 60, text: 'Just checking you got this. Your link is still here: {link}' }, afterSignup: { dm: 'Here it is, as promised: {url}' }, publicReply: { on: true, text: 'Sent you a DM! 💌' }, list: {} },
     { keyword: 'SIZES', freebie: 'Size chart', url: 'https://example.com/sizes', live: true, dmApproved: true, delivery: 'direct', where: { igComments: true, igDms: true }, dm: 'Here\'s the size chart: {url}' },
   ] }));
   writeFileSync(join(cfg, 'pages', 'privacy.html'), '<h1>Privacy policy</h1><p>Demo page.</p><h2 id="delete-your-data">Delete your data</h2><p>Email hello@example.com.</p>');
@@ -52,6 +53,21 @@ export function seed(cfg, data) {
   events.push({ at: ago(3), keyword: 'PATTERN', platform: 'Instagram', post: POSTS[0], result: 'sent' }, { at: ago(2.9), keyword: 'PATTERN', platform: 'Instagram', post: '', result: 'sent' });
   flows.push({ token: 'demoMaya000001', keyword: 'PATTERN', platform: 'Instagram', personId: 'p-maya', dmPersonId: 'p-maya', author: 'maya.makes.demo', post: POSTS[0], step: 'signedUp', email: 'maya@example.com', createdAt: ago(3), askedAt: ago(3), linkSentAt: ago(2.9), clickedAt: ago(2.8), signedUpAt: ago(2.7), deliveredAt: ago(2.7), history: [step('asked', 3), step('linkSent', 2.9), step('clicked', 2.8), step('signedUp', 2.7, { email: 'maya@example.com' })] });
   subscribers.push({ id: 'ffffffffffffff01', email: 'maya@example.com', keyword: 'PATTERN', freebie: 'Free tote bag pattern', platform: 'Instagram', consent, at: ago(2.7), status: 'kept', provider: 'builtin' });
+  // FABRIC (here or by email, from three weeks ago): people pick, about half want it by email.
+  for (let d = 21; d >= 1; d--) {
+    const at = ago(d * 24 + 5);
+    const who = `sewer${d}.demo`;
+    const way = d % 5 === 0 ? 'asked' : d % 2 ? 'here' : 'email';
+    events.push({ at, keyword: 'FABRIC', platform: 'Instagram', post: POSTS[1], result: 'sent' });
+    const base = { token: `demoFab${String(d).padStart(4, '0')}`, keyword: 'FABRIC', platform: 'Instagram', personId: `f${d}`, dmPersonId: `f${d}`, author: who, post: POSTS[1], history: [], createdAt: at, askedAt: at };
+    if (way === 'asked') flows.push({ ...base, step: 'asked' });
+    else if (way === 'here') flows.push({ ...base, step: 'sentHere', sentHereAt: at });
+    else {
+      const signed = d % 4 !== 0;
+      flows.push({ ...base, step: signed ? 'signedUp' : 'clicked', linkSentAt: at, clickedAt: at, ...(signed ? { signedUpAt: at, deliveredAt: at, email: `sewer${d}@example.com` } : { remindedAt: at }) });
+      if (signed) subscribers.push({ id: `fab${String(d).padStart(13, '0')}`, email: `sewer${d}@example.com`, keyword: 'FABRIC', freebie: 'Fabric cheat sheet', platform: 'Instagram', consent, at, status: 'kept', provider: 'builtin' });
+    }
+  }
   subscribers.sort((a, b) => b.at.localeCompare(a.at));
 
   const row = (r) => ({ type: 'Other', priority: false, draft: '', note: '', read: false, ...r });

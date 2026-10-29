@@ -56,6 +56,30 @@
       "yt": {
         "text": "Grab it here: {link}"
       }
+    },
+    {
+      "keyword": "CHOOSE",
+      "url": "https://example.com/choose.pdf",
+      "dm": "Here you go: {url}",
+      "delivery": "email",
+      "where": {
+        "igComments": true,
+        "igDms": true
+      },
+      "ask": {
+        "on": true,
+        "text": "Want it here or by email?",
+        "word": "READY"
+      },
+      "linkText": "Pop in your email: {link}",
+      "reminder": {
+        "on": false
+      },
+      "choice": {
+        "on": true,
+        "here": "Send it here",
+        "email": "By email"
+      }
     }
   ]
 }
