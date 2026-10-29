@@ -29,3 +29,7 @@ automation/reel-template-pack/build/.cache/
 automation/youtube/.cache/
 # Physical pack: zips made for upload (rebuild from the buyer folders)
 automation/reel-template-pack/for-upload/
+
+# Own Halloween Reels (motion_h1_mine / motion_h2_mine): extracted frames (rebuilt by the scripts) and phone captures of the live site
+automation/reel-hf/2026-10-29-hw-*/_frames/
+automation/reel-hf/2026-10-29-hw-*/screens/
