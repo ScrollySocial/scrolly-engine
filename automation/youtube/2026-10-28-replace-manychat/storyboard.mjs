@@ -29,24 +29,38 @@ const css = `
 .lbl{font:700 30px/1 Fig;letter-spacing:.02em;color:${C.navy};opacity:.75}
 .num{font:400 170px/.9 Serif;color:${C.navy};letter-spacing:-.01em}
 .num small{font-size:70px}
-.hand{position:absolute;font:400 54px/1.05 Hand;color:${C.cream};text-shadow:0 3px 14px rgba(10,25,48,.75)}
+.hand{position:absolute;font:400 54px/1.05 Hand;color:${C.navy}}
+.note{background:${C.paper};padding:18px 28px 22px;box-shadow:0 12px 30px rgba(10,25,48,.35);border-radius:4px}
 .receipt{position:absolute;width:520px;background:${C.paper};padding:40px 44px 70px;font:400 44px/1.25 Hand;color:#2b2724;rotate:-3deg;box-shadow:0 18px 40px rgba(10,25,48,.35);
   -webkit-mask:linear-gradient(#000 0 0) top/100% calc(100% - 22px) no-repeat,radial-gradient(circle 16px at 16px 100%,#0000 98%,#000) bottom/32px 22px repeat-x}
 .receipt b{font-weight:400;color:${C.navy};box-shadow:inset 0 -.32em 0 ${C.sky}}
 .receipt .row{display:flex;justify-content:space-between;gap:20px}
 .receipt .tot{border-top:3px dashed #2b2724;margin-top:16px;padding-top:12px;font-size:54px;color:${C.navy}}
+.giant{position:absolute;font:400 470px/.8 Serif;color:${C.navy};-webkit-text-stroke:34px ${C.paper};paint-order:stroke fill;letter-spacing:-.03em}
+.num.xl{font-size:250px}.num.xl small{font-size:96px}
 .pill{position:absolute;background:${C.cream};color:${C.navy};font:600 34px/1 Fig;padding:20px 34px;border-radius:999px;box-shadow:0 10px 30px rgba(10,25,48,.3)}
 `;
-const ring = (x, y, w, h, color = C.sky, sw = 7) => `<svg class="abs" style="left:${x}px;top:${y}px;width:${w}px;height:${h}px;overflow:visible" viewBox="0 0 200 100" preserveAspectRatio="none"><path d="M18 52 C14 18 70 6 112 8 C170 11 196 34 190 58 C184 86 120 96 76 92 C34 88 6 70 22 40" fill="none" stroke="${color}" stroke-width="${sw}" stroke-linecap="round" vector-effect="non-scaling-stroke"/></svg>`;
-const arrow = (x, y, w, r = 0, color = C.cream) => `<svg class="abs" style="left:${x}px;top:${y}px;width:${w}px;height:${w * 0.75}px;rotate:${r}deg;overflow:visible;filter:drop-shadow(0 3px 8px rgba(10,25,48,.6))" viewBox="0 0 120 90"><path d="M8 12 C40 4 86 18 98 64" fill="none" stroke="${color}" stroke-width="6" stroke-linecap="round"/><path d="M80 52 L99 70 L110 46" fill="none" stroke="${color}" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+const RING = 'M18 52 C14 18 70 6 112 8 C170 11 196 34 190 58 C184 86 120 96 76 92 C34 88 6 70 22 40';
+const ring = (x, y, w, h, color = C.sky, sw = 7, halo = false) => `<svg class="abs" style="left:${x}px;top:${y}px;width:${w}px;height:${h}px;overflow:visible" viewBox="0 0 200 100" preserveAspectRatio="none">${halo ? `<path d="${RING}" fill="none" stroke="${C.navy}" stroke-width="${sw + 6}" stroke-linecap="round" vector-effect="non-scaling-stroke"/>` : ''}<path d="${RING}" fill="none" stroke="${color}" stroke-width="${sw}" stroke-linecap="round" vector-effect="non-scaling-stroke"/></svg>`;
+const arrowPath = (color, w) => `<path d="M8 12 C40 4 86 18 98 64" fill="none" stroke="${color}" stroke-width="${w}" stroke-linecap="round"/><path d="M80 52 L99 70 L110 46" fill="none" stroke="${color}" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round"/>`;
+const arrow = (x, y, w, r = 0, color = C.navy) => `<svg class="abs" style="left:${x}px;top:${y}px;width:${w}px;height:${w * 0.75}px;rotate:${r}deg;overflow:visible" viewBox="0 0 120 90">${arrowPath(C.paper, 14)}${arrowPath(color, 6)}</svg>`;
 
 const stills = {
+  // 0:00 cold open, first 2 s: "ManyChat could cost you up to hundreds of dollars every single month" as a graphics-only beat, HUGE.
+  '0a-cold-open-hundreds': `<div class="abs" style="inset:0;background:${C.navy}"></div>
+    <div class="abs" style="left:0;right:0;top:120px;text-align:center;font:700 64px/1 Fig;letter-spacing:.2em;color:${C.sky}">MANYCHAT: UP TO</div>
+    <div class="abs" style="left:0;right:0;top:250px;text-align:center;font:400 400px/.9 Serif;color:${C.cream};letter-spacing:-.02em">$100s</div>
+    <div class="abs" style="left:0;right:0;top:700px;text-align:center;font:400 150px/1 Serif;color:${C.cream}">every month</div>`,
+  // 0:05 "My version costs only $6": back on her tight shot, a giant $6 slams into the left side (never over her face).
+  '0b-cold-open-six': `<div class="bg" style="background-image:url('${frame('IMG_2066')}')"></div>
+    <div class="giant" style="left:-16px;top:230px">$6</div>
+    <div class="hand note" style="left:1500px;top:640px;rotate:4deg;font-size:62px">my server,<br>my list</div>`,
   // 0:10 hook: ManyChat Pro on the left, hers on the right, ringed; hand note for "even if my computer is off".
   '1-side-statements': `<div class="bg" style="background-image:url('${frame('IMG_2040')}')"></div>
-    <div class="card" style="left:70px;top:300px;rotate:-2deg"><div class="lbl">MANYCHAT PRO</div><div class="num">$39<small>/mo</small></div></div>
-    <div class="card" style="left:1400px;top:270px;rotate:2deg"><div class="lbl">MINE</div><div class="num">$6<small>/mo</small></div></div>
-    ${ring(1395, 330, 380, 200)}
-    <div class="hand" style="left:1450px;top:640px;rotate:-4deg">still runs when<br>my laptop is off</div>
+    <div class="card" style="left:20px;top:250px;rotate:-2deg"><div class="lbl" style="font-size:38px">MANYCHAT PRO</div><div class="num xl">$39<small>/mo</small></div></div>
+    <div class="card" style="left:1330px;top:200px;rotate:2deg"><div class="lbl" style="font-size:38px">MINE</div><div class="num xl">$6<small>/mo</small></div></div>
+    ${ring(1330, 280, 520, 290, C.sky, 9, true)}
+    <div class="hand note" style="left:1400px;top:660px;rotate:-4deg">still runs when<br>my laptop is off</div>
     ${arrow(1330, 560, 110, 200)}`,
   // chapter card, 1.5 s: number + title (same words become the YouTube chapter).
   '2-chapter-card': `<div class="abs" style="inset:0;background:${C.navy}"></div>
@@ -68,7 +82,7 @@ const stills = {
       <div class="row"><span>Web address</span><span>free</span></div>
       <div class="row tot"><span>Total</span><span>$6/mo</span></div></div>
     <div class="card" style="left:70px;top:330px;rotate:-2deg"><div class="lbl">MANYCHAT PRO</div><div class="num">$39<small>/mo</small></div></div>
-    <svg class="abs" style="left:380px;top:610px;width:110px;height:110px;filter:drop-shadow(0 3px 8px rgba(10,25,48,.6))" viewBox="0 0 100 100"><path d="M18 16 L84 86 M82 14 L20 84" stroke="${C.cream}" stroke-width="9" stroke-linecap="round" fill="none"/></svg>`,
+    <svg class="abs" style="left:380px;top:610px;width:110px;height:110px" viewBox="0 0 100 100"><path d="M18 16 L84 86 M82 14 L20 84" stroke="${C.paper}" stroke-width="20" stroke-linecap="round" fill="none"/><path d="M18 16 L84 86 M82 14 L20 84" stroke="${C.navy}" stroke-width="10" stroke-linecap="round" fill="none"/></svg>`,
   // end screen, 19 s: she moves to the left, the right side stays clear for YouTube's own cards (outlines = where they land).
   '5-end-screen': `<div class="abs" style="inset:0;background:${C.navy}"></div>
     <div class="abs" style="left:-420px;top:0;width:1920px;height:1080px;background:url('${frame('IMG_2063')}') center/cover"></div>
