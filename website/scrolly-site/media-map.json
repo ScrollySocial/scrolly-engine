@@ -692,5 +692,13 @@
  "guides/claude-dms-hero.webp": {
   "id": 2044,
   "url": "https://theambitiondepartment.com/wp-content/uploads/2026/10/tad-guide-claude-dms-hero.webp"
+ },
+ "guides/claude-dms-hero-laptop.webp": {
+  "id": 2050,
+  "url": "https://theambitiondepartment.com/wp-content/uploads/2026/10/tad-guide-claude-dms-hero-laptop.webp"
+ },
+ "guides/claude-dms-draft-reply.webp": {
+  "id": 2051,
+  "url": "https://theambitiondepartment.com/wp-content/uploads/2026/10/tad-guide-claude-dms-draft-reply.webp"
  }
 }

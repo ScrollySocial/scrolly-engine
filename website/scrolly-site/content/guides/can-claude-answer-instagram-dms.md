@@ -5,12 +5,12 @@ title: Can Claude Answer Instagram DMs? What Instagram Actually Allows
 description: Can Claude answer your Instagram DMs? What it can and can't do on its own, what you need, the three ways to set it up, and Instagram's DM rules.
 h1: Can Claude answer
 h1Italic: Instagram DMs?
-lede: Not on its own, but Claude Code can help you build your own app that does. Claude Code makes it easier than it sounds.
+lede: What Claude can and can't do, what you'll need, and the three ways to set it up. Claude Code makes it easier than it sounds.
 author: Mercedes
 authorBio: I'm Mercedes, founder of The Ambition Department. I build my own business tools with Claude and share the systems so you don't have to start from scratch.
 authorPhoto:
-heroImage: https://theambitiondepartment.com/wp-content/uploads/2026/10/tad-guide-claude-dms-hero.webp
-heroAlt: A phone on a tripod showing a keyword comment and the Instagram DM conversation it starts
+heroImage: https://theambitiondepartment.com/wp-content/uploads/2026/10/tad-guide-claude-dms-hero-laptop.webp
+heroAlt: A laptop showing the Chat Manager inbox with Instagram comments and DMs waiting for a reply
 product: chat-manager
 updated: 2026-10-29
 ---
@@ -25,7 +25,7 @@ As a business owner, I know how important it is not just to monetize your audien
 
 However, the tiers on ManyChat add up quickly. Not only is 25 contacts a very low limit on the free plan, it is also restrictive in the types of automations that you can set up. The advantage of ManyChat is that it is an official integration and doesn't put your account at risk by using it.
 
-Another important part of owning a business is figuring out a way to reduce your costs. Reducing your operating costs is very important in business, particularly as we are all dealing with an inflationary environment. So in an effort to keep my personal business costs low, I found a way to forgo the expensive ManyChat subscription, and create my own personal application with most of the features I actually used, for a fraction of the cost. And you can do this too, even if you're not tech savvy!
+Reducing your operating costs is very important in business, particularly as we are all dealing with an inflationary environment. So in an effort to keep my personal business costs low, I found a way to forgo the expensive ManyChat subscription, and create my own personal application with most of the features I actually used, for a fraction of the cost. And you can do this too, even if you're not tech savvy!
 
 ## What Claude can and can't do on its own
 
@@ -51,6 +51,8 @@ So you are going to need more tools to complete this automation than just Claude
 
 ### What Claude Code can't do for you
 
+![Meta app webhook settings with only the comments field subscribed](https://theambitiondepartment.com/wp-content/uploads/2026/10/tad-guide-manychat-meta-webhook-comments.webp "My Meta app's webhook settings: one of the screens you click through yourself."){right}
+
 1. Well, you need to create all your own accounts and passwords.
 2. Saving your API keys.
 3. You also have to do the actual testing after the tool gets built. You either need a second account or a friend to help you with comments and DMs for testing.
@@ -74,19 +76,20 @@ Claude drafts | Every other comment or DM gets a draft reply that you send or ed
 Fully automatic | Claude answers everything itself, through its paid API.
 :::
 
+![A keyword comment, the DM asking them to reply READY, the signup link, the freebie and a reminder](https://theambitiondepartment.com/wp-content/uploads/2026/10/tad-guide-manychat-demo-dm-preview.webp "What someone sees after commenting a keyword. From my Chat Manager demo, a made-up shop."){right}
+
 **1. Keyword DMs.** You can use this tool as a way to auto-respond to keywords, sending people a link to get them on your email list, as you would do with ManyChat. Once it's set up, this part runs on your server on its own, without using Claude at all.
 
-**2. Claude drafts, you approve.** Additionally, you could also have Claude draft responses to all DMs and comments. Then, when you go to review your messages in the tool, you can send as is or simply update before replying. There are a couple of caveats to this:
+**2. Claude drafts, you approve.** Additionally, you could also have Claude draft responses to all DMs and comments. Then, when you go to review your messages in the tool, you can send as is or simply update before replying. There's one caveat to this:
 
-- You can only reply to a message through the API (your tool) if it is less than 24 hours old.
 - You cannot directly reply to TikTok through the tool, but you can copy and paste between the two.
+
+![A TikTok comment in the Chat Manager inbox with a suggested reply and a Copy and open TikTok button](https://theambitiondepartment.com/wp-content/uploads/2026/10/tad-guide-claude-dms-draft-reply.webp "A suggested reply waiting for my OK. From my Chat Manager demo, a made-up shop.")
 
 **3. Fully automatic replies.** If you want to get really techie with your setup, you can also set it up to auto-respond to all comments and DMs on Instagram.
 
 - You would need to add a Claude API key for this to be completed, which could incur an additional cost beyond the monthly Claude subscription.
 - When setting this up, you need to be sure to include very specific instructions on your business, your voice, and how to answer the most common comments and questions.
-
-![A keyword comment, the DM asking them to reply READY, the signup link, the freebie and a reminder](https://theambitiondepartment.com/wp-content/uploads/2026/10/tad-guide-manychat-demo-dm-preview.webp "What someone sees after commenting a keyword. From my Chat Manager demo, a made-up shop.")
 
 :::cta hand Want to view an interactive demo of my personal software? | /chat-manager/#demo | Check it out
 
@@ -110,6 +113,8 @@ The second reason that I chose not to was because I am then responsible for what
 
 ## Build it yourself or use my kit
 
+To see what ManyChat would cost for your audience, try the [ManyChat cost calculator](/calculators/manychat-cost/).
+
 If you'd like to build your own, my guide on [how I replaced ManyChat with Claude](/guides/replace-manychat-with-claude/) walks through the setup and the traps. If you'd rather skip the setup, Chat Manager is my own software as a kit that Claude sets up with you.
 
 :::cta
@@ -129,4 +134,5 @@ TikTok comments can land in your inbox with a suggested reply to copy and paste.
 
 :::sources
 - Instagram Platform: Private Replies and Messaging, developers.facebook.com/docs/instagram-platform, checked October 24, 2026
+- Instagram Terms of Use, help.instagram.com/581066165581870, checked October 29, 2026
 :::

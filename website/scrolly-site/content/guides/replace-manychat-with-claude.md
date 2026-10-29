@@ -88,6 +88,8 @@ To scrape your account's public TikTok comments you can use Apify, this can be d
 25,000 people | ManyChat $199 | Your own $6
 :::
 
+Work out your own numbers with the [ManyChat cost calculator](/calculators/manychat-cost/).
+
 :::cta slim If instead of building your own you want to simply create your accounts and be ready to go, you can copy my software instructions for Claude. My Chat Manager is $97 once (at launch), then only $6 a month for server hosting, regardless of how many people message you.
 
 ## How the setup works

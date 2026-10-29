@@ -4,7 +4,8 @@
 //   dist/guide-<slug>.html        the publish payload: writing notes removed, fails while any note is left
 //   dist/guide-<slug>.draft.*     local preview with the writing notes showing (never published, no id)
 // Markdown supported: # front matter (--- key: value ---), ## and ### headings, paragraphs, - and 1. lists, **bold**,
-// *italic*, [links](url), `code`, > her own quote, ![alt](file "caption") screenshots, | tables |, and blocks:
+// *italic*, [links](url), `code`, > her own quote, ![alt](file "caption") screenshots (add {right} or {left} right after
+// the closing bracket to float it beside the text on desktop), | tables |, and blocks:
 //   :::answer ... :::            the short answer under the hero (what Google can show as a snippet)
 //   :::trap Title ... :::        a "watch out" box for a setup trap
 //   :::note ... :::              writing prompt for Mercedes; shows in the draft only
@@ -67,9 +68,9 @@ function blocks(text, toc) {
       const id = slugify(m[2]);
       if (m[1] === '##' && toc) toc.push([id, m[2]]);
       out.push(m[1] === '##' ? `<h2 id="${id}">${inline(m[2])}</h2>` : `<h3 id="${id}">${inline(m[2])}</h3>`);
-    } else if ((m = l.match(/^!\[([^\]]*)\]\((\S+)(?: "([^"]+)")?\)/))) {
+    } else if ((m = l.match(/^!\[([^\]]*)\]\((\S+)(?: "([^"]+)")?\)(?:\{(left|right)\})?/))) {
       const pic = m[2].startsWith('REPLACE-') ? '<div class="gd-shot">Your screenshot goes here</div>' : `<img src="${m[2]}" alt="${esc(m[1])}" loading="lazy">`;
-      out.push(`<figure>${pic}${m[3] ? `<figcaption>${inline(m[3])}</figcaption>` : ''}</figure>`);
+      out.push(`<figure${m[4] ? ` class="gd-side ${m[4]}"` : ''}>${pic}${m[3] ? `<figcaption>${inline(m[3])}</figcaption>` : ''}</figure>`);
     } else if (l.startsWith('|')) {
       const rows = [];
       while (i < lines.length && lines[i].startsWith('|')) rows.push(lines[i++]);
@@ -228,6 +229,10 @@ const CSS = `
 .gd-body article>*+*{margin-top:1.1em}
 .gd-body p,.gd-body li{font-size:var(--s3-fs-body);line-height:1.65}
 .gd-body h2{font-size:var(--s3-fs-h3)!important;line-height:1.08;margin-top:1.4em!important;scroll-margin-top:110px}
+/* Side pictures ({right}/{left}): beside the text from 760px up, full width below; headings start below them */
+.gd-body h2,.gd-body h3,.gd-body figure:not(.gd-side){clear:both}
+@media (min-width:760px){.s3 .gd-body figure.gd-side{width:44%;margin-bottom:12px!important}.s3 .gd-body figure.gd-side.right{float:right;margin-left:32px!important}.s3 .gd-body figure.gd-side.left{float:left;margin-right:32px!important}.gd-body figure.gd-side img{max-height:none}}
+.gd-body article::after{content:'';display:block;clear:both}
 .s3 .gd-intro{margin-top:28px}
 .s3 .gd-intro p+p{margin-top:1.1em}
 .gd-body h3{font-size:var(--s3-fs-title)!important;line-height:1.15;margin-top:1.6em!important;scroll-margin-top:110px}
