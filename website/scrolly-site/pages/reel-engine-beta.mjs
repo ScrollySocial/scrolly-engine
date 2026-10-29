@@ -1,16 +1,18 @@
 // Reel Engine Founding Beta sales page (DRAFT, 2026-10-13). Local preview only: no WordPress page exists, so `id` is null and
-// publish.mjs skips it. Offer details come from vault products/content-engine/selling-research.md (price + seats are placeholders,
-// not decided). Proof is only Mercedes's own engine-made Reels. Before publishing: upload the files in dist/reel-engine-beta/
-// to WP media and swap ASSET for img(), point the buttons at the real product, and add the Instagram links once the Reels are live.
+// publish.mjs skips it. Proof is only Mercedes's own engine-made Reels. Before publishing: upload the files in dist/reel-engine-beta/
+// to WP media and swap ASSET for img(), set PRODUCT_ID, and add the Instagram links once the Reels are live.
+// Price and seats are never written here (Mercedes 2026-10-29): they live on the WooCommerce product and the page reads the
+// price from the Store API, so a price change or a social-media coupon needs no page edit. No product yet = no price shown.
 import { s3shell } from '../lib.mjs';
 
 export const id = null;
 export const title = 'Reel Engine Founding Beta, The Ambition Department';
 
 const ASSET = (f) => `reel-engine-beta/${f}`;
-const PRICE = '$97';
-const SEATS = 10;
-const SEAT_URL = `mailto:hello@theambitiondepartment.com?subject=${encodeURIComponent('Reel Engine Founding Beta')}`;
+const PRODUCT_ID = null; // WooCommerce downloadable product (zip), not created yet
+const BUY_URL = PRODUCT_ID
+  ? `/?add-to-cart=${PRODUCT_ID}`
+  : `mailto:hello@theambitiondepartment.com?subject=${encodeURIComponent('Reel Engine Founding Beta')}`;
 
 const REELS = [
   { v: 'know.mp4', poster: 'know-cover.jpg', label: 'Reel: Your AI should know what you’re selling' },
@@ -46,13 +48,21 @@ const FAQS = [
   ['Does it post for me?', 'In the beta you get the finished MP4 and cover, ready for Instagram or your scheduler.'],
   ['Does my footage leave my computer?', 'Your video files, the review page and the renders all stay on your computer. Claude works from your transcript and still frames.'],
   ['Do I need to know code?', 'No. Claude runs the setup for you and asks a few plain questions, and you ask it for changes in plain words.'],
-  ['What does founding mean?', `You’re one of the first ${SEATS} people using it, so expect a few setup bugs. You get the founding price and direct help while we fix them.`],
+  ['What does founding mean?', 'You’re one of the first people using it, so expect a few setup bugs. You get the founding price and help by email while we fix them.'],
 ];
 
 const half = Math.ceil(FAQS.length / 2);
 const faqCol = (rows) => `<div>${rows.map(([q, a]) => `<details><summary>${q}</summary><div>${a}</div></details>`).join('')}</div>`;
 const list = (rows) => `<ul>${rows.map(([h, p]) => `<li><b>${h}</b><span>${p}</span></li>`).join('')}</ul>`;
-const seatBtn = (cls = '') => `<a class="s3-btn ${cls}" href="${SEAT_URL}">Request a founding seat</a>`;
+const seatBtn = (cls = '') => `<a class="s3-btn ${cls}" href="${BUY_URL}">${PRODUCT_ID ? 'Get the Reel Engine' : 'Request a founding seat'}</a>`;
+// Fills every [data-price] from the product; hidden until a price arrives. No '&' allowed (s3shell).
+const SCRIPT = PRODUCT_ID ? `(function(){
+fetch('/wp-json/wc/store/v1/products/${PRODUCT_ID}').then(function(r){return r.ok?r.json():null}).then(function(p){
+ if(!p||!p.prices)return;var q=p.prices,n=Number(q.price)/Math.pow(10,q.currency_minor_unit||0);
+ var t=(q.currency_prefix||'$')+(n%1?n.toFixed(2):String(n))+(q.currency_suffix||'');
+ document.querySelectorAll('.s3 [data-price]').forEach(function(el){el.querySelector('b').textContent=t;el.hidden=false});
+}).catch(function(){});
+})();` : '';
 
 const CSS = `
 .s3 .rb-hero{padding:clamp(28px,4vw,64px) 0 var(--s3-sec)}
@@ -81,8 +91,11 @@ const CSS = `
 .s3 .rb-card a{text-decoration:underline;text-underline-offset:3px}
 .s3 .rb-faq .s3-faq{display:grid;grid-template-columns:1fr 1fr;gap:0 48px;margin-top:20px}
 .s3 .rb-faq .s3-faq>div details:first-child{border-top:1px solid var(--s3-line)}
-.s3 .rb-end{background:#f7e9de}
+.s3 .rb-end{background:var(--s3-mist)}
 .s3 .rb-end .s3-lede{margin:18px 0 28px}
+.s3 .rb-endprice{margin:-12px 0 28px;font:var(--s3-fs-body-serif)/1.4 var(--s3-serif)}
+.s3 .rb-cost b,.s3 .rb-endprice b{font-weight:400}
+.s3 [data-price][hidden]{display:none}
 .s3 .rb-end .s3-fine{margin-top:28px}
 @media(max-width:900px){
  .s3 .rb-hero .s3-wrap,.s3 .rb-pack,.s3 .rb-faq .s3-faq{grid-template-columns:1fr}
@@ -98,7 +111,7 @@ export function build() {
  <div>
   <h1><span>Film one take.</span><em>Claude edits it.</em></h1>
   <p class="s3-lede">The Reel Engine turns one talking-head take into a finished Reel with graphics, captions, sounds and a cover, in your brand. You check it in three steps, and it renders on your computer.</p>
-  <div class="rb-buy"><div class="rb-cost">${PRICE}<small>One-time. Founding beta, ${SEATS} seats</small></div>${seatBtn()}</div>
+  <div class="rb-buy"><div class="rb-cost" data-price hidden><b></b><small>One-time. Founding beta</small></div>${seatBtn()}</div>
  </div>
  <figure class="rb-reels">
   ${REELS.map((r) => `<video controls playsinline preload="none" poster="${ASSET(r.poster)}" aria-label="${r.label}"><source src="${ASSET(r.v)}" type="video/mp4"></video>`).join('')}
@@ -125,9 +138,10 @@ export function build() {
 </div></section>
 <section class="rb-end s3-sec"><div class="s3-wrap">
  <h2 class="s3-h2">Your next Reel, edited for you.</h2>
- <p class="s3-lede">${PRICE} one-time. ${SEATS} founding seats.</p>
+ <p class="s3-lede">Download it, open it in Claude and say “set up my Reel engine”.</p>
+ <p class="rb-endprice" data-price hidden><b></b> one-time, founding beta.</p>
  ${seatBtn()}
  <p class="s3-fine">Built on HyperFrames, open source by HeyGen. Claude is made by Anthropic and is sold separately.</p>
 </div></section>`;
-  return s3shell(body, CSS);
+  return s3shell(body, CSS, SCRIPT);
 }
