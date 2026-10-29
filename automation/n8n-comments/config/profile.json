@@ -1,10 +1,10 @@
 {
-  "_note": "Mercedes's own Chat Manager profile (Scrolly). Buyers get profile.example.json; the setup skill writes theirs. No keys here: those live in the server's .env.",
-  "brand": "Scrolly",
-  "handle": "scrollysocial",
+  "_note": "Mercedes's own Chat Manager profile (The Ambition Department, renamed from Scrolly 2026-10-29; Instagram @ambitiondepthq, was @scrollysocial). Buyers get profile.example.json; the setup skill writes theirs. No keys here: those live in the server's .env.",
+  "brand": "The Ambition Department",
+  "handle": "ambitiondepthq",
   "owner": "Mercedes",
-  "about": "Mercedes runs Scrolly (@scrollysocial). She helps small business owners and moms make their first money online with organic social media, starting with little or no audience. Her paid products are the $1K Club and the $1K Club + Challenge, plus a few guides and templates.",
-  "privacyUrl": "https://scrollyseo.com/privacy/",
+  "about": "Mercedes runs The Ambition Department (@ambitiondepthq on Instagram, formerly Scrolly and @scrollysocial). She helps small business owners and moms make their first money online with organic social media, starting with little or no audience. Her paid products are the $1K Club and the $1K Club + Challenge, plus a few guides and templates.",
+  "privacyUrl": "https://theambitiondepartment.com/privacy/",
   "look": {
     "background": "#f7f3ec",
     "card": "#ffffff",
@@ -17,6 +17,6 @@
     "fontsUrl": "https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Jost:wght@400;500;600&display=swap"
   },
   "signup": {
-    "consent": "Add me to Scrolly's emails too (tips and offers). I can unsubscribe anytime."
+    "consent": "Add me to The Ambition Department's emails too (tips and offers). I can unsubscribe anytime."
   }
 }
