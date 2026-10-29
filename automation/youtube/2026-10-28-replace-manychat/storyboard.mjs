@@ -65,6 +65,16 @@ function tvs({ her, herOn = 'big', head, push }) {
     <img class="abs" src="${prop('Beige CRT monitor with green screen-56')}" style="left:${R.x}px;top:${R.y}px;width:${R.w}px">
     ${screen(url(path.join(CACHE, 'screens', 'tv-calc.png')), R.x + R.w * 0.066, R.y + R.h * 0.105, R.w * 0.588, R.h * 0.602, '4%')}
     ${wal(T, T.h, herOn === 'small' ? frame('tv-her-' + her) : null)}`;
+  // 'solo': one huge TV, just her (the open). 'shrink': halfway as that TV shrinks into the small top slot and the stack fades in.
+  const S = { w: 1180 }; S.h = S.w * 1131 / 1215; S.x = 700; S.y = 1060 - S.h;
+  if (herOn === 'solo' || herOn === 'shrink') {
+    const k = herOn === 'solo' ? 0 : 0.5, mid = { w: S.w + (T.w - S.w) * k, x: S.x + (T.x - S.x) * k, y: S.y + (T.y - S.y) * k };
+    const shadow = `<div class="abs" style="left:${mid.x - 40}px;width:${mid.w + 80}px;top:1010px;height:60px;border-radius:50%;background:radial-gradient(rgba(0,0,0,.45),transparent 70%);opacity:${1 - k}"></div>`;
+    return `<div class="bg" style="background-image:url('${frame('curtain-bw')}')"></div>
+    ${k ? `<div class="abs" style="inset:0;opacity:${k}">${stack.replace(wal(T, T.h, null), '')}</div>` : shadow}
+    ${wal(mid, mid.w * 1131 / 1215, frame('tv-her-' + her))}
+    ${head ? `<div class="abs head" style="width:640px;font-size:92px;top:250px">${head}</div>` : ''}`;
+  }
   const [o, oh] = herOn === 'big' ? [W, Wh] : [T, T.h];
   const sx = o.x + o.w * 0.414, sy = o.y + oh * 0.63; // her screen's centre: the push-in goes through it
   return `<div class="bg" style="background-image:url('${frame('curtain-bw')}')"></div>
@@ -74,10 +84,11 @@ function tvs({ her, herOn = 'big', head, push }) {
 
 const stills = {
   // 0:00 cold open: the stack of TVs (her Style Board pin "Video transitions"): her real curtain in black and white,
-  // her own prop TVs in colour. She starts on the big walnut TV (the vertical take fits a TV), then jumps into the small top TV and the big
-  // TV switches to her inbox. CRT = the real ManyChat cost
+  // her own prop TVs in colour. It opens on ONE huge TV with just her (the vertical take fits a TV); on "My version" that TV shrinks into
+  // the small top slot as the stack appears, and the big walnut TV shows her inbox. CRT = the real ManyChat cost
   // calculator. On "Here's what I do" the camera pushes into her small TV and comes out on the wide hook.
-  '0a-tvs-hundreds': tvs({ her: '2.7', head: 'MANYCHAT:<br>UP TO <span class="sky">$100s</span><br>A MONTH' }),
+  '0a-tvs-hundreds': tvs({ her: '2.7', herOn: 'solo', head: 'MANYCHAT:<br>UP TO <span class="sky">$100s</span><br>A MONTH' }),
+  '0a2-tvs-shrink': tvs({ her: '7.0', herOn: 'shrink', head: '' }),
   '0b-tvs-six': tvs({ her: '7.0', herOn: 'small', head: 'MINE:<br><span class="sky">$6</span><br>A MONTH' }),
   '0c-tvs-push-in': tvs({ her: '10.3', herOn: 'small', head: '', push: true }),
   // 0:10 hook: ManyChat Pro on the left, hers on the right, ringed; hand note for "even if my computer is off".

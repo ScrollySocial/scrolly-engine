@@ -20,8 +20,9 @@ mkdirSync(OUT, { recursive: true });
 const intro = [0.34, 10.9], hook = [1.01, 4.67];
 const T0 = intro[1] - intro[0]; // the hook starts here (10.56 s)
 const total = T0 + hook[1] - hook[0];
-// Stills: [file, start, end]; the push-in is a 0.5 s crossfade from 0b into 0c, then a cut to the hook.
-const shots = [['0a-tvs-hundreds', 0, 5.0], ['0b-tvs-six', 5.0, 9.6], ['0c-tvs-push-in', 9.6, T0], ['1-side-statements', T0, total]];
+// Stills: [file, start, end]; the big TV shrinks into the stack (0a → 0a2 → 0b), the push-in is a 0.5 s crossfade
+// from 0b into 0c, then a cut to the hook.
+const shots = [['0a-tvs-hundreds', 0, 4.75], ['0a2-tvs-shrink', 4.75, 5.05], ['0b-tvs-six', 5.05, 9.6], ['0c-tvs-push-in', 9.6, T0], ['1-side-statements', T0, total]];
 // Sounds (word times from the 2066 transcript, minus 0.34). Never the same sound twice in a row.
 const fx = [
   ['mouse-click', 0.0, 0.8], ['static', 0.05, 0.5],   // big TV switches on
@@ -34,7 +35,7 @@ const fx = [
 
 const args = ['-v', 'error', '-y'];
 // the push-in still gets 0.5 s extra because the crossfade overlaps it with the still before
-shots.forEach(([f, a, b], i) => args.push('-loop', '1', '-t', String(b - a + (i === 2 ? 0.5 : 0)), '-i', path.join(SB, f + '.png')));
+shots.forEach(([f, a, b], i) => args.push('-loop', '1', '-t', String(b - a + (i === 3 ? 0.5 : 0)), '-i', path.join(SB, f + '.png')));
 args.push('-ss', String(intro[0]), '-t', String(T0), '-i', `${TAKES}/reels/IMG_2066.MOV`);
 args.push('-ss', String(hook[0]), '-t', String(hook[1] - hook[0]), '-i', `${TAKES}/youtube/IMG_2040.MOV`);
 args.push('-stream_loop', '-1', '-i', MUSIC);
@@ -45,7 +46,7 @@ for (const [name] of fx) if (name !== 'static') { fxIn.push(args.length); args.p
 
 const v = shots.map((_, i) => `[${i}:v]scale=1920:1080,fps=30,format=yuv420p,setsar=1,settb=1/30[v${i}]`);
 // 0b → 0c as a 0.5 s crossfade (the push-in), the rest are cuts
-v.push(`[v0][v1]concat=n=2:v=1:a=0,settb=1/30[ab]`, `[ab][v2]xfade=transition=fade:duration=0.5:offset=${shots[1][2] - 0.5}[abc]`, `[abc][v3]concat=n=2:v=1:a=0[vid]`);
+v.push(`[v0][v1][v2]concat=n=3:v=1:a=0,settb=1/30[ab]`, `[ab][v3]xfade=transition=fade:duration=0.5:offset=${shots[2][2] - 0.5}[abc]`, `[abc][v4]concat=n=2:v=1:a=0[vid]`);
 const a = [`[${vi}:a]aresample=48000[vo1]`, `[${hi}:a]aresample=48000[vo2]`, `[vo1][vo2]concat=n=2:v=0:a=1,loudnorm=I=-16:TP=-1.5[voice]`,
   `[${mi}:a]aresample=48000,atrim=0:${total},volume=0.07,afade=t=in:d=1.5,afade=t=out:st=${total - 1.95}:d=1.95[mus]`,
   `[${si}:a]aresample=48000,highpass=f=900,lowpass=f=7000,afade=t=in:d=0.02,afade=t=out:st=0.18:d=0.12,asplit=2[st0][st1]`];
