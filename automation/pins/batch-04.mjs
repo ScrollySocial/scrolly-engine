@@ -1,44 +1,53 @@
 // Batch 4 (2026-10-29): Pins for guide B7 (/guides/can-claude-answer-instagram-dms/) and the ManyChat Cost Calculator
 // (/calculators/manychat-cost/), both live 2026-10-29. Mix (Mercedes 2026-10-28: test photos, video and text-only):
-// 3 text-only list Pins (C), 2 graphic Pins with the live page on a phone (A, D), 1 photo (F), 1 video (E).
+// round 2: 3 text-only (G, no photo), 2 fresh photos (F), 1 fresh video (E).
 // Headlines land at a glance with no jargon (memory: Pin copy at a glance). Prices: manychat.com/pricing, checked 2026-10-28.
 // Schedule: a 4pm US Eastern slot next to batches 1 to 3; each link at least 3 days apart.
 // Usage: node batch-04.mjs   Output: pins/out/batch-04/ (PNG/MP4 per Pin, review.html, batch.json, sheet.png)
 import { writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { launch, fileUrl, esc } from '../carousels/lib/common.mjs';
-import { HERE, SITE, PAL, captureShots, renderPins, styleFor } from './lib/templates.mjs';
-import { composeVideoPin } from './lib/video.mjs';
+import { HERE, SITE, renderPins, ensureStock } from './lib/templates.mjs';
+import { composeVideoPin, ensureClips } from './lib/video.mjs';
 
 const OUT = path.join(HERE, 'out/batch-04');
 const P = (s) => `pexels-${s}`;
 const B = { dm: 'Instagram DM Automation', ai: 'AI Tools for Small Business' };
 const DMS = '/guides/can-claude-answer-instagram-dms/', CALC = '/calculators/manychat-cost/';
 
+// Fresh stock only (Mercedes 2026-10-29: no photo or clip already used on a Pin). Pexels, picked by Claude to her
+// stock rules (warm, cosy, real-looking, nobody posing at the camera).
+const STOCK = [
+  { id: P('17627337-phone-tea'), src: 'https://images.pexels.com/photos/17627337/pexels-photo-17627337.jpeg', page: 'https://www.pexels.com/photo/woman-hands-holding-tea-and-cellphone-17627337/', picked: 'Claude' },
+  { id: P('35962987-laptop-coffee'), src: 'https://images.pexels.com/photos/35962987/pexels-photo-35962987.jpeg', page: 'https://www.pexels.com/photo/young-woman-relaxing-with-coffee-and-laptop-35962987/', picked: 'Claude' },
+];
+const CLIPS = [{ id: P('v7131639-sleep-mask-texting'), src: 'https://www.pexels.com/download/video/7131639/', page: 'https://www.pexels.com/video/a-woman-using-her-smartphone-7131639/', picked: 'Claude' }];
+
+// Round 2 (Mercedes 2026-10-29): every Pin must stop the scroll; the calculator angle is what you could SAVE by leaving
+// ManyChat (we're not selling ManyChat), and text-only Pins use the bold label-bar look on a strong colour.
 const PINS = [
-  { id: 'd1-3-ways-c', link: DMS, layout: 'C', ...PAL.latte, num: '3', head: 'ways to automate', serif: 'your Instagram DMs', items: ['Keyword DMs on autopilot', 'AI drafts, you approve', 'Fully automatic replies'], board: B.dm,
-    title: '3 Ways to Automate Your Instagram DMs', desc: "Keyword DMs that send your link automatically, AI-written drafts you approve, or fully automatic replies. What each one costs, what Instagram allows, and the one I chose.", keywords: 'instagram dm automation, automate instagram dms, claude instagram dm automation, instagram auto reply' },
-  { id: 'c1-cost-a', link: CALC, layout: 'A', ...PAL.blush, big: ['What will', 'ManyChat cost?'], serif: 'for your audience size', chip: 'Free calculator', board: B.dm,
-    title: 'What Will ManyChat Cost You? Free Calculator', desc: 'Put in how many people comment or DM you each month. See the ManyChat plan you would need, what it costs a year, and what running your own setup costs instead.', keywords: 'manychat pricing, how much does manychat cost, manychat calculator, manychat alternative' },
-  { id: 'd2-password-f', link: DMS, layout: 'F', photo: P('12497427-laptop-bed'), hl: 'caveatbrush', board: B.ai, serif: 'Never give AI your Instagram password', sel: 'do this instead',
+  { id: 'e1-ai-dms-text', link: DMS, layout: 'G', ground: 'deeprose', scriptFont: 'grace', badge: 'Free guide', board: B.ai,
+    lines: [{ t: 'can AI answer', script: true }, { t: 'your' }, { t: 'Instagram' }, { t: 'DMs?', sky: true }, { t: "here's the truth", script: true }],
+    title: 'Can AI Answer Your Instagram DMs? Here Is the Truth', desc: "Can Claude answer your Instagram DMs? Not on its own. What you need to set it up the official way, Instagram's DM rules, and the three ways to run it.", keywords: 'can claude answer instagram dms, ai instagram dms, instagram dm automation, instagram dm rules' },
+  { id: 'e2-save-text', link: CALC, layout: 'G', ground: 'navy', scriptFont: 'grace', badge: 'Free calculator', board: B.dm,
+    lines: [{ t: 'how much could you', script: true }, { t: 'save', sky: true }, { t: 'leaving' }, { t: 'ManyChat?' }],
+    title: 'How Much Could You Save by Leaving ManyChat?', desc: 'Put in how many people comment or DM you each month. See what ManyChat costs you a year and what you could save running your own setup for about $6 a month.', keywords: 'manychat alternative, manychat pricing, save money small business, instagram automation cost' },
+  { id: 'e3-password-photo', link: DMS, layout: 'F', photo: P('17627337-phone-tea'), hl: 'caveatbrush', board: B.ai, serif: 'Never give AI your Instagram password', sel: 'do this instead',
     title: 'Never Give AI Your Instagram Password (Do This Instead)', desc: "Bots that log in and click around Instagram break its rules and can get your account restricted. Here's the official way to let Claude help with your DMs.", keywords: 'instagram dm policy, ai instagram automation, claude code instagram automation, instagram account safety' },
-  { id: 'c2-plans-c', link: CALC, layout: 'C', ...PAL.latte, num: '5', head: 'ManyChat plans', serif: 'and what each costs a month', items: ['Free: $0', 'Essential: $17', 'Pro: $39', 'Business: $99', 'Advanced: $199'], board: B.dm,
-    title: 'ManyChat Pricing: What Each Plan Costs a Month', desc: 'ManyChat charges by how many people you interact with each month: Free up to 25, Essential $17 for 250, Pro $39 for 2,500, Business $99 for 7,500, Advanced $199 for 25,000 (monthly billing). Work out yours free.', keywords: 'manychat pricing, manychat plans, manychat pro price, manychat cost per month' },
-  { id: 'd3-ai-dms-d', link: DMS, layout: 'D', ...PAL.navy, serif: 'Can AI answer your Instagram DMs?', sub: "What it can do, what Instagram allows, and what it can't.", btn_t: 'Read the guide', board: B.ai,
-    title: 'Can AI Answer Your Instagram DMs? What Instagram Allows', desc: "Can Claude answer your Instagram DMs? Not on its own. What you need to set it up the official way, Instagram's DM rules, and the three ways to run it.", keywords: 'can claude answer instagram dms, ai instagram dms, instagram dm rules, instagram dm automation' },
-  { id: 'c3-468-vs-72-c', link: CALC, layout: 'C', ...PAL.latte, num: '$396', head: 'saved a year', serif: 'at 1,000 people a month', items: ['ManyChat Pro: $468', 'My own setup: $72'], styleOverride: { marker: 'num' }, board: B.ai,
-    title: 'ManyChat Pro Is $468 a Year. My Own Setup Is $72.', desc: 'For 1,000 people a month, ManyChat Pro costs $468 a year on monthly billing. My own setup runs on a $6-a-month server, plus the Claude plan I already had. Work out your numbers free.', keywords: 'manychat pro, manychat pricing, manychat alternative, save money small business' },
-  { id: 'd4-auto-reply-e', link: DMS, layout: 'E', video: P('v7393135-typing'), cardTop: 860, pin: 'cream', hl: 'marker', board: B.dm, serif: 'Auto-reply to Instagram DMs', small: 'the way Instagram allows',
+  { id: 'e4-save-photo', link: CALC, layout: 'F', photo: P('35962987-laptop-coffee'), hl: 'marker', board: B.ai, serif: 'How much could you save by leaving ManyChat?', sel: 'calculate it now',
+    title: 'Leaving ManyChat? Calculate What You Could Save', desc: 'ManyChat charges more as more people message you. This free calculator shows your yearly ManyChat cost next to running your own setup for about $6 a month.', keywords: 'manychat cost, manychat calculator, manychat alternative, instagram dm automation cost' },
+  { id: 'e5-auto-reply-video', link: DMS, layout: 'E', video: P('v7131639-sleep-mask-texting'), cardTop: 900, pin: 'blue', hl: 'marker', board: B.dm, serif: 'Auto-reply to Instagram DMs', small: 'the way Instagram allows',
     title: 'Auto-Reply to Instagram DMs the Way Instagram Allows', desc: "Send your link automatically when someone comments a keyword, and get AI-drafted replies for everything else. Instagram's DM rules and how to stay inside them.", keywords: 'instagram auto reply, auto reply instagram dms, instagram dm automation, instagram dm policy' },
+  { id: 'e6-396-text', link: CALC, layout: 'G', ground: 'blush', scriptFont: 'grace', badge: 'Calculate yours', board: B.dm,
+    lines: [{ t: 'leaving ManyChat Pro?', script: true }, { t: '$396', sky: true }, { t: 'saved' }, { t: 'a year' }, { t: 'at 1,000 people a month', script: true }],
+    title: '$396 a Year Saved by Leaving ManyChat Pro', desc: 'At 1,000 people a month, ManyChat Pro is $468 a year on monthly billing. Your own setup runs on a $6-a-month server ($72 a year), plus a Claude plan. Work out your own numbers free.', keywords: 'manychat pro, manychat pricing, manychat alternative, save money small business' },
 ];
 
 // 4pm US Eastern: 20:00 UTC until Nov 1 (EDT), 21:00 UTC from Nov 2 (EST). Guide Pins and calculator Pins alternate days.
-const DAYS = ['2026-10-30', '2026-10-31', '2026-11-02', '2026-11-03', '2026-11-05', '2026-11-06', '2026-11-08'];
-const seenLayout = { A: 0, C: 0, D: 0 };
+const DAYS = ['2026-10-30', '2026-10-31', '2026-11-02', '2026-11-03', '2026-11-05', '2026-11-06'];
 PINS.forEach((p, i) => {
   p.date = `${DAYS[i]}T${DAYS[i] < '2026-11-02' ? '20' : '21'}:00:00`;
   p.id = `pin4-${String(i + 1).padStart(2, '0')}-${p.id}`;
-  if (p.layout in seenLayout) p.style = { ...styleFor(p.layout, 3 + seenLayout[p.layout]++), ...p.styleOverride }; // not batch 1's first looks; styleOverride: e.g. plain digits for a dollar number
 });
 const url = (p) => SITE + p.link + '?utm_source=pinterest';
 
@@ -55,12 +64,13 @@ for (const link of [DMS, CALC]) {
 if (new Set(PINS.map((p) => p.title)).size !== PINS.length) errs.push('duplicate titles');
 if (errs.length) { errs.forEach((e) => console.log('ERROR  ' + e)); process.exit(1); }
 
+await ensureStock(STOCK);
+await ensureClips(CLIPS);
 const browser = await launch();
-await captureShots(browser, [...new Set(PINS.filter((p) => ['A', 'D'].includes(p.layout)).map((p) => p.link))]);
 for (const w of await renderPins(browser, PINS, OUT)) console.log('WARN   ' + w);
 for (const p of PINS.filter((x) => x.video)) { composeVideoPin(p, OUT); console.log('video  ' + p.id); }
-const W = 7 * 236 + 24, sf = path.join(OUT, '.sheet.html');
-writeFileSync(sf, `<body style="margin:0;background:#fff;padding:12px;display:grid;grid-template-columns:repeat(7,224px);gap:12px;width:${W}px">${PINS.map((p) => `<img src="${fileUrl(path.join(OUT, p.id + '.png'))}" style="width:224px;border-radius:12px">`).join('')}</body>`);
+const W = 6 * 236 + 24, sf = path.join(OUT, '.sheet.html');
+writeFileSync(sf, `<body style="margin:0;background:#fff;padding:12px;display:grid;grid-template-columns:repeat(6,224px);gap:12px;width:${W}px">${PINS.map((p) => `<img src="${fileUrl(path.join(OUT, p.id + '.png'))}" style="width:224px;border-radius:12px">`).join('')}</body>`);
 const pg = await browser.newPage(); await pg.setViewport({ width: W, height: 400 });
 await pg.goto(fileUrl(sf), { waitUntil: 'load' }); await pg.screenshot({ path: path.join(OUT, 'sheet.png'), fullPage: true });
 await browser.close();

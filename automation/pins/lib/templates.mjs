@@ -212,7 +212,7 @@ export const F = (p) => {
 
 // G: stacked white label bars in a heavy sans, script lines between, a photo filling the bottom and a round dark badge
 // with a hand-drawn arrow pointing at it (her Levee Road "explode your Pinterest traffic" reference, 2026-10-28).
-// lines: [{ t, script: true } | { t }]
+// lines: [{ t, script: true } | { t, sky?: true }]. No photo = text-only: the block centres on the ground, badge bottom right.
 // scriptFont swaps Sacramento for another hand with room above and below (Mercedes 2026-10-28: Sacramento capitals were
 // hard to read and touched the bars; Caveat Brush was too small and not liked).
 const SCRIPT_FONTS = { caveatbrush: ["'Caveat Brush'", 120], marker: ["'Permanent Marker'", 104], grace: ["'Covered By Your Grace'", 170] };
@@ -228,8 +228,11 @@ export const G = (p) => {
   ${p.scriptFont && SCRIPT_FONTS[p.scriptFont] ? `.scr { font: 400 ${p.scriptSize || SCRIPT_FONTS[p.scriptFont][1]}px/1.05 ${SCRIPT_FONTS[p.scriptFont][0]}, cursive; margin: 14px 0 10px; }` : ''}
   .badge { position: absolute; right: 50px; bottom: ${(p.photoH || 520) - 250}px; width: 280px; height: 280px; border-radius: 50%; background: #2b2b2b; color: #fff; display: flex; align-items: center; justify-content: center; text-align: center; font: 800 40px/1.05 Jost; text-transform: uppercase; padding: 46px; transform: rotate(-10deg); z-index: 3; }
   .arr { position: absolute; left: 260px; bottom: ${(p.photoH || 520) - 140}px; width: 360px; height: 120px; background: #fff; filter: drop-shadow(0 3px 8px rgba(0,0,0,.65)); -webkit-mask: url('${ARROW}') center/100% 100% no-repeat; mask: url('${ARROW}') center/100% 100% no-repeat; mask-mode: luminance; transform: rotate(10deg); z-index: 3; }
-</style><div class="photo"></div><div class="h">${p.lines.map((l) => (l.script ? `<div class="scr">${esc(l.t)}</div>` : `<div><span class="bar">${esc(l.t)}</span></div>`)).join('')}</div>
-${p.arrow === false ? "" : `<div class="arr"></div>`}<div class="badge">${esc(p.badge)}</div><div class="dom">${DOMAIN}</div>`;
+  ${p.photo ? '' : `/* text-only (Mercedes 2026-10-29: keep text-only Pins in every batch): block centred on a strong ground */
+  .h { top: 50%; transform: translateY(-54%); } .scr { color: ${g.dark ? g.accent : g.ink}; } .bar.sky { background: #4da3ff; }
+  .badge { bottom: 70px; right: 60px; ${g.dark ? 'background: #4da3ff; color: #0a1930;' : ''} } .dom { color: ${g.dark ? '#fff' : g.ink}; }`}
+</style>${p.photo ? '<div class="photo"></div>' : ''}<div class="h">${p.lines.map((l) => (l.script ? `<div class="scr">${esc(l.t)}</div>` : `<div><span class="bar${l.sky ? ' sky' : ''}">${esc(l.t)}</span></div>`)).join('')}</div>
+${p.arrow === false || !p.photo ? "" : `<div class="arr"></div>`}<div class="badge">${esc(p.badge)}</div><div class="dom">${DOMAIN}</div>`;
 };
 
 // H: a cream graphic with a serif headline, one panel showing a video (or photo) of a person, and handwritten notes with
@@ -337,6 +340,11 @@ export async function renderPins(browser, pins, outDir) {
       for (const el of document.querySelectorAll('.bar, .scr')) { let fs = parseFloat(getComputedStyle(el).fontSize); while (el.getBoundingClientRect().width > 940 && fs > 40) { fs -= 4; el.style.fontSize = fs + 'px'; } }
       // G: the whole text block must end above the photo (110px spare: script descenders hang below the line box); shrink bars and script lines together until it does.
       const gph = document.querySelector('.photo');
+      // Text-only G: shrink until the block fits the Pin's width and stays clear of the badge.
+      if (!gph && document.querySelector('.bar')) { for (const e of document.querySelectorAll('.scr')) { let fs = parseFloat(getComputedStyle(e).fontSize); while (e.scrollWidth > e.clientWidth + 2 && fs > 50) { fs -= 3; e.style.fontSize = fs + 'px'; } }
+        let k = 1; const parts = [...document.querySelectorAll('.bar, .scr')].map((e) => [e, parseFloat(getComputedStyle(e).fontSize)]);
+        const tooBig = () => { const r = h.getBoundingClientRect(); return [...document.querySelectorAll('.bar, .scr')].some((e) => e.scrollWidth > e.clientWidth + 2 || e.getBoundingClientRect().right > 975 || e.getBoundingClientRect().left < 25) || r.bottom > 1150 || r.top < 110; };
+        while (tooBig() && k > .4) { k -= .03; parts.forEach(([e, s]) => { e.style.fontSize = s * k + 'px'; }); } }
       if (gph) { let k = 1; const parts = [...document.querySelectorAll('.bar, .scr')].map((e) => [e, parseFloat(getComputedStyle(e).fontSize)]);
         while (h.getBoundingClientRect().bottom > gph.getBoundingClientRect().top - 110 && k > .5) { k -= .03; parts.forEach(([e, s]) => { e.style.fontSize = s * k + 'px'; }); } }
       for (const b of document.querySelectorAll('.badge')) { let fs = parseFloat(getComputedStyle(b).fontSize); while ((b.scrollWidth > b.clientWidth || b.scrollHeight > b.clientHeight) && fs > 20) { fs -= 2; b.style.fontSize = fs + 'px'; } }
