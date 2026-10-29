@@ -54,30 +54,32 @@ const arrow = (x, y, w, r = 0, color = C.navy) => `<svg class="abs" style="left:
 const PROPS = path.join(HERE, '../../reel-template-pack/build/.cache/hq');
 const prop = (n) => url(path.join(PROPS, n + '.png'));
 const screen = (src, x, y, w, h, r) => `<div class="abs" style="left:${x}px;top:${y}px;width:${w}px;height:${h}px;border-radius:${r};overflow:hidden;background:#1d1f22">${src ? `<div class="abs" style="inset:0;background:url('${src}') center/cover"></div><div class="abs scan"></div><div class="abs glare"></div>` : `<div class="abs" style="inset:0;background:radial-gradient(#3a3d42,#15171a)"></div><div class="abs glare"></div>`}</div>`;
-function tvs({ her, top, head, push }) {
-  const W = { x: 230, y: 333, w: 760 }, Wh = W.w * 1131 / 1215;            // walnut TV, bottom left: her
+function tvs({ her, herOn = 'big', head, push }) {
+  const W = { x: 230, y: 333, w: 760 }, Wh = W.w * 1131 / 1215;            // walnut TV, bottom left: her, then her inbox
   const R = { x: 1010, w: 660 }; R.h = R.w * 1062 / 1163; R.y = 1040 - R.h;  // CRT, bottom right: the calculator
-  const T = { w: 440 }; T.h = T.w * 1131 / 1215; T.x = 1090; T.y = R.y - T.h + 14; // small walnut on top of the CRT: inbox
+  const T = { w: 440 }; T.h = T.w * 1131 / 1215; T.x = 1090; T.y = R.y - T.h + 14; // small walnut on top of the CRT: off, then her
   const wal = (o, hh, src) => `<img class="abs" src="${prop('Vintage Walnut Rabbit-Ear Television')}" style="left:${o.x}px;top:${o.y}px;width:${o.w}px">` +
     screen(src, o.x + o.w * 0.095, o.y + hh * 0.39, o.w * 0.638, hh * 0.48, '7%/10%');
   const stack = `<div class="abs" style="left:150px;right:180px;top:1010px;height:60px;border-radius:50%;background:radial-gradient(rgba(0,0,0,.45),transparent 70%)"></div>
-    ${wal(W, Wh, frame('tv-her-' + her))}
+    ${wal(W, Wh, herOn === 'big' ? frame('tv-her-' + her) : url(path.join(CACHE, 'screens', 'tv-inbox.png')))}
     <img class="abs" src="${prop('Beige CRT monitor with green screen-56')}" style="left:${R.x}px;top:${R.y}px;width:${R.w}px">
     ${screen(url(path.join(CACHE, 'screens', 'tv-calc.png')), R.x + R.w * 0.066, R.y + R.h * 0.105, R.w * 0.588, R.h * 0.602, '4%')}
-    ${wal(T, T.h, top ? url(path.join(CACHE, 'screens', 'tv-inbox.png')) : null)}`;
-  const sx = W.x + W.w * 0.414, sy = W.y + Wh * 0.63; // her screen's centre: the push-in goes through it
+    ${wal(T, T.h, herOn === 'small' ? frame('tv-her-' + her) : null)}`;
+  const [o, oh] = herOn === 'big' ? [W, Wh] : [T, T.h];
+  const sx = o.x + o.w * 0.414, sy = o.y + oh * 0.63; // her screen's centre: the push-in goes through it
   return `<div class="bg" style="background-image:url('${frame('curtain-bw')}')"></div>
-    <div class="abs" style="inset:0;${push ? `transform-origin:${sx}px ${sy}px;transform:translate(${960 - sx}px,${540 - sy}px) scale(3.2)` : ''}">${stack}</div>
+    <div class="abs" style="inset:0;${push ? `transform-origin:${sx}px ${sy}px;transform:translate(${960 - sx}px,${540 - sy}px) scale(${herOn === 'big' ? 3.2 : 6})` : ''}">${stack}</div>
     ${head ? `<div class="abs head">${head}</div>` : ''}`;
 }
 
 const stills = {
   // 0:00 cold open: the stack of TVs (her Style Board pin "Video transitions"): her real curtain in black and white,
-  // her own prop TVs in colour. Big walnut TV = her (the vertical Reel take fits a TV), CRT = the real ManyChat cost
-  // calculator, small top TV = her inbox. On "Here's what I do" the camera pushes into her TV and comes out on the wide hook.
-  '0a-tvs-hundreds': tvs({ her: '2.7', top: null, head: 'MANYCHAT:<br>UP TO <span class="sky">$100s</span><br>A MONTH' }),
-  '0b-tvs-six': tvs({ her: '7.0', top: 'inbox', head: 'MINE:<br><span class="sky">$6</span><br>A MONTH' }),
-  '0c-tvs-push-in': tvs({ her: '10.3', top: 'inbox', head: '', push: true }),
+  // her own prop TVs in colour. She starts on the big walnut TV (the vertical take fits a TV), then jumps into the small top TV and the big
+  // TV switches to her inbox. CRT = the real ManyChat cost
+  // calculator. On "Here's what I do" the camera pushes into her small TV and comes out on the wide hook.
+  '0a-tvs-hundreds': tvs({ her: '2.7', head: 'MANYCHAT:<br>UP TO <span class="sky">$100s</span><br>A MONTH' }),
+  '0b-tvs-six': tvs({ her: '7.0', herOn: 'small', head: 'MINE:<br><span class="sky">$6</span><br>A MONTH' }),
+  '0c-tvs-push-in': tvs({ her: '10.3', herOn: 'small', head: '', push: true }),
   // 0:10 hook: ManyChat Pro on the left, hers on the right, ringed; hand note for "even if my computer is off".
   '1-side-statements': `<div class="bg" style="background-image:url('${frame('IMG_2040')}')"></div>
     <div class="card" style="left:20px;top:250px;rotate:-2deg"><div class="lbl" style="font-size:38px">MANYCHAT PRO</div><div class="num xl">$39<small>/mo</small></div></div>
