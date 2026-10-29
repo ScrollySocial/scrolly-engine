@@ -14,7 +14,7 @@ calculator, real comment/DM screens; no drawn "app" mockups, no AI images. Doodl
 ## Her storyboard notes (2026-10-29)
 - **Nothing white on the curtain.** White handwriting and doodles disappear into the pattern: handwritten asides are navy
   on a paper note, arrows and ✗ are navy with a paper outline, rings on footage get a navy edge.
-- **HUGE at the start.** The first 30 s hooks with giant type: "$100s every month" as a full-frame navy beat, a giant
+- **HUGE at the start.** The first 30 s hooks with giant type: word-by-word punches (she picked these over a full-frame navy beat), a giant
   "$6" filling the left side of the tight cold-open shot, and the hook prices at 250 px on their cards.
 - Cold-open crop fixed: cropY 0.58 (0.18 showed only her hairline).
 
@@ -33,7 +33,7 @@ calculator, real comment/DM screens; no drawn "app" mockups, no AI images. Doodl
 ## Beat by beat
 | Time | Beat (takes) | On screen |
 | --- | --- | --- |
-| 0:00 | **Cold open** (Reel intro 2066, same blue top) "ManyChat could cost you up to hundreds of dollars a month. Mine costs $6..." | First line as a full-frame navy beat: "MANYCHAT: UP TO / $100s / every month", huge. Then her tight shot with a giant navy "$6" (paper outline) slamming into the left side. On "own all the data": paper note "my server, my list". Quick title card: **I replaced ManyChat with Claude**. |
+| 0:00 | **Cold open** (Reel intro 2066, same blue top) "ManyChat could cost you up to hundreds of dollars a month. Mine costs $6..." | Word-by-word punches on her tight shot, huge navy serif with a paper outline, each timed to her voice and placed on whichever side of her face is open: "$100s" (2.5 s) + "a month" (3.7 s), clear, "$6" (6.9 s) + "your data" (9.4 s). No navy card. On "own all the data": paper note "my server, my list". Quick title card: **I replaced ManyChat with Claude**. |
 | 0:10 | **Hook** (2040) "$39 a month... I built one myself, $6" | Left: "$39/mo" (ManyChat Pro). Right: "$6/mo" (mine), ringed. "Even if my computer is off": hand note with an arrow, "still runs". |
 | 0:37 | **1. Why I wouldn't pay** (2039, 2041, 2043) | Chapter card. **Real ManyChat pricing page** (screenshot, dated "checked Oct 28, 2026") slides in from the side; drawn ring around Free 25 contacts, then Pro $39 up to 2,500. Paper checklist: "Free: 25 contacts ✓ · 4 live automations ✗". "Not as bad as it sounds" → hand aside. |
 | 1:35 | **2. What "replace with Claude" means** (2044) | Chapter card. Full-screen **how-it-works strip** built from 3 real things: Claude Code window → n8n workflow on a $6 server → Instagram. Each lights up as she names it. "Evening restart" story: hand note "comment at 2am? still answered". |

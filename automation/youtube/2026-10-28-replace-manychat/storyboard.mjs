@@ -46,15 +46,18 @@ const arrowPath = (color, w) => `<path d="M8 12 C40 4 86 18 98 64" fill="none" s
 const arrow = (x, y, w, r = 0, color = C.navy) => `<svg class="abs" style="left:${x}px;top:${y}px;width:${w}px;height:${w * 0.75}px;rotate:${r}deg;overflow:visible" viewBox="0 0 120 90">${arrowPath(C.paper, 14)}${arrowPath(color, 6)}</svg>`;
 
 const stills = {
-  // 0:00 cold open, first 2 s: "ManyChat could cost you up to hundreds of dollars every single month" as a graphics-only beat, HUGE.
-  '0a-cold-open-hundreds': `<div class="abs" style="inset:0;background:${C.navy}"></div>
-    <div class="abs" style="left:0;right:0;top:120px;text-align:center;font:700 64px/1 Fig;letter-spacing:.2em;color:${C.sky}">MANYCHAT: UP TO</div>
-    <div class="abs" style="left:0;right:0;top:250px;text-align:center;font:400 400px/.9 Serif;color:${C.cream};letter-spacing:-.02em">$100s</div>
-    <div class="abs" style="left:0;right:0;top:700px;text-align:center;font:400 150px/1 Serif;color:${C.cream}">every month</div>`,
-  // 0:05 "My version costs only $6": back on her tight shot, a giant $6 slams into the left side (never over her face).
-  '0b-cold-open-six': `<div class="bg" style="background-image:url('${frame('IMG_2066')}')"></div>
-    <div class="giant" style="left:-16px;top:230px">$6</div>
-    <div class="hand note" style="left:1500px;top:640px;rotate:4deg;font-size:62px">my server,<br>my list</div>`,
+  // 0:00 cold open: word-by-word punches on her tight shot, each word huge and timed to her voice, around her head (never over her face).
+  // She moves in this take: each word goes on whichever side is open at that moment.
+  '0a-punch-hundreds': `<div class="bg" style="background-image:url('${frame('IMG_2066_2.7')}')"></div>
+    <div class="giant " style="left:14px;top:330px;font-size:250px;rotate:-4deg">$100s</div>`,
+  '0b-punch-month': `<div class="bg" style="background-image:url('${frame('IMG_2066_4.5')}')"></div>
+    <div class="giant " style="left:14px;top:330px;font-size:250px;rotate:-4deg">$100s</div>
+    <div class="giant " style="left:20px;top:600px;font-size:185px;rotate:3deg">a month</div>`,
+  '0c-punch-six': `<div class="bg" style="background-image:url('${frame('IMG_2066_7.0')}')"></div>
+    <div class="giant " style="left:-16px;top:230px">$6</div>`,
+  '0d-punch-data': `<div class="bg" style="background-image:url('${frame('IMG_2066_9.5')}')"></div>
+    <div class="giant " style="left:-16px;top:230px">$6</div>
+    <div class="giant " style="left:1520px;top:440px;font-size:160px;line-height:.85;rotate:3deg">your<br>data</div>`,
   // 0:10 hook: ManyChat Pro on the left, hers on the right, ringed; hand note for "even if my computer is off".
   '1-side-statements': `<div class="bg" style="background-image:url('${frame('IMG_2040')}')"></div>
     <div class="card" style="left:20px;top:250px;rotate:-2deg"><div class="lbl" style="font-size:38px">MANYCHAT PRO</div><div class="num xl">$39<small>/mo</small></div></div>
