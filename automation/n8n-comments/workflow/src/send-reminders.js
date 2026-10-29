@@ -28,7 +28,7 @@ try {
 for (const f of delivery) {
   const k = keywords.find((x) => x.keyword === f.keyword);
   if (!k?.afterSignup?.dm || !f.dmPersonId) continue;
-  const text = k.afterSignup.dm.replace('{url}', k.url);
+  const text = k.afterSignup.dm.replace('{url}', await trackedUrl(k, 'after', f.token, f.freebieUrl));
   let result = 'test';
   if (!DRY_RUN) {
     try {

@@ -22,7 +22,7 @@ export function seed(cfg, data) {
   }));
   writeFileSync(join(cfg, 'keywords-all.json'), JSON.stringify({ keywords: [
     { keyword: 'PATTERN', freebie: 'Free tote bag pattern', url: 'https://example.com/tote.pdf', live: true, dmApproved: true, delivery: 'email', where: { igComments: true, igDms: true }, ask: { on: true, text: 'Want the free pattern? Reply READY and I\'ll send it over.', word: 'READY' }, linkText: 'Here you go! Pop in your email and it opens right away: {link}', signup: { headline: 'Get your free tote bag pattern', text: 'Pop in your email and you can open it right away.' }, reminder: { on: true, minutes: 60, text: 'Just checking you got this. Your link is still here: {link}' }, afterSignup: { dm: 'Here\'s your pattern, as promised: {url}' }, list: {} },
-    { keyword: 'FABRIC', freebie: 'Fabric cheat sheet', url: 'https://example.com/fabric.pdf', live: true, dmApproved: true, delivery: 'email', where: { igComments: true, igDms: true }, ask: { on: true, text: 'Want the fabric cheat sheet right here, or by email so it’s saved in your inbox?', word: 'READY' }, choice: { on: true, here: 'Send it here', email: 'By email' }, dm: 'Here you go! {url}', linkText: 'Pop in your email and it opens right away: {link}', signup: { headline: 'Get the fabric cheat sheet' }, reminder: { on: true, minutes: 60, text: 'Just checking you got this. Your link is still here: {link}' }, afterSignup: { dm: 'Here it is, as promised: {url}' }, publicReply: { on: true, text: 'Sent you a DM! 💌' }, list: {} },
+    { keyword: 'FABRIC', freebie: 'Fabric cheat sheet', url: 'https://example.com/fabric.pdf', live: true, dmApproved: true, delivery: 'email', where: { igComments: true, igDms: true }, ask: { on: true, text: 'Want the fabric cheat sheet right here, or by email so it’s saved in your inbox?', word: 'READY' }, choice: { on: true, here: 'Send it here', email: 'By email' }, dm: 'Here you go! {url}', linkText: 'Pop in your email and it opens right away: {link}', signup: { headline: 'Get the fabric cheat sheet' }, reminder: { on: true, minutes: 60, text: 'Just checking you got this. Your link is still here: {link}' }, afterSignup: { dm: 'Here it is, as promised: {url}' }, publicReply: { on: true, text: 'Sent you a DM! 💌' }, questions: [{ text: 'What do you sew most?', answers: [{ label: 'Bags', url: '' }, { label: 'Clothes', url: '' }, { label: 'Quilts', url: 'https://example.com/quilting-fabric.pdf' }] }], list: {} },
     { keyword: 'SIZES', freebie: 'Size chart', url: 'https://example.com/sizes', live: true, dmApproved: true, delivery: 'direct', where: { igComments: true, igDms: true }, dm: 'Here\'s the size chart: {url}' },
   ] }));
   writeFileSync(join(cfg, 'pages', 'privacy.html'), '<h1>Privacy policy</h1><p>Demo page.</p><h2 id="delete-your-data">Delete your data</h2><p>Email hello@example.com.</p>');
@@ -32,6 +32,7 @@ export function seed(cfg, data) {
   const events = [];
   const flows = [];
   const subscribers = [];
+  const links = [];
   for (let d = 59; d >= 1; d--) {
     const n = d < 30 ? 2 + ((d * 7) % 5) : 1 + ((d * 3) % 3);
     for (let i = 0; i < n; i++) {
@@ -40,6 +41,8 @@ export function seed(cfg, data) {
       const keyword = pick === 3 ? 'SIZES' : 'PATTERN';
       const post = POSTS[pick === 3 ? 2 : pick % 2];
       events.push({ at, keyword, platform: 'Instagram', post, result: 'sent' });
+      // SIZES sends its link straight in the DM: about two in three people open it.
+      if (keyword === 'SIZES') links.push({ id: `demoS${d}x${i}`, keyword, flow: '', kind: 'direct', at, clicks: (d + i) % 3 ? 1 : 0, ...((d + i) % 3 ? { clickedAt: at } : {}) });
       if (keyword !== 'PATTERN') continue;
       const signed = (d + i) % 3 !== 0;
       const author = `maker${d}${i}.demo`;
@@ -59,13 +62,20 @@ export function seed(cfg, data) {
     const who = `sewer${d}.demo`;
     const way = d % 5 === 0 ? 'asked' : d % 2 ? 'here' : 'email';
     events.push({ at, keyword: 'FABRIC', platform: 'Instagram', post: POSTS[1], result: 'sent' });
-    const base = { token: `demoFab${String(d).padStart(4, '0')}`, keyword: 'FABRIC', platform: 'Instagram', personId: `f${d}`, dmPersonId: `f${d}`, author: who, post: POSTS[1], history: [], createdAt: at, askedAt: at };
+    const sews = ['Bags', 'Clothes', 'Quilts'][d % 3];
+    const token = `demoFab${String(d).padStart(4, '0')}`;
+    const base = { token, keyword: 'FABRIC', platform: 'Instagram', personId: `f${d}`, dmPersonId: `f${d}`, author: who, post: POSTS[1], history: [], createdAt: at, askedAt: at };
+    const answered = { questionAt: at, answers: [{ q: 'What do you sew most?', a: sews }], ...(sews === 'Quilts' ? { freebieUrl: 'https://example.com/quilting-fabric.pdf' } : {}) };
     if (way === 'asked') flows.push({ ...base, step: 'asked' });
-    else if (way === 'here') flows.push({ ...base, step: 'sentHere', sentHereAt: at });
+    else if (way === 'here') {
+      flows.push({ ...base, ...answered, step: 'sentHere', sentHereAt: at });
+      links.push({ id: `demoL${token}`, keyword: 'FABRIC', flow: token, kind: 'here', at, clicks: d % 3 ? 1 : 0, ...(d % 3 ? { clickedAt: at } : {}) });
+    }
     else {
       const signed = d % 4 !== 0;
-      flows.push({ ...base, step: signed ? 'signedUp' : 'clicked', linkSentAt: at, clickedAt: at, ...(signed ? { signedUpAt: at, deliveredAt: at, email: `sewer${d}@example.com` } : { remindedAt: at }) });
-      if (signed) subscribers.push({ id: `fab${String(d).padStart(13, '0')}`, email: `sewer${d}@example.com`, keyword: 'FABRIC', freebie: 'Fabric cheat sheet', platform: 'Instagram', consent, at, status: 'kept', provider: 'builtin' });
+      if (signed) links.push({ id: `demoA${token}`, keyword: 'FABRIC', flow: token, kind: 'after', at, clicks: 1, clickedAt: at });
+      flows.push({ ...base, ...answered, step: signed ? 'signedUp' : 'clicked', linkSentAt: at, clickedAt: at, ...(signed ? { signedUpAt: at, deliveredAt: at, email: `sewer${d}@example.com` } : { remindedAt: at }) });
+      if (signed) subscribers.push({ id: `fab${String(d).padStart(13, '0')}`, email: `sewer${d}@example.com`, keyword: 'FABRIC', freebie: 'Fabric cheat sheet', platform: 'Instagram', consent, at, status: 'kept', provider: 'builtin', answers: answered.answers });
     }
   }
   subscribers.sort((a, b) => b.at.localeCompare(a.at));
@@ -87,6 +97,7 @@ export function seed(cfg, data) {
     events,
     flows,
     subscribers,
+    links,
     // Local demo password (the public demo needs none): demo-password
     auth: { salt: 'demo', hash: scryptSync('demo-password', 'demo', 64).toString('hex'), setAt: ago(1) },
     sessions: {},

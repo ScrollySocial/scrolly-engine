@@ -35,6 +35,9 @@ async function waitFor(fn, ms = 30000) {
   }
   return null;
 }
+// A freebie link in a DM goes through the inbox's click counter.
+const GO = /http:\/\/localhost:5691\/inbox\/go\/[A-Za-z0-9_-]{8,20}/;
+const goLink = (text, before) => (String(text || '').startsWith(before) && GO.test(String(text).slice(before.length)) ? String(text).match(GO)[0] : '');
 const sentDms = (log) => log.log.filter((x) => x.path.startsWith('/graph/') && x.path.endsWith('/messages'));
 
 function igEvent(comments) {
@@ -81,7 +84,7 @@ await waitFor(async () => (await rows()).length >= 3);
 log = await mockLog();
 const dms = sentDms(log);
 check('Two keyword DMs sent (c1, c2), none to her own comment', dms.length === 2 && dms.every((d) => ['c1', 'c2'].includes(d.body.recipient.comment_id)), JSON.stringify(dms.map((d) => d.body)));
-check('DM text has the freebie link', dms[0]?.body.message.text === 'Here you go: https://example.com/pins.pdf');
+check('DM text has the freebie link (through the click counter)', !!goLink(dms[0]?.body.message.text, 'Here you go: '), dms[0]?.body.message.text);
 check('DM uses the Instagram token', dms[0]?.auth === 'Bearer test-ig-token', dms[0]?.auth);
 let all = await rows();
 const ig = all.filter((x) => x.platform === 'Instagram');
@@ -198,7 +201,7 @@ await waitFor(async () => !!(await byComment('dm1')));
 log = await mockLog();
 const dmReply = sentDms(log).slice(dmsBefore);
 const dm1 = await byComment('dm1');
-check('Keyword DM gets the freebie back by DM (to the sender, not a comment)', dmReply.length === 1 && dmReply[0].body.recipient.id === '555' && dmReply[0].body.message.text === 'Here you go: https://example.com/pins.pdf', JSON.stringify(dmReply.map((d) => d.body)));
+check('Keyword DM gets the freebie back by DM (to the sender, not a comment)', dmReply.length === 1 && dmReply[0].body.recipient.id === '555' && !!goLink(dmReply[0].body.message.text, 'Here you go: '), JSON.stringify(dmReply.map((d) => d.body)));
 check('Keyword DM row: kind dm, Handled, username looked up', dm1?.kind === 'dm' && dm1?.status === 'Handled' && dm1?.author === 'user555', JSON.stringify(dm1));
 // Instagram echoes the freebie DM back: it must not show twice.
 await postIg(dmEvent([{ sender: { id: IG_ID }, recipient: { id: '555' }, timestamp: Date.now(), message: { mid: dmReply[0] ? `mid-sent-${dmsBefore + 1}` : 'x', text: 'Here you go', is_echo: true } }]));
@@ -244,8 +247,9 @@ check('Stats count keyword comments and DMs sent per keyword and post', pinsStat
 // 13. Freebie flow: comment FREE → "reply READY" → READY → personal link → signup page → MailerLite → reminder
 const freeKw = { keyword: 'FREE', freebie: 'Free guide', url: 'https://example.com/free.pdf', live: true, dmApproved: true, delivery: 'email', where: { igComments: true, igDms: true }, ask: { on: true, text: 'Want it? Reply READY.', word: 'READY' }, linkText: 'Grab it here: {link}', mailerliteGroup: '111', reminder: { on: true, minutes: 60, text: 'Still want it? {link}' }, afterSignup: { dm: 'Here it is: {url}' }, publicReply: { on: true, text: 'Sent you a DM!\nCheck your DMs!' }, followGate: { on: true, text: 'Follow me first, then reply READY again.' } };
 const chooseKw = { keyword: 'CHOOSE', freebie: 'Choice guide', url: 'https://example.com/choose.pdf', dm: 'Here you go: {url}', live: true, dmApproved: true, delivery: 'email', where: { igComments: true, igDms: true }, ask: { on: true, text: 'Want it here or by email?', word: 'READY' }, linkText: 'Pop in your email: {link}', mailerliteGroup: '111', choice: { on: true, here: 'Send it here', email: 'By email' } };
+const askKw = { keyword: 'ASKME', freebie: 'Ask guide', url: 'https://example.com/ask.pdf', dm: 'Here you go: {url}', live: true, dmApproved: true, delivery: 'email', where: { igComments: true, igDms: true }, ask: { on: true, text: 'Want it? Reply READY.', word: 'READY' }, linkText: 'Sign up here: {link}', mailerliteGroup: '111', questions: [{ text: 'What do you sell?', answers: [{ label: 'Clothes' }, { label: 'Food', url: 'https://example.com/food.pdf' }] }, { text: 'How big is your list?', answers: [{ label: 'Under 100' }, { label: 'Over 100' }] }] };
 const ytKw = { keyword: 'YTK', freebie: 'YouTube guide', url: 'https://example.com/yt.pdf', live: true, dmApproved: true, delivery: 'email', where: { igComments: false, igDms: false, ytComments: true }, linkText: 'Grab it here: {link}', mailerliteGroup: '111', yt: { text: 'Grab it here: {link}' } };
-r = await fetch(`${INBOX}/inbox/api/keywords`, { method: 'PUT', headers: INBOX_KEY, body: JSON.stringify({ keywords: [freeKw, ytKw, chooseKw] }) });
+r = await fetch(`${INBOX}/inbox/api/keywords`, { method: 'PUT', headers: INBOX_KEY, body: JSON.stringify({ keywords: [freeKw, ytKw, chooseKw, askKw] }) });
 check('Flow keyword saved in the dashboard', r.status === 200, await r.text());
 const dmCount = async () => sentDms(await mockLog()).length;
 let before = await dmCount();
@@ -295,7 +299,14 @@ await postIg(dmEvent([{ sender: { id: '444' }, recipient: { id: IG_ID }, timesta
 await waitFor(async () => (await dmCount()) > before);
 last = sentDms(await mockLog()).pop();
 let ivy = ((await inbox('/flows?personId=444')).flows || [])[0];
-check('Tapped "Send it here": the freebie link by DM, flow done at "sent here"', last?.body.recipient.id === '444' && last?.body.message.text === 'Here you go: https://example.com/choose.pdf' && ivy?.step === 'sentHere', JSON.stringify({ msg: last?.body, step: ivy?.step }));
+const hereLink = goLink(last?.body.message.text, 'Here you go: ');
+check('Tapped "Send it here": the freebie link by DM, flow done at "sent here"', last?.body.recipient.id === '444' && !!hereLink && ivy?.step === 'sentHere', JSON.stringify({ msg: last?.body, step: ivy?.step }));
+let go = await fetch(hereLink, { redirect: 'manual', headers: { 'User-Agent': 'facebookexternalhit/1.1' } });
+check('Instagram\'s link preview goes to the freebie but isn\'t counted as a click', go.status === 302 && go.headers.get('location') === 'https://example.com/choose.pdf' && !((await inbox('/flows?personId=444')).flows || [])[0]?.freebieClickedAt);
+go = await fetch(hereLink, { redirect: 'manual' });
+const ivyClicked = ((await inbox('/flows?personId=444')).flows || [])[0];
+check('Opening the DM link: counted once, then on to the freebie', go.status === 302 && go.headers.get('location') === 'https://example.com/choose.pdf' && !!ivyClicked?.freebieClickedAt && ivyClicked.history.some((h) => h.step === 'freebieClicked'), JSON.stringify(ivyClicked?.history));
+check('An unknown click link shows "expired"', (await fetch(`${INBOX}/inbox/go/notarealid123`, { redirect: 'manual' })).status === 404);
 check('The button tap is Handled (no reply needed)', (await waitFor(async () => (await byComment('dm60'))?.status === 'Handled')) === true);
 before = await dmCount();
 await postIg(dmEvent([{ sender: { id: '445' }, recipient: { id: IG_ID }, timestamp: Date.now(), message: { mid: 'dm61', text: 'choose' } }]));
@@ -313,6 +324,41 @@ r = await fetch(`${INBOX}/inbox/api/keywords`, { method: 'PUT', headers: INBOX_K
 check('"Let them choose" without {url} in the "Send it here" DM is refused', r.status === 400);
 const chooseStats = (await inbox('/stats?days=30')).keywords.find((k) => k.keyword === 'CHOOSE');
 check('Stats count both answers: 2 asked, 1 sent here, 1 got the signup link', chooseStats?.funnel?.asked === 2 && chooseStats.funnel.sentHere === 1 && chooseStats.funnel.linkSent === 1, JSON.stringify(chooseStats?.funnel));
+check('Stats count the "Send it here" link: 1 sent, 1 opened', chooseStats?.links?.here?.sent === 1 && chooseStats.links.here.clicked === 1, JSON.stringify(chooseStats?.links));
+
+// 13d. Questions: READY → two questions with buttons (answers saved) → the signup link; an answer picks the freebie
+before = await dmCount();
+await postIg(igEvent([{ id: 'c70', text: 'ASKME', from: { id: '321', username: 'quinn' }, media: { id: 'media1' } }]));
+await waitFor(async () => (await dmCount()) > before);
+before = await dmCount();
+await postIg(dmEvent([{ sender: { id: '321' }, recipient: { id: IG_ID }, timestamp: Date.now(), message: { mid: 'dm70', text: 'READY' } }]));
+await waitFor(async () => (await dmCount()) > before);
+last = sentDms(await mockLog()).pop();
+check('READY with questions: the first question, its answers as buttons', last?.body.recipient.id === '321' && last?.body.message.text === 'What do you sell?' && last.body.message.quick_replies?.map((q) => `${q.title}=${q.payload}`).join() === 'Clothes=CM_Q:ASKME:0:0,Food=CM_Q:ASKME:0:1', JSON.stringify(last?.body));
+before = await dmCount();
+await postIg(dmEvent([{ sender: { id: '321' }, recipient: { id: IG_ID }, timestamp: Date.now(), message: { mid: 'dm71', text: 'Food', quick_reply: { payload: 'CM_Q:ASKME:0:1' } } }]));
+await waitFor(async () => (await dmCount()) > before);
+last = sentDms(await mockLog()).pop();
+let quinn = ((await inbox('/flows?personId=321')).flows || [])[0];
+check('Tapped an answer: saved, and the next question goes out', last?.body.message.text === 'How big is your list?' && last.body.message.quick_replies?.length === 2 && quinn?.step === 'question' && quinn.qIndex === 1 && quinn.answers?.[0]?.a === 'Food' && quinn.freebieUrl === 'https://example.com/food.pdf', JSON.stringify({ msg: last?.body, quinn }));
+check('The button tap is Handled', (await waitFor(async () => (await byComment('dm71'))?.status === 'Handled')) === true);
+before = await dmCount();
+await postIg(dmEvent([{ sender: { id: '321' }, recipient: { id: IG_ID }, timestamp: Date.now(), message: { mid: 'dm72', text: '2' } }]));
+await waitFor(async () => (await dmCount()) > before);
+last = sentDms(await mockLog()).pop();
+quinn = ((await inbox('/flows?personId=321')).flows || [])[0];
+const quinnLink = (last?.body.message.text || '').match(/http:\/\/localhost:5691\/inbox\/f\/[A-Za-z0-9_-]+/)?.[0];
+check('Typed "2" for the last question: saved, then their signup link', !!quinnLink && quinn?.step === 'linkSent' && quinn.answers?.map((x) => `${x.q}=${x.a}`).join() === 'What do you sell?=Food,How big is your list?=Over 100', JSON.stringify(quinn?.answers));
+let qpage = await fetch(quinnLink, { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: 'email=quinn%40example.com&consent=yes' });
+check('Signup page opens the freebie their answer picked', (await qpage.text()).includes('href="https://example.com/food.pdf"'));
+const quinnSub = (await inbox('/subscribers')).subscribers?.find((x) => x.email === 'quinn@example.com');
+check('Their answers are kept with the signup', quinnSub?.answers?.length === 2, JSON.stringify(quinnSub));
+const csv = await (await fetch(`${INBOX}/inbox/api/subscribers.csv`, { headers: INBOX_KEY })).text();
+check('CSV has a column per question with their answers', /,What do you sell\?,How big is your list\?\r\n/.test(csv.split('\r\n')[0] + '\r\n') && csv.includes('quinn@example.com') && /quinn@example\.com.*,Food,Over 100\r\n/.test(csv), csv.split('\r\n').slice(0, 3).join(' | '));
+const askStats = (await inbox('/stats?days=30')).keywords.find((k) => k.keyword === 'ASKME');
+check('Stats count each answer', askStats?.answers?.['What do you sell?']?.Food === 1 && askStats.answers['How big is your list?']['Over 100'] === 1, JSON.stringify(askStats?.answers));
+r = await fetch(`${INBOX}/inbox/api/keywords`, { method: 'PUT', headers: INBOX_KEY, body: JSON.stringify({ keywords: [freeKw, ytKw, chooseKw, { ...askKw, questions: [{ text: 'Only one answer?', answers: [{ label: 'Yes' }] }] }] }) });
+check('A question with only one answer is refused', r.status === 400);
 await fetch(link, { headers: { 'User-Agent': 'facebookexternalhit/1.1 (+http://www.facebook.com/externalhit_uatext.php)' } });
 check('Instagram\'s link-preview robot doesn\'t count as opening the link', ((await inbox('/flows?personId=666')).flows || [])[0]?.step === 'linkSent');
 let page = await fetch(link);
@@ -329,9 +375,9 @@ const ml = (await mockLog()).log.filter((x) => x.path === '/mailerlite/subscribe
 check('Signup adds them to the keyword\'s MailerLite group and shows the freebie right away', page.status === 200 && html.includes('href="https://example.com/free.pdf"') && ml?.body.email === 'fay@example.com' && ml?.body.groups[0] === '111' && ml?.auth === 'Bearer test-ml', JSON.stringify(ml));
 flows = (await inbox('/flows?personId=666')).flows || [];
 check('Flow ends at "signed up" with the email', flows[0]?.step === 'signedUp' && flows[0]?.email === 'fay@example.com');
-const delivered = await waitFor(async () => sentDms(await mockLog()).find((d) => d.body.recipient.id === '666' && d.body.message.text === 'Here it is: https://example.com/free.pdf'));
+const delivered = await waitFor(async () => sentDms(await mockLog()).find((d) => d.body.recipient.id === '666' && !!goLink(d.body.message.text, 'Here it is: ')));
 await sleep(3000);
-check('After signup the freebie link also goes out by DM, once', !!delivered && !!((await inbox('/flows?personId=666')).flows || [])[0]?.deliveredAt && sentDms(await mockLog()).filter((d) => d.body.message.text === 'Here it is: https://example.com/free.pdf').length === 1);
+check('After signup the freebie link also goes out by DM, once', !!delivered && !!((await inbox('/flows?personId=666')).flows || [])[0]?.deliveredAt && sentDms(await mockLog()).filter((d) => d.body.recipient.id === '666' && !!goLink(d.body.message.text, 'Here it is: ')).length === 1);
 check('An unknown link shows "expired"', (await fetch(`${INBOX}/inbox/f/notarealtoken123`)).status === 404);
 // Reminder: a second person gets the link but doesn't sign up.
 before = await dmCount();
@@ -352,7 +398,7 @@ await runJob('reminders');
 await sleep(6000);
 check('Never reminded twice', (await dmCount()) === before);
 const freeStats = (await inbox('/stats?days=30')).keywords.find((k) => k.keyword === 'FREE');
-check('Stats show the funnel: 3 asked, 1 asked to follow first, 3 got the link, 1 opened, 1 signed up, 1 reminded', JSON.stringify(freeStats?.funnel) === JSON.stringify({ asked: 3, followGated: 1, linkSent: 3, clicked: 1, signedUp: 1, reminded: 1, sentHere: 0, delivered: 1 }), JSON.stringify(freeStats?.funnel));
+check('Stats show the funnel: 3 asked, 1 asked to follow first, 3 got the link, 1 opened, 1 signed up, 1 reminded', JSON.stringify(freeStats?.funnel) === JSON.stringify({ asked: 3, followGated: 1, question: 0, linkSent: 3, clicked: 1, signedUp: 1, reminded: 1, sentHere: 0, delivered: 1 }), JSON.stringify(freeStats?.funnel));
 const fay = (await inbox('/conversations')).conversations.find((x) => x.author === 'fay');
 check('Conversation shows the flow steps with the person', fay?.flows?.[0]?.history.map((s) => s.step).join() === 'asked,linkSent,clicked,signedUp', JSON.stringify(fay?.flows?.[0]?.history));
 await inbox('/conversations/read', { method: 'POST', body: { key: fay.key } });
@@ -381,7 +427,7 @@ check('A YouTube reply without the link is refused', r.status === 400);
 const panel = await inbox('/lists/targets/111');
 check('MailerLite panel: group size and the sequence it starts, with links', panel.group?.active === 5 && panel.automations?.length === 1 && panel.automations[0].name === 'FREE delivery' && panel.automations[0].url === 'https://dashboard.mailerlite.com/automations/900', JSON.stringify(panel));
 const st = await inbox('/stats?days=30');
-check('Stats: contacts, new contacts, signups, conversion and 30 daily points', st.totals?.contacts > 0 && st.totals.newContacts > 0 && st.totals.signups === 2 && typeof st.totals.conversion === 'number' && st.series?.length === 30 && st.series.at(-1).signups === 2, JSON.stringify(st.totals));
+check('Stats: contacts, new contacts, signups, conversion and 30 daily points', st.totals?.contacts > 0 && st.totals.newContacts > 0 && st.totals.signups === 3 && typeof st.totals.conversion === 'number' && st.series?.length === 30 && st.series.at(-1).signups === 3, JSON.stringify(st.totals));
 check('Stats: the previous period, top posts and her reply time', st.previous?.signups === 0 && st.previous.keywordUses === 0 && Array.isArray(st.posts) && st.posts.every((p) => p.post && p.uses >= 0) && typeof st.replies?.answered === 'number' && typeof st.replies.waiting === 'number', JSON.stringify({ previous: st.previous, posts: st.posts, replies: st.replies }));
 const hl = await inbox('/health?fresh=1');
 check('Connections: n8n answers, each check has a state and a sentence, no keys shown', hl.checks?.find((c) => c.id === 'n8n')?.state !== 'bad' && hl.checks.every((c) => ['ok', 'warn', 'bad', 'off'].includes(c.state) && c.name && c.text) && !/(access_token|api_key)=[^…]/.test(JSON.stringify(hl)), JSON.stringify(hl));

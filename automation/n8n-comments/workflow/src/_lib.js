@@ -59,6 +59,19 @@ function inbox(method, path, body) {
   return http({ method, url: `${INBOX}/inbox/api${path}`, headers: { 'x-inbox-secret': cfg('INBOX_API_SECRET') }, ...(body ? { body } : {}) });
 }
 // Post links and DM senders' usernames, looked up once and remembered.
+// The freebie link for a DM, through the inbox's click counter (/inbox/go/<id>). In test mode, or if the
+// inbox can't make one, the plain link: nobody is ever left without their freebie.
+async function trackedUrl(k, kind, flowToken, plain) {
+  const url = plain || k.url;
+  if (DRY_RUN) return url;
+  try {
+    const l = await inbox('POST', '/links', { keyword: k.keyword, kind, flow: flowToken || '' });
+    return `${cfg('INBOX_PUBLIC_URL', `https://${cfg('N8N_HOST', 'localhost')}`)}/inbox/go/${l.id}`;
+  } catch (e) {
+    logError('inbox-link', e);
+    return url;
+  }
+}
 async function igPermalink(mediaId) {
   if (!mediaId) return '';
   state.permalinks = Object.keys(state.permalinks || {}).length > 2000 ? {} : state.permalinks || {};

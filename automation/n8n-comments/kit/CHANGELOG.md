@@ -3,6 +3,8 @@
 ## Unreleased
 - "Here or by email": two buttons on the first DM, "Send it here" (link by DM) or "By email" (signup link).
 - Flows tab: every keyword drawn as connected step cards with its numbers from the last 30 days.
+- Click tracking: freebie links in DMs go through your own server, so the Flows tab shows how many people opened them.
+- Questions: up to 3 per keyword, answers as buttons, saved with each person (Inbox, Email list, CSV, webhook); an answer can send its own freebie.
 
 ## 1.0.0
 First version: Instagram comment and DM keywords (link in the DM, or "reply READY" → personal signup link → email

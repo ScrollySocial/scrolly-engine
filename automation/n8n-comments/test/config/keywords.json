@@ -80,6 +80,53 @@
         "here": "Send it here",
         "email": "By email"
       }
+    },
+    {
+      "keyword": "ASKME",
+      "url": "https://example.com/ask.pdf",
+      "dm": "Here you go: {url}",
+      "delivery": "email",
+      "where": {
+        "igComments": true,
+        "igDms": true
+      },
+      "ask": {
+        "on": true,
+        "text": "Want it? Reply READY.",
+        "word": "READY"
+      },
+      "linkText": "Sign up here: {link}",
+      "reminder": {
+        "on": false
+      },
+      "questions": [
+        {
+          "text": "What do you sell?",
+          "answers": [
+            {
+              "label": "Clothes",
+              "url": ""
+            },
+            {
+              "label": "Food",
+              "url": "https://example.com/food.pdf"
+            }
+          ]
+        },
+        {
+          "text": "How big is your list?",
+          "answers": [
+            {
+              "label": "Under 100",
+              "url": ""
+            },
+            {
+              "label": "Over 100",
+              "url": ""
+            }
+          ]
+        }
+      ]
     }
   ]
 }

@@ -56,7 +56,7 @@ const SESSION_DAYS = 30;
 // ---- storage: one JSON file, written atomically ----
 mkdirSync(DATA_DIR, { recursive: true });
 const DATA_FILE = join(DATA_DIR, 'inbox.json');
-let db = { rows: [], events: [], flows: [], subscribers: [], auth: null, sessions: {} };
+let db = { rows: [], events: [], flows: [], subscribers: [], links: [], auth: null, sessions: {} };
 try {
   db = { ...db, ...JSON.parse(readFileSync(DATA_FILE, 'utf8')) };
 } catch {}
@@ -107,6 +107,13 @@ function cleanKeyword(k) {
   // "Let them choose": the first DM gets two buttons, "Send it here" (the freebie link by DM, the
   // keyword's DM text) or "By email" (the signup link). Instagram cuts button titles at 20 characters.
   const choice = { on: !!k.choice?.on, here: str(k.choice?.here || 'Send it here').slice(0, 20), email: str(k.choice?.email || 'By email').slice(0, 20) };
+  // Questions (optional, need "ask first"): asked one at a time in the DM after their first reply, each
+  // with 2 to 6 button answers. Answers are saved with the person; an answer can send its own freebie link.
+  const questions = (Array.isArray(k.questions) ? k.questions : []).slice(0, 3).map((q) => ({
+    text: str(q?.text),
+    answers: (Array.isArray(q?.answers) ? q.answers : []).slice(0, 6).map((a) => ({ label: str(a?.label).slice(0, 20), url: str(a?.url) })).filter((a) => a.label || a.url),
+  })).filter((q) => q.text || q.answers.length);
+  for (const q of questions) for (const a of q.answers) if (a.url && !/^https:\/\/\S+$/.test(a.url)) throw new Error(`${keyword}: the link for "${a.label}" must start with https://`);
   const out = {
     ...k,
     keyword,
@@ -130,6 +137,7 @@ function cleanKeyword(k) {
     publicReply,
     followGate,
     choice,
+    questions,
   };
   delete out.reminder.hours;
   delete out.mailerliteGroup;
@@ -144,6 +152,12 @@ function cleanKeyword(k) {
     if (delivery === 'email' && p.needsTarget && !out.list.id) throw new Error(`${keyword}: pick the ${p.name} ${p.label} people join`);
     if (choice.on && (!ask.on || delivery !== 'email')) throw new Error(`${keyword}: "let them choose" needs "ask them to reply first" and email signup`);
     if (choice.on && !out.dm.includes('{url}')) throw new Error(`${keyword}: "let them choose" needs the "Send it here" DM text, with {url} in it`);
+    if (questions.length && !ask.on) throw new Error(`${keyword}: questions need "ask them to reply first" switched on`);
+    for (const [i, q] of questions.entries()) {
+      if (!q.text) throw new Error(`${keyword}: question ${i + 1} needs its text`);
+      if (q.answers.length < 2 || q.answers.some((a) => !a.label)) throw new Error(`${keyword}: question ${i + 1} needs 2 to 6 answers, each with a button word`);
+      if (new Set(q.answers.map((a) => a.label.toLowerCase())).size !== q.answers.length) throw new Error(`${keyword}: question ${i + 1} has the same answer twice`);
+    }
     if (followGate.on && !ask.on) throw new Error(`${keyword}: "only for followers" needs "ask them to reply first" switched on`);
     if (followGate.on && !followGate.text) throw new Error(`${keyword}: write the "follow me first" message`);
     if (publicReply.on && !publicReply.text) throw new Error(`${keyword}: write at least one reply for under the comment`);
@@ -170,7 +184,7 @@ function saveKeywords(list) {
     source: 'comment dashboard (hooks.scrollyseo.com/inbox)',
     keywords: clean
       .filter((k) => k.live && k.dmApproved)
-      .map(({ keyword, freebie, url, dm, delivery, where, ask, linkText, reminder, yt, afterSignup, publicReply, followGate, choice }) => ({ keyword, freebie, url, dm, delivery, where, ask, linkText, reminder, yt, afterSignup, publicReply, followGate, choice })),
+      .map(({ keyword, freebie, url, dm, delivery, where, ask, linkText, reminder, yt, afterSignup, publicReply, followGate, choice, questions }) => ({ keyword, freebie, url, dm, delivery, where, ask, linkText, reminder, yt, afterSignup, publicReply, followGate, choice, questions })),
   });
   return clean;
 }
@@ -248,8 +262,9 @@ function deleteKeyword(name) {
 
 // ---- freebie flows: one per person per keyword ----
 // Steps: asked (told to reply READY) → linkSent → clicked → signedUp; reminded can happen once after linkSent/clicked.
+// question: they're answering the keyword's questions (qIndex = the one waiting for an answer).
 // sentHere: they tapped "Send it here" (let them choose), so the link went by DM and the flow is done.
-const FLOW_STEPS = ['asked', 'linkSent', 'clicked', 'signedUp', 'reminded', 'sentHere'];
+const FLOW_STEPS = ['asked', 'question', 'linkSent', 'clicked', 'signedUp', 'reminded', 'sentHere'];
 const flowDone = (f) => f.step === 'signedUp' || f.step === 'sentHere';
 const samePerson = (f, q) => (q.personId && (f.personId === q.personId || f.dmPersonId === q.personId)) || (q.author && f.author && f.author.toLowerCase() === String(q.author).toLowerCase());
 function flowStep(f, step, extra = {}) {
@@ -317,11 +332,12 @@ async function sendSignup(sub) {
     console.error('email list', sub.error);
   }
 }
-function keepSignup({ email, keyword, freebie, platform, listId, consent }) {
-  // One entry per email per keyword; signing up again only refreshes the date.
+function keepSignup({ email, keyword, freebie, platform, listId, consent, answers }) {
+  // One entry per email per keyword; signing up again only refreshes the date (and their answers).
   let sub = db.subscribers.find((x) => x.email === email && x.keyword === keyword);
   if (sub) sub.at = now();
   else db.subscribers.push((sub = { id: newId(), email, keyword, freebie, platform, listId, consent, at: now(), status: 'new' }));
+  if (answers?.length) sub.answers = answers;
   return sub;
 }
 async function retrySignups() {
@@ -332,8 +348,10 @@ async function retrySignups() {
 setInterval(() => retrySignups().catch(() => {}), 15 * 60e3).unref();
 const csvCell = (v) => (/[",\r\n]/.test(String(v ?? '')) ? `"${String(v).replace(/"/g, '""')}"` : String(v ?? ''));
 function subscribersCsv() {
-  const head = ['email', 'keyword', 'freebie', 'platform', 'signed_up', 'consent_wording', 'sent_to', 'status'];
-  const lines = db.subscribers.map((x) => [x.email, x.keyword, x.freebie, x.platform, x.at, x.consent, x.provider || '', x.status].map(csvCell).join(','));
+  // One column per question anyone answered, named after the question.
+  const qs = [...new Set(db.subscribers.flatMap((x) => (x.answers || []).map((a) => a.q)))];
+  const head = ['email', 'keyword', 'freebie', 'platform', 'signed_up', 'consent_wording', 'sent_to', 'status', ...qs];
+  const lines = db.subscribers.map((x) => [x.email, x.keyword, x.freebie, x.platform, x.at, x.consent, x.provider || '', x.status, ...qs.map((q) => x.answers?.find((a) => a.q === q)?.a || '')].map(csvCell).join(','));
   // A byte-order mark so Excel opens the file as UTF-8.
   return String.fromCharCode(0xfeff) + [head.join(','), ...lines].join('\r\n') + '\r\n';
 }
@@ -352,7 +370,7 @@ function signupPage(k, action, state = {}) {
     : state.expired
     ? `<h1>This link has expired</h1><p>Comment the keyword again and you'll get a fresh one.</p>`
     : state.done
-    ? `<h1>Here's your ${esc(k?.freebie || 'freebie')}</h1><p><a class="btn" href="${esc(k?.url || '#')}" target="_blank" rel="noopener">Open it</a></p><p>You're on the list with <strong>${esc(state.email)}</strong>. Save this page or the link so you can come back to it anytime.</p>`
+    ? `<h1>Here's your ${esc(k?.freebie || 'freebie')}</h1><p><a class="btn" href="${esc(state.url || k?.url || '#')}" target="_blank" rel="noopener">Open it</a></p><p>You're on the list with <strong>${esc(state.email)}</strong>. Save this page or the link so you can come back to it anytime.</p>`
     : `<h1>${esc(headline)}</h1><p>${esc(text)}</p>
        <form method="post" action="${esc(action)}">
          <label for="email">Your email</label>
@@ -406,7 +424,7 @@ async function handleSignup(req, res, token) {
       flowStep(f, 'clicked');
       save();
     }
-    return send(res, 200, signupPage(k, action, f.step === 'signedUp' ? { done: true, email: f.email } : {}), 'text/html; charset=utf-8');
+    return send(res, 200, signupPage(k, action, f.step === 'signedUp' ? { done: true, email: f.email, url: f.freebieUrl } : {}), 'text/html; charset=utf-8');
   }
   // POST: a few tries a minute is plenty for a person; bots get slowed down.
   const cutoff = Date.now() - 60e3;
@@ -418,13 +436,40 @@ async function handleSignup(req, res, token) {
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email) || email.length > 200) return send(res, 400, signupPage(k, action, { email, error: "That email doesn't look right." }), 'text/html; charset=utf-8');
   if (form.consent !== 'yes') return send(res, 400, signupPage(k, action, { email, error: 'Tick the box so I can email it to you.' }), 'text/html; charset=utf-8');
   // Kept here first, then sent on to the email tool; if the tool fails, retrySignups tries again.
-  const sub = keepSignup({ email, keyword: k.keyword, freebie: k.freebie, platform: f.platform, listId: k.list?.id || k.mailerliteGroup || '', consent: readProfile().signup.consent });
+  const sub = keepSignup({ email, keyword: k.keyword, freebie: k.freebie, platform: f.platform, listId: k.list?.id || k.mailerliteGroup || '', consent: readProfile().signup.consent, answers: f.answers });
   await sendSignup(sub);
   flowStep(f, 'signedUp', { email });
   // The DM with the freebie link goes out from n8n right away (its reminder job also sends these).
   runJob('reminders');
   save();
-  return send(res, 200, signupPage(k, action, { done: true, email }), 'text/html; charset=utf-8');
+  return send(res, 200, signupPage(k, action, { done: true, email, url: f.freebieUrl }), 'text/html; charset=utf-8');
+}
+// ---- tracked links: a freebie link in a DM goes through /inbox/go/<id>, so a click is counted ----
+// kind: direct (the keyword's DM), here ("Send it here"), after (the DM after signup). The link always
+// opens the keyword's current freebie (or the one their answer picked), so editing the link fixes old DMs too.
+function newLink(body) {
+  const l = { id: randomBytes(9).toString('base64url'), keyword: str(body.keyword).toUpperCase(), flow: str(body.flow), kind: ['direct', 'here', 'after'].includes(body.kind) ? body.kind : 'direct', at: now(), clicks: 0 };
+  db.links.push(l);
+  save();
+  return l;
+}
+function handleGo(req, res, id) {
+  const l = db.links.find((x) => x.id === id);
+  const k = l && readKeywords().find((x) => x.keyword === l.keyword);
+  const f = l?.flow ? db.flows.find((x) => x.token === l.flow) : null;
+  const target = f?.freebieUrl || k?.url;
+  if (!target) return send(res, 404, signupPage(null, '', { expired: true }), 'text/html; charset=utf-8');
+  if (!isRobot(req)) {
+    l.clicks++;
+    l.clickedAt ||= now();
+    if (f && !f.freebieClickedAt) {
+      f.freebieClickedAt = now();
+      f.history.push({ at: now(), step: 'freebieClicked' });
+    }
+    save();
+  }
+  res.writeHead(302, { Location: target, 'Cache-Control': 'no-store', 'Referrer-Policy': 'no-referrer', 'X-Content-Type-Options': 'nosniff' });
+  res.end();
 }
 // The shared signup page for a keyword (/inbox/s/KEYWORD), used in public YouTube replies:
 // anyone can open it, so it starts a flow only when someone actually signs up.
@@ -550,9 +595,10 @@ function conversations() {
 function stats(days) {
   const cutoff = new Date(Date.now() - days * 86400e3).toISOString();
   const by = {};
+  const kw = (name) => (by[name] ||= { keyword: name, comments: 0, dmsSent: 0, dmsFailed: 0, posts: {} });
   for (const e of db.events) {
     if (e.at < cutoff || e.result === 'opened') continue;
-    const k = (by[e.keyword] ||= { keyword: e.keyword, comments: 0, dmsSent: 0, dmsFailed: 0, posts: {} });
+    const k = kw(e.keyword);
     k.comments++;
     if (e.result === 'sent') k.dmsSent++;
     if (e.result === 'failed') k.dmsFailed++;
@@ -561,12 +607,24 @@ function stats(days) {
   // The signup funnel per keyword: how far people got.
   for (const f of db.flows) {
     if ((f.createdAt || '') < cutoff) continue;
-    const k = (by[f.keyword] ||= { keyword: f.keyword, comments: 0, dmsSent: 0, dmsFailed: 0, posts: {} });
-    const fun = (k.funnel ||= { asked: 0, followGated: 0, linkSent: 0, clicked: 0, signedUp: 0, reminded: 0, sentHere: 0, delivered: 0 });
+    const k = kw(f.keyword);
+    const fun = (k.funnel ||= { asked: 0, followGated: 0, question: 0, linkSent: 0, clicked: 0, signedUp: 0, reminded: 0, sentHere: 0, delivered: 0 });
     if (f.followGatedAt) fun.followGated++;
-    for (const s of ['asked', 'linkSent', 'clicked', 'signedUp', 'sentHere']) if (f[`${s}At`]) fun[s]++;
+    for (const s of ['asked', 'question', 'linkSent', 'clicked', 'signedUp', 'sentHere']) if (f[`${s}At`]) fun[s]++;
     if (f.remindedAt) fun.reminded++;
     if (f.deliveredAt) fun.delivered++;
+    // Answers to the keyword's questions: how many people picked each one.
+    for (const x of f.answers || []) {
+      const q = ((k.answers ||= {})[x.q] ||= {});
+      q[x.a] = (q[x.a] || 0) + 1;
+    }
+  }
+  // Freebie links in DMs: sent and opened, per kind (direct, here, after signup).
+  for (const l of db.links) {
+    if (l.at < cutoff) continue;
+    const t = ((kw(l.keyword).links ||= {})[l.kind] ||= { sent: 0, clicked: 0 });
+    t.sent++;
+    if (l.clickedAt) t.clicked++;
   }
   const open = (s) => db.rows.filter((r) => r.status === s && r.kind !== 'out').length;
   // Contacts = people who commented or messaged (like ManyChat's contacts), counted by first contact.
@@ -743,6 +801,7 @@ function youtubeCleanup() {
   // Stats keep counts only (keyword, post link, result), never comment text or names; a year is plenty.
   const yearAgo = new Date(Date.now() - 366 * 86400e3).toISOString();
   db.events = db.events.filter((e) => e.at >= yearAgo);
+  db.links = db.links.filter((l) => l.at >= yearAgo);
   save();
   return removed;
 }
@@ -803,6 +862,8 @@ async function handle(req, res) {
   const signup = path.match(/^\/inbox\/f\/([A-Za-z0-9_-]{8,40})$/);
   if (DEMO && (signup || path.startsWith('/inbox/s/')) && req.method === 'POST') return send(res, 200, signupPage(null, '', { demo: true }), 'text/html; charset=utf-8');
   if (signup && ['GET', 'POST'].includes(req.method)) return handleSignup(req, res, signup[1]);
+  const go = path.match(/^\/inbox\/go\/([A-Za-z0-9_-]{8,20})$/);
+  if (go && req.method === 'GET') return handleGo(req, res, go[1]);
   const shared = path.match(/^\/inbox\/s\/([A-Za-z0-9$]{2,20})$/);
   if (shared && ['GET', 'POST'].includes(req.method)) return handleSharedSignup(req, res, shared[1]);
 
@@ -902,7 +963,18 @@ async function handle(req, res) {
     const f = db.flows.find((x) => x.token === fm[1]);
     if (!f) return send(res, 404, { error: 'not found' });
     try {
+      // An answer to one of the keyword's questions: kept with the person (one per question; an answer
+      // with its own link changes which freebie they get).
+      if (body.answer?.q) {
+        const q = str(body.answer.q);
+        f.answers = (f.answers || []).filter((x) => x.q !== q);
+        f.answers.push({ q, a: str(body.answer.a) });
+        if (/^https:\/\/\S+$/.test(str(body.answer.url))) f.freebieUrl = str(body.answer.url);
+        f.history.push({ at: now(), step: 'answered', q, a: str(body.answer.a) });
+      }
       if (body.step) flowStep(f, body.step);
+      if (body.qIndex != null) f.qIndex = Math.max(0, Number(body.qIndex) || 0);
+      if (body.pick === 'here' || body.pick === 'email') f.pick = body.pick;
       if (body.dmPersonId) f.dmPersonId = str(body.dmPersonId);
       if (body.lastInboundAt) f.lastInboundAt = now();
       if (body.delivered) f.deliveredAt = f.deliveredAt || now();
@@ -1007,6 +1079,7 @@ async function handle(req, res) {
     save();
     return send(res, before === db.rows.length ? 404 : 200, { deleted: before - db.rows.length });
   }
+  if (api === '/links' && req.method === 'POST') return send(res, 200, newLink(body));
   if (api === '/events' && req.method === 'POST') {
     db.events.push({ at: now(), ...pick(body, ['keyword', 'platform', 'post', 'result']) });
     save();

@@ -46,7 +46,7 @@ const PROVIDERS = {
     connected: () => /^https:\/\/\S+$/.test(env('LIST_WEBHOOK_URL')) || /^http:\/\/localhost[:/]/.test(env('LIST_WEBHOOK_URL')),
     // One POST per signup. With LIST_WEBHOOK_SECRET set, X-Signature is sha256=<HMAC of the body>.
     add: async (s) => {
-      const body = JSON.stringify({ event: 'signup', email: s.email, keyword: s.keyword, freebie: s.freebie, platform: s.platform, consent: s.consent, signedUpAt: s.at, test: !!s.test });
+      const body = JSON.stringify({ event: 'signup', email: s.email, keyword: s.keyword, freebie: s.freebie, platform: s.platform, consent: s.consent, signedUpAt: s.at, answers: s.answers || [], test: !!s.test });
       const headers = { 'Content-Type': 'application/json', 'User-Agent': 'ChatManager (self-hosted)' };
       if (env('LIST_WEBHOOK_SECRET')) headers['X-Signature'] = `sha256=${createHmac('sha256', env('LIST_WEBHOOK_SECRET')).update(body).digest('hex')}`;
       const res = await fetch(env('LIST_WEBHOOK_URL'), { method: 'POST', headers, body });

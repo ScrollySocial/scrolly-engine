@@ -196,6 +196,9 @@
     .fnode .fafter { display: block; }
     .fnode + .fnode::before { content: ''; position: absolute; top: -27px; left: 28px; height: 26px; border-left: 2px solid var(--input); }
   }
+  .answer-row { display: grid; grid-template-columns: 1fr 1.4fr auto; gap: 0 10px; align-items: end; }
+  .answer-row button { margin-bottom: 2px; }
+  @media (max-width: 699px) { .answer-row { grid-template-columns: 1fr; } .answer-row button { justify-self: start; } }
   .pv-qr { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 6px; }
   .pv-qr span { border: 1px solid #3797f0; color: #3797f0; border-radius: 999px; padding: 4px 12px; font-size: 14px; }
   .login { max-width: 420px; margin: 12vh auto 0; }
@@ -417,7 +420,7 @@ async function showInbox(body) {
         flow ? h('span', { class: flow.step === 'signedUp' ? 'pill on' : 'pill', text: `${flow.keyword}: ${STEP_LABEL[flow.step]}` }) : null));
   })));
 }
-const STEP_LABEL = { followGated: 'asked to follow first', asked: 'asked to reply', linkSent: 'got the link', clicked: 'opened the link', signedUp: 'signed up', reminded: 'reminded' };
+const STEP_LABEL = { followGated: 'asked to follow first', asked: 'asked to reply', question: 'asked a question', answered: 'answered', linkSent: 'got the link', clicked: 'opened the link', signedUp: 'signed up', reminded: 'reminded', sentHere: 'got the freebie in the DM', freebieClicked: 'opened the freebie' };
 
 // ---- one conversation ----
 async function showConversation(body, key) {
@@ -437,7 +440,7 @@ async function showConversation(body, key) {
     if (r.draft && ['Posted', 'Approved'].includes(r.status)) events.push({ at: r.postedAt || r.updatedAt || r.receivedAt, reply: r });
     if (String(r.dm || '').startsWith('sent: ')) events.push({ at: r.receivedAt, auto: r });
   }
-  for (const f of c.flows || []) for (const s of f.history || []) events.push({ at: s.at, sys: `${f.keyword}: ${STEP_LABEL[s.step]}${s.step === 'signedUp' && f.email ? ` (${f.email})` : ''}` });
+  for (const f of c.flows || []) for (const s of f.history || []) events.push({ at: s.at, sys: `${f.keyword}: ${STEP_LABEL[s.step] || s.step}${s.step === 'signedUp' && f.email ? ` (${f.email})` : ''}${s.step === 'answered' ? ` "${s.q}": ${s.a}` : ''}` });
   events.sort((a, b) => String(a.at || '').localeCompare(String(b.at || '')));
   const thread = h('div', { class: 'thread' });
   for (const e of events) {
@@ -573,7 +576,7 @@ async function welcomeCard() {
 }
 
 // "+ New keyword" starts from a tested template (#k/new picks one, #k/new:<id> opens it).
-const blankKeyword = () => ({ keyword: '', freebie: '', url: '', live: false, dmApproved: false, delivery: 'direct', where: { igComments: true, igDms: true, ytComments: false }, ask: { on: false, text: '', word: 'READY' }, dm: 'Here you go: {url}', linkText: 'Here you go! Pop in your email and I\'ll send it straight over: {link}', signup: {}, reminder: { on: false, minutes: 60, text: 'Just checking you got this. Your link is still here: {link}' }, yt: { text: '' }, afterSignup: { dm: '' }, publicReply: { on: true, text: PUBLIC_REPLY_DEFAULT }, choice: { on: false, here: 'Send it here', email: 'By email' } });
+const blankKeyword = () => ({ keyword: '', freebie: '', url: '', live: false, dmApproved: false, delivery: 'direct', where: { igComments: true, igDms: true, ytComments: false }, ask: { on: false, text: '', word: 'READY' }, dm: 'Here you go: {url}', linkText: 'Here you go! Pop in your email and I\'ll send it straight over: {link}', signup: {}, reminder: { on: false, minutes: 60, text: 'Just checking you got this. Your link is still here: {link}' }, yt: { text: '' }, afterSignup: { dm: '' }, publicReply: { on: true, text: PUBLIC_REPLY_DEFAULT }, choice: { on: false, here: 'Send it here', email: 'By email' }, questions: [] });
 const PUBLIC_REPLY_DEFAULT = ['Sent it to your DMs! 💌', 'Just sent you a DM, check your inbox!', 'It\'s in your DMs now 🙌'].join('\n');
 const TEMPLATES = [
   { id: 'email', title: 'Freebie by email (recommended)', text: 'They reply READY, get their own signup link, type their email and see the freebie. Grows your email list, with one reminder if they forget.',
@@ -614,6 +617,7 @@ async function showKeyword(body, name) {
   k.publicReply ||= { on: false, text: '' };
   k.followGate ||= { on: false, text: '' };
   k.choice ||= { on: false, here: 'Send it here', email: 'By email' };
+  k.questions ||= [];
   const followGateDefault = () => `Almost there! Follow @${HANDLE()} first, then reply ${k.ask.word || 'READY'} again and I'll send it straight over 💛`;
   k.signup ||= {};
   // The email list (lists.mjs on the server). Some tools need one target per keyword: a MailerLite
@@ -743,14 +747,19 @@ async function showKeyword(body, name) {
       }
       // "Let them choose": the buttons under the first DM, then both answers.
       const choosing = k.choice.on && k.ask.on;
-      const buttons = () => h('div', { class: 'pv-qr', 'aria-label': 'Buttons' }, h('span', { text: k.choice.here || 'Send it here' }), h('span', { text: k.choice.email || 'By email' }));
+      const qr = (labels) => h('div', { class: 'pv-qr', 'aria-label': 'Buttons' }, labels.map((l) => h('span', { text: l || '(answer)' })));
+      const buttons = () => qr([k.choice.here || 'Send it here', k.choice.email || 'By email']);
+      const here = k.choice.here || 'Send it here';
+      const answer = choosing ? k.choice.email || 'By email' : k.ask.word || 'READY';
       if (k.ask.on && (previewTab === 'igc' || choosing)) {
-        const answer = choosing ? k.choice.email || 'By email' : k.ask.word || 'READY';
         thread.push(me(k.ask.text || '(write the first DM above)'));
-        if (choosing) thread.push(buttons(), sys(`If they tap "${k.choice.here || 'Send it here'}"`), them(k.choice.here || 'Send it here'), me(fill(k.dm)), sys(`If they tap "${answer}"`));
+        if (choosing) thread.push(buttons());
         thread.push(them(answer));
         if (k.followGate.on) thread.push(sys('If they don\'t follow you yet'), me(k.followGate.text || followGateDefault()), ...(choosing ? [buttons()] : []), sys('They follow you and answer again'), them(answer));
       }
+      // Questions: one at a time, the answers as buttons (the preview picks the first answer).
+      if (k.ask.on) for (const q of k.questions) thread.push(me(q.text || '(write the question above)'), qr(q.answers.map((a) => a.label)), them(q.answers[0]?.label || '(answer)'));
+      if (choosing) thread.push(sys(`If they tapped "${here}"`), me(fill(k.dm)), sys(`If they tapped "${answer}"`));
       thread.push(me(k.delivery === 'email' ? fill(k.linkText, link) : fill(k.dm)));
       if (k.delivery === 'email') {
         thread.push(sys(`They tap the link, type their email (added to ${listWhere()}) and see the freebie right away`));
@@ -778,7 +787,7 @@ async function showKeyword(body, name) {
           k.ask.text ||= 'Want it right here, or by email so it\'s saved in your inbox?';
         }
         if (k.choice.on && !String(k.dm || '').includes('{url}')) k.dm = 'Here you go! {url}';
-        drawAsk(); drawDelivery(); drawYt(); drawPreviews();
+        drawAsk(); drawQuestions(); drawDelivery(); drawYt(); drawPreviews();
       });
       return h('label', {}, r, h('span', {}, h('strong', { text: title }), h('br'), h('span', { class: 'hint', text: sub })));
     };
@@ -824,7 +833,7 @@ async function showKeyword(body, name) {
   const askSection = h('div');
   const drawAsk = () => {
     askSection.replaceChildren(...[
-      toggle(k.ask, 'on', 'Ask them to reply first', () => { if (!k.ask.on) k.choice.on = false; drawAsk(); drawPreviews(); drawDelivery(); }),
+      toggle(k.ask, 'on', 'Ask them to reply first', () => { if (!k.ask.on) k.choice.on = false; drawAsk(); drawQuestions(); drawPreviews(); drawDelivery(); }),
       h('p', { class: 'hint', text: 'Their reply opens a DM conversation, which lets you remind them later. Needs DMs switched on.' }),
       k.ask.on ? [text(k.ask, 'text', 'First DM', { area: true, placeholder: k.choice.on ? 'Want it right here, or by email?' : 'Want the free calculator? Reply READY and I\'ll send it over.', hint: k.choice.on ? 'Your two buttons show under it (set them in Step 2).' : '', onInput: drawPreviews }), text(k.ask, 'word', 'The word they reply', { placeholder: 'READY', onInput: drawPreviews })] : null,
       k.ask.on ? [
@@ -835,6 +844,27 @@ async function showKeyword(body, name) {
       ] : null,
     ].flat(3).filter(Boolean));
   };
+  // Questions (optional): asked one at a time after their first reply, each answer a button.
+  const qSection = h('div');
+  const drawQuestions = () => {
+    if (!k.ask.on) return qSection.replaceChildren(h('p', { class: 'hint', text: 'Switch on "Ask them to reply first" (Step 1) to ask questions.' }));
+    const redraw = () => { drawQuestions(); drawPreviews(); };
+    const parts = [h('p', { class: 'hint', text: 'Up to 3 questions before the freebie goes out. Each answer is a button (up to 20 characters); what they pick is saved with them, in the Inbox and on your Email list and its CSV. An answer can send a different freebie.' })];
+    k.questions.forEach((q, qi) => {
+      parts.push(h('h3', { style: 'margin-top:16px', text: `Question ${qi + 1}` }), ...text(q, 'text', `Question ${qi + 1}`, { placeholder: qi ? 'How big is your list?' : 'What do you sell?', onInput: drawPreviews }));
+      q.answers.forEach((a, ai) => parts.push(h('div', { class: 'answer-row' },
+        h('div', {}, ...text(a, 'label', `Answer ${ai + 1} (question ${qi + 1})`, { placeholder: ['Clothes', 'Food', 'Services'][ai] || 'Answer', onInput: drawPreviews })),
+        h('div', {}, ...text(a, 'url', `Its own freebie link (optional, answer ${ai + 1}, question ${qi + 1})`, { type: 'url', placeholder: 'Empty: the usual freebie' })),
+        q.answers.length > 2 ? h('button', { class: 'danger', type: 'button', text: 'Remove', 'aria-label': `Remove answer ${ai + 1} of question ${qi + 1}`, on: { click: () => { q.answers.splice(ai, 1); redraw(); } } }) : h('span'))));
+      parts.push(h('div', { class: 'row' },
+        q.answers.length < 6 ? h('button', { type: 'button', text: '+ Add answer', on: { click: () => { q.answers.push({ label: '', url: '' }); redraw(); } } }) : null,
+        h('button', { class: 'danger', type: 'button', text: `Remove question ${qi + 1}`, on: { click: () => { k.questions.splice(qi, 1); redraw(); } } })));
+    });
+    if (k.questions.length < 3) parts.push(h('div', { class: 'row' }, h('button', { type: 'button', text: k.questions.length ? '+ Add another question' : '+ Add a question', on: { click: () => { k.questions.push({ text: '', answers: [{ label: '', url: '' }, { label: '', url: '' }] }); redraw(); } } })));
+    if (k.questions.length) parts.push(h('p', { class: 'hint', text: 'Typing works too: the answer\'s word, or its number (1, 2, 3).' }));
+    qSection.replaceChildren(...parts.flat(3).filter(Boolean));
+  };
+  drawQuestions();
   drawAsk();
   drawReply();
   drawYt();
@@ -874,14 +904,17 @@ async function showKeyword(body, name) {
       text(k, 'url', 'Link to the freebie', { type: 'url', placeholder: 'https://…', onInput: drawPreviews }),
       h('div', { class: 'row' }, h('button', { text: 'Open freebie', on: { click: () => (k.url ? window.open(k.url, '_blank', 'noopener') : toast('Add the link first.')) } }))),
     h('div', { class: 'card' }, h('h3', { text: 'Step 1: Ask first (optional)' }), askSection),
+    h('div', { class: 'card' }, h('h3', { text: 'Questions (optional)' }), qSection),
     h('div', { class: 'card' }, h('h3', { text: `Step ${k.ask.on ? 2 : 1}: How they get it` }), deliverySection),
     h('div', { class: 'card' }, h('h3', { text: 'Preview: what they\'ll see' }), previews,
       check(k, 'dmApproved', 'I approve these messages')),
     !isNew ? h('div', { class: 'card' }, h('h3', { text: 'Last 30 days' }),
       s ? h('div', { class: 'funnel' },
         [[s.comments, 'used it'], [f?.asked ?? 0, 'asked to reply'], ...(k.followGate?.on || f?.followGated ? [[f?.followGated ?? 0, 'asked to follow first']] : []), ...(k.choice?.on || f?.sentHere ? [[f?.sentHere ?? 0, 'chose "here"']] : []), [f?.linkSent ?? s.dmsSent, k.choice?.on ? 'chose email' : 'got the link'], [f?.clicked ?? 0, 'opened it'], [f?.signedUp ?? 0, 'signed up'], [f?.reminded ?? 0, 'reminded']]
+          .concat(s.links ? [[Object.values(s.links).reduce((n, x) => n + x.clicked, 0), 'opened the freebie link']] : [])
           .map(([n, l]) => h('div', {}, h('div', { class: 'big', text: String(n) }), h('div', { class: 'hint', text: l }))))
-        : h('p', { class: 'hint', text: 'Nobody has used it yet.' })) : '',
+        : h('p', { class: 'hint', text: 'Nobody has used it yet.' }),
+      ...Object.entries(s?.answers || {}).map(([q, counts]) => h('p', { class: 'hint', style: 'margin-top:10px' }, h('strong', { text: `${q} ` }), Object.entries(counts).sort((a, b) => b[1] - a[1]).map(([a, n]) => `${a} ${n}`).join(' · ')))) : '',
     h('div', { class: 'row between' },
       h('button', { class: 'primary', text: 'Save', on: { click: save } }),
       !isNew ? h('button', { class: 'danger', text: 'Delete keyword', on: { click: async () => {
@@ -923,7 +956,8 @@ async function showEmailList(body) {
   body.append(h('div', { class: 'card' }, h('table', {},
     h('thead', {}, h('tr', {}, h('th', { text: 'Email' }), h('th', { class: 'sr-only', text: 'Delete' }))),
     h('tbody', {}, subscribers.map((x) => h('tr', {},
-      h('td', { style: 'overflow-wrap:anywhere' }, x.email, h('div', { class: 'hint', text: `${x.keyword} · ${ago(x.at)} · ${label[x.status] || x.status}` })),
+      h('td', { style: 'overflow-wrap:anywhere' }, x.email, h('div', { class: 'hint', text: `${x.keyword} · ${ago(x.at)} · ${label[x.status] || x.status}` }),
+        x.answers?.length ? h('div', { class: 'hint', text: x.answers.map((a) => `${a.q} ${a.a}`).join(' · ') }) : null),
       h('td', {}, h('button', { class: 'danger', text: 'Delete', 'aria-label': `Delete ${x.email}`, on: { click: async () => {
         if (!confirm(`Delete ${x.email} from this list? (For a deletion request, also remove them in ${tool || 'any tool you imported the list into'}.)`)) return;
         try { await api(`/api/subscribers/${x.id}`, { method: 'DELETE' }); toast('Deleted.'); route(); } catch (e) { toast(e.message); }
@@ -1055,46 +1089,57 @@ function flowGraph(k, s) {
   const where = [k.where?.igComments !== false && `comments ${k.keyword} on a post or Reel`, k.where?.igDms !== false && `DMs ${k.keyword} or replies to a Story`, k.where?.ytComments && `comments ${k.keyword} on YouTube`].filter(Boolean);
   const trigger = add({ col: 1, row: 1, cls: 'trigger', icon: 'Instagram', type: 'Trigger', title: 'When someone…', lines: where, stats: [[s?.comments ?? 0, 'used it']] });
   const igOnly = k.where?.igComments === false && k.where?.igDms === false;
+  const L = s?.links || {};
   let col = 2;
-  let prev = trigger;
-  let port = null;
+  // Where the next card's lines start: [card, port] pairs (a card with answer buttons has one per answer).
+  let from = [[trigger, null]];
+  const sendTo = (to) => { for (const [n, p] of from) link(n, to, p, p === 'yes' ? 'yes' : ''); };
   const choosing = !!(k.choice?.on && k.ask?.on);
+  const questions = k.ask?.on ? k.questions || [] : [];
   let emailRow = 1;
   if (!igOnly && k.ask?.on) {
     const ask = add({ col: col++, row: 1, icon: 'Instagram', type: 'Send message', title: 'First DM', bubble: k.ask.text, wait: choosing ? 'Waiting for them to tap a button' : `Waiting for them to reply ${k.ask.word || 'READY'}`, stats: [[f.asked ?? 0, 'sent']],
       ports: choosing ? [['here', k.choice.here || 'Send it here', 'btn'], ['email', k.choice.email || 'By email', 'btn']] : [] });
-    link(prev, ask, port);
-    prev = ask;
+    sendTo(ask);
+    // With "let them choose", both buttons lead on (follow check, questions) and the paths split at the end.
+    from = choosing ? [[ask, 'here'], [ask, 'email']] : [[ask, null]];
     if (k.followGate?.on) {
       const gate = add({ col: col++, row: 1, icon: 'Condition', type: 'Condition', title: 'Do they follow you?', lines: ['Instagram tells us when they answer.'], ports: [['yes', 'Yes', 'yes'], ['no', 'Not yet', 'not']] });
-      if (choosing) link(ask, gate, 'here'), link(ask, gate, 'email');
-      else link(ask, gate, null);
+      sendTo(gate);
       const again = add({ col, row: 2, icon: 'Instagram', type: 'Send message', title: 'Follow me first', bubble: k.followGate.text, wait: 'Then they answer again', stats: [[f.followGated ?? 0, 'sent']] });
       link(gate, again, 'no', 'not');
-      prev = gate;
-      port = 'yes';
+      from = [[gate, 'yes']];
+    }
+    for (const [qi, q] of questions.entries()) {
+      const counts = s?.answers?.[q.text] || {};
+      const qn = add({ col: col++, row: 1, icon: 'Instagram', type: `Question ${qi + 1}`, title: q.text || '(no question yet)', wait: 'Waiting for their answer', lines: ['Each answer is saved with them.'],
+        ports: q.answers.map((a, i) => [`a${i}`, `${a.label || '(answer)'}: ${counts[a.label] || 0}${a.url ? ' · own freebie' : ''}`, 'btn']) });
+      sendTo(qn);
+      from = q.answers.map((_, i) => [qn, `a${i}`]);
     }
     if (choosing) {
-      const here = add({ col, row: 1, cls: 'end', icon: 'Instagram', type: 'Send message', title: `"${k.choice.here || 'Send it here'}"`, bubble: fill(k.dm), stats: [[f.sentHere ?? 0, 'sent']] });
-      link(prev, here, port || 'here', port ? 'yes' : '');
-      emailRow = k.followGate?.on ? 3 : 2;
-      port = port || 'email';
+      const straight = !k.followGate?.on && !questions.length;
+      const here = add({ col, row: 1, cls: 'end', icon: 'Instagram', type: 'Send message', title: `"${k.choice.here || 'Send it here'}"`, bubble: fill(k.dm), stats: [[f.sentHere ?? 0, 'sent'], [L.here?.clicked ?? 0, 'opened']] });
+      if (straight) link(ask, here, 'here');
+      else sendTo(here);
+      if (straight) from = [[ask, 'email']];
+      emailRow = k.followGate?.on && !questions.length ? 3 : 2;
     }
   }
   if (!igOnly && k.delivery !== 'email') {
-    const dm = add({ col: col++, row: 1, cls: 'end', icon: 'Instagram', type: 'Send message', title: 'The freebie', bubble: fill(k.dm), stats: [[f.linkSent || s?.dmsSent || 0, 'sent']] });
-    link(prev, dm, port, port === 'yes' ? 'yes' : '');
+    const dm = add({ col: col++, row: 1, cls: 'end', icon: 'Instagram', type: 'Send message', title: 'The freebie', bubble: fill(k.dm), stats: [[L.direct?.sent ?? (f.linkSent || s?.dmsSent || 0), 'sent'], [L.direct?.clicked ?? 0, 'opened']] });
+    sendTo(dm);
   } else if (!igOnly) {
     const r = emailRow;
     const msg = add({ col: col++, row: r, icon: 'Instagram', type: 'Send message', title: choosing ? `"${k.choice.email || 'By email'}"` : 'Their signup link', bubble: fill(k.linkText), stats: [[f.linkSent ?? 0, 'sent'], [f.clicked ?? 0, 'opened']],
       ports: k.reminder?.on ? [['next', 'Next step', ''], ['not', `If no signup after ${mins(k.reminder.minutes || 60)}`, 'not']] : [] });
-    link(prev, msg, port, port === 'yes' ? 'yes' : '');
+    sendTo(msg);
     const list = ME.list && !['builtin', 'webhook'].includes(ME.list.id) ? `${ME.list.name}${k.list?.name ? ` (${k.list.name})` : ''}` : 'your email list';
     const rate = f.linkSent ? `${Math.round(((f.signedUp ?? 0) / f.linkSent) * 100)}%` : '-';
     const page = add({ col: col++, row: r, cls: k.afterSignup?.dm ? '' : 'end', icon: 'Email', type: 'Signup page', title: k.signup?.headline || `Get your free ${String(k.freebie || 'freebie').replace(/^free\s+/i, '')}`, lines: ['They type their email and see the freebie right away.', `Added to ${list}.`], stats: [[f.signedUp ?? 0, 'signed up'], [rate, 'of links sent']] });
     link(msg, page, k.reminder?.on ? 'next' : null);
     if (k.afterSignup?.dm) {
-      const after = add({ col: col++, row: r, cls: 'end', icon: 'Instagram', type: 'Send message', title: 'After they sign up', bubble: fill(k.afterSignup.dm), stats: [[f.delivered ?? 0, 'sent']] });
+      const after = add({ col: col++, row: r, cls: 'end', icon: 'Instagram', type: 'Send message', title: 'After they sign up', bubble: fill(k.afterSignup.dm), stats: [[f.delivered ?? 0, 'sent'], [L.after?.clicked ?? 0, 'opened']] });
       link(page, after, null);
     }
     if (k.reminder?.on) {
