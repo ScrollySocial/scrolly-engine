@@ -1,11 +1,12 @@
 """Mercedes's own h1 Reel (2026-10-29): "Watch my ManyChat bill disappear", Comment MANYCHAT. Built from the approved
 template's pieces (motion_h1.py, untouched): her smoke on Screen blend, the clock tower striking midnight, Bodoni words,
-her doodles. Only her hook take exists (no snap, no empty shot), so the BILL vanishes, not her.
- 0.0-4.3   her hook (IMG_2076 from 1.0 s); a real cream index card, the bill in her handwriting, lands on "Watch my"
- 4.3-6.3   the smoke poofs over the card; "now you don't" where it was
- 6.3-9.0   the midnight stage: tower rises, hands sweep to midnight, rings; "gone" + "[$39 a month]"; second puff
- 9.0-11.6  her real Chat Manager demo inbox on a phone: "mine" + "[$6 a month]"
- 11.6-15.0 CTA on the midnight stage: comment [MANYCHAT] for my full guide
+her doodles. No empty shot was filmed, so the empty plate is the curtain from the left edge of a YouTube take (IMG_2063);
+the smoke hides the switch (her note 2026-10-29: let her finish "disappear", poof 1 s later, and SHE disappears).
+ 0.0-5.4   her hook (IMG_2076 from 1.0 s); a real cream index card, the bill in her handwriting, lands on "Watch my"
+ 5.4-7.4   the smoke poofs over her and the card; they're gone: "now you don't" on the empty curtain
+ 7.4-10.1   the midnight stage: tower rises, hands sweep to midnight, rings; "gone" + "[$39 a month]"; second puff
+ 10.1-12.7 her real Chat Manager demo inbox on a phone: "mine" + "[$6 a month]"
+ 12.7-16.1 CTA on the midnight stage: comment [MANYCHAT] for my full guide
 Accent = brand sky blue (orange is retired). Usage: python build/motion_h1_mine.py [stills...]
 """
 import math, subprocess, sys
@@ -22,11 +23,19 @@ T0 = 1.0
 OUT = Path('C:/Users/merce/OneDrive/Scrolly Media/exports/reels/draft'); OUT.mkdir(parents=True, exist_ok=True)
 TMP = REEL / '_frames'; TMP.mkdir(exist_ok=True)
 SKY, NAVY, WHITE = (77, 163, 255), (10, 25, 48), (255, 255, 255)
-T_CARD, T_POOF, T_STAGE, T_RING, T_PUFF2, T_CLIP3, T_CTA, END = 2.3, 4.3, 6.3, 7.85, 8.3, 9.0, 11.6, 15.0
+T_CARD, T_POOF, T_STAGE, T_RING, T_PUFF2, T_CLIP3, T_CTA, END = 2.3, 5.4, 7.4, 8.95, 9.4, 10.1, 12.7, 16.1
 HAND = str(ROOT / 'reel-hf' / 'lib' / 'assets' / 'fonts' / 'covered-by-your-grace.woff2')
 
 HER = M.extract(SRC, str(TMP / 'hook'), T0, 6.4)
 INBOX = [ImageOps.fit(Image.open(p).convert('RGBA'), (W, H)) for p in sorted((REEL / 'screens').glob('inbox-0*.png'))]
+def _plate():
+    """The same curtain with nobody in it: the left edge of YouTube take IMG_2063 (tripod, same curtain), 9:16."""
+    f = TMP / 'plate.jpg'
+    if not f.exists():
+        subprocess.run([E.FFMPEG, '-v', 'error', '-y', '-ss', '5', '-i', 'C:/Users/merce/OneDrive/Scrolly Media/videos/2026-10-28-session/youtube/IMG_2063.MOV',
+                        '-frames:v', '1', '-vf', f'{B.S.TONE},crop=1215:2160:0:0,scale={W}:{H}', '-q:v', '2', str(f)], check=True)
+    return Image.open(f).convert('RGBA')
+PLATE = _plate()
 def her(t): return Image.open(HER[min(len(HER) - 1, max(0, int(t * FPS)))]).convert('RGBA')
 def inbox(t): return INBOX[min(len(INBOX) - 1, max(0, int((t - 0.5) / 0.45) + 1 if t >= 0.5 else 0))].copy()
 
@@ -53,7 +62,8 @@ def plain_stage():
     im = Image.new('RGBA', (W, H), M.STAGE + (255,)); im.alpha_composite(M.GRAIN); return im
 
 def frame(t):
-    if t < T_STAGE: im = her(t)
+    if t < T_POOF + 0.45: im = her(t)
+    elif t < T_STAGE: im = PLATE.copy()
     elif t < T_CLIP3: im = stage(t)
     elif t < T_CTA: im = inbox(t - T_CLIP3)
     else: im = plain_stage()
@@ -62,9 +72,9 @@ def frame(t):
         k = M.back_out((t - T_CARD) / 0.35, 1.6)
         M.put(im, CARD, (CARD_C[0], CARD_C[1] + 260 * (1 - k)), -4 + 3 * math.sin(t * 2))
         M.doodle(im, t, T_CARD + 0.5, 'arrow', 0, 170, (150, 1250), SKY, 30, t1=T_POOF + 0.45)   # points at the bill
-    # 2 where the card was: "now you don't"
-    M.word(im, t, T_POOF + 0.45, 'now you', (540, 1250), 120, NAVY, t1=T_STAGE)
-    M.word(im, t, T_POOF + 0.6, "don't", (540, 1450), 240, SKY, t1=T_STAGE)
+    # 2 she and the bill are gone: "now you don't" on the empty curtain
+    M.word(im, t, T_POOF + 0.45, 'now you', (540, 820), 130, NAVY, t1=T_STAGE)
+    M.word(im, t, T_POOF + 0.6, "don't", (540, 1030), 260, NAVY, t1=T_STAGE)
     # 3 midnight: gone
     M.word(im, t, T_STAGE + 0.1, 'gone', (540, 360), 300, SKY, t1=T_CLIP3)
     M.boxed(im, t, T_STAGE + 0.4, '$39 a month', (540, 580), 72, WHITE, NAVY, t1=T_CLIP3)
@@ -78,7 +88,7 @@ def frame(t):
     M.boxed(im, t, T_CTA + 0.3, 'MANYCHAT', (540, 860), 120, SKY, NAVY, pill=True)
     M.word(im, t, T_CTA + 0.6, 'for my full guide', (540, 1070), 104, SKY)
     M.doodle(im, t, T_CTA + 0.9, 'arrow', 0, 150, (80, 860), SKY)
-    for t0, c in ((T_POOF, (540, 1560)), (T_PUFF2, (540, 520))):    # her smoke on Screen: over the bill, then over the stage
+    for t0, c in ((T_POOF, (540, 950)), (T_PUFF2, (540, 520))):    # her smoke on Screen: over the bill, then over the stage
         M.SMOKE_C = c; s = M.smoke_at(t, t0)
         if s is not None: im = ImageChops.screen(im.convert('RGB'), s).convert('RGBA')
     return im.convert('RGB')
