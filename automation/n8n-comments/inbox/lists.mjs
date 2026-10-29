@@ -4,6 +4,9 @@
 //   builtin (default when no key is set), mailerlite, kit, mailchimp, beehiiv, flodesk, webhook.
 // Each tool does one thing here: "add this email and put it in this group / tag / audience /
 // publication / segment". Request shapes checked in each tool's own API docs on 2026-10-23.
+// Answers to a keyword's questions go along too (checked in the docs 2026-10-29): a custom field in
+// MailerLite, beehiiv and Flodesk (made the first time it's needed), a "field: answer" tag in Kit
+// and Mailchimp. That part never costs a signup: if the tool refuses it, the email still goes in.
 // No npm packages. Base URLs are settings so tests can point them at test/mock-apis.mjs.
 import { createHash, createHmac } from 'node:crypto';
 
@@ -11,6 +14,25 @@ const env = (k, d = '') => (process.env[k] ?? '').trim() || d;
 const md5 = (s) => createHash('md5').update(s).digest('hex');
 const basic = (user, pass = '') => `Basic ${Buffer.from(`${user}:${pass}`).toString('base64')}`;
 
+// The answers as { field, value }; field is the short name the owner gave the question ("sews").
+const answerPairs = (s) => (s.answers || []).filter((a) => a.field && a.a).map((a) => ({ field: a.field, value: a.a }));
+const answerTag = (p) => `${p.field}: ${p.value}`.slice(0, 100);
+async function tryAnswers(s, fn, fallback) {
+  const pairs = answerPairs(s);
+  if (!pairs.length) return fallback;
+  try {
+    return await fn(pairs);
+  } catch (e) {
+    s.answersError = String(e.message || e).slice(0, 300);
+    return fallback;
+  }
+}
+// Field keys and ids already looked up or made, so each is made once (tool:list:name → key).
+const fieldCache = new Map();
+async function cachedField(id, make) {
+  if (!fieldCache.has(id)) fieldCache.set(id, await make());
+  return fieldCache.get(id);
+}
 async function call(name, base, method, path, headers, body) {
   const res = await fetch(`${base}${path}`, {
     method,
@@ -71,8 +93,22 @@ const PROVIDERS = {
       const g = (await this.req('POST', '/groups', { name })).data || {};
       return { id: String(g.id), name: g.name };
     },
+    // POST /subscribers adds or updates, and only ever adds groups; fields go in by key.
     async add(s) {
-      await this.req('POST', '/subscribers', { email: s.email, groups: [s.listId], status: 'active' });
+      const fields = await tryAnswers(s, async (pairs) => {
+        const out = {};
+        for (const p of pairs) out[await this.fieldKey(p.field)] = p.value;
+        return out;
+      }, {});
+      await this.req('POST', '/subscribers', { email: s.email, groups: [s.listId], status: 'active', ...(Object.keys(fields).length ? { fields } : {}) });
+    },
+    fieldKey(name) {
+      return cachedField(`mailerlite:${name.toLowerCase()}`, async () => {
+        const found = ((await this.req('GET', `/fields?limit=100&filter[keyword]=${encodeURIComponent(name)}`)).data || []).find((f) => String(f.name).toLowerCase() === name.toLowerCase());
+        const key = found?.key || ((await this.req('POST', '/fields', { name, type: 'text' })).data || {}).key;
+        if (!key) throw new Error(`MailerLite didn't make the field "${name}"`);
+        return key;
+      });
     },
     // The keyword page's extra panel: group size and the email sequences that group starts.
     async detail(id) {
@@ -107,6 +143,14 @@ const PROVIDERS = {
     async add(s) {
       await this.req('POST', '/v4/subscribers', { email_address: s.email, state: 'active' });
       await this.req('POST', `/v4/tags/${encodeURIComponent(s.listId)}/subscribers`, { email_address: s.email });
+      // Creating a tag that exists returns it (matched ignoring case), so this is safe every time.
+      await tryAnswers(s, async (pairs) => {
+        for (const p of pairs) {
+          const t = (await this.req('POST', '/v4/tags', { name: answerTag(p) })).tag || {};
+          if (!t.id) throw new Error(`Kit didn't make the tag "${answerTag(p)}"`);
+          await this.req('POST', `/v4/tags/${t.id}/subscribers`, { email_address: s.email });
+        }
+      });
     },
   },
 
@@ -131,6 +175,8 @@ const PROVIDERS = {
       const hash = md5(s.email.toLowerCase());
       await this.req('PUT', `/lists/${encodeURIComponent(s.listId)}/members/${hash}`, { email_address: s.email, status_if_new: 'subscribed' });
       await this.req('POST', `/lists/${encodeURIComponent(s.listId)}/members/${hash}/tags`, { tags: [{ name: `freebie-${s.keyword}`, status: 'active' }] });
+      // Mailchimp makes a tag the first time it's used.
+      await tryAnswers(s, (pairs) => this.req('POST', `/lists/${encodeURIComponent(s.listId)}/members/${hash}/tags`, { tags: pairs.map((p) => ({ name: answerTag(p), status: 'active' })) }));
     },
   },
 
@@ -148,15 +194,29 @@ const PROVIDERS = {
       const d = await this.req('GET', '/v2/publications?limit=100');
       return (d.data || []).map((p) => ({ id: String(p.id), name: p.name }));
     },
+    // Custom fields must exist first (beehiiv quietly drops unknown ones), so they're made if missing.
     async add(s) {
-      await this.req('POST', `/v2/publications/${encodeURIComponent(s.listId)}/subscriptions`, {
+      const pub = encodeURIComponent(s.listId);
+      const custom = await tryAnswers(s, async (pairs) => {
+        for (const p of pairs) {
+          await cachedField(`beehiiv:${s.listId}:${p.field.toLowerCase()}`, async () => {
+            const have = ((await this.req('GET', `/v2/publications/${pub}/custom_fields?limit=100`)).data || []).find((f) => String(f.display).toLowerCase() === p.field.toLowerCase());
+            return have?.display || ((await this.req('POST', `/v2/publications/${pub}/custom_fields`, { kind: 'string', display: p.field })).data || {}).display || p.field;
+          });
+        }
+        return pairs.map((p) => ({ name: p.field, value: p.value }));
+      }, []);
+      const d = await this.req('POST', `/v2/publications/${pub}/subscriptions`, {
         email: s.email,
         reactivate_existing: false,
         send_welcome_email: true,
         utm_source: (s.platform || 'instagram').toLowerCase(),
         utm_medium: 'chat-manager',
         utm_campaign: s.keyword,
+        ...(custom.length ? { custom_fields: custom } : {}),
       });
+      const warn = d.warnings || d.data?.warnings;
+      if (custom.length && Array.isArray(warn) && warn.length) s.answersError = `beehiiv: ${warn.map((w) => w.message || w).join(', ')}`.slice(0, 300);
     },
   },
 
@@ -178,8 +238,22 @@ const PROVIDERS = {
       const g = await this.req('POST', '/v1/segments', { name });
       return { id: String(g.id), name: g.name };
     },
+    // POST /v1/subscribers adds or updates; custom fields go in by key (made from a label if missing).
     async add(s) {
-      await this.req('POST', '/v1/subscribers', { email: s.email, segment_ids: [s.listId] });
+      const custom = await tryAnswers(s, async (pairs) => {
+        const out = {};
+        for (const p of pairs) {
+          const key = await cachedField(`flodesk:${p.field.toLowerCase()}`, async () => {
+            const all = await this.req('GET', '/v1/custom-fields/all');
+            const have = (Array.isArray(all) ? all : all.data || []).find((f) => String(f.label).toLowerCase() === p.field.toLowerCase());
+            return have?.key || (await this.req('POST', '/v1/custom-fields', { label: p.field })).key;
+          });
+          if (!key) throw new Error(`Flodesk didn't make the field "${p.field}"`);
+          out[key] = p.value;
+        }
+        return out;
+      }, {});
+      await this.req('POST', '/v1/subscribers', { email: s.email, segment_ids: [s.listId], ...(Object.keys(custom).length ? { custom_fields: custom } : {}) });
     },
   },
 };

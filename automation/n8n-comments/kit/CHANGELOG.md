@@ -5,6 +5,7 @@
 - Flows tab: every keyword drawn as connected step cards with its numbers from the last 30 days.
 - Click tracking: freebie links in DMs go through your own server, so the Flows tab shows how many people opened them.
 - Questions: up to 3 per keyword, answers as buttons, saved with each person (Inbox, Email list, CSV, webhook); an answer can send its own freebie.
+- Answers go to your email tool: a field in MailerLite, beehiiv and Flodesk, a tag like "sews: Quilts" in Kit and Mailchimp (made for you the first time). If the tool refuses, the signup still goes in and the answer stays on your Email list.
 
 ## 1.0.0
 First version: Instagram comment and DM keywords (link in the DM, or "reply READY" → personal signup link → email

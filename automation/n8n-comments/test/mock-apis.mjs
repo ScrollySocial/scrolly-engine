@@ -52,6 +52,8 @@ const routes = [
     { id: '900', name: 'FREE delivery', enabled: true, emails_count: 2, stats: { sent: 9, open_rate: { string: '60%' } }, triggers: [{ type: 'subscriber_joins_group', group_ids: ['111'] }] },
     { id: '901', name: 'Something else', enabled: true, emails_count: 1, stats: {}, triggers: [{ type: 'subscriber_joins_group', group_ids: ['222'] }] },
   ] })],
+  ['GET', /^\/mailerlite\/fields$/, () => ({ data: [] })],
+  ['POST', /^\/mailerlite\/fields$/, (req, url, body) => ({ data: { id: 7, name: body.name, key: String(body.name).toLowerCase(), type: 'text' } })],
   ['POST', /^\/mailerlite\/subscribers$/, (req, url, body) => ({ data: { id: 'sub1', email: body.email } })],
   ['POST', /^\/google-token$/, () => ({ access_token: 'yt-access', expires_in: 3599 })],
   ['POST', /^\/apify\/acts\/clockworks~tiktok-comments-scraper\/run-sync-get-dataset-items$/, () => [

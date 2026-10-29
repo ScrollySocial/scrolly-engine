@@ -844,6 +844,14 @@ async function showKeyword(body, name) {
       ] : null,
     ].flat(3).filter(Boolean));
   };
+  // What the connected email tool does with an answer (lists.mjs): a field, or a "name: answer" tag.
+  const fieldHint = (name, answer) => {
+    const tool = ME.list?.id || 'builtin';
+    if (['mailerlite', 'beehiiv', 'flodesk'].includes(tool)) return `Short, like "${name}". ${ME.list.name} gets a field with this name, with their answer in it (made for you the first time).`;
+    if (['kit', 'mailchimp'].includes(tool)) return `Short, like "${name}". ${ME.list.name} gets a tag like "${name}: ${answer}" (made for you the first time).`;
+    if (tool === 'webhook') return `Short, like "${name}". Sent with each signup to your webhook.`;
+    return `Short, like "${name}". Used when you connect an email tool later; your Email list and CSV show the answers already.`;
+  };
   // Questions (optional): asked one at a time after their first reply, each answer a button.
   const qSection = h('div');
   const drawQuestions = () => {
@@ -852,6 +860,7 @@ async function showKeyword(body, name) {
     const parts = [h('p', { class: 'hint', text: 'Up to 3 questions before the freebie goes out. Each answer is a button (up to 20 characters); what they pick is saved with them, in the Inbox and on your Email list and its CSV. An answer can send a different freebie.' })];
     k.questions.forEach((q, qi) => {
       parts.push(h('h3', { style: 'margin-top:16px', text: `Question ${qi + 1}` }), ...text(q, 'text', `Question ${qi + 1}`, { placeholder: qi ? 'How big is your list?' : 'What do you sell?', onInput: drawPreviews }));
+      parts.push(...text(q, 'field', `Name in your email tool (question ${qi + 1})`, { placeholder: qi ? 'list_size' : 'sells', hint: fieldHint(q.field || (qi ? 'list_size' : 'sells'), q.answers[0]?.label || 'Clothes') }));
       q.answers.forEach((a, ai) => parts.push(h('div', { class: 'answer-row' },
         h('div', {}, ...text(a, 'label', `Answer ${ai + 1} (question ${qi + 1})`, { placeholder: ['Clothes', 'Food', 'Services'][ai] || 'Answer', onInput: drawPreviews })),
         h('div', {}, ...text(a, 'url', `Its own freebie link (optional, answer ${ai + 1}, question ${qi + 1})`, { type: 'url', placeholder: 'Empty: the usual freebie' })),

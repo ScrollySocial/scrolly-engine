@@ -83,6 +83,13 @@ function readKeywords() {
 //           to the keyword's list in the connected email tool (lists.mjs) and shows the freebie.
 // Optional before either: "ask first" (reply READY), and after an email link: one reminder DM.
 const str = (v) => String(v ?? '').trim();
+// "What do you sew most?" → "sew_most": a question's short name for email tools.
+const FIELD_SKIP = new Set(['what', 'which', 'who', 'how', 'do', 'does', 'did', 'you', 'your', 'are', 'is', 'the', 'a', 'an', 'of', 'to', 'for', 'in', 'on', 'would', 'like', 'i', 'we', 'me', 'my', 'and', 'or']);
+function fieldName(t) {
+  const words = str(t).toLowerCase().normalize('NFKD').replace(/[^a-z0-9]+/g, ' ').trim().split(' ').filter(Boolean);
+  const kept = words.filter((w) => !FIELD_SKIP.has(w));
+  return ((kept.length ? kept : words).slice(0, 3).join('_') || 'answer').slice(0, 30);
+}
 function cleanKeyword(k) {
   const keyword = str(k.keyword).toUpperCase();
   if (!/^[A-Z0-9$]{2,20}$/.test(keyword)) throw new Error(`"${k.keyword}" isn't a keyword: use 2 to 20 letters or numbers, no spaces`);
@@ -111,6 +118,8 @@ function cleanKeyword(k) {
   // with 2 to 6 button answers. Answers are saved with the person; an answer can send its own freebie link.
   const questions = (Array.isArray(k.questions) ? k.questions : []).slice(0, 3).map((q) => ({
     text: str(q?.text),
+    // The short name in their email tool: a field (MailerLite, beehiiv, Flodesk) or the start of a tag (Kit, Mailchimp).
+    field: fieldName(q?.field || q?.text),
     answers: (Array.isArray(q?.answers) ? q.answers : []).slice(0, 6).map((a) => ({ label: str(a?.label).slice(0, 20), url: str(a?.url) })).filter((a) => a.label || a.url),
   })).filter((q) => q.text || q.answers.length);
   for (const q of questions) for (const a of q.answers) if (a.url && !/^https:\/\/\S+$/.test(a.url)) throw new Error(`${keyword}: the link for "${a.label}" must start with https://`);
@@ -158,6 +167,7 @@ function cleanKeyword(k) {
       if (q.answers.length < 2 || q.answers.some((a) => !a.label)) throw new Error(`${keyword}: question ${i + 1} needs 2 to 6 answers, each with a button word`);
       if (new Set(q.answers.map((a) => a.label.toLowerCase())).size !== q.answers.length) throw new Error(`${keyword}: question ${i + 1} has the same answer twice`);
     }
+    if (new Set(questions.map((q) => q.field)).size !== questions.length) throw new Error(`${keyword}: two questions have the same name for your email tool`);
     if (followGate.on && !ask.on) throw new Error(`${keyword}: "only for followers" needs "ask them to reply first" switched on`);
     if (followGate.on && !followGate.text) throw new Error(`${keyword}: write the "follow me first" message`);
     if (publicReply.on && !publicReply.text) throw new Error(`${keyword}: write at least one reply for under the comment`);
@@ -320,6 +330,7 @@ async function sendSignup(sub) {
     return;
   }
   sub.tries = (sub.tries || 0) + 1;
+  delete sub.answersError;
   try {
     if (p.needsTarget && !sub.listId) throw new Error(`no ${p.name} ${p.label} picked for ${sub.keyword}`);
     await p.add(sub);
@@ -436,7 +447,7 @@ async function handleSignup(req, res, token) {
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email) || email.length > 200) return send(res, 400, signupPage(k, action, { email, error: "That email doesn't look right." }), 'text/html; charset=utf-8');
   if (form.consent !== 'yes') return send(res, 400, signupPage(k, action, { email, error: 'Tick the box so I can email it to you.' }), 'text/html; charset=utf-8');
   // Kept here first, then sent on to the email tool; if the tool fails, retrySignups tries again.
-  const sub = keepSignup({ email, keyword: k.keyword, freebie: k.freebie, platform: f.platform, listId: k.list?.id || k.mailerliteGroup || '', consent: readProfile().signup.consent, answers: f.answers });
+  const sub = keepSignup({ email, keyword: k.keyword, freebie: k.freebie, platform: f.platform, listId: k.list?.id || k.mailerliteGroup || '', consent: readProfile().signup.consent, answers: (f.answers || []).map((x) => ({ ...x, field: (k.questions || []).find((q) => q.text === x.q)?.field || fieldName(x.q) })) });
   await sendSignup(sub);
   flowStep(f, 'signedUp', { email });
   // The DM with the freebie link goes out from n8n right away (its reminder job also sends these).
@@ -779,7 +790,10 @@ async function health() {
       }
     }
     if (reach) add('email', p.name, 'bad', `Can't reach ${p.name}: ${reach}`, `Ask Claude: "check my ${p.name} connection".`);
-    else if (stuck.length) add('email', p.name, 'warn', `${stuck.length} signup${stuck.length === 1 ? '' : 's'} haven't reached ${p.name} yet (they got their freebie). Last reason: ${redact(stuck[0].error) || 'unknown'}`, 'Email list tab → "Try again now".');
+    else if (db.subscribers.some((x) => x.answersError && x.at >= new Date(Date.now() - 7 * 86400e3).toISOString())) {
+      const last = db.subscribers.filter((x) => x.answersError).sort((a, b) => b.at.localeCompare(a.at))[0];
+      add('email', p.name, 'warn', `Signups reach ${p.name}, but some answers didn't (they're kept on your Email list). Last reason: ${redact(last.answersError)}`, `Ask Claude: "check my ${p.name} connection".`);
+    } else if (stuck.length) add('email', p.name, 'warn', `${stuck.length} signup${stuck.length === 1 ? '' : 's'} haven't reached ${p.name} yet (they got their freebie). Last reason: ${redact(stuck[0].error) || 'unknown'}`, 'Email list tab → "Try again now".');
     else add('email', p.name, 'ok', 'Connected.');
   }
   // 6. Replies she approved that didn't post.

@@ -352,7 +352,8 @@ check('Typed "2" for the last question: saved, then their signup link', !!quinnL
 let qpage = await fetch(quinnLink, { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: 'email=quinn%40example.com&consent=yes' });
 check('Signup page opens the freebie their answer picked', (await qpage.text()).includes('href="https://example.com/food.pdf"'));
 const quinnSub = (await inbox('/subscribers')).subscribers?.find((x) => x.email === 'quinn@example.com');
-check('Their answers are kept with the signup', quinnSub?.answers?.length === 2, JSON.stringify(quinnSub));
+const mlFields = (await mockLog()).log.filter((x) => x.path === '/mailerlite/subscribers' && x.body.email === 'quinn@example.com').pop();
+check('Their answers are kept with the signup and go to MailerLite as fields', quinnSub?.answers?.length === 2 && !quinnSub.answersError && mlFields?.body.fields?.sell === 'Food' && mlFields.body.fields.big_list === 'Over 100', JSON.stringify({ quinnSub, ml: mlFields?.body }));
 const csv = await (await fetch(`${INBOX}/inbox/api/subscribers.csv`, { headers: INBOX_KEY })).text();
 check('CSV has a column per question with their answers', /,What do you sell\?,How big is your list\?\r\n/.test(csv.split('\r\n')[0] + '\r\n') && csv.includes('quinn@example.com') && /quinn@example\.com.*,Food,Over 100\r\n/.test(csv), csv.split('\r\n').slice(0, 3).join(' | '));
 const askStats = (await inbox('/stats?days=30')).keywords.find((k) => k.keyword === 'ASKME');

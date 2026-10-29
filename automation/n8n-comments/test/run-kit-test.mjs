@@ -25,6 +25,8 @@ function check(name, ok, detail = '') {
 // ---- stand-in email tools: records every request; failNext makes the next add fail ----
 let log = [];
 let failNext = 0;
+// failFields: the next "make a field" request fails (answers then can't go in; the signup still must).
+let failFields = 0;
 const json = (res, code, body) => (res.writeHead(code, { 'Content-Type': 'application/json' }), res.end(JSON.stringify(body)));
 const mock = http.createServer((req, res) => {
   let raw = '';
@@ -40,7 +42,10 @@ const mock = http.createServer((req, res) => {
     const p = url.pathname;
     const adding = req.method !== 'GET' && /\/(subscribers|members|subscriptions|hook)/.test(p) && !/\/tags$/.test(p) && !/\/tags\/\d+\/subscribers$/.test(p);
     if (adding && failNext > 0) return failNext--, json(res, 503, { message: 'down for maintenance' });
+    if (failFields > 0 && req.method === 'POST' && /\/(fields|custom_fields|custom-fields)$/.test(p)) return failFields--, json(res, 422, { message: 'field limit reached' });
     // MailerLite
+    if (p === '/ml/fields' && req.method === 'GET') return json(res, 200, { data: [{ id: 5, name: 'Company', key: 'company', type: 'text' }] });
+    if (p === '/ml/fields' && req.method === 'POST') return json(res, 200, { data: { id: 6, name: body.name, key: String(body.name).toLowerCase().replace(/\s+/g, '_'), type: body.type } });
     if (p === '/ml/groups' && req.method === 'GET') return json(res, 200, { data: [{ id: 111, name: 'Freebie: FREE' }] });
     if (p === '/ml/groups' && req.method === 'POST') return json(res, 201, { data: { id: 222, name: body.name } });
     if (p === '/ml/groups/111') return json(res, 200, { data: { id: 111, name: 'Freebie: FREE', active_count: 3 } });
@@ -48,7 +53,7 @@ const mock = http.createServer((req, res) => {
     if (p === '/ml/subscribers') return json(res, 201, { data: { id: 'x' } });
     // Kit
     if (p === '/kit/v4/tags' && req.method === 'GET') return json(res, 200, { tags: [{ id: 41, name: 'freebie-free' }], pagination: {} });
-    if (p === '/kit/v4/tags' && req.method === 'POST') return json(res, 201, { tag: { id: 42, name: body.name } });
+    if (p === '/kit/v4/tags' && req.method === 'POST') return json(res, 201, { tag: { id: String(body.name).startsWith('sews:') ? 43 : 42, name: body.name } });
     if (p === '/kit/v4/subscribers') return json(res, 201, { subscriber: { id: 1 } });
     if (/^\/kit\/v4\/tags\/\d+\/subscribers$/.test(p)) return json(res, 201, { subscriber: { id: 1 } });
     // Mailchimp
@@ -57,10 +62,14 @@ const mock = http.createServer((req, res) => {
     if (/^\/mc\/lists\/aud1\/members\/[a-f0-9]{32}\/tags$/.test(p)) return res.writeHead(204), res.end();
     // beehiiv
     if (p === '/bh/v2/publications') return json(res, 200, { data: [{ id: 'pub_1', name: 'My newsletter' }] });
+    if (p === '/bh/v2/publications/pub_1/custom_fields' && req.method === 'GET') return json(res, 200, { data: [], page: 1, total_pages: 1 });
+    if (p === '/bh/v2/publications/pub_1/custom_fields' && req.method === 'POST') return json(res, 200, { data: { id: 'cf1', kind: body.kind, display: body.display } });
     if (p === '/bh/v2/publications/pub_1/subscriptions') return json(res, 201, { data: { id: 'sub_1' } });
     // Flodesk
     if (p === '/fd/v1/segments' && req.method === 'GET') return json(res, 200, { meta: {}, data: [{ id: 'seg1', name: 'Freebie' }] });
     if (p === '/fd/v1/segments' && req.method === 'POST') return json(res, 201, { id: 'seg2', name: body.name });
+    if (p === '/fd/v1/custom-fields/all') return json(res, 200, [{ key: 'company', label: 'Company' }]);
+    if (p === '/fd/v1/custom-fields' && req.method === 'POST') return json(res, 201, { key: String(body.label).toLowerCase(), label: body.label });
     if (p === '/fd/v1/subscribers') return json(res, 200, { id: 'fd1', email: body.email });
     // Webhook
     if (p === '/hook') return json(res, 200, { ok: true });
@@ -105,9 +114,12 @@ const api = async (path, opts = {}) => {
   }
 };
 const kw = (list) => ({ keyword: 'FREE', freebie: 'Free guide', url: 'https://example.com/free.pdf', live: true, dmApproved: true, delivery: 'email', where: { igComments: true, igDms: true }, linkText: 'Grab it: {link}', list });
-// A person gets a personal link (as n8n would make it), opens it and signs up.
-async function signUp(email) {
+// A keyword with one question (needs "ask first"), as the dashboard saves it.
+const kwQ = (list) => ({ ...kw(list), ask: { on: true, text: 'Want it? Reply READY.', word: 'READY' }, questions: [{ text: 'What do you sew most?', field: 'sews', answers: [{ label: 'Quilts' }, { label: 'Bags' }] }] });
+// A person gets a personal link (as n8n would make it), answers (optional), opens it and signs up.
+async function signUp(email, answer) {
   const flow = await api('/flows', { method: 'POST', body: { keyword: 'FREE', platform: 'Instagram', personId: `p-${email}`, author: email.split('@')[0] } });
+  if (answer) await api(`/flows/${flow.token}`, { method: 'PATCH', body: { answer: { q: 'What do you sew most?', a: answer } } });
   await fetch(`${I}/inbox/f/${flow.token}`, { headers: { 'User-Agent': 'Mozilla/5.0 (iPhone)' } });
   const res = await fetch(`${I}/inbox/f/${flow.token}`, { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: `email=${encodeURIComponent(email)}&consent=yes` });
   return { status: res.status, html: await res.text(), flow };
@@ -148,18 +160,23 @@ check('Dashboard gets the profile, public address and list info (no keys)', me.p
 // 3. Each email tool: list its targets, add a signup into the keyword's target
 const tools = [
   { id: 'mailerlite', env: { EMAIL_LIST: 'mailerlite', MAILERLITE_API_KEY: 'ml-key', MAILERLITE_BASE: `${M}/ml` }, target: '111', created: '222',
-    sent: (l) => l.some((x) => x.path === '/ml/subscribers' && x.body.email === 'cy@example.com' && x.body.groups?.[0] === '111' && x.headers.authorization === 'Bearer ml-key') },
+    sent: (l) => l.some((x) => x.path === '/ml/subscribers' && x.body.email === 'cy@example.com' && x.body.groups?.[0] === '111' && x.headers.authorization === 'Bearer ml-key'),
+    answered: (l) => l.some((x) => x.method === 'POST' && x.path === '/ml/fields' && x.body.name === 'sews' && x.body.type === 'text') && l.some((x) => x.path === '/ml/subscribers' && x.body.fields?.sews === 'Quilts') },
   { id: 'kit', env: { EMAIL_LIST: 'kit', KIT_API_KEY: 'kit-key', KIT_BASE: `${M}/kit` }, target: '41', created: '42',
-    sent: (l) => l.some((x) => x.path === '/kit/v4/subscribers' && x.body.email_address === 'cy@example.com' && x.headers['x-kit-api-key'] === 'kit-key') && l.some((x) => x.path === '/kit/v4/tags/41/subscribers' && x.body.email_address === 'cy@example.com') },
+    sent: (l) => l.some((x) => x.path === '/kit/v4/subscribers' && x.body.email_address === 'cy@example.com' && x.headers['x-kit-api-key'] === 'kit-key') && l.some((x) => x.path === '/kit/v4/tags/41/subscribers' && x.body.email_address === 'cy@example.com'),
+    answered: (l) => l.some((x) => x.method === 'POST' && x.path === '/kit/v4/tags' && x.body.name === 'sews: Quilts') && l.some((x) => x.path === '/kit/v4/tags/43/subscribers' && x.body.email_address === 'cy@example.com') },
   { id: 'mailchimp', env: { EMAIL_LIST: 'mailchimp', MAILCHIMP_API_KEY: 'abc123-us21', MAILCHIMP_BASE: `${M}/mc` }, target: 'aud1',
     sent: (l) => {
       const hash = createHash('md5').update('cy@example.com').digest('hex');
       return l.some((x) => x.method === 'PUT' && x.path === `/mc/lists/aud1/members/${hash}` && x.body.status_if_new === 'subscribed' && x.headers.authorization === `Basic ${Buffer.from('chatmanager:abc123-us21').toString('base64')}`) && l.some((x) => x.path === `/mc/lists/aud1/members/${hash}/tags` && x.body.tags?.[0]?.name === 'freebie-FREE');
-    } },
+    },
+    answered: (l) => l.some((x) => /\/mc\/lists\/aud1\/members\/[a-f0-9]{32}\/tags$/.test(x.path) && x.body.tags?.some((t) => t.name === 'sews: Quilts' && t.status === 'active')) },
   { id: 'beehiiv', env: { EMAIL_LIST: 'beehiiv', BEEHIIV_API_KEY: 'bh-key', BEEHIIV_BASE: `${M}/bh` }, target: 'pub_1',
-    sent: (l) => l.some((x) => x.path === '/bh/v2/publications/pub_1/subscriptions' && x.body.email === 'cy@example.com' && x.body.utm_campaign === 'FREE' && x.headers.authorization === 'Bearer bh-key') },
+    sent: (l) => l.some((x) => x.path === '/bh/v2/publications/pub_1/subscriptions' && x.body.email === 'cy@example.com' && x.body.utm_campaign === 'FREE' && x.headers.authorization === 'Bearer bh-key'),
+    answered: (l) => l.some((x) => x.method === 'POST' && x.path === '/bh/v2/publications/pub_1/custom_fields' && x.body.display === 'sews' && x.body.kind === 'string') && l.some((x) => x.path === '/bh/v2/publications/pub_1/subscriptions' && x.body.custom_fields?.[0]?.name === 'sews' && x.body.custom_fields[0].value === 'Quilts') },
   { id: 'flodesk', env: { EMAIL_LIST: 'flodesk', FLODESK_API_KEY: 'fd-key', FLODESK_BASE: `${M}/fd` }, target: 'seg1', created: 'seg2',
-    sent: (l) => l.some((x) => x.path === '/fd/v1/subscribers' && x.body.email === 'cy@example.com' && x.body.segment_ids?.[0] === 'seg1' && x.headers.authorization === `Basic ${Buffer.from('fd-key:').toString('base64')}`) },
+    sent: (l) => l.some((x) => x.path === '/fd/v1/subscribers' && x.body.email === 'cy@example.com' && x.body.segment_ids?.[0] === 'seg1' && x.headers.authorization === `Basic ${Buffer.from('fd-key:').toString('base64')}`),
+    answered: (l) => l.some((x) => x.method === 'POST' && x.path === '/fd/v1/custom-fields' && x.body.label === 'sews') && l.some((x) => x.path === '/fd/v1/subscribers' && x.body.custom_fields?.sews === 'Quilts' && x.body.segment_ids?.[0] === 'seg1') },
 ];
 for (const t of tools) {
   await startInbox(t.env, [kw({ id: t.target, name: 'x' })]);
@@ -177,10 +194,28 @@ for (const t of tools) {
   r = await signUp('cy@example.com');
   subs = await api('/subscribers');
   check(`${t.id}: signup reaches the tool in the keyword's ${info.label}`, r.status === 200 && t.sent(log) && subs.subscribers[0]?.status === 'sent' && subs.subscribers[0]?.provider === t.id, JSON.stringify(log.map((x) => [x.method, x.path, x.body])));
+  // The same keyword with a question: their answer goes along (a field, or a "sews: Quilts" tag).
+  await startInbox(t.env, [kwQ({ id: t.target, name: 'x' })]);
+  log = [];
+  r = await signUp('cy@example.com', 'Quilts');
+  subs = await api('/subscribers');
+  check(`${t.id}: their answer reaches the tool (${['kit', 'mailchimp'].includes(t.id) ? 'tag "sews: Quilts"' : 'field "sews"'})`, r.status === 200 && t.answered(log) && subs.subscribers[0]?.status === 'sent' && !subs.subscribers[0]?.answersError, JSON.stringify({ log: log.map((x) => [x.method, x.path, x.body]), sub: subs.subscribers[0] }));
 }
 // Saving an email keyword without a target is refused when the tool needs one.
 const noTarget = await api('/keywords', { method: 'PUT', body: { keywords: [kw({})] } });
 check('A keyword can\'t go live without its list picked (Flodesk segment)', noTarget.status === 400 && noTarget.error.includes('segment'), JSON.stringify(noTarget));
+// The tool won't make the field: the email still goes in (with its group), the answer stays here, health says so.
+await startInbox({ EMAIL_LIST: 'mailerlite', MAILERLITE_API_KEY: 'ml-key', MAILERLITE_BASE: `${M}/ml` }, [kwQ({ id: '111', name: 'x' })]);
+log = [];
+failFields = 1;
+r = await signUp('flo@example.com', 'Bags');
+subs = await api('/subscribers');
+const flo = subs.subscribers.find((s) => s.email === 'flo@example.com');
+check('Field refused: the signup still reaches the tool, the answer is kept here with the reason', r.status === 200 && flo?.status === 'sent' && flo.answers?.[0]?.a === 'Bags' && /422/.test(flo.answersError || '') && log.some((x) => x.path === '/ml/subscribers' && x.body.groups?.[0] === '111' && !x.body.fields), JSON.stringify(flo));
+const hl = await api('/health?fresh=1');
+check('Connections check says some answers didn\'t reach the tool', hl.checks?.find((c) => c.id === 'email')?.state === 'warn' && /answers didn't/.test(hl.checks.find((c) => c.id === 'email').text), JSON.stringify(hl.checks?.find((c) => c.id === 'email')));
+const named = await api('/keywords', { method: 'PUT', body: { keywords: [{ ...kwQ({ id: '111', name: 'x' }), questions: [{ text: 'What do you sew most?', answers: [{ label: 'Quilts' }, { label: 'Bags' }] }] }] } });
+check('A question with no name gets one from its words ("sew_most")', named.keywords?.[0]?.questions?.[0]?.field === 'sew_most', JSON.stringify(named.keywords?.[0]?.questions));
 // Keywords saved before the kit (mailerliteGroup) keep working.
 await startInbox({ MAILERLITE_API_KEY: 'ml-key', MAILERLITE_BASE: `${M}/ml` }, [{ ...kw(undefined), mailerliteGroup: '111', mailerliteGroupName: 'Freebie: FREE' }]);
 log = [];
