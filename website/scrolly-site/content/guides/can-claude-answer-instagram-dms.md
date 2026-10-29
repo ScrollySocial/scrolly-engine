@@ -1,6 +1,6 @@
 ---
 slug: can-claude-answer-instagram-dms
-wpId:
+wpId: 2052
 title: Can Claude Answer Instagram DMs? What Instagram Actually Allows
 description: Can Claude answer your Instagram DMs? What it can and can't do on its own, what you need, the three ways to set it up, and Instagram's DM rules.
 h1: Can Claude answer
@@ -93,7 +93,7 @@ Fully automatic | Claude answers everything itself, through its paid API.
 
 :::cta hand Want to view an interactive demo of my personal software? | /chat-manager/#demo | Check it out
 
-## What Instagram allows (the DM rules)
+## Instagram's DM rules for automation
 
 These are Instagram's rules, so they apply to every tool, ManyChat included:
 
