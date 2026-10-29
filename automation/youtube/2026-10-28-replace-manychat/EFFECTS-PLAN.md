@@ -14,12 +14,15 @@ calculator, real comment/DM screens; no drawn "app" mockups, no AI images. Doodl
 ## Her storyboard notes (2026-10-29)
 - **Nothing white on the curtain.** White handwriting and doodles disappear into the pattern: handwritten asides are navy
   on a paper note, arrows and ✗ are navy with a paper outline, rings on footage get a navy edge.
-- **HUGE at the start.** The first 30 s hooks with giant type: word-by-word punches (she picked these over a full-frame navy beat), a giant
+- **Opening rethought (her pick from 3 Style Board ideas): the stack of TVs.** Rejected on the way: a full-frame navy
+  card, word-by-word punches beside her face, and the zoomed-out vertical clip with blurred sides. Before that note: a giant
   "$6" filling the left side of the tight cold-open shot, and the hook prices at 250 px on their cards.
 - **Font: Figtree heavy** (her pick over Instrument Serif, Bricolage and the handwriting font) for every big word: the
   cold-open punches, price cards, receipt total and chapter titles. Handwriting stays for the small paper notes.
-- **Not zoomed in so close:** the cold-open Reel take (vertical) is shown whole in the middle with a soft blurred copy
-  filling the sides (plan.json `"fit": "blur"`, roughcut.mjs), and the punches sit on those blurred sides.
+- **Not zoomed in so close:** the vertical cold-open take plays inside the TV instead of filling the frame. The rough
+  cut shows it whole over a blurred copy (plan.json `"fit": "blur"`) only as a stand-in until the TV build replaces it.
+- The real ManyChat pricing page is behind a bot check, so screens use her own calculator page (prices from
+  manychat.com/pricing, checked Oct 28).
 
 ## Effects used across the whole video
 | Effect | What it is | Where |
@@ -36,7 +39,7 @@ calculator, real comment/DM screens; no drawn "app" mockups, no AI images. Doodl
 ## Beat by beat
 | Time | Beat (takes) | On screen |
 | --- | --- | --- |
-| 0:00 | **Cold open** (Reel intro 2066, same blue top) "ManyChat could cost you up to hundreds of dollars a month. Mine costs $6..." | Word-by-word punches, the vertical take shown whole over a blurred copy, huge navy Figtree heavy with a paper outline on the blurred sides, each timed to her voice and placed on whichever side of her face is open: "$100s" (2.5 s) + "a month" (3.7 s), clear, "$6" (6.9 s) + "your data" (9.4 s). No navy card. On "own all the data": paper note "my server, my list". Quick title card: **I replaced ManyChat with Claude**. |
+| 0:00 | **Cold open: stack of TVs** (Reel intro 2066 audio, same outfit) | Her real curtain in black and white; her own prop TVs in colour (walnut rabbit-ear TV + beige CRT from the template-pack library, cut out). Big TV = her (the vertical take fits a TV, no close crop), CRT = the real ManyChat cost calculator page (Pro $39/mo for 1,000 people), small top TV = her inbox, switching on at "$6". Headline top-left in Figtree heavy: "MANYCHAT: UP TO $100s A MONTH" → "MINE: $6 A MONTH". On "Here's what I do" the camera pushes into her TV and comes out on the wide hook (2040). |
 | 0:10 | **Hook** (2040) "$39 a month... I built one myself, $6" | Left: "$39/mo" (ManyChat Pro). Right: "$6/mo" (mine), ringed. "Even if my computer is off": hand note with an arrow, "still runs". |
 | 0:37 | **1. Why I wouldn't pay** (2039, 2041, 2043) | Chapter card. **Real ManyChat pricing page** (screenshot, dated "checked Oct 28, 2026") slides in from the side; drawn ring around Free 25 contacts, then Pro $39 up to 2,500. Paper checklist: "Free: 25 contacts ✓ · 4 live automations ✗". "Not as bad as it sounds" → hand aside. |
 | 1:35 | **2. What "replace with Claude" means** (2044) | Chapter card. Full-screen **how-it-works strip** built from 3 real things: Claude Code window → n8n workflow on a $6 server → Instagram. Each lights up as she names it. "Evening restart" story: hand note "comment at 2am? still answered". |
