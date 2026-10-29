@@ -27,3 +27,8 @@ computer and press the approve buttons; Claude does the rest. Plan on about an h
 - **draft my comment replies**: Claude writes reply drafts on your plan; you approve them in your dashboard.
 
 Your keys and your server's key live only in the `.secrets` folder here. Keep a copy somewhere safe.
+
+## Who can use it
+
+You can set Chat Manager up for your own accounts and for every client you manage: one copy per Instagram account.
+Please don't resell the kit or give it to someone else to set up for themselves.

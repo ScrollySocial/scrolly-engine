@@ -129,8 +129,8 @@ const FAQS = [
   ['I don’t have a website.', 'Setup gives you a free web address (yourname.duckdns.org) with a secure https connection and your privacy page on it. Your dashboard is behind your own password.'],
   ['I don’t use an email tool.', 'Freebies still go out: people see theirs right after signing up. The emails are kept on your server, ready to download as a CSV whenever you start an email tool.'],
   ['Can people get it in the DM instead?', 'Yes. Give them two buttons, “Send it here” and “By email”, and they pick. The DM link reaches everyone; the email button grows your list.'],
-  ['Can I run it for my clients?', 'Yes, one copy per client. Each copy runs one Instagram account on its own hosting (about $6 a month each), so every client’s inbox, list and data stay separate. Setting up each one takes about an hour, with that client’s Meta account.'],
-  ['Does it work with my client’s email tool?', 'MailerLite, Kit, Mailchimp, beehiiv and Flodesk connect directly: the client shares one key. Klaviyo, ActiveCampaign, HubSpot and others connect through a webhook (Zapier, Make or n8n). Or download the list as a CSV.'],
+  ['Can I run it for my clients?', 'Yes. Set it up for every client you manage, one copy per client. Each copy runs one Instagram account on its own hosting (about $6 a month each), so every client’s inbox, list and data stay separate. Setup takes about an hour per client, with that client’s Meta account. What’s not allowed: reselling the kit, or giving it to someone to set up for themselves.'],
+  ['Which email tools does it work with?', 'MailerLite, Kit, Mailchimp, beehiiv and Flodesk connect directly with one key. Klaviyo, ActiveCampaign, HubSpot and others connect through a webhook (Zapier, Make or n8n). Running a client’s list? They share that one key with you.'],
   ['Is it allowed by Instagram?', 'It uses Meta’s official Instagram API with an app that only works on your own account.'],
   ['Mac or Windows?', 'Both. Setup uses tools that work on Windows and Mac.'],
 ];
