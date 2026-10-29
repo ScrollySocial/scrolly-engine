@@ -46,6 +46,7 @@ const ICON_BY_SLUG = {
   'profit': ['dollar', ['dollar', 'dollar', 'percent']],
   'break-even': ['scale', ['dollar', 'flag', 'receipt']],
   'average-order-value': ['receipt', ['receipt', 'trend']],
+  'manychat-cost': ['tag', ['tag', 'receipt', 'dollar', 'trend']],
 };
 
 // Same three Clubs and copy as the homepage.
@@ -98,6 +99,14 @@ const BRIDGE = `
  <ul class="cdir-clubs">${CLUBS.map(([amt, line, h, cta]) => `<li><div class="amt">${amt}<small>Club</small></div><p>${line}</p><a class="s3-link" href="${h}" aria-label="${cta}: ${amt} Club"><span class="tx">${cta}</span> <span aria-hidden="true">→</span></a></li>`).join('')}</ul>
 </div></section>`;
 
+// A calculator can swap the Clubs section for its own product (manychat-cost: Chat Manager).
+const bridgeFor = (b) => `
+<section class="cdir-bridge s3-sec" aria-labelledby="cdir-bridge-h"><div class="s3-wrap">
+ <h2 class="s3-h2" id="cdir-bridge-h">${b.h}</h2>
+ <p class="s3-lede">${b.lede}</p>
+ <p style="display:flex;flex-wrap:wrap;gap:16px 32px;align-items:center;margin-top:28px"><a class="s3-btn inline" href="${b.href}">${b.btn} <span aria-hidden="true">→</span></a>${b.link ? `<a class="s3-link" href="${b.link[1]}"><span class="tx">${b.link[0]}</span> <span aria-hidden="true">→</span></a>` : ''}</p>
+</div></section>`;
+
 function directory() {
   const feat = bySlug['income-goal'];
   const res = compute(feat);
@@ -139,7 +148,7 @@ function tool(c) {
  <div class="cdir-band"><h2>Your numbers</h2></div>
  <form id="cdir-form" class="cdir-form" novalidate>${c.fields.map((x) => field(x, true)).join('')}</form>
  <div class="cdir-res" aria-live="polite">${res.map(([v, t], i) => `<div>${ico(ICON_BY_SLUG[c.slug][1][i])}<div><div class="v${szAll(res)}" id="cdir-v${i}">${v}</div><p class="s3-label">${c.outs[i]}</p><p class="t" id="cdir-t${i}">${t}</p></div></div>`).join('')}</div>
- <p class="s3-fine note">Estimates, not guarantees.</p>
+ <p class="s3-fine note">Estimates, not guarantees.${c.source ? ` ${c.source}` : ''}</p>
 </div></div></section>
 
 <section class="cdir-why s3-sec tight"><div class="s3-wrap s3-split">
@@ -151,7 +160,7 @@ function tool(c) {
  <div class="cdir-head"><h2 class="s3-h3" id="cdir-rel-h">Related calculators</h2><a class="s3-link" href="/calculators/"><span class="tx">All calculators</span> <span aria-hidden="true">→</span></a></div>
  <ul class="cdir-cards">${c.related.map((s) => card(bySlug[s])).join('')}</ul>
 </div></section>
-${BRIDGE}`;
+${c.bridge ? bridgeFor(c.bridge) : BRIDGE}`;
   return s3shell(`<div class="cdir">${body}</div>`, CSS, script(c));
 }
 

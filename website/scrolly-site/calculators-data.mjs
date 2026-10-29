@@ -168,6 +168,31 @@ return [[H.money(Math.round(a*100)/100),H.money(v.rev)+' from '+H.num(v.orders)+
     tips: ['Offer a bundle that saves the buyer a step.', 'Suggest one relevant add-on at checkout.', 'Set a free shipping threshold just above your current average.'],
     related: ['profit', 'price-to-customers', 'income-goal'],
   },
+  {
+    // B3 in vault keyword-clusters-2026-11.md (manychat pricing). Prices from manychat.com/pricing, checked 2026-10-28:
+    // [up to N active contacts, $ a month on monthly billing, $ a month on yearly billing, plan]. Above 25,000 they quote.
+    slug: 'manychat-cost', id: null, group: 'know', name: 'ManyChat Cost Calculator',
+    short: 'See what ManyChat costs for your audience, next to running your own setup.',
+    lede: 'Put in how many people comment or DM you each month. See the ManyChat plan you’d need, what it costs a year, and what your own setup costs instead.',
+    fields: [N('contacts', 'People who comment or DM you each month', 1000, 50), $('own', 'Your own server each month', 6)],
+    outs: ['ManyChat plan you’d need', 'ManyChat per year', 'Your own setup per year', 'Difference per year'],
+    fn: `function(v,H){var T=[[25,0,0,'Free'],[250,17,14,'Essential'],[2500,39,29,'Pro'],[7500,99,69,'Business'],[25000,199,139,'Advanced']],p=null,i;
+for(i=0;i<T.length;i++){if(v.contacts<=T[i][0]){p=T[i];break}}
+var own=v.own*12,n=H.num(v.contacts)+(v.contacts===1?' person':' people');
+var o=[H.money(own),'Your own server at '+H.money(v.own)+' a month is '+H.money(own)+' a year, however many people message you. Plus the Claude plan you already have.'];
+if(!p)return [['Custom','Above 25,000 people a month, ManyChat quotes a custom price.'],['Ask','ManyChat lists no price above 25,000 people a month.'],o,['Ask','Compare once ManyChat gives you a quote.']];
+var y=p[1]*12,yy=p[2]*12,d=y-own;
+return [[p[3],'For '+n+' a month, you’d need ManyChat '+p[3]+(p[1]?': '+H.money(p[1])+' a month, or '+H.money(p[2])+' a month paid yearly.':', which is free (up to 4 live automations).')],
+[H.money(y),p[1]?H.money(y)+' a year on monthly billing, or '+H.money(yy)+' paid yearly.':'Free at this size.'],
+o,
+[H.money(Math.abs(d)),d>0?'Your own setup costs about '+H.money(d)+' a year less on monthly billing ('+H.money(Math.max(0,yy-own))+' less than paying ManyChat yearly).':'At this size ManyChat costs '+H.money(-d)+' a year less than your own server.']]}`,
+    why: 'ManyChat charges by how many people you interact with each month, so the bill grows with your audience. Your own comment-to-DM setup costs the same however many people message you. Here’s how I set mine up: <a href="/guides/replace-manychat-with-claude/">How I replaced ManyChat with Claude</a>.',
+    tips: ['Count everyone who comments a keyword or DMs you in a month: ManyChat calls them active contacts.', 'ManyChat’s free plan stops at 25 people and 4 live automations.', 'Your own setup needs a paid Claude plan to build it, which you may already have.'],
+    source: 'ManyChat prices from manychat.com/pricing, checked October 28, 2026. Taxes not included.',
+    // Bottom section: Chat Manager instead of the Clubs (same buyer as this calculator).
+    bridge: { h: 'Want the <em class="or">$6</em> setup?', lede: 'Chat Manager is my own comment-to-DM software as a kit: Claude sets it up with you.', btn: 'See Chat Manager', href: '/chat-manager/', link: ['Read how I built mine', '/guides/replace-manychat-with-claude/'] },
+    related: ['break-even', 'profit', 'income-goal'],
+  },
 ];
 
 // Preset pills for a field with `presets` (styles: .s3-pres in chrome/v3.css). id = the input's id prefix ('cdir-' or 'cl-').
