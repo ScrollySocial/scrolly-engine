@@ -1,7 +1,7 @@
 # YouTube 1: I Replaced ManyChat with Claude (effects plan v1, 2026-10-29)
 
 Planner card `4e8e9d4e9604`. Cut list: `plan.json` (all 26 takes sorted, nothing rendered yet).
-Length now: about **13 min** after pause trims (the outline said 8 to 10; trim options at the end).
+Length: about **13 min** after pause trims, kept at that length (decisions at the end).
 
 ## The look, in one paragraph
 16:9, her in the middle of the pink curtain, so every graphic lives in the **empty side thirds** (left or right of
@@ -39,21 +39,18 @@ calculator, real comment/DM screens; no drawn "app" mockups, no AI images. Doodl
 | 8:18 | **6. What it can't do** (2055, 2056) | Chapter card. Paper checklist: "Instagram ✓ · YouTube ✓ · TikTok auto-DM ✗". Hand aside "being upfront". |
 | 9:25 | **My comment inbox** (2057, 2058) | Screen takeover of the demo inbox: filter by platform, read/unread, a TikTok comment with its draft reply and the copy button. Apify logo chip; hand note "free monthly credit". "I own all that data": side statement **your data, your server**. |
 | 12:22 | **7. Who should stay on ManyChat** (2060) | Chapter card. Paper checklist "Stay on ManyChat if: TikTok DMs · WhatsApp (pays per message) · zero setup". |
-| 12:57 | **8. Get mine** (2061, 2059) | Chapter card. Screen: the guide page, then the Chat Manager page and live demo. Comment-bar UI types the comment word. URL pill: theambitiondepartment.com. |
+| 12:57 | **8. Get mine** (2061, 2059) | Chapter card. Screen: the guide page, then the Chat Manager page and live demo. Comment-bar UI types **CHATTERBOX**. URL pill: theambitiondepartment.com. |
 | 14:21 | **End screen** (2063) | She shifts to the left third; right side kept empty for YouTube's end-screen cards (next video + subscribe), 19 s, music up. |
 
-## Things I need you to decide
-1. **The comment word.** In 2061 you say "comment **chatterbox**", but no CHATTERBOX keyword exists (live: MATH, QUIZ,
-   PLAN, CHALLENGE, MANYCHAT, HALLOWEEN). Either I add CHATTERBOX to Chat Manager (DM: the Chat Manager page), or I
-   cut the spoken line and show "Comment MANYCHAT" on screen instead.
-2. **The price line.** You say Pro is "$39 for 250 contacts". ManyChat's page (checked Oct 28) says Pro is $39 for up
-   to **2,500**; 250 is Essential at $17. I already cut "and that's for 250 contacts" from the hook; the pricing
-   screenshot shows the real tiers.
-3. **"Less than an hour"** (2061): the kit's setup time isn't tested yet (the server mini test is still open). Keep it,
-   or cut to "...much faster than doing it yourself"?
-4. **Length (13 min).** Trims I'd make to get near 10: the Apify part (2:16 → about 1 min), the evening-restart story
-   in 2044 (about 25 s), and the "time it takes" beat (50 s → 20 s).
-5. **Cold open:** OK to open on the Reel intro 2066 (cropped from vertical, so it's a tight shot)?
+## Decisions (Mercedes, 2026-10-29)
+1. **Comment word: CHATTERBOX stays.** Added live to Chat Manager 2026-10-29 (IG comments, IG DMs, YouTube comments):
+   "Here's my Chat Manager, the comment and DM tool I built to replace ManyChat. See the live demo and get your copy:
+   {url}" → theambitiondepartment.com/chat-manager/. Comment-bar UI types CHATTERBOX.
+2. **Price line: cut.** No spoken "250 contacts" line is in the cut (2039 0-24 and 2040 5.1-7.8 stay out); the ManyChat
+   pricing screenshot rings the real tiers: Free 25, Essential $17 / 250, Pro $39 / 2,500.
+3. **"Less than an hour": kept** as she said it.
+4. **Length: keep all ~13 min.** No trims beyond the pause cuts (over 8 min also allows mid-roll ads).
+5. **Cold open on 2066: yes** (same outfit, curtain and glasses as the YouTube takes, checked).
 
 ## What I can capture myself vs need from you
 - **Me:** demo inbox screens and scrolls, ManyChat pricing page, the guide (incl. its Meta webhook screenshot),
