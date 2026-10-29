@@ -171,7 +171,7 @@ return [[H.money(Math.round(a*100)/100),H.money(v.rev)+' from '+H.num(v.orders)+
   {
     // B3 in vault keyword-clusters-2026-11.md (manychat pricing). Prices from manychat.com/pricing, checked 2026-10-28:
     // [up to N active contacts, $ a month on monthly billing, $ a month on yearly billing, plan]. Above 25,000 they quote.
-    slug: 'manychat-cost', id: null, group: 'know', name: 'ManyChat Cost Calculator',
+    slug: 'manychat-cost', id: 2045, group: 'know', name: 'ManyChat Cost Calculator',
     short: 'See what ManyChat costs for your audience, next to running your own setup.',
     lede: 'Put in how many people comment or DM you each month. See the ManyChat plan you’d need, what it costs a year, and what your own setup costs instead.',
     fields: [N('contacts', 'Monthly DM contacts', 1000, 50), $('own', 'Your server per month', 6)],

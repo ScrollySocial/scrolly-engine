@@ -22,6 +22,7 @@ export const PAGES = [
   calc(1157, 'profit', 'Profit Calculator', 'Work out your gross profit, net profit and profit margin from revenue and costs.'),
   calc(1158, 'break-even', 'Break-Even Calculator', 'Find out how many sales it takes for a course, tool or ad budget to pay for itself.'),
   calc(1159, 'average-order-value', 'Average Order Value Calculator', 'See how much the average customer spends per order, and what a small increase is worth.'),
+  calc(2045, 'manychat-cost', 'ManyChat Cost Calculator', 'See what ManyChat costs for your audience size, next to running your own comment-to-DM setup for about $6 a month.'),
   { id: 1767, key: 'chat-manager', title: 'Turn comments into email signups', desc: 'Your own comment-to-DM software for Instagram and YouTube. About $6 a month to run, whatever your list size.', art: 'chat-manager-product.webp', fit: 'contain' },
   { id: 2040, key: 'blog', title: 'Blog', desc: 'Step-by-step guides from building my own business with Claude, with the real costs and what went wrong.', art: 'hp3-hero-tiger.webp', fit: 'contain', label: 'Blog' },
   { id: 2025, key: 'guide-replace-manychat-with-claude', title: 'How I replaced ManyChat with Claude', desc: 'I replaced ManyChat with my own Instagram comment-to-DM system that Claude built. What it does, what it costs, the setup traps, and who should stay put.', art: 'guide-manychat-hero.webp', fit: 'cover', label: 'Guide' },
