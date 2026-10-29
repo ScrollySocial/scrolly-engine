@@ -22,7 +22,7 @@ SRC = Path('C:/Users/merce/OneDrive/Scrolly Media/videos/2026-10-28-session/reel
 T0 = 1.0
 OUT = Path('C:/Users/merce/OneDrive/Scrolly Media/exports/reels/draft'); OUT.mkdir(parents=True, exist_ok=True)
 TMP = REEL / '_frames'; TMP.mkdir(exist_ok=True)
-SKY, NAVY, WHITE = (77, 163, 255), (10, 25, 48), (255, 255, 255)
+SKY, NAVY, WHITE, ORANGE = (77, 163, 255), (10, 25, 48), (255, 255, 255), M.ACC
 T_CARD, T_POOF, T_STAGE, T_RING, T_PUFF2, T_CLIP3, T_CTA, END = 2.3, 5.4, 7.4, 8.95, 9.4, 10.1, 12.7, 16.1
 HAND = str(ROOT / 'reel-hf' / 'lib' / 'assets' / 'fonts' / 'covered-by-your-grace.woff2')
 
@@ -85,9 +85,9 @@ def frame(t):
     M.boxed(im, t, T_CLIP3 + 0.55, '$6 a month', (540, 1390), 96, SKY, NAVY, t1=T_CTA)
     # 5 CTA
     M.word(im, t, T_CTA + 0.05, 'comment', (540, 640), 170)
-    M.boxed(im, t, T_CTA + 0.3, 'MANYCHAT', (540, 860), 120, SKY, NAVY, pill=True)
-    M.word(im, t, T_CTA + 0.6, 'for my full guide', (540, 1070), 104, SKY)
-    M.doodle(im, t, T_CTA + 0.9, 'arrow', 0, 150, (80, 860), SKY)
+    M.boxed(im, t, T_CTA + 0.3, 'MANYCHAT', (540, 860), 120, ORANGE, WHITE, pill=True)  # orange: her pick for this ending (2026-10-29)
+    M.word(im, t, T_CTA + 0.6, 'for my full guide', (540, 1070), 104, ORANGE)
+    M.doodle(im, t, T_CTA + 0.9, 'arrow', 0, 150, (80, 860), ORANGE)
     for t0, c in ((T_POOF, (540, 950)), (T_PUFF2, (540, 520))):    # her smoke on Screen: over the bill, then over the stage
         M.SMOKE_C = c; s = M.smoke_at(t, t0)
         if s is not None: im = ImageChops.screen(im.convert('RGB'), s).convert('RGBA')
