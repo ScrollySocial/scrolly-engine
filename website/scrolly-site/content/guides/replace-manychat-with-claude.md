@@ -126,7 +126,7 @@ If it has been longer than 24 hours since their last message, you cannot use the
 
 You must have a creator or business account for this to work with Instagram.
 
-There is not a way to auto-DM new Instagram followers, with ManyChat or with this tool.
+This tool can't auto-DM new Instagram followers. ManyChat has a Follow to DM beta for that, but Meta decides which accounts qualify, and accounts under about 1,000 followers usually don't.
 
 There is no way to automate the integration with auto-DMing in TikTok like you can with ManyChat.
 

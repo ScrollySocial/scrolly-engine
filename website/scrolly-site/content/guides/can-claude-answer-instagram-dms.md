@@ -99,7 +99,7 @@ These are Instagram's rules, so they apply to every tool, ManyChat included:
 
 - You can send one private DM per comment, and you have 7 days from the comment to send it.
 - After that, you can only message someone within 24 hours of their last message to you.
-- No cold DMs: you can't message someone who hasn't commented or messaged you first, so no tool can auto-DM new followers.
+- No cold DMs: you can only message people who commented or messaged you first. The one exception is ManyChat's Follow to DM beta for new followers, where Meta decides which accounts qualify, and accounts under about 1,000 followers usually don't.
 - You need a creator or business account. Switching is free.
 - An app that only works on your own account doesn't need Meta's App Review.
 
@@ -127,7 +127,7 @@ Not when you use the official API through your own Meta app. Giving an AI your p
 ?? Will the replies sound like me?
 The drafts follow your own voice notes, and you can edit every one before it sends.
 ?? Can it DM my new followers?
-No tool can. Instagram doesn't allow messaging people who haven't contacted you first.
+Not mine. Instagram's public API has no new-follower signal, so most tools can only message people who contacted you first. ManyChat has a Follow to DM beta for this, but Meta decides which accounts qualify, and smaller accounts usually don't.
 ?? Does it work on TikTok too?
 TikTok comments can land in your inbox with a suggested reply to copy and paste. TikTok has no way to reply to comments automatically.
 :::
