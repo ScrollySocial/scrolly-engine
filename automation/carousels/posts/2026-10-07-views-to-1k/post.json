@@ -18,7 +18,7 @@
     {
       "layout": "numcover",
       "media": "f5e7ef379a",
-      "big": "10,667",
+      "big": "80,000",
       "text": "views = $1,000",
       "hand": "here's the math →",
       "doodles": [
@@ -129,34 +129,34 @@
       "formula": [
         "800|visitors",
         "÷",
-        "7.5%|who visit",
+        "1%|who visit",
         "=",
-        "10,667|views"
+        "80,000|views"
       ],
-      "text": "Then divide visitors by the share of viewers who tap through."
+      "text": "Then divide visitors by the share of viewers who tap through. Under 1% is normal."
     },
     {
       "layout": "chart",
       "chart": {
         "rows": [
           [
-            "7.5% visit",
-            10667,
-            "10,667"
-          ],
-          [
-            "2.5% visit",
-            32000,
-            "32,000"
-          ],
-          [
-            "1% visit",
+            "1%, strong",
             80000,
             "80,000"
+          ],
+          [
+            "0.3%, typical",
+            266667,
+            "266,667"
+          ],
+          [
+            "0.1%, weak",
+            800000,
+            "800,000"
           ]
         ],
         "hi": 0,
-        "note": "Views needed for $1,000 at $50, if 2.5% of visitors buy"
+        "note": "Views needed for $1,000 at $50 if 2.5% of visitors buy. Share of viewers who visit, using the calculator's presets"
       },
       "text": "That one percentage changes everything."
     },
@@ -164,7 +164,7 @@
       "layout": "checklist",
       "items": [
         "A clearer hook",
-        "A clearer page",
+        "A comment word that DMs your link",
         "A link sticker in more Stories"
       ],
       "text": "Small fixes that raise it:",
@@ -175,8 +175,8 @@
       "screen": {
         "type": "image"
       },
-      "media": "4b3aaf72ba",
-      "focus": "50% 88%",
+      "media": "414bb107a3",
+      "focus": "50% 0%",
       "text": "Want to run your own numbers? The free calculator does the math in seconds.",
       "doodles": [
         {
@@ -203,8 +203,7 @@
     "type": "comment",
     "keyword": "MATH"
   },
-  "tigerNod": "line",
-  "caption": "Comment MATH and I'll send you the free $1K Math calculator. Want to check the math yourself first? Here's where the 2.5% comes from: Littledata's study of 421 Shopify stores found a median of 1.4% of visits ending in a sale, and Dynamic Yield's data from 400+ brands averages 2.66%. One clear offer shown to people who already watched your videos can reasonably aim near 2.5%, but plan with the lower number too. One more thing: Instagram counts replays as views, so views are always higher than the number of people.",
+  "caption": "Comment MATH and I'll send you the free $1K Math calculator. Where the numbers come from: link-in-bio benchmarks put taps at about 1 to 3% of profile visits, and only some viewers visit your profile, so well under 1% of views is normal. That's why a comment word that sends your link in a DM helps so much. For buying, Littledata's study of 421 Shopify stores found a median of 1.4% of visits ending in a sale, and Dynamic Yield's data from 400+ brands averages 2.66%, so 2.5% is a hopeful guess; plan with the lower number too. One more thing: Instagram counts replays as views, so views are always higher than the number of people.",
   "hashtags": [
     "#smallbusinesstips",
     "#instagramforbusiness",
