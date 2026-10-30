@@ -18,11 +18,11 @@ Talking head, about 45 to 60 seconds each. Facts checked 2026-10-30; re-check pr
 >
 > So make that one message ask for a reply. Mine says: reply READY and I'll send your link. When they answer, my tool sends the signup link, plus one reminder an hour later if they haven't signed up.
 >
-> Comment CHATTERBOX and I'll send you how mine works.
+> Comment AUTODM and I'll send you my free Auto-DM Rulebook.
 
 **Show on screen:** Meta's Private Replies doc (Limitations: one message, 7 days). Your own DM thread: keyword comment, READY ask, link.
 
-**Ending:** Comment CHATTERBOX
+**Ending:** Comment AUTODM
 
 *Source: developers.facebook.com Instagram Private Replies (updated 2026-07-02); vault comment-to-dm-n8n-plan.md. Facts checked 2026-10-30; re-check prices and menus the day you film.*
 
@@ -66,11 +66,11 @@ Talking head, about 45 to 60 seconds each. Facts checked 2026-10-30; re-check pr
 >
 > Mine runs on a $6 a month server. What I give up is setup time, and fixing it myself when something changes.
 >
-> Comment MANYCHAT and I'll send you my full guide.
+> Comment AUTODM and I'll send you my free Auto-DM Rulebook.
 
 **Show on screen:** ManyChat pricing page (re-check the price the day you film). Meta app dashboard on your account. The $6 droplet.
 
-**Ending:** Comment MANYCHAT
+**Ending:** Comment AUTODM
 
 *Source: manychat.com blog "official Meta business partner"; Meta Instagram platform overview (Standard Access); ManyChat Pro price checked 2026-10-28, re-check before posting. Facts checked 2026-10-30; re-check prices and menus the day you film.*
 
@@ -90,11 +90,11 @@ Talking head, about 45 to 60 seconds each. Facts checked 2026-10-30; re-check pr
 >
 > What works: a direct link that stays up. I upload to my own website's media library and give Buffer that link.
 >
-> The full auto-posting guide is in the $1K Challenge. Comment CHALLENGE and I'll send you the link.
+> The full auto-posting guide is in the $1K Challenge. Comment AUTOPOST and I'll send you my free link checklist.
 
 **Show on screen:** A Buffer post made by Claude with the website media link. A Notion file link next to it.
 
-**Ending:** Comment CHALLENGE
+**Ending:** Comment AUTOPOST
 
 *Source: Her Buffer API test 2026-10-08 (memory: project_buffer_ai_posting_test); Buffer create_post docs (URL-only assets). Facts checked 2026-10-30; re-check prices and menus the day you film.*
 
@@ -114,11 +114,11 @@ Talking head, about 45 to 60 seconds each. Facts checked 2026-10-30; re-check pr
 >
 > I stay away from tools that control a browser to post on TikTok for you. It's against TikTok's rules and can put your account at risk.
 >
-> Comment CHATTERBOX and I'll send you how the inbox works.
+> Comment AUTODM and I'll send you my free Auto-DM Rulebook.
 
 **Show on screen:** Apify run page with the $0.10 cap. Your inbox at hooks.scrollyseo.com/inbox with a TikTok row and the Copy & open TikTok button.
 
-**Ending:** Comment CHATTERBOX
+**Ending:** Comment AUTODM
 
 *Source: vault comment-to-dm-n8n-plan.md (How it works, TikTok section). Facts checked 2026-10-30; re-check prices and menus the day you film.*
 
@@ -138,11 +138,11 @@ Talking head, about 45 to 60 seconds each. Facts checked 2026-10-30; re-check pr
 >
 > I have about 80 of these now. One fact per file means when something changes, Claude updates that one file, and nothing gets saved twice.
 >
-> Comment ___ and I'll send you my starter template.
+> Comment MEMORYKIT and I'll send you my free starter kit.
 
 **Show on screen:** CLAUDE.md open in your project. The memory folder list. MEMORY.md index scrolling.
 
-**Ending:** Comment ___ (new word needed: freebie + DM in Chat Manager first)
+**Ending:** Comment MEMORYKIT
 
 *Source: Her own setup (CLAUDE.md + memory folder, 80 files on 2026-10-30). Facts checked 2026-10-30; re-check prices and menus the day you film.*
 
@@ -164,11 +164,11 @@ Talking head, about 45 to 60 seconds each. Facts checked 2026-10-30; re-check pr
 >
 > My rule: if I've explained the same thing to Claude three times, it becomes a skill.
 >
-> Comment ___ and I'll send you a skill template.
+> Comment MEMORYKIT and I'll send you my free starter kit, with a skill template inside.
 
 **Show on screen:** The .claude/skills folder. scrolly-carousel/SKILL.md top lines. Typing the slash command.
 
-**Ending:** Comment ___ (new word needed: freebie + DM in Chat Manager first)
+**Ending:** Comment MEMORYKIT
 
 *Source: Her own setup (.claude/skills: scrolly-carousel, scrolly-reels, scrolly-research, ig-saved-to-planner, reel-engine-setup; vault skills/draft-comment-replies). Facts checked 2026-10-30; re-check prices and menus the day you film.*
 
@@ -188,11 +188,11 @@ Talking head, about 45 to 60 seconds each. Facts checked 2026-10-30; re-check pr
 >
 > Two things I learned the hard way. The laptop has to stay awake: sleep on power is set to never, and the app stays open. And render one video at a time. I once ran five renders at once and my computer crashed.
 >
-> Comment ___ and I'll send you how the nightly run is set up.
+> Comment MEMORYKIT and I'll send you my free starter kit, with a nightly task inside.
 
 **Show on screen:** Scheduled task reels-overnight at 12:30am. The review hub at localhost:4320. A morning note.
 
-**Ending:** Comment ___ (new word needed: freebie + DM in Chat Manager first)
+**Ending:** Comment MEMORYKIT
 
 *Source: vault reel-engine-handoff.md Session 4 (2026-10-13); memory feedback_one_render_at_a_time (2026-10-20). Facts checked 2026-10-30; re-check prices and menus the day you film.*
 
@@ -214,11 +214,11 @@ Talking head, about 45 to 60 seconds each. Facts checked 2026-10-30; re-check pr
 >
 > My rule: if it matters next week, it goes in a file.
 >
-> Comment ___ and I'll send you my starter template.
+> Comment MEMORYKIT and I'll send you my free starter kit.
 
 **Show on screen:** A long Claude Code session. Then a fresh session that picks up from CLAUDE.md and memory.
 
-**Ending:** Comment ___ (new word needed: freebie + DM in Chat Manager first)
+**Ending:** Comment MEMORYKIT
 
 *Source: How Claude Code context and summarizing work; her own setup. Facts checked 2026-10-30; re-check prices and menus the day you film.*
 
