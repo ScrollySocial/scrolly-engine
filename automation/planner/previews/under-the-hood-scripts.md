@@ -28,51 +28,51 @@ Talking head, about 45 to 60 seconds each. Facts checked 2026-10-30; re-check pr
 
 ---
 
-## 2: The logo that can add 4 to 6 weeks to your Google app
+## 2: I asked Claude to build my own ManyChat
 
-**On-screen hook:** One logo can add 4 to 6 weeks to your Google app.
+**On-screen hook:** I asked Claude to build my own ManyChat. It costs me $6 a month.
 
 **Script**
 
-> To reply to YouTube comments from my own tool, I had to make a Google app. On its branding page there's a spot for an app logo. It looks harmless.
+> ManyChat Pro would have cost me $39 a month. So I asked Claude to build me my own version.
 >
-> Upload one, and once your app is in production, Google makes you go through verification, which takes 4 to 6 weeks. Skip the logo and the app works right away on your own channel.
+> Here's what it does now: when someone comments a word like MATH, they get a DM, sign up with their email, and land on my MailerLite list. YouTube comments get a reply with the link, and my TikTok comments show up in the same inbox.
 >
-> At sign-in you'll see "Google hasn't verified this app." For your own channel that's expected: click Advanced, then Go to your app.
+> It runs on a $6 a month server. Claude did the technical parts, and I did the clicking.
 >
-> Two more traps on that same setup: "Get started for free" is the $300 trial that asks for your card, so go to console.cloud.google.com instead. And never click Submit for verification.
+> Two of those clicks almost cost me weeks. Adding a logo to the Google app starts a 4 to 6 week review. And leaving that app in test mode makes it stop working after 7 days.
 >
 > Comment TRAPS and I'll send you my free checklist of every setup trap.
 
-**Show on screen:** Google Cloud Branding page with the App logo field (circle it, big X). The "hasn't verified this app" screen, Advanced → Go to.
+**Show on screen:** A comment on your Reel, then the DM arriving on your phone. Your Chat Manager inbox. The $6 server line in DigitalOcean. The Google logo field (circled) and the Testing / In production switch.
 
 **Ending:** Comment TRAPS
 
-*Source: Her own setup 2026-10-23, vault comment-to-dm-n8n-plan.md "Customer kit: traps". Facts checked 2026-10-30; re-check prices and menus the day you film.*
+*Rewritten 2026-10-30 for business owners who use Claude and market online (old version was the Google-logo trap on its own). Facts: ManyChat Pro $39/month (manychat.com/pricing, checked 2026-10-28, re-check before filming); $6 server; traps from vault comment-to-dm-n8n-plan.md.*
 
 ---
 
-## 3: ManyChat uses the same Instagram API you can use
+## 3: Claude drafts my comment replies, I just approve
 
-**On-screen hook:** ManyChat uses the same Instagram API you can use yourself.
+**On-screen hook:** Claude drafts every reply to my comments. I just tap approve.
 
 **Script**
 
-> ManyChat is an official Meta Business Partner. It connects to Instagram through Meta's official API.
+> Comments from Instagram, YouTube and TikTok all land in one inbox, and Claude drafts a reply to each one.
 >
-> That same API is open to you. If you make a Meta app and only use it on your own Instagram account, you don't need App Review or business verification. That's how my comment tool works.
+> It sounds like me because it reads my voice file first: how I talk, the words I never use, what I sell and what it costs.
 >
-> So what is ManyChat's $39 a month paying for? The drag-and-drop builder, the hosting, support, and never touching a setup screen. For plenty of people that's worth it.
+> I could let it send replies on its own. I don't, because I'm responsible for what it says, and I've seen enough AI make things up.
 >
-> Mine runs on a $6 a month server. What I give up is setup time, and fixing it myself when something changes.
+> So every draft waits for me. I read it, fix anything that's off, and tap approve.
 >
-> Comment AUTODM and I'll send you my free Auto-DM Rulebook.
+> Comment MEMORYKIT and I'll send you my free starter kit, with a voice file template inside.
 
-**Show on screen:** ManyChat pricing page (re-check the price the day you film). Meta app dashboard on your account. The $6 droplet.
+**Show on screen:** Your Chat Manager inbox with a drafted reply, editing one word, tapping Approve. The voice file open on screen (no private details).
 
-**Ending:** Comment AUTODM
+**Ending:** Comment MEMORYKIT
 
-*Source: manychat.com blog "official Meta business partner"; Meta Instagram platform overview (Standard Access); ManyChat Pro price checked 2026-10-28, re-check before posting. Facts checked 2026-10-30; re-check prices and menus the day you film.*
+*Rewritten 2026-10-30 for business owners who use Claude and market online (old version: ManyChat uses the same API). Facts: draft-comment-replies skill writes drafts that wait for her OK; her reason for not auto-sending is from her own guide (replace-manychat-with-claude).*
 
 ---
 
@@ -224,26 +224,24 @@ Talking head, about 45 to 60 seconds each. Facts checked 2026-10-30; re-check pr
 
 ---
 
-## 10: The 7-day setting that silently breaks your automation
+## 10: Claude's first answer to my $1,000 math was way off
 
-**On-screen hook:** The 7-day setting that silently breaks your automation.
+**On-screen hook:** I asked Claude how many views it takes to make $1,000. Its first answer was way off.
 
 **Script**
 
-> My YouTube comment replies run through a Google app. A new Google app starts in Testing mode.
+> A carousel Claude drafted for me said it takes about 10,000 views to make $1,000 selling a $50 product.
 >
-> In Testing, Google's sign-in tokens expire after 7 days. Nothing warns you. A week later, your replies just stop.
+> That number assumed 7.5% of viewers would visit my page. Link-in-bio numbers are more like 1 to 3% of the people who visit your profile, and most viewers never visit at all. At a typical 0.3%, it's over 476,000 views.
 >
-> The fix is one button: on the Audience page, click Publish app so it says In production. Google asks for a home page and a privacy policy link on the Branding page first.
+> The math was right. The guess underneath it was way off, and nothing on the slides said so.
 >
-> If you set it up in Testing, sign in again after publishing so you get a fresh token.
+> So now I ask Claude one question every time it gives me a number: where does this come from, and what's typical?
 >
-> And no logo, so you don't trigger the 4 to 6 week verification.
->
-> Comment TRAPS and I'll send you my free checklist of every setup trap.
+> Comment MATH and I'll send you my free $1K Math worksheet with realistic numbers.
 
-**Show on screen:** Google Cloud Audience page: Testing → Publish app → In production. Branding page links.
+**Show on screen:** The old cover (10,667 views) next to the new one (476,334). The free calculator with Typical selected. You typing the question to Claude.
 
-**Ending:** Comment TRAPS
+**Ending:** Comment MATH
 
-*Source: Google OAuth docs (Testing refresh tokens expire in 7 days); her setup 2026-10-23. Facts checked 2026-10-30; re-check prices and menus the day you film.*
+*Rewritten 2026-10-30 for business owners who use Claude and market online (old version: Google Testing-mode token). True story from 2026-10-30: views-to-1k carousel used 7.5% (Playbook worked example), rebuilt on the calculator typical rates (1.4% buy, 0.3% visit = 476,334). Sources: Sked Social / Hopp link-in-bio benchmarks, Littledata 1.4%.*
