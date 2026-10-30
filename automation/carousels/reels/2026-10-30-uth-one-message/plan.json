@@ -1,0 +1,72 @@
+{
+ "kit": "yap",
+ "segments": [
+  {
+   "src": "2026-10-28-session/reels/IMG_2082.MOV",
+   "in": 3.08,
+   "out": 9.04,
+   "transcript": "audio/2026-10-28-session__reels__IMG_2082.json"
+  },
+  {
+   "src": "2026-10-28-session/reels/IMG_2082.MOV",
+   "in": 17.24,
+   "out": 27.65,
+   "transcript": "audio/2026-10-28-session__reels__IMG_2082.json"
+  },
+  {
+   "src": "2026-10-28-session/reels/IMG_2082.MOV",
+   "in": 28.69,
+   "out": 36.21,
+   "transcript": "audio/2026-10-28-session__reels__IMG_2082.json"
+  },
+  {
+   "src": "2026-10-28-session/reels/IMG_2082.MOV",
+   "in": 41.77,
+   "out": 48.57,
+   "transcript": "audio/2026-10-28-session__reels__IMG_2082.json"
+  },
+  {
+   "src": "2026-10-28-session/reels/IMG_2082.MOV",
+   "in": 49.93,
+   "out": 56.13,
+   "transcript": "audio/2026-10-28-session__reels__IMG_2082.json"
+  },
+  {
+   "src": "2026-10-28-session/reels/IMG_2082.MOV",
+   "in": 61.15,
+   "out": 65.21,
+   "transcript": "audio/2026-10-28-session__reels__IMG_2082.json"
+  },
+  {
+   "src": "2026-10-28-session/reels/IMG_2082.MOV",
+   "in": 66.23,
+   "out": 72.53,
+   "transcript": "audio/2026-10-28-session__reels__IMG_2082.json"
+  },
+  {
+   "src": "2026-10-28-session/reels/IMG_2082.MOV",
+   "in": 76.09,
+   "out": 80.37,
+   "transcript": "audio/2026-10-28-session__reels__IMG_2082.json"
+  },
+  {
+   "src": "2026-10-28-session/reels/IMG_2082.MOV",
+   "in": 80.93,
+   "out": 84.37,
+   "transcript": "audio/2026-10-28-session__reels__IMG_2082.json"
+  },
+  {
+   "src": "2026-10-28-session/reels/IMG_2082.MOV",
+   "in": 84.99,
+   "out": 92.45,
+   "transcript": "audio/2026-10-28-session__reels__IMG_2082.json"
+  },
+  {
+   "src": "2026-10-28-session/reels/IMG_2082.MOV",
+   "in": 93.81,
+   "out": 101.79,
+   "transcript": "audio/2026-10-28-session__reels__IMG_2082.json"
+  }
+ ],
+ "maxPause": 0.45
+}

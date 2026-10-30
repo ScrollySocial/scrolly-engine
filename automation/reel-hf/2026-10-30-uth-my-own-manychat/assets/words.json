@@ -1,0 +1,1842 @@
+{
+ "id": "2026-10-30-uth-my-own-manychat",
+ "kit": "yap",
+ "fps": 30,
+ "duration": 91.71,
+ "video": "2026-10-30-uth-my-own-manychat/base.mp4",
+ "words": [
+  {
+   "w": "Many",
+   "s": 0.3,
+   "e": 0.88,
+   "seg": 0,
+   "first": true
+  },
+  {
+   "w": "Chat",
+   "s": 0.88,
+   "e": 1.12,
+   "seg": 0,
+   "first": false
+  },
+  {
+   "w": "Pro",
+   "s": 1.12,
+   "e": 1.4,
+   "seg": 0,
+   "first": false
+  },
+  {
+   "w": "would",
+   "s": 1.4,
+   "e": 1.78,
+   "seg": 0,
+   "first": false
+  },
+  {
+   "w": "have",
+   "s": 1.78,
+   "e": 1.88,
+   "seg": 0,
+   "first": false
+  },
+  {
+   "w": "cost",
+   "s": 1.88,
+   "e": 2.08,
+   "seg": 0,
+   "first": false
+  },
+  {
+   "w": "me",
+   "s": 2.08,
+   "e": 2.44,
+   "seg": 0,
+   "first": false
+  },
+  {
+   "w": "$39",
+   "s": 2.44,
+   "e": 3.08,
+   "seg": 0,
+   "first": false
+  },
+  {
+   "w": "a",
+   "s": 3.08,
+   "e": 3.44,
+   "seg": 0,
+   "first": false
+  },
+  {
+   "w": "month,",
+   "s": 3.44,
+   "e": 3.62,
+   "seg": 0,
+   "first": false
+  },
+  {
+   "w": "so",
+   "s": 4.1,
+   "e": 4.26,
+   "seg": 0,
+   "first": false
+  },
+  {
+   "w": "I",
+   "s": 4.26,
+   "e": 4.56,
+   "seg": 0,
+   "first": false
+  },
+  {
+   "w": "asked",
+   "s": 4.56,
+   "e": 4.76,
+   "seg": 0,
+   "first": false
+  },
+  {
+   "w": "Claude",
+   "s": 4.76,
+   "e": 4.98,
+   "seg": 0,
+   "first": false
+  },
+  {
+   "w": "to",
+   "s": 4.98,
+   "e": 5.22,
+   "seg": 0,
+   "first": false
+  },
+  {
+   "w": "make",
+   "s": 5.22,
+   "e": 5.4,
+   "seg": 0,
+   "first": false
+  },
+  {
+   "w": "me",
+   "s": 5.4,
+   "e": 5.62,
+   "seg": 0,
+   "first": false
+  },
+  {
+   "w": "my",
+   "s": 5.62,
+   "e": 5.92,
+   "seg": 0,
+   "first": false
+  },
+  {
+   "w": "own",
+   "s": 5.92,
+   "e": 6.26,
+   "seg": 0,
+   "first": false
+  },
+  {
+   "w": "version,",
+   "s": 6.26,
+   "e": 6.64,
+   "seg": 0,
+   "first": false
+  },
+  {
+   "w": "and",
+   "s": 6.92,
+   "e": 7,
+   "seg": 0,
+   "first": false
+  },
+  {
+   "w": "here's",
+   "s": 7,
+   "e": 7.32,
+   "seg": 0,
+   "first": false
+  },
+  {
+   "w": "what",
+   "s": 7.32,
+   "e": 7.44,
+   "seg": 0,
+   "first": false
+  },
+  {
+   "w": "it",
+   "s": 7.44,
+   "e": 7.54,
+   "seg": 0,
+   "first": false
+  },
+  {
+   "w": "did.",
+   "s": 7.54,
+   "e": 7.7,
+   "seg": 0,
+   "first": false
+  },
+  {
+   "w": "When",
+   "s": 8.344,
+   "e": 8.704,
+   "seg": 1,
+   "first": true
+  },
+  {
+   "w": "someone",
+   "s": 8.704,
+   "e": 9.004,
+   "seg": 1,
+   "first": false
+  },
+  {
+   "w": "comments",
+   "s": 9.004,
+   "e": 9.424,
+   "seg": 1,
+   "first": false
+  },
+  {
+   "w": "a",
+   "s": 9.424,
+   "e": 9.744,
+   "seg": 1,
+   "first": false
+  },
+  {
+   "w": "specific",
+   "s": 9.744,
+   "e": 10.084,
+   "seg": 1,
+   "first": false
+  },
+  {
+   "w": "keyword,",
+   "s": 10.084,
+   "e": 10.484,
+   "seg": 1,
+   "first": false
+  },
+  {
+   "w": "say",
+   "s": 10.844,
+   "e": 11.064,
+   "seg": 1,
+   "first": false
+  },
+  {
+   "w": "for",
+   "s": 11.064,
+   "e": 11.204,
+   "seg": 1,
+   "first": false
+  },
+  {
+   "w": "example,",
+   "s": 11.204,
+   "e": 11.444,
+   "seg": 1,
+   "first": false
+  },
+  {
+   "w": "math,",
+   "s": 11.924,
+   "e": 12.004,
+   "seg": 1,
+   "first": false
+  },
+  {
+   "w": "they",
+   "s": 12.624,
+   "e": 12.864,
+   "seg": 1,
+   "first": false
+  },
+  {
+   "w": "get",
+   "s": 12.864,
+   "e": 13.124,
+   "seg": 1,
+   "first": false
+  },
+  {
+   "w": "an",
+   "s": 13.124,
+   "e": 13.284,
+   "seg": 1,
+   "first": false
+  },
+  {
+   "w": "auto",
+   "s": 13.284,
+   "e": 13.484,
+   "seg": 1,
+   "first": false
+  },
+  {
+   "w": "DM,",
+   "s": 13.484,
+   "e": 13.784,
+   "seg": 1,
+   "first": false
+  },
+  {
+   "w": "It",
+   "s": 14.436,
+   "e": 14.476,
+   "seg": 2,
+   "first": true
+  },
+  {
+   "w": "then",
+   "s": 14.476,
+   "e": 14.756,
+   "seg": 2,
+   "first": false
+  },
+  {
+   "w": "asks",
+   "s": 14.756,
+   "e": 15.316,
+   "seg": 2,
+   "first": false
+  },
+  {
+   "w": "them",
+   "s": 15.316,
+   "e": 15.836,
+   "seg": 2,
+   "first": false
+  },
+  {
+   "w": "via",
+   "s": 15.836,
+   "e": 16.356,
+   "seg": 2,
+   "first": false
+  },
+  {
+   "w": "DM",
+   "s": 16.356,
+   "e": 16.656,
+   "seg": 2,
+   "first": false
+  },
+  {
+   "w": "to",
+   "s": 16.656,
+   "e": 17.436,
+   "seg": 2,
+   "first": false
+  },
+  {
+   "w": "respond",
+   "s": 17.436,
+   "e": 17.916,
+   "seg": 2,
+   "first": false
+  },
+  {
+   "w": "ready,",
+   "s": 17.916,
+   "e": 18.476,
+   "seg": 2,
+   "first": false
+  },
+  {
+   "w": "and",
+   "s": 18.936,
+   "e": 19.276,
+   "seg": 2,
+   "first": false
+  },
+  {
+   "w": "then",
+   "s": 19.276,
+   "e": 19.476,
+   "seg": 2,
+   "first": false
+  },
+  {
+   "w": "if",
+   "s": 19.476,
+   "e": 19.676,
+   "seg": 2,
+   "first": false
+  },
+  {
+   "w": "they",
+   "s": 19.676,
+   "e": 19.816,
+   "seg": 2,
+   "first": false
+  },
+  {
+   "w": "respond",
+   "s": 19.816,
+   "e": 20.056,
+   "seg": 2,
+   "first": false
+  },
+  {
+   "w": "ready,",
+   "s": 20.056,
+   "e": 20.496,
+   "seg": 2,
+   "first": false
+  },
+  {
+   "w": "it",
+   "s": 20.876,
+   "e": 22.256,
+   "seg": 2,
+   "first": false
+  },
+  {
+   "w": "will",
+   "s": 22.256,
+   "e": 22.376,
+   "seg": 2,
+   "first": false
+  },
+  {
+   "w": "send",
+   "s": 22.376,
+   "e": 22.636,
+   "seg": 2,
+   "first": false
+  },
+  {
+   "w": "them",
+   "s": 22.636,
+   "e": 22.956,
+   "seg": 2,
+   "first": false
+  },
+  {
+   "w": "the",
+   "s": 22.956,
+   "e": 23.216,
+   "seg": 2,
+   "first": false
+  },
+  {
+   "w": "link",
+   "s": 23.216,
+   "e": 23.496,
+   "seg": 2,
+   "first": false
+  },
+  {
+   "w": "that",
+   "s": 23.496,
+   "e": 23.776,
+   "seg": 2,
+   "first": false
+  },
+  {
+   "w": "goes",
+   "s": 23.776,
+   "e": 23.996,
+   "seg": 2,
+   "first": false
+  },
+  {
+   "w": "with",
+   "s": 23.996,
+   "e": 24.336,
+   "seg": 2,
+   "first": false
+  },
+  {
+   "w": "the",
+   "s": 24.336,
+   "e": 24.476,
+   "seg": 2,
+   "first": false
+  },
+  {
+   "w": "keyword.",
+   "s": 24.476,
+   "e": 24.676,
+   "seg": 2,
+   "first": false
+  },
+  {
+   "w": "Cool",
+   "s": 25.611,
+   "e": 25.711,
+   "seg": 3,
+   "first": true
+  },
+  {
+   "w": "about",
+   "s": 25.711,
+   "e": 25.891,
+   "seg": 3,
+   "first": false
+  },
+  {
+   "w": "my",
+   "s": 25.891,
+   "e": 26.051,
+   "seg": 3,
+   "first": false
+  },
+  {
+   "w": "setup",
+   "s": 26.051,
+   "e": 26.451,
+   "seg": 3,
+   "first": false
+  },
+  {
+   "w": "compared",
+   "s": 26.451,
+   "e": 26.871,
+   "seg": 3,
+   "first": false
+  },
+  {
+   "w": "to",
+   "s": 26.871,
+   "e": 27.391,
+   "seg": 3,
+   "first": false
+  },
+  {
+   "w": "many",
+   "s": 27.391,
+   "e": 27.771,
+   "seg": 3,
+   "first": false
+  },
+  {
+   "w": "chat,",
+   "s": 27.771,
+   "e": 28.051,
+   "seg": 3,
+   "first": false
+  },
+  {
+   "w": "is",
+   "s": 28.191,
+   "e": 28.271,
+   "seg": 3,
+   "first": false
+  },
+  {
+   "w": "that",
+   "s": 28.271,
+   "e": 28.371,
+   "seg": 3,
+   "first": false
+  },
+  {
+   "w": "it's",
+   "s": 28.371,
+   "e": 28.551,
+   "seg": 3,
+   "first": false
+  },
+  {
+   "w": "actually",
+   "s": 28.551,
+   "e": 28.911,
+   "seg": 3,
+   "first": false
+  },
+  {
+   "w": "directly",
+   "s": 28.911,
+   "e": 29.371,
+   "seg": 3,
+   "first": false
+  },
+  {
+   "w": "integrated",
+   "s": 29.371,
+   "e": 30.231,
+   "seg": 3,
+   "first": false
+  },
+  {
+   "w": "with",
+   "s": 30.231,
+   "e": 30.971,
+   "seg": 3,
+   "first": false
+  },
+  {
+   "w": "my",
+   "s": 30.971,
+   "e": 31.271,
+   "seg": 3,
+   "first": false
+  },
+  {
+   "w": "email",
+   "s": 31.271,
+   "e": 31.551,
+   "seg": 3,
+   "first": false
+  },
+  {
+   "w": "provider.",
+   "s": 31.551,
+   "e": 32.071,
+   "seg": 3,
+   "first": false
+  },
+  {
+   "w": "And",
+   "s": 32.69,
+   "e": 32.77,
+   "seg": 4,
+   "first": true
+  },
+  {
+   "w": "so",
+   "s": 32.77,
+   "e": 33.05,
+   "seg": 4,
+   "first": false
+  },
+  {
+   "w": "once",
+   "s": 33.05,
+   "e": 33.429,
+   "seg": 4,
+   "first": false
+  },
+  {
+   "w": "they",
+   "s": 33.619,
+   "e": 33.879,
+   "seg": 5,
+   "first": false
+  },
+  {
+   "w": "sign",
+   "s": 33.879,
+   "e": 34.099,
+   "seg": 5,
+   "first": false
+  },
+  {
+   "w": "up",
+   "s": 34.099,
+   "e": 34.339,
+   "seg": 5,
+   "first": false
+  },
+  {
+   "w": "to",
+   "s": 34.339,
+   "e": 34.719,
+   "seg": 5,
+   "first": false
+  },
+  {
+   "w": "get",
+   "s": 34.719,
+   "e": 34.879,
+   "seg": 5,
+   "first": false
+  },
+  {
+   "w": "the",
+   "s": 34.879,
+   "e": 35.019,
+   "seg": 5,
+   "first": false
+  },
+  {
+   "w": "freebie,",
+   "s": 35.019,
+   "e": 35.379,
+   "seg": 5,
+   "first": false
+  },
+  {
+   "w": "it",
+   "s": 35.699,
+   "e": 35.959,
+   "seg": 5,
+   "first": false
+  },
+  {
+   "w": "automatically",
+   "s": 35.959,
+   "e": 36.379,
+   "seg": 5,
+   "first": false
+  },
+  {
+   "w": "adds",
+   "s": 36.379,
+   "e": 36.959,
+   "seg": 5,
+   "first": false
+  },
+  {
+   "w": "them",
+   "s": 36.959,
+   "e": 37.279,
+   "seg": 5,
+   "first": false
+  },
+  {
+   "w": "onto",
+   "s": 37.279,
+   "e": 37.679,
+   "seg": 5,
+   "first": false
+  },
+  {
+   "w": "my",
+   "s": 37.679,
+   "e": 38.059,
+   "seg": 5,
+   "first": false
+  },
+  {
+   "w": "email",
+   "s": 38.059,
+   "e": 38.359,
+   "seg": 5,
+   "first": false
+  },
+  {
+   "w": "list",
+   "s": 38.359,
+   "e": 38.639,
+   "seg": 5,
+   "first": false
+  },
+  {
+   "w": "Another",
+   "s": 38.918,
+   "e": 39.218,
+   "seg": 6,
+   "first": true
+  },
+  {
+   "w": "really",
+   "s": 39.218,
+   "e": 39.518,
+   "seg": 6,
+   "first": false
+  },
+  {
+   "w": "cool",
+   "s": 39.518,
+   "e": 39.778,
+   "seg": 6,
+   "first": false
+  },
+  {
+   "w": "feature",
+   "s": 39.778,
+   "e": 40.098,
+   "seg": 6,
+   "first": false
+  },
+  {
+   "w": "is",
+   "s": 40.098,
+   "e": 40.358,
+   "seg": 6,
+   "first": false
+  },
+  {
+   "w": "that",
+   "s": 40.358,
+   "e": 40.478,
+   "seg": 6,
+   "first": false
+  },
+  {
+   "w": "I",
+   "s": 40.478,
+   "e": 40.558,
+   "seg": 6,
+   "first": false
+  },
+  {
+   "w": "was",
+   "s": 40.558,
+   "e": 40.678,
+   "seg": 6,
+   "first": false
+  },
+  {
+   "w": "also",
+   "s": 40.678,
+   "e": 41.118,
+   "seg": 6,
+   "first": false
+  },
+  {
+   "w": "able",
+   "s": 41.118,
+   "e": 41.358,
+   "seg": 6,
+   "first": false
+  },
+  {
+   "w": "to",
+   "s": 41.358,
+   "e": 41.618,
+   "seg": 6,
+   "first": false
+  },
+  {
+   "w": "set",
+   "s": 41.618,
+   "e": 41.798,
+   "seg": 6,
+   "first": false
+  },
+  {
+   "w": "this",
+   "s": 41.798,
+   "e": 41.998,
+   "seg": 6,
+   "first": false
+  },
+  {
+   "w": "up",
+   "s": 41.998,
+   "e": 42.178,
+   "seg": 6,
+   "first": false
+  },
+  {
+   "w": "with",
+   "s": 42.178,
+   "e": 42.598,
+   "seg": 6,
+   "first": false
+  },
+  {
+   "w": "Claude",
+   "s": 42.598,
+   "e": 42.918,
+   "seg": 6,
+   "first": false
+  },
+  {
+   "w": "to",
+   "s": 42.918,
+   "e": 43.518,
+   "seg": 6,
+   "first": false
+  },
+  {
+   "w": "my",
+   "s": 43.518,
+   "e": 43.678,
+   "seg": 6,
+   "first": false
+  },
+  {
+   "w": "YouTube",
+   "s": 43.678,
+   "e": 43.858,
+   "seg": 6,
+   "first": false
+  },
+  {
+   "w": "channel,",
+   "s": 43.858,
+   "e": 44.318,
+   "seg": 6,
+   "first": false
+  },
+  {
+   "w": "so",
+   "s": 44.498,
+   "e": 44.618,
+   "seg": 6,
+   "first": false
+  },
+  {
+   "w": "anyone",
+   "s": 44.618,
+   "e": 44.838,
+   "seg": 6,
+   "first": false
+  },
+  {
+   "w": "who",
+   "s": 44.838,
+   "e": 45.138,
+   "seg": 6,
+   "first": false
+  },
+  {
+   "w": "comments",
+   "s": 45.138,
+   "e": 45.498,
+   "seg": 6,
+   "first": false
+  },
+  {
+   "w": "on",
+   "s": 45.498,
+   "e": 45.978,
+   "seg": 6,
+   "first": false
+  },
+  {
+   "w": "my",
+   "s": 45.978,
+   "e": 46.178,
+   "seg": 6,
+   "first": false
+  },
+  {
+   "w": "YouTube",
+   "s": 46.178,
+   "e": 46.498,
+   "seg": 6,
+   "first": false
+  },
+  {
+   "w": "with",
+   "s": 46.498,
+   "e": 47.138,
+   "seg": 6,
+   "first": false
+  },
+  {
+   "w": "a",
+   "s": 47.138,
+   "e": 47.278,
+   "seg": 6,
+   "first": false
+  },
+  {
+   "w": "specific",
+   "s": 47.278,
+   "e": 47.598,
+   "seg": 6,
+   "first": false
+  },
+  {
+   "w": "keyword",
+   "s": 47.598,
+   "e": 48.038,
+   "seg": 6,
+   "first": false
+  },
+  {
+   "w": "gets",
+   "s": 48.038,
+   "e": 48.578,
+   "seg": 6,
+   "first": false
+  },
+  {
+   "w": "an",
+   "s": 48.578,
+   "e": 48.778,
+   "seg": 6,
+   "first": false
+  },
+  {
+   "w": "auto",
+   "s": 48.778,
+   "e": 49.098,
+   "seg": 6,
+   "first": false
+  },
+  {
+   "w": "response",
+   "s": 49.098,
+   "e": 49.598,
+   "seg": 6,
+   "first": false
+  },
+  {
+   "w": "via",
+   "s": 49.598,
+   "e": 50.038,
+   "seg": 6,
+   "first": false
+  },
+  {
+   "w": "comment",
+   "s": 50.038,
+   "e": 50.538,
+   "seg": 6,
+   "first": false
+  },
+  {
+   "w": "through",
+   "s": 50.538,
+   "e": 51.138,
+   "seg": 6,
+   "first": false
+  },
+  {
+   "w": "this",
+   "s": 51.138,
+   "e": 51.338,
+   "seg": 6,
+   "first": false
+  },
+  {
+   "w": "tool.",
+   "s": 51.338,
+   "e": 51.638,
+   "seg": 6,
+   "first": false
+  },
+  {
+   "w": "I",
+   "s": 52.16,
+   "e": 52.32,
+   "seg": 7,
+   "first": true
+  },
+  {
+   "w": "also",
+   "s": 52.32,
+   "e": 52.56,
+   "seg": 7,
+   "first": false
+  },
+  {
+   "w": "made",
+   "s": 52.56,
+   "e": 52.92,
+   "seg": 7,
+   "first": false
+  },
+  {
+   "w": "it",
+   "s": 52.92,
+   "e": 53.02,
+   "seg": 7,
+   "first": false
+  },
+  {
+   "w": "look",
+   "s": 53.02,
+   "e": 53.28,
+   "seg": 7,
+   "first": false
+  },
+  {
+   "w": "like",
+   "s": 53.28,
+   "e": 53.76,
+   "seg": 7,
+   "first": false
+  },
+  {
+   "w": "an",
+   "s": 53.76,
+   "e": 54.02,
+   "seg": 7,
+   "first": false
+  },
+  {
+   "w": "email",
+   "s": 54.02,
+   "e": 54.3,
+   "seg": 7,
+   "first": false
+  },
+  {
+   "w": "inbox,",
+   "s": 54.3,
+   "e": 54.72,
+   "seg": 7,
+   "first": false
+  },
+  {
+   "w": "so",
+   "s": 54.82,
+   "e": 55.18,
+   "seg": 7,
+   "first": false
+  },
+  {
+   "w": "I",
+   "s": 55.18,
+   "e": 55.42,
+   "seg": 7,
+   "first": false
+  },
+  {
+   "w": "can",
+   "s": 55.42,
+   "e": 55.6,
+   "seg": 7,
+   "first": false
+  },
+  {
+   "w": "manage",
+   "s": 55.6,
+   "e": 55.96,
+   "seg": 7,
+   "first": false
+  },
+  {
+   "w": "all",
+   "s": 55.96,
+   "e": 56.5,
+   "seg": 7,
+   "first": false
+  },
+  {
+   "w": "of",
+   "s": 56.5,
+   "e": 56.7,
+   "seg": 7,
+   "first": false
+  },
+  {
+   "w": "my",
+   "s": 56.7,
+   "e": 56.86,
+   "seg": 7,
+   "first": false
+  },
+  {
+   "w": "comments",
+   "s": 56.86,
+   "e": 57.28,
+   "seg": 7,
+   "first": false
+  },
+  {
+   "w": "from",
+   "s": 57.28,
+   "e": 57.72,
+   "seg": 7,
+   "first": false
+  },
+  {
+   "w": "one",
+   "s": 57.72,
+   "e": 58,
+   "seg": 7,
+   "first": false
+  },
+  {
+   "w": "central",
+   "s": 58,
+   "e": 58.46,
+   "seg": 7,
+   "first": false
+  },
+  {
+   "w": "place,",
+   "s": 58.46,
+   "e": 58.9,
+   "seg": 7,
+   "first": false
+  },
+  {
+   "w": "I",
+   "s": 59.677,
+   "e": 59.957,
+   "seg": 8,
+   "first": true
+  },
+  {
+   "w": "pay",
+   "s": 59.957,
+   "e": 60.157,
+   "seg": 8,
+   "first": false
+  },
+  {
+   "w": "only",
+   "s": 60.157,
+   "e": 60.377,
+   "seg": 8,
+   "first": false
+  },
+  {
+   "w": "$6",
+   "s": 60.377,
+   "e": 60.997,
+   "seg": 8,
+   "first": false
+  },
+  {
+   "w": "a",
+   "s": 60.997,
+   "e": 61.097,
+   "seg": 8,
+   "first": false
+  },
+  {
+   "w": "month",
+   "s": 61.097,
+   "e": 61.497,
+   "seg": 8,
+   "first": false
+  },
+  {
+   "w": "to",
+   "s": 61.497,
+   "e": 61.857,
+   "seg": 8,
+   "first": false
+  },
+  {
+   "w": "host",
+   "s": 61.857,
+   "e": 62.257,
+   "seg": 8,
+   "first": false
+  },
+  {
+   "w": "all",
+   "s": 62.257,
+   "e": 62.477,
+   "seg": 8,
+   "first": false
+  },
+  {
+   "w": "my",
+   "s": 62.477,
+   "e": 62.617,
+   "seg": 8,
+   "first": false
+  },
+  {
+   "w": "data",
+   "s": 62.617,
+   "e": 62.797,
+   "seg": 8,
+   "first": false
+  },
+  {
+   "w": "on",
+   "s": 62.797,
+   "e": 63.137,
+   "seg": 8,
+   "first": false
+  },
+  {
+   "w": "a",
+   "s": 63.137,
+   "e": 63.237,
+   "seg": 8,
+   "first": false
+  },
+  {
+   "w": "private",
+   "s": 63.237,
+   "e": 63.457,
+   "seg": 8,
+   "first": false
+  },
+  {
+   "w": "server",
+   "s": 63.457,
+   "e": 63.837,
+   "seg": 8,
+   "first": false
+  },
+  {
+   "w": "that",
+   "s": 63.837,
+   "e": 64.277,
+   "seg": 8,
+   "first": false
+  },
+  {
+   "w": "is",
+   "s": 64.277,
+   "e": 64.757,
+   "seg": 8,
+   "first": false
+  },
+  {
+   "w": "always",
+   "s": 64.757,
+   "e": 65.117,
+   "seg": 8,
+   "first": false
+  },
+  {
+   "w": "running.",
+   "s": 65.117,
+   "e": 65.497,
+   "seg": 8,
+   "first": false
+  },
+  {
+   "w": "Claude",
+   "s": 66.181,
+   "e": 66.601,
+   "seg": 9,
+   "first": true
+  },
+  {
+   "w": "did",
+   "s": 66.601,
+   "e": 66.881,
+   "seg": 9,
+   "first": false
+  },
+  {
+   "w": "all",
+   "s": 66.881,
+   "e": 67.181,
+   "seg": 9,
+   "first": false
+  },
+  {
+   "w": "the",
+   "s": 67.181,
+   "e": 67.301,
+   "seg": 9,
+   "first": false
+  },
+  {
+   "w": "technical",
+   "s": 67.301,
+   "e": 67.621,
+   "seg": 9,
+   "first": false
+  },
+  {
+   "w": "parts,",
+   "s": 67.621,
+   "e": 67.961,
+   "seg": 9,
+   "first": false
+  },
+  {
+   "w": "and",
+   "s": 68.261,
+   "e": 68.401,
+   "seg": 9,
+   "first": false
+  },
+  {
+   "w": "I",
+   "s": 68.401,
+   "e": 68.661,
+   "seg": 9,
+   "first": false
+  },
+  {
+   "w": "just",
+   "s": 68.661,
+   "e": 68.821,
+   "seg": 9,
+   "first": false
+  },
+  {
+   "w": "had",
+   "s": 68.821,
+   "e": 69.001,
+   "seg": 9,
+   "first": false
+  },
+  {
+   "w": "to",
+   "s": 69.001,
+   "e": 69.161,
+   "seg": 9,
+   "first": false
+  },
+  {
+   "w": "do",
+   "s": 69.161,
+   "e": 69.321,
+   "seg": 9,
+   "first": false
+  },
+  {
+   "w": "some",
+   "s": 69.321,
+   "e": 69.701,
+   "seg": 9,
+   "first": false
+  },
+  {
+   "w": "account",
+   "s": 69.701,
+   "e": 70.081,
+   "seg": 9,
+   "first": false
+  },
+  {
+   "w": "setup",
+   "s": 70.081,
+   "e": 70.581,
+   "seg": 9,
+   "first": false
+  },
+  {
+   "w": "and",
+   "s": 70.581,
+   "e": 71.161,
+   "seg": 9,
+   "first": false
+  },
+  {
+   "w": "a",
+   "s": 71.161,
+   "e": 71.381,
+   "seg": 9,
+   "first": false
+  },
+  {
+   "w": "couple",
+   "s": 71.381,
+   "e": 71.681,
+   "seg": 9,
+   "first": false
+  },
+  {
+   "w": "of",
+   "s": 71.681,
+   "e": 72.141,
+   "seg": 9,
+   "first": false
+  },
+  {
+   "w": "approvals",
+   "s": 72.141,
+   "e": 72.721,
+   "seg": 9,
+   "first": false
+  },
+  {
+   "w": "and",
+   "s": 72.721,
+   "e": 73.161,
+   "seg": 9,
+   "first": false
+  },
+  {
+   "w": "clicks.",
+   "s": 73.161,
+   "e": 73.441,
+   "seg": 9,
+   "first": false
+  },
+  {
+   "w": "Two",
+   "s": 73.991,
+   "e": 74.291,
+   "seg": 10,
+   "first": true
+  },
+  {
+   "w": "of",
+   "s": 74.291,
+   "e": 74.391,
+   "seg": 10,
+   "first": false
+  },
+  {
+   "w": "those",
+   "s": 74.391,
+   "e": 74.551,
+   "seg": 10,
+   "first": false
+  },
+  {
+   "w": "clicks",
+   "s": 74.551,
+   "e": 74.751,
+   "seg": 10,
+   "first": false
+  },
+  {
+   "w": "could",
+   "s": 74.751,
+   "e": 75.291,
+   "seg": 10,
+   "first": false
+  },
+  {
+   "w": "have",
+   "s": 75.291,
+   "e": 75.471,
+   "seg": 10,
+   "first": false
+  },
+  {
+   "w": "cost",
+   "s": 75.471,
+   "e": 75.671,
+   "seg": 10,
+   "first": false
+  },
+  {
+   "w": "me",
+   "s": 75.671,
+   "e": 75.971,
+   "seg": 10,
+   "first": false
+  },
+  {
+   "w": "weeks",
+   "s": 75.971,
+   "e": 76.451,
+   "seg": 10,
+   "first": false
+  },
+  {
+   "w": "in",
+   "s": 76.451,
+   "e": 76.751,
+   "seg": 10,
+   "first": false
+  },
+  {
+   "w": "manual",
+   "s": 76.751,
+   "e": 77.071,
+   "seg": 10,
+   "first": false
+  },
+  {
+   "w": "review,",
+   "s": 77.071,
+   "e": 77.711,
+   "seg": 10,
+   "first": false
+  },
+  {
+   "w": "If",
+   "s": 78.36,
+   "e": 78.82,
+   "seg": 11,
+   "first": true
+  },
+  {
+   "w": "you",
+   "s": 78.82,
+   "e": 78.98,
+   "seg": 11,
+   "first": false
+  },
+  {
+   "w": "want",
+   "s": 78.98,
+   "e": 79.12,
+   "seg": 11,
+   "first": false
+  },
+  {
+   "w": "to",
+   "s": 79.12,
+   "e": 79.2,
+   "seg": 11,
+   "first": false
+  },
+  {
+   "w": "build",
+   "s": 79.2,
+   "e": 79.42,
+   "seg": 11,
+   "first": false
+  },
+  {
+   "w": "your",
+   "s": 79.42,
+   "e": 79.68,
+   "seg": 11,
+   "first": false
+  },
+  {
+   "w": "own",
+   "s": 79.68,
+   "e": 79.96,
+   "seg": 11,
+   "first": false
+  },
+  {
+   "w": "tool",
+   "s": 79.96,
+   "e": 80.28,
+   "seg": 11,
+   "first": false
+  },
+  {
+   "w": "to",
+   "s": 80.28,
+   "e": 80.58,
+   "seg": 11,
+   "first": false
+  },
+  {
+   "w": "replace",
+   "s": 80.58,
+   "e": 80.96,
+   "seg": 11,
+   "first": false
+  },
+  {
+   "w": "many",
+   "s": 80.96,
+   "e": 81.28,
+   "seg": 11,
+   "first": false
+  },
+  {
+   "w": "chat",
+   "s": 81.28,
+   "e": 81.58,
+   "seg": 11,
+   "first": false
+  },
+  {
+   "w": "and",
+   "s": 81.58,
+   "e": 82.16,
+   "seg": 11,
+   "first": false
+  },
+  {
+   "w": "also",
+   "s": 82.16,
+   "e": 82.62,
+   "seg": 11,
+   "first": false
+  },
+  {
+   "w": "respond",
+   "s": 82.62,
+   "e": 83.1,
+   "seg": 11,
+   "first": false
+  },
+  {
+   "w": "to",
+   "s": 83.1,
+   "e": 83.3,
+   "seg": 11,
+   "first": false
+  },
+  {
+   "w": "YouTube",
+   "s": 83.3,
+   "e": 83.5,
+   "seg": 11,
+   "first": false
+  },
+  {
+   "w": "comments",
+   "s": 83.5,
+   "e": 84,
+   "seg": 11,
+   "first": false
+  },
+  {
+   "w": "for",
+   "s": 84,
+   "e": 84.56,
+   "seg": 11,
+   "first": false
+  },
+  {
+   "w": "$6",
+   "s": 84.56,
+   "e": 84.88,
+   "seg": 11,
+   "first": false
+  },
+  {
+   "w": "a",
+   "s": 84.88,
+   "e": 85,
+   "seg": 11,
+   "first": false
+  },
+  {
+   "w": "month,",
+   "s": 85,
+   "e": 85.36,
+   "seg": 11,
+   "first": false
+  },
+  {
+   "w": "go",
+   "s": 85.8,
+   "e": 86.06,
+   "seg": 11,
+   "first": false
+  },
+  {
+   "w": "ahead",
+   "s": 86.06,
+   "e": 86.32,
+   "seg": 11,
+   "first": false
+  },
+  {
+   "w": "and",
+   "s": 86.32,
+   "e": 86.62,
+   "seg": 11,
+   "first": false
+  },
+  {
+   "w": "comment",
+   "s": 86.62,
+   "e": 87.06,
+   "seg": 11,
+   "first": false
+  },
+  {
+   "w": "traps",
+   "s": 87.06,
+   "e": 87.6,
+   "seg": 11,
+   "first": false
+  },
+  {
+   "w": "and",
+   "s": 87.6,
+   "e": 88.18,
+   "seg": 11,
+   "first": false
+  },
+  {
+   "w": "I'll",
+   "s": 88.18,
+   "e": 88.52,
+   "seg": 11,
+   "first": false
+  },
+  {
+   "w": "send",
+   "s": 88.52,
+   "e": 88.74,
+   "seg": 11,
+   "first": false
+  },
+  {
+   "w": "you",
+   "s": 88.74,
+   "e": 88.98,
+   "seg": 11,
+   "first": false
+  },
+  {
+   "w": "the",
+   "s": 88.98,
+   "e": 89.2,
+   "seg": 11,
+   "first": false
+  },
+  {
+   "w": "pitfalls",
+   "s": 89.2,
+   "e": 89.54,
+   "seg": 11,
+   "first": false
+  },
+  {
+   "w": "to",
+   "s": 89.54,
+   "e": 89.88,
+   "seg": 11,
+   "first": false
+  },
+  {
+   "w": "look",
+   "s": 89.88,
+   "e": 90.02,
+   "seg": 11,
+   "first": false
+  },
+  {
+   "w": "out",
+   "s": 90.02,
+   "e": 90.16,
+   "seg": 11,
+   "first": false
+  },
+  {
+   "w": "for",
+   "s": 90.16,
+   "e": 90.42,
+   "seg": 11,
+   "first": false
+  },
+  {
+   "w": "it",
+   "s": 90.42,
+   "e": 90.62,
+   "seg": 11,
+   "first": false
+  },
+  {
+   "w": "when",
+   "s": 90.62,
+   "e": 90.72,
+   "seg": 11,
+   "first": false
+  },
+  {
+   "w": "you're",
+   "s": 90.72,
+   "e": 90.86,
+   "seg": 11,
+   "first": false
+  },
+  {
+   "w": "setting",
+   "s": 90.86,
+   "e": 91.06,
+   "seg": 11,
+   "first": false
+  },
+  {
+   "w": "it",
+   "s": 91.06,
+   "e": 91.3,
+   "seg": 11,
+   "first": false
+  },
+  {
+   "w": "up.",
+   "s": 91.3,
+   "e": 91.46,
+   "seg": 11,
+   "first": false
+  }
+ ],
+ "emphasis": [],
+ "cuts": [
+  0,
+  8.044,
+  14.236,
+  25.161,
+  32.51,
+  33.429,
+  38.639,
+  51.96,
+  59.397,
+  65.881,
+  73.691,
+  78.16
+ ],
+ "title": null,
+ "end": null,
+ "music": null,
+ "sfx": null,
+ "grade": null
+}
