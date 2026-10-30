@@ -18,7 +18,7 @@
     {
       "layout": "numcover",
       "media": "f5e7ef379a",
-      "big": "80,000",
+      "big": "476,334",
       "text": "views = $1,000",
       "hand": "here's the math →",
       "doodles": [
@@ -81,8 +81,8 @@
     },
     {
       "layout": "number",
-      "big": "800",
-      "text": "visitors bring in those 20 sales, if 2.5% of them buy.",
+      "big": "1,429",
+      "text": "visitors bring in those 20 sales, if 1.4% of them buy.",
       "palette": "navy",
       "doodles": [
         {
@@ -127,13 +127,13 @@
     {
       "layout": "formula",
       "formula": [
-        "800|visitors",
+        "1,429|visitors",
         "÷",
-        "1%|who visit",
+        "0.3%|who visit",
         "=",
-        "80,000|views"
+        "476,334|views"
       ],
-      "text": "Then divide visitors by the share of viewers who tap through. Under 1% is normal."
+      "text": "Then divide visitors by the share of viewers who visit. 0.3% is typical."
     },
     {
       "layout": "chart",
@@ -141,22 +141,22 @@
         "rows": [
           [
             "1%, strong",
-            80000,
-            "80,000"
+            142900,
+            "142,900"
           ],
           [
             "0.3%, typical",
-            266667,
-            "266,667"
+            476334,
+            "476,334"
           ],
           [
             "0.1%, weak",
-            800000,
-            "800,000"
+            1429000,
+            "1,429,000"
           ]
         ],
-        "hi": 0,
-        "note": "Views needed for $1,000 at $50 if 2.5% of visitors buy. Share of viewers who visit, using the calculator's presets"
+        "hi": 1,
+        "note": "Views needed for $1,000 at $50 if 1.4% of visitors buy. Viewer-to-visitor rates are the calculator's presets"
       },
       "text": "That one percentage changes everything."
     },
@@ -190,7 +190,7 @@
     },
     {
       "layout": "text",
-      "text": "Both percentages are starting guesses. Swap in your own once you've posted.",
+      "text": "These are typical numbers. Swap in your own once you've posted.",
       "photoBg": "60167eb7b6",
       "scrim": "full"
     },
@@ -203,7 +203,7 @@
     "type": "comment",
     "keyword": "MATH"
   },
-  "caption": "Comment MATH and I'll send you the free $1K Math calculator. Where the numbers come from: link-in-bio benchmarks put taps at about 1 to 3% of profile visits, and only some viewers visit your profile, so well under 1% of views is normal. That's why a comment word that sends your link in a DM helps so much. For buying, Littledata's study of 421 Shopify stores found a median of 1.4% of visits ending in a sale, and Dynamic Yield's data from 400+ brands averages 2.66%, so 2.5% is a hopeful guess; plan with the lower number too. One more thing: Instagram counts replays as views, so views are always higher than the number of people.",
+  "caption": "Comment MATH and I'll send you the free $1K Math calculator. Where the numbers come from: Littledata's study of 421 Shopify stores found a median of 1.4% of visits ending in a sale. For visits, link-in-bio benchmarks put taps at about 1 to 3% of profile visits, and only some viewers visit your profile, so a fraction of 1% of views is typical. That's why a comment word that sends your link in a DM helps so much: it skips the profile visit. One more thing: Instagram counts replays as views, so views are always higher than the number of people.",
   "hashtags": [
     "#smallbusinesstips",
     "#instagramforbusiness",
