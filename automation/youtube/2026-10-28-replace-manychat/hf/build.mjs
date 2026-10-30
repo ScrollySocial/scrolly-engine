@@ -42,6 +42,7 @@ if (process.argv[2] === 'prep') {
   copyFileSync(path.join(AUTO, 'reel-hf/2026-10-13-bb-voice-file/assets/music/music-a.mp3'), A('music.mp3'));
   const hq = path.join(AUTO, 'reel-template-pack/build/.cache/hq');
   copyFileSync(path.join(hq, 'Vintage Walnut Rabbit-Ear Television.png'), A('img', 'tv-walnut.png'));
+  copyFileSync(path.join(hq, 'Vintage Walnut Rabbit-Ear Television.png'), A('img', 'tv-walnut-small.png')); // second copy: two identical img nodes read as duplicate media
   copyFileSync(path.join(hq, 'Beige CRT monitor with green screen-56.png'), A('img', 'tv-crt.png'));
   for (const f of ['tv-calc', 'tv-inbox', 'inbox', 'flows', 'keywords', 'calculator', 'guide', 'chat-manager']) copyFileSync(path.join(CACHE, 'screens', f + '.png'), A('img', f + '.png'));
   copyFileSync(path.join(CACHE, 'frames', 'curtain-bw.jpg'), A('img', 'curtain-bw.jpg'));
@@ -70,7 +71,10 @@ const bed = (id, a, d, level, fi, fo, track) => `<audio id="${id}" src="assets/m
 const html = [], js = [], audio = [], wide = []; // wide = windows where the camera stays wide (a graphic is up)
 let n = 0;
 const uid = (p) => `${p}${++n}`;
-const sfx = (name, t, vol = 0.55) => audio.push(`<audio id="${uid('fx')}" src="assets/sfx/${name}.mp3" data-start="${r2(t)}" data-duration="1.2" data-track-index="${20 + (n % 6)}" data-volume="${vol}"></audio>`);
+// each sound's slot = its real length (ffprobe once per file)
+const FP = path.join(AUTO, 'hyperframes-test/bin/ffprobe.exe'), lens = {};
+const len = (name) => (lens[name] ??= Math.min(1.2, +execFileSync(FP, ['-v', 'error', '-show_entries', 'format=duration', '-of', 'csv=p=0', A('sfx', name + '.mp3')], { encoding: 'utf8' }).trim()));
+const sfx = (name, t, vol = 0.55) => audio.push(`<audio id="${uid('fx')}" src="assets/sfx/${name}.mp3" data-start="${r2(t)}" data-duration="${r2(len(name))}" data-track-index="${20 + (n % 6)}" data-volume="${vol}"></audio>`);
 // a group shown from a to b (fade in/out on a plain div; the framework only owns .clip visibility)
 function group(a, b, inner, { fade = 0.25, keepWide = true, z = 5 } = {}) {
   const id = uid('g');
@@ -84,7 +88,7 @@ const card = (id, label, value, x, y, rot, size = 210) =>
   `<div id="${id}" class="card" style="left:${x}px;top:${y}px;--r:${rot}deg"><div class="lbl">${label}</div><div class="num" style="font-size:${size}px">${value}</div></div>`;
 const note = (id, text, x, y, rot = -4, size = 54) => `<div id="${id}" class="hand note" style="left:${x}px;top:${y}px;--r:${rot}deg;font-size:${size}px">${text}</div>`;
 const RING = 'M18 52 C14 18 70 6 112 8 C170 11 196 34 190 58 C184 86 120 96 76 92 C34 88 6 70 22 40';
-const ring = (id, x, y, w, h) => `<svg id="${id}" class="abs" style="left:${x}px;top:${y}px;width:${w}px;height:${h}px;overflow:visible" viewBox="0 0 200 100" preserveAspectRatio="none"><path class="draw" pathLength="1" d="${RING}" fill="none" stroke="${C.navy}" stroke-width="15" stroke-linecap="round" vector-effect="non-scaling-stroke"/><path class="draw" pathLength="1" d="${RING}" fill="none" stroke="${C.sky}" stroke-width="9" stroke-linecap="round" vector-effect="non-scaling-stroke"/></svg>`;
+const ring = (id, x, y, w, h) => `<svg id="${id}" class="abs" style="left:${x}px;top:${y}px;width:${w}px;height:${h}px;overflow:visible" viewBox="0 0 200 100" preserveAspectRatio="none"><path class="draw" pathLength="1" d="${RING}" fill="none" stroke="${C.navy}" stroke-width="4.6" stroke-linecap="round"/><path class="draw" pathLength="1" d="${RING}" fill="none" stroke="${C.sky}" stroke-width="2.6" stroke-linecap="round"/></svg>`;
 const cross = (id, x, y, s = 110) => `<svg id="${id}" class="abs" style="left:${x}px;top:${y}px;width:${s}px;height:${s}px" viewBox="0 0 100 100"><path class="draw" pathLength="1" d="M18 16 L84 86" stroke="${C.paper}" stroke-width="20" stroke-linecap="round" fill="none"/><path class="draw" pathLength="1" d="M82 14 L20 84" stroke="${C.paper}" stroke-width="20" stroke-linecap="round" fill="none"/><path class="draw" pathLength="1" d="M18 16 L84 86" stroke="${C.navy}" stroke-width="10" stroke-linecap="round" fill="none"/><path class="draw" pathLength="1" d="M82 14 L20 84" stroke="${C.navy}" stroke-width="10" stroke-linecap="round" fill="none"/></svg>`;
 const draw = (sel, t, d = 0.5) => js.push(`draw('${sel}', ${r2(t)}, ${d});`);
 
@@ -141,7 +145,7 @@ function checklist(items, a, b, { x = 60, y = 260, w = 520, title = '' } = {}) {
       <div class="abs tvs" style="left:${r2(R.x + R.w * 0.066)}px;top:${r2(R.y + R.h * 0.105)}px;width:${r2(R.w * 0.588)}px;height:${r2(R.h * 0.602)}px;border-radius:4%"><img class="abs fillimg" src="assets/img/tv-calc.png"><div class="abs scan"></div><div class="abs glare"></div></div>
     </div>
     <div id="co-her" class="abs" style="left:${r2(T.x)}px;top:${r2(T.y)}px;width:${T.w}px;height:${r2(T.h)}px;transform-origin:0 0">
-      <img class="abs" src="assets/img/tv-walnut.png?small" style="left:0;top:0;width:${T.w}px">
+      <img class="abs" src="assets/img/tv-walnut-small.png" style="left:0;top:0;width:${T.w}px">
       <div class="abs tvs" style="${scr(T)};border-radius:7%/10%"><video id="co-vid" class="clip fillimg" src="assets/seg/tv-her.mp4" muted playsinline data-start="0" data-duration="${r2(T0)}" data-track-index="4"></video><div class="abs scan"></div><div class="abs glare"></div></div>
     </div>
   </div>

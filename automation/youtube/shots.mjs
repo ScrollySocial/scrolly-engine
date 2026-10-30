@@ -18,6 +18,8 @@ if (click) {
   await page.evaluate((t) => [...document.querySelectorAll('a,button,[role=tab],li,div')].find((e) => e.childElementCount < 3 && e.textContent.trim() === t)?.click(), click);
   await new Promise((r) => setTimeout(r, 1200));
 }
+// hide a cookie-consent banner from the picture (nothing is clicked or accepted)
+await page.evaluate(() => document.querySelectorAll('body *').forEach((e) => { if (getComputedStyle(e).position === 'fixed' && /consent|cookie/i.test(e.textContent || '') && !e.contains(document.querySelector('main'))) e.style.display = 'none'; }));
 await page.screenshot({ path: path.join(out, name + '.png') });
 await browser.close();
 console.log(path.join(out, name + '.png'));
