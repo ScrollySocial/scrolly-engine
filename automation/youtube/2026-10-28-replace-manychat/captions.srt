@@ -19,1509 +19,1497 @@ the data.
 Here's what I do.
 
 6
-00:00:11,085 --> 00:00:14,745
+00:00:11,335 --> 00:00:14,995
 So, ManyChat Pro costs $39 a month right
 
 7
-00:00:14,745 --> 00:00:16,935
-now, and I built one myself, and it only
+00:00:14,995 --> 00:00:16,755
+now, and that's for and I built one
 
 8
-00:00:16,935 --> 00:00:20,475
-costs $6 a month to run, and I can run it
+00:00:16,755 --> 00:00:20,275
+myself, and it only costs $6 a month to
 
 9
-00:00:20,475 --> 00:00:22,973
-completely myself from my computer, even
+00:00:20,275 --> 00:00:22,235
+run, and I can run it completely myself
 
 10
-00:00:22,973 --> 00:00:25,433
-if my computer is turned off or shut down,
+00:00:22,235 --> 00:00:24,873
+from my computer, even if my computer is
 
 11
-00:00:25,813 --> 00:00:26,973
-or I'm traveling,
+00:00:24,873 --> 00:00:27,873
+turned off or shut down, or I'm traveling,
 
 12
-00:00:27,493 --> 00:00:30,033
+00:00:28,393 --> 00:00:30,933
 my automation still runs, and I own all
 
 13
-00:00:30,033 --> 00:00:30,833
+00:00:30,933 --> 00:00:31,733
 the data.
 
 14
-00:00:30,902 --> 00:00:32,642
+00:00:32,052 --> 00:00:33,792
 So if you want to achieve something
 
 15
-00:00:32,642 --> 00:00:34,982
+00:00:33,792 --> 00:00:36,132
 similar and stop paying software companies
 
 16
-00:00:34,982 --> 00:00:37,642
+00:00:36,132 --> 00:00:38,792
 like ManyChat, I'm going to teach you how
 
 17
-00:00:37,642 --> 00:00:38,442
+00:00:38,792 --> 00:00:39,592
 you can do this yourself.
 
 18
-00:00:38,844 --> 00:00:41,964
+00:00:40,856 --> 00:00:43,976
 I didn't really want to pay that for my
 
 19
-00:00:41,964 --> 00:00:44,864
+00:00:43,976 --> 00:00:46,876
 business and so I went ahead and decided
 
 20
-00:00:44,864 --> 00:00:49,235
+00:00:46,876 --> 00:00:51,247
 to see if there was a way to do DM tool
 
 21
-00:00:49,611 --> 00:00:53,060
+00:00:51,623 --> 00:00:55,072
 to get around those fees from any chat and
 
 22
-00:00:53,060 --> 00:00:54,360
+00:00:55,072 --> 00:00:56,372
 turns out you can build it.
 
 23
-00:00:54,729 --> 00:00:57,509
+00:00:56,787 --> 00:00:59,567
 So when I was looking into this I did go
 
 24
-00:00:57,509 --> 00:00:59,829
-ahead and test out the free plan So in
+00:00:59,567 --> 00:01:02,277
+ahead and test out the free plan So So in
 
 25
-00:00:59,829 --> 00:01:02,249
+00:01:02,277 --> 00:01:04,697
 addition to the free plan on ManyChat
 
 26
-00:01:02,249 --> 00:01:04,689
+00:01:04,697 --> 00:01:07,137
 being limited to only 25 contacts which is
 
 27
-00:01:04,689 --> 00:01:08,169
+00:01:07,137 --> 00:01:10,617
 obviously not a lot it also limits and
 
 28
-00:01:08,169 --> 00:01:10,169
+00:01:10,617 --> 00:01:12,617
 restricts you on the types of automations
 
 29
-00:01:10,169 --> 00:01:11,869
+00:01:12,617 --> 00:01:14,317
 and the count of automations that you can
 
 30
-00:01:11,869 --> 00:01:15,589
+00:01:14,317 --> 00:01:18,037
 have and so for a lower price than many of
 
 31
-00:01:15,589 --> 00:01:17,482
+00:01:18,037 --> 00:01:19,930
 the big tiers if you had a really big
 
 32
-00:01:17,482 --> 00:01:19,642
+00:01:19,930 --> 00:01:22,090
 contact list you get
 
 33
-00:01:20,399 --> 00:01:22,259
+00:01:22,770 --> 00:01:24,630
 unrestricted ability to set up your
 
 34
-00:01:22,259 --> 00:01:23,339
+00:01:24,630 --> 00:01:25,710
 automation how you choose.
 
 35
-00:01:23,919 --> 00:01:25,439
+00:01:26,290 --> 00:01:27,810
 So that's the benefit to building it
 
 36
-00:01:25,439 --> 00:01:26,179
+00:01:27,810 --> 00:01:28,550
 yourself.
 
 37
-00:01:26,179 --> 00:01:28,019
+00:01:28,550 --> 00:01:30,390
 Of course it takes a little bit more work
 
 38
-00:01:28,019 --> 00:01:30,379
+00:01:30,390 --> 00:01:32,750
 than just setting up one single account on
 
 39
-00:01:30,379 --> 00:01:33,019
+00:01:32,750 --> 00:01:35,390
 a new software platform to achieve this
 
 40
-00:01:33,019 --> 00:01:35,359
+00:01:35,390 --> 00:01:37,730
 but it's actually not as bad as it sounds.
 
 41
-00:01:36,050 --> 00:01:38,490
+00:01:37,924 --> 00:01:40,364
 Okay, so when I say that I replaced it
 
 42
-00:01:38,490 --> 00:01:39,290
+00:01:40,364 --> 00:01:41,164
 with Claude,
 
 43
-00:01:39,650 --> 00:01:42,310
+00:01:41,524 --> 00:01:44,184
 what that means is that I'd used Claude
 
 44
-00:01:42,310 --> 00:01:44,410
+00:01:44,184 --> 00:01:46,284
 Code to basically build my own tool.
 
 45
-00:01:44,490 --> 00:01:45,830
+00:01:46,364 --> 00:01:47,704
 You could call it like a software, you
 
 46
-00:01:45,830 --> 00:01:47,730
+00:01:47,704 --> 00:01:49,604
 could call it like an app, even though
 
 47
-00:01:47,730 --> 00:01:50,490
+00:01:49,604 --> 00:01:52,364
 it's not a public app, it's private, and
 
 48
-00:01:50,490 --> 00:01:52,710
+00:01:52,364 --> 00:01:54,584
 it's only accessible by me on my computer.
 
 49
-00:01:53,704 --> 00:01:55,244
+00:01:55,518 --> 00:01:57,058
 And like I said, I didn't actually code
 
 50
-00:01:55,244 --> 00:01:57,164
+00:01:57,058 --> 00:01:58,978
 anything, Claude Code did all of the
 
 51
-00:01:57,164 --> 00:01:59,304
+00:01:58,978 --> 00:02:01,118
 actual coding part for me.
 
 52
-00:02:00,644 --> 00:02:02,724
-But what is happening is that Claude Code
+00:02:01,711 --> 00:02:03,511
+what is happening is that Claude Code will
 
 53
-00:02:02,724 --> 00:02:05,284
-will build a setup on n8n,
+00:02:03,511 --> 00:02:05,771
+build a setup on n8n,
 
 54
-00:02:06,064 --> 00:02:09,284
+00:02:06,551 --> 00:02:09,771
 and it runs your tool on a server, and
 
 55
-00:02:09,284 --> 00:02:11,144
+00:02:09,771 --> 00:02:11,631
 that is what enables this to run
 
 56
-00:02:11,144 --> 00:02:13,251
+00:02:11,631 --> 00:02:13,738
 regardless of whether or not your computer
 
 57
-00:02:13,251 --> 00:02:14,051
+00:02:13,738 --> 00:02:14,538
 is on.
 
 58
-00:02:14,391 --> 00:02:16,631
+00:02:14,878 --> 00:02:17,118
 And so that way there is never delay in
 
 59
-00:02:16,631 --> 00:02:18,311
+00:02:17,118 --> 00:02:18,798
 somebody getting the comment, which is
 
 60
-00:02:18,311 --> 00:02:20,291
+00:02:18,798 --> 00:02:20,778
 important for a feature like this, if
 
 61
-00:02:20,291 --> 00:02:21,891
+00:02:20,778 --> 00:02:22,378
 somebody is commenting in the middle of
 
 62
-00:02:21,891 --> 00:02:24,311
+00:02:22,378 --> 00:02:24,798
 the night, and your computer is doing the
 
 63
-00:02:24,311 --> 00:02:27,424
+00:02:24,798 --> 00:02:27,911
 evening restart or something, which you
 
 64
-00:02:27,424 --> 00:02:29,784
+00:02:27,911 --> 00:02:30,271
 know, sometimes that happens, you'll log
 
 65
-00:02:29,784 --> 00:02:30,864
+00:02:30,271 --> 00:02:31,351
 into your computer the next morning and
 
 66
-00:02:30,864 --> 00:02:32,344
+00:02:31,351 --> 00:02:32,831
 realize, oh, there was like an automated
 
 67
-00:02:32,344 --> 00:02:33,144
+00:02:32,831 --> 00:02:33,631
 restart.
 
 68
-00:02:33,164 --> 00:02:35,104
+00:02:33,651 --> 00:02:35,591
 Well, if you didn't have an external
 
 69
-00:02:35,104 --> 00:02:39,064
+00:02:35,591 --> 00:02:39,551
 server, then that auto -tatt process would
 
 70
-00:02:39,064 --> 00:02:39,864
+00:02:39,551 --> 00:02:40,351
 break down.
 
 71
-00:02:39,964 --> 00:02:41,804
+00:02:40,451 --> 00:02:42,291
 So to prevent that from happening, we set
 
 72
-00:02:41,804 --> 00:02:42,984
+00:02:42,291 --> 00:02:43,471
 up a separate server,
 
 73
-00:02:43,604 --> 00:02:45,784
+00:02:44,091 --> 00:02:46,271
 and that is the additional cost, which for
 
 74
-00:02:45,784 --> 00:02:46,584
+00:02:46,271 --> 00:02:47,071
 me was $6,
 
 75
-00:02:47,224 --> 00:02:49,943
+00:02:47,711 --> 00:02:50,430
 that was the best combination of
 
 76
-00:02:49,943 --> 00:02:52,643
+00:02:50,430 --> 00:02:53,130
 straightforward, easy to use, and best
 
 77
-00:02:52,643 --> 00:02:53,443
+00:02:53,130 --> 00:02:53,930
 price.
 
 78
-00:02:54,769 --> 00:02:57,729
+00:02:54,854 --> 00:02:57,814
 So then how it works is this any and
 
 79
-00:02:58,249 --> 00:03:01,549
+00:02:58,334 --> 00:03:01,634
 Automation is also connected to Instagram
 
 80
-00:03:01,549 --> 00:03:05,069
+00:03:01,634 --> 00:03:05,154
 through Instagram apps official API So if
 
 81
-00:03:05,069 --> 00:03:07,589
+00:03:05,154 --> 00:03:07,674
 you are concerned about it being
 
 82
-00:03:07,589 --> 00:03:11,609
+00:03:07,674 --> 00:03:11,694
 legitimate with Meta and the official Meta
 
 83
-00:03:11,609 --> 00:03:13,889
+00:03:11,694 --> 00:03:13,974
 integration This is actually completely
 
 84
-00:03:13,889 --> 00:03:16,369
+00:03:13,974 --> 00:03:16,454
 and totally approved with Meta You go
 
 85
-00:03:16,369 --> 00:03:18,049
+00:03:16,454 --> 00:03:18,134
 through the process of making your own
 
 86
-00:03:18,049 --> 00:03:20,409
+00:03:18,134 --> 00:03:20,494
 approved app and as long as it's a private
 
 87
-00:03:20,409 --> 00:03:23,569
+00:03:20,494 --> 00:03:23,654
 app just used by you the Approval process
 
 88
-00:03:23,569 --> 00:03:26,389
+00:03:23,654 --> 00:03:26,474
 for Instagram is very straightforward It
 
 89
-00:03:26,389 --> 00:03:28,949
+00:03:26,474 --> 00:03:29,034
 does get a little bit more complicated if
 
 90
-00:03:28,949 --> 00:03:30,669
+00:03:29,034 --> 00:03:30,754
 you also wanted to add in Facebook
 
 91
-00:03:30,669 --> 00:03:34,678
+00:03:30,754 --> 00:03:34,763
 Facebook or WhatsApp So those are optional
 
 92
-00:03:34,678 --> 00:03:36,698
+00:03:34,763 --> 00:03:36,783
 things you could do and they do require
 
 93
-00:03:36,698 --> 00:03:37,498
+00:03:36,783 --> 00:03:37,583
 more steps
 
 94
-00:03:38,278 --> 00:03:39,998
+00:03:38,363 --> 00:03:40,083
 But it's very straightforward for
 
 95
-00:03:39,998 --> 00:03:40,798
+00:03:40,083 --> 00:03:40,883
 Instagram
 
 96
-00:03:41,041 --> 00:03:44,661
+00:03:41,176 --> 00:03:44,796
 So then Instagram is going to send them
 
 97
-00:03:44,661 --> 00:03:45,541
-the auto -reply
+00:03:44,796 --> 00:03:47,767
+the auto -reply its official API and
 
 98
-00:03:47,601 --> 00:03:49,601
-through its official API and
-
-99
-00:03:50,481 --> 00:03:52,561
+00:03:48,647 --> 00:03:50,727
 So any keyword that you set up it's going
 
-100
-00:03:52,561 --> 00:03:55,361
+99
+00:03:50,727 --> 00:03:53,527
 to do that automated response process Just
 
-101
-00:03:55,361 --> 00:03:57,501
+100
+00:03:53,527 --> 00:03:55,667
 like it would if you were using ManyChat
 
-102
-00:03:57,501 --> 00:04:00,341
+101
+00:03:55,667 --> 00:03:58,507
 or you've experienced it as a commenter on
 
-103
-00:04:00,341 --> 00:04:02,721
+102
+00:03:58,507 --> 00:04:00,887
 one of the platforms Like Instagram where
 
-104
-00:04:02,721 --> 00:04:05,461
+103
+00:04:00,887 --> 00:04:03,627
 you comment and you get a message or a
 
-105
-00:04:05,461 --> 00:04:08,341
+104
+00:04:03,627 --> 00:04:06,507
 link An automated response that has been
 
+105
+00:04:06,507 --> 00:04:08,736
+previously set up by the account donor So
+
 106
-00:04:08,341 --> 00:04:09,941
-previously set up by the account donor
+00:04:08,736 --> 00:04:11,616
+I do have very specific keywords set up so
 
 107
-00:04:10,529 --> 00:04:13,629
-So I do have very specific keywords set up
+00:04:11,616 --> 00:04:13,476
+that whenever somebody comments them on my
 
 108
-00:04:13,629 --> 00:04:15,589
-so that whenever somebody comments them on
+00:04:13,476 --> 00:04:16,796
+post it sets off an automation And like
 
 109
-00:04:15,589 --> 00:04:19,049
-my post it sets off an automation And like
-
-110
-00:04:19,049 --> 00:04:21,209
+00:04:16,796 --> 00:04:18,956
 ManyChat you can choose to ask them to
 
-111
-00:04:21,209 --> 00:04:23,649
+110
+00:04:18,956 --> 00:04:21,396
 reply first In the benefit of doing that
 
-112
-00:04:23,649 --> 00:04:25,869
+111
+00:04:21,396 --> 00:04:23,616
 is that they will then be able to have a
 
-113
-00:04:25,869 --> 00:04:27,609
+112
+00:04:23,616 --> 00:04:25,356
 follow -up sent to them if they don't
 
-114
-00:04:27,609 --> 00:04:29,269
+113
+00:04:25,356 --> 00:04:27,016
 click on the link And you can't do that if
 
-115
-00:04:29,269 --> 00:04:30,149
+114
+00:04:27,016 --> 00:04:27,896
 they don't reply first
 
-116
-00:04:30,809 --> 00:04:32,909
+115
+00:04:28,556 --> 00:04:30,656
 And then I also have it set up directly
 
-117
-00:04:32,909 --> 00:04:36,069
+116
+00:04:30,656 --> 00:04:33,816
 with my email platform, which for me in my
 
-118
-00:04:36,069 --> 00:04:37,989
+117
+00:04:33,816 --> 00:04:35,736
 business I'm using mail or light right now
 
-119
-00:04:38,549 --> 00:04:39,349
+118
+00:04:36,296 --> 00:04:37,096
 but
 
-120
-00:04:39,929 --> 00:04:42,029
+119
+00:04:37,676 --> 00:04:39,776
 You can set it up with a whole bunch of
 
-121
-00:04:42,029 --> 00:04:44,809
+120
+00:04:39,776 --> 00:04:42,556
 different email platforms as well So very
 
-122
-00:04:44,809 --> 00:04:46,549
+121
+00:04:42,556 --> 00:04:44,296
 likely if you're using one of the big ones
 
-123
-00:04:46,549 --> 00:04:48,577
+122
+00:04:44,296 --> 00:04:46,324
 it works with this as well for emails
 
-124
-00:04:49,372 --> 00:04:52,652
+123
+00:04:47,084 --> 00:04:50,364
 So what is so great about my setup is that
 
-125
-00:04:52,652 --> 00:04:54,872
+124
+00:04:50,364 --> 00:04:52,584
 not only does it work with Instagram
 
-126
-00:04:54,872 --> 00:04:57,072
+125
+00:04:52,584 --> 00:04:54,784
 exactly as you would expect the normal
 
-127
-00:04:57,072 --> 00:04:59,872
+126
+00:04:54,784 --> 00:04:57,584
 ManyChat integration with Instagram It
 
-128
-00:04:59,872 --> 00:05:02,752
+127
+00:04:57,584 --> 00:05:00,464
 also works with YouTube and it can reply
 
-129
-00:05:02,752 --> 00:05:06,392
+128
+00:05:00,464 --> 00:05:04,104
 to YouTube comments So in my view that is
 
-130
-00:05:06,392 --> 00:05:09,072
+129
+00:05:04,104 --> 00:05:06,784
 major because it can save you so much
 
+130
+00:05:06,784 --> 00:05:10,622
+money with those two platforms is that The
+
 131
-00:05:09,072 --> 00:05:13,482
-money with those two platforms The other
+00:05:10,622 --> 00:05:13,582
+other thing and that is really exciting
 
 132
-00:05:13,482 --> 00:05:15,642
-thing and that is really exciting about
+00:05:13,582 --> 00:05:15,962
+about this tool is that not only does it
 
 133
-00:05:15,642 --> 00:05:17,802
-this tool is that not only does it work
+00:05:15,962 --> 00:05:17,942
+work with both of those platforms Is that
 
 134
-00:05:17,802 --> 00:05:20,062
-with both of those platforms Is that it is
+00:05:17,942 --> 00:05:19,902
+it is going to save you so much money
 
 135
-00:05:20,062 --> 00:05:21,822
-going to save you so much money because
+00:05:19,902 --> 00:05:23,282
+because it's not limited based on contacts
 
 136
-00:05:21,822 --> 00:05:24,882
-it's not limited based on contacts
-
-137
-00:05:25,422 --> 00:05:29,682
+00:05:23,822 --> 00:05:28,082
 so if you have a list of thousands of
 
-138
-00:05:29,682 --> 00:05:31,642
+137
+00:05:28,082 --> 00:05:30,042
 contacts you are starting to get into some
 
-139
-00:05:31,642 --> 00:05:34,082
+138
+00:05:30,042 --> 00:05:32,482
 pretty pricey territory when it comes to
 
-140
-00:05:34,082 --> 00:05:36,522
+139
+00:05:32,482 --> 00:05:34,922
 ManyChat and That is not factoring in
 
-141
-00:05:36,522 --> 00:05:38,702
+140
+00:05:34,922 --> 00:05:37,102
 YouTube at all, which would be a whole
 
-142
-00:05:38,702 --> 00:05:42,082
+141
+00:05:37,102 --> 00:05:40,482
 another separate subscription And so like
 
-143
-00:05:42,082 --> 00:05:44,282
+142
+00:05:40,482 --> 00:05:42,682
 I said if you have thousands of contacts
 
-144
-00:05:44,282 --> 00:05:47,342
+143
+00:05:42,682 --> 00:05:45,742
 this still is going to work just the same
 
-145
-00:05:47,742 --> 00:05:50,082
+144
+00:05:46,142 --> 00:05:48,482
 regardless of your contact list size
 
-146
-00:05:50,744 --> 00:05:54,278
+145
+00:05:49,378 --> 00:05:52,912
 you can actually set up this tool, your
 
-147
-00:05:54,278 --> 00:05:57,618
+146
+00:05:52,912 --> 00:05:56,252
 own instance of like the auto -DM or auto
 
-148
-00:05:57,618 --> 00:06:00,238
+147
+00:05:56,252 --> 00:05:58,872
 -comment software, and you can integrate
 
-149
-00:06:00,238 --> 00:06:01,038
+148
+00:05:58,872 --> 00:05:59,672
 it with YouTube.
 
-150
-00:06:01,458 --> 00:06:02,398
+149
+00:06:00,092 --> 00:06:01,032
 And it's very straightforward.
 
+150
+00:06:01,312 --> 00:06:02,802
+As long As long as you don't pick any
+
 151
-00:06:02,528 --> 00:06:04,886
-As long as you don't pick any fancy or
+00:06:02,802 --> 00:06:05,760
+fancy or extra options, it shouldn't need
 
 152
-00:06:04,886 --> 00:06:07,166
-extra options, it shouldn't need to go
+00:06:05,760 --> 00:06:07,160
+to go through additional review.
 
 153
-00:06:07,166 --> 00:06:08,226
-through additional review.
-
-154
-00:06:09,258 --> 00:06:10,518
+00:06:08,105 --> 00:06:09,365
 Basically what I'm saying is if you're
 
-155
-00:06:10,518 --> 00:06:12,218
+154
+00:06:09,365 --> 00:06:11,065
 careful about how you set it up, you can
 
-156
-00:06:12,218 --> 00:06:13,998
+155
+00:06:11,065 --> 00:06:12,845
 avoid a manual review.
 
-157
-00:06:14,698 --> 00:06:16,138
+156
+00:06:13,545 --> 00:06:14,985
 But you do have to be careful about it
 
-158
-00:06:16,138 --> 00:06:18,518
+157
+00:06:14,985 --> 00:06:17,365
 because even things like just putting your
 
-159
-00:06:18,518 --> 00:06:20,998
+158
+00:06:17,365 --> 00:06:19,845
 own logo can cause it to go through a
 
-160
-00:06:20,998 --> 00:06:21,798
+159
+00:06:19,845 --> 00:06:20,645
 manual review,
 
-161
-00:06:22,398 --> 00:06:24,438
+160
+00:06:21,245 --> 00:06:23,285
 which is just extra time delay.
 
-162
-00:06:25,018 --> 00:06:26,098
+161
+00:06:23,865 --> 00:06:24,945
 So you don't want to do it.
 
-163
-00:06:26,098 --> 00:06:27,558
+162
+00:06:24,945 --> 00:06:26,405
 It would be nice if you could just do it
 
-164
-00:06:27,558 --> 00:06:28,398
+163
+00:06:26,405 --> 00:06:27,245
 all the same day.
 
+164
+00:06:27,605 --> 00:06:29,445
+You only have So ultimately, really this
+
 165
-00:06:28,758 --> 00:06:30,610
-You only have to set up one So ultimately,
+00:06:29,445 --> 00:06:31,673
+tool could be saving you not just on
 
 166
-00:06:30,650 --> 00:06:32,649
-really this tool could be saving you not
+00:06:31,673 --> 00:06:33,753
+ManyChat, but also on YouTube, those
 
 167
-00:06:32,938 --> 00:06:34,938
-just on ManyChat, but also on YouTube,
+00:06:33,753 --> 00:06:35,573
+monthly subscription fees, and you would
 
 168
-00:06:34,938 --> 00:06:37,158
-those monthly subscription fees, and you
+00:06:35,573 --> 00:06:37,313
+really only need your own server and you
 
 169
-00:06:37,158 --> 00:06:38,898
-would really only need your own server and
+00:06:37,313 --> 00:06:38,753
+would need a Claude subscription.
 
 170
-00:06:38,898 --> 00:06:40,478
-you would need a Claude subscription.
-
-171
-00:06:41,246 --> 00:06:43,206
+00:06:39,520 --> 00:06:41,480
 And then like I said, when it comes to the
 
-172
-00:06:43,206 --> 00:06:45,806
+171
+00:06:41,480 --> 00:06:44,080
 server, this sounds very techy, but it's
 
-173
-00:06:45,806 --> 00:06:48,426
+172
+00:06:44,080 --> 00:06:46,700
 actually not too bad because you do have
 
-174
-00:06:48,426 --> 00:06:49,986
+173
+00:06:46,700 --> 00:06:48,260
 Claude Code doing a lot of the backend
 
-175
-00:06:49,986 --> 00:06:50,786
+174
+00:06:48,260 --> 00:06:49,060
 stuff.
 
-176
-00:06:50,966 --> 00:06:53,006
+175
+00:06:49,240 --> 00:06:51,280
 So all you really have to do is set up
 
-177
-00:06:53,006 --> 00:06:54,806
+176
+00:06:51,280 --> 00:06:53,080
 your account and then subscribe to a
 
-178
-00:06:54,806 --> 00:06:55,606
+177
+00:06:53,080 --> 00:06:53,880
 server.
 
-179
-00:06:55,781 --> 00:07:00,361
+178
+00:06:54,290 --> 00:06:58,870
 the server that I subscribe to is $6 and
 
-180
-00:07:00,361 --> 00:07:02,141
+179
+00:06:58,870 --> 00:07:00,650
 that should cover all of my communications
 
-181
-00:07:02,141 --> 00:07:03,021
+180
+00:07:00,650 --> 00:07:01,530
 that go through there.
 
-182
-00:07:03,201 --> 00:07:06,261
+181
+00:07:01,710 --> 00:07:04,770
 So it's $6 every month and it, like I
 
-183
-00:07:06,261 --> 00:07:08,221
+182
+00:07:04,770 --> 00:07:06,730
 said, it doesn't matter really on my
 
-184
-00:07:08,221 --> 00:07:10,061
+183
+00:07:06,730 --> 00:07:08,570
 contact list size.
 
-185
-00:07:10,421 --> 00:07:13,172
+184
+00:07:08,930 --> 00:07:11,681
 So it shouldn't really increase unless the
 
-186
-00:07:13,714 --> 00:07:16,169
+185
+00:07:12,223 --> 00:07:14,678
 server decides to increase their monthly
 
-187
-00:07:16,169 --> 00:07:16,969
+186
+00:07:14,678 --> 00:07:15,478
 costs.
 
-188
-00:07:17,289 --> 00:07:19,049
+187
+00:07:15,798 --> 00:07:17,558
 But it's not based on like a contact
 
-189
-00:07:19,049 --> 00:07:21,169
+188
+00:07:17,558 --> 00:07:19,678
 amount or a contact list, it's just like
 
-190
-00:07:21,169 --> 00:07:23,069
+189
+00:07:19,678 --> 00:07:21,578
 the size, if the size of the server is big
 
-191
-00:07:23,069 --> 00:07:24,649
+190
+00:07:21,578 --> 00:07:23,158
 enough for all of your communication going
 
-192
-00:07:24,649 --> 00:07:25,449
+191
+00:07:23,158 --> 00:07:23,958
 through it.
 
-193
-00:07:25,642 --> 00:07:28,749
+192
+00:07:24,201 --> 00:07:27,308
 So like I said, the great benefit of this
 
-194
-00:07:28,749 --> 00:07:31,084
+193
+00:07:27,308 --> 00:07:29,643
 building your own tool is really just the
 
-195
-00:07:31,084 --> 00:07:31,784
+194
+00:07:29,643 --> 00:07:30,343
 cost.
 
-196
-00:07:31,784 --> 00:07:33,784
+195
+00:07:30,343 --> 00:07:32,343
 It does take a little bit of time to set
 
-197
-00:07:33,784 --> 00:07:34,584
+196
+00:07:32,343 --> 00:07:33,143
 it up.
 
-198
-00:07:34,704 --> 00:07:37,984
+197
+00:07:33,263 --> 00:07:36,543
 For me, it took a full day really to get
 
-199
-00:07:37,984 --> 00:07:40,344
+198
+00:07:36,543 --> 00:07:38,903
 it all set up and then test it and
 
-200
-00:07:40,344 --> 00:07:42,684
+199
+00:07:38,903 --> 00:07:41,243
 continue to add features on the back end
 
-201
-00:07:42,684 --> 00:07:44,504
+200
+00:07:41,243 --> 00:07:43,063
 to get the back end to look how I wanted.
 
-202
-00:07:44,964 --> 00:07:47,044
+201
+00:07:43,523 --> 00:07:45,603
 Once the initial setup was completed, that
 
-203
-00:07:47,044 --> 00:07:49,744
+202
+00:07:45,603 --> 00:07:48,303
 actually isn't the most time consuming
 
-204
-00:07:49,744 --> 00:07:50,144
+203
+00:07:48,303 --> 00:07:48,703
 part.
 
-205
-00:07:50,144 --> 00:07:52,764
+204
+00:07:48,703 --> 00:07:51,323
 It isn't setting up all your different
 
-206
-00:07:52,764 --> 00:07:56,384
+205
+00:07:51,323 --> 00:07:54,943
 accounts to get this all built on like n8n
 
-207
-00:07:56,384 --> 00:07:59,784
+206
+00:07:54,943 --> 00:07:58,343
 and on Instagram and Meta and whatnot.
 
-208
-00:08:00,224 --> 00:08:01,804
+207
+00:07:58,783 --> 00:08:00,363
 It's actually on the back end.
 
-209
-00:08:02,064 --> 00:08:03,424
+208
+00:08:00,623 --> 00:08:01,983
 Once you've got it set up and you're like,
 
-210
-00:08:03,484 --> 00:08:05,404
+209
+00:08:02,043 --> 00:08:03,963
 oh, but I also want to see this or I want
 
-211
-00:08:05,404 --> 00:08:06,164
+210
+00:08:03,963 --> 00:08:04,723
 to be able to change this.
 
-212
-00:08:06,164 --> 00:08:07,784
+211
+00:08:04,723 --> 00:08:06,343
 And so I went through and I did all that
 
-213
-00:08:07,784 --> 00:08:09,479
+212
+00:08:06,343 --> 00:08:08,038
 testing on the back end.
 
-214
-00:08:09,759 --> 00:08:11,259
+213
+00:08:08,318 --> 00:08:09,818
 And that is really what took up the bulk
 
-215
-00:08:11,259 --> 00:08:13,319
+214
+00:08:09,818 --> 00:08:11,878
 of my time is trying to build like the
 
-216
-00:08:13,319 --> 00:08:14,219
+215
+00:08:11,878 --> 00:08:12,778
 back end software.
 
-217
-00:08:15,333 --> 00:08:19,633
+216
+00:08:13,288 --> 00:08:17,588
 Now, because there is a little bit of a
 
-218
-00:08:19,633 --> 00:08:22,773
+217
+00:08:17,588 --> 00:08:20,728
 difference in between how ManyChat works
 
+218
+00:08:20,728 --> 00:08:23,948
+and what and what you can do by yourself
+
 219
-00:08:22,773 --> 00:08:26,633
-and what you can do as your own and what
+00:08:23,948 --> 00:08:25,968
+using Claude Code to build your own tool,
 
 220
-00:08:26,633 --> 00:08:28,613
-you can do by yourself using Claude Code
+00:08:26,428 --> 00:08:28,808
+it doesn't offer everything that ManyChat
 
 221
-00:08:28,613 --> 00:08:31,193
-to build your own tool, it doesn't offer
+00:08:28,808 --> 00:08:31,588
+does even though you do get the benefit of
 
 222
-00:08:31,193 --> 00:08:33,753
-everything that ManyChat does even though
+00:08:31,588 --> 00:08:32,548
+adding in YouTube.
 
 223
-00:08:33,753 --> 00:08:36,033
-you do get the benefit of adding in
+00:08:32,548 --> 00:08:35,465
+So, So the limit is is that right now it
 
 224
-00:08:36,033 --> 00:08:36,533
-YouTube.
+00:08:35,465 --> 00:08:38,665
+does not integrate with TikTok ManyChat
 
 225
-00:08:36,533 --> 00:08:38,773
-So the limit is is that right now it does
-
-226
-00:08:38,773 --> 00:08:41,833
-not integrate with TikTok ManyChat
-
-227
-00:08:41,833 --> 00:08:43,673
+00:08:38,665 --> 00:08:40,505
 actually doesn't really have like the most
 
-228
-00:08:43,673 --> 00:08:46,433
+226
+00:08:40,505 --> 00:08:43,265
 robust integration with TikTok yet
 
-229
-00:08:47,433 --> 00:08:49,713
+227
+00:08:44,265 --> 00:08:46,545
 They just started where you can auto DM
 
-230
-00:08:49,713 --> 00:08:51,213
+228
+00:08:46,545 --> 00:08:48,045
 people who DM you?
 
-231
-00:08:52,493 --> 00:08:54,833
-But that's not the same as Instagram and
+229
+00:08:48,704 --> 00:08:50,484
+that's not the same as Instagram and
 
-232
-00:08:54,833 --> 00:08:55,993
+230
+00:08:50,484 --> 00:08:51,644
 that's not how most of the
 
-233
-00:08:56,673 --> 00:08:58,773
+231
+00:08:52,324 --> 00:08:54,424
 Instagram accounts use ManyChat mostly
 
-234
-00:08:58,773 --> 00:09:00,533
+232
+00:08:54,424 --> 00:08:56,184
 they use it as comments on their post
 
+233
+00:08:56,184 --> 00:08:59,319
+rather than responding to auto DMs it's
+
+234
+00:08:59,319 --> 00:09:02,059
+not like the hugest drawback, but just be
+
 235
-00:09:00,533 --> 00:09:02,833
-rather than responding to auto DMs
+00:09:02,059 --> 00:09:04,159
+aware of that I just want to be upfront
 
 236
-00:09:04,053 --> 00:09:07,033
-So it's not like the hugest drawback, but
+00:09:04,159 --> 00:09:06,399
+and make you aware that that is a
 
 237
-00:09:07,033 --> 00:09:09,493
-just be aware of that I just want to be
-
-238
-00:09:09,493 --> 00:09:11,993
-upfront and make you aware that that is a
-
-239
-00:09:11,993 --> 00:09:13,753
+00:09:06,399 --> 00:09:08,159
 limitation because there are a lot of
 
-240
-00:09:13,753 --> 00:09:16,196
+238
+00:09:08,159 --> 00:09:10,602
 people who are a lot more concentrated on
 
-241
-00:09:16,196 --> 00:09:19,156
+239
+00:09:10,602 --> 00:09:13,562
 TikTok than they are on Instagram and so
 
-242
-00:09:19,156 --> 00:09:21,096
+240
+00:09:13,562 --> 00:09:15,502
 that is something you want to keep an eye
 
-243
-00:09:21,096 --> 00:09:21,896
+241
+00:09:15,502 --> 00:09:16,302
 out for
 
-244
-00:09:22,370 --> 00:09:26,130
+242
+00:09:17,020 --> 00:09:20,780
 So I did actually want one place for all
 
-245
-00:09:26,130 --> 00:09:26,930
+243
+00:09:20,780 --> 00:09:21,580
 of my comments
 
-246
-00:09:27,950 --> 00:09:31,090
+244
+00:09:22,600 --> 00:09:25,740
 to be stored and for me to be able to
 
-247
-00:09:31,090 --> 00:09:32,890
+245
+00:09:25,740 --> 00:09:27,540
 respond to them and to kind of view it as
 
-248
-00:09:32,890 --> 00:09:35,130
+246
+00:09:27,540 --> 00:09:29,780
 like a comment inbox, just like you have
 
-249
-00:09:35,130 --> 00:09:35,910
+247
+00:09:29,780 --> 00:09:30,560
 your email inbox.
 
-250
-00:09:35,910 --> 00:09:37,810
+248
+00:09:30,560 --> 00:09:32,460
 I wanted like a comment inbox and I can
 
-251
-00:09:37,810 --> 00:09:39,530
+249
+00:09:32,460 --> 00:09:34,180
 sort it by application
 
-252
-00:09:40,190 --> 00:09:41,710
+250
+00:09:34,840 --> 00:09:36,360
 and by the comment type.
 
-253
-00:09:41,970 --> 00:09:44,730
+251
+00:09:36,620 --> 00:09:39,380
 So if it was like a story or it was a post
 
-254
-00:09:45,278 --> 00:09:48,238
+252
+00:09:39,928 --> 00:09:42,888
 or if it was a DM and I can filter by red
 
-255
-00:09:48,238 --> 00:09:50,318
+253
+00:09:42,888 --> 00:09:44,968
 or unread or un -responded to.
 
-256
-00:09:50,926 --> 00:09:53,166
+254
+00:09:45,576 --> 00:09:47,816
 And so that is actually what I see on the
 
-257
-00:09:53,166 --> 00:09:55,621
+255
+00:09:47,816 --> 00:09:50,271
 back end is like my own email inbox
 
-258
-00:09:55,621 --> 00:09:56,547
+256
+00:09:50,271 --> 00:09:51,197
 looking storage
 
-259
-00:09:57,272 --> 00:10:00,092
+257
+00:09:51,922 --> 00:09:54,742
 center for all of the comments that I get
 
-260
-00:10:00,092 --> 00:10:01,232
+258
+00:09:54,742 --> 00:09:55,882
 on the different applications.
 
-261
-00:10:02,344 --> 00:10:05,424
+259
+00:09:57,244 --> 00:10:00,324
 So the benefit of this is that I was able
 
-262
-00:10:05,424 --> 00:10:07,964
+260
+00:10:00,324 --> 00:10:02,864
 to pull in all of the TikTok comments.
 
-263
-00:10:08,624 --> 00:10:11,464
+261
+00:10:03,524 --> 00:10:06,364
 The drawback is I just cannot auto -post
 
-264
-00:10:11,464 --> 00:10:14,564
+262
+00:10:06,364 --> 00:10:09,464
 them from the platform from the tool
 
-265
-00:10:14,564 --> 00:10:15,364
+263
+00:10:09,464 --> 00:10:10,264
 itself.
 
-266
-00:10:15,504 --> 00:10:18,651
+264
+00:10:10,404 --> 00:10:13,551
 So in my tool, if I see somebody commented
 
-267
-00:10:18,651 --> 00:10:21,191
+265
+00:10:13,551 --> 00:10:16,091
 on my post, a keyword,
 
-268
-00:10:21,731 --> 00:10:23,291
+266
+00:10:16,631 --> 00:10:18,191
 the automation process handles that.
 
-269
-00:10:23,531 --> 00:10:24,331
+267
+00:10:18,431 --> 00:10:19,231
 I don't need to do anything.
 
-270
-00:10:24,511 --> 00:10:25,331
+268
+00:10:19,411 --> 00:10:20,231
 It's gonna auto -respond.
 
-271
-00:10:25,771 --> 00:10:28,879
+269
+00:10:20,671 --> 00:10:23,779
 It'll show up as a line item in my inbox,
 
-272
-00:10:29,439 --> 00:10:31,159
+270
+00:10:24,339 --> 00:10:26,059
 but I don't need to take any manual
 
-273
-00:10:31,159 --> 00:10:31,879
+271
+00:10:26,059 --> 00:10:26,779
 action.
 
-274
-00:10:31,879 --> 00:10:34,199
+272
+00:10:26,779 --> 00:10:29,099
 But if somebody asks a question and I want
 
-275
-00:10:34,199 --> 00:10:36,019
+273
+00:10:29,099 --> 00:10:30,919
 to give them a more thoughtful and a
 
-276
-00:10:36,019 --> 00:10:36,819
+274
+00:10:30,919 --> 00:10:31,719
 personalized
 
-277
-00:10:36,839 --> 00:10:39,379
+275
+00:10:31,739 --> 00:10:34,279
 response back, I can actually do it
 
-278
-00:10:40,239 --> 00:10:42,639
+276
+00:10:35,139 --> 00:10:37,539
 through that tool if they commented on
 
-279
-00:10:42,639 --> 00:10:45,279
+277
+00:10:37,539 --> 00:10:40,179
 Instagram and same with an Instagram DM.
 
-280
-00:10:45,499 --> 00:10:46,719
+278
+00:10:40,399 --> 00:10:41,619
 As long as it's within like the time
 
-281
-00:10:46,719 --> 00:10:48,399
+279
+00:10:41,619 --> 00:10:43,299
 threshold, I can send that message
 
-282
-00:10:48,919 --> 00:10:50,519
+280
+00:10:43,819 --> 00:10:45,419
 straight through my tool.
 
-283
-00:10:50,999 --> 00:10:53,259
+281
+00:10:45,899 --> 00:10:48,159
 I can't do that on TikTok though, but I
 
-284
-00:10:53,259 --> 00:10:56,119
+282
+00:10:48,159 --> 00:10:51,019
 can see that all of the TikTok messages
 
-285
-00:10:56,119 --> 00:10:58,359
+283
+00:10:51,019 --> 00:10:53,259
 that I've got in and the comments that
 
-286
-00:10:58,359 --> 00:10:59,159
+284
+00:10:53,259 --> 00:10:54,059
 I've got in
 
-287
-00:10:59,759 --> 00:11:01,499
+285
+00:10:54,659 --> 00:10:56,399
 through something called Apify.
 
-288
-00:11:01,719 --> 00:11:03,699
+286
+00:10:56,619 --> 00:10:58,599
 So rather than it going through your
 
-289
-00:11:03,699 --> 00:11:05,939
+287
+00:10:58,599 --> 00:11:00,839
 browser and like logging in on a browser
 
-290
-00:11:05,939 --> 00:11:08,879
+288
+00:11:00,839 --> 00:11:03,779
 to try and pull all the messages through
 
-291
-00:11:08,879 --> 00:11:10,859
+289
+00:11:03,779 --> 00:11:05,759
 the browser, that's not allowed and it can
 
-292
-00:11:10,859 --> 00:11:11,659
+290
+00:11:05,759 --> 00:11:06,559
 be bad for your account.
 
-293
-00:11:11,899 --> 00:11:14,439
+291
+00:11:06,799 --> 00:11:09,339
 It's through something called Apify and
 
-294
-00:11:14,439 --> 00:11:16,459
+292
+00:11:09,339 --> 00:11:11,359
 Apify does have like a free monthly
 
-295
-00:11:16,459 --> 00:11:17,259
+293
+00:11:11,359 --> 00:11:12,159
 allowance.
 
-296
-00:11:17,319 --> 00:11:18,679
+294
+00:11:12,219 --> 00:11:13,579
 So I've been able to run it using that
 
-297
-00:11:18,679 --> 00:11:19,619
+295
+00:11:13,579 --> 00:11:14,519
 free monthly allowance,
 
-298
-00:11:20,319 --> 00:11:22,499
+296
+00:11:15,219 --> 00:11:17,399
 but you know like really big accounts, it
 
-299
-00:11:22,499 --> 00:11:24,659
+297
+00:11:17,399 --> 00:11:19,559
 might be like in the couple of dollars to
 
-300
-00:11:24,659 --> 00:11:26,279
+298
+00:11:19,559 --> 00:11:21,179
 pull in all your TikTok comments.
 
-301
-00:11:26,279 --> 00:11:27,839
+299
+00:11:21,179 --> 00:11:22,739
 If that's something that you wanted,
 
-302
-00:11:28,579 --> 00:11:30,579
+300
+00:11:23,479 --> 00:11:25,479
 but I like it because at least I can go
 
-303
-00:11:30,579 --> 00:11:32,759
+301
+00:11:25,479 --> 00:11:27,659
 and copy and paste between the two
 
-304
-00:11:32,759 --> 00:11:33,559
+302
+00:11:27,659 --> 00:11:28,459
 features.
 
-305
-00:11:33,799 --> 00:11:35,639
+303
+00:11:28,699 --> 00:11:30,539
 So if I'm on my phone, I can pull that up.
 
-306
-00:11:35,979 --> 00:11:39,759
+304
+00:11:30,879 --> 00:11:34,659
 I can have a draft message, a draft
 
-307
-00:11:39,759 --> 00:11:41,919
+305
+00:11:34,659 --> 00:11:36,819
 message for the TikTok comment and then I
 
+306
+00:11:36,819 --> 00:11:40,074
+can post it directly into TikTok by like
+
+307
+00:11:40,074 --> 00:11:42,014
+copying back and forth between the two.
+
 308
-00:11:41,919 --> 00:11:42,719
-can post it
-
-309
-00:11:44,179 --> 00:11:47,039
-directly into TikTok by like copying back
-
-310
-00:11:47,039 --> 00:11:48,339
-and forth between the two.
-
-311
-00:11:48,979 --> 00:11:52,039
+00:11:42,654 --> 00:11:45,714
 So that at least is something sped up in
 
-312
-00:11:52,039 --> 00:11:53,679
+309
+00:11:45,714 --> 00:11:47,354
 that process, even though it's maybe not
 
-313
-00:11:53,679 --> 00:11:54,479
+310
+00:11:47,354 --> 00:11:48,154
 the ideal.
 
-314
-00:11:55,139 --> 00:11:57,139
+311
+00:11:48,814 --> 00:11:50,814
 It's better than nothing in my view and I
 
-315
-00:11:57,139 --> 00:11:58,859
+312
+00:11:50,814 --> 00:11:52,534
 do like again being able to have all that
 
-316
-00:11:58,859 --> 00:12:00,099
+313
+00:11:52,534 --> 00:11:53,774
 data myself.
 
-317
-00:12:00,619 --> 00:12:03,119
+314
+00:11:54,294 --> 00:11:56,794
 It's my data for my social accounts and
 
-318
-00:12:03,119 --> 00:12:05,079
+315
+00:11:56,794 --> 00:11:58,754
 it's stored on my own personal server.
 
-319
-00:12:05,539 --> 00:12:07,819
+316
+00:11:59,214 --> 00:12:01,494
 So I own all that data and that's really
 
-320
-00:12:07,819 --> 00:12:09,179
+317
+00:12:01,494 --> 00:12:02,854
 the whole point of this is that we're
 
-321
-00:12:09,179 --> 00:12:10,659
+318
+00:12:02,854 --> 00:12:04,334
 trying to build our own business asset.
 
+319
+00:12:04,454 --> 00:12:05,664
+We're trying to But hopefully in the
+
+320
+00:12:05,664 --> 00:12:07,704
+future, we can just continue to improve it
+
+321
+00:12:07,704 --> 00:12:10,324
+as more things get approved and change
+
 322
-00:12:10,909 --> 00:12:12,929
-But hopefully in the future, we can just
+00:12:10,324 --> 00:12:11,324
+with APIs and everything.
 
 323
-00:12:12,929 --> 00:12:15,889
-continue to improve it as more things get
-
-324
-00:12:15,889 --> 00:12:17,369
-approved and change with APIs and
-
-325
-00:12:17,369 --> 00:12:18,169
-everything.
-
-326
-00:12:18,178 --> 00:12:21,158
+00:12:12,092 --> 00:12:15,072
 So if you need any of the other features
 
-327
-00:12:21,158 --> 00:12:24,598
+324
+00:12:15,072 --> 00:12:18,512
 of ManyChat, like if you use ManyChat for
 
-328
-00:12:24,598 --> 00:12:28,278
+325
+00:12:18,512 --> 00:12:22,192
 WhatsApp or use it for Facebook, those are
 
-329
-00:12:28,278 --> 00:12:31,038
+326
+00:12:22,192 --> 00:12:24,952
 things I really haven't set up on my side
 
-330
-00:12:31,038 --> 00:12:32,678
+327
+00:12:24,952 --> 00:12:26,592
 yet, but it is actually possible.
 
-331
-00:12:33,358 --> 00:12:35,078
+328
+00:12:27,272 --> 00:12:28,992
 I do know that if you want to set it up
 
-332
-00:12:35,078 --> 00:12:35,878
+329
+00:12:28,992 --> 00:12:29,792
 with WhatsApp,
 
-333
-00:12:36,455 --> 00:12:38,535
+330
+00:12:30,369 --> 00:12:32,449
 that there are actual business fees that
 
-334
-00:12:38,535 --> 00:12:39,335
+331
+00:12:32,449 --> 00:12:33,249
 you would have to pay.
 
-335
-00:12:39,435 --> 00:12:41,335
+332
+00:12:33,349 --> 00:12:35,249
 So it would be more for you to run the
 
-336
-00:12:41,335 --> 00:12:42,735
+333
+00:12:35,249 --> 00:12:36,649
 WhatsApp integration.
 
-337
-00:12:43,955 --> 00:12:46,275
-In addition to just the server cost, you
+334
+00:12:37,480 --> 00:12:39,320
+addition to just the server cost, you
 
-338
-00:12:46,275 --> 00:12:48,409
+335
+00:12:39,320 --> 00:12:41,454
 would have to pay per message with
 
-339
-00:12:49,223 --> 00:12:50,005
+336
+00:12:42,268 --> 00:12:43,068
 WhatsApp.
 
-340
-00:12:50,005 --> 00:12:51,845
+337
+00:12:43,300 --> 00:12:45,140
 but just know that that's available.
 
-341
-00:12:52,245 --> 00:12:53,065
+338
+00:12:45,540 --> 00:12:46,360
 It's cool to know.
 
-342
-00:12:53,843 --> 00:12:55,663
+339
+00:12:47,388 --> 00:12:49,208
 But I did just want to let you guys know
 
-343
-00:12:55,663 --> 00:12:57,443
+340
+00:12:49,208 --> 00:12:50,988
 that this is something that is available
 
-344
-00:12:57,443 --> 00:12:59,903
+341
+00:12:50,988 --> 00:12:53,448
 It's a way for you to be able to save a
 
-345
-00:12:59,903 --> 00:13:01,703
+342
+00:12:53,448 --> 00:12:55,248
 lot of money potentially in your business
 
-346
-00:13:01,703 --> 00:13:04,403
+343
+00:12:55,248 --> 00:12:57,948
 and still maintain all the benefits that
 
-347
-00:13:04,403 --> 00:13:06,583
+344
+00:12:57,948 --> 00:13:00,128
 you would get from softwares like ManyChat
 
-348
-00:13:06,583 --> 00:13:09,203
+345
+00:13:00,128 --> 00:13:02,708
 or any that you might be using for YouTube
 
-349
-00:13:09,319 --> 00:13:11,539
+346
+00:13:02,824 --> 00:13:05,044
 Anyways, like I said, I spent quite a lot
 
-350
-00:13:11,539 --> 00:13:14,499
+347
+00:13:05,044 --> 00:13:08,004
 of time working on this on my side, so if
 
-351
-00:13:14,499 --> 00:13:15,959
+348
+00:13:08,004 --> 00:13:09,464
 this is something that you are interested
 
-352
-00:13:15,959 --> 00:13:20,559
+349
+00:13:09,464 --> 00:13:14,064
 in using, I have a couple of blog posts
 
-353
-00:13:20,559 --> 00:13:22,699
+350
+00:13:14,064 --> 00:13:16,204
 that walk you through how you can build it
 
-354
-00:13:22,699 --> 00:13:25,939
+351
+00:13:16,204 --> 00:13:19,444
 yourself, and I also have for sale on my
 
-355
-00:13:25,939 --> 00:13:28,259
+352
+00:13:19,444 --> 00:13:21,764
 website the tool that I use.
 
+353
+00:13:21,764 --> 00:13:24,944
+So, YouTube So if you're interested in
+
+354
+00:13:24,944 --> 00:13:28,004
+copying mine and not spending all that
+
+355
+00:13:28,004 --> 00:13:30,944
+time setting it up The Claude app goes
+
 356
-00:13:28,259 --> 00:13:31,605
-So, So if you're interested in copying
+00:13:30,944 --> 00:13:32,804
+through the browser and does like as many
 
 357
-00:13:31,605 --> 00:13:34,545
-mine and not spending all that time
+00:13:32,804 --> 00:13:35,144
+steps as it can So I consolidated what
 
 358
-00:13:34,545 --> 00:13:37,325
-setting it up The Claude app goes through
+00:13:35,144 --> 00:13:37,524
+took me hours into something that should
 
 359
-00:13:37,325 --> 00:13:39,445
-the browser and does like as many steps as
+00:13:37,524 --> 00:13:40,164
+take you less than an hour And then you
 
 360
-00:13:39,445 --> 00:13:41,725
-it can So I consolidated what took me
+00:13:40,164 --> 00:13:42,204
+also have the benefit of all my testing
 
 361
-00:13:41,725 --> 00:13:44,165
-hours into something that should take you
+00:13:42,204 --> 00:13:44,324
+and the different features that I've tried
 
 362
-00:13:44,165 --> 00:13:46,825
-less than an hour And then you also have
+00:13:44,324 --> 00:13:47,524
+out and added into the back end To make it
 
 363
-00:13:46,825 --> 00:13:49,385
-the benefit of all my testing and the
+00:13:47,524 --> 00:13:49,964
+as functional and user -friendly as
 
 364
-00:13:49,385 --> 00:13:50,825
-different features that I've tried out and
+00:13:49,964 --> 00:13:50,764
+possible.
 
 365
-00:13:50,825 --> 00:13:54,005
-added into the back end To make it as
+00:13:50,784 --> 00:13:54,344
+Go Go ahead and comment CHATTERBOX below
 
 366
-00:13:54,005 --> 00:13:56,685
-functional and user -friendly as possible.
+00:13:54,344 --> 00:13:56,844
+and I will send you the comment through my
 
 367
-00:13:56,965 --> 00:14:00,645
-Go ahead and comment CHATTERBOX below and
-
-368
-00:14:00,645 --> 00:14:02,645
-I will send you the comment through my
-
-369
-00:14:02,645 --> 00:14:05,945
+00:13:56,844 --> 00:14:00,144
 automation and And you can check it out
 
-370
-00:14:05,945 --> 00:14:08,885
+368
+00:14:00,144 --> 00:14:03,084
 also if you want to check out what mine
 
-371
-00:14:08,885 --> 00:14:11,045
+369
+00:14:03,084 --> 00:14:05,244
 looks like I do have a live demo on my
 
-372
-00:14:11,045 --> 00:14:13,525
+370
+00:14:05,244 --> 00:14:07,724
 website So I will put the link for that
 
-373
-00:14:13,525 --> 00:14:17,225
+371
+00:14:07,724 --> 00:14:11,424
 and I will put the link for that in the
 
+372
+00:14:11,424 --> 00:14:12,764
+description box below
+
+373
+00:14:13,381 --> 00:14:14,901
+So, thanks for watching this video.
+
 374
-00:14:17,225 --> 00:14:19,814
-description box below So, thanks for
-
-375
-00:14:19,814 --> 00:14:20,614
-watching this video.
-
-376
-00:14:20,794 --> 00:14:23,194
+00:14:15,161 --> 00:14:17,561
 I hope that it was helpful for you and
 
-377
-00:14:23,194 --> 00:14:25,194
+375
+00:14:17,561 --> 00:14:19,561
 you're excited to save some money on your
 
-378
-00:14:25,194 --> 00:14:27,634
+376
+00:14:19,561 --> 00:14:22,001
 business and still grow your contact list.
 
+377
+00:14:22,540 --> 00:14:25,140
+you want to see more helpful videos like
+
+378
+00:14:25,140 --> 00:14:26,960
+this, cool things that you can do with AI,
+
 379
-00:14:31,164 --> 00:14:33,964
-If you want to see more helpful videos
-
-380
-00:14:33,964 --> 00:14:35,644
-like this, cool things that you can do
-
-381
-00:14:35,644 --> 00:14:37,784
-with AI, be sure and subscribe to the
-
-382
-00:14:37,784 --> 00:14:38,584
-channel.
+00:14:27,090 --> 00:14:28,170
+subscribe to the channel.

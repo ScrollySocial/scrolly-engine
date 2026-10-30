@@ -16,7 +16,7 @@ const CACHE = path.join(VID, '../.cache', ID);
 const EXPORTS = path.join('C:/Users/merce/OneDrive/Scrolly Media/exports/youtube', ID);
 const TAKES = 'C:/Users/merce/OneDrive/Scrolly Media/videos';
 const W = JSON.parse(readFileSync(path.join(VID, 'words.json'), 'utf8'));
-const DUR = W.duration, SEG = 20;
+const DUR = W.duration, SEG = 20, END = DUR + 5; // END: the end card holds 5 s after her last word
 const C = { navy: '#0a1930', sky: '#4da3ff', cream: '#f7f3ec', paper: '#fffdf7' };
 const A = (...p) => path.join(HERE, 'assets', ...p);
 const ff = (args) => execFileSync(FF, ['-v', 'error', '-y', ...args], { stdio: 'inherit' });
@@ -74,6 +74,9 @@ const uid = (p) => `${p}${++n}`;
 // each sound's slot = its real length (ffprobe once per file)
 const FP = path.join(AUTO, 'hyperframes-test/bin/ffprobe.exe'), lens = {};
 const len = (name) => (lens[name] ??= Math.min(1.2, +execFileSync(FP, ['-v', 'error', '-show_entries', 'format=duration', '-of', 'csv=p=0', A('sfx', name + '.mp3')], { encoding: 'utf8' }).trim()));
+// where each sound is loudest (s): hit() lines that moment up with the motion it belongs to
+const PEAK = { 'whoosh-air': 0.71, 'swoosh-in': 0.3, 'zoom-in': 0.43, 'paper-slide': 0.36, 'pop-light': 0.03 };
+const hit = (name, t, vol) => sfx(name, Math.max(0, t - (PEAK[name] || 0)), vol);
 const sfx = (name, t, vol = 0.55) => audio.push(`<audio id="${uid('fx')}" src="assets/sfx/${name}.mp3" data-start="${r2(t)}" data-duration="${r2(len(name))}" data-track-index="${20 + (n % 6)}" data-volume="${vol}"></audio>`);
 // a group shown from a to b (fade in/out on a plain div; the framework only owns .clip visibility)
 function group(a, b, inner, { fade = 0.25, keepWide = true, z = 5 } = {}) {
@@ -102,12 +105,32 @@ function bubble(a, b) {
   return `<div class="bubble">${vids.join('')}</div>`;
 }
 // screen takeover: the real screen fills the frame (slow drift down so it feels alive), her face bubble on top
-function takeover(img, a, b, { y0 = 0, y1 = -120, extra = '' } = {}) {
-  const id = uid('tk');
-  group(a, b, `<div class="abs" style="inset:0;background:#fff3f0;overflow:hidden"><img id="${id}" class="abs shot" src="assets/img/${img}.png"></div>${extra}${bubble(a, b)}`, { fade: 0.3, z: 6 });
-  js.push(`tl.fromTo('#${id}', { y: ${y0} }, { y: ${y1}, duration: ${r2(b - a)}, ease: 'none' }, ${r2(a)});`);
-  sfx('whoosh-air', a - 0.1, 0.45);
+// slides in from the right (the whoosh peaks as it lands), drifts down slowly (only pages whose background matches
+// the frame's, the demo pages: on her site pages the drift shows an empty band), ends on b (put b on the cut it hides)
+function takeover(img, a, b, { y0 = 0, y1 = -120, extra = '', face = true } = {}) {
+  const id = uid('tk'), sl = uid('sl');
+  group(a, b, `<div id="${sl}" class="abs" style="inset:0;background:#fff3f0;overflow:hidden"><img id="${id}" class="abs shot" src="assets/img/${img}.png"></div>${extra}${face ? bubble(a, b) : ''}`, { fade: 0.2, z: 6 });
+  js.push(`tl.fromTo('#${sl}', { x: 1920 }, { x: 0, duration: 0.45, ease: 'power3.out' }, ${r2(a)});`,
+    `tl.fromTo('#${id}', { y: ${y0} }, { y: ${y1}, duration: ${r2(b - a)}, ease: 'none' }, ${r2(a)});`);
+  hit('whoosh-air', a + 0.35, 0.45);
 }
+// full-screen title card over a rough join between takes (her voice carries on underneath)
+function bridge(text, t, d = 1.6) {
+  const id = uid('br');
+  group(t - 0.5, t - 0.5 + d, `<div id="${id}" class="abs bridge"><div class="brt">${text}</div></div>`, { fade: 0.15, z: 7 });
+  js.push(`tl.fromTo('#${id} .brt', { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.35, ease: E }, ${r2(t - 0.45)});`);
+  hit('swoosh-in', t - 0.35, 0.35);
+}
+// IG-style emphasis line under her face: the phrase builds word by word as she says it
+function say(phrase, after = 0) {
+  const t = at(phrase, after), e = at(phrase, after, true), id = uid('say');
+  const ws = phrase.split(/\s+/);
+  group(t - 0.05, e + 0.9, `<div id="${id}" class="say">${ws.map((w) => `<span>${w}</span>`).join(' ')}</div>`, { fade: 0.15, keepWide: false, z: 4 });
+  const said = W.words.filter((w) => w.t >= t - 0.01 && w.t <= e + 0.01);
+  ws.forEach((_, i) => js.push(`tl.fromTo('#${id} span:nth-child(${i + 1})', { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.15 }, ${r2((said[i] || said.at(-1)).t)});`));
+}
+// where a take first comes in (after a given time)
+const takeStart = (take, after = 0) => W.cuts.find((c, i) => c.take === take && c.t >= after && (W.cuts[i - 1] || {}).take !== take).t;
 function chapter(num, title, t) {
   const id = uid('ch');
   group(t, t + 1.7, `<div class="abs chap" id="${id}"><div class="chn">CHAPTER ${num}</div><div class="cht">${title}</div><div class="chl"></div></div>`, { fade: 0.2, z: 7 });
@@ -116,11 +139,11 @@ function chapter(num, title, t) {
   sfx('paper-slide', t, 0.5);
 }
 // paper checklist in a side third; items tick on their words
-function checklist(items, a, b, { x = 60, y = 260, w = 520, title = '' } = {}) {
+function checklist(items, a, b, { x = 1200, y = 260, w = 560, title = '' } = {}) {
   const id = uid('ck');
   group(a, b, `<div id="${id}" class="paper" style="left:${x}px;top:${y}px;width:${w}px">${title ? `<div class="pt">${title}</div>` : ''}${items.map((it, i) => `<div class="pi"><span>${it.text}</span><span id="${id}-t${i}" class="tick${it.ok ? '' : ' x'}">${it.ok ? '✓' : '✗'}</span></div>`).join('')}</div>`);
   js.push(`tl.fromTo('#${id}', { y: -40, rotation: 3 }, { y: 0, rotation: -2, duration: 0.5, ease: B }, ${r2(a)});`);
-  items.forEach((it, i) => { pop(`#${id}-t${i}`, it.t); sfx(it.ok ? 'check' : 'nope', it.t, 0.4); });
+  items.forEach((it, i) => { pop(`#${id}-t${i}`, it.t); sfx(it.ok ? 'check' : 'pop-light', it.t, 0.4); });
 }
 
 // ================= the video =================
@@ -177,8 +200,9 @@ function checklist(items, a, b, { x = 60, y = 260, w = 520, title = '' } = {}) {
 {
   const h = beat('Hook'), end = nextBeat(h);
   const t39 = at('$39', h), t6 = at('$6', h), tOff = at('computer', h);
-  group(t39 - 0.1, end - 0.3, card('hk1', 'MANYCHAT PRO', '$39<small>/mo</small>', 20, 250, -2) + card('hk2', 'MINE', '$6<small>/mo</small>', 1330, 200, 2)
-    + ring('hk-r', 1240, 140, 660, 460) + note('hk-n', 'still runs when<br>my laptop is off', 1400, 660, -4));
+  // both on the right: her face sits at ~40% across in every take, so the right third is the roomy side
+  group(t39 - 0.1, end - 0.3, card('hk1', 'MANYCHAT PRO', '$39<small>/mo</small>', 1170, 70, -2, 150) + card('hk2', 'MINE', '$6<small>/mo</small>', 1450, 360, 2, 170)
+    + ring('hk-r', 1380, 300, 540, 380) + note('hk-n', 'still runs when<br>my laptop is off', 1200, 790, -4));
   pop('#hk1', t39, -2); sfx('pop-light', t39); pop('#hk2', t6, 2); sfx('pop-bubble', t6); draw('#hk-r', t6 + 0.35, 0.6);
   js.push(`up('#hk-n', ${r2(tOff)});`); sfx('swoosh-in', tOff, 0.4);
 }
@@ -186,20 +210,36 @@ function checklist(items, a, b, { x = 60, y = 260, w = 520, title = '' } = {}) {
 // 1. Why I wouldn't pay: her calculator page with Pro $39 ringed, then the free-plan checklist
 {
   const t = beat('1.'); chapter(1, "Why I wouldn't pay", t);
+  // the join into 2041 and on into 2043 is rough (her arm, quick cuts): her real calculator page covers it, no face box
+  takeover('calculator', takeStart('IMG_2041.MOV') - 0.1, takeStart('IMG_2043.MOV') + 2.2, { y0: 0, y1: 0, face: false });
   const t25 = at('25', t);
   checklist([{ text: 'Free: 25 contacts', ok: true, t: t25 + 0.2 }, { text: 'Limited automations', ok: false, t: at('automations', t25) }],
-    t25 - 0.3, at('benefit', t25), { x: 50, y: 300, w: 560, title: 'ManyChat free plan' });
+    t25 - 0.3, at('benefit', t25), { y: 300, title: 'ManyChat free plan' });
   const tNot = at('not as bad', t);
-  group(tNot - 0.2, Math.min(tNot + 3, beat('2.') - 0.1), note('wp-n', "not as bad<br>as it sounds", 1410, 380, 3, 60));
+  group(tNot - 0.2, Math.min(tNot + 3, beat('2.') - 0.1), note('wp-n', "not as bad<br>as it sounds", 1300, 380, 3, 60));
   js.push(`up('#wp-n', ${r2(tNot)});`);
 }
 
 // 2. What "replace with Claude" means + official API
 { const t = beat('2.'); chapter(2, 'What "replace with Claude" means', t); }
+// how it works, as a diagram: Claude Code builds it -> n8n runs it on a $6 server -> Instagram + YouTube (official
+// APIs) -> her inbox. First while she explains it (2044), again over the start of 2045 (she presses record there).
+function diagram(a, b, times, { api } = {}) {
+  const id = uid('dg');
+  const nodes = [['Claude Code', 'builds it for you'], ['n8n', 'runs it, on a $6 server'], ['Instagram + YouTube', 'official APIs'], ['Your inbox', 'replies + drafts']];
+  const arrows = nodes.map((_, i) => (i ? `<div class="darr" id="${id}-a${i}">&rarr;</div>` : ''));
+  // the ring sits inside the "Instagram + YouTube" box (inset beyond its edges), so it pops and moves with the box
+  const ringIn = (i) => (api && i === 2 ? ring(`${id}-r`, 0, 0, 10, 10).replace('left:0px;top:0px;width:10px;height:10px', 'left:-75px;top:-95px;width:calc(100% + 150px);height:calc(100% + 190px)') : '');
+  group(a, b, `<div class="abs" style="inset:0;background:${C.cream}"></div><div class="dtitle">How it works</div><div class="diag">${nodes.map(([h, sub], i) => `${arrows[i]}<div class="dn" id="${id}-n${i}">${ringIn(i)}<div class="dh">${h}</div><div class="ds">${sub}</div></div>`).join('')}</div>`
+    + bubble(a, b), { fade: 0.25, z: 6 });
+  times.forEach((t, i) => { pop(`#${id}-n${i}`, t, 0); if (i) js.push(`up('#${id}-a${i}', ${r2(t - 0.15)}, 0);`); sfx('pop-light', t, 0.45); });
+  if (api) draw(`#${id}-r`, api, 0.6);
+}
 {
-  const t = beat('Official'), tApi = at('official', t);
-  group(tApi - 0.1, tApi + 4.5, card('api', 'BUILT ON', 'Official<br>Instagram API', 1320, 330, 2, 110));
-  pop('#api', tApi, 2); sfx('pop-light', tApi);
+  const t = beat('2.'), tC = at('claude code', t);
+  diagram(tC - 0.4, at('regardless', tC) + 1.2, [tC, at('any end', tC), at('server', tC), at('server', tC) + 0.8]);
+  const t2 = beat('Official'), tApi = at('official', t2);
+  diagram(t2 - 0.1, tApi + 2.6, [t2 + 0.1, t2 + 0.3, t2 + 0.5, t2 + 0.7], { api: tApi });
 }
 
 // 3. What it does every day: the real Flows page (ask to reply first → signup link → email list → reminder)
@@ -212,15 +252,16 @@ function checklist(items, a, b, { x = 60, y = 260, w = 520, title = '' } = {}) {
 { const t = beat('4.'); chapter(4, 'It works on YouTube too', t); }
 {
   const t = beat('No contact'), tL = at('not limited', t);
-  group(tL - 0.1, tL + 5, card('nl', 'CONTACT LIMIT', 'None', 1330, 300, 2, 190) + note('nl-n', 'thousands of contacts?<br>still $6', 1360, 640, -3, 50));
-  pop('#nl', tL, 2); sfx('pop-light', tL); js.push(`up('#nl-n', ${r2(tL + 1.2)});`);
+  // the "No contact limits" bridge card already says the headline; this note adds the number
+  group(tL - 0.1, tL + 5, note('nl-n', 'thousands of contacts?<br>still $6', 1300, 420, -3, 56));
+  js.push(`up('#nl-n', ${r2(tL)});`); sfx('swoosh-in', tL, 0.35);
 }
 
 // Trap: no logo on your Google app
 {
   const t = beat('Trap'), tLogo = at('logo', t);
   group(tLogo - 0.1, tLogo + 7, `<div id="trap" class="card trap" style="left:1320px;top:250px;--r:2deg"><div class="lbl">SETUP TRAP</div><div class="num" style="font-size:84px;line-height:1">No logo on<br>your Google app</div><div class="sub">or wait 4 to 6 weeks for review</div></div>`);
-  pop('#trap', tLogo, 2); sfx('nope', tLogo, 0.45);
+  pop('#trap', tLogo, 2); sfx('pop-light', tLogo, 0.5);
 }
 
 // 5. The costs: the receipt unrolls, ManyChat Pro $39 with a drawn ✗ beside it
@@ -230,7 +271,7 @@ function checklist(items, a, b, { x = 60, y = 260, w = 520, title = '' } = {}) {
   group(t0, tEnd, `<div id="rc" class="receipt" style="left:1340px;top:150px"><b>My monthly bill</b>
     <div class="row" id="rc1"><span>Claude plan</span><span>have it</span></div><div class="row" id="rc2"><span>Server</span><span>$6</span></div>
     <div class="row" id="rc3"><span>Apify</span><span>free credit</span></div><div class="row" id="rc4"><span>Web address</span><span>free</span></div>
-    <div class="row tot" id="rc5"><span>Total</span><span>$6/mo</span></div></div>` + card('rc-mc', 'MANYCHAT PRO', '$39<small>/mo</small>', 60, 330, -2, 170) + cross('rc-x', 380, 610));
+    <div class="row tot" id="rc5"><span>Total</span><span>$6/mo</span></div></div>` + card('rc-mc', 'MANYCHAT PRO', '$39<small>/mo</small>', 40, 380, -2, 110) + cross('rc-x', 170, 620, 100));
   js.push(`tl.fromTo('#rc', { clipPath: 'inset(0 0 100% 0)' }, { clipPath: 'inset(0 0 0% 0)', duration: 0.8, ease: 'power2.out' }, ${r2(t0)});`);
   ['rc1', 'rc2', 'rc3', 'rc4'].forEach((r, i) => js.push(`up('#${r}', ${r2(t0 + 0.6 + i * 0.5)}, 14);`));
   js.push(`up('#rc5', ${r2(t0 + 2.8)}, 14);`); sfx('coins', t0 + 2.8);
@@ -249,12 +290,12 @@ function checklist(items, a, b, { x = 60, y = 260, w = 520, title = '' } = {}) {
   const t = beat('6.'); chapter(6, "What it can't do", t);
   const tT = at('tiktok', t);
   checklist([{ text: 'Instagram', ok: true, t: tT - 0.8 }, { text: 'YouTube', ok: true, t: tT - 0.4 }, { text: 'TikTok auto-DM', ok: false, t: tT + 0.3 }],
-    tT - 1.2, tT + 7, { x: 50, y: 300, w: 520, title: 'Auto-replies' });
+    tT - 1.2, tT + 7, { y: 300, w: 520, title: 'Auto-replies' });
 }
 
 // My comment inbox: the real inbox (filters, a TikTok comment with its draft), then "your data, your server"
 {
-  const t = beat('My comment'); takeover('inbox', t + 0.2, nextBeat(t) - 0.3, { y0: 0, y1: -300 });
+  const t = beat('My comment'); takeover('inbox', t + 0.2, nextBeat(t), { y0: 0, y1: -300 });
   const tOwn = at('own all that data', beat('TikTok'));
   group(tOwn - 0.1, tOwn + 4.5, card('own', 'WHO OWNS IT', 'Your data,<br>your server', 1320, 320, 2, 96));
   pop('#own', tOwn, 2); sfx('pop-light', tOwn);
@@ -265,17 +306,18 @@ function checklist(items, a, b, { x = 60, y = 260, w = 520, title = '' } = {}) {
   const t = beat('7.'); chapter(7, 'Who should stay on ManyChat', t);
   // what she names: WhatsApp (per-message fees on top of the server) and Facebook
   checklist([{ text: 'WhatsApp', ok: true, t: at('whatsapp', t) }, { text: 'Facebook', ok: true, t: at('facebook', t) }],
-    at('whatsapp', t) - 0.4, nextBeat(t) - 0.4, { x: 50, y: 300, w: 520, title: 'Stay on ManyChat for' });
+    at('whatsapp', t) - 0.4, nextBeat(t) - 0.4, { y: 200, w: 520, title: 'Stay on ManyChat for' });
   const tMsg = at('per message', t);
-  group(tMsg - 0.1, nextBeat(t) - 0.4, note('st-n', 'WhatsApp also charges<br>per message', 1360, 420, 3, 52));
+  group(tMsg - 0.1, nextBeat(t) - 0.4, note('st-n', 'WhatsApp also charges<br>per message', 1240, 640, 3, 52));
   js.push(`up('#st-n', ${r2(tMsg)});`);
 }
 
 // 8. Get mine: the guide, the Chat Manager page, CHATTERBOX typed in a comment bar, the site URL
 {
   const t = beat('8.'); chapter(8, 'Get mine', t);
-  const tCopy = at('copying', t);  // "if you're interested in copying mine" → the Chat Manager page
-  takeover('chat-manager', tCopy - 0.2, tCopy + 9, { y0: 0, y1: -200 });
+  const tG = takeStart('IMG_2059.MOV', t), tCM = W.cuts.find((c) => c.take === 'IMG_2061.MOV' && c.t > tG).t;
+  takeover('guide', tG - 0.15, tCM, { y0: 0, y1: 0 });          // "a couple of blog posts that walk you through it"
+  takeover('chat-manager', tCM, tCM + 9.5, { y0: 0, y1: 0 });  // "if you're interested in copying mine"
   const tCb = at('chatter', t);
   const word = 'CHATTERBOX', tDemo = at('demo', tCb);
   group(tCb - 0.3, tDemo + 4.5, `<div id="cb" class="cbar" style="left:1290px;top:430px"><span class="cbp">Add a comment...</span><span id="cbt" class="cbt">${word}</span><span class="cbs">Post</span></div>`
@@ -287,6 +329,22 @@ function checklist(items, a, b, { x = 60, y = 260, w = 520, title = '' } = {}) {
   pop('#url', tDemo, 0); sfx('pop-light', tDemo);
 }
 
+// full-screen title cards over the rough joins between takes that no chapter card or screen already hides
+bridge('No contact limits', takeStart('IMG_2054.MOV'));
+bridge('Setting it up for YouTube', takeStart('IMG_2049.MOV'));
+bridge('How long it takes', takeStart('IMG_2048.MOV'));
+bridge('The one big limit', takeStart('IMG_2056.MOV'));
+bridge('TikTok comments, too', takeStart('IMG_2058.MOV'));
+
+// IG-style emphasis on the lines that carry the point (none where a card or screen already says it)
+say('I built one myself');
+say('totally approved with meta', beat('Official'));
+say('any keyword that you set up', beat('3.'));
+say('save you so much money', beat('4.'));
+say('one place for all of my comments', beat('My comment'));
+say('our own business asset', beat('TikTok'));
+say('less than an hour', beat('8.'));
+
 // End screen: she moves to the left, the right side stays clear for YouTube's end-screen cards
 const tEndS = beat('End screen');
 html.push(`<div id="es" class="grp" style="z-index:1"><div class="abs" style="left:1180px;top:0;width:740px;height:1080px;background:${C.navy}"></div>
@@ -295,7 +353,14 @@ html.push(`<div id="es" class="grp" style="z-index:1"><div class="abs" style="le
 js.push(`gsap.set('#es', { opacity: 0 }); tl.to('#es', { opacity: 1, duration: 0.5 }, ${r2(tEndS)});`,
   `tl.to('#cam', { x: -420, duration: 0.7, ease: 'power3.inOut' }, ${r2(tEndS)});`);
 wide.push([tEndS - 0.3, DUR]);
-audio.push(bed('music-end', tEndS, DUR - tEndS, 0.09, 2, 2, 12));
+// end card: covers her reaching for the phone, holds 5 s after her last word, music fades out under it
+const tCard = at('cool things', tEndS) - 0.2;
+html.push(`<div id="ec" class="grp" style="z-index:8"><div class="abs" style="inset:0;background:${C.navy}"></div>
+  <div class="abs" style="left:140px;top:300px;width:900px"><div style="font:900 120px/1 Fig;letter-spacing:-.03em;color:${C.cream}">Thanks for watching</div>
+  <div style="font:600 46px/1.3 Fig;color:${C.cream};opacity:.9;margin-top:34px">Subscribe for more cool things you can do with AI</div>
+  <div style="font:800 40px/1 Fig;color:${C.sky};margin-top:60px">@AmbitionDeptHQ</div></div></div>`);
+js.push(`gsap.set('#ec', { opacity: 0 }); tl.to('#ec', { opacity: 1, duration: 0.5 }, ${r2(tCard)});`);
+audio.push(bed('music-end', tEndS, END - tEndS, 0.09, 2, 3, 12));
 
 // punch-in at every jump cut: alternate wide and close, but stay wide while a graphic is up
 {
@@ -328,7 +393,7 @@ const page = `<!doctype html>
 *{margin:0;padding:0;box-sizing:border-box}
 html,body{width:1920px;height:1080px;overflow:hidden;background:#000}
 #root{position:relative;width:100%;height:100%;overflow:hidden;font-family:'Fig',sans-serif;background:#000}
-#cam{position:absolute;inset:0;transform-origin:50% 40%}
+#cam{position:absolute;inset:0;transform-origin:40% 38%}
 .talk{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .abs{position:absolute}
 .grp{position:absolute;inset:0;pointer-events:none}
@@ -362,11 +427,20 @@ html,body{width:1920px;height:1080px;overflow:hidden;background:#000}
 .glare{inset:0;background:radial-gradient(120% 90% at 30% 15%,rgba(255,255,255,.22),transparent 45%),radial-gradient(140% 120% at 50% 50%,transparent 60%,rgba(0,0,0,.35))}
 .cbar{position:absolute;width:560px;display:flex;align-items:center;gap:16px;background:#fff;border-radius:999px;padding:22px 30px;box-shadow:0 12px 30px rgba(10,25,48,.35);font:600 36px/1 Fig;color:#111}
 .cbp{position:absolute;left:30px;color:#888;font-weight:500}.cbt{flex:1;letter-spacing:.02em}.cbs{color:${C.sky};font-weight:800}
+.bridge{inset:0;background:${C.cream};display:flex;align-items:center;justify-content:center}
+.brt{font:900 130px/1 Fig;letter-spacing:-.03em;color:${C.navy};text-align:center;max-width:1600px}
+.say{position:absolute;left:300px;width:940px;top:905px;text-align:center}
+.say span{display:inline-block;background:${C.paper};color:${C.navy};font:800 50px/1 Fig;padding:12px 16px;margin:0 -4px;box-shadow:0 8px 20px rgba(10,25,48,.3)}
+.dtitle{position:absolute;left:0;right:0;top:110px;text-align:center;font:900 84px/1 Fig;letter-spacing:-.03em;color:${C.navy}}
+.diag{position:absolute;left:50px;right:50px;top:290px;display:flex;align-items:center;justify-content:center;gap:14px}
+.dn{position:relative;background:${C.paper};border:5px solid ${C.navy};border-radius:22px;padding:34px 28px;width:380px;min-height:230px;box-shadow:0 14px 34px rgba(10,25,48,.25)}
+.dh{font:900 54px/1.02 Fig;color:${C.navy};letter-spacing:-.02em}.ds{font:600 32px/1.25 Fig;color:${C.navy};opacity:.8;margin-top:14px}
+.darr{font:900 70px/1 Fig;color:${C.sky}}
 .pill{position:absolute;background:${C.cream};color:${C.navy};font:700 34px/1 Fig;padding:20px 34px;border-radius:999px;box-shadow:0 10px 30px rgba(10,25,48,.3)}
 </style>
 </head>
 <body>
-<div id="root" data-composition-id="main" data-width="1920" data-height="1080" data-duration="${r2(DUR)}">
+<div id="root" data-composition-id="main" data-width="1920" data-height="1080" data-duration="${r2(END)}">
 <div id="cam">
 ${segs.join('\n')}
 </div>

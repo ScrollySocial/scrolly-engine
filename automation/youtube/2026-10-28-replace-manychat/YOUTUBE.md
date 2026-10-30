@@ -17,14 +17,14 @@ Chat Manager (live demo + kit): https://theambitiondepartment.com/chat-manager/?
 
 Chapters
 0:00 ManyChat Pro $39 vs mine $6
-0:38 Why I wouldn't pay for ManyChat
-1:35 What "replace it with Claude" means
-3:40 What it does every day
-4:49 It works on YouTube too
-6:41 The costs
-8:14 What it can't do
-12:18 Who should stay on ManyChat
-12:53 Get my copy
+0:40 Why I wouldn't pay for ManyChat
+1:37 What "replace it with Claude" means
+3:41 What it does every day
+4:47 It works on YouTube too
+6:39 The costs
+8:12 What it can't do
+12:11 Who should stay on ManyChat
+12:46 Get my copy
 
 ManyChat prices from manychat.com/pricing, checked October 28, 2026.
 ```

@@ -10,7 +10,7 @@
 *{margin:0;padding:0;box-sizing:border-box}
 html,body{width:1920px;height:1080px;overflow:hidden;background:#000}
 #root{position:relative;width:100%;height:100%;overflow:hidden;font-family:'Fig',sans-serif;background:#000}
-#cam{position:absolute;inset:0;transform-origin:50% 40%}
+#cam{position:absolute;inset:0;transform-origin:40% 38%}
 .talk{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .abs{position:absolute}
 .grp{position:absolute;inset:0;pointer-events:none}
@@ -44,11 +44,20 @@ html,body{width:1920px;height:1080px;overflow:hidden;background:#000}
 .glare{inset:0;background:radial-gradient(120% 90% at 30% 15%,rgba(255,255,255,.22),transparent 45%),radial-gradient(140% 120% at 50% 50%,transparent 60%,rgba(0,0,0,.35))}
 .cbar{position:absolute;width:560px;display:flex;align-items:center;gap:16px;background:#fff;border-radius:999px;padding:22px 30px;box-shadow:0 12px 30px rgba(10,25,48,.35);font:600 36px/1 Fig;color:#111}
 .cbp{position:absolute;left:30px;color:#888;font-weight:500}.cbt{flex:1;letter-spacing:.02em}.cbs{color:#4da3ff;font-weight:800}
+.bridge{inset:0;background:#f7f3ec;display:flex;align-items:center;justify-content:center}
+.brt{font:900 130px/1 Fig;letter-spacing:-.03em;color:#0a1930;text-align:center;max-width:1600px}
+.say{position:absolute;left:300px;width:940px;top:905px;text-align:center}
+.say span{display:inline-block;background:#fffdf7;color:#0a1930;font:800 50px/1 Fig;padding:12px 16px;margin:0 -4px;box-shadow:0 8px 20px rgba(10,25,48,.3)}
+.dtitle{position:absolute;left:0;right:0;top:110px;text-align:center;font:900 84px/1 Fig;letter-spacing:-.03em;color:#0a1930}
+.diag{position:absolute;left:50px;right:50px;top:290px;display:flex;align-items:center;justify-content:center;gap:14px}
+.dn{position:relative;background:#fffdf7;border:5px solid #0a1930;border-radius:22px;padding:34px 28px;width:380px;min-height:230px;box-shadow:0 14px 34px rgba(10,25,48,.25)}
+.dh{font:900 54px/1.02 Fig;color:#0a1930;letter-spacing:-.02em}.ds{font:600 32px/1.25 Fig;color:#0a1930;opacity:.8;margin-top:14px}
+.darr{font:900 70px/1 Fig;color:#4da3ff}
 .pill{position:absolute;background:#f7f3ec;color:#0a1930;font:700 34px/1 Fig;padding:20px 34px;border-radius:999px;box-shadow:0 10px 30px rgba(10,25,48,.3)}
 </style>
 </head>
 <body>
-<div id="root" data-composition-id="main" data-width="1920" data-height="1080" data-duration="878.399">
+<div id="root" data-composition-id="main" data-width="1920" data-height="1080" data-duration="873.775">
 <div id="cam">
 <video id="talk-0" class="clip talk" src="assets/seg/seg-0.mp4" muted playsinline data-start="0" data-duration="20" data-track-index="0"></video>
 <video id="talk-1" class="clip talk" src="assets/seg/seg-1.mp4" muted playsinline data-start="20" data-duration="20" data-track-index="1"></video>
@@ -93,7 +102,7 @@ html,body{width:1920px;height:1080px;overflow:hidden;background:#000}
 <video id="talk-40" class="clip talk" src="assets/seg/seg-40.mp4" muted playsinline data-start="800" data-duration="20" data-track-index="0"></video>
 <video id="talk-41" class="clip talk" src="assets/seg/seg-41.mp4" muted playsinline data-start="820" data-duration="20" data-track-index="1"></video>
 <video id="talk-42" class="clip talk" src="assets/seg/seg-42.mp4" muted playsinline data-start="840" data-duration="20" data-track-index="0"></video>
-<video id="talk-43" class="clip talk" src="assets/seg/seg-43.mp4" muted playsinline data-start="860" data-duration="18.399" data-track-index="1"></video>
+<video id="talk-43" class="clip talk" src="assets/seg/seg-43.mp4" muted playsinline data-start="860" data-duration="8.775" data-track-index="1"></video>
 </div>
 <div id="co" class="grp" style="z-index:9">
   <img class="abs" src="assets/img/curtain-bw.jpg" style="inset:0;width:1920px;height:1080px;object-fit:cover">
@@ -107,43 +116,62 @@ html,body{width:1920px;height:1080px;overflow:hidden;background:#000}
     </div>
     <div id="co-her" class="abs" style="left:1090px;top:41.737px;width:440px;height:409.58px;transform-origin:0 0">
       <img class="abs" src="assets/img/tv-walnut-small.png" style="left:0;top:0;width:440px">
-      <div class="abs tvs" style="left:41.8px;top:159.736px;width:280.72px;height:196.599px;border-radius:7%/10%"><video id="co-vid" class="clip fillimg" src="assets/seg/tv-her.mp4" muted playsinline data-start="0" data-duration="10.947" data-track-index="4"></video><div class="abs scan"></div><div class="abs glare"></div></div>
+      <div class="abs tvs" style="left:41.8px;top:159.736px;width:280.72px;height:196.599px;border-radius:7%/10%"><video id="co-vid" class="clip fillimg" src="assets/seg/tv-her.mp4" muted playsinline data-start="0" data-duration="11.197" data-track-index="4"></video><div class="abs scan"></div><div class="abs glare"></div></div>
     </div>
   </div>
   <div id="co-h1" class="abs head" style="width:640px;font-size:92px;top:250px">MANYCHAT: UP TO <span class="sky">$100s</span> A MONTH</div>
   <div id="co-h2" class="abs head">MINE: <span class="sky">$6</span> A MONTH</div>
 </div>
-<div id="g8" class="grp" style="z-index:5"><div id="hk1" class="card" style="left:20px;top:250px;--r:-2deg"><div class="lbl">MANYCHAT PRO</div><div class="num" style="font-size:210px">$39<small>/mo</small></div></div><div id="hk2" class="card" style="left:1330px;top:200px;--r:2deg"><div class="lbl">MINE</div><div class="num" style="font-size:210px">$6<small>/mo</small></div></div><svg id="hk-r" class="abs" style="left:1240px;top:140px;width:660px;height:460px;overflow:visible" viewBox="0 0 200 100" preserveAspectRatio="none"><path class="draw" pathLength="1" d="M18 52 C14 18 70 6 112 8 C170 11 196 34 190 58 C184 86 120 96 76 92 C34 88 6 70 22 40" fill="none" stroke="#0a1930" stroke-width="4.6" stroke-linecap="round"/><path class="draw" pathLength="1" d="M18 52 C14 18 70 6 112 8 C170 11 196 34 190 58 C184 86 120 96 76 92 C34 88 6 70 22 40" fill="none" stroke="#4da3ff" stroke-width="2.6" stroke-linecap="round"/></svg><div id="hk-n" class="hand note" style="left:1400px;top:660px;--r:-4deg;font-size:54px">still runs when<br>my laptop is off</div></div>
+<div id="g8" class="grp" style="z-index:5"><div id="hk1" class="card" style="left:1170px;top:70px;--r:-2deg"><div class="lbl">MANYCHAT PRO</div><div class="num" style="font-size:150px">$39<small>/mo</small></div></div><div id="hk2" class="card" style="left:1450px;top:360px;--r:2deg"><div class="lbl">MINE</div><div class="num" style="font-size:170px">$6<small>/mo</small></div></div><svg id="hk-r" class="abs" style="left:1380px;top:300px;width:540px;height:380px;overflow:visible" viewBox="0 0 200 100" preserveAspectRatio="none"><path class="draw" pathLength="1" d="M18 52 C14 18 70 6 112 8 C170 11 196 34 190 58 C184 86 120 96 76 92 C34 88 6 70 22 40" fill="none" stroke="#0a1930" stroke-width="4.6" stroke-linecap="round"/><path class="draw" pathLength="1" d="M18 52 C14 18 70 6 112 8 C170 11 196 34 190 58 C184 86 120 96 76 92 C34 88 6 70 22 40" fill="none" stroke="#4da3ff" stroke-width="2.6" stroke-linecap="round"/></svg><div id="hk-n" class="hand note" style="left:1200px;top:790px;--r:-4deg;font-size:54px">still runs when<br>my laptop is off</div></div>
 <div id="g13" class="grp" style="z-index:7"><div class="abs chap" id="ch12"><div class="chn">CHAPTER 1</div><div class="cht">Why I wouldn't pay</div><div class="chl"></div></div></div>
-<div id="g16" class="grp" style="z-index:5"><div id="ck15" class="paper" style="left:50px;top:300px;width:560px"><div class="pt">ManyChat free plan</div><div class="pi"><span>Free: 25 contacts</span><span id="ck15-t0" class="tick">✓</span></div><div class="pi"><span>Limited automations</span><span id="ck15-t1" class="tick x">✗</span></div></div></div>
-<div id="g19" class="grp" style="z-index:5"><div id="wp-n" class="hand note" style="left:1410px;top:380px;--r:3deg;font-size:60px">not as bad<br>as it sounds</div></div>
-<div id="g21" class="grp" style="z-index:7"><div class="abs chap" id="ch20"><div class="chn">CHAPTER 2</div><div class="cht">What "replace with Claude" means</div><div class="chl"></div></div></div>
-<div id="g23" class="grp" style="z-index:5"><div id="api" class="card" style="left:1320px;top:330px;--r:2deg"><div class="lbl">BUILT ON</div><div class="num" style="font-size:110px">Official<br>Instagram API</div></div></div>
-<div id="g26" class="grp" style="z-index:7"><div class="abs chap" id="ch25"><div class="chn">CHAPTER 3</div><div class="cht">What it does every day</div><div class="chl"></div></div></div>
-<div id="g33" class="grp" style="z-index:6"><div class="abs" style="inset:0;background:#fff3f0;overflow:hidden"><img id="tk28" class="abs shot" src="assets/img/flows.png"></div><div class="bubble"><video id="bv29" class="clip bvid" src="assets/seg/seg-11.mp4" muted playsinline data-start="222.741" data-duration="17.225" data-media-start="2.741" data-track-index="2"></video><video id="bv30" class="clip bvid" src="assets/seg/seg-12.mp4" muted playsinline data-start="240" data-duration="19.966" data-media-start="0" data-track-index="3"></video><video id="bv31" class="clip bvid" src="assets/seg/seg-13.mp4" muted playsinline data-start="260" data-duration="19.966" data-media-start="0" data-track-index="2"></video><video id="bv32" class="clip bvid" src="assets/seg/seg-14.mp4" muted playsinline data-start="280" data-duration="8.972" data-media-start="0" data-track-index="3"></video></div></div>
-<div id="g36" class="grp" style="z-index:7"><div class="abs chap" id="ch35"><div class="chn">CHAPTER 4</div><div class="cht">It works on YouTube too</div><div class="chl"></div></div></div>
-<div id="g38" class="grp" style="z-index:5"><div id="nl" class="card" style="left:1330px;top:300px;--r:2deg"><div class="lbl">CONTACT LIMIT</div><div class="num" style="font-size:190px">None</div></div><div id="nl-n" class="hand note" style="left:1360px;top:640px;--r:-3deg;font-size:50px">thousands of contacts?<br>still $6</div></div>
-<div id="g40" class="grp" style="z-index:5"><div id="trap" class="card trap" style="left:1320px;top:250px;--r:2deg"><div class="lbl">SETUP TRAP</div><div class="num" style="font-size:84px;line-height:1">No logo on<br>your Google app</div><div class="sub">or wait 4 to 6 weeks for review</div></div></div>
-<div id="g43" class="grp" style="z-index:7"><div class="abs chap" id="ch42"><div class="chn">CHAPTER 5</div><div class="cht">The costs</div><div class="chl"></div></div></div>
-<div id="g45" class="grp" style="z-index:5"><div id="rc" class="receipt" style="left:1340px;top:150px"><b>My monthly bill</b>
+<div id="g17" class="grp" style="z-index:6"><div id="sl16" class="abs" style="inset:0;background:#fff3f0;overflow:hidden"><img id="tk15" class="abs shot" src="assets/img/calculator.png"></div></div>
+<div id="g20" class="grp" style="z-index:5"><div id="ck19" class="paper" style="left:1200px;top:300px;width:560px"><div class="pt">ManyChat free plan</div><div class="pi"><span>Free: 25 contacts</span><span id="ck19-t0" class="tick">✓</span></div><div class="pi"><span>Limited automations</span><span id="ck19-t1" class="tick x">✗</span></div></div></div>
+<div id="g23" class="grp" style="z-index:5"><div id="wp-n" class="hand note" style="left:1300px;top:380px;--r:3deg;font-size:60px">not as bad<br>as it sounds</div></div>
+<div id="g25" class="grp" style="z-index:7"><div class="abs chap" id="ch24"><div class="chn">CHAPTER 2</div><div class="cht">What "replace with Claude" means</div><div class="chl"></div></div></div>
+<div id="g30" class="grp" style="z-index:6"><div class="abs" style="inset:0;background:#f7f3ec"></div><div class="dtitle">How it works</div><div class="diag"><div class="dn" id="dg27-n0"><div class="dh">Claude Code</div><div class="ds">builds it for you</div></div><div class="darr" id="dg27-a1">&rarr;</div><div class="dn" id="dg27-n1"><div class="dh">n8n</div><div class="ds">runs it, on a $6 server</div></div><div class="darr" id="dg27-a2">&rarr;</div><div class="dn" id="dg27-n2"><div class="dh">Instagram + YouTube</div><div class="ds">official APIs</div></div><div class="darr" id="dg27-a3">&rarr;</div><div class="dn" id="dg27-n3"><div class="dh">Your inbox</div><div class="ds">replies + drafts</div></div></div><div class="bubble"><video id="bv28" class="clip bvid" src="assets/seg/seg-5.mp4" muted playsinline data-start="103.164" data-duration="16.802" data-media-start="3.164" data-track-index="2"></video><video id="bv29" class="clip bvid" src="assets/seg/seg-6.mp4" muted playsinline data-start="120" data-duration="12.831" data-media-start="0" data-track-index="3"></video></div></div>
+<div id="g38" class="grp" style="z-index:6"><div class="abs" style="inset:0;background:#f7f3ec"></div><div class="dtitle">How it works</div><div class="diag"><div class="dn" id="dg35-n0"><div class="dh">Claude Code</div><div class="ds">builds it for you</div></div><div class="darr" id="dg35-a1">&rarr;</div><div class="dn" id="dg35-n1"><div class="dh">n8n</div><div class="ds">runs it, on a $6 server</div></div><div class="darr" id="dg35-a2">&rarr;</div><div class="dn" id="dg35-n2"><svg id="dg35-r" class="abs" style="left:-75px;top:-95px;width:calc(100% + 150px);height:calc(100% + 190px);overflow:visible" viewBox="0 0 200 100" preserveAspectRatio="none"><path class="draw" pathLength="1" d="M18 52 C14 18 70 6 112 8 C170 11 196 34 190 58 C184 86 120 96 76 92 C34 88 6 70 22 40" fill="none" stroke="#0a1930" stroke-width="4.6" stroke-linecap="round"/><path class="draw" pathLength="1" d="M18 52 C14 18 70 6 112 8 C170 11 196 34 190 58 C184 86 120 96 76 92 C34 88 6 70 22 40" fill="none" stroke="#4da3ff" stroke-width="2.6" stroke-linecap="round"/></svg><div class="dh">Instagram + YouTube</div><div class="ds">official APIs</div></div><div class="darr" id="dg35-a3">&rarr;</div><div class="dn" id="dg35-n3"><div class="dh">Your inbox</div><div class="ds">replies + drafts</div></div></div><div class="bubble"><video id="bv36" class="clip bvid" src="assets/seg/seg-8.mp4" muted playsinline data-start="173.682" data-duration="6.284" data-media-start="13.682" data-track-index="2"></video><video id="bv37" class="clip bvid" src="assets/seg/seg-9.mp4" muted playsinline data-start="180" data-duration="5.854" data-media-start="0" data-track-index="3"></video></div></div>
+<div id="g44" class="grp" style="z-index:7"><div class="abs chap" id="ch43"><div class="chn">CHAPTER 3</div><div class="cht">What it does every day</div><div class="chl"></div></div></div>
+<div id="g52" class="grp" style="z-index:6"><div id="sl47" class="abs" style="inset:0;background:#fff3f0;overflow:hidden"><img id="tk46" class="abs shot" src="assets/img/flows.png"></div><div class="bubble"><video id="bv48" class="clip bvid" src="assets/seg/seg-11.mp4" muted playsinline data-start="223.076" data-duration="16.89" data-media-start="3.076" data-track-index="2"></video><video id="bv49" class="clip bvid" src="assets/seg/seg-12.mp4" muted playsinline data-start="240" data-duration="19.966" data-media-start="0" data-track-index="3"></video><video id="bv50" class="clip bvid" src="assets/seg/seg-13.mp4" muted playsinline data-start="260" data-duration="19.966" data-media-start="0" data-track-index="2"></video><video id="bv51" class="clip bvid" src="assets/seg/seg-14.mp4" muted playsinline data-start="280" data-duration="6.884" data-media-start="0" data-track-index="3"></video></div></div>
+<div id="g55" class="grp" style="z-index:7"><div class="abs chap" id="ch54"><div class="chn">CHAPTER 4</div><div class="cht">It works on YouTube too</div><div class="chl"></div></div></div>
+<div id="g57" class="grp" style="z-index:5"><div id="nl-n" class="hand note" style="left:1300px;top:420px;--r:-3deg;font-size:56px">thousands of contacts?<br>still $6</div></div>
+<div id="g59" class="grp" style="z-index:5"><div id="trap" class="card trap" style="left:1320px;top:250px;--r:2deg"><div class="lbl">SETUP TRAP</div><div class="num" style="font-size:84px;line-height:1">No logo on<br>your Google app</div><div class="sub">or wait 4 to 6 weeks for review</div></div></div>
+<div id="g62" class="grp" style="z-index:7"><div class="abs chap" id="ch61"><div class="chn">CHAPTER 5</div><div class="cht">The costs</div><div class="chl"></div></div></div>
+<div id="g64" class="grp" style="z-index:5"><div id="rc" class="receipt" style="left:1340px;top:150px"><b>My monthly bill</b>
     <div class="row" id="rc1"><span>Claude plan</span><span>have it</span></div><div class="row" id="rc2"><span>Server</span><span>$6</span></div>
     <div class="row" id="rc3"><span>Apify</span><span>free credit</span></div><div class="row" id="rc4"><span>Web address</span><span>free</span></div>
-    <div class="row tot" id="rc5"><span>Total</span><span>$6/mo</span></div></div><div id="rc-mc" class="card" style="left:60px;top:330px;--r:-2deg"><div class="lbl">MANYCHAT PRO</div><div class="num" style="font-size:170px">$39<small>/mo</small></div></div><svg id="rc-x" class="abs" style="left:380px;top:610px;width:110px;height:110px" viewBox="0 0 100 100"><path class="draw" pathLength="1" d="M18 16 L84 86" stroke="#fffdf7" stroke-width="20" stroke-linecap="round" fill="none"/><path class="draw" pathLength="1" d="M82 14 L20 84" stroke="#fffdf7" stroke-width="20" stroke-linecap="round" fill="none"/><path class="draw" pathLength="1" d="M18 16 L84 86" stroke="#0a1930" stroke-width="10" stroke-linecap="round" fill="none"/><path class="draw" pathLength="1" d="M82 14 L20 84" stroke="#0a1930" stroke-width="10" stroke-linecap="round" fill="none"/></svg></div>
-<div id="g48" class="grp" style="z-index:5"><div id="tm-n" class="hand note" style="left:1380px;top:360px;--r:-3deg;font-size:56px">about 1 full day,<br>mostly the back end</div></div>
-<div id="g51" class="grp" style="z-index:7"><div class="abs chap" id="ch50"><div class="chn">CHAPTER 6</div><div class="cht">What it can't do</div><div class="chl"></div></div></div>
-<div id="g54" class="grp" style="z-index:5"><div id="ck53" class="paper" style="left:50px;top:300px;width:520px"><div class="pt">Auto-replies</div><div class="pi"><span>Instagram</span><span id="ck53-t0" class="tick">✓</span></div><div class="pi"><span>YouTube</span><span id="ck53-t1" class="tick">✓</span></div><div class="pi"><span>TikTok auto-DM</span><span id="ck53-t2" class="tick x">✗</span></div></div></div>
-<div id="g62" class="grp" style="z-index:6"><div class="abs" style="inset:0;background:#fff3f0;overflow:hidden"><img id="tk58" class="abs shot" src="assets/img/inbox.png"></div><div class="bubble"><video id="bv59" class="clip bvid" src="assets/seg/seg-28.mp4" muted playsinline data-start="562.396" data-duration="17.57" data-media-start="2.396" data-track-index="2"></video><video id="bv60" class="clip bvid" src="assets/seg/seg-29.mp4" muted playsinline data-start="580" data-duration="19.966" data-media-start="0" data-track-index="3"></video><video id="bv61" class="clip bvid" src="assets/seg/seg-30.mp4" muted playsinline data-start="600" data-duration="1.438" data-media-start="0" data-track-index="2"></video></div></div>
-<div id="g64" class="grp" style="z-index:5"><div id="own" class="card" style="left:1320px;top:320px;--r:2deg"><div class="lbl">WHO OWNS IT</div><div class="num" style="font-size:96px">Your data,<br>your server</div></div></div>
-<div id="g67" class="grp" style="z-index:7"><div class="abs chap" id="ch66"><div class="chn">CHAPTER 7</div><div class="cht">Who should stay on ManyChat</div><div class="chl"></div></div></div>
-<div id="g70" class="grp" style="z-index:5"><div id="ck69" class="paper" style="left:50px;top:300px;width:520px"><div class="pt">Stay on ManyChat for</div><div class="pi"><span>WhatsApp</span><span id="ck69-t0" class="tick">✓</span></div><div class="pi"><span>Facebook</span><span id="ck69-t1" class="tick">✓</span></div></div></div>
-<div id="g73" class="grp" style="z-index:5"><div id="st-n" class="hand note" style="left:1360px;top:420px;--r:3deg;font-size:52px">WhatsApp also charges<br>per message</div></div>
-<div id="g75" class="grp" style="z-index:7"><div class="abs chap" id="ch74"><div class="chn">CHAPTER 8</div><div class="cht">Get mine</div><div class="chl"></div></div></div>
-<div id="g79" class="grp" style="z-index:6"><div class="abs" style="inset:0;background:#fff3f0;overflow:hidden"><img id="tk77" class="abs shot" src="assets/img/chat-manager.png"></div><div class="bubble"><video id="bv78" class="clip bvid" src="assets/seg/seg-40.mp4" muted playsinline data-start="810.845" data-duration="9.121" data-media-start="10.845" data-track-index="2"></video></div></div>
-<div id="g81" class="grp" style="z-index:5"><div id="cb" class="cbar" style="left:1290px;top:430px"><span class="cbp">Add a comment...</span><span id="cbt" class="cbt">CHATTERBOX</span><span class="cbs">Post</span></div><div id="url" class="pill" style="left:1330px;top:560px">theambitiondepartment.com</div></div>
+    <div class="row tot" id="rc5"><span>Total</span><span>$6/mo</span></div></div><div id="rc-mc" class="card" style="left:40px;top:380px;--r:-2deg"><div class="lbl">MANYCHAT PRO</div><div class="num" style="font-size:110px">$39<small>/mo</small></div></div><svg id="rc-x" class="abs" style="left:170px;top:620px;width:100px;height:100px" viewBox="0 0 100 100"><path class="draw" pathLength="1" d="M18 16 L84 86" stroke="#fffdf7" stroke-width="20" stroke-linecap="round" fill="none"/><path class="draw" pathLength="1" d="M82 14 L20 84" stroke="#fffdf7" stroke-width="20" stroke-linecap="round" fill="none"/><path class="draw" pathLength="1" d="M18 16 L84 86" stroke="#0a1930" stroke-width="10" stroke-linecap="round" fill="none"/><path class="draw" pathLength="1" d="M82 14 L20 84" stroke="#0a1930" stroke-width="10" stroke-linecap="round" fill="none"/></svg></div>
+<div id="g67" class="grp" style="z-index:5"><div id="tm-n" class="hand note" style="left:1380px;top:360px;--r:-3deg;font-size:56px">about 1 full day,<br>mostly the back end</div></div>
+<div id="g70" class="grp" style="z-index:7"><div class="abs chap" id="ch69"><div class="chn">CHAPTER 6</div><div class="cht">What it can't do</div><div class="chl"></div></div></div>
+<div id="g73" class="grp" style="z-index:5"><div id="ck72" class="paper" style="left:1200px;top:300px;width:520px"><div class="pt">Auto-replies</div><div class="pi"><span>Instagram</span><span id="ck72-t0" class="tick">✓</span></div><div class="pi"><span>YouTube</span><span id="ck72-t1" class="tick">✓</span></div><div class="pi"><span>TikTok auto-DM</span><span id="ck72-t2" class="tick x">✗</span></div></div></div>
+<div id="g82" class="grp" style="z-index:6"><div id="sl78" class="abs" style="inset:0;background:#fff3f0;overflow:hidden"><img id="tk77" class="abs shot" src="assets/img/inbox.png"></div><div class="bubble"><video id="bv79" class="clip bvid" src="assets/seg/seg-27.mp4" muted playsinline data-start="557.046" data-duration="2.92" data-media-start="17.046" data-track-index="2"></video><video id="bv80" class="clip bvid" src="assets/seg/seg-28.mp4" muted playsinline data-start="560" data-duration="19.966" data-media-start="0" data-track-index="3"></video><video id="bv81" class="clip bvid" src="assets/seg/seg-29.mp4" muted playsinline data-start="580" data-duration="16.638" data-media-start="0" data-track-index="2"></video></div></div>
+<div id="g84" class="grp" style="z-index:5"><div id="own" class="card" style="left:1320px;top:320px;--r:2deg"><div class="lbl">WHO OWNS IT</div><div class="num" style="font-size:96px">Your data,<br>your server</div></div></div>
+<div id="g87" class="grp" style="z-index:7"><div class="abs chap" id="ch86"><div class="chn">CHAPTER 7</div><div class="cht">Who should stay on ManyChat</div><div class="chl"></div></div></div>
+<div id="g90" class="grp" style="z-index:5"><div id="ck89" class="paper" style="left:1200px;top:200px;width:520px"><div class="pt">Stay on ManyChat for</div><div class="pi"><span>WhatsApp</span><span id="ck89-t0" class="tick">✓</span></div><div class="pi"><span>Facebook</span><span id="ck89-t1" class="tick">✓</span></div></div></div>
+<div id="g93" class="grp" style="z-index:5"><div id="st-n" class="hand note" style="left:1240px;top:640px;--r:3deg;font-size:52px">WhatsApp also charges<br>per message</div></div>
+<div id="g95" class="grp" style="z-index:7"><div class="abs chap" id="ch94"><div class="chn">CHAPTER 8</div><div class="cht">Get mine</div><div class="chl"></div></div></div>
+<div id="g101" class="grp" style="z-index:6"><div id="sl98" class="abs" style="inset:0;background:#fff3f0;overflow:hidden"><img id="tk97" class="abs shot" src="assets/img/guide.png"></div><div class="bubble"><video id="bv99" class="clip bvid" src="assets/seg/seg-39.mp4" muted playsinline data-start="782.558" data-duration="17.408" data-media-start="2.558" data-track-index="2"></video><video id="bv100" class="clip bvid" src="assets/seg/seg-40.mp4" muted playsinline data-start="800" data-duration="2.224" data-media-start="0" data-track-index="3"></video></div></div>
+<div id="g106" class="grp" style="z-index:6"><div id="sl104" class="abs" style="inset:0;background:#fff3f0;overflow:hidden"><img id="tk103" class="abs shot" src="assets/img/chat-manager.png"></div><div class="bubble"><video id="bv105" class="clip bvid" src="assets/seg/seg-40.mp4" muted playsinline data-start="802.224" data-duration="9.5" data-media-start="2.224" data-track-index="2"></video></div></div>
+<div id="g108" class="grp" style="z-index:5"><div id="cb" class="cbar" style="left:1290px;top:430px"><span class="cbp">Add a comment...</span><span id="cbt" class="cbt">CHATTERBOX</span><span class="cbs">Post</span></div><div id="url" class="pill" style="left:1330px;top:560px">theambitiondepartment.com</div></div>
+<div id="g112" class="grp" style="z-index:7"><div id="br111" class="abs bridge"><div class="brt">No contact limits</div></div></div>
+<div id="g115" class="grp" style="z-index:7"><div id="br114" class="abs bridge"><div class="brt">Setting it up for YouTube</div></div></div>
+<div id="g118" class="grp" style="z-index:7"><div id="br117" class="abs bridge"><div class="brt">How long it takes</div></div></div>
+<div id="g121" class="grp" style="z-index:7"><div id="br120" class="abs bridge"><div class="brt">The one big limit</div></div></div>
+<div id="g124" class="grp" style="z-index:7"><div id="br123" class="abs bridge"><div class="brt">TikTok comments, too</div></div></div>
+<div id="g127" class="grp" style="z-index:4"><div id="say126" class="say"><span>I</span> <span>built</span> <span>one</span> <span>myself</span></div></div>
+<div id="g129" class="grp" style="z-index:4"><div id="say128" class="say"><span>totally</span> <span>approved</span> <span>with</span> <span>meta</span></div></div>
+<div id="g131" class="grp" style="z-index:4"><div id="say130" class="say"><span>any</span> <span>keyword</span> <span>that</span> <span>you</span> <span>set</span> <span>up</span></div></div>
+<div id="g133" class="grp" style="z-index:4"><div id="say132" class="say"><span>save</span> <span>you</span> <span>so</span> <span>much</span> <span>money</span></div></div>
+<div id="g135" class="grp" style="z-index:4"><div id="say134" class="say"><span>one</span> <span>place</span> <span>for</span> <span>all</span> <span>of</span> <span>my</span> <span>comments</span></div></div>
+<div id="g137" class="grp" style="z-index:4"><div id="say136" class="say"><span>our</span> <span>own</span> <span>business</span> <span>asset</span></div></div>
+<div id="g139" class="grp" style="z-index:4"><div id="say138" class="say"><span>less</span> <span>than</span> <span>an</span> <span>hour</span></div></div>
 <div id="es" class="grp" style="z-index:1"><div class="abs" style="left:1180px;top:0;width:740px;height:1080px;background:#0a1930"></div>
   <div class="abs" style="left:1260px;top:150px;font:900 70px/1 Fig;letter-spacing:-.02em;color:#f7f3ec">Watch next</div>
   <div class="abs" style="left:1470px;top:700px;font:800 32px/1.35 Fig;color:#f7f3ec">@AmbitionDeptHQ<br><span style="font-weight:500;font-size:27px;opacity:.85">theambitiondepartment.com</span></div></div>
-<audio id="voice" src="assets/voice.m4a" data-start="0" data-duration="878.399" data-track-index="10" data-volume="1"></audio>
+<div id="ec" class="grp" style="z-index:8"><div class="abs" style="inset:0;background:#0a1930"></div>
+  <div class="abs" style="left:140px;top:300px;width:900px"><div style="font:900 120px/1 Fig;letter-spacing:-.03em;color:#f7f3ec">Thanks for watching</div>
+  <div style="font:600 46px/1.3 Fig;color:#f7f3ec;opacity:.9;margin-top:34px">Subscribe for more cool things you can do with AI</div>
+  <div style="font:800 40px/1 Fig;color:#4da3ff;margin-top:60px">@AmbitionDeptHQ</div></div></div>
+<audio id="voice" src="assets/voice.m4a" data-start="0" data-duration="868.775" data-track-index="10" data-volume="1"></audio>
 <audio id="fx1" src="assets/sfx/mouse-click.mp3" data-start="0" data-duration="1.2" data-track-index="21" data-volume="0.55"></audio>
 <audio id="fx2" src="assets/sfx/static.mp3" data-start="0.05" data-duration="0.336" data-track-index="22" data-volume="0.9"></audio>
 <audio id="fx3" src="assets/sfx/pop-light.mp3" data-start="2.24" data-duration="0.209" data-track-index="23" data-volume="0.55"></audio>
@@ -151,38 +179,52 @@ html,body{width:1920px;height:1080px;overflow:hidden;background:#000}
 <audio id="fx5" src="assets/sfx/mouse-click.mp3" data-start="5.54" data-duration="1.2" data-track-index="25" data-volume="0.55"></audio>
 <audio id="fx6" src="assets/sfx/coins.mp3" data-start="6.64" data-duration="1.071" data-track-index="20" data-volume="0.55"></audio>
 <audio id="fx7" src="assets/sfx/zoom-in.mp3" data-start="9.7" data-duration="1.2" data-track-index="21" data-volume="0.6"></audio>
-<audio id="music-open" src="assets/music.mp3" data-start="0" data-duration="12.447" data-track-index="11" data-volume="1" data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0,"v":0},{"t":1.5,"v":0.07},{"t":10.447,"v":0.07},{"t":12.447,"v":0}]}]}'></audio>
-<audio id="fx9" src="assets/sfx/pop-light.mp3" data-start="13.005" data-duration="0.209" data-track-index="23" data-volume="0.55"></audio>
-<audio id="fx10" src="assets/sfx/pop-bubble.mp3" data-start="17.235" data-duration="0.418" data-track-index="24" data-volume="0.55"></audio>
-<audio id="fx11" src="assets/sfx/swoosh-in.mp3" data-start="22.113" data-duration="0.81" data-track-index="25" data-volume="0.4"></audio>
-<audio id="fx14" src="assets/sfx/paper-slide.mp3" data-start="38.644" data-duration="1.123" data-track-index="22" data-volume="0.5"></audio>
-<audio id="fx17" src="assets/sfx/check.mp3" data-start="63.629" data-duration="1.2" data-track-index="25" data-volume="0.4"></audio>
-<audio id="fx18" src="assets/sfx/nope.mp3" data-start="69.569" data-duration="1.2" data-track-index="20" data-volume="0.4"></audio>
-<audio id="fx22" src="assets/sfx/paper-slide.mp3" data-start="95.85" data-duration="1.123" data-track-index="24" data-volume="0.5"></audio>
-<audio id="fx24" src="assets/sfx/pop-light.mp3" data-start="183.169" data-duration="0.209" data-track-index="20" data-volume="0.55"></audio>
-<audio id="fx27" src="assets/sfx/paper-slide.mp3" data-start="220.841" data-duration="1.123" data-track-index="23" data-volume="0.5"></audio>
-<audio id="fx34" src="assets/sfx/whoosh-air.mp3" data-start="222.641" data-duration="1.2" data-track-index="24" data-volume="0.45"></audio>
-<audio id="fx37" src="assets/sfx/paper-slide.mp3" data-start="289.172" data-duration="1.123" data-track-index="21" data-volume="0.5"></audio>
-<audio id="fx39" src="assets/sfx/pop-light.mp3" data-start="322.402" data-duration="0.209" data-track-index="23" data-volume="0.55"></audio>
-<audio id="fx41" src="assets/sfx/nope.mp3" data-start="378.738" data-duration="1.2" data-track-index="25" data-volume="0.45"></audio>
-<audio id="fx44" src="assets/sfx/paper-slide.mp3" data-start="401.046" data-duration="1.123" data-track-index="22" data-volume="0.5"></audio>
-<audio id="fx46" src="assets/sfx/coins.mp3" data-start="405.746" data-duration="1.071" data-track-index="24" data-volume="0.55"></audio>
-<audio id="fx47" src="assets/sfx/pop-light.mp3" data-start="406.546" data-duration="0.209" data-track-index="25" data-volume="0.55"></audio>
-<audio id="fx49" src="assets/sfx/swoosh-in.mp3" data-start="456.804" data-duration="0.81" data-track-index="21" data-volume="0.4"></audio>
-<audio id="fx52" src="assets/sfx/paper-slide.mp3" data-start="494.98" data-duration="1.123" data-track-index="24" data-volume="0.5"></audio>
-<audio id="fx55" src="assets/sfx/check.mp3" data-start="519.293" data-duration="1.2" data-track-index="21" data-volume="0.4"></audio>
-<audio id="fx56" src="assets/sfx/check.mp3" data-start="519.693" data-duration="1.2" data-track-index="22" data-volume="0.4"></audio>
-<audio id="fx57" src="assets/sfx/nope.mp3" data-start="520.393" data-duration="1.2" data-track-index="23" data-volume="0.4"></audio>
-<audio id="fx63" src="assets/sfx/whoosh-air.mp3" data-start="562.296" data-duration="1.2" data-track-index="23" data-volume="0.45"></audio>
-<audio id="fx65" src="assets/sfx/pop-light.mp3" data-start="726.019" data-duration="0.209" data-track-index="25" data-volume="0.55"></audio>
-<audio id="fx68" src="assets/sfx/paper-slide.mp3" data-start="738.033" data-duration="1.123" data-track-index="22" data-volume="0.5"></audio>
-<audio id="fx71" src="assets/sfx/check.mp3" data-start="744.598" data-duration="1.2" data-track-index="25" data-volume="0.4"></audio>
-<audio id="fx72" src="assets/sfx/check.mp3" data-start="746.878" data-duration="1.2" data-track-index="20" data-volume="0.4"></audio>
-<audio id="fx76" src="assets/sfx/paper-slide.mp3" data-start="773.454" data-duration="1.123" data-track-index="24" data-volume="0.5"></audio>
-<audio id="fx80" src="assets/sfx/whoosh-air.mp3" data-start="810.745" data-duration="1.2" data-track-index="22" data-volume="0.45"></audio>
-<audio id="fx82" src="assets/sfx/pop-bubble.mp3" data-start="838.405" data-duration="0.418" data-track-index="24" data-volume="0.45"></audio>
-<audio id="fx83" src="assets/sfx/pop-light.mp3" data-start="850.165" data-duration="0.209" data-track-index="25" data-volume="0.55"></audio>
-<audio id="music-end" src="assets/music.mp3" data-start="858.914" data-duration="19.485" data-track-index="12" data-volume="1" data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0,"v":0},{"t":2,"v":0.09},{"t":17.485,"v":0.09},{"t":19.485,"v":0}]}]}'></audio>
+<audio id="music-open" src="assets/music.mp3" data-start="0" data-duration="12.697" data-track-index="11" data-volume="1" data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0,"v":0},{"t":1.5,"v":0.07},{"t":10.697,"v":0.07},{"t":12.697,"v":0}]}]}'></audio>
+<audio id="fx9" src="assets/sfx/pop-light.mp3" data-start="13.255" data-duration="0.209" data-track-index="23" data-volume="0.55"></audio>
+<audio id="fx10" src="assets/sfx/pop-bubble.mp3" data-start="18.135" data-duration="0.418" data-track-index="24" data-volume="0.55"></audio>
+<audio id="fx11" src="assets/sfx/swoosh-in.mp3" data-start="23.013" data-duration="0.81" data-track-index="25" data-volume="0.4"></audio>
+<audio id="fx14" src="assets/sfx/paper-slide.mp3" data-start="40.044" data-duration="1.123" data-track-index="22" data-volume="0.5"></audio>
+<audio id="fx18" src="assets/sfx/whoosh-air.mp3" data-start="56.327" data-duration="1.2" data-track-index="20" data-volume="0.45"></audio>
+<audio id="fx21" src="assets/sfx/check.mp3" data-start="66.077" data-duration="1.2" data-track-index="23" data-volume="0.4"></audio>
+<audio id="fx22" src="assets/sfx/pop-light.mp3" data-start="72.017" data-duration="0.209" data-track-index="24" data-volume="0.4"></audio>
+<audio id="fx26" src="assets/sfx/paper-slide.mp3" data-start="97.924" data-duration="1.123" data-track-index="22" data-volume="0.5"></audio>
+<audio id="fx31" src="assets/sfx/pop-light.mp3" data-start="103.564" data-duration="0.209" data-track-index="21" data-volume="0.45"></audio>
+<audio id="fx32" src="assets/sfx/pop-light.mp3" data-start="124.951" data-duration="0.209" data-track-index="22" data-volume="0.45"></audio>
+<audio id="fx33" src="assets/sfx/pop-light.mp3" data-start="128.951" data-duration="0.209" data-track-index="23" data-volume="0.45"></audio>
+<audio id="fx34" src="assets/sfx/pop-light.mp3" data-start="129.751" data-duration="0.209" data-track-index="24" data-volume="0.45"></audio>
+<audio id="fx39" src="assets/sfx/pop-light.mp3" data-start="173.882" data-duration="0.209" data-track-index="23" data-volume="0.45"></audio>
+<audio id="fx40" src="assets/sfx/pop-light.mp3" data-start="174.082" data-duration="0.209" data-track-index="24" data-volume="0.45"></audio>
+<audio id="fx41" src="assets/sfx/pop-light.mp3" data-start="174.282" data-duration="0.209" data-track-index="25" data-volume="0.45"></audio>
+<audio id="fx42" src="assets/sfx/pop-light.mp3" data-start="174.482" data-duration="0.209" data-track-index="20" data-volume="0.45"></audio>
+<audio id="fx45" src="assets/sfx/paper-slide.mp3" data-start="221.176" data-duration="1.123" data-track-index="23" data-volume="0.5"></audio>
+<audio id="fx53" src="assets/sfx/whoosh-air.mp3" data-start="222.716" data-duration="1.2" data-track-index="25" data-volume="0.45"></audio>
+<audio id="fx56" src="assets/sfx/paper-slide.mp3" data-start="287.084" data-duration="1.123" data-track-index="22" data-volume="0.5"></audio>
+<audio id="fx58" src="assets/sfx/swoosh-in.mp3" data-start="320.802" data-duration="0.81" data-track-index="24" data-volume="0.35"></audio>
+<audio id="fx60" src="assets/sfx/pop-light.mp3" data-start="377.585" data-duration="0.209" data-track-index="20" data-volume="0.5"></audio>
+<audio id="fx63" src="assets/sfx/paper-slide.mp3" data-start="399.52" data-duration="1.123" data-track-index="23" data-volume="0.5"></audio>
+<audio id="fx65" src="assets/sfx/coins.mp3" data-start="404.22" data-duration="1.071" data-track-index="25" data-volume="0.55"></audio>
+<audio id="fx66" src="assets/sfx/pop-light.mp3" data-start="405.02" data-duration="0.209" data-track-index="20" data-volume="0.55"></audio>
+<audio id="fx68" src="assets/sfx/swoosh-in.mp3" data-start="455.363" data-duration="0.81" data-track-index="22" data-volume="0.4"></audio>
+<audio id="fx71" src="assets/sfx/paper-slide.mp3" data-start="492.935" data-duration="1.123" data-track-index="25" data-volume="0.5"></audio>
+<audio id="fx74" src="assets/sfx/check.mp3" data-start="516.125" data-duration="1.2" data-track-index="22" data-volume="0.4"></audio>
+<audio id="fx75" src="assets/sfx/check.mp3" data-start="516.525" data-duration="1.2" data-track-index="23" data-volume="0.4"></audio>
+<audio id="fx76" src="assets/sfx/pop-light.mp3" data-start="517.225" data-duration="0.209" data-track-index="24" data-volume="0.4"></audio>
+<audio id="fx83" src="assets/sfx/whoosh-air.mp3" data-start="556.686" data-duration="1.2" data-track-index="25" data-volume="0.45"></audio>
+<audio id="fx85" src="assets/sfx/pop-light.mp3" data-start="719.694" data-duration="0.209" data-track-index="21" data-volume="0.55"></audio>
+<audio id="fx88" src="assets/sfx/paper-slide.mp3" data-start="731.947" data-duration="1.123" data-track-index="24" data-volume="0.5"></audio>
+<audio id="fx91" src="assets/sfx/check.mp3" data-start="738.512" data-duration="1.2" data-track-index="21" data-volume="0.4"></audio>
+<audio id="fx92" src="assets/sfx/check.mp3" data-start="740.792" data-duration="1.2" data-track-index="22" data-volume="0.4"></audio>
+<audio id="fx96" src="assets/sfx/paper-slide.mp3" data-start="766.999" data-duration="1.123" data-track-index="20" data-volume="0.5"></audio>
+<audio id="fx102" src="assets/sfx/whoosh-air.mp3" data-start="782.198" data-duration="1.2" data-track-index="20" data-volume="0.45"></audio>
+<audio id="fx107" src="assets/sfx/whoosh-air.mp3" data-start="801.864" data-duration="1.2" data-track-index="25" data-volume="0.45"></audio>
+<audio id="fx109" src="assets/sfx/pop-bubble.mp3" data-start="832.604" data-duration="0.418" data-track-index="21" data-volume="0.45"></audio>
+<audio id="fx110" src="assets/sfx/pop-light.mp3" data-start="844.364" data-duration="0.209" data-track-index="22" data-volume="0.55"></audio>
+<audio id="fx113" src="assets/sfx/swoosh-in.mp3" data-start="308.004" data-duration="0.81" data-track-index="25" data-volume="0.35"></audio>
+<audio id="fx116" src="assets/sfx/swoosh-in.mp3" data-start="348.525" data-duration="0.81" data-track-index="22" data-volume="0.35"></audio>
+<audio id="fx119" src="assets/sfx/swoosh-in.mp3" data-start="443.551" data-duration="0.81" data-track-index="25" data-volume="0.35"></audio>
+<audio id="fx122" src="assets/sfx/swoosh-in.mp3" data-start="512.715" data-duration="0.81" data-track-index="22" data-volume="0.35"></audio>
+<audio id="fx125" src="assets/sfx/swoosh-in.mp3" data-start="595.988" data-duration="0.81" data-track-index="25" data-volume="0.35"></audio>
+<audio id="music-end" src="assets/music.mp3" data-start="853.281" data-duration="20.494" data-track-index="12" data-volume="1" data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0,"v":0},{"t":2,"v":0.09},{"t":17.494,"v":0.09},{"t":20.494,"v":0}]}]}'></audio>
 </div>
 <script>
 const tl = gsap.timeline({ paused: true });
@@ -199,196 +241,305 @@ tl.to('#co-stack', { opacity: 1, duration: 0.45 }, 5.14);
 tl.to('#co-h1', { opacity: 0, duration: 0.2 }, 5.04);
 tl.to('#co-inbox-img', { opacity: 1, duration: 0.12 }, 5.59);
 pop('#co-h2', 6.49, 0);
-tl.to('#co-stage', { scale: 7, duration: 1.197, ease: 'power2.in' }, 9.8);
+tl.to('#co-stage', { scale: 7, duration: 1.447, ease: 'power2.in' }, 9.8);
 tl.to('#co-h2', { opacity: 0, duration: 0.25 }, 9.8);
-tl.to('#co', { opacity: 0, duration: 0.12 }, 10.887);
+tl.to('#co', { opacity: 0, duration: 0.12 }, 11.137);
 gsap.set('#g8', { opacity: 0 });
-tl.to('#g8', { opacity: 1, duration: 0.25 }, 12.905);
-tl.to('#g8', { opacity: 0, duration: 0.25 }, 38.094);
-pop('#hk1', 13.005, -2);
-pop('#hk2', 17.235, 2);
-draw('#hk-r', 17.585, 0.6);
-up('#hk-n', 22.113);
+tl.to('#g8', { opacity: 1, duration: 0.25 }, 13.155);
+tl.to('#g8', { opacity: 0, duration: 0.25 }, 39.494);
+pop('#hk1', 13.255, -2);
+pop('#hk2', 18.135, 2);
+draw('#hk-r', 18.485, 0.6);
+up('#hk-n', 23.013);
 gsap.set('#g13', { opacity: 0 });
-tl.to('#g13', { opacity: 1, duration: 0.2 }, 38.644);
-tl.to('#g13', { opacity: 0, duration: 0.2 }, 40.144);
-tl.fromTo('#ch12 .cht', { y: 40, opacity: 0 }, { y: 0, opacity: 1, duration: 0.45, ease: E }, 38.744);
-tl.fromTo('#ch12 .chl', { scaleX: 0 }, { scaleX: 1, duration: 0.4, ease: E }, 38.994);
-gsap.set('#g16', { opacity: 0 });
-tl.to('#g16', { opacity: 1, duration: 0.25 }, 63.129);
-tl.to('#g16', { opacity: 0, duration: 0.25 }, 84.169);
-tl.fromTo('#ck15', { y: -40, rotation: 3 }, { y: 0, rotation: -2, duration: 0.5, ease: B }, 63.129);
-pop('#ck15-t0', 63.629, 0);
-pop('#ck15-t1', 69.569, 0);
-gsap.set('#g19', { opacity: 0 });
-tl.to('#g19', { opacity: 1, duration: 0.25 }, 93.879);
-tl.to('#g19', { opacity: 0, duration: 0.25 }, 95.5);
-up('#wp-n', 94.079);
-gsap.set('#g21', { opacity: 0 });
-tl.to('#g21', { opacity: 1, duration: 0.2 }, 95.85);
-tl.to('#g21', { opacity: 0, duration: 0.2 }, 97.35);
-tl.fromTo('#ch20 .cht', { y: 40, opacity: 0 }, { y: 0, opacity: 1, duration: 0.45, ease: E }, 95.95);
-tl.fromTo('#ch20 .chl', { scaleX: 0 }, { scaleX: 1, duration: 0.4, ease: E }, 96.2);
+tl.to('#g13', { opacity: 1, duration: 0.2 }, 40.044);
+tl.to('#g13', { opacity: 0, duration: 0.2 }, 41.544);
+tl.fromTo('#ch12 .cht', { y: 40, opacity: 0 }, { y: 0, opacity: 1, duration: 0.45, ease: E }, 40.144);
+tl.fromTo('#ch12 .chl', { scaleX: 0 }, { scaleX: 1, duration: 0.4, ease: E }, 40.394);
+gsap.set('#g17', { opacity: 0 });
+tl.to('#g17', { opacity: 1, duration: 0.2 }, 56.687);
+tl.to('#g17', { opacity: 0, duration: 0.2 }, 63.637);
+tl.fromTo('#sl16', { x: 1920 }, { x: 0, duration: 0.45, ease: 'power3.out' }, 56.687);
+tl.fromTo('#tk15', { y: 0 }, { y: 0, duration: 7.15, ease: 'none' }, 56.687);
+gsap.set('#g20', { opacity: 0 });
+tl.to('#g20', { opacity: 1, duration: 0.25 }, 65.577);
+tl.to('#g20', { opacity: 0, duration: 0.25 }, 86.54);
+tl.fromTo('#ck19', { y: -40, rotation: 3 }, { y: 0, rotation: -2, duration: 0.5, ease: B }, 65.577);
+pop('#ck19-t0', 66.077, 0);
+pop('#ck19-t1', 72.017, 0);
 gsap.set('#g23', { opacity: 0 });
-tl.to('#g23', { opacity: 1, duration: 0.25 }, 183.069);
-tl.to('#g23', { opacity: 0, duration: 0.25 }, 187.419);
-pop('#api', 183.169, 2);
-gsap.set('#g26', { opacity: 0 });
-tl.to('#g26', { opacity: 1, duration: 0.2 }, 220.841);
-tl.to('#g26', { opacity: 0, duration: 0.2 }, 222.341);
-tl.fromTo('#ch25 .cht', { y: 40, opacity: 0 }, { y: 0, opacity: 1, duration: 0.45, ease: E }, 220.941);
-tl.fromTo('#ch25 .chl', { scaleX: 0 }, { scaleX: 1, duration: 0.4, ease: E }, 221.191);
-gsap.set('#g33', { opacity: 0 });
-tl.to('#g33', { opacity: 1, duration: 0.3 }, 222.741);
-tl.to('#g33', { opacity: 0, duration: 0.3 }, 288.672);
-tl.fromTo('#tk28', { y: 0 }, { y: -180, duration: 66.231, ease: 'none' }, 222.741);
-gsap.set('#g36', { opacity: 0 });
-tl.to('#g36', { opacity: 1, duration: 0.2 }, 289.172);
-tl.to('#g36', { opacity: 0, duration: 0.2 }, 290.672);
-tl.fromTo('#ch35 .cht', { y: 40, opacity: 0 }, { y: 0, opacity: 1, duration: 0.45, ease: E }, 289.272);
-tl.fromTo('#ch35 .chl', { scaleX: 0 }, { scaleX: 1, duration: 0.4, ease: E }, 289.522);
+tl.to('#g23', { opacity: 1, duration: 0.25 }, 96.25);
+tl.to('#g23', { opacity: 0, duration: 0.25 }, 97.574);
+up('#wp-n', 96.45);
+gsap.set('#g25', { opacity: 0 });
+tl.to('#g25', { opacity: 1, duration: 0.2 }, 97.924);
+tl.to('#g25', { opacity: 0, duration: 0.2 }, 99.424);
+tl.fromTo('#ch24 .cht', { y: 40, opacity: 0 }, { y: 0, opacity: 1, duration: 0.45, ease: E }, 98.024);
+tl.fromTo('#ch24 .chl', { scaleX: 0 }, { scaleX: 1, duration: 0.4, ease: E }, 98.274);
+gsap.set('#g30', { opacity: 0 });
+tl.to('#g30', { opacity: 1, duration: 0.25 }, 103.164);
+tl.to('#g30', { opacity: 0, duration: 0.25 }, 132.581);
+pop('#dg27-n0', 103.564, 0);
+pop('#dg27-n1', 124.951, 0);
+up('#dg27-a1', 124.801, 0);
+pop('#dg27-n2', 128.951, 0);
+up('#dg27-a2', 128.801, 0);
+pop('#dg27-n3', 129.751, 0);
+up('#dg27-a3', 129.601, 0);
 gsap.set('#g38', { opacity: 0 });
-tl.to('#g38', { opacity: 1, duration: 0.25 }, 322.302);
-tl.to('#g38', { opacity: 0, duration: 0.25 }, 327.152);
-pop('#nl', 322.402, 2);
-up('#nl-n', 323.602);
-gsap.set('#g40', { opacity: 0 });
-tl.to('#g40', { opacity: 1, duration: 0.25 }, 378.638);
-tl.to('#g40', { opacity: 0, duration: 0.25 }, 385.488);
-pop('#trap', 378.738, 2);
-gsap.set('#g43', { opacity: 0 });
-tl.to('#g43', { opacity: 1, duration: 0.2 }, 401.046);
-tl.to('#g43', { opacity: 0, duration: 0.2 }, 402.546);
-tl.fromTo('#ch42 .cht', { y: 40, opacity: 0 }, { y: 0, opacity: 1, duration: 0.45, ease: E }, 401.146);
-tl.fromTo('#ch42 .chl', { scaleX: 0 }, { scaleX: 1, duration: 0.4, ease: E }, 401.396);
-gsap.set('#g45', { opacity: 0 });
-tl.to('#g45', { opacity: 1, duration: 0.25 }, 402.946);
-tl.to('#g45', { opacity: 0, duration: 0.25 }, 444.892);
-tl.fromTo('#rc', { clipPath: 'inset(0 0 100% 0)' }, { clipPath: 'inset(0 0 0% 0)', duration: 0.8, ease: 'power2.out' }, 402.946);
-up('#rc1', 403.546, 14);
-up('#rc2', 404.046, 14);
-up('#rc3', 404.546, 14);
-up('#rc4', 405.046, 14);
-up('#rc5', 405.746, 14);
-pop('#rc-mc', 406.546, -2);
-draw('#rc-x', 407.046, 0.4);
-gsap.set('#g48', { opacity: 0 });
-tl.to('#g48', { opacity: 1, duration: 0.25 }, 456.704);
-tl.to('#g48', { opacity: 0, duration: 0.25 }, 461.554);
-up('#tm-n', 456.804);
-gsap.set('#g51', { opacity: 0 });
-tl.to('#g51', { opacity: 1, duration: 0.2 }, 494.98);
-tl.to('#g51', { opacity: 0, duration: 0.2 }, 496.48);
-tl.fromTo('#ch50 .cht', { y: 40, opacity: 0 }, { y: 0, opacity: 1, duration: 0.45, ease: E }, 495.08);
-tl.fromTo('#ch50 .chl', { scaleX: 0 }, { scaleX: 1, duration: 0.4, ease: E }, 495.33);
-gsap.set('#g54', { opacity: 0 });
-tl.to('#g54', { opacity: 1, duration: 0.25 }, 518.893);
-tl.to('#g54', { opacity: 0, duration: 0.25 }, 526.843);
-tl.fromTo('#ck53', { y: -40, rotation: 3 }, { y: 0, rotation: -2, duration: 0.5, ease: B }, 518.893);
-pop('#ck53-t0', 519.293, 0);
-pop('#ck53-t1', 519.693, 0);
-pop('#ck53-t2', 520.393, 0);
+tl.to('#g38', { opacity: 1, duration: 0.25 }, 173.682);
+tl.to('#g38', { opacity: 0, duration: 0.25 }, 185.604);
+pop('#dg35-n0', 173.882, 0);
+pop('#dg35-n1', 174.082, 0);
+up('#dg35-a1', 173.932, 0);
+pop('#dg35-n2', 174.282, 0);
+up('#dg35-a2', 174.132, 0);
+pop('#dg35-n3', 174.482, 0);
+up('#dg35-a3', 174.332, 0);
+draw('#dg35-r', 183.254, 0.6);
+gsap.set('#g44', { opacity: 0 });
+tl.to('#g44', { opacity: 1, duration: 0.2 }, 221.176);
+tl.to('#g44', { opacity: 0, duration: 0.2 }, 222.676);
+tl.fromTo('#ch43 .cht', { y: 40, opacity: 0 }, { y: 0, opacity: 1, duration: 0.45, ease: E }, 221.276);
+tl.fromTo('#ch43 .chl', { scaleX: 0 }, { scaleX: 1, duration: 0.4, ease: E }, 221.526);
+gsap.set('#g52', { opacity: 0 });
+tl.to('#g52', { opacity: 1, duration: 0.2 }, 223.076);
+tl.to('#g52', { opacity: 0, duration: 0.2 }, 286.684);
+tl.fromTo('#sl47', { x: 1920 }, { x: 0, duration: 0.45, ease: 'power3.out' }, 223.076);
+tl.fromTo('#tk46', { y: 0 }, { y: -180, duration: 63.808, ease: 'none' }, 223.076);
+gsap.set('#g55', { opacity: 0 });
+tl.to('#g55', { opacity: 1, duration: 0.2 }, 287.084);
+tl.to('#g55', { opacity: 0, duration: 0.2 }, 288.584);
+tl.fromTo('#ch54 .cht', { y: 40, opacity: 0 }, { y: 0, opacity: 1, duration: 0.45, ease: E }, 287.184);
+tl.fromTo('#ch54 .chl', { scaleX: 0 }, { scaleX: 1, duration: 0.4, ease: E }, 287.434);
+gsap.set('#g57', { opacity: 0 });
+tl.to('#g57', { opacity: 1, duration: 0.25 }, 320.702);
+tl.to('#g57', { opacity: 0, duration: 0.25 }, 325.552);
+up('#nl-n', 320.802);
+gsap.set('#g59', { opacity: 0 });
+tl.to('#g59', { opacity: 1, duration: 0.25 }, 377.485);
+tl.to('#g59', { opacity: 0, duration: 0.25 }, 384.335);
+pop('#trap', 377.585, 2);
 gsap.set('#g62', { opacity: 0 });
-tl.to('#g62', { opacity: 1, duration: 0.3 }, 562.396);
-tl.to('#g62', { opacity: 0, duration: 0.3 }, 601.138);
-tl.fromTo('#tk58', { y: 0 }, { y: -300, duration: 39.042, ease: 'none' }, 562.396);
+tl.to('#g62', { opacity: 1, duration: 0.2 }, 399.52);
+tl.to('#g62', { opacity: 0, duration: 0.2 }, 401.02);
+tl.fromTo('#ch61 .cht', { y: 40, opacity: 0 }, { y: 0, opacity: 1, duration: 0.45, ease: E }, 399.62);
+tl.fromTo('#ch61 .chl', { scaleX: 0 }, { scaleX: 1, duration: 0.4, ease: E }, 399.87);
 gsap.set('#g64', { opacity: 0 });
-tl.to('#g64', { opacity: 1, duration: 0.25 }, 725.919);
-tl.to('#g64', { opacity: 0, duration: 0.25 }, 730.269);
-pop('#own', 726.019, 2);
+tl.to('#g64', { opacity: 1, duration: 0.25 }, 401.42);
+tl.to('#g64', { opacity: 0, duration: 0.25 }, 443.651);
+tl.fromTo('#rc', { clipPath: 'inset(0 0 100% 0)' }, { clipPath: 'inset(0 0 0% 0)', duration: 0.8, ease: 'power2.out' }, 401.42);
+up('#rc1', 402.02, 14);
+up('#rc2', 402.52, 14);
+up('#rc3', 403.02, 14);
+up('#rc4', 403.52, 14);
+up('#rc5', 404.22, 14);
+pop('#rc-mc', 405.02, -2);
+draw('#rc-x', 405.52, 0.4);
 gsap.set('#g67', { opacity: 0 });
-tl.to('#g67', { opacity: 1, duration: 0.2 }, 738.033);
-tl.to('#g67', { opacity: 0, duration: 0.2 }, 739.533);
-tl.fromTo('#ch66 .cht', { y: 40, opacity: 0 }, { y: 0, opacity: 1, duration: 0.45, ease: E }, 738.133);
-tl.fromTo('#ch66 .chl', { scaleX: 0 }, { scaleX: 1, duration: 0.4, ease: E }, 738.383);
+tl.to('#g67', { opacity: 1, duration: 0.25 }, 455.263);
+tl.to('#g67', { opacity: 0, duration: 0.25 }, 460.113);
+up('#tm-n', 455.363);
 gsap.set('#g70', { opacity: 0 });
-tl.to('#g70', { opacity: 1, duration: 0.25 }, 744.198);
-tl.to('#g70', { opacity: 0, duration: 0.25 }, 772.804);
-tl.fromTo('#ck69', { y: -40, rotation: 3 }, { y: 0, rotation: -2, duration: 0.5, ease: B }, 744.198);
-pop('#ck69-t0', 744.598, 0);
-pop('#ck69-t1', 746.878, 0);
+tl.to('#g70', { opacity: 1, duration: 0.2 }, 492.935);
+tl.to('#g70', { opacity: 0, duration: 0.2 }, 494.435);
+tl.fromTo('#ch69 .cht', { y: 40, opacity: 0 }, { y: 0, opacity: 1, duration: 0.45, ease: E }, 493.035);
+tl.fromTo('#ch69 .chl', { scaleX: 0 }, { scaleX: 1, duration: 0.4, ease: E }, 493.285);
 gsap.set('#g73', { opacity: 0 });
-tl.to('#g73', { opacity: 1, duration: 0.25 }, 766.795);
-tl.to('#g73', { opacity: 0, duration: 0.25 }, 772.804);
-up('#st-n', 766.895);
-gsap.set('#g75', { opacity: 0 });
-tl.to('#g75', { opacity: 1, duration: 0.2 }, 773.454);
-tl.to('#g75', { opacity: 0, duration: 0.2 }, 774.954);
-tl.fromTo('#ch74 .cht', { y: 40, opacity: 0 }, { y: 0, opacity: 1, duration: 0.45, ease: E }, 773.554);
-tl.fromTo('#ch74 .chl', { scaleX: 0 }, { scaleX: 1, duration: 0.4, ease: E }, 773.804);
-gsap.set('#g79', { opacity: 0 });
-tl.to('#g79', { opacity: 1, duration: 0.3 }, 810.845);
-tl.to('#g79', { opacity: 0, duration: 0.3 }, 819.745);
-tl.fromTo('#tk77', { y: 0 }, { y: -200, duration: 9.2, ease: 'none' }, 810.845);
-gsap.set('#g81', { opacity: 0 });
-tl.to('#g81', { opacity: 1, duration: 0.25 }, 838.305);
-tl.to('#g81', { opacity: 0, duration: 0.25 }, 854.415);
-pop('#cb', 838.405, 0);
-tl.set('#cb .cbp', { opacity: 0 }, 838.605);
-tl.fromTo('#cbt', { clipPath: 'inset(0 100% 0 0)' }, { clipPath: 'inset(0 0% 0 0)', duration: 0.7, ease: 'steps(10)' }, 838.605);
-pop('#url', 850.165, 0);
-gsap.set('#es', { opacity: 0 }); tl.to('#es', { opacity: 1, duration: 0.5 }, 858.914);
-tl.to('#cam', { x: -420, duration: 0.7, ease: 'power3.inOut' }, 858.914);
-tl.set('#cam', { scale: 1.18 }, 47.992);
-tl.set('#cam', { scale: 1 }, 49.235);
-tl.set('#cam', { scale: 1.18 }, 50.073);
-tl.set('#cam', { scale: 1 }, 54.529);
-tl.set('#cam', { scale: 1.18 }, 58.989);
-tl.set('#cam', { scale: 1 }, 76.159);
-tl.set('#cam', { scale: 1.18 }, 113.075);
-tl.set('#cam', { scale: 1 }, 131.53);
-tl.set('#cam', { scale: 1.18 }, 144.592);
-tl.set('#cam', { scale: 1 }, 167.908);
-tl.set('#cam', { scale: 1.18 }, 173.697);
-tl.set('#cam', { scale: 1 }, 213.187);
-tl.set('#cam', { scale: 1.18 }, 310.942);
-tl.set('#cam', { scale: 1 }, 350.541);
-tl.set('#cam', { scale: 1.18 }, 352.526);
-tl.set('#cam', { scale: 1 }, 362.498);
-tl.set('#cam', { scale: 1.18 }, 364.127);
-tl.set('#cam', { scale: 1 }, 368.635);
-tl.set('#cam', { scale: 1.18 }, 389.55);
-tl.set('#cam', { scale: 1 }, 392.649);
-tl.set('#cam', { scale: 1.18 }, 445.442);
-tl.set('#cam', { scale: 1 }, 447.496);
-tl.set('#cam', { scale: 1.18 }, 449.119);
-tl.set('#cam', { scale: 1 }, 488.623);
-tl.set('#cam', { scale: 1.18 }, 516.333);
-tl.set('#cam', { scale: 1 }, 554.827);
-tl.set('#cam', { scale: 1.18 }, 601.738);
-tl.set('#cam', { scale: 1 }, 616.211);
-tl.set('#cam', { scale: 1.18 }, 626.66);
-tl.set('#cam', { scale: 1 }, 730.709);
-tl.set('#cam', { scale: 1.18 }, 789.203);
-tl.set('#cam', { scale: 1 }, 808.605);
-tl.set('#cam', { scale: 1.18 }, 836.765);
-tl.set('#cam', { scale: 1 }, 858.914);
+tl.to('#g73', { opacity: 1, duration: 0.25 }, 515.725);
+tl.to('#g73', { opacity: 0, duration: 0.25 }, 523.675);
+tl.fromTo('#ck72', { y: -40, rotation: 3 }, { y: 0, rotation: -2, duration: 0.5, ease: B }, 515.725);
+pop('#ck72-t0', 516.125, 0);
+pop('#ck72-t1', 516.525, 0);
+pop('#ck72-t2', 517.225, 0);
+gsap.set('#g82', { opacity: 0 });
+tl.to('#g82', { opacity: 1, duration: 0.2 }, 557.046);
+tl.to('#g82', { opacity: 0, duration: 0.2 }, 596.438);
+tl.fromTo('#sl78', { x: 1920 }, { x: 0, duration: 0.45, ease: 'power3.out' }, 557.046);
+tl.fromTo('#tk77', { y: 0 }, { y: -300, duration: 39.592, ease: 'none' }, 557.046);
+gsap.set('#g84', { opacity: 0 });
+tl.to('#g84', { opacity: 1, duration: 0.25 }, 719.594);
+tl.to('#g84', { opacity: 0, duration: 0.25 }, 723.944);
+pop('#own', 719.694, 2);
+gsap.set('#g87', { opacity: 0 });
+tl.to('#g87', { opacity: 1, duration: 0.2 }, 731.947);
+tl.to('#g87', { opacity: 0, duration: 0.2 }, 733.447);
+tl.fromTo('#ch86 .cht', { y: 40, opacity: 0 }, { y: 0, opacity: 1, duration: 0.45, ease: E }, 732.047);
+tl.fromTo('#ch86 .chl', { scaleX: 0 }, { scaleX: 1, duration: 0.4, ease: E }, 732.297);
+gsap.set('#g90', { opacity: 0 });
+tl.to('#g90', { opacity: 1, duration: 0.25 }, 738.112);
+tl.to('#g90', { opacity: 0, duration: 0.25 }, 766.349);
+tl.fromTo('#ck89', { y: -40, rotation: 3 }, { y: 0, rotation: -2, duration: 0.5, ease: B }, 738.112);
+pop('#ck89-t0', 738.512, 0);
+pop('#ck89-t1', 740.792, 0);
+gsap.set('#g93', { opacity: 0 });
+tl.to('#g93', { opacity: 1, duration: 0.25 }, 759.84);
+tl.to('#g93', { opacity: 0, duration: 0.25 }, 766.349);
+up('#st-n', 759.94);
+gsap.set('#g95', { opacity: 0 });
+tl.to('#g95', { opacity: 1, duration: 0.2 }, 766.999);
+tl.to('#g95', { opacity: 0, duration: 0.2 }, 768.499);
+tl.fromTo('#ch94 .cht', { y: 40, opacity: 0 }, { y: 0, opacity: 1, duration: 0.45, ease: E }, 767.099);
+tl.fromTo('#ch94 .chl', { scaleX: 0 }, { scaleX: 1, duration: 0.4, ease: E }, 767.349);
+gsap.set('#g101', { opacity: 0 });
+tl.to('#g101', { opacity: 1, duration: 0.2 }, 782.558);
+tl.to('#g101', { opacity: 0, duration: 0.2 }, 802.024);
+tl.fromTo('#sl98', { x: 1920 }, { x: 0, duration: 0.45, ease: 'power3.out' }, 782.558);
+tl.fromTo('#tk97', { y: 0 }, { y: 0, duration: 19.666, ease: 'none' }, 782.558);
+gsap.set('#g106', { opacity: 0 });
+tl.to('#g106', { opacity: 1, duration: 0.2 }, 802.224);
+tl.to('#g106', { opacity: 0, duration: 0.2 }, 811.524);
+tl.fromTo('#sl104', { x: 1920 }, { x: 0, duration: 0.45, ease: 'power3.out' }, 802.224);
+tl.fromTo('#tk103', { y: 0 }, { y: 0, duration: 9.5, ease: 'none' }, 802.224);
+gsap.set('#g108', { opacity: 0 });
+tl.to('#g108', { opacity: 1, duration: 0.25 }, 832.504);
+tl.to('#g108', { opacity: 0, duration: 0.25 }, 848.614);
+pop('#cb', 832.604, 0);
+tl.set('#cb .cbp', { opacity: 0 }, 832.804);
+tl.fromTo('#cbt', { clipPath: 'inset(0 100% 0 0)' }, { clipPath: 'inset(0 0% 0 0)', duration: 0.7, ease: 'steps(10)' }, 832.804);
+pop('#url', 844.364, 0);
+gsap.set('#g112', { opacity: 0 });
+tl.to('#g112', { opacity: 1, duration: 0.15 }, 308.154);
+tl.to('#g112', { opacity: 0, duration: 0.15 }, 309.604);
+tl.fromTo('#br111 .brt', { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.35, ease: E }, 308.204);
+gsap.set('#g115', { opacity: 0 });
+tl.to('#g115', { opacity: 1, duration: 0.15 }, 348.675);
+tl.to('#g115', { opacity: 0, duration: 0.15 }, 350.125);
+tl.fromTo('#br114 .brt', { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.35, ease: E }, 348.725);
+gsap.set('#g118', { opacity: 0 });
+tl.to('#g118', { opacity: 1, duration: 0.15 }, 443.701);
+tl.to('#g118', { opacity: 0, duration: 0.15 }, 445.151);
+tl.fromTo('#br117 .brt', { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.35, ease: E }, 443.751);
+gsap.set('#g121', { opacity: 0 });
+tl.to('#g121', { opacity: 1, duration: 0.15 }, 512.865);
+tl.to('#g121', { opacity: 0, duration: 0.15 }, 514.315);
+tl.fromTo('#br120 .brt', { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.35, ease: E }, 512.915);
+gsap.set('#g124', { opacity: 0 });
+tl.to('#g124', { opacity: 1, duration: 0.15 }, 596.138);
+tl.to('#g124', { opacity: 0, duration: 0.15 }, 597.588);
+tl.fromTo('#br123 .brt', { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.35, ease: E }, 596.188);
+gsap.set('#g127', { opacity: 0 });
+tl.to('#g127', { opacity: 1, duration: 0.15 }, 16.185);
+tl.to('#g127', { opacity: 0, duration: 0.15 }, 17.925);
+tl.fromTo('#say126 span:nth-child(1)', { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.15 }, 16.235);
+tl.fromTo('#say126 span:nth-child(2)', { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.15 }, 16.415);
+tl.fromTo('#say126 span:nth-child(3)', { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.15 }, 16.575);
+tl.fromTo('#say126 span:nth-child(4)', { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.15 }, 16.755);
+gsap.set('#g129', { opacity: 0 });
+tl.to('#g129', { opacity: 1, duration: 0.15 }, 194.324);
+tl.to('#g129', { opacity: 0, duration: 0.15 }, 196.704);
+tl.fromTo('#say128 span:nth-child(1)', { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.15 }, 194.374);
+tl.fromTo('#say128 span:nth-child(2)', { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.15 }, 194.614);
+tl.fromTo('#say128 span:nth-child(3)', { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.15 }, 195.134);
+tl.fromTo('#say128 span:nth-child(4)', { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.15 }, 195.734);
+gsap.set('#g131', { opacity: 0 });
+tl.to('#g131', { opacity: 1, duration: 0.15 }, 228.797);
+tl.to('#g131', { opacity: 0, duration: 0.15 }, 231.057);
+tl.fromTo('#say130 span:nth-child(1)', { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.15 }, 228.847);
+tl.fromTo('#say130 span:nth-child(2)', { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.15 }, 229.207);
+tl.fromTo('#say130 span:nth-child(3)', { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.15 }, 229.587);
+tl.fromTo('#say130 span:nth-child(4)', { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.15 }, 229.847);
+tl.fromTo('#say130 span:nth-child(5)', { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.15 }, 229.967);
+tl.fromTo('#say130 span:nth-child(6)', { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.15 }, 230.147);
+gsap.set('#g133', { opacity: 0 });
+tl.to('#g133', { opacity: 1, duration: 0.15 }, 305.294);
+tl.to('#g133', { opacity: 0, duration: 0.15 }, 307.954);
+tl.fromTo('#say132 span:nth-child(1)', { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.15 }, 305.344);
+tl.fromTo('#say132 span:nth-child(2)', { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.15 }, 305.584);
+tl.fromTo('#say132 span:nth-child(3)', { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.15 }, 305.824);
+tl.fromTo('#say132 span:nth-child(4)', { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.15 }, 306.364);
+tl.fromTo('#say132 span:nth-child(5)', { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.15 }, 306.784);
+gsap.set('#g135', { opacity: 0 });
+tl.to('#g135', { opacity: 1, duration: 0.15 }, 559.03);
+tl.to('#g135', { opacity: 0, duration: 0.15 }, 562.31);
+tl.fromTo('#say134 span:nth-child(1)', { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.15 }, 559.08);
+tl.fromTo('#say134 span:nth-child(2)', { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.15 }, 559.46);
+tl.fromTo('#say134 span:nth-child(3)', { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.15 }, 559.94);
+tl.fromTo('#say134 span:nth-child(4)', { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.15 }, 560.38);
+tl.fromTo('#say134 span:nth-child(5)', { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.15 }, 560.78);
+tl.fromTo('#say134 span:nth-child(6)', { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.15 }, 561);
+tl.fromTo('#say134 span:nth-child(7)', { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.15 }, 561.16);
+gsap.set('#g137', { opacity: 0 });
+tl.to('#g137', { opacity: 1, duration: 0.15 }, 723.264);
+tl.to('#g137', { opacity: 0, duration: 0.15 }, 725.084);
+tl.fromTo('#say136 span:nth-child(1)', { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.15 }, 723.314);
+tl.fromTo('#say136 span:nth-child(2)', { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.15 }, 723.474);
+tl.fromTo('#say136 span:nth-child(3)', { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.15 }, 723.694);
+tl.fromTo('#say136 span:nth-child(4)', { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.15 }, 723.974);
+gsap.set('#g139', { opacity: 0 });
+tl.to('#g139', { opacity: 1, duration: 0.15 }, 818.014);
+tl.to('#g139', { opacity: 0, duration: 0.15 }, 819.774);
+tl.fromTo('#say138 span:nth-child(1)', { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.15 }, 818.064);
+tl.fromTo('#say138 span:nth-child(2)', { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.15 }, 818.464);
+tl.fromTo('#say138 span:nth-child(3)', { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.15 }, 818.704);
+tl.fromTo('#say138 span:nth-child(4)', { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.15 }, 818.824);
+gsap.set('#es', { opacity: 0 }); tl.to('#es', { opacity: 1, duration: 0.5 }, 853.281);
+tl.to('#cam', { x: -420, duration: 0.7, ease: 'power3.inOut' }, 853.281);
+gsap.set('#ec', { opacity: 0 }); tl.to('#ec', { opacity: 1, duration: 0.5 }, 865.28);
+tl.set('#cam', { scale: 1.18 }, 50.004);
+tl.set('#cam', { scale: 1 }, 51.247);
+tl.set('#cam', { scale: 1.18 }, 52.085);
+tl.set('#cam', { scale: 1 }, 56.787);
+tl.set('#cam', { scale: 1.18 }, 145.079);
+tl.set('#cam', { scale: 1 }, 168.395);
+tl.set('#cam', { scale: 1.18 }, 213.272);
+tl.set('#cam', { scale: 1 }, 221.176);
+tl.set('#cam', { scale: 1.18 }, 351.16);
+tl.set('#cam', { scale: 1 }, 361.432);
+tl.set('#cam', { scale: 1.18 }, 363.061);
+tl.set('#cam', { scale: 1 }, 367.564);
+tl.set('#cam', { scale: 1.18 }, 387.825);
+tl.set('#cam', { scale: 1 }, 390.924);
+tl.set('#cam', { scale: 1.18 }, 446.055);
+tl.set('#cam', { scale: 1 }, 447.678);
+tl.set('#cam', { scale: 1.18 }, 487.182);
+tl.set('#cam', { scale: 1 }, 492.935);
+tl.set('#cam', { scale: 1.18 }, 501.228);
+tl.set('#cam', { scale: 1 }, 513.365);
+tl.set('#cam', { scale: 1.18 }, 528.302);
+tl.set('#cam', { scale: 1 }, 538.708);
+tl.set('#cam', { scale: 1.18 }, 549.233);
+tl.set('#cam', { scale: 1 }, 556.846);
+tl.set('#cam', { scale: 1.18 }, 611.111);
+tl.set('#cam', { scale: 1 }, 621.56);
+tl.set('#cam', { scale: 1.18 }, 697.851);
+tl.set('#cam', { scale: 1 }, 724.684);
+tl.set('#cam', { scale: 1.18 }, 831.164);
+tl.set('#cam', { scale: 1 }, 853.281);
 tl.set('#cam', { scale: 1 }, 0);
-tl.set('#cam', { scale: 1 }, 12.605);
-tl.set('#cam', { scale: 1 }, 38.344);
-tl.set('#cam', { scale: 1 }, 62.829);
-tl.set('#cam', { scale: 1 }, 93.579);
-tl.set('#cam', { scale: 1 }, 95.55);
-tl.set('#cam', { scale: 1 }, 182.769);
-tl.set('#cam', { scale: 1 }, 220.541);
-tl.set('#cam', { scale: 1 }, 222.441);
-tl.set('#cam', { scale: 1 }, 288.872);
-tl.set('#cam', { scale: 1 }, 322.002);
-tl.set('#cam', { scale: 1 }, 378.338);
-tl.set('#cam', { scale: 1 }, 400.746);
-tl.set('#cam', { scale: 1 }, 402.646);
-tl.set('#cam', { scale: 1 }, 456.404);
-tl.set('#cam', { scale: 1 }, 494.68);
-tl.set('#cam', { scale: 1 }, 518.593);
-tl.set('#cam', { scale: 1 }, 562.096);
-tl.set('#cam', { scale: 1 }, 725.619);
-tl.set('#cam', { scale: 1 }, 737.733);
-tl.set('#cam', { scale: 1 }, 743.898);
-tl.set('#cam', { scale: 1 }, 766.495);
-tl.set('#cam', { scale: 1 }, 773.154);
-tl.set('#cam', { scale: 1 }, 810.545);
-tl.set('#cam', { scale: 1 }, 838.005);
-tl.set('#cam', { scale: 1 }, 858.614);
+tl.set('#cam', { scale: 1 }, 12.855);
+tl.set('#cam', { scale: 1 }, 39.744);
+tl.set('#cam', { scale: 1 }, 56.387);
+tl.set('#cam', { scale: 1 }, 65.277);
+tl.set('#cam', { scale: 1 }, 95.95);
+tl.set('#cam', { scale: 1 }, 97.624);
+tl.set('#cam', { scale: 1 }, 102.864);
+tl.set('#cam', { scale: 1 }, 173.382);
+tl.set('#cam', { scale: 1 }, 220.876);
+tl.set('#cam', { scale: 1 }, 222.776);
+tl.set('#cam', { scale: 1 }, 286.784);
+tl.set('#cam', { scale: 1 }, 320.402);
+tl.set('#cam', { scale: 1 }, 377.185);
+tl.set('#cam', { scale: 1 }, 399.22);
+tl.set('#cam', { scale: 1 }, 401.12);
+tl.set('#cam', { scale: 1 }, 454.963);
+tl.set('#cam', { scale: 1 }, 492.635);
+tl.set('#cam', { scale: 1 }, 515.425);
+tl.set('#cam', { scale: 1 }, 556.746);
+tl.set('#cam', { scale: 1 }, 719.294);
+tl.set('#cam', { scale: 1 }, 731.647);
+tl.set('#cam', { scale: 1 }, 737.812);
+tl.set('#cam', { scale: 1 }, 759.54);
+tl.set('#cam', { scale: 1 }, 766.699);
+tl.set('#cam', { scale: 1 }, 782.258);
+tl.set('#cam', { scale: 1 }, 801.924);
+tl.set('#cam', { scale: 1 }, 832.204);
+tl.set('#cam', { scale: 1 }, 307.854);
+tl.set('#cam', { scale: 1 }, 348.375);
+tl.set('#cam', { scale: 1 }, 443.401);
+tl.set('#cam', { scale: 1 }, 512.565);
+tl.set('#cam', { scale: 1 }, 595.838);
+tl.set('#cam', { scale: 1 }, 852.981);
 window.__timelines['main'] = tl;
 </script>
 </body>
