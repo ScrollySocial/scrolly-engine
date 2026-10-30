@@ -102,7 +102,7 @@ Screen: your Chat Manager dashboard, the Flows tab for one keyword.
 - What you give up: setup time (a Meta app, a privacy policy page, publishing the app) and fixing it yourself when
   something changes.
 - Who it fits: you want the emails and the follow-up without a monthly bill that grows with your comments, and you're
-  OK with one afternoon of setup.
+  OK with under an hour of setup (what video 1 says).
 
 ## 5. Side by side (about 1 min)
 
@@ -114,14 +114,14 @@ Screen: one table graphic. Fill Meta's column only from your test.
 | People a month | (from your test) | 25 / 250 / 2,500 | No limit |
 | Collects emails | (from your test) | Yes | Yes |
 | Follow-up after they reply | (from your test) | Yes | Yes, plus a reminder |
-| Setup | Minutes, desktop only | Minutes | An afternoon |
+| Setup | Minutes, desktop only | Minutes | Under an hour with the kit |
 | When it breaks | Meta | ManyChat support | You |
 
 ## 6. How to choose: three questions (about 1 min)
 
 1. How many people comment your word in a month? (Over 25, ManyChat Free is out.)
 2. Do you want their email, or only to send a link?
-3. Would you rather pay monthly or spend an afternoon on setup?
+3. Would you rather pay monthly or spend under an hour on setup?
 
 > "If you have one freebie and a few comments a week, start with Meta's free tool. Move up when it stops being
 > enough."
