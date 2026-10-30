@@ -137,7 +137,7 @@
    "series": "Under the Hood",
    "link": "",
    "filmingNotes": "SCRIPT (talking head, ~45-60 sec)\nAt 12:30 every night, a scheduled task starts Claude on my laptop. It runs the same steps each time.\nIt queues the Reels I approved. It applies the choices I made on my review page. It renders the videos, drafts new Reels from footage waiting in my planner, and leaves me a morning note.\nIn the morning I watch, approve or leave notes, and the next night picks those up.\nTwo things I learned the hard way. The laptop has to stay awake: sleep on power is set to never, and the app stays open. And render one video at a time. I once ran five renders at once and my computer crashed.\nComment MEMORYKIT and I'll send you my free starter kit, with a nightly task inside.\n\nSHOW ON SCREEN: Scheduled task reels-overnight at 12:30am. The review hub at localhost:4320. A morning note.",
-   "editNotes": "",
+   "editNotes": "Footage: OneDrive Scrolly Media/videos/2026-10-28-session/reels/ (filmed 2026-10-30). IMG_2093 = full take (cut the \"I'm not recording\" first second); IMG_2092 = false starts, skip. She says \"comment memory\" but the live keyword is MEMORYKIT: on-screen CTA and caption must say MEMORYKIT.",
    "reelFolder": "",
    "mediaUrl": "",
    "order": null,
@@ -147,10 +147,10 @@
    "fromNotion": null,
    "archived": false,
    "createdAt": "2026-10-30T17:48:30.707Z",
-   "updatedAt": "2026-10-30T20:27:00.354Z",
+   "updatedAt": "2026-10-30T22:00:08.920Z",
    "lanes": {
     "instagram": {
-     "stage": "Film",
+     "stage": "Edit",
      "date": "",
      "caption": "",
      "title": "",
@@ -158,7 +158,7 @@
      "page": ""
     },
     "tiktok": {
-     "stage": "Film",
+     "stage": "Edit",
      "date": "",
      "caption": "",
      "title": "",
@@ -181,7 +181,7 @@
    "series": "Under the Hood",
    "link": "",
    "filmingNotes": "SCRIPT (talking head, ~45-60 sec)\nEvery time I asked Claude for a carousel, I re-explained my rules: sizes, fonts, how to check facts, where to save it.\nNow that's a skill. A skill is a folder with one file, SKILL.md, holding the steps and rules for one job. A short description at the top tells Claude when to use it.\nSo I say \"make a carousel\" and Claude loads the carousel skill. Or I type its name as a slash command.\nI have skills for carousels, Reels, research, importing my Instagram saves and drafting comment replies.\nMy rule: if I've explained the same thing to Claude three times, it becomes a skill.\nComment MEMORYKIT and I'll send you my free starter kit, with a skill template inside.\n\nSHOW ON SCREEN: The .claude/skills folder. scrolly-carousel/SKILL.md top lines. Typing the slash command.",
-   "editNotes": "",
+   "editNotes": "Footage: OneDrive Scrolly Media/videos/2026-10-28-session/reels/ (filmed 2026-10-30). IMG_2091 (one take; CTA said twice, use the second).",
    "reelFolder": "",
    "mediaUrl": "",
    "order": null,
@@ -191,10 +191,10 @@
    "fromNotion": null,
    "archived": false,
    "createdAt": "2026-10-30T17:48:30.550Z",
-   "updatedAt": "2026-10-30T20:27:00.756Z",
+   "updatedAt": "2026-10-30T22:00:08.766Z",
    "lanes": {
     "instagram": {
-     "stage": "Film",
+     "stage": "Edit",
      "date": "",
      "caption": "",
      "title": "",
@@ -202,7 +202,7 @@
      "page": ""
     },
     "tiktok": {
-     "stage": "Film",
+     "stage": "Edit",
      "date": "",
      "caption": "",
      "title": "",
@@ -269,7 +269,7 @@
    "series": "Under the Hood",
    "link": "",
    "filmingNotes": "SCRIPT (talking head, ~45-60 sec)\nMy tool reads Instagram and YouTube comments through their official APIs. TikTok gives creators no API to reply to comments, and no simple way to pull them in.\nSo once a day my server runs an Apify scraper on my newest 3 videos, 30 comments each. I capped it at 10 cents a run, so it's $3 a month at most, and Apify's free plan includes $5 of credit a month.\nThe comments land in my inbox with a suggested reply and a button that copies it and opens TikTok. I paste it in myself.\nI stay away from tools that control a browser to post on TikTok for you. It's against TikTok's rules and can put your account at risk.\nComment AUTODM and I'll send you my free Auto-DM Rulebook.\n\nSHOW ON SCREEN: Apify run page with the $0.10 cap. Your inbox at hooks.scrollyseo.com/inbox with a TikTok row and the Copy & open TikTok button.",
-   "editNotes": "",
+   "editNotes": "Footage: OneDrive Scrolly Media/videos/2026-10-28-session/reels/ (filmed 2026-10-30). IMG_2089 (one full take, some repeated lines to cut).",
    "reelFolder": "",
    "mediaUrl": "",
    "order": null,
@@ -279,10 +279,10 @@
    "fromNotion": null,
    "archived": false,
    "createdAt": "2026-10-30T17:48:30.271Z",
-   "updatedAt": "2026-10-30T20:27:01.306Z",
+   "updatedAt": "2026-10-30T22:00:08.633Z",
    "lanes": {
     "instagram": {
-     "stage": "Film",
+     "stage": "Edit",
      "date": "",
      "caption": "",
      "title": "",
@@ -290,7 +290,7 @@
      "page": ""
     },
     "tiktok": {
-     "stage": "Film",
+     "stage": "Edit",
      "date": "",
      "caption": "",
      "title": "",
@@ -357,7 +357,7 @@
    "series": "Under the Hood",
    "link": "",
    "filmingNotes": "SCRIPT (talking head, ~45-60 sec)\nComments from Instagram, YouTube and TikTok all land in one inbox, and Claude drafts a reply to each one.\nIt sounds like me because it reads my voice file first: how I talk, the words I never use, what I sell and what it costs.\nI could let it send replies on its own. I don't, because I'm responsible for what it says, and I've seen enough AI make things up.\nSo every draft waits for me. I read it, fix anything that's off, and tap approve.\nComment MEMORYKIT and I'll send you my free starter kit, with a voice file template inside.\n\nSHOW ON SCREEN: Your Chat Manager inbox with a drafted reply, editing one word, tapping Approve. The voice file open on screen (no private details).",
-   "editNotes": "",
+   "editNotes": "Footage: OneDrive Scrolly Media/videos/2026-10-28-session/reels/ (filmed 2026-10-30). IMG_2088 = full take; IMG_2087 = false start, skip. She says \"comment memory\" but the live keyword is MEMORYKIT: on-screen CTA and caption must say MEMORYKIT.",
    "reelFolder": "",
    "mediaUrl": "",
    "order": null,
@@ -367,10 +367,10 @@
    "fromNotion": null,
    "archived": false,
    "createdAt": "2026-10-30T17:48:29.948Z",
-   "updatedAt": "2026-10-30T20:41:56.192Z",
+   "updatedAt": "2026-10-30T22:00:08.477Z",
    "lanes": {
     "instagram": {
-     "stage": "Film",
+     "stage": "Edit",
      "date": "",
      "caption": "",
      "title": "",
@@ -378,7 +378,7 @@
      "page": ""
     },
     "tiktok": {
-     "stage": "Film",
+     "stage": "Edit",
      "date": "",
      "caption": "",
      "title": "",
@@ -401,7 +401,7 @@
    "series": "Under the Hood",
    "link": "",
    "filmingNotes": "SCRIPT (talking head, ~45-60 sec)\nManyChat Pro would have cost me $39 a month. So I asked Claude to build me my own version.\nHere's what it does now: when someone comments a word like MATH, they get a DM, sign up with their email, and land on my MailerLite list. YouTube comments get a reply with the link, and my TikTok comments show up in the same inbox.\nIt runs on a $6 a month server. Claude did the technical parts, and I did the clicking.\nTwo of those clicks almost cost me weeks. Adding a logo to the Google app starts a 4 to 6 week review. And leaving that app in test mode makes it stop working after 7 days.\nComment TRAPS and I'll send you my free checklist of every setup trap.\n\nSHOW ON SCREEN: A comment on your Reel, then the DM arriving on your phone. Your Chat Manager inbox. The $6 server line in DigitalOcean. The Google logo field (circled) and the Testing / In production switch.",
-   "editNotes": "",
+   "editNotes": "Footage: OneDrive Scrolly Media/videos/2026-10-28-session/reels/ (filmed 2026-10-30). IMG_2085 = main take; IMG_2086 = alternate shorter CTA; IMG_2084 = false start, skip.",
    "reelFolder": "",
    "mediaUrl": "",
    "order": null,
@@ -411,10 +411,10 @@
    "fromNotion": null,
    "archived": false,
    "createdAt": "2026-10-30T17:48:29.803Z",
-   "updatedAt": "2026-10-30T20:41:56.059Z",
+   "updatedAt": "2026-10-30T22:00:08.311Z",
    "lanes": {
     "instagram": {
-     "stage": "Film",
+     "stage": "Edit",
      "date": "",
      "caption": "",
      "title": "",
@@ -422,7 +422,7 @@
      "page": ""
     },
     "tiktok": {
-     "stage": "Film",
+     "stage": "Edit",
      "date": "",
      "caption": "",
      "title": "",
@@ -445,7 +445,7 @@
    "series": "Under the Hood",
    "link": "",
    "filmingNotes": "SCRIPT (talking head, ~45-60 sec)\nIf you've set up comment-to-DM, you may have noticed it sends one message and then waits. That's Instagram's rule, and every tool follows it, ManyChat included.\nWhen someone comments your keyword, the tool sends what Meta calls a private reply. You get one per comment, and it has to go out within 7 days of the comment.\nAfter that, you can only keep talking if they reply. Their reply opens a 24-hour window where you can send more.\nSo make that one message ask for a reply. Mine says: reply READY and I'll send your link. When they answer, my tool sends the signup link, plus one reminder an hour later if they haven't signed up.\nComment AUTODM and I'll send you my free Auto-DM Rulebook.\n\nSHOW ON SCREEN: Meta's Private Replies doc (Limitations: one message, 7 days). Your own DM thread: keyword comment, READY ask, link.",
-   "editNotes": "",
+   "editNotes": "Footage: OneDrive Scrolly Media/videos/2026-10-28-session/reels/ (filmed 2026-10-30). IMG_2082 (one full take).",
    "reelFolder": "",
    "mediaUrl": "",
    "order": null,
@@ -455,10 +455,10 @@
    "fromNotion": null,
    "archived": false,
    "createdAt": "2026-10-30T17:48:29.650Z",
-   "updatedAt": "2026-10-30T20:27:02.371Z",
+   "updatedAt": "2026-10-30T22:00:08.160Z",
    "lanes": {
     "instagram": {
-     "stage": "Film",
+     "stage": "Edit",
      "date": "",
      "caption": "",
      "title": "",
@@ -466,7 +466,7 @@
      "page": ""
     },
     "tiktok": {
-     "stage": "Film",
+     "stage": "Edit",
      "date": "",
      "caption": "",
      "title": "",
