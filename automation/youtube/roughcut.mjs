@@ -1,10 +1,12 @@
 // YouTube long-form rough cut: the Reel engine's cut rules (reel-studio/prep.mjs) for horizontal 16:9 video.
 // Reads youtube/<id>/plan.json:
 //   { "title": "...", "maxPause": 0.6, "segments": [ { "src": "<under footage folder>", "in": 1.0, "out": 23.3, "beat": "Hook", "cropY": 0.2 } ] }
+//   "hardIn"/"hardOut": true cut exactly at in/out instead of snapping into the nearest silence
 //   cropY = where a 16:9 window sits on a vertical take; "fit": "blur" shows the whole vertical take over a blurred copy instead
 // Each cut point moves into real silence (0.12s air before speech, 0.2s after), pauses longer than maxPause shrink
 // to a breath when no transcript word starts inside them, HDR (iPhone HLG) is tone-mapped to SDR.
-// Writes <exports>/<id>/roughcut.mp4 (1920×1080 30fps, -14 LUFS) and youtube/<id>/timeline.md (where each beat starts).
+// Writes <exports>/<id>/roughcut.mp4 (1920×1080 30fps, -14 LUFS), youtube/<id>/timeline.md (where each beat starts) and
+// youtube/<id>/words.json (every word's time in the cut, for graphics and captions).
 // Usage: node roughcut.mjs <id>
 import { execFileSync, spawnSync } from 'node:child_process';
 import { mkdirSync, writeFileSync, existsSync, readFileSync } from 'node:fs';
@@ -47,7 +49,9 @@ function refine(f, seg) {
   const start = before ? Math.max(before[0], before[1] - 0.12) : seg.in - 0.2;
   const after = sil.find(([s]) => s >= seg.out - 0.15);
   const end = after ? Math.min(after[1], after[0] + 0.2) : seg.out + 0.35;
-  return { start: +Math.max(0, Math.min(start, seg.in - 0.1)).toFixed(3), end: +Math.max(end, seg.out + 0.15).toFixed(3) };
+  // hardIn / hardOut: cut exactly there (a leftover word runs straight into the kept one, with no silence to snap to)
+  return { start: seg.hardIn ? seg.in : +Math.max(0, Math.min(start, seg.in - 0.1)).toFixed(3),
+    end: seg.hardOut ? seg.out : +Math.max(end, seg.out + 0.15).toFixed(3) };
 }
 
 const maxPause = plan.maxPause ?? 0.6;
@@ -65,11 +69,12 @@ for (const s of plan.segments) {
   pieces.push({ s, start: cur, end: c.end, first });
 }
 
-const parts = [], beats = [];
+const parts = [], beats = [], words = [], cuts = [];
+const wordsOf = (s) => (existsSync(transcript(s)) ? JSON.parse(readFileSync(transcript(s), 'utf8')).flatMap((x) => x.words) : []);
 let t = 0;
 for (const [i, { s, start, end, first }] of pieces.entries()) {
   const f = src(s), dur = +(end - start).toFixed(3);
-  const key = createHash('sha1').update(JSON.stringify([s.src, start, end, W, s.fit ?? 'crop', s.cropY])).digest('hex').slice(0, 12);
+  const key = createHash('sha1').update(JSON.stringify([s.src, start, end, W, s.fit ?? 'crop', s.cropY, 'pre1080'])).digest('hex').slice(0, 12);
   const file = path.join(cache, `seg-${key}.mp4`);
   if (!existsSync(file)) {
     // cropY: where the 16:9 window sits on a taller (vertical) take, 0 = top, 0.5 = middle (default)
@@ -77,12 +82,17 @@ for (const [i, { s, start, end, first }] of pieces.entries()) {
     const fit = s.fit === 'blur'
       ? `split[a][b];[a]scale=${W}:${H}:force_original_aspect_ratio=increase,crop=${W}:${H},gblur=sigma=40,eq=brightness=-0.04[bg];[b]scale=-2:${H}:flags=lanczos[fg];[bg][fg]overlay=(W-w)/2:0`
       : `scale=${W}:${H}:force_original_aspect_ratio=increase:flags=lanczos,crop=${W}:${H}:(iw-${W})/2:(ih-${H})*${s.cropY ?? 0.5}`;
-    const vf = `${isHdr(f) ? TM : ''}${fit},fps=${FPS},setsar=1,format=yuv420p`;
+    // shrink to 1080p before the HDR tone-map (the float conversion on full 4K frames is ~4x slower, same result at 1080p)
+    const pre = s.fit === 'blur' ? `scale=-2:${H}:flags=lanczos,` : `scale=${W}:${H}:force_original_aspect_ratio=increase:flags=lanczos,`;
+    const vf = `${isHdr(f) ? pre + TM : ''}${fit},fps=${FPS},setsar=1,format=yuv420p`;
     const af = `aresample=48000,afade=t=in:d=0.015,afade=t=out:st=${(dur - 0.015).toFixed(3)}:d=0.015`;
     execFileSync(FF, ['-v', 'error', '-y', '-ss', String(start), '-t', String(dur), '-i', f, '-vf', vf, '-af', af,
       '-c:v', 'libx264', '-preset', 'veryfast', '-crf', '18', '-c:a', 'aac', '-b:a', '192k', '-ac', '2', file]);
   }
+  cuts.push({ t: +t.toFixed(3), take: path.basename(s.src), src: s.src, in: start, out: end });
   if (first && s.beat) beats.push({ t, beat: s.beat, take: path.basename(s.src) });
+  // every spoken word on the cut's timeline (graphics timing + captions)
+  for (const w of wordsOf(s)) if (w.s >= start && w.s < end) words.push({ w: w.w.trim(), t: +(t + w.s - start).toFixed(3), e: +(t + Math.min(w.e, end) - start).toFixed(3) });
   console.log(`piece ${i + 1}/${pieces.length}: ${path.basename(s.src)} ${start}-${end}`);
   parts.push(file);
   t += dur;
@@ -93,6 +103,7 @@ execFileSync(FF, ['-v', 'error', '-y', '-f', 'concat', '-safe', '0', '-i', list,
   '-af', 'loudnorm=I=-14:TP=-1.5:LRA=11', '-c:a', 'aac', '-b:a', '192k', '-movflags', '+faststart', path.join(out, 'roughcut.mp4')]);
 
 const mmss = (x) => `${Math.floor(x / 60)}:${String(Math.floor(x % 60)).padStart(2, '0')}`;
+writeFileSync(path.join(HERE, id, 'words.json'), JSON.stringify({ duration: +t.toFixed(3), beats, cuts, words }) + '\n');
 writeFileSync(path.join(HERE, id, 'timeline.md'), `# ${plan.title}: rough cut timeline (${mmss(t)})\n\n` +
   beats.map((b) => `- ${mmss(b.t)} ${b.beat} (${b.take})`).join('\n') + '\n');
 console.log(`roughcut ${id}: ${pieces.length} pieces, ${mmss(t)} → ${path.join(out, 'roughcut.mp4')}`);

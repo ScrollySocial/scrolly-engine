@@ -1,0 +1,395 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1920, height=1080">
+<script src="assets/js/gsap.min.js"></script>
+<style>
+@font-face{font-family:'Fig';src:url('assets/fonts/figtree.woff2') format('woff2');font-weight:300 900}
+@font-face{font-family:'Hand';src:url('assets/fonts/covered-by-your-grace.woff2') format('woff2')}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1920px;height:1080px;overflow:hidden;background:#000}
+#root{position:relative;width:100%;height:100%;overflow:hidden;font-family:'Fig',sans-serif;background:#000}
+#cam{position:absolute;inset:0;transform-origin:50% 40%}
+.talk{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.abs{position:absolute}
+.grp{position:absolute;inset:0;pointer-events:none}
+.card{position:absolute;background:#fffdf7;color:#0a1930;padding:34px 44px 38px;box-shadow:0 18px 44px rgba(10,25,48,.35);border-radius:6px;rotate:var(--r)}
+.lbl{font:700 36px/1 Fig;letter-spacing:.02em;opacity:.75}
+.num{font:900 210px/.95 Fig;letter-spacing:-.03em}.num small{font-size:.38em;font-weight:700}
+.trap{width:560px}.trap .sub{font:600 34px/1.2 Fig;margin-top:14px;opacity:.8}
+.hand{position:absolute;font:400 54px/1.05 Hand;color:#0a1930;white-space:nowrap}
+.note{background:#fffdf7;padding:18px 28px 22px;box-shadow:0 12px 30px rgba(10,25,48,.35);border-radius:4px;rotate:var(--r)}
+.draw{stroke-dasharray:1;stroke-dashoffset:1}
+.paper{position:absolute;background:#fffdf7;background-image:repeating-linear-gradient(180deg,transparent 0 78px,#cfe0ee 78px 81px);padding:26px 40px 30px;font:400 56px/81px Hand;color:#2b2724;box-shadow:0 14px 36px rgba(10,25,48,.35)}
+.paper .pt{font:800 30px/81px Fig;color:#0a1930;letter-spacing:.02em;text-transform:uppercase}
+.paper .pi{display:flex;justify-content:space-between;gap:20px}
+.tick{display:inline-block;color:#2e7d4f;font-family:Fig;font-weight:800}.tick.x{color:#0a1930}
+.receipt{position:absolute;width:520px;background:#fffdf7;padding:40px 44px 70px;font:400 44px/1.25 Hand;color:#2b2724;rotate:-3deg;box-shadow:0 18px 40px rgba(10,25,48,.35)}
+.receipt b{display:block;font-weight:400;color:#0a1930;margin-bottom:30px}.receipt b{text-decoration:underline #4da3ff 8px;text-underline-offset:6px}
+.receipt .row{display:flex;justify-content:space-between;gap:20px}
+.receipt .tot{border-top:3px dashed #2b2724;margin-top:16px;padding-top:12px;font-size:54px;color:#0a1930}
+.chap{inset:0;background:#0a1930;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:30px}
+.chn{font:700 40px/1 Fig;letter-spacing:.3em;color:#4da3ff}
+.cht{font:900 150px/1 Fig;letter-spacing:-.03em;color:#f7f3ec;text-align:center;max-width:1700px}
+.chl{width:200px;height:5px;background:#4da3ff}
+.shot{left:0;top:0;width:1920px;height:auto}
+.bubble{position:absolute;right:44px;bottom:44px;width:440px;height:330px;border-radius:28px;border:6px solid #f7f3ec;box-shadow:0 16px 40px rgba(10,25,48,.35);overflow:hidden;background:#000}
+.bvid{position:absolute;left:-260px;top:-95px;width:960px;height:540px;object-fit:cover}
+.head{left:70px;top:70px;width:880px;font:900 104px/.95 Fig;letter-spacing:-.03em;color:#0a1930;-webkit-text-stroke:22px #fffdf7;paint-order:stroke fill}
+.head .sky{color:#4da3ff}
+.tvs{overflow:hidden;background:#1d1f22}.fillimg{left:0;top:0;width:100%;height:100%;object-fit:cover}
+.off{inset:0;background:radial-gradient(#3a3d42,#15171a)}
+.scan{inset:0;background:repeating-linear-gradient(180deg,rgba(0,0,0,.08) 0 2px,transparent 2px 5px)}
+.glare{inset:0;background:radial-gradient(120% 90% at 30% 15%,rgba(255,255,255,.22),transparent 45%),radial-gradient(140% 120% at 50% 50%,transparent 60%,rgba(0,0,0,.35))}
+.cbar{position:absolute;width:560px;display:flex;align-items:center;gap:16px;background:#fff;border-radius:999px;padding:22px 30px;box-shadow:0 12px 30px rgba(10,25,48,.35);font:600 36px/1 Fig;color:#111}
+.cbp{position:absolute;left:30px;color:#888;font-weight:500}.cbt{flex:1;letter-spacing:.02em}.cbs{color:#4da3ff;font-weight:800}
+.pill{position:absolute;background:#f7f3ec;color:#0a1930;font:700 34px/1 Fig;padding:20px 34px;border-radius:999px;box-shadow:0 10px 30px rgba(10,25,48,.3)}
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-width="1920" data-height="1080" data-duration="878.399">
+<div id="cam">
+<video id="talk-0" class="clip talk" src="assets/seg/seg-0.mp4" muted playsinline data-start="0" data-duration="20" data-track-index="0"></video>
+<video id="talk-1" class="clip talk" src="assets/seg/seg-1.mp4" muted playsinline data-start="20" data-duration="20" data-track-index="1"></video>
+<video id="talk-2" class="clip talk" src="assets/seg/seg-2.mp4" muted playsinline data-start="40" data-duration="20" data-track-index="0"></video>
+<video id="talk-3" class="clip talk" src="assets/seg/seg-3.mp4" muted playsinline data-start="60" data-duration="20" data-track-index="1"></video>
+<video id="talk-4" class="clip talk" src="assets/seg/seg-4.mp4" muted playsinline data-start="80" data-duration="20" data-track-index="0"></video>
+<video id="talk-5" class="clip talk" src="assets/seg/seg-5.mp4" muted playsinline data-start="100" data-duration="20" data-track-index="1"></video>
+<video id="talk-6" class="clip talk" src="assets/seg/seg-6.mp4" muted playsinline data-start="120" data-duration="20" data-track-index="0"></video>
+<video id="talk-7" class="clip talk" src="assets/seg/seg-7.mp4" muted playsinline data-start="140" data-duration="20" data-track-index="1"></video>
+<video id="talk-8" class="clip talk" src="assets/seg/seg-8.mp4" muted playsinline data-start="160" data-duration="20" data-track-index="0"></video>
+<video id="talk-9" class="clip talk" src="assets/seg/seg-9.mp4" muted playsinline data-start="180" data-duration="20" data-track-index="1"></video>
+<video id="talk-10" class="clip talk" src="assets/seg/seg-10.mp4" muted playsinline data-start="200" data-duration="20" data-track-index="0"></video>
+<video id="talk-11" class="clip talk" src="assets/seg/seg-11.mp4" muted playsinline data-start="220" data-duration="20" data-track-index="1"></video>
+<video id="talk-12" class="clip talk" src="assets/seg/seg-12.mp4" muted playsinline data-start="240" data-duration="20" data-track-index="0"></video>
+<video id="talk-13" class="clip talk" src="assets/seg/seg-13.mp4" muted playsinline data-start="260" data-duration="20" data-track-index="1"></video>
+<video id="talk-14" class="clip talk" src="assets/seg/seg-14.mp4" muted playsinline data-start="280" data-duration="20" data-track-index="0"></video>
+<video id="talk-15" class="clip talk" src="assets/seg/seg-15.mp4" muted playsinline data-start="300" data-duration="20" data-track-index="1"></video>
+<video id="talk-16" class="clip talk" src="assets/seg/seg-16.mp4" muted playsinline data-start="320" data-duration="20" data-track-index="0"></video>
+<video id="talk-17" class="clip talk" src="assets/seg/seg-17.mp4" muted playsinline data-start="340" data-duration="20" data-track-index="1"></video>
+<video id="talk-18" class="clip talk" src="assets/seg/seg-18.mp4" muted playsinline data-start="360" data-duration="20" data-track-index="0"></video>
+<video id="talk-19" class="clip talk" src="assets/seg/seg-19.mp4" muted playsinline data-start="380" data-duration="20" data-track-index="1"></video>
+<video id="talk-20" class="clip talk" src="assets/seg/seg-20.mp4" muted playsinline data-start="400" data-duration="20" data-track-index="0"></video>
+<video id="talk-21" class="clip talk" src="assets/seg/seg-21.mp4" muted playsinline data-start="420" data-duration="20" data-track-index="1"></video>
+<video id="talk-22" class="clip talk" src="assets/seg/seg-22.mp4" muted playsinline data-start="440" data-duration="20" data-track-index="0"></video>
+<video id="talk-23" class="clip talk" src="assets/seg/seg-23.mp4" muted playsinline data-start="460" data-duration="20" data-track-index="1"></video>
+<video id="talk-24" class="clip talk" src="assets/seg/seg-24.mp4" muted playsinline data-start="480" data-duration="20" data-track-index="0"></video>
+<video id="talk-25" class="clip talk" src="assets/seg/seg-25.mp4" muted playsinline data-start="500" data-duration="20" data-track-index="1"></video>
+<video id="talk-26" class="clip talk" src="assets/seg/seg-26.mp4" muted playsinline data-start="520" data-duration="20" data-track-index="0"></video>
+<video id="talk-27" class="clip talk" src="assets/seg/seg-27.mp4" muted playsinline data-start="540" data-duration="20" data-track-index="1"></video>
+<video id="talk-28" class="clip talk" src="assets/seg/seg-28.mp4" muted playsinline data-start="560" data-duration="20" data-track-index="0"></video>
+<video id="talk-29" class="clip talk" src="assets/seg/seg-29.mp4" muted playsinline data-start="580" data-duration="20" data-track-index="1"></video>
+<video id="talk-30" class="clip talk" src="assets/seg/seg-30.mp4" muted playsinline data-start="600" data-duration="20" data-track-index="0"></video>
+<video id="talk-31" class="clip talk" src="assets/seg/seg-31.mp4" muted playsinline data-start="620" data-duration="20" data-track-index="1"></video>
+<video id="talk-32" class="clip talk" src="assets/seg/seg-32.mp4" muted playsinline data-start="640" data-duration="20" data-track-index="0"></video>
+<video id="talk-33" class="clip talk" src="assets/seg/seg-33.mp4" muted playsinline data-start="660" data-duration="20" data-track-index="1"></video>
+<video id="talk-34" class="clip talk" src="assets/seg/seg-34.mp4" muted playsinline data-start="680" data-duration="20" data-track-index="0"></video>
+<video id="talk-35" class="clip talk" src="assets/seg/seg-35.mp4" muted playsinline data-start="700" data-duration="20" data-track-index="1"></video>
+<video id="talk-36" class="clip talk" src="assets/seg/seg-36.mp4" muted playsinline data-start="720" data-duration="20" data-track-index="0"></video>
+<video id="talk-37" class="clip talk" src="assets/seg/seg-37.mp4" muted playsinline data-start="740" data-duration="20" data-track-index="1"></video>
+<video id="talk-38" class="clip talk" src="assets/seg/seg-38.mp4" muted playsinline data-start="760" data-duration="20" data-track-index="0"></video>
+<video id="talk-39" class="clip talk" src="assets/seg/seg-39.mp4" muted playsinline data-start="780" data-duration="20" data-track-index="1"></video>
+<video id="talk-40" class="clip talk" src="assets/seg/seg-40.mp4" muted playsinline data-start="800" data-duration="20" data-track-index="0"></video>
+<video id="talk-41" class="clip talk" src="assets/seg/seg-41.mp4" muted playsinline data-start="820" data-duration="20" data-track-index="1"></video>
+<video id="talk-42" class="clip talk" src="assets/seg/seg-42.mp4" muted playsinline data-start="840" data-duration="20" data-track-index="0"></video>
+<video id="talk-43" class="clip talk" src="assets/seg/seg-43.mp4" muted playsinline data-start="860" data-duration="18.399" data-track-index="1"></video>
+</div>
+<div id="co" class="grp" style="z-index:9">
+  <img class="abs" src="assets/img/curtain-bw.jpg" style="inset:0;width:1920px;height:1080px;object-fit:cover">
+  <div id="co-stage" class="abs" style="inset:0;transform-origin:1272.16px 299.773px">
+    <div id="co-stack" class="abs" style="inset:0">
+      <div class="abs" style="left:150px;right:180px;top:1010px;height:60px;border-radius:50%;background:radial-gradient(rgba(0,0,0,.45),transparent 70%)"></div>
+      <img class="abs" src="assets/img/tv-walnut.png" style="left:230px;top:333px;width:760px">
+      <div id="co-inbox" class="abs tvs" style="left:302.2px;top:608.908px;width:484.88px;height:339.579px;border-radius:7%/10%"><img id="co-inbox-img" class="abs fillimg" src="assets/img/tv-inbox.png"><div class="abs scan"></div><div class="abs glare"></div></div>
+      <img class="abs" src="assets/img/tv-crt.png" style="left:1010px;top:437.317px;width:660px">
+      <div class="abs tvs" style="left:1053.56px;top:500.599px;width:388.08px;height:362.815px;border-radius:4%"><img class="abs fillimg" src="assets/img/tv-calc.png"><div class="abs scan"></div><div class="abs glare"></div></div>
+    </div>
+    <div id="co-her" class="abs" style="left:1090px;top:41.737px;width:440px;height:409.58px;transform-origin:0 0">
+      <img class="abs" src="assets/img/tv-walnut.png?small" style="left:0;top:0;width:440px">
+      <div class="abs tvs" style="left:41.8px;top:159.736px;width:280.72px;height:196.599px;border-radius:7%/10%"><video id="co-vid" class="clip fillimg" src="assets/seg/tv-her.mp4" muted playsinline data-start="0" data-duration="10.947" data-track-index="4"></video><div class="abs scan"></div><div class="abs glare"></div></div>
+    </div>
+  </div>
+  <div id="co-h1" class="abs head" style="width:640px;font-size:92px;top:250px">MANYCHAT: UP TO <span class="sky">$100s</span> A MONTH</div>
+  <div id="co-h2" class="abs head">MINE: <span class="sky">$6</span> A MONTH</div>
+</div>
+<div id="g8" class="grp" style="z-index:5"><div id="hk1" class="card" style="left:20px;top:250px;--r:-2deg"><div class="lbl">MANYCHAT PRO</div><div class="num" style="font-size:210px">$39<small>/mo</small></div></div><div id="hk2" class="card" style="left:1330px;top:200px;--r:2deg"><div class="lbl">MINE</div><div class="num" style="font-size:210px">$6<small>/mo</small></div></div><svg id="hk-r" class="abs" style="left:1240px;top:140px;width:660px;height:460px;overflow:visible" viewBox="0 0 200 100" preserveAspectRatio="none"><path class="draw" pathLength="1" d="M18 52 C14 18 70 6 112 8 C170 11 196 34 190 58 C184 86 120 96 76 92 C34 88 6 70 22 40" fill="none" stroke="#0a1930" stroke-width="15" stroke-linecap="round" vector-effect="non-scaling-stroke"/><path class="draw" pathLength="1" d="M18 52 C14 18 70 6 112 8 C170 11 196 34 190 58 C184 86 120 96 76 92 C34 88 6 70 22 40" fill="none" stroke="#4da3ff" stroke-width="9" stroke-linecap="round" vector-effect="non-scaling-stroke"/></svg><div id="hk-n" class="hand note" style="left:1400px;top:660px;--r:-4deg;font-size:54px">still runs when<br>my laptop is off</div></div>
+<div id="g13" class="grp" style="z-index:7"><div class="abs chap" id="ch12"><div class="chn">CHAPTER 1</div><div class="cht">Why I wouldn't pay</div><div class="chl"></div></div></div>
+<div id="g16" class="grp" style="z-index:5"><div id="ck15" class="paper" style="left:50px;top:300px;width:560px"><div class="pt">ManyChat free plan</div><div class="pi"><span>Free: 25 contacts</span><span id="ck15-t0" class="tick">✓</span></div><div class="pi"><span>Limited automations</span><span id="ck15-t1" class="tick x">✗</span></div></div></div>
+<div id="g19" class="grp" style="z-index:5"><div id="wp-n" class="hand note" style="left:1410px;top:380px;--r:3deg;font-size:60px">not as bad<br>as it sounds</div></div>
+<div id="g21" class="grp" style="z-index:7"><div class="abs chap" id="ch20"><div class="chn">CHAPTER 2</div><div class="cht">What "replace with Claude" means</div><div class="chl"></div></div></div>
+<div id="g23" class="grp" style="z-index:5"><div id="api" class="card" style="left:1320px;top:330px;--r:2deg"><div class="lbl">BUILT ON</div><div class="num" style="font-size:110px">Official<br>Instagram API</div></div></div>
+<div id="g26" class="grp" style="z-index:7"><div class="abs chap" id="ch25"><div class="chn">CHAPTER 3</div><div class="cht">What it does every day</div><div class="chl"></div></div></div>
+<div id="g33" class="grp" style="z-index:6"><div class="abs" style="inset:0;background:#fff3f0;overflow:hidden"><img id="tk28" class="abs shot" src="assets/img/flows.png"></div><div class="bubble"><video id="bv29" class="clip bvid" src="assets/seg/seg-11.mp4" muted playsinline data-start="222.741" data-duration="17.225" data-media-start="2.741" data-track-index="2"></video><video id="bv30" class="clip bvid" src="assets/seg/seg-12.mp4" muted playsinline data-start="240" data-duration="19.966" data-media-start="0" data-track-index="3"></video><video id="bv31" class="clip bvid" src="assets/seg/seg-13.mp4" muted playsinline data-start="260" data-duration="19.966" data-media-start="0" data-track-index="2"></video><video id="bv32" class="clip bvid" src="assets/seg/seg-14.mp4" muted playsinline data-start="280" data-duration="8.972" data-media-start="0" data-track-index="3"></video></div></div>
+<div id="g36" class="grp" style="z-index:7"><div class="abs chap" id="ch35"><div class="chn">CHAPTER 4</div><div class="cht">It works on YouTube too</div><div class="chl"></div></div></div>
+<div id="g38" class="grp" style="z-index:5"><div id="nl" class="card" style="left:1330px;top:300px;--r:2deg"><div class="lbl">CONTACT LIMIT</div><div class="num" style="font-size:190px">None</div></div><div id="nl-n" class="hand note" style="left:1360px;top:640px;--r:-3deg;font-size:50px">thousands of contacts?<br>still $6</div></div>
+<div id="g40" class="grp" style="z-index:5"><div id="trap" class="card trap" style="left:1320px;top:250px;--r:2deg"><div class="lbl">SETUP TRAP</div><div class="num" style="font-size:84px;line-height:1">No logo on<br>your Google app</div><div class="sub">or wait 4 to 6 weeks for review</div></div></div>
+<div id="g43" class="grp" style="z-index:7"><div class="abs chap" id="ch42"><div class="chn">CHAPTER 5</div><div class="cht">The costs</div><div class="chl"></div></div></div>
+<div id="g45" class="grp" style="z-index:5"><div id="rc" class="receipt" style="left:1340px;top:150px"><b>My monthly bill</b>
+    <div class="row" id="rc1"><span>Claude plan</span><span>have it</span></div><div class="row" id="rc2"><span>Server</span><span>$6</span></div>
+    <div class="row" id="rc3"><span>Apify</span><span>free credit</span></div><div class="row" id="rc4"><span>Web address</span><span>free</span></div>
+    <div class="row tot" id="rc5"><span>Total</span><span>$6/mo</span></div></div><div id="rc-mc" class="card" style="left:60px;top:330px;--r:-2deg"><div class="lbl">MANYCHAT PRO</div><div class="num" style="font-size:170px">$39<small>/mo</small></div></div><svg id="rc-x" class="abs" style="left:380px;top:610px;width:110px;height:110px" viewBox="0 0 100 100"><path class="draw" pathLength="1" d="M18 16 L84 86" stroke="#fffdf7" stroke-width="20" stroke-linecap="round" fill="none"/><path class="draw" pathLength="1" d="M82 14 L20 84" stroke="#fffdf7" stroke-width="20" stroke-linecap="round" fill="none"/><path class="draw" pathLength="1" d="M18 16 L84 86" stroke="#0a1930" stroke-width="10" stroke-linecap="round" fill="none"/><path class="draw" pathLength="1" d="M82 14 L20 84" stroke="#0a1930" stroke-width="10" stroke-linecap="round" fill="none"/></svg></div>
+<div id="g48" class="grp" style="z-index:5"><div id="tm-n" class="hand note" style="left:1380px;top:360px;--r:-3deg;font-size:56px">about 1 full day,<br>mostly the back end</div></div>
+<div id="g51" class="grp" style="z-index:7"><div class="abs chap" id="ch50"><div class="chn">CHAPTER 6</div><div class="cht">What it can't do</div><div class="chl"></div></div></div>
+<div id="g54" class="grp" style="z-index:5"><div id="ck53" class="paper" style="left:50px;top:300px;width:520px"><div class="pt">Auto-replies</div><div class="pi"><span>Instagram</span><span id="ck53-t0" class="tick">✓</span></div><div class="pi"><span>YouTube</span><span id="ck53-t1" class="tick">✓</span></div><div class="pi"><span>TikTok auto-DM</span><span id="ck53-t2" class="tick x">✗</span></div></div></div>
+<div id="g62" class="grp" style="z-index:6"><div class="abs" style="inset:0;background:#fff3f0;overflow:hidden"><img id="tk58" class="abs shot" src="assets/img/inbox.png"></div><div class="bubble"><video id="bv59" class="clip bvid" src="assets/seg/seg-28.mp4" muted playsinline data-start="562.396" data-duration="17.57" data-media-start="2.396" data-track-index="2"></video><video id="bv60" class="clip bvid" src="assets/seg/seg-29.mp4" muted playsinline data-start="580" data-duration="19.966" data-media-start="0" data-track-index="3"></video><video id="bv61" class="clip bvid" src="assets/seg/seg-30.mp4" muted playsinline data-start="600" data-duration="1.438" data-media-start="0" data-track-index="2"></video></div></div>
+<div id="g64" class="grp" style="z-index:5"><div id="own" class="card" style="left:1320px;top:320px;--r:2deg"><div class="lbl">WHO OWNS IT</div><div class="num" style="font-size:96px">Your data,<br>your server</div></div></div>
+<div id="g67" class="grp" style="z-index:7"><div class="abs chap" id="ch66"><div class="chn">CHAPTER 7</div><div class="cht">Who should stay on ManyChat</div><div class="chl"></div></div></div>
+<div id="g70" class="grp" style="z-index:5"><div id="ck69" class="paper" style="left:50px;top:300px;width:520px"><div class="pt">Stay on ManyChat for</div><div class="pi"><span>WhatsApp</span><span id="ck69-t0" class="tick">✓</span></div><div class="pi"><span>Facebook</span><span id="ck69-t1" class="tick">✓</span></div></div></div>
+<div id="g73" class="grp" style="z-index:5"><div id="st-n" class="hand note" style="left:1360px;top:420px;--r:3deg;font-size:52px">WhatsApp also charges<br>per message</div></div>
+<div id="g75" class="grp" style="z-index:7"><div class="abs chap" id="ch74"><div class="chn">CHAPTER 8</div><div class="cht">Get mine</div><div class="chl"></div></div></div>
+<div id="g79" class="grp" style="z-index:6"><div class="abs" style="inset:0;background:#fff3f0;overflow:hidden"><img id="tk77" class="abs shot" src="assets/img/chat-manager.png"></div><div class="bubble"><video id="bv78" class="clip bvid" src="assets/seg/seg-40.mp4" muted playsinline data-start="810.845" data-duration="9.121" data-media-start="10.845" data-track-index="2"></video></div></div>
+<div id="g81" class="grp" style="z-index:5"><div id="cb" class="cbar" style="left:1290px;top:430px"><span class="cbp">Add a comment...</span><span id="cbt" class="cbt">CHATTERBOX</span><span class="cbs">Post</span></div><div id="url" class="pill" style="left:1330px;top:560px">theambitiondepartment.com</div></div>
+<div id="es" class="grp" style="z-index:1"><div class="abs" style="left:1180px;top:0;width:740px;height:1080px;background:#0a1930"></div>
+  <div class="abs" style="left:1260px;top:150px;font:900 70px/1 Fig;letter-spacing:-.02em;color:#f7f3ec">Watch next</div>
+  <div class="abs" style="left:1470px;top:700px;font:800 32px/1.35 Fig;color:#f7f3ec">@AmbitionDeptHQ<br><span style="font-weight:500;font-size:27px;opacity:.85">theambitiondepartment.com</span></div></div>
+<audio id="voice" src="assets/voice.m4a" data-start="0" data-duration="878.399" data-track-index="10" data-volume="1"></audio>
+<audio id="fx1" src="assets/sfx/mouse-click.mp3" data-start="0" data-duration="1.2" data-track-index="21" data-volume="0.55"></audio>
+<audio id="fx2" src="assets/sfx/static.mp3" data-start="0.05" data-duration="1.2" data-track-index="22" data-volume="0.9"></audio>
+<audio id="fx3" src="assets/sfx/pop-light.mp3" data-start="2.24" data-duration="1.2" data-track-index="23" data-volume="0.55"></audio>
+<audio id="fx4" src="assets/sfx/static.mp3" data-start="5.04" data-duration="1.2" data-track-index="24" data-volume="0.9"></audio>
+<audio id="fx5" src="assets/sfx/mouse-click.mp3" data-start="5.54" data-duration="1.2" data-track-index="25" data-volume="0.55"></audio>
+<audio id="fx6" src="assets/sfx/coins.mp3" data-start="6.64" data-duration="1.2" data-track-index="20" data-volume="0.55"></audio>
+<audio id="fx7" src="assets/sfx/zoom-in.mp3" data-start="9.7" data-duration="1.2" data-track-index="21" data-volume="0.6"></audio>
+<audio id="music-open" src="assets/music.mp3" data-start="0" data-duration="12.447" data-track-index="11" data-volume="1" data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0,"v":0},{"t":1.5,"v":0.07},{"t":10.447,"v":0.07},{"t":12.447,"v":0}]}]}'></audio>
+<audio id="fx9" src="assets/sfx/pop-light.mp3" data-start="13.005" data-duration="1.2" data-track-index="23" data-volume="0.55"></audio>
+<audio id="fx10" src="assets/sfx/pop-bubble.mp3" data-start="17.235" data-duration="1.2" data-track-index="24" data-volume="0.55"></audio>
+<audio id="fx11" src="assets/sfx/swoosh-in.mp3" data-start="22.113" data-duration="1.2" data-track-index="25" data-volume="0.4"></audio>
+<audio id="fx14" src="assets/sfx/paper-slide.mp3" data-start="38.644" data-duration="1.2" data-track-index="22" data-volume="0.5"></audio>
+<audio id="fx17" src="assets/sfx/check.mp3" data-start="63.629" data-duration="1.2" data-track-index="25" data-volume="0.4"></audio>
+<audio id="fx18" src="assets/sfx/nope.mp3" data-start="69.569" data-duration="1.2" data-track-index="20" data-volume="0.4"></audio>
+<audio id="fx22" src="assets/sfx/paper-slide.mp3" data-start="95.85" data-duration="1.2" data-track-index="24" data-volume="0.5"></audio>
+<audio id="fx24" src="assets/sfx/pop-light.mp3" data-start="183.169" data-duration="1.2" data-track-index="20" data-volume="0.55"></audio>
+<audio id="fx27" src="assets/sfx/paper-slide.mp3" data-start="220.841" data-duration="1.2" data-track-index="23" data-volume="0.5"></audio>
+<audio id="fx34" src="assets/sfx/whoosh-air.mp3" data-start="222.641" data-duration="1.2" data-track-index="24" data-volume="0.45"></audio>
+<audio id="fx37" src="assets/sfx/paper-slide.mp3" data-start="289.172" data-duration="1.2" data-track-index="21" data-volume="0.5"></audio>
+<audio id="fx39" src="assets/sfx/pop-light.mp3" data-start="322.402" data-duration="1.2" data-track-index="23" data-volume="0.55"></audio>
+<audio id="fx41" src="assets/sfx/nope.mp3" data-start="378.738" data-duration="1.2" data-track-index="25" data-volume="0.45"></audio>
+<audio id="fx44" src="assets/sfx/paper-slide.mp3" data-start="401.046" data-duration="1.2" data-track-index="22" data-volume="0.5"></audio>
+<audio id="fx46" src="assets/sfx/coins.mp3" data-start="405.746" data-duration="1.2" data-track-index="24" data-volume="0.55"></audio>
+<audio id="fx47" src="assets/sfx/pop-light.mp3" data-start="406.546" data-duration="1.2" data-track-index="25" data-volume="0.55"></audio>
+<audio id="fx49" src="assets/sfx/swoosh-in.mp3" data-start="456.804" data-duration="1.2" data-track-index="21" data-volume="0.4"></audio>
+<audio id="fx52" src="assets/sfx/paper-slide.mp3" data-start="494.98" data-duration="1.2" data-track-index="24" data-volume="0.5"></audio>
+<audio id="fx55" src="assets/sfx/check.mp3" data-start="519.293" data-duration="1.2" data-track-index="21" data-volume="0.4"></audio>
+<audio id="fx56" src="assets/sfx/check.mp3" data-start="519.693" data-duration="1.2" data-track-index="22" data-volume="0.4"></audio>
+<audio id="fx57" src="assets/sfx/nope.mp3" data-start="520.393" data-duration="1.2" data-track-index="23" data-volume="0.4"></audio>
+<audio id="fx63" src="assets/sfx/whoosh-air.mp3" data-start="562.296" data-duration="1.2" data-track-index="23" data-volume="0.45"></audio>
+<audio id="fx65" src="assets/sfx/pop-light.mp3" data-start="726.019" data-duration="1.2" data-track-index="25" data-volume="0.55"></audio>
+<audio id="fx68" src="assets/sfx/paper-slide.mp3" data-start="738.033" data-duration="1.2" data-track-index="22" data-volume="0.5"></audio>
+<audio id="fx71" src="assets/sfx/check.mp3" data-start="744.598" data-duration="1.2" data-track-index="25" data-volume="0.4"></audio>
+<audio id="fx72" src="assets/sfx/check.mp3" data-start="746.878" data-duration="1.2" data-track-index="20" data-volume="0.4"></audio>
+<audio id="fx76" src="assets/sfx/paper-slide.mp3" data-start="773.454" data-duration="1.2" data-track-index="24" data-volume="0.5"></audio>
+<audio id="fx80" src="assets/sfx/whoosh-air.mp3" data-start="810.745" data-duration="1.2" data-track-index="22" data-volume="0.45"></audio>
+<audio id="fx82" src="assets/sfx/pop-bubble.mp3" data-start="838.405" data-duration="1.2" data-track-index="24" data-volume="0.45"></audio>
+<audio id="fx83" src="assets/sfx/pop-light.mp3" data-start="850.165" data-duration="1.2" data-track-index="25" data-volume="0.55"></audio>
+<audio id="music-end" src="assets/music.mp3" data-start="858.914" data-duration="19.485" data-track-index="12" data-volume="1" data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0,"v":0},{"t":2,"v":0.09},{"t":17.485,"v":0.09},{"t":19.485,"v":0}]}]}'></audio>
+</div>
+<script>
+const tl = gsap.timeline({ paused: true });
+const E = 'power3.out', B = 'back.out(1.6)';
+const pop = (s, t, r = 0) => tl.fromTo(s, { scale: 0, rotation: r - 8, opacity: 0 }, { scale: 1, rotation: r, opacity: 1, duration: 0.45, ease: B }, t);
+const up = (s, t, y = 30) => tl.fromTo(s, { y, opacity: 0 }, { y: 0, opacity: 1, duration: 0.4, ease: E }, t);
+const draw = (s, t, d = 0.45) => tl.fromTo(s + ' .draw', { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: d, ease: 'power2.inOut' }, t);
+gsap.set('#co-her', { x: -390, y: -80.157, scale: 2.682 });
+gsap.set('#co-stack', { opacity: 0 }); gsap.set('#co-h2', { opacity: 0 }); gsap.set('#co-inbox-img', { opacity: 0 });
+tl.fromTo('#co-her', { opacity: 0 }, { opacity: 1, duration: 0.15 }, 0.02);
+pop('#co-h1', 2.24, 0);
+tl.to('#co-her', { x: 0, y: 0, scale: 1, duration: 0.55, ease: 'power3.inOut' }, 5.04);
+tl.to('#co-stack', { opacity: 1, duration: 0.45 }, 5.14);
+tl.to('#co-h1', { opacity: 0, duration: 0.2 }, 5.04);
+tl.to('#co-inbox-img', { opacity: 1, duration: 0.12 }, 5.59);
+pop('#co-h2', 6.49, 0);
+tl.to('#co-stage', { scale: 7, duration: 1.197, ease: 'power2.in' }, 9.8);
+tl.to('#co-h2', { opacity: 0, duration: 0.25 }, 9.8);
+tl.to('#co', { opacity: 0, duration: 0.12 }, 10.887);
+gsap.set('#g8', { opacity: 0 });
+tl.to('#g8', { opacity: 1, duration: 0.25 }, 12.905);
+tl.to('#g8', { opacity: 0, duration: 0.25 }, 38.094);
+pop('#hk1', 13.005, -2);
+pop('#hk2', 17.235, 2);
+draw('#hk-r', 17.585, 0.6);
+up('#hk-n', 22.113);
+gsap.set('#g13', { opacity: 0 });
+tl.to('#g13', { opacity: 1, duration: 0.2 }, 38.644);
+tl.to('#g13', { opacity: 0, duration: 0.2 }, 40.144);
+tl.fromTo('#ch12 .cht', { y: 40, opacity: 0 }, { y: 0, opacity: 1, duration: 0.45, ease: E }, 38.744);
+tl.fromTo('#ch12 .chl', { scaleX: 0 }, { scaleX: 1, duration: 0.4, ease: E }, 38.994);
+gsap.set('#g16', { opacity: 0 });
+tl.to('#g16', { opacity: 1, duration: 0.25 }, 63.129);
+tl.to('#g16', { opacity: 0, duration: 0.25 }, 84.169);
+tl.fromTo('#ck15', { y: -40, rotation: 3 }, { y: 0, rotation: -2, duration: 0.5, ease: B }, 63.129);
+pop('#ck15-t0', 63.629, 0);
+pop('#ck15-t1', 69.569, 0);
+gsap.set('#g19', { opacity: 0 });
+tl.to('#g19', { opacity: 1, duration: 0.25 }, 93.879);
+tl.to('#g19', { opacity: 0, duration: 0.25 }, 95.5);
+up('#wp-n', 94.079);
+gsap.set('#g21', { opacity: 0 });
+tl.to('#g21', { opacity: 1, duration: 0.2 }, 95.85);
+tl.to('#g21', { opacity: 0, duration: 0.2 }, 97.35);
+tl.fromTo('#ch20 .cht', { y: 40, opacity: 0 }, { y: 0, opacity: 1, duration: 0.45, ease: E }, 95.95);
+tl.fromTo('#ch20 .chl', { scaleX: 0 }, { scaleX: 1, duration: 0.4, ease: E }, 96.2);
+gsap.set('#g23', { opacity: 0 });
+tl.to('#g23', { opacity: 1, duration: 0.25 }, 183.069);
+tl.to('#g23', { opacity: 0, duration: 0.25 }, 187.419);
+pop('#api', 183.169, 2);
+gsap.set('#g26', { opacity: 0 });
+tl.to('#g26', { opacity: 1, duration: 0.2 }, 220.841);
+tl.to('#g26', { opacity: 0, duration: 0.2 }, 222.341);
+tl.fromTo('#ch25 .cht', { y: 40, opacity: 0 }, { y: 0, opacity: 1, duration: 0.45, ease: E }, 220.941);
+tl.fromTo('#ch25 .chl', { scaleX: 0 }, { scaleX: 1, duration: 0.4, ease: E }, 221.191);
+gsap.set('#g33', { opacity: 0 });
+tl.to('#g33', { opacity: 1, duration: 0.3 }, 222.741);
+tl.to('#g33', { opacity: 0, duration: 0.3 }, 288.672);
+tl.fromTo('#tk28', { y: 0 }, { y: -180, duration: 66.231, ease: 'none' }, 222.741);
+gsap.set('#g36', { opacity: 0 });
+tl.to('#g36', { opacity: 1, duration: 0.2 }, 289.172);
+tl.to('#g36', { opacity: 0, duration: 0.2 }, 290.672);
+tl.fromTo('#ch35 .cht', { y: 40, opacity: 0 }, { y: 0, opacity: 1, duration: 0.45, ease: E }, 289.272);
+tl.fromTo('#ch35 .chl', { scaleX: 0 }, { scaleX: 1, duration: 0.4, ease: E }, 289.522);
+gsap.set('#g38', { opacity: 0 });
+tl.to('#g38', { opacity: 1, duration: 0.25 }, 322.302);
+tl.to('#g38', { opacity: 0, duration: 0.25 }, 327.152);
+pop('#nl', 322.402, 2);
+up('#nl-n', 323.602);
+gsap.set('#g40', { opacity: 0 });
+tl.to('#g40', { opacity: 1, duration: 0.25 }, 378.638);
+tl.to('#g40', { opacity: 0, duration: 0.25 }, 385.488);
+pop('#trap', 378.738, 2);
+gsap.set('#g43', { opacity: 0 });
+tl.to('#g43', { opacity: 1, duration: 0.2 }, 401.046);
+tl.to('#g43', { opacity: 0, duration: 0.2 }, 402.546);
+tl.fromTo('#ch42 .cht', { y: 40, opacity: 0 }, { y: 0, opacity: 1, duration: 0.45, ease: E }, 401.146);
+tl.fromTo('#ch42 .chl', { scaleX: 0 }, { scaleX: 1, duration: 0.4, ease: E }, 401.396);
+gsap.set('#g45', { opacity: 0 });
+tl.to('#g45', { opacity: 1, duration: 0.25 }, 402.946);
+tl.to('#g45', { opacity: 0, duration: 0.25 }, 444.892);
+tl.fromTo('#rc', { clipPath: 'inset(0 0 100% 0)' }, { clipPath: 'inset(0 0 0% 0)', duration: 0.8, ease: 'power2.out' }, 402.946);
+up('#rc1', 403.546, 14);
+up('#rc2', 404.046, 14);
+up('#rc3', 404.546, 14);
+up('#rc4', 405.046, 14);
+up('#rc5', 405.746, 14);
+pop('#rc-mc', 406.546, -2);
+draw('#rc-x', 407.046, 0.4);
+gsap.set('#g48', { opacity: 0 });
+tl.to('#g48', { opacity: 1, duration: 0.25 }, 456.704);
+tl.to('#g48', { opacity: 0, duration: 0.25 }, 461.554);
+up('#tm-n', 456.804);
+gsap.set('#g51', { opacity: 0 });
+tl.to('#g51', { opacity: 1, duration: 0.2 }, 494.98);
+tl.to('#g51', { opacity: 0, duration: 0.2 }, 496.48);
+tl.fromTo('#ch50 .cht', { y: 40, opacity: 0 }, { y: 0, opacity: 1, duration: 0.45, ease: E }, 495.08);
+tl.fromTo('#ch50 .chl', { scaleX: 0 }, { scaleX: 1, duration: 0.4, ease: E }, 495.33);
+gsap.set('#g54', { opacity: 0 });
+tl.to('#g54', { opacity: 1, duration: 0.25 }, 518.893);
+tl.to('#g54', { opacity: 0, duration: 0.25 }, 526.843);
+tl.fromTo('#ck53', { y: -40, rotation: 3 }, { y: 0, rotation: -2, duration: 0.5, ease: B }, 518.893);
+pop('#ck53-t0', 519.293, 0);
+pop('#ck53-t1', 519.693, 0);
+pop('#ck53-t2', 520.393, 0);
+gsap.set('#g62', { opacity: 0 });
+tl.to('#g62', { opacity: 1, duration: 0.3 }, 562.396);
+tl.to('#g62', { opacity: 0, duration: 0.3 }, 601.138);
+tl.fromTo('#tk58', { y: 0 }, { y: -300, duration: 39.042, ease: 'none' }, 562.396);
+gsap.set('#g64', { opacity: 0 });
+tl.to('#g64', { opacity: 1, duration: 0.25 }, 725.919);
+tl.to('#g64', { opacity: 0, duration: 0.25 }, 730.269);
+pop('#own', 726.019, 2);
+gsap.set('#g67', { opacity: 0 });
+tl.to('#g67', { opacity: 1, duration: 0.2 }, 738.033);
+tl.to('#g67', { opacity: 0, duration: 0.2 }, 739.533);
+tl.fromTo('#ch66 .cht', { y: 40, opacity: 0 }, { y: 0, opacity: 1, duration: 0.45, ease: E }, 738.133);
+tl.fromTo('#ch66 .chl', { scaleX: 0 }, { scaleX: 1, duration: 0.4, ease: E }, 738.383);
+gsap.set('#g70', { opacity: 0 });
+tl.to('#g70', { opacity: 1, duration: 0.25 }, 744.198);
+tl.to('#g70', { opacity: 0, duration: 0.25 }, 772.804);
+tl.fromTo('#ck69', { y: -40, rotation: 3 }, { y: 0, rotation: -2, duration: 0.5, ease: B }, 744.198);
+pop('#ck69-t0', 744.598, 0);
+pop('#ck69-t1', 746.878, 0);
+gsap.set('#g73', { opacity: 0 });
+tl.to('#g73', { opacity: 1, duration: 0.25 }, 766.795);
+tl.to('#g73', { opacity: 0, duration: 0.25 }, 772.804);
+up('#st-n', 766.895);
+gsap.set('#g75', { opacity: 0 });
+tl.to('#g75', { opacity: 1, duration: 0.2 }, 773.454);
+tl.to('#g75', { opacity: 0, duration: 0.2 }, 774.954);
+tl.fromTo('#ch74 .cht', { y: 40, opacity: 0 }, { y: 0, opacity: 1, duration: 0.45, ease: E }, 773.554);
+tl.fromTo('#ch74 .chl', { scaleX: 0 }, { scaleX: 1, duration: 0.4, ease: E }, 773.804);
+gsap.set('#g79', { opacity: 0 });
+tl.to('#g79', { opacity: 1, duration: 0.3 }, 810.845);
+tl.to('#g79', { opacity: 0, duration: 0.3 }, 819.745);
+tl.fromTo('#tk77', { y: 0 }, { y: -200, duration: 9.2, ease: 'none' }, 810.845);
+gsap.set('#g81', { opacity: 0 });
+tl.to('#g81', { opacity: 1, duration: 0.25 }, 838.305);
+tl.to('#g81', { opacity: 0, duration: 0.25 }, 854.415);
+pop('#cb', 838.405, 0);
+tl.set('#cb .cbp', { opacity: 0 }, 838.605);
+tl.fromTo('#cbt', { clipPath: 'inset(0 100% 0 0)' }, { clipPath: 'inset(0 0% 0 0)', duration: 0.7, ease: 'steps(10)' }, 838.605);
+pop('#url', 850.165, 0);
+gsap.set('#es', { opacity: 0 }); tl.to('#es', { opacity: 1, duration: 0.5 }, 858.914);
+tl.to('#cam', { x: -420, duration: 0.7, ease: 'power3.inOut' }, 858.914);
+tl.set('#cam', { scale: 1.18 }, 47.992);
+tl.set('#cam', { scale: 1 }, 49.235);
+tl.set('#cam', { scale: 1.18 }, 50.073);
+tl.set('#cam', { scale: 1 }, 54.529);
+tl.set('#cam', { scale: 1.18 }, 58.989);
+tl.set('#cam', { scale: 1 }, 76.159);
+tl.set('#cam', { scale: 1.18 }, 113.075);
+tl.set('#cam', { scale: 1 }, 131.53);
+tl.set('#cam', { scale: 1.18 }, 144.592);
+tl.set('#cam', { scale: 1 }, 167.908);
+tl.set('#cam', { scale: 1.18 }, 173.697);
+tl.set('#cam', { scale: 1 }, 213.187);
+tl.set('#cam', { scale: 1.18 }, 310.942);
+tl.set('#cam', { scale: 1 }, 350.541);
+tl.set('#cam', { scale: 1.18 }, 352.526);
+tl.set('#cam', { scale: 1 }, 362.498);
+tl.set('#cam', { scale: 1.18 }, 364.127);
+tl.set('#cam', { scale: 1 }, 368.635);
+tl.set('#cam', { scale: 1.18 }, 389.55);
+tl.set('#cam', { scale: 1 }, 392.649);
+tl.set('#cam', { scale: 1.18 }, 445.442);
+tl.set('#cam', { scale: 1 }, 447.496);
+tl.set('#cam', { scale: 1.18 }, 449.119);
+tl.set('#cam', { scale: 1 }, 488.623);
+tl.set('#cam', { scale: 1.18 }, 516.333);
+tl.set('#cam', { scale: 1 }, 554.827);
+tl.set('#cam', { scale: 1.18 }, 601.738);
+tl.set('#cam', { scale: 1 }, 616.211);
+tl.set('#cam', { scale: 1.18 }, 626.66);
+tl.set('#cam', { scale: 1 }, 730.709);
+tl.set('#cam', { scale: 1.18 }, 789.203);
+tl.set('#cam', { scale: 1 }, 808.605);
+tl.set('#cam', { scale: 1.18 }, 836.765);
+tl.set('#cam', { scale: 1 }, 858.914);
+tl.set('#cam', { scale: 1 }, 0);
+tl.set('#cam', { scale: 1 }, 12.605);
+tl.set('#cam', { scale: 1 }, 38.344);
+tl.set('#cam', { scale: 1 }, 62.829);
+tl.set('#cam', { scale: 1 }, 93.579);
+tl.set('#cam', { scale: 1 }, 95.55);
+tl.set('#cam', { scale: 1 }, 182.769);
+tl.set('#cam', { scale: 1 }, 220.541);
+tl.set('#cam', { scale: 1 }, 222.441);
+tl.set('#cam', { scale: 1 }, 288.872);
+tl.set('#cam', { scale: 1 }, 322.002);
+tl.set('#cam', { scale: 1 }, 378.338);
+tl.set('#cam', { scale: 1 }, 400.746);
+tl.set('#cam', { scale: 1 }, 402.646);
+tl.set('#cam', { scale: 1 }, 456.404);
+tl.set('#cam', { scale: 1 }, 494.68);
+tl.set('#cam', { scale: 1 }, 518.593);
+tl.set('#cam', { scale: 1 }, 562.096);
+tl.set('#cam', { scale: 1 }, 725.619);
+tl.set('#cam', { scale: 1 }, 737.733);
+tl.set('#cam', { scale: 1 }, 743.898);
+tl.set('#cam', { scale: 1 }, 766.495);
+tl.set('#cam', { scale: 1 }, 773.154);
+tl.set('#cam', { scale: 1 }, 810.545);
+tl.set('#cam', { scale: 1 }, 838.005);
+tl.set('#cam', { scale: 1 }, 858.614);
+window.__timelines['main'] = tl;
+</script>
+</body>
+</html>

@@ -33,3 +33,8 @@ automation/reel-template-pack/for-upload/
 # Own Halloween Reels (motion_h1_mine / motion_h2_mine): extracted frames (rebuilt by the scripts) and phone captures of the live site
 automation/reel-hf/2026-10-29-hw-*/_frames/
 automation/reel-hf/2026-10-29-hw-*/screens/
+# YouTube effects builds: media copied in by `node build.mjs prep` (rebuild from the rough cut)
+automation/youtube/*/hf/assets/
+automation/youtube/*/hf/renders/
+automation/youtube/*/hf/*.log
+automation/youtube/*/hf/snapshots/
