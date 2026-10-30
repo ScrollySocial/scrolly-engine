@@ -42,11 +42,11 @@ Talking head, about 45 to 60 seconds each. Facts checked 2026-10-30; re-check pr
 >
 > Two more traps on that same setup: "Get started for free" is the $300 trial that asks for your card, so go to console.cloud.google.com instead. And never click Submit for verification.
 >
-> Comment CHATTERBOX and I'll send you my setup.
+> Comment TRAPS and I'll send you my free checklist of every setup trap.
 
 **Show on screen:** Google Cloud Branding page with the App logo field (circle it, big X). The "hasn't verified this app" screen, Advanced → Go to.
 
-**Ending:** Comment CHATTERBOX
+**Ending:** Comment TRAPS
 
 *Source: Her own setup 2026-10-23, vault comment-to-dm-n8n-plan.md "Customer kit: traps". Facts checked 2026-10-30; re-check prices and menus the day you film.*
 
@@ -240,10 +240,10 @@ Talking head, about 45 to 60 seconds each. Facts checked 2026-10-30; re-check pr
 >
 > And no logo, so you don't trigger the 4 to 6 week verification.
 >
-> Comment CHATTERBOX and I'll send you my setup.
+> Comment TRAPS and I'll send you my free checklist of every setup trap.
 
 **Show on screen:** Google Cloud Audience page: Testing → Publish app → In production. Branding page links.
 
-**Ending:** Comment CHATTERBOX
+**Ending:** Comment TRAPS
 
 *Source: Google OAuth docs (Testing refresh tokens expire in 7 days); her setup 2026-10-23. Facts checked 2026-10-30; re-check prices and menus the day you film.*
