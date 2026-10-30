@@ -17,7 +17,7 @@
   "slides": [
     {
       "layout": "numcover",
-      "media": "1e629b09ae",
+      "media": "f5e7ef379a",
       "big": "10,667",
       "text": "views = $1,000",
       "hand": "here's the math →",
@@ -168,8 +168,7 @@
         "A link sticker in more Stories"
       ],
       "text": "Small fixes that raise it:",
-      "photoBg": "473beb9747",
-      "scrim": "top"
+      "palette": "offwhite"
     },
     {
       "layout": "phone",
@@ -178,7 +177,7 @@
       },
       "media": "4b3aaf72ba",
       "focus": "50% 88%",
-      "text": "Want to run your own numbers? The free calculator on scrollyseo.com does the math in seconds.",
+      "text": "Want to run your own numbers? The free calculator does the math in seconds.",
       "doodles": [
         {
           "k": "tape",
@@ -196,16 +195,16 @@
       "scrim": "full"
     },
     {
-      "text": "The $1K Challenge gives you your $1K number and what to do each week. Link in bio.",
+      "text": "Comment MATH and I'll send you the free calculator. Plug in your price.",
       "palette": "navy"
     }
   ],
   "cta": {
-    "type": "link-in-bio",
-    "offer": "1k-club-challenge"
+    "type": "comment",
+    "keyword": "MATH"
   },
   "tigerNod": "line",
-  "caption": "Your $1K number and a plan for each week are in the $1K Challenge, link in bio. Want to check the math yourself first? Here's where the 2.5% comes from: Littledata's study of 421 Shopify stores found a median of 1.4% of visits ending in a sale, and Dynamic Yield's data from 400+ brands averages 2.66%. One clear offer shown to people who already watched your videos can reasonably aim near 2.5%, but plan with the lower number too. One more thing: Instagram counts replays as views, so views are always higher than the number of people.",
+  "caption": "Comment MATH and I'll send you the free $1K Math calculator. Want to check the math yourself first? Here's where the 2.5% comes from: Littledata's study of 421 Shopify stores found a median of 1.4% of visits ending in a sale, and Dynamic Yield's data from 400+ brands averages 2.66%. One clear offer shown to people who already watched your videos can reasonably aim near 2.5%, but plan with the lower number too. One more thing: Instagram counts replays as views, so views are always higher than the number of people.",
   "hashtags": [
     "#smallbusinesstips",
     "#instagramforbusiness",
