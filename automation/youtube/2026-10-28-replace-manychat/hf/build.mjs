@@ -210,9 +210,13 @@ function checklist(items, a, b, { x = 1200, y = 260, w = 560, title = '' } = {})
 // 1. Why I wouldn't pay: her calculator page with Pro $39 ringed, then the free-plan checklist
 {
   const t = beat('1.'); chapter(1, "Why I wouldn't pay", t);
+  // she says free "jumps up to" Pro: the Essential tier sits in between, so the real ladder goes on screen
+  const tPro = at('pro plan', t);
+  group(tPro - 0.1, at('pay that', tPro) + 2.4, note('tier-n', 'Essential: $17 for 250<br>Pro: $39 for 2,500', 1250, 380, -3, 52));
+  js.push(`up('#tier-n', ${r2(tPro)});`); sfx('swoosh-in', tPro, 0.35);
   // the join into 2041 and on into 2043 is rough (her arm, quick cuts): her real calculator page covers it, no face box
   takeover('calculator', takeStart('IMG_2041.MOV') - 0.1, takeStart('IMG_2043.MOV') + 2.2, { y0: 0, y1: 0, face: false });
-  const t25 = at('25', t);
+  const t25 = at('25', takeStart('IMG_2043.MOV'));  // 2039 also says 25 earlier: the checklist goes with 2043's
   checklist([{ text: 'Free: 25 contacts', ok: true, t: t25 + 0.2 }, { text: 'Limited automations', ok: false, t: at('automations', t25) }],
     t25 - 0.3, at('benefit', t25), { y: 300, title: 'ManyChat free plan' });
   const tNot = at('not as bad', t);
@@ -296,6 +300,10 @@ function diagram(a, b, times, { api } = {}) {
 // My comment inbox: the real inbox (filters, a TikTok comment with its draft), then "your data, your server"
 {
   const t = beat('My comment'); takeover('inbox', t + 0.2, nextBeat(t), { y0: 0, y1: -300 });
+  // "logging in through a browser isn't allowed... it's through Apify": Apify reads public comments, never her login
+  const tAp = at('called apify', at('called apify', beat('TikTok')) + 1);
+  group(tAp - 0.1, tAp + 5, note('ap-n', 'Apify reads public comments.<br>It never logs in as you.', 1230, 400, -3, 50));
+  js.push(`up('#ap-n', ${r2(tAp)});`); sfx('swoosh-in', tAp, 0.35);
   const tOwn = at('own all that data', beat('TikTok'));
   group(tOwn - 0.1, tOwn + 4.5, card('own', 'WHO OWNS IT', 'Your data,<br>your server', 1320, 320, 2, 96));
   pop('#own', tOwn, 2); sfx('pop-light', tOwn);

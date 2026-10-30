@@ -1,7 +1,7 @@
 // YouTube long-form rough cut: the Reel engine's cut rules (reel-studio/prep.mjs) for horizontal 16:9 video.
 // Reads youtube/<id>/plan.json:
 //   { "title": "...", "maxPause": 0.6, "segments": [ { "src": "<under footage folder>", "in": 1.0, "out": 23.3, "beat": "Hook", "cropY": 0.2 } ] }
-//   "hardIn"/"hardOut": true cut exactly at in/out instead of snapping into the nearest silence
+//   "hardIn"/"hardOut": true cut exactly at in/out instead of snapping into the nearest silence; "pad": muted seconds after a hard out (default 0.3)
 //   cropY = where a 16:9 window sits on a vertical take; "fit": "blur" shows the whole vertical take over a blurred copy instead
 // Each cut point moves into real silence (0.12s air before speech, 0.2s after), pauses longer than maxPause shrink
 // to a breath when no transcript word starts inside them, HDR (iPhone HLG) is tone-mapped to SDR.
@@ -87,7 +87,7 @@ for (const s of plan.segments) {
     cur = +b.toFixed(3); first = false;
   }
   // a hard cut ends on 0.3 s of muted picture: a breath before the next take instead of a clipped run-on
-  pieces.push({ s, start: cur, end: c.end, first, pad: s.hardOut ? 0.3 : 0 });
+  pieces.push({ s, start: cur, end: c.end, first, pad: s.hardOut ? (s.pad ?? 0.3) : 0 });
 }
 
 const parts = [], beats = [], words = [], cuts = [];

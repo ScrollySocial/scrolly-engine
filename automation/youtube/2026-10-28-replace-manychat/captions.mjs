@@ -10,12 +10,17 @@ const { words } = JSON.parse(readFileSync(path.join(HERE, 'words.json'), 'utf8')
 const norm = (s) => s.toLowerCase().replace(/[^a-z0-9]/g, '');
 // two-word mishearings → one word (keeps the first word's punctuation-free start, the last word's trailing punctuation)
 const PAIRS = { manychat: 'ManyChat', manychats: 'ManyChat', minichat: 'ManyChat', cloudcode: 'Claude Code', cloudapp: 'Claude app',
-  cloudsubscription: 'Claude subscription', anyend: 'n8n', chatterbox: 'CHATTERBOX' };
-const ONE = { minichat: 'ManyChat', manychat: 'ManyChat', appify: 'Apify', meta: 'Meta', tiktok: 'TikTok', claude: 'Claude' };
+  cloudsubscription: 'Claude subscription', anyend: 'n8n', chatterbox: 'CHATTERBOX', redor: 'read or', accountdonor: 'account owner' };
+const TRIPLES = { mailorlight: 'MailerLite' };
+const ONE = { autotatt: 'auto-DM', minichat: 'ManyChat', manychat: 'ManyChat', appify: 'Apify', meta: 'Meta', tiktok: 'TikTok', claude: 'Claude' };
 const tail = (w) => (w.match(/[.,!?;:]+$/) || [''])[0];
 const ws = [];
 for (let i = 0; i < words.length; i++) {
-  const a = words[i], b = words[i + 1];
+  const a = words[i], b = words[i + 1], c = words[i + 2];
+  const tri = c && TRIPLES[norm(a.w) + norm(b.w) + norm(c.w)];
+  if (tri) { ws.push({ w: tri + tail(c.w), t: a.t, e: c.e }); i += 2; continue; }
+  // Whisper splits hyphenated words ("auto -DM", "user -friendly"): join them back
+  if (b && b.w.startsWith('-')) { const j = a.w + b.w; ws.push({ ...a, w: ONE[norm(j)] ? ONE[norm(j)] + tail(j) : j, e: b.e }); i++; continue; }
   const pair = b && PAIRS[norm(a.w) + norm(b.w)];
   if (pair) { ws.push({ w: pair + tail(b.w), t: a.t, e: b.e }); i++; continue; }
   const one = ONE[norm(a.w)];
