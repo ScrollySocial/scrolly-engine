@@ -21,10 +21,10 @@ Chapters
 1:52 What "replace it with Claude" means
 3:55 What it does every day
 5:01 It works on YouTube too
-6:49 The costs
+6:50 The costs
 8:15 What it can't do
-12:14 Who should stay on ManyChat
-12:45 Get my copy
+12:13 Who should stay on ManyChat
+12:44 Get my copy
 
 ManyChat prices from manychat.com/pricing, checked October 28, 2026.
 ```

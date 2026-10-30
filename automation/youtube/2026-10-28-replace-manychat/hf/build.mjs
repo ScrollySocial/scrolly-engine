@@ -5,7 +5,7 @@
 //   node build.mjs prep   → media into assets/ (video segments, voice, cold-open TV clip, screens, props, sfx, fonts)
 //   node build.mjs        → index.html          then: npx hyperframes check / preview / render
 import { execFileSync } from 'node:child_process';
-import { copyFileSync, existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { copyFileSync, existsSync, mkdirSync, readFileSync, statSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -27,7 +27,9 @@ if (process.argv[2] === 'prep') {
   for (const d of ['seg', 'fonts', 'js', 'sfx', 'img']) mkdirSync(A(d), { recursive: true });
   const rc = path.join(EXPORTS, 'roughcut.mp4');
   // muted 20 s segments (the engine's pattern: short clips seek fast) + one voice track
-  for (let i = 0; i * SEG < DUR; i++) if (!existsSync(A('seg', `seg-${i}.mp4`)))
+  // remade whenever the rough cut is newer: reusing old pieces with a new voice track put the picture out of sync
+  const fresh = (f) => existsSync(f) && statSync(f).mtimeMs > statSync(rc).mtimeMs;
+  for (let i = 0; i * SEG < DUR; i++) if (!fresh(A('seg', `seg-${i}.mp4`)))
     ff(['-ss', String(i * SEG), '-t', String(Math.min(SEG, DUR - i * SEG)), '-i', rc, '-an', '-c:v', 'libx264', '-preset', 'veryfast', '-crf', '18', '-g', '30', A('seg', `seg-${i}.mp4`)]);
   ff(['-i', rc, '-vn', '-c:a', 'copy', A('voice.m4a')]);
   // her vertical Reel intro as a 4:3 TV picture (face framed like the storyboard)

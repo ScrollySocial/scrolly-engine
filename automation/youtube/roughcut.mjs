@@ -15,7 +15,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
-const FF = path.join(HERE, '../hyperframes-test/bin/ffmpeg.exe');
+const FF = path.join(HERE, '../hyperframes-test/bin/ffmpeg.exe'), FP = path.join(HERE, '../hyperframes-test/bin/ffprobe.exe');
 const FOOTAGE = 'C:/Users/merce/OneDrive/Scrolly Media/videos';
 const EXPORTS = 'C:/Users/merce/OneDrive/Scrolly Media/exports/youtube';
 const AUDIO = path.join(HERE, '../carousels/reels/_work/audio');
@@ -118,7 +118,9 @@ for (const [i, { s, start, end: end0, first, pad = 0 }] of pieces.entries()) {
   for (const w of wordsOf(s)) if (w.s >= start && w.s < end) words.push({ w: w.w.trim(), t: +(t + w.s - start).toFixed(3), e: +(t + Math.min(w.e, end) - start).toFixed(3) });
   console.log(`piece ${i + 1}/${pieces.length}: ${path.basename(s.src)} ${start}-${end}`);
   parts.push(file);
-  t += dur;
+  // advance by the piece's real length (frame-rounded video, AAC-padded audio): the concat plays each file for its
+  // own duration, so summing the asked-for lengths drifted ~0.3 s by the end and cut off her last words
+  t += +execFileSync(FP, ['-v', 'error', '-show_entries', 'format=duration', '-of', 'csv=p=0', file], { encoding: 'utf8' }).trim();
 }
 const list = path.join(cache, 'list.txt');
 writeFileSync(list, parts.map((p) => `file '${p.replace(/\\/g, '/')}'`).join('\n'));
