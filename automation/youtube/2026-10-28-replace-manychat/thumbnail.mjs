@@ -1,6 +1,7 @@
-// YouTube thumbnail options for YouTube 1 (1280×720). Her cut-out from the raw footage, brand v3 colours, Instrument
-// Serif numbers, Jost 800 caps, Covered By Your Grace asides. No italic accents, no marker bands, doodles only where
-// they point at or circle something, nothing over her face.
+// YouTube thumbnail options for YouTube 1 (1280×720). YouTube-style, not the site brand (Mercedes 2026-10-31): her
+// face big, three or four huge words in heavy condensed type, bright yellow and white with hard shadows.
+// Stills MUST be tone-mapped from the iPhone HLG footage (same TM as roughcut.mjs) or she looks pale and grey.
+// Cut-outs straight from hyperframes remove-background; no hand trimming around her hair.
 //   node thumbnail.mjs <dir with cut-2043.png, cut-2054.png, 2043.jpg> [outDir]   → thumb-a.png, thumb-b.png, thumb-c.png
 import { mkdirSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
@@ -10,52 +11,45 @@ import { launch } from '../../carousels/lib/common.mjs';
 
 const [src, out = src] = process.argv.slice(2);
 const u = (f) => pathToFileURL(path.join(src, f)).href;
-const C = { cream: '#f7f3ec', ink: '#0a1930', sky: '#4da3ff', mist: '#dfe4f0', pink: '#ff3b7f' };
-
-const arrow = (x1, y1, x2, y2, bend, col, sw = 6) => {
-  const mx = (x1 + x2) / 2 + bend * (y2 - y1) * .35, my = (y1 + y2) / 2 - bend * (x2 - x1) * .35;
-  const a = Math.atan2(y2 - my, x2 - mx), L = 26, s = .5, p = (r) => `${x2 - L * Math.cos(a + r)} ${y2 - L * Math.sin(a + r)}`;
-  return `<path d="M${x1} ${y1} Q${mx} ${my} ${x2} ${y2}" fill="none" stroke="${col}" stroke-width="${sw}" stroke-linecap="round"/>
-<path d="M${p(s)} L${x2} ${y2} L${p(-s)}" fill="none" stroke="${col}" stroke-width="${sw}" stroke-linecap="round" stroke-linejoin="round"/>`;
-};
+const Y = '#ffd60a';
 
 const page = (body, bg) => `<!doctype html><html><head><meta charset="utf-8">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Jost:wght@700;800&family=Covered+By+Your+Grace&display=block">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Montserrat:wght@900&display=block">
 <style>*{margin:0;padding:0;box-sizing:border-box}
 html,body{width:1280px;height:720px;overflow:hidden;background:${bg}}
-.abs{position:absolute}.serif{font-family:'Instrument Serif',serif;font-weight:400;letter-spacing:-.01em}
-.caps{font-family:Jost,sans-serif;font-weight:800;text-transform:uppercase;letter-spacing:-.005em}
-.hand{font-family:'Covered By Your Grace',cursive}
-svg{position:absolute;left:0;top:0;overflow:visible}</style></head><body>${body}</body></html>`;
+.abs{position:absolute}
+.anton{font-family:Anton,sans-serif;text-transform:uppercase;line-height:.9;letter-spacing:.005em}
+.mont{font-family:Montserrat,sans-serif;font-weight:900;text-transform:uppercase;line-height:.92;letter-spacing:-.02em}
+.pop{text-shadow:0 6px 0 #000,0 0 22px rgba(0,0,0,.55);-webkit-text-stroke:3px #000;paint-order:stroke fill}
+</style></head><body>${body}</body></html>`;
 
-// her cut-out: the 16:9 frame scaled to height h, shifted so her body sits where we want it
-const her = (file, left, top, h, shadow = '.22') =>
-  `<img class="abs" src="${u(file)}" style="left:${left}px;top:${top}px;height:${h}px;filter:drop-shadow(0 14px 30px rgba(10,25,48,${shadow}))">`;
+// her cut-out: the 16:9 frame scaled to height h, shifted so she sits where we want her
+const her = (file, left, top, h) =>
+  `<img class="abs" src="${u(file)}" style="left:${left}px;top:${top}px;height:${h}px;filter:drop-shadow(0 0 0 #fff) drop-shadow(0 10px 30px rgba(0,0,0,.45))">`;
 
 const designs = {
-  // A: off-white, the price drop is the hero, her smiling on the right
-  a: page(`${her('cut-2043.png', 330, 40, 760)}
-<div class="abs caps" style="left:64px;top:56px;font-size:58px;line-height:1;color:${C.ink}">I replaced ManyChat</div>
-<div class="abs serif" style="left:56px;top:150px;font-size:250px;line-height:1;color:${C.ink};opacity:.55">$39</div>
-<div class="abs serif" style="left:300px;top:330px;font-size:330px;line-height:1;color:${C.sky}">$6</div>
-<div class="abs hand" style="left:74px;top:470px;font-size:56px;color:${C.ink};rotate:-4deg">a month</div>
-<svg width="1280" height="720">${arrow(368, 222, 392, 350, -.5, C.ink)}</svg>`, C.cream),
+  // A: bold blue, the price drop is the hero, her surprised face big on the right
+  a: page(`<div class="abs" style="inset:0;background:radial-gradient(circle at 70% 45%,#3d8bff 0%,#1747c9 55%,#0b2170 100%)"></div>
+${her('cut-2054.png', 230, 40, 900)}
+<div class="abs anton pop" style="left:48px;top:40px;font-size:96px;color:#fff">I replaced<br>ManyChat</div>
+<div class="abs anton pop" style="left:48px;top:290px;font-size:250px;color:${Y}">$6</div>
+<div class="abs anton pop" style="left:290px;top:440px;font-size:76px;color:#fff">/month</div>`, '#1747c9'),
 
-  // B: navy, her surprised on the left, a short blunt line on the right
-  b: page(`${her('cut-2054.png', -200, 60, 740, '.45')}
-<div class="abs caps" style="left:700px;top:70px;width:560px;font-size:86px;line-height:.95;color:#fff">Bye,<br>ManyChat</div>
-<div class="abs serif" style="left:700px;top:300px;font-size:210px;line-height:1;color:${C.sky}">$6/mo</div>
-<div class="abs hand" style="left:720px;top:540px;font-size:58px;color:${C.mist};rotate:-3deg">built it with Claude</div>
-<svg width="1280" height="720">${arrow(705, 585, 610, 600, .4, C.mist)}</svg>`, C.ink),
+  // B: her real set (blurred) behind her smiling cut-out, dark fade left, a blunt line
+  b: page(`<img class="abs" src="${u('2043.jpg')}" style="left:-1280px;top:-360px;height:1440px;filter:blur(18px) brightness(.8)">
+<div class="abs" style="inset:0;background:linear-gradient(90deg,rgba(0,0,0,.8) 0%,rgba(0,0,0,.45) 45%,rgba(0,0,0,0) 70%)"></div>
+${her('cut-2043.png', 430, 30, 900)}
+<div class="abs anton pop" style="left:50px;top:60px;font-size:150px;color:#fff">Bye,<br>ManyChat</div>
+<div class="abs anton pop" style="left:50px;top:430px;font-size:170px;color:${Y}">$39 → $6</div>`, '#000'),
 
-  // C: her real set (curtain) full-bleed, navy fade left, the comparison stacked
-  c: page(`<img class="abs" src="${u('2043.jpg')}" style="left:180px;top:0;height:720px">
-<div class="abs" style="inset:0;background:linear-gradient(90deg,${C.ink} 0%,${C.ink} 34%,rgba(10,25,48,.0) 62%)"></div>
-<div class="abs caps" style="left:60px;top:80px;font-size:64px;line-height:1;color:${C.mist}">ManyChat</div>
-<div class="abs serif" style="left:56px;top:140px;font-size:170px;line-height:1;color:#fff;opacity:.6">$39</div>
-<div class="abs caps" style="left:60px;top:350px;font-size:64px;line-height:1;color:${C.mist}">Mine</div>
-<div class="abs serif" style="left:56px;top:410px;font-size:220px;line-height:1;color:${C.sky}">$6</div>
-<div class="abs hand" style="left:290px;top:540px;font-size:52px;color:#fff;rotate:-5deg">my own tool</div>`, C.ink),
+  // C: split comparison, ManyChat side vs mine, her in the middle
+  c: page(`<div class="abs" style="left:0;top:0;width:640px;height:720px;background:#e8313b"></div>
+<div class="abs" style="left:640px;top:0;width:640px;height:720px;background:#19c46a"></div>
+<div class="abs mont pop" style="left:30px;top:44px;font-size:64px;color:#fff">ManyChat</div>
+<div class="abs mont pop" style="left:30px;top:120px;font-size:170px;color:#fff">$39</div>
+<div class="abs mont pop" style="right:30px;top:44px;font-size:64px;color:#fff;text-align:right">Mine</div>
+<div class="abs mont pop" style="right:30px;top:120px;font-size:170px;color:${Y};text-align:right">$6</div>
+${her('cut-2043.png', 0, -10, 900)}`, '#000'),
 };
 
 mkdirSync(out, { recursive: true });
