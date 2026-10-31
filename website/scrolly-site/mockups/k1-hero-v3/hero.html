@@ -1,56 +1,65 @@
 <!doctype html>
 <!-- $1K Club hero image, v3 (2026-10-31). Replaces k1-hero-fan.webp (2026-10-15, old orange look, graphite shirt).
-     Render: node render.mjs  ->  ../../assets/k1-hero-v3.webp (1536 x 1024). Screen crop: node capture.mjs -->
+     Background: a tilted wall of Instagram posts made from the Challenge's 30 carousel templates (bg/, copied from
+     automation/k1-launch/content/library/dist/carousels/*/previews/example-01.png), washed in off-white.
+     Callouts sit in a mirrored arc. Render: node render.mjs -> ../../assets/k1-hero-v3.webp. Screen crop: node capture.mjs -->
 <html><head><meta charset="utf-8">
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Jost:wght@400;500;700;800&display=swap" rel="stylesheet">
 <style>
-:root{--cream:#f7f3ec;--ink:#0a1930;--sky:#4da3ff;--mist:#dfe4f0;--muted:#4a4e66;--line:#d9d3ca}
+:root{--cream:#f7f3ec;--ink:#0a1930;--sky:#4da3ff;--mist:#dfe4f0;--muted:#4a4e66}
 *{box-sizing:border-box;margin:0;padding:0}
 body{width:1536px;height:1024px;background:var(--cream);font-family:Jost,Arial,sans-serif;color:var(--ink);overflow:hidden;position:relative}
 .abs{position:absolute}
 .shadow{box-shadow:0 30px 60px -20px rgba(10,25,48,.35),0 8px 18px -8px rgba(10,25,48,.25)}
-/* soft blue-mist ground behind the devices */
-.ground{left:150px;top:150px;width:1240px;height:760px;border-radius:380px;background:var(--mist)}
+/* background wall of posts */
+.wall{left:-560px;top:-820px;width:2700px;display:grid;grid-template-columns:repeat(12,196px);gap:28px;transform:rotate(-28deg);transform-origin:center}
+.post{background:#fff;padding:10px 10px 0;border-radius:4px;box-shadow:0 10px 24px -14px rgba(10,25,48,.4)}
+.post img{display:block;width:100%;aspect-ratio:3/4;object-fit:cover}
+.post .ic{display:flex;gap:10px;align-items:center;height:34px;padding:0 2px}
+.post .ic i{width:15px;height:15px;border:2px solid #9aa0ad;border-radius:50%}
+.post .ic i.h{border-color:var(--sky);background:var(--sky);border-radius:50% 50% 50% 0;transform:rotate(-45deg);width:12px;height:12px}
+.post .ic i.b{margin-left:auto;border-radius:2px}
+.wash{inset:0;background:rgba(247,243,236,.62)}
 .card{border-radius:14px;overflow:hidden;background:#fff}
 .card img{display:block;width:100%;height:auto}
 /* laptop: 16:10 screen on a thin base */
-.lap{left:380px;top:300px;width:820px}
-.lap .lid{background:#11151c;border-radius:22px 22px 0 0;padding:16px 16px 18px}
-.lap .scr{aspect-ratio:16/10;background:var(--cream);border-radius:6px;overflow:hidden;padding:26px 26px 0}
-.lap .scr h4{font:400 46px/1 'Instrument Serif',serif;letter-spacing:-.01em;margin:4px 0 18px 8px}
+.lap{left:383px;top:318px;width:770px}
+.lap .lid{background:#11151c;border-radius:22px 22px 0 0;padding:15px 15px 17px}
+.lap .scr{aspect-ratio:16/10;background:var(--cream);border-radius:6px;overflow:hidden;padding:24px 24px 0}
+.lap .scr h4{font:400 44px/1 'Instrument Serif',serif;letter-spacing:-.01em;margin:6px 0 20px 6px}
 .lap .scr img{width:100%;display:block}
-.lap .base{height:16px;margin:0 -46px;background:linear-gradient(#d6d9e0,#aab0bb);border-radius:0 0 18px 18px;position:relative}
+.lap .base{height:16px;margin:0 -44px;background:linear-gradient(#d6d9e0,#aab0bb);border-radius:0 0 18px 18px;position:relative}
 .lap .base:after{content:"";position:absolute;left:50%;top:0;width:140px;height:7px;margin-left:-70px;background:#9298a4;border-radius:0 0 8px 8px}
 /* phone: real proportions */
-.phone{left:1135px;top:370px;width:270px;height:560px;background:#11151c;border-radius:44px;padding:11px;transform:rotate(4deg)}
-.phone .in{width:100%;height:100%;background:var(--cream);border-radius:34px;overflow:hidden;padding:46px 18px 0;position:relative}
-.phone .in:before{content:"";position:absolute;top:12px;left:50%;width:84px;height:24px;margin-left:-42px;background:#11151c;border-radius:14px}
+.phone{left:1150px;top:452px;width:255px;height:530px;background:#11151c;border-radius:42px;padding:10px;transform:rotate(4deg)}
+.phone .in{width:100%;height:100%;background:var(--cream);border-radius:33px;overflow:hidden;padding:44px 16px 0;position:relative}
+.phone .in:before{content:"";position:absolute;top:12px;left:50%;width:80px;height:23px;margin-left:-40px;background:#11151c;border-radius:14px}
 .phone .lab{font:700 11px/1 Jost;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
-.phone h5{font:400 32px/1 'Instrument Serif',serif;margin:8px 0 6px}
+.phone h5{font:400 30px/1 'Instrument Serif',serif;margin:8px 0 6px}
 .phone h5 em{background:linear-gradient(transparent 55%,rgba(77,163,255,.55) 55%,rgba(77,163,255,.55) 92%,transparent 92%)}
 .phone p.l{font:400 13px/1.35 Jost;color:var(--muted);margin-bottom:12px}
 .idea{background:#fff;border-radius:12px;padding:10px 12px;margin-bottom:8px}
-.idea b{display:block;font:500 15px/1.25 Jost;margin-bottom:7px}
+.idea b{display:block;font:500 14px/1.25 Jost;margin-bottom:7px}
 .idea b i{font-style:normal;color:var(--sky);font-weight:700;margin-right:6px}
 .tag{display:inline-block;font:700 10px/1 Jost;letter-spacing:.1em;padding:5px 9px;border-radius:20px;border:1.5px solid var(--ink);margin-right:4px}
 .tag.s{background:var(--sky);border-color:var(--sky)}
-/* callouts: navy pill, sky star */
-.pill{background:var(--ink);color:#fff;border-radius:40px;padding:15px 26px 15px 22px;font:700 24px/1 Jost;letter-spacing:.09em;text-transform:uppercase;white-space:nowrap;display:flex;align-items:center;gap:12px;box-shadow:0 12px 24px -10px rgba(10,25,48,.5)}
-.pill:before{content:"★";color:var(--sky);font-size:22px}
+/* callouts: navy pill, sky star, one size, mirrored arc */
+.pill{background:var(--ink);color:#fff;border-radius:40px;height:58px;padding:0 28px 0 24px;font:700 23px/1 Jost;letter-spacing:.09em;text-transform:uppercase;white-space:nowrap;display:flex;align-items:center;gap:12px;box-shadow:0 12px 24px -10px rgba(10,25,48,.5)}
+.pill:before{content:"★";color:var(--sky);font-size:21px}
 </style></head><body>
-<div class="abs ground"></div>
+<div class="abs wall" id="wall"></div>
+<div class="abs wash"></div>
 
-<!-- back row: guides, templates, planner -->
-<div class="abs card shadow" style="left:120px;top:150px;width:250px;transform:rotate(-9deg)"><img src="../../assets/k1-tile-canva-templates.webp"></div>
-<div class="abs card shadow" style="left:395px;top:70px;width:270px;transform:rotate(-6deg)"><img src="../../assets/k1-cover-playbook-v3.webp"></div>
-<div class="abs card shadow" style="left:640px;top:50px;width:265px;transform:rotate(5deg)"><img src="../../assets/k1-cover-quality-tips-v3.webp"></div>
-<div class="abs card shadow" style="left:1010px;top:95px;width:300px;transform:rotate(8deg)"><img src="../../assets/k1-tile3-notion-onset.webp"></div>
+<!-- back row: the two guides, the content planner -->
+<div class="abs card shadow" style="left:452px;top:128px;width:250px;transform:rotate(-6deg)"><img src="../../assets/k1-cover-playbook-v3.webp"></div>
+<div class="abs card shadow" style="left:676px;top:112px;width:245px;transform:rotate(4deg)"><img src="../../assets/k1-cover-quality-tips-v3.webp"></div>
+<div class="abs card shadow" style="left:985px;top:176px;width:270px;transform:rotate(8deg)"><img src="../../assets/k1-tile3-notion-onset.webp"></div>
 
 <!-- laptop with the live $1K Math calculator -->
 <div class="abs lap"><div class="lid shadow"><div class="scr"><h4>Income Goal Calculator</h4><img src="calc-panel.png"></div></div><div class="base shadow"></div></div>
 
 <!-- earned shirt -->
-<img class="abs" src="../../assets/shirt-1k-dared-front-cut.webp" style="left:20px;top:520px;width:520px;transform:rotate(-7deg);filter:drop-shadow(0 26px 30px rgba(10,25,48,.3))">
+<img class="abs" src="../../assets/shirt-1k-dared-front-cut.webp" style="left:30px;top:515px;width:480px;transform:rotate(-7deg);filter:drop-shadow(0 26px 30px rgba(10,25,48,.3))">
 
 <!-- phone: weekly Reel ideas -->
 <div class="abs phone shadow"><div class="in">
@@ -63,11 +72,20 @@ body{width:1536px;height:1024px;background:var(--cream);font-family:Jost,Arial,s
   <div class="idea"><b><i>4</i>The process</b><span class="tag">TRUST</span><span class="tag">REACH</span></div>
 </div></div>
 
-<!-- callouts -->
-<div class="abs pill" style="left:420px;top:30px">2 PDF guides</div>
-<div class="abs pill" style="left:60px;top:105px">60 Canva templates</div>
-<div class="abs pill" style="left:1060px;top:52px">Content planner</div>
-<div class="abs pill" style="left:560px;top:250px">$1K Math calculator</div>
-<div class="abs pill" style="left:1100px;top:318px">25 Reel ideas a week</div>
-<div class="abs pill" style="left:70px;top:480px">Earned shirt</div>
+<!-- callouts: top pair meets at the centre line, side pairs mirror from the edges -->
+<div class="abs pill" style="right:calc(50% + 10px);top:50px">2 PDF guides</div>
+<div class="abs pill" style="left:calc(50% + 10px);top:50px">$1K Math calculator</div>
+<div class="abs pill" style="left:60px;top:190px">60 Canva templates</div>
+<div class="abs pill" style="right:60px;top:190px">Content planner</div>
+<div class="abs pill" style="left:80px;top:380px">Earned shirt</div>
+<div class="abs pill" style="right:80px;top:380px">25 Reel ideas a week</div>
+
+<script>
+// 12 x 9 wall from the 30 template covers; each row shifts by 7 so repeats land far apart
+const w = document.getElementById('wall');
+for (let i = 0; i < 108; i++) {
+  const n = String(((i % 12) + Math.floor(i / 12) * 7) % 30 + 1).padStart(2, '0');
+  w.insertAdjacentHTML('beforeend', `<div class="post"><img src="bg/c${n}.webp"><div class="ic"><i class="h"></i><i></i><i></i><i class="b"></i></div></div>`);
+}
+</script>
 </body></html>
