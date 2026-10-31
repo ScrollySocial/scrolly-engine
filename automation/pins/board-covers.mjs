@@ -36,6 +36,7 @@ const BOARDS = [
   { file: '11-marketing', board: 'Business Marketing Ideas', top: 'Business', big: ['Marketing'], chip: 'Ideas' },
   { file: '12-holiday', board: 'Holiday Marketing Ideas for Small Business', top: 'Holiday', big: ['Marketing'], chip: 'Black Friday to Christmas' },
   { file: '13-pinterest', board: 'Pinterest Marketing for Small Business', top: 'Small business', big: ['Pinterest'], chip: 'Marketing tips' },
+  { file: '14-reel-ideas', board: 'Social Media Reel Ideas for Instagram and TikTok', top: 'Social media', big: ['Reel', 'ideas'], chip: 'Instagram and TikTok' },
 ];
 
 const W = 1000, H = 1500, SQ = 1000; // the cover crop is the middle 1000x1000
