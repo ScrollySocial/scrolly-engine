@@ -26,7 +26,7 @@
   {
    "src": "2026-10-28-session/reels/IMG_2082.MOV",
    "in": 24.97,
-   "out": 27.65,
+   "out": 27.962,
    "transcript": "audio/2026-10-28-session__reels__IMG_2082.json",
    "padAfter": 0.9
   },
@@ -45,7 +45,7 @@
   {
    "src": "2026-10-28-session/reels/IMG_2082.MOV",
    "in": 35.313,
-   "out": 36.21,
+   "out": 36.341,
    "transcript": "audio/2026-10-28-session__reels__IMG_2082.json"
   },
   {
@@ -57,7 +57,7 @@
   {
    "src": "2026-10-28-session/reels/IMG_2082.MOV",
    "in": 44.868,
-   "out": 48.57,
+   "out": 48.798,
    "transcript": "audio/2026-10-28-session__reels__IMG_2082.json"
   },
   {
@@ -81,7 +81,7 @@
   {
    "src": "2026-10-28-session/reels/IMG_2082.MOV",
    "in": 62.552,
-   "out": 65.21,
+   "out": 65.37,
    "transcript": "audio/2026-10-28-session__reels__IMG_2082.json"
   },
   {
@@ -93,13 +93,13 @@
   {
    "src": "2026-10-28-session/reels/IMG_2082.MOV",
    "in": 70.157,
-   "out": 72.53,
+   "out": 72.918,
    "transcript": "audio/2026-10-28-session__reels__IMG_2082.json"
   },
   {
    "src": "2026-10-28-session/reels/IMG_2082.MOV",
    "in": 76.313,
-   "out": 80.37,
+   "out": 80.509,
    "transcript": "audio/2026-10-28-session__reels__IMG_2082.json"
   },
   {
@@ -111,7 +111,7 @@
   {
    "src": "2026-10-28-session/reels/IMG_2082.MOV",
    "in": 83.308,
-   "out": 84.37,
+   "out": 84.502,
    "transcript": "audio/2026-10-28-session__reels__IMG_2082.json"
   },
   {
@@ -141,7 +141,7 @@
   {
    "src": "2026-10-28-session/reels/IMG_2082.MOV",
    "in": 99.699,
-   "out": 101.79,
+   "out": 101.865,
    "transcript": "audio/2026-10-28-session__reels__IMG_2082.json"
   }
  ]
