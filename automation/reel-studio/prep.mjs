@@ -41,6 +41,9 @@ function silences(src, a, b, noise = plan.noiseDb ?? -34) {
   return res;
 }
 function refine(src, seg) {
+  // plan.pad { before, after } (seconds): the segments are already measured speech islands, so cut exactly that much
+  // air around them (tight jump cuts: no glances away between lines). A segment's own padAfter wins (a held pause).
+  if (plan.pad) return { start: +Math.max(0, seg.in - plan.pad.before).toFixed(3), end: +(seg.out + (seg.padAfter ?? plan.pad.after)).toFixed(3), tight: false };
   const sil = silences(src, seg.in - 1.2, seg.out + 1.2);
   // start: the silence that ends closest to (and not long after) the first word
   const before = sil.filter(([, e]) => e <= seg.in + 0.15).at(-1);
@@ -79,7 +82,7 @@ for (const c of cuts) {
   pieces.push({ s: c.s, start: cur, end: c.end, tight: c.tight });
 }
 
-const parts = [], words = [], cutTimes = [];
+const parts = [], words = [], cutTimes = [], usedWords = new Set();
 let t = 0;
 for (const [i, { s, start, end, tight }] of pieces.entries()) {
   const src = clipPath(s.src);
@@ -100,7 +103,11 @@ for (const [i, { s, start, end, tight }] of pieces.entries()) {
     // A word belongs to the piece it starts in (ends can drift into a trimmed pause); only the first word after a
     // real cut (not a trimmed pause) gets a capital.
     let first = i === 0 || pieces[i - 1].s !== s;
-    for (const sg of segs) for (const w of sg.words) if (w.s >= start - 0.05 && w.s < end) {
+    // plan.pad cuts sit on the real speech onset, and transcript starts often drift earlier into the silence: there a
+    // word belongs to the first piece it overlaps (each transcript word used once).
+    const inPiece = (w) => (plan.pad ? w.e > start + 0.05 && w.s < end - 0.05 && !usedWords.has(`${s.transcript}|${w.s}`) : w.s >= start - 0.05 && w.s < end);
+    for (const sg of segs) for (const w of sg.words) if (inPiece(w)) {
+      usedWords.add(`${s.transcript}|${w.s}`);
       words.push({ w: w.w.trim(), s: +(t + Math.max(w.s, start) - start).toFixed(3), e: +(t + Math.min(w.e, end) - start).toFixed(3), seg: i, first }); first = false;
     }
   }

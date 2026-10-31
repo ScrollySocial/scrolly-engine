@@ -19,6 +19,8 @@ for (let i = 0; i < R.W.length; i++) {
   if (w.w === 'DM' && /^to$/i.test(R.W[i - 1]?.w)) w.w = 'DM,';
 }
 R.W.splice(0, R.W.length, ...R.W.filter((w) => w.w));
+// tight cuts capitalize every piece's first word: keep capitals only at a sentence start (and proper names)
+for (let i = 1; i < R.W.length; i++) { const w = R.W[i], p = R.W[i - 1]; if (/^[A-Z][a-z]/.test(w.w) && !/[.?!]$/.test(p.w) && !/^(I|I'm|I'll|Claude|Instagram|Meta|ManyChat|YouTube|TikTok|Many)/.test(w.w)) w.w = w.w[0].toLowerCase() + w.w.slice(1); }
 
 R.frames([0, at('if you'), at('and that is'), at('when someone'), at('you only'), at('after that'), at('so the trick'), at('when they'), at('comment auto')]);
 const NOTES = {};
@@ -74,16 +76,18 @@ R.scene(8, [K.fade(50), K.chat([
 ], { top: 6 }), K.hand('h8', '1 hour later', { x: 56, y: 50, size: 7, r: -4, in: at('reminder') - 0.3 })]);
 
 // F9 her CTA; the end card follows
-note(9, 'She says the word; aside: no ManyChat needed', 'pop on the aside');
-R.scene(9, [K.fade(46), K.statement('b9', 'Comment <m>AUTODM</m>', { top: 6, size: 12, in: win(9).s + 0.1, swipe: at('AUTODM', 60) + 0.2 }),
-  K.hand('h9', 'free Rulebook, no ManyChat needed', { x: 6, y: 34, size: 6.5, r: -3, in: at('rulebook') })]);
-R.endCard({ kind: 'comment', word: 'AUTODM', detail: 'for my free Auto-DM Rulebook' });
+// no end card (Mercedes 2026-10-30: the freeze frame at the end looked bad): the ask lands live as she says the word
+note(9, 'Comment AUTODM + comment bar appear as she says it; aside: free Rulebook', 'pop on the word, pop-bubble on the bar');
+R.scene(9, [K.fade(46), K.statement('b9', 'Comment <m>AUTODM</m>', { top: 6, size: 12, in: at('AUTODM', win(9).s), swipe: at('AUTODM', win(9).s) + 0.4 }),
+  K.ctaUi('ui9', 'comment', { top: 27, word: 'AUTODM', handle: R.B.handle || '', name: R.B.label || '', in: at('AUTODM', win(9).s) + 0.5 }),
+  K.hand('h9', 'free Rulebook, no ManyChat needed', { x: 6, y: 44, size: 6.5, r: -3, in: at('rulebook') })]);
+R.endCard({ kind: 'comment', word: 'AUTODM', detail: 'for my free Auto-DM Rulebook' }, { live: true });
 
 R.cam.alternate();
 R.cam.punch(at('waits'));
 R.cam.punch(at('the trick'));
 
-R.captions({ hide: [9] });
+R.captions({ hide: [9], top: () => 150 }); // below her chin (Mercedes 2026-10-30: 128 covered her face)
 
 // ---- sound (never the same effect twice in a row) ----
 const fx = R.fx.bind(R);
@@ -95,8 +99,10 @@ fx('fx-pap5', 'paper-slide', win(5).s + 0.1, 0.6); fx('fx-chk5a', 'check', at('o
 fx('fx-wh6', 'whoosh-air', at('this reply'), 0.4);
 fx('fx-pop7', 'pop-light', at('ask')); fx('fx-msg7a', 'pop-message', at('mine')); fx('fx-pop7b', 'pop-bubble', at('link', at('mine')));
 fx('fx-msg8a', 'pop-message', at('signup') - 0.2); fx('fx-chime8', 'chime', at('reminder'), 0.5);
-fx('fx-pop9', 'pop-light', at('AUTODM', 60) + 0.2);
-R.music('assets/music/music-a.mp3'); // "Curiosity" (Mixkit), her pick on the 2026-10-13 Reels
+fx('fx-pop9', 'pop-light', at('AUTODM', win(9).s) + 0.4); fx('fx-bar9', 'pop-bubble', at('AUTODM', win(9).s) + 0.5);
+// music cuts out on "it waits" and stays out (Mercedes 2026-10-30: silence through that pause)
+const waits = R.W.find((w) => w.s >= at('waits') - 0.001);
+R.music('assets/music/music-a.mp3', { end: +(waits.e + 0.05).toFixed(2), fadeOut: 0.2 }); // "Curiosity" (Mixkit), her pick on the 2026-10-13 Reels
 
 // cover options (the viewer's problem in their words); <m> = marker swipe
 const COVERS = [

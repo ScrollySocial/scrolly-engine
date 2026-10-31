@@ -60,7 +60,7 @@ export function reel({ brand, template = studio, words = 'assets/words.json', ou
   const K = makeComponents(B);
   const scenes = [], cuts = [], sfx = [], camJs = [], animJs = [], rawJs = [];
   let capRender = () => null;
-  let F = [0, DUR], music = '', capHtml = '', capList = [], capHide = [];
+  let F = [0, DUR], music = '', capHtml = '', capList = [], capHide = [], capTop = null;
   let END = DUR, endInfo = null; // the end card adds a short tail after she stops talking: END = DUR + tail
   const byFrame = {}, cutStill = {}, cutMeta = []; // for the storyboard sheet
   const sfxData = [], sfxOff = [], listOf = {}; let musicData = null; // for the animatic mix (+ switched-off sounds, for the review page)
@@ -134,7 +134,7 @@ export function reel({ brand, template = studio, words = 'assets/words.json', ou
     // ONE track, ONE level + fades. The level is measured (lib/loudness.mjs): Quiet / Normal / Up front = a fixed number of
     // dB under her voice, whatever the track's own loudness. A fixed `volume` (build.mjs) or an older page's
     // Quieter/Louder number (decisions music.volume) still wins when set; her page level (music.level) beats both.
-    music(file, { level = T.music.level, volume, fadeIn = T.music.fadeIn, fadeOut = T.music.fadeOut } = {}) {
+    music(file, { level = T.music.level, volume, fadeIn = T.music.fadeIn, fadeOut = T.music.fadeOut, end } = {}) { // end = seconds: the music stops there (a held silent pause)
       const baseFile = file, baseLevel = level;
       if (musicEdit.file && existsSync(musicEdit.file)) file = musicEdit.file;
       const chosen = musicEdit.level || (musicEdit.volume != null || volume != null ? null : level);
@@ -145,7 +145,7 @@ export function reel({ brand, template = studio, words = 'assets/words.json', ou
       if (!mix.measured) console.warn(`⚠ music level not measured (ffmpeg missing or unreadable file): using volume ${volume}`);
       else if (mix.tooQuiet) console.warn(`⚠ MUSIC TOO QUIET: ${mix.out} LUFS is ${mix.under} dB under her voice (${mix.voice} LUFS); over ${WARN_UNDER} dB under can't be heard on a phone. Pick Quiet/Normal/Up front on the review page or drop the fixed volume.`);
       else console.log(`music: ${chosen ? LEVELS[chosen].label : 'fixed volume'} → volume ${volume}, ${mix.out} LUFS, ${mix.under} dB under her voice (${mix.voice} LUFS)`);
-      music = `<audio id="music-a" src="${file}" data-start="0" data-duration="${DUR}" data-track-index="10" data-volume="${volume}" data-fade-in="${fadeIn}" data-fade-out="${fadeOut}"></audio>`;
+      music = `<audio id="music-a" src="${file}" data-start="0" data-duration="${end ?? DUR}" data-track-index="10" data-volume="${volume}" data-fade-in="${fadeIn}" data-fade-out="${fadeOut}"></audio>`;
     },
     // relaxed lower-third captions; hide = frame numbers that carry their own type, or [start, end] seconds to hide
     // only part of a frame (e.g. the hook's words, then captions for the rest of the line)
@@ -161,7 +161,7 @@ export function reel({ brand, template = studio, words = 'assets/words.json', ou
         if (cur.length >= maxWords || /[.,?!]$/.test(w.w)) flush();
       }
       flush();
-      capList = caps; capHide = hide;
+      capList = caps; capHide = hide; capTop = top;
       capRender = (i) => {
         const c = caps[i], ed = capEdits[i] || {};
         if (ed.style === 'hide') return null;
@@ -177,10 +177,13 @@ export function reel({ brand, template = studio, words = 'assets/words.json', ou
     // (decisions.json cta) wins. Adds one frame AFTER her last word: her cut-out (the last moment's, or the frame she
     // picked) on a flat brand color, the ask above her head, a real-looking Instagram piece and a handwritten aside.
     // Call after R.frames() and before R.captions(). No CTA picked = no card and a warning (Plan it asks for one).
-    endCard(def = {}, { tail = T.endCard?.tail ?? 2.8 } = {}) {
+    endCard(def = {}, { tail = T.endCard?.tail ?? 2.8, live = false } = {}) {
       const c = resolveCta(D.cta?.kind ? D.cta : def);
       if (!c) { endInfo = { missing: true }; console.warn('⚠ NO CTA: pick what this Reel should get people to do (review page, Plan it → Ending).'); return null; }
       const d = CTAS[c.kind], card = d.card(c, B), s = DUR, n = F.length;
+      // live: build.mjs already shows the ask in the last moment as she says the word, so no extra frame, freeze or
+      // sounds (Mercedes 2026-10-30); the page's Ending pick and the caption's CTA line still come from here.
+      if (live) { endInfo = { n: n - 1, title: `Ending (live): ${d.label}`, cta: c, caption: ctaCaption(c, B), hook: d.hook, manual: d.manual || '' }; return endInfo; }
       F = [...F, +(DUR + tail).toFixed(2)]; END = F.at(-1);
       const bgKey = B.C[c.bg] ? c.bg : T.endCard?.bg || 'cream', dark = bgKey === 'ink', ink = dark ? B.C.cream : B.C.ink;
       const nn = (k) => String(k).padStart(2, '0'), fr = c.frame || n - 1;
@@ -220,7 +223,7 @@ export function reel({ brand, template = studio, words = 'assets/words.json', ou
         const main = layers.filter((l) => !l.layer).map((l) => l.html).join(''), top = layers.filter((l) => l.layer).map((l) => l.html).join('');
         const ci = capHide.includes(k) ? -1 : capList.findIndex((c) => c.s >= w.s && c.s < w.s + w.d), cr = ci >= 0 ? capRender(ci) : null, cap = cr && capList[ci];
         const said = W.filter((x) => x.s >= w.s && x.s < w.s + w.d).map((x) => x.w).join(' ');
-        return `<figure class="cell"><div class="frame" id="f${k}">${existsSync(stills(k)) ? `<img class="bg" src="${stills(k)}">` : ''}<div class="scene">${main}</div>${cutStill[k] ? `<img class="bg" src="${cutStill[k]}">` : ''}<div class="scene">${top}</div>${cap ? `<div class="${cr.cls.replace('clip ', '')}" style="top:${T.captions.top}cqw"><span>${cr.inner}</span></div>` : ''}</div>
+        return `<figure class="cell"><div class="frame" id="f${k}">${existsSync(stills(k)) ? `<img class="bg" src="${stills(k)}">` : ''}<div class="scene">${main}</div>${cutStill[k] ? `<img class="bg" src="${cutStill[k]}">` : ''}<div class="scene">${top}</div>${cap ? `<div class="${cr.cls.replace('clip ', '')}" style="top:${capTop ? capTop(win(k).s) : T.captions.top}cqw"><span>${cr.inner}</span></div>` : ''}</div>
 <figcaption><b>F${k}</b> <span class="t">${w.s.toFixed(1)}–${(w.s + w.d).toFixed(1)}s</span>${note.title ? ` ${note.title}` : ''}<br><i>“${said}”</i>${note.sound ? `<br><span class="snd">♪ ${note.sound}</span>` : ''}</figcaption></figure>`;
       }).join('\n');
       writeFileSync(file, `<!doctype html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>${title} storyboard ${version}</title>

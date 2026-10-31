@@ -16,11 +16,13 @@ for (let i = 0; i < R.W.length; i++) {
   if (/^ready,?$/i.test(w.w)) w.w = w.w.toUpperCase();
   if (/^traps,?$/i.test(w.w)) w.w = w.w.toUpperCase();
   if (w.w === 'Cool' && /^about$/i.test(nx?.w)) w.w = 'What’s cool'; // the cut starts inside "what's": caption keeps it
-  if (w.w === 'list' && /^another$/i.test(nx?.w)) w.w = 'list.';
+  if (w.w === 'list' && /^through$/i.test(nx?.w)) { w.w = 'list.'; nx.w = ''; } // "through" is past the cut (transcript time drifts)
 }
 R.W.splice(0, R.W.length, ...R.W.filter((w) => w.w));
+// tight cuts capitalize every piece's first word: keep capitals only at a sentence start (and proper names)
+for (let i = 1; i < R.W.length; i++) { const w = R.W[i], p = R.W[i - 1]; if (/^[A-Z][a-z]/.test(w.w) && !/[.?!]$/.test(p.w) && !/^(I|I'm|I'll|Claude|Instagram|Meta|ManyChat|YouTube|TikTok|Many)/.test(w.w)) w.w = w.w[0].toLowerCase() + w.w.slice(1); }
 
-R.frames([0, at('when someone'), at('it then'), at('what’s'), at('and so once'), at('another'), at('i also made'), at('i pay'), at('claude did'), at('two of'), at('if you want')]);
+R.frames([0, at('when someone'), at('it then'), at("what's"), at('and so once'), at('another'), at('i also made'), at('i pay'), at('claude did'), at('two of'), at('if you want')]);
 const NOTES = {};
 const note = (n, title, sound) => (NOTES[n] = { title, sound });
 
@@ -62,11 +64,16 @@ R.scene(6, [K.fade(50), K.chat([
 ], { top: 6 })]);
 
 // F7 one inbox
-note(7, 'Folders fan in: one inbox for every comment', 'paper slide, pop, paper slide');
-R.scene(7, [K.fade(48),
-  K.folder('f7a', 'Instagram', { x: 2, y: 10, r: -7, in: at('email inbox') }), K.folder('f7b', 'YouTube', { x: 36, y: 5, r: -1, in: at('manage') }),
-  K.folder('f7c', 'TikTok', { x: 68, y: 12, r: 7, in: at('comments', at('manage')) }),
-  K.hand('h7', 'one central place', { x: 10, y: 42, size: 7, r: -3, in: at('central') })]);
+// inbox demo above her head (Mercedes 2026-10-30): the public Chat Manager demo (made-up shop), list → click → the thread
+note(7, 'Inbox demo above her head: the list, a click, the whole comment-to-signup thread scrolls', 'pop on the window, click, paper slide on the scroll');
+const t7 = at('email inbox'), c7 = at('manage') + 0.3;
+const inboxDemo = { html: `<div id="ib7" class="abs blk" style="left:7cqw;top:3cqw;width:86cqw;height:74cqw;border-radius:2.2cqw;overflow:hidden;background:#fff6f3;box-shadow:0 1.5cqw 4cqw rgba(10,25,48,.35)">
+  <div style="height:5.6cqw;background:#ece6dd;display:flex;align-items:center;gap:1.2cqw;padding:0 2.4cqw"><i style="width:1.6cqw;height:1.6cqw;border-radius:50%;background:#ff5f57"></i><i style="width:1.6cqw;height:1.6cqw;border-radius:50%;background:#febc2e"></i><i style="width:1.6cqw;height:1.6cqw;border-radius:50%;background:#28c840"></i><span style="margin-left:2cqw;flex:1;background:#fff;border-radius:2cqw;padding:.5cqw 2cqw;font:500 2.4cqw/1.2 Jost,sans-serif;color:#0a1930">my inbox</span></div>
+  <div style="position:relative;height:68.4cqw;overflow:hidden"><img id="ib7a" src="assets/img/inbox-list.png" style="position:absolute;left:-5%;top:0;width:150%"><img id="ib7b" src="assets/img/inbox-thread.png" style="position:absolute;left:-4%;top:0;width:118%;opacity:0"></div></div>`,
+  anim: [`pop('#ib7', ${t7});`, `tl.to('#ib7a', { y: '-12%', duration: 1.2, ease: 'power1.inOut' }, ${t7 + 0.6});`,
+    `tl.set('#ib7b', { opacity: 1 }, ${c7 + 0.25});`, `tl.to('#ib7b', { y: '-38%', duration: ${(win(7).d - (c7 - win(7).s) - 0.8).toFixed(2)}, ease: 'power1.inOut' }, ${c7 + 0.6});`] };
+R.scene(7, [K.fade(40), inboxDemo, K.cursor('cur7', { x: 40, y: 22, size: 6, click: c7 }),
+  K.hand('h7', 'demo shop, same inbox', { x: 50, y: 78, size: 5.5, r: -3, in: t7 + 0.4 })]);
 
 // F8 $6 vs $39
 note(8, 'Receipt: $6 a month server', 'coins on the receipt');
@@ -88,15 +95,17 @@ R.scene(10, [K.fade(48), K.paper('p10', [
 ], { top: 6, in: win(10).s + 0.1 })]);
 
 // F11 her CTA; the end card follows
-note(11, 'She says the word; aside: the setup traps', 'pop on the aside');
-R.scene(11, [K.fade(46), K.statement('b11', 'Comment <m>TRAPS</m>', { top: 6, size: 12, in: win(11).s + 0.1, swipe: at('TRAPS') }),
-  K.hand('h11', 'every setup trap, free', { x: 8, y: 34, size: 7, r: -3, in: at('pitfalls') })]);
-R.endCard({ kind: 'comment', word: 'TRAPS', detail: 'for my free setup trap checklist' });
+// no end card (Mercedes 2026-10-30: "Comment TRAPS should show up when I say it", no freeze frame)
+note(11, 'Comment TRAPS + comment bar appear as she says it; aside: every setup trap', 'pop on the word, pop-bubble on the bar');
+R.scene(11, [K.fade(46), K.statement('b11', 'Comment <m>TRAPS</m>', { top: 6, size: 12, in: at('TRAPS'), swipe: at('TRAPS') + 0.4 }),
+  K.ctaUi('ui11', 'comment', { top: 27, word: 'TRAPS', handle: R.B.handle || '', name: R.B.label || '', in: at('TRAPS') + 0.5 }),
+  K.hand('h11', 'every setup trap, free', { x: 8, y: 44, size: 7, r: -3, in: at('pitfalls') })]);
+R.endCard({ kind: 'comment', word: 'TRAPS', detail: 'for my free setup trap checklist' }, { live: true });
 
 R.cam.alternate();
 R.cam.punch(at('weeks'));
 
-R.captions({ hide: [11] });
+R.captions({ hide: [11], top: () => 150 }); // below her chin (Mercedes 2026-10-30: 128 covered her face)
 
 // ---- sound (never the same effect twice in a row) ----
 const fx = R.fx.bind(R);
@@ -106,11 +115,11 @@ fx('fx-pop3', 'pop-light', at('READY')); fx('fx-msg3', 'pop-message', at('link')
 fx('fx-wh4', 'whoosh-air', at('integrated'), 0.4);
 fx('fx-pap5', 'paper-slide', win(5).s + 0.1, 0.6); fx('fx-chk5a', 'check', at('sign up'), 0.4); fx('fx-pop5b', 'pop-light', at('automatically'));
 fx('fx-pop6', 'pop-bubble', at('youtube')); fx('fx-msg6', 'pop-message', at('auto response'));
-fx('fx-pap7a', 'paper-slide', at('email inbox'), 0.7); fx('fx-pop7b', 'pop-light', at('manage')); fx('fx-pap7c', 'paper-slide', at('comments', at('manage')), 0.7);
+fx('fx-pop7a', 'pop-bubble', t7); fx('fx-clk7', 'mouse-click', c7, 0.4); fx('fx-pap7c', 'paper-slide', c7 + 0.6, 0.7);
 fx('fx-pop8', 'pop-light', at('$6')); fx('fx-coin8', 'coins', at('host'), 0.5);
 fx('fx-type9', 'typing-short', at('technical') - 0.6, 0.35); fx('fx-msg9', 'pop-message', at('clicks'));
 fx('fx-pap10', 'paper-slide', win(10).s + 0.1, 0.6); fx('fx-no10', 'nope', at('weeks'), 0.45);
-fx('fx-pop11', 'pop-light', at('pitfalls'));
+fx('fx-pop11', 'pop-light', at('TRAPS') + 0.4); fx('fx-bar11', 'pop-bubble', at('TRAPS') + 0.5);
 R.music('assets/music/music-a.mp3'); // "Curiosity" (Mixkit), her pick on the 2026-10-13 Reels
 
 const COVERS = [

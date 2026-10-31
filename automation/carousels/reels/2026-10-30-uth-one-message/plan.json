@@ -1,72 +1,148 @@
 {
  "kit": "yap",
+ "pad": {
+  "before": 0.06,
+  "after": 0.1
+ },
  "segments": [
   {
    "src": "2026-10-28-session/reels/IMG_2082.MOV",
-   "in": 3.08,
-   "out": 9.04,
+   "in": 3.603,
+   "out": 9.009,
    "transcript": "audio/2026-10-28-session__reels__IMG_2082.json"
   },
   {
    "src": "2026-10-28-session/reels/IMG_2082.MOV",
-   "in": 17.24,
+   "in": 17.497,
+   "out": 19.851,
+   "transcript": "audio/2026-10-28-session__reels__IMG_2082.json"
+  },
+  {
+   "src": "2026-10-28-session/reels/IMG_2082.MOV",
+   "in": 21.056,
+   "out": 22.09,
+   "transcript": "audio/2026-10-28-session__reels__IMG_2082.json"
+  },
+  {
+   "src": "2026-10-28-session/reels/IMG_2082.MOV",
+   "in": 24.97,
    "out": 27.65,
+   "transcript": "audio/2026-10-28-session__reels__IMG_2082.json",
+   "padAfter": 0.9
+  },
+  {
+   "src": "2026-10-28-session/reels/IMG_2082.MOV",
+   "in": 29.085,
+   "out": 31.139,
    "transcript": "audio/2026-10-28-session__reels__IMG_2082.json"
   },
   {
    "src": "2026-10-28-session/reels/IMG_2082.MOV",
-   "in": 28.69,
+   "in": 32.316,
+   "out": 34.159,
+   "transcript": "audio/2026-10-28-session__reels__IMG_2082.json"
+  },
+  {
+   "src": "2026-10-28-session/reels/IMG_2082.MOV",
+   "in": 35.313,
    "out": 36.21,
    "transcript": "audio/2026-10-28-session__reels__IMG_2082.json"
   },
   {
    "src": "2026-10-28-session/reels/IMG_2082.MOV",
-   "in": 41.77,
+   "in": 41.829,
+   "out": 44.005,
+   "transcript": "audio/2026-10-28-session__reels__IMG_2082.json"
+  },
+  {
+   "src": "2026-10-28-session/reels/IMG_2082.MOV",
+   "in": 44.868,
    "out": 48.57,
    "transcript": "audio/2026-10-28-session__reels__IMG_2082.json"
   },
   {
    "src": "2026-10-28-session/reels/IMG_2082.MOV",
-   "in": 49.93,
-   "out": 56.13,
+   "in": 50.226,
+   "out": 51.765,
+   "transcript": "audio/2026-10-28-session__reels__IMG_2082.json"
+  },
+  {
+   "src": "2026-10-28-session/reels/IMG_2082.MOV",
+   "in": 52.886,
+   "out": 56.109,
    "transcript": "audio/2026-10-28-session__reels__IMG_2082.json"
   },
   {
    "src": "2026-10-28-session/reels/IMG_2082.MOV",
    "in": 61.15,
+   "out": 62.279,
+   "transcript": "audio/2026-10-28-session__reels__IMG_2082.json"
+  },
+  {
+   "src": "2026-10-28-session/reels/IMG_2082.MOV",
+   "in": 62.552,
    "out": 65.21,
    "transcript": "audio/2026-10-28-session__reels__IMG_2082.json"
   },
   {
    "src": "2026-10-28-session/reels/IMG_2082.MOV",
-   "in": 66.23,
+   "in": 66.593,
+   "out": 69.723,
+   "transcript": "audio/2026-10-28-session__reels__IMG_2082.json"
+  },
+  {
+   "src": "2026-10-28-session/reels/IMG_2082.MOV",
+   "in": 70.157,
    "out": 72.53,
    "transcript": "audio/2026-10-28-session__reels__IMG_2082.json"
   },
   {
    "src": "2026-10-28-session/reels/IMG_2082.MOV",
-   "in": 76.09,
+   "in": 76.313,
    "out": 80.37,
    "transcript": "audio/2026-10-28-session__reels__IMG_2082.json"
   },
   {
    "src": "2026-10-28-session/reels/IMG_2082.MOV",
-   "in": 80.93,
+   "in": 81.619,
+   "out": 83.006,
+   "transcript": "audio/2026-10-28-session__reels__IMG_2082.json"
+  },
+  {
+   "src": "2026-10-28-session/reels/IMG_2082.MOV",
+   "in": 83.308,
    "out": 84.37,
    "transcript": "audio/2026-10-28-session__reels__IMG_2082.json"
   },
   {
    "src": "2026-10-28-session/reels/IMG_2082.MOV",
-   "in": 84.99,
-   "out": 92.45,
+   "in": 85.554,
+   "out": 86.414,
    "transcript": "audio/2026-10-28-session__reels__IMG_2082.json"
   },
   {
    "src": "2026-10-28-session/reels/IMG_2082.MOV",
-   "in": 93.81,
+   "in": 86.735,
+   "out": 88.33,
+   "transcript": "audio/2026-10-28-session__reels__IMG_2082.json"
+  },
+  {
+   "src": "2026-10-28-session/reels/IMG_2082.MOV",
+   "in": 88.679,
+   "out": 92.316,
+   "transcript": "audio/2026-10-28-session__reels__IMG_2082.json"
+  },
+  {
+   "src": "2026-10-28-session/reels/IMG_2082.MOV",
+   "in": 94.293,
+   "out": 99.065,
+   "transcript": "audio/2026-10-28-session__reels__IMG_2082.json"
+  },
+  {
+   "src": "2026-10-28-session/reels/IMG_2082.MOV",
+   "in": 99.699,
    "out": 101.79,
    "transcript": "audio/2026-10-28-session__reels__IMG_2082.json"
   }
- ],
- "maxPause": 0.45
+ ]
 }
