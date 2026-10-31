@@ -58,8 +58,13 @@ R.scene(5, [K.fade(48), K.paper('p5', [
 ], { top: 6, in: win(5).s + 0.1 })]);
 
 // F6 their reply opens the window
-note(6, 'Their reply opens a 24-hour window', 'whoosh-air on the statement');
-R.scene(6, [K.fade(46), K.statement('b6', 'Their reply opens a <m>24-hour window</m>', { top: 6, size: 11, in: at('this reply'), swipe: at('window') })]);
+// changed 2026-10-30 (she marked the statement for a change): their reply lands, the window opens, more messages follow
+note(6, 'Their reply lands; “24-hour window open” chip; then more DMs can go out', 'pop-bubble on the reply, chime on the chip, pop-message on the next DM');
+R.scene(6, [K.fade(50), K.chat([
+  { id: 'c6a', kind: 'me', text: 'yes please!', in: at('if they reply') },
+  { id: 'c6b', kind: 'chip', text: '⏱ 24-hour window open', in: at('window') - 0.3 },
+  { id: 'c6c', kind: 'ai', text: 'Here’s the link 👇', in: at('send more'), enter: 'up' },
+], { top: 6 })]);
 
 // F7 the fix: the one message asks for a reply
 note(7, 'Her real ask: reply READY, and they do', 'pop-message on the ask, pop-bubble on READY');
@@ -96,7 +101,7 @@ fx('fx-pop2a', 'pop-bubble', win(2).s + 0.3); fx('fx-msg2', 'pop-message', at('o
 fx('fx-wh3', 'whoosh-air', win(3).s + 0.1, 0.4); fx('fx-pop3', 'pop-light', at('ManyChat'));
 fx('fx-pop4a', 'pop-bubble', at('comments')); fx('fx-pop4b', 'pop-light', at('private'));
 fx('fx-pap5', 'paper-slide', win(5).s + 0.1, 0.6); fx('fx-chk5a', 'check', at('one per'), 0.4); fx('fx-pop5b', 'pop-light', at('seven'));
-fx('fx-wh6', 'whoosh-air', at('this reply'), 0.4);
+fx('fx-pop6', 'pop-bubble', at('if they reply')); fx('fx-chime6', 'chime', at('window') - 0.3, 0.5); fx('fx-msg6', 'pop-message', at('send more'));
 fx('fx-pop7', 'pop-light', at('ask')); fx('fx-msg7a', 'pop-message', at('mine')); fx('fx-pop7b', 'pop-bubble', at('link', at('mine')));
 fx('fx-msg8a', 'pop-message', at('signup') - 0.2); fx('fx-chime8', 'chime', at('reminder'), 0.5);
 fx('fx-pop9', 'pop-light', at('AUTODM', win(9).s) + 0.4); fx('fx-bar9', 'pop-bubble', at('AUTODM', win(9).s) + 0.5);
