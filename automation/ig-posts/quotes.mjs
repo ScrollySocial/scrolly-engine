@@ -28,7 +28,7 @@ export const QUOTES = [
   { n: 8, text: 'The greatest legacy is showing others what’s possible.', by: 'Unknown' },
   { n: 9, text: 'To inspire people, don’t show them your superpowers. Show them theirs.', by: 'Alexander den Heijer' },
   { n: 10, text: 'A curious mind constantly uncovers magic.', by: 'Unknown', tile: 'balloon2' },
-  { n: 11, text: 'Enthusiasm is common. Endurance is rare.', by: 'Angela Duckworth', tile: 'tortoise' },
+  { n: 11, text: 'Enthusiasm is common. Endurance is rare.', by: 'Angela Duckworth', tile: 'rope' },
   { n: 12, text: 'The scariest place to be is the same place as last year. Grow.', by: 'Unknown' },
   { n: 13, text: 'Excellence is to do a common thing in an uncommon way. Character, not circumstances, makes the man.', by: 'Booker T. Washington' },
   { n: 14, text: 'You can beat 99% of people if you can master the shame of rejection, the boredom of repetition, and the pain of feedback.', by: 'Alex Hormozi' },
@@ -184,7 +184,22 @@ ${star(C.navy, { pts: 8, seed: 12, sw: 3 }, 'left:440px;top:1000px;width:50px;he
 ${star('#fff', { pts: 4, seed: 3, sw: 3.4 }, 'left:640px;top:1010px;width:56px;height:56px')}
 <div class="big">${esc(q.text)}</div><div class="cr">${esc(cr(q.by))}</div>`;
 
-const TILES = { starry, wand, constellation, moon, balloon, sail, quiet, tortoise, balloon2 };
+// 1889 tightrope-walker trade card (Kimball "Pretty Athletes"), cut out, walking a hand-drawn rope across a soft sky.
+const rope = (q) => `<style>${BASE}${WHIM}
+  body { background: linear-gradient(#d9e2f1, #f4efe6 78%); }
+  .art { left: 270px; top: 360px; width: 560px; filter: drop-shadow(0 14px 20px rgba(10,25,48,.22)); }
+  .big { left: 70px; right: 70px; top: 80px; text-align: center; }
+  .cr { left: 0; right: 0; bottom: 120px; text-align: center; }
+</style>
+<svg viewBox="0 0 1080 1440" style="position:absolute;inset:0;width:1080px;height:1440px"><path d="M-20 1150 Q545 1268 1100 1120" fill="none" stroke="${C.navy}" stroke-width="5" stroke-linecap="round"/></svg>
+<img class="art" src="${fileUrl(path.join(HERE, 'assets', 'met', 'met-712792-cut.png'))}">
+${star(C.sky, { pts: 4, fill: true, seed: 7 }, 'left:150px;top:520px;width:90px;height:90px')}
+${star(C.navy, { pts: 8, seed: 12, sw: 3 }, 'left:880px;top:470px;width:52px;height:52px')}
+${star('#fff', { pts: 4, fill: true, seed: 3 }, 'left:900px;top:720px;width:64px;height:64px')}
+${star(C.sky, { pts: 4, seed: 9, sw: 3 }, 'left:120px;top:800px;width:46px;height:46px')}
+<div class="big">${esc(q.text)}</div><div class="cr">${esc(cr(q.by))}</div>`;
+
+const TILES = { starry, wand, constellation, moon, balloon, sail, quiet, tortoise, balloon2, rope };
 const only = process.argv.slice(2).map(Number);
 const list = QUOTES.filter((q) => q.tile && (!only.length || only.includes(q.n)));
 
