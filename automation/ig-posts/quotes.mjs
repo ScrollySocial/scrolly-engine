@@ -19,7 +19,7 @@ const C = { cream: '#f7f3ec', navy: '#0a1930', sky: '#4da3ff', mist: '#dfe4f0' }
 // The 14 quotes (planner cards "Quote 1" to "Quote 14"); credit = the checked author, or Unknown.
 export const QUOTES = [
   { n: 1, text: 'The only man who never makes mistakes is the man who never does anything.', by: 'Theodore Roosevelt' },
-  { n: 2, text: 'It is not in the stars to hold our destiny but in ourselves.', by: 'Unknown', tile: 'moon' },
+  { n: 2, text: 'It is not in the stars to hold our destiny but in ourselves.', by: 'Unknown', tile: 'quiet' },
   { n: 3, text: 'If you can’t explain it simply, you don’t understand it well enough.', by: 'Unknown' },
   { n: 4, text: 'If you look for perfection, you’ll never be content.', by: 'Leo Tolstoy, Anna Karenina' },
   { n: 5, text: 'Of course it’s hard. It’s supposed to be hard. If it’s easy, everyone would do it. Hard is what makes it great.', by: 'A League of Their Own' },
@@ -27,8 +27,8 @@ export const QUOTES = [
   { n: 7, text: 'What a privilege it is to be exhausted by the work you once dreamed of.', by: 'Unknown' },
   { n: 8, text: 'The greatest legacy is showing others what’s possible.', by: 'Unknown' },
   { n: 9, text: 'To inspire people, don’t show them your superpowers. Show them theirs.', by: 'Alexander den Heijer' },
-  { n: 10, text: 'A curious mind constantly uncovers magic.', by: 'Unknown', tile: 'balloon', lines: ['A curious mind', 'constantly', 'uncovers magic.'] },
-  { n: 11, text: 'Enthusiasm is common. Endurance is rare.', by: 'Angela Duckworth', tile: 'sail' },
+  { n: 10, text: 'A curious mind constantly uncovers magic.', by: 'Unknown', tile: 'quiet' },
+  { n: 11, text: 'Enthusiasm is common. Endurance is rare.', by: 'Angela Duckworth', tile: 'sail', lines: ['Enthusiasm', 'is common.', 'Endurance', 'is rare.'] },
   { n: 12, text: 'The scariest place to be is the same place as last year. Grow.', by: 'Unknown' },
   { n: 13, text: 'Excellence is to do a common thing in an uncommon way. Character, not circumstances, makes the man.', by: 'Booker T. Washington' },
   { n: 14, text: 'You can beat 99% of people if you can master the shame of rejection, the boredom of repetition, and the pain of feedback.', by: 'Alex Hormozi' },
@@ -130,18 +130,27 @@ ${star(C.navy, { pts: 8, seed: 12, sw: 3 }, 'left:990px;top:400px;width:56px;hei
 ${star('#fff', { pts: 4, seed: 3, sw: 3.4 }, 'left:470px;top:560px;width:60px;height:60px')}
 ${strips(q.lines, q.by, 'left:70px;bottom:110px')}`;
 
-// Ryder's "Under a Cloud" (c. 1900): a small boat sailing on under a dark cloud, quote small in the cloud, sparkles by the moon.
+// Ryder's "Under a Cloud" (c. 1900): a small boat sailing on under a dark cloud, quote on paper strips in the cloud
+// (white text over the painting was too hard to read, Mercedes 2026-11-02), sparkles by the moon.
 const sail = (q) => `<style>${BASE}${COLLAGE}
   .bg { object-position: 60% center; filter: saturate(.9); transform: scale(1.06); }
-  .small { top: 210px; font-size: 84px; }
-  .by { top: 470px; color: ${C.mist}; text-shadow: 0 2px 14px rgba(10,25,48,.6); }
 </style><img class="bg" src="${MET(11974)}">
-${star('#fff', { pts: 4, fill: true, seed: 11 }, 'left:330px;top:600px;width:70px;height:70px')}
+${star('#fff', { pts: 4, fill: true, seed: 11 }, 'left:345px;top:690px;width:62px;height:62px')}
 ${star(C.sky, { pts: 8, seed: 21, sw: 3 }, 'left:220px;top:720px;width:48px;height:48px')}
-${star('#fff', { pts: 4, seed: 5, sw: 3 }, 'left:430px;top:740px;width:40px;height:40px')}
-<div class="small">${esc(q.text)}</div><div class="by">${esc(credit(q.by))}</div>`;
+${star('#fff', { pts: 4, seed: 5, sw: 3 }, 'left:490px;top:800px;width:40px;height:40px')}
+${strips(q.lines, q.by, 'left:70px;top:130px')}`;
 
-const TILES = { starry, wand, constellation, moon, balloon, sail };
+// Unknown author = quiet (Mercedes 2026-11-02): plain soft paper, soft muted ink, no art, one tiny sparkle.
+// Credited quotes get the stronger vintage-collage tiles above.
+const quiet = (q) => `<style>${BASE}
+  body { background: #f3eee5; color: #4a4e66; }
+  .q { top: 50%; transform: translateY(-50%); font-size: 84px; line-height: 1.12; left: 150px; right: 150px; }
+  .by { bottom: 150px; font: 500 28px/1 Jost, Arial, sans-serif; letter-spacing: .22em; text-transform: uppercase; color: #8f8a83; }
+</style>
+${star('#a9c7ea', { pts: 4, seed: 5, sw: 3 }, 'left:510px;top:200px;width:60px;height:60px')}
+<div class="q">${esc(q.text)}</div><div class="by">unknown</div>`;
+
+const TILES = { starry, wand, constellation, moon, balloon, sail, quiet };
 const only = process.argv.slice(2).map(Number);
 const list = QUOTES.filter((q) => q.tile && (!only.length || only.includes(q.n)));
 
