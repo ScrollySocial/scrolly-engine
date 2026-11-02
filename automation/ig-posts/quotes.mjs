@@ -24,8 +24,8 @@ export const QUOTES = [
   { n: 4, text: 'If you look for perfection, you’ll never be content.', by: 'Leo Tolstoy, Anna Karenina', tile: 'athlete', art: 712807 },
   { n: 5, text: 'Of course it’s hard. It’s supposed to be hard. If it’s easy, everyone would do it. Hard is what makes it great.', by: 'A League of Their Own', tile: 'athlete', art: 712793 },
   { n: 6, text: 'If you’re making mistakes, it means you’re out there doing something.', by: 'Neil Gaiman', tile: 'athlete', art: 712790 },
-  { n: 7, text: 'What a privilege it is to be exhausted by the work you once dreamed of.', by: 'Unknown', tile: 'note' },
-  { n: 8, text: 'The greatest legacy is showing others what’s possible.', by: 'Unknown', tile: 'sticker', fs: 112 },
+  { n: 7, text: 'What a privilege it is to be exhausted by the work you once dreamed of.', by: 'Unknown', tile: 'note', bg: 12162, bgPos: '15% center', bgSize: 'auto 104%', noteTop: 120 },
+  { n: 8, text: 'The greatest legacy is showing others what’s possible.', by: 'Unknown', tile: 'sticker', serif: true, fs: 150 },
   { n: 9, text: 'To inspire people, don’t show them your superpowers. Show them theirs.', by: 'Alexander den Heijer', tile: 'athlete', art: 712801 },
   { n: 10, text: 'A curious mind constantly uncovers magic.', by: 'Unknown', tile: 'athlete', art: 727249 },
   { n: 11, text: 'Enthusiasm is common. Endurance is rare.', by: 'Angela Duckworth', tile: 'rope' },
@@ -263,17 +263,17 @@ const note = (q) => `<style>${BASE}${SCENE}
     box-shadow: 0 18px 30px rgba(10,25,48,.35); clip-path: polygon(0 1%, 8% 0, 22% 1.2%, 40% .3%, 58% 1.4%, 77% .2%, 92% 1%, 100% 0, 99.4% 30%, 100% 64%, 99.2% 100%, 80% 99%, 61% 100%, 42% 98.8%, 24% 100%, 7% 99%, 0 100%, .6% 60%); }
     .note p { text-wrap: balance; color: ${C.navy}; font: 400 72px/1.18 'Covered By Your Grace', cursive; letter-spacing: .02em; text-align: center; }
   .note small { display: block; margin-top: 34px; text-align: center; color: ${C.navy}; opacity: .7; font: 400 38px/1 'Covered By Your Grace', cursive; }
-  .tape { position: absolute; left: 400px; top: 430px; width: 280px; height: 86px; background: rgba(255,255,255,.62); transform: rotate(2deg); box-shadow: 0 2px 6px rgba(10,25,48,.12); }
+  .tape { position: absolute; left: 400px; top: calc(var(--nt) - 40px); width: 280px; height: 86px; background: rgba(255,255,255,.62); transform: rotate(2deg); box-shadow: 0 2px 6px rgba(10,25,48,.12); }
 </style>
-<div class="layer" style="background-image:url('${MET(10790)}');background-position:50% 40%"></div>
-<div class="note"><p>${esc(q.text)}</p><small>${esc(cr(q.by))}</small></div><div class="tape"></div>
-${star('#fff', { pts: 4, fill: true, seed: 7 }, 'left:860px;top:300px;width:76px;height:76px')}
+<div class="layer" style="background-image:url('${MET(q.bg || 10790)}');background-position:${q.bgPos || '50% 40%'};background-size:${q.bgSize || 'cover'}"></div>
+<div class="note" style="top:${q.noteTop || 470}px"><p>${esc(q.text)}</p><small>${esc(cr(q.by))}</small></div><div class="tape" style="--nt:${q.noteTop || 470}px"></div>
+${star('#fff', { pts: 4, fill: true, seed: 7 }, 'left:900px;top:640px;width:70px;height:70px')}
 ${star(C.sky, { pts: 8, seed: 12, sw: 3 }, 'left:150px;top:1150px;width:56px;height:56px')}`;
 
 // Sticker: big chunky words with a thick paper outline, stuck on Van Gogh's Wheat Field with Cypresses.
 const sticker = (q) => `<style>${BASE}${SCENE}
   .st { position: absolute; left: 70px; right: 70px; top: 50%; transform: translateY(-52%) rotate(-3deg); text-align: center;
-    font: 800 ${q.fs || 118}px/1.06 Jost, Arial, sans-serif; text-transform: uppercase; letter-spacing: -.01em; color: ${C.navy};
+    font: ${q.serif ? `400 ${q.fs || 150}px/1 'Instrument Serif', Georgia, serif; letter-spacing: -.005em;` : `800 ${q.fs || 118}px/1.06 Jost, Arial, sans-serif; text-transform: uppercase; letter-spacing: -.01em;`} color: ${C.navy}; text-wrap: balance;
     -webkit-text-stroke: 30px #f6f1e6; paint-order: stroke fill; filter: drop-shadow(0 10px 14px rgba(10,25,48,.35)); }
 </style>
 <div class="layer" style="background-image:url('${MET(436535)}');background-position:30% center;background-size:auto 112%"></div>
