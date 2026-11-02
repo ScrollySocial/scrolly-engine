@@ -111,7 +111,8 @@ const scr = { x: p.screen.x * SC, y: p.screen.y * SC, w: p.screen.w * SC, h: p.s
 const GRAIN = `url("data:image/svg+xml;base64,${Buffer.from(`<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .5 0 0 0 0 .5 0 0 0 0 .5 0 0 0 .07 0'/></filter><rect width='100%' height='100%' filter='url(#n)'/></svg>`).toString('base64')}")`;
 // Timeline (Mercedes 2026-11-02): the question types in word by word, big, then shrinks to the top; the call to action
 // pops in and the highlighter sweeps under it; the live page slides up full screen, then zooms out into the phone; the
-// end pushes the link sticker: "tap the link" pops, the arrow bounces and rings pulse where the sticker goes.
+// end pushes the link sticker: "tap the link" pops and the arrow bounces toward the clear spot for the sticker
+// (pulsing rings were dropped 2026-11-02: the sticker would cover them).
 const T = { words: 0.25, wordGap: 0.22, shrink: [1.75, 2.35], cta: [2.35, 2.85], mark: [2.85, 3.35], full: 3.35, slide: 0.45, zoom: [6.3, 7.25], link: 7.35, end: 10.5 };
 const ZOOM = W / scr.w; // the phone scaled so its screen fills the Story
 const html = `<!doctype html><html><head><meta charset="utf-8">
@@ -131,7 +132,6 @@ const html = `<!doctype html><html><head><meta charset="utf-8">
   .star { position: absolute; width: ${v.star.size}px; left: ${PX + PW + v.star.dx}px; top: ${p.top + v.star.dy}px; filter: drop-shadow(0 6px 8px rgba(10,25,48,.25)); }
   .tap { position: absolute; left: 0; right: 0; top: 1290px; text-align: center; font-family: 'Covered By Your Grace', cursive; font-size: 72px; line-height: 1; }
   .tap svg { display: block; margin: 0 auto; width: 60px; height: 70px; }
-  .ring { position: absolute; left: 50%; top: 1470px; width: 330px; height: 96px; margin: -48px 0 0 -165px; border: 6px solid #4da3ff; border-radius: 999px; }
   .foot { position: absolute; left: 0; right: 0; top: 1560px; text-align: center; }
   .foot svg { width: 300px; height: auto; display: block; margin: 0 auto; }
   .foot .amb { fill: #4da3ff; }
@@ -139,7 +139,6 @@ const html = `<!doctype html><html><head><meta charset="utf-8">
 </style></head><body>
   <div class="top"><p id="q">${esc(v.q).split(' ').map((w) => `<b>${w}</b>`).join(' ')}</p><h1 id="cta"><span>${esc(v.cta)}</span></h1></div>
   <div class="foot">${LOGO}<p>theambitiondepartment.com</p></div>
-  <div class="ring" id="r1"></div><div class="ring" id="r2"></div>
   <div class="tap" id="tap">tap the link<svg viewBox="0 0 60 70"><path d="M31 4c-2 18 1 38-1 58M14 46c7 6 12 12 16 17c4-7 9-12 16-18" fill="none" stroke="#4da3ff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
   <div class="phone" id="phone"><div class="scr"><img id="s"></div><img class="body" src="${fileUrl(path.join(HERE, p.file))}"></div>
   <img class="star" id="star" src="${fileUrl(path.join(HERE, 'assets/stars', v.star.file + '.png'))}">
@@ -189,12 +188,11 @@ for (let i = 0; i < total; i++) {
     const st = prog(T.zoom[1] - 0.1, T.zoom[1] + 0.35), sb = ((t - T.zoom[1]) % 2) / 2, bb = t > T.zoom[1] + 0.6 && sb < 0.25 ? Math.sin((sb / 0.25) * Math.PI) : 0;
     $('star').style.opacity = st > 0 ? 1 : 0;
     $('star').style.transform = `translateY(${-28 * bb}px) rotate(${srot + 10 * bb}deg) scale(${(st > 0 ? back(st) : 0) * (1 + 0.08 * bb)})`;
-    // Link push: "tap the link" pops, the arrow bounces, rings pulse where the sticker goes.
+    // Link push: "tap the link" pops and the arrow bounces toward the sticker spot.
     const l = prog(T.link, T.link + 0.45);
     $('tap').style.opacity = l > 0 ? 1 : 0;
     $('tap').style.transform = `scale(${l > 0 ? back(l) : 0})`;
     $('tap').querySelector('svg').style.transform = `translateY(${16 * Math.abs(Math.sin((t - T.link) * Math.PI * 1.5))}px)`;
-    ['r1', 'r2'].forEach((id, k) => { const rp = t < T.link + 0.3 ? -1 : ((t - T.link - 0.3 + k * 0.5) % 1); const r = $(id); r.style.opacity = rp < 0 ? 0 : (1 - rp) * 0.9; r.style.transform = `scale(${1 + 0.35 * Math.max(0, rp)})`; });
   }, fileUrl(path.join(SCR, shot)), t, T, geo, v.star.rotate);
   await pg.screenshot({ path: path.join(COMP, String(i).padStart(5, '0') + '.jpg'), type: 'jpeg', quality: 92 });
 }
