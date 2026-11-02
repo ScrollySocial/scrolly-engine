@@ -13,7 +13,7 @@ const HERE = path.dirname(fileURLToPath(import.meta.url));
 const OUT = path.join(HERE, 'out', 'quotes');
 const EXPORTS = path.resolve(cfg('media').exportsDir, '../ig-posts/quotes');
 const ASSETS = path.resolve(HERE, '../../website/scrolly-site/assets');
-const FONTS = 'https://fonts.googleapis.com/css2?family=Jost:wght@400;500;700&family=Instrument+Serif&family=Covered+By+Your+Grace&family=Lily+Script+One&family=Molle:ital@1&family=Caprasimo&family=Sansita+Swashed:wght@900&family=Sonsie+One&family=Shrikhand&family=Oleo+Script:wght@700&family=Lobster&display=block';
+const FONTS = 'https://fonts.googleapis.com/css2?family=Jost:wght@400;500;700&family=Instrument+Serif&family=Covered+By+Your+Grace&family=Lily+Script+One&family=Molle:ital@1&family=Caprasimo&family=Sansita+Swashed:wght@900&family=Sonsie+One&family=Shrikhand&family=Oleo+Script:wght@700&family=Lobster&family=Gloock&family=DM+Serif+Display&family=Fraunces:opsz,wght@9..144,600&family=Cormorant+Garamond:wght@600&family=Italiana&family=Abril+Fatface&family=Alfa+Slab+One&family=Rubik+Mono+One&display=block';
 const C = { cream: '#f7f3ec', navy: '#0a1930', sky: '#4da3ff', mist: '#dfe4f0' };
 
 // The 14 quotes (planner cards "Quote 1" to "Quote 14"); credit = the checked author, or Unknown.
@@ -332,9 +332,61 @@ const PIECES = [
   ['olive', 560, 1400, 520, 200, 31, .5, .8, 1.1], ['orchard', 1010, 1390, 220, 200, 37, .5, .75, 1.3], ['irises', 60, 1380, 220, 220, 41, .4, .3, 1.6],
 ];
 
-const TILES = { starry, wand, constellation, moon, balloon, sail, quiet, tortoise, balloon2, rope, athlete, ribbon, note, sticker, collage };
+// Final set (Mercedes 2026-11-02, "just make the rest considering my inspiration": pink Van Gogh village, meadow with
+// a wavy label, ransom letters over mountains, small serif on a painted hill). One bright painting full-bleed, a soft
+// dreamy wash, the quote small and calm in one of four text styles, gold star stickers, small credit. Fonts vary.
+const goldStar = (x, y, w, rot) => `<svg class="gs" viewBox="0 0 100 100" style="left:${x}px;top:${y}px;width:${w}px;height:${w}px;transform:rotate(${rot}deg)"><defs><linearGradient id="g${x}${y}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f6dc84"/><stop offset=".55" stop-color="#d9ae45"/><stop offset="1" stop-color="#b78a2c"/></linearGradient></defs><path d="M50 6 L62 37 L95 38 L69 58 L79 91 L50 72 L21 91 L31 58 L5 38 L38 37 Z" fill="url(#g${x}${y})" stroke="#a87d24" stroke-width="2" stroke-linejoin="round"/></svg>`;
+const STARS = [[80, 120, 84, -12], [920, 90, 70, 18], [110, 930, 66, 10], [900, 1010, 80, -20], [500, 1200, 74, 8], [120, 1320, 60, -6], [930, 1330, 66, 22]];
+const RANSOM = ['#f3e9d2', '#e8d3c0', '#cfd8e6', '#e9d9a8', '#d7e2cf', '#f1d6dc'];
+const RFONTS = [["'Abril Fatface'", 400], ["'Alfa Slab One'", 400], ["'DM Serif Display'", 400], ["Fraunces", 600], ["Gloock", 400]];
+const RCOL = ['#0a1930', '#7a3b2e', '#2f5d3a', '#2f4f86', '#8a5a14'];
+const dreamy = (q) => {
+  const [art, pos] = q.paint;
+  const font = q.font || "'Instrument Serif'";
+  let text;
+  if (q.style === 'strips') text = `<div class="fit strips" style="font-family:${font}"><span>${esc(q.text)}</span></div>`;
+  else if (q.style === 'plain') text = `<div class="fit plain" style="font-family:${font}">${esc(q.text)}</div>`;
+  else if (q.style === 'label') text = `<div class="fit label" style="font-family:${font}">${esc(q.text)}</div>`;
+  else { let i = 0; text = `<div class="fit ransom">${q.text.split(' ').map((w) => `<span class="w">${[...w].map((ch) => { i++; const [f, wt] = RFONTS[(i * 7 + q.n) % RFONTS.length]; return `<span class="l" style="background:${RANSOM[(i * 5 + q.n) % RANSOM.length]};color:${RCOL[(i * 3) % RCOL.length]};font-family:${f};font-weight:${wt};transform:rotate(${((i * 37) % 11) - 5}deg) translateY(${((i * 13) % 7) - 3}px)">${esc(ch)}</span>`; }).join('')}</span>`).join(' ')}</div>`; }
+  return `<style>${BASE}${SCENE}
+  body { background: url('${MET(art)}') ${pos}/${[436527, 437980].includes(art) ? '124% auto' : 'auto 118%'} no-repeat; }
+  .wash { position: absolute; inset: 0; background: linear-gradient(rgba(255,232,236,.30), rgba(255,246,232,.10) 55%, rgba(255,255,255,0)); }
+  .glow { position: absolute; left: 0; right: 0; top: 200px; height: 700px; background: radial-gradient(ellipse 60% 50% at 50% 50%, rgba(250,246,238,.82), rgba(250,246,238,0) 74%); }
+  .box { position: absolute; left: 130px; right: 130px; top: 230px; height: 640px; display: flex; flex-direction: column; justify-content: center; align-items: center; }
+  .fit { position: relative; width: 100%; max-height: 500px; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
+  .strips span { line-height: 1.5; color: ${C.navy}; background: #f7f2e7; padding: 4px 16px; -webkit-box-decoration-break: clone; box-decoration-break: clone; border-radius: 6px; box-shadow: 0 3px 8px rgba(10,25,48,.18); }
+  .strips { display: block; font-size: 64px; padding-top: 40px; }
+  .plain { font-size: 72px; line-height: 1.12; color: #16261a; text-wrap: balance; text-shadow: 0 0 18px rgba(250,246,238,.9), 0 0 4px rgba(250,246,238,.8); }
+  .label { font-size: 52px; line-height: 1.2; letter-spacing: .06em; text-transform: uppercase; color: #1d1d1d; text-wrap: balance; background: #f8f4ec; padding: 50px 96px; border-radius: 48% 52% 46% 54% / 60% 40% 60% 40%; transform: rotate(-4deg); box-shadow: 0 8px 18px rgba(10,25,48,.28); width: auto; max-width: 100%; }
+  .ransom { font-size: 76px; flex-direction: row; flex-wrap: wrap; align-content: center; gap: 14px 30px; }
+  .ransom .w { display: inline-flex; white-space: nowrap; }
+  .ransom .l { display: inline-block; font-size: 1em; line-height: 1; padding: 6px 6px 8px; margin: 0 1px; box-shadow: 0 2px 5px rgba(10,25,48,.25); }
+  .gs { position: absolute; filter: drop-shadow(0 4px 5px rgba(10,25,48,.3)); }
+</style><div class="wash"></div>${q.style === 'plain' ? '<div class="glow"></div>' : ''}
+${STARS.map(([x, y, w, r]) => goldStar(x, y, w, r)).join('')}
+<div class="box">${text}${tag(q.by, 'position:static;margin-top:34px;transform:rotate(-2deg)')}</div>`;
+};
+const W = 436535, O = 437998, F = 436527, Y = 437980, S = 11321;
+const DREAMY = {
+  1: { style: 'strips', paint: [W, '30% 20%'], font: "'Instrument Serif'" },
+  2: { style: 'label', paint: [Y, '70% 30%'], font: "'Cormorant Garamond'" },
+  3: { style: 'plain', paint: [S, '75% center'], font: "Gloock" },
+  4: { style: 'label', paint: [O, '70% 30%'], font: "Italiana" },
+  5: { style: 'strips', paint: [S, '30% center'], font: "Fraunces" },
+  6: { style: 'strips', paint: [W, '80% 25%'], font: "Fraunces" },
+  7: { style: 'strips', paint: [F, '50% 40%'], font: "'DM Serif Display'" },
+  8: { style: 'label', paint: [W, '60% 30%'], font: "'Cormorant Garamond'" },
+  9: { style: 'plain', paint: [W, '20% 15%'], font: "'DM Serif Display'" },
+  10: { style: 'ransom', paint: [O, '20% 30%'] },
+  11: { style: 'ransom', paint: [S, '60% center'] },
+  12: { style: 'label', paint: [F, '40% 60%'], font: "Italiana" },
+  13: { style: 'strips', paint: [Y, '30% 40%'], font: "Gloock" },
+  14: { style: 'strips', paint: [O, '55% 20%'], font: "'Instrument Serif'" },
+};
+
+const TILES = { starry, wand, constellation, moon, balloon, sail, quiet, tortoise, balloon2, rope, athlete, ribbon, note, sticker, collage, dreamy };
 const only = process.argv.slice(2).map(Number);
-const list = QUOTES.filter((q) => q.tile && (!only.length || only.includes(q.n)));
+const list = QUOTES.map((q) => (DREAMY[q.n] ? { ...q, ...DREAMY[q.n], tile: 'dreamy' } : q)).filter((q) => q.tile && (!only.length || only.includes(q.n)));
 
 mkdirSync(OUT, { recursive: true });
 mkdirSync(EXPORTS, { recursive: true });
@@ -346,7 +398,7 @@ for (const q of list) {
   writeFileSync(f, `<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="${FONTS}"></head><body>${TILES[q.tile](q)}</body></html>`);
   await pg.goto(fileUrl(f), { waitUntil: 'networkidle0' });
   await pg.evaluate(() => document.fonts.ready);
-  await pg.evaluate(() => { for (const el of document.querySelectorAll('[data-fit]')) { const max = +el.dataset.fit; let fs = parseFloat(getComputedStyle(el).fontSize); while ((el.scrollHeight > max || el.scrollWidth > el.clientWidth) && fs > 40) { fs -= 2; el.style.fontSize = fs + 'px'; } } });
+  await pg.evaluate(() => { for (const el of document.querySelectorAll('[data-fit], .fit')) { const max = el.dataset.fit ? +el.dataset.fit : 480; let fs = parseFloat(getComputedStyle(el).fontSize); while ((el.scrollHeight > max || el.scrollWidth > el.clientWidth) && fs > 40) { fs -= 2; el.style.fontSize = fs + 'px'; } } });
   const png = path.join(OUT, `quote-${q.n}.png`);
   await pg.screenshot({ path: png });
   copyFileSync(png, path.join(EXPORTS, `quote-${q.n}.png`));
