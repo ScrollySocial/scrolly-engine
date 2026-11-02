@@ -370,7 +370,7 @@ const W = 436535, O = 437998, F = 436527, Y = 437980, S = 11321;
 const DREAMY = { // one background per post, real variety (Mercedes 2026-11-02: "stuck on Tuscany"): photos + Van Gogh + Hokusai
   1: { style: 'strips', paint: [W, '30% 20%'], font: "'Instrument Serif'" },
   2: { style: 'label', paint: [Y, '70% 30%'], font: "'Cormorant Garamond'" },
-  3: { style: 'plain', paint: ['mountain-sunrise-pink-0', 'center'], font: "Gloock" },
+  3: { style: 'strips', paint: [F, '50% 30%'], font: "Gloock" },
   4: { style: 'label', paint: [O, '70% 30%'], font: "Italiana" },
   5: { style: 'strips', paint: ['sunflower-field-1', 'center 30%'], font: "Fraunces" },
   6: { style: 'strips', paint: ['poppy-field-0', 'center'], font: "Fraunces" },
@@ -379,7 +379,7 @@ const DREAMY = { // one background per post, real variety (Mercedes 2026-11-02: 
   9: { style: 'plain', paint: [437683, '68% center'], font: "'DM Serif Display'" },
   10: { style: 'ransom', paint: ['poppy-field-2', 'center'] },
   11: { style: 'ransom', paint: ['pink-sunset-clouds-0', 'center'] },
-  12: { style: 'label', paint: ['sunflower-field-2', 'center 70%'], font: "Italiana" },
+  12: { style: 'strips', paint: ['sunflower-field-2', 'center 70%'], font: "Fraunces" },
   13: { style: 'strips', paint: [45434, '62% 40%'], size: 'auto 125%', font: "Gloock" },
   14: { style: 'strips', paint: [437307, '50% 15%'], size: '140% auto', font: "'Instrument Serif'" },
 };
