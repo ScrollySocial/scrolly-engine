@@ -16,16 +16,22 @@ const GRAIN = (a) => `url("data:image/svg+xml;base64,${Buffer.from(`<svg xmlns='
 
 // Star placements are relative to the circle centre: [file, x, y, size, rotate].
 const COVERS = [
-  // Mercedes 2026-11-02: tilted gold foil star on blue mist, FREE on a label (D2) but bright blue and centred on the
-  // star. Brand sky blue takes navy text (white on sky fails contrast).
+  // Mercedes 2026-11-02: tilted gold foil star on blue mist with a sky label (navy text) centred on the star;
+  // trying FREEBIE and FREEBIES in place of FREE.
   {
-    file: 'free-e1-sky-label', label: 'E1. Sky label, centred',
+    file: 'freebie-f1', label: 'F1. FREEBIE',
     bg: '#dfe4f0', grain: 0.07,
     stars: [['foil-95', 0, 25, 960, -8]],
-    word: { text: 'FREE', font: 'Jost', weight: 800, color: '#0a1930', size: 190, y: 60, rotate: -8, bg: '#4da3ff' },
+    word: { text: 'FREEBIE', font: 'Jost', weight: 800, color: '#0a1930', size: 158, y: 60, rotate: -8, bg: '#4da3ff' },
   },
   {
-    file: 'free-e2-sky-label-big', label: 'E2. Sky label, centred, bigger',
+    file: 'freebies-f2', label: 'F2. FREEBIES',
+    bg: '#dfe4f0', grain: 0.07,
+    stars: [['foil-95', 0, 25, 960, -8]],
+    word: { text: 'FREEBIES', font: 'Jost', weight: 800, color: '#0a1930', size: 140, y: 60, rotate: -8, bg: '#4da3ff' },
+  },
+  {
+    file: 'free-e2-sky-label-big', label: 'E2. FREE (for comparison)',
     bg: '#dfe4f0', grain: 0.07,
     stars: [['foil-95', 0, 25, 960, -8]],
     word: { text: 'FREE', font: 'Jost', weight: 800, color: '#0a1930', size: 215, y: 60, rotate: -8, bg: '#4da3ff' },
