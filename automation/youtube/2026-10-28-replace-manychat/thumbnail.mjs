@@ -14,13 +14,22 @@ import { launch } from '../../carousels/lib/common.mjs';
 const [src, out = src] = process.argv.slice(2);
 const u = (f) => pathToFileURL(path.join(src, f)).href;
 
+// headline: "Bye" in a script, MANYCHAT in a clean heavy sans (Mercedes 2026-11-02: the tight Poppins 900 was hard
+// to read and she hated the outlined/boxed versions); pick the script with SCRIPT=<name>
+const SCRIPTS = { pacifico: ['Pacifico', 400], yellowtail: ['Yellowtail', 400], kaushan: ['Kaushan Script', 400],
+  dancing: ['Dancing Script', 700], satisfy: ['Satisfy', 400], damion: ['Damion', 400] };
+const SCRIPT = SCRIPTS[process.env.SCRIPT || 'pacifico'];
+
 const page = (body) => `<!doctype html><html><head><meta charset="utf-8">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;800;900&family=Inter:wght@500;600;700&display=block">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;800;900&family=${SCRIPT[0].replace(/ /g, '+')}:wght@${SCRIPT[1]}&family=Inter:wght@500;600;700&display=block">
 <style>*{margin:0;padding:0;box-sizing:border-box}
 html,body{width:1280px;height:720px;overflow:hidden;background:#000}
 .abs{position:absolute}
 .big{font-family:Poppins,sans-serif;font-weight:900;color:#fff;letter-spacing:-.02em;line-height:.95;white-space:nowrap;
   text-shadow:0 4px 0 rgba(0,0,0,.25),0 10px 34px rgba(0,0,0,.55)}
+
+.big{font-weight:800;letter-spacing:.01em}
+.bye{font-family:'${SCRIPT[0]}',cursive;font-weight:${SCRIPT[1]};font-size:1.25em;letter-spacing:0;margin-right:.3em;display:inline-block;rotate:-6deg;translate:0 .06em}
 .phone{position:absolute;width:250px;height:510px;border-radius:44px;background:#111;padding:11px;
   box-shadow:0 30px 60px rgba(0,0,0,.5),inset 0 0 0 2px #3a3a3a}
 .scr{width:100%;height:100%;border-radius:34px;background:#f2f2f7;overflow:hidden;position:relative;font-family:Inter,sans-serif;color:#111}
@@ -76,7 +85,7 @@ const designs = {
   a: page(`${set('2043', 28, 10, 860)}
 <div class="phone" style="left:40px;top:200px;rotate:-11deg">${subScreen('ManyChat Pro', '$39', false)}</div>
 <div class="phone" style="left:990px;top:200px;rotate:10deg">${subScreen('My DM tool', '$6', true)}</div>
-<div class="abs big" style="left:0;right:0;top:34px;text-align:center;font-size:110px">BYE MANYCHAT</div>`),
+<div class="abs big" style="left:0;right:0;top:34px;text-align:center;font-size:110px"><span class="bye">Bye</span>MANYCHAT</div>`),
 
   // B: glossy app tiles either side of her, the price line across the bottom
   b: page(`${set('2054', 28, -20, 860)}
