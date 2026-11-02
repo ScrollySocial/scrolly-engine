@@ -145,5 +145,18 @@
   "artist": "John Singer Sargent, 1885",
   "source": "https://www.metmuseum.org/art/collection/search/12162",
   "license": "Public domain (The Met Open Access, CC0)"
+ },
+ "met-437998": {
+  "title": "Olive Trees",
+  "artist": "Vincent van Gogh, 1889",
+  "source": "https://www.metmuseum.org/art/collection/search/437998",
+  "license": "Public domain (The Met Open Access, CC0)"
+ },
+ "met-436527": {
+  "title": "The Flowering Orchard",
+  "artist": "Vincent van Gogh, 1888",
+  "source": "https://www.metmuseum.org/art/collection/search/436527",
+  "license": "Public domain (The Met Open Access, CC0)",
+  "note": "not used yet"
  }
 }

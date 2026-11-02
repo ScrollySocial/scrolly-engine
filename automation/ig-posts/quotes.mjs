@@ -21,7 +21,7 @@ export const QUOTES = [
   { n: 1, text: 'The only man who never makes mistakes is the man who never does anything.', by: 'Theodore Roosevelt', tile: 'athlete', art: 712795 },
   { n: 2, text: 'It is not in the stars to hold our destiny but in ourselves.', by: 'Unknown', tile: 'athlete', art: 712808 },
   { n: 3, text: 'If you can’t explain it simply, you don’t understand it well enough.', by: 'Unknown', tile: 'athlete', art: 712799 },
-  { n: 4, text: 'If you look for perfection, you’ll never be content.', by: 'Leo Tolstoy, Anna Karenina', tile: 'sticker', script: 'Molle', fs: 112, bg: 436528, bgPos: '50% 60%', bgSize: 'cover' },
+  { n: 4, text: 'If you look for perfection, you’ll never be content.', by: 'Leo Tolstoy, Anna Karenina', tile: 'sticker', script: 'Molle', fs: 112, bg: 437998, bgPos: '40% center', bgSize: 'auto 106%', top: '27%' },
   { n: 5, text: 'Of course it’s hard. It’s supposed to be hard. If it’s easy, everyone would do it. Hard is what makes it great.', by: 'A League of Their Own', tile: 'athlete', art: 712793 },
   { n: 6, text: 'If you’re making mistakes, it means you’re out there doing something.', by: 'Neil Gaiman', tile: 'athlete', art: 712790 },
   { n: 7, text: 'What a privilege it is to be exhausted by the work you once dreamed of.', by: 'Unknown', tile: 'note', bg: 12162, bgPos: '15% center', bgSize: 'auto 104%', noteTop: 120 },
@@ -272,7 +272,7 @@ ${star(C.sky, { pts: 8, seed: 12, sw: 3 }, 'left:150px;top:1150px;width:56px;hei
 
 // Sticker: big chunky words with a thick paper outline, stuck on Van Gogh's Wheat Field with Cypresses.
 const sticker = (q) => `<style>${BASE}${SCENE}
-  .st { position: absolute; left: 70px; right: 70px; top: 50%; transform: translateY(-52%) rotate(-3deg); text-align: center;
+  .st { position: absolute; left: 70px; right: 70px; top: ${q.top || '50%'}; transform: translateY(-52%) rotate(-3deg); text-align: center;
     font: ${q.script ? `${q.script === 'Molle' ? 'italic ' : ''}400 ${q.fs || 112}px/1.12 '${q.script}', cursive;` : `800 ${q.fs || 118}px/1.06 Jost, Arial, sans-serif; text-transform: uppercase; letter-spacing: -.01em;`} color: ${q.script ? '#2f7fe0' : C.navy}; text-wrap: balance;
     -webkit-text-stroke: ${q.script ? 26 : 30}px #fbf8f1; paint-order: stroke fill; filter: drop-shadow(0 10px 14px rgba(10,25,48,.35)); }
 </style>
