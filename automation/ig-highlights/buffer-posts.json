@@ -1,0 +1,8 @@
+{
+ "note": "Freebies highlight Stories queued in Buffer (Instagram, automatic, link sticker set by Buffer) on 2026-11-02 at Mercedes's OK. Media = WordPress tad-story-freebies-* (see wp-media.json); keep them until these have posted.",
+ "cover": { "buffer": "6ae8cc30559f13a14d69dfc5", "dueAt": "2026-11-02T12:10:00-06:00" },
+ "1-offer-quiz": { "buffer": "6ae8cc36559f13a14d69e4bd", "dueAt": "2026-11-02T16:07:00-06:00", "link": "https://theambitiondepartment.com/quiz/" },
+ "2-next-move": { "buffer": "6ae8cc3e64e501e0da3c9b2b", "dueAt": "2026-11-02T17:07:00-06:00", "link": "https://theambitiondepartment.com/next-move/" },
+ "3-calculators": { "buffer": "6ae8cc415020dab66a88dd79", "dueAt": "2026-11-02T18:23:00-06:00", "link": "https://theambitiondepartment.com/calculators/" },
+ "4-blog": { "buffer": "6ae8cc43a99125fa8e9e9dc9", "dueAt": "2026-11-02T19:39:00-06:00", "link": "https://theambitiondepartment.com/blog/" }
+}
