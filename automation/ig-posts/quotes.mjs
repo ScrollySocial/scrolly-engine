@@ -13,19 +13,19 @@ const HERE = path.dirname(fileURLToPath(import.meta.url));
 const OUT = path.join(HERE, 'out', 'quotes');
 const EXPORTS = path.resolve(cfg('media').exportsDir, '../ig-posts/quotes');
 const ASSETS = path.resolve(HERE, '../../website/scrolly-site/assets');
-const FONTS = 'https://fonts.googleapis.com/css2?family=Jost:wght@400;500;700&family=Instrument+Serif&family=Covered+By+Your+Grace&family=Lily+Script+One&family=Molle:ital@1&display=block';
+const FONTS = 'https://fonts.googleapis.com/css2?family=Jost:wght@400;500;700&family=Instrument+Serif&family=Covered+By+Your+Grace&family=Lily+Script+One&family=Molle:ital@1&family=Caprasimo&family=Sansita+Swashed:wght@900&family=Sonsie+One&family=Shrikhand&family=Oleo+Script:wght@700&family=Lobster&display=block';
 const C = { cream: '#f7f3ec', navy: '#0a1930', sky: '#4da3ff', mist: '#dfe4f0' };
 
 // The 14 quotes (planner cards "Quote 1" to "Quote 14"); credit = the checked author, or Unknown.
 export const QUOTES = [
-  { n: 1, text: 'The only man who never makes mistakes is the man who never does anything.', by: 'Theodore Roosevelt', tile: 'athlete', art: 712795 },
+  { n: 1, text: 'The only man who never makes mistakes is the man who never does anything.', by: 'Theodore Roosevelt', tile: 'collage', script: 'Caprasimo', fs: 100, get pieces() { return PIECES; } },
   { n: 2, text: 'It is not in the stars to hold our destiny but in ourselves.', by: 'Unknown', tile: 'athlete', art: 712808 },
   { n: 3, text: 'If you can’t explain it simply, you don’t understand it well enough.', by: 'Unknown', tile: 'athlete', art: 712799 },
-  { n: 4, text: 'If you look for perfection, you’ll never be content.', by: 'Leo Tolstoy, Anna Karenina', tile: 'collage', script: 'Molle', fs: 100, patchRy: 260, get pieces() { return PIECES; } },
+  { n: 4, text: 'If you look for perfection, you’ll never be content.', by: 'Leo Tolstoy, Anna Karenina', tile: 'collage', script: 'Molle', fs: 100, get pieces() { return PIECES; } },
   { n: 5, text: 'Of course it’s hard. It’s supposed to be hard. If it’s easy, everyone would do it. Hard is what makes it great.', by: 'A League of Their Own', tile: 'athlete', art: 712793 },
-  { n: 6, text: 'If you’re making mistakes, it means you’re out there doing something.', by: 'Neil Gaiman', tile: 'athlete', art: 712790 },
+  { n: 6, text: 'If you’re making mistakes, it means you’re out there doing something.', by: 'Neil Gaiman', tile: 'collage', script: 'Sansita Swashed', fs: 100, get pieces() { return PIECES; } },
   { n: 7, text: 'What a privilege it is to be exhausted by the work you once dreamed of.', by: 'Unknown', tile: 'note', bg: 12162, bgPos: '15% center', bgSize: 'auto 104%', noteTop: 120 },
-  { n: 8, text: 'The greatest legacy is showing others what’s possible.', by: 'Unknown', tile: 'collage', script: 'Lily Script One', fs: 96, get pieces() { return PIECES; } },
+  { n: 8, text: 'The greatest legacy is showing others what’s possible.', by: 'Unknown', tile: 'collage', script: 'Lily Script One', fs: 100, get pieces() { return PIECES; } },
   { n: 9, text: 'To inspire people, don’t show them your superpowers. Show them theirs.', by: 'Alexander den Heijer', tile: 'athlete', art: 712801 },
   { n: 10, text: 'A curious mind constantly uncovers magic.', by: 'Unknown', tile: 'athlete', art: 727249 },
   { n: 11, text: 'Enthusiasm is common. Endurance is rare.', by: 'Angela Duckworth', tile: 'rope' },
@@ -297,7 +297,9 @@ const artUrl = (k) => (k === 'stars' ? fileUrl(path.join(ASSETS, 'ftr-sky.webp')
 const artSize = (k) => (k === 'stars' ? [1672, 941] : ART[k].slice(1));
 // piece: [art, cx, cy, rx, ry, seed, fx, fy, zoom] — fx/fy = point of the painting (0-1) shown at the blob centre
 const collage = (q) => {
-  const pieces = q.pieces;
+  const keys = ['stars', 'olive', 'orchard', 'irises', 'wheat'];
+  const FOCUS = { irises: [.42, .2, 2.4], stars: [.42, .42, 1.6] }; // flowers only (no vase), the swirl (no plain navy)
+  const pieces = q.pieces.map((p) => { const k = keys[(keys.indexOf(p[0]) + q.n) % keys.length]; return FOCUS[k] ? [k, ...p.slice(1, 6), ...FOCUS[k]] : [k, ...p.slice(1)]; });
   const defs = pieces.map(([, cx, cy, rx, ry, sd], i) => `<clipPath id="c${i}"><path d="${blob(cx, cy, rx, ry, sd, 13, .3)}"/></clipPath>`).join('');
   const imgs = pieces.map(([k, cx, cy, rx, ry, , fx = .5, fy = .5, zoom = 1], i) => {
     const [w0, h0] = artSize(k); const w = Math.max(rx, ry) * 2.6 * zoom * (w0 > h0 ? w0 / h0 : 1); const h = w * h0 / w0;
@@ -308,8 +310,8 @@ const collage = (q) => {
   const script = q.script || 'Lily Script One';
   return `<style>${BASE}${SCENE}
   body { background: #c9b98f; }
-  .st { position: absolute; left: 130px; right: 130px; top: ${py}px; transform: translateY(-50%) rotate(-3deg); text-align: center; text-wrap: balance;
-    font: ${script === 'Molle' ? 'italic ' : ''}400 ${q.fs || 96}px/1.14 '${script}', cursive; color: #2f7fe0; -webkit-text-stroke: 18px #fbf8f1; paint-order: stroke fill; }
+  .st { position: absolute; left: 200px; right: 200px; top: ${py}px; transform: translateY(-50%) rotate(-2deg); text-align: center; text-wrap: balance;
+    font: ${script === 'Molle' ? 'italic ' : ''}${script === 'Sansita Swashed' ? 900 : script === 'Oleo Script' ? 700 : 400} ${q.fs || 96}px/1.14 '${script}', cursive; color: #2f7fe0; -webkit-text-stroke: 16px #fbf8f1; paint-order: stroke fill; }
 </style>
 <svg viewBox="0 0 1080 1440" style="position:absolute;inset:0;width:1080px;height:1440px">
   <defs>${defs}<filter id="sh" x="-10%" y="-10%" width="120%" height="120%"><feDropShadow dx="0" dy="5" stdDeviation="7" flood-color="#0a1930" flood-opacity=".45"/></filter></defs>
@@ -321,7 +323,7 @@ ${star('#f3d36b', { pts: 4, fill: true, seed: 7 }, 'left:860px;top:150px;width:9
 ${star('#fff', { pts: 4, seed: 12, sw: 3 }, 'left:120px;top:250px;width:60px;height:60px')}
 ${star('#f3d36b', { pts: 4, fill: true, seed: 5 }, 'left:150px;top:1180px;width:70px;height:70px')}
 ${star('#fff', { pts: 8, seed: 21, sw: 3 }, 'left:900px;top:1230px;width:56px;height:56px')}
-<div class="st">${esc(q.text)}</div>
+<div class="st" data-fit="${Math.round(pry * 1.25)}">${esc(q.text)}</div>
 ${tag(q.by, `left:50%;top:${py + pry - 30}px;transform:translateX(-50%) rotate(2deg)`)}`;
 };
 const PIECES = [
@@ -344,6 +346,7 @@ for (const q of list) {
   writeFileSync(f, `<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="${FONTS}"></head><body>${TILES[q.tile](q)}</body></html>`);
   await pg.goto(fileUrl(f), { waitUntil: 'networkidle0' });
   await pg.evaluate(() => document.fonts.ready);
+  await pg.evaluate(() => { for (const el of document.querySelectorAll('[data-fit]')) { const max = +el.dataset.fit; let fs = parseFloat(getComputedStyle(el).fontSize); while ((el.scrollHeight > max || el.scrollWidth > el.clientWidth) && fs > 40) { fs -= 2; el.style.fontSize = fs + 'px'; } } });
   const png = path.join(OUT, `quote-${q.n}.png`);
   await pg.screenshot({ path: png });
   copyFileSync(png, path.join(EXPORTS, `quote-${q.n}.png`));
