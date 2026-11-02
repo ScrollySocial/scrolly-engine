@@ -13,7 +13,7 @@ const HERE = path.dirname(fileURLToPath(import.meta.url));
 const OUT = path.join(HERE, 'out', 'quotes');
 const EXPORTS = path.resolve(cfg('media').exportsDir, '../ig-posts/quotes');
 const ASSETS = path.resolve(HERE, '../../website/scrolly-site/assets');
-const FONTS = 'https://fonts.googleapis.com/css2?family=Jost:wght@400;500;700&family=Instrument+Serif&family=Covered+By+Your+Grace&display=block';
+const FONTS = 'https://fonts.googleapis.com/css2?family=Jost:wght@400;500;700&family=Instrument+Serif&family=Covered+By+Your+Grace&family=Lily+Script+One&family=Molle:ital@1&display=block';
 const C = { cream: '#f7f3ec', navy: '#0a1930', sky: '#4da3ff', mist: '#dfe4f0' };
 
 // The 14 quotes (planner cards "Quote 1" to "Quote 14"); credit = the checked author, or Unknown.
@@ -21,11 +21,11 @@ export const QUOTES = [
   { n: 1, text: 'The only man who never makes mistakes is the man who never does anything.', by: 'Theodore Roosevelt', tile: 'athlete', art: 712795 },
   { n: 2, text: 'It is not in the stars to hold our destiny but in ourselves.', by: 'Unknown', tile: 'athlete', art: 712808 },
   { n: 3, text: 'If you can’t explain it simply, you don’t understand it well enough.', by: 'Unknown', tile: 'athlete', art: 712799 },
-  { n: 4, text: 'If you look for perfection, you’ll never be content.', by: 'Leo Tolstoy, Anna Karenina', tile: 'athlete', art: 712807 },
+  { n: 4, text: 'If you look for perfection, you’ll never be content.', by: 'Leo Tolstoy, Anna Karenina', tile: 'sticker', script: 'Molle', fs: 112, bg: 436528, bgPos: '50% 60%', bgSize: 'cover' },
   { n: 5, text: 'Of course it’s hard. It’s supposed to be hard. If it’s easy, everyone would do it. Hard is what makes it great.', by: 'A League of Their Own', tile: 'athlete', art: 712793 },
   { n: 6, text: 'If you’re making mistakes, it means you’re out there doing something.', by: 'Neil Gaiman', tile: 'athlete', art: 712790 },
   { n: 7, text: 'What a privilege it is to be exhausted by the work you once dreamed of.', by: 'Unknown', tile: 'note', bg: 12162, bgPos: '15% center', bgSize: 'auto 104%', noteTop: 120 },
-  { n: 8, text: 'The greatest legacy is showing others what’s possible.', by: 'Unknown', tile: 'sticker', serif: true, fs: 150 },
+  { n: 8, text: 'The greatest legacy is showing others what’s possible.', by: 'Unknown', tile: 'sticker', script: 'Lily Script One', fs: 104 },
   { n: 9, text: 'To inspire people, don’t show them your superpowers. Show them theirs.', by: 'Alexander den Heijer', tile: 'athlete', art: 712801 },
   { n: 10, text: 'A curious mind constantly uncovers magic.', by: 'Unknown', tile: 'athlete', art: 727249 },
   { n: 11, text: 'Enthusiasm is common. Endurance is rare.', by: 'Angela Duckworth', tile: 'rope' },
@@ -273,10 +273,10 @@ ${star(C.sky, { pts: 8, seed: 12, sw: 3 }, 'left:150px;top:1150px;width:56px;hei
 // Sticker: big chunky words with a thick paper outline, stuck on Van Gogh's Wheat Field with Cypresses.
 const sticker = (q) => `<style>${BASE}${SCENE}
   .st { position: absolute; left: 70px; right: 70px; top: 50%; transform: translateY(-52%) rotate(-3deg); text-align: center;
-    font: ${q.serif ? `400 ${q.fs || 150}px/1 'Instrument Serif', Georgia, serif; letter-spacing: -.005em;` : `800 ${q.fs || 118}px/1.06 Jost, Arial, sans-serif; text-transform: uppercase; letter-spacing: -.01em;`} color: ${C.navy}; text-wrap: balance;
-    -webkit-text-stroke: 30px #f6f1e6; paint-order: stroke fill; filter: drop-shadow(0 10px 14px rgba(10,25,48,.35)); }
+    font: ${q.script ? `${q.script === 'Molle' ? 'italic ' : ''}400 ${q.fs || 112}px/1.12 '${q.script}', cursive;` : `800 ${q.fs || 118}px/1.06 Jost, Arial, sans-serif; text-transform: uppercase; letter-spacing: -.01em;`} color: ${q.script ? '#2f7fe0' : C.navy}; text-wrap: balance;
+    -webkit-text-stroke: ${q.script ? 26 : 30}px #fbf8f1; paint-order: stroke fill; filter: drop-shadow(0 10px 14px rgba(10,25,48,.35)); }
 </style>
-<div class="layer" style="background-image:url('${MET(436535)}');background-position:30% center;background-size:auto 112%"></div>
+<div class="layer" style="background-image:url('${MET(q.bg || 436535)}');background-position:${q.bgPos || '30% center'};background-size:${q.bgSize || 'auto 112%'}"></div>
 <div class="st">${esc(q.text)}</div>
 ${star('#fff', { pts: 4, fill: true, seed: 7 }, 'left:850px;top:180px;width:80px;height:80px')}
 ${star(C.sky, { pts: 8, seed: 21, sw: 3 }, 'left:130px;top:1120px;width:60px;height:60px')}
