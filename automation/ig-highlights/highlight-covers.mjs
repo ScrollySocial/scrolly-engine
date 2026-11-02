@@ -10,6 +10,8 @@ import { launch, fileUrl, esc } from '../carousels/lib/common.mjs';
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const OUT = path.join(HERE, 'out');
 // The website header logo: "Ambition" is its own path (class="amb") so it can be sky blue (Mercedes 2026-10-26).
+// The website's highlighter stroke (--s3-mark in chrome/v3.css): see-through, ragged, slightly tilted.
+const MARK = readFileSync(path.join(HERE, '../../website/scrolly-site/chrome/v3.css'), 'utf8').match(/--s3-mark:(url\("[^"]+"\)[^;]*);/)[1];
 const LOGO = readFileSync(path.join(HERE, '../../website/scrolly-site/chrome/logo.html'), 'utf8').match(/<svg[\s\S]*<\/svg>/)[0];
 const STAR = (n) => fileUrl(path.join(HERE, 'assets/stars', n + '.png'));
 const W = 1080, H = 1920, CIRCLE = 1000; // keep everything that matters inside the centre circle
@@ -28,7 +30,7 @@ const COVERS = [
     stars: [['foil-95', 0, 25, 960, -8]],
     word: { text: 'FREEBIES', font: 'Jost', weight: 800, color: '#0a1930', size: 140, y: 60, rotate: -8, bg: '#4da3ff' },
     // Seen when the Story itself plays (outside the circle crop): a headline above, logo + site below.
-    top: 'Free tools for your business', sub: 'Tap through', subRest: ' for quizzes, calculators and guides',
+    top: 'Free tools for your business', sub: 'Tap through for quizzes, calculators and guides',
   },
 ];
 
@@ -63,7 +65,7 @@ const coverHtml = (c) => `<!doctype html><html><head><meta charset="utf-8">
   .top p { font-family: Jost, Arial, sans-serif; font-weight: 500; font-size: 38px; margin-top: 16px; }
   .foot { position: absolute; left: 0; right: 0; top: 1520px; text-align: center; color: #0a1930; }
   .foot .amb { fill: #4da3ff; }
-  .top mark { background: #4da3ff; color: #0a1930; padding: .06em .3em .1em; border-radius: .2em; }
+  .top mark { background: ${MARK}; color: #0a1930; padding: 0 .3em; }
   .foot svg { width: 340px; height: auto; display: block; margin: 0 auto; }
   .foot p { font-family: Jost, Arial, sans-serif; font-weight: 500; font-size: 34px; margin-top: 14px; }
 </style></head><body><div class="c">
@@ -71,7 +73,7 @@ const coverHtml = (c) => `<!doctype html><html><head><meta charset="utf-8">
   ${c.stars.map(([f, x, y, s, r]) => `<img class="star" src="${STAR(f)}" style="width:${s}px;left:${CIRCLE / 2 + x - s / 2}px;top:${CIRCLE / 2 + y - s / 2}px;transform:rotate(${r}deg)">`).join('\n  ')}
   <div class="word">${esc(c.word.text)}</div>
 </div>
-${c.top ? `<div class="top"><h1>${esc(c.top)}</h1><p><mark>${esc(c.sub)}</mark>${esc(c.subRest || '')}</p></div>
+${c.top ? `<div class="top"><h1>${esc(c.top)}</h1><p><mark>${esc(c.sub)}</mark></p></div>
 <div class="foot">${LOGO}<p>theambitiondepartment.com</p></div>` : ''}
 </body></html>`;
 
