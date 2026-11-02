@@ -16,25 +16,19 @@ const GRAIN = (a) => `url("data:image/svg+xml;base64,${Buffer.from(`<svg xmlns='
 
 // Star placements are relative to the circle centre: [file, x, y, size, rotate].
 const COVERS = [
-  // Mercedes 2026-11-02: one big gold foil star sticker; she likes C3's tilt on the blue mist ground, but FREE was
-  // unreadable at profile size, so the word goes bigger across the star's arms (or on a navy label, or leaves).
+  // Mercedes 2026-11-02: tilted gold foil star on blue mist, FREE on a label (D2) but bright blue and centred on the
+  // star. Brand sky blue takes navy text (white on sky fails contrast).
   {
-    file: 'free-d1-big-word', label: 'D1. Bigger FREE across the arms',
+    file: 'free-e1-sky-label', label: 'E1. Sky label, centred',
     bg: '#dfe4f0', grain: 0.07,
     stars: [['foil-95', 0, 25, 960, -8]],
-    word: { text: 'FREE', font: 'Jost', weight: 800, color: '#0a1930', size: 235, y: -15, rotate: -8 },
+    word: { text: 'FREE', font: 'Jost', weight: 800, color: '#0a1930', size: 190, y: 60, rotate: -8, bg: '#4da3ff' },
   },
   {
-    file: 'free-d2-navy-label', label: 'D2. FREE on a navy label',
+    file: 'free-e2-sky-label-big', label: 'E2. Sky label, centred, bigger',
     bg: '#dfe4f0', grain: 0.07,
     stars: [['foil-95', 0, 25, 960, -8]],
-    word: { text: 'FREE', font: 'Jost', weight: 800, color: '#ffffff', size: 190, y: -10, rotate: -8, bg: '#0a1930' },
-  },
-  {
-    file: 'free-d3-star-only', label: 'D3. Star only (name shows below)',
-    bg: '#dfe4f0', grain: 0.07,
-    stars: [['foil-95', 0, 25, 960, -8]],
-    word: { text: '', font: 'Jost', weight: 800, color: '#0a1930', size: 10, y: 0 },
+    word: { text: 'FREE', font: 'Jost', weight: 800, color: '#0a1930', size: 215, y: 60, rotate: -8, bg: '#4da3ff' },
   },
 ];
 
