@@ -16,25 +16,25 @@ const GRAIN = (a) => `url("data:image/svg+xml;base64,${Buffer.from(`<svg xmlns='
 
 // Star placements are relative to the circle centre: [file, x, y, size, rotate].
 const COVERS = [
-  // Mercedes 2026-11-02: words with stars around them rejected ("look stupid"). Direction 1 picked: one huge
-  // crinkled gold foil star fills the circle with the word printed on it, like a sticker.
+  // Mercedes 2026-11-02: one big gold foil star sticker; she likes C3's tilt on the blue mist ground, but FREE was
+  // unreadable at profile size, so the word goes bigger across the star's arms (or on a navy label, or leaves).
   {
-    file: 'free-c1-star-mist', label: 'C1. Blue mist ground',
+    file: 'free-d1-big-word', label: 'D1. Bigger FREE across the arms',
     bg: '#dfe4f0', grain: 0.07,
-    stars: [['foil-106', 0, 25, 960, 0]],
-    word: { text: 'FREE', font: 'Jost', weight: 800, color: '#0a1930', size: 155, y: 75 },
-  },
-  {
-    file: 'free-c2-star-navy', label: 'C2. Navy ground',
-    bg: '#0a1930', grain: 0.10,
-    stars: [['foil-106', 0, 25, 960, 0]],
-    word: { text: 'FREE', font: 'Jost', weight: 800, color: '#0a1930', size: 155, y: 75 },
-  },
-  {
-    file: 'free-c3-star-cream-tilt', label: 'C3. Cream ground, tilted',
-    bg: '#f7f3ec', grain: 0.07,
     stars: [['foil-95', 0, 25, 960, -8]],
-    word: { text: 'FREE', font: 'Jost', weight: 800, color: '#0a1930', size: 155, y: 75, rotate: -8 },
+    word: { text: 'FREE', font: 'Jost', weight: 800, color: '#0a1930', size: 235, y: -15, rotate: -8 },
+  },
+  {
+    file: 'free-d2-navy-label', label: 'D2. FREE on a navy label',
+    bg: '#dfe4f0', grain: 0.07,
+    stars: [['foil-95', 0, 25, 960, -8]],
+    word: { text: 'FREE', font: 'Jost', weight: 800, color: '#ffffff', size: 190, y: -10, rotate: -8, bg: '#0a1930' },
+  },
+  {
+    file: 'free-d3-star-only', label: 'D3. Star only (name shows below)',
+    bg: '#dfe4f0', grain: 0.07,
+    stars: [['foil-95', 0, 25, 960, -8]],
+    word: { text: '', font: 'Jost', weight: 800, color: '#0a1930', size: 10, y: 0 },
   },
 ];
 
@@ -61,7 +61,7 @@ const coverHtml = (c) => `<!doctype html><html><head><meta charset="utf-8">
   .fx { position: absolute; inset: 0; width: 100%; height: 100%; }
   .word { position: absolute; left: 50%; top: 50%; transform: translate(-50%, calc(-50% + ${c.word.y}px)) rotate(${c.word.rotate || 0}deg);
           font-family: '${c.word.font}', Arial, sans-serif; font-weight: ${c.word.weight}; font-size: ${c.word.size}px;
-          color: ${c.word.color}; line-height: 1; letter-spacing: ${c.word.font === 'Jost' ? '-.01em' : '0'}; white-space: nowrap; }
+          color: ${c.word.color}; line-height: 1;${c.word.bg ? ` background: ${c.word.bg}; padding: .1em .32em .14em; border-radius: .12em;` : ''} letter-spacing: ${c.word.font === 'Jost' ? '-.01em' : '0'}; white-space: nowrap; }
   .star { position: absolute; filter: drop-shadow(0 6px 8px rgba(10,25,48,.22)); }
 </style></head><body><div class="c">
   ${c.sparkle ? sparkle(c.sparkle) : ''}${c.loop ? LOOP : ''}${c.swoosh ? SWOOSH : ''}
