@@ -15,10 +15,10 @@ const [src, out = src] = process.argv.slice(2);
 const u = (f) => pathToFileURL(path.join(src, f)).href;
 
 // headline: "Bye" in a script, MANYCHAT in a clean heavy sans (Mercedes 2026-11-02: the tight Poppins 900 was hard
-// to read and she hated the outlined/boxed versions); pick the script with SCRIPT=<name>
-const SCRIPTS = { pacifico: ['Pacifico', 400], yellowtail: ['Yellowtail', 400], kaushan: ['Kaushan Script', 400],
+// to read and she hated the outlined/boxed versions); pick the script with SCRIPT=<name>; she chose Sacramento (2026-11-02)
+const SCRIPTS = { sacramento: ['Sacramento', 400], pacifico: ['Pacifico', 400], yellowtail: ['Yellowtail', 400], kaushan: ['Kaushan Script', 400],
   dancing: ['Dancing Script', 700], satisfy: ['Satisfy', 400], damion: ['Damion', 400] };
-const SCRIPT = SCRIPTS[process.env.SCRIPT || 'pacifico'];
+const SCRIPT = SCRIPTS[process.env.SCRIPT || 'sacramento'];
 
 const page = (body) => `<!doctype html><html><head><meta charset="utf-8">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;800;900&family=${SCRIPT[0].replace(/ /g, '+')}:wght@${SCRIPT[1]}&family=Inter:wght@500;600;700&display=block">
@@ -29,7 +29,7 @@ html,body{width:1280px;height:720px;overflow:hidden;background:#000}
   text-shadow:0 4px 0 rgba(0,0,0,.25),0 10px 34px rgba(0,0,0,.55)}
 
 .big{font-weight:800;letter-spacing:.01em}
-.bye{font-family:'${SCRIPT[0]}',cursive;font-weight:${SCRIPT[1]};font-size:1.25em;letter-spacing:0;margin-right:.3em;display:inline-block;rotate:-6deg;translate:0 .06em}
+.bye{font-family:'${SCRIPT[0]}',cursive;font-weight:${SCRIPT[1]};font-size:1.7em;letter-spacing:0;margin-right:.18em;display:inline-block;rotate:-6deg;translate:0 .1em;text-shadow:0 3px 10px rgba(0,0,0,.55),0 0 2px rgba(0,0,0,.6)}
 .phone{position:absolute;width:250px;height:510px;border-radius:44px;background:#111;padding:11px;
   box-shadow:0 30px 60px rgba(0,0,0,.5),inset 0 0 0 2px #3a3a3a}
 .scr{width:100%;height:100%;border-radius:34px;background:#f2f2f7;overflow:hidden;position:relative;font-family:Inter,sans-serif;color:#111}
