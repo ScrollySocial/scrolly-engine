@@ -109,32 +109,40 @@ const shots = readdirSync(SCR).filter((f) => f.endsWith('.jpg')).sort();
 const p = v.phone, SC = p.height / p.h, PW = p.w * SC, PX = (W - PW) / 2;
 const scr = { x: p.screen.x * SC, y: p.screen.y * SC, w: p.screen.w * SC, h: p.screen.h * SC };
 const GRAIN = `url("data:image/svg+xml;base64,${Buffer.from(`<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .5 0 0 0 0 .5 0 0 0 0 .5 0 0 0 .07 0'/></filter><rect width='100%' height='100%' filter='url(#n)'/></svg>`).toString('base64')}")`;
+// Timeline (Mercedes 2026-11-02): the question types in word by word, big, then shrinks to the top; the call to action
+// pops in and the highlighter sweeps under it; the live page slides up full screen, then zooms out into the phone; the
+// end pushes the link sticker: "tap the link" pops, the arrow bounces and rings pulse where the sticker goes.
+const T = { words: 0.25, wordGap: 0.22, shrink: [1.75, 2.35], cta: [2.35, 2.85], mark: [2.85, 3.35], full: 3.35, slide: 0.45, zoom: [6.3, 7.25], link: 7.35, end: 10.5 };
+const ZOOM = W / scr.w; // the phone scaled so its screen fills the Story
 const html = `<!doctype html><html><head><meta charset="utf-8">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@500;800&family=Instrument+Serif&family=Covered+By+Your+Grace&display=block">
 <style>
   * { margin: 0; box-sizing: border-box; }
   body { width: ${W}px; height: ${H}px; background-color: #dfe4f0; background-image: ${GRAIN}; overflow: hidden; color: #0a1930; }
   .top { position: absolute; left: 50px; right: 50px; top: 250px; text-align: center; }
-  .top p { font-family: Jost, Arial, sans-serif; font-weight: 500; font-size: 42px; }
+  .top p { font-family: Jost, Arial, sans-serif; font-weight: 500; font-size: 42px; transform-origin: 50% 50%; }
+  .top p b { font-weight: 500; display: inline-block; }
   .top h1 { font-family: 'Instrument Serif', Georgia, serif; font-weight: 400; font-size: 170px; line-height: 1; letter-spacing: -.01em; margin-top: 14px; white-space: nowrap; }
-  .top h1 span { background: ${MARK}; padding: 0 .12em; }
-  .phone { position: absolute; left: ${PX}px; top: ${p.top}px; width: ${PW}px; height: ${p.height}px; transform: rotate(${p.rotate}deg); filter: drop-shadow(0 24px 30px rgba(10,25,48,.25)); }
+  .top h1 span { display: inline-block; background: ${MARK}; padding: 0 .12em; }
+  .phone { position: absolute; left: ${PX}px; top: ${p.top}px; width: ${PW}px; height: ${p.height}px; transform-origin: 0 0; filter: drop-shadow(0 24px 30px rgba(10,25,48,.25)); }
   .phone .scr { position: absolute; left: ${scr.x}px; top: ${scr.y}px; width: ${scr.w}px; height: ${scr.h}px; border-radius: 36px; overflow: hidden; background: #fff; }
   .phone .scr img { width: 100%; display: block; }
   .phone .body { position: absolute; inset: 0; width: 100%; height: 100%; }
   .star { position: absolute; width: ${v.star.size}px; left: ${PX + PW + v.star.dx}px; top: ${p.top + v.star.dy}px; filter: drop-shadow(0 6px 8px rgba(10,25,48,.25)); }
-  .tap { position: absolute; left: 0; right: 0; top: 1300px; text-align: center; font-family: 'Covered By Your Grace', cursive; font-size: 60px; line-height: 1; }
-  .tap svg { display: block; margin: 4px auto 0; width: 60px; height: 70px; }
+  .tap { position: absolute; left: 0; right: 0; top: 1290px; text-align: center; font-family: 'Covered By Your Grace', cursive; font-size: 72px; line-height: 1; }
+  .tap svg { display: block; margin: 0 auto; width: 60px; height: 70px; }
+  .ring { position: absolute; left: 50%; top: 1470px; width: 330px; height: 96px; margin: -48px 0 0 -165px; border: 6px solid #4da3ff; border-radius: 999px; }
   .foot { position: absolute; left: 0; right: 0; top: 1560px; text-align: center; }
   .foot svg { width: 300px; height: auto; display: block; margin: 0 auto; }
   .foot .amb { fill: #4da3ff; }
   .foot p { font-family: Jost, Arial, sans-serif; font-weight: 500; font-size: 32px; margin-top: 12px; }
 </style></head><body>
-  <div class="top"><p>${esc(v.q)}</p><h1><span>${esc(v.cta)}</span></h1></div>
-  <div class="phone"><div class="scr"><img id="s"></div><img class="body" src="${fileUrl(path.join(HERE, p.file))}"></div>
-  <img class="star" id="star" src="${fileUrl(path.join(HERE, 'assets/stars', v.star.file + '.png'))}">
-  <div class="tap" id="tap">tap the link<svg viewBox="0 0 60 70"><path d="M31 4c-2 18 1 38-1 58M14 46c7 6 12 12 16 17c4-7 9-12 16-18" fill="none" stroke="#4da3ff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+  <div class="top"><p id="q">${esc(v.q).split(' ').map((w) => `<b>${w}</b>`).join(' ')}</p><h1 id="cta"><span>${esc(v.cta)}</span></h1></div>
   <div class="foot">${LOGO}<p>theambitiondepartment.com</p></div>
+  <div class="ring" id="r1"></div><div class="ring" id="r2"></div>
+  <div class="tap" id="tap">tap the link<svg viewBox="0 0 60 70"><path d="M31 4c-2 18 1 38-1 58M14 46c7 6 12 12 16 17c4-7 9-12 16-18" fill="none" stroke="#4da3ff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+  <div class="phone" id="phone"><div class="scr"><img id="s"></div><img class="body" src="${fileUrl(path.join(HERE, p.file))}"></div>
+  <img class="star" id="star" src="${fileUrl(path.join(HERE, 'assets/stars', v.star.file + '.png'))}">
 </body></html>`;
 const hf = path.join(WORK, 'frame.html');
 writeFileSync(hf, html);
@@ -143,16 +151,51 @@ await pg.setViewport({ width: W, height: H, deviceScaleFactor: 1 });
 await pg.goto(fileUrl(hf), { waitUntil: 'networkidle0' });
 await pg.evaluate(() => document.fonts.ready);
 await pg.evaluate(() => { const h = document.querySelector('.top h1'); let z = 170; while (z > 80 && h.scrollWidth > 980) h.style.fontSize = (z -= 4) + 'px'; });
-for (let i = 0; i < shots.length; i++) {
+const geo = { PX, top: p.top, PW, PH: p.height, sx: scr.x, sy: scr.y, rot: p.rotate, ZOOM, H };
+const total = Math.round(T.end * FPS);
+for (let i = 0; i < total; i++) {
   const t = i / FPS;
-  await pg.evaluate(async (src, t, rot) => {
-    const img = document.getElementById('s');
-    img.src = src; await img.decode();
-    // Star: a little bounce every 2 seconds. Arrow: nudges down and back.
-    const ph = (t % 2) / 2, b = ph < 0.25 ? Math.sin((ph / 0.25) * Math.PI) : 0;
-    document.getElementById('star').style.transform = `translateY(${-28 * b}px) rotate(${rot + 10 * b}deg) scale(${1 + 0.08 * b})`;
-    document.querySelector('#tap svg').style.transform = `translateY(${10 * Math.abs(Math.sin(t * Math.PI))}px)`;
-  }, fileUrl(path.join(SCR, shots[i])), t, v.star.rotate);
+  const shot = shots[Math.max(0, Math.min(shots.length - 1, Math.floor((t - T.full) * FPS)))];
+  await pg.evaluate(async (src, t, T, g, srot) => {
+    const cl = (x) => Math.max(0, Math.min(1, x));
+    const prog = (a, b) => cl((t - a) / (b - a));
+    const out = (x) => 1 - Math.pow(1 - x, 3);
+    const inOut = (x) => (x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2);
+    const back = (x) => 1 + 2.7 * Math.pow(x - 1, 3) + 1.7 * Math.pow(x - 1, 2);
+    const $ = (id) => document.getElementById(id);
+    // Question: words fade up one by one, big in the middle, then the line shrinks into place at the top.
+    [...$('q').children].forEach((w, k) => { const e = out(prog(T.words + k * T.wordGap, T.words + k * T.wordGap + 0.3)); w.style.opacity = e; w.style.transform = `translateY(${30 * (1 - e)}px)`; });
+    const sh = inOut(prog(...T.shrink));
+    $('q').style.transform = `translateY(${(860 - 275) * (1 - sh)}px) scale(${1.6 - 0.6 * sh})`;
+    // Call to action pops in, then the highlighter sweeps under it.
+    const c = prog(...T.cta);
+    $('cta').style.opacity = c > 0 ? 1 : 0;
+    $('cta').firstChild.style.transform = `scale(${c > 0 ? 0.6 + 0.4 * back(c) : 0.6})`;
+    $('cta').firstChild.style.backgroundSize = `${100 * out(prog(...T.mark))}% 74%`;
+    // Live page: slides up full screen, plays, then zooms out into the phone.
+    const ph = $('phone');
+    if (t < T.full) ph.style.visibility = 'hidden';
+    else {
+      ph.style.visibility = 'visible';
+      const img = $('s');
+      if (img.getAttribute('src') !== src) { img.src = src; await img.decode(); }
+      const z = inOut(prog(...T.zoom));
+      const slide = (1 - out(prog(T.full, T.full + T.slide))) * g.H;
+      const s = g.ZOOM + (1 - g.ZOOM) * z;
+      const tx = (-g.PX - g.ZOOM * g.sx) * (1 - z), ty = (-g.top - g.ZOOM * g.sy) * (1 - z) + slide;
+      ph.style.transform = `translate(${tx}px,${ty}px) scale(${s}) translate(${g.PW / 2}px,${g.PH / 2}px) rotate(${g.rot * z}deg) translate(${-g.PW / 2}px,${-g.PH / 2}px)`;
+    }
+    // Star pops onto the phone once it lands, then bounces every 2 seconds.
+    const st = prog(T.zoom[1] - 0.1, T.zoom[1] + 0.35), sb = ((t - T.zoom[1]) % 2) / 2, bb = t > T.zoom[1] + 0.6 && sb < 0.25 ? Math.sin((sb / 0.25) * Math.PI) : 0;
+    $('star').style.opacity = st > 0 ? 1 : 0;
+    $('star').style.transform = `translateY(${-28 * bb}px) rotate(${srot + 10 * bb}deg) scale(${(st > 0 ? back(st) : 0) * (1 + 0.08 * bb)})`;
+    // Link push: "tap the link" pops, the arrow bounces, rings pulse where the sticker goes.
+    const l = prog(T.link, T.link + 0.45);
+    $('tap').style.opacity = l > 0 ? 1 : 0;
+    $('tap').style.transform = `scale(${l > 0 ? back(l) : 0})`;
+    $('tap').querySelector('svg').style.transform = `translateY(${16 * Math.abs(Math.sin((t - T.link) * Math.PI * 1.5))}px)`;
+    ['r1', 'r2'].forEach((id, k) => { const rp = t < T.link + 0.3 ? -1 : ((t - T.link - 0.3 + k * 0.5) % 1); const r = $(id); r.style.opacity = rp < 0 ? 0 : (1 - rp) * 0.9; r.style.transform = `scale(${1 + 0.35 * Math.max(0, rp)})`; });
+  }, fileUrl(path.join(SCR, shot)), t, T, geo, v.star.rotate);
   await pg.screenshot({ path: path.join(COMP, String(i).padStart(5, '0') + '.jpg'), type: 'jpeg', quality: 92 });
 }
 await browser.close();
