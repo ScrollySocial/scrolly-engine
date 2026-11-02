@@ -16,24 +16,25 @@ const GRAIN = (a) => `url("data:image/svg+xml;base64,${Buffer.from(`<svg xmlns='
 
 // Star placements are relative to the circle centre: [file, x, y, size, rotate].
 const COVERS = [
-  // Mercedes 2026-11-02: A (blue mist) chosen; stars must read at profile size, so fewer and much bigger.
+  // Mercedes 2026-11-02: blue mist chosen; stars must read at profile size. She wants chunky 5-point gold foil stars
+  // (her prop library, images/*foil star sticker*), cut off their white backgrounds into assets/stars/foil-*.png.
   {
-    file: 'free-a1-two-stars', label: 'A1. Two big stars',
+    file: 'free-b1-two-stars', label: 'B1. Two foil stars',
     bg: '#dfe4f0', grain: 0.07,
     word: { text: 'FREE', font: 'Jost', weight: 800, color: '#0a1930', size: 210, y: 10 },
-    stars: [['00-gold', 275, -290, 330, 8], ['02-silver', -275, 300, 290, -10]],
+    stars: [['foil-106', 250, -255, 290, 12], ['foil-97', -265, 275, 240, -10]],
   },
   {
-    file: 'free-a2-three-stars', label: 'A2. Three big stars',
+    file: 'free-b2-three-stars', label: 'B2. Three foil stars',
     bg: '#dfe4f0', grain: 0.07,
     word: { text: 'FREE', font: 'Jost', weight: 800, color: '#0a1930', size: 210, y: 10 },
-    stars: [['00-gold', -265, -295, 300, -6], ['02-silver', 290, -270, 230, 10], ['01-gold', 255, 310, 260, 4]],
+    stars: [['foil-95', -250, -255, 250, -12], ['foil-103', 290, -215, 180, 10], ['foil-106', 250, 280, 240, 8]],
   },
   {
-    file: 'free-a3-one-hero-star', label: 'A3. One hero star',
+    file: 'free-b3-hero-star', label: 'B3. One hero foil star',
     bg: '#dfe4f0', grain: 0.07,
-    word: { text: 'FREE', font: 'Jost', weight: 800, color: '#0a1930', size: 210, y: 130 },
-    stars: [['00-gold', 0, -200, 370, 0], ['02-silver', -320, 250, 180, -10], ['01-gold', 320, 250, 160, 6]],
+    word: { text: 'FREE', font: 'Jost', weight: 800, color: '#0a1930', size: 210, y: 140 },
+    stars: [['foil-106', 0, -200, 330, 0], ['foil-97', -330, 230, 150, -12], ['foil-95', 330, 230, 140, 10]],
   },
 ];
 
