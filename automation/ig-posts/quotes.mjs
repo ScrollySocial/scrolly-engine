@@ -19,7 +19,7 @@ const C = { cream: '#f7f3ec', navy: '#0a1930', sky: '#4da3ff', mist: '#dfe4f0' }
 // The 14 quotes (planner cards "Quote 1" to "Quote 14"); credit = the checked author, or Unknown.
 export const QUOTES = [
   { n: 1, text: 'The only man who never makes mistakes is the man who never does anything.', by: 'Theodore Roosevelt' },
-  { n: 2, text: 'It is not in the stars to hold our destiny but in ourselves.', by: 'Unknown', tile: 'quiet' },
+  { n: 2, text: 'It is not in the stars to hold our destiny but in ourselves.', by: 'Unknown' },
   { n: 3, text: 'If you can’t explain it simply, you don’t understand it well enough.', by: 'Unknown' },
   { n: 4, text: 'If you look for perfection, you’ll never be content.', by: 'Leo Tolstoy, Anna Karenina' },
   { n: 5, text: 'Of course it’s hard. It’s supposed to be hard. If it’s easy, everyone would do it. Hard is what makes it great.', by: 'A League of Their Own' },
@@ -27,8 +27,8 @@ export const QUOTES = [
   { n: 7, text: 'What a privilege it is to be exhausted by the work you once dreamed of.', by: 'Unknown' },
   { n: 8, text: 'The greatest legacy is showing others what’s possible.', by: 'Unknown' },
   { n: 9, text: 'To inspire people, don’t show them your superpowers. Show them theirs.', by: 'Alexander den Heijer' },
-  { n: 10, text: 'A curious mind constantly uncovers magic.', by: 'Unknown', tile: 'quiet' },
-  { n: 11, text: 'Enthusiasm is common. Endurance is rare.', by: 'Angela Duckworth', tile: 'sail', lines: ['Enthusiasm', 'is common.', 'Endurance', 'is rare.'] },
+  { n: 10, text: 'A curious mind constantly uncovers magic.', by: 'Unknown', tile: 'balloon2' },
+  { n: 11, text: 'Enthusiasm is common. Endurance is rare.', by: 'Angela Duckworth', tile: 'tortoise' },
   { n: 12, text: 'The scariest place to be is the same place as last year. Grow.', by: 'Unknown' },
   { n: 13, text: 'Excellence is to do a common thing in an uncommon way. Character, not circumstances, makes the man.', by: 'Booker T. Washington' },
   { n: 14, text: 'You can beat 99% of people if you can master the shame of rejection, the boredom of repetition, and the pain of feedback.', by: 'Alex Hormozi' },
@@ -150,7 +150,41 @@ const quiet = (q) => `<style>${BASE}
 ${star('#a9c7ea', { pts: 4, seed: 5, sw: 3 }, 'left:510px;top:200px;width:60px;height:60px')}
 <div class="q">${esc(q.text)}</div><div class="by">unknown</div>`;
 
-const TILES = { starry, wand, constellation, moon, balloon, sail, quiet };
+// Round 3 (Mercedes 2026-11-02): every quote the same way, "scroll stopping, whimsical, but not hard to read".
+// One big whimsical vintage subject, the quote large in navy on a calm part of the art, the credit small and quiet
+// (Unknown included: never emphasised), sparkle stars as the magic.
+const WHIM = `
+  .art { position: absolute; }
+  .big { position: absolute; color: ${C.navy}; font: 400 98px/1.02 'Instrument Serif', Georgia, serif; letter-spacing: -.01em; text-wrap: balance; }
+  .cr { position: absolute; color: ${C.navy}; opacity: .7; font: 400 40px/1 'Covered By Your Grace', cursive; letter-spacing: .03em; }`;
+const cr = (by) => (by === 'Unknown' ? 'unknown' : by);
+
+// Hokusai's tortoise hanging on a string (c. 1800), floating in sparkles on its own paper; quote below.
+const tortoise = (q) => `<style>${BASE}${WHIM}
+  body { background: #e9dcc0; }
+  .art { left: -490px; top: -700px; width: 2000px; }
+  .big { left: 90px; right: 90px; bottom: 150px; text-align: center; }
+  .cr { left: 0; right: 0; bottom: 78px; text-align: center; }
+</style><img class="art" src="${MET(57274)}">
+${star(C.sky, { pts: 4, fill: true, seed: 7 }, 'left:220px;top:330px;width:84px;height:84px')}
+${star(C.navy, { pts: 8, seed: 12, sw: 3 }, 'left:760px;top:250px;width:52px;height:52px')}
+${star('#fff', { pts: 4, seed: 3, sw: 3.4 }, 'left:920px;top:330px;width:60px;height:60px')}
+${star(C.sky, { pts: 4, seed: 9, sw: 3 }, 'left:150px;top:620px;width:46px;height:46px')}
+<div class="big">${esc(q.text)}</div><div class="cr">${esc(cr(q.by))}</div>`;
+
+// 1889 balloon trade card, cut out and huge, rising over Kensett's 1872 sea; quote large on the calm sky.
+const balloon2 = (q) => `<style>${BASE}${WHIM}
+  .bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 38% center; }
+  .art { left: 560px; top: 30px; width: 520px; transform: rotate(7deg); clip-path: inset(2% 0 0 0); filter: drop-shadow(0 14px 22px rgba(10,25,48,.28)); }
+  .big { left: 80px; width: 520px; top: 130px; }
+  .cr { left: 84px; top: 720px; }
+</style><img class="bg" src="${MET(11321)}"><img class="art" src="${fileUrl(path.join(HERE, 'assets', 'met', 'met-727249-cut.png'))}">
+${star('#fff', { pts: 4, fill: true, seed: 7 }, 'left:520px;top:860px;width:90px;height:90px')}
+${star(C.navy, { pts: 8, seed: 12, sw: 3 }, 'left:440px;top:1000px;width:50px;height:50px')}
+${star('#fff', { pts: 4, seed: 3, sw: 3.4 }, 'left:640px;top:1010px;width:56px;height:56px')}
+<div class="big">${esc(q.text)}</div><div class="cr">${esc(cr(q.by))}</div>`;
+
+const TILES = { starry, wand, constellation, moon, balloon, sail, quiet, tortoise, balloon2 };
 const only = process.argv.slice(2).map(Number);
 const list = QUOTES.filter((q) => q.tile && (!only.length || only.includes(q.n)));
 
