@@ -1,8 +1,10 @@
-// YouTube thumbnail options for YouTube 1 (1280×720). YouTube-style, not the site brand (Mercedes 2026-10-31): her
-// face big, three or four huge words in heavy condensed type, bright yellow and white with hard shadows.
+// YouTube thumbnail options for YouTube 1 (1280×720), in the style working on YouTube now (Mercedes's reference,
+// 2026-11-02: Modern Millie's channel): her centred, big and warm on her own softly blurred set, real-looking objects
+// around her shoulders (glossy app tiles, phones, notification cards), two to four words in a heavy rounded white sans
+// with a soft shadow. Not the site brand.
 // Stills MUST be tone-mapped from the iPhone HLG footage (same TM as roughcut.mjs) or she looks pale and grey.
-// Cut-outs straight from hyperframes remove-background; no hand trimming around her hair.
-//   node thumbnail.mjs <dir with cut-2043.png, cut-2054.png, 2043.jpg> [outDir]   → thumb-a.png, thumb-b.png, thumb-c.png
+//   node thumbnail.mjs <dir with sdr-2043.jpg, cut-2043.png, sdr-2054.jpg, cut-2054.png> [outDir]
+//   → thumb-a.png (two phones), thumb-b.png (app tiles), thumb-c.png (notification stack)
 import { mkdirSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { tmpdir } from 'node:os';
@@ -11,45 +13,83 @@ import { launch } from '../../carousels/lib/common.mjs';
 
 const [src, out = src] = process.argv.slice(2);
 const u = (f) => pathToFileURL(path.join(src, f)).href;
-const Y = '#ffd60a';
 
-const page = (body, bg) => `<!doctype html><html><head><meta charset="utf-8">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Montserrat:wght@900&display=block">
+const page = (body) => `<!doctype html><html><head><meta charset="utf-8">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;800;900&family=Inter:wght@500;600;700&display=block">
 <style>*{margin:0;padding:0;box-sizing:border-box}
-html,body{width:1280px;height:720px;overflow:hidden;background:${bg}}
+html,body{width:1280px;height:720px;overflow:hidden;background:#000}
 .abs{position:absolute}
-.anton{font-family:Anton,sans-serif;text-transform:uppercase;line-height:.9;letter-spacing:.005em}
-.mont{font-family:Montserrat,sans-serif;font-weight:900;text-transform:uppercase;line-height:.92;letter-spacing:-.02em}
-.pop{text-shadow:0 6px 0 #000,0 0 22px rgba(0,0,0,.55);-webkit-text-stroke:3px #000;paint-order:stroke fill}
+.big{font-family:Poppins,sans-serif;font-weight:900;color:#fff;letter-spacing:-.02em;line-height:.95;white-space:nowrap;
+  text-shadow:0 4px 0 rgba(0,0,0,.25),0 10px 34px rgba(0,0,0,.55)}
+.phone{position:absolute;width:250px;height:510px;border-radius:44px;background:#111;padding:11px;
+  box-shadow:0 30px 60px rgba(0,0,0,.5),inset 0 0 0 2px #3a3a3a}
+.scr{width:100%;height:100%;border-radius:34px;background:#f2f2f7;overflow:hidden;position:relative;font-family:Inter,sans-serif;color:#111}
+.island{position:absolute;left:50%;top:10px;width:84px;height:24px;margin-left:-42px;border-radius:14px;background:#000}
+.tile{position:absolute;border-radius:28%;box-shadow:0 26px 50px rgba(0,0,0,.45),inset 0 -10px 22px rgba(0,0,0,.18),inset 0 8px 18px rgba(255,255,255,.35)}
+.note{position:absolute;width:430px;padding:16px 18px;border-radius:24px;background:rgba(250,250,252,.93);font-family:Inter,sans-serif;
+  color:#111;box-shadow:0 14px 34px rgba(0,0,0,.35);display:flex;gap:14px;align-items:center}
+.note .ic{width:46px;height:46px;border-radius:12px;flex:none}
+.note b{display:block;font-size:19px;font-weight:700}.note span{font-size:18px;color:#3c3c43}
+.note i{position:absolute;right:18px;top:14px;font-style:normal;font-size:15px;color:#8a8a8e}
 </style></head><body>${body}</body></html>`;
 
-// her cut-out: the 16:9 frame scaled to height h, shifted so she sits where we want her
-const her = (file, left, top, h) =>
-  `<img class="abs" src="${u(file)}" style="left:${left}px;top:${top}px;height:${h}px;filter:drop-shadow(0 0 0 #fff) drop-shadow(0 10px 30px rgba(0,0,0,.45))">`;
+// her on her own set: the blurred frame behind, the sharp cut-out on top, same placement (portrait-mode look)
+const set = (id, left, top, h) => `
+<img class="abs" src="${u(`sdr-${id}.jpg`)}" style="left:${left - h * .25}px;top:${top - h * .1}px;height:${h * 1.3}px;filter:blur(16px) brightness(.92) saturate(1.1)">
+<img class="abs" src="${u(`cut-${id}.png`)}" style="left:${left}px;top:${top}px;height:${h}px">`;
+
+// a subscription screen, like the phone's own Settings > Subscriptions page
+const subScreen = (app, price, ok) => `<div class="scr"><div class="island"></div>
+<div style="padding:56px 18px 0;font-size:15px;color:#8a8a8e;font-weight:600">SUBSCRIPTION</div>
+<div style="margin:10px 12px;background:#fff;border-radius:16px;padding:18px 16px">
+<div style="font-size:22px;font-weight:700">${app}</div>
+<div style="font-size:15px;color:#8a8a8e;margin-top:4px">Monthly</div>
+<div style="font-family:Poppins;font-weight:800;font-size:64px;margin-top:22px;letter-spacing:-.03em;color:${ok ? '#1a9e4b' : '#111'}">${price}</div>
+<div style="font-size:16px;color:#8a8a8e">per month</div></div>
+<div style="margin:10px 12px;background:#fff;border-radius:16px;padding:16px;font-size:17px;font-weight:600;color:${ok ? '#1a9e4b' : '#d70015'}">${ok ? 'Active ✓' : 'Cancel Subscription'}</div></div>`;
+
+// Claude's mark: a starburst of tapered rays on its orange tile
+const claudeTile = (x, y, s, rot) => {
+  const rays = Array.from({ length: 12 }, (_, i) => {
+    const a = i * 30 + (i % 2 ? 7 : 0), L = i % 3 === 0 ? .36 : .3;
+    return `<path d="M0 -${s * .05} L${s * L} 0 L0 ${s * .05} Z" fill="#fff" transform="rotate(${a})"/>`;
+  }).join('');
+  return `<div class="tile" style="left:${x}px;top:${y}px;width:${s}px;height:${s}px;background:linear-gradient(160deg,#f08a62,#d4613a);rotate:${rot}deg">
+<svg width="${s}" height="${s}"><g transform="translate(${s / 2} ${s / 2})">${rays}<circle r="${s * .06}" fill="#fff"/></g></svg></div>`;
+};
+// a DM tile: paper plane on Instagram's gradient
+const dmTile = (x, y, s, rot) => `<div class="tile" style="left:${x}px;top:${y}px;width:${s}px;height:${s}px;background:radial-gradient(circle at 25% 110%,#fdc468 0%,#fa7e1e 25%,#d62976 55%,#962fbf 80%,#4f5bd5 100%);rotate:${rot}deg">
+<svg width="${s}" height="${s}" viewBox="0 0 100 100"><path d="M24 50 L78 26 L62 78 L50 56 Z M50 56 L78 26" fill="none" stroke="#fff" stroke-width="7" stroke-linejoin="round" stroke-linecap="round"/></svg></div>`;
+
+const GLYPH = {
+  ig: '<rect x="12" y="12" width="22" height="22" rx="7" fill="none" stroke="#fff" stroke-width="3"/><circle cx="23" cy="23" r="5" fill="none" stroke="#fff" stroke-width="3"/>',
+  dm: '<path d="M12 24 L34 14 L28 34 L23 26 Z" fill="none" stroke="#fff" stroke-width="3" stroke-linejoin="round"/>',
+  mail: '<rect x="11" y="15" width="24" height="17" rx="3" fill="none" stroke="#fff" stroke-width="3"/><path d="M12 17 L23 25 L34 17" fill="none" stroke="#fff" stroke-width="3"/>',
+  usd: '<text x="23" y="32" text-anchor="middle" font-family="Poppins" font-weight="800" font-size="24" fill="#fff">$</text>',
+};
+const note = (top, left, icon, glyph, title, text, when = 'now') =>
+  `<div class="note" style="top:${top}px;left:${left}px"><div class="ic" style="background:${icon}"><svg width="46" height="46">${GLYPH[glyph]}</svg></div><div><b>${title}</b><span>${text}</span></div><i>${when}</i></div>`;
+const IG = 'radial-gradient(circle at 25% 110%,#fdc468,#fa7e1e 25%,#d62976 55%,#962fbf 80%,#4f5bd5)';
 
 const designs = {
-  // A: bold blue, the price drop is the hero, her surprised face big on the right
-  a: page(`<div class="abs" style="inset:0;background:radial-gradient(circle at 70% 45%,#3d8bff 0%,#1747c9 55%,#0b2170 100%)"></div>
-${her('cut-2054.png', 230, 40, 900)}
-<div class="abs anton pop" style="left:48px;top:40px;font-size:96px;color:#fff">I replaced<br>ManyChat</div>
-<div class="abs anton pop" style="left:48px;top:290px;font-size:250px;color:${Y}">$6</div>
-<div class="abs anton pop" style="left:290px;top:440px;font-size:76px;color:#fff">/month</div>`, '#1747c9'),
+  // A: two phones (the 0 → 10,000 followers layout): ManyChat's bill on the left, hers on the right
+  a: page(`${set('2043', 28, 10, 860)}
+<div class="phone" style="left:40px;top:200px;rotate:-11deg">${subScreen('ManyChat Pro', '$39', false)}</div>
+<div class="phone" style="left:990px;top:200px;rotate:10deg">${subScreen('My DM tool', '$6', true)}</div>
+<div class="abs big" style="left:0;right:0;top:34px;text-align:center;font-size:110px">BYE MANYCHAT</div>`),
 
-  // B: her real set (blurred) behind her smiling cut-out, dark fade left, a blunt line
-  b: page(`<img class="abs" src="${u('2043.jpg')}" style="left:-1280px;top:-360px;height:1440px;filter:blur(18px) brightness(.8)">
-<div class="abs" style="inset:0;background:linear-gradient(90deg,rgba(0,0,0,.8) 0%,rgba(0,0,0,.45) 45%,rgba(0,0,0,0) 70%)"></div>
-${her('cut-2043.png', 430, 30, 900)}
-<div class="abs anton pop" style="left:50px;top:60px;font-size:150px;color:#fff">Bye,<br>ManyChat</div>
-<div class="abs anton pop" style="left:50px;top:430px;font-size:170px;color:${Y}">$39 → $6</div>`, '#000'),
+  // B: glossy app tiles either side of her, the price line across the bottom
+  b: page(`${set('2054', 28, -20, 860)}
+${claudeTile(70, 120, 270, -9)}${dmTile(950, 110, 270, 9)}
+<div class="abs big" style="left:0;right:0;bottom:22px;text-align:center;font-size:112px">$6 AUTO DMs</div>`),
 
-  // C: split comparison, ManyChat side vs mine, her in the middle
-  c: page(`<div class="abs" style="left:0;top:0;width:640px;height:720px;background:#e8313b"></div>
-<div class="abs" style="left:640px;top:0;width:640px;height:720px;background:#19c46a"></div>
-<div class="abs mont pop" style="left:30px;top:44px;font-size:64px;color:#fff">ManyChat</div>
-<div class="abs mont pop" style="left:30px;top:120px;font-size:170px;color:#fff">$39</div>
-<div class="abs mont pop" style="right:30px;top:44px;font-size:64px;color:#fff;text-align:right">Mine</div>
-<div class="abs mont pop" style="right:30px;top:120px;font-size:170px;color:${Y};text-align:right">$6</div>
-${her('cut-2043.png', 0, -10, 900)}`, '#000'),
+  // C: her to the left, what the tool does all day stacked beside her as phone notifications
+  c: page(`${set('2043', -282, 10, 860)}
+${note(150, 800, IG, 'ig', 'Instagram', 'New comment: "MATH"', '9:41')}
+${note(250, 800, IG, 'dm', 'Auto-DM sent ✓', 'Reply READY for the calculator', '9:41')}
+${note(350, 800, '#2db36b', 'mail', 'New subscriber', '+1 on your email list', '9:42')}
+${note(450, 800, '#3a7bd5', 'usd', 'Server bill', '$6.00 this month', '1st')}
+<div class="abs big" style="left:0;right:0;top:28px;text-align:center;font-size:96px">NO MORE MANYCHAT</div>`),
 };
 
 mkdirSync(out, { recursive: true });
