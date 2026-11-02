@@ -18,20 +18,20 @@ const C = { cream: '#f7f3ec', navy: '#0a1930', sky: '#4da3ff', mist: '#dfe4f0' }
 
 // The 14 quotes (planner cards "Quote 1" to "Quote 14"); credit = the checked author, or Unknown.
 export const QUOTES = [
-  { n: 1, text: 'The only man who never makes mistakes is the man who never does anything.', by: 'Theodore Roosevelt' },
-  { n: 2, text: 'It is not in the stars to hold our destiny but in ourselves.', by: 'Unknown' },
-  { n: 3, text: 'If you can’t explain it simply, you don’t understand it well enough.', by: 'Unknown' },
-  { n: 4, text: 'If you look for perfection, you’ll never be content.', by: 'Leo Tolstoy, Anna Karenina' },
-  { n: 5, text: 'Of course it’s hard. It’s supposed to be hard. If it’s easy, everyone would do it. Hard is what makes it great.', by: 'A League of Their Own' },
-  { n: 6, text: 'If you’re making mistakes, it means you’re out there doing something.', by: 'Neil Gaiman' },
-  { n: 7, text: 'What a privilege it is to be exhausted by the work you once dreamed of.', by: 'Unknown' },
-  { n: 8, text: 'The greatest legacy is showing others what’s possible.', by: 'Unknown' },
-  { n: 9, text: 'To inspire people, don’t show them your superpowers. Show them theirs.', by: 'Alexander den Heijer' },
-  { n: 10, text: 'A curious mind constantly uncovers magic.', by: 'Unknown', tile: 'balloon2' },
+  { n: 1, text: 'The only man who never makes mistakes is the man who never does anything.', by: 'Theodore Roosevelt', tile: 'athlete', art: 712795 },
+  { n: 2, text: 'It is not in the stars to hold our destiny but in ourselves.', by: 'Unknown', tile: 'athlete', art: 712808 },
+  { n: 3, text: 'If you can’t explain it simply, you don’t understand it well enough.', by: 'Unknown', tile: 'athlete', art: 712799 },
+  { n: 4, text: 'If you look for perfection, you’ll never be content.', by: 'Leo Tolstoy, Anna Karenina', tile: 'athlete', art: 712807 },
+  { n: 5, text: 'Of course it’s hard. It’s supposed to be hard. If it’s easy, everyone would do it. Hard is what makes it great.', by: 'A League of Their Own', tile: 'athlete', art: 712793 },
+  { n: 6, text: 'If you’re making mistakes, it means you’re out there doing something.', by: 'Neil Gaiman', tile: 'athlete', art: 712790 },
+  { n: 7, text: 'What a privilege it is to be exhausted by the work you once dreamed of.', by: 'Unknown', tile: 'athlete', art: 712800 },
+  { n: 8, text: 'The greatest legacy is showing others what’s possible.', by: 'Unknown', tile: 'athlete', art: 712802 },
+  { n: 9, text: 'To inspire people, don’t show them your superpowers. Show them theirs.', by: 'Alexander den Heijer', tile: 'athlete', art: 712801 },
+  { n: 10, text: 'A curious mind constantly uncovers magic.', by: 'Unknown', tile: 'athlete', art: 727249 },
   { n: 11, text: 'Enthusiasm is common. Endurance is rare.', by: 'Angela Duckworth', tile: 'rope' },
-  { n: 12, text: 'The scariest place to be is the same place as last year. Grow.', by: 'Unknown' },
-  { n: 13, text: 'Excellence is to do a common thing in an uncommon way. Character, not circumstances, makes the man.', by: 'Booker T. Washington' },
-  { n: 14, text: 'You can beat 99% of people if you can master the shame of rejection, the boredom of repetition, and the pain of feedback.', by: 'Alex Hormozi' },
+  { n: 12, text: 'The scariest place to be is the same place as last year. Grow.', by: 'Unknown', tile: 'athlete', art: 712810 },
+  { n: 13, text: 'Excellence is to do a common thing in an uncommon way. Character, not circumstances, makes the man.', by: 'Booker T. Washington', tile: 'athlete', art: 712809 },
+  { n: 14, text: 'You can beat 99% of people if you can master the shame of rejection, the boredom of repetition, and the pain of feedback.', by: 'Alex Hormozi', tile: 'athlete', art: 712794 },
 ];
 
 const BASE = `* { margin: 0; box-sizing: border-box; }
@@ -199,7 +199,26 @@ ${star('#fff', { pts: 4, fill: true, seed: 3 }, 'left:900px;top:720px;width:64px
 ${star(C.sky, { pts: 4, seed: 9, sw: 3 }, 'left:120px;top:800px;width:46px;height:46px')}
 <div class="big">${esc(q.text)}</div><div class="cr">${esc(cr(q.by))}</div>`;
 
-const TILES = { starry, wand, constellation, moon, balloon, sail, quiet, tortoise, balloon2, rope };
+// The full set (Mercedes 2026-11-02, "yes, make them all" after the balloon and the tightrope walker): one 1889
+// Kimball "Pretty Athletes" trade-card woman per quote, cut out, standing under the quote on a soft sky, sparkles beside her.
+const SKIES = ['linear-gradient(#d9e2f1, #f4efe6 78%)', 'linear-gradient(#cfe1f7, #f6f1e8 80%)', 'linear-gradient(#f4efe6, #e2e7f1)'];
+const athlete = (q) => {
+  const fs = q.text.length <= 60 ? 98 : q.text.length <= 100 ? 82 : 70;
+  const side = [[150, 520, 84, C.sky, 4, true], [880, 470, 52, C.navy, 8, false], [900, 760, 62, '#fff', 4, true], [120, 860, 46, C.sky, 4, false]];
+  return `<style>${BASE}${WHIM}
+  body { background: ${SKIES[q.n % 3]}; display: flex; flex-direction: column; align-items: center; padding: 80px 70px 70px; }
+  .big { position: static; text-align: center; font-size: ${fs}px; }
+  .fig { flex: 1; min-height: 0; width: 100%; display: flex; justify-content: center; align-items: flex-end; padding-top: 40px; }
+  .fig img { max-height: 100%; max-width: 640px; filter: drop-shadow(0 14px 20px rgba(10,25,48,.22)); }
+  .cr { position: static; margin-top: 34px; }
+</style>
+${side.map(([x, y, w, c, pts, fill], i) => star(c, { pts, fill, seed: q.n * 7 + i, sw: 3 }, `left:${x}px;top:${y}px;width:${w}px;height:${w}px`)).join('\n')}
+<div class="big">${esc(q.text)}</div>
+<div class="fig"><img src="${fileUrl(path.join(HERE, 'assets', 'met', `met-${q.art}-cut.png`))}"></div>
+<div class="cr">${esc(cr(q.by))}</div>`;
+};
+
+const TILES = { starry, wand, constellation, moon, balloon, sail, quiet, tortoise, balloon2, rope, athlete };
 const only = process.argv.slice(2).map(Number);
 const list = QUOTES.filter((q) => q.tile && (!only.length || only.includes(q.n)));
 
