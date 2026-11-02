@@ -133,14 +133,14 @@ const VIDEOS = {
   // CTA lands and the laptop rises in with the calculator being typed into.
   '3-calculators': {
     url: '/calculators/', view: { w: 1000, h: 594, mobile: false }, seconds: 8, end: 10, full: 3.1,
-    ground: 'navy', device: 'laptop', place: { width: 900, left: 90, top: 700, rotate: 0 },
+    ground: 'navy', device: 'laptop', place: { width: 820, left: 130, top: 650, rotate: 0 }, // smaller so the link sticker fits under the arrow
     q: 'How many views does your goal take?', cta: 'Do the math', count: { to: 476334, label: 'views for a $1,000 month, at typical rates' },
-    star: { file: 'foil-103', size: 160, x: 880, y: 640, rotate: 10 },
+    star: { file: 'foil-103', size: 150, x: 830, y: 595, rotate: 10 },
     css: `.top { left: 50px; right: 50px; top: 250px; text-align: center; } .top h1 { color: #4da3ff; } .top h1 span { background: none !important; }
       .count { position: absolute; left: 0; right: 0; top: 620px; text-align: center; color: #4da3ff; font-family: 'Instrument Serif', Georgia, serif; font-size: 230px; line-height: 1; }
       .count small { display: block; font-family: Jost, Arial, sans-serif; font-size: 40px; color: #dfe4f0; margin-top: 8px; }
-      .tap { left: 0; right: 0; top: 1365px; text-align: center; }
-      .foot { left: 0; right: 0; top: 1590px; text-align: center; } .foot svg { margin: 0 auto; }`,
+      .tap { left: 0; right: 0; top: 1255px; text-align: center; }
+      .foot { left: 0; right: 0; top: 1600px; text-align: center; } .foot svg { margin: 0 auto; }`,
     // Types a new monthly goal so the results change live. Nothing is submitted (the calculator has no form).
     async script({ pg, tap, type }) {
       await wait(600);
