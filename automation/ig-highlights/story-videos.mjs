@@ -2,7 +2,8 @@
 // typing, with a tap dot so viewers see where the finger goes); step 2 composites that recording into a device prop,
 // frame by frame, with the call to action, a foil star, "tap the link" and the logo.
 // Every video has its own ground, device, layout and motion (Mercedes 2026-11-02: "they all need to be different").
-// Usage: node story-videos.mjs <key> [--record]   (--record re-captures the page; otherwise the last recording is reused)
+// Usage: node story-videos.mjs <key> [--record] [--tiktok]   (--record re-captures the page; otherwise the last recording
+// is reused. --tiktok swaps "tap the link" for the page's web address, since TikTok has no link stickers: <key>-tiktok.mp4)
 // Output: ig-highlights/out/video/<key>.mp4. Render one video at a time (Mercedes's PC, 2026-10-20).
 import { writeFileSync, readFileSync, mkdirSync, existsSync, rmSync, readdirSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
@@ -45,7 +46,7 @@ const HELPERS = `
   const pop = (id, a) => { const p = prog(a, a + 0.45); $(id).style.opacity = p > 0 ? 1 : 0; return p > 0 ? back(p) : 0; };
   const bounce = (since, every = 2) => { const ph = ((t - since) % every) / every; return t > since && ph < 0.25 ? Math.sin((ph / 0.25) * Math.PI) : 0; };
   const sweep = (a, b) => { $('cta').firstChild.style.backgroundSize = (100 * out(prog(a, b))) + '% 74%'; };
-  const arrow = (since) => { $('tap').querySelector('svg').style.transform = 'translateY(' + 16 * Math.abs(Math.sin((t - since) * Math.PI * 1.5)) + 'px)'; };
+  const arrow = (since) => { const a = $('tap').querySelector('svg'); if (a) a.style.transform = 'translateY(' + 16 * Math.abs(Math.sin((t - since) * Math.PI * 1.5)) + 'px)'; };
   const dev = (tx, ty, s, rot) => { $('dev').style.transform = 'translate(' + tx + 'px,' + ty + 'px) scale(' + s + ') translate(' + g.DW / 2 + 'px,' + g.DH / 2 + 'px) rotate(' + rot + 'deg) translate(' + -g.DW / 2 + 'px,' + -g.DH / 2 + 'px)'; };
 `;
 
@@ -94,7 +95,7 @@ const VIDEOS = {
     css: `.top { left: 60px; right: 60px; top: 250px; text-align: left; } .top h1 { font-size: 150px; }
       .lines { position: absolute; left: 70px; top: 640px; font-family: 'Instrument Serif', Georgia, serif; font-size: 190px; line-height: .95; }
       .lines b { display: block; font-weight: 400; }
-      .tap { left: 60px; width: 380px; top: 1150px; text-align: left; } .tap svg { margin: 6px 0 0 60px; }
+      .tap { left: 60px; width: 380px; top: 1150px; text-align: left; } .tap svg { margin: 6px 0 0 60px; } .tap .addr { margin-left: 0; font-size: 26px; padding: 12px 22px 14px; } .tap .addr b { font-size: 38px; }
       .foot { left: 60px; top: 1580px; text-align: left; } .foot svg { margin: 0; }`,
     // Picks the first answer and moves to question 2. The email step at the end is never reached.
     async script({ fr, tap }) {
@@ -171,7 +172,7 @@ const VIDEOS = {
   // Mist, a tablet that drops in tilted and settles. The CTA comes first this time, letter by letter, then the guide
   // scrolls on the tablet; the question sits small under it.
   '4-blog': {
-    url: '/guides/can-claude-answer-instagram-dms/', view: { w: 1180, h: 800, mobile: false }, seconds: 8, end: 10, full: 1.2,
+    url: '/guides/can-claude-answer-instagram-dms/', addr: '/blog/', view: { w: 1180, h: 800, mobile: false }, seconds: 8, end: 10, full: 1.2,
     ground: 'mist', device: 'tablet', place: { width: 940, left: 70, top: 640, rotate: 5 },
     q: 'Step-by-step guides with real costs', cta: 'Read the blog',
     star: { file: 'foil-97', size: 180, x: 60, y: 560, rotate: -16 },
@@ -202,6 +203,7 @@ const VIDEOS = {
 };
 
 const key = process.argv[2];
+const TIKTOK = process.argv.includes('--tiktok');
 const v = VIDEOS[key];
 if (!v) { console.log('Usage: node story-videos.mjs <' + Object.keys(VIDEOS).join('|') + '> [--record]'); process.exit(1); }
 const D = DEVICES[v.device], G = GROUNDS[v.ground];
@@ -304,13 +306,15 @@ const html = `<!doctype html><html><head><meta charset="utf-8">
   .foot .amb { fill: #4da3ff; }
   .foot p { font-family: Jost, Arial, sans-serif; font-weight: 500; font-size: 32px; margin-top: 12px; }
   #cta { opacity: 0; }
+  .addr { display: block; width: max-content; margin: 10px auto 0; padding: 14px 30px 16px; border-radius: 22px; background: #4da3ff; color: #0a1930; font-family: Jost, Arial, sans-serif; font-weight: 500; font-size: 34px; line-height: 1.2; text-align: center; }
+  .addr b { display: block; font-weight: 800; font-size: 46px; }
   ${v.css}
 </style></head><body>
   <div class="top"><p id="q">${esc(v.q).split(' ').map((w) => `<b>${w}</b>`).join(' ')}</p><h1 id="cta"><span>${ctaHtml}</span></h1></div>
   ${v.lines ? `<div class="lines" id="lines">${v.lines.map((l) => `<b>${esc(l)}</b>`).join('')}</div>` : ''}
   ${v.count ? `<div class="count" id="count">0<small>${esc(v.count.label)}</small></div>` : ''}
   <div class="foot" id="foot">${LOGO}<p>theambitiondepartment.com</p></div>
-  <div class="tap" id="tap">tap the link<svg viewBox="0 0 60 70"><path d="M31 4c-2 18 1 38-1 58M14 46c7 6 12 12 16 17c4-7 9-12 16-18" fill="none" stroke="#4da3ff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+  ${TIKTOK ? `<div class="tap" id="tap">free at<span class="addr">theambitiondepartment.com<b>${esc((v.addr || v.url).replace(/\/$/, ''))}</b></span></div>` : `<div class="tap" id="tap">tap the link<svg viewBox="0 0 60 70"><path d="M31 4c-2 18 1 38-1 58M14 46c7 6 12 12 16 17c4-7 9-12 16-18" fill="none" stroke="#4da3ff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>`}
   <div class="dev" id="dev"><div class="scr"><img id="s"></div><img class="body" src="${fileUrl(path.join(HERE, D.file))}"></div>
   <img class="star" id="star" src="${fileUrl(path.join(HERE, 'assets/stars', v.star.file + '.png'))}">
 </body></html>`;
@@ -334,6 +338,6 @@ for (let i = 0; i < total; i++) {
   await pg.screenshot({ path: path.join(COMP, String(i).padStart(5, '0') + '.jpg'), type: 'jpeg', quality: 92 });
 }
 await browser.close();
-const mp4 = path.join(OUT, key + '.mp4');
+const mp4 = path.join(OUT, key + (TIKTOK ? '-tiktok' : '') + '.mp4');
 execFileSync(FFMPEG, ['-y', '-loglevel', 'error', '-framerate', String(FPS), '-i', path.join(COMP, '%05d.jpg'), '-c:v', 'libx264', '-crf', '18', '-preset', 'medium', '-pix_fmt', 'yuv420p', '-movflags', '+faststart', mp4]);
 console.log('video  ' + mp4);

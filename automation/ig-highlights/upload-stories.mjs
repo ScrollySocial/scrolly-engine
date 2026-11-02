@@ -1,4 +1,4 @@
-// Hosts the Freebies highlight Stories in WordPress media so Buffer can fetch them when it posts (the Buffer API takes
+// Hosts the Freebies highlight Stories (and their TikTok versions) in WordPress media so Buffer can fetch them when it posts (the Buffer API takes
 // URLs only). Files are named tad-story-*; never delete them before the Stories have posted. Looks first, so a rerun
 // never makes duplicates. Records ids and URLs in wp-media.json.
 // Usage: node upload-stories.mjs
@@ -15,6 +15,10 @@ const FILES = [
   { key: '2-next-move', file: `${MEDIA}/freebies-video/2-next-move.mp4`, name: 'tad-story-freebies-2-next-move', type: 'video/mp4' },
   { key: '3-calculators', file: `${MEDIA}/freebies-video/3-calculators.mp4`, name: 'tad-story-freebies-3-calculators', type: 'video/mp4' },
   { key: '4-blog', file: `${MEDIA}/freebies-video/4-blog.mp4`, name: 'tad-story-freebies-4-blog', type: 'video/mp4' },
+  { key: '1-offer-quiz-tiktok', file: `${MEDIA}/freebies-video/1-offer-quiz-tiktok.mp4`, name: 'tad-tiktok-freebies-1-offer-quiz', type: 'video/mp4' },
+  { key: '2-next-move-tiktok', file: `${MEDIA}/freebies-video/2-next-move-tiktok.mp4`, name: 'tad-tiktok-freebies-2-next-move', type: 'video/mp4' },
+  { key: '3-calculators-tiktok', file: `${MEDIA}/freebies-video/3-calculators-tiktok.mp4`, name: 'tad-tiktok-freebies-3-calculators', type: 'video/mp4' },
+  { key: '4-blog-tiktok', file: `${MEDIA}/freebies-video/4-blog-tiktok.mp4`, name: 'tad-tiktok-freebies-4-blog', type: 'video/mp4' },
 ];
 const REC = path.join(HERE, 'wp-media.json');
 const rec = existsSync(REC) ? JSON.parse(readFileSync(REC, 'utf8')) : {};
