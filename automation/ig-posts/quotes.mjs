@@ -24,12 +24,12 @@ export const QUOTES = [
   { n: 4, text: 'If you look for perfection, you’ll never be content.', by: 'Leo Tolstoy, Anna Karenina', tile: 'athlete', art: 712807 },
   { n: 5, text: 'Of course it’s hard. It’s supposed to be hard. If it’s easy, everyone would do it. Hard is what makes it great.', by: 'A League of Their Own', tile: 'athlete', art: 712793 },
   { n: 6, text: 'If you’re making mistakes, it means you’re out there doing something.', by: 'Neil Gaiman', tile: 'athlete', art: 712790 },
-  { n: 7, text: 'What a privilege it is to be exhausted by the work you once dreamed of.', by: 'Unknown', tile: 'athlete', art: 712800 },
-  { n: 8, text: 'The greatest legacy is showing others what’s possible.', by: 'Unknown', tile: 'athlete', art: 712802 },
+  { n: 7, text: 'What a privilege it is to be exhausted by the work you once dreamed of.', by: 'Unknown', tile: 'note' },
+  { n: 8, text: 'The greatest legacy is showing others what’s possible.', by: 'Unknown', tile: 'sticker', fs: 112 },
   { n: 9, text: 'To inspire people, don’t show them your superpowers. Show them theirs.', by: 'Alexander den Heijer', tile: 'athlete', art: 712801 },
   { n: 10, text: 'A curious mind constantly uncovers magic.', by: 'Unknown', tile: 'athlete', art: 727249 },
   { n: 11, text: 'Enthusiasm is common. Endurance is rare.', by: 'Angela Duckworth', tile: 'rope' },
-  { n: 12, text: 'The scariest place to be is the same place as last year. Grow.', by: 'Unknown', tile: 'athlete', art: 712810 },
+  { n: 12, text: 'The scariest place to be is the same place as last year. Grow.', by: 'Unknown', tile: 'ribbon', ribbon: ['The scariest place to be', 'is the same place as last year', 'Grow.'] },
   { n: 13, text: 'Excellence is to do a common thing in an uncommon way. Character, not circumstances, makes the man.', by: 'Booker T. Washington', tile: 'athlete', art: 712809 },
   { n: 14, text: 'You can beat 99% of people if you can master the shame of rejection, the boredom of repetition, and the pain of feedback.', by: 'Alex Hormozi', tile: 'athlete', art: 712794 },
 ];
@@ -218,7 +218,71 @@ ${side.map(([x, y, w, c, pts, fill], i) => star(c, { pts, fill, seed: q.n * 7 + 
 <div class="cr">${esc(cr(q.by))}</div>`;
 };
 
-const TILES = { starry, wand, constellation, moon, balloon, sail, quiet, tortoise, balloon2, rope, athlete };
+// Round 5 (Mercedes 2026-11-02): no pin-up women. Collage scenes from her new pins: painted landscapes, torn paper,
+// and the quote built into the scene as an object (a winding ribbon, a taped note, a sticker). Readable first.
+const torn = (seed, y0, amp = 26, n = 28) => { // jagged top edge polygon (percent x, px y)
+  let r = seed; const rnd = () => ((r = (r * 9301 + 49297) % 233280) / 233280);
+  const pts = Array.from({ length: n + 1 }, (_, i) => `${(i / n * 100).toFixed(1)}% ${Math.round(y0 + (rnd() - .5) * amp + Math.sin(i / 3) * amp * .6)}px`);
+  return `polygon(${pts.join(', ')}, 100% 100%, 0 100%)`;
+};
+const tag = (by, css) => `<div class="tag" style="${css}">${esc(cr(by))}</div>`;
+const SCENE = `
+  .layer { position: absolute; inset: 0; background-size: cover; background-position: center; }
+  .tag { position: absolute; background: #f4efe6; color: ${C.navy}; font: 400 38px/1 'Covered By Your Grace', cursive; letter-spacing: .03em; padding: 10px 22px 6px; box-shadow: 0 4px 10px rgba(10,25,48,.25); }`;
+
+// Ribbon: starry night above, a torn strip of Van Gogh's Irises below, the quote riding a winding ribbon across both.
+const ribbon = (q) => {
+  const d = 'M -60 520 C 160 380, 330 420, 420 600 S 600 900, 760 820 S 1000 640, 1140 760';
+  const d2 = 'M -60 1010 C 200 900, 420 1120, 640 1060 S 960 900, 1140 980';
+  return `<style>${BASE}${SCENE}
+  body { background: ${C.navy}; }
+  .tp { font: 700 50px/1 Jost, Arial, sans-serif; letter-spacing: .16em; text-transform: uppercase; fill: ${C.navy}; }
+</style>
+<div class="layer" style="background-image:url('${fileUrl(path.join(ASSETS, 'ftr-sky.webp'))}')"></div>
+<div class="layer" style="background-image:url('${fileUrl(path.join(ASSETS, 'ftr-stars.webp'))}');opacity:.9"></div>
+<div class="layer" style="background:#efe6d3;clip-path:${torn(3, 690, 30)}"></div>
+<div class="layer" style="background-image:url('${MET(436528)}');background-position:50% 70%;clip-path:${torn(3, 706, 30)}"></div>
+<svg viewBox="0 0 1080 1440" style="position:absolute;inset:0;width:1080px;height:1440px">
+  <defs><path id="r1" d="${d}"/><path id="r2" d="${d2}"/></defs>
+  <g style="filter:drop-shadow(0 8px 12px rgba(10,25,48,.35))">
+    <path d="${d}" fill="none" stroke="#7f9ea6" stroke-width="104" stroke-linecap="round"/><path d="${d}" fill="none" stroke="#e7ecef" stroke-width="80" stroke-linecap="round"/>
+    <path d="${d2}" fill="none" stroke="#7f9ea6" stroke-width="104" stroke-linecap="round"/><path d="${d2}" fill="none" stroke="#e7ecef" stroke-width="80" stroke-linecap="round"/>
+  </g>
+  <text class="tp" dy="17"><textPath href="#r1" startOffset="50%" text-anchor="middle">${esc(q.ribbon[0])}</textPath></text>
+  <text class="tp" dy="17"><textPath href="#r2" startOffset="50%" text-anchor="middle">${esc(q.ribbon[1])}</textPath></text>
+</svg>
+${star('#fff', { pts: 4, fill: true, seed: 7 }, 'left:800px;top:150px;width:80px;height:80px')}
+${star(C.sky, { pts: 8, seed: 12, sw: 3 }, 'left:130px;top:200px;width:56px;height:56px')}
+<div style="position:absolute;left:80px;bottom:150px;transform:rotate(-5deg);font:800 150px/1 Jost,Arial,sans-serif;text-transform:uppercase;color:${C.navy};-webkit-text-stroke:34px #f6f1e6;paint-order:stroke fill;filter:drop-shadow(0 10px 14px rgba(10,25,48,.35))">${esc(q.ribbon[2])}</div>
+${tag(q.by, 'right:70px;bottom:80px;transform:rotate(-2deg)')}`;
+};
+
+// Taped note: a handwritten paper note taped over a painted forest (Durand, In the Woods, 1855).
+const note = (q) => `<style>${BASE}${SCENE}
+  .note { position: absolute; left: 110px; right: 110px; top: 470px; background: #f6f1e6; padding: 90px 70px 80px; transform: rotate(-1.5deg);
+    box-shadow: 0 18px 30px rgba(10,25,48,.35); clip-path: polygon(0 1%, 8% 0, 22% 1.2%, 40% .3%, 58% 1.4%, 77% .2%, 92% 1%, 100% 0, 99.4% 30%, 100% 64%, 99.2% 100%, 80% 99%, 61% 100%, 42% 98.8%, 24% 100%, 7% 99%, 0 100%, .6% 60%); }
+    .note p { text-wrap: balance; color: ${C.navy}; font: 400 72px/1.18 'Covered By Your Grace', cursive; letter-spacing: .02em; text-align: center; }
+  .note small { display: block; margin-top: 34px; text-align: center; color: ${C.navy}; opacity: .7; font: 400 38px/1 'Covered By Your Grace', cursive; }
+  .tape { position: absolute; left: 400px; top: 430px; width: 280px; height: 86px; background: rgba(255,255,255,.62); transform: rotate(2deg); box-shadow: 0 2px 6px rgba(10,25,48,.12); }
+</style>
+<div class="layer" style="background-image:url('${MET(10790)}');background-position:50% 40%"></div>
+<div class="note"><p>${esc(q.text)}</p><small>${esc(cr(q.by))}</small></div><div class="tape"></div>
+${star('#fff', { pts: 4, fill: true, seed: 7 }, 'left:860px;top:300px;width:76px;height:76px')}
+${star(C.sky, { pts: 8, seed: 12, sw: 3 }, 'left:150px;top:1150px;width:56px;height:56px')}`;
+
+// Sticker: big chunky words with a thick paper outline, stuck on Van Gogh's Wheat Field with Cypresses.
+const sticker = (q) => `<style>${BASE}${SCENE}
+  .st { position: absolute; left: 70px; right: 70px; top: 50%; transform: translateY(-52%) rotate(-3deg); text-align: center;
+    font: 800 ${q.fs || 118}px/1.06 Jost, Arial, sans-serif; text-transform: uppercase; letter-spacing: -.01em; color: ${C.navy};
+    -webkit-text-stroke: 30px #f6f1e6; paint-order: stroke fill; filter: drop-shadow(0 10px 14px rgba(10,25,48,.35)); }
+</style>
+<div class="layer" style="background-image:url('${MET(436535)}');background-position:30% center;background-size:auto 112%"></div>
+<div class="st">${esc(q.text)}</div>
+${star('#fff', { pts: 4, fill: true, seed: 7 }, 'left:850px;top:180px;width:80px;height:80px')}
+${star(C.sky, { pts: 8, seed: 21, sw: 3 }, 'left:130px;top:1120px;width:60px;height:60px')}
+${tag(q.by, 'left:50%;bottom:90px;transform:translateX(-50%) rotate(2deg)')}`;
+
+const TILES = { starry, wand, constellation, moon, balloon, sail, quiet, tortoise, balloon2, rope, athlete, ribbon, note, sticker };
 const only = process.argv.slice(2).map(Number);
 const list = QUOTES.filter((q) => q.tile && (!only.length || only.includes(q.n)));
 

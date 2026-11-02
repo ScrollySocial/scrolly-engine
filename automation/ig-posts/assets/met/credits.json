@@ -121,5 +121,23 @@
   "source": "https://www.metmuseum.org/art/collection/search/712794",
   "license": "Public domain (The Met Open Access, CC0)",
   "note": "met-712794-cut.png = cut out with rembg"
+ },
+ "met-436528": {
+  "title": "Irises",
+  "artist": "Vincent van Gogh, 1890",
+  "source": "https://www.metmuseum.org/art/collection/search/436528",
+  "license": "Public domain (The Met Open Access, CC0)"
+ },
+ "met-436535": {
+  "title": "Wheat Field with Cypresses",
+  "artist": "Vincent van Gogh, 1889",
+  "source": "https://www.metmuseum.org/art/collection/search/436535",
+  "license": "Public domain (The Met Open Access, CC0)"
+ },
+ "met-10790": {
+  "title": "In the Woods",
+  "artist": "Asher Brown Durand, 1855",
+  "source": "https://www.metmuseum.org/art/collection/search/10790",
+  "license": "Public domain (The Met Open Access, CC0)"
  }
 }
