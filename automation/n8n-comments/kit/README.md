@@ -32,3 +32,8 @@ Your keys and your server's key live only in the `.secrets` folder here. Keep a 
 
 You can set Chat Manager up for your own accounts and for every client you manage: one copy per Instagram account.
 Please don't resell the kit or give it to someone else to set up for themselves.
+
+## Earn with Chat Manager
+
+Share it with a friend and earn $30 a sale, rising to $40 from your third sale. Apply here:
+https://theambitiondepartment.com/affiliates/
