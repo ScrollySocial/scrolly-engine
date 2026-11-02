@@ -16,25 +16,25 @@ const GRAIN = (a) => `url("data:image/svg+xml;base64,${Buffer.from(`<svg xmlns='
 
 // Star placements are relative to the circle centre: [file, x, y, size, rotate].
 const COVERS = [
-  // Mercedes 2026-11-02: blue mist chosen; stars must read at profile size. She wants chunky 5-point gold foil stars
-  // (her prop library, images/*foil star sticker*), cut off their white backgrounds into assets/stars/foil-*.png.
+  // Mercedes 2026-11-02: words with stars around them rejected ("look stupid"). Direction 1 picked: one huge
+  // crinkled gold foil star fills the circle with the word printed on it, like a sticker.
   {
-    file: 'free-b1-two-stars', label: 'B1. Two foil stars',
+    file: 'free-c1-star-mist', label: 'C1. Blue mist ground',
     bg: '#dfe4f0', grain: 0.07,
-    word: { text: 'FREE', font: 'Jost', weight: 800, color: '#0a1930', size: 210, y: 10 },
-    stars: [['foil-106', 250, -255, 290, 12], ['foil-97', -265, 275, 240, -10]],
+    stars: [['foil-106', 0, 25, 960, 0]],
+    word: { text: 'FREE', font: 'Jost', weight: 800, color: '#0a1930', size: 155, y: 75 },
   },
   {
-    file: 'free-b2-three-stars', label: 'B2. Three foil stars',
-    bg: '#dfe4f0', grain: 0.07,
-    word: { text: 'FREE', font: 'Jost', weight: 800, color: '#0a1930', size: 210, y: 10 },
-    stars: [['foil-95', -250, -255, 250, -12], ['foil-103', 290, -215, 180, 10], ['foil-106', 250, 280, 240, 8]],
+    file: 'free-c2-star-navy', label: 'C2. Navy ground',
+    bg: '#0a1930', grain: 0.10,
+    stars: [['foil-106', 0, 25, 960, 0]],
+    word: { text: 'FREE', font: 'Jost', weight: 800, color: '#0a1930', size: 155, y: 75 },
   },
   {
-    file: 'free-b3-hero-star', label: 'B3. One hero foil star',
-    bg: '#dfe4f0', grain: 0.07,
-    word: { text: 'FREE', font: 'Jost', weight: 800, color: '#0a1930', size: 210, y: 140 },
-    stars: [['foil-106', 0, -200, 330, 0], ['foil-97', -330, 230, 150, -12], ['foil-95', 330, 230, 140, 10]],
+    file: 'free-c3-star-cream-tilt', label: 'C3. Cream ground, tilted',
+    bg: '#f7f3ec', grain: 0.07,
+    stars: [['foil-95', 0, 25, 960, -8]],
+    word: { text: 'FREE', font: 'Jost', weight: 800, color: '#0a1930', size: 155, y: 75, rotate: -8 },
   },
 ];
 
@@ -59,14 +59,14 @@ const coverHtml = (c) => `<!doctype html><html><head><meta charset="utf-8">
   body { width: ${W}px; height: ${H}px; background-color: ${c.bg}; background-image: ${GRAIN(c.grain)}; overflow: hidden; }
   .c { position: absolute; left: ${(W - CIRCLE) / 2}px; top: ${(H - CIRCLE) / 2}px; width: ${CIRCLE}px; height: ${CIRCLE}px; }
   .fx { position: absolute; inset: 0; width: 100%; height: 100%; }
-  .word { position: absolute; left: 50%; top: 50%; transform: translate(-50%, calc(-50% + ${c.word.y}px));
+  .word { position: absolute; left: 50%; top: 50%; transform: translate(-50%, calc(-50% + ${c.word.y}px)) rotate(${c.word.rotate || 0}deg);
           font-family: '${c.word.font}', Arial, sans-serif; font-weight: ${c.word.weight}; font-size: ${c.word.size}px;
           color: ${c.word.color}; line-height: 1; letter-spacing: ${c.word.font === 'Jost' ? '-.01em' : '0'}; white-space: nowrap; }
   .star { position: absolute; filter: drop-shadow(0 6px 8px rgba(10,25,48,.22)); }
 </style></head><body><div class="c">
   ${c.sparkle ? sparkle(c.sparkle) : ''}${c.loop ? LOOP : ''}${c.swoosh ? SWOOSH : ''}
-  <div class="word">${esc(c.word.text)}</div>
   ${c.stars.map(([f, x, y, s, r]) => `<img class="star" src="${STAR(f)}" style="width:${s}px;left:${CIRCLE / 2 + x - s / 2}px;top:${CIRCLE / 2 + y - s / 2}px;transform:rotate(${r}deg)">`).join('\n  ')}
+  <div class="word">${esc(c.word.text)}</div>
 </div></body></html>`;
 
 // Each cover as Instagram shows it: a circle, big for judging and at real profile size (77px) on light and dark.
