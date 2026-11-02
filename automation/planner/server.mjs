@@ -10,9 +10,9 @@
 // Writes: data/pin-status.json (her "Seen it live" / "Missing" clicks) and data/ideas.json (her idea edits).
 import http from 'node:http';
 import { readFileSync, writeFileSync, renameSync, readdirSync, existsSync, mkdirSync } from 'node:fs';
-import { join, dirname, extname } from 'node:path';
+import { join, dirname, extname, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { liveFetch } from './lib/buffer.mjs';
+import { liveFetch, HANDLES } from './lib/buffer.mjs';
 import { plan as queuePlan, run as queueRun } from './lib/queue.mjs';
 import { cleanIdea, PLATFORMS, STAGES, PIN_STAGES, FORMATS } from './lib/ideas.mjs';
 
@@ -44,7 +44,11 @@ function writeJson(f, v) {
   renameSync(`${f}.tmp`, f);
 }
 
-const CAROUSEL_EXPORTS = readJson(join(here, '..', 'carousels', 'config', 'media.json'), {}).exportsDir || '';
+const MEDIA_CFG = readJson(join(here, '..', 'carousels', 'config', 'media.json'), {});
+const CAROUSEL_EXPORTS = MEDIA_CFG.exportsDir || '';
+// The OneDrive "Scrolly Media" folder (parent of photosDir). Cards link their finished files inside it.
+const MEDIA_ROOT = MEDIA_CFG.photosDir ? resolve(MEDIA_CFG.photosDir, '..') : '';
+const LOGO = join(here, '..', '..', 'Scrolly Organic Engine', 'brand', 'assets', 'ambition-department-logo-navy.png');
 
 // ---- Pins ----
 const STATUS_FILE = join(DATA, 'pin-status.json');
@@ -111,11 +115,24 @@ function deleteIdea(id) {
 const keywords = () => readJson(join(here, '..', 'carousels', 'config', 'destinations.json'), {}).commentKeywords
   ?.map((k) => ({ keyword: k.keyword, live: Boolean(k.live && k.dmApproved), freebie: k.freebie })) || [];
 
+// Reel ids that have a cover in the Reel exports folder (exports/reels/<id>/cover.png), for the feed preview
+const reelCovers = () => {
+  try {
+    return readdirSync(MEDIA_CFG.reelExportsDir).filter((d) => existsSync(join(MEDIA_CFG.reelExportsDir, d, 'cover.png')));
+  } catch {
+    return [];
+  }
+};
+
 // ---- Buffer ----
 let cache = null; // live results, kept 60s so reloading the page doesn't spend the rate limit
 async function buffer(force) {
   const key = envKey('BUFFER_API_KEY');
-  const snapshot = () => ({ ...readJson(join(DATA, 'buffer-snapshot.json'), { takenAt: null, posts: [] }), live: false });
+  const snapshot = () => {
+    const s = readJson(join(DATA, 'buffer-snapshot.json'), { takenAt: null, posts: [] });
+    const channels = (s.channels || []).map((c) => ({ ...c, ...HANDLES[c.name] }));
+    return { ...s, channels, live: false };
+  };
   if (!key) return { ...snapshot(), note: 'No BUFFER_API_KEY yet, showing the last saved copy.' };
   if (!force && cache && Date.now() - cache.at < 60e3) return cache.data;
   try {
@@ -128,7 +145,7 @@ async function buffer(force) {
 }
 
 // ---- http ----
-const TYPES = { '.html': 'text/html; charset=utf-8', '.png': 'image/png', '.json': 'application/json' };
+const TYPES = { '.html': 'text/html; charset=utf-8', '.png': 'image/png', '.json': 'application/json', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.webp': 'image/webp' };
 function send(res, code, body, type = 'application/json') {
   res.writeHead(code, { 'content-type': type, 'cache-control': 'no-store' });
   res.end(typeof body === 'string' || Buffer.isBuffer(body) ? body : JSON.stringify(body));
@@ -157,7 +174,7 @@ http
       if (req.method === 'GET' && url.pathname === '/api/data') {
         return send(res, 200, {
           now: new Date().toISOString(),
-          options: { platforms: PLATFORMS, stages: STAGES, pinStages: PIN_STAGES, formats: FORMATS, keywords: keywords() },
+          options: { platforms: PLATFORMS, stages: STAGES, pinStages: PIN_STAGES, formats: FORMATS, keywords: keywords(), reelCovers: reelCovers() },
           ideas: ideas(),
           pins: pins(),
           buffer: await buffer(url.searchParams.has('refresh')),
@@ -221,6 +238,14 @@ http
         const f = join(CAROUSEL_EXPORTS, slide[1], slide[2]);
         if (existsSync(f)) return send(res, 200, readFileSync(f), TYPES['.png']);
       }
+      // Finished images in OneDrive Scrolly Media (quote posts, Reel covers), for the feed preview. Images only, inside that folder.
+      if (req.method === 'GET' && url.pathname.startsWith('/media/') && MEDIA_ROOT) {
+        const f = resolve(MEDIA_ROOT, decodeURIComponent(url.pathname.slice(7)));
+        if (f.startsWith(MEDIA_ROOT + sep) && TYPES[extname(f).toLowerCase()]?.startsWith('image/') && existsSync(f)) {
+          return send(res, 200, readFileSync(f), TYPES[extname(f).toLowerCase()]);
+        }
+      }
+      if (req.method === 'GET' && url.pathname === '/logo.png' && existsSync(LOGO)) return send(res, 200, readFileSync(LOGO), TYPES['.png']);
       // Preview pages Claude writes before queueing (previews/<name>.html), shown to her for approval
       const prev = url.pathname.match(/^\/previews\/([\w-]+\.html)$/);
       if (req.method === 'GET' && prev && existsSync(join(here, 'previews', prev[1]))) {

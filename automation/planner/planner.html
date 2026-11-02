@@ -65,28 +65,53 @@
   th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--line); vertical-align: top; font-size: 15px; }
   th { color: var(--muted); font-weight: 600; }
   tr:last-child td { border-bottom: 0; }
-  .posts { display: grid; gap: 10px; }
-  .post { display: grid; grid-template-columns: 72px 1fr; gap: 12px; background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 10px; }
-  .post img { width: 72px; height: 96px; object-fit: cover; border-radius: 6px; background: var(--mist); }
-  .post .cap { font-size: 15px; white-space: pre-wrap; max-height: 4.5em; overflow: hidden; }
-  .post.open .cap { max-height: none; }
-  .post .more { background: none; border: 0; color: var(--sky); font: inherit; font-size: 15px; padding: 0; cursor: pointer; }
   .empty { color: var(--muted); }
-  .channels { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; margin-top: 14px; align-items: start; }
-  .channel { background: var(--mist); border-radius: 14px; padding: 14px; scroll-margin-top: 64px; }
-  .channel h3 { margin: 0; font: 600 21px/1.2 Georgia, serif; }
-  .channel .handle { color: var(--muted); font-size: 15px; }
-  .channel h4 { margin: 16px 0 8px; font-size: 15px; }
-  .counts { display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0 0; }
-  .counts span { background: var(--card); border-radius: 999px; padding: 2px 10px; font-size: 15px; }
-  .counts b { font-weight: 700; }
-  .channel .post { grid-template-columns: 56px 1fr; }
-  .channel .post img { width: 56px; height: 75px; }
-  .channel details { margin-top: 14px; font-size: 15px; }
-  .channel summary { cursor: pointer; font-weight: 600; }
+  .m { color: var(--muted); font-size: 15px; }
+  /* Feed preview: one phone per app */
+  .apps { display: flex; flex-wrap: wrap; gap: 8px; margin: 14px 0 6px; }
+  .feedwrap { display: grid; grid-template-columns: minmax(0, 400px) minmax(0, 1fr); gap: 24px; align-items: start; margin-top: 12px; }
+  @media (max-width: 860px) { .feedwrap { grid-template-columns: minmax(0, 1fr); } }
+  .phone { background: var(--card); border: 1px solid var(--line); border-radius: 28px; padding: 18px 0 10px; overflow: hidden; width: 100%; max-width: 400px; justify-self: center; }
+  .prof { padding: 0 16px 12px; display: grid; gap: 6px; }
+  .prof .top { display: flex; align-items: center; gap: 18px; }
+  .prof.center { text-align: center; } .prof.center .top { flex-direction: column; gap: 8px; }
+  .avatar { width: 76px; height: 76px; border-radius: 50%; border: 1px solid var(--line); background: #f7f3ec url(/logo.png) center / 88% no-repeat; flex: none; }
+  .prof .h { font-weight: 700; }
+  .nums { display: flex; gap: 18px; font-size: 15px; } .prof.center .nums { justify-content: center; }
+  .nums b { display: block; font-size: 17px; }
+  .tabbar { border-top: 1px solid var(--line); padding: 8px 16px; font-size: 15px; color: var(--muted); display: flex; justify-content: space-between; }
+  .grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 2px; }
+  .tile { position: relative; display: block; width: 100%; aspect-ratio: 3 / 4; background: var(--mist); border: 0; padding: 0; cursor: pointer; overflow: hidden; font: inherit; color: var(--ink); }
+  .grid.tall .tile { aspect-ratio: 9 / 16; }
+  .tile img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .tile .txt { position: absolute; inset: 0; padding: 32px 8px 8px; font-size: 15px; line-height: 1.25; text-align: left; overflow: hidden; }
+  .tile .badge { position: absolute; left: 4px; top: 4px; max-width: calc(100% - 8px); border-radius: 6px; padding: 0 6px; font-size: 15px; font-weight: 600; line-height: 1.5; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .tile .kind { position: absolute; right: 6px; bottom: 4px; color: #fff; font-size: 15px; text-shadow: 0 0 3px #000a; }
+  .st-ready .badge { background: var(--sky); color: #0a1930; }
+  .st-draft .badge { background: #fff; color: #0a1930; border: 1px dashed #0a1930; }
+  .st-queued .badge { background: #0a1930; color: #f7f3ec; }
+  .st-error .badge { background: var(--warn); color: #fff; }
+  .tile.st-ready, .tile.st-draft { outline: 3px dashed var(--sky); outline-offset: -3px; }
+  .tile:focus-visible { outline: 3px solid var(--pink); outline-offset: -3px; }
+  .yt { display: grid; gap: 14px; padding: 0 12px; }
+  .yt .tile { aspect-ratio: 16 / 9; border-radius: 10px; }
+  .yt .ttl { font-weight: 600; font-size: 15px; margin-top: 6px; }
+  .side { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; min-width: 0; }
+  .side h3 { margin: 0 0 6px; font-size: 17px; }
+  .legend { display: grid; gap: 6px; font-size: 15px; }
+  .legend span { display: inline-block; border-radius: 6px; padding: 0 8px; font-weight: 600; margin-right: 6px; }
+  .next { display: grid; gap: 6px; font-size: 15px; margin: 0; padding: 0; list-style: none; }
+  .next button { width: 100%; text-align: left; font: inherit; color: var(--ink); background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 8px 10px; cursor: pointer; }
+  .next button:hover { border-color: var(--sky); }
+  .next b, .next span { display: block; pointer-events: none; }
+  .next span { color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .side details { font-size: 15px; }
+  .side summary { cursor: pointer; font-weight: 600; }
   .times { display: grid; grid-template-columns: 44px 1fr; gap: 2px 8px; margin-top: 8px; color: var(--muted); }
   .times b { color: var(--ink); font-weight: 600; }
-  @media (max-width: 900px) { .channels { grid-template-columns: 1fr; } }
+  #postDlg { width: min(94vw, 560px); max-width: none; max-height: 92vh; }
+  #postBody { padding: 18px; display: grid; gap: 10px; }
+  #postBody img { border-radius: 10px; max-height: 56vh; width: auto; max-width: 100%; margin: 0 auto; }
   .head { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
   .primary { background: var(--ink); color: var(--bg); border: 0; border-radius: 999px; padding: 8px 18px; font: inherit; font-size: 15px; font-weight: 600; cursor: pointer; }
   .ghost { background: none; border: 1px solid var(--line); color: var(--ink); border-radius: 999px; padding: 8px 18px; font: inherit; font-size: 15px; cursor: pointer; }
@@ -186,11 +211,15 @@
     <div id="pinDays"></div>
   </section>
 
-  <section id="buffer">
-    <h2>Buffer</h2>
-    <p class="sub" id="bufSource"></p>
-    <div class="note" id="bufLimit"></div>
-    <div class="channels" id="bufChannels"></div>
+  <section id="buffer" style="scroll-margin-top:56px">
+    <h2>Feed preview</h2>
+    <p class="sub">How each profile will look. Top left posts last: <b>Ready</b> posts (not in Buffer yet) sit on top, then what Buffer will post, then what's already up. Tap a post to see its caption.</p>
+    <div class="apps" id="feedApps"></div>
+    <div class="row" id="feedFilter" style="margin:6px 0 0"></div>
+    <div class="feedwrap">
+      <div class="phone" id="phone"></div>
+      <aside class="side" id="feedSide"></aside>
+    </div>
   </section>
 
   <section id="pages">
@@ -201,6 +230,7 @@
 </main>
 <dialog id="zoom"><img alt=""></dialog>
 <dialog id="editor"><form method="dialog" id="ideaForm"></form></dialog>
+<dialog id="postDlg"><div id="postBody"></div></dialog>
 <dialog id="queueDlg"><div id="queueBody" style="padding:20px;display:grid;gap:12px"></div></dialog>
 
 <script>
@@ -254,22 +284,6 @@ function renderPins() {
     </div>`).join('')}</div></div>`).join('') : '<p class="empty">No Pins here.</p>';
 }
 
-function postCard(p) {
-  const when = p.status === 'sent' ? `Posted ${fmtWhen(p.sentAt || p.dueAt)}`
-    : p.dueAt ? `${p.status === 'error' ? 'Was due' : 'Posts'} ${fmtWhen(p.dueAt)}` : `Saved ${fmtWhen(p.createdAt)}`;
-  const kind = p.kind === 'carousel' ? `Carousel, ${p.count} slides` : p.kind === 'video' ? 'Video' : p.kind === 'image' ? 'Single image' : 'Text only';
-  const long = p.text.length > 220;
-  return `<div class="post">
-    ${p.thumb ? `<img src="${esc(p.thumb)}" alt="" loading="lazy">` : '<div></div>'}
-    <div>
-      <div class="row" style="margin:0 0 4px"><span class="pill ${esc(p.status)}">${esc(p.channel)}</span><span class="m">${esc(kind)} · ${esc(when)} · ${p.text.length.toLocaleString()} characters</span></div>
-      <div class="cap">${esc(p.text) || '<span class="empty">No caption</span>'}</div>
-      ${long ? '<button class="more" type="button">Show the whole caption</button>' : ''}
-      ${p.error ? `<div class="err">${esc(p.error)}</div>` : ''}
-    </div>
-  </div>`;
-}
-
 const FREE_PLAN_LIMIT = 10; // Buffer Free: 10 scheduled posts across all channels
 const DAYS = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
 const fmtClock = (hm) => {
@@ -277,39 +291,144 @@ const fmtClock = (hm) => {
   return `${h % 12 || 12}:${String(m).padStart(2, '0')}${h < 12 ? 'am' : 'pm'}`;
 };
 
+// ---- Feed preview: each app's profile as it will look, Ready posts on top ----
+const APPS = [{ name: 'Instagram', key: 'instagram' }, { name: 'TikTok', key: 'tiktok' }, { name: 'YouTube', key: 'youtube' }];
+const FEED_ST = {
+  ready: ['Ready', 'Done in the planner, not in Buffer yet'],
+  draft: ['Buffer draft', 'Saved in Buffer, not queued yet'],
+  queued: ['In Buffer', 'Buffer posts it at this time'],
+  error: ["Didn't post", 'Buffer tried and it failed'],
+  sent: ['Posted', 'Already on the profile'],
+};
+let feedApp = 'Instagram';
+let feedHide = [];
+try { feedApp = localStorage.getItem('planner.feedApp') || feedApp; feedHide = JSON.parse(localStorage.getItem('planner.feedHide') || '[]'); } catch {}
+let feedAll = [];
+const isVideo = (u) => /\.(mp4|mov)(\?|$)/i.test(u || '');
+const fmtSlot = (iso) => new Date(iso).toLocaleString('en-US', { ...ET, weekday: 'short', hour: 'numeric', minute: '2-digit' })
+  .replace(':00', '').replace(' AM', 'am').replace(' PM', 'pm').replace(',', '');
+
+// A planner card's picture: carousel slide 1, the posted file, its finished image in OneDrive, or the Reel cover
+function cardImage(i) {
+  if (i.carouselId) return `/carousel-img/${encodeURIComponent(i.carouselId)}/slide-01.png`;
+  if (i.mediaUrl && !isVideo(i.mediaUrl)) return i.mediaUrl;
+  const m = (i.link || '').match(/Scrolly Media\/(.+?\.(png|jpe?g|webp))/i);
+  if (m) return `/media/${m[1].split('/').map(encodeURIComponent).join('/')}`;
+  const reel = (i.reelFolder || i.link || '').replace(/[\\/]+$/, '').split(/[\\/]/).pop();
+  if (reel && (state.options.reelCovers || []).includes(reel)) return `/media/exports/reels/${encodeURIComponent(reel)}/cover.png`;
+  return null;
+}
+const cardKind = (i) => (i.format === 'Carousel' ? 'carousel' : ['Reel', 'Short', 'YouTube long-form'].includes(i.format) ? 'video' : 'image');
+
+function feedItems(app) {
+  const posts = state.buffer.posts.filter((p) => p.channel === app.name);
+  const items = [];
+  for (const i of state.ideas) {
+    const l = i.lanes[app.key];
+    if (i.archived || !l || l.stage !== 'Ready' || i.format === 'Story') continue; // Stories aren't on the grid
+    const bp = l.bufferId && posts.find((p) => p.id === l.bufferId);
+    if (bp && bp.status !== 'draft') continue; // Buffer's copy shows instead
+    items.push({ st: bp ? 'draft' : 'ready', card: i, post: bp || null, img: cardImage(i) || bp?.thumb, kind: cardKind(i),
+      text: l.caption || '', title: l.title || i.title, rank: 0, t: -(Number(i.order) || 1e9) });
+  }
+  for (const p of posts) {
+    if (items.some((x) => x.post?.id === p.id)) continue;
+    const st = ['scheduled', 'sending', 'needs_approval'].includes(p.status) ? 'queued' : ['sent', 'error'].includes(p.status) ? p.status : 'draft';
+    const card = state.ideas.find((i) => i.lanes[app.key]?.bufferId === p.id);
+    items.push({ st, card, post: p, img: (p.kind === 'video' && card && cardImage(card)) || p.thumb || (card && cardImage(card)),
+      kind: p.kind === 'text' ? 'image' : p.kind, text: p.text, title: card ? card.lanes[app.key]?.title || card.title : p.text.split('\n')[0],
+      rank: { draft: 1, queued: 2, error: 3, sent: 4 }[st], t: Date.parse(p.sentAt || p.dueAt || p.createdAt) || 0 });
+  }
+  return items.sort((x, y) => x.rank - y.rank || y.t - x.t);
+}
+
+function tile(it, missing = it.title) {
+  const badge = it.st === 'queued' ? fmtSlot(it.post.dueAt) : it.st === 'sent' ? '' : FEED_ST[it.st][0];
+  const icon = it.kind === 'carousel' ? '❐' : it.kind === 'video' ? '▶' : '';
+  return `<button class="tile st-${it.st}" type="button" data-feed="${feedAll.indexOf(it)}" aria-label="${esc(`${FEED_ST[it.st][0]}: ${it.title}`)}">
+    ${it.img ? `<img src="${esc(it.img)}" alt="" loading="lazy">` : `<span class="txt">${esc(missing)}</span>`}
+    ${badge ? `<span class="badge">${esc(badge)}</span>` : ''}${icon ? `<span class="kind" aria-hidden="true">${icon}</span>` : ''}
+  </button>`;
+}
+
 function renderBuffer() {
   const b = state.buffer;
-  const channels = b.channels?.length ? b.channels
-    : ['Instagram', 'TikTok', 'YouTube'].map((name) => ({ name, schedule: [] }));
-  const scheduled = b.posts.filter((p) => ['scheduled', 'sending', 'needs_approval'].includes(p.status)).length;
-  $('bufSource').innerHTML = b.live
-    ? `Live from Buffer, ${esc(fmtWhen(b.takenAt))}.`
-    : `Saved copy from ${b.takenAt ? esc(fmtWhen(b.takenAt)) : 'never'}. ${esc(b.note || '')} Ask Claude to "refresh my planner" for a new one.`;
-  $('bufLimit').innerHTML = `<b>${scheduled} of ${FREE_PLAN_LIMIT}</b> scheduled posts used. Buffer's free plan holds ${FREE_PLAN_LIMIT} across all three channels together.`;
-  const list = (posts, empty) => (posts.length ? `<div class="posts">${posts.map(postCard).join('')}</div>` : `<p class="empty">${empty}</p>`);
-  $('bufChannels').innerHTML = channels.map((c) => {
-    const mine = b.posts.filter((p) => p.channel === c.name);
-    const by = (s) => mine.filter((p) => s.includes(p.status));
-    const queue = by(['scheduled', 'sending', 'needs_approval']).sort((x, y) => (x.dueAt || '').localeCompare(y.dueAt || ''));
-    const drafts = by(['draft']);
-    const errors = by(['error']);
-    const sent = by(['sent']).sort((x, y) => (y.sentAt || y.dueAt || '').localeCompare(x.sentAt || x.dueAt || ''));
-    const slots = c.schedule.reduce((n, d) => n + d.times.length, 0);
-    const days = DAYS.map((d) => c.schedule.find((s) => s.day === d)).filter(Boolean);
-    return `<div class="channel" id="ch-${esc(c.name)}">
-      <h3>${esc(c.name)}</h3>
-      <div class="handle">${c.link ? `<a href="${esc(c.link)}" target="_blank" rel="noopener">${esc(c.handle)}</a>` : ''}${c.paused ? ' · <span class="err">Queue paused</span>' : ''}</div>
-      <div class="counts"><span><b>${queue.length}</b> queued</span><span><b>${drafts.length}</b> drafts</span>${errors.length ? `<span><b>${errors.length}</b> failed</span>` : ''}<span><b>${sent.length}</b> posted</span></div>
-      <h4>In the queue (posts in this order)</h4>${list(queue, 'Empty. Nothing will post here until you queue something.')}
-      <h4>Drafts, ready to queue next</h4>${list(drafts, 'No drafts.')}
-      ${errors.length ? `<h4>Didn't post</h4>${list(errors, '')}` : ''}
-      ${days.length ? `<details><summary>Posting times: ${slots} a week</summary>
-        <div class="times">${days.map((d) => `<b>${d.day[0].toUpperCase() + d.day.slice(1)}</b><span>${d.times.map(fmtClock).join(', ') || 'off'}</span>`).join('')}</div>
-        <p class="m">Buffer's times, in ${esc((c.timezone || '').replace('America/', '').replace('_', ' '))} time. A queued post takes the next free time.</p></details>` : ''}
-      <details><summary>Posted (${sent.length})</summary>${list(sent, 'Nothing posted from Buffer yet.')}</details>
-    </div>`;
+  const app = APPS.find((a) => a.name === feedApp) || APPS[0];
+  const c = b.channels?.find((x) => x.name === app.name) || { name: app.name, schedule: [] };
+  feedAll = feedItems(app);
+  const n = (st) => feedAll.filter((x) => x.st === st).length;
+  const shown = feedAll.filter((x) => !feedHide.includes(x.st));
+
+  $('feedApps').innerHTML = APPS.map((a) => {
+    const coming = feedItems(a).filter((x) => ['ready', 'queued'].includes(x.st)).length;
+    return `<button class="chip" type="button" data-app="${a.name}" aria-pressed="${a.name === app.name}">${a.name} · ${coming} coming up</button>`;
   }).join('');
+  $('feedFilter').innerHTML = Object.keys(FEED_ST).filter((st) => n(st))
+    .map((st) => `<button class="chip" type="button" data-fst="${st}" aria-pressed="${!feedHide.includes(st)}">${feedHide.includes(st) ? 'Show' : 'Showing'}: ${FEED_ST[st][0]} (${n(st)})</button>`).join('');
+
+  const handle = c.handle ? `@${esc(c.handle)}` : '';
+  const link = c.link ? `<a href="${esc(c.link)}" target="_blank" rel="noopener" class="m">Open the real profile</a>` : '';
+  const nums = `<div class="nums"><span><b>${n('ready')}</b>ready</span><span><b>${n('queued')}</b>in Buffer</span><span><b>${n('sent')}</b>posted</span></div>`;
+  const empty = '<p class="empty" style="padding:0 16px">Nothing to show with these filters.</p>';
+  if (app.name === 'YouTube') {
+    $('phone').innerHTML = `<div class="prof"><div class="top"><div class="avatar"></div><div><b>The Ambition Department</b><div class="m">${handle}</div>${link}</div></div></div>
+      <div class="tabbar"><span>Videos</span><span>${shown.length} shown</span></div>
+      <div class="yt">${shown.map((it) => `<div>${tile(it, 'No thumbnail yet')}<div class="ttl">${esc(it.title)}</div><div class="m">${esc(FEED_ST[it.st][0])}${it.st === 'queued' ? `, ${esc(fmtWhen(it.post.dueAt))}` : ''}</div></div>`).join('') || empty}</div>`;
+  } else {
+    const tt = app.name === 'TikTok';
+    $('phone').innerHTML = `<div class="prof${tt ? ' center' : ''}"><div class="top"><div class="avatar"></div>${tt ? `<div class="h">${handle}</div>` : ''}${nums}</div>
+        ${tt ? '' : `<div><div class="h">${handle}</div><div>The Ambition Department</div></div>`}${link}</div>
+      <div class="tabbar"><span>Posts</span><span>${shown.length} shown</span></div>
+      ${shown.length ? `<div class="grid${tt ? ' tall' : ''}">${shown.map((it) => tile(it)).join('')}</div>` : empty}`;
+  }
+
+  const scheduled = b.posts.filter((p) => ['scheduled', 'sending', 'needs_approval'].includes(p.status)).length;
+  const row = (it, top) => `<li><button type="button" data-feed="${feedAll.indexOf(it)}"><b>${esc(top)}</b><span>${esc(it.title)}</span></button></li>`;
+  const queue = feedAll.filter((x) => x.st === 'queued').reverse();
+  const errors = feedAll.filter((x) => x.st === 'error');
+  const slots = c.schedule.reduce((k, d) => k + d.times.length, 0);
+  const days = DAYS.map((d) => c.schedule.find((s) => s.day === d)).filter(Boolean);
+  $('feedSide').innerHTML = `
+    <div class="note" style="margin:0"><b>${scheduled} of ${FREE_PLAN_LIMIT}</b> Buffer posts used. The free plan holds ${FREE_PLAN_LIMIT} across all three apps together.
+      <div class="m">${b.live ? `Live from Buffer, ${esc(fmtWhen(b.takenAt))}.` : `Saved copy from ${b.takenAt ? esc(fmtWhen(b.takenAt)) : 'never'}. ${esc(b.note || '')} Ask Claude to "refresh my planner".`}${c.paused ? ' <span class="err">This queue is paused in Buffer.</span>' : ''}</div></div>
+    <div><h3>What the labels mean</h3><div class="legend">
+      <div><span style="background:var(--sky);color:#0a1930">Ready</span>Done in the planner, not in Buffer yet. Tap it to queue it.</div>
+      <div><span style="background:#0a1930;color:#f7f3ec">Tue 7:23pm</span>In Buffer, posts then (US Eastern).</div>
+      <div><span style="border:1px solid var(--line)">No label</span>Already posted.</div>
+    </div></div>
+    <div><h3>Next from Buffer</h3>${queue.length ? `<ol class="next">${queue.map((it) => row(it, fmtWhen(it.post.dueAt))).join('')}</ol>` : `<p class="empty" style="margin:0">Nothing queued for ${esc(app.name)}.</p>`}</div>
+    ${errors.length ? `<div><h3 class="err">Didn't post</h3><ol class="next">${errors.map((it) => row(it, it.post.error || 'Failed')).join('')}</ol></div>` : ''}
+    ${days.length ? `<details><summary>Buffer's posting times: ${slots} a week</summary>
+      <div class="times">${days.map((d) => `<b>${d.day[0].toUpperCase() + d.day.slice(1)}</b><span>${d.times.map(fmtClock).join(', ') || 'off'}</span>`).join('')}</div>
+      <p class="m">In ${esc((c.timezone || '').replace('America/', '').replace('_', ' '))} time. A queued post takes the next free time.</p></details>` : ''}
+    <p class="m" style="margin:0">Posted shows Buffer's last 30 posts across all apps.</p>`;
 }
+
+function openPost(it) {
+  const app = APPS.find((a) => a.name === feedApp) || APPS[0];
+  const when = it.st === 'sent' ? `Posted ${fmtWhen(it.post.sentAt || it.post.dueAt)}` : it.st === 'queued' ? `Buffer posts it ${fmtWhen(it.post.dueAt)}` : FEED_ST[it.st][1];
+  const kind = it.kind === 'carousel' ? `Carousel${it.post?.count ? `, ${it.post.count} slides` : ''}` : it.kind === 'video' ? 'Video' : 'Single image';
+  const canQueue = it.st === 'ready' && it.card && QUEUEABLE.includes(app.key);
+  $('postBody').innerHTML = `
+    ${it.img ? `<img src="${esc(it.img)}" alt="">` : ''}
+    <div class="row" style="margin:0"><span class="pill ${it.st === 'sent' ? 'sent' : it.st === 'error' ? 'error' : 'scheduled'}">${esc(FEED_ST[it.st][0])}</span><span class="m">${esc(kind)} · ${esc(when)}</span></div>
+    <b>${esc(it.title)}</b>
+    <div class="qcap">${esc(it.text) || '<span class="empty">No caption yet</span>'}</div>
+    ${it.post?.error ? `<p class="err" style="margin:0">${esc(it.post.error)}</p>` : ''}
+    <div class="actions"><span>${it.card ? `<button class="ghost" type="button" data-open-card="${esc(it.card.id)}">Open the card</button>` : ''}</span>
+      <span style="display:flex;gap:8px"><button class="ghost" type="button" data-pclose>Close</button>${canQueue ? `<button class="primary" type="button" data-queue="${app.key}" data-card="${esc(it.card.id)}">Queue it</button>` : ''}</span></div>`;
+  $('postDlg').showModal();
+}
+
+// The top nav's Instagram / TikTok / YouTube links (#ch-Instagram) open that app's feed
+function feedFromHash() {
+  const m = location.hash.match(/^#ch-(\w+)$/);
+  if (!m || !APPS.some((a) => a.name === m[1])) return;
+  feedApp = m[1];
+  if (state) renderBuffer();
+  $('buffer').scrollIntoView();
+}
+window.addEventListener('hashchange', feedFromHash);
 
 function renderPages() {
   const now = new Date(state.now);
@@ -621,6 +740,10 @@ async function load(refresh) {
     renderPins();
     renderBuffer();
     renderPages();
+    if (!refresh && !load.done) {
+      load.done = true;
+      feedFromHash(); // the page re-renders after load, so jump to #ch-Instagram once the feed exists
+    }
   } catch (e) {
     $('sub').innerHTML = `<span class="err">Couldn't load the planner data: ${esc(e.message)}. Is the server running?</span>`;
   }
@@ -629,8 +752,31 @@ async function load(refresh) {
 document.addEventListener('click', async (e) => {
   const t = e.target;
   const edit = t.closest('[data-edit]');
-  if (t.dataset.queue) {
+  const appLink = t.closest('a[href^="#ch-"]');
+  if (appLink) {
+    e.preventDefault(); // same hash twice fires no hashchange
+    history.replaceState(null, '', appLink.getAttribute('href'));
+    feedFromHash();
+  } else if (t.dataset.queue) {
+    if ($('postDlg').open) $('postDlg').close();
     openQueue(t.dataset.card || $('ideaForm').dataset.id, t.dataset.queue);
+  } else if (t.closest('[data-feed]')) {
+    openPost(feedAll[t.closest('[data-feed]').dataset.feed]);
+  } else if (t.dataset.app) {
+    feedApp = t.dataset.app;
+    try { localStorage.setItem('planner.feedApp', feedApp); } catch {}
+    history.replaceState(null, '', `#ch-${feedApp}`);
+    renderBuffer();
+  } else if (t.dataset.fst) {
+    const st = t.dataset.fst;
+    feedHide = feedHide.includes(st) ? feedHide.filter((x) => x !== st) : [...feedHide, st];
+    try { localStorage.setItem('planner.feedHide', JSON.stringify(feedHide)); } catch {}
+    renderBuffer();
+  } else if (t.dataset.openCard) {
+    $('postDlg').close();
+    openEditor(t.dataset.openCard);
+  } else if (t.hasAttribute('data-pclose') || t.id === 'postDlg') {
+    $('postDlg').close();
   } else if (t.dataset.qconfirm) {
     confirmQueue(t);
   } else if (t.hasAttribute('data-qclose') || t.id === 'queueDlg') {
@@ -670,10 +816,6 @@ document.addEventListener('click', async (e) => {
     t.disabled = true;
     await fetch('/api/pin-mark', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ id: t.dataset.id, mark: t.dataset.mark || null }) });
     load();
-  } else if (t.classList.contains('more')) {
-    const card = t.closest('.post');
-    card.classList.toggle('open');
-    t.textContent = card.classList.contains('open') ? 'Show less' : 'Show the whole caption';
   } else if (t.hasAttribute('data-zoom')) {
     $('zoom').querySelector('img').src = t.src;
     $('zoom').showModal();

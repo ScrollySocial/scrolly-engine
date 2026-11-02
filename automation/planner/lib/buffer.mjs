@@ -25,13 +25,22 @@ export function normalizePost(n) {
   };
 }
 
+// Her handles since the rename (vault brand/rename-ambition-department.md). Buffer keeps the name from when each account
+// was connected (still "scrollysocial" on 2026-11-02), so the planner shows these instead.
+export const HANDLES = {
+  Instagram: { handle: 'ambitiondepthq', link: 'https://instagram.com/ambitiondepthq' },
+  TikTok: { handle: 'ambitiondepthq', link: 'https://tiktok.com/@ambitiondepthq' },
+  YouTube: { handle: 'ambitiondepthq', link: 'https://www.youtube.com/@ambitiondepthq' },
+};
+
 // A channel and its Buffer posting times (wall-clock times in the channel's own timezone).
 export function normalizeChannel(c) {
+  const name = CHANNELS[c.id] || c.service;
   return {
     id: c.id,
-    name: CHANNELS[c.id] || c.service,
-    handle: c.name,
-    link: c.externalLink || null,
+    name,
+    handle: HANDLES[name]?.handle || c.name,
+    link: HANDLES[name]?.link || c.externalLink || null,
     timezone: c.timezone,
     paused: Boolean(c.isQueuePaused),
     schedule: (c.postingSchedule || []).map((d) => ({ day: d.day, times: d.paused ? [] : d.times })),

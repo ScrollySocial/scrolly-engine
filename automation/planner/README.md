@@ -17,6 +17,14 @@ Run from the project folder, then open http://localhost:4330:
   (Instagram, TikTok, YouTube, Pinterest). Claude may edit `ideas.json` directly; the page re-reads it on load.
 - `data/pin-status.json`: her "Seen it live" / "Missing" clicks. `data/buffer-snapshot.json`: last saved Buffer copy.
 
+## Feed preview (built 2026-11-02)
+The Buffer section is now a phone-style profile per app (Instagram, TikTok, YouTube; the nav links `#ch-Instagram` etc.
+open it). Top left = posts last: Ready cards not in Buffer yet (blue dashed), Buffer drafts, Buffer's queue (navy time
+label), failed, then posted. Tap a post for its caption, "Open the card" and, when Ready, Queue it. Pictures come from the
+card (carousel slide 1, `mediaUrl`, the finished image linked in OneDrive Scrolly Media via `/media/...`, or the Reel
+cover in exports/reels) or Buffer's thumbnail. Handles are set in `lib/buffer.mjs` `HANDLES` (@ambitiondepthq), because
+Buffer still reports the old "scrollysocial" names.
+
 ## Queue it (built 2026-10-28)
 A Ready Instagram or TikTok lane gets a **Queue it** button (card editor and the platform board).
 1. `POST /api/queue-plan` shows the preview: slides (carousel export) or the card's `mediaUrl`, the lane's caption, alt
