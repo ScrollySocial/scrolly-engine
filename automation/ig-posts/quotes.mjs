@@ -21,11 +21,11 @@ export const QUOTES = [
   { n: 1, text: 'The only man who never makes mistakes is the man who never does anything.', by: 'Theodore Roosevelt', tile: 'athlete', art: 712795 },
   { n: 2, text: 'It is not in the stars to hold our destiny but in ourselves.', by: 'Unknown', tile: 'athlete', art: 712808 },
   { n: 3, text: 'If you can’t explain it simply, you don’t understand it well enough.', by: 'Unknown', tile: 'athlete', art: 712799 },
-  { n: 4, text: 'If you look for perfection, you’ll never be content.', by: 'Leo Tolstoy, Anna Karenina', tile: 'sticker', script: 'Molle', fs: 112, bg: 437998, bgPos: '40% center', bgSize: 'auto 106%', top: '27%' },
+  { n: 4, text: 'If you look for perfection, you’ll never be content.', by: 'Leo Tolstoy, Anna Karenina', tile: 'collage', script: 'Molle', fs: 100, patchRy: 260, get pieces() { return PIECES; } },
   { n: 5, text: 'Of course it’s hard. It’s supposed to be hard. If it’s easy, everyone would do it. Hard is what makes it great.', by: 'A League of Their Own', tile: 'athlete', art: 712793 },
   { n: 6, text: 'If you’re making mistakes, it means you’re out there doing something.', by: 'Neil Gaiman', tile: 'athlete', art: 712790 },
   { n: 7, text: 'What a privilege it is to be exhausted by the work you once dreamed of.', by: 'Unknown', tile: 'note', bg: 12162, bgPos: '15% center', bgSize: 'auto 104%', noteTop: 120 },
-  { n: 8, text: 'The greatest legacy is showing others what’s possible.', by: 'Unknown', tile: 'sticker', script: 'Lily Script One', fs: 104 },
+  { n: 8, text: 'The greatest legacy is showing others what’s possible.', by: 'Unknown', tile: 'collage', script: 'Lily Script One', fs: 96, get pieces() { return PIECES; } },
   { n: 9, text: 'To inspire people, don’t show them your superpowers. Show them theirs.', by: 'Alexander den Heijer', tile: 'athlete', art: 712801 },
   { n: 10, text: 'A curious mind constantly uncovers magic.', by: 'Unknown', tile: 'athlete', art: 727249 },
   { n: 11, text: 'Enthusiasm is common. Endurance is rare.', by: 'Angela Duckworth', tile: 'rope' },
@@ -282,7 +282,55 @@ ${star('#fff', { pts: 4, fill: true, seed: 7 }, q.top ? 'left:880px;top:80px;wid
 ${star(C.sky, { pts: 8, seed: 21, sw: 3 }, 'left:130px;top:1120px;width:60px;height:60px')}
 ${tag(q.by, 'left:50%;bottom:90px;transform:translateX(-50%) rotate(2deg)')}`;
 
-const TILES = { starry, wand, constellation, moon, balloon, sail, quiet, tortoise, balloon2, rope, athlete, ribbon, note, sticker };
+// Round 6 (Mercedes 2026-11-02, her Van Gogh / painted-meadow / mountain collage pins): several public-domain paintings
+// cut into soft blobs and layered edge to edge, the quote on its own cut-out patch in the middle, in her picked scripts.
+const blob = (cx, cy, rx, ry, seed, n = 9, wob = .22) => { // smooth closed blob path
+  let r = seed; const rnd = () => ((r = (r * 9301 + 49297) % 233280) / 233280);
+  const pts = Array.from({ length: n }, (_, i) => { const a = i / n * Math.PI * 2, k = 1 + (rnd() - .5) * wob * 2; return [cx + Math.cos(a) * rx * k, cy + Math.sin(a) * ry * k]; });
+  const mid = (a, b) => [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2];
+  let d = `M ${mid(pts[n - 1], pts[0]).map(Math.round).join(' ')}`;
+  pts.forEach((p, i) => { const m = mid(p, pts[(i + 1) % n]); d += ` Q ${p.map(Math.round).join(' ')} ${m.map(Math.round).join(' ')}`; });
+  return d + ' Z';
+};
+const ART = { wheat: [436535, 4000, 3184], olive: [437998, 3811, 3040], orchard: [436527, 2985, 4000], irises: [436528, 4000, 3172] };
+const artUrl = (k) => (k === 'stars' ? fileUrl(path.join(ASSETS, 'ftr-sky.webp')) : MET(ART[k][0]));
+const artSize = (k) => (k === 'stars' ? [1672, 941] : ART[k].slice(1));
+// piece: [art, cx, cy, rx, ry, seed, fx, fy, zoom] — fx/fy = point of the painting (0-1) shown at the blob centre
+const collage = (q) => {
+  const pieces = q.pieces;
+  const defs = pieces.map(([, cx, cy, rx, ry, sd], i) => `<clipPath id="c${i}"><path d="${blob(cx, cy, rx, ry, sd, 13, .3)}"/></clipPath>`).join('');
+  const imgs = pieces.map(([k, cx, cy, rx, ry, , fx = .5, fy = .5, zoom = 1], i) => {
+    const [w0, h0] = artSize(k); const w = Math.max(rx, ry) * 2.6 * zoom * (w0 > h0 ? w0 / h0 : 1); const h = w * h0 / w0;
+    return `<g clip-path="url(#c${i})" filter="url(#sh)"><image href="${artUrl(k)}" x="${Math.round(cx - w * fx)}" y="${Math.round(cy - h * fy)}" width="${Math.round(w)}" height="${Math.round(h)}"/></g>`;
+  }).join('');
+  const py = q.patchY || 720, pry = q.patchRy || 300;
+  const patch = blob(540, py, 460, pry, q.n * 13 + 5, 14, .14);
+  const script = q.script || 'Lily Script One';
+  return `<style>${BASE}${SCENE}
+  body { background: #c9b98f; }
+  .st { position: absolute; left: 130px; right: 130px; top: ${py}px; transform: translateY(-50%) rotate(-3deg); text-align: center; text-wrap: balance;
+    font: ${script === 'Molle' ? 'italic ' : ''}400 ${q.fs || 96}px/1.14 '${script}', cursive; color: #2f7fe0; -webkit-text-stroke: 18px #fbf8f1; paint-order: stroke fill; }
+</style>
+<svg viewBox="0 0 1080 1440" style="position:absolute;inset:0;width:1080px;height:1440px">
+  <defs>${defs}<filter id="sh" x="-10%" y="-10%" width="120%" height="120%"><feDropShadow dx="0" dy="5" stdDeviation="7" flood-color="#0a1930" flood-opacity=".45"/></filter></defs>
+  <image href="${artUrl('wheat')}" x="-700" y="-200" width="2400" height="1910"/>
+  ${imgs}
+  <path d="${patch}" fill="#f4efe4" filter="url(#sh)"/>
+</svg>
+${star('#f3d36b', { pts: 4, fill: true, seed: 7 }, 'left:860px;top:150px;width:90px;height:90px')}
+${star('#fff', { pts: 4, seed: 12, sw: 3 }, 'left:120px;top:250px;width:60px;height:60px')}
+${star('#f3d36b', { pts: 4, fill: true, seed: 5 }, 'left:150px;top:1180px;width:70px;height:70px')}
+${star('#fff', { pts: 8, seed: 21, sw: 3 }, 'left:900px;top:1230px;width:56px;height:56px')}
+<div class="st">${esc(q.text)}</div>
+${tag(q.by, `left:50%;top:${py + pry - 30}px;transform:translateX(-50%) rotate(2deg)`)}`;
+};
+const PIECES = [
+  ['stars', 250, 180, 420, 280, 3, .45, .5, 1.1], ['olive', 850, 170, 360, 260, 7, .5, .25, 1.2], ['orchard', 120, 600, 300, 340, 11, .55, .3, 1.4],
+  ['irises', 960, 620, 280, 320, 17, .45, .45, 1.8], ['wheat', 280, 1150, 420, 320, 23, .5, .8, 1.1], ['stars', 860, 1120, 360, 300, 29, .3, .45, 1.2],
+  ['olive', 560, 1400, 520, 200, 31, .5, .8, 1.1], ['orchard', 1010, 1390, 220, 200, 37, .5, .75, 1.3], ['irises', 60, 1380, 220, 220, 41, .4, .3, 1.6],
+];
+
+const TILES = { starry, wand, constellation, moon, balloon, sail, quiet, tortoise, balloon2, rope, athlete, ribbon, note, sticker, collage };
 const only = process.argv.slice(2).map(Number);
 const list = QUOTES.filter((q) => q.tile && (!only.length || only.includes(q.n)));
 
