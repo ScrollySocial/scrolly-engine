@@ -1,5 +1,5 @@
 {
- "note": "Freebies highlight Stories queued in Buffer (Instagram, automatic, link sticker set by Buffer) on 2026-11-02 at Mercedes's OK. Media = WordPress tad-story-freebies-* (see wp-media.json); keep them until these have posted. Story links carry utm_source=instagram&utm_medium=story (traffic-plan-2026-11.md). TikTok versions show the address on screen (no link stickers on TikTok).",
+ "note": "Freebies highlight Stories queued in Buffer (Instagram, automatic, link sticker set by Buffer) on 2026-11-02 at Mercedes's OK. Media = WordPress tad-story-freebies-* (see wp-media.json); keep them until these have posted. Story links carry utm_source=instagram&utm_medium=story (traffic-plan-2026-11.md). TikTok versions show the address on screen (no link stickers on TikTok). 2026-11-02 12:23: the automatic Stories posted WITHOUT link stickers (Buffer automatic posting cannot place stickers). Re-queued as Buffer reminder posts (she adds the sticker by hand): see repost.",
  "cover": {
   "buffer": "6ae8cc30559f13a14d69dfc5",
   "dueAt": "2026-11-02T12:10:00-06:00"
@@ -40,6 +40,28 @@
   "4-blog": {
    "buffer": "6ae8ce48af5d3b08ec23d013",
    "dueAt": "2026-11-02T18:12:00-06:00"
+  }
+ },
+ "repost": {
+  "1-offer-quiz": {
+   "buffer": "6ae8d5fba1cb4345befd6766",
+   "dueAt": "2026-11-02T12:32:00-06:00",
+   "schedulingType": "notification"
+  },
+  "2-next-move": {
+   "buffer": "6ae8d5ffa1cb4345befd6896",
+   "dueAt": "2026-11-02T12:35:00-06:00",
+   "schedulingType": "notification"
+  },
+  "3-calculators": {
+   "buffer": "6ae8d60287c5ea7cde54d259",
+   "dueAt": "2026-11-02T12:38:00-06:00",
+   "schedulingType": "notification"
+  },
+  "4-blog": {
+   "buffer": "6ae8d60587c5ea7cde54d342",
+   "dueAt": "2026-11-02T12:41:00-06:00",
+   "schedulingType": "notification"
   }
  }
 }
