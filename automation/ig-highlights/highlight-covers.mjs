@@ -16,32 +16,24 @@ const GRAIN = (a) => `url("data:image/svg+xml;base64,${Buffer.from(`<svg xmlns='
 
 // Star placements are relative to the circle centre: [file, x, y, size, rotate].
 const COVERS = [
+  // Mercedes 2026-11-02: A (blue mist) chosen; stars must read at profile size, so fewer and much bigger.
   {
-    file: 'free-a-mist', label: 'A. Blue mist, foil stars',
+    file: 'free-a1-two-stars', label: 'A1. Two big stars',
     bg: '#dfe4f0', grain: 0.07,
-    word: { text: 'FREE', font: 'Jost', weight: 800, color: '#0a1930', size: 300, y: 10 },
-    stars: [['00-gold', 270, -250, 230, 8], ['02-silver', -300, 230, 170, -10], ['15-gold', -250, -210, 80, 0], ['11-silver', 330, 190, 90, 12], ['12-gold', 120, 290, 70, -6]],
+    word: { text: 'FREE', font: 'Jost', weight: 800, color: '#0a1930', size: 210, y: 10 },
+    stars: [['00-gold', 275, -290, 330, 8], ['02-silver', -275, 300, 290, -10]],
   },
   {
-    file: 'free-b-cream-loop', label: 'B. Cream, sky scribble loop',
-    bg: '#f7f3ec', grain: 0.07,
-    word: { text: 'FREE', font: 'Jost', weight: 800, color: '#0a1930', size: 230, y: 10 },
-    loop: true,
-    stars: [['01-gold', 300, -260, 190, -8], ['04-silver', -320, -170, 120, 10], ['03-gold', -270, 270, 130, 4], ['14-silver', 260, 290, 70, 0]],
-  },
-  {
-    file: 'free-c-navy-sparkle', label: 'C. Cream, navy sparkle badge',
-    bg: '#f7f3ec', grain: 0.07,
-    sparkle: '#0a1930',
-    word: { text: 'FREE', font: 'Jost', weight: 800, color: '#ffffff', size: 170, y: 12 },
-    stars: [['00-gold', 300, -300, 160, 14], ['02-silver', -330, 280, 140, -6], ['09-gold', -330, -260, 80, 0], ['10-silver', 320, 300, 80, 8]],
-  },
-  {
-    file: 'free-d-handwritten', label: 'D. Blue mist, handwritten',
+    file: 'free-a2-three-stars', label: 'A2. Three big stars',
     bg: '#dfe4f0', grain: 0.07,
-    word: { text: 'freebies', font: 'Covered By Your Grace', weight: 400, color: '#0a1930', size: 250, y: -10 },
-    swoosh: true,
-    stars: [['01-gold', 290, -270, 200, 6], ['05-silver', -310, -240, 140, -12], ['06-gold', -290, 260, 110, 0], ['13-silver', 300, 260, 90, 10]],
+    word: { text: 'FREE', font: 'Jost', weight: 800, color: '#0a1930', size: 210, y: 10 },
+    stars: [['00-gold', -265, -295, 300, -6], ['02-silver', 290, -270, 230, 10], ['01-gold', 255, 310, 260, 4]],
+  },
+  {
+    file: 'free-a3-one-hero-star', label: 'A3. One hero star',
+    bg: '#dfe4f0', grain: 0.07,
+    word: { text: 'FREE', font: 'Jost', weight: 800, color: '#0a1930', size: 210, y: 130 },
+    stars: [['00-gold', 0, -200, 370, 0], ['02-silver', -320, 250, 180, -10], ['01-gold', 320, 250, 160, 6]],
   },
 ];
 
