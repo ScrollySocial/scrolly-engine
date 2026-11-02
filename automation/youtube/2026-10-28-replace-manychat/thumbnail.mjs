@@ -3,7 +3,7 @@
 // around her shoulders (glossy app tiles, phones, notification cards), two to four words in a heavy rounded white sans
 // with a soft shadow. Not the site brand.
 // Stills MUST be tone-mapped from the iPhone HLG footage (same TM as roughcut.mjs) or she looks pale and grey.
-//   node thumbnail.mjs <dir with sdr-2043.jpg, cut-2043.png, sdr-2054.jpg, cut-2054.png> [outDir]
+//   node thumbnail.mjs <dir with sdr-2043.jpg, cut-2043.png, sdr-2054.jpg, cut-2054.png, logo-*.png> [outDir]
 //   → thumb-a.png (two phones), thumb-b.png (app tiles), thumb-c.png (notification stack)
 import { mkdirSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
@@ -47,13 +47,15 @@ const set = (id, left, top, h) => `
 <img class="abs" src="${u(`sdr-${id}.jpg`)}" style="left:${left - h * .25}px;top:${top - h * .1}px;height:${h * 1.3}px;filter:blur(16px) brightness(.92) saturate(1.1)">
 <img class="abs" src="${u(`cut-${id}.png`)}" style="left:${left}px;top:${top}px;height:${h}px">`;
 
-// a subscription screen, like the phone's own Settings > Subscriptions page
-const subScreen = (app, price, ok) => `<div class="scr"><div class="island"></div>
+// a subscription screen, like the phone's own Settings > Subscriptions page, with the app's icon (her logo files:
+// logo-manychat.png, logo-claude.png in the source dir)
+const subScreen = (app, price, ok, logo) => `<div class="scr"><div class="island"></div>
 <div style="padding:56px 18px 0;font-size:15px;color:#8a8a8e;font-weight:600">SUBSCRIPTION</div>
 <div style="margin:10px 12px;background:#fff;border-radius:16px;padding:18px 16px">
+<img src="${u(logo)}" style="width:66px;height:66px;border-radius:15px;object-fit:cover;box-shadow:0 0 0 1px #e2e2e6,0 4px 10px rgba(0,0,0,.12);display:block;margin-bottom:10px">
 <div style="font-size:22px;font-weight:700">${app}</div>
 <div style="font-size:15px;color:#8a8a8e;margin-top:4px">Monthly</div>
-<div style="font-family:Poppins;font-weight:800;font-size:64px;margin-top:22px;letter-spacing:-.03em;color:${ok ? '#1a9e4b' : '#111'}">${price}</div>
+<div style="font-family:Poppins;font-weight:800;font-size:64px;margin-top:10px;letter-spacing:-.03em;color:${ok ? '#1a9e4b' : '#111'}">${price}</div>
 <div style="font-size:16px;color:#8a8a8e">per month</div></div>
 <div style="margin:10px 12px;background:#fff;border-radius:16px;padding:16px;font-size:17px;font-weight:600;color:${ok ? '#1a9e4b' : '#d70015'}">${ok ? 'Active ✓' : 'Cancel Subscription'}</div></div>`;
 
@@ -83,8 +85,8 @@ const IG = 'radial-gradient(circle at 25% 110%,#fdc468,#fa7e1e 25%,#d62976 55%,#
 const designs = {
   // A: two phones (the 0 → 10,000 followers layout): ManyChat's bill on the left, hers on the right
   a: page(`${set('2043', 28, 10, 860)}
-<div class="phone" style="left:40px;top:200px;rotate:-11deg">${subScreen('ManyChat Pro', '$39', false)}</div>
-<div class="phone" style="left:990px;top:200px;rotate:10deg">${subScreen('My DM tool', '$6', true)}</div>
+<div class="phone" style="left:40px;top:200px;rotate:-11deg">${subScreen('ManyChat Pro', '$39', false, 'logo-manychat.png')}</div>
+<div class="phone" style="left:990px;top:200px;rotate:10deg">${subScreen('My DM tool', '$6', true, 'logo-claude.png')}</div>
 <div class="abs big" style="left:0;right:0;top:34px;text-align:center;font-size:110px"><span class="bye">Bye</span>MANYCHAT</div>`),
 
   // B: glossy app tiles either side of her, the price line across the bottom
