@@ -278,7 +278,7 @@ const sticker = (q) => `<style>${BASE}${SCENE}
 </style>
 <div class="layer" style="background-image:url('${MET(q.bg || 436535)}');background-position:${q.bgPos || '30% center'};background-size:${q.bgSize || 'auto 112%'}"></div>
 <div class="st">${esc(q.text)}</div>
-${star('#fff', { pts: 4, fill: true, seed: 7 }, 'left:850px;top:180px;width:80px;height:80px')}
+${star('#fff', { pts: 4, fill: true, seed: 7 }, q.top ? 'left:880px;top:80px;width:72px;height:72px' : 'left:850px;top:180px;width:80px;height:80px')}
 ${star(C.sky, { pts: 8, seed: 21, sw: 3 }, 'left:130px;top:1120px;width:60px;height:60px')}
 ${tag(q.by, 'left:50%;bottom:90px;transform:translateX(-50%) rotate(2deg)')}`;
 
