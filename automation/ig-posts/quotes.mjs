@@ -349,7 +349,7 @@ const dreamy = (q) => {
   else if (q.style === 'label') text = `<div class="fit label" style="font-family:${font}">${esc(q.text)}</div>`;
   else { let i = 0; text = `<div class="fit ransom">${q.text.split(' ').map((w) => `<span class="w">${[...w].map((ch) => { i++; const [f, wt] = RFONTS[(i * 7 + q.n) % RFONTS.length]; return `<span class="l" style="background:${RANSOM[(i * 5 + q.n) % RANSOM.length]};color:${RCOL[(i * 3) % RCOL.length]};font-family:${f};font-weight:${wt};transform:rotate(${((i * 37) % 11) - 5}deg) translateY(${((i * 13) % 7) - 3}px)">${esc(ch)}</span>`; }).join('')}</span>`).join(' ')}</div>`; }
   return `<style>${BASE}${SCENE}
-  .paint { position: absolute; inset: 0; background: url('${MET(art)}') ${pos}/${q.size || ([436527, 437980, 437307].includes(art) ? '124% auto' : 'auto 118%')} no-repeat; filter: saturate(1.12) brightness(1.06); }
+  .paint { position: absolute; inset: 0; background: url('${typeof art === 'number' ? MET(art) : fileUrl(path.join(HERE, 'assets', 'photos', art + '.jpg'))}') ${pos}/${q.size || (typeof art !== 'number' ? 'cover' : [436527, 437980, 437307].includes(art) ? '124% auto' : 'auto 118%')} no-repeat; filter: saturate(1.12) brightness(1.06); }
   .wash { position: absolute; inset: 0; background: linear-gradient(rgba(255,232,236,.30), rgba(255,246,232,.10) 55%, rgba(255,255,255,0)); }
   .glow { position: absolute; left: 0; right: 0; top: 200px; height: 700px; background: radial-gradient(ellipse 60% 50% at 50% 50%, rgba(250,246,238,.82), rgba(250,246,238,0) 74%); }
   .box { position: absolute; left: 130px; right: 130px; top: 230px; height: 640px; display: flex; flex-direction: column; justify-content: center; align-items: center; }
@@ -367,21 +367,21 @@ ${STARS.map(([x, y, w, r]) => goldStar(x, y, w, r)).join('')}
 <div class="box">${text}${tag(q.by, 'position:static;margin-top:34px;transform:rotate(-2deg)')}</div>`;
 };
 const W = 436535, O = 437998, F = 436527, Y = 437980, S = 11321;
-const DREAMY = { // one painting per post (Mercedes 2026-11-02: "they all need their own background", more cheerful)
+const DREAMY = { // one background per post, real variety (Mercedes 2026-11-02: "stuck on Tuscany"): photos + Van Gogh + Hokusai
   1: { style: 'strips', paint: [W, '30% 20%'], font: "'Instrument Serif'" },
   2: { style: 'label', paint: [Y, '70% 30%'], font: "'Cormorant Garamond'" },
-  3: { style: 'plain', paint: [S, '75% center'], font: "Gloock" },
+  3: { style: 'plain', paint: ['mountain-sunrise-pink-0', 'center'], font: "Gloock" },
   4: { style: 'label', paint: [O, '70% 30%'], font: "Italiana" },
-  5: { style: 'strips', paint: [437426, '55% 0%'], font: "Fraunces" },
-  6: { style: 'strips', paint: [437431, '40% 30%'], font: "Fraunces" },
-  7: { style: 'strips', paint: [F, '50% 40%'], font: "'DM Serif Display'" },
-  8: { style: 'label', paint: [901617, '8% 5%'], size: 'auto 150%', font: "'Cormorant Garamond'" },
+  5: { style: 'strips', paint: ['sunflower-field-1', 'center 30%'], font: "Fraunces" },
+  6: { style: 'strips', paint: ['poppy-field-0', 'center'], font: "Fraunces" },
+  7: { style: 'strips', paint: ['pink-sunset-clouds-1', 'center'], font: "'DM Serif Display'" },
+  8: { style: 'label', paint: ['clouds-blue-sky-meadow-0', 'center'], font: "'Cormorant Garamond'" },
   9: { style: 'plain', paint: [437683, '68% center'], font: "'DM Serif Display'" },
-  10: { style: 'ransom', paint: [437307, '50% 15%'], size: '140% auto' },
-  11: { style: 'ransom', paint: [437680, '88% 25%'], size: 'auto 135%' },
-  12: { style: 'label', paint: [437433, '40% 30%'], font: "Italiana" },
-  13: { style: 'strips', paint: [437299, '18% 15%'], font: "Gloock" },
-  14: { style: 'strips', paint: [437684, '5% 25%'], size: 'auto 165%', font: "'Instrument Serif'" },
+  10: { style: 'ransom', paint: ['poppy-field-2', 'center'] },
+  11: { style: 'ransom', paint: ['pink-sunset-clouds-0', 'center'] },
+  12: { style: 'label', paint: ['sunflower-field-2', 'center 70%'], font: "Italiana" },
+  13: { style: 'strips', paint: [45434, '62% 40%'], size: 'auto 125%', font: "Gloock" },
+  14: { style: 'strips', paint: [437307, '50% 15%'], size: '140% auto', font: "'Instrument Serif'" },
 };
 
 const TILES = { starry, wand, constellation, moon, balloon, sail, quiet, tortoise, balloon2, rope, athlete, ribbon, note, sticker, collage, dreamy };
