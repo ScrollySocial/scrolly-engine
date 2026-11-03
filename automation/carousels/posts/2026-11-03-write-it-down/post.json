@@ -1,0 +1,101 @@
+{
+  "id": "2026-11-03-write-it-down",
+  "style": "D",
+  "palette": "offwhite",
+  "brief": {
+    "source": "Mercedes topic 2026-11-02 (pasted research) re-verified; shared record in posts/2026-11-03-why-challenges-work/research.md",
+    "reader": "People working toward their first $1,000 from Instagram",
+    "problem": "They post and hope, without a weekly record of what's happening",
+    "outcome": "They track views, link taps and sales weekly and share them",
+    "topic": "Track your progress in writing",
+    "mainPoint": "Tracking helps you reach goals, most when written down or reported; here's what to track for $1,000",
+    "structure": "one finding then a how-to",
+    "ending": "weekly numbers + PLAN",
+    "slide2Check": "Hook2 states the finding (tracking helps, paper helps more) as a promise of what to write: works without the 138 cover"
+  },
+  "media": {},
+  "slides": [
+    {
+      "layout": "tilecover",
+      "big": "138",
+      "text": "experiments agree: write your progress down",
+      "hand": "what to track for $1,000 →"
+    },
+    {
+      "layout": "hook2",
+      "top": "Tracking a goal helped people reach it, and writing it down helped even more.",
+      "bottom": "Here's what to write down →",
+      "palette": "mist"
+    },
+    {
+      "layout": "text",
+      "text": "Across 19,951 people, tracking worked best when it was physically recorded or reported to someone.",
+      "palette": "navy"
+    },
+    {
+      "layout": "phone",
+      "screen": {
+        "type": "insights",
+        "rows": [
+          "Views",
+          "Reach",
+          "Profile activity",
+          "External link taps"
+        ],
+        "hi": 0
+      },
+      "text": "Each week, write down your views from Insights."
+    },
+    {
+      "layout": "checklist",
+      "text": "Your weekly numbers:",
+      "items": [
+        "Views",
+        "Link taps",
+        "Sales"
+      ],
+      "palette": "navy"
+    },
+    {
+      "layout": "formula",
+      "formula": [
+        "$1,000|goal",
+        "÷",
+        "price|yours",
+        "=",
+        "sales|target"
+      ],
+      "text": "Then check sales against your target: $1,000 divided by your price."
+    },
+    {
+      "layout": "chat",
+      "chat": [
+        {
+          "text": "Weekly check-in: how did it go?"
+        },
+        {
+          "me": true,
+          "text": "Here are my numbers for the week."
+        }
+      ],
+      "text": "Then share them. Reporting your progress made tracking work even better.",
+      "palette": "mist"
+    },
+    {
+      "text": "Comment PLAN and I'll send you the plan for your first $1,000, week by week.",
+      "palette": "navy"
+    }
+  ],
+  "cta": {
+    "type": "comment",
+    "keyword": "PLAN"
+  },
+  "tigerNod": null,
+  "caption": "Comment PLAN and I'll send you the $1K Club page with the plan for your first $1,000. The finding behind this comes from a 2016 review of 138 experiments: people prompted to track their progress reached more of their goals, and the effect was strongest when they wrote it down or shared it. A notebook works. So does a note on your phone that you send to a friend every Sunday.",
+  "hashtags": [
+    "#goalsetting",
+    "#instagramforbusiness",
+    "#onlinebusiness"
+  ],
+  "notionUrl": null
+}

@@ -1,0 +1,91 @@
+{
+  "id": "2026-11-03-do-challenges-work",
+  "style": "D",
+  "palette": "offwhite",
+  "brief": {
+    "source": "Mercedes topic 2026-11-02 (pasted research) re-verified; shared record in posts/2026-11-03-why-challenges-work/research.md",
+    "reader": "People weighing whether a paid 30-day challenge is worth it",
+    "problem": "They suspect challenges are gimmicks with badges and hype",
+    "outcome": "They can judge any challenge by the three parts with real evidence behind them",
+    "topic": "Do challenges actually work",
+    "mainPoint": "Game features alone add little; goals, tracking and choosing your own goal held up best",
+    "structure": "myth check with evidence, then a checklist to judge any challenge",
+    "ending": "Challenge has all three + CHALLENGE",
+    "slide2Check": "Hook2 reframes the yes/no question as 'badges do less, plain habits do more': same promise, new angle, works alone"
+  },
+  "media": {},
+  "slides": [
+    {
+      "layout": "checkcover",
+      "palette": "sky",
+      "question": "Do 30-day challenges actually work?",
+      "options": [
+        "Always",
+        "Depends what's in them",
+        "Never"
+      ],
+      "tick": 1,
+      "hand": "what the research says →",
+      "text": "Do 30-day challenges actually work?"
+    },
+    {
+      "layout": "hook2",
+      "top": "Points and badges do less than you'd think, and a few plain habits do more.",
+      "bottom": "Here's the evidence →",
+      "palette": "navy"
+    },
+    {
+      "layout": "number",
+      "big": "489",
+      "text": "extra steps a day: the average gain from game features in health apps across 36 trials. The researchers called it trivial."
+    },
+    {
+      "layout": "text",
+      "text": "In learning research, game features helped test scores. The boost to motivation held up less well in the strongest studies.",
+      "palette": "mist"
+    },
+    {
+      "layout": "checklist",
+      "text": "What held up better:",
+      "items": [
+        "Tracking your progress: 138 experiments",
+        "Specific, hard goals: 141 papers",
+        "Choosing your own goal and starting now: 500 adults"
+      ]
+    },
+    {
+      "layout": "chat",
+      "chat": [
+        {
+          "text": "So what should a challenge have?"
+        },
+        {
+          "me": true,
+          "text": "A clear goal, a deadline and a way to track it."
+        }
+      ],
+      "text": "Use that as your test.",
+      "palette": "navy"
+    },
+    {
+      "layout": "text",
+      "text": "Before you join any challenge, check for those three. Prizes and badges are the extra on top."
+    },
+    {
+      "text": "The $1K Challenge has all three. Comment CHALLENGE and I'll send you the details.",
+      "palette": "navy"
+    }
+  ],
+  "cta": {
+    "type": "comment",
+    "keyword": "CHALLENGE"
+  },
+  "tigerNod": null,
+  "caption": "Comment CHALLENGE and I'll send you the $1K Challenge page. It's $45 one time, with 30 days, your personal $1K Plan and a weekly check-in. Every study here measured health, learning or everyday behaviour, so none of them shows a challenge will earn you money. What they do show is which parts help people follow through, and those are the parts worth checking for before you sign up for anything.",
+  "hashtags": [
+    "#goalsetting",
+    "#accountability",
+    "#smallbusinessowner"
+  ],
+  "notionUrl": null
+}

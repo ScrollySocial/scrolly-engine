@@ -1,0 +1,110 @@
+{
+  "id": "2026-11-03-why-challenges-work",
+  "style": "D",
+  "palette": "offwhite",
+  "brief": {
+    "source": "Mercedes topic 2026-11-02 (pasted research) re-verified; shared record in posts/2026-11-03-why-challenges-work/research.md",
+    "reader": "People working toward their first $1,000 online who have set goals before and drifted",
+    "problem": "They rely on motivation and a goal in their head, and lose steam",
+    "outcome": "They know the parts that research ties to follow-through and add them to their $1,000 goal",
+    "topic": "Why turning a goal into a challenge works",
+    "mainPoint": "Specific goals, tracking and telling someone have the best evidence; a game layer helped in one trial",
+    "structure": "study walk-through then application",
+    "ending": "4-step setup for your $1,000 + MATH",
+    "slide2Check": "Hook2 on the 25% vs 41% result: same promise (science of challenges) from the single most striking number; works as its own cover"
+  },
+  "media": {},
+  "slides": [
+    {
+      "layout": "tilecover",
+      "text": "There's science behind turning your goal into a challenge",
+      "hand": "here's what it found →"
+    },
+    {
+      "layout": "hook2",
+      "top": "Add a game to the same goal, and people hit it on 41% of days instead of 25%.",
+      "bottom": "Swipe for what made the difference →",
+      "palette": "navy"
+    },
+    {
+      "layout": "chart",
+      "chart": {
+        "rows": [
+          [
+            "No game",
+            25,
+            "25%"
+          ],
+          [
+            "Competing for points",
+            41,
+            "41%"
+          ]
+        ],
+        "hi": 1,
+        "note": "Share of days people hit their daily step goal. Trial of 602 adults, 2019"
+      },
+      "text": "In one trial, adults who competed for points hit their step goal far more often."
+    },
+    {
+      "layout": "checklist",
+      "text": "Bigger reviews point to three parts:",
+      "items": [
+        "A specific, hard goal",
+        "Tracking your progress",
+        "Telling someone how it's going"
+      ],
+      "palette": "navy"
+    },
+    {
+      "layout": "number",
+      "big": "141",
+      "text": "research papers found goals worked best when they were hard, set in public or shared with a group."
+    },
+    {
+      "layout": "chat",
+      "chat": [
+        {
+          "text": "How's your goal going this week?"
+        },
+        {
+          "me": true,
+          "text": "I wrote it all down. Here's where I'm at."
+        }
+      ],
+      "text": "Tracking helped across 138 experiments, most when people wrote it down or reported it.",
+      "palette": "mist"
+    },
+    {
+      "layout": "text",
+      "text": "In a 2021 trial of 500 adults, the people who picked their own goal and started right away did best.",
+      "palette": "navy"
+    },
+    {
+      "layout": "checklist",
+      "text": "To use it on your $1,000:",
+      "items": [
+        "Pick one number: $1,000",
+        "Set a 30-day deadline",
+        "Write your sales down every week",
+        "Tell one person how it's going"
+      ]
+    },
+    {
+      "text": "Comment MATH and I'll send you the calculator that turns $1,000 into your sales number.",
+      "palette": "navy"
+    }
+  ],
+  "cta": {
+    "type": "comment",
+    "keyword": "MATH"
+  },
+  "tigerNod": null,
+  "caption": "Comment MATH and I'll send you the free calculator that turns $1,000 into the number of sales you need, so your goal is specific from day one. One caveat: these studies measured steps, health and learning. None of them measured income, so use them as a guide to how people follow through. The parts with the most evidence are the plain ones: a clear number, a deadline, writing your progress down and telling someone.",
+  "hashtags": [
+    "#goalsetting",
+    "#smallbusinesstips",
+    "#onlinebusiness"
+  ],
+  "notionUrl": null
+}
