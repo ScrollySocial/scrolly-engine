@@ -48,6 +48,36 @@ function carouselMedia(carouselId) {
   });
 }
 
+// A finished Reel that only lives on this computer: the one MP4 in the card's linked folder (uploads on Confirm)
+function reelMedia(card) {
+  const dir = (card.link || '').trim();
+  if (!/^[a-z]:[\\/]/i.test(dir) || !existsSync(dir) || !statSync(dir).isDirectory()) return null;
+  const mp4s = readdirSync(dir).filter((f) => /\.(mp4|mov)$/i.test(f));
+  if (mp4s.length !== 1) return null;
+  return [{ file: join(dir, mp4s[0]), name: mp4s[0], url: null, preview: null, video: true, alt: card.title }];
+}
+
+// Upload a Reel video to WordPress media (named tad-reel-*), looking first so a retry never makes a duplicate
+async function uploadVideo(wp, m) {
+  const ext = m.name.split('.').pop().toLowerCase();
+  const name = `tad-reel-${m.name.replace(/\.[^.]+$/, '').replace(/[^a-z0-9-]+/gi, '-').toLowerCase()}`;
+  const find = async () => {
+    const s = (await wp(`/wp-json/wp/v2/media?search=${encodeURIComponent(name)}&per_page=10&_fields=id,source_url`)).json;
+    return Array.isArray(s) ? s.find((x) => x.source_url.endsWith(`/${name}.${ext}`)) : null;
+  };
+  let hit = await find();
+  if (!hit) {
+    const r = await wp('/wp-json/wp/v2/media', {
+      method: 'POST',
+      headers: { 'Content-Type': ext === 'mov' ? 'video/quicktime' : 'video/mp4', 'Content-Disposition': `attachment; filename="${name}.${ext}"` },
+      body: readFileSync(m.file),
+    });
+    hit = r.status < 300 ? r.json : await find(); // the host can answer 502 on uploads that still land
+    if (!hit) throw new Error(`Upload failed for ${m.name} (${r.status})`);
+  }
+  return hit.source_url;
+}
+
 // What Queue it would send. Never changes anything.
 export function plan(card, platform, { keywords = [], scheduled = null } = {}) {
   const lane = card.lanes?.[platform];
@@ -66,7 +96,8 @@ export function plan(card, platform, { keywords = [], scheduled = null } = {}) {
     const video = /\.(mp4|mov)(\?|$)/i.test(card.mediaUrl);
     media = [{ url: card.mediaUrl, preview: video ? null : card.mediaUrl, video, alt: card.title }];
   }
-  if (!media?.length) problems.push('No slides or media found for this card (carousel export or posted-file link).');
+  if (!media) media = reelMedia(card);
+  if (!media?.length) problems.push('No slides or media found for this card (carousel export, posted-file link, or one MP4 in the linked folder).');
 
   // Every post except Stories asks for a comment word that Chat Manager answers (Instagram only answers comments)
   const warnings = [];
@@ -140,10 +171,19 @@ export async function run(card, platform, key, keywords) {
       writeFileSync(recFile, JSON.stringify(rec, null, 1) + '\n'); // after each one, so a failure halfway keeps progress
     }
   }
+  let mediaUrl = null;
+  if (!media && !card.mediaUrl) {
+    const reel = reelMedia(card);
+    if (reel) {
+      const { wp } = await import('../../../website/scrolly-site/wp-client.mjs');
+      mediaUrl = await uploadVideo(wp, reel[0]);
+      media = [{ ...reel[0], url: mediaUrl }];
+    }
+  }
   if (!media) media = p.media;
 
   const assets = media.map((m) => (m.video ? { video: { url: m.url } } : { image: { url: m.url, metadata: { altText: m.alt || card.title } } }));
-  return { ...(await queuePost(key, { platform, bufferId: p.draft, text: p.caption, assets, byHand: p.byHand })), byHand: p.byHand };
+  return { ...(await queuePost(key, { platform, bufferId: p.draft, text: p.caption, assets, byHand: p.byHand })), byHand: p.byHand, mediaUrl };
 }
 
 export { CHANNEL_IDS };

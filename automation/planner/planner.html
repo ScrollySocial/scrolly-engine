@@ -1181,7 +1181,7 @@ async function openQueue(id, platform) {
     <h2>Queue in Buffer: ${esc(p.channel)}</h2>
     <p class="sub" style="margin:0">${esc(card.title)}<br>Goes to the end of your ${esc(p.channel)} queue; Buffer picks the next free time. ${p.byHand ? '<b>You post this one yourself:</b> at that time the Buffer app on your phone reminds you and opens it in the app, where you add music and share.' : 'Buffer posts it automatically.'} ${p.scheduled != null ? `${p.scheduled} of 10 free-plan posts are scheduled now.` : ''}</p>
     <div class="qslides">${p.media.map((m) => m.preview ? `<img src="${esc(m.preview)}" alt="${esc(m.alt || '')}" title="${esc(m.alt || '')}">` : '<div class="preview">Video</div>').join('')}</div>
-    <p class="sub" style="margin:0">${p.media.length} ${p.media.length === 1 ? 'file' : 'slides'}${p.toUpload ? `, ${p.toUpload} to upload to WordPress (named tad-carousel-…)` : ', already on WordPress'}${p.draft ? '. Uses your existing Buffer draft for this post.' : '.'}</p>
+    <p class="sub" style="margin:0">${p.media.length} ${p.media.length === 1 ? 'file' : 'slides'}${p.toUpload ? `, ${p.toUpload} to upload to WordPress (named ${p.media.some((m) => m.video) ? 'tad-reel-…' : 'tad-carousel-…'})` : ', already on WordPress'}${p.draft ? '. Uses your existing Buffer draft for this post.' : '.'}</p>
     <div class="qcap">${esc(p.caption)}</div>
     ${p.problems.map((x) => `<p class="qbad" style="margin:0">${esc(x)}</p>`).join('')}
     ${p.warnings.map((x) => `<p class="qwarn" style="margin:0">Note: ${esc(x)}</p>`).join('')}
