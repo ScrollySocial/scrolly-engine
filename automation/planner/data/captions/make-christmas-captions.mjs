@@ -125,8 +125,8 @@ const head = `---
 series: Christmas countdown (Reels, automation/reel-series/christmas-countdown)
 status: draft v3 for her review (2026-11-03). Built by make-christmas-captions.mjs: her caption, same message and order on
   every post, examples / comment line / hashtags varied per day so they aren't 8 copies
-keyword: ${KEYWORD} (her pick for the $1K Club + Challenge, 2026-10-23; not live yet, needs a freebie + email signup before
-  Nov 4). She ruled out CHALLENGE. MATH works today as a fallback.
+keyword: ${KEYWORD}, LIVE 2026-11-03 in Chat Manager (email signup, asks READY, group "Freebie: EARN1K", sends the $1K
+  Challenge page; same wording as CHALLENGE). She ruled out CHALLENGE as the comment word.
 sources:
   - Her caption 2026-11-03 (Challenge first, 5 ways, product / no product, affiliate up to $40)
   - Affiliate: products/chat-manager/affiliate-program.md (open to Chat Manager buyers only; $30 sales 1-2, $40 from sale 3)
