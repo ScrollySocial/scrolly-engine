@@ -26,10 +26,11 @@ const TITLE_FONT = own('mountains-of-christmas-bold.ttf'); // her pick 2026-11-0
 const HAND_FONT = b64('covered-by-your-grace.woff2'), SCRIPT_FONT = own('pacifico.ttf');
 
 const W = 1080, H = 1920, FPS = 30;
-// 2026-11-03 round 2: 4 × 0.4s at 2x was too fast to take in; now 3 × 1s with soft crossfades, less speed-up
-const QUICK = 3, QUICK_LEN = 1.0;        // seconds each (including the crossfade)
-const XF = 0.35;                         // crossfade between clips
-const SPEED_QUICK = 1.25, SPEED_HERO = 1.3; // playback speed-up
+// 2026-11-03 round 3: every Reel = 2 stock clips then her. Hard cuts (crossfades read as edited/polished) and
+// slower clips; round 2 (3 × 1s with crossfades) still felt too fast and repeated clips
+const QUICK = 2, QUICK_LEN = 1.3;        // seconds each
+const XF = 0;                            // 0 = hard cuts; > 0 = crossfade of that length
+const SPEED_QUICK = 1.15, SPEED_HERO = 1.3; // playback speed-up
 const ZOOM = 1.04;                       // crops stray edges off every clip
 const POP = 0.45;                        // title grows in over this long
 const LINES_AT = 0.6, LINE_GAP = 0.35, LINE_IN = 0.45; // white boxes: first at 0.6s, then one every 0.35s
@@ -51,22 +52,35 @@ const SUBJECT = {
   '19387113-uhd_2160_3840_60fps.mp4': 'cosy+tree', '19733272-uhd_2160_3840_60fps.mp4': 'lights', '3321566-hd_1920_1080_25fps.mp4': 'nativity',
   // her b-roll
   'desk-coffee-sip-01.mp4': 'drink', 'wall-coffee-sip-02.mp4': 'drink', 'wall-coffee-step-in-01.mp4': 'drink',
+  'kitchen-coffee-pour-01.mp4': 'drink', 'kitchen-smoothie-sip-01.mp4': 'drink', 'kitchen-oven-tray-01.mp4': 'food',
 };
 const tags = (f) => (SUBJECT[path.basename(f)] || '').split('+').filter(Boolean);
-// her picks for the longer clip on a stock day (instead of the rotation)
-const HERO_FOR = { 48: '14697192-hd_1080_1620_30fps.mp4' }; // the hot chocolate
-// her own b-roll as the longer clip on the days where the line is her talking (already handheld: no added drift)
+// day 30 is approved as rendered (2026-11-03): never re-render it, and keep its stock clips out of every other Reel
+const APPROVED = new Set([30]);
+const RESERVED = ['19387113-uhd_2160_3840_60fps.mp4', '19733272-uhd_2160_3840_60fps.mp4', '15019021_2160_3840_30fps.mp4'];
+// too dreamy/cinematic: they read as stock however they're graded
+const TOO_POLISHED = ['6283475-hd_1080_1920_30fps.mp4', '19733270-uhd_2160_3840_60fps.mp4', '3321566-hd_1920_1080_25fps.mp4'];
+// her own b-roll ends every Reel (she liked herself at the end of day 30). Already handheld: no added shake.
+// Days without one wait ("later": true in lines.json) until she films more.
 const BROLL = path.join(P.footage, 'broll');
 const HER = {
-  // 47 had wall-coffee-sip-01: she scrapped it (2026-11-03), so 47 is a stock day now
-  51: 'couch-lookup-smile-01.mp4', 49: 'desk-coffee-sip-01.mp4', 45: 'couch-writing-01.mp4',
-  42: 'desk-typing-01.mp4', 39: 'notebook-hand-01.mp4', 37: 'wall-coffee-sip-02.mp4', 34: 'typing-overhead-01.mp4',
+  // wall-coffee-sip-01 scrapped by her; notebook-hand-01 turns into a knuckle close-up, not an end clip
+  51: 'couch-lookup-smile-01.mp4', 50: 'kitchen-oven-tray-01.mp4', 49: 'desk-coffee-sip-01.mp4',
+  48: 'kitchen-coffee-pour-01.mp4', 47: 'wall-coffee-sip-02.mp4', 45: 'couch-writing-01.mp4',
+  44: 'kitchen-smoothie-sip-01.mp4', 42: 'desk-typing-01.mp4', 34: 'typing-overhead-01.mp4',
   31: 'desk-typing-from-behind-01.mp4', 30: 'wall-coffee-step-in-01.mp4',
 };
-// on these her face is in the top half, so the text sits lower (over her sweater/desk), never over her face
-const LOW_TEXT = new Set([51, 45, 37, 31, 30]); // 31: she turns round at the end
-// exact spots where the usual ones touch her face: 49 mid-frame face (higher), 30 steps in close (lower)
-const TEXT_TOP = 300, TEXT_TOP_LOW = 960, TEXT_AT = { 49: 150, 30: 1100 };
+// where the text block starts (y px), picked per Reel from her clip: calm space, never her face or the action
+const TEXT_TOP = 300;
+const TEXT_AT = {
+  51: 960, // couch: face up top, text over the sweater
+  50: 1000, // oven: her head at the top, text over the oven door
+  49: 150, // desk: face mid-frame, text above her head
+  48: 260, // coffee pour: the pour is low, text over the machine
+  47: 960, 45: 960, 44: 1050, // face in the top half, text over her top
+  31: 960, 30: 1100, // 31 turns round at the end; 30 steps in close
+};
+const textTop = (day) => TEXT_AT[day] ?? TEXT_TOP;
 // where to start a clip and how fast, when the default picks a bad stretch
 const CLIP_RANGE = {
   'desk-typing-from-behind-01.mp4': { start: 0, speed: 1 }, // she stands up at ~5s; stop before that
@@ -76,6 +90,8 @@ const GREEN = '#1F7A45';                 // pairs with it in the script word
 
 // per clip, before the look: even out exposure so dark and bright clips meet in the middle
 const LEVEL = 'normalize=smoothing=24:independence=0.3:strength=0.55';
+// stock only: look like her phone clips, not an ad. Brighter, lifted shadows, flatter, a touch softer than 4K-crisp
+const PHONE = "eq=brightness=0.035:contrast=0.9:saturation=1.06:gamma=1.07,curves=all='0/0.04 0.5/0.53 1/1',gblur=sigma=0.6";
 const LOOKS = {
   // C: natural match. Her colours kept (she liked the untouched clips best); only a touch of contrast, a hair warmer
   // so the blue snow sits with the cosy indoor clips, and a fine grain so they share one texture
@@ -105,17 +121,11 @@ const FIT = `scale=${Math.round(W * ZOOM / 2) * 2}:${Math.round(H * ZOOM / 2) * 
   `crop=${W}:${H}:floor((iw-${W})/4)*2:floor((ih-${H})/4)*2,setsar=1`;
 
 const lines = JSON.parse(readFileSync(path.join(HERE, "lines.json"), "utf8"));
-const making = lines.filter((l) => !l.skip); // she wants 14 Reels max (2026-11-03); "skip": true parks a line
+// she wants 14 Reels max; "skip": true parks a line, "later": true waits for her next b-roll (2026-11-03)
+const making = lines.filter((l) => !l.skip && !l.later);
 const clips = readdirSync(CLIPS).filter((f) => f.toLowerCase().endsWith('.mp4') && !SKIP.includes(f)).sort();
 const probe = (f) => +execFileSync(tool('ffprobe'), ['-v', 'error', '-show_entries', 'format=duration', '-of', 'csv=p=0', f]).toString();
 const ff = (args) => execFileSync(tool('ffmpeg'), ['-v', 'error', '-y', ...args], { stdio: ['ignore', 'inherit', 'inherit'] });
-
-// the longer clip is always one of these: hands, mugs, slippers, a home. Empty pretty shots (snow, the city tree,
-// landscapes) read as stock when they hold, so they only flash
-const LIVED_IN = ['12649870_2160_3840_30fps.mp4', '12715369_2160_3840_30fps.mp4', '12726790_2160_3840_30fps.mp4',
-  '14697192-hd_1080_1620_30fps.mp4', '14846655_2160_3840_30fps.mp4', '14988566_1080_1920_60fps.mp4',
-  '19387113-uhd_2160_3840_60fps.mp4', '5970198-uhd_2160_4096_25fps.mp4', '6032907-hd_1080_1920_25fps.mp4',
-  '6214615-hd_1080_1920_25fps.mp4', '6283475-hd_1080_1920_30fps.mp4', '6099570-hd_1080_1920_25fps.mp4'];
 
 const shuffle = (list, seed) => {
   let s = seed;
@@ -124,40 +134,34 @@ const shuffle = (list, seed) => {
   for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(rnd() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
   return a;
 };
-// clips for every day, in posting order (full paths). The longer clip is hers on HER days, else a lived-in stock clip
-// in turn. Flashes: no two of one subject in a Reel, and no clip back within a few days (days 51-47 share none).
-// Fixed seeds: a day always gets the same clips.
+// clips for every day being made, in posting order (full paths): 2 stock clips, then hers. Every stock clip is used
+// once across the series (she noticed repeats). Within a Reel no two clips share a subject tag, and where it can, a
+// Reel avoids the subjects of the Reel before. Fixed seed: a day always gets the same clips.
 const SCHEDULE = (() => {
-  const picked = Object.values(HERO_FOR);
-  const stockHeroes = shuffle(LIVED_IN.filter((f) => clips.includes(f) && !picked.includes(f)), 7);
-  const heroOf = [];
-  let h = 0;
-  making.forEach((l) => heroOf.push(HER[l.day] ? null : HERO_FOR[l.day] || stockHeroes[h++ % stockHeroes.length]));
-  const order = shuffle(clips, 11);
+  const pool = shuffle(clips.filter((c) => !RESERVED.includes(c) && !TOO_POLISHED.includes(c)), 11);
+  const used = new Set();
   const out = {};
-  const recent = [];
-  let q = 0;
-  making.forEach((l, i) => {
-    const hero = heroOf[i];
-    // relax step by step if ~26 clips can't satisfy everything: first look less far ahead, then less far back
-    let quick = [];
-    for (const [ahead, back] of [[4, 4], [2, 4], [0, 4], [0, 3], [0, 2], [0, 1], [0, 0]]) {
-      const soon = heroOf.slice(i + 1, i + 1 + ahead).filter(Boolean);
-      const blocked = new Set([hero, ...soon, ...recent.slice(-back || recent.length).flat()].filter(Boolean));
-      if (!back) blocked.clear(), hero && blocked.add(hero);
-      const subjects = new Set(tags(hero || HER[l.day]));
-      quick = [];
-      for (let k = 0; k < order.length && quick.length < QUICK; k++) {
-        const c = order[(q + k) % order.length];
-        if (blocked.has(c) || tags(c).some((t) => subjects.has(t))) continue;
-        quick.push(c); tags(c).forEach((t) => subjects.add(t));
+  let prevTags = new Set();
+  for (const l of making.filter((m) => !APPROVED.has(m.day))) {
+    const end = HER[l.day] ? path.join(BROLL, HER[l.day]) : null;
+    const pick = (avoidPrev, allowReuse) => {
+      const subjects = new Set(tags(end || ''));
+      const got = [];
+      for (const c of pool) {
+        if (got.length === QUICK + (end ? 0 : 1)) break;
+        if ((!allowReuse && used.has(c)) || got.includes(c)) continue;
+        if (tags(c).some((t) => subjects.has(t) || (avoidPrev && prevTags.has(t)))) continue;
+        got.push(c); tags(c).forEach((t) => subjects.add(t));
       }
-      if (quick.length === QUICK) break;
-    }
-    q += QUICK;
-    out[l.day] = [...quick.map((c) => path.join(CLIPS, c)), hero ? path.join(CLIPS, hero) : path.join(BROLL, HER[l.day])];
-    recent.push([...quick, hero].filter(Boolean));
-  });
+      return got.length === QUICK + (end ? 0 : 1) ? got : null;
+    };
+    const got = pick(true, false) || pick(false, false) || pick(false, true);
+    if (!got) throw new Error(`not enough clips for day ${l.day}`);
+    if (got.some((c) => used.has(c))) console.log(`note: day ${l.day} reuses a stock clip (ran out of unused ones)`);
+    got.forEach((c) => used.add(c));
+    out[l.day] = [...got.map((c) => path.join(CLIPS, c)), ...(end ? [end] : [])];
+    prevTags = new Set(out[l.day].flatMap(tags));
+  }
   return out;
 })();
 const isHers = (f) => f.startsWith(BROLL);
@@ -207,7 +211,7 @@ async function layout(page, { day, title, body }) {
     @font-face { font-family: Hand; src: url(data:font/woff2;base64,${HAND_FONT}) format('woff2'); }
     @font-face { font-family: Script; src: url(data:font/ttf;base64,${SCRIPT_FONT}); }
     html, body { margin: 0; width: ${W}px; height: ${H}px; background: transparent; }
-    .wrap { position: absolute; left: 70px; right: 70px; top: ${TEXT_AT[day] ?? (LOW_TEXT.has(day) ? TEXT_TOP_LOW : TEXT_TOP)}px; text-align: center; }
+    .wrap { position: absolute; left: 70px; right: 70px; top: ${textTop(day)}px; text-align: center; }
     /* line-height 1.18: at 1.02 the white outlines of the two lines ran into each other */
     .title { font: 700 ${tSize}px/1.18 Cute, cursive; color: ${RED}; -webkit-text-stroke: 14px #fff;
              paint-order: stroke fill; margin-bottom: 34px; filter: drop-shadow(0 4px 14px rgba(0,0,0,.45)); } /* separates it from white snow */
@@ -245,28 +249,30 @@ async function render(page, line, look) {
     const need = lens[i] * speeds[i];
     const start = CLIP_RANGE[path.basename(f)]?.start ?? Math.max(0, Math.min(1, durs[i] - need - 0.1)); // skip the first second when there's room
     args.push('-ss', String(start), '-t', String(need + 0.3), '-i', f);
-    // stock gets levelled to meet in the middle; hers is kept as filmed. tpad holds the last frame if a clip runs short
-    const base = `[${i}:v]setpts=PTS/${speeds[i]},fps=${FPS},${FIT}${isHers(f) ? '' : `,${LEVEL}`},` +
+    // stock is levelled and made to look phone-shot; hers is kept as filmed. tpad holds the last frame if a clip runs short
+    const base = `[${i}:v]setpts=PTS/${speeds[i]},fps=${FPS},${FIT}${isHers(f) ? '' : `,${LEVEL},${PHONE}`},` +
       `tpad=stop_mode=clone:stop_duration=1,trim=duration=${lens[i]},setpts=PTS-STARTPTS`;
     if (isHers(f)) { chains.push(`${base},fps=${FPS},settb=1/${FPS},format=yuv420p[v${i}]`); return; } // hers is already handheld
-    // phone-filmed feel on stock (tripod) clips: a slow push-in with a drift that never repeats evenly;
-    // gentler on the short clips, more on the longer one
-    const N = Math.round(lens[i] * FPS);
-    const k = i < QUICK ? 0.6 : 1;
-    chains.push(`${base},zoompan=z='1.04+${0.05 * k}*on/${N}':x='iw/2-iw/zoom/2+${14 * k}*sin(on/9)+${5 * k}*sin(on/3.3)':` +
-      `y='ih/2-ih/zoom/2+${10 * k}*sin(on/12+1)+${4 * k}*sin(on/4.7)':d=1:s=${W}x${H}:fps=${FPS},settb=1/${FPS},format=yuv420p[v${i}]`);
+    // a hand holding a phone, not a smooth glide: several wobbles at unrelated speeds plus a fast tremor, no push-in.
+    // Different phase per clip so two clips never shake alike
+    const p = (day * 7 + i * 3) % 10;
+    chains.push(`${base},zoompan=z='1.06+0.006*sin(on/23+${p})':` +
+      `x='iw/2-iw/zoom/2+9*sin(on/5.3+${p})+6*sin(on/2.2+${p * 2})+4*sin(on/11.7)+1.5*sin(on*1.9)':` +
+      `y='ih/2-ih/zoom/2+7*sin(on/4.1+${p})+5*sin(on/9.3+2)+1.5*sin(on*2.3+${p})':` +
+      `d=1:s=${W}x${H}:fps=${FPS},settb=1/${FPS},format=yuv420p[v${i}]`);
   });
   const n = picks.length;
-  args.push('-loop', '1', '-t', String(total), '-i', scrim(LOW_TEXT.has(day)));
+  args.push('-loop', '1', '-t', String(total), '-i', scrim(textTop(day) >= 900));
   args.push('-loop', '1', '-t', String(total), '-i', T.files.title);
   args.push('-loop', '1', '-t', String(total), '-i', T.files.body);
   args.push('-i', path.join(SFX, 'sparkle.mp3'));
   const [iG, iT, iB, iS] = [n, n + 1, n + 2, n + 3];
 
-  // clips joined with soft crossfades, then the look
+  // clips joined (hard cuts, or crossfades when XF > 0), then the look
   const fc = [...chains];
   let prev = 'v0', at = 0;
-  for (let i = 1; i < n; i++) {
+  if (!XF) { fc.push(`${picks.map((_, i) => `[v${i}]`).join('')}concat=n=${n}:v=1:a=0[x]`); prev = 'x'; }
+  for (let i = 1; XF && i < n; i++) {
     at += lens[i - 1] - XF;
     fc.push(`[${prev}][v${i}]xfade=transition=fade:duration=${XF}:offset=${at.toFixed(3)}[x${i}]`);
     prev = `x${i}`;
@@ -350,7 +356,8 @@ const li = argv.indexOf('--look');
 const look = li >= 0 ? argv.splice(li, 2)[1].toUpperCase() : 'C';
 if (!existsSync(OUT)) mkdirSync(OUT, { recursive: true });
 if (argv.includes('sheet')) { sheet(); process.exit(0); }
-const todo = argv.includes('all') ? making : lines.filter((l) => argv.includes(String(l.day)));
+const todo = (argv.includes('all') ? making : lines.filter((l) => argv.includes(String(l.day))))
+  .filter((l) => !APPROVED.has(l.day) || (console.log(`day ${l.day} is approved, left as it is`), false));
 if ((!todo.length && !argv.includes('titles')) || !LOOKS[look]) { console.log('usage: node build.mjs <day> [day...] | all | sheet | titles  [--look A|B]'); process.exit(1); }
 const b = await launch();
 const page = await b.newPage();
