@@ -1,5 +1,5 @@
-// Christmas countdown Reels: 4 very quick Pexels cuts, then one longer clip. On top the whole time: the title in a cute
-// handwritten font (red, white outline) and the rest of her line in plain black text on white highlight boxes.
+// Christmas countdown Reels: 4 very quick Pexels cuts, then one longer clip. On top the whole time: the title in
+// Mountains of Christmas (red, white outline) and the rest of her line in plain black text on white highlight boxes.
 // Every clip is levelled first (exposure evened out), then gets the same look so the mixed stock reads as one set.
 //   node build.mjs 51 50              render those days (look A)
 //   node build.mjs all --look B       render every line in lines.json, one at a time
@@ -16,7 +16,8 @@ const CLIPS = path.join(HERE, '../../reel-template-pack/assets/Christmas');
 const OUT = path.join(P.exports, 'christmas-countdown');
 const FONTS = path.join(HERE, '../../reel-hf/lib/assets/fonts');
 const b64 = (f) => readFileSync(path.join(FONTS, f)).toString('base64');
-const BODY_FONT = b64('figtree.woff2'), TITLE_FONT = b64('covered-by-your-grace.woff2');
+const BODY_FONT = b64('figtree.woff2');
+const TITLE_FONT = readFileSync(path.join(HERE, 'fonts/mountains-of-christmas-bold.ttf')).toString('base64'); // her pick 2026-11-03
 
 const W = 1080, H = 1920, FPS = 30;
 const QUICK = 4, QUICK_LEN = 0.4;        // seconds each on screen
@@ -69,13 +70,13 @@ const duration = (l) => (words(l) > 22 ? 7 : 6);
 async function textPng(page, { title, body }, file) {
   const esc = (t) => t.replace(/&/g, '&amp;').replace(/</g, '&lt;')
     .replace(/(\p{Extended_Pictographic}️?)/gu, '<span class="e">$1</span>');
-  const tSize = title.length <= 26 ? 124 : title.length <= 40 ? 100 : 84;
+  const tSize = title.length <= 26 ? 132 : title.length <= 40 ? 108 : 90; // a thin font, so a size up
   await page.setContent(`<!doctype html><html><head><style>
     @font-face { font-family: Figtree; src: url(data:font/woff2;base64,${BODY_FONT}) format('woff2'); font-weight: 300 900; }
-    @font-face { font-family: Cute; src: url(data:font/woff2;base64,${TITLE_FONT}) format('woff2'); }
+    @font-face { font-family: Cute; src: url(data:font/ttf;base64,${TITLE_FONT}); font-weight: 700; }
     html, body { margin: 0; width: ${W}px; height: ${H}px; background: transparent; }
     .wrap { position: absolute; left: 70px; right: 70px; top: 300px; text-align: center; }
-    .title { font: 400 ${tSize}px/1.02 Cute, cursive; color: ${RED}; -webkit-text-stroke: 14px #fff;
+    .title { font: 700 ${tSize}px/1.02 Cute, cursive; color: ${RED}; -webkit-text-stroke: 14px #fff;
              paint-order: stroke fill; margin-bottom: 34px; filter: drop-shadow(0 4px 10px rgba(0,0,0,.25)); }
     .title, .body { text-wrap: balance; }  /* even line lengths, no lone last word */
     .body { font: 600 54px/1.5 Figtree, sans-serif; color: #000; }
