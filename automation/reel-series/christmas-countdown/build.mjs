@@ -17,7 +17,10 @@ const OUT = path.join(P.exports, 'christmas-countdown');
 const FONTS = path.join(HERE, '../../reel-hf/lib/assets/fonts');
 const b64 = (f) => readFileSync(path.join(FONTS, f)).toString('base64');
 const BODY_FONT = b64('figtree.woff2');
-const TITLE_FONT = readFileSync(path.join(HERE, 'fonts/mountains-of-christmas-bold.ttf')).toString('base64'); // her pick 2026-11-03
+const own = (f) => readFileSync(path.join(HERE, 'fonts', f)).toString('base64');
+const TITLE_FONT = own('mountains-of-christmas-bold.ttf'); // her pick 2026-11-03
+// a title with *a word* in it: that word in a red/green script on its own line, the rest handwritten (day 51)
+const HAND_FONT = b64('covered-by-your-grace.woff2'), SCRIPT_FONT = own('pacifico.ttf');
 
 const W = 1080, H = 1920, FPS = 30;
 const QUICK = 4, QUICK_LEN = 0.4;        // seconds each on screen
@@ -25,6 +28,7 @@ const SPEED_QUICK = 2, SPEED_HERO = 1.5; // playback speed-up
 const ZOOM = 1.04;                       // crops stray edges off every clip
 const SKIP = ['5766093-uhd_4096_2160_30fps.mp4']; // has its own "merry christmas" letters, fights the text
 const RED = '#C2362F';                   // holiday kit red
+const GREEN = '#1F7A45';                 // pairs with it in the script word
 
 // per clip, before the look: even out exposure so dark and bright clips meet in the middle
 const LEVEL = 'normalize=smoothing=24:independence=0.3:strength=0.55';
@@ -64,27 +68,36 @@ function pick(day) {
 }
 
 // long lines get a second longer so they can be read
-const words = (l) => `${l.title} ${l.body}`.split(/\s+/).length;
+const words = (l) => `${l.title.replace(/\*/g, '')} ${l.body}`.split(/\s+/).length;
 const duration = (l) => (words(l) > 22 ? 7 : 6);
 
 async function textPng(page, { title, body }, file) {
   const esc = (t) => t.replace(/&/g, '&amp;').replace(/</g, '&lt;')
     .replace(/(\p{Extended_Pictographic}️?)/gu, '<span class="e">$1</span>');
-  const tSize = title.length <= 26 ? 132 : title.length <= 40 ? 108 : 90; // a thin font, so a size up
+  const plain = title.replace(/\*/g, '');
+  const tSize = plain.length <= 26 ? 132 : plain.length <= 40 ? 108 : 90; // a thin font, so a size up
+  const mixed = title.includes('*');
+  const alternate = (w) => [...w].map((ch, i) => `<span style="color:${i % 2 ? GREEN : RED}">${ch}</span>`).join('');
+  const titleHtml = esc(title).replace(/\*([^*]+)\*/g, (_, w) => `<span class="script">${alternate(w)}</span>`);
   await page.setContent(`<!doctype html><html><head><style>
     @font-face { font-family: Figtree; src: url(data:font/woff2;base64,${BODY_FONT}) format('woff2'); font-weight: 300 900; }
     @font-face { font-family: Cute; src: url(data:font/ttf;base64,${TITLE_FONT}); font-weight: 700; }
+    @font-face { font-family: Hand; src: url(data:font/woff2;base64,${HAND_FONT}) format('woff2'); }
+    @font-face { font-family: Script; src: url(data:font/ttf;base64,${SCRIPT_FONT}); }
     html, body { margin: 0; width: ${W}px; height: ${H}px; background: transparent; }
     .wrap { position: absolute; left: 70px; right: 70px; top: 300px; text-align: center; }
-    .title { font: 700 ${tSize}px/1.02 Cute, cursive; color: ${RED}; -webkit-text-stroke: 14px #fff;
+    /* line-height 1.18: at 1.02 the white outlines of the two lines ran into each other */
+    .title { font: 700 ${tSize}px/1.18 Cute, cursive; color: ${RED}; -webkit-text-stroke: 14px #fff;
              paint-order: stroke fill; margin-bottom: 34px; filter: drop-shadow(0 4px 10px rgba(0,0,0,.25)); }
+    .title.mixed { font: 400 ${tSize}px/1.1 Hand, cursive; }
+    .script { display: block; font: 400 ${Math.round(tSize * 1.25)}px/1.3 Script, cursive; margin-top: 6px; }
     .title, .body { text-wrap: balance; }  /* even line lengths, no lone last word */
     .body { font: 600 54px/1.5 Figtree, sans-serif; color: #000; }
     .body span.hl { background: #fff; padding: 6px 18px; border-radius: 12px;
                     -webkit-box-decoration-break: clone; box-decoration-break: clone; }
     .e { font-family: 'Segoe UI Emoji', sans-serif; -webkit-text-stroke: 0; }
   </style></head><body><div class="wrap">
-    <div class="title">${esc(title)}</div>
+    <div class="title${mixed ? ' mixed' : ''}">${titleHtml}</div>
     <div class="body"><span class="hl">${esc(body)}</span></div>
   </div></body></html>`, { waitUntil: 'load' });
   await page.evaluate(() => document.fonts.ready);
