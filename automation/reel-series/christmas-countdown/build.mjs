@@ -1,9 +1,11 @@
-// Christmas countdown Reels: 4 very quick Pexels cuts, then one longer clip, one line of her text on top the whole time.
-// Every clip gets the same warm film grade so the mixed stock reads as one set, and is sped up.
-//   node build.mjs 51 50        render those days
-//   node build.mjs all          render every line in lines.json (one at a time, never in parallel)
-// Clips: reel-template-pack/assets/Christmas. Output: <exports>/christmas-countdown/day-<n>.mp4 (OneDrive, not git).
-import { readFileSync, readdirSync, mkdirSync, existsSync } from 'node:fs';
+// Christmas countdown Reels: 4 very quick Pexels cuts, then one longer clip. On top the whole time: the title in a cute
+// handwritten font (red, white outline) and the rest of her line in plain black text on white highlight boxes.
+// Every clip is levelled first (exposure evened out), then gets the same look so the mixed stock reads as one set.
+//   node build.mjs 51 50              render those days (look A)
+//   node build.mjs all --look B       render every line in lines.json, one at a time
+//   node build.mjs sheet              before/after still of 8 clips: raw, look A, look B
+// Clips: reel-template-pack/assets/Christmas. Output: <exports>/christmas-countdown/ (OneDrive, not git).
+import { readFileSync, readdirSync, mkdirSync, existsSync, rmSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -12,26 +14,44 @@ import { P, tool, launch } from '../../reel-hf/lib/settings.mjs';
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const CLIPS = path.join(HERE, '../../reel-template-pack/assets/Christmas');
 const OUT = path.join(P.exports, 'christmas-countdown');
-const FONT_B64 = readFileSync(path.join(HERE, '../../reel-hf/lib/assets/fonts/figtree.woff2')).toString('base64');
+const FONTS = path.join(HERE, '../../reel-hf/lib/assets/fonts');
+const b64 = (f) => readFileSync(path.join(FONTS, f)).toString('base64');
+const BODY_FONT = b64('figtree.woff2'), TITLE_FONT = b64('covered-by-your-grace.woff2');
 
 const W = 1080, H = 1920, FPS = 30;
 const QUICK = 4, QUICK_LEN = 0.4;        // seconds each on screen
 const SPEED_QUICK = 2, SPEED_HERO = 1.5; // playback speed-up
+const ZOOM = 1.04;                       // crops stray edges off every clip
 const SKIP = ['5766093-uhd_4096_2160_30fps.mp4']; // has its own "merry christmas" letters, fights the text
-const INK = '#0a1930';                    // navy text, white outline
+const RED = '#C2362F';                   // holiday kit red
 
-// same look on every clip: lifted blacks, warm highlights, a little less colour, soft grain + vignette
-const GRADE = [
-  'eq=contrast=1.06:saturation=0.86:brightness=0.01',
-  'colorbalance=rs=0.04:bs=-0.04:rm=0.03:bm=-0.03:rh=0.05:gh=0.01:bh=-0.05',
-  "curves=all='0/0.05 0.25/0.24 0.75/0.78 1/0.96'",
-  'noise=alls=5:allf=t+u',
-  'vignette=PI/5',
-].join(',');
+// per clip, before the look: even out exposure so dark and bright clips meet in the middle
+const LEVEL = 'normalize=smoothing=24:independence=0.3:strength=0.55';
+const LOOKS = {
+  // A: warm film. Matte blacks, golden highlights, less colour, glow, grain
+  A: [
+    'eq=contrast=1.05:saturation=0.74:gamma=1.04',
+    'colorbalance=rs=0.06:gs=0.01:bs=-0.06:rm=0.05:bm=-0.05:rh=0.07:gh=0.02:bh=-0.08',
+    "curves=all='0/0.09 0.3/0.3 0.7/0.72 1/0.94'",
+    'split[a][b];[b]gblur=sigma=18[g];[a][g]blend=all_mode=screen:all_opacity=0.18',
+    'vignette=PI/5.5', 'noise=alls=7:allf=t+u', // grain after the vignette dithers away its rings
+  ].join(','),
+  // B: faded cream. Softer and lighter, cream-tinted, very muted colour
+  B: [
+    'eq=contrast=0.94:saturation=0.62:gamma=1.10',
+    'colorbalance=rs=0.04:bs=-0.03:rm=0.04:gm=0.01:bm=-0.04:rh=0.04:gh=0.03:bh=-0.03',
+    "curves=all='0/0.14 0.5/0.54 1/0.95'",
+    'vignette=PI/6', 'noise=alls=6:allf=t+u',
+  ].join(','),
+};
+// fit to 9:16, a little zoom, and an even-pixel centre crop (an odd crop left a coloured line on the edge)
+const FIT = `scale=${Math.round(W * ZOOM / 2) * 2}:${Math.round(H * ZOOM / 2) * 2}:force_original_aspect_ratio=increase,` +
+  `crop=${W}:${H}:floor((iw-${W})/4)*2:floor((ih-${H})/4)*2,setsar=1`;
 
 const lines = JSON.parse(readFileSync(path.join(HERE, 'lines.json'), 'utf8'));
 const clips = readdirSync(CLIPS).filter((f) => f.toLowerCase().endsWith('.mp4') && !SKIP.includes(f)).sort();
 const probe = (f) => +execFileSync(tool('ffprobe'), ['-v', 'error', '-show_entries', 'format=duration', '-of', 'csv=p=0', f]).toString();
+const ff = (args) => execFileSync(tool('ffmpeg'), ['-v', 'error', '-y', ...args], { stdio: ['ignore', 'inherit', 'inherit'] });
 
 // seeded shuffle so a day always gets the same clips, and neighbouring days get different ones
 function pick(day) {
@@ -43,60 +63,95 @@ function pick(day) {
 }
 
 // long lines get a second longer so they can be read
-const duration = (text) => (text.split(/\s+/).length > 22 ? 7 : 6);
+const words = (l) => `${l.title} ${l.body}`.split(/\s+/).length;
+const duration = (l) => (words(l) > 22 ? 7 : 6);
 
-async function textPng(page, text, file) {
-  const esc = (t) => t.replace(/&/g, '&amp;').replace(/</g, '&lt;');
-  const html = esc(text).replace(/(\p{Extended_Pictographic}️?)/gu, '<span class="e">$1</span>');
+async function textPng(page, { title, body }, file) {
+  const esc = (t) => t.replace(/&/g, '&amp;').replace(/</g, '&lt;')
+    .replace(/(\p{Extended_Pictographic}️?)/gu, '<span class="e">$1</span>');
+  const tSize = title.length <= 26 ? 124 : title.length <= 40 ? 100 : 84;
   await page.setContent(`<!doctype html><html><head><style>
-    @font-face { font-family: Figtree; src: url(data:font/woff2;base64,${FONT_B64}) format('woff2'); font-weight: 300 900; }
+    @font-face { font-family: Figtree; src: url(data:font/woff2;base64,${BODY_FONT}) format('woff2'); font-weight: 300 900; }
+    @font-face { font-family: Cute; src: url(data:font/woff2;base64,${TITLE_FONT}) format('woff2'); }
     html, body { margin: 0; width: ${W}px; height: ${H}px; background: transparent; }
-    .t { position: absolute; left: 80px; right: 80px; top: 360px; text-align: center;
-         font: 800 70px/1.18 Figtree, sans-serif; color: ${INK}; letter-spacing: -0.5px;
-         -webkit-text-stroke: 11px #fff; paint-order: stroke fill; }
-    .e { -webkit-text-stroke: 0; font-family: 'Segoe UI Emoji', sans-serif; }
-  </style></head><body><div class="t">${html}</div></body></html>`, { waitUntil: 'load' });
+    .wrap { position: absolute; left: 70px; right: 70px; top: 300px; text-align: center; }
+    .title { font: 400 ${tSize}px/1.02 Cute, cursive; color: ${RED}; -webkit-text-stroke: 14px #fff;
+             paint-order: stroke fill; margin-bottom: 34px; filter: drop-shadow(0 4px 10px rgba(0,0,0,.25)); }
+    .title, .body { text-wrap: balance; }  /* even line lengths, no lone last word */
+    .body { font: 600 54px/1.5 Figtree, sans-serif; color: #000; }
+    .body span.hl { background: #fff; padding: 6px 18px; border-radius: 12px;
+                    -webkit-box-decoration-break: clone; box-decoration-break: clone; }
+    .e { font-family: 'Segoe UI Emoji', sans-serif; -webkit-text-stroke: 0; }
+  </style></head><body><div class="wrap">
+    <div class="title">${esc(title)}</div>
+    <div class="body"><span class="hl">${esc(body)}</span></div>
+  </div></body></html>`, { waitUntil: 'load' });
   await page.evaluate(() => document.fonts.ready);
   await page.screenshot({ path: file, omitBackground: true });
 }
 
-async function render(page, { day, text }) {
-  const total = duration(text);
+async function render(page, line, look) {
+  const { day } = line;
+  const total = duration(line);
   const picks = pick(day);
   const lens = [...Array(QUICK).fill(QUICK_LEN), +(total - QUICK * QUICK_LEN).toFixed(2)];
   const speeds = [...Array(QUICK).fill(SPEED_QUICK), SPEED_HERO];
   const png = path.join(OUT, `.day-${day}-text.png`);
-  await textPng(page, text, png);
+  await textPng(page, line, png);
 
-  const args = ['-v', 'error', '-y'];
+  const args = [];
   const chains = [];
   picks.forEach((f, i) => {
     const src = path.join(CLIPS, f);
     const need = lens[i] * speeds[i];
     const start = Math.max(0, Math.min(1, probe(src) - need - 0.1)); // skip the first second when there's room
     args.push('-ss', String(start), '-t', String(need + 0.2), '-i', src);
-    chains.push(`[${i}:v]setpts=PTS/${speeds[i]},fps=${FPS},scale=${W}:${H}:force_original_aspect_ratio=increase,` +
-      `crop=${W}:${H},setsar=1,trim=duration=${lens[i]},setpts=PTS-STARTPTS[v${i}]`);
+    chains.push(`[${i}:v]setpts=PTS/${speeds[i]},fps=${FPS},${FIT},${LEVEL},trim=duration=${lens[i]},setpts=PTS-STARTPTS[v${i}]`);
   });
   const n = picks.length;
   args.push('-loop', '1', '-t', String(total), '-i', png);
   args.push('-f', 'lavfi', '-t', String(total), '-i', 'anullsrc=r=48000:cl=stereo');
   const fc = [...chains,
-    `${picks.map((_, i) => `[v${i}]`).join('')}concat=n=${n}:v=1:a=0,${GRADE}[bg]`,
+    `${picks.map((_, i) => `[v${i}]`).join('')}concat=n=${n}:v=1:a=0,${LOOKS[look]}[bg]`,
     `[bg][${n}:v]overlay=0:0:shortest=1,format=yuv420p[out]`].join(';');
   const file = path.join(OUT, `day-${day}.mp4`);
   args.push('-filter_complex', fc, '-map', '[out]', '-map', `${n + 1}:a`, '-t', String(total),
     '-c:v', 'libx264', '-preset', 'medium', '-crf', '18', '-r', String(FPS), '-c:a', 'aac', '-shortest', '-movflags', '+faststart', file);
-  execFileSync(tool('ffmpeg'), args, { stdio: ['ignore', 'inherit', 'inherit'] });
-  console.log(`day ${day}: ${file}  (${total}s; clips ${picks.join(', ')})`);
+  ff(args);
+  rmSync(png, { force: true });
+  console.log(`day ${day}: ${file}  (${total}s, look ${look}; clips ${picks.join(', ')})`);
 }
 
-const want = process.argv.slice(2);
-const todo = want.includes('all') ? lines : lines.filter((l) => want.includes(String(l.day)));
-if (!todo.length) { console.log('usage: node build.mjs <day> [day...] | all'); process.exit(1); }
+// 8 clips across the range (snow, candles, pink flat-lay, ornaments...) in three rows: raw / A / B
+function sheet() {
+  const some = ['12948642_1080_1920_30fps.mp4', '6283475-hd_1080_1920_30fps.mp4', '5715559-hd_1080_1920_30fps.mp4',
+    '14988566_1080_1920_60fps.mp4', '12726790_2160_3840_30fps.mp4', '19387113-uhd_2160_3840_60fps.mp4',
+    '14846655_2160_3840_30fps.mp4', 'uhd_60fps.mp4'];
+  const args = [];
+  some.forEach((f) => args.push('-ss', '2', '-i', path.join(CLIPS, f)));
+  const rows = { raw: '', A: `,${LEVEL},${LOOKS.A}`, B: `,${LEVEL},${LOOKS.B}` };
+  const parts = [];
+  some.forEach((_, i) => parts.push(`[${i}:v]trim=end_frame=1,${FIT},split=3[r${i}][a${i}][b${i}]`));
+  for (const [k, chain] of Object.entries(rows)) {
+    const tag = k === 'raw' ? 'r' : k.toLowerCase();
+    some.forEach((_, i) => parts.push(`[${tag}${i}]null${chain},scale=270:480[${tag}s${i}]`));
+    parts.push(`${some.map((_, i) => `[${tag}s${i}]`).join('')}hstack=inputs=${some.length}[row${tag}]`);
+  }
+  parts.push('[rowr][rowa][rowb]vstack=inputs=3[out]');
+  const file = path.join(OUT, 'filter-compare.png');
+  ff([...args, '-filter_complex', parts.join(';'), '-map', '[out]', '-frames:v', '1', file]);
+  console.log(`sheet: ${file}  (top: original, middle: look A, bottom: look B)`);
+}
+
+const argv = process.argv.slice(2);
+const li = argv.indexOf('--look');
+const look = li >= 0 ? argv.splice(li, 2)[1].toUpperCase() : 'A';
 if (!existsSync(OUT)) mkdirSync(OUT, { recursive: true });
+if (argv.includes('sheet')) { sheet(); process.exit(0); }
+const todo = argv.includes('all') ? lines : lines.filter((l) => argv.includes(String(l.day)));
+if (!todo.length || !LOOKS[look]) { console.log('usage: node build.mjs <day> [day...] | all | sheet  [--look A|B]'); process.exit(1); }
 const b = await launch();
 const page = await b.newPage();
 await page.setViewport({ width: W, height: H });
-for (const l of todo) await render(page, l);
+for (const l of todo) await render(page, l, look);
 await b.close();
