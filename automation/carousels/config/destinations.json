@@ -119,12 +119,13 @@
     },
     {
       "keyword": "EARN1K",
-      "freebie": "To decide (Mercedes picked the keyword 2026-10-23)",
-      "url": "",
-      "leadsTo": "$1K Club + Challenge (https://theambitiondepartment.com/1k-club/)",
+      "freebie": "$1K Challenge page (same flow and wording as CHALLENGE, email signup, group Freebie: EARN1K)",
+      "url": "https://theambitiondepartment.com/1k-club/?utm_source=instagram&utm_medium=dm&utm_campaign=earn1k",
+      "leadsTo": "$1K Club + Challenge",
       "live": false,
-      "dmApproved": false,
-      "dm": ""
+      "dmApproved": true,
+      "dm": "Here's the $1K Challenge: {url} It's $45 one time, with 30 days, your personal $1K Plan and 25 Reel ideas every week.",
+      "_note": "Set up 2026-11-03 for the Christmas countdown Reels; switched on in Chat Manager after her OK."
     },
     {
       "keyword": "SPOOKY",
