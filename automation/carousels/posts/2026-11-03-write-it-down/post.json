@@ -16,10 +16,12 @@
   "media": {},
   "slides": [
     {
-      "layout": "tilecover",
-      "big": "138",
-      "text": "experiments agree: write your progress down",
-      "hand": "what to track for $1,000 →"
+      "layout": "photocover",
+      "type": "caps",
+      "text": "138 experiments agree: write your progress down",
+      "accent": "138",
+      "media": "60167eb7b6",
+      "focus": "center 50%"
     },
     {
       "layout": "hook2",

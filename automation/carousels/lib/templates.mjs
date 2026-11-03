@@ -137,7 +137,7 @@ export function slideHtml(post, slide, i, ctx) {
         slide.media = slide.media || post.media?.pano;
       }
       const m = slide.media ? mediaFor(slide.media, slide.focus) : null;
-      if (['photo', 'pano', 'image', 'numcover', 'hookcover'].includes(slide.layout) && !m) throw new Error(`slide ${i + 1}: photo layout needs slide.media`);
+      if (['photo', 'pano', 'image', 'numcover', 'hookcover', 'photocover'].includes(slide.layout) && !m) throw new Error(`slide ${i + 1}: photo layout needs slide.media`);
       // photoBg: any layout over a full-bleed photo of Mercedes, with a navy scrim behind the text (white text, sky accents).
       const pb = slide.photoBg ? mediaFor(slide.photoBg, slide.photoFocus) : null;
       const pbHtml = pb ? `<div class="bg pbg" style="background-image:url('${pb.url}');background-position:${pb.focus || 'center'}"></div><div class="scrim scrim-${slide.scrim || 'bottom'}"></div>` : '';
@@ -161,7 +161,7 @@ export function slideHtml(post, slide, i, ctx) {
 
 export function pageHtml(post, ctx) {
   const { brand } = ctx;
-  const fams = [...new Set([...Object.values(brand.fonts).map((f) => f.google), 'Covered By Your Grace'])].map((g) => `family=${g.replace(/ /g, '+')}`).join('&');
+  const fams = [...new Set([...Object.values(brand.fonts).map((f) => f.google), 'Covered By Your Grace', 'Archivo:wdth,wght@62..125,800'])].map((g) => `family=${g.replace(/ /g, '+')}`).join('&');
   const font = brand.fonts.highlight.family, disp = brand.fonts.display.family;
   const sz = SIZES[post.style];
   return `<!doctype html><html><head><meta charset="utf-8">

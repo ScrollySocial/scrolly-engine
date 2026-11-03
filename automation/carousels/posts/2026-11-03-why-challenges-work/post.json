@@ -16,9 +16,12 @@
   "media": {},
   "slides": [
     {
-      "layout": "tilecover",
+      "layout": "photocover",
+      "type": "caps",
       "text": "There's science behind turning your goal into a challenge",
-      "hand": "here's what it found →"
+      "accent": "a challenge",
+      "media": "95d583fddb",
+      "focus": "center 70%"
     },
     {
       "layout": "hook2",

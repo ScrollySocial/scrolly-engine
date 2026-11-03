@@ -53,6 +53,16 @@ export const LAYOUTS = {
   numcover: (s, m) => `<div class="bg" style="background-image:url('${m.url}');background-position:${m.focus || 'center 10%'}"></div><div class="nc-fade nc-${s.pos || 'bottom'}"></div><div class="nc nc-${s.pos || 'bottom'}"><div class="nc-big">${esc(s.big)}</div><div class="nc-line">${esc(s.text)}</div>${s.hand ? `<div class="nc-hand">${esc(s.hand)}</div>` : ''}</div>`,
   // hookcover: her photo + navy fade + bold caps hook + handwriting. pos: top | bottom.
   hookcover: (s, m) => `<div class="bg" style="background-image:url('${m.url}');background-position:${m.focus || 'center 20%'}"></div><div class="nc-fade nc-${s.pos || 'top'}"></div><div class="nc nc-${s.pos || 'top'}"><div class="hk">${esc(s.text)}</div>${s.hand ? `<div class="nc-hand">${esc(s.hand)}</div>` : ''}</div>`,
+  // photocover (Mercedes 2026-11-03, the cohesive-feed cover): her photo + soft top fade, white hook, s.accent words in sky.
+  // s.type: serif = tall Instrument Serif with the accent in italic (like @withnicoleyoung), for short personal hooks;
+  // caps = condensed Archivo caps (like @liz.on.the.web), for teaching and data hooks. Size steps by hook length.
+  photocover: (s, m) => {
+    const caps = s.type === 'caps', t = caps ? s.text.toUpperCase() : s.text, a = caps ? (s.accent || '').toUpperCase() : s.accent || '';
+    const k = a ? t.indexOf(a) : -1;
+    const html = k < 0 ? esc(t) : `${esc(t.slice(0, k))}<b>${esc(a)}</b>${esc(t.slice(k + a.length))}`;
+    const n = s.text.length, fs = caps ? (n <= 30 ? 196 : n <= 45 ? 172 : 150) : (n <= 30 ? 210 : n <= 45 ? 176 : 150);
+    return `<div class="bg" style="background-image:url('${m.url}');background-position:${m.focus || 'center 30%'}"></div><div class="pc-fade"></div><div class="pc pc-${caps ? 'caps' : 'serif'}" style="font-size:${fs}px">${html}</div>`;
+  },
   // tilecover: flat palette tile. With s.big: big sky number + bold line + handwriting. Without: serif statement + handwriting.
   tilecover: (s) => s.big
     ? `<div class="tc"><div class="tc-big">${esc(s.big)}</div><div class="tc-line">${esc(s.text)}</div>${s.hand ? `<div class="tc-hand">${esc(s.hand)}</div>` : ''}</div>`
@@ -166,6 +176,14 @@ export const LAYOUT_CSS = (brand) => `
 .hk{font-size:118px;font-weight:800;text-transform:uppercase;line-height:.98;letter-spacing:-.01em;text-wrap:balance}
 .nc-hand,.tc-hand,.ck-q,.ck-foot{font:400 80px/1.1 'Covered By Your Grace',cursive;letter-spacing:.03em}
 .nc-hand{color:#f7f3ec;margin-top:34px}
+.lay-photocover{padding:0}
+.pc-fade{position:absolute;left:0;right:0;top:0;height:900px;background:linear-gradient(rgba(10,25,48,.62) 35%,rgba(10,25,48,0))}
+.pc{position:absolute;left:60px;right:60px;top:70px;text-align:center;color:#fff;text-wrap:balance;text-shadow:0 6px 40px rgba(10,25,48,.4)}
+.pc b{color:#4da3ff}
+.pc-serif{font-family:'${brand.fonts.headline.family}',serif;line-height:.9;letter-spacing:-.025em}
+.pc-serif b{font-weight:400;font-style:italic;font-size:1.18em}
+.pc-caps{font-family:Archivo,sans-serif;font-weight:800;font-stretch:62%;line-height:.95}
+.pc-caps b{font-weight:800}
 .lay-tilecover,.lay-checkcover{padding:100px 60px}
 .tc{width:100%;text-align:center;display:flex;flex-direction:column;align-items:center}
 .tc-big{font-family:'${brand.fonts.headline.family}',serif;font-size:520px;line-height:1;color:#4da3ff;letter-spacing:-.02em}

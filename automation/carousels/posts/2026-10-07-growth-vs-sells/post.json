@@ -16,16 +16,12 @@
   "media": {},
   "slides": [
     {
-      "layout": "checkcover",
-      "palette": "sky",
-      "question": "which are you posting?",
-      "options": [
-        "Growth",
-        "Sales"
-      ],
-      "tick": 0,
-      "hand": "(you need both) →",
-      "text": "Which are you posting? Growth or sales"
+      "layout": "photocover",
+      "type": "serif",
+      "text": "Which are you posting? Growth or sales",
+      "accent": "Growth or sales",
+      "media": "1e629b09ae",
+      "focus": "center 100%"
     },
     {
       "layout": "hook2",

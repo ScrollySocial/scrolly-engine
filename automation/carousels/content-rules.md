@@ -33,6 +33,10 @@ Working draft from Mercedes. Expect several rounds of revision. Change this file
 ## 4. Cover (slide 1)
 - A specific, honest hook that makes the topic and the reason to read clear.
 - The carousel must deliver the cover's promise.
+- Look (Mercedes 2026-11-03, for a cohesive grid): layout `photocover` = her photo, soft top fade, white hook, the key
+  words (`accent`) in bright sky blue. Mix two types: `serif` (tall serif, accent in italic, like @withnicoleyoung) for
+  short personal hooks; `caps` (condensed caps, like @liz.on.the.web) for teaching and data hooks. Keep words off her face.
+  Retired for covers: dark-photo block caps (`hookcover`), flat colour tiles, tick-box covers.
 
 ## 5. Slide 2: a unique iteration of slide 1 (Mercedes, 2026-10-07)
 - Slide 2 is a SECOND HOOK: a different version of the slide 1 hook, making the same promise from a new angle, so it works as the cover for anyone Instagram shows the carousel to starting at slide 2.

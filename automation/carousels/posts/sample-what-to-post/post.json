@@ -17,11 +17,12 @@
   "media": {},
   "slides": [
     {
-      "layout": "hookcover",
-      "media": "b01077b718",
-      "pos": "top",
+      "layout": "photocover",
+      "type": "serif",
       "text": "No idea what to post today?",
-      "hand": "film this →"
+      "accent": "what to post",
+      "media": "542d2ebb5f",
+      "focus": "center 60%"
     },
     {
       "layout": "hook2",

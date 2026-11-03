@@ -16,17 +16,12 @@
   "media": {},
   "slides": [
     {
-      "layout": "checkcover",
-      "palette": "sky",
-      "question": "Do 30-day challenges actually work?",
-      "options": [
-        "Always",
-        "Depends what's in them",
-        "Never"
-      ],
-      "tick": 1,
-      "hand": "what the research says →",
-      "text": "Do 30-day challenges actually work?"
+      "layout": "photocover",
+      "type": "caps",
+      "text": "Do 30-day challenges actually work?",
+      "accent": "30-day challenges",
+      "media": "473beb9747",
+      "focus": "center 80%"
     },
     {
       "layout": "hook2",

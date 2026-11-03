@@ -16,26 +16,12 @@
   "media": {},
   "slides": [
     {
-      "layout": "tilecover",
-      "palette": "navy",
+      "layout": "photocover",
+      "type": "serif",
       "text": "The 7-day organic traffic plan",
-      "hand": "day 1 starts here →",
-      "doodles": [
-        {
-          "k": "star",
-          "x": 120,
-          "y": 130,
-          "w": 150,
-          "fill": true
-        },
-        {
-          "k": "star",
-          "x": 840,
-          "y": 1120,
-          "w": 110,
-          "c": "white"
-        }
-      ]
+      "accent": "7-day",
+      "media": "f5e7ef379a",
+      "focus": "center 80%"
     },
     {
       "layout": "hook2",

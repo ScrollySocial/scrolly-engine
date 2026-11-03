@@ -16,21 +16,12 @@
   "media": {},
   "slides": [
     {
-      "layout": "hookcover",
-      "media": "265ec9a722",
-      "focus": "center 50%",
-      "pos": "top",
+      "layout": "photocover",
+      "type": "serif",
       "text": "How long should your Reel be?",
-      "hand": "the data has an answer →",
-      "doodles": [
-        {
-          "k": "star",
-          "x": 830,
-          "y": 1130,
-          "w": 140,
-          "fill": true
-        }
-      ]
+      "accent": "How long",
+      "media": "265ec9a722",
+      "focus": "center 60%"
     },
     {
       "layout": "numcover",
