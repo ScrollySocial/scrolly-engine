@@ -13,7 +13,7 @@ const HERE = path.dirname(fileURLToPath(import.meta.url));
 let OUT = path.join(HERE, 'out', 'quotes');
 const EXPORTS = path.resolve(cfg('media').exportsDir, '../ig-posts/quotes');
 const ASSETS = path.resolve(HERE, '../../website/scrolly-site/assets');
-const FONTS = 'https://fonts.googleapis.com/css2?family=Jost:wght@400;500;700&family=Instrument+Serif&family=Covered+By+Your+Grace&family=Space+Mono:wght@700&family=Lily+Script+One&family=Molle:ital@1&family=Caprasimo&family=Sansita+Swashed:wght@900&family=Sonsie+One&family=Shrikhand&family=Oleo+Script:wght@700&family=Lobster&family=Gloock&family=DM+Serif+Display&family=Fraunces:opsz,wght@9..144,600&family=Cormorant+Garamond:wght@600&family=Italiana&family=Abril+Fatface&family=Alfa+Slab+One&family=Rubik+Mono+One&display=block';
+const FONTS = 'https://fonts.googleapis.com/css2?family=Jost:wght@400;500;700&family=Instrument+Serif&family=Covered+By+Your+Grace&family=Space+Mono:wght@700&family=Varela+Round&family=Arimo:wght@600&family=Lily+Script+One&family=Molle:ital@1&family=Caprasimo&family=Sansita+Swashed:wght@900&family=Sonsie+One&family=Shrikhand&family=Oleo+Script:wght@700&family=Lobster&family=Gloock&family=DM+Serif+Display&family=Fraunces:opsz,wght@9..144,600&family=Cormorant+Garamond:wght@600&family=Italiana&family=Abril+Fatface&family=Alfa+Slab+One&family=Rubik+Mono+One&display=block';
 const C = { cream: '#f7f3ec', navy: '#0a1930', sky: '#4da3ff', mist: '#dfe4f0' };
 
 // The 14 quotes (planner cards "Quote 1" to "Quote 14"); credit = the checked author, or Unknown.
@@ -426,9 +426,51 @@ const strips2 = (text, max) => text.toUpperCase().replace(/[’]/g, "'").split('
   if (last && (last + ' ' + w).length <= max) rows[rows.length - 1] = last + ' ' + w; else rows.push(w);
   return rows;
 }, []);
+// Realistic tape (Mercedes 2026-11-03: "the letters look too fake"). LABEL=emboss: embossed label-maker tape like her
+// photo (black glossy tape, raised whitened letters, each letter a little off its line). LABEL=print: thermal
+// label-maker tape (white laminated tape, flat printed black letters). Unset = the first flat version.
+const KIND = process.env.LABEL || '';
+const GRAIN = `url("data:image/svg+xml,${encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="160" height="160"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="1.4" numOctaves="2" stitchTiles="stitch"/><feColorMatrix values="0 0 0 0 .5  0 0 0 0 .5  0 0 0 0 .5  0 0 0 .5 0"/></filter><rect width="160" height="160" filter="url(#n)"/></svg>')}")`;
+const jitter = (row, seed) => [...row].map((ch, k) => {
+  if (ch === ' ') return '<i class="sp"> </i>';
+  const r = ((seed * 31 + k * 17) % 13) / 13 - .5, r2 = ((seed * 7 + k * 29) % 11) / 11 - .5;
+  return `<i style="transform:translate(${(r2 * 1.6).toFixed(1)}px,${(r * 3).toFixed(1)}px) rotate(${(r * 2.2).toFixed(1)}deg)">${esc(ch)}</i>`;
+}).join('');
+const tape = (q, rows, fs) => {
+  const emb = KIND === 'emboss';
+  const css = emb ? `
+  .t { position: relative; font: 700 ${fs}px/1 'Varela Round', Arial, sans-serif; letter-spacing: .2em; color: #ecebe6; white-space: nowrap;
+    padding: ${Math.round(fs * .36)}px ${Math.round(fs * .62)}px ${Math.round(fs * .32)}px ${Math.round(fs * .82)}px; border-radius: 2px;
+    background: ${GRAIN}, linear-gradient(#262626, #0d0d0d 48%, #161616); background-blend-mode: overlay, normal;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.16), inset 0 -2px 2px rgba(0,0,0,.7), 0 2px 1px rgba(0,0,0,.45), 0 10px 16px rgba(10,25,48,.32); }
+  .t::after { content: ''; position: absolute; left: 0; right: 0; top: 10%; height: 28%; background: linear-gradient(rgba(255,255,255,.10), rgba(255,255,255,0)); border-radius: 2px; pointer-events: none; }
+  .t i { display: inline-block; font-style: normal; filter: blur(.35px);
+    text-shadow: 0 -1px 0 rgba(0,0,0,.85), 0 1px 0 rgba(255,255,255,.45), 0 0 4px rgba(255,255,255,.22), 1px 2px 2px rgba(0,0,0,.55); }`
+    : `
+  .t { position: relative; font: 600 ${fs}px/1 Arimo, Arial, sans-serif; letter-spacing: .04em; color: #141414; white-space: nowrap;
+    padding: ${Math.round(fs * .34)}px ${Math.round(fs * .56)}px ${Math.round(fs * .3)}px; border-radius: ${Math.round(fs * .16)}px;
+    background: ${GRAIN}, linear-gradient(#fefefc, #f1f0eb 60%, #e9e8e2); background-blend-mode: soft-light, normal;
+    box-shadow: inset 0 1px 0 #fff, inset 0 -1px 1px rgba(0,0,0,.12), 0 1px 1px rgba(0,0,0,.25), 0 8px 14px rgba(10,25,48,.28); }
+  .t::after { content: ''; position: absolute; left: 0; right: 0; top: 0; height: 45%; background: linear-gradient(rgba(255,255,255,.55), rgba(255,255,255,0)); border-radius: inherit; pointer-events: none; }
+  .t i { display: inline-block; font-style: normal; opacity: .93; }`;
+  const tilt = [-1.6, 1.1, -.6, 1.6, -1.2, .8, -1.4, 1.3], nudge = [-14, 18, -6, 10, -18, 8, -10, 14];
+  return { css: css + `\n  .t i.sp { width: .5em; }\n  .t.cred { font-size: ${Math.round(fs * .62)}px; }`,
+    html: rows.map((r, i) => `<div class="t" style="transform:rotate(${tilt[i % 8]}deg) translateX(${nudge[i % 8]}px)">${emb ? jitter(r, q.n * 10 + i) : esc(r)}</div>`).join('') };
+};
 const labels = (q) => {
   const n = q.text.length, max = n <= 50 ? 13 : n <= 90 ? 16 : 19, fs = n <= 50 ? 62 : n <= 90 ? 50 : 42;
-  const rows = strips2(q.text, max);
+  const rows = strips2(q.text, KIND ? max + 3 : max);
+  if (KIND) {
+    const T = tape(q, rows, KIND === 'print' ? Math.round(fs * 1.15) : fs);
+    const cred = q.by === 'Unknown' ? `<div class="unk${[2, 7, 10, 12].includes(q.n) ? ' ink' : ''}">unknown</div>`
+      : `<div class="t cred" style="transform:rotate(1.4deg);margin-top:${Math.round(fs * .3)}px">${KIND === 'emboss' ? jitter(credit(q.by).replace('~ ', '- ').toUpperCase(), q.n) : esc(credit(q.by).replace('~ ', '- ').toUpperCase())}</div>`;
+    return `<style>${BASE}
+  .paint { position: absolute; inset: 0; background: url('${typeof q.paint[0] === 'number' ? MET(q.paint[0]) : fileUrl(path.join(HERE, 'assets', 'photos', q.paint[0] + '.jpg'))}') ${q.paint[1]}/${q.paint[2] || 'cover'} no-repeat; }
+  .lab { position: absolute; left: 0; right: 0; top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; align-items: center; gap: ${Math.round(fs * .38)}px; }
+  .unk { margin-top: ${Math.round(fs * .4)}px; font: 500 30px/1 Jost, Arial, sans-serif; letter-spacing: .24em; text-transform: uppercase; color: rgba(255,255,255,.9); text-shadow: 0 1px 8px rgba(10,25,48,.55); }
+  .unk.ink { color: #0a1930; font-weight: 600; text-shadow: 0 0 10px rgba(255,255,255,.9), 0 0 3px rgba(255,255,255,.9); }${T.css}
+</style><div class="paint"></div><div class="lab">${T.html}${cred}</div>`;
+  }
   return `<style>${BASE}
   .paint { position: absolute; inset: 0; background: url('${typeof q.paint[0] === 'number' ? MET(q.paint[0]) : fileUrl(path.join(HERE, 'assets', 'photos', q.paint[0] + '.jpg'))}') ${q.paint[1]}/${q.paint[2] || 'cover'} no-repeat; }
   .lab { position: absolute; left: 0; right: 0; top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; align-items: center; gap: ${Math.round(fs * .42)}px; }
@@ -451,7 +493,7 @@ const list = QUOTES.map((q) => (isLabels ? { ...q, paint: (BLUE[q.n] || {}).pain
   .filter((q) => q && q.tile && (!only.length || only.includes(q.n)));
 if (isBlue) OUT = path.join(HERE, 'out', 'quotes-blue');
 if (isWhite) OUT = path.join(HERE, 'out', 'quotes-white');
-if (isLabels) OUT = path.join(HERE, 'out', 'quotes-labels');
+if (isLabels) OUT = path.join(HERE, 'out', KIND ? `quotes-labels-${KIND}` : 'quotes-labels');
 
 mkdirSync(OUT, { recursive: true });
 mkdirSync(EXPORTS, { recursive: true });
