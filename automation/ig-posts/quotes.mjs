@@ -13,7 +13,7 @@ const HERE = path.dirname(fileURLToPath(import.meta.url));
 let OUT = path.join(HERE, 'out', 'quotes');
 const EXPORTS = path.resolve(cfg('media').exportsDir, '../ig-posts/quotes');
 const ASSETS = path.resolve(HERE, '../../website/scrolly-site/assets');
-const FONTS = 'https://fonts.googleapis.com/css2?family=Jost:wght@400;500;700&family=Instrument+Serif&family=Covered+By+Your+Grace&family=Lily+Script+One&family=Molle:ital@1&family=Caprasimo&family=Sansita+Swashed:wght@900&family=Sonsie+One&family=Shrikhand&family=Oleo+Script:wght@700&family=Lobster&family=Gloock&family=DM+Serif+Display&family=Fraunces:opsz,wght@9..144,600&family=Cormorant+Garamond:wght@600&family=Italiana&family=Abril+Fatface&family=Alfa+Slab+One&family=Rubik+Mono+One&display=block';
+const FONTS = 'https://fonts.googleapis.com/css2?family=Jost:wght@400;500;700&family=Instrument+Serif&family=Covered+By+Your+Grace&family=Space+Mono:wght@700&family=Lily+Script+One&family=Molle:ital@1&family=Caprasimo&family=Sansita+Swashed:wght@900&family=Sonsie+One&family=Shrikhand&family=Oleo+Script:wght@700&family=Lobster&family=Gloock&family=DM+Serif+Display&family=Fraunces:opsz,wght@9..144,600&family=Cormorant+Garamond:wght@600&family=Italiana&family=Abril+Fatface&family=Alfa+Slab+One&family=Rubik+Mono+One&display=block';
 const C = { cream: '#f7f3ec', navy: '#0a1930', sky: '#4da3ff', mist: '#dfe4f0' };
 
 // The 14 quotes (planner cards "Quote 1" to "Quote 14"); credit = the checked author, or Unknown.
@@ -415,13 +415,36 @@ const white = (q) => `<style>${BASE}
   .by { bottom: 170px; font: 500 28px/1 Jost, Arial, sans-serif; letter-spacing: .22em; text-transform: uppercase; color: #8f96a6; }
 </style><div class="q">${esc(q.text)}</div><div class="by">${esc(cr(q.by))}</div>`;
 
-const TILES = { starry, wand, constellation, moon, balloon, sail, quiet, tortoise, balloon2, rope, athlete, ribbon, note, sticker, collage, dreamy, blue, white };
-const isBlue = process.argv.includes('--blue'), isWhite = process.argv.includes('--white');
+// Label-maker set (Mercedes 2026-11-03, her embossed-label photo): the quote punched out as white label-maker strips,
+// black raised capitals, stuck at slight angles on her blue photos. Preview only: node quotes.mjs --labels [n ...].
+const strips2 = (text, max) => text.toUpperCase().replace(/[’]/g, "'").split(' ').reduce((rows, w) => {
+  const last = rows[rows.length - 1];
+  if (last && (last + ' ' + w).length <= max) rows[rows.length - 1] = last + ' ' + w; else rows.push(w);
+  return rows;
+}, []);
+const labels = (q) => {
+  const n = q.text.length, max = n <= 50 ? 13 : n <= 90 ? 16 : 19, fs = n <= 50 ? 62 : n <= 90 ? 50 : 42;
+  const rows = strips2(q.text, max);
+  return `<style>${BASE}
+  .paint { position: absolute; inset: 0; background: url('${fileUrl(path.join(HERE, 'assets', 'photos', q.paint[0] + '.jpg'))}') ${q.paint[1]}/cover no-repeat; }
+  .lab { position: absolute; left: 0; right: 0; top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; align-items: center; gap: ${Math.round(fs * .42)}px; }
+  .s { font: 700 ${fs}px/1 'Space Mono', monospace; letter-spacing: .32em; color: #111; padding: ${Math.round(fs * .34)}px ${Math.round(fs * .5)}px ${Math.round(fs * .3)}px ${Math.round(fs * .82)}px;
+    background: linear-gradient(#fbfbf8, #ecebe6); border-radius: 3px; box-shadow: 0 6px 12px rgba(10,25,48,.28), inset 0 1px 0 #fff;
+    text-shadow: 0 1px 0 rgba(255,255,255,.75), 0 -1px 0 rgba(0,0,0,.35); white-space: nowrap; }
+  .s.cred { font-size: ${Math.round(fs * .62)}px; }
+</style><div class="paint"></div><div class="lab">${rows.map((r, i) => `<div class="s" style="transform:rotate(${[-1.6, 1.1, -.6, 1.6, -1.2, .8, -1.4, 1.3][i % 8]}deg) translateX(${[-14, 18, -6, 10, -18, 8, -10, 14][i % 8]}px)">${esc(r)}</div>`).join('')}
+<div class="s cred" style="transform:rotate(1.4deg);margin-top:${Math.round(fs * .3)}px">${esc(credit(q.by).replace('~ ', '- ').toUpperCase())}</div></div>`;
+};
+
+const TILES = { starry, wand, constellation, moon, balloon, sail, quiet, tortoise, balloon2, rope, athlete, ribbon, note, sticker, collage, dreamy, blue, white, labels };
+const isBlue = process.argv.includes('--blue'), isWhite = process.argv.includes('--white'), isLabels = process.argv.includes('--labels');
 const only = process.argv.slice(2).filter((a) => !a.startsWith('--')).map(Number);
-const list = QUOTES.map((q) => (isWhite ? { ...q, tile: 'white' } : isBlue ? BLUE[q.n] && { ...q, ...BLUE[q.n], tile: 'blue' } : DREAMY[q.n] ? { ...q, ...DREAMY[q.n], tile: 'dreamy' } : q))
+const KEEP_PAINT = { 6: ['poppy-field-0', 'center'], 9: ['clouds-blue-sky-meadow-0', 'center'], 13: ['blue-sky-balloon-0', '66% center'] }; // label previews only
+const list = QUOTES.map((q) => (isLabels ? { ...q, paint: (BLUE[q.n] || {}).paint || KEEP_PAINT[q.n], tile: 'labels' } : isWhite ? { ...q, tile: 'white' } : isBlue ? BLUE[q.n] && { ...q, ...BLUE[q.n], tile: 'blue' } : DREAMY[q.n] ? { ...q, ...DREAMY[q.n], tile: 'dreamy' } : q))
   .filter((q) => q && q.tile && (!only.length || only.includes(q.n)));
 if (isBlue) OUT = path.join(HERE, 'out', 'quotes-blue');
 if (isWhite) OUT = path.join(HERE, 'out', 'quotes-white');
+if (isLabels) OUT = path.join(HERE, 'out', 'quotes-labels');
 
 mkdirSync(OUT, { recursive: true });
 mkdirSync(EXPORTS, { recursive: true });
@@ -436,7 +459,7 @@ for (const q of list) {
   await pg.evaluate(() => { for (const el of document.querySelectorAll('[data-fit], .fit')) { const max = el.dataset.fit ? +el.dataset.fit : 480; let fs = parseFloat(getComputedStyle(el).fontSize); while ((el.scrollHeight > max || el.scrollWidth > el.clientWidth) && fs > 40) { fs -= 2; el.style.fontSize = fs + 'px'; } } });
   const png = path.join(OUT, `quote-${q.n}.png`);
   await pg.screenshot({ path: png });
-  if (!isBlue && !isWhite) copyFileSync(png, path.join(EXPORTS, `quote-${q.n}.png`));
+  if (!isBlue && !isWhite && !isLabels) copyFileSync(png, path.join(EXPORTS, `quote-${q.n}.png`));
   console.log(`image  quote-${q.n}`);
 }
 await browser.close();
