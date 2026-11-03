@@ -197,7 +197,7 @@ async function textLayers(page, line, base) {
   return { ...box, files };
 }
 
-async function layout(page, { day, title, body, top }) {
+async function layout(page, { day, title, body, top, noTitle }) {
   const esc = (t) => t.replace(/&/g, '&amp;').replace(/</g, '&lt;')
     .replace(/(\p{Extended_Pictographic}️?)/gu, '<span class="e">$1</span>');
   const plain = title.replace(/[*~]/g, '');
@@ -225,7 +225,7 @@ async function layout(page, { day, title, body, top }) {
                     -webkit-box-decoration-break: clone; box-decoration-break: clone; }
     .e { font-family: 'Segoe UI Emoji', sans-serif; -webkit-text-stroke: 0; }
   </style></head><body><div class="wrap">
-    <div class="title${mixed ? ' mixed' : ''}">${titleHtml}</div>
+    ${noTitle ? '' : `<div class="title${mixed ? ' mixed' : ''}">${titleHtml}</div>`}
     <div class="body"><span class="hl">${esc(body)}</span></div>
   </div></body></html>`, { waitUntil: 'load' });
   await page.evaluate(() => document.fonts.ready);
@@ -324,9 +324,12 @@ function scrim(low) {
 }
 
 // Covers (her pick 2026-11-03: a pause from the Reel, a mix of Christmas shots and good ones of her, no bad faces).
+// No Christmas title on covers (Mercedes 2026-11-03, for a cohesive grid): only the white caption box, so every cover
+// is rebuilt from its clip rather than taken from the Reel.
 // Value = seconds into the Reel. { at, top } = the grid only shows the middle 3:4 band (y 240-1680), so when the Reel's
 // text sits higher than that, the cover rebuilds that frame from its clip with the text moved down to `top`.
 const COVERS = { 51: 3.8, 50: 2.3, 49: { at: 2.3, top: 300 }, 48: 3.8, 47: 5.4, 45: 2.3, 44: 2.3, 30: 5.4 };
+const COVER_CLIP = { 45: '14697192-hd_1080_1620_30fps.mp4', 44: '20585555-hd_1080_1920_30fps.mp4' }; // marshmallow mug, cardinal
 const slug = (day) => `christmas-countdown-day-${day}`;
 
 // one folder per Reel in the Reel exports (what the planner looks in): <slug>/<slug>.mp4 + <slug>/cover.png
@@ -340,18 +343,20 @@ async function covers(page, days) {
     const mp4 = path.join(OUT, `day-${day}.mp4`);
     copyFileSync(mp4, path.join(dir, `${slug(day)}.mp4`));
     const file = path.join(dir, 'cover.png');
-    if (!spec.top) {
-      ff(['-ss', String(at), '-i', mp4, '-frames:v', '1', file]);
-    } else {
+    {
       const line = lines.find((l) => l.day === day);
-      const { picks, lens, speeds, starts } = timing(line);
-      let i = 0, from = 0;
+      // the clip list has moved on since some Reels were rendered: pin the clip their cover frame actually showed
+      if (COVER_CLIP[day] && SCHEDULE[day]) SCHEDULE[day] = SCHEDULE[day].map((c, k) => (k === Math.min(QUICK, Math.floor(at / QUICK_LEN)) ? path.join(CLIPS, COVER_CLIP[day]) : c));
+      // an approved day keeps no clip list (it's never re-rendered): its cover frame comes from her own end clip
+      const { picks, lens, speeds, starts } = SCHEDULE[day] ? timing(line)
+        : { picks: [path.join(BROLL, HER[day])], lens: [99], speeds: [SPEED_HERO], starts: [0] };
+      let i = 0, from = SCHEDULE[day] ? 0 : QUICK * QUICK_LEN;
       while (i < picks.length - 1 && at >= from + lens[i] - XF) { from += lens[i] - XF; i++; }
       const bg = path.join(OUT, `.cover-${day}-bg.png`), txt = path.join(OUT, `.cover-${day}-text.png`);
       ff(['-ss', String(starts[i] + (at - from) * speeds[i]), '-i', picks[i], '-frames:v', '1',
         '-vf', `${FIT}${isHers(picks[i]) ? '' : `,${PHONE}`},${LOOKS.C}`, bg]);
-      await textPng(page, { ...line, top: spec.top }, txt);
-      ff(['-i', bg, '-i', scrim(spec.top >= 900), '-i', txt, '-filter_complex', '[0:v][1:v]overlay[a];[a][2:v]overlay',
+      await textPng(page, { ...line, top: spec.top ?? textTop(day), noTitle: true }, txt);
+      ff(['-i', bg, '-i', scrim((spec.top ?? textTop(day)) >= 900), '-i', txt, '-filter_complex', '[0:v][1:v]overlay[a];[a][2:v]overlay',
         '-frames:v', '1', file]);
       rmSync(bg, { force: true }); rmSync(txt, { force: true });
     }
