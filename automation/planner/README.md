@@ -26,6 +26,18 @@ don't count (their Pins do). A Ready card with no date isn't on the calendar. Ta
 (date-only cards say "No time yet"); tap a post for the same popup as the feed preview, or a Pin for its image. Each
 day links to that app's feed preview.
 
+## Carousels review (built 2026-11-03)
+`#carousels`: every carousel already made, so she can pick what to post. Sources: the carousel engine's exports
+(OneDrive `exports/carousels/<date>-<slug>` with `automation/carousels/posts/<id>/post.json`; tests, samples and pinned
+concept boards left out) and the 10 $1K Club promo carousels (`k1-launch/content/promo-carousels/dist`, old Scrolly look
+and $40 price, so they can only be marked Needs fixing or Skip). Filters: To review, Will post, Needs fixing, Skipped,
+Posted (a card with that `carouselId` has a Posted lane), All. Tap one for every slide + the caption.
+Her choices go to `data/carousel-review.json`. **Post it** (engine only) makes a card at Ready on Instagram with the
+export's caption, or moves the existing card's Instagram lane up to Ready; Queue it from the grid as usual.
+
+**Old UGC posts:** Buffer still lists the July-August UGC account posts she deleted from Instagram. `FEED_START`
+(2026-10-01) in `planner.html` keeps anything Buffer sent before it off the grid and the calendar.
+
 ## Feed preview (built 2026-11-02)
 The Buffer section is now a phone-style profile per app (Instagram, TikTok, YouTube; the nav links `#ch-Instagram` etc.
 open it). Top left = posts last: Ready cards not in Buffer yet (blue dashed), Buffer drafts, Buffer's queue (navy time

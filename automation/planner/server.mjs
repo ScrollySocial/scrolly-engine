@@ -50,6 +50,84 @@ const CAROUSEL_EXPORTS = MEDIA_CFG.exportsDir || '';
 const MEDIA_ROOT = MEDIA_CFG.photosDir ? resolve(MEDIA_CFG.photosDir, '..') : '';
 const LOGO = join(here, '..', '..', 'Scrolly Organic Engine', 'brand', 'assets', 'ambition-department-logo-navy.png');
 
+// ---- Carousels already made (her review: which can be posted) ----
+// Two sources: the carousel engine's exports (OneDrive exports/carousels/<id>, with posts/<id>/post.json) and the
+// $1K Club promo carousels (k1-launch/content/promo-carousels/dist, old Scrolly branding and the old $40 price).
+// Tests, style samples and pinned-grid concept boards are left out. Her choices: data/carousel-review.json.
+const CAROUSEL_POSTS = join(here, '..', 'carousels', 'posts');
+const PROMO = join(here, '..', 'k1-launch', 'content', 'promo-carousels', 'dist');
+const REVIEW_FILE = join(DATA, 'carousel-review.json');
+const DECISIONS = ['post', 'fix', 'skip'];
+const slidesIn = (dir) => {
+  try {
+    return readdirSync(dir).filter((f) => /^slide-\d+\.png$/.test(f)).sort();
+  } catch {
+    return [];
+  }
+};
+const readText = (f) => {
+  try {
+    return readFileSync(f, 'utf8').trim();
+  } catch {
+    return '';
+  }
+};
+function carousels() {
+  const review = readJson(REVIEW_FILE, {});
+  const out = [];
+  let engine = [];
+  try {
+    engine = readdirSync(CAROUSEL_EXPORTS).filter((d) => /^\d{4}-\d\d-\d\d-/.test(d) && existsSync(join(CAROUSEL_POSTS, d, 'post.json')));
+  } catch {}
+  for (const id of engine) {
+    const slides = slidesIn(join(CAROUSEL_EXPORTS, id));
+    if (!slides.length) continue;
+    const post = readJson(join(CAROUSEL_POSTS, id, 'post.json'), {});
+    out.push({ id, source: 'engine', made: id.slice(0, 10), title: post.brief?.topic || id.slice(11).replace(/-/g, ' '),
+      slides: slides.map((f) => `/carousel-img/${id}/${f}`), caption: readText(join(CAROUSEL_EXPORTS, id, 'caption.txt')), review: review[id] || null });
+  }
+  // captions.md: "## <slug>" then a fenced caption
+  const md = readText(join(PROMO, 'captions.md'));
+  const caps = Object.fromEntries([...md.matchAll(/^## (\S+)[\s\S]*?```\r?\n([\s\S]*?)```/gm)].map((m) => [m[1], m[2].trim()]));
+  let promo = [];
+  try {
+    promo = readdirSync(PROMO).filter((d) => /^\d\d-[\w-]+$/.test(d));
+  } catch {}
+  for (const slug of promo) {
+    const slides = slidesIn(join(PROMO, slug));
+    if (!slides.length) continue;
+    const id = `promo-${slug}`;
+    out.push({ id, source: 'promo', made: '2026-09', title: (caps[slug] || slug).split('\n')[0], slides: slides.map((f) => `/promo-img/${slug}/${f}`),
+      caption: caps[slug] || '', note: 'Old Scrolly look and the old $40 price. Needs a rebuild in the new look before it can post.', review: review[id] || null });
+  }
+  return out;
+}
+// Her choice on one carousel. "post" on an engine carousel also puts it on the planner: a new card at Ready on Instagram
+// (caption from the export), or the existing card's Instagram lane moved up to Ready.
+function reviewCarousel({ id, decision }) {
+  const c = carousels().find((x) => x.id === id);
+  if (!c) throw Object.assign(new Error('no such carousel'), { code: 404 });
+  if (decision !== null && !DECISIONS.includes(decision)) throw Object.assign(new Error('bad choice'), { code: 400 });
+  if (decision === 'post' && c.source !== 'engine') throw Object.assign(new Error(c.note), { code: 400 });
+  const review = readJson(REVIEW_FILE, {});
+  if (decision === null) delete review[id];
+  else review[id] = { decision, at: new Date().toISOString() };
+  writeJson(REVIEW_FILE, review);
+  if (decision === 'post') {
+    const card = ideas().find((x) => x.carouselId === id && !x.archived);
+    const early = (l) => !l || ['Idea', 'Script', 'Film', 'Edit'].includes(l.stage);
+    if (!card) {
+      saveIdea({ title: `${c.title} (carousel)`, format: 'Carousel', carouselId: id, notes: `Added from the carousel review ${new Date().toISOString().slice(0, 10)}.`,
+        lanes: { instagram: { stage: 'Ready', caption: c.caption } } });
+    } else if (early(card.lanes.instagram)) {
+      const lane = { ...(card.lanes.instagram || {}), stage: 'Ready' };
+      if (!lane.caption) lane.caption = c.caption;
+      saveIdea({ ...card, lanes: { ...card.lanes, instagram: lane } });
+    }
+  }
+  return review[id] || null;
+}
+
 // ---- Pins ----
 const STATUS_FILE = join(DATA, 'pin-status.json');
 const MARKS = ['Live', 'Missing', 'Deleted']; // what she saw on Pinterest; no mark = not checked yet. Deleted = she removed it before it posted.
@@ -199,6 +277,7 @@ http
           options: { platforms: PLATFORMS, stages: STAGES, pinStages: PIN_STAGES, formats: FORMATS, keywords: keywords(), reelCovers: reelCovers() },
           ideas: ideas(),
           pins: pins(),
+          carousels: carousels(),
           buffer: await buffer(url.searchParams.has('refresh')),
         });
       }
@@ -243,6 +322,9 @@ http
         cache = null; // the next page load reads Buffer fresh
         return send(res, 200, { moved });
       }
+      if (req.method === 'POST' && url.pathname === '/api/carousel-review') {
+        return send(res, 200, { review: reviewCarousel(await readBody(req)), ideas: ideas() });
+      }
       if (req.method === 'POST' && url.pathname === '/api/feed-order') {
         return send(res, 200, { ideas: saveFeedOrder(await readBody(req)) });
       }
@@ -269,6 +351,11 @@ http
       const slide = url.pathname.match(/^\/carousel-img\/([\w-]+)\/(slide-\d+\.png)$/);
       if (req.method === 'GET' && slide) {
         const f = join(CAROUSEL_EXPORTS, slide[1], slide[2]);
+        if (existsSync(f)) return send(res, 200, readFileSync(f), TYPES['.png']);
+      }
+      const promoSlide = url.pathname.match(/^\/promo-img\/(\d\d-[\w-]+)\/(slide-\d+\.png)$/);
+      if (req.method === 'GET' && promoSlide) {
+        const f = join(PROMO, promoSlide[1], promoSlide[2]);
         if (existsSync(f)) return send(res, 200, readFileSync(f), TYPES['.png']);
       }
       // Finished images in OneDrive Scrolly Media (quote posts, Reel covers), for the feed preview. Images only, inside that folder.

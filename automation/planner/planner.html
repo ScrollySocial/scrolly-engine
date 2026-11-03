@@ -193,6 +193,16 @@
   .cday .by { font-size: 15px; color: var(--muted); line-height: 1.3; overflow: hidden; }
   .cday .by span { display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   @media (max-width: 700px) { .cday { min-height: 58px; padding: 4px; } .cday .by { display: none; } .cday .n { font-size: 20px; } .cal { gap: 2px; } }
+  .cars { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 12px; }
+  .car { display: grid; gap: 6px; align-content: start; text-align: left; background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 8px; font: inherit; color: var(--ink); cursor: pointer; }
+  .car:hover { border-color: var(--sky); }
+  .car img { width: 100%; aspect-ratio: 3 / 4; object-fit: cover; border-radius: 8px; background: var(--mist); }
+  .car .t { font-weight: 650; line-height: 1.3; }
+  #carDlg { width: min(96vw, 980px); max-width: none; max-height: 94vh; }
+  #carBody { padding: 18px; display: grid; gap: 12px; }
+  .strip { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 8px; scroll-snap-type: x mandatory; }
+  .strip img { height: min(56vh, 480px); width: auto; aspect-ratio: 3 / 4; border-radius: 8px; border: 1px solid var(--line); flex: none; scroll-snap-align: start; }
+  .primary.on, .ghost.on { outline: 3px solid var(--pink); outline-offset: 2px; }
   #dayDlg { width: min(94vw, 640px); max-width: none; max-height: 92vh; }
   #dayBody { padding: 18px; display: grid; gap: 12px; }
   .dlist { display: grid; gap: 8px; margin: 0; padding: 0; list-style: none; }
@@ -209,6 +219,7 @@
   <p class="sub" id="sub">Loading…</p>
   <nav>
     <a class="chip" href="#calendar">Calendar</a>
+    <a class="chip" href="#carousels">Carousels</a>
     <a class="chip" href="#ideas">Ideas</a>
     <a class="chip" href="#pinterest">Pinterest</a>
     <a class="chip" href="#ch-Instagram">Instagram</a>
@@ -230,6 +241,13 @@
       <span class="m" id="calTotal"></span>
     </div>
     <div class="cal" id="cal"></div>
+  </section>
+
+  <section id="carousels" style="scroll-margin-top:56px">
+    <h2>Carousels</h2>
+    <p class="sub">Every carousel already made, so you can pick what to post. Tap one to see all its slides and the caption.</p>
+    <div class="row" id="carFilter" style="margin:14px 0 14px"></div>
+    <div class="cars" id="carGrid"></div>
   </section>
 
   <section id="ideas">
@@ -274,6 +292,7 @@
 <dialog id="zoom"><img alt=""></dialog>
 <dialog id="editor"><form method="dialog" id="ideaForm"></form></dialog>
 <dialog id="postDlg"><div id="postBody"></div></dialog>
+<dialog id="carDlg"><div id="carBody"></div></dialog>
 <dialog id="dayDlg"><div id="dayBody"></div></dialog>
 <dialog id="queueDlg"><div id="queueBody" style="padding:20px;display:grid;gap:12px"></div></dialog>
 
@@ -328,6 +347,10 @@ function renderPins() {
     </div>`).join('')}</div></div>`).join('') : '<p class="empty">No Pins here.</p>';
 }
 
+// Buffer still lists the old UGC account's posts (July-August 2026) that she deleted from Instagram. Her Ambition Department
+// posts start 2026-10-14, so anything Buffer sent before October stays off the grid and the calendar.
+const FEED_START = '2026-10-01';
+const oldAccount = (p) => p.status === 'sent' && (p.sentAt || p.dueAt || '') < FEED_START;
 const FREE_PLAN_LIMIT = 10; // Buffer Free: 10 scheduled posts across all channels
 const DAYS = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
 const fmtClock = (hm) => {
@@ -377,7 +400,7 @@ function feedItems(app) {
       text: l.caption || '', title: l.title || i.title, rank: 0, t: l.feedOrder || 1e9 }); // her dragged order; top left posts last
   }
   for (const p of posts) {
-    if (items.some((x) => x.post?.id === p.id) || p.igType === 'story') continue; // Stories never show on the grid
+    if (items.some((x) => x.post?.id === p.id) || p.igType === 'story' || oldAccount(p)) continue; // Stories never show on the grid
     const st = ['scheduled', 'sending', 'needs_approval'].includes(p.status) ? 'queued' : ['sent', 'error'].includes(p.status) ? p.status : 'draft';
     const card = state.ideas.find((i) => i.lanes[app.key]?.bufferId === p.id);
     items.push({ st, card, post: p, img: (p.kind === 'video' && card && cardImage(card)) || p.thumb || (card && cardImage(card)),
@@ -575,6 +598,69 @@ $('phone').addEventListener('drop', (e) => {
 });
 $('phone').addEventListener('dragend', () => { dragFrom = null; clearDrop(); });
 
+// ---- Carousels already made: her review of which can post ----
+const CAR_ST = { review: 'To review', post: 'Will post', fix: 'Needs fixing', skip: 'Skipped', posted: 'Posted' };
+let carFilter = 'review';
+try { carFilter = localStorage.getItem('planner.carFilter') || 'review'; } catch {}
+let carShown = [];
+const carCard = (c) => state.ideas.find((i) => i.carouselId === c.id && !i.archived);
+function carState(c) {
+  const card = carCard(c);
+  if (card && Object.values(card.lanes).some((l) => l && ['Posted', 'Live'].includes(l.stage))) return 'posted';
+  return c.review?.decision || 'review';
+}
+function carStage(c) {
+  const card = carCard(c);
+  const lanes = card ? Object.entries(card.lanes).filter(([, l]) => l) : [];
+  return lanes.length ? lanes.map(([p, l]) => `${PNAME[p]}: ${l.stage}`).join(' · ') : 'Not in the planner yet';
+}
+function renderCars() {
+  const list = state.carousels || [];
+  const n = (st) => list.filter((c) => carState(c) === st).length;
+  $('carFilter').innerHTML = [...Object.keys(CAR_ST), 'all'].filter((st) => st === 'all' || st === 'review' || n(st))
+    .map((st) => `<button class="chip" type="button" data-carf="${st}" aria-pressed="${st === carFilter}">${st === 'all' ? 'All' : CAR_ST[st]} · ${st === 'all' ? list.length : n(st)}</button>`).join('');
+  carShown = list.filter((c) => carFilter === 'all' || carState(c) === carFilter)
+    .sort((a, b) => (a.source === b.source ? b.made.localeCompare(a.made) : a.source === 'engine' ? -1 : 1));
+  $('carGrid').innerHTML = carShown.length ? carShown.map((c, k) => `<button class="car" type="button" data-car="${k}">
+      <img src="${esc(c.slides[0])}" alt="" loading="lazy">
+      <span class="t">${esc(c.title)}</span>
+      <span class="m">${c.slides.length} slides · ${esc(c.source === 'promo' ? '$1K promo, old look' : `made ${fmtDate(c.made)}`)}</span>
+      <span class="row" style="margin:0"><span class="pill ${carState(c) === 'posted' ? 'sent' : carState(c) === 'skip' ? 'deleted' : 'scheduled'}">${esc(CAR_ST[carState(c)])}</span></span>
+    </button>`).join('') : `<p class="empty">Nothing here.${carFilter === 'review' ? ' Every carousel has a choice.' : ''}</p>`;
+}
+function openCar(c) {
+  const st = carState(c);
+  const card = carCard(c);
+  const btn = (d, label, cls = 'ghost') => `<button class="${cls}${c.review?.decision === d ? ' on' : ''}" type="button" data-carpick="${d}" data-carid="${esc(c.id)}">${label}</button>`;
+  const help = c.source === 'engine'
+    ? '"Post it" puts it on your Instagram grid as Ready (and makes the planner card if there isn\'t one). Queue it from there.'
+    : 'This one can\'t post as it is. "Needs fixing" keeps it on your list for a rebuild.';
+  $('carBody').innerHTML = `
+    <div class="head"><h2 style="margin:0">${esc(c.title)}</h2><button class="ghost" type="button" data-carclose>Close</button></div>
+    <p class="m" style="margin:0">${c.slides.length} slides · ${esc(carStage(c))}${c.note ? `<br><b>${esc(c.note)}</b>` : ''}</p>
+    <div class="strip">${c.slides.map((u, k) => `<img src="${esc(u)}" alt="Slide ${k + 1}" loading="lazy">`).join('')}</div>
+    <div><b>Caption</b><div class="qcap" style="margin-top:6px">${esc(c.caption) || '<span class="empty">No caption saved</span>'}</div></div>
+    ${st === 'posted' ? '<p class="m" style="margin:0">Already posted.</p>' : `<div class="actions"><span style="display:flex;flex-wrap:wrap;gap:8px">
+      ${c.source === 'engine' ? btn('post', 'Post it', 'primary') : ''}${btn('fix', 'Needs fixing')}${btn('skip', 'Skip it')}
+      ${c.review ? `<button class="ghost" type="button" data-carpick="" data-carid="${esc(c.id)}">Undo my choice</button>` : ''}</span>
+      ${card ? `<button class="ghost" type="button" data-open-card="${esc(card.id)}">Open the card</button>` : ''}</div>
+    <p class="m" style="margin:0">${help}</p>`}`;
+  if (!$('carDlg').open) $('carDlg').showModal();
+}
+async function pickCar(id, decision) {
+  const r = await fetch('/api/carousel-review', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ id, decision: decision || null }) });
+  const body = await r.json();
+  if (!r.ok) return alert(body.error || 'Could not save that.');
+  state.ideas = body.ideas;
+  const c = state.carousels.find((x) => x.id === id);
+  c.review = body.review;
+  renderCars();
+  renderIdeas();
+  renderBuffer();
+  renderCal();
+  openCar(c);
+}
+
 // ---- Calendar: every dated post (Buffer queue + sent, planner lanes with a date, Pins), one count per day ----
 const CAL_APPS = [...APPS, { name: 'Pinterest', key: 'pinterest' }];
 const SHORT = { Instagram: 'IG', TikTok: 'TT', YouTube: 'YT', Pinterest: 'Pins' };
@@ -598,7 +684,7 @@ function calItems() {
     const posts = state.buffer.posts.filter((p) => p.channel === app.name);
     for (const p of posts) {
       const when = p.status === 'sent' ? p.sentAt || p.dueAt : p.dueAt;
-      if (!when || p.status === 'draft') continue;
+      if (!when || p.status === 'draft' || oldAccount(p)) continue;
       const st = ['scheduled', 'sending', 'needs_approval'].includes(p.status) ? 'queued' : ['sent', 'error'].includes(p.status) ? p.status : 'draft';
       const card = state.ideas.find((i) => i.lanes[app.key]?.bufferId === p.id);
       out.push({ app, day: dayKey(when), when, st, label: FEED_ST[st][0], card, post: p,
@@ -989,6 +1075,7 @@ async function load(refresh) {
     state = await r.json();
     $('sub').textContent = `Today is ${fmtDay(state.now)}. Times are US Eastern.`;
     renderCal();
+    renderCars();
     renderIdeas();
     renderPins();
     renderBuffer();
@@ -1011,6 +1098,16 @@ document.addEventListener('click', async (e) => {
     if ($('dayDlg').open) $('dayDlg').close();
     history.replaceState(null, '', appLink.getAttribute('href'));
     feedFromHash();
+  } else if (t.closest('[data-car]')) {
+    openCar(carShown[t.closest('[data-car]').dataset.car]);
+  } else if (t.dataset.carid) {
+    pickCar(t.dataset.carid, t.dataset.carpick);
+  } else if (t.hasAttribute('data-carclose') || t.id === 'carDlg') {
+    $('carDlg').close();
+  } else if (t.dataset.carf) {
+    carFilter = t.dataset.carf;
+    try { localStorage.setItem('planner.carFilter', carFilter); } catch {}
+    renderCars();
   } else if (t.closest('[data-day]')) {
     openDay(t.closest('[data-day]').dataset.day);
   } else if (t.closest('[data-ditem]')) {
@@ -1049,6 +1146,7 @@ document.addEventListener('click', async (e) => {
     renderBuffer();
   } else if (t.dataset.openCard) {
     $('postDlg').close();
+    if ($('carDlg').open) $('carDlg').close();
     openEditor(t.dataset.openCard);
   } else if (t.hasAttribute('data-pclose') || t.id === 'postDlg') {
     $('postDlg').close();
