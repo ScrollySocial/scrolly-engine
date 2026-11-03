@@ -7,8 +7,9 @@
 //   node build.mjs all --look A       render every line in lines.json, one at a time
 //   node build.mjs sheet              before/after still of 8 clips: raw, look C, look A, look B
 //   node build.mjs titles             every day's text on one still, to check them all at once
+//   node build.mjs covers             each Reel + its cover into <exports>/christmas-countdown-day-<n>/ (the planner reads these)
 // Clips: reel-template-pack/assets/Christmas. Output: <exports>/christmas-countdown/ (OneDrive, not git).
-import { readFileSync, readdirSync, mkdirSync, existsSync, rmSync } from 'node:fs';
+import { readFileSync, readdirSync, mkdirSync, existsSync, rmSync, copyFileSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -98,7 +99,7 @@ const LOOKS = {
   C: [
     'eq=contrast=1.04:saturation=1.03',
     'colorbalance=rs=0.02:bs=-0.03:rm=0.01:bm=-0.02:rh=0.02:bh=-0.02',
-    'noise=alls=3:allf=t+u',
+    'format=yuv420p', 'noise=alls=3:allf=t+u', // yuv first: noise straight after colorbalance smeared a red strip down the right edge
   ].join(','),
   // A: warm film. Matte blacks, golden highlights, less colour, glow, grain
   A: [
@@ -106,14 +107,14 @@ const LOOKS = {
     'colorbalance=rs=0.06:gs=0.01:bs=-0.06:rm=0.05:bm=-0.05:rh=0.07:gh=0.02:bh=-0.08',
     "curves=all='0/0.09 0.3/0.3 0.7/0.72 1/0.94'",
     'split[a][b];[b]gblur=sigma=18[g];[a][g]blend=all_mode=screen:all_opacity=0.18',
-    'vignette=PI/5.5', 'noise=alls=7:allf=t+u', // grain after the vignette dithers away its rings
+    'vignette=PI/5.5', 'format=yuv420p', 'noise=alls=7:allf=t+u', // grain after the vignette dithers away its rings
   ].join(','),
   // B: faded cream. Softer and lighter, cream-tinted, very muted colour
   B: [
     'eq=contrast=0.94:saturation=0.62:gamma=1.10',
     'colorbalance=rs=0.04:bs=-0.03:rm=0.04:gm=0.01:bm=-0.04:rh=0.04:gh=0.03:bh=-0.03',
     "curves=all='0/0.14 0.5/0.54 1/0.95'",
-    'vignette=PI/6', 'noise=alls=6:allf=t+u',
+    'vignette=PI/6', 'format=yuv420p', 'noise=alls=6:allf=t+u',
   ].join(','),
 };
 // fit to 9:16, a little zoom, and an even-pixel centre crop (an odd crop left a coloured line on the edge)
@@ -196,7 +197,7 @@ async function textLayers(page, line, base) {
   return { ...box, files };
 }
 
-async function layout(page, { day, title, body }) {
+async function layout(page, { day, title, body, top }) {
   const esc = (t) => t.replace(/&/g, '&amp;').replace(/</g, '&lt;')
     .replace(/(\p{Extended_Pictographic}️?)/gu, '<span class="e">$1</span>');
   const plain = title.replace(/[*~]/g, '');
@@ -211,7 +212,7 @@ async function layout(page, { day, title, body }) {
     @font-face { font-family: Hand; src: url(data:font/woff2;base64,${HAND_FONT}) format('woff2'); }
     @font-face { font-family: Script; src: url(data:font/ttf;base64,${SCRIPT_FONT}); }
     html, body { margin: 0; width: ${W}px; height: ${H}px; background: transparent; }
-    .wrap { position: absolute; left: 70px; right: 70px; top: ${textTop(day)}px; text-align: center; }
+    .wrap { position: absolute; left: 70px; right: 70px; top: ${top ?? textTop(day)}px; text-align: center; }
     /* line-height 1.18: at 1.02 the white outlines of the two lines ran into each other */
     .title { font: 700 ${tSize}px/1.18 Cute, cursive; color: ${RED}; -webkit-text-stroke: 14px #fff;
              paint-order: stroke fill; margin-bottom: 34px; filter: drop-shadow(0 4px 14px rgba(0,0,0,.45)); } /* separates it from white snow */
@@ -230,10 +231,10 @@ async function layout(page, { day, title, body }) {
   await page.evaluate(() => document.fonts.ready);
 }
 
-async function render(page, line, look) {
-  const { day } = line;
+// which stretch of each clip a Reel plays: picks, seconds on screen, speed, where in the clip it starts
+function timing(line) {
   const total = duration(line);
-  const picks = SCHEDULE[day];
+  const picks = SCHEDULE[line.day];
   // each clip runs XF longer than it shows on its own, because neighbours overlap in the crossfade
   const lens = [...Array(QUICK).fill(QUICK_LEN), +(total - QUICK * QUICK_LEN + QUICK * XF).toFixed(2)];
   const durs = picks.map(probe);
@@ -241,14 +242,21 @@ async function render(page, line, look) {
   // her clips can slow to 0.7x (they're 60 fps, so it stays smooth) when they're shorter than the time they fill
   const speeds = lens.map((len, i) => CLIP_RANGE[path.basename(picks[i])]?.speed ?? Math.max(isHers(picks[i]) ? 0.7 : 1,
     Math.min(i < QUICK ? SPEED_QUICK : SPEED_HERO, (durs[i] - 0.3) / len)));
+  // skip the first second when there's room
+  const starts = picks.map((f, i) => CLIP_RANGE[path.basename(f)]?.start ?? Math.max(0, Math.min(1, durs[i] - lens[i] * speeds[i] - 0.1)));
+  return { total, picks, lens, speeds, starts };
+}
+
+async function render(page, line, look) {
+  const { day } = line;
+  const { total, picks, lens, speeds, starts } = timing(line);
   const T = await textLayers(page, line, path.join(OUT, `.day-${day}`));
 
   const args = [];
   const chains = [];
   picks.forEach((f, i) => {
     const need = lens[i] * speeds[i];
-    const start = CLIP_RANGE[path.basename(f)]?.start ?? Math.max(0, Math.min(1, durs[i] - need - 0.1)); // skip the first second when there's room
-    args.push('-ss', String(start), '-t', String(need + 0.3), '-i', f);
+    args.push('-ss', String(starts[i]), '-t', String(need + 0.3), '-i', f);
     // stock is levelled and made to look phone-shot; hers is kept as filmed. tpad holds the last frame if a clip runs short
     const base = `[${i}:v]setpts=PTS/${speeds[i]},fps=${FPS},${FIT}${isHers(f) ? '' : `,${LEVEL},${PHONE}`},` +
       `tpad=stop_mode=clone:stop_duration=1,trim=duration=${lens[i]},setpts=PTS-STARTPTS`;
@@ -315,6 +323,42 @@ function scrim(low) {
   return file;
 }
 
+// Covers (her pick 2026-11-03: a pause from the Reel, a mix of Christmas shots and good ones of her, no bad faces).
+// Value = seconds into the Reel. { at, top } = the grid only shows the middle 3:4 band (y 240-1680), so when the Reel's
+// text sits higher than that, the cover rebuilds that frame from its clip with the text moved down to `top`.
+const COVERS = { 51: 3.8, 50: 2.3, 49: { at: 2.3, top: 300 }, 48: 3.8, 47: 5.4, 45: 2.3, 44: 2.3, 30: 5.4 };
+const slug = (day) => `christmas-countdown-day-${day}`;
+
+// one folder per Reel in the Reel exports (what the planner looks in): <slug>/<slug>.mp4 + <slug>/cover.png
+async function covers(page, days) {
+  for (const day of days) {
+    const spec = COVERS[day];
+    if (spec == null) { console.log(`day ${day}: no cover picked yet`); continue; }
+    const at = spec.at ?? spec;
+    const dir = path.join(P.exports, slug(day));
+    if (!existsSync(dir)) mkdirSync(dir, { recursive: true });
+    const mp4 = path.join(OUT, `day-${day}.mp4`);
+    copyFileSync(mp4, path.join(dir, `${slug(day)}.mp4`));
+    const file = path.join(dir, 'cover.png');
+    if (!spec.top) {
+      ff(['-ss', String(at), '-i', mp4, '-frames:v', '1', file]);
+    } else {
+      const line = lines.find((l) => l.day === day);
+      const { picks, lens, speeds, starts } = timing(line);
+      let i = 0, from = 0;
+      while (i < picks.length - 1 && at >= from + lens[i] - XF) { from += lens[i] - XF; i++; }
+      const bg = path.join(OUT, `.cover-${day}-bg.png`), txt = path.join(OUT, `.cover-${day}-text.png`);
+      ff(['-ss', String(starts[i] + (at - from) * speeds[i]), '-i', picks[i], '-frames:v', '1',
+        '-vf', `${FIT}${isHers(picks[i]) ? '' : `,${PHONE}`},${LOOKS.C}`, bg]);
+      await textPng(page, { ...line, top: spec.top }, txt);
+      ff(['-i', bg, '-i', scrim(spec.top >= 900), '-i', txt, '-filter_complex', '[0:v][1:v]overlay[a];[a][2:v]overlay',
+        '-frames:v', '1', file]);
+      rmSync(bg, { force: true }); rmSync(txt, { force: true });
+    }
+    console.log(`day ${day}: ${dir}`);
+  }
+}
+
 // 8 clips across the range (snow, candles, pink flat-lay, ornaments...) in four rows: raw / C / A / B
 function sheet() {
   const some = ['12948642_1080_1920_30fps.mp4', '6283475-hd_1080_1920_30fps.mp4', '5715559-hd_1080_1920_30fps.mp4',
@@ -358,10 +402,11 @@ if (!existsSync(OUT)) mkdirSync(OUT, { recursive: true });
 if (argv.includes('sheet')) { sheet(); process.exit(0); }
 const todo = (argv.includes('all') ? making : lines.filter((l) => argv.includes(String(l.day))))
   .filter((l) => !APPROVED.has(l.day) || (console.log(`day ${l.day} is approved, left as it is`), false));
-if ((!todo.length && !argv.includes('titles')) || !LOOKS[look]) { console.log('usage: node build.mjs <day> [day...] | all | sheet | titles  [--look A|B]'); process.exit(1); }
+if ((!todo.length && !argv.includes('titles') && !argv.includes('covers')) || !LOOKS[look]) { console.log('usage: node build.mjs <day> [day...] | all | sheet | titles | covers  [--look A|B]'); process.exit(1); }
 const b = await launch();
 const page = await b.newPage();
 await page.setViewport({ width: W, height: H });
 if (argv.includes('titles')) await titles(page);
+if (argv.includes('covers')) await covers(page, Object.keys(COVERS).map(Number));
 for (const l of todo) await render(page, l, look);
 await b.close();
