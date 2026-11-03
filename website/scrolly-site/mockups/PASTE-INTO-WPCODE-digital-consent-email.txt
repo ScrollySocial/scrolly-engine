@@ -1,0 +1,27 @@
+<?php
+/**
+ * Order email confirmation of the digital-products tickbox (2026-11-02).
+ * EU/UK rules want the buyer's "immediate access, no 14-day cancel" choice confirmed back to them in writing (a "durable
+ * medium") once they've bought. The tickbox (digital-consent-checkbox.php) saves the choice on the order; this repeats it in
+ * the customer's processing and completed emails, only on orders where it was ticked.
+ * WPCode: PHP snippet, Auto Insert, Run Everywhere.
+ */
+add_action( 'woocommerce_email_order_details', function ( $order, $sent_to_admin, $plain_text, $email ) {
+	if ( $sent_to_admin || ! is_a( $order, 'WC_Order' ) || ! is_a( $email, 'WC_Email' ) ) {
+		return;
+	}
+	if ( ! in_array( $email->id, array( 'customer_processing_order', 'customer_completed_order' ), true ) ) {
+		return;
+	}
+	// Additional Checkout Fields API saves order-location fields under this key.
+	if ( ! $order->get_meta( '_wc_other/tad/digital-consent' ) ) {
+		return;
+	}
+	$date    = wc_format_datetime( $order->get_date_created() );
+	$message = 'At checkout on ' . $date . ', you asked for immediate access to your digital products and confirmed that once you can download them, all sales are final and you lose the 14-day right to cancel. Our full Refund Policy: ' . home_url( '/refund/' );
+	if ( $plain_text ) {
+		echo "\n" . $message . "\n\n";
+	} else {
+		echo '<p style="margin:0 0 16px;font-size:14px;">' . esc_html( $message ) . '</p>';
+	}
+}, 25, 4 );
