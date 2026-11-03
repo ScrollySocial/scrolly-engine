@@ -157,6 +157,11 @@
   .del { flex: none; display: inline-grid; place-items: center; width: 34px; height: 34px; border-radius: 8px; border: 1px solid var(--line); background: none; color: var(--muted); cursor: pointer; padding: 0; }
   .del:hover, .del:focus-visible { color: var(--warn); border-color: var(--warn); }
   .del svg { pointer-events: none; }
+  .del.lbl { width: auto; gap: 6px; grid-auto-flow: column; padding: 0 12px; font: inherit; font-size: 15px; }
+  .pick { flex: none; width: 22px; height: 22px; margin: 2px 4px 0 0; cursor: pointer; accent-color: var(--warn); }
+  .idea.picked { border-color: var(--warn); }
+  .bulk { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 0 0 10px; }
+  .bulk .m { color: var(--muted); font-size: 15px; }
   .toast { position: fixed; left: 50%; bottom: 20px; transform: translateX(-50%); z-index: 20; display: flex; gap: 14px; align-items: center; background: var(--ink); color: var(--bg); border-radius: 12px; padding: 10px 12px 10px 16px; max-width: calc(100vw - 32px); box-shadow: 0 6px 24px rgb(10 25 48 / .25); }
   .toast .ghost { color: var(--bg); border-color: var(--bg); padding: 4px 14px; }
   #editor { width: min(94vw, 720px); max-width: none; max-height: 92vh; padding: 0; }
@@ -874,28 +879,44 @@ try { ideaGroupFilter = localStorage.getItem('planner.ideaGroup') || 'In progres
 const matches = (i) => !ideaQuery || `${i.title} ${i.hook} ${i.notes} ${i.series} ${i.product}`.toLowerCase().includes(ideaQuery);
 
 // One-click delete on every card, with Undo (a copy stays in data/deleted.json either way)
-const delBtn = (i) => `<button class="del" type="button" data-del="${esc(i.id)}" aria-label="Delete ${esc(i.title)}" title="Delete"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"/></svg></button>`;
+const TRASH = '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"/></svg>';
+// labelled = the word "Delete" beside the icon (Just ideas list, Mercedes 2026-11-03: the icon alone was easy to miss)
+const delBtn = (i, labelled) => `<button class="del${labelled ? ' lbl' : ''}" type="button" data-del="${esc(i.id)}" aria-label="Delete ${esc(i.title)}" title="Delete">${TRASH}${labelled ? 'Delete' : ''}</button>`;
 let undoTimer = null;
-async function deleteCard(id) {
-  const idea = state.ideas.find((x) => x.id === id);
-  if (!idea) return;
-  const r = await fetch('/api/idea-delete', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ id }) });
-  if (!r.ok) return alert(`Couldn't delete: ${(await r.json()).error}`);
-  state.ideas = state.ideas.filter((x) => x.id !== id);
+// Just ideas list: tick several, delete them in one go
+let picked = new Set();
+const deleteCard = (id) => deleteCards([id]);
+async function deleteCards(ids) {
+  const gone = [];
+  for (const id of ids) {
+    const idea = state.ideas.find((x) => x.id === id);
+    if (!idea) continue;
+    const r = await fetch('/api/idea-delete', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ id }) });
+    if (!r.ok) { alert(`Couldn't delete "${idea.title}": ${(await r.json()).error}`); break; }
+    gone.push(idea);
+  }
+  if (!gone.length) return;
+  const ids2 = new Set(gone.map((x) => x.id));
+  state.ideas = state.ideas.filter((x) => !ids2.has(x.id));
+  picked = new Set([...picked].filter((id) => !ids2.has(id)));
   if ($('editor').open) $('editor').close();
   renderIdeas();
   renderBuffer();
   renderCal();
-  $('toast').innerHTML = `<span>Deleted "${esc(idea.title.length > 50 ? `${idea.title.slice(0, 50)}…` : idea.title)}"</span><button class="ghost" type="button" data-undo="${esc(id)}">Undo</button>`;
+  const t = gone[0].title;
+  const what = gone.length > 1 ? `${gone.length} ideas` : `"${esc(t.length > 50 ? `${t.slice(0, 50)}…` : t)}"`;
+  $('toast').innerHTML = `<span>Deleted ${what}</span><button class="ghost" type="button" data-undo="${esc(gone.map((x) => x.id).join(','))}">Undo</button>`;
   $('toast').hidden = false;
   clearTimeout(undoTimer);
   undoTimer = setTimeout(() => { $('toast').hidden = true; }, 10000);
 }
-async function undoDelete(id) {
+async function undoDelete(ids) {
   $('toast').hidden = true;
-  const r = await fetch('/api/idea-restore', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ id }) });
-  if (!r.ok) return alert(`Couldn't undo: ${(await r.json()).error}`);
-  state.ideas.unshift((await r.json()).idea);
+  for (const id of ids.split(',')) {
+    const r = await fetch('/api/idea-restore', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ id }) });
+    if (!r.ok) { alert(`Couldn't undo: ${(await r.json()).error}`); break; }
+    state.ideas.unshift((await r.json()).idea);
+  }
   renderIdeas();
   renderBuffer();
   renderCal();
@@ -924,13 +945,18 @@ function renderIdeas() {
       $('ideaView').innerHTML = '<p class="empty">Nothing here.</p>';
       return;
     }
-    $('ideaView').innerHTML = `<div class="ideas">${shown.map((i) => `
-      <div class="idea" role="button" tabindex="0" data-edit="${esc(i.id)}">
-        <span><span class="t">${esc(i.title)}</span><br><span class="m">${ideaMeta(i) || '&nbsp;'}</span> ${kwBadge(i)}</span>
+    const justIdeas = ideaGroupFilter === 'Just ideas';
+    if (justIdeas) picked = new Set([...picked].filter((id) => shown.some((i) => i.id === id)));
+    const bulk = justIdeas ? `<div class="bulk"><button class="ghost" type="button" data-bulk="all">${picked.size === shown.length ? 'Untick all' : 'Tick all'}</button>
+      <button class="ghost danger" type="button" data-bulk="del"${picked.size ? '' : ' disabled'}>Delete ticked (${picked.size})</button>
+      <span class="m">Just ideas aren't in progress, so delete freely. Undo is there for 10 seconds.</span></div>` : '';
+    $('ideaView').innerHTML = `${bulk}<div class="ideas">${shown.map((i) => `
+      <div class="idea${picked.has(i.id) ? ' picked' : ''}" role="button" tabindex="0" data-edit="${esc(i.id)}">
+        <span style="display:flex;align-items:flex-start">${justIdeas ? `<input type="checkbox" class="pick" data-pick="${esc(i.id)}" aria-label="Tick ${esc(i.title)}"${picked.has(i.id) ? ' checked' : ''}>` : ''}<span><span class="t">${esc(i.title)}</span><br><span class="m">${ideaMeta(i) || '&nbsp;'}</span> ${kwBadge(i)}</span></span>
         <span class="lanes">${state.options.platforms.map((p) => {
           const l = i.lanes[p];
           return `<span class="lane ${laneClass(p, l)}">${PNAME[p]}: ${l ? esc(l.stage) : 'not planned'}</span>`;
-        }).join('')}${delBtn(i)}</span>
+        }).join('')}${delBtn(i, justIdeas)}</span>
       </div>`).join('')}</div>`;
     return;
   }
@@ -1176,6 +1202,21 @@ async function load(refresh) {
 
 document.addEventListener('click', async (e) => {
   const t = e.target;
+  if (t.dataset.pick) { // tick box on a Just ideas row: never opens the card
+    if (t.checked) picked.add(t.dataset.pick); else picked.delete(t.dataset.pick);
+    renderIdeas();
+    return;
+  }
+  if (t.dataset.bulk === 'all') {
+    const rows = [...document.querySelectorAll('[data-pick]')].map((x) => x.dataset.pick);
+    picked = picked.size === rows.length ? new Set() : new Set(rows);
+    renderIdeas();
+    return;
+  }
+  if (t.dataset.bulk === 'del') {
+    if (picked.size && confirm(`Delete ${picked.size} idea${picked.size > 1 ? 's' : ''}?`)) deleteCards([...picked]);
+    return;
+  }
   const edit = t.closest('[data-edit]');
   const appLink = t.closest('a[href^="#ch-"]');
   if (appLink) {
