@@ -98,17 +98,19 @@ function reviewCarousel({ id, decision }) {
   if (decision !== null && !DECISIONS.includes(decision)) throw Object.assign(new Error('bad choice'), { code: 400 });
   if (decision === 'post' && c.source !== 'engine') throw Object.assign(new Error(c.note), { code: 400 });
   const review = readJson(REVIEW_FILE, {});
-  if (decision === null) delete review[id];
-  else review[id] = { decision, at: new Date().toISOString() };
+  const feedOrder = review[id]?.feedOrder;
+  if (decision === null) review[id] = feedOrder ? { feedOrder } : undefined;
+  else review[id] = { ...(feedOrder ? { feedOrder } : {}), decision, at: new Date().toISOString() };
+  if (!review[id]) delete review[id];
   writeJson(REVIEW_FILE, review);
   if (decision === 'post') {
     const card = ideas().find((x) => x.carouselId === id && !x.archived);
     const early = (l) => !l || ['Idea', 'Script', 'Film', 'Edit'].includes(l.stage);
     if (!card) {
       saveIdea({ title: `${c.title} (carousel)`, format: 'Carousel', carouselId: id, notes: `Added from the carousel review ${new Date().toISOString().slice(0, 10)}.`,
-        lanes: { instagram: { stage: 'Ready', caption: c.caption } } });
+        lanes: { instagram: { stage: 'Ready', caption: c.caption, ...(feedOrder ? { feedOrder } : {}) } } });
     } else if (early(card.lanes.instagram)) {
-      const lane = { ...(card.lanes.instagram || {}), stage: 'Ready' };
+      const lane = { ...(card.lanes.instagram || {}), stage: 'Ready', ...(feedOrder ? { feedOrder } : {}) };
       if (!lane.caption) lane.caption = c.caption;
       saveIdea({ ...card, lanes: { ...card.lanes, instagram: lane } });
     }
@@ -162,26 +164,35 @@ function saveIdea(input) {
   return idea;
 }
 
-// Her drag-and-drop on the feed preview: cards in posting order (first posts first) get feedOrder 1, 2, 3... on that
-// app's lane, in one write. Refused whole if any card changed since the page loaded.
+// Her drag-and-drop on the feed preview: posts in posting order (first posts first) get feedOrder 1, 2, 3... Cards keep
+// it on that app's lane; made carousels not picked yet ({ carousel: id }) keep it in carousel-review.json. One write
+// each, refused whole if any card changed since the page loaded.
 function saveFeedOrder({ platform, cards }) {
   if (!PLATFORMS.includes(platform) || !Array.isArray(cards)) throw Object.assign(new Error('bad order'), { code: 400 });
   const list = ideas();
   const now = new Date().toISOString();
-  const picked = cards.map(({ id, updatedAt }) => {
+  const review = readJson(REVIEW_FILE, {});
+  const made = new Set(carousels().map((c) => c.id));
+  cards.forEach((x, n) => {
+    if (!x.carousel) return;
+    if (!made.has(x.carousel)) throw Object.assign(new Error('no such carousel'), { code: 404 });
+    review[x.carousel] = { ...review[x.carousel], feedOrder: n + 1 };
+  });
+  const picked = cards.map((x, n) => [x, n]).filter(([x]) => !x.carousel).map(([{ id, updatedAt }, n]) => {
     const card = list.find((x) => x.id === id);
     if (!card?.lanes[platform]) throw Object.assign(new Error('no such card'), { code: 404 });
     if (updatedAt !== card.updatedAt) {
       throw Object.assign(new Error('A card changed since the page loaded. Reload, then drag again.'), { code: 409 });
     }
-    return card;
+    return [card, n];
   });
-  picked.forEach((card, n) => {
+  picked.forEach(([card, n]) => {
     card.lanes[platform].feedOrder = n + 1;
     card.updatedAt = now;
   });
   writeJson(IDEAS_FILE, { ideas: list });
-  return picked;
+  writeJson(REVIEW_FILE, review);
+  return picked.map(([card]) => card);
 }
 
 // Her Delete button: the card leaves the board; a copy goes to data/deleted.json so a mis-click can be undone.

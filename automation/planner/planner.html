@@ -401,8 +401,9 @@ function feedItems(app) {
     for (const c of state.carousels || []) {
       const l = carCard(c)?.lanes.instagram;
       if (!['review', 'fix'].includes(carState(c)) || (l && !['Idea', 'Script', 'Film', 'Edit'].includes(l.stage))) continue;
+      // same drag group as Ready posts (rank 0); its spot is saved on the review until it gets a Ready card
       items.push({ st: 'made', car: c, card: carCard(c), post: null, img: c.slides[0], kind: 'carousel', text: c.caption, title: c.title,
-        label: c.review?.decision === 'fix' ? 'Needs fixing' : 'To review', rank: -1, t: 0 });
+        label: c.review?.decision === 'fix' ? 'Needs fixing' : 'To review', rank: 0, t: c.review?.feedOrder || 1e9 });
     }
   }
   for (const i of state.ideas) {
@@ -540,7 +541,7 @@ async function moveFeed(from, to) {
   const [it] = group.splice(a, 1);
   group.splice(b, 0, it);
   const app = APPS.find((x) => x.name === feedApp) || APPS[0];
-  const cards = group.slice().reverse().map((x) => ({ id: x.card.id, updatedAt: x.card.updatedAt }));
+  const cards = group.slice().reverse().map((x) => (x.st === 'made' ? { carousel: x.car.id } : { id: x.card.id, updatedAt: x.card.updatedAt }));
   const r = await fetch('/api/feed-order', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ platform: app.key, cards }) });
   const body = await r.json();
   if (!r.ok) {
@@ -551,6 +552,7 @@ async function moveFeed(from, to) {
     const k = state.ideas.findIndex((x) => x.id === saved.id);
     if (k >= 0) state.ideas[k] = saved;
   }
+  group.slice().reverse().forEach((x, n) => { if (x.st === 'made') x.car.review = { ...x.car.review, feedOrder: n + 1 }; });
   renderBuffer();
   renderIdeas();
 }
@@ -646,6 +648,7 @@ function renderCars() {
 function openCar(c) {
   const st = carState(c);
   const card = carCard(c);
+  const k = feedAll.findIndex((x) => x.car === c); // on the Instagram grid: offer Move (phones can't drag)
   const btn = (d, label, cls = 'ghost') => `<button class="${cls}${c.review?.decision === d ? ' on' : ''}" type="button" data-carpick="${d}" data-carid="${esc(c.id)}">${label}</button>`;
   const help = c.source === 'engine'
     ? '"Post it" puts it on your Instagram grid as Ready (and makes the planner card if there isn\'t one). Queue it from there.'
@@ -657,9 +660,10 @@ function openCar(c) {
     <div><b>Caption</b><div class="qcap" style="margin-top:6px">${esc(c.caption) || '<span class="empty">No caption saved</span>'}</div></div>
     ${st === 'posted' ? '<p class="m" style="margin:0">Already posted.</p>' : `<div class="actions"><span style="display:flex;flex-wrap:wrap;gap:8px">
       ${c.source === 'engine' ? btn('post', 'Post it', 'primary') : ''}${btn('fix', 'Needs fixing')}${btn('skip', 'Skip it')}
-      ${c.review ? `<button class="ghost" type="button" data-carpick="" data-carid="${esc(c.id)}">Undo my choice</button>` : ''}</span>
+      ${c.review?.decision ? `<button class="ghost" type="button" data-carpick="" data-carid="${esc(c.id)}">Undo my choice</button>` : ''}</span>
       ${card ? `<button class="ghost" type="button" data-open-card="${esc(card.id)}">Open the card</button>` : ''}</div>
-    <p class="m" style="margin:0">${help}</p>`}`;
+    <p class="m" style="margin:0">${help}</p>`}
+    ${k >= 0 ? `<div class="row" style="margin:0"><span class="m">Move on the Instagram grid:</span><button class="ghost" type="button" data-move="${k}" data-to="-1">← Earlier on the grid</button><button class="ghost" type="button" data-move="${k}" data-to="1">Later on the grid →</button></div>` : ''}`;
   if (!$('carDlg').open) $('carDlg').showModal();
 }
 async function pickCar(id, decision) {
@@ -1146,6 +1150,7 @@ document.addEventListener('click', async (e) => {
     const group = feedAll.filter((x) => MOVABLE(x) && x.rank === feedAll[from].rank);
     const to = group[group.indexOf(feedAll[from]) + Number(t.dataset.to)];
     $('postDlg').close();
+    if ($('carDlg').open) $('carDlg').close();
     if (to) moveFeed(from, feedAll.indexOf(to));
   } else if (t.closest('[data-feed]')) {
     const it = feedAll[t.closest('[data-feed]').dataset.feed];

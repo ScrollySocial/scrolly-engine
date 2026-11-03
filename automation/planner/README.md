@@ -32,7 +32,7 @@ day links to that app's feed preview.
 `_test-*` and pinned concept boards left out). The date shown is the last render, not the folder date. The old-look $1K
 Club promo carousels are left out (Mercedes 2026-11-03: outdated). Filters: To review, Will post, Needs fixing, Skipped,
 Posted (a card with that `carouselId` has a Posted lane), All. Tap one for every slide + the caption.
-They also sit top left on the Instagram feed preview as **To review** tiles (tap = the same review) until picked; Skip takes one off.
+They also sit on the Instagram feed preview as **To review** tiles (tap = the same review) until picked; Skip takes one off. They drag with the Ready posts (phone: Earlier/Later in the popup); their spot is `feedOrder` in carousel-review.json until Post it copies it onto the card's Instagram lane.
 Her choices go to `data/carousel-review.json`. **Post it** makes a card at Ready on Instagram with the
 export's caption, or moves the existing card's Instagram lane up to Ready; Queue it from the grid as usual.
 
