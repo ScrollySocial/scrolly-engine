@@ -327,8 +327,8 @@ function scrim(low) {
 // No Christmas title on covers (Mercedes 2026-11-03, for a cohesive grid): only the white caption box, so every cover
 // is rebuilt from its clip rather than taken from the Reel.
 // Value = seconds into the Reel. { at, top } = the grid only shows the middle 3:4 band (y 240-1680), so when the Reel's
-// text sits higher than that, the cover rebuilds that frame from its clip with the text moved down to `top`.
-const COVERS = { 51: 3.8, 50: 2.3, 49: { at: 2.3, top: 300 }, 48: 3.8, 47: 5.4, 45: 2.3, 44: 2.3, 30: 5.4 };
+// text sits higher than that, `top` moves it down (kept inside y 420-1500 so even a square crop shows it).
+const COVERS = { 51: 3.8, 50: 2.3, 49: { at: 2.3, top: 470 }, 48: { at: 3.8, top: 450 }, 47: 5.4, 45: 2.3, 44: 2.3, 30: 5.4 };
 const COVER_CLIP = { 45: '14697192-hd_1080_1620_30fps.mp4', 44: '20585555-hd_1080_1920_30fps.mp4' }; // marshmallow mug, cardinal
 const slug = (day) => `christmas-countdown-day-${day}`;
 

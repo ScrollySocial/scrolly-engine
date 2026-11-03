@@ -432,8 +432,11 @@ const labels = (q) => {
     background: linear-gradient(#fbfbf8, #ecebe6); border-radius: 3px; box-shadow: 0 6px 12px rgba(10,25,48,.28), inset 0 1px 0 #fff;
     text-shadow: 0 1px 0 rgba(255,255,255,.75), 0 -1px 0 rgba(0,0,0,.35); white-space: nowrap; }
   .s.cred { font-size: ${Math.round(fs * .62)}px; }
+  .unk { margin-top: ${Math.round(fs * .4)}px; font: 500 30px/1 Jost, Arial, sans-serif; letter-spacing: .24em; text-transform: uppercase; color: rgba(255,255,255,.9); text-shadow: 0 1px 8px rgba(10,25,48,.55); }
+  .unk.ink { color: #0a1930; font-weight: 600; text-shadow: 0 0 10px rgba(255,255,255,.9), 0 0 3px rgba(255,255,255,.9); }
 </style><div class="paint"></div><div class="lab">${rows.map((r, i) => `<div class="s" style="transform:rotate(${[-1.6, 1.1, -.6, 1.6, -1.2, .8, -1.4, 1.3][i % 8]}deg) translateX(${[-14, 18, -6, 10, -18, 8, -10, 14][i % 8]}px)">${esc(r)}</div>`).join('')}
-<div class="s cred" style="transform:rotate(1.4deg);margin-top:${Math.round(fs * .3)}px">${esc(credit(q.by).replace('~ ', '- ').toUpperCase())}</div></div>`;
+${q.by === 'Unknown' ? `<div class="unk${[2, 7, 10, 12].includes(q.n) ? ' ink' : ''}">unknown</div>` // no label for unknown: small quiet words (Mercedes 2026-11-03)
+  : `<div class="s cred" style="transform:rotate(1.4deg);margin-top:${Math.round(fs * .3)}px">${esc(credit(q.by).replace('~ ', '- ').toUpperCase())}</div>`}</div>`;
 };
 
 const TILES = { starry, wand, constellation, moon, balloon, sail, quiet, tortoise, balloon2, rope, athlete, ribbon, note, sticker, collage, dreamy, blue, white, labels };
