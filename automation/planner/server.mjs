@@ -380,6 +380,9 @@ http
           return send(res, 200, readFileSync(f), TYPES[extname(f).toLowerCase()]);
         }
       }
+      if (req.method === 'GET' && (url.pathname === '/favicon.svg' || url.pathname === '/favicon.ico')) {
+        return send(res, 200, readFileSync(join(here, 'favicon.svg')), 'image/svg+xml');
+      }
       if (req.method === 'GET' && url.pathname === '/logo.png' && existsSync(LOGO)) return send(res, 200, readFileSync(LOGO), TYPES['.png']);
       // Preview pages Claude writes before queueing (previews/<name>.html), shown to her for approval
       const prev = url.pathname.match(/^\/previews\/([\w-]+\.html)$/);
