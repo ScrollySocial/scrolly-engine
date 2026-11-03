@@ -69,17 +69,18 @@ function pick(day) {
 }
 
 // long lines get a second longer so they can be read
-const words = (l) => `${l.title.replace(/\*/g, '')} ${l.body}`.split(/\s+/).length;
+const words = (l) => `${l.title.replace(/[*~]/g, '')} ${l.body}`.split(/\s+/).length;
 const duration = (l) => (words(l) > 22 ? 7 : 6);
 
 async function textPng(page, { title, body }, file) {
   const esc = (t) => t.replace(/&/g, '&amp;').replace(/</g, '&lt;')
     .replace(/(\p{Extended_Pictographic}️?)/gu, '<span class="e">$1</span>');
-  const plain = title.replace(/\*/g, '');
+  const plain = title.replace(/[*~]/g, '');
   const tSize = plain.length <= 26 ? 132 : plain.length <= 40 ? 108 : 90; // a thin font, so a size up
   const mixed = title.includes('*');
   const alternate = (w) => [...w].map((ch, i) => `<span style="color:${i % 2 ? GREEN : RED}">${ch}</span>`).join('');
-  const titleHtml = esc(title).replace(/\*([^*]+)\*/g, (_, w) => `<span class="script">${alternate(w)}</span>`);
+  const titleHtml = esc(title).replace(/\*([^*]+)\*/g, (_, w) => `<span class="script">${alternate(w)}</span>`)
+    .replace(/~([^~]+)~/g, '<span class="hand">$1</span>'); // ~words~ = that part handwritten on its own line (day 50)
   await page.setContent(`<!doctype html><html><head><style>
     @font-face { font-family: Figtree; src: url(data:font/woff2;base64,${BODY_FONT}) format('woff2'); font-weight: 300 900; }
     @font-face { font-family: Cute; src: url(data:font/ttf;base64,${TITLE_FONT}); font-weight: 700; }
@@ -91,6 +92,7 @@ async function textPng(page, { title, body }, file) {
     .title { font: 700 ${tSize}px/1.18 Cute, cursive; color: ${RED}; -webkit-text-stroke: 14px #fff;
              paint-order: stroke fill; margin-bottom: 34px; filter: drop-shadow(0 4px 10px rgba(0,0,0,.25)); }
     .title.mixed { font: 400 ${tSize}px/1.1 Hand, cursive; }
+    .hand { display: block; font: 400 ${tSize}px/1.1 Hand, cursive; margin-top: 4px; }
     .script { display: block; font: 400 ${Math.round(tSize * 1.25)}px/1.3 Script, cursive; margin-top: 6px; }
     .title, .body { text-wrap: balance; }  /* even line lengths, no lone last word */
     .body { font: 600 54px/1.5 Figtree, sans-serif; color: #000; }
