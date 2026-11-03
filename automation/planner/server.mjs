@@ -105,7 +105,7 @@ function reviewCarousel({ id, decision }) {
   writeJson(REVIEW_FILE, review);
   if (decision === 'post') {
     const card = ideas().find((x) => x.carouselId === id && !x.archived);
-    const early = (l) => !l || ['Idea', 'Script', 'Film', 'Edit'].includes(l.stage);
+    const early = (l) => !l || ['Idea', 'Script', 'Storyboard', 'Film', 'Edit'].includes(l.stage);
     if (!card) {
       saveIdea({ title: `${c.title} (carousel)`, format: 'Carousel', carouselId: id, notes: `Added from the carousel review ${new Date().toISOString().slice(0, 10)}.`,
         lanes: { instagram: { stage: 'Ready', caption: c.caption, ...(feedOrder ? { feedOrder } : {}) } } });

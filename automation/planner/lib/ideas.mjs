@@ -5,7 +5,7 @@ import { randomBytes } from 'node:crypto';
 
 export const PLATFORMS = ['instagram', 'tiktok', 'youtube', 'pinterest'];
 // Buffer platforms. A lane that's null isn't planned for that platform.
-export const STAGES = ['Idea', 'Script', 'Film', 'Edit', 'Ready', 'Scheduled', 'Posted'];
+export const STAGES = ['Idea', 'Script', 'Storyboard', 'Film', 'Edit', 'Ready', 'Scheduled', 'Posted']; // Storyboard added 2026-11-03 (Mercedes)
 // Pins come from the generator and the bulk CSV, so Pinterest has its own steps.
 export const PIN_STAGES = ['Needs Pins', 'Pins made', 'Scheduled', 'Live'];
 export const FORMATS = ['Reel', 'Carousel', 'Single image', 'Short', 'YouTube long-form', 'Live', 'Story', 'Blog post'];

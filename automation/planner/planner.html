@@ -162,6 +162,10 @@
   .idea.picked { border-color: var(--warn); }
   .bulk { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 0 0 10px; }
   .bulk .m { color: var(--muted); font-size: 15px; }
+  .igrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 8px; }
+  .igrid .scard { width: auto; }
+  .scard.picked { border-color: var(--warn); }
+  .scard .top { display: flex; gap: 6px; align-items: flex-start; }
   .toast { position: fixed; left: 50%; bottom: 20px; transform: translateX(-50%); z-index: 20; display: flex; gap: 14px; align-items: center; background: var(--ink); color: var(--bg); border-radius: 12px; padding: 10px 12px 10px 16px; max-width: calc(100vw - 32px); box-shadow: 0 6px 24px rgb(10 25 48 / .25); }
   .toast .ghost { color: var(--bg); border-color: var(--bg); padding: 4px 14px; }
   #editor { width: min(94vw, 720px); max-width: none; max-height: 92vh; padding: 0; }
@@ -237,6 +241,7 @@
     <a class="chip" href="#calendar">Calendar</a>
     <a class="chip" href="#carousels">Carousels</a>
     <a class="chip" href="#ideas">Ideas</a>
+    <a class="chip" href="#progress">In progress</a>
     <a class="chip" href="#pinterest">Pinterest</a>
     <a class="chip" href="#ch-Instagram">Instagram</a>
     <a class="chip" href="#ch-TikTok">TikTok</a>
@@ -271,12 +276,18 @@
       <h2>Ideas</h2>
       <button class="primary" type="button" id="newIdea">+ New idea</button>
     </div>
-    <p class="sub">One card per idea. Each platform moves along on its own, from Idea to Posted.</p>
+    <p class="sub">Ideas not started yet. When one moves to Script it goes to In progress below.</p>
     <div class="row" id="ideaFilter" style="margin:14px 0 10px"></div>
     <input id="ideaSearch" type="search" placeholder="Search ideas" aria-label="Search ideas"
       style="font:inherit;font-size:15px;width:100%;max-width:420px;padding:8px 12px;border:1px solid var(--line);border-radius:999px;background:var(--card);color:var(--ink);margin:0 0 14px">
-    <div class="row" id="ideaStageFilter" style="margin:0 0 14px"></div>
     <div id="ideaView"></div>
+  </section>
+
+  <section id="progress" style="scroll-margin-top:56px">
+    <h2>In progress</h2>
+    <p class="sub">Posts being made, one row per step. Scroll a row sideways. Posted ones live on the feed preview.</p>
+    <div class="row" id="progFilter" style="margin:14px 0 12px"></div>
+    <div id="progView"></div>
   </section>
 
   <section id="pinterest">
@@ -428,7 +439,7 @@ function feedItems(app) {
   if (app.key === 'instagram') {
     for (const c of state.carousels || []) {
       const l = carCard(c)?.lanes.instagram;
-      if (!['review', 'fix'].includes(carState(c)) || (l && !['Idea', 'Script', 'Film', 'Edit'].includes(l.stage))) continue;
+      if (!['review', 'fix'].includes(carState(c)) || (l && !['Idea', 'Script', 'Storyboard', 'Film', 'Edit'].includes(l.stage))) continue;
       // same drag group as Ready posts (rank 0); its spot is saved on the review until it gets a Ready card
       items.push({ st: 'made', car: c, card: carCard(c), post: null, img: c.slides[0], kind: 'carousel', text: c.caption, title: c.title,
         label: c.review?.decision === 'fix' ? 'Needs fixing' : 'To review', rank: 0, t: c.review?.feedOrder || 1e9 });
@@ -873,9 +884,7 @@ function ideaGroup(i) {
   if (ls.length && ls.every((l) => DONE.includes(l.stage) || l.stage === 'Needs Pins')) return ls.some((l) => DONE.includes(l.stage)) ? 'Posted' : 'Just ideas';
   return ls.some((l) => !['Idea', 'Needs Pins'].includes(l.stage)) ? 'In progress' : 'Just ideas';
 }
-let ideaGroupFilter = 'In progress';
 let ideaQuery = '';
-try { ideaGroupFilter = localStorage.getItem('planner.ideaGroup') || 'In progress'; } catch {}
 const matches = (i) => !ideaQuery || `${i.title} ${i.hook} ${i.notes} ${i.series} ${i.product}`.toLowerCase().includes(ideaQuery);
 
 // One-click delete on every card, with Undo (a copy stays in data/deleted.json either way)
@@ -922,62 +931,72 @@ async function undoDelete(ids) {
   renderCal();
 }
 
+let showArchived = false;
+// A card's place for the current filter: 'idea' (first stage), 'progress' (Script to Scheduled), 'done' (posted) or null
+function ideaPlace(i, p) {
+  if (!p) {
+    const g = ideaGroup(i);
+    return g === 'Just ideas' ? 'idea' : g === 'In progress' ? 'progress' : g === 'Posted' ? 'done' : null;
+  }
+  const l = i.lanes[p];
+  if (!l) return null;
+  return l.stage === stagesFor(p)[0] ? 'idea' : DONE.includes(l.stage) ? 'done' : 'progress';
+}
+const laneLine = (i) => state.options.platforms.filter((q) => i.lanes[q]).map((q) => `${PNAME[q]}: ${i.lanes[q].stage}`).join(' · ');
+const stageSelect = (i, p, s) => `<select data-move="${esc(i.id)}" data-p="${p}" aria-label="Move to">${stagesFor(p).map((x) => `<option${x === s ? ' selected' : ''}>${esc(x)}</option>`).join('')}</select>`;
+
 function renderIdeas() {
+  const p = ideaFilter === 'all' ? null : ideaFilter === 'stories' ? 'instagram' : ideaFilter;
   const live = state.ideas.filter((i) => !i.archived && matches(i));
-  const groups = ['In progress', 'Just ideas', 'Posted', 'Archived', 'No comment word'];
-  // 'No comment word' = posts still to make (not posted, not archived) that don't ask for a comment word yet
-  const inGroup = (g) => state.ideas.filter((i) => matches(i) && (g === 'No comment word'
-    ? !i.archived && ideaGroup(i) !== 'Posted' && kwState(i) === 'missing' : ideaGroup(i) === g));
-  $('ideaStageFilter').hidden = ideaFilter !== 'all';
-  $('ideaStageFilter').innerHTML = groups.map((g) => `<button class="chip" type="button" aria-pressed="${g === ideaGroupFilter}" data-ig="${esc(g)}">${esc(g)} (${inGroup(g).length})</button>`).join('');
-  const n = (p) => live.filter((i) => i.lanes[p]).length;
-  const stories = live.filter((i) => i.format === 'Story' && i.lanes.instagram).length;
-  $('ideaFilter').innerHTML = [['all', `All (${live.length})`], ...state.options.platforms.map((p) => [p, `${PNAME[p]} (${n(p)})`]), ['stories', `Stories (${stories})`]]
-    .map(([k, l]) => `<button class="chip" type="button" aria-pressed="${k === ideaFilter}" data-if="${k}">${esc(l)}</button>`).join('');
-  if (!live.length) {
-    $('ideaView').innerHTML = '<p class="empty">No ideas yet. Add your first one.</p>';
-    return;
-  }
-  if (ideaFilter === 'all') {
-    const rank = (i) => Math.max(...Object.values(i.lanes).filter(Boolean).map((l) => state.options.stages.indexOf(l.stage)), -1);
-    const shown = inGroup(ideaGroupFilter).sort((a, b) => rank(b) - rank(a) || (a.order ?? 1e9) - (b.order ?? 1e9));
-    if (!shown.length) {
-      $('ideaView').innerHTML = '<p class="empty">Nothing here.</p>';
-      return;
-    }
-    const justIdeas = ideaGroupFilter === 'Just ideas';
-    if (justIdeas) picked = new Set([...picked].filter((id) => shown.some((i) => i.id === id)));
-    const bulk = justIdeas ? `<div class="bulk"><button class="ghost" type="button" data-bulk="all">${picked.size === shown.length ? 'Untick all' : 'Tick all'}</button>
+  const mine = live.filter((i) => (!p || i.lanes[p]) && (ideaFilter !== 'stories' || i.format === 'Story'));
+  const ideasNow = mine.filter((i) => ideaPlace(i, p) === 'idea');
+  const prog = mine.filter((i) => ideaPlace(i, p) === 'progress');
+  const archived = state.ideas.filter((i) => i.archived && matches(i));
+  // the same platform chips sit on both sections, with each section's own counts
+  const scope = (k) => live.filter((i) => (k === 'all' || (k === 'stories' ? i.format === 'Story' && i.lanes.instagram : i.lanes[k])));
+  const chipRow = (where) => [['all', 'All'], ...state.options.platforms.map((q) => [q, PNAME[q]]), ['stories', 'Stories']].map(([k, l]) => {
+    const q = k === 'all' ? null : k === 'stories' ? 'instagram' : k;
+    const n = scope(k).filter((i) => ideaPlace(i, q) === where).length;
+    return `<button class="chip" type="button" aria-pressed="${k === ideaFilter}" data-if="${k}">${esc(l)} (${n})</button>`;
+  }).join('');
+  $('ideaFilter').innerHTML = chipRow('idea') + (archived.length ? `<button class="chip" type="button" data-arch aria-pressed="${showArchived}">Archived (${archived.length})</button>` : '');
+  $('progFilter').innerHTML = chipRow('progress');
+
+  // ---- Ideas: a grid of small cards, tick several to delete in one go ----
+  const shown = showArchived ? archived : ideasNow.sort((a2, b2) => (a2.order ?? 1e9) - (b2.order ?? 1e9));
+  picked = new Set([...picked].filter((id) => shown.some((i) => i.id === id)));
+  const first = p ? stagesFor(p)[0] : null;
+  $('ideaView').innerHTML = shown.length ? `<div class="bulk"><button class="ghost" type="button" data-bulk="all">${picked.size === shown.length ? 'Untick all' : 'Tick all'}</button>
       <button class="ghost danger" type="button" data-bulk="del"${picked.size ? '' : ' disabled'}>Delete ticked (${picked.size})</button>
-      <span class="m">Just ideas aren't in progress, so delete freely. Undo is there for 10 seconds.</span></div>` : '';
-    $('ideaView').innerHTML = `${bulk}<div class="ideas">${shown.map((i) => `
-      <div class="idea${picked.has(i.id) ? ' picked' : ''}" role="button" tabindex="0" data-edit="${esc(i.id)}">
-        <span style="display:flex;align-items:flex-start">${justIdeas ? `<input type="checkbox" class="pick" data-pick="${esc(i.id)}" aria-label="Tick ${esc(i.title)}"${picked.has(i.id) ? ' checked' : ''}>` : ''}<span><span class="t">${esc(i.title)}</span><br><span class="m">${ideaMeta(i) || '&nbsp;'}</span> ${kwBadge(i)}</span></span>
-        <span class="lanes">${state.options.platforms.map((p) => {
-          const l = i.lanes[p];
-          return `<span class="lane ${laneClass(p, l)}">${PNAME[p]}: ${l ? esc(l.stage) : 'not planned'}</span>`;
-        }).join('')}${delBtn(i, justIdeas)}</span>
-      </div>`).join('')}</div>`;
-    return;
-  }
-  // "Stories" = the Instagram board, Story cards only
-  const p = ideaFilter === 'stories' ? 'instagram' : ideaFilter;
-  const mine = live.filter((i) => i.lanes[p] && (ideaFilter !== 'stories' || i.format === 'Story'));
-  // One row per stage, cards side by side (Mercedes 2026-11-03: columns were too long to scroll). Empty stages fold to a line.
-  $('ideaView').innerHTML = `<div class="srows">${stagesFor(p).map((s) => {
-    const cards = mine.filter((i) => i.lanes[p].stage === s)
-      .sort((a, b) => (a.lanes[p].date || '9').localeCompare(b.lanes[p].date || '9') || (a.order ?? 1e9) - (b.order ?? 1e9));
-    return `<div class="srow${cards.length ? '' : ' none'}"><h4>${esc(s)} <span>${cards.length}</span></h4>${cards.length ? `<div class="scards">${cards.map((i) => {
-      const meta = [i.format, i.lanes[p].date ? fmtDate(i.lanes[p].date) : ''].filter(Boolean).join(' · ');
-      const kw = kwState(i);
+      <span class="m">${showArchived ? 'Archived ideas.' : `${shown.length} idea${shown.length === 1 ? '' : 's'}. Undo is there for 10 seconds after a delete.`}</span></div>
+    <div class="igrid">${shown.map((i) => `<div class="scard${picked.has(i.id) ? ' picked' : ''}" data-edit="${esc(i.id)}">
+      <span class="top"><input type="checkbox" class="pick" data-pick="${esc(i.id)}" aria-label="Tick ${esc(i.title)}"${picked.has(i.id) ? ' checked' : ''}><span class="t">${esc(i.title)}</span></span>
+      <span class="m">${esc([i.format, p ? '' : laneLine(i)].filter(Boolean).join(' · ')) || '&nbsp;'}${kwState(i) === 'missing' ? ' · <span class="err">no comment word</span>' : ''}</span>
+      <span class="act">${p ? stageSelect(i, p, first) : ''}${delBtn(i, true)}</span>
+    </div>`).join('')}</div>`
+    : `<p class="empty">${live.length ? 'No ideas waiting here.' : 'No ideas yet. Add your first one.'}</p>`;
+
+  // ---- In progress: one row per step (Script to Scheduled), cards side by side ----
+  const steps = (p ? stagesFor(p) : state.options.stages).filter((x, k) => k > 0 && !DONE.includes(x));
+  // All: a card sits in the row of its furthest step that isn't posted yet
+  const rowOf = (i) => {
+    if (p) return i.lanes[p].stage;
+    const st = Object.values(i.lanes).filter(Boolean).map((l) => l.stage).filter((x) => steps.includes(x));
+    return st.sort((x, y) => steps.indexOf(y) - steps.indexOf(x))[0];
+  };
+  $('progView').innerHTML = `<div class="srows">${steps.map((step) => {
+    const cards = prog.filter((i) => rowOf(i) === step)
+      .sort((a2, b2) => ((p && a2.lanes[p].date) || '9').localeCompare((p && b2.lanes[p].date) || '9') || (a2.order ?? 1e9) - (b2.order ?? 1e9));
+    return `<div class="srow${cards.length ? '' : ' none'}"><h4>${esc(step)} <span>${cards.length}</span></h4>${cards.length ? `<div class="scards">${cards.map((i) => {
+      const meta = p ? [i.format, i.lanes[p].date ? fmtDate(i.lanes[p].date) : ''].filter(Boolean).join(' · ') : laneLine(i);
       return `<div class="scard" data-edit="${esc(i.id)}">
         <span class="t">${esc(i.title)}</span>
-        <span class="m">${esc(meta) || '&nbsp;'}${kw === 'missing' ? ' · <span class="err">no comment word</span>' : ''}</span>
-        <span class="act">${QUEUEABLE.includes(p) && s === 'Ready' ? `<button class="ghost" type="button" data-queue="${p}" data-card="${esc(i.id)}">Queue it</button>` : ''}<select data-move="${esc(i.id)}" data-p="${p}" aria-label="Move to">${stagesFor(p).map((x) => `<option${x === s ? ' selected' : ''}>${esc(x)}</option>`).join('')}</select>${delBtn(i)}</span>
+        <span class="m">${esc(meta) || '&nbsp;'}${kwState(i) === 'missing' ? ' · <span class="err">no comment word</span>' : ''}</span>
+        <span class="act">${p && QUEUEABLE.includes(p) && step === 'Ready' ? `<button class="ghost" type="button" data-queue="${p}" data-card="${esc(i.id)}">Queue it</button>` : ''}${p ? stageSelect(i, p, step) : '<span class="m" style="flex:1">Open to change</span>'}${delBtn(i)}</span>
       </div>`;
     }).join('')}</div>` : ''}</div>`;
   }).join('')}</div>${ideaFilter === 'stories' ? '<p class="sub" style="margin-top:8px">A Story card is one day of Stories. Film = photos to shoot, Edit = lines written and slides to render. Add one with + New idea and Format "Story".</p>'
-    : live.length > mine.length ? `<p class="sub" style="margin-top:8px">${live.length - mine.length} ideas aren't planned for ${PNAME[p]}. Open one and tick ${PNAME[p]} to add it here.</p>` : ''}`;
+    : p && live.length > mine.length ? `<p class="sub" style="margin-top:8px">${live.length - mine.length} ideas aren't planned for ${PNAME[p]}. Open one and tick ${PNAME[p]} to add it.</p>` : ''}`;
 }
 
 function laneFields(p, l, i) {
@@ -1285,9 +1304,8 @@ document.addEventListener('click', async (e) => {
     confirmQueue(t);
   } else if (t.hasAttribute('data-qclose') || t.id === 'queueDlg') {
     $('queueDlg').close();
-  } else if (t.dataset.ig) {
-    ideaGroupFilter = t.dataset.ig;
-    try { localStorage.setItem('planner.ideaGroup', ideaGroupFilter); } catch {}
+  } else if (t.hasAttribute('data-arch')) {
+    showArchived = !showArchived;
     renderIdeas();
   } else if (t.dataset.if) {
     ideaFilter = t.dataset.if;

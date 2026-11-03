@@ -18,8 +18,12 @@ Run from the project folder, then open http://localhost:4330:
 - `data/pin-status.json`: her "Seen it live" / "Missing" clicks. `data/buffer-snapshot.json`: last saved Buffer copy.
 
 ## Ideas board layout (2026-11-03)
-A platform's board is one row per stage with cards side by side (scroll sideways); empty stages fold to one line.
-Mercedes found the old tall columns too long to scroll.
+Two sections (Mercedes 2026-11-03): **Ideas** (`#ideas`) = cards still at the first stage (Idea; Pinterest: Needs Pins), a
+grid of small cards with tick boxes + Delete ticked, and an Archived toggle. **In progress** (`#progress`) = one row per step
+(Script, Storyboard, Film, Edit, Ready, Scheduled; Pinterest: Pins made, Scheduled), cards side by side, scroll sideways.
+Both share the platform chips (All / Instagram / TikTok / YouTube / Pinterest / Stories). On All, a card sits in the row
+of its furthest unposted step. Posted cards aren't here (feed preview, calendar). **Storyboard** is a stage since
+2026-11-03 (`lib/ideas.mjs STAGES`, between Script and Film).
 Every card (board and All list) has a trash button: one click deletes it, with **Undo** for 10 seconds (`POST /api/idea-restore`
 puts the newest copy from `data/deleted.json` back). The editor's Delete works the same way, no confirm box.
 
