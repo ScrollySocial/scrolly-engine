@@ -172,6 +172,30 @@
   dialog img { display: block; width: 100%; height: auto; }
   dialog::backdrop { background: rgb(10 25 48 / .6); }
   .err { color: var(--warn); }
+  /* Calendar: a month of posts, counted per day */
+  .calbar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 14px 0 10px; }
+  .calbar h3 { margin: 0 8px 0 0; min-width: 150px; }
+  .cal { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 4px; }
+  .cal .dow { text-align: center; color: var(--muted); font-size: 15px; font-weight: 600; padding: 2px 0; }
+  .cday { display: grid; align-content: start; gap: 2px; min-height: 92px; text-align: left; background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 6px 8px; font: inherit; color: var(--ink); cursor: pointer; min-width: 0; }
+  .cday:hover { border-color: var(--sky); }
+  .cday:focus-visible { outline: 3px solid var(--pink); outline-offset: 1px; }
+  .cday.out { background: none; color: var(--done); }
+  .cday.today { border: 2px solid var(--ink); }
+  .cday .dn { font-size: 15px; color: var(--muted); }
+  .cday.today .dn { color: var(--ink); font-weight: 700; }
+  .cday .n { font: 600 26px/1.1 Georgia, serif; }
+  .cday .n.zero { color: transparent; }
+  .cday .by { font-size: 15px; color: var(--muted); line-height: 1.3; overflow: hidden; }
+  .cday .by span { display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  @media (max-width: 700px) { .cday { min-height: 58px; padding: 4px; } .cday .by { display: none; } .cday .n { font-size: 20px; } .cal { gap: 2px; } }
+  #dayDlg { width: min(94vw, 640px); max-width: none; max-height: 92vh; }
+  #dayBody { padding: 18px; display: grid; gap: 12px; }
+  .dlist { display: grid; gap: 8px; margin: 0; padding: 0; list-style: none; }
+  .ditem { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 12px; align-items: center; width: 100%; text-align: left; background: var(--bg); border: 1px solid var(--line); border-radius: 10px; padding: 8px; font: inherit; color: var(--ink); cursor: pointer; }
+  .ditem:hover { border-color: var(--sky); }
+  .ditem .th { width: 64px; height: 80px; border-radius: 6px; background: var(--mist); object-fit: cover; display: grid; place-items: center; color: var(--muted); font-size: 15px; }
+  .ditem .t { font-weight: 650; line-height: 1.3; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
   @media (max-width: 560px) { h1 { font-size: 28px; } .pins { grid-template-columns: 1fr; } }
 </style>
 </head>
@@ -180,6 +204,7 @@
   <h1>Content Planner</h1>
   <p class="sub" id="sub">Loading…</p>
   <nav>
+    <a class="chip" href="#calendar">Calendar</a>
     <a class="chip" href="#ideas">Ideas</a>
     <a class="chip" href="#pinterest">Pinterest</a>
     <a class="chip" href="#ch-Instagram">Instagram</a>
@@ -188,6 +213,20 @@
     <a class="chip" href="#pages">Pins by page</a>
     <button class="chip" id="refresh" type="button">Refresh Buffer</button>
   </nav>
+
+  <section id="calendar" style="scroll-margin-top:56px">
+    <h2>Calendar</h2>
+    <p class="sub">How many posts go out each day. Tap a day to see its posts. Counts Buffer's queue and posts, planner cards with a date, and Pins.</p>
+    <div class="row" id="calApps" style="margin:14px 0 0"></div>
+    <div class="calbar">
+      <h3 id="calMonth"></h3>
+      <button class="chip" type="button" data-cal="-1" aria-label="Previous month">‹ Prev</button>
+      <button class="chip" type="button" data-cal="0">This month</button>
+      <button class="chip" type="button" data-cal="1" aria-label="Next month">Next ›</button>
+      <span class="m" id="calTotal"></span>
+    </div>
+    <div class="cal" id="cal"></div>
+  </section>
 
   <section id="ideas">
     <div class="head">
@@ -231,6 +270,7 @@
 <dialog id="zoom"><img alt=""></dialog>
 <dialog id="editor"><form method="dialog" id="ideaForm"></form></dialog>
 <dialog id="postDlg"><div id="postBody"></div></dialog>
+<dialog id="dayDlg"><div id="dayBody"></div></dialog>
 <dialog id="queueDlg"><div id="queueBody" style="padding:20px;display:grid;gap:12px"></div></dialog>
 
 <script>
@@ -299,6 +339,7 @@ const FEED_ST = {
   queued: ['In Buffer', 'Buffer posts it at this time'],
   error: ["Didn't post", 'Buffer tried and it failed'],
   sent: ['Posted', 'Already on the profile'],
+  plan: ['Planned', 'Has a date in the planner, not ready yet'], // calendar only; never on the feed grid
 };
 let feedApp = 'Instagram';
 let feedHide = [];
@@ -404,14 +445,14 @@ function renderBuffer() {
     <p class="m" style="margin:0">Posted shows Buffer's last 30 posts across all apps.</p>`;
 }
 
-function openPost(it) {
-  const app = APPS.find((a) => a.name === feedApp) || APPS[0];
-  const when = it.st === 'sent' ? `Posted ${fmtWhen(it.post.sentAt || it.post.dueAt)}` : it.st === 'queued' ? `Buffer posts it ${fmtWhen(it.post.dueAt)}` : FEED_ST[it.st][1];
+function openPost(it, app = APPS.find((a) => a.name === feedApp) || APPS[0]) {
+  const when = it.st === 'sent' ? `Posted ${it.post ? fmtWhen(it.post.sentAt || it.post.dueAt) : fmtDate(it.day)}` : it.st === 'queued' ? `Buffer posts it ${fmtWhen(it.post.dueAt)}`
+    : it.day ? `${FEED_ST[it.st][1]}. Date: ${fmtDate(it.day)}` : FEED_ST[it.st][1];
   const kind = it.kind === 'carousel' ? `Carousel${it.post?.count ? `, ${it.post.count} slides` : ''}` : it.kind === 'video' ? 'Video' : 'Single image';
   const canQueue = it.st === 'ready' && it.card && QUEUEABLE.includes(app.key);
   $('postBody').innerHTML = `
     ${it.img ? `<img src="${esc(it.img)}" alt="">` : ''}
-    <div class="row" style="margin:0"><span class="pill ${it.st === 'sent' ? 'sent' : it.st === 'error' ? 'error' : 'scheduled'}">${esc(FEED_ST[it.st][0])}</span><span class="m">${esc(kind)} · ${esc(when)}</span></div>
+    <div class="row" style="margin:0"><span class="pill ${it.st === 'sent' ? 'sent' : it.st === 'error' ? 'error' : 'scheduled'}">${esc(it.label || FEED_ST[it.st][0])}</span><span class="m">${esc(kind)} · ${esc(when)}</span></div>
     <b>${esc(it.title)}</b>
     <div class="qcap">${esc(it.text) || '<span class="empty">No caption yet</span>'}</div>
     ${it.post?.error ? `<p class="err" style="margin:0">${esc(it.post.error)}</p>` : ''}
@@ -429,6 +470,112 @@ function feedFromHash() {
   $('buffer').scrollIntoView();
 }
 window.addEventListener('hashchange', feedFromHash);
+
+// ---- Calendar: every dated post (Buffer queue + sent, planner lanes with a date, Pins), one count per day ----
+const CAL_APPS = [...APPS, { name: 'Pinterest', key: 'pinterest' }];
+const SHORT = { Instagram: 'IG', TikTok: 'TT', YouTube: 'YT', Pinterest: 'Pins' };
+const dayKey = (iso) => new Date(iso).toLocaleDateString('en-CA', ET); // YYYY-MM-DD in US Eastern
+let calApp = 'All';
+let calMonth = null; // 'YYYY-MM'
+try { calApp = localStorage.getItem('planner.calApp') || 'All'; } catch {}
+let calAll = [];
+let dayShown = [];
+// Buffer posts with no caption (Stories) get named after their file: tad-story-freebies-cover.png → "No caption: story freebies cover"
+function mediaName(p) {
+  const u = decodeURIComponent(p.thumb || '');
+  const f = (u.match(/([^/=]+)\.(png|jpe?g|webp|mp4|mov)(\?|$)/i) || [])[1];
+  return f ? `No caption: ${f.replace(/^(tad|scrolly)-/, '').replace(/[-_]+/g, ' ')}` : 'No caption';
+}
+
+function calItems() {
+  const out = [];
+  const now = new Date(state.now);
+  for (const app of APPS) {
+    const posts = state.buffer.posts.filter((p) => p.channel === app.name);
+    for (const p of posts) {
+      const when = p.status === 'sent' ? p.sentAt || p.dueAt : p.dueAt;
+      if (!when || p.status === 'draft') continue;
+      const st = ['scheduled', 'sending', 'needs_approval'].includes(p.status) ? 'queued' : ['sent', 'error'].includes(p.status) ? p.status : 'draft';
+      const card = state.ideas.find((i) => i.lanes[app.key]?.bufferId === p.id);
+      out.push({ app, day: dayKey(when), when, st, label: FEED_ST[st][0], card, post: p,
+        img: (p.kind === 'video' && card && cardImage(card)) || p.thumb || (card && cardImage(card)),
+        kind: p.kind === 'text' ? 'image' : p.kind, text: p.text, title: card ? card.lanes[app.key]?.title || card.title : p.text.split('\n').find(Boolean) || mediaName(p) });
+    }
+    for (const i of state.ideas) {
+      const l = i.lanes[app.key];
+      if (i.archived || !l?.date) continue;
+      const bp = bufferPost(l.bufferId);
+      if (bp && bp.status !== 'draft') continue; // Buffer's copy is on the calendar already
+      const st = bp ? 'draft' : l.stage === 'Posted' ? 'sent' : l.stage === 'Ready' ? 'ready' : 'plan';
+      out.push({ app, day: l.date, when: null, st, label: bp ? 'Buffer draft' : l.stage, card: i, post: bp || null,
+        img: cardImage(i) || bp?.thumb, kind: cardKind(i), text: l.caption || '', title: l.title || i.title, story: i.format === 'Story' });
+    }
+  }
+  const pinApp = CAL_APPS[3];
+  for (const p of state.pins) {
+    if (p.mark === 'Deleted') continue;
+    out.push({ app: pinApp, day: dayKey(p.when), when: p.when, st: 'pin', label: pinState(p, now)[0], pin: p, img: p.image, title: p.title });
+  }
+  return out;
+}
+
+function renderCal() {
+  calAll = calItems();
+  const today = dayKey(state.now);
+  if (!calMonth) calMonth = today.slice(0, 7);
+  const [y, m] = calMonth.split('-').map(Number);
+  const inMonth = calAll.filter((x) => x.day.startsWith(calMonth));
+  $('calApps').innerHTML = ['All', ...CAL_APPS.map((a) => a.name)].map((a) => {
+    const n = inMonth.filter((x) => a === 'All' || x.app.name === a).length;
+    return `<button class="chip" type="button" data-capp="${a}" aria-pressed="${a === calApp}">${a} · ${n}</button>`;
+  }).join('');
+  const shown = calAll.filter((x) => calApp === 'All' || x.app.name === calApp);
+  const first = new Date(Date.UTC(y, m - 1, 1));
+  $('calMonth').textContent = first.toLocaleDateString('en-US', { timeZone: 'UTC', month: 'long', year: 'numeric' });
+  $('calTotal').textContent = `${shown.filter((x) => x.day.startsWith(calMonth)).length} posts this month${calApp === 'All' ? '' : ` on ${calApp}`}`;
+  const start = new Date(first);
+  start.setUTCDate(1 - ((first.getUTCDay() + 6) % 7)); // weeks start on Monday
+  const cells = [];
+  for (let d = new Date(start); cells.length < 42; d.setUTCDate(d.getUTCDate() + 1)) {
+    const key = d.toISOString().slice(0, 10);
+    if (cells.length >= 35 && !key.startsWith(calMonth)) break; // 5 rows are enough most months
+    const list = shown.filter((x) => x.day === key);
+    const by = calApp === 'All' ? CAL_APPS.map((a) => [a.name, list.filter((x) => x.app.name === a.name).length]).filter(([, n]) => n) : [];
+    const lbl = `${new Date(`${key}T12:00:00Z`).toLocaleDateString('en-US', { timeZone: 'UTC', weekday: 'long', month: 'long', day: 'numeric' })}: ${list.length} post${list.length === 1 ? '' : 's'}`;
+    cells.push(`<button class="cday${key.startsWith(calMonth) ? '' : ' out'}${key === today ? ' today' : ''}" type="button" data-day="${key}" aria-label="${esc(lbl)}">
+      <span class="dn">${d.getUTCDate()}</span><span class="n${list.length ? '' : ' zero'}">${list.length}</span>
+      ${by.length ? `<span class="by">${by.map(([a, n]) => `<span>${n} ${SHORT[a]}</span>`).join('')}</span>` : ''}</button>`);
+  }
+  $('cal').innerHTML = DAYS.map((d) => `<div class="dow">${d[0].toUpperCase() + d.slice(1)}</div>`).join('') + cells.join('');
+}
+
+function openDay(key) {
+  dayShown = calAll.filter((x) => x.day === key && (calApp === 'All' || x.app.name === calApp))
+    .sort((a, b) => (a.when ? 0 : 1) - (b.when ? 0 : 1) || (a.when || '').localeCompare(b.when || '') || a.app.name.localeCompare(b.app.name));
+  const title = new Date(`${key}T12:00:00Z`).toLocaleDateString('en-US', { timeZone: 'UTC', weekday: 'long', month: 'long', day: 'numeric' });
+  const feeds = [...new Set(dayShown.filter((x) => x.app.name !== 'Pinterest').map((x) => x.app.name))];
+  $('dayBody').innerHTML = `
+    <div class="head"><h2 style="margin:0">${esc(title)}</h2><button class="ghost" type="button" data-dclose>Close</button></div>
+    <p class="m" style="margin:0">${dayShown.length} post${dayShown.length === 1 ? '' : 's'}${calApp === 'All' ? '' : ` on ${esc(calApp)}`}. Times are US Eastern; cards with only a date show "No time yet".</p>
+    ${dayShown.length ? `<ol class="dlist">${dayShown.map((x, n) => `<li><button class="ditem" type="button" data-ditem="${n}">
+      ${x.img ? `<img class="th" src="${esc(x.img)}" alt="" loading="lazy">` : '<span class="th">No pic</span>'}
+      <span><span class="t">${esc(x.title)}</span>
+        <span class="row" style="margin-top:4px"><span class="pill ${x.st === 'sent' || x.label === 'Live' ? 'sent' : x.st === 'error' || x.label === 'Missing' ? 'error' : 'scheduled'}">${esc(x.label)}</span>
+        <span class="m">${esc(x.app.name)}${x.story ? ' Story' : ''} · ${x.when ? esc(fmtTime(x.when)) : 'No time yet'}</span></span></span>
+    </button></li>`).join('')}</ol>` : '<p class="empty" style="margin:0">Nothing planned for this day.</p>'}
+    ${feeds.length ? `<div class="row" style="margin:0">${feeds.map((a) => `<a class="chip" href="#ch-${a}" data-dclose>See the ${a} feed preview</a>`).join('')}</div>` : ''}`;
+  $('dayDlg').showModal();
+}
+
+function openDayItem(x) {
+  $('dayDlg').close();
+  if (x.pin) {
+    const img = $('zoom').querySelector('img');
+    img.src = x.pin.image;
+    img.alt = x.pin.title;
+    $('zoom').showModal();
+  } else openPost(x, x.app);
+}
 
 function renderPages() {
   const now = new Date(state.now);
@@ -736,6 +883,7 @@ async function load(refresh) {
     const r = await fetch(`/api/data${refresh ? '?refresh=1' : ''}`);
     state = await r.json();
     $('sub').textContent = `Today is ${fmtDay(state.now)}. Times are US Eastern.`;
+    renderCal();
     renderIdeas();
     renderPins();
     renderBuffer();
@@ -755,8 +903,24 @@ document.addEventListener('click', async (e) => {
   const appLink = t.closest('a[href^="#ch-"]');
   if (appLink) {
     e.preventDefault(); // same hash twice fires no hashchange
+    if ($('dayDlg').open) $('dayDlg').close();
     history.replaceState(null, '', appLink.getAttribute('href'));
     feedFromHash();
+  } else if (t.closest('[data-day]')) {
+    openDay(t.closest('[data-day]').dataset.day);
+  } else if (t.closest('[data-ditem]')) {
+    openDayItem(dayShown[t.closest('[data-ditem]').dataset.ditem]);
+  } else if (t.hasAttribute('data-dclose') || t.id === 'dayDlg') {
+    $('dayDlg').close();
+  } else if (t.dataset.capp) {
+    calApp = t.dataset.capp;
+    try { localStorage.setItem('planner.calApp', calApp); } catch {}
+    renderCal();
+  } else if (t.dataset.cal) {
+    const step = Number(t.dataset.cal);
+    const [y, m] = calMonth.split('-').map(Number);
+    calMonth = step ? new Date(Date.UTC(y, m - 1 + step, 1)).toISOString().slice(0, 7) : dayKey(state.now).slice(0, 7);
+    renderCal();
   } else if (t.dataset.queue) {
     if ($('postDlg').open) $('postDlg').close();
     openQueue(t.dataset.card || $('ideaForm').dataset.id, t.dataset.queue);
