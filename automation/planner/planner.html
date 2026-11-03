@@ -384,6 +384,13 @@ function feedItems(app) {
       kind: p.kind === 'text' ? 'image' : p.kind, text: p.text, title: card ? card.lanes[app.key]?.title || card.title : p.text.split('\n')[0],
       rank: { draft: 1, queued: 2, error: 3, sent: 4 }[st], t: Date.parse(p.sentAt || p.dueAt || p.createdAt) || 0 });
   }
+  // Posted cards Buffer no longer lists (older than its last 100 posts) still belong on the grid
+  for (const i of state.ideas) {
+    const l = i.lanes[app.key];
+    if (i.archived || l?.stage !== 'Posted' || i.format === 'Story' || items.some((x) => x.card === i)) continue;
+    items.push({ st: 'sent', card: i, post: null, img: cardImage(i), kind: cardKind(i), text: l.caption || '', title: l.title || i.title,
+      day: l.date, rank: 4, t: Date.parse(`${l.date || '2000-01-01'}T12:00:00Z`) });
+  }
   return items.sort((x, y) => x.rank - y.rank || y.t - x.t);
 }
 
@@ -447,7 +454,7 @@ function renderBuffer() {
     ${days.length ? `<details><summary>Buffer's posting times: ${slots} a week</summary>
       <div class="times">${days.map((d) => `<b>${d.day[0].toUpperCase() + d.day.slice(1)}</b><span>${d.times.map(fmtClock).join(', ') || 'off'}</span>`).join('')}</div>
       <p class="m">In ${esc((c.timezone || '').replace('America/', '').replace('_', ' '))} time. A queued post takes the next free time.</p></details>` : ''}
-    <p class="m" style="margin:0">Posted shows Buffer's last 30 posts across all apps.</p>`;
+    <p class="m" style="margin:0">Posted shows Buffer's last 100 posts plus every card marked Posted.</p>`;
 }
 
 function openPost(it, app = APPS.find((a) => a.name === feedApp) || APPS[0]) {

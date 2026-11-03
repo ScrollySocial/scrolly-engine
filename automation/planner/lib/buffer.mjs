@@ -121,6 +121,6 @@ export async function queuePost(key, { platform, bufferId, text, assets, byHand 
 export async function liveFetch(key) {
   const { channels } = await gql(key, CHANNEL_QUERY, { org: ORG_ID });
   const queue = await page(key, ['draft', 'needs_approval', 'scheduled', 'sending', 'error'], 100, 'asc');
-  const sent = await page(key, ['sent'], 30, 'desc');
+  const sent = await page(key, ['sent'], 100, 'desc'); // the grid needs older posts too (84 sent on 2026-11-03)
   return { takenAt: new Date().toISOString(), live: true, channels: channels.map(normalizeChannel), posts: [...queue, ...sent] };
 }
