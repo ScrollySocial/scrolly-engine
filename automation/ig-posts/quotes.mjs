@@ -13,7 +13,7 @@ const HERE = path.dirname(fileURLToPath(import.meta.url));
 let OUT = path.join(HERE, 'out', 'quotes');
 const EXPORTS = path.resolve(cfg('media').exportsDir, '../ig-posts/quotes');
 const ASSETS = path.resolve(HERE, '../../website/scrolly-site/assets');
-const FONTS = 'https://fonts.googleapis.com/css2?family=Jost:wght@400;500;700&family=Instrument+Serif&family=Covered+By+Your+Grace&family=Space+Mono:wght@700&family=Varela+Round&family=Arimo:wght@600&family=Lily+Script+One&family=Molle:ital@1&family=Caprasimo&family=Sansita+Swashed:wght@900&family=Sonsie+One&family=Shrikhand&family=Oleo+Script:wght@700&family=Lobster&family=Gloock&family=DM+Serif+Display&family=Fraunces:opsz,wght@9..144,600&family=Cormorant+Garamond:wght@600&family=Italiana&family=Abril+Fatface&family=Alfa+Slab+One&family=Rubik+Mono+One&display=block';
+const FONTS = 'https://fonts.googleapis.com/css2?family=Jost:wght@400;500;700&family=Instrument+Serif&family=Covered+By+Your+Grace&family=Space+Mono:wght@700&family=Varela+Round&family=Barlow+Semi+Condensed:wght@700&family=Arimo:wght@600&family=Lily+Script+One&family=Molle:ital@1&family=Caprasimo&family=Sansita+Swashed:wght@900&family=Sonsie+One&family=Shrikhand&family=Oleo+Script:wght@700&family=Lobster&family=Gloock&family=DM+Serif+Display&family=Fraunces:opsz,wght@9..144,600&family=Cormorant+Garamond:wght@600&family=Italiana&family=Abril+Fatface&family=Alfa+Slab+One&family=Rubik+Mono+One&display=block';
 const C = { cream: '#f7f3ec', navy: '#0a1930', sky: '#4da3ff', mist: '#dfe4f0' };
 
 // The 14 quotes (planner cards "Quote 1" to "Quote 14"); credit = the checked author, or Unknown.
@@ -438,14 +438,17 @@ const jitter = (row, seed) => [...row].map((ch, k) => {
 }).join('');
 const tape = (q, rows, fs) => {
   const emb = KIND === 'emboss';
+  // embossed (Mercedes 2026-11-03, "real embossed"): letters lit by an SVG light (#emb) so they read raised and
+  // stress-whitened, tape colour TAPE=black (her photo) or blue
+  const TC = process.env.TAPE === 'blue' ? ['#3a6fd0', '#1d4aa0', '#2858b4'] : ['#2a2a2a', '#0c0c0c', '#171717'];
   const css = emb ? `
-  .t { position: relative; font: 700 ${fs}px/1 'Varela Round', Arial, sans-serif; letter-spacing: .2em; color: #ecebe6; white-space: nowrap;
-    padding: ${Math.round(fs * .36)}px ${Math.round(fs * .62)}px ${Math.round(fs * .32)}px ${Math.round(fs * .82)}px; border-radius: 2px;
-    background: ${GRAIN}, linear-gradient(#262626, #0d0d0d 48%, #161616); background-blend-mode: overlay, normal;
-    box-shadow: inset 0 1px 0 rgba(255,255,255,.16), inset 0 -2px 2px rgba(0,0,0,.7), 0 2px 1px rgba(0,0,0,.45), 0 10px 16px rgba(10,25,48,.32); }
-  .t::after { content: ''; position: absolute; left: 0; right: 0; top: 10%; height: 28%; background: linear-gradient(rgba(255,255,255,.10), rgba(255,255,255,0)); border-radius: 2px; pointer-events: none; }
-  .t i { display: inline-block; font-style: normal; filter: blur(.35px);
-    text-shadow: 0 -1px 0 rgba(0,0,0,.85), 0 1px 0 rgba(255,255,255,.45), 0 0 4px rgba(255,255,255,.22), 1px 2px 2px rgba(0,0,0,.55); }`
+  .t { position: relative; font: 700 ${fs}px/1 'Barlow Semi Condensed', Arial, sans-serif; letter-spacing: .14em; color: #fff; white-space: nowrap;
+    padding: ${Math.round(fs * .3)}px ${Math.round(fs * .5)}px ${Math.round(fs * .26)}px ${Math.round(fs * .64)}px; border-radius: 1.5px;
+    background: ${GRAIN}, linear-gradient(${TC[0]}, ${TC[1]} 52%, ${TC[2]}); background-blend-mode: overlay, normal;
+    box-shadow: inset 0 1.5px 0 rgba(255,255,255,.22), inset 0 -2px 2px rgba(0,0,0,.55), 0 1px 1px rgba(0,0,0,.6), 0 6px 10px rgba(10,25,48,.35); }
+  .t::after { content: ''; position: absolute; left: 0; right: 0; top: 8%; height: 30%; background: linear-gradient(rgba(255,255,255,.14), rgba(255,255,255,0)); pointer-events: none; }
+  .t .w { filter: url(#emb); }
+  .t i { display: inline-block; font-style: normal; }`
     : `
   .t { position: relative; font: 600 ${fs}px/1 Arimo, Arial, sans-serif; letter-spacing: .04em; color: #141414; white-space: nowrap;
     padding: ${Math.round(fs * .34)}px ${Math.round(fs * .56)}px ${Math.round(fs * .3)}px; border-radius: ${Math.round(fs * .16)}px;
@@ -455,15 +458,26 @@ const tape = (q, rows, fs) => {
   .t i { display: inline-block; font-style: normal; opacity: .93; }`;
   const tilt = [-1.6, 1.1, -.6, 1.6, -1.2, .8, -1.4, 1.3], nudge = [-14, 18, -6, 10, -18, 8, -10, 14];
   return { css: css + `\n  .t i.sp { width: .5em; }\n  .t.cred { font-size: ${Math.round(fs * .62)}px; }`,
-    html: rows.map((r, i) => `<div class="t" style="transform:rotate(${tilt[i % 8]}deg) translateX(${nudge[i % 8]}px)">${emb ? jitter(r, q.n * 10 + i) : esc(r)}</div>`).join('') };
+    html: (emb ? EMB_FILTER : '') + rows.map((r, i) => `<div class="t" style="transform:rotate(${tilt[i % 8]}deg) translateX(${nudge[i % 8]}px)">${emb ? `<span class="w">${jitter(r, q.n * 10 + i)}</span>` : esc(r)}</div>`).join('') };
 };
+// Raised letters: blur the letter shapes into a height map, light it from the top left (diffuse = the whitened
+// plastic, specular = the glint on the raised edge), keep it inside the letters, and drop a small shadow under them.
+const EMB_FILTER = `<svg width="0" height="0" style="position:absolute"><filter id="emb" x="-3%" y="-25%" width="106%" height="150%" color-interpolation-filters="sRGB">
+  <feGaussianBlur in="SourceAlpha" stdDeviation="1.3" result="b"/>
+  <feDiffuseLighting in="b" surfaceScale="3" diffuseConstant="1.25" lighting-color="#eef0f2" result="d"><feDistantLight azimuth="235" elevation="52"/></feDiffuseLighting>
+  <feSpecularLighting in="b" surfaceScale="3" specularConstant=".75" specularExponent="20" lighting-color="#fff" result="s"><feDistantLight azimuth="235" elevation="38"/></feSpecularLighting>
+  <feComposite in="s" in2="d" operator="arithmetic" k2="1" k3="1" result="lit"/>
+  <feComposite in="lit" in2="SourceAlpha" operator="in" result="letters"/>
+  <feOffset in="SourceAlpha" dx="1" dy="2" result="o"/><feGaussianBlur in="o" stdDeviation="1.1" result="ob"/>
+  <feFlood flood-color="#000" flood-opacity=".75"/><feComposite in2="ob" operator="in" result="sh"/>
+  <feMerge><feMergeNode in="sh"/><feMergeNode in="letters"/></feMerge></filter></svg>`;
 const labels = (q) => {
   const n = q.text.length, max = n <= 50 ? 13 : n <= 90 ? 16 : 19, fs = n <= 50 ? 62 : n <= 90 ? 50 : 42;
   const rows = strips2(q.text, KIND ? max + 3 : max);
   if (KIND) {
-    const T = tape(q, rows, KIND === 'print' ? Math.round(fs * 1.15) : fs);
+    const T = tape(q, rows, Math.round(fs * (KIND === 'print' ? 1.15 : 1.28)));
     const cred = q.by === 'Unknown' ? `<div class="unk${[2, 7, 10, 12].includes(q.n) ? ' ink' : ''}">unknown</div>`
-      : `<div class="t cred" style="transform:rotate(1.4deg);margin-top:${Math.round(fs * .3)}px">${KIND === 'emboss' ? jitter(credit(q.by).replace('~ ', '- ').toUpperCase(), q.n) : esc(credit(q.by).replace('~ ', '- ').toUpperCase())}</div>`;
+      : `<div class="t cred" style="transform:rotate(1.4deg);margin-top:${Math.round(fs * .3)}px">${KIND === 'emboss' ? `<span class="w">${jitter(credit(q.by).replace('~ ', '- ').toUpperCase(), q.n)}</span>` : esc(credit(q.by).replace('~ ', '- ').toUpperCase())}</div>`;
     return `<style>${BASE}
   .paint { position: absolute; inset: 0; background: url('${typeof q.paint[0] === 'number' ? MET(q.paint[0]) : fileUrl(path.join(HERE, 'assets', 'photos', q.paint[0] + '.jpg'))}') ${q.paint[1]}/${q.paint[2] || 'cover'} no-repeat; }
   .lab { position: absolute; left: 0; right: 0; top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; align-items: center; gap: ${Math.round(fs * .38)}px; }
@@ -493,7 +507,7 @@ const list = QUOTES.map((q) => (isLabels ? { ...q, paint: (BLUE[q.n] || {}).pain
   .filter((q) => q && q.tile && (!only.length || only.includes(q.n)));
 if (isBlue) OUT = path.join(HERE, 'out', 'quotes-blue');
 if (isWhite) OUT = path.join(HERE, 'out', 'quotes-white');
-if (isLabels) OUT = path.join(HERE, 'out', KIND ? `quotes-labels-${KIND}` : 'quotes-labels');
+if (isLabels) OUT = path.join(HERE, 'out', KIND ? `quotes-labels-${KIND}${process.env.TAPE ? '-' + process.env.TAPE : ''}` : 'quotes-labels');
 
 mkdirSync(OUT, { recursive: true });
 mkdirSync(EXPORTS, { recursive: true });
