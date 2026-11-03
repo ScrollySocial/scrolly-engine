@@ -92,6 +92,9 @@
   .st-queued .badge { background: #0a1930; color: #f7f3ec; }
   .st-error .badge { background: var(--warn); color: #fff; }
   .tile.st-ready, .tile.st-draft { outline: 3px dashed var(--sky); outline-offset: -3px; }
+  .st-made .badge { background: #fff; color: #0a1930; border: 1px solid var(--line); }
+  .tile.st-made { outline: 3px dotted var(--done); outline-offset: -3px; }
+  .tile.st-made img { opacity: .8; }
   .tile[draggable="true"] { cursor: grab; }
   .tile.dragging { opacity: .35; }
   .tile.drop-before { box-shadow: inset 5px 0 0 var(--pink); }
@@ -367,6 +370,7 @@ const FEED_ST = {
   error: ["Didn't post", 'Buffer tried and it failed'],
   sent: ['Posted', 'Already on the profile'],
   plan: ['Planned', 'Has a date in the planner, not ready yet'], // calendar only; never on the feed grid
+  made: ['To review', "Carousel already made, not picked for posting yet"],
 };
 let feedApp = 'Instagram';
 let feedHide = [];
@@ -391,6 +395,16 @@ const cardKind = (i) => (i.format === 'Carousel' ? 'carousel' : ['Reel', 'Short'
 function feedItems(app) {
   const posts = state.buffer.posts.filter((p) => p.channel === app.name);
   const items = [];
+  // Carousels already made but not Ready yet (To review / Needs fixing in the Carousels section), so she can see them
+  // on the grid before picking. Tap = the carousel review. Skipped ones stay off.
+  if (app.key === 'instagram') {
+    for (const c of state.carousels || []) {
+      const l = carCard(c)?.lanes.instagram;
+      if (!['review', 'fix'].includes(carState(c)) || (l && !['Idea', 'Script', 'Film', 'Edit'].includes(l.stage))) continue;
+      items.push({ st: 'made', car: c, card: carCard(c), post: null, img: c.slides[0], kind: 'carousel', text: c.caption, title: c.title,
+        label: c.review?.decision === 'fix' ? 'Needs fixing' : 'To review', rank: -1, t: 0 });
+    }
+  }
   for (const i of state.ideas) {
     const l = i.lanes[app.key];
     if (i.archived || !l || l.stage !== 'Ready' || i.format === 'Story') continue; // Stories aren't on the grid
@@ -418,7 +432,7 @@ function feedItems(app) {
 }
 
 function tile(it, missing = it.title) {
-  const badge = it.st === 'queued' ? fmtSlot(it.post.dueAt) : it.st === 'sent' ? '' : FEED_ST[it.st][0];
+  const badge = it.st === 'queued' ? fmtSlot(it.post.dueAt) : it.st === 'sent' ? '' : it.label || FEED_ST[it.st][0];
   const icon = it.kind === 'carousel' ? '❐' : it.kind === 'video' ? '▶' : '';
   const drag = MOVABLE(it) ? ` draggable="true" data-rank="${it.rank}"` : '';
   return `<button class="tile st-${it.st}" type="button" data-feed="${feedAll.indexOf(it)}"${drag} aria-label="${esc(`${FEED_ST[it.st][0]}: ${it.title}`)}">
@@ -468,6 +482,7 @@ function renderBuffer() {
     <div class="note" style="margin:0"><b>${scheduled} of ${FREE_PLAN_LIMIT}</b> Buffer posts used. The free plan holds ${FREE_PLAN_LIMIT} across all three apps together.
       <div class="m">${b.live ? `Live from Buffer, ${esc(fmtWhen(b.takenAt))}.` : `Saved copy from ${b.takenAt ? esc(fmtWhen(b.takenAt)) : 'never'}. ${esc(b.note || '')} Ask Claude to "refresh my planner".`}${c.paused ? ' <span class="err">This queue is paused in Buffer.</span>' : ''}</div></div>
     <div><h3>What the labels mean</h3><div class="legend">
+      <div><span style="background:#fff;color:#0a1930;border:1px solid var(--line)">To review</span>A carousel already made that you haven't picked yet. Tap it to look and choose.</div>
       <div><span style="background:var(--sky);color:#0a1930">Ready</span>Done in the planner, not in Buffer yet. Tap it to queue it.</div>
       <div><span style="background:#0a1930;color:#f7f3ec">Tue 7:23pm</span>In Buffer, posts then (US Eastern).</div>
       <div><span style="border:1px solid var(--line)">No label</span>Already posted.</div>
@@ -1133,7 +1148,9 @@ document.addEventListener('click', async (e) => {
     $('postDlg').close();
     if (to) moveFeed(from, feedAll.indexOf(to));
   } else if (t.closest('[data-feed]')) {
-    openPost(feedAll[t.closest('[data-feed]').dataset.feed]);
+    const it = feedAll[t.closest('[data-feed]').dataset.feed];
+    if (it.car) openCar(it.car);
+    else openPost(it);
   } else if (t.dataset.app) {
     feedApp = t.dataset.app;
     try { localStorage.setItem('planner.feedApp', feedApp); } catch {}
