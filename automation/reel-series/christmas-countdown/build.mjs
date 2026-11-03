@@ -36,29 +36,37 @@ const LINES_AT = 0.6, LINE_GAP = 0.35, LINE_IN = 0.45; // white boxes: first at 
 const SFX = path.join(HERE, '../../reel-hf/lib/assets/sfx');
 // these have their own words (MERRY, merry christmas) that the text covers or fights
 const SKIP = ['5766093-uhd_4096_2160_30fps.mp4', '5715559-hd_1080_1920_30fps.mp4'];
-// what each clip shows: one Reel never uses two of the same (two trees, two hot drinks looked odd)
+// what each clip shows, as tags: a Reel never has two clips sharing a tag (two trees, two hot drinks looked odd).
+// 'tree' = a Christmas tree anywhere in the shot, also behind ornaments, slippers, the train or candles (day 48 had 3)
 const SUBJECT = {
   '12649870_2160_3840_30fps.mp4': 'food', '6214615-hd_1080_1920_25fps.mp4': 'food',
   '12715369_2160_3840_30fps.mp4': 'drink', '12726790_2160_3840_30fps.mp4': 'drink', '14697192-hd_1080_1620_30fps.mp4': 'drink',
-  '12748878_2160_3606_60fps.mp4': 'ornament', '12840394_1080_1920_25fps.mp4': 'ornament', '5970198-uhd_2160_4096_25fps.mp4': 'ornament',
-  '6098629-hd_1080_1920_25fps.mp4': 'ornament', '6099394-hd_1080_1920_25fps.mp4': 'ornament', '6099570-hd_1080_1920_25fps.mp4': 'ornament',
+  '12748878_2160_3606_60fps.mp4': 'ornament+tree', '12840394_1080_1920_25fps.mp4': 'ornament', '5970198-uhd_2160_4096_25fps.mp4': 'ornament+tree',
+  '6098629-hd_1080_1920_25fps.mp4': 'ornament+tree', '6099394-hd_1080_1920_25fps.mp4': 'ornament+tree', '6099570-hd_1080_1920_25fps.mp4': 'ornament+tree',
   '12948642_1080_1920_30fps.mp4': 'bird', '20585555-hd_1080_1920_30fps.mp4': 'bird',
   '14827864_1080_1920_30fps.mp4': 'snow', '15019021_2160_3840_30fps.mp4': 'snow', 'uhd_60fps.mp4': 'snow',
-  '14884414_1080_1920_60fps.mp4': 'tree', '15177846_2160_3840_30fps.mp4': 'tree', '19733270-uhd_2160_3840_60fps.mp4': 'tree',
+  '14884414_1080_1920_60fps.mp4': 'tree', '15177846_2160_3840_30fps.mp4': 'tree+snow', '19733270-uhd_2160_3840_60fps.mp4': 'tree+lights',
   '6032907-hd_1080_1920_25fps.mp4': 'tree',
-  '14846655_2160_3840_30fps.mp4': 'toy', '14988566_1080_1920_60fps.mp4': 'candle', '6283475-hd_1080_1920_30fps.mp4': 'candle',
-  '19387113-uhd_2160_3840_60fps.mp4': 'cosy', '19733272-uhd_2160_3840_60fps.mp4': 'lights', '3321566-hd_1920_1080_25fps.mp4': 'nativity',
+  '14846655_2160_3840_30fps.mp4': 'toy+tree', '14988566_1080_1920_60fps.mp4': 'candle', '6283475-hd_1080_1920_30fps.mp4': 'candle+tree',
+  '19387113-uhd_2160_3840_60fps.mp4': 'cosy+tree', '19733272-uhd_2160_3840_60fps.mp4': 'lights', '3321566-hd_1920_1080_25fps.mp4': 'nativity',
+  // her b-roll
+  'desk-coffee-sip-01.mp4': 'drink', 'wall-coffee-sip-02.mp4': 'drink', 'wall-coffee-step-in-01.mp4': 'drink',
 };
+const tags = (f) => (SUBJECT[path.basename(f)] || '').split('+').filter(Boolean);
+// her picks for the longer clip on a stock day (instead of the rotation)
+const HERO_FOR = { 48: '14697192-hd_1080_1620_30fps.mp4' }; // the hot chocolate
 // her own b-roll as the longer clip on the days where the line is her talking (already handheld: no added drift)
 const BROLL = path.join(P.footage, 'broll');
 const HER = {
-  51: 'couch-lookup-smile-01.mp4', 49: 'desk-coffee-sip-01.mp4', 47: 'wall-coffee-sip-01.mp4', 45: 'couch-writing-01.mp4',
+  // 47 had wall-coffee-sip-01: she scrapped it (2026-11-03), so 47 is a stock day now
+  51: 'couch-lookup-smile-01.mp4', 49: 'desk-coffee-sip-01.mp4', 45: 'couch-writing-01.mp4',
   42: 'desk-typing-01.mp4', 39: 'notebook-hand-01.mp4', 37: 'wall-coffee-sip-02.mp4', 34: 'typing-overhead-01.mp4',
   31: 'desk-typing-from-behind-01.mp4', 30: 'wall-coffee-step-in-01.mp4',
 };
 // on these her face is in the top half, so the text sits lower (over her sweater/desk), never over her face
-const LOW_TEXT = new Set([51, 49, 47, 45, 37, 30]);
-const TEXT_TOP = 300, TEXT_TOP_LOW = 960;
+const LOW_TEXT = new Set([51, 45, 37, 30]);
+// 49: her face is mid-frame, so the text goes higher than usual to clear her head
+const TEXT_TOP = 300, TEXT_TOP_LOW = 960, TEXT_TOP_HIGH = { 49: 150 };
 const RED = '#C2362F';                   // holiday kit red
 const GREEN = '#1F7A45';                 // pairs with it in the script word
 
@@ -116,10 +124,11 @@ const shuffle = (list, seed) => {
 // in turn. Flashes: no two of one subject in a Reel, and no clip back within a few days (days 51-47 share none).
 // Fixed seeds: a day always gets the same clips.
 const SCHEDULE = (() => {
-  const stockHeroes = shuffle(LIVED_IN.filter((f) => clips.includes(f)), 7);
+  const picked = Object.values(HERO_FOR);
+  const stockHeroes = shuffle(LIVED_IN.filter((f) => clips.includes(f) && !picked.includes(f)), 7);
   const heroOf = [];
   let h = 0;
-  making.forEach((l) => heroOf.push(HER[l.day] ? null : stockHeroes[h++ % stockHeroes.length]));
+  making.forEach((l) => heroOf.push(HER[l.day] ? null : HERO_FOR[l.day] || stockHeroes[h++ % stockHeroes.length]));
   const order = shuffle(clips, 11);
   const out = {};
   const recent = [];
@@ -132,12 +141,12 @@ const SCHEDULE = (() => {
       const soon = heroOf.slice(i + 1, i + 1 + ahead).filter(Boolean);
       const blocked = new Set([hero, ...soon, ...recent.slice(-back || recent.length).flat()].filter(Boolean));
       if (!back) blocked.clear(), hero && blocked.add(hero);
-      const subjects = new Set(hero ? [SUBJECT[hero]] : []);
+      const subjects = new Set(tags(hero || HER[l.day]));
       quick = [];
       for (let k = 0; k < order.length && quick.length < QUICK; k++) {
         const c = order[(q + k) % order.length];
-        if (blocked.has(c) || subjects.has(SUBJECT[c])) continue;
-        quick.push(c); subjects.add(SUBJECT[c]);
+        if (blocked.has(c) || tags(c).some((t) => subjects.has(t))) continue;
+        quick.push(c); tags(c).forEach((t) => subjects.add(t));
       }
       if (quick.length === QUICK) break;
     }
@@ -194,7 +203,7 @@ async function layout(page, { day, title, body }) {
     @font-face { font-family: Hand; src: url(data:font/woff2;base64,${HAND_FONT}) format('woff2'); }
     @font-face { font-family: Script; src: url(data:font/ttf;base64,${SCRIPT_FONT}); }
     html, body { margin: 0; width: ${W}px; height: ${H}px; background: transparent; }
-    .wrap { position: absolute; left: 70px; right: 70px; top: ${LOW_TEXT.has(day) ? TEXT_TOP_LOW : TEXT_TOP}px; text-align: center; }
+    .wrap { position: absolute; left: 70px; right: 70px; top: ${LOW_TEXT.has(day) ? TEXT_TOP_LOW : TEXT_TOP_HIGH[day] ?? TEXT_TOP}px; text-align: center; }
     /* line-height 1.18: at 1.02 the white outlines of the two lines ran into each other */
     .title { font: 700 ${tSize}px/1.18 Cute, cursive; color: ${RED}; -webkit-text-stroke: 14px #fff;
              paint-order: stroke fill; margin-bottom: 34px; filter: drop-shadow(0 4px 14px rgba(0,0,0,.45)); } /* separates it from white snow */
