@@ -12,7 +12,7 @@ import http from 'node:http';
 import { readFileSync, writeFileSync, renameSync, readdirSync, existsSync, mkdirSync } from 'node:fs';
 import { join, dirname, extname, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { liveFetch, HANDLES } from './lib/buffer.mjs';
+import { liveFetch, movePosts, HANDLES } from './lib/buffer.mjs';
 import { plan as queuePlan, run as queueRun } from './lib/queue.mjs';
 import { cleanIdea, PLATFORMS, STAGES, PIN_STAGES, FORMATS } from './lib/ideas.mjs';
 
@@ -234,6 +234,14 @@ http
         const saved = saveIdea({ ...card, lanes: { ...card.lanes, [platform]: lane } });
         cache = null; // next page load reads Buffer fresh
         return send(res, 200, { post, byHand: post.byHand, idea: saved });
+      }
+      // Her Confirm after dragging queued posts: new times for posts already in Buffer
+      if (req.method === 'POST' && url.pathname === '/api/buffer-move') {
+        const key = envKey('BUFFER_API_KEY');
+        if (!key) return send(res, 400, { error: 'No BUFFER_API_KEY in automation/.env yet.' });
+        const moved = await movePosts(key, (await readBody(req)).moves);
+        cache = null; // the next page load reads Buffer fresh
+        return send(res, 200, { moved });
       }
       if (req.method === 'POST' && url.pathname === '/api/feed-order') {
         return send(res, 200, { ideas: saveFeedOrder(await readBody(req)) });

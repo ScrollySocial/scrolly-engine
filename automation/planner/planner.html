@@ -397,7 +397,7 @@ function feedItems(app) {
 function tile(it, missing = it.title) {
   const badge = it.st === 'queued' ? fmtSlot(it.post.dueAt) : it.st === 'sent' ? '' : FEED_ST[it.st][0];
   const icon = it.kind === 'carousel' ? '❐' : it.kind === 'video' ? '▶' : '';
-  const drag = it.rank === 0 ? ' draggable="true"' : '';
+  const drag = MOVABLE(it) ? ` draggable="true" data-rank="${it.rank}"` : '';
   return `<button class="tile st-${it.st}" type="button" data-feed="${feedAll.indexOf(it)}"${drag} aria-label="${esc(`${FEED_ST[it.st][0]}: ${it.title}`)}">
     ${it.img ? `<img src="${esc(it.img)}" alt="" loading="lazy">` : `<span class="txt">${esc(missing)}</span>`}
     ${badge ? `<span class="badge">${esc(badge)}</span>` : ''}${icon ? `<span class="kind" aria-hidden="true">${icon}</span>` : ''}
@@ -448,7 +448,7 @@ function renderBuffer() {
       <div><span style="background:var(--sky);color:#0a1930">Ready</span>Done in the planner, not in Buffer yet. Tap it to queue it.</div>
       <div><span style="background:#0a1930;color:#f7f3ec">Tue 7:23pm</span>In Buffer, posts then (US Eastern).</div>
       <div><span style="border:1px solid var(--line)">No label</span>Already posted.</div>
-    </div><p class="m" style="margin:8px 0 0">Drag a Ready post to change the order (on a phone: tap it, then Move). Posts already in Buffer keep Buffer's times.</p></div>
+    </div><p class="m" style="margin:8px 0 0">Drag a post to change the order (on a phone: tap it, then Move). Ready posts move among Ready posts. Posts in Buffer swap times with each other, after you confirm.</p></div>
     <div><h3>Next from Buffer</h3>${queue.length ? `<ol class="next">${queue.map((it) => row(it, fmtWhen(it.post.dueAt))).join('')}</ol>` : `<p class="empty" style="margin:0">Nothing queued for ${esc(app.name)}.</p>`}</div>
     ${errors.length ? `<div><h3 class="err">Didn't post</h3><ol class="next">${errors.map((it) => row(it, it.post.error || 'Failed')).join('')}</ol></div>` : ''}
     ${days.length ? `<details><summary>Buffer's posting times: ${slots} a week</summary>
@@ -463,7 +463,7 @@ function openPost(it, app = APPS.find((a) => a.name === feedApp) || APPS[0]) {
   const kind = it.kind === 'carousel' ? `Carousel${it.post?.count ? `, ${it.post.count} slides` : ''}` : it.kind === 'video' ? 'Video' : 'Single image';
   const canQueue = it.st === 'ready' && it.card && QUEUEABLE.includes(app.key);
   const k = feedAll.indexOf(it);
-  const move = it.rank === 0 && k >= 0 && feedAll.filter((x) => x.rank === 0).length > 1
+  const move = MOVABLE(it) && k >= 0 && feedAll.filter((x) => x.rank === it.rank).length > 1
     ? `<div class="row" style="margin:0"><span class="m">Move on the grid:</span><button class="ghost" type="button" data-move="${k}" data-to="-1">← Earlier on the grid</button><button class="ghost" type="button" data-move="${k}" data-to="1">Later on the grid →</button></div>` : '';
   $('postBody').innerHTML = `
     ${it.img ? `<img src="${esc(it.img)}" alt="">` : ''}
@@ -487,9 +487,14 @@ function feedFromHash() {
 }
 window.addEventListener('hashchange', feedFromHash);
 
-// ---- Drag to reorder: Ready posts only (Buffer's queue keeps its own times) ----
-// The grid shows posts last-first, so the saved posting order is the grid order read backwards.
+// ---- Drag to reorder ----
+// Ready posts reorder among themselves (saved on the cards). Posts in Buffer's queue swap times with each other: the same
+// times, handed out in the new order, after her Confirm. The grid shows posts last-first, so posting order = grid backwards.
+const MOVABLE = (it) => it.rank === 0 || (it.st === 'queued' && it.post?.status === 'scheduled');
+let pendingMoves = null;
 async function moveFeed(from, to) {
+  if (feedAll[from]?.rank !== feedAll[to]?.rank) return;
+  if (feedAll[from].rank === 2) return planBufferMove(from, to);
   const group = feedAll.filter((x) => x.rank === 0);
   const a = group.indexOf(feedAll[from]);
   const b = group.indexOf(feedAll[to]);
@@ -511,6 +516,37 @@ async function moveFeed(from, to) {
   renderBuffer();
   renderIdeas();
 }
+function planBufferMove(from, to) {
+  const group = feedAll.filter((x) => MOVABLE(x) && x.rank === 2);
+  const a = group.indexOf(feedAll[from]);
+  const b = group.indexOf(feedAll[to]);
+  if (a < 0 || b < 0 || a === b) return;
+  const times = group.map((x) => x.post.dueAt).sort();
+  const [it] = group.splice(a, 1);
+  group.splice(b, 0, it);
+  const posting = group.slice().reverse();
+  const moves = posting.map((x, k) => ({ id: x.post.id, from: x.post.dueAt, dueAt: times[k], title: x.title })).filter((m) => m.from !== m.dueAt);
+  if (!moves.length) return;
+  pendingMoves = moves;
+  $('queueBody').innerHTML = `<h2 style="margin:0">Change Buffer's times?</h2>
+    <p class="sub" style="margin:0">These posts swap times in Buffer. Nothing changes until you click Confirm. Times are US Eastern.</p>
+    <ol class="next">${moves.map((m) => `<li><div style="border:1px solid var(--line);border-radius:10px;padding:8px 10px"><b>${esc(m.title)}</b><span class="m">${esc(fmtWhen(m.from))} → <b>${esc(fmtWhen(m.dueAt))}</b></span></div></li>`).join('')}</ol>
+    <p class="m" style="margin:0">Moved posts keep their exact new time in Buffer (a custom time), even if you change Buffer's posting slots later.</p>
+    <div class="actions"><button class="ghost" type="button" data-qclose>Cancel</button><button class="primary" type="button" data-bmove>Confirm</button></div>`;
+  $('queueDlg').showModal();
+}
+async function confirmBufferMove(btn) {
+  btn.disabled = true;
+  btn.textContent = 'Moving…';
+  const r = await fetch('/api/buffer-move', { method: 'POST', headers: { 'content-type': 'application/json' },
+    body: JSON.stringify({ moves: pendingMoves.map(({ id, from, dueAt }) => ({ id, from, dueAt })) }) });
+  const body = await r.json();
+  pendingMoves = null;
+  $('queueBody').innerHTML = r.ok
+    ? `<h2 style="margin:0">Moved</h2><p style="margin:0">${body.moved.length} post${body.moved.length === 1 ? '' : 's'} now have new times in Buffer.</p><div class="actions"><span></span><button class="primary" type="button" data-qclose>Done</button></div>`
+    : `<h2 style="margin:0" class="err">Didn't move</h2><p style="margin:0">${esc(body.error || r.status)}</p><div class="actions"><span></span><button class="primary" type="button" data-qclose>Close</button></div>`;
+  load(true);
+}
 let dragFrom = null;
 const clearDrop = () => document.querySelectorAll('.drop-before, .drop-after, .dragging').forEach((el) => el.classList.remove('drop-before', 'drop-after', 'dragging'));
 $('phone').addEventListener('dragstart', (e) => {
@@ -523,7 +559,7 @@ $('phone').addEventListener('dragstart', (e) => {
 });
 $('phone').addEventListener('dragover', (e) => {
   const t = e.target.closest('.tile[draggable="true"]');
-  if (dragFrom == null || !t) return;
+  if (dragFrom == null || !t || feedAll[Number(t.dataset.feed)]?.rank !== feedAll[dragFrom]?.rank) return;
   e.preventDefault();
   document.querySelectorAll('.drop-before, .drop-after').forEach((el) => el.classList.remove('drop-before', 'drop-after'));
   if (Number(t.dataset.feed) !== dragFrom) t.classList.add(Number(t.dataset.feed) < dragFrom ? 'drop-before' : 'drop-after');
@@ -995,7 +1031,7 @@ document.addEventListener('click', async (e) => {
     openQueue(t.dataset.card || $('ideaForm').dataset.id, t.dataset.queue);
   } else if (t.dataset.move) {
     const from = Number(t.dataset.move);
-    const group = feedAll.filter((x) => x.rank === 0);
+    const group = feedAll.filter((x) => MOVABLE(x) && x.rank === feedAll[from].rank);
     const to = group[group.indexOf(feedAll[from]) + Number(t.dataset.to)];
     $('postDlg').close();
     if (to) moveFeed(from, feedAll.indexOf(to));
@@ -1016,6 +1052,8 @@ document.addEventListener('click', async (e) => {
     openEditor(t.dataset.openCard);
   } else if (t.hasAttribute('data-pclose') || t.id === 'postDlg') {
     $('postDlg').close();
+  } else if (t.hasAttribute('data-bmove')) {
+    confirmBufferMove(t);
   } else if (t.dataset.qconfirm) {
     confirmQueue(t);
   } else if (t.hasAttribute('data-qclose') || t.id === 'queueDlg') {

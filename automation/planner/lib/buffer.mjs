@@ -118,6 +118,63 @@ export async function queuePost(key, { platform, bufferId, text, assets, byHand 
   return result.post; // { id, status, dueAt }
 }
 
+// ---- Move queued posts (her drag on the feed preview, then her Confirm) ----
+// Buffer re-checks an edit as a whole post, so each post is read in full and sent back with only its time changed
+// (mode customScheduled). Every post is checked before the first edit: still scheduled, still at the time the page showed.
+// Field names checked against Buffer's schema by introspection (2026-11-03).
+const FULL = `query PlannerFull($id: PostId!) { post(input: { id: $id }) {
+  id status channelId channelService dueAt text tags { id }
+  assets { type source ... on ImageAsset { image { altText userTags { handle x y } } } ... on VideoAsset { video { thumbnailOffset title } } }
+  metadata {
+    ... on InstagramPostMetadata { type shouldShareToFeed firstComment link isAiGenerated geolocation { id text } stickerFields { music other products text topics } }
+    ... on TiktokPostMetadata { title isAiGenerated }
+    ... on YoutubePostMetadata { title privacy madeForKids notifySubscribers embeddable license isAiGenerated category { categoryId } }
+  } } }`;
+const clean = (o) => Object.fromEntries(Object.entries(o).filter(([, v]) => v != null));
+
+export function editInput(p, dueAt) {
+  const assets = p.assets.map((a) => {
+    if (a.type === 'image') return { image: { url: a.source, metadata: clean({ altText: a.image?.altText || '', userTags: a.image?.userTags?.length ? a.image.userTags : null }) } };
+    if (a.type === 'video') return { video: { url: a.source, metadata: clean({ thumbnailOffset: a.video?.thumbnailOffset, title: a.video?.title }) } };
+    throw Object.assign(new Error('This post has a file type the planner can\'t move. Move it in Buffer.'), { code: 400 });
+  });
+  const m = p.metadata || {};
+  const metadata = p.channelService === 'instagram'
+    ? { instagram: clean({ type: m.type, shouldShareToFeed: m.shouldShareToFeed, firstComment: m.firstComment, link: m.link, isAiGenerated: m.isAiGenerated,
+        geolocation: m.geolocation, stickerFields: m.stickerFields ? clean(m.stickerFields) : null }) }
+    : p.channelService === 'tiktok' ? { tiktok: clean({ title: m.title, isAiGenerated: m.isAiGenerated }) }
+    : p.channelService === 'youtube' ? { youtube: clean({ title: m.title, privacy: m.privacy, madeForKids: m.madeForKids, notifySubscribers: m.notifySubscribers,
+        embeddable: m.embeddable, license: m.license, isAiGenerated: m.isAiGenerated, categoryId: m.category?.categoryId }) }
+    : null;
+  // schedulingType left out on purpose: Buffer keeps "Notify me" or automatic as it was
+  return { id: p.id, text: p.text, assets, ...(metadata ? { metadata } : {}), tagIds: (p.tags || []).map((t) => t.id), mode: 'customScheduled', dueAt };
+}
+
+export async function movePosts(key, moves, request = gql) {
+  if (!Array.isArray(moves) || !moves.length) throw Object.assign(new Error('Nothing to move.'), { code: 400 });
+  const now = Date.now();
+  const full = [];
+  for (const { id, from, dueAt } of moves) {
+    const p = (await request(key, FULL, { id }).catch(() => null))?.post; // Buffer answers "Post not found" as an error
+    if (!p) throw Object.assign(new Error('A post is gone from Buffer. Refresh the planner.'), { code: 409 });
+    if (p.status !== 'scheduled' || Date.parse(p.dueAt) !== Date.parse(from)) {
+      throw Object.assign(new Error('Buffer changed since the planner loaded (a post posted or moved). Refresh, then drag again.'), { code: 409 });
+    }
+    if (!(Date.parse(dueAt) > now + 60_000)) throw Object.assign(new Error('A new time is in the past or less than a minute away.'), { code: 400 });
+    full.push(editInput(p, dueAt));
+  }
+  const done = [];
+  for (const input of full) {
+    const r = (await request(key, EDIT, { input })).editPost;
+    if (!r?.post) {
+      const err = new Error(`Buffer refused a move${done.length ? ` after ${done.length} of ${full.length} moved` : ''}: ${r?.message || 'no reason given'}. Refresh to see where things are.`);
+      throw Object.assign(err, { code: 400 });
+    }
+    done.push(r.post);
+  }
+  return done; // [{ id, status, dueAt }]
+}
+
 export async function liveFetch(key) {
   const { channels } = await gql(key, CHANNEL_QUERY, { org: ORG_ID });
   const queue = await page(key, ['draft', 'needs_approval', 'scheduled', 'sending', 'error'], 100, 'asc');

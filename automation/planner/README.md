@@ -39,8 +39,15 @@ Buffer still reports the old "scrollysocial" names.
 - **Drag to reorder (2026-11-03):** Ready posts (and Buffer drafts that have a card) can be dragged on the grid; on a phone,
   tap one and use "Earlier/Later on the grid". `POST /api/feed-order` saves `feedOrder` 1, 2, 3... (1 posts first) on that
   app's lane, all cards in one write, refused whole if a card changed since the page loaded. Cards with no `feedOrder` sit
-  top left (post after the ordered ones). Posts already in Buffer keep Buffer's times; moving those (swap `dueAt` with
-  `editPost`, her Confirm) is still to build.
+  top left (post after the ordered ones).
+- **Move posts in Buffer (2026-11-03):** queued (scheduled) tiles drag among themselves only. The group's times are
+  handed out in the new order and shown as "old → new" with Confirm; `POST /api/buffer-move` → `lib/buffer.mjs movePosts`
+  reads each post in full, refuses all of it if any post isn't scheduled or isn't at the time the page showed, then
+  `editPost` with the full text, assets (alt text, user tags, video thumbnail), tags and app settings, `mode
+  customScheduled` + the new `dueAt`, schedulingType left out so "Notify me" stays. Moved posts become custom-timed in
+  Buffer. Checked with a pretend Buffer and against Buffer's schema (nonexistent id); not yet run on a real queued post.
+- **Posted on the grid:** reads Buffer's last 100 sent posts (was 30), and a card lane at Posted shows even when Buffer
+  no longer lists it.
 
 ## Queue it (built 2026-10-28)
 A Ready Instagram or TikTok lane gets a **Queue it** button (card editor and the platform board).
