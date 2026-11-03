@@ -28,11 +28,11 @@ day links to that app's feed preview.
 
 ## Carousels review (built 2026-11-03)
 `#carousels`: every carousel already made, so she can pick what to post. Sources: the carousel engine's exports
-(OneDrive `exports/carousels/<date>-<slug>` with `automation/carousels/posts/<id>/post.json`; tests, samples and pinned
-concept boards left out) and the 10 $1K Club promo carousels (`k1-launch/content/promo-carousels/dist`, old Scrolly look
-and $40 price, so they can only be marked Needs fixing or Skip). Filters: To review, Will post, Needs fixing, Skipped,
+(OneDrive `exports/carousels/<date>-<slug>` plus `sample-what-to-post`, each with `automation/carousels/posts/<id>/post.json`;
+`_test-*` and pinned concept boards left out). The date shown is the last render, not the folder date. The old-look $1K
+Club promo carousels are left out (Mercedes 2026-11-03: outdated). Filters: To review, Will post, Needs fixing, Skipped,
 Posted (a card with that `carouselId` has a Posted lane), All. Tap one for every slide + the caption.
-Her choices go to `data/carousel-review.json`. **Post it** (engine only) makes a card at Ready on Instagram with the
+Her choices go to `data/carousel-review.json`. **Post it** makes a card at Ready on Instagram with the
 export's caption, or moves the existing card's Instagram lane up to Ready; Queue it from the grid as usual.
 
 **Old UGC posts:** Buffer still lists the July-August UGC account posts she deleted from Instagram. `FEED_START`

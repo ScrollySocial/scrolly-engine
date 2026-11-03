@@ -9,7 +9,7 @@
 //   - Ideas: data/ideas.json (one card per idea, a lane per platform)
 // Writes: data/pin-status.json (her "Seen it live" / "Missing" clicks) and data/ideas.json (her idea edits).
 import http from 'node:http';
-import { readFileSync, writeFileSync, renameSync, readdirSync, existsSync, mkdirSync } from 'node:fs';
+import { readFileSync, writeFileSync, renameSync, readdirSync, existsSync, mkdirSync, statSync } from 'node:fs';
 import { join, dirname, extname, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { liveFetch, movePosts, HANDLES } from './lib/buffer.mjs';
@@ -51,11 +51,10 @@ const MEDIA_ROOT = MEDIA_CFG.photosDir ? resolve(MEDIA_CFG.photosDir, '..') : ''
 const LOGO = join(here, '..', '..', 'Scrolly Organic Engine', 'brand', 'assets', 'ambition-department-logo-navy.png');
 
 // ---- Carousels already made (her review: which can be posted) ----
-// Two sources: the carousel engine's exports (OneDrive exports/carousels/<id>, with posts/<id>/post.json) and the
-// $1K Club promo carousels (k1-launch/content/promo-carousels/dist, old Scrolly branding and the old $40 price).
-// Tests, style samples and pinned-grid concept boards are left out. Her choices: data/carousel-review.json.
+// The carousel engine's exports (OneDrive exports/carousels/<id>, with posts/<id>/post.json). The old-look $1K Club
+// promo carousels are left out (Mercedes 2026-11-03: outdated).
+// Her choices: data/carousel-review.json.
 const CAROUSEL_POSTS = join(here, '..', 'carousels', 'posts');
-const PROMO = join(here, '..', 'k1-launch', 'content', 'promo-carousels', 'dist');
 const REVIEW_FILE = join(DATA, 'carousel-review.json');
 const DECISIONS = ['post', 'fix', 'skip'];
 const slidesIn = (dir) => {
@@ -77,28 +76,17 @@ function carousels() {
   const out = [];
   let engine = [];
   try {
-    engine = readdirSync(CAROUSEL_EXPORTS).filter((d) => /^\d{4}-\d\d-\d\d-/.test(d) && existsSync(join(CAROUSEL_POSTS, d, 'post.json')));
+    // dated posts plus sample-what-to-post (a full post in the new look); _test-* and concept boards stay out
+    engine = readdirSync(CAROUSEL_EXPORTS).filter((d) => /^(\d{4}-\d\d-\d\d-|sample-)/.test(d) && existsSync(join(CAROUSEL_POSTS, d, 'post.json')));
   } catch {}
   for (const id of engine) {
     const slides = slidesIn(join(CAROUSEL_EXPORTS, id));
     if (!slides.length) continue;
     const post = readJson(join(CAROUSEL_POSTS, id, 'post.json'), {});
-    out.push({ id, source: 'engine', made: id.slice(0, 10), title: post.brief?.topic || id.slice(11).replace(/-/g, ' '),
+    // the date she last rendered it (folder names keep the first draft's date)
+    const made = statSync(join(CAROUSEL_EXPORTS, id, slides[0])).mtime.toISOString().slice(0, 10);
+    out.push({ id, source: 'engine', made, title: post.brief?.topic || id.replace(/^\d{4}-\d\d-\d\d-|^sample-/, '').replace(/-/g, ' '),
       slides: slides.map((f) => `/carousel-img/${id}/${f}`), caption: readText(join(CAROUSEL_EXPORTS, id, 'caption.txt')), review: review[id] || null });
-  }
-  // captions.md: "## <slug>" then a fenced caption
-  const md = readText(join(PROMO, 'captions.md'));
-  const caps = Object.fromEntries([...md.matchAll(/^## (\S+)[\s\S]*?```\r?\n([\s\S]*?)```/gm)].map((m) => [m[1], m[2].trim()]));
-  let promo = [];
-  try {
-    promo = readdirSync(PROMO).filter((d) => /^\d\d-[\w-]+$/.test(d));
-  } catch {}
-  for (const slug of promo) {
-    const slides = slidesIn(join(PROMO, slug));
-    if (!slides.length) continue;
-    const id = `promo-${slug}`;
-    out.push({ id, source: 'promo', made: '2026-09', title: (caps[slug] || slug).split('\n')[0], slides: slides.map((f) => `/promo-img/${slug}/${f}`),
-      caption: caps[slug] || '', note: 'Old Scrolly look and the old $40 price. Needs a rebuild in the new look before it can post.', review: review[id] || null });
   }
   return out;
 }
@@ -351,11 +339,6 @@ http
       const slide = url.pathname.match(/^\/carousel-img\/([\w-]+)\/(slide-\d+\.png)$/);
       if (req.method === 'GET' && slide) {
         const f = join(CAROUSEL_EXPORTS, slide[1], slide[2]);
-        if (existsSync(f)) return send(res, 200, readFileSync(f), TYPES['.png']);
-      }
-      const promoSlide = url.pathname.match(/^\/promo-img\/(\d\d-[\w-]+)\/(slide-\d+\.png)$/);
-      if (req.method === 'GET' && promoSlide) {
-        const f = join(PROMO, promoSlide[1], promoSlide[2]);
         if (existsSync(f)) return send(res, 200, readFileSync(f), TYPES['.png']);
       }
       // Finished images in OneDrive Scrolly Media (quote posts, Reel covers), for the feed preview. Images only, inside that folder.
