@@ -11,7 +11,7 @@
 
 // ---- free rules (checked in this order: spam, lead, question, praise) ----
 const RULES = {
-  spam: /promote (it|this|your)|promo(tion)? on @|collab|brand ambassador|(dm|message) (me|us) (for|to)|check (out )?(my|our) (bio|page|profile)|crypto|bitcoin|forex|invest(ment|ing)? (opportunity|platform)|earn \$?\d+.{0,12}(daily|weekly|a day|per day)|(real|cheap|free) followers|grow your (account|page|followers)|https?:\/\//i,
+  spam: SPAM_RE, // in _lib.js, shared with the first-DM welcome
   lead: /how much|price|pricing|cost|how (do|can) i (join|get|buy|sign up|start)|where (do|can) i (get|buy|find|sign up)|sign me up|i('m| am) interested|i need (this|that|help)|i want (this|in)|how to join|\bjoin\b|enroll|send (me )?the link|stuck|nobody buys|no (sales|one buys)|can't (sell|get sales)/i,
   question: /\?|^(how|what|why|when|where|which|who|can|could|does|do|is|are|should|will|would|any tips)\b/i,
   praise: /lov(e|ing)|thank|great|amazing|helpful|so good|needed (this|that)|obsessed|genius|perfect|yes+!|🔥|❤|♥|😍|👏|🙌|💯|🥰|🙏/i,

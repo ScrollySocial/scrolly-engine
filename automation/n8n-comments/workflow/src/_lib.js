@@ -32,6 +32,9 @@ function saveState() {
   fs.writeFileSync(`${STATE_FILE}.tmp`, JSON.stringify(state));
   fs.renameSync(`${STATE_FILE}.tmp`, STATE_FILE);
 }
+// Spam words: sort-comments.js sorts with it, and the first-DM welcome skips anything it matches
+// (ad pitches like "spend $5 a day, check it out below", fake "Instagram has launched..." notices).
+const SPAM_RE = /promote (it|this|your)|promo(tion)? on @|collab|brand ambassador|(dm|message) (me|us) (for|to)|check (out )?(my|our) (bio|page|profile)|check (it|this) out (below|here)|crypto|bitcoin|forex|invest(ment|ing)? (opportunity|platform)|earn \$?\d+.{0,12}(daily|weekly|a day|per day)|(spend|only|just|for) \$\d+.{0,12}(a day|per day|daily|\/day)|(instagram|meta|facebook) (has|just) (launched|released|introduced|rolled out)|(meta|instagram) (support|team|verification)|(account|page) (will be|has been|is) (disabled|suspended|restricted|deleted)|copyright (violation|infringement)|(real|cheap|free) followers|grow your (account|page|followers)|https?:\/\//i;
 const helpers = this.helpers;
 const now = () => new Date().toISOString();
 

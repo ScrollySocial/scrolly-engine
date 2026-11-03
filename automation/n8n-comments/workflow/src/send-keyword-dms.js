@@ -216,7 +216,11 @@ for (const item of $input.all()) {
     } catch (e) {
       welcome = null;
     }
-    if (welcome?.on && welcome.approved && welcome.text) {
+    // Spam never gets the welcome (it's still remembered, so a spammer's next DM doesn't get one either).
+    if (SPAM_RE.test(c.text)) {
+      remember('welcomed', c.authorId);
+      c.note = `${c.note ? `${c.note} ` : ''}No welcome: looks like spam.`;
+    } else if (welcome?.on && welcome.approved && welcome.text) {
       if (DRY_RUN) {
         c.dm = `test mode, would send: ${welcome.text}`;
       } else {
