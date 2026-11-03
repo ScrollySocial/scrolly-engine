@@ -140,17 +140,20 @@
   .lane.posted { background: var(--ok); color: #fff; }
   .lane.ready { background: var(--sky); color: #0a1930; }
   @media (max-width: 700px) { .idea { grid-template-columns: 1fr; } .lanes { justify-content: flex-start; } }
-  .board { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(170px, 1fr); gap: 10px; overflow-x: auto; padding-bottom: 8px; align-items: start; }
-  .col { background: var(--mist); border-radius: 12px; padding: 10px; min-height: 80px; }
-  /* Phones: stages stack, and empty ones step aside */
-  @media (max-width: 700px) {
-    .board { grid-auto-flow: row; grid-template-columns: 1fr; }
-    .col.none { display: none; }
-  }
-  .col h4 { margin: 0 0 8px; font-size: 15px; display: flex; justify-content: space-between; }
-  .col h4 span { color: var(--muted); font-weight: 400; }
-  .col .idea { grid-template-columns: 1fr; padding: 10px; margin-bottom: 8px; }
-  .col .idea select { font: inherit; font-size: 15px; margin-top: 4px; max-width: 100%; }
+  /* Platform board: a row per stage, cards scroll sideways */
+  .srows { display: grid; gap: 8px; }
+  .srow { background: var(--mist); border-radius: 12px; padding: 8px 10px 10px; min-width: 0; }
+  .srow h4 { margin: 0 0 6px; font-size: 15px; display: flex; gap: 8px; align-items: baseline; }
+  .srow h4 span { color: var(--muted); font-weight: 400; }
+  .srow.none { padding: 6px 10px; } .srow.none h4 { margin: 0; color: var(--muted); font-weight: 600; }
+  .scards { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 6px; scroll-snap-type: x proximity; }
+  .scard { flex: none; width: 210px; display: grid; grid-template-rows: auto 1fr auto; gap: 4px; background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 8px 10px; cursor: pointer; scroll-snap-align: start; }
+  .scard:hover { border-color: var(--sky); }
+  .scard .t { font-weight: 650; font-size: 15px; line-height: 1.25; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; }
+  .scard .m { color: var(--muted); font-size: 15px; line-height: 1.3; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+  .scard .act { display: flex; gap: 6px; align-items: center; }
+  .scard select { font: inherit; font-size: 15px; flex: 1; min-width: 0; }
+  .scard .ghost { padding: 4px 10px; flex: none; }
   #editor { width: min(94vw, 720px); max-width: none; max-height: 92vh; padding: 0; }
   #ideaForm { padding: 20px; display: grid; gap: 12px; }
   #ideaForm label { display: grid; gap: 4px; font-size: 15px; font-weight: 600; }
@@ -519,7 +522,7 @@ function openPost(it, app = APPS.find((a) => a.name === feedApp) || APPS[0]) {
   const canQueue = it.st === 'ready' && it.card && QUEUEABLE.includes(app.key);
   const k = feedAll.indexOf(it);
   const move = MOVABLE(it) && k >= 0 && feedAll.filter((x) => x.rank === it.rank).length > 1
-    ? `<div class="row" style="margin:0"><span class="m">Move on the grid:</span><button class="ghost" type="button" data-move="${k}" data-to="-1">← Earlier on the grid</button><button class="ghost" type="button" data-move="${k}" data-to="1">Later on the grid →</button></div>` : '';
+    ? `<div class="row" style="margin:0"><span class="m">Move on the grid:</span><button class="ghost" type="button" data-gmove="${k}" data-to="-1">← Earlier on the grid</button><button class="ghost" type="button" data-gmove="${k}" data-to="1">Later on the grid →</button></div>` : '';
   $('postBody').innerHTML = `
     ${it.img ? `<img src="${esc(it.img)}" alt="">` : ''}
     <div class="row" style="margin:0"><span class="pill ${it.st === 'sent' ? 'sent' : it.st === 'error' ? 'error' : 'scheduled'}">${esc(it.label || FEED_ST[it.st][0])}</span><span class="m">${esc(kind)} · ${esc(when)}</span></div>
@@ -680,7 +683,7 @@ function openCar(c) {
       ${c.review?.decision ? `<button class="ghost" type="button" data-carpick="" data-carid="${esc(c.id)}">Undo my choice</button>` : ''}</span>
       ${card ? `<button class="ghost" type="button" data-open-card="${esc(card.id)}">Open the card</button>` : ''}</div>
     <p class="m" style="margin:0">${help}</p>`}
-    ${k >= 0 ? `<div class="row" style="margin:0"><span class="m">Move on the Instagram grid:</span><button class="ghost" type="button" data-move="${k}" data-to="-1">← Earlier on the grid</button><button class="ghost" type="button" data-move="${k}" data-to="1">Later on the grid →</button></div>` : ''}`;
+    ${k >= 0 ? `<div class="row" style="margin:0"><span class="m">Move on the Instagram grid:</span><button class="ghost" type="button" data-gmove="${k}" data-to="-1">← Earlier on the grid</button><button class="ghost" type="button" data-gmove="${k}" data-to="1">Later on the grid →</button></div>` : ''}`;
   if (!$('carDlg').open) $('carDlg').showModal();
 }
 async function pickCar(id, decision) {
@@ -900,15 +903,19 @@ function renderIdeas() {
   // "Stories" = the Instagram board, Story cards only
   const p = ideaFilter === 'stories' ? 'instagram' : ideaFilter;
   const mine = live.filter((i) => i.lanes[p] && (ideaFilter !== 'stories' || i.format === 'Story'));
-  $('ideaView').innerHTML = `<div class="board">${stagesFor(p).map((s) => {
+  // One row per stage, cards side by side (Mercedes 2026-11-03: columns were too long to scroll). Empty stages fold to a line.
+  $('ideaView').innerHTML = `<div class="srows">${stagesFor(p).map((s) => {
     const cards = mine.filter((i) => i.lanes[p].stage === s)
       .sort((a, b) => (a.lanes[p].date || '9').localeCompare(b.lanes[p].date || '9') || (a.order ?? 1e9) - (b.order ?? 1e9));
-    return `<div class="col${cards.length ? '' : ' none'}"><h4>${esc(s)} <span>${cards.length}</span></h4>${cards.map((i) => `
-      <div class="idea" data-edit="${esc(i.id)}">
+    return `<div class="srow${cards.length ? '' : ' none'}"><h4>${esc(s)} <span>${cards.length}</span></h4>${cards.length ? `<div class="scards">${cards.map((i) => {
+      const meta = [i.format, i.lanes[p].date ? fmtDate(i.lanes[p].date) : ''].filter(Boolean).join(' · ');
+      const kw = kwState(i);
+      return `<div class="scard" data-edit="${esc(i.id)}">
         <span class="t">${esc(i.title)}</span>
-        <span class="m">${[ideaMeta(i), i.lanes[p].date ? fmtDate(i.lanes[p].date) : ''].filter(Boolean).join(' · ')}</span>${kwBadge(i)}
-        ${QUEUEABLE.includes(p) && s === 'Ready' ? `<button class="ghost" type="button" data-queue="${p}" data-card="${esc(i.id)}" style="margin-top:6px">Queue it</button>` : ''}<select data-move="${esc(i.id)}" data-p="${p}" aria-label="Move to">${stagesFor(p).map((x) => `<option${x === s ? ' selected' : ''}>${esc(x)}</option>`).join('')}</select>
-      </div>`).join('')}</div>`;
+        <span class="m">${esc(meta) || '&nbsp;'}${kw === 'missing' ? ' · <span class="err">no comment word</span>' : ''}</span>
+        <span class="act">${QUEUEABLE.includes(p) && s === 'Ready' ? `<button class="ghost" type="button" data-queue="${p}" data-card="${esc(i.id)}">Queue it</button>` : ''}<select data-move="${esc(i.id)}" data-p="${p}" aria-label="Move to">${stagesFor(p).map((x) => `<option${x === s ? ' selected' : ''}>${esc(x)}</option>`).join('')}</select></span>
+      </div>`;
+    }).join('')}</div>` : ''}</div>`;
   }).join('')}</div>${ideaFilter === 'stories' ? '<p class="sub" style="margin-top:8px">A Story card is one day of Stories. Film = photos to shoot, Edit = lines written and slides to render. Add one with + New idea and Format "Story".</p>'
     : live.length > mine.length ? `<p class="sub" style="margin-top:8px">${live.length - mine.length} ideas aren't planned for ${PNAME[p]}. Open one and tick ${PNAME[p]} to add it here.</p>` : ''}`;
 }
@@ -1162,8 +1169,8 @@ document.addEventListener('click', async (e) => {
   } else if (t.dataset.queue) {
     if ($('postDlg').open) $('postDlg').close();
     openQueue(t.dataset.card || $('ideaForm').dataset.id, t.dataset.queue);
-  } else if (t.dataset.move) {
-    const from = Number(t.dataset.move);
+  } else if (t.dataset.gmove) {
+    const from = Number(t.dataset.gmove);
     const group = feedAll.filter((x) => MOVABLE(x) && x.rank === feedAll[from].rank);
     const to = group[group.indexOf(feedAll[from]) + Number(t.dataset.to)];
     $('postDlg').close();

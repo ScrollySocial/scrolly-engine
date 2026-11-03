@@ -17,6 +17,10 @@ Run from the project folder, then open http://localhost:4330:
   (Instagram, TikTok, YouTube, Pinterest). Claude may edit `ideas.json` directly; the page re-reads it on load.
 - `data/pin-status.json`: her "Seen it live" / "Missing" clicks. `data/buffer-snapshot.json`: last saved Buffer copy.
 
+## Ideas board layout (2026-11-03)
+A platform's board is one row per stage with cards side by side (scroll sideways); empty stages fold to one line.
+Mercedes found the old tall columns too long to scroll.
+
 ## Calendar (built 2026-11-03)
 Top of the page (`#calendar`). A month grid, weeks start Monday, US Eastern days. Each day shows how many posts and, on
 "All", the split per app (IG, TT, YT, Pins). Filter chips: All, Instagram, TikTok, YouTube, Pinterest (saved per browser).
