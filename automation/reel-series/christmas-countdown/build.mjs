@@ -4,6 +4,7 @@
 //   node build.mjs 51 50              render those days (look A)
 //   node build.mjs all --look B       render every line in lines.json, one at a time
 //   node build.mjs sheet              before/after still of 8 clips: raw, look A, look B
+//   node build.mjs titles             every day's text on one still, to check them all at once
 // Clips: reel-template-pack/assets/Christmas. Output: <exports>/christmas-countdown/ (OneDrive, not git).
 import { readFileSync, readdirSync, mkdirSync, existsSync, rmSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
@@ -157,15 +158,31 @@ function sheet() {
   console.log(`sheet: ${file}  (top: original, middle: look A, bottom: look B)`);
 }
 
+// every day's text over one clip still, 6 across, to check all the titles without rendering videos
+async function titles(page) {
+  const dir = path.join(OUT, '.titles');
+  if (!existsSync(dir)) mkdirSync(dir, { recursive: true });
+  const bg = path.join(dir, 'bg.png');
+  ff(['-ss', '2', '-i', path.join(CLIPS, '14988566_1080_1920_60fps.mp4'), '-frames:v', '1', '-vf', `${FIT},${LEVEL},${LOOKS.A}`, bg]);
+  for (const [i, l] of lines.entries()) await textPng(page, l, path.join(dir, `${String(i).padStart(2, '0')}.png`));
+  const file = path.join(OUT, 'titles-all.png');
+  ff(['-i', bg, '-i', path.join(dir, '%02d.png'), '-filter_complex',
+    `[0:v]loop=${lines.length - 1}:1:0[b];[b][1:v]overlay,crop=${W}:1000:0:240,scale=360:-2,tile=6x${Math.ceil(lines.length / 6)}`,
+    '-frames:v', '1', file]);
+  rmSync(dir, { recursive: true, force: true });
+  console.log(`titles: ${file}`);
+}
+
 const argv = process.argv.slice(2);
 const li = argv.indexOf('--look');
 const look = li >= 0 ? argv.splice(li, 2)[1].toUpperCase() : 'A';
 if (!existsSync(OUT)) mkdirSync(OUT, { recursive: true });
 if (argv.includes('sheet')) { sheet(); process.exit(0); }
 const todo = argv.includes('all') ? lines : lines.filter((l) => argv.includes(String(l.day)));
-if (!todo.length || !LOOKS[look]) { console.log('usage: node build.mjs <day> [day...] | all | sheet  [--look A|B]'); process.exit(1); }
+if ((!todo.length && !argv.includes('titles')) || !LOOKS[look]) { console.log('usage: node build.mjs <day> [day...] | all | sheet | titles  [--look A|B]'); process.exit(1); }
 const b = await launch();
 const page = await b.newPage();
 await page.setViewport({ width: W, height: H });
+if (argv.includes('titles')) await titles(page);
 for (const l of todo) await render(page, l, look);
 await b.close();
