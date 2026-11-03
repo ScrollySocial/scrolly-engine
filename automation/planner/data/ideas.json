@@ -1,6 +1,44 @@
 {
  "ideas": [
   {
+   "id": "645065540120",
+   "title": "\"I have no idea what to post\"",
+   "format": "Reel",
+   "hook": "Where are my small business owners who stare at a blank screen every morning?",
+   "cta": "Comment CHALLENGE",
+   "keyword": "",
+   "notes": "Added 2026-11-03 from her objection list. Overlaps older card(s): 47525cfc2462 (No idea what to post? Film this), 6b10f3573841 (20 minutes a week)\n\nCategory: Overcome objections",
+   "product": "$1K Challenge",
+   "series": "Real talk",
+   "link": "",
+   "filmingNotes": "Block A, on camera. Script: vault products/content-engine/ig-5-days-2026-11-04.md",
+   "editNotes": "",
+   "reelFolder": "",
+   "mediaUrl": "",
+   "order": null,
+   "carouselId": "",
+   "mediaUsed": "",
+   "notionId": "",
+   "fromNotion": null,
+   "archived": false,
+   "createdAt": "2026-11-03T20:15:16.418Z",
+   "updatedAt": "2026-11-03T22:02:56.163Z",
+   "lanes": {
+    "instagram": {
+     "stage": "Film",
+     "date": "2026-11-04",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": "",
+     "byHand": false
+    },
+    "tiktok": null,
+    "youtube": null,
+    "pinterest": null
+   }
+  },
+  {
    "id": "c58355da260c",
    "title": "Reel: Christmas countdown, 38 days",
    "format": "Reel",
@@ -493,7 +531,7 @@
   },
   {
    "id": "d627de06a7bf",
-   "title": "Real talk 5: \"I don't have money for ads\"",
+   "title": "\"I don't have money for ads\"",
    "format": "Reel",
    "hook": "For the small business owner who wants sales without an ad budget.",
    "cta": "Comment PLAN",
@@ -513,7 +551,7 @@
    "fromNotion": null,
    "archived": false,
    "createdAt": "2026-11-03T20:15:16.892Z",
-   "updatedAt": "2026-11-03T21:16:09.610Z",
+   "updatedAt": "2026-11-03T22:03:36.979Z",
    "lanes": {
     "instagram": {
      "stage": "Film",
@@ -521,7 +559,8 @@
      "caption": "",
      "title": "",
      "bufferId": "",
-     "page": ""
+     "page": "",
+     "byHand": false
     },
     "tiktok": null,
     "youtube": null,
@@ -530,7 +569,7 @@
   },
   {
    "id": "51d00b07ef66",
-   "title": "Real talk 4: \"I don't want to show my face on Instagram\"",
+   "title": "\"I don't want to show my face on Instagram\"",
    "format": "Reel",
    "hook": "I made this for the business owner who'd rather stay behind the camera.",
    "cta": "Comment CHALLENGE",
@@ -550,7 +589,7 @@
    "fromNotion": null,
    "archived": false,
    "createdAt": "2026-11-03T20:15:16.772Z",
-   "updatedAt": "2026-11-03T21:16:09.487Z",
+   "updatedAt": "2026-11-03T22:03:23.281Z",
    "lanes": {
     "instagram": {
      "stage": "Film",
@@ -558,7 +597,8 @@
      "caption": "",
      "title": "",
      "bufferId": "",
-     "page": ""
+     "page": "",
+     "byHand": false
     },
     "tiktok": null,
     "youtube": null,
@@ -567,7 +607,7 @@
   },
   {
    "id": "7a38890c6d30",
-   "title": "Real talk 3: \"I don't have enough followers to sell anything\"",
+   "title": "\"I don't have enough followers to sell anything\"",
    "format": "Reel",
    "hook": "I hope this finds the shop owner who thinks they need 10K followers first.",
    "cta": "Comment MATH",
@@ -587,7 +627,7 @@
    "fromNotion": null,
    "archived": false,
    "createdAt": "2026-11-03T20:15:16.659Z",
-   "updatedAt": "2026-11-03T21:16:09.362Z",
+   "updatedAt": "2026-11-03T22:03:06.971Z",
    "lanes": {
     "instagram": {
      "stage": "Film",
@@ -595,7 +635,8 @@
      "caption": "",
      "title": "",
      "bufferId": "",
-     "page": ""
+     "page": "",
+     "byHand": false
     },
     "tiktok": null,
     "youtube": null,
@@ -604,7 +645,7 @@
   },
   {
    "id": "d4979413ed6c",
-   "title": "Real talk 2: \"Nobody is seeing my posts\"",
+   "title": "\"Nobody is seeing my posts\"",
    "format": "Reel",
    "hook": "Calling everyone tired of posting to what feels like nobody.",
    "cta": "Comment MATH",
@@ -624,7 +665,7 @@
    "fromNotion": null,
    "archived": false,
    "createdAt": "2026-11-03T20:15:16.542Z",
-   "updatedAt": "2026-11-03T21:16:09.229Z",
+   "updatedAt": "2026-11-03T22:03:02.466Z",
    "lanes": {
     "instagram": {
      "stage": "Film",
@@ -632,44 +673,8 @@
      "caption": "",
      "title": "",
      "bufferId": "",
-     "page": ""
-    },
-    "tiktok": null,
-    "youtube": null,
-    "pinterest": null
-   }
-  },
-  {
-   "id": "645065540120",
-   "title": "Real talk 1: \"I have no idea what to post\"",
-   "format": "Reel",
-   "hook": "Where are my small business owners who stare at a blank screen every morning?",
-   "cta": "Comment CHALLENGE",
-   "keyword": "",
-   "notes": "Added 2026-11-03 from her objection list. Overlaps older card(s): 47525cfc2462 (No idea what to post? Film this), 6b10f3573841 (20 minutes a week)\n\nCategory: Overcome objections",
-   "product": "$1K Challenge",
-   "series": "Real talk",
-   "link": "",
-   "filmingNotes": "Block A, on camera. Script: vault products/content-engine/ig-5-days-2026-11-04.md",
-   "editNotes": "",
-   "reelFolder": "",
-   "mediaUrl": "",
-   "order": null,
-   "carouselId": "",
-   "mediaUsed": "",
-   "notionId": "",
-   "fromNotion": null,
-   "archived": false,
-   "createdAt": "2026-11-03T20:15:16.418Z",
-   "updatedAt": "2026-11-03T21:16:09.114Z",
-   "lanes": {
-    "instagram": {
-     "stage": "Film",
-     "date": "2026-11-04",
-     "caption": "",
-     "title": "",
-     "bufferId": "",
-     "page": ""
+     "page": "",
+     "byHand": false
     },
     "tiktok": null,
     "youtube": null,
@@ -1002,7 +1007,7 @@
    "filmingNotes": "",
    "editNotes": "",
    "reelFolder": "",
-   "mediaUrl": "",
+   "mediaUrl": "https://theambitiondepartment.com/wp-content/uploads/2026/11/tad-quote-14-label.png",
    "order": null,
    "carouselId": "",
    "mediaUsed": "",
@@ -1010,7 +1015,7 @@
    "fromNotion": null,
    "archived": false,
    "createdAt": "2026-11-02T19:42:08.448Z",
-   "updatedAt": "2026-11-03T20:05:11.810Z",
+   "updatedAt": "2026-11-03T22:08:18.164Z",
    "lanes": {
     "instagram": {
      "stage": "Ready",
@@ -1040,7 +1045,7 @@
    "filmingNotes": "",
    "editNotes": "",
    "reelFolder": "",
-   "mediaUrl": "",
+   "mediaUrl": "https://theambitiondepartment.com/wp-content/uploads/2026/11/tad-quote-13-label.png",
    "order": null,
    "carouselId": "",
    "mediaUsed": "",
@@ -1048,7 +1053,7 @@
    "fromNotion": null,
    "archived": false,
    "createdAt": "2026-11-02T19:42:08.333Z",
-   "updatedAt": "2026-11-03T20:05:11.810Z",
+   "updatedAt": "2026-11-03T22:08:06.104Z",
    "lanes": {
     "instagram": {
      "stage": "Ready",
@@ -1078,7 +1083,7 @@
    "filmingNotes": "",
    "editNotes": "",
    "reelFolder": "",
-   "mediaUrl": "",
+   "mediaUrl": "https://theambitiondepartment.com/wp-content/uploads/2026/11/tad-quote-12-label.png",
    "order": null,
    "carouselId": "",
    "mediaUsed": "",
@@ -1086,7 +1091,7 @@
    "fromNotion": null,
    "archived": false,
    "createdAt": "2026-11-02T19:42:08.211Z",
-   "updatedAt": "2026-11-03T20:05:11.810Z",
+   "updatedAt": "2026-11-03T22:07:48.794Z",
    "lanes": {
     "instagram": {
      "stage": "Ready",
@@ -1116,7 +1121,7 @@
    "filmingNotes": "",
    "editNotes": "",
    "reelFolder": "",
-   "mediaUrl": "",
+   "mediaUrl": "https://theambitiondepartment.com/wp-content/uploads/2026/11/tad-quote-11-label.png",
    "order": null,
    "carouselId": "",
    "mediaUsed": "",
@@ -1124,7 +1129,7 @@
    "fromNotion": null,
    "archived": false,
    "createdAt": "2026-11-02T19:42:08.095Z",
-   "updatedAt": "2026-11-03T20:05:11.810Z",
+   "updatedAt": "2026-11-03T22:07:32.695Z",
    "lanes": {
     "instagram": {
      "stage": "Ready",
@@ -1154,7 +1159,7 @@
    "filmingNotes": "",
    "editNotes": "",
    "reelFolder": "",
-   "mediaUrl": "https://theambitiondepartment.com/wp-content/uploads/2026/11/tad-quote-10.png",
+   "mediaUrl": "https://theambitiondepartment.com/wp-content/uploads/2026/11/tad-quote-10-label.png",
    "order": null,
    "carouselId": "",
    "mediaUsed": "",
@@ -1162,7 +1167,7 @@
    "fromNotion": null,
    "archived": false,
    "createdAt": "2026-11-02T19:42:07.979Z",
-   "updatedAt": "2026-11-03T20:05:11.810Z",
+   "updatedAt": "2026-11-03T22:07:21.690Z",
    "lanes": {
     "instagram": {
      "stage": "Ready",
@@ -1192,7 +1197,7 @@
    "filmingNotes": "",
    "editNotes": "",
    "reelFolder": "",
-   "mediaUrl": "https://theambitiondepartment.com/wp-content/uploads/2026/11/tad-quote-9.png",
+   "mediaUrl": "https://theambitiondepartment.com/wp-content/uploads/2026/11/tad-quote-9-label.png",
    "order": null,
    "carouselId": "",
    "mediaUsed": "",
@@ -1200,7 +1205,7 @@
    "fromNotion": null,
    "archived": false,
    "createdAt": "2026-11-02T19:42:07.862Z",
-   "updatedAt": "2026-11-03T20:05:11.810Z",
+   "updatedAt": "2026-11-03T22:07:03.645Z",
    "lanes": {
     "instagram": {
      "stage": "Ready",
@@ -1230,7 +1235,7 @@
    "filmingNotes": "",
    "editNotes": "",
    "reelFolder": "",
-   "mediaUrl": "https://theambitiondepartment.com/wp-content/uploads/2026/11/tad-quote-8.png",
+   "mediaUrl": "https://theambitiondepartment.com/wp-content/uploads/2026/11/tad-quote-8-label.png",
    "order": null,
    "carouselId": "",
    "mediaUsed": "",
@@ -1238,7 +1243,7 @@
    "fromNotion": null,
    "archived": false,
    "createdAt": "2026-11-02T19:42:07.745Z",
-   "updatedAt": "2026-11-03T20:05:11.810Z",
+   "updatedAt": "2026-11-03T22:06:42.031Z",
    "lanes": {
     "instagram": {
      "stage": "Ready",
@@ -1268,7 +1273,7 @@
    "filmingNotes": "",
    "editNotes": "",
    "reelFolder": "",
-   "mediaUrl": "https://theambitiondepartment.com/wp-content/uploads/2026/11/tad-quote-7.png",
+   "mediaUrl": "https://theambitiondepartment.com/wp-content/uploads/2026/11/tad-quote-7-label.png",
    "order": null,
    "carouselId": "",
    "mediaUsed": "",
@@ -1276,7 +1281,7 @@
    "fromNotion": null,
    "archived": false,
    "createdAt": "2026-11-02T19:42:07.626Z",
-   "updatedAt": "2026-11-03T20:05:11.810Z",
+   "updatedAt": "2026-11-03T22:06:26.145Z",
    "lanes": {
     "instagram": {
      "stage": "Ready",
@@ -1306,7 +1311,7 @@
    "filmingNotes": "",
    "editNotes": "",
    "reelFolder": "",
-   "mediaUrl": "https://theambitiondepartment.com/wp-content/uploads/2026/11/tad-quote-6.png",
+   "mediaUrl": "https://theambitiondepartment.com/wp-content/uploads/2026/11/tad-quote-6-label.png",
    "order": null,
    "carouselId": "",
    "mediaUsed": "",
@@ -1314,7 +1319,7 @@
    "fromNotion": null,
    "archived": false,
    "createdAt": "2026-11-02T19:42:07.508Z",
-   "updatedAt": "2026-11-03T20:05:11.810Z",
+   "updatedAt": "2026-11-03T22:06:14.910Z",
    "lanes": {
     "instagram": {
      "stage": "Ready",
@@ -1344,7 +1349,7 @@
    "filmingNotes": "",
    "editNotes": "",
    "reelFolder": "",
-   "mediaUrl": "https://theambitiondepartment.com/wp-content/uploads/2026/11/tad-quote-5.png",
+   "mediaUrl": "https://theambitiondepartment.com/wp-content/uploads/2026/11/tad-quote-5-label.png",
    "order": null,
    "carouselId": "",
    "mediaUsed": "",
@@ -1352,7 +1357,7 @@
    "fromNotion": null,
    "archived": false,
    "createdAt": "2026-11-02T19:42:07.389Z",
-   "updatedAt": "2026-11-03T20:05:11.810Z",
+   "updatedAt": "2026-11-03T22:06:02.158Z",
    "lanes": {
     "instagram": {
      "stage": "Ready",
@@ -1382,7 +1387,7 @@
    "filmingNotes": "",
    "editNotes": "",
    "reelFolder": "",
-   "mediaUrl": "https://theambitiondepartment.com/wp-content/uploads/2026/11/tad-quote-4.png",
+   "mediaUrl": "https://theambitiondepartment.com/wp-content/uploads/2026/11/tad-quote-4-label.png",
    "order": null,
    "carouselId": "",
    "mediaUsed": "",
@@ -1390,7 +1395,7 @@
    "fromNotion": null,
    "archived": false,
    "createdAt": "2026-11-02T19:42:07.269Z",
-   "updatedAt": "2026-11-03T20:05:11.810Z",
+   "updatedAt": "2026-11-03T22:05:46.462Z",
    "lanes": {
     "instagram": {
      "stage": "Ready",
