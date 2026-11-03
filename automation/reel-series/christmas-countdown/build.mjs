@@ -26,12 +26,39 @@ const TITLE_FONT = own('mountains-of-christmas-bold.ttf'); // her pick 2026-11-0
 const HAND_FONT = b64('covered-by-your-grace.woff2'), SCRIPT_FONT = own('pacifico.ttf');
 
 const W = 1080, H = 1920, FPS = 30;
-const QUICK = 4, QUICK_LEN = 0.4;        // seconds each on screen
-const SPEED_QUICK = 2, SPEED_HERO = 1.5; // playback speed-up
+// 2026-11-03 round 2: 4 × 0.4s at 2x was too fast to take in; now 3 × 1s with soft crossfades, less speed-up
+const QUICK = 3, QUICK_LEN = 1.0;        // seconds each (including the crossfade)
+const XF = 0.35;                         // crossfade between clips
+const SPEED_QUICK = 1.25, SPEED_HERO = 1.3; // playback speed-up
 const ZOOM = 1.04;                       // crops stray edges off every clip
-const LINES_AT = 0.3, LINE_GAP = 0.12;   // white boxes: first one at 0.3s, then one every 0.12s
+const POP = 0.45;                        // title grows in over this long
+const LINES_AT = 0.6, LINE_GAP = 0.35, LINE_IN = 0.45; // white boxes: first at 0.6s, then one every 0.35s
 const SFX = path.join(HERE, '../../reel-hf/lib/assets/sfx');
-const SKIP = ['5766093-uhd_4096_2160_30fps.mp4']; // has its own "merry christmas" letters, fights the text
+// these have their own words (MERRY, merry christmas) that the text covers or fights
+const SKIP = ['5766093-uhd_4096_2160_30fps.mp4', '5715559-hd_1080_1920_30fps.mp4'];
+// what each clip shows: one Reel never uses two of the same (two trees, two hot drinks looked odd)
+const SUBJECT = {
+  '12649870_2160_3840_30fps.mp4': 'food', '6214615-hd_1080_1920_25fps.mp4': 'food',
+  '12715369_2160_3840_30fps.mp4': 'drink', '12726790_2160_3840_30fps.mp4': 'drink', '14697192-hd_1080_1620_30fps.mp4': 'drink',
+  '12748878_2160_3606_60fps.mp4': 'ornament', '12840394_1080_1920_25fps.mp4': 'ornament', '5970198-uhd_2160_4096_25fps.mp4': 'ornament',
+  '6098629-hd_1080_1920_25fps.mp4': 'ornament', '6099394-hd_1080_1920_25fps.mp4': 'ornament', '6099570-hd_1080_1920_25fps.mp4': 'ornament',
+  '12948642_1080_1920_30fps.mp4': 'bird', '20585555-hd_1080_1920_30fps.mp4': 'bird',
+  '14827864_1080_1920_30fps.mp4': 'snow', '15019021_2160_3840_30fps.mp4': 'snow', 'uhd_60fps.mp4': 'snow',
+  '14884414_1080_1920_60fps.mp4': 'tree', '15177846_2160_3840_30fps.mp4': 'tree', '19733270-uhd_2160_3840_60fps.mp4': 'tree',
+  '6032907-hd_1080_1920_25fps.mp4': 'tree',
+  '14846655_2160_3840_30fps.mp4': 'toy', '14988566_1080_1920_60fps.mp4': 'candle', '6283475-hd_1080_1920_30fps.mp4': 'candle',
+  '19387113-uhd_2160_3840_60fps.mp4': 'cosy', '19733272-uhd_2160_3840_60fps.mp4': 'lights', '3321566-hd_1920_1080_25fps.mp4': 'nativity',
+};
+// her own b-roll as the longer clip on the days where the line is her talking (already handheld: no added drift)
+const BROLL = path.join(P.footage, 'broll');
+const HER = {
+  51: 'couch-lookup-smile-01.mp4', 49: 'desk-coffee-sip-01.mp4', 47: 'wall-coffee-sip-01.mp4', 45: 'couch-writing-01.mp4',
+  42: 'desk-typing-01.mp4', 39: 'notebook-hand-01.mp4', 37: 'wall-coffee-sip-02.mp4', 34: 'typing-overhead-01.mp4',
+  31: 'desk-typing-from-behind-01.mp4', 30: 'wall-coffee-step-in-01.mp4',
+};
+// on these her face is in the top half, so the text sits lower (over her sweater/desk), never over her face
+const LOW_TEXT = new Set([51, 49, 47, 45, 37, 30]);
+const TEXT_TOP = 300, TEXT_TOP_LOW = 960;
 const RED = '#C2362F';                   // holiday kit red
 const GREEN = '#1F7A45';                 // pairs with it in the script word
 
@@ -65,7 +92,8 @@ const LOOKS = {
 const FIT = `scale=${Math.round(W * ZOOM / 2) * 2}:${Math.round(H * ZOOM / 2) * 2}:force_original_aspect_ratio=increase,` +
   `crop=${W}:${H}:floor((iw-${W})/4)*2:floor((ih-${H})/4)*2,setsar=1`;
 
-const lines = JSON.parse(readFileSync(path.join(HERE, 'lines.json'), 'utf8'));
+const lines = JSON.parse(readFileSync(path.join(HERE, "lines.json"), "utf8"));
+const making = lines.filter((l) => !l.skip); // she wants 14 Reels max (2026-11-03); "skip": true parks a line
 const clips = readdirSync(CLIPS).filter((f) => f.toLowerCase().endsWith('.mp4') && !SKIP.includes(f)).sort();
 const probe = (f) => +execFileSync(tool('ffprobe'), ['-v', 'error', '-show_entries', 'format=duration', '-of', 'csv=p=0', f]).toString();
 const ff = (args) => execFileSync(tool('ffmpeg'), ['-v', 'error', '-y', ...args], { stdio: ['ignore', 'inherit', 'inherit'] });
@@ -84,35 +112,42 @@ const shuffle = (list, seed) => {
   for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(rnd() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
   return a;
 };
-// clips for every day, in posting order: heroes take turns (12 days apart), and no clip comes back within 5 days,
-// so days 51-47 share none. Fixed seeds: a day always gets the same clips.
+// clips for every day, in posting order (full paths). The longer clip is hers on HER days, else a lived-in stock clip
+// in turn. Flashes: no two of one subject in a Reel, and no clip back within a few days (days 51-47 share none).
+// Fixed seeds: a day always gets the same clips.
 const SCHEDULE = (() => {
-  const heroes = shuffle(LIVED_IN.filter((f) => clips.includes(f)), 7);
+  const stockHeroes = shuffle(LIVED_IN.filter((f) => clips.includes(f)), 7);
+  const heroOf = [];
+  let h = 0;
+  making.forEach((l) => heroOf.push(HER[l.day] ? null : stockHeroes[h++ % stockHeroes.length]));
   const order = shuffle(clips, 11);
   const out = {};
   const recent = [];
   let q = 0;
-  lines.forEach((l, i) => {
-    const hero = heroes[i % heroes.length];
-    // also don't flash a clip that holds in the next few days; with only ~27 clips, look less far ahead when needed
+  making.forEach((l, i) => {
+    const hero = heroOf[i];
+    // relax step by step if ~26 clips can't satisfy everything: first look less far ahead, then less far back
     let quick = [];
-    for (let ahead = 4; ahead >= 0 && quick.length < QUICK; ahead--) {
-      const soon = [...Array(ahead).keys()].map((k) => heroes[(i + k + 1) % heroes.length]);
-      const blocked = new Set([hero, ...soon, ...recent.slice(-4).flat()]);
-      const free = order.filter((c) => !blocked.has(c));
-      if (free.length < QUICK) continue;
+    for (const [ahead, back] of [[4, 4], [2, 4], [0, 4], [0, 3], [0, 2], [0, 1], [0, 0]]) {
+      const soon = heroOf.slice(i + 1, i + 1 + ahead).filter(Boolean);
+      const blocked = new Set([hero, ...soon, ...recent.slice(-back || recent.length).flat()].filter(Boolean));
+      if (!back) blocked.clear(), hero && blocked.add(hero);
+      const subjects = new Set(hero ? [SUBJECT[hero]] : []);
       quick = [];
-      for (let k = 0; quick.length < QUICK; k++) {
+      for (let k = 0; k < order.length && quick.length < QUICK; k++) {
         const c = order[(q + k) % order.length];
-        if (!blocked.has(c) && !quick.includes(c)) quick.push(c);
+        if (blocked.has(c) || subjects.has(SUBJECT[c])) continue;
+        quick.push(c); subjects.add(SUBJECT[c]);
       }
-      q += QUICK;
+      if (quick.length === QUICK) break;
     }
-    out[l.day] = [...quick, hero];
-    recent.push(out[l.day]);
+    q += QUICK;
+    out[l.day] = [...quick.map((c) => path.join(CLIPS, c)), hero ? path.join(CLIPS, hero) : path.join(BROLL, HER[l.day])];
+    recent.push([...quick, hero].filter(Boolean));
   });
   return out;
 })();
+const isHers = (f) => f.startsWith(BROLL);
 
 // long lines get a second longer so they can be read
 const words = (l) => `${l.title.replace(/[*~]/g, '')} ${l.body}`.split(/\s+/).length;
@@ -144,7 +179,7 @@ async function textLayers(page, line, base) {
   return { ...box, files };
 }
 
-async function layout(page, { title, body }) {
+async function layout(page, { day, title, body }) {
   const esc = (t) => t.replace(/&/g, '&amp;').replace(/</g, '&lt;')
     .replace(/(\p{Extended_Pictographic}️?)/gu, '<span class="e">$1</span>');
   const plain = title.replace(/[*~]/g, '');
@@ -159,10 +194,10 @@ async function layout(page, { title, body }) {
     @font-face { font-family: Hand; src: url(data:font/woff2;base64,${HAND_FONT}) format('woff2'); }
     @font-face { font-family: Script; src: url(data:font/ttf;base64,${SCRIPT_FONT}); }
     html, body { margin: 0; width: ${W}px; height: ${H}px; background: transparent; }
-    .wrap { position: absolute; left: 70px; right: 70px; top: 300px; text-align: center; }
+    .wrap { position: absolute; left: 70px; right: 70px; top: ${LOW_TEXT.has(day) ? TEXT_TOP_LOW : TEXT_TOP}px; text-align: center; }
     /* line-height 1.18: at 1.02 the white outlines of the two lines ran into each other */
     .title { font: 700 ${tSize}px/1.18 Cute, cursive; color: ${RED}; -webkit-text-stroke: 14px #fff;
-             paint-order: stroke fill; margin-bottom: 34px; filter: drop-shadow(0 4px 10px rgba(0,0,0,.25)); }
+             paint-order: stroke fill; margin-bottom: 34px; filter: drop-shadow(0 4px 14px rgba(0,0,0,.45)); } /* separates it from white snow */
     .title.mixed { font: 400 ${tSize}px/1.1 Hand, cursive; }
     .hand { display: block; font: 400 ${tSize}px/1.1 Hand, cursive; margin-top: 4px; }
     .script { display: block; font: 400 ${Math.round(tSize * 1.25)}px/1.3 Script, cursive; margin-top: 6px; }
@@ -182,10 +217,13 @@ async function render(page, line, look) {
   const { day } = line;
   const total = duration(line);
   const picks = SCHEDULE[day];
-  const lens = [...Array(QUICK).fill(QUICK_LEN), +(total - QUICK * QUICK_LEN).toFixed(2)];
-  const durs = picks.map((f) => probe(path.join(CLIPS, f)));
-  // a short hero clip plays a little less sped-up so it still fills the time
-  const speeds = [...Array(QUICK).fill(SPEED_QUICK), Math.min(SPEED_HERO, (durs[QUICK] - 0.3) / lens[QUICK])];
+  // each clip runs XF longer than it shows on its own, because neighbours overlap in the crossfade
+  const lens = [...Array(QUICK).fill(QUICK_LEN), +(total - QUICK * QUICK_LEN + QUICK * XF).toFixed(2)];
+  const durs = picks.map(probe);
+  // a short clip plays a little less sped-up so it still fills its time
+  // her clips can slow to 0.7x (they're 60 fps, so it stays smooth) when they're shorter than the time they fill
+  const speeds = lens.map((len, i) => Math.max(isHers(picks[i]) ? 0.7 : 1,
+    Math.min(i < QUICK ? SPEED_QUICK : SPEED_HERO, (durs[i] - 0.3) / len)));
   const T = await textLayers(page, line, path.join(OUT, `.day-${day}`));
 
   const args = [];
@@ -193,48 +231,69 @@ async function render(page, line, look) {
   picks.forEach((f, i) => {
     const need = lens[i] * speeds[i];
     const start = Math.max(0, Math.min(1, durs[i] - need - 0.1)); // skip the first second when there's room
-    args.push('-ss', String(start), '-t', String(need + 0.2), '-i', path.join(CLIPS, f));
-    const base = `[${i}:v]setpts=PTS/${speeds[i]},fps=${FPS},${FIT},${LEVEL},trim=duration=${lens[i]},setpts=PTS-STARTPTS`;
-    if (i < QUICK) { chains.push(`${base}[v${i}]`); return; }
-    // handheld feel on the longer clip: a slow push-in (3% → 7%) with a small drift that never repeats evenly
+    args.push('-ss', String(start), '-t', String(need + 0.3), '-i', f);
+    // stock gets levelled to meet in the middle; hers is kept as filmed. tpad holds the last frame if a clip runs short
+    const base = `[${i}:v]setpts=PTS/${speeds[i]},fps=${FPS},${FIT}${isHers(f) ? '' : `,${LEVEL}`},` +
+      `tpad=stop_mode=clone:stop_duration=1,trim=duration=${lens[i]},setpts=PTS-STARTPTS`;
+    if (isHers(f)) { chains.push(`${base},fps=${FPS},settb=1/${FPS},format=yuv420p[v${i}]`); return; } // hers is already handheld
+    // phone-filmed feel on stock (tripod) clips: a slow push-in with a drift that never repeats evenly;
+    // gentler on the short clips, more on the longer one
     const N = Math.round(lens[i] * FPS);
-    chains.push(`${base},zoompan=z='1.03+0.04*on/${N}':x='iw/2-iw/zoom/2+7*sin(on/8)+3*sin(on/3.1)':` +
-      `y='ih/2-ih/zoom/2+5*sin(on/11+1)+2*sin(on/4.3)':d=1:s=${W}x${H}:fps=${FPS}[v${i}]`);
+    const k = i < QUICK ? 0.6 : 1;
+    chains.push(`${base},zoompan=z='1.04+${0.05 * k}*on/${N}':x='iw/2-iw/zoom/2+${14 * k}*sin(on/9)+${5 * k}*sin(on/3.3)':` +
+      `y='ih/2-ih/zoom/2+${10 * k}*sin(on/12+1)+${4 * k}*sin(on/4.7)':d=1:s=${W}x${H}:fps=${FPS},settb=1/${FPS},format=yuv420p[v${i}]`);
   });
   const n = picks.length;
+  args.push('-loop', '1', '-t', String(total), '-i', scrim(LOW_TEXT.has(day)));
   args.push('-loop', '1', '-t', String(total), '-i', T.files.title);
   args.push('-loop', '1', '-t', String(total), '-i', T.files.body);
-  args.push('-i', path.join(SFX, 'sparkle.mp3'), '-i', path.join(SFX, 'pop-light.mp3'));
-  const [iT, iB, iS, iP] = [n, n + 1, n + 2, n + 3];
+  args.push('-i', path.join(SFX, 'sparkle.mp3'));
+  const [iG, iT, iB, iS] = [n, n + 1, n + 2, n + 3];
 
-  // title: on screen from frame 1, pops from 75% to full size with a small overshoot (ease-out-back, 0.25s)
+  // clips joined with soft crossfades, then the look
+  const fc = [...chains];
+  let prev = 'v0', at = 0;
+  for (let i = 1; i < n; i++) {
+    at += lens[i - 1] - XF;
+    fc.push(`[${prev}][v${i}]xfade=transition=fade:duration=${XF}:offset=${at.toFixed(3)}[x${i}]`);
+    prev = `x${i}`;
+  }
+  // a light shade behind the text area so it reads on white snow
+  fc.push(`[${prev}]${LOOKS[look]}[g0]`, `[g0][${iG}:v]overlay=0:0[bg]`);
+  // title: on screen from frame 1, grows from 80% to full size with a small overshoot (ease-out-back)
   const t = T.t;
-  const S = `if(lt(t,0.25),0.75+0.25*(1+2.70158*pow(t/0.25-1,3)+1.70158*pow(t/0.25-1,2)),1)`;
-  const fc = [...chains,
-    `${picks.map((_, i) => `[v${i}]`).join('')}concat=n=${n}:v=1:a=0,${LOOKS[look]}[bg]`,
-    `[${iT}:v]format=rgba,crop=${t.w}:${t.h}:${t.x}:${t.y},scale=w='2*trunc(iw*${S}/2)':h='2*trunc(ih*${S}/2)':eval=frame[tt]`,
-    `[bg][tt]overlay=x='${t.x + t.w / 2}-overlay_w/2':y='${t.y + t.h / 2}-overlay_h/2':eval=frame[s0]`];
+  const S = `if(lt(t,${POP}),0.8+0.2*(1+2.70158*pow(t/${POP}-1,3)+1.70158*pow(t/${POP}-1,2)),1)`;
+  fc.push(`[${iT}:v]format=rgba,crop=${t.w}:${t.h}:${t.x}:${t.y},scale=w='2*trunc(iw*${S}/2)':h='2*trunc(ih*${S}/2)':eval=frame[tt]`,
+    `[bg][tt]overlay=x='${t.x + t.w / 2}-overlay_w/2':y='${t.y + t.h / 2}-overlay_h/2':eval=frame[s0]`);
   // body: each white box rises 40px and fades in, one line after another
   const L = T.lines;
   fc.push(`[${iB}:v]format=rgba,split=${L.length}${L.map((_, i) => `[b${i}]`).join('')}`);
   L.forEach((r, i) => {
     const st = (LINES_AT + i * LINE_GAP).toFixed(2);
-    fc.push(`[b${i}]crop=${r.w}:${r.h}:${r.x}:${r.y},fade=in:st=${st}:d=0.2:alpha=1[l${i}]`);
-    fc.push(`[s${i}][l${i}]overlay=x=${r.x}:y='${r.y}+40*pow(1-min(1,max(0,(t-${st})/0.25)),3)':eval=frame[s${i + 1}]`);
+    fc.push(`[b${i}]crop=${r.w}:${r.h}:${r.x}:${r.y},fade=in:st=${st}:d=${LINE_IN}:alpha=1[l${i}]`);
+    fc.push(`[s${i}][l${i}]overlay=x=${r.x}:y='${r.y}+40*pow(1-min(1,max(0,(t-${st})/${LINE_IN})),3)':eval=frame[s${i + 1}]`);
   });
   fc.push(`[s${L.length}]format=yuv420p[out]`);
-  // sound: sparkle as the title lands, one soft pop as the first box arrives; quiet, so her Instagram song sits on top
-  const ms = Math.round(LINES_AT * 1000);
-  fc.push(`[${iS}:a]aresample=48000,aformat=channel_layouts=stereo,volume=0.45[a1]`);
-  fc.push(`[${iP}:a]aresample=48000,aformat=channel_layouts=stereo,adelay=${ms}|${ms},volume=0.6[a2]`);
-  fc.push(`[a1][a2]amix=inputs=2:normalize=0:duration=longest,apad,atrim=0:${total}[aout]`);
+  // sound: just the sparkle as the title lands (the pop didn't fit); quiet, so her Instagram song sits on top
+  fc.push(`[${iS}:a]aresample=48000,aformat=channel_layouts=stereo,volume=0.45,apad,atrim=0:${total}[aout]`);
 
   const file = path.join(OUT, `day-${day}.mp4`);
   args.push('-filter_complex', fc.join(';'), '-map', '[out]', '-map', '[aout]', '-t', String(total),
     '-c:v', 'libx264', '-preset', 'medium', '-crf', '18', '-r', String(FPS), '-c:a', 'aac', '-movflags', '+faststart', file);
   ff(args);
   rmSync(T.files.title, { force: true }); rmSync(T.files.body, { force: true });
-  console.log(`day ${day}: ${file}  (${total}s, look ${look}; clips ${picks.join(', ')})`);
+  console.log(`day ${day}: ${file}  (${total}s, look ${look}; clips ${picks.map((p) => path.basename(p)).join(', ')})`);
+}
+
+// a soft shade behind the text: from the top (about 28% black, gone by 60% of the height), or for low text a band
+// that peaks behind it (y 1000-1500) and fades out above and below
+function scrim(low) {
+  const file = path.join(OUT, low ? '.scrim-low.png' : '.scrim.png');
+  if (!existsSync(file)) {
+    const a = low ? `'72*exp(-pow((Y-1250)/420,2))'` : `'if(lt(Y,${H * 0.6}),72*pow(1-Y/${H * 0.6},1.5),0)'`;
+    ff(['-f', 'lavfi', '-i', `color=black:s=${W}x${H}:d=0.04`, '-vf', `format=rgba,geq=r=0:g=0:b=0:a=${a}`, '-frames:v', '1', file]);
+  }
+  return file;
 }
 
 // 8 clips across the range (snow, candles, pink flat-lay, ornaments...) in four rows: raw / C / A / B
@@ -264,10 +323,10 @@ async function titles(page) {
   if (!existsSync(dir)) mkdirSync(dir, { recursive: true });
   const bg = path.join(dir, 'bg.png');
   ff(['-ss', '2', '-i', path.join(CLIPS, '14988566_1080_1920_60fps.mp4'), '-frames:v', '1', '-vf', `${FIT},${LEVEL},${LOOKS.A}`, bg]);
-  for (const [i, l] of lines.entries()) await textPng(page, l, path.join(dir, `${String(i).padStart(2, '0')}.png`));
+  for (const [i, l] of making.entries()) await textPng(page, l, path.join(dir, `${String(i).padStart(2, '0')}.png`));
   const file = path.join(OUT, 'titles-all.png');
   ff(['-i', bg, '-i', path.join(dir, '%02d.png'), '-filter_complex',
-    `[0:v]loop=${lines.length - 1}:1:0[b];[b][1:v]overlay,crop=${W}:1000:0:240,scale=360:-2,tile=6x${Math.ceil(lines.length / 6)}`,
+    `[0:v]loop=${making.length - 1}:1:0[b];[b][1:v]overlay,scale=270:-2,tile=6x${Math.ceil(making.length / 6)}`,
     '-frames:v', '1', file]);
   rmSync(dir, { recursive: true, force: true });
   console.log(`titles: ${file}`);
@@ -278,7 +337,7 @@ const li = argv.indexOf('--look');
 const look = li >= 0 ? argv.splice(li, 2)[1].toUpperCase() : 'C';
 if (!existsSync(OUT)) mkdirSync(OUT, { recursive: true });
 if (argv.includes('sheet')) { sheet(); process.exit(0); }
-const todo = argv.includes('all') ? lines : lines.filter((l) => argv.includes(String(l.day)));
+const todo = argv.includes('all') ? making : lines.filter((l) => argv.includes(String(l.day)));
 if ((!todo.length && !argv.includes('titles')) || !LOOKS[look]) { console.log('usage: node build.mjs <day> [day...] | all | sheet | titles  [--look A|B]'); process.exit(1); }
 const b = await launch();
 const page = await b.newPage();
