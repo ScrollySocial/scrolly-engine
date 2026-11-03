@@ -64,9 +64,13 @@ const HER = {
   31: 'desk-typing-from-behind-01.mp4', 30: 'wall-coffee-step-in-01.mp4',
 };
 // on these her face is in the top half, so the text sits lower (over her sweater/desk), never over her face
-const LOW_TEXT = new Set([51, 45, 37, 30]);
-// 49: her face is mid-frame, so the text goes higher than usual to clear her head
-const TEXT_TOP = 300, TEXT_TOP_LOW = 960, TEXT_TOP_HIGH = { 49: 150 };
+const LOW_TEXT = new Set([51, 45, 37, 31, 30]); // 31: she turns round at the end
+// exact spots where the usual ones touch her face: 49 mid-frame face (higher), 30 steps in close (lower)
+const TEXT_TOP = 300, TEXT_TOP_LOW = 960, TEXT_AT = { 49: 150, 30: 1100 };
+// where to start a clip and how fast, when the default picks a bad stretch
+const CLIP_RANGE = {
+  'desk-typing-from-behind-01.mp4': { start: 0, speed: 1 }, // she stands up at ~5s; stop before that
+};
 const RED = '#C2362F';                   // holiday kit red
 const GREEN = '#1F7A45';                 // pairs with it in the script word
 
@@ -203,7 +207,7 @@ async function layout(page, { day, title, body }) {
     @font-face { font-family: Hand; src: url(data:font/woff2;base64,${HAND_FONT}) format('woff2'); }
     @font-face { font-family: Script; src: url(data:font/ttf;base64,${SCRIPT_FONT}); }
     html, body { margin: 0; width: ${W}px; height: ${H}px; background: transparent; }
-    .wrap { position: absolute; left: 70px; right: 70px; top: ${LOW_TEXT.has(day) ? TEXT_TOP_LOW : TEXT_TOP_HIGH[day] ?? TEXT_TOP}px; text-align: center; }
+    .wrap { position: absolute; left: 70px; right: 70px; top: ${TEXT_AT[day] ?? (LOW_TEXT.has(day) ? TEXT_TOP_LOW : TEXT_TOP)}px; text-align: center; }
     /* line-height 1.18: at 1.02 the white outlines of the two lines ran into each other */
     .title { font: 700 ${tSize}px/1.18 Cute, cursive; color: ${RED}; -webkit-text-stroke: 14px #fff;
              paint-order: stroke fill; margin-bottom: 34px; filter: drop-shadow(0 4px 14px rgba(0,0,0,.45)); } /* separates it from white snow */
@@ -231,7 +235,7 @@ async function render(page, line, look) {
   const durs = picks.map(probe);
   // a short clip plays a little less sped-up so it still fills its time
   // her clips can slow to 0.7x (they're 60 fps, so it stays smooth) when they're shorter than the time they fill
-  const speeds = lens.map((len, i) => Math.max(isHers(picks[i]) ? 0.7 : 1,
+  const speeds = lens.map((len, i) => CLIP_RANGE[path.basename(picks[i])]?.speed ?? Math.max(isHers(picks[i]) ? 0.7 : 1,
     Math.min(i < QUICK ? SPEED_QUICK : SPEED_HERO, (durs[i] - 0.3) / len)));
   const T = await textLayers(page, line, path.join(OUT, `.day-${day}`));
 
@@ -239,7 +243,7 @@ async function render(page, line, look) {
   const chains = [];
   picks.forEach((f, i) => {
     const need = lens[i] * speeds[i];
-    const start = Math.max(0, Math.min(1, durs[i] - need - 0.1)); // skip the first second when there's room
+    const start = CLIP_RANGE[path.basename(f)]?.start ?? Math.max(0, Math.min(1, durs[i] - need - 0.1)); // skip the first second when there's room
     args.push('-ss', String(start), '-t', String(need + 0.3), '-i', f);
     // stock gets levelled to meet in the middle; hers is kept as filmed. tpad holds the last frame if a clip runs short
     const base = `[${i}:v]setpts=PTS/${speeds[i]},fps=${FPS},${FIT}${isHers(f) ? '' : `,${LEVEL}`},` +
