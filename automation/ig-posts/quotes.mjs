@@ -426,7 +426,7 @@ const labels = (q) => {
   const n = q.text.length, max = n <= 50 ? 13 : n <= 90 ? 16 : 19, fs = n <= 50 ? 62 : n <= 90 ? 50 : 42;
   const rows = strips2(q.text, max);
   return `<style>${BASE}
-  .paint { position: absolute; inset: 0; background: url('${fileUrl(path.join(HERE, 'assets', 'photos', q.paint[0] + '.jpg'))}') ${q.paint[1]}/cover no-repeat; }
+  .paint { position: absolute; inset: 0; background: url('${typeof q.paint[0] === 'number' ? MET(q.paint[0]) : fileUrl(path.join(HERE, 'assets', 'photos', q.paint[0] + '.jpg'))}') ${q.paint[1]}/${q.paint[2] || 'cover'} no-repeat; }
   .lab { position: absolute; left: 0; right: 0; top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; align-items: center; gap: ${Math.round(fs * .42)}px; }
   .s { font: 700 ${fs}px/1 'Space Mono', monospace; letter-spacing: .32em; color: #111; padding: ${Math.round(fs * .34)}px ${Math.round(fs * .5)}px ${Math.round(fs * .3)}px ${Math.round(fs * .82)}px;
     background: linear-gradient(#fbfbf8, #ecebe6); border-radius: 3px; box-shadow: 0 6px 12px rgba(10,25,48,.28), inset 0 1px 0 #fff;
@@ -439,7 +439,7 @@ const labels = (q) => {
 const TILES = { starry, wand, constellation, moon, balloon, sail, quiet, tortoise, balloon2, rope, athlete, ribbon, note, sticker, collage, dreamy, blue, white, labels };
 const isBlue = process.argv.includes('--blue'), isWhite = process.argv.includes('--white'), isLabels = process.argv.includes('--labels');
 const only = process.argv.slice(2).filter((a) => !a.startsWith('--')).map(Number);
-const KEEP_PAINT = { 6: ['poppy-field-0', 'center'], 9: ['clouds-blue-sky-meadow-0', 'center'], 13: ['blue-sky-balloon-0', '66% center'] }; // label previews only
+const KEEP_PAINT = { 6: ['poppy-field-0', 'center'], 9: [437683, '68% center', 'auto 118%'], 13: [45434, '62% 40%', 'auto 125%'] }; // the 3 she kept (poppies, painted field, the wave)
 const list = QUOTES.map((q) => (isLabels ? { ...q, paint: (BLUE[q.n] || {}).paint || KEEP_PAINT[q.n], tile: 'labels' } : isWhite ? { ...q, tile: 'white' } : isBlue ? BLUE[q.n] && { ...q, ...BLUE[q.n], tile: 'blue' } : DREAMY[q.n] ? { ...q, ...DREAMY[q.n], tile: 'dreamy' } : q))
   .filter((q) => q && q.tile && (!only.length || only.includes(q.n)));
 if (isBlue) OUT = path.join(HERE, 'out', 'quotes-blue');
