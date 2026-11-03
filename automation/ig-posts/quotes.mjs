@@ -417,6 +417,10 @@ const white = (q) => `<style>${BASE}
 
 // Label-maker set (Mercedes 2026-11-03, her embossed-label photo): the quote punched out as white label-maker strips,
 // black raised capitals, stuck at slight angles on her blue photos. Preview only: node quotes.mjs --labels [n ...].
+// NEXT QUOTES (Mercedes 2026-11-03): make the strips look more realistic before rendering new ones; the first 14 stay.
+// Aim for a photographed label-maker tape: raised letters (highlight on top edge, shadow below, slightly uneven
+// spacing and baseline), a faint plastic sheen and grain, ends cut square with a rounded corner or a slanted cut, tape
+// thickness in the shadow, the odd tiny wrinkle. Show her one sample before making a batch.
 const strips2 = (text, max) => text.toUpperCase().replace(/[’]/g, "'").split(' ').reduce((rows, w) => {
   const last = rows[rows.length - 1];
   if (last && (last + ' ' + w).length <= max) rows[rows.length - 1] = last + ' ' + w; else rows.push(w);
