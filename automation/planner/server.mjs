@@ -96,6 +96,28 @@ function saveIdea(input) {
   return idea;
 }
 
+// Her drag-and-drop on the feed preview: cards in posting order (first posts first) get feedOrder 1, 2, 3... on that
+// app's lane, in one write. Refused whole if any card changed since the page loaded.
+function saveFeedOrder({ platform, cards }) {
+  if (!PLATFORMS.includes(platform) || !Array.isArray(cards)) throw Object.assign(new Error('bad order'), { code: 400 });
+  const list = ideas();
+  const now = new Date().toISOString();
+  const picked = cards.map(({ id, updatedAt }) => {
+    const card = list.find((x) => x.id === id);
+    if (!card?.lanes[platform]) throw Object.assign(new Error('no such card'), { code: 404 });
+    if (updatedAt !== card.updatedAt) {
+      throw Object.assign(new Error('A card changed since the page loaded. Reload, then drag again.'), { code: 409 });
+    }
+    return card;
+  });
+  picked.forEach((card, n) => {
+    card.lanes[platform].feedOrder = n + 1;
+    card.updatedAt = now;
+  });
+  writeJson(IDEAS_FILE, { ideas: list });
+  return picked;
+}
+
 // Her Delete button: the card leaves the board; a copy goes to data/deleted.json so a mis-click can be undone.
 const DELETED_FILE = join(DATA, 'deleted.json');
 function deleteIdea(id) {
@@ -212,6 +234,9 @@ http
         const saved = saveIdea({ ...card, lanes: { ...card.lanes, [platform]: lane } });
         cache = null; // next page load reads Buffer fresh
         return send(res, 200, { post, byHand: post.byHand, idea: saved });
+      }
+      if (req.method === 'POST' && url.pathname === '/api/feed-order') {
+        return send(res, 200, { ideas: saveFeedOrder(await readBody(req)) });
       }
       if (req.method === 'POST' && url.pathname === '/api/idea-delete') {
         deleteIdea((await readBody(req)).id);

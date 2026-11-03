@@ -34,6 +34,14 @@ card (carousel slide 1, `mediaUrl`, the finished image linked in OneDrive Scroll
 cover in exports/reels) or Buffer's thumbnail. Handles are set in `lib/buffer.mjs` `HANDLES` (@ambitiondepthq), because
 Buffer still reports the old "scrollysocial" names.
 
+- **Stories stay off the grid (2026-11-03):** Buffer's `metadata.type` (story / post / reel) is read as `igType`; story
+  posts show on the calendar only. Story cards (format Story) were already left out.
+- **Drag to reorder (2026-11-03):** Ready posts (and Buffer drafts that have a card) can be dragged on the grid; on a phone,
+  tap one and use "Earlier/Later on the grid". `POST /api/feed-order` saves `feedOrder` 1, 2, 3... (1 posts first) on that
+  app's lane, all cards in one write, refused whole if a card changed since the page loaded. Cards with no `feedOrder` sit
+  top left (post after the ordered ones). Posts already in Buffer keep Buffer's times; moving those (swap `dueAt` with
+  `editPost`, her Confirm) is still to build.
+
 ## Queue it (built 2026-10-28)
 A Ready Instagram or TikTok lane gets a **Queue it** button (card editor and the platform board).
 1. `POST /api/queue-plan` shows the preview: slides (carousel export) or the card's `mediaUrl`, the lane's caption, alt

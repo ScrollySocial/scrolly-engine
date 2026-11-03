@@ -92,6 +92,10 @@
   .st-queued .badge { background: #0a1930; color: #f7f3ec; }
   .st-error .badge { background: var(--warn); color: #fff; }
   .tile.st-ready, .tile.st-draft { outline: 3px dashed var(--sky); outline-offset: -3px; }
+  .tile[draggable="true"] { cursor: grab; }
+  .tile.dragging { opacity: .35; }
+  .tile.drop-before { box-shadow: inset 5px 0 0 var(--pink); }
+  .tile.drop-after { box-shadow: inset -5px 0 0 var(--pink); }
   .tile:focus-visible { outline: 3px solid var(--pink); outline-offset: -3px; }
   .yt { display: grid; gap: 14px; padding: 0 12px; }
   .yt .tile { aspect-ratio: 16 / 9; border-radius: 10px; }
@@ -370,10 +374,10 @@ function feedItems(app) {
     const bp = l.bufferId && posts.find((p) => p.id === l.bufferId);
     if (bp && bp.status !== 'draft') continue; // Buffer's copy shows instead
     items.push({ st: bp ? 'draft' : 'ready', card: i, post: bp || null, img: cardImage(i) || bp?.thumb, kind: cardKind(i),
-      text: l.caption || '', title: l.title || i.title, rank: 0, t: -(Number(i.order) || 1e9) });
+      text: l.caption || '', title: l.title || i.title, rank: 0, t: l.feedOrder || 1e9 }); // her dragged order; top left posts last
   }
   for (const p of posts) {
-    if (items.some((x) => x.post?.id === p.id)) continue;
+    if (items.some((x) => x.post?.id === p.id) || p.igType === 'story') continue; // Stories never show on the grid
     const st = ['scheduled', 'sending', 'needs_approval'].includes(p.status) ? 'queued' : ['sent', 'error'].includes(p.status) ? p.status : 'draft';
     const card = state.ideas.find((i) => i.lanes[app.key]?.bufferId === p.id);
     items.push({ st, card, post: p, img: (p.kind === 'video' && card && cardImage(card)) || p.thumb || (card && cardImage(card)),
@@ -386,7 +390,8 @@ function feedItems(app) {
 function tile(it, missing = it.title) {
   const badge = it.st === 'queued' ? fmtSlot(it.post.dueAt) : it.st === 'sent' ? '' : FEED_ST[it.st][0];
   const icon = it.kind === 'carousel' ? '❐' : it.kind === 'video' ? '▶' : '';
-  return `<button class="tile st-${it.st}" type="button" data-feed="${feedAll.indexOf(it)}" aria-label="${esc(`${FEED_ST[it.st][0]}: ${it.title}`)}">
+  const drag = it.rank === 0 ? ' draggable="true"' : '';
+  return `<button class="tile st-${it.st}" type="button" data-feed="${feedAll.indexOf(it)}"${drag} aria-label="${esc(`${FEED_ST[it.st][0]}: ${it.title}`)}">
     ${it.img ? `<img src="${esc(it.img)}" alt="" loading="lazy">` : `<span class="txt">${esc(missing)}</span>`}
     ${badge ? `<span class="badge">${esc(badge)}</span>` : ''}${icon ? `<span class="kind" aria-hidden="true">${icon}</span>` : ''}
   </button>`;
@@ -436,7 +441,7 @@ function renderBuffer() {
       <div><span style="background:var(--sky);color:#0a1930">Ready</span>Done in the planner, not in Buffer yet. Tap it to queue it.</div>
       <div><span style="background:#0a1930;color:#f7f3ec">Tue 7:23pm</span>In Buffer, posts then (US Eastern).</div>
       <div><span style="border:1px solid var(--line)">No label</span>Already posted.</div>
-    </div></div>
+    </div><p class="m" style="margin:8px 0 0">Drag a Ready post to change the order (on a phone: tap it, then Move). Posts already in Buffer keep Buffer's times.</p></div>
     <div><h3>Next from Buffer</h3>${queue.length ? `<ol class="next">${queue.map((it) => row(it, fmtWhen(it.post.dueAt))).join('')}</ol>` : `<p class="empty" style="margin:0">Nothing queued for ${esc(app.name)}.</p>`}</div>
     ${errors.length ? `<div><h3 class="err">Didn't post</h3><ol class="next">${errors.map((it) => row(it, it.post.error || 'Failed')).join('')}</ol></div>` : ''}
     ${days.length ? `<details><summary>Buffer's posting times: ${slots} a week</summary>
@@ -450,12 +455,16 @@ function openPost(it, app = APPS.find((a) => a.name === feedApp) || APPS[0]) {
     : it.day ? `${FEED_ST[it.st][1]}. Date: ${fmtDate(it.day)}` : FEED_ST[it.st][1];
   const kind = it.kind === 'carousel' ? `Carousel${it.post?.count ? `, ${it.post.count} slides` : ''}` : it.kind === 'video' ? 'Video' : 'Single image';
   const canQueue = it.st === 'ready' && it.card && QUEUEABLE.includes(app.key);
+  const k = feedAll.indexOf(it);
+  const move = it.rank === 0 && k >= 0 && feedAll.filter((x) => x.rank === 0).length > 1
+    ? `<div class="row" style="margin:0"><span class="m">Move on the grid:</span><button class="ghost" type="button" data-move="${k}" data-to="-1">← Earlier on the grid</button><button class="ghost" type="button" data-move="${k}" data-to="1">Later on the grid →</button></div>` : '';
   $('postBody').innerHTML = `
     ${it.img ? `<img src="${esc(it.img)}" alt="">` : ''}
     <div class="row" style="margin:0"><span class="pill ${it.st === 'sent' ? 'sent' : it.st === 'error' ? 'error' : 'scheduled'}">${esc(it.label || FEED_ST[it.st][0])}</span><span class="m">${esc(kind)} · ${esc(when)}</span></div>
     <b>${esc(it.title)}</b>
     <div class="qcap">${esc(it.text) || '<span class="empty">No caption yet</span>'}</div>
     ${it.post?.error ? `<p class="err" style="margin:0">${esc(it.post.error)}</p>` : ''}
+    ${move}
     <div class="actions"><span>${it.card ? `<button class="ghost" type="button" data-open-card="${esc(it.card.id)}">Open the card</button>` : ''}</span>
       <span style="display:flex;gap:8px"><button class="ghost" type="button" data-pclose>Close</button>${canQueue ? `<button class="primary" type="button" data-queue="${app.key}" data-card="${esc(it.card.id)}">Queue it</button>` : ''}</span></div>`;
   $('postDlg').showModal();
@@ -470,6 +479,58 @@ function feedFromHash() {
   $('buffer').scrollIntoView();
 }
 window.addEventListener('hashchange', feedFromHash);
+
+// ---- Drag to reorder: Ready posts only (Buffer's queue keeps its own times) ----
+// The grid shows posts last-first, so the saved posting order is the grid order read backwards.
+async function moveFeed(from, to) {
+  const group = feedAll.filter((x) => x.rank === 0);
+  const a = group.indexOf(feedAll[from]);
+  const b = group.indexOf(feedAll[to]);
+  if (a < 0 || b < 0 || a === b) return;
+  const [it] = group.splice(a, 1);
+  group.splice(b, 0, it);
+  const app = APPS.find((x) => x.name === feedApp) || APPS[0];
+  const cards = group.slice().reverse().map((x) => ({ id: x.card.id, updatedAt: x.card.updatedAt }));
+  const r = await fetch('/api/feed-order', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ platform: app.key, cards }) });
+  const body = await r.json();
+  if (!r.ok) {
+    alert(body.error || 'Could not save the new order.');
+    return load();
+  }
+  for (const saved of body.ideas) {
+    const k = state.ideas.findIndex((x) => x.id === saved.id);
+    if (k >= 0) state.ideas[k] = saved;
+  }
+  renderBuffer();
+  renderIdeas();
+}
+let dragFrom = null;
+const clearDrop = () => document.querySelectorAll('.drop-before, .drop-after, .dragging').forEach((el) => el.classList.remove('drop-before', 'drop-after', 'dragging'));
+$('phone').addEventListener('dragstart', (e) => {
+  const t = e.target.closest('.tile[draggable="true"]');
+  if (!t) return;
+  dragFrom = Number(t.dataset.feed);
+  e.dataTransfer.effectAllowed = 'move';
+  e.dataTransfer.setData('text/plain', t.dataset.feed);
+  t.classList.add('dragging');
+});
+$('phone').addEventListener('dragover', (e) => {
+  const t = e.target.closest('.tile[draggable="true"]');
+  if (dragFrom == null || !t) return;
+  e.preventDefault();
+  document.querySelectorAll('.drop-before, .drop-after').forEach((el) => el.classList.remove('drop-before', 'drop-after'));
+  if (Number(t.dataset.feed) !== dragFrom) t.classList.add(Number(t.dataset.feed) < dragFrom ? 'drop-before' : 'drop-after');
+});
+$('phone').addEventListener('drop', (e) => {
+  const t = e.target.closest('.tile[draggable="true"]');
+  if (dragFrom == null || !t) return;
+  e.preventDefault();
+  const from = dragFrom;
+  dragFrom = null;
+  clearDrop();
+  moveFeed(from, Number(t.dataset.feed));
+});
+$('phone').addEventListener('dragend', () => { dragFrom = null; clearDrop(); });
 
 // ---- Calendar: every dated post (Buffer queue + sent, planner lanes with a date, Pins), one count per day ----
 const CAL_APPS = [...APPS, { name: 'Pinterest', key: 'pinterest' }];
@@ -499,7 +560,8 @@ function calItems() {
       const card = state.ideas.find((i) => i.lanes[app.key]?.bufferId === p.id);
       out.push({ app, day: dayKey(when), when, st, label: FEED_ST[st][0], card, post: p,
         img: (p.kind === 'video' && card && cardImage(card)) || p.thumb || (card && cardImage(card)),
-        kind: p.kind === 'text' ? 'image' : p.kind, text: p.text, title: card ? card.lanes[app.key]?.title || card.title : p.text.split('\n').find(Boolean) || mediaName(p) });
+        kind: p.kind === 'text' ? 'image' : p.kind, text: p.text, title: card ? card.lanes[app.key]?.title || card.title : p.text.split('\n').find(Boolean) || mediaName(p),
+        story: p.igType === 'story' });
     }
     for (const i of state.ideas) {
       const l = i.lanes[app.key];
@@ -782,14 +844,14 @@ function updateCounts() {
 function formIdea() {
   const f = $('ideaForm');
   const v = (n) => f.elements[n]?.value ?? '';
+  const old = state.ideas.find((x) => x.id === f.dataset.id) || {};
   const lanes = {};
   for (const p of state.options.platforms) {
     lanes[p] = f.elements[`${p}.on`].checked
-      ? { stage: v(`${p}.stage`), date: v(`${p}.date`), caption: v(`${p}.caption`), title: v(`${p}.title`), bufferId: v(`${p}.bufferId`), page: v(`${p}.page`), ...(f.elements[`${p}.byHand`] ? { byHand: f.elements[`${p}.byHand`].checked } : {}) }
+      ? { stage: v(`${p}.stage`), date: v(`${p}.date`), caption: v(`${p}.caption`), title: v(`${p}.title`), bufferId: v(`${p}.bufferId`), page: v(`${p}.page`), ...(old.lanes?.[p]?.feedOrder ? { feedOrder: old.lanes[p].feedOrder } : {}), ...(f.elements[`${p}.byHand`] ? { byHand: f.elements[`${p}.byHand`].checked } : {}) }
       : null;
   }
-  // Start from the saved card so fields the form doesn't show (carousel checks, Notion extras) are kept.
-  const old = state.ideas.find((x) => x.id === f.dataset.id) || {};
+  // Start from the saved card (old) so fields the form doesn't show (carousel checks, Notion extras) are kept.
   return { ...old, id: f.dataset.id || undefined, title: v('title'), format: v('format'), series: v('series'), product: v('product'),
     link: v('link'), hook: v('hook'), cta: v('cta'), keyword: v('keyword').trim(), order: v('order'), notes: v('notes'),
     filmingNotes: v('filmingNotes'), editNotes: v('editNotes'), archived: old.archived || false, lanes };
@@ -924,6 +986,12 @@ document.addEventListener('click', async (e) => {
   } else if (t.dataset.queue) {
     if ($('postDlg').open) $('postDlg').close();
     openQueue(t.dataset.card || $('ideaForm').dataset.id, t.dataset.queue);
+  } else if (t.dataset.move) {
+    const from = Number(t.dataset.move);
+    const group = feedAll.filter((x) => x.rank === 0);
+    const to = group[group.indexOf(feedAll[from]) + Number(t.dataset.to)];
+    $('postDlg').close();
+    if (to) moveFeed(from, feedAll.indexOf(to));
   } else if (t.closest('[data-feed]')) {
     openPost(feedAll[t.closest('[data-feed]').dataset.feed]);
   } else if (t.dataset.app) {

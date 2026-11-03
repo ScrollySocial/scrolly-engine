@@ -37,6 +37,8 @@ export function cleanIdea(input, existing) {
       page: str(l.page, 300), // Pinterest: the site page its Pins link to
       // Instagram/TikTok: post it herself via Buffer's "Notify me" (to add music). Unset = by format (carousels: yes).
       ...(typeof l.byHand === 'boolean' ? { byHand: l.byHand } : {}),
+      // Her drag-and-drop order on the feed preview grid, per app (1 posts first). Unset = after the ordered ones.
+      ...(Number.isInteger(l.feedOrder) && l.feedOrder > 0 ? { feedOrder: l.feedOrder } : {}),
     };
   }
   const now = new Date().toISOString();

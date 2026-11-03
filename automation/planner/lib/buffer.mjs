@@ -22,6 +22,8 @@ export function normalizePost(n) {
     count: assets.length,
     thumb: assets[0]?.thumbnail || assets[0]?.source || null,
     error: n.error?.message || null,
+    // Instagram only: story | post | reel. Stories never show on the profile grid.
+    igType: n.metadata?.type || null,
   };
 }
 
@@ -56,7 +58,8 @@ const CHANNEL_QUERY = `query PlannerChannels($org: OrganizationId!) {
 
 const POST_FIELDS =`id status text dueAt sentAt createdAt channelId channelService
   error { message }
-  assets { type source thumbnail }`;
+  assets { type source thumbnail }
+  metadata { ... on InstagramPostMetadata { type } }`;
 
 // Field names checked against the connector's schema (2026-10-27); not yet run with a real key.
 // If Buffer rejects it, the server falls back to the snapshot and shows the error.
