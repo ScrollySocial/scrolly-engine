@@ -10,7 +10,7 @@ import { launch, fileUrl, esc, cfg } from '../carousels/lib/common.mjs';
 import { handStar } from '../carousels/lib/hand.mjs';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
-const OUT = path.join(HERE, 'out', 'quotes');
+let OUT = path.join(HERE, 'out', 'quotes');
 const EXPORTS = path.resolve(cfg('media').exportsDir, '../ig-posts/quotes');
 const ASSETS = path.resolve(HERE, '../../website/scrolly-site/assets');
 const FONTS = 'https://fonts.googleapis.com/css2?family=Jost:wght@400;500;700&family=Instrument+Serif&family=Covered+By+Your+Grace&family=Lily+Script+One&family=Molle:ital@1&family=Caprasimo&family=Sansita+Swashed:wght@900&family=Sonsie+One&family=Shrikhand&family=Oleo+Script:wght@700&family=Lobster&family=Gloock&family=DM+Serif+Display&family=Fraunces:opsz,wght@9..144,600&family=Cormorant+Garamond:wght@600&family=Italiana&family=Abril+Fatface&family=Alfa+Slab+One&family=Rubik+Mono+One&display=block';
@@ -384,9 +384,44 @@ const DREAMY = { // one background per post, real variety (Mercedes 2026-11-02: 
   14: { style: 'strips', paint: [437307, '50% 15%'], size: '140% auto', font: "'Instrument Serif'" },
 };
 
-const TILES = { starry, wand, constellation, moon, balloon, sail, quiet, tortoise, balloon2, rope, athlete, ribbon, note, sticker, collage, dreamy };
-const only = process.argv.slice(2).map(Number);
-const list = QUOTES.map((q) => (DREAMY[q.n] ? { ...q, ...DREAMY[q.n], tile: 'dreamy' } : q)).filter((q) => q.tile && (!only.length || only.includes(q.n)));
+// Blue set (Mercedes 2026-11-03, "more blue" for a cohesive grid): her picked blue photos, layered mixed-media look
+// (washi tape on the words, hand-drawn stars over gold stickers). 6, 9 and 13 stay as they are.
+// Preview only: node quotes.mjs --blue [n ...] writes out/quotes-blue/, never the OneDrive exports.
+const BLUE = {
+  1: { style: 'strips', paint: ['painted-blue-sea-meadow-0', 'center 70%'], font: "'Instrument Serif'" },
+  2: { style: 'label', paint: ['snowy-peak-blue-sky-0', 'center 30%'], font: "'Cormorant Garamond'" },
+  3: { style: 'strips', paint: ['blue-misty-hills-0', 'center'], font: 'Gloock' },
+  4: { style: 'label', paint: ['blue-flowers-urn-0', 'center'], font: 'Italiana' },
+  5: { style: 'strips', paint: ['blue-sky-beach-path-0', 'center'], font: 'Fraunces' },
+  7: { style: 'strips', paint: ['blue-sky-balloon-0', '66% center'], font: "'DM Serif Display'" },
+  8: { style: 'label', paint: ['aerial-beach-umbrellas-0', 'center 35%'], font: "'Cormorant Garamond'" },
+  10: { style: 'ransom', paint: ['poppies-grey-sky-0', '30% center'] },
+  11: { style: 'ransom', paint: ['blue-misty-hills-0', 'center 80%'] },
+  12: { style: 'strips', paint: ['painted-blue-sea-meadow-0', 'center 15%'], font: 'Fraunces' },
+  14: { style: 'strips', paint: ['snowy-peak-blue-sky-0', 'center 0%'], font: "'Instrument Serif'" },
+};
+const washi = (css) => `<div style="position:absolute;width:230px;height:62px;background:repeating-linear-gradient(45deg,rgba(77,163,255,.55) 0 14px,rgba(247,243,236,.6) 14px 28px);box-shadow:0 2px 6px rgba(10,25,48,.18);${css}"></div>`;
+const blueLayer = (q) => `${washi('left:110px;top:250px;transform:rotate(-14deg)')}${washi('right:110px;top:840px;transform:rotate(-9deg)')}
+${star('#fff', { pts: 4, fill: true, seed: q.n * 3 }, 'left:850px;top:220px;width:96px;height:96px')}
+${star(C.sky, { pts: 8, seed: q.n * 5, sw: 3 }, 'left:150px;top:1060px;width:64px;height:64px')}
+${star('#fff', { pts: 4, seed: q.n * 7, sw: 3.4 }, 'left:820px;top:1150px;width:58px;height:58px')}`;
+const blue = (q) => dreamy(q).replace('<div class="wash"></div>', '').replace('<div class="box">', `${blueLayer(q)}<div class="box">`);
+
+// White set (Mercedes 2026-11-03, "extremely simple and pared back... all white?"): plain white, the quote in navy
+// serif, a small grey credit, nothing else. Preview only: node quotes.mjs --white [n ...] writes out/quotes-white/.
+const white = (q) => `<style>${BASE}
+  body { background: #fff; color: ${C.navy}; }
+  .q { top: 50%; transform: translateY(-50%); font-size: ${q.text.length <= 60 ? 104 : q.text.length <= 100 ? 88 : 74}px; line-height: 1.08; left: 130px; right: 130px; }
+  .by { bottom: 170px; font: 500 28px/1 Jost, Arial, sans-serif; letter-spacing: .22em; text-transform: uppercase; color: #8f96a6; }
+</style><div class="q">${esc(q.text)}</div><div class="by">${esc(cr(q.by))}</div>`;
+
+const TILES = { starry, wand, constellation, moon, balloon, sail, quiet, tortoise, balloon2, rope, athlete, ribbon, note, sticker, collage, dreamy, blue, white };
+const isBlue = process.argv.includes('--blue'), isWhite = process.argv.includes('--white');
+const only = process.argv.slice(2).filter((a) => !a.startsWith('--')).map(Number);
+const list = QUOTES.map((q) => (isWhite ? { ...q, tile: 'white' } : isBlue ? BLUE[q.n] && { ...q, ...BLUE[q.n], tile: 'blue' } : DREAMY[q.n] ? { ...q, ...DREAMY[q.n], tile: 'dreamy' } : q))
+  .filter((q) => q && q.tile && (!only.length || only.includes(q.n)));
+if (isBlue) OUT = path.join(HERE, 'out', 'quotes-blue');
+if (isWhite) OUT = path.join(HERE, 'out', 'quotes-white');
 
 mkdirSync(OUT, { recursive: true });
 mkdirSync(EXPORTS, { recursive: true });
@@ -401,7 +436,7 @@ for (const q of list) {
   await pg.evaluate(() => { for (const el of document.querySelectorAll('[data-fit], .fit')) { const max = el.dataset.fit ? +el.dataset.fit : 480; let fs = parseFloat(getComputedStyle(el).fontSize); while ((el.scrollHeight > max || el.scrollWidth > el.clientWidth) && fs > 40) { fs -= 2; el.style.fontSize = fs + 'px'; } } });
   const png = path.join(OUT, `quote-${q.n}.png`);
   await pg.screenshot({ path: png });
-  copyFileSync(png, path.join(EXPORTS, `quote-${q.n}.png`));
+  if (!isBlue && !isWhite) copyFileSync(png, path.join(EXPORTS, `quote-${q.n}.png`));
   console.log(`image  quote-${q.n}`);
 }
 await browser.close();
