@@ -20,6 +20,8 @@ Run from the project folder, then open http://localhost:4330:
 ## Ideas board layout (2026-11-03)
 A platform's board is one row per stage with cards side by side (scroll sideways); empty stages fold to one line.
 Mercedes found the old tall columns too long to scroll.
+Every card (board and All list) has a trash button: one click deletes it, with **Undo** for 10 seconds (`POST /api/idea-restore`
+puts the newest copy from `data/deleted.json` back). The editor's Delete works the same way, no confirm box.
 
 ## Calendar (built 2026-11-03)
 Top of the page (`#calendar`). A month grid, weeks start Monday, US Eastern days. Each day shows how many posts and, on

@@ -207,6 +207,19 @@ function deleteIdea(id) {
   list.splice(i, 1);
   writeJson(IDEAS_FILE, { ideas: list });
 }
+// Her Undo right after a delete: the newest copy in data/deleted.json goes back on the board as it was.
+function restoreIdea(id) {
+  const bin = readJson(DELETED_FILE, { deleted: [] });
+  const k = bin.deleted.findIndex((x) => x.id === id);
+  if (k < 0) throw Object.assign(new Error('Nothing to undo for that card.'), { code: 404 });
+  const { deletedAt, ...card } = bin.deleted[k];
+  const list = ideas();
+  if (!list.some((x) => x.id === id)) list.unshift(card);
+  writeJson(IDEAS_FILE, { ideas: list });
+  bin.deleted.splice(k, 1);
+  writeJson(DELETED_FILE, bin);
+  return card;
+}
 
 // ---- Comment words ----
 // The repo copy of Chat Manager's keyword list. The dashboard (hooks.scrollyseo.com/inbox) is the real list, so a word
@@ -327,6 +340,9 @@ http
       }
       if (req.method === 'POST' && url.pathname === '/api/feed-order') {
         return send(res, 200, { ideas: saveFeedOrder(await readBody(req)) });
+      }
+      if (req.method === 'POST' && url.pathname === '/api/idea-restore') {
+        return send(res, 200, { idea: restoreIdea((await readBody(req)).id) });
       }
       if (req.method === 'POST' && url.pathname === '/api/idea-delete') {
         deleteIdea((await readBody(req)).id);

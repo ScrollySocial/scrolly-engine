@@ -154,6 +154,11 @@
   .scard .act { display: flex; gap: 6px; align-items: center; }
   .scard select { font: inherit; font-size: 15px; flex: 1; min-width: 0; }
   .scard .ghost { padding: 4px 10px; flex: none; }
+  .del { flex: none; display: inline-grid; place-items: center; width: 34px; height: 34px; border-radius: 8px; border: 1px solid var(--line); background: none; color: var(--muted); cursor: pointer; padding: 0; }
+  .del:hover, .del:focus-visible { color: var(--warn); border-color: var(--warn); }
+  .del svg { pointer-events: none; }
+  .toast { position: fixed; left: 50%; bottom: 20px; transform: translateX(-50%); z-index: 20; display: flex; gap: 14px; align-items: center; background: var(--ink); color: var(--bg); border-radius: 12px; padding: 10px 12px 10px 16px; max-width: calc(100vw - 32px); box-shadow: 0 6px 24px rgb(10 25 48 / .25); }
+  .toast .ghost { color: var(--bg); border-color: var(--bg); padding: 4px 14px; }
   #editor { width: min(94vw, 720px); max-width: none; max-height: 92vh; padding: 0; }
   #ideaForm { padding: 20px; display: grid; gap: 12px; }
   #ideaForm label { display: grid; gap: 4px; font-size: 15px; font-weight: 600; }
@@ -295,6 +300,7 @@
     <div style="overflow-x:auto;margin-top:12px"><table id="pageTable"></table></div>
   </section>
 </main>
+<div class="toast" id="toast" role="status" hidden></div>
 <dialog id="zoom"><img alt=""></dialog>
 <dialog id="editor"><form method="dialog" id="ideaForm"></form></dialog>
 <dialog id="postDlg"><div id="postBody"></div></dialog>
@@ -867,6 +873,34 @@ let ideaQuery = '';
 try { ideaGroupFilter = localStorage.getItem('planner.ideaGroup') || 'In progress'; } catch {}
 const matches = (i) => !ideaQuery || `${i.title} ${i.hook} ${i.notes} ${i.series} ${i.product}`.toLowerCase().includes(ideaQuery);
 
+// One-click delete on every card, with Undo (a copy stays in data/deleted.json either way)
+const delBtn = (i) => `<button class="del" type="button" data-del="${esc(i.id)}" aria-label="Delete ${esc(i.title)}" title="Delete"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"/></svg></button>`;
+let undoTimer = null;
+async function deleteCard(id) {
+  const idea = state.ideas.find((x) => x.id === id);
+  if (!idea) return;
+  const r = await fetch('/api/idea-delete', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ id }) });
+  if (!r.ok) return alert(`Couldn't delete: ${(await r.json()).error}`);
+  state.ideas = state.ideas.filter((x) => x.id !== id);
+  if ($('editor').open) $('editor').close();
+  renderIdeas();
+  renderBuffer();
+  renderCal();
+  $('toast').innerHTML = `<span>Deleted "${esc(idea.title.length > 50 ? `${idea.title.slice(0, 50)}…` : idea.title)}"</span><button class="ghost" type="button" data-undo="${esc(id)}">Undo</button>`;
+  $('toast').hidden = false;
+  clearTimeout(undoTimer);
+  undoTimer = setTimeout(() => { $('toast').hidden = true; }, 10000);
+}
+async function undoDelete(id) {
+  $('toast').hidden = true;
+  const r = await fetch('/api/idea-restore', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ id }) });
+  if (!r.ok) return alert(`Couldn't undo: ${(await r.json()).error}`);
+  state.ideas.unshift((await r.json()).idea);
+  renderIdeas();
+  renderBuffer();
+  renderCal();
+}
+
 function renderIdeas() {
   const live = state.ideas.filter((i) => !i.archived && matches(i));
   const groups = ['In progress', 'Just ideas', 'Posted', 'Archived', 'No comment word'];
@@ -891,13 +925,13 @@ function renderIdeas() {
       return;
     }
     $('ideaView').innerHTML = `<div class="ideas">${shown.map((i) => `
-      <button class="idea" type="button" data-edit="${esc(i.id)}">
+      <div class="idea" role="button" tabindex="0" data-edit="${esc(i.id)}">
         <span><span class="t">${esc(i.title)}</span><br><span class="m">${ideaMeta(i) || '&nbsp;'}</span> ${kwBadge(i)}</span>
         <span class="lanes">${state.options.platforms.map((p) => {
           const l = i.lanes[p];
           return `<span class="lane ${laneClass(p, l)}">${PNAME[p]}: ${l ? esc(l.stage) : 'not planned'}</span>`;
-        }).join('')}</span>
-      </button>`).join('')}</div>`;
+        }).join('')}${delBtn(i)}</span>
+      </div>`).join('')}</div>`;
     return;
   }
   // "Stories" = the Instagram board, Story cards only
@@ -913,7 +947,7 @@ function renderIdeas() {
       return `<div class="scard" data-edit="${esc(i.id)}">
         <span class="t">${esc(i.title)}</span>
         <span class="m">${esc(meta) || '&nbsp;'}${kw === 'missing' ? ' · <span class="err">no comment word</span>' : ''}</span>
-        <span class="act">${QUEUEABLE.includes(p) && s === 'Ready' ? `<button class="ghost" type="button" data-queue="${p}" data-card="${esc(i.id)}">Queue it</button>` : ''}<select data-move="${esc(i.id)}" data-p="${p}" aria-label="Move to">${stagesFor(p).map((x) => `<option${x === s ? ' selected' : ''}>${esc(x)}</option>`).join('')}</select></span>
+        <span class="act">${QUEUEABLE.includes(p) && s === 'Ready' ? `<button class="ghost" type="button" data-queue="${p}" data-card="${esc(i.id)}">Queue it</button>` : ''}<select data-move="${esc(i.id)}" data-p="${p}" aria-label="Move to">${stagesFor(p).map((x) => `<option${x === s ? ' selected' : ''}>${esc(x)}</option>`).join('')}</select>${delBtn(i)}</span>
       </div>`;
     }).join('')}</div>` : ''}</div>`;
   }).join('')}</div>${ideaFilter === 'stories' ? '<p class="sub" style="margin-top:8px">A Story card is one day of Stories. Film = photos to shoot, Edit = lines written and slides to render. Add one with + New idea and Format "Story".</p>'
@@ -1063,6 +1097,14 @@ $('ideaForm').addEventListener('submit', async (e) => {
     $('editor').close();
   } catch (err) {
     if (!err.handled) alert(`Couldn't save: ${err.message}`);
+  }
+});
+// List rows are divs acting as buttons (they hold a Delete button): Enter or Space opens the card
+document.addEventListener('keydown', (e) => {
+  const row = e.target.closest?.('.idea[role="button"]');
+  if (row && e.target === row && (e.key === 'Enter' || e.key === ' ')) {
+    e.preventDefault();
+    openEditor(row.dataset.edit);
   }
 });
 document.addEventListener('change', async (e) => {
@@ -1217,14 +1259,10 @@ document.addEventListener('click', async (e) => {
     idea.archived = !idea.archived;
     await postIdea(idea);
     $('editor').close();
-  } else if (t.dataset.delete) {
-    const idea = state.ideas.find((x) => x.id === t.dataset.delete);
-    if (!confirm(`Delete "${idea.title}"? It disappears from your planner.`)) return;
-    const r = await fetch('/api/idea-delete', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ id: idea.id }) });
-    if (!r.ok) return alert(`Couldn't delete: ${(await r.json()).error}`);
-    state.ideas = state.ideas.filter((x) => x.id !== idea.id);
-    $('editor').close();
-    renderIdeas();
+  } else if (t.dataset.delete || t.dataset.del) {
+    deleteCard(t.dataset.delete || t.dataset.del);
+  } else if (t.dataset.undo) {
+    undoDelete(t.dataset.undo);
   } else if (t.hasAttribute('data-close') || t.id === 'editor') {
     $('editor').close();
   } else if (edit && t.tagName !== 'SELECT' && t.tagName !== 'OPTION') {
