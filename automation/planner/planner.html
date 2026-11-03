@@ -392,6 +392,20 @@ function cardImage(i) {
 }
 const cardKind = (i) => (i.format === 'Carousel' ? 'carousel' : ['Reel', 'Short', 'YouTube long-form'].includes(i.format) ? 'video' : 'image');
 
+// The posted part of the Instagram grid comes from her real profile once "Refresh my grid" has read it
+// (data/ig-profile.json). A post links to its planner card through the Buffer post with the same opening words.
+const realGrid = (app) => app.key === 'instagram' && state.igProfile?.posts?.length;
+const opening = (t) => String(t || '').replace(/\s+/g, ' ').trim().slice(0, 60).toLowerCase();
+function igItems(app) {
+  const sent = state.buffer.posts.filter((p) => p.channel === app.name && p.status === 'sent');
+  return state.igProfile.posts.map((g) => {
+    const bp = g.caption && sent.find((p) => opening(p.text) && opening(p.text) === opening(g.caption));
+    const card = bp && state.ideas.find((i) => i.lanes[app.key]?.bufferId === bp.id);
+    return { st: 'sent', ig: g, card, post: null, img: g.thumb, kind: g.kind, text: g.caption, title: g.caption.split('\n').find(Boolean) || card?.title || 'Post',
+      day: g.postedAt?.slice(0, 10), label: g.pinned ? 'Pinned' : '', rank: 4, t: (g.pinned ? 1e13 : 0) + (Date.parse(g.postedAt) || 0) };
+  });
+}
+
 function feedItems(app) {
   const posts = state.buffer.posts.filter((p) => p.channel === app.name);
   const items = [];
@@ -416,6 +430,7 @@ function feedItems(app) {
   }
   for (const p of posts) {
     if (items.some((x) => x.post?.id === p.id) || p.igType === 'story' || oldAccount(p)) continue; // Stories never show on the grid
+    if (realGrid(app) && p.status === 'sent') continue; // what's really on Instagram shows instead
     const st = ['scheduled', 'sending', 'needs_approval'].includes(p.status) ? 'queued' : ['sent', 'error'].includes(p.status) ? p.status : 'draft';
     const card = state.ideas.find((i) => i.lanes[app.key]?.bufferId === p.id);
     items.push({ st, card, post: p, img: (p.kind === 'video' && card && cardImage(card)) || p.thumb || (card && cardImage(card)),
@@ -425,15 +440,16 @@ function feedItems(app) {
   // Posted cards Buffer no longer lists (older than its last 100 posts) still belong on the grid
   for (const i of state.ideas) {
     const l = i.lanes[app.key];
-    if (i.archived || l?.stage !== 'Posted' || i.format === 'Story' || items.some((x) => x.card === i)) continue;
+    if (realGrid(app) || i.archived || l?.stage !== 'Posted' || i.format === 'Story' || items.some((x) => x.card === i)) continue;
     items.push({ st: 'sent', card: i, post: null, img: cardImage(i), kind: cardKind(i), text: l.caption || '', title: l.title || i.title,
       day: l.date, rank: 4, t: Date.parse(`${l.date || '2000-01-01'}T12:00:00Z`) });
   }
+  if (realGrid(app)) items.push(...igItems(app));
   return items.sort((x, y) => x.rank - y.rank || y.t - x.t);
 }
 
 function tile(it, missing = it.title) {
-  const badge = it.st === 'queued' ? fmtSlot(it.post.dueAt) : it.st === 'sent' ? '' : it.label || FEED_ST[it.st][0];
+  const badge = it.st === 'queued' ? fmtSlot(it.post.dueAt) : it.st === 'sent' ? it.label || '' : it.label || FEED_ST[it.st][0];
   const icon = it.kind === 'carousel' ? '❐' : it.kind === 'video' ? '▶' : '';
   const drag = MOVABLE(it) ? ` draggable="true" data-rank="${it.rank}"` : '';
   return `<button class="tile st-${it.st}" type="button" data-feed="${feedAll.indexOf(it)}"${drag} aria-label="${esc(`${FEED_ST[it.st][0]}: ${it.title}`)}">
@@ -493,11 +509,11 @@ function renderBuffer() {
     ${days.length ? `<details><summary>Buffer's posting times: ${slots} a week</summary>
       <div class="times">${days.map((d) => `<b>${d.day[0].toUpperCase() + d.day.slice(1)}</b><span>${d.times.map(fmtClock).join(', ') || 'off'}</span>`).join('')}</div>
       <p class="m">In ${esc((c.timezone || '').replace('America/', '').replace('_', ' '))} time. A queued post takes the next free time.</p></details>` : ''}
-    <p class="m" style="margin:0">Posted shows Buffer's last 100 posts plus every card marked Posted.</p>`;
+    <p class="m" style="margin:0">${realGrid(app) ? `Posted = your real Instagram profile, read ${esc(fmtWhen(state.igProfile.takenAt))}. Ask Claude to "refresh my grid" after you post or delete.` : "Posted shows Buffer's last 100 posts plus every card marked Posted."}</p>`;
 }
 
 function openPost(it, app = APPS.find((a) => a.name === feedApp) || APPS[0]) {
-  const when = it.st === 'sent' ? `Posted ${it.post ? fmtWhen(it.post.sentAt || it.post.dueAt) : fmtDate(it.day)}` : it.st === 'queued' ? `Buffer posts it ${fmtWhen(it.post.dueAt)}`
+  const when = it.ig ? `Posted ${it.ig.postedAt ? fmtWhen(it.ig.postedAt) : ''}` : it.st === 'sent' ? `Posted ${it.post ? fmtWhen(it.post.sentAt || it.post.dueAt) : fmtDate(it.day)}` : it.st === 'queued' ? `Buffer posts it ${fmtWhen(it.post.dueAt)}`
     : it.day ? `${FEED_ST[it.st][1]}. Date: ${fmtDate(it.day)}` : FEED_ST[it.st][1];
   const kind = it.kind === 'carousel' ? `Carousel${it.post?.count ? `, ${it.post.count} slides` : ''}` : it.kind === 'video' ? 'Video' : 'Single image';
   const canQueue = it.st === 'ready' && it.card && QUEUEABLE.includes(app.key);
@@ -510,6 +526,7 @@ function openPost(it, app = APPS.find((a) => a.name === feedApp) || APPS[0]) {
     <b>${esc(it.title)}</b>
     <div class="qcap">${esc(it.text) || '<span class="empty">No caption yet</span>'}</div>
     ${it.post?.error ? `<p class="err" style="margin:0">${esc(it.post.error)}</p>` : ''}
+    ${it.ig ? `<a href="${esc(it.ig.url)}" target="_blank" rel="noopener">Open it on Instagram</a>` : ''}
     ${move}
     <div class="actions"><span>${it.card ? `<button class="ghost" type="button" data-open-card="${esc(it.card.id)}">Open the card</button>` : ''}</span>
       <span style="display:flex;gap:8px"><button class="ghost" type="button" data-pclose>Close</button>${canQueue ? `<button class="primary" type="button" data-queue="${app.key}" data-card="${esc(it.card.id)}">Queue it</button>` : ''}</span></div>`;

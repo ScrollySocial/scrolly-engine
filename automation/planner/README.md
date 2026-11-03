@@ -26,6 +26,13 @@ don't count (their Pins do). A Ready card with no date isn't on the calendar. Ta
 (date-only cards say "No time yet"); tap a post for the same popup as the feed preview, or a Pin for its image. Each
 day links to that app's feed preview.
 
+## Refresh my grid (built 2026-11-03)
+`node automation/planner/ig-refresh.mjs` reads her real Instagram profile (@ambitiondepthq) with Apify
+`apify/instagram-scraper` (about $0.0027 a post, capped at $0.30 a run, logged in reels-test/data/apify-runs.ndjson) into
+`data/ig-profile.json`, pictures in `data/ig-thumbs/` (not in git). Once it exists, the Instagram grid's Posted part is that
+profile (pinned first, then newest), not Buffer's sent list: posts she deleted disappear and posts made in the app show.
+A post links to its card through the Buffer post with the same opening words. Run it when she says "refresh my grid".
+
 ## Carousels review (built 2026-11-03)
 `#carousels`: every carousel already made, so she can pick what to post. Sources: the carousel engine's exports
 (OneDrive `exports/carousels/<date>-<slug>` plus `sample-what-to-post`, each with `automation/carousels/posts/<id>/post.json`;

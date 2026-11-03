@@ -38,3 +38,6 @@ automation/youtube/*/hf/assets/
 automation/youtube/*/hf/renders/
 automation/youtube/*/hf/*.log
 automation/youtube/*/hf/snapshots/
+
+# Instagram grid pictures (ig-refresh.mjs); re-downloadable, keep out of git
+automation/planner/data/ig-thumbs/

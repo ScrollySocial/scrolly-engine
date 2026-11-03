@@ -277,6 +277,7 @@ http
           ideas: ideas(),
           pins: pins(),
           carousels: carousels(),
+          igProfile: readJson(join(DATA, 'ig-profile.json'), null), // her real Instagram grid (ig-refresh.mjs)
           buffer: await buffer(url.searchParams.has('refresh')),
         });
       }
@@ -351,6 +352,10 @@ http
       if (req.method === 'GET' && slide) {
         const f = join(CAROUSEL_EXPORTS, slide[1], slide[2]);
         if (existsSync(f)) return send(res, 200, readFileSync(f), TYPES['.png']);
+      }
+      const igThumb = url.pathname.match(/^\/ig-thumb\/([\w-]+\.jpg)$/);
+      if (req.method === 'GET' && igThumb && existsSync(join(DATA, 'ig-thumbs', igThumb[1]))) {
+        return send(res, 200, readFileSync(join(DATA, 'ig-thumbs', igThumb[1])), 'image/jpeg');
       }
       // Finished images in OneDrive Scrolly Media (quote posts, Reel covers), for the feed preview. Images only, inside that folder.
       if (req.method === 'GET' && url.pathname.startsWith('/media/') && MEDIA_ROOT) {
