@@ -154,13 +154,18 @@ const box = (t, top, size = 64) => `<div style="position:absolute;left:100px;rig
   <span style="background:#fff;padding:6px 16px;box-decoration-break:clone;-webkit-box-decoration-break:clone;border-radius:10px">${t}</span></div>`;
 const big = (t, top, size, color, extra = '') => `<div style="position:absolute;left:0;right:0;top:${top}px;text-align:center;font:800 ${size}px/0.95 Bricolage;color:${color};letter-spacing:-3px;${extra}">${t}</div>`;
 const SHADOW = 'text-shadow:0 6px 24px rgba(40,20,30,.35)';
+const BUTTER = '#F9E38C';
+// butter yellow sits on busy footage, so it gets a firmer dark edge + soft shadow to stay readable
+const DARK_SHADOW = 'text-shadow:0 0 3px rgba(60,40,20,.9),0 4px 18px rgba(40,25,10,.65)';
 const TEXTS = {
   // 2: the line pops in one piece at a time; "welcome" lands huge in script when the bar arrives
   2: { l1: box('If beach days', 230, 70), l2: box('and bubble baths', 330, 70), l3: box('are your thing,', 430, 70),
     welcome: `<div style="position:absolute;left:0;right:0;top:1590px;text-align:center;font:255px/1 Pacifico;color:#fff;` +
       `text-shadow:0 0 30px rgba(236,140,170,.75),0 8px 24px rgba(120,40,80,.35)">welcome</div>` },
-  3: { head: big('DEAR<br>ALGORITHM,', 190, 190, '#fff', SHADOW),
-    rest: box('please connect me with all the people who love supporting small businesses and artisanal products!', 1590, 58) },
+  // 3: butter-yellow script "Dear algorithm," and the rest in butter yellow too (her ask 2026-11-04)
+  3: { head: `<div style="position:absolute;left:0;right:0;top:150px;text-align:center;font:175px/1.05 Pacifico;color:${BUTTER};${DARK_SHADOW}">Dear<br>algorithm,</div>`,
+    rest: `<div style="position:absolute;left:90px;right:90px;top:1520px;text-align:center;font:800 66px/1.2 Figtree;color:${BUTTER};${DARK_SHADOW}">` +
+      'please connect me with all the people who love supporting small businesses and artisanal products!</div>' },
   4: { hook: box("You weren't looking for a new soap,", 200, 66), here: big('but here<br>we are.', 1250, 175, '#fff', SHADOW) },
   5: { hook: box('Can you tell the difference?', 1240, 70),
     labels: big('REAL', 1480, 150, '#fff', SHADOW + ';width:540px') + big('SOAP', 1480, 150, '#fff', SHADOW + ';width:540px;left:540px'),
@@ -241,7 +246,9 @@ const BOLD = {
   3: () => render(3, ['-ss', '3.2', '-t', '1.3', '-i', clip('her-mix-pour'), '-ss', '12.5', '-t', '1.3', '-i', clip('her-mix-pour'),
     '-ss', '34.3', '-t', '4.4', '-i', clip('her-mix-pour'), ...barIn(), ...txt(3, 'head'), ...txt(3, 'rest'), ...sfx('sparkle.mp3'), ...sfx('pop-light.mp3')],
     [0, 1, 2].map((i) => `[${i}:v]${FIT},fps=${FPS},setsar=1[h${i}]`).join(';') + ';[h0][h1][h2]concat=n=3:v=1:a=0[bg];' +
-    `[3:v]scale=860:860,format=rgba[bar];[bg][bar]overlay=x='(W-w)/2':y='if(lt(t\\,2.8)\\,-1000\\,720-abs(1100*exp(-5*(t-2.8))*cos(8*(t-2.8))))':eval=frame[vb];` +
+    // once it has landed (~3.3s) the bar starts to rock and float, easing in so it doesn't jolt
+    `[3:v]scale=860:860,format=rgba,rotate='0.07*sin(2*PI*(t-3.3)/2)*min(1\\,max(0\\,(t-3.3)/0.6))':c=none:ow='rotw(0.12)':oh='roth(0.12)'[bar];` +
+    `[bg][bar]overlay=x='(W-w)/2':y='if(lt(t\\,2.8)\\,-1000\\,600-abs(1100*exp(-5*(t-2.8))*cos(8*(t-2.8)))-22*sin(2*PI*(t-3.3)/2+1)*min(1\\,max(0\\,(t-3.3)/0.6)))':eval=frame[vb];` +
     `[vb][4:v]overlay[vh];[5:v]format=rgba,fade=in:st=0.6:d=0.25:alpha=1[rest];[vh][rest]overlay`,
     `${at(6, 0.1, 0.4)}[a1];${at(7, 3.0, 0.7)}[a2];${mix(['a1', 'a2'])}`),
   // 4 (round 3): a feed of grey, boring posts scrolls fast, slows and stops dead on her bar, the only colour on screen
