@@ -1,6 +1,43 @@
 {
  "ideas": [
   {
+   "id": "822da7d6a809",
+   "title": "1 boring photo, 9 posts (all really from that photo)",
+   "format": "Reel",
+   "hook": "I turned 1 boring photo into 9 posts",
+   "cta": "",
+   "keyword": "",
+   "notes": "Inspiration: @tainacreats (4K followers in her first week on IG). Her best Reel, 1 boring photo into 9 posts, has almost 1M views and she re-posted it several times. What Mercedes didn't love: most of her 9 posts weren't actually that photo, and if you really want 9 posts you'd want Reels and carousels, not 9 images.\n\nOur version: the SAME boring photo (coffee cup, laptop, desk) used in every post, and the mix is mostly Reels + carousels:\n- 1 photo post: the photo, nicely edited, long caption\n- 4 Reels: (1) Mercedes talking with the photo behind her (green screen), the story behind it; (2) slow zoom into the photo + strong hook text + trending audio; (3) before and after, raw photo to edited; (4) tip Reel, photo on screen while text teaches\n- 4 carousels: (1) story carousel, photo as cover; (2) tips carousel, photo on cover + last slide; (3) crop carousel, a different crop per slide, one point each; (4) quote carousel, short lines over parts of the photo\n\nThe Reel about it: show the boring photo, flash through all 9, end on the grid where every tile is clearly the same photo.\nWatch out: Reels from one still can feel flat; green-screen and before/after are the strongest. The slow zoom needs a strong hook.\nCould lead into the Reel engine / carousel engine (reel -> carousel -> Pins pipeline).",
+   "product": "",
+   "series": "",
+   "link": "",
+   "filmingNotes": "",
+   "editNotes": "",
+   "reelFolder": "",
+   "mediaUrl": "",
+   "order": null,
+   "carouselId": "",
+   "mediaUsed": "",
+   "notionId": "",
+   "fromNotion": null,
+   "archived": false,
+   "createdAt": "2026-11-04T15:55:27.386Z",
+   "updatedAt": "2026-11-04T15:55:27.386Z",
+   "lanes": {
+    "instagram": {
+     "stage": "Idea",
+     "date": "",
+     "caption": "",
+     "title": "",
+     "bufferId": "",
+     "page": ""
+    },
+    "tiktok": null,
+    "youtube": null,
+    "pinterest": null
+   }
+  },
+  {
    "id": "645065540120",
    "title": "\"I have no idea what to post\"",
    "format": "Reel",
