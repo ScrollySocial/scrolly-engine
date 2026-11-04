@@ -2,7 +2,7 @@
 // business). Reel 1 (option A, her pick 2026-11-04), 7 seconds:
 //   A shower clip + hook > B UPGRADE YOUR SHOWER with a pastel sunset playing inside the letters > C push into the sun on
 //   the soap > D that sun becomes a real sun (zoom out of a sunset clip) > E pastel sunset flashes > F the whole bar.
-//   node build.mjs reel1        renders <exports>/soap-9-posts/reel-1.mp4
+//   node build.mjs reel1        renders <exports>/soap-9-posts/reel-1.mp4 (reel2..reel5 the same way)
 // Clips: clips/<pexels id>.mp4 (gitignored, Pexels License, credits in credits.json).
 import { mkdirSync, writeFileSync, readFileSync, existsSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
@@ -145,6 +145,67 @@ function reel1() {
   console.log(out);
 }
 
+// Reels 2-5 (her list 2026-11-04), one simple template so they're quick: stock scenes with hard cuts, her bar cut out on
+// top (floats a little, or drops in at popAt), one line of text on white boxes the whole way
+const SIMPLE = {
+  2: { hook: 'If beach days and bubble baths are your thing, welcome.',
+    scenes: [{ id: 36625664, ss: 2, d: 3.5 }, { id: 8227197, ss: 1, d: 3.5 }], bar: { w: 560, y: 1000 } },
+  3: { hook: 'Dear algorithm, please connect me with all the people who love supporting small businesses and artisanal products!',
+    scenes: [{ id: 13767351, ss: 0.5, d: 7 }], bar: { w: 600, y: 860 } },
+  4: { hook: "You weren't looking for a new soap, but here we are.",
+    scenes: [{ id: 7815710, ss: 2, d: 7 }], bar: { w: 380, y: 1250, popAt: 1.2 } },
+  5: { hook: 'Can you tell the difference?',
+    scenes: [{ id: 36609524, ss: 1, d: 3.3, label: 'A real sunset' }, { soap: true, d: 3.7, label: 'A bar of soap' }] },
+};
+const box = (t, top, size = 64) => `<div style="position:absolute;left:100px;right:100px;top:${top}px;text-align:center;font:700 ${size}px/1.42 Figtree">
+  <span style="background:#fff;padding:6px 16px;box-decoration-break:clone;-webkit-box-decoration-break:clone;border-radius:10px">${t}</span></div>`;
+
+async function simpleTexts(n) {
+  const r = SIMPLE[n], b = await launch(), page = await b.newPage();
+  await page.setViewport({ width: W, height: H });
+  await png(page, box(r.hook, 230), path.join(TMP, `s${n}-hook.png`));
+  for (const [i, sc] of r.scenes.entries()) if (sc.label) await png(page, box(sc.label, 1500, 72), path.join(TMP, `s${n}-label${i}.png`));
+  await b.close();
+}
+
+function simple(n) {
+  const r = SIMPLE[n], seg = (i) => path.join(TMP, `s${n}-${i}.mp4`);
+  r.scenes.forEach((sc, i) => {
+    const label = sc.label ? ['-loop', '1', '-t', `${sc.d}`, '-i', path.join(TMP, `s${n}-label${i}.png`)] : [];
+    const src = sc.soap
+      ? ['-loop', '1', '-t', `${sc.d}`, '-i', SOAP]
+      : ['-ss', `${sc.ss}`, '-t', `${sc.d}`, '-i', clip(sc.id)];
+    // the soap scene: the bar fills the frame like the real sunset did, easing out to show it's a bar
+    const base = sc.soap
+      ? `[0:v]crop=${BAR.w}:${BAR.h}:${BAR.x}:${BAR.y},scale=${BAR.w * 2}:${BAR.h * 2},zoompan=z='1.5-0.5*on/${Math.round(sc.d * FPS)}':x='${(SUN.x - BAR.x) * 2}-iw/zoom/2':y='${(SUN.y - BAR.y) * 2}-ih/zoom/2':d=${Math.round(sc.d * FPS)}:s=${W}x${H}:fps=${FPS}`
+      : `[0:v]${FIT},fps=${FPS},scale=1146:2036,zoompan=z='1+0.05*in_time/${sc.d}':x='iw/2-iw/zoom/2':y='ih/2-ih/zoom/2':d=1:s=${W}x${H}:fps=${FPS}`;
+    const inputs = [...src, ...label];
+    const chain = [`${base},setsar=1[v0]`];
+    let last = 'v0', k = 1;
+    if (r.bar) {
+      inputs.push('-loop', '1', '-t', `${sc.d}`, '-i', path.join(TMP, 'bar.png'));
+      const w = Math.round(r.bar.w * 2000 / 1350 / 2) * 2; // bar.png is the whole 2000px photo; the bar is ~1350px of it
+      const x = Math.round((W - w) / 2), y0 = r.bar.y - Math.round(w * 0.04);
+      const t0 = r.bar.popAt ?? 0;
+      const y = r.bar.popAt != null ? `if(lt(t\,${t0})\,${H}\,${y0}-90*pow(max(0\,1-(t-${t0})/0.28)\,2))` : `${y0}-12*t`;
+      chain.push(`[${inputs.filter((v) => v === '-i').length - 1}:v]scale=${w}:${w},format=rgba[bar]`, `[${last}][bar]overlay=x=${x}:y='${y}':eval=frame[v${k}]`);
+      last = `v${k++}`;
+    }
+    if (sc.label) { chain.push(`[${last}][1:v]overlay[v${k}]`); last = `v${k++}`; }
+    chain.push(`[${last}]${GRAIN}`);
+    ff([...inputs, '-filter_complex', chain.join(';'), '-frames:v', `${Math.round(sc.d * FPS)}`, ...enc, seg(i)]);
+  });
+  const out = path.join(OUT, `reel-${n}.mp4`), k = r.scenes.length;
+  const sfx = r.bar?.popAt != null ? path.join(SFX, 'pop-bubble.mp3') : path.join(SFX, 'whoosh-air.mp3');
+  const at = Math.round((r.bar?.popAt ?? r.scenes[0].d) * 1000);
+  ff([...r.scenes.flatMap((_, i) => ['-i', seg(i)]), '-loop', '1', '-i', path.join(TMP, `s${n}-hook.png`), '-i', sfx, '-filter_complex',
+    r.scenes.map((_, i) => `[${i}:v]setsar=1[c${i}]`).join(';') + ';' + r.scenes.map((_, i) => `[c${i}]`).join('') +
+    `concat=n=${k}:v=1[cat];[${k}:v]format=rgba[hk];[cat][hk]overlay=shortest=1,format=yuv420p[v];[${k + 1}:a]adelay=${at}|${at},volume=0.6,apad,atrim=0:7[a]`,
+    '-map', '[v]', '-map', '[a]', '-t', '7', '-r', `${FPS}`, '-c:v', 'libx264', '-crf', '18', '-pix_fmt', 'yuv420p', '-c:a', 'aac', '-b:a', '160k', '-movflags', '+faststart', out]);
+  console.log(out);
+}
+
 const cmd = process.argv[2];
 if (cmd === 'reel1') { mkdirSync(TMP, { recursive: true }); await texts(); reel1(); }
-else console.log('usage: node build.mjs reel1');
+else if (SIMPLE[cmd?.replace('reel', '')]) { const n = +cmd.replace('reel', ''); mkdirSync(TMP, { recursive: true }); if (!existsSync(path.join(TMP, 'bar.png'))) await texts(); await simpleTexts(n); simple(n); }
+else console.log('usage: node build.mjs reel1 | reel2 | reel3 | reel4 | reel5');
