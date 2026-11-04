@@ -129,7 +129,8 @@ export const C = (p) => {
   const mark = (i) => (st.marker === 'tick' ? `<b class="mk dd2">${DOOD.tick}</b>` : st.marker === 'hand' ? `<b class="mk dd2">${HAND_DIGIT[i]}</b>` : `<b class="mk">${i + 1}</b>`);
   // More than three items (e.g. a five-check list): tighter rows and a smaller number so the list stays on the Pin.
   const many = p.items.length > 3;
-  const bigNum = st.marker === 'hand' ? `<span style="font-family:Doodles">${HAND_DIGIT[Number(p.num) - 1] || esc(p.num)}</span>` : esc(p.num);
+  // The hand-drawn digit's glyph hangs below its line box, so give it room before the headline (her: text blocked by other text).
+  const bigNum = st.marker === 'hand' ? `<span style="font-family:Doodles;display:inline-block;margin-bottom:70px">${HAND_DIGIT[Number(p.num) - 1] || esc(p.num)}</span>` : esc(p.num);
   return `<style>${BASE(g, st)}
   .col { position: absolute; top: 150px; left: 80px; right: 80px; z-index: 3; }
   .h { position: static; ${st.align === 'center' ? 'text-align:center;' : ''} }
