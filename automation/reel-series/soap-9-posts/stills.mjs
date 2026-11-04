@@ -52,7 +52,7 @@ const SLIDES = () => [
     ['No lye left', 'The lye is all used up turning the oils into soap.'],
   ].map(([h, d], k) => `<div style="position:absolute;left:110px;right:110px;top:${330 + k * 330}px;text-align:center">
       <div style="font-size:54px">${h}</div><div style="font-size:38px;line-height:1.35;margin-top:14px">${d}</div></div>`).join('')),
-  slide(q('What does it smell like?', 70, 112) + bar(500, 540, 300, -6) + t('Coconut Water | Apple', 1000, 56)
+  slide(q('What does it smell like?', 70, 112) + bar(500, 540, 300, -6) + t('Pineapple | Coconut Water | Apple | Thyme', 1010, 44)
     + t('Light, clean, with a hint of sweetness', 1090, 38) + t('Comment <b>SUNSET</b> for the link to get yours today', 1270, 40)),
 ];
 
@@ -67,7 +67,7 @@ A grey sky swirled by hand, pink clouds, a sun sitting right on the horizon and 
 
 No two bars come out the same. The swirls move a little differently every time we pour, so the sunset you get is yours alone.
 
-It smells like coconut water and apple: light, clean, with a hint of sweetness. The kind of scent that makes a regular Tuesday shower feel like the last hour of a beach day.
+It smells like pineapple, coconut water, apple and thyme: light, clean, with a hint of sweetness. The kind of scent that makes a regular Tuesday shower feel like the last hour of a beach day.
 
 Made with olive oil, coconut oil, shea butter and castor oil.
 
@@ -86,7 +86,7 @@ Why handmade cold process feels different:
 1. The glycerin made while the soap forms stays in the bar. Glycerin is a humectant, which means it holds on to water.
 2. We add 10% extra oil (superfat), so a little oil stays in the bar as oil instead of becoming soap.
 
-The scent: coconut water and apple. Light, clean, with a hint of sweetness.
+The scent: pineapple, coconut water, apple and thyme. Light, clean, with a hint of sweetness.
 
 Comment SUNSET for the link to get yours today`;
 
