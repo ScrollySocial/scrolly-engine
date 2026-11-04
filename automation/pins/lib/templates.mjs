@@ -259,7 +259,44 @@ export const H = (p) => {
   .nar { position: absolute; left: ${W.x + W.w - 24}px; width: 140px; height: 52px; background: ${g.ink}; -webkit-mask: url('${ARROW}') center/100% 100% no-repeat; mask: url('${ARROW}') center/100% 100% no-repeat; mask-mode: luminance; transform: scaleX(-1) rotate(-14deg); z-index: 3; }
 </style>${p.video ? frame : ''}<div class="win"></div>${corners}<div class="h"><div class="ser">${p.headHtml}</div></div>${notes}<div class="dom">${DOMAIN}</div>`;
 };
-export const LAYOUTS = { A, C, D, E, F, G, H };
+// J: the photo inside a real photographed instant-photo frame (Reel kit prop), tilted on a coloured ground, serif
+// headline above and a handwritten line on the frame's white strip (2026-11-04: batch 5 must look new; photos only).
+// Prop is 783x1179 with the picture window at x 66-717, y 98-938.
+export const J = (p) => {
+  const g = GROUNDS[p.ground || 'blush'], W = 640, k = W / 783;
+  return `<style>* { margin: 0; box-sizing: border-box; } ${FACES}
+  body { width: 1000px; height: 1500px; overflow: hidden; position: relative; font-family: Jost, Arial, sans-serif; background-color: ${g.bg}; color: ${g.ink}; ${pattern({ pattern: p.pattern || 'none' }, g)} }
+  .dom { position: absolute; top: 46px; left: 0; right: 0; text-align: center; font: 600 26px/1 Jost; letter-spacing: .16em; text-transform: uppercase; color: ${g.ink}; z-index: 3; }
+  .h { position: absolute; top: 120px; left: 60px; right: 60px; text-align: center; z-index: 3; }
+  .ser { font: 400 ${p.size || 118}px/.98 ${SERIF[p.serif || 'dmserif']}; }
+  .pol { position: absolute; left: ${500 - W / 2}px; top: ${p.polTop || 440}px; width: ${W}px; height: ${Math.round(1179 * k)}px; transform: rotate(${p.tilt ?? -4}deg); filter: drop-shadow(0 26px 34px rgba(0,0,0,.28)); z-index: 2; }
+  .pol .ph { position: absolute; left: ${Math.round(66 * k)}px; top: ${Math.round(98 * k)}px; width: ${Math.round(652 * k)}px; height: ${Math.round(841 * k)}px; background: url('${fileUrl(stockFile(p.photo))}') ${p.focus || 'center'}/cover no-repeat; }
+  .pol img { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .pol .cap { position: absolute; left: 0; right: 0; top: ${Math.round(975 * k)}px; text-align: center; ${hlCss(p, 74)} color: #2b2320; white-space: nowrap; }
+  .dd { position: absolute; font-family: Doodles; line-height: 1; z-index: 1; pointer-events: none; }
+
+</style><div class="h"><div class="ser">${esc(p.serif_t)}</div></div>
+<div class="pol"><img src="${fileUrl(path.join(PROPS, 'instant-photo-blank.png'))}"><div class="ph"></div><div class="cap">${esc(p.cap)}</div></div><script>{ /* the frame starts 50px under the headline and shrinks if it would run off the Pin */ const h = document.querySelector('.h').getBoundingClientRect(), pol = document.querySelector('.pol'); const top = Math.max(h.bottom + 50, ${p.polTop || 440}); const room = 1460 - top, ht = pol.offsetHeight; pol.style.top = top + 'px'; if (ht > room) { pol.style.transformOrigin = '50% 0'; pol.style.transform += ' scale(' + (room / ht).toFixed(3) + ')'; } }</script>${sparkles({ doodles: p.doodles || [], phone: 'center' }, g)}<div class="dom">${DOMAIN}</div>`;
+};
+
+// K: headline on strips of real label-maker tape (Reel kit prop), white typewriter letters, over a full-bleed photo or
+// video, or on a plain ground for text-only Pins. lines: ['WORD', ...]; sub: a handwritten line under the strips.
+export const K = (p) => {
+  const g = p.ground ? GROUNDS[p.ground] : null;
+  const bgCss = p.video ? 'background: transparent;' : g ? `background-color: ${g.bg}; ${pattern({ pattern: p.pattern || 'none' }, g)}` : '';
+  const strips = p.lines.map((l, i) => `<div><span class="tape" style="transform:rotate(${[-2, 1.5, -1, 2][i % 4]}deg)">${esc(l)}</span></div>`).join('');
+  return `<style>* { margin: 0; box-sizing: border-box; } ${FACES}
+  body { width: 1000px; height: 1500px; overflow: hidden; position: relative; font-family: Jost, Arial, sans-serif; ${bgCss} }
+  .shade { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,.35), rgba(0,0,0,0) 45%, rgba(0,0,0,0) 70%, rgba(0,0,0,.35)); }
+  .dom { position: absolute; top: 46px; left: 0; right: 0; text-align: center; font: 600 26px/1 Jost; letter-spacing: .16em; text-transform: uppercase; color: ${g && !g.dark ? g.ink : '#fff'}; ${g ? '' : 'text-shadow: 0 1px 8px rgba(0,0,0,.5);'} z-index: 3; }
+  .h { position: absolute; left: 40px; right: 40px; ${p.bottom ? 'bottom: 140px;' : !p.photo && !p.video ? 'top: 50%; transform: translateY(-50%);' : 'top: 150px;'} text-align: center; z-index: 3; }
+  .tape { display: inline-block; margin: 10px 0; padding: 26px 46px 28px; background: url('${fileUrl(path.join(PROPS, 'label-tape-black.png'))}') center/100% 100% no-repeat; color: #fff; font: 400 ${p.size || 92}px/1 'Special Elite', 'Courier New', monospace; letter-spacing: .06em; text-transform: uppercase; white-space: nowrap; filter: drop-shadow(0 8px 10px rgba(0,0,0,.3)); }
+  .dd { position: absolute; font-family: Doodles; line-height: 1; z-index: 1; pointer-events: none; }
+  .sub { margin-top: 26px; ${hlCss(p, 64)} color: ${g && !g.dark ? g.ink : '#fff'}; ${g ? '' : 'text-shadow: 0 2px 12px rgba(0,0,0,.55);'} white-space: nowrap; }
+</style>${p.photo ? photoBg(p) + '<div class="shade"></div>' : p.video ? '<div class="shade"></div>' : ''}<div class="h">${strips}${p.sub ? `<div class="sub">${esc(p.sub)}</div>` : ''}</div>${g ? sparkles({ doodles: p.doodles || [], phone: 'center' }, g) : ''}<div class="dom">${DOMAIN}</div>`;
+};
+
+export const LAYOUTS = { A, C, D, E, F, G, H, J, K };
 
 // Stock photos: id -> local file in assets/stock/ (downloaded once from Pexels, credits in assets/stock/credits.json).
 export const STOCK_DIR = path.join(HERE, 'assets/stock');
@@ -338,6 +375,8 @@ export async function renderPins(browser, pins, outDir) {
       let s = big ? parseFloat(getComputedStyle(big).fontSize) : 0;
       while (big && !fits() && s > 60) { s -= 4; big.style.fontSize = s + 'px'; }
       // Highlighted lines (and handwritten notes) never wrap or run off the Pin: shrink each until it fits (Mercedes 2026-10-28: cut-off fonts).
+      for (const el of document.querySelectorAll('.h > .sub')) { let fs = parseFloat(getComputedStyle(el).fontSize); while (el.scrollWidth > 920 && fs > 30) { fs -= 3; el.style.fontSize = fs + 'px'; } }
+      for (const el of document.querySelectorAll('.tape, .pol .cap')) { let fs = parseFloat(getComputedStyle(el).fontSize); const max = el.classList.contains('cap') ? el.parentElement.clientWidth - 40 : 920; while (el.scrollWidth > max && fs > 30) { fs -= 3; el.style.fontSize = fs + 'px'; } }
       for (const el of document.querySelectorAll('.bar, .scr')) { let fs = parseFloat(getComputedStyle(el).fontSize); while (el.getBoundingClientRect().width > 940 && fs > 40) { fs -= 4; el.style.fontSize = fs + 'px'; } }
       // G: the whole text block must end above the photo (110px spare: script descenders hang below the line box); shrink bars and script lines together until it does.
       const gph = document.querySelector('.photo');
