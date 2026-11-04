@@ -208,7 +208,7 @@ async function feed() {
 }
 // Reel 3's words + bar, one PNG per frame. 0-2.8s: words centred, "Dear" then "algorithm," float up, the caps line
 // tracks in. 2.8-3.2s: words fade up and away, a soft glow blooms. 3.0-3.7s: the bar spins in from small to full size
-// with a little overshoot, then floats. From 3.8s the words come back above and below it (her pick A layout).
+// with a little overshoot, then floats. From 3.8s "Shop now" fades in above it.
 async function overlay3() {
   const dir = path.join(TMP, 'r3ov');
   mkdirSync(dir, { recursive: true });
@@ -230,6 +230,9 @@ async function overlay3() {
       const back = (x) => { x = c(x); const k = 1.7; return 1 + (k + 1) * Math.pow(x - 1, 3) + k * Math.pow(x - 1, 2); };
       const $ = (id) => document.getElementById(id).style;
       const late = t >= 3.8; // words back, in the final layout
+      // the end says Shop now instead of Dear algorithm (her note)
+      document.getElementById('w1').textContent = late ? 'Shop now' : 'Dear';
+      document.getElementById('w2').textContent = late ? '' : 'algorithm,';
       const leave = c((t - 2.8) / 0.35), in1 = out3((t - 3.8) / 0.5), in2 = out3((t - 4.0) / 0.5);
       $('head').top = late ? `${95 - 30 * (1 - in1)}px` : `${560 - 40 * leave}px`;
       $('head').opacity = late ? in1 : 1 - leave;
