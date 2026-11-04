@@ -206,7 +206,52 @@ async function feed() {
   await page.screenshot({ path: path.join(TMP, 'feed.png'), fullPage: true });
   await b.close();
 }
-const txt = (n, k) =>['-loop', '1', '-t', '7', '-i', path.join(TMP, `b${n}-${k}.png`)];
+// Reel 3's words + bar, one PNG per frame. 0-2.8s: words centred, "Dear" then "algorithm," float up, the caps line
+// tracks in. 2.8-3.2s: words fade up and away, a soft glow blooms. 3.0-3.7s: the bar spins in from small to full size
+// with a little overshoot, then floats. From 3.8s the words come back above and below it (her pick A layout).
+async function overlay3() {
+  const dir = path.join(TMP, 'r3ov');
+  mkdirSync(dir, { recursive: true });
+  const bar = `data:image/png;base64,${readFileSync(path.join(TMP, 'bar.png')).toString('base64')}`;
+  const caps = 'please connect me with all the people who love supporting small businesses and artisanal products!';
+  const b = await launch(), page = await b.newPage();
+  await page.setViewport({ width: W, height: H });
+  await page.setContent(`<style>${CSS}*{box-sizing:border-box}.a{position:absolute;left:0;right:0;text-align:center}</style>
+    <div id=scrim class=a style="inset:0;background:linear-gradient(180deg,rgba(30,20,10,.5) 0%,rgba(30,20,10,.15) 35%,rgba(30,20,10,.15) 65%,rgba(30,20,10,.55) 100%)"></div>
+    <div id=glow class=a style="inset:0;background:radial-gradient(circle at 50% 52%,rgba(255,244,214,.95) 0%,rgba(255,236,190,.5) 28%,rgba(255,236,190,0) 60%);opacity:0"></div>
+    <img id=bar src="${bar}" style="position:absolute;left:${(W - 900) / 2}px;top:560px;width:900px;opacity:0">
+    <div id=head class=a style="font:215px/0.95 GreatVibes;color:${BUTTER};${SOFT_SHADOW}"><div id=w1>Dear</div><div id=w2>algorithm,</div></div>
+    <div id=caps class=a style="left:110px;right:110px;font:500 46px/1.5 Figtree;text-transform:uppercase;color:#fff;${SOFT_SHADOW}">${caps}</div>`);
+  await page.evaluate(() => document.fonts.ready);
+  for (let f = 0; f < 7 * FPS; f++) {
+    await page.evaluate((t) => {
+      const c = (x) => Math.max(0, Math.min(1, x)), out3 = (x) => 1 - Math.pow(1 - c(x), 3);
+      const back = (x) => { x = c(x); const k = 1.7; return 1 + (k + 1) * Math.pow(x - 1, 3) + k * Math.pow(x - 1, 2); };
+      const $ = (id) => document.getElementById(id).style;
+      const late = t >= 3.8; // words back, in the final layout
+      const leave = c((t - 2.8) / 0.35), in1 = out3((t - 3.8) / 0.5), in2 = out3((t - 4.0) / 0.5);
+      $('head').top = late ? `${95 - 30 * (1 - in1)}px` : `${560 - 40 * leave}px`;
+      $('head').opacity = late ? in1 : 1 - leave;
+      $('head').filter = late ? 'none' : `blur(${8 * leave}px)`;
+      for (const [id, st] of [['w1', 0.15], ['w2', 0.45]]) {
+        const k = out3((t - st) / 0.45);
+        $(id).opacity = late ? 1 : k; $(id).transform = late ? 'none' : `translateY(${40 * (1 - k)}px)`;
+      }
+      const tr = out3((t - 0.9) / 0.8);
+      $('caps').top = late ? 'auto' : '1060px'; $('caps').bottom = late ? '130px' : 'auto';
+      $('caps').letterSpacing = late ? '6px' : `${6 + 22 * (1 - tr)}px`;
+      $('caps').opacity = late ? in2 : tr * (1 - leave);
+      $('glow').opacity = t < 2.9 ? 0 : Math.max(0, 1 - Math.abs(t - 3.15) / 0.35);
+      const s = t < 3.0 ? 0 : 0.15 + 0.85 * back((t - 3.0) / 0.7), spin = -540 * (1 - out3((t - 3.0) / 0.7));
+      const fl = c((t - 3.8) / 0.6), rock = 4 * Math.sin(2 * Math.PI * (t - 3.8) / 2) * fl, bob = -18 * Math.sin(2 * Math.PI * (t - 3.8) / 2 + 1) * fl;
+      $('bar').opacity = t < 3.0 ? 0 : c((t - 3.0) / 0.12);
+      $('bar').transform = `translateY(${bob}px) scale(${s}) rotate(${spin + rock}deg)`;
+    }, f / FPS);
+    await page.screenshot({ path: path.join(dir, `${String(f + 1).padStart(4, '0')}.png`), omitBackground: true });
+  }
+  await b.close();
+}
+const txt = (n, k) => ['-loop', '1', '-t', '7', '-i', path.join(TMP, `b${n}-${k}.png`)];
 const barIn = () => ['-loop', '1', '-t', '7', '-i', path.join(TMP, 'bar.png')];
 const sfx = (f) => ['-i', path.join(SFX, f)];
 const at = (i, sec, vol = 0.6) => `[${i}:a]adelay=${Math.round(sec * 1000)}|${Math.round(sec * 1000)},volume=${vol}`;
@@ -245,15 +290,14 @@ const BOLD = {
     `${at(9, 2.2, 0.5)}[a1];${at(10, 5.2, 0.6)}[a2];${at(11, 5.45, 0.5)}[a3];${mix(['a1', 'a2', 'a3'])}`),
   // 3 (round 3): HER footage from her old soap business (clips/her-mix-pour.mp4), only the shots before the charcoal goes
   // in (that batch was her black Deep Clean bar): the pour, the stick blender in yellow batter, the empty mold. Then the
-  // sunset bar drops into the mold
+  // sunset bar appears in the mold. Round 4 (her notes): words in the MIDDLE, animated; a real bar transition. The words +
+  // bar layer is drawn frame by frame in the browser (overlay3) so the motion can be smooth, then laid over her footage
   3: () => render(3, ['-ss', '3.2', '-t', '1.3', '-i', clip('her-mix-pour'), '-ss', '12.5', '-t', '1.3', '-i', clip('her-mix-pour'),
-    '-ss', '34.3', '-t', '4.4', '-i', clip('her-mix-pour'), ...barIn(), ...txt(3, 'head'), ...txt(3, 'rest'), ...sfx('sparkle.mp3'), ...sfx('pop-light.mp3')],
+    '-ss', '34.3', '-t', '4.4', '-i', clip('her-mix-pour'), '-framerate', `${FPS}`, '-i', path.join(TMP, 'r3ov', '%04d.png'),
+    ...sfx('sparkle.mp3'), ...sfx('whoosh-air.mp3'), ...sfx('pop-light.mp3')],
     [0, 1, 2].map((i) => `[${i}:v]${FIT},fps=${FPS},setsar=1[h${i}]`).join(';') + ';[h0][h1][h2]concat=n=3:v=1:a=0[bg];' +
-    // once it has landed (~3.3s) the bar starts to rock and float, easing in so it doesn't jolt
-    `[3:v]scale=860:860,format=rgba,rotate='0.07*sin(2*PI*(t-3.3)/2)*min(1\\,max(0\\,(t-3.3)/0.6))':c=none:ow='rotw(0.12)':oh='roth(0.12)'[bar];` +
-    `[bg][bar]overlay=x='(W-w)/2':y='if(lt(t\\,2.8)\\,-1000\\,575-abs(1100*exp(-5*(t-2.8))*cos(8*(t-2.8)))-22*sin(2*PI*(t-3.3)/2+1)*min(1\\,max(0\\,(t-3.3)/0.6)))':eval=frame[vb];` +
-    `[vb][4:v]overlay[vh];[5:v]format=rgba,fade=in:st=0.6:d=0.25:alpha=1[rest];[vh][rest]overlay`,
-    `${at(6, 0.1, 0.4)}[a1];${at(7, 3.0, 0.7)}[a2];${mix(['a1', 'a2'])}`),
+    '[3:v]format=rgba[ov];[bg][ov]overlay=shortest=1',
+    `${at(4, 0.1, 0.4)}[a1];${at(5, 2.85, 0.5)}[a2];${at(6, 3.55, 0.7)}[a3];${mix(['a1', 'a2', 'a3'])}`),
   // 4 (round 3): a feed of grey, boring posts scrolls fast, slows and stops dead on her bar, the only colour on screen
   4: () => {
     const { y } = FEED;
@@ -280,5 +324,5 @@ const BOLD = {
 
 const cmd = process.argv[2];
 if (cmd === 'reel1') { mkdirSync(TMP, { recursive: true }); await texts(); reel1(); }
-else if (BOLD[cmd?.replace("reel", "")]) { const n = +cmd.replace("reel", ""); mkdirSync(TMP, { recursive: true }); if (!existsSync(path.join(TMP, "bar.png"))) await texts(); await boldTexts(n); if (n === 4) await feed(); BOLD[n](); }
+else if (BOLD[cmd?.replace("reel", "")]) { const n = +cmd.replace("reel", ""); mkdirSync(TMP, { recursive: true }); if (!existsSync(path.join(TMP, "bar.png"))) await texts(); await boldTexts(n); if (n === 4) await feed(); if (n === 3) await overlay3(); BOLD[n](); }
 else console.log('usage: node build.mjs reel1 | reel2 | reel3 | reel4 | reel5');
