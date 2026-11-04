@@ -39,6 +39,8 @@ const font = (f, fam, w = 'normal') => `@font-face{font-family:${fam};src:url(da
 const PACIFICO = readFileSync(path.join(HERE, '../christmas-countdown/fonts/pacifico.ttf')).toString('base64');
 const CSS = font('figtree.woff2', 'Figtree', '300 900') + font('bricolage-800.woff2', 'Bricolage', 800) +
   `@font-face{font-family:Pacifico;src:url(data:font/ttf;base64,${PACIFICO})}` +
+  // Great Vibes (Google Fonts, OFL, fonts/): Reel 3's thin script
+  `@font-face{font-family:GreatVibes;src:url(data:font/ttf;base64,${readFileSync(path.join(HERE, 'fonts/great-vibes.ttf')).toString('base64')})}` +
   `html,body{margin:0;width:${W}px;height:${H}px;background:transparent}`;
 
 async function png(page, html, file, bg = 'transparent') {
@@ -155,16 +157,17 @@ const box = (t, top, size = 64) => `<div style="position:absolute;left:100px;rig
 const big = (t, top, size, color, extra = '') => `<div style="position:absolute;left:0;right:0;top:${top}px;text-align:center;font:800 ${size}px/0.95 Bricolage;color:${color};letter-spacing:-3px;${extra}">${t}</div>`;
 const SHADOW = 'text-shadow:0 6px 24px rgba(40,20,30,.35)';
 const BUTTER = '#F9E38C';
-// butter yellow sits on busy footage, so it gets a firmer dark edge + soft shadow to stay readable
-const DARK_SHADOW = 'text-shadow:0 0 3px rgba(60,40,20,.9),0 4px 18px rgba(40,25,10,.65)';
+const SOFT_SHADOW = 'text-shadow:0 2px 20px rgba(0,0,0,.35)'; // a glow only: she called the dark outline ugly
 const TEXTS = {
   // 2: the line pops in one piece at a time; "welcome" lands huge in script when the bar arrives
   2: { l1: box('If beach days', 230, 70), l2: box('and bubble baths', 330, 70), l3: box('are your thing,', 430, 70),
     welcome: `<div style="position:absolute;left:0;right:0;top:1590px;text-align:center;font:255px/1 Pacifico;color:#fff;` +
       `text-shadow:0 0 30px rgba(236,140,170,.75),0 8px 24px rgba(120,40,80,.35)">welcome</div>` },
-  // 3: butter-yellow script "Dear algorithm," and the rest in butter yellow too (her ask 2026-11-04)
-  3: { head: `<div style="position:absolute;left:0;right:0;top:150px;text-align:center;font:175px/1.05 Pacifico;color:${BUTTER};${DARK_SHADOW}">Dear<br>algorithm,</div>`,
-    rest: `<div style="position:absolute;left:90px;right:90px;top:1520px;text-align:center;font:800 66px/1.2 Figtree;color:${BUTTER};${DARK_SHADOW}">` +
+  // 3: her pick A from the lettering sheet (2026-11-04, matcha-grid inspo): thin butter-yellow script, the rest in small
+  // spaced white caps, no outlines; a soft dark fade top and bottom keeps the thin type readable on her footage
+  3: { head: '<div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(30,20,10,.55) 0%,rgba(30,20,10,0) 30%,rgba(30,20,10,0) 70%,rgba(30,20,10,.6) 100%)"></div>' +
+      `<div style="position:absolute;left:0;right:0;top:95px;text-align:center;font:215px/0.95 GreatVibes;color:${BUTTER};${SOFT_SHADOW}">Dear<br>algorithm,</div>`,
+    rest: `<div style="position:absolute;left:110px;right:110px;bottom:130px;text-align:center;font:500 46px/1.5 Figtree;letter-spacing:6px;text-transform:uppercase;color:#fff;${SOFT_SHADOW}">` +
       'please connect me with all the people who love supporting small businesses and artisanal products!</div>' },
   4: { hook: box("You weren't looking for a new soap,", 200, 66), here: big('but here<br>we are.', 1250, 175, '#fff', SHADOW) },
   5: { hook: box('Can you tell the difference?', 1240, 70),
@@ -248,7 +251,7 @@ const BOLD = {
     [0, 1, 2].map((i) => `[${i}:v]${FIT},fps=${FPS},setsar=1[h${i}]`).join(';') + ';[h0][h1][h2]concat=n=3:v=1:a=0[bg];' +
     // once it has landed (~3.3s) the bar starts to rock and float, easing in so it doesn't jolt
     `[3:v]scale=860:860,format=rgba,rotate='0.07*sin(2*PI*(t-3.3)/2)*min(1\\,max(0\\,(t-3.3)/0.6))':c=none:ow='rotw(0.12)':oh='roth(0.12)'[bar];` +
-    `[bg][bar]overlay=x='(W-w)/2':y='if(lt(t\\,2.8)\\,-1000\\,600-abs(1100*exp(-5*(t-2.8))*cos(8*(t-2.8)))-22*sin(2*PI*(t-3.3)/2+1)*min(1\\,max(0\\,(t-3.3)/0.6)))':eval=frame[vb];` +
+    `[bg][bar]overlay=x='(W-w)/2':y='if(lt(t\\,2.8)\\,-1000\\,575-abs(1100*exp(-5*(t-2.8))*cos(8*(t-2.8)))-22*sin(2*PI*(t-3.3)/2+1)*min(1\\,max(0\\,(t-3.3)/0.6)))':eval=frame[vb];` +
     `[vb][4:v]overlay[vh];[5:v]format=rgba,fade=in:st=0.6:d=0.25:alpha=1[rest];[vh][rest]overlay`,
     `${at(6, 0.1, 0.4)}[a1];${at(7, 3.0, 0.7)}[a2];${mix(['a1', 'a2'])}`),
   // 4 (round 3): a feed of grey, boring posts scrolls fast, slows and stops dead on her bar, the only colour on screen
