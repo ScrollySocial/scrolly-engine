@@ -35,7 +35,10 @@ const END = 'Comment <b>SUNSET</b> for the link to get yours today';
 const CREAM = '#F7F1EA';
 
 const font = (f, fam, w = 'normal') => `@font-face{font-family:${fam};src:url(data:font/woff2;base64,${readFileSync(path.join(FONTS, f)).toString('base64')});font-weight:${w}}`;
+// Pacifico (from the Christmas series fonts): the cute script for Reel 2's huge "welcome" (her ask 2026-11-04)
+const PACIFICO = readFileSync(path.join(HERE, '../christmas-countdown/fonts/pacifico.ttf')).toString('base64');
 const CSS = font('figtree.woff2', 'Figtree', '300 900') + font('bricolage-800.woff2', 'Bricolage', 800) +
+  `@font-face{font-family:Pacifico;src:url(data:font/ttf;base64,${PACIFICO})}` +
   `html,body{margin:0;width:${W}px;height:${H}px;background:transparent}`;
 
 async function png(page, html, file, bg = 'transparent') {
@@ -152,7 +155,10 @@ const box = (t, top, size = 64) => `<div style="position:absolute;left:100px;rig
 const big = (t, top, size, color, extra = '') => `<div style="position:absolute;left:0;right:0;top:${top}px;text-align:center;font:800 ${size}px/0.95 Bricolage;color:${color};letter-spacing:-3px;${extra}">${t}</div>`;
 const SHADOW = 'text-shadow:0 6px 24px rgba(40,20,30,.35)';
 const TEXTS = {
-  2: { hook: box('If beach days and bubble baths are your thing, welcome.', 230) },
+  // 2: the line pops in one piece at a time; "welcome" lands huge in script when the bar arrives
+  2: { l1: box('If beach days', 230, 70), l2: box('and bubble baths', 330, 70), l3: box('are your thing,', 430, 70),
+    welcome: `<div style="position:absolute;left:0;right:0;top:1590px;text-align:center;font:255px/1 Pacifico;color:#fff;` +
+      `text-shadow:0 0 30px rgba(236,140,170,.75),0 8px 24px rgba(120,40,80,.35)">welcome</div>` },
   3: { head: big('DEAR<br>ALGORITHM,', 190, 190, '#fff', SHADOW),
     rest: box('please connect me with all the people who love supporting small businesses and artisanal products!', 1590, 58) },
   4: { hook: box("You weren't looking for a new soap,", 250), here: big('HERE<br>WE ARE.', 1380, 210, '#1C6FA8') },
@@ -190,14 +196,19 @@ const BOLD = {
   // filling the frame (foam to foam) > the overhead bath (turned upright, same top-down view as the beach) > THEN the bar
   // drops in over the foam and floats
   2: () => render(2, ['-ss', '1', '-t', '2.6', '-i', clip(36625664), '-ss', '0.5', '-t', '1.4', '-i', clip(11932043),
-    '-ss', '14', '-t', '2', '-i', clip(4156329), '-ss', '13', '-t', '1.8', '-i', clip(11932043), ...barIn(), ...txt(2, 'hook'),
-    ...sfx('whoosh-air.mp3'), ...sfx('pop-bubble.mp3')],
+    '-ss', '14', '-t', '2', '-i', clip(4156329), '-ss', '13', '-t', '1.8', '-i', clip(11932043), ...barIn(), ...txt(2, 'l1'), ...txt(2, 'l2'), ...txt(2, 'l3'), ...txt(2, 'welcome'),
+    ...sfx('whoosh-air.mp3'), ...sfx('pop-bubble.mp3'), ...sfx('sparkle.mp3')],
     `[0:v]${FIT},fps=${FPS},scale=${W * 2}:${H * 2},zoompan=z='1+1.2*min(in_time/2.6\\,1)':x='(iw-iw/zoom)*min(in_time/2.2\\,1)':y='ih/2-ih/zoom/2':d=1:s=${W}x${H}:fps=${FPS},setsar=1[beach];` +
     `[1:v]${FIT},fps=${FPS},setsar=1[foam];[2:v]transpose=1,${FIT},fps=${FPS},setsar=1[bath];` +
     `[3:v]${FIT},fps=${FPS},gblur=sigma=3,setsar=1[foam2];` +
     `[beach][foam]xfade=transition=fade:duration=0.4:offset=2.2[bf];[bf][bath]xfade=transition=fade:duration=0.4:offset=3.2[bfb];[bfb][foam2]concat=n=2:v=1[bg];` +
-    `${floatBar(4, 1000)};[bar]fade=in:st=5.2:d=0.15:alpha=1[barf];[bg][barf]overlay=x='(W-w)/2':y='if(lt(t\\,5.2)\\,${H}\\,700+20*sin(2*PI*t/2.4)-120*pow(max(0\\,1-(t-5.2)/0.3)\\,2))':eval=frame[vb];[vb][5:v]overlay`,
-    `${at(6, 2.2, 0.5)}[a1];${at(7, 5.2, 0.6)}[a2];${mix(['a1', 'a2'])}`),
+    `${floatBar(4, 1000)};[bar]fade=in:st=5.2:d=0.15:alpha=1[barf];[bg][barf]overlay=x='(W-w)/2':y='if(lt(t\\,5.2)\\,${H}\\,590+20*sin(2*PI*t/2.4)-120*pow(max(0\\,1-(t-5.2)/0.3)\\,2))':eval=frame[vb];` +
+    // each line drops in and fades up (0.2s apart); welcome rises in big once the bar has landed
+    [[5, 0.15], [6, 0.45], [7, 0.75]].map(([i, st], k) => `[${i}:v]format=rgba,fade=in:st=${st}:d=0.2:alpha=1[l${k}]`).join(';') +
+    `;[vb][l0]overlay=y='-40*max(0\\,1-(t-0.15)/0.25)':eval=frame[w0];[w0][l1]overlay=y='-40*max(0\\,1-(t-0.45)/0.25)':eval=frame[w1];` +
+    `[w1][l2]overlay=y='-40*max(0\\,1-(t-0.75)/0.25)':eval=frame[w2];` +
+    `[8:v]format=rgba,fade=in:st=5.45:d=0.25:alpha=1[wel];[w2][wel]overlay=y='120*pow(max(0\\,1-(t-5.45)/0.4)\\,2)':eval=frame`,
+    `${at(9, 2.2, 0.5)}[a1];${at(10, 5.2, 0.6)}[a2];${at(11, 5.45, 0.5)}[a3];${mix(['a1', 'a2', 'a3'])}`),
   // 3: the bar's own colours, blown up and blurred, fill the screen; big bar rocking in the middle; DEAR ALGORITHM huge
   3: () => render(3, ['-loop', '1', '-t', '7', '-i', SOAP, ...barIn(), ...txt(3, 'head'), ...txt(3, 'rest'), ...sfx('sparkle.mp3')],
     `[0:v]crop=900:900:550:250,scale=${W}:${H},fps=${FPS},gblur=sigma=40,eq=saturation=1.5:brightness=0.02,setsar=1[bg];${floatBar(1, 1000, 0.07, 3)};` +
