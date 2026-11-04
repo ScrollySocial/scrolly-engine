@@ -25,7 +25,7 @@ const rec = existsSync(recFile) ? JSON.parse(readFileSync(recFile, 'utf8')) : {}
 const BOARDS = ['Small Business Goal Setting', 'Pricing your Products and Services', 'Website SEO for Small Business', 'Business Marketing Ideas',
   'Social Media Content Planning', 'Instagram Growth Tips for Small Businesses', 'Instagram DM Automation', 'CapCut Reel Templates',
   'Instagram Reel Ideas for Businesses', 'Instagram Carousel and Canva Templates', 'AI Tools for Small Business', 'Holiday Marketing Ideas for Small Business',
-  'Pinterest Marketing for Small Business'];
+  'Pinterest Marketing for Small Business', 'Social Media Reel Ideas for Instagram and TikTok'];
 
 // 1. Upload.
 // The host often answers 502 while the upload still lands (2026-10-27), so after an error look the file up by name

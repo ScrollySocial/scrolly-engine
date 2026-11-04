@@ -14,11 +14,15 @@ const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 export async function wp(p, opts = {}) {
   for (let i = 0; i < 8; i++) {
     await sleep(900);
-    const r = await fetch(BASE + p, { ...opts, headers: { Authorization: auth, 'Content-Type': 'application/json', ...(opts.headers || {}) } });
-    if (r.status === 429) { await sleep(5000 * (i + 1)); continue; }
-    const t = await r.text();
+    // The host sometimes drops the connection mid-request (ECONNRESET); wait and retry rather than crash.
+    let r, t;
+    try {
+      r = await fetch(BASE + p, { ...opts, headers: { Authorization: auth, 'Content-Type': 'application/json', ...(opts.headers || {}) } });
+      if (r.status === 429) { await sleep(5000 * (i + 1)); continue; }
+      t = await r.text();
+    } catch (e) { await sleep(4000 * (i + 1)); continue; }
     let j; try { j = JSON.parse(t); } catch { j = t; }
     return { status: r.status, json: j, headers: r.headers };
   }
-  throw new Error('persistent 429 for ' + p);
+  throw new Error('persistent 429 or dropped connection for ' + p);
 }
