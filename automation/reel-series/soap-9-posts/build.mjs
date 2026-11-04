@@ -213,7 +213,8 @@ async function overlay3() {
   const dir = path.join(TMP, 'r3ov');
   mkdirSync(dir, { recursive: true });
   const bar = `data:image/png;base64,${readFileSync(path.join(TMP, 'bar.png')).toString('base64')}`;
-  const caps = 'please connect me with all the people who love supporting small businesses and artisanal products!';
+  // fixed lines, so nothing re-wraps while it animates (the tracking-in version was unreadable, her note)
+  const caps = ['please connect me with all', 'the people who love', 'supporting small', 'businesses and artisanal', 'products!'];
   const b = await launch(), page = await b.newPage();
   await page.setViewport({ width: W, height: H });
   await page.setContent(`<style>${CSS}*{box-sizing:border-box}.a{position:absolute;left:0;right:0;text-align:center}</style>
@@ -221,7 +222,7 @@ async function overlay3() {
     <div id=glow class=a style="inset:0;background:radial-gradient(circle at 50% 52%,rgba(255,244,214,.95) 0%,rgba(255,236,190,.5) 28%,rgba(255,236,190,0) 60%);opacity:0"></div>
     <img id=bar src="${bar}" style="position:absolute;left:${(W - 900) / 2}px;top:560px;width:900px;opacity:0">
     <div id=head class=a style="font:215px/0.95 GreatVibes;color:${BUTTER};${SOFT_SHADOW}"><div id=w1>Dear</div><div id=w2>algorithm,</div></div>
-    <div id=caps class=a style="left:110px;right:110px;font:500 46px/1.5 Figtree;text-transform:uppercase;color:#fff;${SOFT_SHADOW}">${caps}</div>`);
+    <div id=caps class=a style="left:110px;right:110px;font:500 46px/1.5 Figtree;text-transform:uppercase;color:#fff;letter-spacing:6px;${SOFT_SHADOW}">${caps.map((l, i) => `<div id=c${i}>${l}</div>`).join('')}</div>`);
   await page.evaluate(() => document.fonts.ready);
   for (let f = 0; f < 7 * FPS; f++) {
     await page.evaluate((t) => {
@@ -237,10 +238,13 @@ async function overlay3() {
         const k = out3((t - st) / 0.45);
         $(id).opacity = late ? 1 : k; $(id).transform = late ? 'none' : `translateY(${40 * (1 - k)}px)`;
       }
-      const tr = out3((t - 0.9) / 0.8);
       $('caps').top = late ? 'auto' : '1060px'; $('caps').bottom = late ? '130px' : 'auto';
-      $('caps').letterSpacing = late ? '6px' : `${6 + 22 * (1 - tr)}px`;
-      $('caps').opacity = late ? in2 : tr * (1 - leave);
+      $('caps').opacity = late ? 0 : 1 - leave; // she hated it moving to the bottom: it leaves with the script and stays gone
+      // each line fades up in turn, 0.15s apart
+      for (let i = 0; i < 5; i++) {
+        const k = late ? 1 : out3((t - 0.85 - 0.15 * i) / 0.35);
+        $(`c${i}`).opacity = k; $(`c${i}`).transform = `translateY(${24 * (1 - k)}px)`;
+      }
       $('glow').opacity = t < 2.9 ? 0 : Math.max(0, 1 - Math.abs(t - 3.15) / 0.35);
       const s = t < 3.0 ? 0 : 0.15 + 0.85 * back((t - 3.0) / 0.7), spin = -540 * (1 - out3((t - 3.0) / 0.7));
       const fl = c((t - 3.8) / 0.6), rock = 4 * Math.sin(2 * Math.PI * (t - 3.8) / 2) * fl, bob = -18 * Math.sin(2 * Math.PI * (t - 3.8) / 2 + 1) * fl;
