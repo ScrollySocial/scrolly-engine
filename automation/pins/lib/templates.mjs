@@ -268,7 +268,7 @@ export const J = (p) => {
   body { width: 1000px; height: 1500px; overflow: hidden; position: relative; font-family: Jost, Arial, sans-serif; background-color: ${g.bg}; color: ${g.ink}; ${pattern({ pattern: p.pattern || 'none' }, g)} }
   .dom { position: absolute; top: 46px; left: 0; right: 0; text-align: center; font: 600 26px/1 Jost; letter-spacing: .16em; text-transform: uppercase; color: ${g.ink}; z-index: 3; }
   .h { position: absolute; top: 120px; left: 60px; right: 60px; text-align: center; z-index: 3; }
-  .ser { font: 400 ${p.size || 118}px/.98 ${SERIF[p.serif || 'dmserif']}; }
+  .ser { font: 400 ${Math.round((p.size || 118) * 1.12)}px/.98 ${SERIF[p.serif || 'dmserif']}; }
   .pol { position: absolute; left: ${500 - W / 2}px; top: ${p.polTop || 440}px; width: ${W}px; height: ${Math.round(1179 * k)}px; transform: rotate(${p.tilt ?? -4}deg); filter: drop-shadow(0 26px 34px rgba(0,0,0,.28)); z-index: 2; }
   .pol .ph { position: absolute; left: ${Math.round(66 * k)}px; top: ${Math.round(98 * k)}px; width: ${Math.round(652 * k)}px; height: ${Math.round(841 * k)}px; background: url('${fileUrl(stockFile(p.photo))}') ${p.focus || 'center'}/cover no-repeat; }
   .pol img { position: absolute; inset: 0; width: 100%; height: 100%; }
