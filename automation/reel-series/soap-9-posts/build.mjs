@@ -28,9 +28,10 @@ const GRAIN = 'format=yuv420p,noise=alls=3:allf=t+u';
 const SUN = { x: 980, y: 1070 };
 const BAR = { x: 502, y: 150, w: 956, h: 1700 };
 
-const HOOK = 'POV: You finally find a soap that looks like a sunset.';
-const BIG = ['UPGRADE', 'YOUR', 'SHOWER'];
-const END = "It's a bar of soap.";
+// her wording 2026-11-04 round 2
+const HOOK = 'POV: You finally found a soap as fancy as you.';
+const BIG = ['UPGRADE', 'YOUR', 'SHOWER', 'EXPERIENCE'];
+const END = 'Comment <b>SUNSET</b> for the link to get yours today';
 const CREAM = '#F7F1EA';
 
 const font = (f, fam, w = 'normal') => `@font-face{font-family:${fam};src:url(data:font/woff2;base64,${readFileSync(path.join(FONTS, f)).toString('base64')});font-weight:${w}}`;
@@ -40,6 +41,8 @@ const CSS = font('figtree.woff2', 'Figtree', '300 900') + font('bricolage-800.wo
 async function png(page, html, file, bg = 'transparent') {
   await page.setContent(`<style>${CSS}body{background:${bg}}</style>${html}`);
   await page.evaluate(() => document.fonts.ready);
+  // big words: each line sized to the same width (after the font has loaded, or the sizes come out wrong)
+  await page.evaluate(() => { for (const d of document.querySelectorAll('#w div')) d.style.fontSize = (200 * 960 / d.getBoundingClientRect().width) + 'px'; });
   await page.screenshot({ path: file, omitBackground: bg === 'transparent' });
 }
 
@@ -49,10 +52,36 @@ async function texts() {
   // hook: black words on white boxes, top third (her countdown style)
   await png(page, `<div style="position:absolute;left:90px;right:90px;top:250px;text-align:center;font:700 66px/1.42 Figtree">
     <span style="background:#fff;padding:6px 16px;box-decoration-break:clone;-webkit-box-decoration-break:clone;border-radius:10px">${HOOK}</span></div>`, path.join(TMP, 'hook.png'));
-  // the big words as a white-on-black mask: the sunset clip shows through the white
-  await png(page, `<div style="position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;align-items:center;font:800 250px/0.92 Bricolage;color:#fff;letter-spacing:-6px">
-    ${BIG.map((w) => `<div>${w}</div>`).join('')}</div>`, path.join(TMP, 'mask.png'), '#000');
-  await png(page, `<div style="position:absolute;left:0;right:0;top:1500px;text-align:center;font:700 72px Figtree;color:#1b1b1b">${END}</div>`, path.join(TMP, 'end.png'));
+  // the big words as a white-on-black mask: the shower clip keeps playing through the white. Each line is sized to
+  // the same width, so EXPERIENCE fits
+  await png(page, `<div id=w style="position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;align-items:center;font:800 200px/0.9 Bricolage;color:#fff;letter-spacing:-4px">
+    ${BIG.map((w) => `<div style="white-space:nowrap">${w}</div>`).join('')}</div>`, path.join(TMP, 'mask.png'), '#000');
+  await png(page, `<div id=w style="position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;align-items:center;font:800 200px/0.9 Bricolage;color:transparent;letter-spacing:-4px;text-shadow:0 6px 18px rgba(60,30,20,.28),0 0 1px rgba(60,30,20,.45)">
+    ${BIG.map((w) => `<div style="white-space:nowrap">${w}</div>`).join('')}</div>`, path.join(TMP, 'shadow.png'));
+  await png(page, `<div style="position:absolute;left:110px;right:110px;top:1430px;text-align:center;font:600 64px/1.42 Figtree">
+    <span style="background:#fff;padding:6px 16px;box-decoration-break:clone;-webkit-box-decoration-break:clone;border-radius:10px">${END}</span></div>`, path.join(TMP, 'end.png'));
+  // the bar cut out of its white background (per row: first to last pixel that isn't white), with a soft shadow
+  await page.setContent('<canvas id=c></canvas>');
+  const cut = await page.evaluate(async (src) => {
+    const img = new Image(); img.src = src; await img.decode();
+    const w = img.width, h = img.height, a = new OffscreenCanvas(w, h), x = a.getContext('2d');
+    x.drawImage(img, 0, 0);
+    const d = x.getImageData(0, 0, w, h), px = d.data;
+    const solid = (i) => (765 - px[i] - px[i + 1] - px[i + 2]) > 36;
+    for (let y = 0; y < h; y++) {
+      let l = -1, r = -1;
+      for (let i = 0; i < w; i++) if (solid((y * w + i) * 4)) { l = i; break; }
+      for (let i = w - 1; i >= 0; i--) if (solid((y * w + i) * 4)) { r = i; break; }
+      for (let i = 0; i < w; i++) if (l < 0 || i < l + 2 || i > r - 2) px[(y * w + i) * 4 + 3] = 0;
+    }
+    x.putImageData(d, 0, 0);
+    const o = new OffscreenCanvas(w, h), y2 = o.getContext('2d');
+    y2.shadowColor = 'rgba(40,20,30,0.45)'; y2.shadowBlur = 60; y2.shadowOffsetY = 30;
+    y2.drawImage(a, 0, 0);
+    const blob = await o.convertToBlob({ type: 'image/png' });
+    return await new Promise((ok) => { const f = new FileReader(); f.onload = () => ok(f.result.split(',')[1]); f.readAsDataURL(blob); });
+  }, `data:image/webp;base64,${readFileSync(SOAP).toString('base64')}`);
+  writeFileSync(path.join(TMP, 'bar.png'), Buffer.from(cut, 'base64'));
   await b.close();
 }
 
@@ -60,40 +89,45 @@ function reel1() {
   mkdirSync(TMP, { recursive: true });
   const seg = (n) => path.join(TMP, `r1-${n}.mp4`);
   const hook = path.join(TMP, 'hook.png');
-  // A 1.5s: her pick, a woman lathering in the shower, slow push-in, hook on top
-  ff(['-ss', '0.4', '-t', '1.5', '-i', clip(5240831), '-loop', '1', '-i', hook, '-filter_complex',
-    `[0:v]${FIT},scale=1146:2036,zoompan=z='1+0.04*in_time/1.5':x='iw/2-iw/zoom/2':y='ih/2-ih/zoom/2':d=1:s=${W}x${H}:fps=${FPS},${GRAIN}[v];[v][1:v]overlay=shortest=1`,
-    '-t', '1.5', ...enc, seg('a')]);
-  // B 1.4s: the words filled with a pastel sunset, on cream; quick fade in
-  ff(['-f', 'lavfi', '-t', '1.4', '-i', `color=${CREAM}:s=${W}x${H}:r=${FPS}`, '-ss', '2', '-t', '1.4', '-i', clip(35016536),
-    '-loop', '1', '-t', '1.4', '-i', path.join(TMP, 'mask.png'), '-filter_complex',
-    `[1:v]crop=iw:ih*0.5:0:0,${FIT},eq=brightness=0.06:saturation=1.25,format=rgba[s];[2:v]format=gray,scale=${W}:${H}[m];[s][m]alphamerge,fade=in:st=0:d=0.15:alpha=1[t];[0:v][t]overlay=shortest=1,${GRAIN}`,
-    '-t', '1.4', ...enc, seg('b')]);
-  // C 1.3s: the bar fills the screen (reads as a painting), easing in until the frame is all sun
-  const up = 4, D = Math.round(1.3 * FPS);
+  const XF = 0.13, dA = 1.3, dB = 1.6, dC = 1.2, dD = 0.7, dE = 0.9;
+  const dF = +(7 - (dA + dB + dC + dD - XF + dE) + 0.05).toFixed(2);
+  // A 1.3s: her pick, a woman lathering in the shower, slow push-in, hook on top
+  ff(['-ss', '0.4', '-t', `${dA}`, '-i', clip(5240831), '-loop', '1', '-i', hook, '-filter_complex',
+    `[0:v]${FIT},fps=${FPS},scale=1146:2036,zoompan=z='1+0.04*in_time/${dA}':x='iw/2-iw/zoom/2':y='ih/2-ih/zoom/2':d=1:s=${W}x${H}:fps=${FPS},${GRAIN}[v];[v][1:v]overlay=shortest=1`,
+    '-t', `${dA}`, ...enc, seg('a')]);
+  // B 1.6s: the transition OUT of the shower (her idea): the same clip keeps playing, the cream closes in around it
+  // until it only shows inside UPGRADE YOUR SHOWER EXPERIENCE
+  ff(['-f', 'lavfi', '-t', `${dB}`, '-i', `color=${CREAM}:s=${W}x${H}:r=${FPS}`, '-ss', `${0.4 + dA}`, '-t', `${dB}`, '-i', clip(5240831),
+    '-loop', '1', '-t', `${dB}`, '-i', path.join(TMP, 'mask.png'), '-f', 'lavfi', '-t', `${dB}`, '-i', `color=white:s=${W}x${H}:r=${FPS}`, '-loop', '1', '-t', `${dB}`, '-i', path.join(TMP, 'shadow.png'), '-filter_complex',
+    `[1:v]${FIT},fps=${FPS},crop=iw/1.5:ih/1.5:iw/6:ih*0.3,scale=${W}:${H},eq=contrast=1.15:brightness=-0.06:saturation=1.15,format=rgba[s];[3:v]format=rgba,fade=out:st=0.05:d=0.4:alpha=1[full];[2:v]fps=${FPS},format=rgba[ml];[ml][full]overlay,format=gray[m];` +
+    `[s][m]alphamerge[t];[4:v]format=rgba,fade=in:st=0.1:d=0.35:alpha=1[sh];[0:v][sh]overlay[bgs];[bgs][t]overlay=shortest=1,${GRAIN}`,
+    '-t', `${dB}`, ...enc, seg('b')]);
+  // C 1.2s: the bar fills the screen (reads as a painting), easing in until the frame is all sun
+  const up = 4, D = Math.round(dC * FPS);
   ff(['-i', SOAP, '-filter_complex',
     `[0:v]crop=${BAR.w}:${BAR.h}:${BAR.x}:${BAR.y},scale=${BAR.w * up}:${BAR.h * up}:flags=lanczos,` +
     `zoompan=z='1+6*pow(on/${D},2.2)':x='${(SUN.x - BAR.x) * up}-iw/zoom/2':y='${(SUN.y - BAR.y) * up}-ih/zoom/2':d=${D}:s=${W}x${H}:fps=${FPS},${GRAIN}`,
     '-frames:v', `${D}`, ...enc, seg('c')]);
-  // D 0.8s: a real sun, starting zoomed right in on it and pulling out to the whole sunset
+  // D 0.7s: a real sun, starting zoomed right in on it and pulling out to the whole sunset
   const sun = { x: 556 * 2, y: 1056 * 2 };
-  ff(['-ss', '3', '-t', '0.8', '-i', clip(32064395), '-filter_complex',
-    `[0:v]${FIT},scale=${W * 2}:${H * 2},zoompan=z='1+11*pow(1-min(in_time/0.8\\,1),2.4)':` +
+  ff(['-ss', '3', '-t', `${dD}`, '-i', clip(32064395), '-filter_complex',
+    `[0:v]${FIT},fps=${FPS},scale=${W * 2}:${H * 2},zoompan=z='1+11*pow(1-min(in_time/0.8\\,1),2.4)':` +
     `x='max(0,min(iw-iw/zoom,${sun.x}-iw/zoom/2))':y='max(0,min(ih-ih/zoom,${sun.y}-ih/zoom/2))':d=1:s=${W}x${H}:fps=${FPS},` +
-    `eq=saturation=0.85:gamma=1.04,${GRAIN}`, '-t', '0.8', ...enc, seg('d')]);
-  // E 1.2s: four pastel sunsets, 0.3s each, hard cuts
-  const flash = [34918687, 26725993, 40774068, 35684730];
-  ff([...flash.flatMap((id) => ['-ss', '3', '-t', '0.3', '-i', clip(id)]), '-filter_complex',
-    flash.map((_, i) => `[${i}:v]${FIT},fps=${FPS},trim=duration=0.3,setpts=PTS-STARTPTS[f${i}]`).join(';') + ';' +
+    `eq=saturation=0.85:gamma=1.04,${GRAIN}`, '-t', `${dD}`, ...enc, seg('d')]);
+  // E 0.9s: three pastel sunsets, 0.3s each, hard cuts
+  const flash = [34918687, 40774068, 35684730];
+  ff([...flash.flatMap((id) => ['-ss', '3', '-t', '0.5', '-i', clip(id)]), '-filter_complex',
+    flash.map((_, i) => `[${i}:v]${FIT},fps=${FPS},trim=end_frame=9,setpts=PTS-STARTPTS[f${i}]`).join(';') + ';' +
     flash.map((_, i) => `[f${i}]`).join('') + `concat=n=${flash.length}:v=1,${GRAIN}`, ...enc, seg('e')]);
-  // F 1s: the whole bar on white, a slow settle, "It's a bar of soap."
-  ff(['-loop', '1', '-t', '1', '-i', SOAP, '-loop', '1', '-t', '1', '-i', path.join(TMP, 'end.png'), '-filter_complex',
-    `color=white:s=${W}x${H}:r=${FPS}:d=1[bg];[0:v]scale=1000:1000,format=rgba[s];[bg][s]overlay=40:380[v];[v][1:v]overlay,${GRAIN}`,
-    '-t', '1', ...enc, seg('f')]);
+  // F: the bar cut out, floating over a soft pastel sunset (not on white, her note), with the comment CTA
+  ff(['-ss', '1', '-t', `${dF}`, '-i', clip(35016483), '-loop', '1', '-t', `${dF}`, '-i', path.join(TMP, 'bar.png'),
+    '-loop', '1', '-t', `${dF}`, '-i', path.join(TMP, 'end.png'), '-filter_complex',
+    `[0:v]${FIT},fps=${FPS},gblur=sigma=5,eq=brightness=0.03[bg];[1:v]scale=1000:1000,format=rgba[s];` +
+    `[bg][s]overlay=x=40:y='300-14*t':eval=frame[v];[v][2:v]overlay,${GRAIN}`,
+    '-t', `${dF}`, ...enc, seg('f')]);
 
   // join: hook over C, D and E too (not over the big words or the end); a short dissolve where soap sun meets real sun
   const out = path.join(OUT, 'reel-1.mp4');
-  const XF = 0.13, dA = 1.5, dB = 1.4, dC = 1.3, dD = 0.8;
   const sfx = (f) => path.join(SFX, f);
   ff(['-i', seg('a'), '-i', seg('b'), '-i', seg('c'), '-i', seg('d'), '-i', seg('e'), '-i', seg('f'), '-loop', '1', '-i', hook,
     '-i', sfx('pop-light.mp3'), '-i', sfx('zoom-in.mp3'), '-i', sfx('whoosh-air.mp3'), '-i', sfx('sparkle.mp3'),
@@ -103,7 +137,7 @@ function reel1() {
     `[s0][s1][cdeh][s5]concat=n=4:v=1,format=yuv420p[v];` +
     `[7:a]adelay=${dA * 1000}|${dA * 1000},volume=0.7[a1];[8:a]adelay=${(dA + dB) * 1000}|${(dA + dB) * 1000},volume=0.6[a2];` +
     `[9:a]adelay=${(dA + dB + dC - 0.1) * 1000}|${(dA + dB + dC - 0.1) * 1000},volume=0.5[a3];` +
-    `[10:a]adelay=${(dA + dB + dC + dD - XF + 1.2) * 1000}|${(dA + dB + dC + dD - XF + 1.2) * 1000},volume=0.6[a4];` +
+    `[10:a]adelay=${(dA + dB + dC + dD - XF + dE) * 1000}|${(dA + dB + dC + dD - XF + dE) * 1000},volume=0.6[a4];` +
     `[a1][a2][a3][a4]amix=inputs=4:normalize=0,apad,atrim=0:7[a]`,
     '-map', '[v]', '-map', '[a]', '-t', '7', '-r', `${FPS}`, '-pix_fmt', 'yuv420p', '-c:v', 'libx264', '-crf', '18',
     '-c:a', 'aac', '-b:a', '160k', '-movflags', '+faststart', out]);
