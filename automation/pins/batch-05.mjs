@@ -31,7 +31,7 @@ const PHOTOS = [
   px(17117467, 'peonies-laptop'), px(3874609, 'tulips-laptop'), px(35446297, 'xmas-gifts'), px(6334694, 'gold-wrapping'), px(29341293, 'gift-supplies'),
   px(5727928, 'gift-wrap-white'), px(5900135, 'calculator-hands'), px(7680747, 'receipt'), px(7223500, 'packing-box'), px(7679739, 'packing-tape'),
   px(6399496, 'bokeh-mug'), px(15422829, 'xmas-coffee-laptop'), px(5942700, 'xmas-desk'), px(6347629, 'ring-light'), px(7676430, 'tripod-filming'),
-  px(7622883, 'writing-bed'),
+  px(7622883, 'writing-bed'), px(8534161, 'laptop-flowers'), px(8489952, 'pink-phone-flatlay'), px(5900162, 'woman-calculator'), px(4050340, 'floor-laptop-2'),
 ];
 const vid = (id, slug, file) => ({ id: `pexels-v${id}-${slug}`, src: `https://videos.pexels.com/video-files/${id}/${file}`, page: `https://www.pexels.com/video/${id}/`, picked: 'Claude (batch 5)' });
 const CLIPS = [
@@ -44,13 +44,13 @@ const S = (s) => `pexels-${s}`;
 // ground for text-only), plus E (note card), F (serif + highlight) and G (label bars) on the new photos.
 const PINS = [
   // ManyChat / Claude.
-  { layout: 'K', video: S('v6000648-puffer-typing'), lines: ['I replaced', 'ManyChat', 'with Claude'], sub: 'here is what it costs', hl: 'caveatbrush', link: '/guides/replace-manychat-with-claude/', board: B.dm,
+  { layout: 'F', video: S('v6000648-puffer-typing'), serif: 'I replaced ManyChat with Claude', sel: 'here is what it costs', hl: 'caveatbrush', link: '/guides/replace-manychat-with-claude/', board: B.dm,
     title: 'How I Replaced ManyChat With Claude', desc: 'I replaced ManyChat with my own Instagram comment-to-DM setup that Claude built. What it does, what it costs, the setup traps, and who should stay put.', keywords: KW_DM + ', claude ai' },
   { layout: 'J', photo: S('8938259-hands-phone-green'), ground: 'mist', serif_t: 'Replace ManyChat with Claude', cap: 'here is how I did it', hl: 'reenie', link: '/guides/replace-manychat-with-claude/', board: B.ai, doodles: ['sparkle'],
     title: 'Replace ManyChat With Claude: How I Did It', desc: 'What replacing ManyChat with Claude actually means, what mine does every day and what it costs compared with ManyChat.', keywords: 'claude ai, ai tools for small business, manychat alternative, instagram automation' },
   { layout: 'F', photo: S('11989314-hands-phone-dark'), hl: 'marker', link: '/guides/replace-manychat-with-claude/', board: B.dm, serif: 'Instagram auto DMs without ManyChat', sel: 'what mine does every day',
     title: 'Instagram DM Automation Without ManyChat', desc: 'What my own comment-to-DM setup does every day, built with Claude instead of paying for ManyChat.', keywords: KW_DM },
-  { layout: 'K', ground: 'navy', pattern: 'dots', lines: ['ManyChat', 'or $6', 'a month?'], sub: 'compare for your audience', hl: 'caveatbrush', link: '/calculators/manychat-cost/', board: B.dm, doodles: ['sparkle'],
+  { layout: 'J', photo: S('8534161-laptop-flowers'), ground: 'navy', serif_t: 'What does ManyChat really cost?', cap: 'compare for your audience', hl: 'caveatbrush', link: '/calculators/manychat-cost/', board: B.dm,
     title: 'ManyChat Cost Calculator: What Will You Pay?', desc: 'See what ManyChat costs for your audience size, next to running your own comment-to-DM setup for about $6 a month.', keywords: 'manychat pricing, manychat cost, instagram automation cost, manychat alternative' },
   { layout: 'E', photo: S('3756879-orange-phone'), cardTop: 880, pin: 'white', hl: 'reenie', link: '/calculators/manychat-cost/', board: B.dm, serif: 'What will ManyChat cost you?', small: 'check your audience size',
     title: 'How Much Does ManyChat Cost for Your Audience?', desc: 'Put in your audience size and see what ManyChat would cost, next to a comment-to-DM setup that runs for about $6 a month.', keywords: 'manychat pricing, how much is manychat, instagram dm automation, small business tools' },
@@ -58,7 +58,7 @@ const PINS = [
     title: 'ManyChat vs a $6-a-Month DM Setup', desc: 'Compare what ManyChat costs for your audience with running your own comment-to-DM setup for about $6 a month. Free calculator.', keywords: 'manychat alternative, cheap instagram automation, ai tools for small business, manychat cost' },
   { layout: 'F', photo: S('12679950-sunglasses-laptop'), hl: 'caveatbrush', link: '/guides/can-claude-answer-instagram-dms/', board: B.ai, serif: 'Can Claude answer your Instagram DMs?', sel: 'what it can and can’t do',
     title: 'Can Claude Answer Instagram DMs?', desc: 'What Claude can and can’t do on its own, what you need, the three ways to set it up, and Instagram’s DM rules.', keywords: 'claude ai, ai instagram dms, ai tools for small business, instagram automation' },
-  { layout: 'K', photo: S('17117467-peonies-laptop'), lines: ['Let AI', 'answer', 'your DMs'], sub: '3 ways to set it up', hl: 'reenie', link: '/guides/can-claude-answer-instagram-dms/', board: B.dm,
+  { layout: 'E', photo: S('17117467-peonies-laptop'), cardTop: 860, pin: 'white', serif: 'Let AI answer your DMs', small: '3 ways to set it up', hl: 'reenie', link: '/guides/can-claude-answer-instagram-dms/', board: B.dm,
     title: '3 Ways to Let AI Answer Your Instagram DMs', desc: 'The three ways to set up Claude to answer Instagram DMs, what you need for each, and Instagram’s rules for automation.', keywords: 'ai dm automation, instagram dm automation, claude ai, instagram tips' },
   { layout: 'E', video: S('v5075207-coffee-photo'), cardTop: 860, pin: 'blue', hl: 'caveatbrush', link: '/chat-manager/', board: B.dm, serif: 'Auto-reply to comments', small: 'without ManyChat',
     title: 'Auto-Reply to Instagram Comments Without ManyChat', desc: 'Someone comments your keyword and gets your link by DM automatically. Your own comment-to-DM tool for Instagram and YouTube, about $6 a month to run.', keywords: KW_DM },
@@ -67,7 +67,7 @@ const PINS = [
   // Quizzes.
   { layout: 'J', photo: S('7234525-jewelry-hands'), ground: 'oat', serif_t: 'Find your first offer', cap: 'free 3-step quiz', hl: 'caveatbrush', link: '/quiz/', board: B.marketing, doodles: ['sparkle'],
     title: 'Digital Product Ideas: Find Your First Offer', desc: 'Not sure what to sell? Answer 3 quick steps and get digital product ideas based on what you can already do. Free quiz.', keywords: 'digital product ideas, what to sell online, first digital product, small business ideas' },
-  { layout: 'K', ground: 'deeprose', pattern: 'stripes', lines: ['What should', 'you sell', 'online?'], sub: 'take the free quiz', hl: 'marker', link: '/quiz/', board: B.marketing,
+  { layout: 'J', photo: S('8489952-pink-phone-flatlay'), ground: 'deeprose', serif_t: 'What should you sell online?', cap: 'take the free quiz', hl: 'marker', link: '/quiz/', board: B.marketing,
     title: 'Not Sure What to Sell Online? Free Quiz', desc: 'Find your first offer in 3 quick steps. A free quiz with digital product ideas based on what you already know how to do.', keywords: 'what to sell online, digital product ideas, online business ideas, first offer' },
   { layout: 'F', photo: S('5208294-pink-planner'), textBottom: true, hl: 'sacramento', link: '/quiz/', board: B.marketing, serif: 'What digital product should you make?', sel: 'free 3-step quiz',
     title: 'What Digital Product Should You Make? Free Quiz', desc: 'A free 3-step quiz that turns what you can do into digital product ideas for your first offer.', keywords: 'digital product ideas, digital products to sell, side business ideas, what to sell online' },
@@ -80,7 +80,7 @@ const PINS = [
     title: 'December Income Goal for Small Business', desc: 'Set your December income goal, then see the sales, website visitors and views it takes to reach it. A free calculator for small business owners.', keywords: 'december income goal, holiday sales goal, small business holiday marketing, income goal calculator' },
   { layout: 'J', photo: S('35446297-xmas-gifts'), ground: 'cream', serif_t: 'Your Black Friday sales goal', cap: 'sales per day, worked out', hl: 'caveatbrush', link: '/calculators/sales-goal/', board: B.holiday,
     title: 'Black Friday Sales Goal for Small Business', desc: 'Break your holiday revenue goal into the sales you need each week and each day. A free sales goal calculator.', keywords: 'black friday small business, holiday sales goal, black friday marketing, sales goal calculator' },
-  { layout: 'K', photo: S('6334694-gold-wrapping'), lines: ['Holiday', 'sales goal'], sub: 'per day, worked out free', hl: 'caveatbrush', link: '/calculators/sales-goal/', board: B.holiday,
+  { layout: 'F', photo: S('6334694-gold-wrapping'), serif: 'Your holiday sales goal', sel: 'per day, worked out free', hl: 'caveatbrush', link: '/calculators/sales-goal/', board: B.holiday,
     title: 'Holiday Sales Goal: How Many Sales Per Day?', desc: 'Break a monthly holiday revenue target into the sales you need each month, each week and each day. Free calculator.', keywords: 'holiday sales goal, christmas sales small business, daily sales goal, sales goal calculator' },
   { layout: 'F', photo: S('15422829-xmas-coffee-laptop'), textBottom: true, hl: 'reenie', link: '/calculators/income-goal/', board: B.goals, serif: 'Your 2027 income goal, in numbers', sel: 'free calculator',
     title: 'Set Your 2027 Income Goal (Free Calculator)', desc: 'Plan next year: set your income goal and see the sales, visitors and views it takes to get there.', keywords: '2027 goals, business goal setting, income goal, new year business planning' },
@@ -89,7 +89,7 @@ const PINS = [
   // Pricing + profit.
   { layout: 'J', photo: S('6755799-candle-maker'), ground: 'rose', serif_t: 'Not sure what to charge?', cap: 'compare 3 prices free', hl: 'marker', link: '/calculators/price-to-customers/', board: B.pricing,
     title: 'How to Price Your Handmade Products', desc: 'Compare three price points side by side and see how many customers each one needs to reach your goal. Free pricing calculator.', keywords: 'how to price handmade products, pricing strategy, pricing calculator, small business pricing' },
-  { layout: 'K', ground: 'espresso', pattern: 'dots', lines: ['Raise', 'your prices?'], sub: 'see the customers each needs', hl: 'reenie', link: '/calculators/price-to-customers/', board: B.pricing, doodles: ['sparkle'],
+  { layout: 'J', photo: S('5900162-woman-calculator'), ground: 'espresso', serif_t: 'Should you raise your prices?', cap: 'see what each price needs', hl: 'reenie', link: '/calculators/price-to-customers/', board: B.pricing,
     title: 'Should You Raise Your Prices?', desc: 'Compare three prices and see how many customers each one needs to reach your goal. A free calculator for small businesses.', keywords: 'raise your prices, pricing your services, pricing strategy, what to charge' },
   { layout: 'E', photo: S('5900135-calculator-hands'), cardTop: 860, pin: 'blue', hl: 'caveatbrush', link: '/calculators/profit/', board: B.pricing, serif: 'Busy but not profitable?', small: 'check your margin free',
     title: 'Busy But Not Profitable? Check Your Margin', desc: 'Work out your profit and profit margin from your revenue and costs with a free calculator for small business owners.', keywords: 'small business profit, profit margin, business money tips, small business finances' },
@@ -98,7 +98,7 @@ const PINS = [
   // Content, Reels, traffic.
   { layout: 'J', photo: S('6347629-ring-light'), ground: 'blush', serif_t: 'How many views does each Reel need?', size: 100, cap: 'to hit your goal', hl: 'caveatbrush', link: '/calculators/views-per-post/', board: B.reels,
     title: 'How Many Views Does Each Reel Need?', desc: 'Put in your income goal, your rates and how often you post. See how many views each Reel needs, on average, to get there.', keywords: 'reel views, instagram reels tips, tiktok views, reel ideas for business' },
-  { layout: 'K', photo: S('7676430-tripod-filming'), bottom: true, lines: ['Views', 'per post'], sub: 'to hit your income goal', hl: 'marker', link: '/calculators/views-per-post/', board: B.growth,
+  { layout: 'F', photo: S('7676430-tripod-filming'), textBottom: true, serif: 'Views per post to hit your goal', sel: 'free calculator', hl: 'marker', link: '/calculators/views-per-post/', board: B.growth,
     title: 'Instagram Views Per Post Calculator', desc: 'See how many views each post needs, on average, to reach your income goal. Free calculator.', keywords: 'instagram views, instagram growth tips, views per post, content goals' },
   { layout: 'E', photo: S('3874609-tulips-laptop'), cardTop: 860, pin: 'cream', hl: 'reenie', link: '/calculators/traffic-to-sales/', board: B.seo, serif: 'Turn website visitors into sales', small: 'see your numbers free',
     title: 'Website Traffic to Sales Calculator', desc: 'Turn your website traffic and conversion rate into estimated sales and revenue. Free calculator.', keywords: 'website traffic, website sales, traffic to sales, small business website' },
@@ -108,16 +108,16 @@ const PINS = [
     title: 'How to Grow on Instagram Without Paid Ads', desc: 'A complete toolkit to plan, create and post organic content and go after your first $1,000 without depending on paid ads.', keywords: 'instagram growth, grow on instagram, organic marketing, instagram tips for small business' },
   { layout: 'J', photo: S('7622883-writing-bed'), ground: 'mist', serif_t: 'Plan a week of posts in one sitting', size: 100, cap: "here's my system", hl: 'marker', link: '/1k-club/', board: B.planning,
     title: 'Plan a Week of Instagram Posts in One Sitting', desc: 'Plan a full week of Instagram posts in one sitting with a complete toolkit for organic content.', keywords: 'content planning, plan instagram posts, batch content, social media planning' },
-  { layout: 'K', video: S('v6347120-box-sticker'), lines: ['A month', 'of product', 'Reels'], sub: 'just add your clips', hl: 'caveatbrush', link: '/product-reels/', board: B.reels,
+  { layout: 'E', video: S('v6347120-box-sticker'), cardTop: 860, pin: 'blue', serif: 'A month of product Reels', small: 'just add your clips', hl: 'caveatbrush', link: '/product-reels/', board: B.reels,
     title: 'Reel Ideas for Product Businesses', desc: '25 ready-made CapCut Reel templates for your product. Add your clips and post, and change the words, fonts and colours.', keywords: 'reel ideas for business, product reels, instagram reel ideas, tiktok ideas' },
   { layout: 'E', photo: S('7679739-packing-tape'), cardTop: 120, tilt: -1.5, pin: 'white', hl: 'marker', link: '/product-reels/', board: B.capcut, serif: 'CapCut templates for product Reels', small: '25 ready to edit',
     title: 'CapCut Templates for Product Reels', desc: '25 ready-made CapCut Reel templates for your product. Add your clips and post. Change it all in CapCut.', keywords: 'capcut templates, reel templates, product reels, capcut reel templates' },
   { layout: 'F', photo: S('16186795-pen-hand'), hl: 'reenie', link: '/seo-site-audit/', board: B.seo, serif: 'Why isn’t my website on Google?', sel: 'find out what to fix',
     title: 'Why Isn’t My Website Showing Up on Google?', desc: 'An expert SEO audit of your website, competitors, technical performance, content and search opportunities, in priority order.', keywords: 'website not on google, seo audit, small business seo, google ranking' },
-  { layout: 'K', ground: 'cream', pattern: 'grid', lines: ['Fix your', 'website SEO', 'first'], sub: 'a prioritized audit', hl: 'caveatbrush', link: '/seo-site-audit/', board: B.seo,
+  { layout: 'J', photo: S('4050340-floor-laptop-2'), ground: 'cream', serif_t: 'Fix your website SEO first', cap: 'a prioritized audit', hl: 'caveatbrush', link: '/seo-site-audit/', board: B.seo,
     title: 'Small Business SEO: What to Fix First', desc: 'A prioritized SEO audit of your technical performance, content, competitors and search opportunities, so you know what to fix first.', keywords: 'seo audit, website seo checklist, small business seo, seo tips' },
 ];
-for (const p of PINS) if (p.ground && p.layout === 'K' && !p.photo && !p.video) p.textOnly = true;
+// Layout K (label-maker tape) was rejected as ugly (2026-11-04); its Pins moved to E, F and J.
 
 // Schedule: 5 a day from Nov 11 at 8am, 11am, 2pm, 5pm, 8pm US Eastern (EST = UTC-5). A link never repeats within
 // 3 days, counting batches 1-4 (minus the Pins she deleted); the same layout never runs twice in a row.
