@@ -95,12 +95,13 @@ function reel1() {
   ff(['-ss', '0.4', '-t', `${dA}`, '-i', clip(5240831), '-loop', '1', '-i', hook, '-filter_complex',
     `[0:v]${FIT},fps=${FPS},scale=1146:2036,zoompan=z='1+0.04*in_time/${dA}':x='iw/2-iw/zoom/2':y='ih/2-ih/zoom/2':d=1:s=${W}x${H}:fps=${FPS},${GRAIN}[v];[v][1:v]overlay=shortest=1`,
     '-t', `${dA}`, ...enc, seg('a')]);
-  // B 1.6s: the transition OUT of the shower (her idea): the same clip keeps playing, the cream closes in around it
-  // until it only shows inside UPGRADE YOUR SHOWER EXPERIENCE
-  ff(['-f', 'lavfi', '-t', `${dB}`, '-i', `color=${CREAM}:s=${W}x${H}:r=${FPS}`, '-ss', `${0.4 + dA}`, '-t', `${dB}`, '-i', clip(5240831),
+  // B 1.6s: the transition OUT of the shower (her idea): the same clip keeps playing, the soap bar closes in around it
+  // until it only shows inside UPGRADE YOUR SHOWER EXPERIENCE; the words fade and C's zoom starts from this same frame
+  ff(['-loop', '1', '-t', `${dB}`, '-i', SOAP, '-ss', `${0.4 + dA}`, '-t', `${dB}`, '-i', clip(5240831),
     '-loop', '1', '-t', `${dB}`, '-i', path.join(TMP, 'mask.png'), '-f', 'lavfi', '-t', `${dB}`, '-i', `color=white:s=${W}x${H}:r=${FPS}`, '-loop', '1', '-t', `${dB}`, '-i', path.join(TMP, 'shadow.png'), '-filter_complex',
     `[1:v]${FIT},fps=${FPS},crop=iw/1.5:ih/1.5:iw/6:ih*0.3,scale=${W}:${H},eq=contrast=1.15:brightness=-0.06:saturation=1.15,format=rgba[s];[3:v]format=rgba,fade=out:st=0.05:d=0.4:alpha=1[full];[2:v]fps=${FPS},format=rgba[ml];[ml][full]overlay,format=gray[m];` +
-    `[s][m]alphamerge[t];[4:v]format=rgba,fade=in:st=0.1:d=0.35:alpha=1[sh];[0:v][sh]overlay[bgs];[bgs][t]overlay=shortest=1,${GRAIN}`,
+    `[0:v]crop=${BAR.w}:${BAR.h}:${BAR.x}:${BAR.y},scale=${W}:${H}:flags=lanczos,fps=${FPS},setsar=1[bar];` +
+    `[s][m]alphamerge,fade=out:st=${dB - 0.22}:d=0.2:alpha=1[t];[4:v]format=rgba,fade=in:st=0.1:d=0.35:alpha=1,fade=out:st=${dB - 0.22}:d=0.2:alpha=1[sh];[bar][sh]overlay[bgs];[bgs][t]overlay=shortest=1,${GRAIN}`,
     '-t', `${dB}`, ...enc, seg('b')]);
   // C 1.2s: the bar fills the screen (reads as a painting), easing in until the frame is all sun
   const up = 4, D = Math.round(dC * FPS);
