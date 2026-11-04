@@ -161,7 +161,7 @@ const TEXTS = {
       `text-shadow:0 0 30px rgba(236,140,170,.75),0 8px 24px rgba(120,40,80,.35)">welcome</div>` },
   3: { head: big('DEAR<br>ALGORITHM,', 190, 190, '#fff', SHADOW),
     rest: box('please connect me with all the people who love supporting small businesses and artisanal products!', 1590, 58) },
-  4: { hook: box("You weren't looking for a new soap,", 250), here: big('HERE<br>WE ARE.', 1380, 210, '#1C6FA8') },
+  4: { hook: box("You weren't looking for a new soap,", 200, 66), here: big('but here<br>we are.', 1250, 175, '#fff', SHADOW) },
   5: { hook: box('Can you tell the difference?', 1240, 70),
     labels: big('REAL', 1480, 150, '#fff', SHADOW + ';width:540px') + big('SOAP', 1480, 150, '#fff', SHADOW + ';width:540px;left:540px'),
     end: big("IT'S<br>SOAP.", 1440, 200, '#fff', SHADOW) },
@@ -172,7 +172,33 @@ async function boldTexts(n) {
   for (const [k, html] of Object.entries(TEXTS[n])) await png(page, html, path.join(TMP, `b${n}-${k}.png`));
   await b.close();
 }
-const txt = (n, k) => ['-loop', '1', '-t', '7', '-i', path.join(TMP, `b${n}-${k}.png`)];
+// Reel 4's feed: plain posts made from grey frames of the stock clips (generic UI, no app branding), her bar's post 8th
+const FEED_SHOTS = [[7815710, 5], [6801314, 6], [9155064, 3], [13767351, 2], [36625664, 8], [4156329, 30], [11932043, 10], null, [26725993, 5]];
+const POST_H = 1480, FEED_TOP = 60;
+const FEED = { y: FEED_TOP + 7 * POST_H + 110 + 625 - 1000 };  // bar post's photo centred a little below the middle
+async function feed() {
+  const imgs = FEED_SHOTS.map((s, i) => {
+    if (!s) return null;
+    const f = path.join(TMP, `feed-${i}.jpg`);
+    ff(['-ss', `${s[1]}`, '-i', clip(s[0]), '-frames:v', '1', '-vf', 'scale=1000:1250:force_original_aspect_ratio=increase,crop=1000:1250,hue=s=0,eq=contrast=0.85:brightness=0.03', f]);
+    return `data:image/jpeg;base64,${readFileSync(f).toString('base64')}`;
+  });
+  const bar = `data:image/png;base64,${readFileSync(path.join(TMP, 'bar.png')).toString('base64')}`;
+  const post = (src) => `<div style="height:${POST_H}px;padding:0 40px;box-sizing:border-box">
+    <div style="height:110px;display:flex;align-items:center;gap:20px"><div style="width:70px;height:70px;border-radius:50%;background:#d9d9d9"></div>
+      <div><div style="width:260px;height:20px;border-radius:10px;background:#cfcfcf;margin-bottom:12px"></div><div style="width:160px;height:16px;border-radius:8px;background:#e4e4e4"></div></div></div>
+    ${src ? `<img src="${src}" style="width:1000px;height:1250px;display:block">`
+      : `<div style="width:1000px;height:1250px;background:linear-gradient(180deg,#F3E6E4 0%,#F4BFC8 45%,#F7DDA0 70%,#7EC3E3 100%);display:flex;align-items:center;justify-content:center"><img src="${bar}" style="width:1150px;height:1150px"></div>`}
+    <div style="height:120px;display:flex;align-items:center;gap:26px">${'<div style="width:48px;height:48px;border-radius:50%;border:5px solid #bbb;box-sizing:border-box"></div>'.repeat(3)}
+      <div style="flex:1"></div><div style="width:200px;height:18px;border-radius:9px;background:#e4e4e4"></div></div></div>`;
+  const html = `<body style="margin:0;width:${W}px;background:#fff;padding-top:${FEED_TOP}px">${imgs.map(post).join('')}</body>`;
+  const b = await launch(), page = await b.newPage();
+  await page.setViewport({ width: W, height: 1000 });
+  await page.setContent(html, { waitUntil: 'load' });
+  await page.screenshot({ path: path.join(TMP, 'feed.png'), fullPage: true });
+  await b.close();
+}
+const txt = (n, k) =>['-loop', '1', '-t', '7', '-i', path.join(TMP, `b${n}-${k}.png`)];
 const barIn = () => ['-loop', '1', '-t', '7', '-i', path.join(TMP, 'bar.png')];
 const sfx = (f) => ['-i', path.join(SFX, f)];
 const at = (i, sec, vol = 0.6) => `[${i}:a]adelay=${Math.round(sec * 1000)}|${Math.round(sec * 1000)},volume=${vol}`;
@@ -209,18 +235,23 @@ const BOLD = {
     `[w1][l2]overlay=y='-40*max(0\\,1-(t-0.75)/0.25)':eval=frame[w2];` +
     `[8:v]format=rgba,fade=in:st=5.45:d=0.25:alpha=1[wel];[w2][wel]overlay=y='120*pow(max(0\\,1-(t-5.45)/0.4)\\,2)':eval=frame`,
     `${at(9, 2.2, 0.5)}[a1];${at(10, 5.2, 0.6)}[a2];${at(11, 5.45, 0.5)}[a3];${mix(['a1', 'a2', 'a3'])}`),
-  // 3: the bar's own colours, blown up and blurred, fill the screen; big bar rocking in the middle; DEAR ALGORITHM huge
-  3: () => render(3, ['-loop', '1', '-t', '7', '-i', SOAP, ...barIn(), ...txt(3, 'head'), ...txt(3, 'rest'), ...sfx('sparkle.mp3')],
-    `[0:v]crop=900:900:550:250,scale=${W}:${H},fps=${FPS},gblur=sigma=40,eq=saturation=1.5:brightness=0.02,setsar=1[bg];${floatBar(1, 1000, 0.07, 3)};` +
-    `[bg][bar]overlay=x='(W-w)/2':y='470+18*sin(2*PI*t/3)':eval=frame[vb];[vb][2:v]overlay[vh];[vh][3:v]overlay`,
-    `${at(4, 0.15, 0.5)}[a1];${mix(['a1'])}`),
-  // 4: sun-yellow screen, the bar drops in from the top and bounces to a stop, then HERE WE ARE lands under it
-  4: () => render(4, ['-f', 'lavfi', '-t', '7', '-i', `color=#F6CF57:s=${W}x${H}:r=${FPS}`, ...barIn(), ...txt(4, 'hook'), ...txt(4, 'here'),
-    ...sfx('swoosh-in.mp3'), ...sfx('pop-light.mp3')],
-    `[0:v]vignette=angle=PI/3:mode=backward,setsar=1[bg];[1:v]scale=1080:1080,format=rgba[bar];` +
-    `[bg][bar]overlay=x=0:y='if(lt(t\\,0.5)\\,-1400\\,330-abs(1500*exp(-4.5*(t-0.5))*cos(7.5*(t-0.5))))':eval=frame[vb];` +
-    `[vb][2:v]overlay[vh];[3:v]format=rgba,fade=in:st=1.0:d=0.2:alpha=1[here];[vh][here]overlay`,
-    `${at(4, 0.45, 0.5)}[a1];${at(5, 0.7, 0.7)}[a2];${mix(['a1', 'a2'])}`),
+  // 3 (round 3): HER footage from her old soap business (clips/her-mix-pour.mp4), only the shots before the charcoal goes
+  // in (that batch was her black Deep Clean bar): the pour, the stick blender in yellow batter, the empty mold. Then the
+  // sunset bar drops into the mold
+  3: () => render(3, ['-ss', '3.2', '-t', '1.3', '-i', clip('her-mix-pour'), '-ss', '12.5', '-t', '1.3', '-i', clip('her-mix-pour'),
+    '-ss', '34.3', '-t', '4.4', '-i', clip('her-mix-pour'), ...barIn(), ...txt(3, 'head'), ...txt(3, 'rest'), ...sfx('sparkle.mp3'), ...sfx('pop-light.mp3')],
+    [0, 1, 2].map((i) => `[${i}:v]${FIT},fps=${FPS},setsar=1[h${i}]`).join(';') + ';[h0][h1][h2]concat=n=3:v=1:a=0[bg];' +
+    `[3:v]scale=860:860,format=rgba[bar];[bg][bar]overlay=x='(W-w)/2':y='if(lt(t\\,2.8)\\,-1000\\,720-abs(1100*exp(-5*(t-2.8))*cos(8*(t-2.8))))':eval=frame[vb];` +
+    `[vb][4:v]overlay[vh];[5:v]format=rgba,fade=in:st=0.6:d=0.25:alpha=1[rest];[vh][rest]overlay`,
+    `${at(6, 0.1, 0.4)}[a1];${at(7, 3.0, 0.7)}[a2];${mix(['a1', 'a2'])}`),
+  // 4 (round 3): a feed of grey, boring posts scrolls fast, slows and stops dead on her bar, the only colour on screen
+  4: () => {
+    const { y } = FEED;
+    render(4, ['-loop', '1', '-t', '7', '-i', path.join(TMP, 'feed.png'), ...txt(4, 'hook'), ...txt(4, 'here'), ...sfx('whoosh-fast.mp3'), ...sfx('pop-light.mp3')],
+      `[0:v]crop=${W}:${H}:0:'${y}*(1-pow(1-min(t/2\\,1)\\,3))',fps=${FPS},tmix=frames=3,setsar=1[bg];[bg][1:v]overlay[vh];` +
+      `[2:v]format=rgba,fade=in:st=2.0:d=0.2:alpha=1[here];[vh][here]overlay=y='90*pow(max(0\\,1-(t-2.0)/0.35)\\,2)':eval=frame`,
+      `${at(3, 0, 0.5)}[a1];${at(4, 2.0, 0.7)}[a2];${mix(['a1', 'a2'])}`);
+  },
   // 5: the real sunset; a line slides in to split the screen REAL | SOAP down the middle; then the soap takes over
   // (round 3: her sunset clip, laid out like the bar: blue sky, pink band, sun on the horizon, sea. Both sides framed at
   // the same scale with the horizons level, the whole bar showing, not a close-up)
@@ -239,5 +270,5 @@ const BOLD = {
 
 const cmd = process.argv[2];
 if (cmd === 'reel1') { mkdirSync(TMP, { recursive: true }); await texts(); reel1(); }
-else if (BOLD[cmd?.replace("reel", "")]) { const n = +cmd.replace("reel", ""); mkdirSync(TMP, { recursive: true }); if (!existsSync(path.join(TMP, "bar.png"))) await texts(); await boldTexts(n); BOLD[n](); }
+else if (BOLD[cmd?.replace("reel", "")]) { const n = +cmd.replace("reel", ""); mkdirSync(TMP, { recursive: true }); if (!existsSync(path.join(TMP, "bar.png"))) await texts(); await boldTexts(n); if (n === 4) await feed(); BOLD[n](); }
 else console.log('usage: node build.mjs reel1 | reel2 | reel3 | reel4 | reel5');
