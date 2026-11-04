@@ -158,7 +158,7 @@ const TEXTS = {
   4: { hook: box("You weren't looking for a new soap,", 250), here: big('HERE<br>WE ARE.', 1380, 210, '#1C6FA8') },
   5: { hook: box('Can you tell the difference?', 1240, 70),
     labels: big('REAL', 1480, 150, '#fff', SHADOW + ';width:540px') + big('SOAP', 1480, 150, '#fff', SHADOW + ';width:540px;left:540px'),
-    end: big("IT'S<br>SOAP.", 1360, 230, '#fff', SHADOW) },
+    end: big("IT'S<br>SOAP.", 1440, 200, '#fff', SHADOW) },
 };
 async function boldTexts(n) {
   const b = await launch(), page = await b.newPage();
@@ -183,16 +183,21 @@ function render(n, inputs, graph, audio) {
   console.log(out);
 }
 
-// the split line in 5: off the right edge, slides to the middle, holds, then wipes to the left edge
-const SPLIT = `if(lt(t\\,1.8)\\,${W}\\,if(lt(t\\,2.4)\\,${W}-${W / 2}*(t-1.8)/0.6\\,if(lt(t\\,4.6)\\,${W / 2}\\,max(0\\,${W / 2}-${W / 2}*(t-4.6)/0.6))))`;
+// the split line in 5: off the right edge, slides to the middle, holds, then slides back out to the right
+const SPLIT = `if(lt(t\\,1.8)\\,${W}\\,if(lt(t\\,2.4)\\,${W}-${W / 2}*(t-1.8)/0.6\\,if(lt(t\\,4.6)\\,${W / 2}\\,min(${W}\\,${W / 2}+${W / 2}*(t-4.6)/0.4))))`;
 const BOLD = {
-  // 2: the camera drifts right along the beach toward the foam, and the foam slides over into the bubble bath; the bar floats
-  2: () => render(2, ['-ss', '1', '-t', '3.6', '-i', clip(36625664), '-ss', '0.5', '-t', '4.2', '-i', clip(8227197), ...barIn(), ...txt(2, 'hook'),
+  // 2 (round 3, her clips): overhead beach, pushing in on the foam at the right edge > that foam dissolves into bath foam
+  // filling the frame (foam to foam) > the overhead bath (turned upright, same top-down view as the beach) > THEN the bar
+  // drops in over the foam and floats
+  2: () => render(2, ['-ss', '1', '-t', '2.6', '-i', clip(36625664), '-ss', '0.5', '-t', '1.4', '-i', clip(11932043),
+    '-ss', '14', '-t', '2', '-i', clip(4156329), '-ss', '13', '-t', '1.8', '-i', clip(11932043), ...barIn(), ...txt(2, 'hook'),
     ...sfx('whoosh-air.mp3'), ...sfx('pop-bubble.mp3')],
-    `[0:v]${FIT},fps=${FPS},scale=1620:2880,crop=${W}:${H}:x='(iw-${W})*min(t/3.4\\,1)':y=(ih-${H})/2,setsar=1[beach];` +
-    `[1:v]${FIT},fps=${FPS},setsar=1[bath];[beach][bath]xfade=transition=smoothleft:duration=0.8:offset=2.8[bg];` +
-    `${floatBar(2, 940)};[bg][bar]overlay=x='(W-w)/2':y='940+22*sin(2*PI*t/2.4+1)':eval=frame[vb];[vb][3:v]overlay`,
-    `${at(4, 2.8, 0.5)}[a1];${at(5, 3.4, 0.5)}[a2];${mix(['a1', 'a2'])}`),
+    `[0:v]${FIT},fps=${FPS},scale=${W * 2}:${H * 2},zoompan=z='1+1.2*min(in_time/2.6\\,1)':x='(iw-iw/zoom)*min(in_time/2.2\\,1)':y='ih/2-ih/zoom/2':d=1:s=${W}x${H}:fps=${FPS},setsar=1[beach];` +
+    `[1:v]${FIT},fps=${FPS},setsar=1[foam];[2:v]transpose=1,${FIT},fps=${FPS},setsar=1[bath];` +
+    `[3:v]${FIT},fps=${FPS},gblur=sigma=3,setsar=1[foam2];` +
+    `[beach][foam]xfade=transition=fade:duration=0.4:offset=2.2[bf];[bf][bath]xfade=transition=fade:duration=0.4:offset=3.2[bfb];[bfb][foam2]concat=n=2:v=1[bg];` +
+    `${floatBar(4, 1000)};[bar]fade=in:st=5.2:d=0.15:alpha=1[barf];[bg][barf]overlay=x='(W-w)/2':y='if(lt(t\\,5.2)\\,${H}\\,700+20*sin(2*PI*t/2.4)-120*pow(max(0\\,1-(t-5.2)/0.3)\\,2))':eval=frame[vb];[vb][5:v]overlay`,
+    `${at(6, 2.2, 0.5)}[a1];${at(7, 5.2, 0.6)}[a2];${mix(['a1', 'a2'])}`),
   // 3: the bar's own colours, blown up and blurred, fill the screen; big bar rocking in the middle; DEAR ALGORITHM huge
   3: () => render(3, ['-loop', '1', '-t', '7', '-i', SOAP, ...barIn(), ...txt(3, 'head'), ...txt(3, 'rest'), ...sfx('sparkle.mp3')],
     `[0:v]crop=900:900:550:250,scale=${W}:${H},fps=${FPS},gblur=sigma=40,eq=saturation=1.5:brightness=0.02,setsar=1[bg];${floatBar(1, 1000, 0.07, 3)};` +
@@ -206,14 +211,19 @@ const BOLD = {
     `[vb][2:v]overlay[vh];[3:v]format=rgba,fade=in:st=1.0:d=0.2:alpha=1[here];[vh][here]overlay`,
     `${at(4, 0.45, 0.5)}[a1];${at(5, 0.7, 0.7)}[a2];${mix(['a1', 'a2'])}`),
   // 5: the real sunset; a line slides in to split the screen REAL | SOAP down the middle; then the soap takes over
-  5: () => render(5, ['-ss', '1', '-t', '7', '-i', clip(36609524), '-loop', '1', '-t', '7', '-i', SOAP, ...txt(5, 'hook'), ...txt(5, 'labels'), ...txt(5, 'end'),
+  // (round 3: her sunset clip, laid out like the bar: blue sky, pink band, sun on the horizon, sea. Both sides framed at
+  // the same scale with the horizons level, the whole bar showing, not a close-up)
+  5: () => render(5, ['-ss', '1', '-t', '7', '-i', clip(13663887), '-loop', '1', '-t', '7', '-i', SOAP, ...txt(5, 'hook'), ...txt(5, 'labels'), ...txt(5, 'end'),
     '-f', 'lavfi', '-t', '7', '-i', `color=black:s=${W}x${H}:r=${FPS}`, '-f', 'lavfi', '-t', '7', '-i', `color=white:s=${W}x${H}:r=${FPS}`,
-    '-f', 'lavfi', '-t', '7', '-i', `color=white:s=10x${H}:r=${FPS}`, ...sfx('whoosh-air.mp3'), ...sfx('whoosh-fast.mp3')],
-    `[0:v]${FIT},scale=1512:2688,crop=${W}:${H}:432:384,fps=${FPS},setsar=1[sun];[1:v]crop=765:1360:598:530,scale=${W}:${H}:flags=lanczos,fps=${FPS},setsar=1[soap];` +
+    '-f', 'lavfi', '-t', '7', '-i', `color=white:s=10x${H}:r=${FPS}`, ...sfx('whoosh-air.mp3'), ...sfx('whoosh-fast.mp3'), ...barIn(), ...sfx('pop-light.mp3')],
+    `[0:v]${FIT},scale=1296:2304,crop=${W}:${H}:216:0,fps=${FPS},setsar=1[sun];[1:v]crop=878:1560:541:373,scale=${W}:${H}:flags=lanczos,fps=${FPS},setsar=1[soap];` +
     `[5:v][6:v]overlay=x='${SPLIT}':eval=frame,format=gray[m];[soap][m]alphamerge[sm];[sun][sm]overlay[v1];` +
-    `[v1][7:v]overlay=x='${SPLIT}-5':eval=frame:enable='between(t\\,1.8\\,5.2)'[v2];` +
-    `[v2][2:v]overlay=enable='lt(t\,5.2)'[v3];[v3][3:v]overlay=enable='between(t\\,2.4\\,4.6)'[v4];[4:v]format=rgba,fade=in:st=5.3:d=0.2:alpha=1[end];[v4][end]overlay`,
-    `${at(8, 1.8, 0.5)}[a1];${at(9, 4.6, 0.5)}[a2];${mix(['a1', 'a2'])}`),
+    `[v1][7:v]overlay=x='${SPLIT}-5':eval=frame:enable='between(t\\,1.8\\,5.0)'[v2];` +
+    `[v2][2:v]overlay=enable='lt(t\\,5.0)'[v3];[v3][3:v]overlay=enable='between(t\\,2.4\\,4.6)'[v4];` +
+    // then the whole bar drops in over the real sunset, so you see them at the same scale
+    `[10:v]scale=1000:1000,format=rgba,fade=in:st=5.0:d=0.12:alpha=1[bar];[v4][bar]overlay=x=40:y='if(lt(t\\,5.0)\\,${H}\\,420-110*pow(max(0\\,1-(t-5.0)/0.3)\\,2))':eval=frame[v5];` +
+    `[4:v]format=rgba,fade=in:st=5.25:d=0.2:alpha=1[end];[v5][end]overlay`,
+    `${at(8, 1.8, 0.5)}[a1];${at(9, 4.6, 0.5)}[a2];${at(11, 5.0, 0.7)}[a3];${mix(['a1', 'a2', 'a3'])}`),
 };
 
 const cmd = process.argv[2];
