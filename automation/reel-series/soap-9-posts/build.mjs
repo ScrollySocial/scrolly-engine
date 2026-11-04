@@ -208,7 +208,10 @@ async function feed() {
 }
 // Reel 3's words + bar, one PNG per frame. 0-2.8s: words centred, "Dear" then "algorithm," float up, the caps line
 // tracks in. 2.8-3.2s: words fade up and away, a soft glow blooms. 3.0-3.7s: the bar spins in from small to full size
-// with a little overshoot, then floats. From 3.8s "Shop now" fades in above it.
+// with a little overshoot, then floats. From 3.8s "Shop now" rises in just under it.
+// her list (2026-11-04), as labels around the bar: [text, x, y, appears at]
+const PILLS = [['All natural ingredients', 40, 600, 3.9], ['Made by hand', 600, 820, 4.25],
+  ['Smells like coconut + apple', 30, 1080, 4.6], ['Each bar is a work of art', 420, 1300, 4.95]];
 async function overlay3() {
   const dir = path.join(TMP, 'r3ov');
   mkdirSync(dir, { recursive: true });
@@ -222,8 +225,9 @@ async function overlay3() {
     <div id=glow class=a style="inset:0;background:radial-gradient(circle at 50% 52%,rgba(255,244,214,.95) 0%,rgba(255,236,190,.5) 28%,rgba(255,236,190,0) 60%);opacity:0"></div>
     <img id=bar src="${bar}" style="position:absolute;left:${(W - 900) / 2}px;top:560px;width:900px;opacity:0">
     <div id=head class=a style="font:215px/0.95 GreatVibes;color:${BUTTER};${SOFT_SHADOW}"><div id=w1>Dear</div><div id=w2>algorithm,</div></div>
+    ${PILLS.map(([txt, x, y], i) => `<div id=p${i} style="position:absolute;left:${x}px;top:${y}px;padding:16px 30px;border-radius:60px;background:rgba(255,250,238,.94);font:700 40px Figtree;color:#5a4320;box-shadow:0 8px 24px rgba(0,0,0,.25);opacity:0;white-space:nowrap">${txt}</div>`).join('')}
     <div id=caps class=a style="left:110px;right:110px;font:500 46px/1.5 Figtree;text-transform:uppercase;color:#fff;letter-spacing:6px;${SOFT_SHADOW}">${caps.map((l, i) => `<div id=c${i}>${l}</div>`).join('')}</div>`);
-  await page.evaluate(() => document.fonts.ready);
+  await page.evaluate((at) => { window.PILL_AT = at; return document.fonts.ready; }, PILLS.map((p) => p[3]));
   for (let f = 0; f < 7 * FPS; f++) {
     await page.evaluate((t) => {
       const c = (x) => Math.max(0, Math.min(1, x)), out3 = (x) => 1 - Math.pow(1 - c(x), 3);
@@ -233,8 +237,8 @@ async function overlay3() {
       // the end says Shop now instead of Dear algorithm (her note)
       document.getElementById('w1').textContent = late ? 'Shop now' : 'Dear';
       document.getElementById('w2').textContent = late ? '' : 'algorithm,';
-      const leave = c((t - 2.8) / 0.35), in1 = out3((t - 3.8) / 0.5), in2 = out3((t - 4.0) / 0.5);
-      $('head').top = late ? `${95 - 30 * (1 - in1)}px` : `${560 - 40 * leave}px`;
+      const leave = c((t - 2.8) / 0.35), in1 = out3((t - 5.4) / 0.5), in2 = out3((t - 4.0) / 0.5);
+      $('head').top = late ? `${1490 + 30 * (1 - in1)}px` : `${560 - 40 * leave}px`;
       $('head').opacity = late ? in1 : 1 - leave;
       $('head').filter = late ? 'none' : `blur(${8 * leave}px)`;
       for (const [id, st] of [['w1', 0.15], ['w2', 0.45]]) {
@@ -248,6 +252,8 @@ async function overlay3() {
         const k = late ? 1 : out3((t - 0.85 - 0.15 * i) / 0.35);
         $(`c${i}`).opacity = k; $(`c${i}`).transform = `translateY(${24 * (1 - k)}px)`;
       }
+      // the list: each label pops in beside the bar, 0.35s apart, after it lands
+      PILL_AT.forEach((st, i) => { const k = back((t - st) / 0.35); $(`p${i}`).opacity = c((t - st) / 0.15); $(`p${i}`).transform = `scale(${t < st ? 0.6 : k})`; });
       $('glow').opacity = t < 2.9 ? 0 : Math.max(0, 1 - Math.abs(t - 3.15) / 0.35);
       const s = t < 3.0 ? 0 : 0.15 + 0.85 * back((t - 3.0) / 0.7), spin = -540 * (1 - out3((t - 3.0) / 0.7));
       const fl = c((t - 3.8) / 0.6), rock = 4 * Math.sin(2 * Math.PI * (t - 3.8) / 2) * fl, bob = -18 * Math.sin(2 * Math.PI * (t - 3.8) / 2 + 1) * fl;
