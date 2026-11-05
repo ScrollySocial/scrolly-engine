@@ -5,7 +5,7 @@
 // A Reel's build.mjs only passes the config below. Times on the screen are { part, dt }: part = index into
 // screen.json parts, dt = seconds after that part starts on the Reel's timeline.
 //
-//   igsReel({ title, hook: { a, b, c, top, size, sizeA, swipe, punch }, frames: [{ part, … }], shots: {…}, covers, post })
+//   igsReel({ title, hook: { a, b, c, top, size, sizeA, swipe, punch, anim({ at, SCR }) → extra timeline lines }, frames: [{ part, … }], shots: {…}, covers, post })
 import { readFileSync } from 'node:fs';
 import { reel } from '../lib/reel.mjs';
 import { reviewExport, PROXY } from '../lib/review/export.mjs';
@@ -42,7 +42,7 @@ export async function igsReel(cfg) {
   <div id="hk1a" style="font-size:${H.sizeA ?? 10.5}cqw">${H.a}</div>
   <div id="hk1b" style="margin-top:1.4cqw"><span class="mk" style="padding:0 .1em"><span class="mkbg"></span><span class="mkt">${H.b}</span></span></div>
   <div id="hk1c" style="margin-top:.6cqw">${H.c}</div></div>`,
-    anim: ["up('#hk1a', 0.05, 30);", "pop('#hk1b', 0.3);", "up('#hk1c', 0.5, 30);", `swipe('#hk1', ${at(H.swipe)});`],
+    anim: ["up('#hk1a', 0.05, 30);", "pop('#hk1b', 0.3);", "up('#hk1c', 0.5, 30);", `swipe('#hk1', ${at(H.swipe)});`, ...(H.anim ? H.anim({ at, SCR }) : [])],
   }]);
 
   // screen frames: F2 = the Settings and activity list (path pill), then one frame per page. Per frame:

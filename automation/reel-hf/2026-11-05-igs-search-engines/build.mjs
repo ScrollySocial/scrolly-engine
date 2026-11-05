@@ -8,7 +8,10 @@ import { igsReel } from '../_series/ig-settings.mjs';
 
 await igsReel({
   title: 'Instagram settings 8: Show in Google and Bing results',
-  hook: { a: 'Instagram', b: 'hack', c: 'to grow', top: 17.5, size: 9.5, sizeA: 6.8, swipe: 'hack', punch: 'hack' },
+  // GROW starts small and slowly grows until the screen recording (Mercedes 2026-11-05), growing right and down from its top-left so it
+  // never climbs into HACK; it stays above her face
+  hook: { a: 'Instagram', b: 'hack', c: 'to <span id="hk1g" style="display:inline-block;transform-origin:0 0">grow</span>', top: 17.5, size: 9.5, sizeA: 6.8, swipe: 'hack', punch: 'hack',
+    anim: ({ at, SCR }) => [`tl.fromTo('#hk1g', { scale: 1 }, { scale: 1.55, duration: ${(SCR - at('grow')).toFixed(2)}, ease: 'power1.inOut', immediateRender: false }, ${at('grow')});`] },
   frames: [
     { part: 0, note: 'Settings and activity scrolls (her recording), path pill; zoom to Account privacy, ring, her tap',
       zoom: { at: { part: 1, dt: 0.1 }, scale: 1.25, origin: '0% 67.5%' }, rings: [{ x: -1, y: 113, w: 48, h: 14, at: { part: 1, dt: 0.6 } }], tap: { part: 1, dt: 1.3 } },
