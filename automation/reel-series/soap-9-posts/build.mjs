@@ -441,19 +441,19 @@ const MAIN_T = 12.5, GRID_AT = 4.4;
 // Instagram's real 3:4 profile grid (round 3, her note: carousels looked bad shrunk into 9:16 tiles). Each Reel is
 // cropped where its words sit at the moment its tile ends (CROP_Y), so nothing is cut off
 const TILE = { w: 300, h: 400, gap: 8, x: 82, y: 520 };
-const CROP_Y = { 'reel-1': 240, 'reel-2': 250, 'reel-3': 200, 'reel-4': 120, 'reel-5': 240, 'reel-6': 120 };
+const CROP_Y = { 'reel-1': 240, 'reel-2': 250, 'reel-3': 200, 'reel-4': 120, 'reel-5': 240, 'reel-6': 150 };
 const POSTS = path.join(OUT);
 // Reel 3 (its labels) and the carousel's list slides never sit side by side (her note)
 // the image post sits in the middle (her note)
 const GRID = ['reel-1', 'c1', 'reel-2', 'reel-4', 'image', 'reel-6', 'reel-5', 'c2', 'reel-3'];
 // approved new versions from the per-post chats (2026-11-04): grid name -> file
-const REEL_FILE = { 'reel-2': 'reel-2-v7', 'reel-4': 'reel-4-v4' };
+const REEL_FILE = { 'reel-2': 'reel-2-v7', 'reel-4': 'reel-4-v4', 'reel-6': 'reel-6-v6' };
 const reelFile = (g) => path.join(OUT, `${REEL_FILE[g] || g}.mp4`);
 // where each Reel is (seconds into it) when the main Reel ends, so the grid lands on its best moment: UPGRADE YOUR SHOWER
 // EXPERIENCE over the soap (her pick), welcome fully in, Shop now + the labels, but here we are, the REAL | SOAP split, summer
 // Reels whose tile plays from the start and then shows a cover frame (seconds into the Reel)
 const COVER = { 'reel-1': 2.55 };
-const TILE_END = { 'reel-1': 2.55, 'reel-2': 3.5, 'reel-3': 6.6, 'reel-4': 4.5, 'reel-5': 3.6, 'reel-6': 6.6 };
+const TILE_END = { 'reel-1': 2.55, 'reel-2': 3.5, 'reel-3': 6.6, 'reel-4': 4.5, 'reel-5': 3.6, 'reel-6': 6.6 }; // reel-6 v6: its best grid second is also 6.6
 // a Reel's real length (some are 6.9s, not 7): the loop maths must use it, or a tile lands on the Reel's first frame
 const videoLength = (f) => +execFileSync(tool('ffprobe'), ['-v', 'error', '-select_streams', 'v', '-show_entries', 'stream=duration', '-of', 'csv=p=0', f]).toString();
 const slides = (dir, n) => Array.from({ length: n }, (_, i) => path.join(POSTS, dir, `slide-${String(i + 1).padStart(2, '0')}.png`));
@@ -566,7 +566,9 @@ function tileVideo(g, k, st) {
     ff(['-stream_loop', '3', '-i', reelFile(g),
       '-vf', `fps=${FPS},trim=start=${skip.toFixed(3)}:duration=${d},setpts=PTS-STARTPTS,scale=${w}:${sh},crop=${w}:${h}:0:${Math.min(sh - h, Math.round(CROP_Y[g] * sh / H))},fps=${FPS},setsar=1`, ...enc, out]);
   } else if (g === 'image') {
-    ff(['-loop', '1', '-t', `${d}`, '-i', path.join(POSTS, 'image-post', 'image-post-6.png'), '-filter_complex', fitted(0), '-t', `${d}`, ...enc, out]);
+    // the image post is 4:5: shown whole (its handwriting runs to the edges), on a soft blurred band top and bottom
+    ff(['-loop', '1', '-t', `${d}`, '-i', path.join(POSTS, 'image-post', 'image-post-6.png'), '-filter_complex',
+      `[0:v]split[a][b];[a]scale=${w}:${h}:force_original_aspect_ratio=increase,crop=${w}:${h},gblur=sigma=10[bg];[b]scale=${w}:-2[fg];[bg][fg]overlay=0:(H-h)/2,fps=${FPS},setsar=1`, '-t', `${d}`, ...enc, out]);
   } else if (g === 'c1') {
     // her bathtub carousel: first its approved cover motion (the items hop INTO the tub, 3.3s, from the cover-motion
     // chat), then it swipes slides 2, 3, 4 and lands back on the cover (slide 1) when the tile ends
