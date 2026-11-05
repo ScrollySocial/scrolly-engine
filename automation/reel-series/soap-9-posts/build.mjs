@@ -468,7 +468,8 @@ function tileVideo(g, k, st) {
     ff(['-loop', '1', '-t', `${d}`, '-i', path.join(POSTS, 'image-post', 'image-post.png'), '-filter_complex', fitted(0), '-t', `${d}`, ...enc, out]);
   } else {
     // carousel: swipe left through the slides, 1s each
-    const list = g === 'c1' ? slides('carousel-1', 6) : [...slides('carousel-2', 4), ...slides('carousel-2', 2)];
+    // c1 = her bathtub carousel (4 slides, from the other chat 2026-11-04)
+    const list = g === 'c1' ? [...slides('carousel-1', 4), ...slides('carousel-1', 2)] : [...slides('carousel-2', 4), ...slides('carousel-2', 2)];
     const n = Math.min(list.length, Math.ceil(d / 1.0) + 1), HOLD = 1.0, XF = 0.3;
     const ins = list.slice(0, n).flatMap((f) => ['-loop', '1', '-t', `${HOLD + XF}`, '-i', f]);
     const chain = list.slice(0, n).map((_, i) => `${fitted(i)}[s${i}]`);
