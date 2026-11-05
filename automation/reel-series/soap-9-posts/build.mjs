@@ -174,7 +174,7 @@ const TEXTS = {
     rest: `<div style="position:absolute;left:110px;right:110px;bottom:130px;text-align:center;font:500 46px/1.5 Figtree;letter-spacing:6px;text-transform:uppercase;color:#fff;${SOFT_SHADOW}">` +
       'please connect me with all the people who love supporting small businesses and artisanal products!</div>' },
   4: { hook: box("You weren't looking for a new soap,", 200, 66), here: big('but here<br>we are.', 1250, 175, '#fff', SHADOW) },
-  5: { hook: box('Can you tell the difference?', 230, 70),
+  5: { hook: box('Can you tell the difference?', 270, 70),
     labels: big('REAL', 1480, 150, '#fff', SHADOW + ';width:540px') + big('SOAP', 1480, 150, '#fff', SHADOW + ';width:540px;left:540px'),
     end: big("IT'S<br>SOAP.", 1440, 200, '#fff', SHADOW) },
 };
@@ -245,8 +245,8 @@ async function welcome2() {
 // tracks in. 2.8-3.2s: words fade up and away, a soft glow blooms. 3.0-3.7s: the bar spins in from small to full size
 // with a little overshoot, then floats. "Shop now" fades in at the top (her pick), not jammed against the edge.
 // her list (2026-11-04), as labels around the bar: [text, x, y, appears at]
-const PILLS = [['All natural ingredients', 40, 600, 3.9], ['Made by hand', 600, 820, 4.25],
-  ['Smells like coconut + apple', 30, 1080, 4.6], ['Each bar is a work of art', 420, 1300, 4.95]];
+const PILLS = [['All natural ingredients', 30, 600, 3.9], ['Made by hand', 560, 830, 4.25],
+  ['Smells like coconut + apple', 20, 1080, 4.6], ['Each bar is a work of art', 300, 1320, 4.95]];
 async function overlay3() {
   const dir = path.join(TMP, 'r3ov');
   mkdirSync(dir, { recursive: true });
@@ -260,7 +260,7 @@ async function overlay3() {
     <div id=glow class=a style="inset:0;background:radial-gradient(circle at 50% 52%,rgba(255,244,214,.95) 0%,rgba(255,236,190,.5) 28%,rgba(255,236,190,0) 60%);opacity:0"></div>
     <img id=bar src="${bar}" style="position:absolute;left:${(W - 900) / 2}px;top:560px;width:900px;opacity:0">
     <div id=head class=a style="font:215px/0.95 GreatVibes;color:${BUTTER};${SOFT_SHADOW}"><div id=w1>Dear</div><div id=w2>algorithm,</div></div>
-    ${PILLS.map(([txt, x, y], i) => `<div id=p${i} style="position:absolute;left:${x}px;top:${y}px;padding:16px 30px;border-radius:60px;background:rgba(255,250,238,.94);font:700 40px Figtree;color:#5a4320;box-shadow:0 8px 24px rgba(0,0,0,.25);opacity:0;white-space:nowrap">${txt}</div>`).join('')}
+    ${PILLS.map(([txt, x, y], i) => `<div id=p${i} style="position:absolute;left:${x}px;top:${y}px;padding:18px 34px;border-radius:70px;background:rgba(255,250,238,.96);font:800 56px Figtree;color:#5a4320;box-shadow:0 8px 24px rgba(0,0,0,.25);opacity:0;white-space:nowrap">${txt}</div>`).join('')}
     <div id=caps class=a style="left:110px;right:110px;font:500 46px/1.5 Figtree;text-transform:uppercase;color:#fff;letter-spacing:6px;${SOFT_SHADOW}">${caps.map((l, i) => `<div id=c${i}>${l}</div>`).join('')}</div>`);
   await page.evaluate((at) => { window.PILL_AT = at; return document.fonts.ready; }, PILLS.map((p) => p[3]));
   for (let f = 0; f < 7 * FPS; f++) {
@@ -358,20 +358,23 @@ const BOLD = {
       `[2:v]format=rgba,fade=in:st=2.0:d=0.2:alpha=1[here];[vh][here]overlay=y='90*pow(max(0\\,1-(t-2.0)/0.35)\\,2)':eval=frame`,
       `${at(3, 0, 0.5)}[a1];${at(4, 2.0, 0.7)}[a2];${mix(['a1', 'a2'])}`);
   },
-  // 5: the real sunset; a line slides in to split the screen REAL | SOAP down the middle; then the soap takes over
-  // (round 3: her sunset clip, laid out like the bar: blue sky, pink band, sun on the horizon, sea. Both sides framed at
-  // the same scale with the horizons level, the whole bar showing, not a close-up)
-  5: () => render(5, ['-ss', '1', '-t', '7', '-i', clip(13663887), '-loop', '1', '-t', '7', '-i', SOAP, ...txt(5, 'hook'), ...txt(5, 'labels'), ...txt(5, 'end'),
+  // 5: the real sunset; a line slides in to split the screen REAL | SOAP down the middle; then the soap takes over.
+  // Round 5 (her spec): the split shows half the REAL sun and half the SOAP sun at the SAME size, with the whole height
+  // of the bar. The real side is a Pexels photo of a big half sun on the horizon (clips/real-sun-13075383.jpg, 6240×4160,
+  // sun centre 3157,2411, 1324px wide), scaled to 71% so its sun is as wide as the bar's sun (944px), centred on the line
+  // (x 540) and on the bar's horizon (y 1221)
+  5: () => render(5, ['-loop', '1', '-t', '7', '-i', path.join(CLIPS, 'real-sun-13075383.jpg'), '-loop', '1', '-t', '7', '-i', SOAP, ...txt(5, 'hook'), ...txt(5, 'labels'), ...txt(5, 'end'),
     '-f', 'lavfi', '-t', '7', '-i', `color=black:s=${W}x${H}:r=${FPS}`, '-f', 'lavfi', '-t', '7', '-i', `color=white:s=${W}x${H}:r=${FPS}`,
     '-f', 'lavfi', '-t', '7', '-i', `color=white:s=10x${H}:r=${FPS}`, ...sfx('whoosh-air.mp3'), ...sfx('whoosh-fast.mp3'), ...barIn(), ...sfx('pop-light.mp3')],
-    // round 4 (her note): the WHOLE height of the bar shows, and the real sunset is zoomed 2.5x so the two read at the
-    // same scale (3.5x: as far as the clip stays sharp). Both suns sit dead centre (x 540) on the same horizon (y 1221), so the split line cuts each sun in half
-    `[0:v]${FIT},scale=3780:6720,crop=${W}:${H}:1270:2013,unsharp=5:5:0.6,fps=${FPS},setsar=1[sun];[1:v]crop=1052:1870:454:85,scale=${W}:${H}:flags=lanczos,fps=${FPS},setsar=1[soap];` +
+    // round 6: the WHOLE bar fits inside the 3:4 part the grid tile shows (y 240-1680): the cut-out bar at 77% on a soft
+    // neutral, its sun at x 540 on a horizon at y 1155; the photo at 53.5% so its sun is the same 708px wide on that horizon
+    `[0:v]scale=3338:2225:flags=lanczos,crop=${W}:${H}:1149:135,fps=${FPS},setsar=1[sun];` +
+    `color=#ECE5DC:s=${W}x${H}:r=${FPS}:d=7[nb];[10:v]split[b10a][b10b];[b10a]scale=1540:1540,format=rgba[cb];[nb][cb]overlay=-215:175,fps=${FPS},setsar=1[soap];` +
     `[5:v][6:v]overlay=x='${SPLIT}':eval=frame,format=gray[m];[soap][m]alphamerge[sm];[sun][sm]overlay[v1];` +
     `[v1][7:v]overlay=x='${SPLIT}-5':eval=frame:enable='between(t\\,1.8\\,5.0)'[v2];` +
     `[v2][2:v]overlay=enable='lt(t\\,5.0)'[v3];[v3][3:v]overlay=enable='between(t\\,2.4\\,4.6)'[v4];` +
     // then the whole bar drops in over the real sunset, so you see them at the same scale
-    `[10:v]scale=1000:1000,format=rgba,fade=in:st=5.0:d=0.12:alpha=1[bar];[v4][bar]overlay=x=40:y='if(lt(t\\,5.0)\\,${H}\\,420-110*pow(max(0\\,1-(t-5.0)/0.3)\\,2))':eval=frame[v5];` +
+    `[b10b]scale=1000:1000,format=rgba,fade=in:st=5.0:d=0.12:alpha=1[bar];[v4][bar]overlay=x=40:y='if(lt(t\\,5.0)\\,${H}\\,420-110*pow(max(0\\,1-(t-5.0)/0.3)\\,2))':eval=frame[v5];` +
     `[4:v]format=rgba,fade=in:st=5.25:d=0.2:alpha=1[end];[v5][end]overlay`,
     `${at(8, 1.8, 0.5)}[a1];${at(9, 4.6, 0.5)}[a2];${at(11, 5.0, 0.7)}[a3];${mix(['a1', 'a2', 'a3'])}`),
   // 6 (her idea 2026-11-04): "It may look like fall outside / but in your shower / it's still summer". Fall leaves >
@@ -398,10 +401,10 @@ async function overlay6() {
   await page.setContent(`<style>${CSS}.a{position:absolute;left:0;right:0;text-align:center}</style>
     <div id=scrim class=a style="inset:0;background:linear-gradient(180deg,rgba(20,10,5,.15) 0%,rgba(20,10,5,.4) 40%,rgba(20,10,5,.4) 60%,rgba(20,10,5,.15) 100%)"></div>
     <div id=glow class=a style="inset:0;background:radial-gradient(circle at 50% 52%,rgba(255,244,214,.95) 0%,rgba(255,236,190,.5) 28%,rgba(255,236,190,0) 60%);opacity:0"></div>
-    <img id=bar src="${bar}" style="position:absolute;left:${(W - 900) / 2}px;top:600px;width:900px;opacity:0">
+    <img id=bar src="${bar}" style="position:absolute;left:${(W - 860) / 2}px;top:700px;width:860px;opacity:0">
     <div id=g1 class=a style="top:740px"><div id=c1 style="${caps}">it may look like</div><div id=s1 style="font:200px/1 GreatVibes;color:#fff;${SOFT_SHADOW}">fall outside</div></div>
     <div id=g2 class=a style="top:740px"><div id=c2 style="${caps}">but</div><div id=s2 style="font:200px/1 GreatVibes;color:#fff;${SOFT_SHADOW}">in your shower</div></div>
-    <div id=g3 class=a style="top:150px"><div id=c3 style="${caps}">it's still</div><div id=s3 style="font:230px/1 GreatVibes;color:${BUTTER};${SOFT_SHADOW}">summer</div></div>`);
+    <div id=g3 class=a style="top:150px"><div id=c3 style="${caps};font-size:74px;font-weight:700">it's still</div><div id=s3 style="font:340px/0.95 GreatVibes;color:${BUTTER};${SOFT_SHADOW}">summer</div></div>`);
   await page.evaluate(() => document.fonts.ready);
   for (let f = 0; f < 7 * FPS; f++) {
     await page.evaluate((t) => {
@@ -434,16 +437,21 @@ async function overlay6() {
 // Round 2 (her notes 2026-11-04): every tile shows its WHOLE post (9:16 tiles, stills sit whole on a blurred copy of
 // themselves), the carousels swipe through their slides, and each Reel is started at the point that puts its most
 // dynamic moment in the last second. Her footage gets a warm grade, with contrast so it doesn't look foggy (her note).
-const MAIN_T = 11, GRID_AT = 4.4;
+const MAIN_T = 12.5, GRID_AT = 4.4;
 // Instagram's real 3:4 profile grid (round 3, her note: carousels looked bad shrunk into 9:16 tiles). Each Reel is
 // cropped where its words sit at the moment its tile ends (CROP_Y), so nothing is cut off
 const TILE = { w: 300, h: 400, gap: 8, x: 82, y: 520 };
-const CROP_Y = { 'reel-1': 240, 'reel-2': 480, 'reel-3': 200, 'reel-4': 170, 'reel-5': 200, 'reel-6': 120 };
+const CROP_Y = { 'reel-1': 240, 'reel-2': 480, 'reel-3': 200, 'reel-4': 170, 'reel-5': 240, 'reel-6': 120 };
 const POSTS = path.join(OUT);
-const GRID = ['reel-1', 'image', 'reel-2', 'reel-3', 'c1', 'reel-4', 'reel-5', 'c2', 'reel-6'];
+// Reel 3 (its labels) and the carousel's list slides never sit side by side (her note)
+const GRID = ['reel-1', 'image', 'reel-2', 'reel-4', 'c1', 'reel-6', 'reel-5', 'c2', 'reel-3'];
 // where each Reel is (seconds into it) when the main Reel ends, so the grid lands on its best moment: UPGRADE YOUR SHOWER
 // EXPERIENCE over the soap (her pick), welcome fully in, Shop now + the labels, but here we are, the REAL | SOAP split, summer
-const TILE_END = { 'reel-1': 2.55, 'reel-2': 6.9, 'reel-3': 6.9, 'reel-4': 3.0, 'reel-5': 3.6, 'reel-6': 6.9 };
+// Reels whose tile plays from the start and then shows a cover frame (seconds into the Reel)
+const COVER = { 'reel-1': 2.55 };
+const TILE_END = { 'reel-1': 2.55, 'reel-2': 6.7, 'reel-3': 6.6, 'reel-4': 3.0, 'reel-5': 3.6, 'reel-6': 6.6 };
+// a Reel's real length (some are 6.9s, not 7): the loop maths must use it, or a tile lands on the Reel's first frame
+const videoLength = (f) => +execFileSync(tool('ffprobe'), ['-v', 'error', '-select_streams', 'v', '-show_entries', 'stream=duration', '-of', 'csv=p=0', f]).toString();
 const slides = (dir, n) => Array.from({ length: n }, (_, i) => path.join(POSTS, dir, `slide-${String(i + 1).padStart(2, '0')}.png`));
 
 // Carousel 2, the bath one (her pick 2026-11-04): her bath clips + the bar, in the soap shop's lettering (Reel 3's pick A)
@@ -453,6 +461,23 @@ const C2 = [
   { shot: [8227197, 2, ''], caps: 'every bar is', script: 'one of<br>a kind' },
   { shot: [4156329, 30, 'transpose=1,'], caps: 'comment', word: 'SUNSET', small: 'for the link' },
 ];
+// the image post, round 2 (her note: the first one was "just the bar of soap"): a product post for Sunshine Splash, the
+// name from her old listing. Cream ground, big pink script name, the cut-out bar tilted with a soft shadow, scent notes
+async function imagePost() {
+  const dir = path.join(POSTS, 'image-post');
+  mkdirSync(dir, { recursive: true });
+  const bar = `data:image/png;base64,${readFileSync(path.join(TMP, 'bar.png')).toString('base64')}`;
+  const b = await launch(), page = await b.newPage();
+  await page.setViewport({ width: 1080, height: 1350 });
+  await page.setContent(`<style>${CSS}html,body{width:1080px;height:1350px;margin:0;background:#F7EFE6}</style>
+    <div style="position:absolute;left:0;right:0;top:70px;text-align:center;font:600 50px Figtree;letter-spacing:10px;text-transform:uppercase;color:#7a5638">handmade bar soap</div>
+    <div style="position:absolute;left:0;right:0;top:140px;text-align:center;font:175px/1 GreatVibes;color:#E07E95;white-space:nowrap">Sunshine Splash</div>
+    <img src="${bar}" style="position:absolute;left:230px;top:380px;width:620px;transform:rotate(-6deg)">
+    <div style="position:absolute;left:0;right:0;bottom:70px;text-align:center;font:700 44px/1.4 Figtree;letter-spacing:6px;text-transform:uppercase;color:#7a5638">pineapple · coconut water<br>apple · thyme</div>`);
+  await page.evaluate(() => document.fonts.ready);
+  await page.screenshot({ path: path.join(dir, 'image-post-2.png') });
+  await b.close();
+}
 async function carousel2() {
   const dir = path.join(POSTS, 'carousel-2');
   mkdirSync(dir, { recursive: true });
@@ -523,16 +548,25 @@ function tileVideo(g, k, st) {
   const out = path.join(TMP, `tile-${k}.mp4`), d = +(MAIN_T - st).toFixed(2), { w, h } = TILE;
   // stills and slides fill the tile
   const fitted = (i) => `[${i}:v]scale=${w}:${h}:force_original_aspect_ratio=increase,crop=${w}:${h},fps=${FPS},setsar=1`;
-  if (g.startsWith('reel')) {
-    const skip = (((TILE_END[g] - d) % 7) + 7) % 7, sh = Math.round(H * w / W / 2) * 2;
+  if (COVER[g] != null) {
+    // plays from the start, the whole way through, then holds its cover frame (her note: the tile is the Reel's cover
+    // once it's done playing; starting it mid-way broke the flow)
+    const play = Math.min(7, d - 0.5), sh = Math.round(H * w / W / 2) * 2, shape = `scale=${w}:${sh},crop=${w}:${h}:0:${Math.min(sh - h, Math.round(CROP_Y[g] * sh / H))}`;
+    ff(['-t', `${play}`, '-i', path.join(OUT, `${g}.mp4`), '-ss', `${COVER[g]}`, '-i', path.join(OUT, `${g}.mp4`), '-filter_complex',
+      `[0:v]fps=${FPS},${shape},setsar=1[p];[1:v]trim=end_frame=1,${shape},setsar=1,tpad=stop_mode=clone:stop_duration=${(d - play + 0.2).toFixed(2)},fps=${FPS}[c];[p][c]concat=n=2:v=1`,
+      '-t', `${d}`, ...enc, out]);
+  } else if (g.startsWith('reel')) {
+    const L = videoLength(path.join(OUT, `${g}.mp4`)), skip = (((TILE_END[g] - d) % L) + L) % L, sh = Math.round(H * w / W / 2) * 2;
     ff(['-stream_loop', '3', '-i', path.join(OUT, `${g}.mp4`),
       '-vf', `fps=${FPS},trim=start=${skip.toFixed(3)}:duration=${d},setpts=PTS-STARTPTS,scale=${w}:${sh},crop=${w}:${h}:0:${Math.min(sh - h, Math.round(CROP_Y[g] * sh / H))},fps=${FPS},setsar=1`, ...enc, out]);
   } else if (g === 'image') {
-    ff(['-loop', '1', '-t', `${d}`, '-i', path.join(POSTS, 'image-post', 'image-post.png'), '-filter_complex', fitted(0), '-t', `${d}`, ...enc, out]);
+    ff(['-loop', '1', '-t', `${d}`, '-i', path.join(POSTS, 'image-post', 'image-post-2.png'), '-filter_complex', fitted(0), '-t', `${d}`, ...enc, out]);
   } else {
     // carousel: swipe left through the slides, 1s each
-    // c1 = her bathtub carousel (4 slides, from the other chat 2026-11-04)
-    const list = g === 'c1' ? [...slides('carousel-1', 4), ...slides('carousel-1', 2)] : [...slides('carousel-2', 4), ...slides('carousel-2', 2)];
+    // c1 = her bathtub carousel (4 slides, from the other chat 2026-11-04), ordered so the tile ends on the bathtub cover
+    const c1 = slides('carousel-1', 4), lastIdx = Math.floor((d - 0.05) / 1.0);
+    // c1: counted back from the end so the slide showing when the tile ends is the bathtub cover
+    const list = g === 'c1' ? Array.from({ length: lastIdx + 1 }, (_, i) => c1[(((i - lastIdx) % 4) + 4) % 4]) : [...slides('carousel-2', 4), ...slides('carousel-2', 2)];
     const n = Math.min(list.length, Math.ceil(d / 1.0) + 1), HOLD = 1.0, XF = 0.3;
     const ins = list.slice(0, n).flatMap((f) => ['-loop', '1', '-t', `${HOLD + XF}`, '-i', f]);
     const chain = list.slice(0, n).map((_, i) => `${fitted(i)}[s${i}]`);
@@ -585,6 +619,7 @@ function mainReel() {
 const cmd = process.argv[2];
 if (cmd === 'main') { mkdirSync(TMP, { recursive: true }); await mainTexts(); mainReel(); }
 else if (cmd === 'carousel2') { mkdirSync(TMP, { recursive: true }); await carousel2(); }
+else if (cmd === 'image') { mkdirSync(TMP, { recursive: true }); await imagePost(); }
 else if (cmd === 'reel1') { mkdirSync(TMP, { recursive: true }); await texts(); reel1(); }
 else if (BOLD[cmd?.replace("reel", "")]) { const n = +cmd.replace("reel", ""); mkdirSync(TMP, { recursive: true }); if (!existsSync(path.join(TMP, "bar.png"))) await texts(); await boldTexts(n); if (n === 4) await feed(); if (n === 3) await overlay3(); if (n === 6) await overlay6(); if (n === 2) await welcome2(); BOLD[n](); }
 else console.log('usage: node build.mjs reel1 | reel2 | reel3 | reel4 | reel5 | reel6 | carousel2 | main');
