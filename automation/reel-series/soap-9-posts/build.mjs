@@ -388,7 +388,69 @@ async function overlay6() {
   await b.close();
 }
 
+// THE MAIN REEL (the lesson, after @tainacreates' format, her inspo): her at her desk + the plain soap photo as a card,
+// Client: "I only have one photo, but I need 9 posts." > "Of course, I got you" > the 9 posts pop into a 3x3 grid, the
+// 6 Reels playing in their tiles. 11s. Her footage (green couch) gets the soft warm grade she likes on herself.
+const MAIN_T = 11, GRID_AT = 4.4;
+const TILE = { w: 300, h: 400, gap: 8, x: 82, y: 540 };
+const POSTS = path.join(OUT);
+// grid order mixes the formats; c2 has no post yet, so carousel 1's slide 6 stands in until carousel 2 exists
+const GRID = ['reel-1', 'image', 'reel-2', 'reel-3', 'c1', 'reel-4', 'reel-5', 'c2', 'reel-6'];
+const still = {
+  image: path.join(POSTS, 'image-post', 'image-post.png'),
+  c1: path.join(POSTS, 'carousel-1', 'slide-01.png'),
+  c2: existsSync(path.join(POSTS, 'carousel-2', 'slide-01.png')) ? path.join(POSTS, 'carousel-2', 'slide-01.png') : path.join(POSTS, 'carousel-1', 'slide-06.png'),
+};
+async function mainTexts() {
+  const b = await launch(), page = await b.newPage();
+  await page.setViewport({ width: W, height: H });
+  const sh = 'text-shadow:0 2px 18px rgba(0,0,0,.5)';
+  await png(page, `<div style="position:absolute;left:90px;right:90px;top:900px;text-align:center;font:700 62px/1.3 Figtree;color:#fff;${sh}">Client: "I only have one photo,<br>but I need 9 posts."</div>`, path.join(TMP, 'm-client.png'));
+  await png(page, `<div style="position:absolute;left:330px;top:1150px;width:420px;padding:18px;background:#fff;border-radius:6px;box-shadow:0 18px 40px rgba(0,0,0,.35);transform:rotate(-4deg)">
+    <img src="data:image/webp;base64,${readFileSync(SOAP).toString('base64')}" style="width:384px;display:block"></div>`, path.join(TMP, 'm-card.png'));
+  await png(page, `<div style="position:absolute;left:0;right:0;top:330px;text-align:center;font:150px/1 GreatVibes;color:#fff;${sh}">Of course, I got you</div>`, path.join(TMP, 'm-gotyou.png'));
+  await png(page, `<div style="position:absolute;left:0;right:0;top:1790px;text-align:center;font:500 44px Figtree;letter-spacing:8px;text-transform:uppercase;color:#fff;${sh}">1 photo · 9 posts</div>`, path.join(TMP, 'm-caption.png'));
+  await b.close();
+}
+function mainReel() {
+  // her green-couch clips filmed 2026-11-04 (her pick): working on the laptop for the client line, then the second take.
+  // Cut once to a light 1080×1920 file (the originals are 4K HEVC)
+  const her = path.join(TMP, 'm-her.mp4'), V = P.footage;
+  ff(['-ss', '12', '-t', '3.2', '-i', path.join(V, 'IMG_2171.MOV'), '-ss', '8', '-t', '7', '-i', path.join(V, 'IMG_2172.MOV'), '-filter_complex',
+    `[0:v]${FIT},fps=${FPS}[a];[1:v]${FIT},fps=${FPS}[b];[a][b]concat=n=2:v=1:a=0`, ...enc, her]);
+  const inputs = ['-t', '10', '-i', her, ...['client', 'card', 'gotyou', 'caption'].flatMap((k) => ['-loop', '1', '-t', `${MAIN_T}`, '-i', path.join(TMP, `m-${k}.png`)])];
+  const tiles = GRID.map((g, k) => {
+    inputs.push(...(g.startsWith('reel') ? ['-i', path.join(OUT, `${g}.mp4`)] : ['-loop', '1', '-t', `${MAIN_T}`, '-i', still[g]]));
+    return { idx: 5 + k, st: +(GRID_AT + 0.1 * k).toFixed(2), x: TILE.x + (k % 3) * (TILE.w + TILE.gap), y: TILE.y + Math.floor(k / 3) * (TILE.h + TILE.gap), reel: g.startsWith('reel') };
+  });
+  inputs.push(...sfx('sparkle.mp3'), ...sfx('pop-bubble.mp3'));
+  const sx = 5 + GRID.length;
+  const g = [
+    // her clip, held on its last frame to the end; soft warm grade; a blurred, darker copy fades in behind the grid
+    `[0:v]${FIT},fps=${FPS},tpad=stop_mode=clone:stop_duration=1.5,trim=duration=${MAIN_T},eq=brightness=0.03:saturation=1.05:gamma=1.04,colorbalance=rs=0.03:bs=-0.03:rm=0.02:bm=-0.02,gblur=sigma=0.8,split[b1][b2]`,
+    `[b2]gblur=sigma=24,eq=brightness=-0.12,format=rgba,fade=in:st=${GRID_AT - 0.2}:d=0.3:alpha=1[blur]`,
+    `[b1][blur]overlay[v0]`,
+    `[1:v]format=rgba,fade=out:st=3.0:d=0.2:alpha=1[cl];[v0][cl]overlay[v1]`,
+    `[2:v]format=rgba,fade=out:st=3.0:d=0.2:alpha=1[cd];[v1][cd]overlay=y='40*pow(max(0\\,1-t/0.4)\\,2)':eval=frame[v2]`,
+    `[3:v]format=rgba,fade=in:st=3.2:d=0.35:alpha=1[gy];[v2][gy]overlay[v3]`,
+  ];
+  let last = 'v3';
+  for (const [k, t] of tiles.entries()) {
+    // reels start playing the moment their tile pops in; everything is cropped to the 3:4 grid shape
+    const shape = `scale=${TILE.w}:${TILE.h}:force_original_aspect_ratio=increase,crop=${TILE.w}:${TILE.h}`;
+    g.push(`[${t.idx}:v]${shape},fps=${FPS},format=rgba${t.reel ? `,setpts=PTS-STARTPTS+${t.st}/TB` : ''},fade=in:st=${t.st}:d=0.15:alpha=1[t${k}]`);
+    g.push(`[${last}][t${k}]overlay=x=${t.x}:y='${t.y}+30*pow(max(0\\,1-(t-${t.st})/0.25)\\,2)':eval=frame:enable='gte(t\\,${t.st})':eof_action=repeat[g${k}]`);
+    last = `g${k}`;
+  }
+  g.push(`[4:v]format=rgba,fade=in:st=${GRID_AT + 1}:d=0.3:alpha=1[cap];[${last}][cap]overlay`);
+  const out = path.join(OUT, 'main-reel.mp4');
+  ff([...inputs, '-filter_complex', `${g.join(';')},${GRAIN},format=yuv420p[v];${at(sx, 3.2, 0.5)}[a1];${at(sx + 1, GRID_AT, 0.6)}[a2];[a1][a2]amix=inputs=2:normalize=0,apad,atrim=0:${MAIN_T}[a]`,
+    '-map', '[v]', '-map', '[a]', '-t', `${MAIN_T}`, '-r', `${FPS}`, '-c:v', 'libx264', '-crf', '18', '-pix_fmt', 'yuv420p', '-c:a', 'aac', '-b:a', '160k', '-movflags', '+faststart', out]);
+  console.log(out);
+}
+
 const cmd = process.argv[2];
-if (cmd === 'reel1') { mkdirSync(TMP, { recursive: true }); await texts(); reel1(); }
+if (cmd === 'main') { mkdirSync(TMP, { recursive: true }); await mainTexts(); mainReel(); }
+else if (cmd === 'reel1') { mkdirSync(TMP, { recursive: true }); await texts(); reel1(); }
 else if (BOLD[cmd?.replace("reel", "")]) { const n = +cmd.replace("reel", ""); mkdirSync(TMP, { recursive: true }); if (!existsSync(path.join(TMP, "bar.png"))) await texts(); await boldTexts(n); if (n === 4) await feed(); if (n === 3) await overlay3(); if (n === 6) await overlay6(); BOLD[n](); }
 else console.log('usage: node build.mjs reel1 | reel2 | reel3 | reel4 | reel5 | reel6');
