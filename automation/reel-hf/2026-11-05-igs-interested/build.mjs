@@ -2,12 +2,13 @@
 // recording JZAC2850 (2026-11-05): Settings and activity → tap Your activity (59.25) → scroll to Suggested content →
 // Interested. Series look: ../_series/ig-settings.mjs. Honest (card note): Interested shapes what SHE sees, so she can
 // study her niche; it does not push her own Reels.
+// Hook words above her head (Mercedes 2026-11-05: "moved up, not at the bottom").
 // Usage: node build.mjs | node build.mjs review. Footage: prep-footage → grade.mjs → screen.mjs (screen.json)
 import { igsReel } from '../_series/ig-settings.mjs';
 
 await igsReel({
   title: 'Instagram settings 6: Interested',
-  hook: { a: 'Instagram', b: 'hack', c: 'to grow', top: 114, swipe: 'hack', punch: 'hack' },
+  hook: { a: 'Instagram', b: 'hack', c: 'to grow', top: 18, size: 13, sizeA: 8.5, swipe: 'hack', punch: 'hack' },
   frames: [
     { part: 0, note: 'Settings and activity (her recording), path pill; zoom to Your activity, ring, her tap',
       zoom: { at: { part: 0, dt: 0.15 }, scale: 1.25, origin: '0% 52%' }, rings: [{ x: -1, y: 86, w: 44, h: 14, at: { part: 0, dt: 0.55 } }], tap: { part: 0, dt: 1.25 } },

@@ -2,7 +2,7 @@
  "id": "2026-11-05-igs-sharing-reuse",
  "kit": "yap",
  "fps": 30,
- "duration": 11.67,
+ "duration": 11.93,
  "video": "2026-11-05-igs-sharing-reuse/base.mp4",
  "words": [
   {
@@ -64,14 +64,14 @@
   {
    "w": "Try",
    "s": 2.31,
-   "e": 2.45,
+   "e": 2.58,
    "seg": 1,
    "first": true
   },
   {
    "w": "this.",
-   "s": 2.45,
-   "e": 2.71,
+   "s": 2.58,
+   "e": 2.84,
    "seg": 1,
    "first": false
   }
@@ -86,5 +86,5 @@
  "music": null,
  "sfx": null,
  "grade": null,
- "screenAt": 2.767
+ "screenAt": 3.033
 }

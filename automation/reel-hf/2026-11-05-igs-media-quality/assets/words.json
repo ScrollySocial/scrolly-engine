@@ -2,117 +2,109 @@
  "id": "2026-11-05-igs-media-quality",
  "kit": "yap",
  "fps": 30,
- "duration": 12.07,
+ "duration": 11.63,
  "video": "2026-11-05-igs-media-quality/base.mp4",
  "words": [
   {
-   "w": "If",
+   "w": "Your",
    "s": 0,
-   "e": 1.05,
+   "e": 0.92,
    "seg": 0,
    "first": true
   },
   {
-   "w": "your",
-   "s": 1.05,
-   "e": 1.11,
+   "w": "Instagram",
+   "s": 0.92,
+   "e": 1.42,
    "seg": 0,
    "first": false
   },
   {
-   "w": "Instagram",
-   "s": 1.56,
-   "e": 2.06,
-   "seg": 1,
-   "first": true
-  },
-  {
    "w": "account",
-   "s": 2.06,
-   "e": 2.52,
-   "seg": 1,
+   "s": 1.42,
+   "e": 1.88,
+   "seg": 0,
    "first": false
   },
   {
    "w": "isn't",
-   "s": 2.52,
-   "e": 2.92,
-   "seg": 1,
+   "s": 1.88,
+   "e": 2.28,
+   "seg": 0,
    "first": false
   },
   {
    "w": "growing,",
-   "s": 2.92,
-   "e": 3.26,
-   "seg": 1,
+   "s": 2.28,
+   "e": 2.62,
+   "seg": 0,
    "first": false
   },
   {
    "w": "then",
-   "s": 3.52,
-   "e": 3.6,
-   "seg": 1,
+   "s": 2.88,
+   "e": 2.96,
+   "seg": 0,
    "first": false
   },
   {
    "w": "you",
-   "s": 3.6,
-   "e": 3.72,
-   "seg": 1,
+   "s": 2.96,
+   "e": 3.08,
+   "seg": 0,
    "first": false
   },
   {
    "w": "need",
-   "s": 3.72,
-   "e": 3.92,
-   "seg": 1,
+   "s": 3.08,
+   "e": 3.28,
+   "seg": 0,
    "first": false
   },
   {
    "w": "to",
-   "s": 3.92,
-   "e": 4.06,
-   "seg": 1,
+   "s": 3.28,
+   "e": 3.42,
+   "seg": 0,
    "first": false
   },
   {
    "w": "check",
-   "s": 4.06,
-   "e": 4.3,
-   "seg": 1,
+   "s": 3.42,
+   "e": 3.66,
+   "seg": 0,
    "first": false
   },
   {
    "w": "these",
-   "s": 4.3,
-   "e": 4.62,
-   "seg": 1,
+   "s": 3.66,
+   "e": 3.98,
+   "seg": 0,
    "first": false
   },
   {
    "w": "secret",
-   "s": 4.62,
-   "e": 5.16,
-   "seg": 1,
+   "s": 3.98,
+   "e": 4.52,
+   "seg": 0,
    "first": false
   },
   {
    "w": "settings.",
-   "s": 5.16,
-   "e": 5.53,
-   "seg": 1,
+   "s": 4.52,
+   "e": 4.89,
+   "seg": 0,
    "first": false
   }
  ],
  "emphasis": [],
  "cuts": [
-  0,
-  1.11
+  0
  ],
  "title": null,
  "end": null,
  "music": null,
  "sfx": null,
  "grade": null,
- "screenAt": 6.033
+ "screenAt": 5.6
 }

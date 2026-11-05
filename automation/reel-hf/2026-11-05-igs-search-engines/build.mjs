@@ -2,12 +2,13 @@
 // then her screen recording JZAC2850 (2026-11-05): Settings and activity scroll → tap Account privacy (141.7) → "Allow
 // public photos and videos to appear in search engine results" on. Series look: ../_series/ig-settings.mjs. Honest:
 // Instagram's own wording, search engines like Google CAN show public posts; no ranking promise.
+// Hook words above her head (Mercedes 2026-11-05: "moved up, not at the bottom").
 // Usage: node build.mjs | node build.mjs review. Footage: prep-footage → grade.mjs → screen.mjs (screen.json)
 import { igsReel } from '../_series/ig-settings.mjs';
 
 await igsReel({
   title: 'Instagram settings 8: Show in Google and Bing results',
-  hook: { a: 'Instagram', b: 'hack', c: 'to grow', top: 112, swipe: 'hack', punch: 'hack' },
+  hook: { a: 'Instagram', b: 'hack', c: 'to grow', top: 17.5, size: 9.5, sizeA: 6.8, swipe: 'hack', punch: 'hack' },
   frames: [
     { part: 0, note: 'Settings and activity scrolls (her recording), path pill; zoom to Account privacy, ring, her tap',
       zoom: { at: { part: 1, dt: 0.1 }, scale: 1.25, origin: '0% 67.5%' }, rings: [{ x: -1, y: 113, w: 48, h: 14, at: { part: 1, dt: 0.6 } }], tap: { part: 1, dt: 1.3 } },
