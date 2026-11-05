@@ -438,6 +438,10 @@ async function overlay6() {
 // themselves), the carousels swipe through their slides, and each Reel is started at the point that puts its most
 // dynamic moment in the last second. Her footage gets a warm grade, with contrast so it doesn't look foggy (her note).
 const MAIN_T = 12.5, GRID_AT = 4.4;
+// her iPhone clips are HDR (BT.2020 HLG). Left as they were, the whole main Reel came out tagged HDR and every player showed
+// it darker than the posts (her note, 2026-11-05). Tone-map them to SDR and tag every output BT.709
+const SDR = 'zscale=t=linear:npl=203,format=gbrpf32le,zscale=p=bt709,tonemap=hable:desat=0,zscale=t=bt709:m=bt709:r=tv,format=yuv420p';
+const BT709 = ['-colorspace', 'bt709', '-color_primaries', 'bt709', '-color_trc', 'bt709', '-color_range', 'tv'];
 // Instagram's real 3:4 profile grid (round 3, her note: carousels looked bad shrunk into 9:16 tiles). Each Reel is
 // cropped where its words sit at the moment its tile ends (CROP_Y), so nothing is cut off
 const TILE = { w: 300, h: 400, gap: 8, x: 82, y: 520 };
@@ -446,7 +450,8 @@ const POSTS = path.join(OUT);
 // Reel 3 (its labels) and the carousel's list slides never sit side by side (her note)
 // the image post sits in the middle (her note)
 // bottom middle: the bubbles Reel replaced Carousel 2 (her note, 2026-11-05)
-const GRID = ['reel-1', 'c1', 'reel-2', 'reel-4', 'image', 'reel-5', 'reel-6', 'reel-bubbles', 'reel-3'];
+// her pick 2026-11-05 (colour-balanced: no two same-colour tiles touch, photo in the middle, SUNNY far from Bar Soap)
+const GRID = ['reel-1', 'c1', 'reel-6', 'reel-5', 'image', 'reel-4', 'reel-2', 'reel-bubbles', 'reel-3'];
 // approved new versions from the per-post chats (2026-11-04): grid name -> file
 const REEL_FILE = { 'reel-2': 'reel-2-v7', 'reel-3': 'reel-3-v2', 'reel-bubbles': 'reel-bubbles-v3', 'reel-4': 'reel-4-v4', 'reel-6': 'reel-6-v6' };
 const reelFile = (g) => path.join(OUT, `${REEL_FILE[g] || g}.mp4`);
@@ -564,8 +569,11 @@ function tileVideo(g, k, st) {
     const cover = path.join(TMP, 'cover-reel-1.png');
     ff(['-i', SOAP, '-i', path.join(TMP, 'shadow.png'), '-i', path.join(TMP, 'mask.png'), '-filter_complex',
       `[0:v]crop=${BAR.w}:${BAR.h}:${BAR.x}:${BAR.y},scale=${W}:${H}:flags=lanczos,format=rgba[bar];[2:v]format=gray[m];color=white:s=${W}x${H}:d=1,format=rgba[wh];[wh][m]alphamerge[txt];[bar][1:v]overlay[b2];[b2][txt]overlay`, '-frames:v', '1', cover]);
-    ff(['-t', `${play}`, '-i', reelFile(g), '-i', cover, '-filter_complex',
-      `[0:v]fps=${FPS},${shape},setsar=1[p];[1:v]${shape},setsar=1,fps=${FPS},tpad=stop_mode=clone:stop_duration=${(d - play + 0.2).toFixed(2)},fps=${FPS}[c];[p][c]concat=n=2:v=1`,
+    // the hold is made as its own clip first: joining a single still frame inside one graph silently dropped it
+    const hold = path.join(TMP, `tile-${k}-cover.mp4`), holdT = (d - play + 0.2).toFixed(2);
+    ff(['-loop', '1', '-t', holdT, '-i', cover, '-vf', `${shape},setsar=1,fps=${FPS},format=yuv420p`, ...enc, hold]);
+    ff(['-t', `${play}`, '-i', reelFile(g), '-i', hold, '-filter_complex',
+      `[0:v]fps=${FPS},${shape},setsar=1,format=yuv420p[p];[1:v]setsar=1[c];[p][c]concat=n=2:v=1`,
       '-t', `${d}`, ...enc, out]);
   } else if (g.startsWith('reel')) {
     const L = videoLength(reelFile(g)), skip = (((TILE_END[g] - d) % L) + L) % L, sh = Math.round(H * w / W / 2) * 2;
@@ -605,7 +613,7 @@ function mainReel() {
   // Cut once to a light 1080×1920 file (the originals are 4K HEVC)
   const her = path.join(TMP, 'm-her.mp4'), V = P.footage;
   if (!existsSync(her)) ff(['-ss', '20', '-t', '3.2', '-i', path.join(V, 'IMG_2171.MOV'), '-ss', '8', '-t', '7', '-i', path.join(V, 'IMG_2172.MOV'), '-filter_complex',
-    `[0:v]${FIT},fps=${FPS}[a];[1:v]${FIT},fps=${FPS}[b];[a][b]concat=n=2:v=1:a=0`, ...enc, her]);
+    `[0:v]${SDR},${FIT},fps=${FPS}[a];[1:v]${SDR},${FIT},fps=${FPS}[b];[a][b]concat=n=2:v=1:a=0`, ...enc, ...BT709, her]);
   const png = (k) => ['-loop', '1', '-t', `${MAIN_T}`, '-i', path.join(TMP, `m-${k}.png`)];
   const inputs = ['-t', '10', '-i', her, ...png('client'), ...png('card'), '-framerate', `${FPS}`, '-i', path.join(TMP, 'm-gy', '%04d.png'), ...png('flash'), ...png('burst')];
   const tiles = GRID.map((g, k) => {
@@ -636,7 +644,7 @@ function mainReel() {
   }
   const out = path.join(OUT, `main-reel-v${process.argv[3] || 1}.mp4`); // versioned: her player kept showing old copies
   ff([...inputs, '-filter_complex', `${g.join(';')};[${last}]${GRAIN},format=yuv420p[v];${at(sx, 3.2, 0.5)}[a1];${at(sx + 1, GRID_AT, 0.6)}[a2];${at(sx + 2, 0.45, 0.8)}[a3];[a1][a2][a3]amix=inputs=3:normalize=0,apad,atrim=0:${MAIN_T}[a]`,
-    '-map', '[v]', '-map', '[a]', '-t', `${MAIN_T}`, '-r', `${FPS}`, '-c:v', 'libx264', '-crf', '18', '-pix_fmt', 'yuv420p', '-c:a', 'aac', '-b:a', '160k', '-movflags', '+faststart', out]);
+    '-map', '[v]', '-map', '[a]', '-t', `${MAIN_T}`, '-r', `${FPS}`, '-c:v', 'libx264', '-crf', '18', '-pix_fmt', 'yuv420p', ...BT709, '-c:a', 'aac', '-b:a', '160k', '-movflags', '+faststart', out]);
   console.log(out);
 }
 
