@@ -24,7 +24,7 @@ All in `C:\Users\merce\Scrolly Organic Engine\`:
 | Stock clips + photos (Pexels, free) | `automation/reel-series/soap-9-posts/clips/` (919 MB, not in git) and `credits.json` |
 | The render engine helpers (ffmpeg path, Chrome for drawing frames, folders) | `automation/reel-hf/lib/settings.mjs`, sounds/fonts in `automation/reel-hf/lib/assets/` |
 | The finished Sunshine Splash Reels, for reference | `C:\Users\merce\OneDrive\Scrolly Media\exports\reels\soap-9-posts\` : `reel-1.mp4`, `reel-2-v7.mp4`, `reel-3-v2.mp4`, `reel-4-v4.mp4`, `reel-5.mp4`, `reel-6-v6.mp4`, `reel-bubbles-v3.mp4` |
-| Her Pinterest inspo images for these Reels | `C:\Users\merce\AppData\Local\Temp\claude\C--Users-merce-Scrolly-Organic-Engine\043dd0ea-8ca4-45d4-b12f-77640e6169f8\scratchpad\pins\` (p0 scent, p1 callouts, p2 podium, p3 bubbles, season.jpg weather) — temporary folder: the chat should copy them into the new project first thing |
+| Her Pinterest inspo images for these Reels | `C:\Users\merce\OneDrive\Scrolly Media\exports\reels\soap-9-posts\inspo-pins\` : p0 scent, p1 callouts, p2 podium, p3 bubbles, p4 bathtub carousel, season.jpg weather |
 
 ---
 
@@ -68,4 +68,4 @@ Read every script and the matching note in `notes/` before changing anything: th
 - **Facts:** only my real ingredients and claims. Ask if unsure.
 - **Keep a simple record** of each bar's Reels (file, version, approved yes/no, caption) in `TRACKER.md` in this project, and commit your work to git here when each step is done (never commit the clips or videos).
 
-Start by: setting up git in this folder, copying the scripts + fonts + notes + inspo images, reading them, then asking me for anything missing from the checklist (bar photos, facts, shop name). Then show me the per-bar concept table for Reels 1, 5 and 6.
+Start by: setting up git in this folder, copying the scripts + fonts + notes, and looking at the inspo images, reading them, then asking me for anything missing from the checklist (bar photos, facts, shop name). Then show me the per-bar concept table for Reels 1, 5 and 6.
