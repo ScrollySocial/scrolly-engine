@@ -75,12 +75,16 @@ for (const r of rows) {
   if (link !== 200) errs.push(`${r.id}: link returns ${link}`);
 }
 if (new Set(rows.map((r) => r.title)).size !== rows.length) errs.push('duplicate titles');
+// Pinterest rejects a row as "Duplicate Pin link" when an earlier row in the same CSV has the same link (2026-11-05:
+// 44 Pins across batches 1-5 never got created). utm_content = the Pin id makes every link unique.
+const link = (r) => r.url + (r.url.includes('?') ? '&' : '?') + 'utm_content=' + r.id;
+if (new Set(rows.map(link)).size !== rows.length) errs.push('two rows share a link');
 if (errs.length) { errs.forEach((e) => console.log('ERROR  ' + e)); process.exit(1); }
 
 // 3. CSV (column names from Pinterest's bulk upload help page; Thumbnail is for video only: a timestamp, here 00:01).
 const q = (s) => `"${String(s ?? '').replace(/"/g, '""')}"`;
 const csv = ['Title,Media URL,Pinterest board,Thumbnail,Description,Link,Publish date,Keywords',
-  ...rows.map((r) => [r.title, rec[r.id].url, r.board, r.video ? '00:01' : '', r.description, r.url, r.date, r.keywords].map(q).join(','))].join('\r\n') + '\r\n';
+  ...rows.map((r) => [r.title, rec[r.id].url, r.board, r.video ? '00:01' : '', r.description, link(r), r.date, r.keywords].map(q).join(','))].join('\r\n') + '\r\n';
 const out = path.join(dir, csvName + '.csv');
 writeFileSync(out, csv);
 const od = 'C:/Users/merce/OneDrive/Scrolly Media/exports/pins';
