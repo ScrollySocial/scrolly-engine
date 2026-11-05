@@ -42,6 +42,7 @@ const CSS = font('figtree.woff2', 'Figtree', '300 900') + font('bricolage-800.wo
   // Great Vibes (Google Fonts, OFL, fonts/): Reel 3's thin script
   // her own brand fonts (vault brand/visual-system.md) for the main Reel, which is in HER voice: Instrument Serif + Jost
   `@font-face{font-family:InstrumentSerif;src:url(data:font/ttf;base64,${readFileSync(path.join(FONTS, 'instrument-serif.ttf')).toString('base64')})}` +
+  `@font-face{font-family:InstrumentSerifItalic;src:url(data:font/ttf;base64,${readFileSync(path.join(HERE, 'fonts/instrument-serif-italic.ttf')).toString('base64')})}` +
   `@font-face{font-family:Jost;src:url(data:font/ttf;base64,${readFileSync(path.join(HERE, 'fonts/jost.ttf')).toString('base64')});font-weight:100 900}` +
   `@font-face{font-family:GreatVibes;src:url(data:font/ttf;base64,${readFileSync(path.join(HERE, 'fonts/great-vibes.ttf')).toString('base64')})}` +
   `html,body{margin:0;width:${W}px;height:${H}px;background:transparent}`;
@@ -391,43 +392,102 @@ async function overlay6() {
   await b.close();
 }
 
-// THE MAIN REEL (the lesson, after @tainacreates' format, her inspo): her at her desk + the plain soap photo as a card,
-// Client: "I only have one photo, but I need 9 posts." > "Of course, I got you" > the 9 posts pop into a 3x3 grid, the
-// 6 Reels playing in their tiles. 11s. Her footage (green couch) gets the soft warm grade she likes on herself.
-const MAIN_T = 11, GRID_AT = 4.4;
-const TILE = { w: 300, h: 400, gap: 8, x: 82, y: 540 };
+// THE MAIN REEL (the lesson, after @tainacreates' format, her inspo): her on the green couch + the plain soap photo as a
+// card, Client: "I only have one photo, but I need 9 posts." > "Of course, I got you" > the 9 posts pop into a 3x3 grid.
+// Round 2 (her notes 2026-11-04): every tile shows its WHOLE post (9:16 tiles, stills sit whole on a blurred copy of
+// themselves), the carousels swipe through their slides, and each Reel is started at the point that puts its most
+// dynamic moment in the last second. Her footage gets the soft warm grade she likes on herself.
+const MAIN_T = 11, GRID_AT = 4.4, PEAK_AT = 10.2;
+const TILE = { w: 276, h: 490, gap: 8, x: 118, y: 370 };
 const POSTS = path.join(OUT);
-// grid order mixes the formats; c2 has no post yet, so carousel 1's slide 6 stands in until carousel 2 exists
 const GRID = ['reel-1', 'image', 'reel-2', 'reel-3', 'c1', 'reel-4', 'reel-5', 'c2', 'reel-6'];
-const still = {
-  image: path.join(POSTS, 'image-post', 'image-post.png'),
-  c1: path.join(POSTS, 'carousel-1', 'slide-01.png'),
-  c2: existsSync(path.join(POSTS, 'carousel-2', 'slide-01.png')) ? path.join(POSTS, 'carousel-2', 'slide-01.png') : path.join(POSTS, 'carousel-1', 'slide-06.png'),
-};
-// her brand, not the soap shop's: Instrument Serif for the line, Jost for the rest (her note 2026-11-04)
+// each Reel's most dynamic moment (seconds into it): the soap sun turning real, the bar + "welcome", the spin-in, the
+// scroll stopping, the REAL | SOAP split, the spin-in on the beach
+const PEAK = { 'reel-1': 4.0, 'reel-2': 5.3, 'reel-3': 3.2, 'reel-4': 1.7, 'reel-5': 2.1, 'reel-6': 4.4 };
+const slides = (dir, n) => Array.from({ length: n }, (_, i) => path.join(POSTS, dir, `slide-${String(i + 1).padStart(2, '0')}.png`));
+
+// Carousel 2, the bath one (her pick 2026-11-04): her bath clips + the bar, in the soap shop's lettering (Reel 3's pick A)
+const C2 = [
+  { shot: [4156329, 20, 'transpose=1,'], caps: 'bath night,', script: 'upgraded' },
+  { shot: [11932043, 15, ''], caps: 'smells like', script: 'summer', small: 'pineapple · coconut water · apple · thyme' },
+  { shot: [8227197, 2, ''], caps: 'every bar is', script: 'one of a kind', barTop: 700 },
+  { shot: [4156329, 30, 'transpose=1,'], caps: 'comment', word: 'SUNSET', small: 'for the link to get yours' },
+];
+async function carousel2() {
+  const dir = path.join(POSTS, 'carousel-2');
+  mkdirSync(dir, { recursive: true });
+  const bar = `data:image/png;base64,${readFileSync(path.join(TMP, 'bar.png')).toString('base64')}`;
+  const b = await launch(), page = await b.newPage();
+  await page.setViewport({ width: 1080, height: 1440 });
+  for (const [i, c] of C2.entries()) {
+    const f = path.join(TMP, `c2-bg${i}.jpg`);
+    ff(['-ss', `${c.shot[1]}`, '-i', clip(c.shot[0]), '-frames:v', '1', '-vf', `${c.shot[2]}scale=1080:1440:force_original_aspect_ratio=increase,crop=1080:1440`, f]);
+    await page.setContent(`<style>${CSS}html,body{width:1080px;height:1440px}</style>
+      <div style="position:absolute;inset:0;background:url(data:image/jpeg;base64,${readFileSync(f).toString('base64')}) center/cover"></div>
+      <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(20,10,5,.45) 0%,rgba(20,10,5,0) 38%,rgba(20,10,5,0) 75%,rgba(20,10,5,.4) 100%)"></div>
+      <img src="${bar}" style="position:absolute;left:250px;top:${c.barTop || 430}px;width:580px">
+      <div style="position:absolute;left:0;right:0;top:80px;text-align:center">
+        <div style="font:500 44px Figtree;letter-spacing:8px;text-transform:uppercase;color:#fff;${SOFT_SHADOW}">${c.caps}</div>
+        ${c.word ? `<div style="font:800 150px/1.1 Figtree;letter-spacing:6px;color:${BUTTER};${SOFT_SHADOW}">${c.word}</div>` : `<div style="font:190px/1 GreatVibes;color:${BUTTER};${SOFT_SHADOW}">${c.script}</div>`}</div>
+      ${c.small ? `<div style="position:absolute;left:60px;right:60px;bottom:90px;text-align:center;font:500 38px Figtree;letter-spacing:5px;text-transform:uppercase;color:#fff;${SOFT_SHADOW}">${c.small}</div>` : ''}`);
+    await page.evaluate(() => document.fonts.ready);
+    await page.screenshot({ path: path.join(dir, `slide-${String(i + 1).padStart(2, '0')}.png`) });
+  }
+  await b.close();
+}
+
+// her brand, not the soap shop's: Instrument Serif for the line, Jost for the rest (her note 2026-11-04). "I got you" in
+// the serif italic, her sky blue, with a white outline (her ask). The photo is a polaroid that snaps in with a flash
 async function mainTexts() {
   const b = await launch(), page = await b.newPage();
   await page.setViewport({ width: W, height: H });
   const sh = 'text-shadow:0 2px 18px rgba(0,0,0,.5)';
   await png(page, `<div style="position:absolute;left:90px;right:90px;top:900px;text-align:center;font:500 62px/1.3 Jost;color:#fff;${sh}">Client: "I only have one photo,<br>but I need 9 posts."</div>`, path.join(TMP, 'm-client.png'));
-  await png(page, `<div style="position:absolute;left:330px;top:1150px;width:420px;padding:18px;background:#fff;border-radius:6px;box-shadow:0 18px 40px rgba(0,0,0,.35);transform:rotate(-4deg)">
-    <img src="data:image/webp;base64,${readFileSync(SOAP).toString('base64')}" style="width:384px;display:block"></div>`, path.join(TMP, 'm-card.png'));
-  await png(page, `<div style="position:absolute;left:0;right:0;top:330px;text-align:center;font:150px/1 InstrumentSerif;letter-spacing:-1px;color:#fff;${sh}">Of course, I got you</div>`, path.join(TMP, 'm-gotyou.png'));
-  await png(page, `<div style="position:absolute;left:0;right:0;top:1790px;text-align:center;font:500 44px Jost;letter-spacing:8px;text-transform:uppercase;color:#fff;${sh}">1 photo · 9 posts</div>`, path.join(TMP, 'm-caption.png'));
+  await png(page, `<div style="position:absolute;left:325px;top:1120px;width:430px;padding:22px 22px 96px;background:#fbfaf6;border-radius:3px;box-shadow:0 18px 40px rgba(0,0,0,.35);transform:rotate(-4deg)">
+    <img src="data:image/webp;base64,${readFileSync(SOAP).toString('base64')}" style="width:386px;display:block"></div>`, path.join(TMP, 'm-card.png'));
+  await png(page, '<div style="position:absolute;inset:0;background:#fff"></div>', path.join(TMP, 'm-flash.png'));
+  await png(page, `<div style="position:absolute;left:0;right:0;top:175px;text-align:center;font:150px/1 InstrumentSerif;letter-spacing:-1px;color:#fff;${sh}">Of course, <span style="font-family:InstrumentSerifItalic;color:#4da3ff;-webkit-text-stroke:7px #fff;paint-order:stroke fill;text-shadow:none">I got you</span></div>`, path.join(TMP, 'm-gotyou.png'));
   await b.close();
 }
+
+// one small video per tile, as long as it is on screen
+function tileVideo(g, k, st) {
+  const out = path.join(TMP, `tile-${k}.mp4`), d = +(MAIN_T - st).toFixed(2), { w, h } = TILE;
+  // a still or slide sits whole on a blurred, darker copy of itself
+  const fitted = (i) => `[${i}:v]split[a${i}][b${i}];[a${i}]scale=${w}:${h}:force_original_aspect_ratio=increase,crop=${w}:${h},gblur=sigma=12,eq=brightness=-0.08[bg${i}];` +
+    `[b${i}]scale=${w}:-2[fg${i}];[bg${i}][fg${i}]overlay=0:(H-h)/2,fps=${FPS},setsar=1`;
+  if (g.startsWith('reel')) {
+    const skip = (((PEAK[g] - (PEAK_AT - st)) % 7) + 7) % 7;
+    ff(['-stream_loop', '3', '-ss', `${skip.toFixed(2)}`, '-t', `${d}`, '-i', path.join(OUT, `${g}.mp4`), '-vf', `scale=${w}:${h},fps=${FPS},setsar=1`, ...enc, out]);
+  } else if (g === 'image') {
+    ff(['-loop', '1', '-t', `${d}`, '-i', path.join(POSTS, 'image-post', 'image-post.png'), '-filter_complex', fitted(0), '-t', `${d}`, ...enc, out]);
+  } else {
+    // carousel: swipe left through the slides, 1s each
+    const list = g === 'c1' ? slides('carousel-1', 6) : [...slides('carousel-2', 4), ...slides('carousel-2', 2)];
+    const n = Math.min(list.length, Math.ceil(d / 1.0) + 1), HOLD = 1.0, XF = 0.3;
+    const ins = list.slice(0, n).flatMap((f) => ['-loop', '1', '-t', `${HOLD + XF}`, '-i', f]);
+    const chain = list.slice(0, n).map((_, i) => `${fitted(i)}[s${i}]`);
+    let lastS = 's0';
+    for (let i = 1; i < n; i++) { chain.push(`[${lastS}][s${i}]xfade=transition=slideleft:duration=${XF}:offset=${(i * HOLD).toFixed(2)}[x${i}]`); lastS = `x${i}`; }
+    ff([...ins, '-filter_complex', chain.join(';'), '-map', `[${lastS}]`, '-t', `${d}`, ...enc, out]);
+  }
+  return out;
+}
+
 function mainReel() {
-  // her green-couch clips filmed 2026-11-04 (her pick): working on the laptop for the client line, then the second take.
+  // her green-couch clips filmed 2026-11-04 (her pick): working on the laptop for the client line (from 20s: at 12-15s she
+  // looks up at the end and it reads as an eye-roll, her note), then the second take.
   // Cut once to a light 1080×1920 file (the originals are 4K HEVC)
   const her = path.join(TMP, 'm-her.mp4'), V = P.footage;
-  ff(['-ss', '12', '-t', '3.2', '-i', path.join(V, 'IMG_2171.MOV'), '-ss', '8', '-t', '7', '-i', path.join(V, 'IMG_2172.MOV'), '-filter_complex',
+  if (!existsSync(her)) ff(['-ss', '20', '-t', '3.2', '-i', path.join(V, 'IMG_2171.MOV'), '-ss', '8', '-t', '7', '-i', path.join(V, 'IMG_2172.MOV'), '-filter_complex',
     `[0:v]${FIT},fps=${FPS}[a];[1:v]${FIT},fps=${FPS}[b];[a][b]concat=n=2:v=1:a=0`, ...enc, her]);
-  const inputs = ['-t', '10', '-i', her, ...['client', 'card', 'gotyou', 'caption'].flatMap((k) => ['-loop', '1', '-t', `${MAIN_T}`, '-i', path.join(TMP, `m-${k}.png`)])];
+  const inputs = ['-t', '10', '-i', her, ...['client', 'card', 'gotyou', 'flash'].flatMap((k) => ['-loop', '1', '-t', `${MAIN_T}`, '-i', path.join(TMP, `m-${k}.png`)])];
   const tiles = GRID.map((g, k) => {
-    inputs.push(...(g.startsWith('reel') ? ['-i', path.join(OUT, `${g}.mp4`)] : ['-loop', '1', '-t', `${MAIN_T}`, '-i', still[g]]));
-    return { idx: 5 + k, st: +(GRID_AT + 0.1 * k).toFixed(2), x: TILE.x + (k % 3) * (TILE.w + TILE.gap), y: TILE.y + Math.floor(k / 3) * (TILE.h + TILE.gap), reel: g.startsWith('reel') };
+    const st = +(GRID_AT + 0.1 * k).toFixed(2);
+    inputs.push('-i', tileVideo(g, k, st));
+    return { idx: 5 + k, st, x: TILE.x + (k % 3) * (TILE.w + TILE.gap), y: TILE.y + Math.floor(k / 3) * (TILE.h + TILE.gap) };
   });
-  inputs.push(...sfx('sparkle.mp3'), ...sfx('pop-bubble.mp3'));
+  inputs.push(...sfx('sparkle.mp3'), ...sfx('pop-bubble.mp3'), ...sfx('camera.mp3'));
   const sx = 5 + GRID.length;
   const g = [
     // her clip, held on its last frame to the end; soft warm grade; a blurred, darker copy fades in behind the grid
@@ -435,26 +495,26 @@ function mainReel() {
     `[b2]gblur=sigma=24,eq=brightness=-0.12,format=rgba,fade=in:st=${GRID_AT - 0.2}:d=0.3:alpha=1[blur]`,
     `[b1][blur]overlay[v0]`,
     `[1:v]format=rgba,fade=out:st=3.0:d=0.2:alpha=1[cl];[v0][cl]overlay[v1]`,
-    `[2:v]format=rgba,fade=out:st=3.0:d=0.2:alpha=1[cd];[v1][cd]overlay=y='40*pow(max(0\\,1-t/0.4)\\,2)':eval=frame[v2]`,
+    // the polaroid snaps in at 0.5s with a white flash (and the camera sound)
+    `[2:v]format=rgba,fade=in:st=0.5:d=0.05:alpha=1,fade=out:st=3.0:d=0.2:alpha=1[cd];[v1][cd]overlay=y='40*pow(max(0\\,1-(t-0.5)/0.35)\\,2)':eval=frame:enable='gte(t\\,0.5)'[v2a]`,
+    `[4:v]format=rgba,fade=in:st=0.47:d=0.03:alpha=1,fade=out:st=0.52:d=0.25:alpha=1[fl];[v2a][fl]overlay=enable='between(t\\,0.45\\,0.8)'[v2]`,
     `[3:v]format=rgba,fade=in:st=3.2:d=0.35:alpha=1[gy];[v2][gy]overlay[v3]`,
   ];
   let last = 'v3';
   for (const [k, t] of tiles.entries()) {
-    // reels start playing the moment their tile pops in; everything is cropped to the 3:4 grid shape
-    const shape = `scale=${TILE.w}:${TILE.h}:force_original_aspect_ratio=increase,crop=${TILE.w}:${TILE.h}`;
-    g.push(`[${t.idx}:v]${shape},fps=${FPS},format=rgba${t.reel ? `,setpts=PTS-STARTPTS+${t.st}/TB` : ''},fade=in:st=${t.st}:d=0.15:alpha=1[t${k}]`);
+    g.push(`[${t.idx}:v]format=rgba,setpts=PTS-STARTPTS+${t.st}/TB,fade=in:st=${t.st}:d=0.15:alpha=1[t${k}]`);
     g.push(`[${last}][t${k}]overlay=x=${t.x}:y='${t.y}+30*pow(max(0\\,1-(t-${t.st})/0.25)\\,2)':eval=frame:enable='gte(t\\,${t.st})':eof_action=repeat[g${k}]`);
     last = `g${k}`;
   }
-  g.push(`[4:v]format=rgba,fade=in:st=${GRID_AT + 1}:d=0.3:alpha=1[cap];[${last}][cap]overlay`);
   const out = path.join(OUT, 'main-reel.mp4');
-  ff([...inputs, '-filter_complex', `${g.join(';')},${GRAIN},format=yuv420p[v];${at(sx, 3.2, 0.5)}[a1];${at(sx + 1, GRID_AT, 0.6)}[a2];[a1][a2]amix=inputs=2:normalize=0,apad,atrim=0:${MAIN_T}[a]`,
+  ff([...inputs, '-filter_complex', `${g.join(';')};[${last}]${GRAIN},format=yuv420p[v];${at(sx, 3.2, 0.5)}[a1];${at(sx + 1, GRID_AT, 0.6)}[a2];${at(sx + 2, 0.45, 0.8)}[a3];[a1][a2][a3]amix=inputs=3:normalize=0,apad,atrim=0:${MAIN_T}[a]`,
     '-map', '[v]', '-map', '[a]', '-t', `${MAIN_T}`, '-r', `${FPS}`, '-c:v', 'libx264', '-crf', '18', '-pix_fmt', 'yuv420p', '-c:a', 'aac', '-b:a', '160k', '-movflags', '+faststart', out]);
   console.log(out);
 }
 
 const cmd = process.argv[2];
 if (cmd === 'main') { mkdirSync(TMP, { recursive: true }); await mainTexts(); mainReel(); }
+else if (cmd === 'carousel2') { mkdirSync(TMP, { recursive: true }); await carousel2(); }
 else if (cmd === 'reel1') { mkdirSync(TMP, { recursive: true }); await texts(); reel1(); }
 else if (BOLD[cmd?.replace("reel", "")]) { const n = +cmd.replace("reel", ""); mkdirSync(TMP, { recursive: true }); if (!existsSync(path.join(TMP, "bar.png"))) await texts(); await boldTexts(n); if (n === 4) await feed(); if (n === 3) await overlay3(); if (n === 6) await overlay6(); BOLD[n](); }
-else console.log('usage: node build.mjs reel1 | reel2 | reel3 | reel4 | reel5 | reel6');
+else console.log('usage: node build.mjs reel1 | reel2 | reel3 | reel4 | reel5 | reel6 | carousel2 | main');
