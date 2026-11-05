@@ -509,7 +509,7 @@ async function mainTexts() {
   const b = await launch(), page = await b.newPage();
   await page.setViewport({ width: W, height: H });
   const sh = 'text-shadow:0 2px 18px rgba(0,0,0,.5)';
-  await png(page, `<div style="position:absolute;left:90px;right:90px;top:900px;text-align:center;font:500 62px/1.3 Jost;color:#fff;${sh}">Client: "I only have one photo,<br>but I need 9 posts."</div>`, path.join(TMP, 'm-client.png'));
+  await png(page, `<div style="position:absolute;left:90px;right:90px;top:170px;text-align:center;font:500 62px/1.3 Jost;color:#fff;${sh}">Client: "I only have one photo,<br>but I need 9 posts."</div>`, path.join(TMP, 'm-client.png'));
   // a real-looking instant photo, Instax-mini proportions: equal thin sides, a bit more at the top, the thick bottom
   // (her note: the frame was wider than the picture, so all the extra white sat on the right): the whole bar (cut out) on a soft neutral backdrop fills the photo window (her idea; the
   // photo's own white background made the first one read as a plain card), cream frame with the thick bottom, a sheen
@@ -519,6 +519,8 @@ async function mainTexts() {
       <img src="data:image/png;base64,${barPng}" style="position:absolute;left:20px;top:62px;width:310px">
       <div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.28) 0%,rgba(255,255,255,0) 45%)"></div></div></div>`, path.join(TMP, 'm-card.png'));
   await png(page, '<div style="position:absolute;inset:0;background:#fff"></div>', path.join(TMP, 'm-flash.png'));
+  await png(page, `<div style="position:absolute;left:-60px;top:864px;width:1200px;height:1200px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.95) 0%,rgba(255,250,235,.7) 22%,rgba(255,245,220,0) 60%)"></div>
+    <div style="position:absolute;left:-60px;top:864px;width:1200px;height:1200px;border-radius:50%;background:repeating-conic-gradient(from 0deg,rgba(255,255,255,.55) 0deg 4deg,rgba(255,255,255,0) 4deg 20deg);-webkit-mask:radial-gradient(circle,#000 18%,transparent 62%)"></div>`, path.join(TMP, 'm-burst.png'));
   // "Of course, I got you" animates in (her ask): "Of course," fades up, then I / got / you pop in one at a time with a
   // little overshoot. Frames for 3.0-4.6s; the graph pads the start and holds the last frame
   const gy = path.join(TMP, 'm-gy');
@@ -549,11 +551,11 @@ function tileVideo(g, k, st) {
   // stills and slides fill the tile
   const fitted = (i) => `[${i}:v]scale=${w}:${h}:force_original_aspect_ratio=increase,crop=${w}:${h},fps=${FPS},setsar=1`;
   if (COVER[g] != null) {
-    // plays from the start, the whole way through, then holds its cover frame (her note: the tile is the Reel's cover
+    // plays from the start, the whole way through, then holds its cover frame, a little lighter and crisper (her note) (her note: the tile is the Reel's cover
     // once it's done playing; starting it mid-way broke the flow)
     const play = Math.min(7, d - 0.5), sh = Math.round(H * w / W / 2) * 2, shape = `scale=${w}:${sh},crop=${w}:${h}:0:${Math.min(sh - h, Math.round(CROP_Y[g] * sh / H))}`;
     ff(['-t', `${play}`, '-i', path.join(OUT, `${g}.mp4`), '-ss', `${COVER[g]}`, '-i', path.join(OUT, `${g}.mp4`), '-filter_complex',
-      `[0:v]fps=${FPS},${shape},setsar=1[p];[1:v]trim=end_frame=1,${shape},setsar=1,tpad=stop_mode=clone:stop_duration=${(d - play + 0.2).toFixed(2)},fps=${FPS}[c];[p][c]concat=n=2:v=1`,
+      `[0:v]fps=${FPS},${shape},setsar=1[p];[1:v]trim=end_frame=1,${shape},eq=contrast=1.25:brightness=0.07:saturation=1.08,setsar=1,tpad=stop_mode=clone:stop_duration=${(d - play + 0.2).toFixed(2)},fps=${FPS}[c];[p][c]concat=n=2:v=1`,
       '-t', `${d}`, ...enc, out]);
   } else if (g.startsWith('reel')) {
     const L = videoLength(path.join(OUT, `${g}.mp4`)), skip = (((TILE_END[g] - d) % L) + L) % L, sh = Math.round(H * w / W / 2) * 2;
@@ -561,12 +563,20 @@ function tileVideo(g, k, st) {
       '-vf', `fps=${FPS},trim=start=${skip.toFixed(3)}:duration=${d},setpts=PTS-STARTPTS,scale=${w}:${sh},crop=${w}:${h}:0:${Math.min(sh - h, Math.round(CROP_Y[g] * sh / H))},fps=${FPS},setsar=1`, ...enc, out]);
   } else if (g === 'image') {
     ff(['-loop', '1', '-t', `${d}`, '-i', path.join(POSTS, 'image-post', 'image-post-2.png'), '-filter_complex', fitted(0), '-t', `${d}`, ...enc, out]);
+  } else if (g === 'c1') {
+    // her bathtub carousel: first its approved cover motion (the items hop INTO the tub, 3.3s, from the cover-motion
+    // chat), then it swipes slides 2, 3, 4 and lands back on the cover (slide 1) when the tile ends
+    const motion = path.join(POSTS, 'carousel-1', 'cover-motion.mp4'), M = videoLength(motion), c1 = slides('carousel-1', 4);
+    const list = [c1[1], c1[2], c1[3], c1[0]], HOLD = +((d - M) / list.length).toFixed(2), XF = 0.3;
+    const ins = list.flatMap((f) => ['-loop', '1', '-t', `${HOLD + XF}`, '-i', f]);
+    const chain = list.map((_, i) => `${fitted(i)}[s${i}]`);
+    let lastS = 's0';
+    for (let i = 1; i < list.length; i++) { chain.push(`[${lastS}][s${i}]xfade=transition=slideleft:duration=${XF}:offset=${(i * HOLD).toFixed(2)}[x${i}]`); lastS = `x${i}`; }
+    ff(['-i', motion, ...ins, '-filter_complex',
+      `[0:v]${fitted(0).slice(5)}[mo];` + chain.join(';').replace(/\[(\d+):v\]/g, (_, n) => `[${+n + 1}:v]`) + `;[mo][${lastS}]concat=n=2:v=1`, '-t', `${d}`, ...enc, out]);
   } else {
-    // carousel: swipe left through the slides, 1s each
-    // c1 = her bathtub carousel (4 slides, from the other chat 2026-11-04), ordered so the tile ends on the bathtub cover
-    const c1 = slides('carousel-1', 4), lastIdx = Math.floor((d - 0.05) / 1.0);
-    // c1: counted back from the end so the slide showing when the tile ends is the bathtub cover
-    const list = g === 'c1' ? Array.from({ length: lastIdx + 1 }, (_, i) => c1[(((i - lastIdx) % 4) + 4) % 4]) : [...slides('carousel-2', 4), ...slides('carousel-2', 2)];
+    // carousel 2: swipe left through the slides, 1s each
+    const list = [...slides('carousel-2', 4), ...slides('carousel-2', 2)];
     const n = Math.min(list.length, Math.ceil(d / 1.0) + 1), HOLD = 1.0, XF = 0.3;
     const ins = list.slice(0, n).flatMap((f) => ['-loop', '1', '-t', `${HOLD + XF}`, '-i', f]);
     const chain = list.slice(0, n).map((_, i) => `${fitted(i)}[s${i}]`);
@@ -585,20 +595,22 @@ function mainReel() {
   if (!existsSync(her)) ff(['-ss', '20', '-t', '3.2', '-i', path.join(V, 'IMG_2171.MOV'), '-ss', '8', '-t', '7', '-i', path.join(V, 'IMG_2172.MOV'), '-filter_complex',
     `[0:v]${FIT},fps=${FPS}[a];[1:v]${FIT},fps=${FPS}[b];[a][b]concat=n=2:v=1:a=0`, ...enc, her]);
   const png = (k) => ['-loop', '1', '-t', `${MAIN_T}`, '-i', path.join(TMP, `m-${k}.png`)];
-  const inputs = ['-t', '10', '-i', her, ...png('client'), ...png('card'), '-framerate', `${FPS}`, '-i', path.join(TMP, 'm-gy', '%04d.png'), ...png('flash')];
+  const inputs = ['-t', '10', '-i', her, ...png('client'), ...png('card'), '-framerate', `${FPS}`, '-i', path.join(TMP, 'm-gy', '%04d.png'), ...png('flash'), ...png('burst')];
   const tiles = GRID.map((g, k) => {
     const st = +(GRID_AT + 0.1 * k).toFixed(2);
     inputs.push('-i', tileVideo(g, k, st));
-    return { idx: 5 + k, st, x: TILE.x + (k % 3) * (TILE.w + TILE.gap), y: TILE.y + Math.floor(k / 3) * (TILE.h + TILE.gap) };
+    return { idx: 6 + k, st, x: TILE.x + (k % 3) * (TILE.w + TILE.gap), y: TILE.y + Math.floor(k / 3) * (TILE.h + TILE.gap) };
   });
   inputs.push(...sfx('sparkle.mp3'), ...sfx('pop-bubble.mp3'), ...sfx('camera.mp3'));
-  const sx = 5 + GRID.length;
+  const sx = 6 + GRID.length;
   const g = [
     // her clip, held on its last frame to the end; soft warm grade; a blurred, darker copy fades in behind the grid
     `[0:v]${FIT},fps=${FPS},tpad=stop_mode=clone:stop_duration=1.5,trim=duration=${MAIN_T},eq=contrast=1.22:saturation=1.15:gamma=0.9,curves=all='0/0 0.25/0.2 0.75/0.78 1/1',colorbalance=rs=0.02:bs=-0.02:rm=0.02:bm=-0.02,unsharp=5:5:0.5,split[b1][b2]`,
     `[b2]gblur=sigma=24,eq=brightness=-0.12,format=rgba,fade=in:st=${GRID_AT - 0.2}:d=0.3:alpha=1[blur]`,
     `[b1][blur]overlay[v0]`,
-    `[1:v]format=rgba,fade=out:st=3.0:d=0.2:alpha=1[cl];[v0][cl]overlay[v1]`,
+    `[1:v]format=rgba,fade=out:st=3.0:d=0.2:alpha=1[cl];[v0][cl]overlay[v1b]`,
+    // the burst flares behind the photo as it snaps in, then fades
+    `[5:v]format=rgba,fade=in:st=0.45:d=0.08:alpha=1,fade=out:st=0.7:d=0.7:alpha=1[bu];[v1b][bu]overlay=enable='between(t\,0.45\,1.4)'[v1]`,
     // the polaroid snaps in at 0.5s with a white flash (and the camera sound)
     `[2:v]format=rgba,fade=in:st=0.5:d=0.05:alpha=1,fade=out:st=3.0:d=0.2:alpha=1[cd];[v1][cd]overlay=y='40*pow(max(0\\,1-(t-0.5)/0.35)\\,2)':eval=frame:enable='gte(t\\,0.5)'[v2a]`,
     `[4:v]format=rgba,fade=in:st=0.47:d=0.03:alpha=1,fade=out:st=0.52:d=0.25:alpha=1[fl];[v2a][fl]overlay=enable='between(t\\,0.45\\,0.8)'[v2]`,
