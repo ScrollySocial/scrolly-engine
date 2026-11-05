@@ -445,7 +445,7 @@ const CROP_Y = { 'reel-1': 240, 'reel-2': 250, 'reel-3': 200, 'reel-4': 120, 're
 const POSTS = path.join(OUT);
 // Reel 3 (its labels) and the carousel's list slides never sit side by side (her note)
 // the image post sits in the middle (her note)
-const GRID = ['reel-1', 'c1', 'reel-2', 'reel-4', 'image', 'reel-6', 'reel-5', 'c2', 'reel-3'];
+const GRID = ['reel-1', 'c1', 'reel-2', 'reel-4', 'image', 'reel-5', 'reel-6', 'c2', 'reel-3'];
 // approved new versions from the per-post chats (2026-11-04): grid name -> file
 const REEL_FILE = { 'reel-2': 'reel-2-v7', 'reel-4': 'reel-4-v4', 'reel-6': 'reel-6-v6' };
 const reelFile = (g) => path.join(OUT, `${REEL_FILE[g] || g}.mp4`);
@@ -558,8 +558,13 @@ function tileVideo(g, k, st) {
     // plays from the start, the whole way through, then holds its cover frame, a little lighter and crisper (her note) (her note: the tile is the Reel's cover
     // once it's done playing; starting it mid-way broke the flow)
     const play = Math.min(7, d - 0.5), sh = Math.round(H * w / W / 2) * 2, shape = `scale=${w}:${sh},crop=${w}:${h}:0:${Math.min(sh - h, Math.round(CROP_Y[g] * sh / H))}`;
-    ff(['-t', `${play}`, '-i', reelFile(g), '-ss', `${COVER[g]}`, '-i', reelFile(g), '-filter_complex',
-      `[0:v]fps=${FPS},${shape},setsar=1[p];[1:v]trim=end_frame=1,${shape},eq=contrast=1.35:brightness=0.13:saturation=1.1:gamma=1.1,setsar=1,tpad=stop_mode=clone:stop_duration=${(d - play + 0.2).toFixed(2)},fps=${FPS}[c];[p][c]concat=n=2:v=1`,
+    // the cover: Reel 1's UPGRADE moment rebuilt as a still, the same soap-bar background, the words in clean white with
+    // their soft shadow (her note: make the words whiter; brightening the whole frame changed her approved colours)
+    const cover = path.join(TMP, 'cover-reel-1.png');
+    ff(['-i', SOAP, '-i', path.join(TMP, 'shadow.png'), '-i', path.join(TMP, 'mask.png'), '-filter_complex',
+      `[0:v]crop=${BAR.w}:${BAR.h}:${BAR.x}:${BAR.y},scale=${W}:${H}:flags=lanczos,format=rgba[bar];[2:v]format=gray[m];color=white:s=${W}x${H}:d=1,format=rgba[wh];[wh][m]alphamerge[txt];[bar][1:v]overlay[b2];[b2][txt]overlay`, '-frames:v', '1', cover]);
+    ff(['-t', `${play}`, '-i', reelFile(g), '-i', cover, '-filter_complex',
+      `[0:v]fps=${FPS},${shape},setsar=1[p];[1:v]${shape},setsar=1,fps=${FPS},tpad=stop_mode=clone:stop_duration=${(d - play + 0.2).toFixed(2)},fps=${FPS}[c];[p][c]concat=n=2:v=1`,
       '-t', `${d}`, ...enc, out]);
   } else if (g.startsWith('reel')) {
     const L = videoLength(reelFile(g)), skip = (((TILE_END[g] - d) % L) + L) % L, sh = Math.round(H * w / W / 2) * 2;
