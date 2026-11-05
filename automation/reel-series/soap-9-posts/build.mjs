@@ -479,7 +479,7 @@ async function carousel2() {
 }
 
 // her brand, not the soap shop's: Instrument Serif for the line, Jost for the rest (her note 2026-11-04). "I got you" in
-// the serif italic, light blue (not the bright sky), with a white outline (her ask). The photo is a polaroid that snaps in with a flash
+// the serif italic, light blue #7DBDF5 (her pick B from the swatch sheet), with a white outline. The photo is a polaroid that snaps in with a flash
 async function mainTexts() {
   const b = await launch(), page = await b.newPage();
   await page.setViewport({ width: W, height: H });
@@ -500,7 +500,7 @@ async function mainTexts() {
   mkdirSync(gy, { recursive: true });
   await page.setContent(`<style>${CSS}span{display:inline-block;transform-origin:50% 85%}</style>
     <div style="position:absolute;left:0;right:0;top:330px;text-align:center;font:150px/1 InstrumentSerif;letter-spacing:-1px;color:#fff;${sh}">
-      <span id=a>Of course,</span> ${['I', 'got', 'you'].map((w, i) => `<span id=w${i} style="font-family:InstrumentSerifItalic;color:#A9D6FF;-webkit-text-stroke:7px #fff;paint-order:stroke fill;text-shadow:none">${w}</span>`).join(' ')}</div>`);
+      <span id=a>Of course,</span> ${['I', 'got', 'you'].map((w, i) => `<span id=w${i} style="font-family:InstrumentSerifItalic;color:#7DBDF5;-webkit-text-stroke:7px #fff;paint-order:stroke fill;text-shadow:none">${w}</span>`).join(' ')}</div>`);
   await page.evaluate(() => document.fonts.ready);
   for (let f = 0; f < Math.round(1.6 * FPS); f++) {
     await page.evaluate((t) => {
