@@ -1,0 +1,90 @@
+{
+ "id": "2026-11-05-igs-sharing-reuse",
+ "kit": "yap",
+ "fps": 30,
+ "duration": 11.67,
+ "video": "2026-11-05-igs-sharing-reuse/base.mp4",
+ "words": [
+  {
+   "w": "Want",
+   "s": 0,
+   "e": 0.21,
+   "seg": 0,
+   "first": true
+  },
+  {
+   "w": "to",
+   "s": 0.21,
+   "e": 0.33,
+   "seg": 0,
+   "first": false
+  },
+  {
+   "w": "Instagram",
+   "s": 0.33,
+   "e": 0.69,
+   "seg": 0,
+   "first": false
+  },
+  {
+   "w": "hack",
+   "s": 0.69,
+   "e": 0.93,
+   "seg": 0,
+   "first": false
+  },
+  {
+   "w": "to",
+   "s": 0.93,
+   "e": 1.15,
+   "seg": 0,
+   "first": false
+  },
+  {
+   "w": "grow",
+   "s": 1.15,
+   "e": 1.25,
+   "seg": 0,
+   "first": false
+  },
+  {
+   "w": "your",
+   "s": 1.25,
+   "e": 1.41,
+   "seg": 0,
+   "first": false
+  },
+  {
+   "w": "account?",
+   "s": 1.41,
+   "e": 1.65,
+   "seg": 0,
+   "first": false
+  },
+  {
+   "w": "Try",
+   "s": 2.31,
+   "e": 2.45,
+   "seg": 1,
+   "first": true
+  },
+  {
+   "w": "this.",
+   "s": 2.45,
+   "e": 2.71,
+   "seg": 1,
+   "first": false
+  }
+ ],
+ "emphasis": [],
+ "cuts": [
+  0,
+  2.31
+ ],
+ "title": null,
+ "end": null,
+ "music": null,
+ "sfx": null,
+ "grade": null,
+ "screenAt": 2.767
+}

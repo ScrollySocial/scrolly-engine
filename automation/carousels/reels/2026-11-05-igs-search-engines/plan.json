@@ -1,0 +1,21 @@
+{
+ "kit": "yap",
+ "pad": {
+  "before": 0.06,
+  "after": 0.1
+ },
+ "segments": [
+  {
+   "src": "2026-11-04-session/instagram-settings/hook-try-this-hack/striped-cardigan-outdoor_IMG_2170.MOV",
+   "in": 1.1,
+   "out": 2.89,
+   "transcript": "audio/2026-11-04-session__instagram-settings__hook-try-this-hack__striped-cardigan-outdoor_IMG_2170.json"
+  },
+  {
+   "src": "2026-11-04-session/instagram-settings/hook-try-this-hack/striped-cardigan-outdoor_IMG_2170.MOV",
+   "in": 3.67,
+   "out": 4.15,
+   "transcript": "audio/2026-11-04-session__instagram-settings__hook-try-this-hack__striped-cardigan-outdoor_IMG_2170.json"
+  }
+ ]
+}

@@ -1,0 +1,21 @@
+{
+ "kit": "yap",
+ "pad": {
+  "before": 0.06,
+  "after": 0.1
+ },
+ "segments": [
+  {
+   "src": "2026-11-04-session/instagram-settings/hook-try-this-hack/plaid-outdoor_IMG_2164.MOV",
+   "in": 0.85,
+   "out": 3,
+   "transcript": "audio/2026-11-04-session__instagram-settings__hook-try-this-hack__plaid-outdoor_IMG_2164.json"
+  },
+  {
+   "src": "2026-11-04-session/instagram-settings/hook-try-this-hack/plaid-outdoor_IMG_2164.MOV",
+   "in": 5.04,
+   "out": 5.36,
+   "transcript": "audio/2026-11-04-session__instagram-settings__hook-try-this-hack__plaid-outdoor_IMG_2164.json"
+  }
+ ]
+}

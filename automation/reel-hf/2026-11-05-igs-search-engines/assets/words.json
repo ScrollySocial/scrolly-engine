@@ -1,0 +1,90 @@
+{
+ "id": "2026-11-05-igs-search-engines",
+ "kit": "yap",
+ "fps": 30,
+ "duration": 9.97,
+ "video": "2026-11-05-igs-search-engines/base.mp4",
+ "words": [
+  {
+   "w": "Want",
+   "s": 0,
+   "e": 0.17,
+   "seg": 0,
+   "first": true
+  },
+  {
+   "w": "an",
+   "s": 0.17,
+   "e": 0.25,
+   "seg": 0,
+   "first": false
+  },
+  {
+   "w": "Instagram",
+   "s": 0.25,
+   "e": 0.55,
+   "seg": 0,
+   "first": false
+  },
+  {
+   "w": "hack",
+   "s": 0.55,
+   "e": 0.91,
+   "seg": 0,
+   "first": false
+  },
+  {
+   "w": "to",
+   "s": 0.91,
+   "e": 1.17,
+   "seg": 0,
+   "first": false
+  },
+  {
+   "w": "grow",
+   "s": 1.17,
+   "e": 1.31,
+   "seg": 0,
+   "first": false
+  },
+  {
+   "w": "your",
+   "s": 1.31,
+   "e": 1.47,
+   "seg": 0,
+   "first": false
+  },
+  {
+   "w": "account?",
+   "s": 1.47,
+   "e": 1.75,
+   "seg": 0,
+   "first": false
+  },
+  {
+   "w": "Try",
+   "s": 1.95,
+   "e": 2.13,
+   "seg": 1,
+   "first": true
+  },
+  {
+   "w": "this",
+   "s": 2.13,
+   "e": 2.39,
+   "seg": 1,
+   "first": false
+  }
+ ],
+ "emphasis": [],
+ "cuts": [
+  0,
+  1.95
+ ],
+ "title": null,
+ "end": null,
+ "music": null,
+ "sfx": null,
+ "grade": null,
+ "screenAt": 2.567
+}

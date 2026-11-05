@@ -1,0 +1,1 @@
+split=3[a][b][c];[b]bilateral=sigmaS=10:sigmaR=0.06[s];[a][s]blend=all_mode=normal:all_opacity=0.6[m];[c]gblur=sigma=18[g];[m][g]blend=all_mode=screen:all_opacity=0.10,eq=contrast=0.96:brightness=0.01:saturation=0.97,colorbalance=rs=0.03:gs=0.01:bs=-0.03:rm=0.03:bm=-0.03:rh=0.01:bh=-0.02

@@ -1,0 +1,89 @@
+{
+ "id": "2026-11-05-igs-account-status",
+ "kit": "yap",
+ "fps": 30,
+ "duration": 12,
+ "video": "2026-11-05-igs-account-status/base.mp4",
+ "words": [
+  {
+   "w": "Your",
+   "s": 0,
+   "e": 0.38,
+   "seg": 0,
+   "first": true
+  },
+  {
+   "w": "Instagram",
+   "s": 0.38,
+   "e": 0.82,
+   "seg": 0,
+   "first": false
+  },
+  {
+   "w": "account",
+   "s": 0.82,
+   "e": 1.22,
+   "seg": 0,
+   "first": false
+  },
+  {
+   "w": "isn't",
+   "s": 1.22,
+   "e": 1.46,
+   "seg": 0,
+   "first": false
+  },
+  {
+   "w": "growing,",
+   "s": 1.46,
+   "e": 1.68,
+   "seg": 0,
+   "first": false
+  },
+  {
+   "w": "try",
+   "s": 1.68,
+   "e": 2.12,
+   "seg": 0,
+   "first": false
+  },
+  {
+   "w": "checking",
+   "s": 2.12,
+   "e": 2.44,
+   "seg": 0,
+   "first": false
+  },
+  {
+   "w": "these",
+   "s": 2.44,
+   "e": 2.74,
+   "seg": 0,
+   "first": false
+  },
+  {
+   "w": "secret",
+   "s": 2.74,
+   "e": 3.32,
+   "seg": 0,
+   "first": false
+  },
+  {
+   "w": "settings.",
+   "s": 3.32,
+   "e": 3.74,
+   "seg": 0,
+   "first": false
+  }
+ ],
+ "emphasis": [],
+ "cuts": [
+  0
+ ],
+ "title": null,
+ "end": null,
+ "music": null,
+ "sfx": null,
+ "grade": null,
+ "screenAt": 3.933
+}
