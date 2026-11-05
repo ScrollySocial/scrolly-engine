@@ -441,15 +441,19 @@ const MAIN_T = 12.5, GRID_AT = 4.4;
 // Instagram's real 3:4 profile grid (round 3, her note: carousels looked bad shrunk into 9:16 tiles). Each Reel is
 // cropped where its words sit at the moment its tile ends (CROP_Y), so nothing is cut off
 const TILE = { w: 300, h: 400, gap: 8, x: 82, y: 520 };
-const CROP_Y = { 'reel-1': 240, 'reel-2': 480, 'reel-3': 200, 'reel-4': 170, 'reel-5': 240, 'reel-6': 120 };
+const CROP_Y = { 'reel-1': 240, 'reel-2': 480, 'reel-3': 200, 'reel-4': 120, 'reel-5': 240, 'reel-6': 120 };
 const POSTS = path.join(OUT);
 // Reel 3 (its labels) and the carousel's list slides never sit side by side (her note)
-const GRID = ['reel-1', 'image', 'reel-2', 'reel-4', 'c1', 'reel-6', 'reel-5', 'c2', 'reel-3'];
+// the image post sits in the middle (her note)
+const GRID = ['reel-1', 'c1', 'reel-2', 'reel-4', 'image', 'reel-6', 'reel-5', 'c2', 'reel-3'];
+// approved new versions from the per-post chats (2026-11-04): grid name -> file
+const REEL_FILE = { 'reel-4': 'reel-4-v4' };
+const reelFile = (g) => path.join(OUT, `${REEL_FILE[g] || g}.mp4`);
 // where each Reel is (seconds into it) when the main Reel ends, so the grid lands on its best moment: UPGRADE YOUR SHOWER
 // EXPERIENCE over the soap (her pick), welcome fully in, Shop now + the labels, but here we are, the REAL | SOAP split, summer
 // Reels whose tile plays from the start and then shows a cover frame (seconds into the Reel)
 const COVER = { 'reel-1': 2.55 };
-const TILE_END = { 'reel-1': 2.55, 'reel-2': 6.7, 'reel-3': 6.6, 'reel-4': 3.0, 'reel-5': 3.6, 'reel-6': 6.6 };
+const TILE_END = { 'reel-1': 2.55, 'reel-2': 6.7, 'reel-3': 6.6, 'reel-4': 4.5, 'reel-5': 3.6, 'reel-6': 6.6 };
 // a Reel's real length (some are 6.9s, not 7): the loop maths must use it, or a tile lands on the Reel's first frame
 const videoLength = (f) => +execFileSync(tool('ffprobe'), ['-v', 'error', '-select_streams', 'v', '-show_entries', 'stream=duration', '-of', 'csv=p=0', f]).toString();
 const slides = (dir, n) => Array.from({ length: n }, (_, i) => path.join(POSTS, dir, `slide-${String(i + 1).padStart(2, '0')}.png`));
@@ -554,15 +558,15 @@ function tileVideo(g, k, st) {
     // plays from the start, the whole way through, then holds its cover frame, a little lighter and crisper (her note) (her note: the tile is the Reel's cover
     // once it's done playing; starting it mid-way broke the flow)
     const play = Math.min(7, d - 0.5), sh = Math.round(H * w / W / 2) * 2, shape = `scale=${w}:${sh},crop=${w}:${h}:0:${Math.min(sh - h, Math.round(CROP_Y[g] * sh / H))}`;
-    ff(['-t', `${play}`, '-i', path.join(OUT, `${g}.mp4`), '-ss', `${COVER[g]}`, '-i', path.join(OUT, `${g}.mp4`), '-filter_complex',
-      `[0:v]fps=${FPS},${shape},setsar=1[p];[1:v]trim=end_frame=1,${shape},eq=contrast=1.25:brightness=0.07:saturation=1.08,setsar=1,tpad=stop_mode=clone:stop_duration=${(d - play + 0.2).toFixed(2)},fps=${FPS}[c];[p][c]concat=n=2:v=1`,
+    ff(['-t', `${play}`, '-i', reelFile(g), '-ss', `${COVER[g]}`, '-i', reelFile(g), '-filter_complex',
+      `[0:v]fps=${FPS},${shape},setsar=1[p];[1:v]trim=end_frame=1,${shape},eq=contrast=1.35:brightness=0.13:saturation=1.1:gamma=1.1,setsar=1,tpad=stop_mode=clone:stop_duration=${(d - play + 0.2).toFixed(2)},fps=${FPS}[c];[p][c]concat=n=2:v=1`,
       '-t', `${d}`, ...enc, out]);
   } else if (g.startsWith('reel')) {
-    const L = videoLength(path.join(OUT, `${g}.mp4`)), skip = (((TILE_END[g] - d) % L) + L) % L, sh = Math.round(H * w / W / 2) * 2;
-    ff(['-stream_loop', '3', '-i', path.join(OUT, `${g}.mp4`),
+    const L = videoLength(reelFile(g)), skip = (((TILE_END[g] - d) % L) + L) % L, sh = Math.round(H * w / W / 2) * 2;
+    ff(['-stream_loop', '3', '-i', reelFile(g),
       '-vf', `fps=${FPS},trim=start=${skip.toFixed(3)}:duration=${d},setpts=PTS-STARTPTS,scale=${w}:${sh},crop=${w}:${h}:0:${Math.min(sh - h, Math.round(CROP_Y[g] * sh / H))},fps=${FPS},setsar=1`, ...enc, out]);
   } else if (g === 'image') {
-    ff(['-loop', '1', '-t', `${d}`, '-i', path.join(POSTS, 'image-post', 'image-post-2.png'), '-filter_complex', fitted(0), '-t', `${d}`, ...enc, out]);
+    ff(['-loop', '1', '-t', `${d}`, '-i', path.join(POSTS, 'image-post', 'image-post-6.png'), '-filter_complex', fitted(0), '-t', `${d}`, ...enc, out]);
   } else if (g === 'c1') {
     // her bathtub carousel: first its approved cover motion (the items hop INTO the tub, 3.3s, from the cover-motion
     // chat), then it swipes slides 2, 3, 4 and lands back on the cover (slide 1) when the tile ends
