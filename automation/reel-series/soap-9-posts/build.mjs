@@ -208,7 +208,7 @@ async function feed() {
 }
 // Reel 3's words + bar, one PNG per frame. 0-2.8s: words centred, "Dear" then "algorithm," float up, the caps line
 // tracks in. 2.8-3.2s: words fade up and away, a soft glow blooms. 3.0-3.7s: the bar spins in from small to full size
-// with a little overshoot, then floats. From 3.8s "Shop now" rises in just under it.
+// with a little overshoot, then floats. "Shop now" fades in at the top (her pick), not jammed against the edge.
 // her list (2026-11-04), as labels around the bar: [text, x, y, appears at]
 const PILLS = [['All natural ingredients', 40, 600, 3.9], ['Made by hand', 600, 820, 4.25],
   ['Smells like coconut + apple', 30, 1080, 4.6], ['Each bar is a work of art', 420, 1300, 4.95]];
@@ -238,7 +238,7 @@ async function overlay3() {
       document.getElementById('w1').textContent = late ? 'Shop now' : 'Dear';
       document.getElementById('w2').textContent = late ? '' : 'algorithm,';
       const leave = c((t - 2.8) / 0.35), in1 = out3((t - 5.4) / 0.5), in2 = out3((t - 4.0) / 0.5);
-      $('head').top = late ? `${1490 + 30 * (1 - in1)}px` : `${560 - 40 * leave}px`;
+      $('head').top = late ? `${250 - 30 * (1 - in1)}px` : `${560 - 40 * leave}px`;
       $('head').opacity = late ? in1 : 1 - leave;
       $('head').filter = late ? 'none' : `blur(${8 * leave}px)`;
       for (const [id, st] of [['w1', 0.15], ['w2', 0.45]]) {
