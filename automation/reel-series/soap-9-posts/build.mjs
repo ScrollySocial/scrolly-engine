@@ -40,6 +40,9 @@ const PACIFICO = readFileSync(path.join(HERE, '../christmas-countdown/fonts/paci
 const CSS = font('figtree.woff2', 'Figtree', '300 900') + font('bricolage-800.woff2', 'Bricolage', 800) +
   `@font-face{font-family:Pacifico;src:url(data:font/ttf;base64,${PACIFICO})}` +
   // Great Vibes (Google Fonts, OFL, fonts/): Reel 3's thin script
+  // her own brand fonts (vault brand/visual-system.md) for the main Reel, which is in HER voice: Instrument Serif + Jost
+  `@font-face{font-family:InstrumentSerif;src:url(data:font/ttf;base64,${readFileSync(path.join(FONTS, 'instrument-serif.ttf')).toString('base64')})}` +
+  `@font-face{font-family:Jost;src:url(data:font/ttf;base64,${readFileSync(path.join(HERE, 'fonts/jost.ttf')).toString('base64')});font-weight:100 900}` +
   `@font-face{font-family:GreatVibes;src:url(data:font/ttf;base64,${readFileSync(path.join(HERE, 'fonts/great-vibes.ttf')).toString('base64')})}` +
   `html,body{margin:0;width:${W}px;height:${H}px;background:transparent}`;
 
@@ -401,15 +404,16 @@ const still = {
   c1: path.join(POSTS, 'carousel-1', 'slide-01.png'),
   c2: existsSync(path.join(POSTS, 'carousel-2', 'slide-01.png')) ? path.join(POSTS, 'carousel-2', 'slide-01.png') : path.join(POSTS, 'carousel-1', 'slide-06.png'),
 };
+// her brand, not the soap shop's: Instrument Serif for the line, Jost for the rest (her note 2026-11-04)
 async function mainTexts() {
   const b = await launch(), page = await b.newPage();
   await page.setViewport({ width: W, height: H });
   const sh = 'text-shadow:0 2px 18px rgba(0,0,0,.5)';
-  await png(page, `<div style="position:absolute;left:90px;right:90px;top:900px;text-align:center;font:700 62px/1.3 Figtree;color:#fff;${sh}">Client: "I only have one photo,<br>but I need 9 posts."</div>`, path.join(TMP, 'm-client.png'));
+  await png(page, `<div style="position:absolute;left:90px;right:90px;top:900px;text-align:center;font:500 62px/1.3 Jost;color:#fff;${sh}">Client: "I only have one photo,<br>but I need 9 posts."</div>`, path.join(TMP, 'm-client.png'));
   await png(page, `<div style="position:absolute;left:330px;top:1150px;width:420px;padding:18px;background:#fff;border-radius:6px;box-shadow:0 18px 40px rgba(0,0,0,.35);transform:rotate(-4deg)">
     <img src="data:image/webp;base64,${readFileSync(SOAP).toString('base64')}" style="width:384px;display:block"></div>`, path.join(TMP, 'm-card.png'));
-  await png(page, `<div style="position:absolute;left:0;right:0;top:330px;text-align:center;font:150px/1 GreatVibes;color:#fff;${sh}">Of course, I got you</div>`, path.join(TMP, 'm-gotyou.png'));
-  await png(page, `<div style="position:absolute;left:0;right:0;top:1790px;text-align:center;font:500 44px Figtree;letter-spacing:8px;text-transform:uppercase;color:#fff;${sh}">1 photo · 9 posts</div>`, path.join(TMP, 'm-caption.png'));
+  await png(page, `<div style="position:absolute;left:0;right:0;top:330px;text-align:center;font:150px/1 InstrumentSerif;letter-spacing:-1px;color:#fff;${sh}">Of course, I got you</div>`, path.join(TMP, 'm-gotyou.png'));
+  await png(page, `<div style="position:absolute;left:0;right:0;top:1790px;text-align:center;font:500 44px Jost;letter-spacing:8px;text-transform:uppercase;color:#fff;${sh}">1 photo · 9 posts</div>`, path.join(TMP, 'm-caption.png'));
   await b.close();
 }
 function mainReel() {
