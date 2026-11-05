@@ -11,8 +11,9 @@ await igsReel({
   frames: [
     { part: 0, note: 'Settings and activity (her recording), path pill; zoom to Sharing and reuse, ring, her tap',
       zoom: { at: { part: 0, dt: 0.35 }, scale: 1.25, origin: '0% 73.7%' }, rings: [{ x: -1, y: 126, w: 54, h: 10, at: { part: 0, dt: 0.9 } }], tap: { part: 0, dt: 1.7 } },
-    { part: 1, note: 'Sharing and reuse page: ring around “Posts and reels to stories” + “Reposts” (both on)',
-      rings: [{ x: -1.5, y: 104, w: 101, h: 24, at: { part: 1, dt: 0.5 } }] },
+    // one ring per row (Mercedes 2026-11-05: one ring over two lines wasn't clear)
+    { part: 1, note: 'Sharing and reuse page: a ring around “Posts and reels to stories”, then one around “Reposts on posts and reels” (both on)',
+      rings: [{ x: -1.5, y: 106.6, w: 58, h: 9.6, at: { part: 1, dt: 0.45 } }, { x: -1.5, y: 116.6, w: 61, h: 9.6, at: { part: 1, dt: 1.2 } }] },
     { part: 2, note: 'Scroll down to Downloads (on): ring around its switch (never across the description), slow push in',
       rings: [{ x: 73, y: 93, w: 23, h: 14, at: { part: 3, dt: 0.15 } }], zoom: { at: { part: 3, dt: 0 }, scale: 1.05, origin: '50% 59%', d: 1.4, ease: 'none' } },
   ],
