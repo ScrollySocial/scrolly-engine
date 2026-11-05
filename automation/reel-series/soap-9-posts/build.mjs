@@ -484,12 +484,12 @@ async function mainTexts() {
   await page.setViewport({ width: W, height: H });
   const sh = 'text-shadow:0 2px 18px rgba(0,0,0,.5)';
   await png(page, `<div style="position:absolute;left:90px;right:90px;top:900px;text-align:center;font:500 62px/1.3 Jost;color:#fff;${sh}">Client: "I only have one photo,<br>but I need 9 posts."</div>`, path.join(TMP, 'm-client.png'));
-  // a real-looking polaroid: the whole bar (cut out) on a soft peach-pink backdrop fills the photo window (her idea; the
+  // a real-looking instant photo (tall frame, portrait window, her note): the whole bar (cut out) on a soft neutral backdrop fills the photo window (her idea; the
   // photo's own white background made the first one read as a plain card), cream frame with the thick bottom, a sheen
   const barPng = readFileSync(path.join(TMP, 'bar.png')).toString('base64');
-  await png(page, `<div style="position:absolute;left:310px;top:1080px;width:460px;padding:26px 26px 110px;background:#f6f2e9;border-radius:4px;box-shadow:0 22px 44px rgba(0,0,0,.4),inset 0 0 0 1px rgba(0,0,0,.05);transform:rotate(-5deg)">
-    <div style="position:relative;width:408px;height:408px;overflow:hidden;background:radial-gradient(circle at 40% 35%,#FBE3D6 0%,#F2C9C4 60%,#E5B3B9 100%);box-shadow:inset 0 0 12px rgba(0,0,0,.3)">
-      <img src="data:image/png;base64,${barPng}" style="position:absolute;left:44px;top:40px;width:320px">
+  await png(page, `<div style="position:absolute;left:345px;top:1170px;width:390px;padding:30px 28px 140px;background:#f8f5ee;border-radius:4px;box-shadow:0 22px 44px rgba(0,0,0,.4),inset 0 0 0 1px rgba(0,0,0,.05);transform:rotate(-5deg)">
+    <div style="position:relative;width:334px;height:446px;overflow:hidden;background:radial-gradient(circle at 45% 35%,#F3EEE8 0%,#E9E2D9 100%);box-shadow:inset 0 0 10px rgba(0,0,0,.22)">
+      <img src="data:image/png;base64,${barPng}" style="position:absolute;left:12px;top:58px;width:310px">
       <div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.28) 0%,rgba(255,255,255,0) 45%)"></div></div></div>`, path.join(TMP, 'm-card.png'));
   await png(page, '<div style="position:absolute;inset:0;background:#fff"></div>', path.join(TMP, 'm-flash.png'));
   await png(page, `<div style="position:absolute;left:0;right:0;top:330px;text-align:center;font:150px/1 InstrumentSerif;letter-spacing:-1px;color:#fff;${sh}">Of course, <span style="font-family:InstrumentSerifItalic;color:#A9D6FF;-webkit-text-stroke:7px #fff;paint-order:stroke fill;text-shadow:none">I got you</span></div>`, path.join(TMP, 'm-gotyou.png'));
@@ -538,7 +538,7 @@ function mainReel() {
   const sx = 5 + GRID.length;
   const g = [
     // her clip, held on its last frame to the end; soft warm grade; a blurred, darker copy fades in behind the grid
-    `[0:v]${FIT},fps=${FPS},tpad=stop_mode=clone:stop_duration=1.5,trim=duration=${MAIN_T},eq=contrast=1.14:saturation=1.12:gamma=0.95,colorbalance=rs=0.02:bs=-0.02:rm=0.02:bm=-0.02,unsharp=5:5:0.5,split[b1][b2]`,
+    `[0:v]${FIT},fps=${FPS},tpad=stop_mode=clone:stop_duration=1.5,trim=duration=${MAIN_T},eq=contrast=1.22:saturation=1.15:gamma=0.9,curves=all='0/0 0.25/0.2 0.75/0.78 1/1',colorbalance=rs=0.02:bs=-0.02:rm=0.02:bm=-0.02,unsharp=5:5:0.5,split[b1][b2]`,
     `[b2]gblur=sigma=24,eq=brightness=-0.12,format=rgba,fade=in:st=${GRID_AT - 0.2}:d=0.3:alpha=1[blur]`,
     `[b1][blur]overlay[v0]`,
     `[1:v]format=rgba,fade=out:st=3.0:d=0.2:alpha=1[cl];[v0][cl]overlay[v1]`,
@@ -553,7 +553,7 @@ function mainReel() {
     g.push(`[${last}][t${k}]overlay=x=${t.x}:y='${t.y}+30*pow(max(0\\,1-(t-${t.st})/0.25)\\,2)':eval=frame:enable='gte(t\\,${t.st})':eof_action=repeat[g${k}]`);
     last = `g${k}`;
   }
-  const out = path.join(OUT, 'main-reel.mp4');
+  const out = path.join(OUT, `main-reel-v${process.argv[3] || 1}.mp4`); // versioned: her player kept showing old copies
   ff([...inputs, '-filter_complex', `${g.join(';')};[${last}]${GRAIN},format=yuv420p[v];${at(sx, 3.2, 0.5)}[a1];${at(sx + 1, GRID_AT, 0.6)}[a2];${at(sx + 2, 0.45, 0.8)}[a3];[a1][a2][a3]amix=inputs=3:normalize=0,apad,atrim=0:${MAIN_T}[a]`,
     '-map', '[v]', '-map', '[a]', '-t', `${MAIN_T}`, '-r', `${FPS}`, '-c:v', 'libx264', '-crf', '18', '-pix_fmt', 'yuv420p', '-c:a', 'aac', '-b:a', '160k', '-movflags', '+faststart', out]);
   console.log(out);
