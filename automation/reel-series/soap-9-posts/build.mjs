@@ -174,7 +174,7 @@ const TEXTS = {
     rest: `<div style="position:absolute;left:110px;right:110px;bottom:130px;text-align:center;font:500 46px/1.5 Figtree;letter-spacing:6px;text-transform:uppercase;color:#fff;${SOFT_SHADOW}">` +
       'please connect me with all the people who love supporting small businesses and artisanal products!</div>' },
   4: { hook: box("You weren't looking for a new soap,", 200, 66), here: big('but here<br>we are.', 1250, 175, '#fff', SHADOW) },
-  5: { hook: box('Can you tell the difference?', 1240, 70),
+  5: { hook: box('Can you tell the difference?', 230, 70),
     labels: big('REAL', 1480, 150, '#fff', SHADOW + ';width:540px') + big('SOAP', 1480, 150, '#fff', SHADOW + ';width:540px;left:540px'),
     end: big("IT'S<br>SOAP.", 1440, 200, '#fff', SHADOW) },
 };
@@ -208,6 +208,37 @@ async function feed() {
   await page.setViewport({ width: W, height: 1000 });
   await page.setContent(html, { waitUntil: 'load' });
   await page.screenshot({ path: path.join(TMP, 'feed.png'), fullPage: true });
+  await b.close();
+}
+// Reel 2's "welcome" (her note: animate it): each letter pops up with a little overshoot, 0.07s apart, and small
+// sparkles twinkle around the word. Frames for 5.45s-7s only; the graph pads the start
+async function welcome2() {
+  const dir = path.join(TMP, 'r2wel');
+  mkdirSync(dir, { recursive: true });
+  const b = await launch(), page = await b.newPage();
+  await page.setViewport({ width: W, height: H });
+  const sparks = [[150, 1560, 0.35], [930, 1600, 0.5], [210, 1820, 0.7], [880, 1830, 0.85], [540, 1540, 1.0]];
+  await page.setContent(`<style>${CSS}span{display:inline-block;transform-origin:50% 80%}</style>
+    <div style="position:absolute;left:0;right:0;top:1590px;text-align:center;font:255px/1 Pacifico;color:#fff;text-shadow:0 0 30px rgba(236,140,170,.75),0 8px 24px rgba(120,40,80,.35)">
+      ${[...'welcome'].map((ch, i) => `<span id=L${i}>${ch}</span>`).join('')}</div>
+    ${sparks.map(([x, y], i) => `<svg id=S${i} width=60 height=60 style="position:absolute;left:${x}px;top:${y}px" viewBox="-10 -10 20 20"><path d="M0-10Q1-1 10 0Q1 1 0 10Q-1 1-10 0Q-1-1 0-10Z" fill="#fff"/></svg>`).join('')}`);
+  await page.evaluate(() => document.fonts.ready);
+  const frames = Math.round((7 - 5.45) * FPS);
+  for (let f = 0; f < frames; f++) {
+    await page.evaluate((t, sparks) => {
+      const c = (x) => Math.max(0, Math.min(1, x));
+      const back = (x) => { x = c(x); const k = 2.2; return 1 + (k + 1) * Math.pow(x - 1, 3) + k * Math.pow(x - 1, 2); };
+      for (let i = 0; i < 7; i++) {
+        const k = (t - 0.07 * i) / 0.32, s = document.getElementById(`L${i}`).style;
+        s.opacity = c(k * 3); s.transform = `translateY(${60 * (1 - c(k))}px) scale(${k <= 0 ? 0 : back(k)})`;
+      }
+      sparks.forEach(([, , st], i) => {
+        const k = (t - st) / 0.5, s = document.getElementById(`S${i}`).style;
+        s.opacity = k < 0 || k > 1 ? 0 : Math.sin(Math.PI * k); s.transform = `scale(${0.4 + Math.sin(Math.PI * c(k))}) rotate(${90 * c(k)}deg)`;
+      });
+    }, f / FPS, sparks);
+    await page.screenshot({ path: path.join(dir, `${String(f + 1).padStart(4, '0')}.png`), omitBackground: true });
+  }
   await b.close();
 }
 // Reel 3's words + bar, one PNG per frame. 0-2.8s: words centred, "Dear" then "algorithm," float up, the caps line
@@ -292,18 +323,21 @@ const BOLD = {
   // filling the frame (foam to foam) > the overhead bath (turned upright, same top-down view as the beach) > THEN the bar
   // drops in over the foam and floats
   2: () => render(2, ['-ss', '1', '-t', '2.6', '-i', clip(36625664), '-ss', '0.5', '-t', '1.4', '-i', clip(11932043),
-    '-ss', '14', '-t', '2', '-i', clip(4156329), '-ss', '13', '-t', '1.8', '-i', clip(11932043), ...barIn(), ...txt(2, 'l1'), ...txt(2, 'l2'), ...txt(2, 'l3'), ...txt(2, 'welcome'),
+    '-ss', '14', '-t', '2', '-i', clip(4156329), '-ss', '13', '-t', '1.8', '-i', clip(11932043), ...barIn(), ...txt(2, 'l1'), ...txt(2, 'l2'), ...txt(2, 'l3'),
+    '-framerate', `${FPS}`, '-i', path.join(TMP, 'r2wel', '%04d.png'),
     ...sfx('whoosh-air.mp3'), ...sfx('pop-bubble.mp3'), ...sfx('sparkle.mp3')],
     `[0:v]${FIT},fps=${FPS},scale=${W * 2}:${H * 2},zoompan=z='1+1.2*min(in_time/2.6\\,1)':x='(iw-iw/zoom)*min(in_time/2.2\\,1)':y='ih/2-ih/zoom/2':d=1:s=${W}x${H}:fps=${FPS},setsar=1[beach];` +
-    `[1:v]${FIT},fps=${FPS},setsar=1[foam];[2:v]transpose=1,${FIT},fps=${FPS},setsar=1[bath];` +
-    `[3:v]${FIT},fps=${FPS},gblur=sigma=3,setsar=1[foam2];` +
+    // the bath shots were too dark (her note): lifted
+    `[1:v]${FIT},fps=${FPS},eq=gamma=1.12:brightness=0.03,setsar=1[foam];[2:v]transpose=1,${FIT},fps=${FPS},eq=gamma=1.3:brightness=0.07:saturation=1.05,setsar=1[bath];` +
+    `[3:v]${FIT},fps=${FPS},gblur=sigma=3,eq=gamma=1.15:brightness=0.04,setsar=1[foam2];` +
     `[beach][foam]xfade=transition=fade:duration=0.4:offset=2.2[bf];[bf][bath]xfade=transition=fade:duration=0.4:offset=3.2[bfb];[bfb][foam2]concat=n=2:v=1[bg];` +
     `${floatBar(4, 1000)};[bar]fade=in:st=5.2:d=0.15:alpha=1[barf];[bg][barf]overlay=x='(W-w)/2':y='if(lt(t\\,5.2)\\,${H}\\,590+20*sin(2*PI*t/2.4)-120*pow(max(0\\,1-(t-5.2)/0.3)\\,2))':eval=frame[vb];` +
     // each line drops in and fades up (0.2s apart); welcome rises in big once the bar has landed
     [[5, 0.15], [6, 0.45], [7, 0.75]].map(([i, st], k) => `[${i}:v]format=rgba,fade=in:st=${st}:d=0.2:alpha=1[l${k}]`).join(';') +
     `;[vb][l0]overlay=y='-40*max(0\\,1-(t-0.15)/0.25)':eval=frame[w0];[w0][l1]overlay=y='-40*max(0\\,1-(t-0.45)/0.25)':eval=frame[w1];` +
     `[w1][l2]overlay=y='-40*max(0\\,1-(t-0.75)/0.25)':eval=frame[w2];` +
-    `[8:v]format=rgba,fade=in:st=5.45:d=0.25:alpha=1[wel];[w2][wel]overlay=y='120*pow(max(0\\,1-(t-5.45)/0.4)\\,2)':eval=frame`,
+    // welcome: drawn frame by frame (welcome2), letters pop in one by one with sparkles; it starts at 5.45s
+    `[8:v]format=rgba,tpad=start_duration=5.45:color=0x00000000[wel];[w2][wel]overlay`,
     `${at(9, 2.2, 0.5)}[a1];${at(10, 5.2, 0.6)}[a2];${at(11, 5.45, 0.5)}[a3];${mix(['a1', 'a2', 'a3'])}`),
   // 3 (round 3): HER footage from her old soap business (clips/her-mix-pour.mp4), only the shots before the charcoal goes
   // in (that batch was her black Deep Clean bar): the pour, the stick blender in yellow batter, the empty mold. Then the
@@ -329,7 +363,9 @@ const BOLD = {
   5: () => render(5, ['-ss', '1', '-t', '7', '-i', clip(13663887), '-loop', '1', '-t', '7', '-i', SOAP, ...txt(5, 'hook'), ...txt(5, 'labels'), ...txt(5, 'end'),
     '-f', 'lavfi', '-t', '7', '-i', `color=black:s=${W}x${H}:r=${FPS}`, '-f', 'lavfi', '-t', '7', '-i', `color=white:s=${W}x${H}:r=${FPS}`,
     '-f', 'lavfi', '-t', '7', '-i', `color=white:s=10x${H}:r=${FPS}`, ...sfx('whoosh-air.mp3'), ...sfx('whoosh-fast.mp3'), ...barIn(), ...sfx('pop-light.mp3')],
-    `[0:v]${FIT},scale=1296:2304,crop=${W}:${H}:216:0,fps=${FPS},setsar=1[sun];[1:v]crop=878:1560:541:373,scale=${W}:${H}:flags=lanczos,fps=${FPS},setsar=1[soap];` +
+    // round 4 (her note): the WHOLE height of the bar shows, and the real sunset is zoomed 2.5x so the two read at the
+    // same scale. Both suns sit dead centre (x 540) on the same horizon (y 1221), so the split line cuts each sun in half
+    `[0:v]${FIT},scale=2700:4800,crop=${W}:${H}:753:1089,fps=${FPS},setsar=1[sun];[1:v]crop=1052:1870:454:85,scale=${W}:${H}:flags=lanczos,fps=${FPS},setsar=1[soap];` +
     `[5:v][6:v]overlay=x='${SPLIT}':eval=frame,format=gray[m];[soap][m]alphamerge[sm];[sun][sm]overlay[v1];` +
     `[v1][7:v]overlay=x='${SPLIT}-5':eval=frame:enable='between(t\\,1.8\\,5.0)'[v2];` +
     `[v2][2:v]overlay=enable='lt(t\\,5.0)'[v3];[v3][3:v]overlay=enable='between(t\\,2.4\\,4.6)'[v4];` +
@@ -396,22 +432,25 @@ async function overlay6() {
 // card, Client: "I only have one photo, but I need 9 posts." > "Of course, I got you" > the 9 posts pop into a 3x3 grid.
 // Round 2 (her notes 2026-11-04): every tile shows its WHOLE post (9:16 tiles, stills sit whole on a blurred copy of
 // themselves), the carousels swipe through their slides, and each Reel is started at the point that puts its most
-// dynamic moment in the last second. Her footage gets the soft warm grade she likes on herself.
-const MAIN_T = 11, GRID_AT = 4.4, PEAK_AT = 10.2;
-const TILE = { w: 276, h: 490, gap: 8, x: 118, y: 370 };
+// dynamic moment in the last second. Her footage gets a warm grade, with contrast so it doesn't look foggy (her note).
+const MAIN_T = 11, GRID_AT = 4.4;
+// Instagram's real 3:4 profile grid (round 3, her note: carousels looked bad shrunk into 9:16 tiles). Each Reel is
+// cropped where its words sit at the moment its tile ends (CROP_Y), so nothing is cut off
+const TILE = { w: 300, h: 400, gap: 8, x: 82, y: 520 };
+const CROP_Y = { 'reel-1': 240, 'reel-2': 480, 'reel-3': 200, 'reel-4': 170, 'reel-5': 200, 'reel-6': 120 };
 const POSTS = path.join(OUT);
 const GRID = ['reel-1', 'image', 'reel-2', 'reel-3', 'c1', 'reel-4', 'reel-5', 'c2', 'reel-6'];
-// each Reel's most dynamic moment (seconds into it): the soap sun turning real, the bar + "welcome", the spin-in, the
-// scroll stopping, the REAL | SOAP split, the spin-in on the beach
-const PEAK = { 'reel-1': 4.0, 'reel-2': 5.3, 'reel-3': 3.2, 'reel-4': 1.7, 'reel-5': 2.1, 'reel-6': 4.4 };
+// where each Reel is (seconds into it) when the main Reel ends, so the grid lands on its best moment: UPGRADE YOUR SHOWER
+// EXPERIENCE over the soap (her pick), welcome fully in, Shop now + the labels, but here we are, the REAL | SOAP split, summer
+const TILE_END = { 'reel-1': 2.55, 'reel-2': 6.9, 'reel-3': 6.9, 'reel-4': 3.0, 'reel-5': 3.6, 'reel-6': 6.9 };
 const slides = (dir, n) => Array.from({ length: n }, (_, i) => path.join(POSTS, dir, `slide-${String(i + 1).padStart(2, '0')}.png`));
 
 // Carousel 2, the bath one (her pick 2026-11-04): her bath clips + the bar, in the soap shop's lettering (Reel 3's pick A)
 const C2 = [
   { shot: [4156329, 20, 'transpose=1,'], caps: 'bath night,', script: 'upgraded' },
-  { shot: [11932043, 15, ''], caps: 'smells like', script: 'summer', small: 'pineapple · coconut water · apple · thyme' },
-  { shot: [8227197, 2, ''], caps: 'every bar is', script: 'one of a kind', barTop: 700 },
-  { shot: [4156329, 30, 'transpose=1,'], caps: 'comment', word: 'SUNSET', small: 'for the link to get yours' },
+  { shot: [13767351, 2, ''], caps: 'smells like', script: 'summer', small: 'pineapple · coconut<br>water · apple · thyme' },
+  { shot: [8227197, 2, ''], caps: 'every bar is', script: 'one of<br>a kind' },
+  { shot: [4156329, 30, 'transpose=1,'], caps: 'comment', word: 'SUNSET', small: 'for the link' },
 ];
 async function carousel2() {
   const dir = path.join(POSTS, 'carousel-2');
@@ -422,14 +461,16 @@ async function carousel2() {
   for (const [i, c] of C2.entries()) {
     const f = path.join(TMP, `c2-bg${i}.jpg`);
     ff(['-ss', `${c.shot[1]}`, '-i', clip(c.shot[0]), '-frames:v', '1', '-vf', `${c.shot[2]}scale=1080:1440:force_original_aspect_ratio=increase,crop=1080:1440`, f]);
-    await page.setContent(`<style>${CSS}html,body{width:1080px;height:1440px}</style>
-      <div style="position:absolute;inset:0;background:url(data:image/jpeg;base64,${readFileSync(f).toString('base64')}) center/cover"></div>
-      <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(20,10,5,.45) 0%,rgba(20,10,5,0) 38%,rgba(20,10,5,0) 75%,rgba(20,10,5,.4) 100%)"></div>
-      <img src="${bar}" style="position:absolute;left:250px;top:${c.barTop || 430}px;width:580px">
-      <div style="position:absolute;left:0;right:0;top:80px;text-align:center">
-        <div style="font:500 44px Figtree;letter-spacing:8px;text-transform:uppercase;color:#fff;${SOFT_SHADOW}">${c.caps}</div>
-        ${c.word ? `<div style="font:800 150px/1.1 Figtree;letter-spacing:6px;color:${BUTTER};${SOFT_SHADOW}">${c.word}</div>` : `<div style="font:190px/1 GreatVibes;color:${BUTTER};${SOFT_SHADOW}">${c.script}</div>`}</div>
-      ${c.small ? `<div style="position:absolute;left:60px;right:60px;bottom:90px;text-align:center;font:500 38px Figtree;letter-spacing:5px;text-transform:uppercase;color:#fff;${SOFT_SHADOW}">${c.small}</div>` : ''}`);
+    // round 2 (her notes): photo on top, a cream panel with BIG words below (readable even as a tiny tile), the bar as a
+    // sticker across the seam, so it can't be mistaken for Reel 6's ending
+    await page.setContent(`<style>${CSS}html,body{width:1080px;height:1440px;margin:0}</style>
+      <div style="position:absolute;left:0;right:0;top:0;height:830px;background:url(data:image/jpeg;base64,${readFileSync(f).toString('base64')}) center/cover"></div>
+      <div style="position:absolute;left:0;right:0;top:830px;bottom:0;background:#F7EFE6"></div>
+      <img src="${bar}" style="position:absolute;left:600px;top:470px;width:520px;transform:rotate(8deg)">
+      <div style="position:absolute;left:60px;width:620px;top:880px">
+        <div style="font:600 54px Figtree;letter-spacing:8px;text-transform:uppercase;color:#7a5638">${c.caps}</div>
+        ${c.word ? `<div style="font:800 175px/1.05 Figtree;letter-spacing:4px;color:#E07E95">${c.word}</div>` : `<div style="font:215px/1.05 GreatVibes;color:#E07E95;white-space:nowrap">${c.script}</div>`}
+        ${c.small ? `<div style="margin-top:14px;font:600 40px/1.4 Figtree;letter-spacing:4px;text-transform:uppercase;color:#7a5638">${c.small}</div>` : ''}</div>`);
     await page.evaluate(() => document.fonts.ready);
     await page.screenshot({ path: path.join(dir, `slide-${String(i + 1).padStart(2, '0')}.png`) });
   }
@@ -443,27 +484,27 @@ async function mainTexts() {
   await page.setViewport({ width: W, height: H });
   const sh = 'text-shadow:0 2px 18px rgba(0,0,0,.5)';
   await png(page, `<div style="position:absolute;left:90px;right:90px;top:900px;text-align:center;font:500 62px/1.3 Jost;color:#fff;${sh}">Client: "I only have one photo,<br>but I need 9 posts."</div>`, path.join(TMP, 'm-client.png'));
-  // a real-looking polaroid: a square close-up of the bar fills the photo window (the photo's own white background
-  // made the first one read as a plain card), cream frame with the thick bottom, a soft sheen on the print
-  const sq = path.join(TMP, 'm-square.jpg');
-  ff(['-i', SOAP, '-frames:v', '1', '-vf', 'crop=1300:1300:300:350,scale=760:760', sq]);
+  // a real-looking polaroid: the whole bar (cut out) on a soft peach-pink backdrop fills the photo window (her idea; the
+  // photo's own white background made the first one read as a plain card), cream frame with the thick bottom, a sheen
+  const barPng = readFileSync(path.join(TMP, 'bar.png')).toString('base64');
   await png(page, `<div style="position:absolute;left:310px;top:1080px;width:460px;padding:26px 26px 110px;background:#f6f2e9;border-radius:4px;box-shadow:0 22px 44px rgba(0,0,0,.4),inset 0 0 0 1px rgba(0,0,0,.05);transform:rotate(-5deg)">
-    <div style="position:relative;width:408px;height:408px;background:url(data:image/jpeg;base64,${readFileSync(sq).toString('base64')}) center/cover;box-shadow:inset 0 0 12px rgba(0,0,0,.35)">
+    <div style="position:relative;width:408px;height:408px;overflow:hidden;background:radial-gradient(circle at 40% 35%,#FBE3D6 0%,#F2C9C4 60%,#E5B3B9 100%);box-shadow:inset 0 0 12px rgba(0,0,0,.3)">
+      <img src="data:image/png;base64,${barPng}" style="position:absolute;left:44px;top:40px;width:320px">
       <div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.28) 0%,rgba(255,255,255,0) 45%)"></div></div></div>`, path.join(TMP, 'm-card.png'));
   await png(page, '<div style="position:absolute;inset:0;background:#fff"></div>', path.join(TMP, 'm-flash.png'));
-  await png(page, `<div style="position:absolute;left:0;right:0;top:175px;text-align:center;font:150px/1 InstrumentSerif;letter-spacing:-1px;color:#fff;${sh}">Of course, <span style="font-family:InstrumentSerifItalic;color:#A9D6FF;-webkit-text-stroke:7px #fff;paint-order:stroke fill;text-shadow:none">I got you</span></div>`, path.join(TMP, 'm-gotyou.png'));
+  await png(page, `<div style="position:absolute;left:0;right:0;top:330px;text-align:center;font:150px/1 InstrumentSerif;letter-spacing:-1px;color:#fff;${sh}">Of course, <span style="font-family:InstrumentSerifItalic;color:#A9D6FF;-webkit-text-stroke:7px #fff;paint-order:stroke fill;text-shadow:none">I got you</span></div>`, path.join(TMP, 'm-gotyou.png'));
   await b.close();
 }
 
 // one small video per tile, as long as it is on screen
 function tileVideo(g, k, st) {
   const out = path.join(TMP, `tile-${k}.mp4`), d = +(MAIN_T - st).toFixed(2), { w, h } = TILE;
-  // a still or slide sits whole on a blurred, darker copy of itself
-  const fitted = (i) => `[${i}:v]split[a${i}][b${i}];[a${i}]scale=${w}:${h}:force_original_aspect_ratio=increase,crop=${w}:${h},gblur=sigma=12,eq=brightness=-0.08[bg${i}];` +
-    `[b${i}]scale=${w}:-2[fg${i}];[bg${i}][fg${i}]overlay=0:(H-h)/2,fps=${FPS},setsar=1`;
+  // stills and slides fill the tile
+  const fitted = (i) => `[${i}:v]scale=${w}:${h}:force_original_aspect_ratio=increase,crop=${w}:${h},fps=${FPS},setsar=1`;
   if (g.startsWith('reel')) {
-    const skip = (((PEAK[g] - (PEAK_AT - st)) % 7) + 7) % 7;
-    ff(['-stream_loop', '3', '-ss', `${skip.toFixed(2)}`, '-t', `${d}`, '-i', path.join(OUT, `${g}.mp4`), '-vf', `scale=${w}:${h},fps=${FPS},setsar=1`, ...enc, out]);
+    const skip = (((TILE_END[g] - d) % 7) + 7) % 7, sh = Math.round(H * w / W / 2) * 2;
+    ff(['-stream_loop', '3', '-i', path.join(OUT, `${g}.mp4`),
+      '-vf', `fps=${FPS},trim=start=${skip.toFixed(3)}:duration=${d},setpts=PTS-STARTPTS,scale=${w}:${sh},crop=${w}:${h}:0:${Math.min(sh - h, Math.round(CROP_Y[g] * sh / H))},fps=${FPS},setsar=1`, ...enc, out]);
   } else if (g === 'image') {
     ff(['-loop', '1', '-t', `${d}`, '-i', path.join(POSTS, 'image-post', 'image-post.png'), '-filter_complex', fitted(0), '-t', `${d}`, ...enc, out]);
   } else {
@@ -497,7 +538,7 @@ function mainReel() {
   const sx = 5 + GRID.length;
   const g = [
     // her clip, held on its last frame to the end; soft warm grade; a blurred, darker copy fades in behind the grid
-    `[0:v]${FIT},fps=${FPS},tpad=stop_mode=clone:stop_duration=1.5,trim=duration=${MAIN_T},eq=brightness=0.03:saturation=1.05:gamma=1.04,colorbalance=rs=0.03:bs=-0.03:rm=0.02:bm=-0.02,gblur=sigma=0.8,split[b1][b2]`,
+    `[0:v]${FIT},fps=${FPS},tpad=stop_mode=clone:stop_duration=1.5,trim=duration=${MAIN_T},eq=contrast=1.14:saturation=1.12:gamma=0.95,colorbalance=rs=0.02:bs=-0.02:rm=0.02:bm=-0.02,unsharp=5:5:0.5,split[b1][b2]`,
     `[b2]gblur=sigma=24,eq=brightness=-0.12,format=rgba,fade=in:st=${GRID_AT - 0.2}:d=0.3:alpha=1[blur]`,
     `[b1][blur]overlay[v0]`,
     `[1:v]format=rgba,fade=out:st=3.0:d=0.2:alpha=1[cl];[v0][cl]overlay[v1]`,
@@ -522,5 +563,5 @@ const cmd = process.argv[2];
 if (cmd === 'main') { mkdirSync(TMP, { recursive: true }); await mainTexts(); mainReel(); }
 else if (cmd === 'carousel2') { mkdirSync(TMP, { recursive: true }); await carousel2(); }
 else if (cmd === 'reel1') { mkdirSync(TMP, { recursive: true }); await texts(); reel1(); }
-else if (BOLD[cmd?.replace("reel", "")]) { const n = +cmd.replace("reel", ""); mkdirSync(TMP, { recursive: true }); if (!existsSync(path.join(TMP, "bar.png"))) await texts(); await boldTexts(n); if (n === 4) await feed(); if (n === 3) await overlay3(); if (n === 6) await overlay6(); BOLD[n](); }
+else if (BOLD[cmd?.replace("reel", "")]) { const n = +cmd.replace("reel", ""); mkdirSync(TMP, { recursive: true }); if (!existsSync(path.join(TMP, "bar.png"))) await texts(); await boldTexts(n); if (n === 4) await feed(); if (n === 3) await overlay3(); if (n === 6) await overlay6(); if (n === 2) await welcome2(); BOLD[n](); }
 else console.log('usage: node build.mjs reel1 | reel2 | reel3 | reel4 | reel5 | reel6 | carousel2 | main');
