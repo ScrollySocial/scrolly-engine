@@ -332,8 +332,9 @@ const BOLD = {
     `[3:v]${FIT},fps=${FPS},gblur=sigma=3,eq=gamma=1.15:brightness=0.04,setsar=1[foam2];` +
     `[beach][foam]xfade=transition=fade:duration=0.4:offset=2.2[bf];[bf][bath]xfade=transition=fade:duration=0.4:offset=3.2[bfb];[bfb][foam2]concat=n=2:v=1[bg];` +
     `${floatBar(4, 1000)};[bar]fade=in:st=5.2:d=0.15:alpha=1[barf];[bg][barf]overlay=x='(W-w)/2':y='if(lt(t\\,5.2)\\,${H}\\,590+20*sin(2*PI*t/2.4)-120*pow(max(0\\,1-(t-5.2)/0.3)\\,2))':eval=frame[vb];` +
-    // each line drops in and fades up (0.2s apart); welcome rises in big once the bar has landed
-    [[5, 0.15], [6, 0.45], [7, 0.75]].map(([i, st], k) => `[${i}:v]format=rgba,fade=in:st=${st}:d=0.2:alpha=1[l${k}]`).join(';') +
+    // each line drops in and fades up (0.2s apart), then fades away as welcome comes in, so the ending is just the bar +
+    // welcome (her note: in the grid tile the top line was cut off)
+    [[5, 0.15], [6, 0.45], [7, 0.75]].map(([i, st], k) => `[${i}:v]format=rgba,fade=in:st=${st}:d=0.2:alpha=1,fade=out:st=5.3:d=0.3:alpha=1[l${k}]`).join(';') +
     `;[vb][l0]overlay=y='-40*max(0\\,1-(t-0.15)/0.25)':eval=frame[w0];[w0][l1]overlay=y='-40*max(0\\,1-(t-0.45)/0.25)':eval=frame[w1];` +
     `[w1][l2]overlay=y='-40*max(0\\,1-(t-0.75)/0.25)':eval=frame[w2];` +
     // welcome: drawn frame by frame (welcome2), letters pop in one by one with sparkles; it starts at 5.45s
@@ -364,8 +365,8 @@ const BOLD = {
     '-f', 'lavfi', '-t', '7', '-i', `color=black:s=${W}x${H}:r=${FPS}`, '-f', 'lavfi', '-t', '7', '-i', `color=white:s=${W}x${H}:r=${FPS}`,
     '-f', 'lavfi', '-t', '7', '-i', `color=white:s=10x${H}:r=${FPS}`, ...sfx('whoosh-air.mp3'), ...sfx('whoosh-fast.mp3'), ...barIn(), ...sfx('pop-light.mp3')],
     // round 4 (her note): the WHOLE height of the bar shows, and the real sunset is zoomed 2.5x so the two read at the
-    // same scale. Both suns sit dead centre (x 540) on the same horizon (y 1221), so the split line cuts each sun in half
-    `[0:v]${FIT},scale=2700:4800,crop=${W}:${H}:753:1089,fps=${FPS},setsar=1[sun];[1:v]crop=1052:1870:454:85,scale=${W}:${H}:flags=lanczos,fps=${FPS},setsar=1[soap];` +
+    // same scale (3.5x: as far as the clip stays sharp). Both suns sit dead centre (x 540) on the same horizon (y 1221), so the split line cuts each sun in half
+    `[0:v]${FIT},scale=3780:6720,crop=${W}:${H}:1270:2013,unsharp=5:5:0.6,fps=${FPS},setsar=1[sun];[1:v]crop=1052:1870:454:85,scale=${W}:${H}:flags=lanczos,fps=${FPS},setsar=1[soap];` +
     `[5:v][6:v]overlay=x='${SPLIT}':eval=frame,format=gray[m];[soap][m]alphamerge[sm];[sun][sm]overlay[v1];` +
     `[v1][7:v]overlay=x='${SPLIT}-5':eval=frame:enable='between(t\\,1.8\\,5.0)'[v2];` +
     `[v2][2:v]overlay=enable='lt(t\\,5.0)'[v3];[v3][3:v]overlay=enable='between(t\\,2.4\\,4.6)'[v4];` +
@@ -484,12 +485,13 @@ async function mainTexts() {
   await page.setViewport({ width: W, height: H });
   const sh = 'text-shadow:0 2px 18px rgba(0,0,0,.5)';
   await png(page, `<div style="position:absolute;left:90px;right:90px;top:900px;text-align:center;font:500 62px/1.3 Jost;color:#fff;${sh}">Client: "I only have one photo,<br>but I need 9 posts."</div>`, path.join(TMP, 'm-client.png'));
-  // a real-looking instant photo (tall frame, portrait window, her note): the whole bar (cut out) on a soft neutral backdrop fills the photo window (her idea; the
+  // a real-looking instant photo, Instax-mini proportions: equal thin sides, a bit more at the top, the thick bottom
+  // (her note: the frame was wider than the picture, so all the extra white sat on the right): the whole bar (cut out) on a soft neutral backdrop fills the photo window (her idea; the
   // photo's own white background made the first one read as a plain card), cream frame with the thick bottom, a sheen
   const barPng = readFileSync(path.join(TMP, 'bar.png')).toString('base64');
-  await png(page, `<div style="position:absolute;left:345px;top:1170px;width:390px;padding:30px 28px 140px;background:#f8f5ee;border-radius:4px;box-shadow:0 22px 44px rgba(0,0,0,.4),inset 0 0 0 1px rgba(0,0,0,.05);transform:rotate(-5deg)">
-    <div style="position:relative;width:334px;height:446px;overflow:hidden;background:radial-gradient(circle at 45% 35%,#F3EEE8 0%,#E9E2D9 100%);box-shadow:inset 0 0 10px rgba(0,0,0,.22)">
-      <img src="data:image/png;base64,${barPng}" style="position:absolute;left:12px;top:58px;width:310px">
+  await png(page, `<div style="position:absolute;left:343px;top:1150px;width:336px;padding:44px 29px 131px;background:#f8f5ee;border-radius:4px;box-shadow:0 22px 44px rgba(0,0,0,.4),inset 0 0 0 1px rgba(0,0,0,.05);transform:rotate(-5deg)">
+    <div style="position:relative;width:336px;height:453px;overflow:hidden;background:radial-gradient(circle at 45% 35%,#F3EEE8 0%,#E9E2D9 100%);box-shadow:inset 0 0 10px rgba(0,0,0,.22)">
+      <img src="data:image/png;base64,${barPng}" style="position:absolute;left:20px;top:62px;width:310px">
       <div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.28) 0%,rgba(255,255,255,0) 45%)"></div></div></div>`, path.join(TMP, 'm-card.png'));
   await png(page, '<div style="position:absolute;inset:0;background:#fff"></div>', path.join(TMP, 'm-flash.png'));
   await png(page, `<div style="position:absolute;left:0;right:0;top:330px;text-align:center;font:150px/1 InstrumentSerif;letter-spacing:-1px;color:#fff;${sh}">Of course, <span style="font-family:InstrumentSerifItalic;color:#A9D6FF;-webkit-text-stroke:7px #fff;paint-order:stroke fill;text-shadow:none">I got you</span></div>`, path.join(TMP, 'm-gotyou.png'));
