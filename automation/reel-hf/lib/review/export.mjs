@@ -61,7 +61,7 @@ export async function reviewExport(R, { notes = {}, title = '', covers = [], cov
     covers: covers.map((c) => ({ text: c.text, plain: c.text.replace(/<\/?m>/g, ''), aside: c.aside || '' })), coverDefault: coverCut ? +(coverCut.match(/f(\d+)/)?.[1] || 1) : 1,
     // the CTA line goes in the draft caption (second sentence); her own caption edits on the page are left alone
     post: post ? { ...post, caption: withCtaLine(post.caption, R.endInfo?.caption) } : null,
-    cta: R.endInfo?.cta || null, ctaLine: R.endInfo?.caption || '', ctaFrame: R.endInfo?.n || null, ctas: ctaList(), coverBgs: COVER_BGS, brands: brandList(), brand: R.B.name,
+    cta: R.endInfo?.cta || null, ctaLine: R.endInfo?.caption || '', ctaFrame: R.endInfo?.n || null, ctas: ctaList(R.endInfo?.cta?.kind), coverBgs: COVER_BGS, brands: brandList(), brand: R.B.name,
     frames, words, captions: R.captionList.map((c) => ({ i: c.i, s: r2(c.s), e: r2(c.e), t: c.t, frame: frameAt(c.s) })), sfx, sfxLib, sfxReel: mp3s('assets/sfx'),
     music: m && { file: m.baseFile, volume: m.volume, baseVolume: m.baseVolume, level: m.level, baseLevel: m.baseLevel, levels: m.levels, mix: m.mix, fadeIn: m.fadeIn, fadeOut: m.fadeOut },
     musicLevels: LEVELS,

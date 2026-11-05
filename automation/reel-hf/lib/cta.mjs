@@ -89,5 +89,7 @@ export function withCtaLine(caption, line) {
 }
 
 // for the review page: labels, field names and hook reminders (no functions)
-const offered = ([id]) => !Array.isArray(S.cta?.offer) || !S.cta.offer.length || S.cta.offer.includes(id);
-export const ctaList = () => Object.entries(CTAS).filter(offered).map(([id, d]) => ({ id, label: d.label, needs: d.needs, detailLabel: d.detailLabel || '', detailHint: d.detailHint || '', hook: d.hook, manual: d.manual || '' }));
+// planned = the ending the Reel's build.mjs chose (R.endCard kind): always offered, so a take that ends on another action
+// (she says "Save this" on camera) can still be picked and approved
+const offered = ([id], planned) => id === planned || !Array.isArray(S.cta?.offer) || !S.cta.offer.length || S.cta.offer.includes(id);
+export const ctaList = (planned) => Object.entries(CTAS).filter((e) => offered(e, planned)).map(([id, d]) => ({ id, label: d.label, needs: d.needs, detailLabel: d.detailLabel || '', detailHint: d.detailHint || '', hook: d.hook, manual: d.manual || '' }));

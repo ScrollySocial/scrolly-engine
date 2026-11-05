@@ -1,0 +1,462 @@
+{
+ "id": "2026-11-05-ais-list-your-prices",
+ "kit": "yap",
+ "fps": 30,
+ "duration": 18.18,
+ "video": "2026-11-05-ais-list-your-prices/base.mp4",
+ "words": [
+  {
+   "w": "If",
+   "s": 0,
+   "e": 0.15,
+   "seg": 0,
+   "first": true
+  },
+  {
+   "w": "you",
+   "s": 0.15,
+   "e": 0.27,
+   "seg": 0,
+   "first": false
+  },
+  {
+   "w": "want",
+   "s": 0.27,
+   "e": 0.41,
+   "seg": 0,
+   "first": false
+  },
+  {
+   "w": "to",
+   "s": 0.41,
+   "e": 0.51,
+   "seg": 0,
+   "first": false
+  },
+  {
+   "w": "get",
+   "s": 0.51,
+   "e": 0.65,
+   "seg": 0,
+   "first": false
+  },
+  {
+   "w": "leads",
+   "s": 0.65,
+   "e": 0.91,
+   "seg": 0,
+   "first": false
+  },
+  {
+   "w": "while",
+   "s": 0.91,
+   "e": 1.29,
+   "seg": 0,
+   "first": false
+  },
+  {
+   "w": "you",
+   "s": 1.29,
+   "e": 1.51,
+   "seg": 0,
+   "first": false
+  },
+  {
+   "w": "sleep",
+   "s": 1.51,
+   "e": 1.77,
+   "seg": 0,
+   "first": false
+  },
+  {
+   "w": "by",
+   "s": 1.77,
+   "e": 2.07,
+   "seg": 0,
+   "first": false
+  },
+  {
+   "w": "having",
+   "s": 2.07,
+   "e": 2.37,
+   "seg": 0,
+   "first": false
+  },
+  {
+   "w": "AI",
+   "s": 2.37,
+   "e": 2.67,
+   "seg": 0,
+   "first": false
+  },
+  {
+   "w": "recommend",
+   "s": 2.67,
+   "e": 3.07,
+   "seg": 0,
+   "first": false
+  },
+  {
+   "w": "your",
+   "s": 3.07,
+   "e": 3.35,
+   "seg": 0,
+   "first": false
+  },
+  {
+   "w": "business,",
+   "s": 3.35,
+   "e": 3.67,
+   "seg": 0,
+   "first": false
+  },
+  {
+   "w": "then",
+   "s": 4.27,
+   "e": 4.29,
+   "seg": 0,
+   "first": false
+  },
+  {
+   "w": "you",
+   "s": 4.29,
+   "e": 4.55,
+   "seg": 0,
+   "first": false
+  },
+  {
+   "w": "need to",
+   "s": 4.55,
+   "e": 4.71,
+   "seg": 0,
+   "first": false
+  },
+  {
+   "w": "make",
+   "s": 4.71,
+   "e": 4.95,
+   "seg": 0,
+   "first": false
+  },
+  {
+   "w": "sure",
+   "s": 4.95,
+   "e": 5.19,
+   "seg": 0,
+   "first": false
+  },
+  {
+   "w": "that",
+   "s": 5.19,
+   "e": 5.47,
+   "seg": 0,
+   "first": false
+  },
+  {
+   "w": "you",
+   "s": 5.47,
+   "e": 5.65,
+   "seg": 0,
+   "first": false
+  },
+  {
+   "w": "are",
+   "s": 5.65,
+   "e": 5.79,
+   "seg": 0,
+   "first": false
+  },
+  {
+   "w": "listing",
+   "s": 5.79,
+   "e": 6.07,
+   "seg": 0,
+   "first": false
+  },
+  {
+   "w": "prices",
+   "s": 6.07,
+   "e": 6.57,
+   "seg": 0,
+   "first": false
+  },
+  {
+   "w": "on",
+   "s": 6.57,
+   "e": 7.11,
+   "seg": 0,
+   "first": false
+  },
+  {
+   "w": "your",
+   "s": 7.11,
+   "e": 7.29,
+   "seg": 0,
+   "first": false
+  },
+  {
+   "w": "website.",
+   "s": 7.29,
+   "e": 7.59,
+   "seg": 0,
+   "first": false
+  },
+  {
+   "w": "If",
+   "s": 7.91,
+   "e": 8.03,
+   "seg": 1,
+   "first": true
+  },
+  {
+   "w": "instead",
+   "s": 8.03,
+   "e": 8.17,
+   "seg": 1,
+   "first": false
+  },
+  {
+   "w": "you're",
+   "s": 8.17,
+   "e": 8.67,
+   "seg": 1,
+   "first": false
+  },
+  {
+   "w": "saying",
+   "s": 8.67,
+   "e": 8.93,
+   "seg": 1,
+   "first": false
+  },
+  {
+   "w": "contact",
+   "s": 8.93,
+   "e": 9.33,
+   "seg": 1,
+   "first": false
+  },
+  {
+   "w": "us",
+   "s": 9.33,
+   "e": 9.83,
+   "seg": 1,
+   "first": false
+  },
+  {
+   "w": "for",
+   "s": 9.83,
+   "e": 9.99,
+   "seg": 1,
+   "first": false
+  },
+  {
+   "w": "pricing,",
+   "s": 9.99,
+   "e": 10.29,
+   "seg": 1,
+   "first": false
+  },
+  {
+   "w": "AI",
+   "s": 10.51,
+   "e": 10.69,
+   "seg": 2,
+   "first": true
+  },
+  {
+   "w": "is",
+   "s": 10.69,
+   "e": 11.15,
+   "seg": 2,
+   "first": false
+  },
+  {
+   "w": "going",
+   "s": 11.15,
+   "e": 11.39,
+   "seg": 2,
+   "first": false
+  },
+  {
+   "w": "to",
+   "s": 11.39,
+   "e": 11.59,
+   "seg": 2,
+   "first": false
+  },
+  {
+   "w": "skip",
+   "s": 11.59,
+   "e": 11.77,
+   "seg": 2,
+   "first": false
+  },
+  {
+   "w": "your",
+   "s": 11.77,
+   "e": 11.95,
+   "seg": 2,
+   "first": false
+  },
+  {
+   "w": "business",
+   "s": 11.95,
+   "e": 12.21,
+   "seg": 2,
+   "first": false
+  },
+  {
+   "w": "every",
+   "s": 12.21,
+   "e": 12.57,
+   "seg": 2,
+   "first": false
+  },
+  {
+   "w": "time",
+   "s": 12.57,
+   "e": 13.01,
+   "seg": 2,
+   "first": false
+  },
+  {
+   "w": "for",
+   "s": 13.01,
+   "e": 13.31,
+   "seg": 2,
+   "first": false
+  },
+  {
+   "w": "websites",
+   "s": 13.31,
+   "e": 13.67,
+   "seg": 2,
+   "first": false
+  },
+  {
+   "w": "that",
+   "s": 13.67,
+   "e": 14.09,
+   "seg": 2,
+   "first": false
+  },
+  {
+   "w": "actually",
+   "s": 14.09,
+   "e": 14.35,
+   "seg": 2,
+   "first": false
+  },
+  {
+   "w": "list",
+   "s": 14.35,
+   "e": 14.75,
+   "seg": 2,
+   "first": false
+  },
+  {
+   "w": "their",
+   "s": 14.75,
+   "e": 14.93,
+   "seg": 2,
+   "first": false
+  },
+  {
+   "w": "rates.",
+   "s": 14.93,
+   "e": 15.11,
+   "seg": 2,
+   "first": false
+  },
+  {
+   "w": "Save",
+   "s": 15.45,
+   "e": 15.47,
+   "seg": 3,
+   "first": true
+  },
+  {
+   "w": "this",
+   "s": 15.47,
+   "e": 15.71,
+   "seg": 3,
+   "first": false
+  },
+  {
+   "w": "for",
+   "s": 15.71,
+   "e": 15.93,
+   "seg": 3,
+   "first": false
+  },
+  {
+   "w": "the",
+   "s": 15.93,
+   "e": 16.05,
+   "seg": 3,
+   "first": false
+  },
+  {
+   "w": "next",
+   "s": 16.05,
+   "e": 16.21,
+   "seg": 3,
+   "first": false
+  },
+  {
+   "w": "time",
+   "s": 16.21,
+   "e": 16.59,
+   "seg": 3,
+   "first": false
+  },
+  {
+   "w": "that",
+   "s": 16.59,
+   "e": 16.79,
+   "seg": 3,
+   "first": false
+  },
+  {
+   "w": "you're",
+   "s": 16.79,
+   "e": 16.97,
+   "seg": 3,
+   "first": false
+  },
+  {
+   "w": "updating",
+   "s": 16.97,
+   "e": 17.29,
+   "seg": 3,
+   "first": false
+  },
+  {
+   "w": "your",
+   "s": 17.29,
+   "e": 17.53,
+   "seg": 3,
+   "first": false
+  },
+  {
+   "w": "website.",
+   "s": 17.53,
+   "e": 17.85,
+   "seg": 3,
+   "first": false
+  }
+ ],
+ "emphasis": [],
+ "cuts": [
+  0,
+  7.89,
+  10.51,
+  15.22
+ ],
+ "title": null,
+ "end": null,
+ "music": null,
+ "sfx": null,
+ "grade": null
+}

@@ -1,0 +1,36 @@
+{
+ "kit": "yap",
+ "pad": {
+  "before": 0.06,
+  "after": 0.1
+ },
+ "segments": [
+  {
+   "src": "2026-11-04-session/chatgpt-search/list-your-prices/purple-floral-indoor_IMG_2149.MOV",
+   "in": 1.05,
+   "out": 8.78,
+   "transcript": "audio/2026-11-04-session__chatgpt-search__list-your-prices__purple-floral-indoor_IMG_2149.json"
+  },
+  {
+   "src": "2026-11-04-session/chatgpt-search/list-your-prices/purple-floral-indoor_IMG_2149.MOV",
+   "in": 9.24,
+   "out": 11.7,
+   "transcript": "audio/2026-11-04-session__chatgpt-search__list-your-prices__purple-floral-indoor_IMG_2149.json"
+  },
+  {
+   "src": "2026-11-04-session/chatgpt-search/list-your-prices/purple-floral-indoor_IMG_2149.MOV",
+   "in": 17.77,
+   "out": 22.32,
+   "transcript": "audio/2026-11-04-session__chatgpt-search__list-your-prices__purple-floral-indoor_IMG_2149.json"
+  },
+  {
+   "src": "2026-11-04-session/chatgpt-search/list-your-prices/purple-floral-indoor_IMG_2149.MOV",
+   "in": 32.3,
+   "out": 35.1,
+   "transcript": "audio/2026-11-04-session__chatgpt-search__list-your-prices__purple-floral-indoor_IMG_2149.json"
+  }
+ ],
+ "exact": {
+  "didn't": "need to"
+ }
+}
