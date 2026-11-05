@@ -494,7 +494,27 @@ async function mainTexts() {
       <img src="data:image/png;base64,${barPng}" style="position:absolute;left:20px;top:62px;width:310px">
       <div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.28) 0%,rgba(255,255,255,0) 45%)"></div></div></div>`, path.join(TMP, 'm-card.png'));
   await png(page, '<div style="position:absolute;inset:0;background:#fff"></div>', path.join(TMP, 'm-flash.png'));
-  await png(page, `<div style="position:absolute;left:0;right:0;top:330px;text-align:center;font:150px/1 InstrumentSerif;letter-spacing:-1px;color:#fff;${sh}">Of course, <span style="font-family:InstrumentSerifItalic;color:#A9D6FF;-webkit-text-stroke:7px #fff;paint-order:stroke fill;text-shadow:none">I got you</span></div>`, path.join(TMP, 'm-gotyou.png'));
+  // "Of course, I got you" animates in (her ask): "Of course," fades up, then I / got / you pop in one at a time with a
+  // little overshoot. Frames for 3.0-4.6s; the graph pads the start and holds the last frame
+  const gy = path.join(TMP, 'm-gy');
+  mkdirSync(gy, { recursive: true });
+  await page.setContent(`<style>${CSS}span{display:inline-block;transform-origin:50% 85%}</style>
+    <div style="position:absolute;left:0;right:0;top:330px;text-align:center;font:150px/1 InstrumentSerif;letter-spacing:-1px;color:#fff;${sh}">
+      <span id=a>Of course,</span> ${['I', 'got', 'you'].map((w, i) => `<span id=w${i} style="font-family:InstrumentSerifItalic;color:#A9D6FF;-webkit-text-stroke:7px #fff;paint-order:stroke fill;text-shadow:none">${w}</span>`).join(' ')}</div>`);
+  await page.evaluate(() => document.fonts.ready);
+  for (let f = 0; f < Math.round(1.6 * FPS); f++) {
+    await page.evaluate((t) => {
+      const c = (x) => Math.max(0, Math.min(1, x));
+      const back = (x) => { x = c(x); const k = 2.2; return 1 + (k + 1) * Math.pow(x - 1, 3) + k * Math.pow(x - 1, 2); };
+      const a = document.getElementById('a').style, k = c((t - 0.2) / 0.35);
+      a.opacity = k; a.transform = `translateY(${30 * (1 - k)}px)`;
+      [0.55, 0.72, 0.89].forEach((st, i) => {
+        const s = document.getElementById(`w${i}`).style, p = (t - st) / 0.3;
+        s.opacity = c(p * 3); s.transform = `translateY(${40 * (1 - c(p))}px) scale(${p <= 0 ? 0.2 : back(p)}) rotate(${-6 * (1 - c(p))}deg)`;
+      });
+    }, f / FPS);
+    await page.screenshot({ path: path.join(gy, `${String(f + 1).padStart(4, '0')}.png`), omitBackground: true });
+  }
   await b.close();
 }
 
@@ -530,7 +550,8 @@ function mainReel() {
   const her = path.join(TMP, 'm-her.mp4'), V = P.footage;
   if (!existsSync(her)) ff(['-ss', '20', '-t', '3.2', '-i', path.join(V, 'IMG_2171.MOV'), '-ss', '8', '-t', '7', '-i', path.join(V, 'IMG_2172.MOV'), '-filter_complex',
     `[0:v]${FIT},fps=${FPS}[a];[1:v]${FIT},fps=${FPS}[b];[a][b]concat=n=2:v=1:a=0`, ...enc, her]);
-  const inputs = ['-t', '10', '-i', her, ...['client', 'card', 'gotyou', 'flash'].flatMap((k) => ['-loop', '1', '-t', `${MAIN_T}`, '-i', path.join(TMP, `m-${k}.png`)])];
+  const png = (k) => ['-loop', '1', '-t', `${MAIN_T}`, '-i', path.join(TMP, `m-${k}.png`)];
+  const inputs = ['-t', '10', '-i', her, ...png('client'), ...png('card'), '-framerate', `${FPS}`, '-i', path.join(TMP, 'm-gy', '%04d.png'), ...png('flash')];
   const tiles = GRID.map((g, k) => {
     const st = +(GRID_AT + 0.1 * k).toFixed(2);
     inputs.push('-i', tileVideo(g, k, st));
@@ -547,7 +568,7 @@ function mainReel() {
     // the polaroid snaps in at 0.5s with a white flash (and the camera sound)
     `[2:v]format=rgba,fade=in:st=0.5:d=0.05:alpha=1,fade=out:st=3.0:d=0.2:alpha=1[cd];[v1][cd]overlay=y='40*pow(max(0\\,1-(t-0.5)/0.35)\\,2)':eval=frame:enable='gte(t\\,0.5)'[v2a]`,
     `[4:v]format=rgba,fade=in:st=0.47:d=0.03:alpha=1,fade=out:st=0.52:d=0.25:alpha=1[fl];[v2a][fl]overlay=enable='between(t\\,0.45\\,0.8)'[v2]`,
-    `[3:v]format=rgba,fade=in:st=3.2:d=0.35:alpha=1[gy];[v2][gy]overlay[v3]`,
+    `[3:v]format=rgba,tpad=start_duration=3.0:color=0x00000000:stop_mode=clone:stop_duration=${MAIN_T}[gy];[v2][gy]overlay[v3]`,
   ];
   let last = 'v3';
   for (const [k, t] of tiles.entries()) {
