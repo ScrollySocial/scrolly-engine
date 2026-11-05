@@ -459,6 +459,10 @@ const reelFile = (g) => path.join(OUT, `${REEL_FILE[g] || g}.mp4`);
 // EXPERIENCE over the soap (her pick), welcome fully in, Shop now + the labels, but here we are, the REAL | SOAP split, summer
 // Reels whose tile plays from the start and then shows a cover frame (seconds into the Reel)
 const COVER = { 'reel-1': 2.55 };
+// Reel 5's ending (IT'S SOAP.) sits below the tile crop, so its tile plays only to the split screen and holds there
+// Reel 2 is a loop that un-builds itself after its hold (4.4s), so its tile stops at the full hold
+const PLAY_TO = { 'reel-2': 4.3, 'reel-5': 4.5 };
+const HOLD_AT = { 'reel-2': 4.2, 'reel-5': 4.4 };
 const TILE_END = { 'reel-1': 2.55, 'reel-2': 3.5, 'reel-3': 6.5, 'reel-4': 4.5, 'reel-5': 3.6, 'reel-6': 6.6, 'reel-bubbles': 6.5 }; // reel-6 v6: its best grid second is also 6.6
 // a Reel's real length (some are 6.9s, not 7): the loop maths must use it, or a tile lands on the Reel's first frame
 const videoLength = (f) => +execFileSync(tool('ffprobe'), ['-v', 'error', '-select_streams', 'v', '-show_entries', 'stream=duration', '-of', 'csv=p=0', f]).toString();
@@ -560,25 +564,24 @@ function tileVideo(g, k, st) {
   const out = path.join(TMP, `tile-${k}.mp4`), d = +(MAIN_T - st).toFixed(2), { w, h } = TILE;
   // stills and slides fill the tile
   const fitted = (i) => `[${i}:v]scale=${w}:${h}:force_original_aspect_ratio=increase,crop=${w}:${h},fps=${FPS},setsar=1`;
-  if (COVER[g] != null) {
-    // plays from the start, the whole way through, then holds its cover frame, a little lighter and crisper (her note) (her note: the tile is the Reel's cover
-    // once it's done playing; starting it mid-way broke the flow)
-    const play = Math.min(7, d - 0.5), sh = Math.round(H * w / W / 2) * 2, shape = `scale=${w}:${sh},crop=${w}:${h}:0:${Math.min(sh - h, Math.round(CROP_Y[g] * sh / H))}`;
-    // the cover: Reel 1's UPGRADE moment rebuilt as a still, the same soap-bar background, the words in clean white with
-    // their soft shadow (her note: make the words whiter; brightening the whole frame changed her approved colours)
-    const cover = path.join(TMP, 'cover-reel-1.png');
-    ff(['-i', SOAP, '-i', path.join(TMP, 'shadow.png'), '-i', path.join(TMP, 'mask.png'), '-filter_complex',
-      `[0:v]crop=${BAR.w}:${BAR.h}:${BAR.x}:${BAR.y},scale=${W}:${H}:flags=lanczos,format=rgba[bar];[2:v]format=gray[m];color=white:s=${W}x${H}:d=1,format=rgba[wh];[wh][m]alphamerge[txt];[bar][1:v]overlay[b2];[b2][txt]overlay`, '-frames:v', '1', cover]);
+  if (g.startsWith('reel')) {
+    // every Reel plays from its first frame (her note: starting mid-way showed the ending first), up to PLAY_TO or its
+    // end, then holds its cover frame: Reel 1's rebuilt UPGRADE still, the others their best frame (TILE_END)
+    const L = videoLength(reelFile(g)), play = Math.min(L, d - 0.4, PLAY_TO[g] ?? L);
+    const sh = Math.round(H * w / W / 2) * 2, shape = `scale=${w}:${sh},crop=${w}:${h}:0:${Math.min(sh - h, Math.round(CROP_Y[g] * sh / H))}`;
+    const cover = path.join(TMP, `cover-${g}.png`);
+    if (COVER[g] != null) {
+      // Reel 1's UPGRADE moment rebuilt as a still, the same soap-bar background, the words in clean white with their soft
+      // shadow (her note: make the words whiter; brightening the whole frame changed her approved colours)
+      ff(['-i', SOAP, '-i', path.join(TMP, 'shadow.png'), '-i', path.join(TMP, 'mask.png'), '-filter_complex',
+        `[0:v]crop=${BAR.w}:${BAR.h}:${BAR.x}:${BAR.y},scale=${W}:${H}:flags=lanczos,format=rgba[bar];[2:v]format=gray[m];color=white:s=${W}x${H}:d=1,format=rgba[wh];[wh][m]alphamerge[txt];[bar][1:v]overlay[b2];[b2][txt]overlay`, '-frames:v', '1', cover]);
+    } else ff(['-ss', `${HOLD_AT[g] ?? TILE_END[g]}`, '-i', reelFile(g), '-frames:v', '1', cover]);
     // the hold is made as its own clip first: joining a single still frame inside one graph silently dropped it
     const hold = path.join(TMP, `tile-${k}-cover.mp4`), holdT = (d - play + 0.2).toFixed(2);
     ff(['-loop', '1', '-t', holdT, '-i', cover, '-vf', `${shape},setsar=1,fps=${FPS},format=yuv420p`, ...enc, hold]);
     ff(['-t', `${play}`, '-i', reelFile(g), '-i', hold, '-filter_complex',
       `[0:v]fps=${FPS},${shape},setsar=1,format=yuv420p[p];[1:v]setsar=1[c];[p][c]concat=n=2:v=1`,
       '-t', `${d}`, ...enc, out]);
-  } else if (g.startsWith('reel')) {
-    const L = videoLength(reelFile(g)), skip = (((TILE_END[g] - d) % L) + L) % L, sh = Math.round(H * w / W / 2) * 2;
-    ff(['-stream_loop', '3', '-i', reelFile(g),
-      '-vf', `fps=${FPS},trim=start=${skip.toFixed(3)}:duration=${d},setpts=PTS-STARTPTS,scale=${w}:${sh},crop=${w}:${h}:0:${Math.min(sh - h, Math.round(CROP_Y[g] * sh / H))},fps=${FPS},setsar=1`, ...enc, out]);
   } else if (g === 'image') {
     // the image post is 4:5: shown whole (its handwriting runs to the edges), on a soft blurred band top and bottom
     ff(['-loop', '1', '-t', `${d}`, '-i', path.join(POSTS, 'image-post', 'image-post-6.png'), '-filter_complex',
@@ -629,11 +632,11 @@ function mainReel() {
     `[b2]gblur=sigma=24,eq=brightness=-0.12,format=rgba,fade=in:st=${GRID_AT - 0.2}:d=0.3:alpha=1[blur]`,
     `[b1][blur]overlay[v0]`,
     `[1:v]format=rgba,fade=out:st=3.0:d=0.2:alpha=1[cl];[v0][cl]overlay[v1b]`,
-    // the burst flares behind the photo as it snaps in, then fades
-    `[5:v]format=rgba,fade=in:st=0.45:d=0.08:alpha=1,fade=out:st=0.7:d=0.7:alpha=1[bu];[v1b][bu]overlay=enable='between(t\,0.45\,1.4)'[v1]`,
-    // the polaroid snaps in at 0.5s with a white flash (and the camera sound)
-    `[2:v]format=rgba,fade=in:st=0.5:d=0.05:alpha=1,fade=out:st=3.0:d=0.2:alpha=1[cd];[v1][cd]overlay=y='40*pow(max(0\\,1-(t-0.5)/0.35)\\,2)':eval=frame:enable='gte(t\\,0.5)'[v2a]`,
-    `[4:v]format=rgba,fade=in:st=0.47:d=0.03:alpha=1,fade=out:st=0.52:d=0.25:alpha=1[fl];[v2a][fl]overlay=enable='between(t\\,0.45\\,0.8)'[v2]`,
+    // the photo slides in quietly at 0.5s; the burst, white flash and camera sound fire as it disappears at ~2.85s, right
+    // before "Of course, I got you" (her note: no dead second after the flash)
+    `[5:v]format=rgba,fade=in:st=2.8:d=0.08:alpha=1,fade=out:st=3.0:d=0.5:alpha=1[bu];[v1b][bu]overlay=enable='between(t\,2.8\,3.6)'[v1]`,
+    `[2:v]format=rgba,fade=in:st=0.5:d=0.25:alpha=1,fade=out:st=2.88:d=0.12:alpha=1[cd];[v1][cd]overlay=y='40*pow(max(0\\,1-(t-0.5)/0.35)\\,2)':eval=frame:enable='gte(t\\,0.5)'[v2a]`,
+    `[4:v]format=rgba,fade=in:st=2.82:d=0.03:alpha=1,fade=out:st=2.88:d=0.3:alpha=1[fl];[v2a][fl]overlay=enable='between(t\\,2.8\\,3.2)'[v2]`,
     `[3:v]format=rgba,tpad=start_duration=3.0:color=0x00000000:stop_mode=clone:stop_duration=${MAIN_T}[gy];[v2][gy]overlay[v3]`,
   ];
   let last = 'v3';
@@ -643,7 +646,7 @@ function mainReel() {
     last = `g${k}`;
   }
   const out = path.join(OUT, `main-reel-v${process.argv[3] || 1}.mp4`); // versioned: her player kept showing old copies
-  ff([...inputs, '-filter_complex', `${g.join(';')};[${last}]${GRAIN},format=yuv420p[v];${at(sx, 3.2, 0.5)}[a1];${at(sx + 1, GRID_AT, 0.6)}[a2];${at(sx + 2, 0.45, 0.8)}[a3];[a1][a2][a3]amix=inputs=3:normalize=0,apad,atrim=0:${MAIN_T}[a]`,
+  ff([...inputs, '-filter_complex', `${g.join(';')};[${last}]${GRAIN},format=yuv420p[v];${at(sx, 3.2, 0.5)}[a1];${at(sx + 1, GRID_AT, 0.6)}[a2];${at(sx + 2, 2.78, 0.8)}[a3];[a1][a2][a3]amix=inputs=3:normalize=0,apad,atrim=0:${MAIN_T}[a]`,
     '-map', '[v]', '-map', '[a]', '-t', `${MAIN_T}`, '-r', `${FPS}`, '-c:v', 'libx264', '-crf', '18', '-pix_fmt', 'yuv420p', ...BT709, '-c:a', 'aac', '-b:a', '160k', '-movflags', '+faststart', out]);
   console.log(out);
 }
