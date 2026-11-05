@@ -437,16 +437,21 @@ async function carousel2() {
 }
 
 // her brand, not the soap shop's: Instrument Serif for the line, Jost for the rest (her note 2026-11-04). "I got you" in
-// the serif italic, her sky blue, with a white outline (her ask). The photo is a polaroid that snaps in with a flash
+// the serif italic, light blue (not the bright sky), with a white outline (her ask). The photo is a polaroid that snaps in with a flash
 async function mainTexts() {
   const b = await launch(), page = await b.newPage();
   await page.setViewport({ width: W, height: H });
   const sh = 'text-shadow:0 2px 18px rgba(0,0,0,.5)';
   await png(page, `<div style="position:absolute;left:90px;right:90px;top:900px;text-align:center;font:500 62px/1.3 Jost;color:#fff;${sh}">Client: "I only have one photo,<br>but I need 9 posts."</div>`, path.join(TMP, 'm-client.png'));
-  await png(page, `<div style="position:absolute;left:325px;top:1120px;width:430px;padding:22px 22px 96px;background:#fbfaf6;border-radius:3px;box-shadow:0 18px 40px rgba(0,0,0,.35);transform:rotate(-4deg)">
-    <img src="data:image/webp;base64,${readFileSync(SOAP).toString('base64')}" style="width:386px;display:block"></div>`, path.join(TMP, 'm-card.png'));
+  // a real-looking polaroid: a square close-up of the bar fills the photo window (the photo's own white background
+  // made the first one read as a plain card), cream frame with the thick bottom, a soft sheen on the print
+  const sq = path.join(TMP, 'm-square.jpg');
+  ff(['-i', SOAP, '-frames:v', '1', '-vf', 'crop=1300:1300:300:350,scale=760:760', sq]);
+  await png(page, `<div style="position:absolute;left:310px;top:1080px;width:460px;padding:26px 26px 110px;background:#f6f2e9;border-radius:4px;box-shadow:0 22px 44px rgba(0,0,0,.4),inset 0 0 0 1px rgba(0,0,0,.05);transform:rotate(-5deg)">
+    <div style="position:relative;width:408px;height:408px;background:url(data:image/jpeg;base64,${readFileSync(sq).toString('base64')}) center/cover;box-shadow:inset 0 0 12px rgba(0,0,0,.35)">
+      <div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.28) 0%,rgba(255,255,255,0) 45%)"></div></div></div>`, path.join(TMP, 'm-card.png'));
   await png(page, '<div style="position:absolute;inset:0;background:#fff"></div>', path.join(TMP, 'm-flash.png'));
-  await png(page, `<div style="position:absolute;left:0;right:0;top:175px;text-align:center;font:150px/1 InstrumentSerif;letter-spacing:-1px;color:#fff;${sh}">Of course, <span style="font-family:InstrumentSerifItalic;color:#4da3ff;-webkit-text-stroke:7px #fff;paint-order:stroke fill;text-shadow:none">I got you</span></div>`, path.join(TMP, 'm-gotyou.png'));
+  await png(page, `<div style="position:absolute;left:0;right:0;top:175px;text-align:center;font:150px/1 InstrumentSerif;letter-spacing:-1px;color:#fff;${sh}">Of course, <span style="font-family:InstrumentSerifItalic;color:#A9D6FF;-webkit-text-stroke:7px #fff;paint-order:stroke fill;text-shadow:none">I got you</span></div>`, path.join(TMP, 'm-gotyou.png'));
   await b.close();
 }
 
