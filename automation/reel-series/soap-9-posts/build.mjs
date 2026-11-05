@@ -333,9 +333,62 @@ const BOLD = {
     `[10:v]scale=1000:1000,format=rgba,fade=in:st=5.0:d=0.12:alpha=1[bar];[v4][bar]overlay=x=40:y='if(lt(t\\,5.0)\\,${H}\\,420-110*pow(max(0\\,1-(t-5.0)/0.3)\\,2))':eval=frame[v5];` +
     `[4:v]format=rgba,fade=in:st=5.25:d=0.2:alpha=1[end];[v5][end]overlay`,
     `${at(8, 1.8, 0.5)}[a1];${at(9, 4.6, 0.5)}[a2];${at(11, 5.0, 0.7)}[a3];${mix(['a1', 'a2', 'a3'])}`),
+  // 6 (her idea 2026-11-04): "It may look like fall outside / but in your shower / it's still summer". Fall leaves >
+  // her lather clip > her robe-and-palm-wall clip > her pastel beach, where the bar spins in. Words + bar drawn per frame
+  // (overlay6), same lettering and motion as Reel 3
+  6: () => render(6, ['-ss', '1', '-t', '2.4', '-i', clip(10223234), '-ss', '1', '-t', '1.1', '-i', clip(9474976),
+    '-ss', '4', '-t', '0.8', '-i', clip(8225573), '-ss', '2', '-t', '2.7', '-i', clip(12954182),
+    '-framerate', `${FPS}`, '-i', path.join(TMP, 'r6ov', '%04d.png'), ...sfx('whoosh-air.mp3'), ...sfx('whoosh-air.mp3'), ...sfx('pop-light.mp3')],
+    [0, 1, 2, 3].map((i) => `[${i}:v]${FIT},fps=${FPS},setsar=1[s${i}]`).join(';') + ';[s0][s1][s2][s3]concat=n=4:v=1:a=0[bg];' +
+    '[4:v]format=rgba[ov];[bg][ov]overlay=shortest=1',
+    `${at(5, 2.3, 0.4)}[a1];${at(6, 4.2, 0.4)}[a2];${at(7, 4.9, 0.7)}[a3];${mix(['a1', 'a2', 'a3'])}`),
 };
+TEXTS[6] = {};
+
+// Reel 6's words + bar, one PNG per frame: each line pair fades up in the middle and leaves; then the bar spins in
+// over the beach with "it's still / summer" at the top
+async function overlay6() {
+  const dir = path.join(TMP, 'r6ov');
+  mkdirSync(dir, { recursive: true });
+  const bar = `data:image/png;base64,${readFileSync(path.join(TMP, 'bar.png')).toString('base64')}`;
+  const caps = `font:500 46px Figtree;letter-spacing:8px;text-transform:uppercase;color:#fff;${SOFT_SHADOW}`;
+  const b = await launch(), page = await b.newPage();
+  await page.setViewport({ width: W, height: H });
+  await page.setContent(`<style>${CSS}.a{position:absolute;left:0;right:0;text-align:center}</style>
+    <div id=scrim class=a style="inset:0;background:linear-gradient(180deg,rgba(20,10,5,.15) 0%,rgba(20,10,5,.4) 40%,rgba(20,10,5,.4) 60%,rgba(20,10,5,.15) 100%)"></div>
+    <div id=glow class=a style="inset:0;background:radial-gradient(circle at 50% 52%,rgba(255,244,214,.95) 0%,rgba(255,236,190,.5) 28%,rgba(255,236,190,0) 60%);opacity:0"></div>
+    <img id=bar src="${bar}" style="position:absolute;left:${(W - 900) / 2}px;top:600px;width:900px;opacity:0">
+    <div id=g1 class=a style="top:740px"><div id=c1 style="${caps}">it may look like</div><div id=s1 style="font:200px/1 GreatVibes;color:#fff;${SOFT_SHADOW}">fall outside</div></div>
+    <div id=g2 class=a style="top:740px"><div id=c2 style="${caps}">but</div><div id=s2 style="font:200px/1 GreatVibes;color:#fff;${SOFT_SHADOW}">in your shower</div></div>
+    <div id=g3 class=a style="top:150px"><div id=c3 style="${caps}">it's still</div><div id=s3 style="font:230px/1 GreatVibes;color:${BUTTER};${SOFT_SHADOW}">summer</div></div>`);
+  await page.evaluate(() => document.fonts.ready);
+  for (let f = 0; f < 7 * FPS; f++) {
+    await page.evaluate((t) => {
+      const c = (x) => Math.max(0, Math.min(1, x)), out3 = (x) => 1 - Math.pow(1 - c(x), 3);
+      const back = (x) => { x = c(x); const k = 1.7; return 1 + (k + 1) * Math.pow(x - 1, 3) + k * Math.pow(x - 1, 2); };
+      const $ = (id) => document.getElementById(id).style;
+      // [group, in at, out at]: caps first, the script 0.25s later; each group blurs up and away
+      for (const [g, st, end] of [[1, 0.15, 2.2], [2, 2.45, 4.05], [3, 4.6, 99]]) {
+        const leave = c((t - end) / 0.3);
+        $(`g${g}`).opacity = 1 - leave; $(`g${g}`).filter = `blur(${8 * leave}px)`; $(`g${g}`).transform = `translateY(${-40 * leave}px)`;
+        for (const [id, d] of [[`c${g}`, 0], [`s${g}`, 0.25]]) {
+          const k = out3((t - st - d) / 0.45);
+          $(id).opacity = k; $(id).transform = `translateY(${36 * (1 - k)}px)`;
+        }
+      }
+      $('scrim').opacity = 1 - c((t - 4.2) / 0.3) * 0.6;
+      $('glow').opacity = t < 4.1 ? 0 : Math.max(0, 1 - Math.abs(t - 4.35) / 0.35);
+      const s = t < 4.2 ? 0 : 0.15 + 0.85 * back((t - 4.2) / 0.7), spin = -540 * (1 - out3((t - 4.2) / 0.7));
+      const fl = c((t - 5.0) / 0.6), rock = 4 * Math.sin(2 * Math.PI * (t - 5.0) / 2) * fl, bob = -18 * Math.sin(2 * Math.PI * (t - 5.0) / 2 + 1) * fl;
+      $('bar').opacity = t < 4.2 ? 0 : c((t - 4.2) / 0.12);
+      $('bar').transform = `translateY(${bob}px) scale(${s}) rotate(${spin + rock}deg)`;
+    }, f / FPS);
+    await page.screenshot({ path: path.join(dir, `${String(f + 1).padStart(4, '0')}.png`), omitBackground: true });
+  }
+  await b.close();
+}
 
 const cmd = process.argv[2];
 if (cmd === 'reel1') { mkdirSync(TMP, { recursive: true }); await texts(); reel1(); }
-else if (BOLD[cmd?.replace("reel", "")]) { const n = +cmd.replace("reel", ""); mkdirSync(TMP, { recursive: true }); if (!existsSync(path.join(TMP, "bar.png"))) await texts(); await boldTexts(n); if (n === 4) await feed(); if (n === 3) await overlay3(); BOLD[n](); }
-else console.log('usage: node build.mjs reel1 | reel2 | reel3 | reel4 | reel5');
+else if (BOLD[cmd?.replace("reel", "")]) { const n = +cmd.replace("reel", ""); mkdirSync(TMP, { recursive: true }); if (!existsSync(path.join(TMP, "bar.png"))) await texts(); await boldTexts(n); if (n === 4) await feed(); if (n === 3) await overlay3(); if (n === 6) await overlay6(); BOLD[n](); }
+else console.log('usage: node build.mjs reel1 | reel2 | reel3 | reel4 | reel5 | reel6');
