@@ -116,7 +116,8 @@ for (const [i, { s, start, end: end0, first, pad = 0 }] of pieces.entries()) {
       '-c:v', 'libx264', '-preset', 'veryfast', '-crf', '18', '-c:a', 'aac', '-b:a', '192k', '-ac', '2', '-f', 'mp4', file + '.part']);
     renameSync(file + '.part', file); // a stopped render leaves only a .part, never a broken cached piece
   }
-  cuts.push({ t: +t.toFixed(3), take: path.basename(s.src), src: s.src, in: start, out: end });
+  // pad = the muted tail inside out (a CapCut copy of the cut stops at out - pad, since it plays the take's own sound)
+  cuts.push({ t: +t.toFixed(3), take: path.basename(s.src), src: s.src, in: start, out: end, pad });
   if (first && s.beat) beats.push({ t, beat: s.beat, take: path.basename(s.src) });
   // every spoken word on the cut's timeline (graphics timing + captions)
   for (const w of wordsOf(s)) if (w.s >= start && w.s < end) words.push({ w: w.w.trim(), t: +(t + w.s - start).toFixed(3), e: +(t + Math.min(w.e, end) - start).toFixed(3) });
