@@ -9,7 +9,7 @@
 // youtube/<id>/words.json (every word's time in the cut, for graphics and captions).
 // Usage: node roughcut.mjs <id>
 import { execFileSync, spawnSync } from 'node:child_process';
-import { mkdirSync, writeFileSync, existsSync, readFileSync } from 'node:fs';
+import { mkdirSync, writeFileSync, existsSync, readFileSync, renameSync } from 'node:fs';
 import { createHash } from 'node:crypto';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -113,7 +113,8 @@ for (const [i, { s, start, end: end0, first, pad = 0 }] of pieces.entries()) {
     const af = pad ? `aresample=48000,afade=t=in:d=0.015,afade=t=out:st=${(dur - pad - 0.03).toFixed(3)}:d=0.03`
       : `aresample=48000,afade=t=in:d=0.015,afade=t=out:st=${(dur - 0.015).toFixed(3)}:d=0.015`;
     execFileSync(FF, ['-v', 'error', '-y', '-ss', String(start), '-t', String(dur), '-i', f, '-vf', vf, '-af', af,
-      '-c:v', 'libx264', '-preset', 'veryfast', '-crf', '18', '-c:a', 'aac', '-b:a', '192k', '-ac', '2', file]);
+      '-c:v', 'libx264', '-preset', 'veryfast', '-crf', '18', '-c:a', 'aac', '-b:a', '192k', '-ac', '2', '-f', 'mp4', file + '.part']);
+    renameSync(file + '.part', file); // a stopped render leaves only a .part, never a broken cached piece
   }
   cuts.push({ t: +t.toFixed(3), take: path.basename(s.src), src: s.src, in: start, out: end });
   if (first && s.beat) beats.push({ t, beat: s.beat, take: path.basename(s.src) });
