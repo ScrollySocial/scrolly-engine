@@ -69,7 +69,8 @@ for (const s of plan.segments) {
   const gaps = [];
   for (const [a, b] of silences(f, c.start, c.end)) {
     if (b - a <= maxPause || a <= c.start + 0.05 || b >= c.end - 0.05) continue;
-    if (tw.some((w) => w.s > a + 0.05 && w.s < b - 0.05)) continue;
+    // never inside a word: a soft, drawn-out word ("to…", "work…") dips under the threshold mid-word
+    if (tw.some((w) => a + 0.12 < w.e - 0.05 && b - 0.2 > w.s + 0.05)) continue;
     gaps.push([a + 0.12, b - 0.2]);
   }
   for (let k = 0; k + 1 < tw.length; k++) {
@@ -77,7 +78,9 @@ for (const s of plan.segments) {
     // Whisper word times run early, so never cut on them: find the real quiet stretch (looser threshold, since room
     // noise hid it from the strict pass) inside the gap, and skip the gap if there is none
     const q = silences(f, tw[k].e - 0.2, tw[k + 1].s + 0.4, LOOSE).filter(([x, y]) => y - x > 0.5).sort((m, n) => (n[1] - n[0]) - (m[1] - m[0]))[0];
-    if (q && q[0] + 0.12 > c.start + 0.1 && q[1] - 0.15 < c.end - 0.1) gaps.push([q[0] + 0.12, q[1] - 0.15]);
+    // kept between the two words: from the first word's end to just after the next one's (early-running) start
+    const ga = Math.max(q?.[0] + 0.12, tw[k].e), gb = Math.min(q?.[1] - 0.15, tw[k + 1].s + 0.1);
+    if (q && gb - ga > 0.3 && ga > c.start + 0.1 && gb < c.end - 0.1) gaps.push([ga, gb]);
   }
   gaps.sort((x, y) => x[0] - y[0]);
   let cur = c.start, first = true;

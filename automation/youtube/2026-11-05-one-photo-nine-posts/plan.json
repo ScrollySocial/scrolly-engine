@@ -1,0 +1,33 @@
+{
+  "title": "1 Product Photo, 9 Instagram Posts (faceless Reels I made with Claude)",
+  "maxPause": 0.6,
+  "segments": [
+    { "src": "IMG_2196.MOV", "in": 2.74, "out": 38.32, "beat": "Hook" },
+    { "src": "IMG_2183.MOV", "in": 0.85, "out": 7.39, "beat": "What I made" },
+    { "src": "IMG_2184.MOV", "in": 1.01, "out": 7.17 },
+    { "src": "IMG_2193.MOV", "in": 5.30, "out": 172.60, "beat": "1. Where the idea came from" },
+    { "src": "IMG_2184.MOV", "in": 125.58, "out": 186.42, "beat": "2. One photo of my soap" },
+    { "src": "IMG_2184.MOV", "in": 203.39, "out": 279.69, "hardIn": true, "beat": "Post 1: the photo post" },
+    { "src": "IMG_2184.MOV", "in": 282.33, "out": 289.75 },
+    { "src": "IMG_2185.MOV", "in": 0.78, "out": 35.9, "hardOut": true, "pad": 0, "beat": "Post 2: shower to sunset Reel" },
+    { "src": "IMG_2185.MOV", "in": 51.4, "out": 83.81, "hardIn": true },
+    { "src": "IMG_2185.MOV", "in": 84.83, "out": 131.05, "beat": "Post 3: the bathtub carousel" },
+    { "src": "IMG_2186.MOV", "in": 5.58, "out": 40.44, "beat": "Post 4: still sunny in the shower" },
+    { "src": "IMG_2186.MOV", "in": 40.44, "out": 61.84, "beat": "One colour scheme" },
+    { "src": "IMG_2186.MOV", "in": 62.66, "out": 67.38 },
+    { "src": "IMG_2186.MOV", "in": 109.32, "out": 132.24, "beat": "Post 5: side by side" },
+    { "src": "IMG_2187.MOV", "in": 0.40, "out": 22.46 },
+    { "src": "IMG_2187.MOV", "in": 22.76, "out": 87.26, "beat": "Post 6: three features" },
+    { "src": "IMG_2188.MOV", "in": 1.04, "out": 69.50, "beat": "Post 7: smells like (scent loop)" },
+    { "src": "IMG_2190.MOV", "in": 1.04, "out": 27.32, "beat": "Post 8: split screens" },
+    { "src": "IMG_2191.MOV", "in": 5.90, "out": 67.16, "beat": "Post 9: the soap dish" },
+    { "src": "IMG_2199.MOV", "in": 1.46, "out": 47.44, "beat": "Why 7-second Reels" },
+    { "src": "IMG_2203.MOV", "in": 2.29, "out": 222.05, "beat": "3. How I made them with Claude" },
+    { "src": "IMG_2203.MOV", "in": 236.69, "out": 310.05, "hardIn": true, "beat": "Editing tip: half-second clips" },
+    { "src": "IMG_2204.MOV", "in": 2.72, "out": 54.0, "hardIn": true, "hardOut": true, "beat": "Wrap-up" },
+    { "src": "IMG_2192.MOV", "in": 1.33, "out": 24.83 },
+    { "src": "IMG_2194.MOV", "in": 2.93, "out": 44.81, "beat": "Why I share this" },
+    { "src": "IMG_2201.MOV", "in": 1.52, "out": 31.87, "beat": "CTA (keyword to confirm)" },
+    { "src": "IMG_2195.MOV", "in": 21.6, "out": 37.62, "hardIn": true, "beat": "Subscribe" }
+  ]
+}
