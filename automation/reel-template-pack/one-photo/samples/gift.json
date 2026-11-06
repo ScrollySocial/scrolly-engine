@@ -1,0 +1,9 @@
+{
+  "name": "gift",
+  "photo": "../assets/props/source/images/Kraft paper cube gift with twine-38.png",
+  "words": [
+    ["Ready to", "script", 4], ["GIVE AWAY", "heavy", 4], ["wrapped by hand", "thin", 3], ["Little", "script", 2],
+    ["LUXURIES", "heavy", 2], ["Soap + candle", "thin", 1], ["One of a kind", "script", 0], ["GIFT SETS", "heavy", 0]
+  ],
+  "end": ["Gift Sets", "get yours now"]
+}

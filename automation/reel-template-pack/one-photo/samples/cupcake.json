@@ -1,0 +1,9 @@
+{
+  "name": "cupcake",
+  "photo": "../assets/props/source/food/Pastel Lavender Birthday Cupcake-2.png",
+  "words": [
+    ["Lavender", "script", 4], ["DREAM", "heavy", 4], ["baked fresh", "thin", 3], ["Real", "script", 2],
+    ["BUTTERCREAM", "heavy", 2], ["Lavender + honey", "thin", 1], ["One of a kind", "script", 0], ["CUPCAKES", "heavy", 0]
+  ],
+  "end": ["Cupcakes", "get yours now"]
+}
